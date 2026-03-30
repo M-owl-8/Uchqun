@@ -44,8 +44,7 @@ const Dashboard = () => {
       setStats(overviewData);
       setSchools(schoolsData);
       setAdmins(adminsData);
-    } catch (error) {
-      console.error('Error loading dashboard data:', error);
+    } catch {
     } finally {
       setLoading(false);
     }

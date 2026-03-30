@@ -83,7 +83,11 @@ export function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-    unregisterPushNotifications().catch(() => {});
+    try {
+      await unregisterPushNotifications();
+    } catch (err) {
+      console.error('[AuthContext] Failed to unregister push notifications during logout:', err);
+    }
     await clearAuth();
     setUser(null);
     setAccessToken(null);

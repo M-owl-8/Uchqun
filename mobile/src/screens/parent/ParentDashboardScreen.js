@@ -25,6 +25,7 @@ export function ParentDashboardScreen() {
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     activities: 0,
     meals: 0,
@@ -84,6 +85,7 @@ export function ParentDashboardScreen() {
   const loadData = useCallback(async (isInitial = false) => {
     try {
       if (isInitial) setLoading(true);
+      setError(null);
 
       const childrenData = await parentService.getChildren().catch(() => []);
       const childrenList = Array.isArray(childrenData) ? childrenData : [];

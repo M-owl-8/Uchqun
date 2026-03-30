@@ -45,10 +45,7 @@ export const AuthProvider = ({ children }) => {
                 }
               })
               .catch((error) => {
-                // Token invalid - but don't clear user immediately
-                // Let ProtectedRoute handle redirect if needed
-                console.warn('Token verification failed:', error.response?.status);
-                // Only clear if it's a real auth error (not network error)
+                // Token invalid - only clear if it's a real auth error (not network error)
                 if (error.response?.status === 401) {
                   localStorage.removeItem('user');
                   localStorage.removeItem('accessToken');

@@ -48,11 +48,6 @@ const Dashboard = () => {
         
         if (statsResponse?.data?.data) {
           const statsData = statsResponse.data.data;
-          console.log('Stats data from backend:', statsData);
-          console.log('Teachers:', statsData.teachers, 'Type:', typeof statsData.teachers);
-          console.log('Parents:', statsData.parents, 'Type:', typeof statsData.parents);
-          console.log('Children:', statsData.children, 'Type:', typeof statsData.children);
-          
           // Ensure we get the correct values
           const teachersCount = typeof statsData.teachers === 'number' 
             ? statsData.teachers 
@@ -71,14 +66,6 @@ const Dashboard = () => {
           } else {
             childrenCount = 0;
           }
-          
-          console.log('Final counts - Teachers:', teachersCount, 'Parents:', parentsCount, 'Children:', childrenCount);
-          console.log('Children count details:', {
-            statsDataChildren: statsData.children,
-            statsDataUsersChildren: statsData.users?.children,
-            statsDataChildrenCount: statsData.childrenCount,
-            finalChildrenCount: childrenCount
-          });
           
           setStats({
             receptions: getReceptionsCount(statsData.receptions),
@@ -115,8 +102,7 @@ const Dashboard = () => {
               groups: groups.length,
             });
             setReceptions(receptionsData);
-          } catch (fallbackError) {
-            console.error('Error loading fallback data:', fallbackError);
+          } catch {
             setStats({
               receptions: 0,
               teachers: 0,
@@ -128,8 +114,7 @@ const Dashboard = () => {
           }
         }
         setReceptions(receptionsData);
-      } catch (error) {
-        console.error('Error loading dashboard data:', error);
+      } catch {
         setStats({
           receptions: 0,
           teachers: 0,

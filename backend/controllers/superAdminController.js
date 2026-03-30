@@ -5,6 +5,7 @@ import School from '../models/School.js';
 import Child from '../models/Child.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
+import { parsePagination } from '../utils/pagination.js';
 
 /**
  * Send message to super-admin
