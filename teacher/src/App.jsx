@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { AuthProvider } from './shared/context/AuthContext';
 import { SocketProvider } from './shared/context/SocketContext';
 import { ToastProvider } from './shared/context/ToastContext';
@@ -33,11 +34,12 @@ import Therapy from './parent/pages/Therapy';
 
 function App() {
   return (
-    <ToastProvider>
-      <NotificationProvider>
-        <AuthProvider>
-          <SocketProvider>
-            <Router>
+    <ErrorBoundary>
+      <ToastProvider>
+        <NotificationProvider>
+          <AuthProvider>
+            <SocketProvider>
+              <Router>
               <ToastContainer />
               <Routes>
               <Route path="/login" element={<Login />} />

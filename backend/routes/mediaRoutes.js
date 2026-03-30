@@ -18,10 +18,8 @@ import { body } from 'express-validator';
 const router = express.Router();
 
 // Proxy endpoint for Appwrite files (to avoid CORS issues)
-// Note: No authentication required for images/videos (public access via media record ID)
-// The media record ID acts as a token - only users who know the ID can access
-// MUST be defined BEFORE router.use(authenticate) to avoid authentication requirement
-router.get('/proxy/:fileId', proxyMediaFile);
+// Requires authentication to ensure only authorized users can access media
+router.get('/proxy/:fileId', authenticate, proxyMediaFile);
 
 // All other routes require authentication
 router.use(authenticate);

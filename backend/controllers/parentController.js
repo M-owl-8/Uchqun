@@ -13,6 +13,7 @@ import Activity from '../models/Activity.js';
 import Meal from '../models/Meal.js';
 import Media from '../models/Media.js';
 import logger from '../utils/logger.js';
+import { parsePagination } from '../utils/pagination.js';
 import { Op, fn, col } from 'sequelize';
 import sequelize from '../config/database.js';
 import { computeAverageRating } from '../utils/governmentLevel.js';
@@ -58,7 +59,8 @@ export const getMyChildren = async (req, res) => {
  */
 export const getMyActivities = async (req, res) => {
   try {
-    const { limit = 50, offset = 0, activityType, startDate, endDate, childId } = req.query;
+    const { activityType, startDate, endDate, childId } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
     // Get parent's groupId
     const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
@@ -79,8 +81,8 @@ export const getMyActivities = async (req, res) => {
 
       const activities = await ParentActivity.findAndCountAll({
         where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
         order: [['activityDate', 'DESC']],
       });
 
@@ -88,8 +90,8 @@ export const getMyActivities = async (req, res) => {
         success: true,
         data: activities.rows,
         total: activities.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
       });
     }
 
@@ -104,8 +106,8 @@ export const getMyActivities = async (req, res) => {
         success: true,
         data: [],
         total: 0,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
       });
     }
 
@@ -137,8 +139,8 @@ export const getMyActivities = async (req, res) => {
         attributes: ['id', 'firstName', 'lastName', 'photo'],
         required: true,
       }],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
       order: [['date', 'DESC'], ['createdAt', 'DESC']],
     });
 
@@ -146,8 +148,8 @@ export const getMyActivities = async (req, res) => {
       success: true,
       data: activities.rows,
       total: activities.count,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
     });
   } catch (error) {
     logger.error('Get my activities error', { error: error.message, stack: error.stack });
@@ -191,7 +193,8 @@ export const getActivityById = async (req, res) => {
  */
 export const getMyMeals = async (req, res) => {
   try {
-    const { limit = 50, offset = 0, mealType, startDate, endDate, childId } = req.query;
+    const { mealType, startDate, endDate, childId } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
     // Get parent's groupId
     const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
@@ -212,8 +215,8 @@ export const getMyMeals = async (req, res) => {
 
       const meals = await ParentMeal.findAndCountAll({
         where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
         order: [['mealDate', 'DESC']],
       });
 
@@ -221,8 +224,8 @@ export const getMyMeals = async (req, res) => {
         success: true,
         data: meals.rows,
         total: meals.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
       });
     }
 
@@ -237,8 +240,8 @@ export const getMyMeals = async (req, res) => {
         success: true,
         data: [],
         total: 0,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
       });
     }
 
@@ -270,8 +273,8 @@ export const getMyMeals = async (req, res) => {
         attributes: ['id', 'firstName', 'lastName', 'photo'],
         required: true,
       }],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
       order: [['date', 'DESC'], ['createdAt', 'DESC']],
     });
 
@@ -279,8 +282,8 @@ export const getMyMeals = async (req, res) => {
       success: true,
       data: meals.rows,
       total: meals.count,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
     });
   } catch (error) {
     logger.error('Get my meals error', { error: error.message, stack: error.stack });
@@ -324,7 +327,8 @@ export const getMealById = async (req, res) => {
  */
 export const getMyMedia = async (req, res) => {
   try {
-    const { limit = 50, offset = 0, fileType } = req.query;
+    const { fileType } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
     // Get parent's groupId
     const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
@@ -339,8 +343,8 @@ export const getMyMedia = async (req, res) => {
 
       const media = await ParentMedia.findAndCountAll({
         where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
         order: [['uploadDate', 'DESC']],
       });
 
@@ -348,8 +352,8 @@ export const getMyMedia = async (req, res) => {
         success: true,
         data: media.rows,
         total: media.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit: limit,
+        offset: offset,
       });
     }
 
@@ -369,8 +373,8 @@ export const getMyMedia = async (req, res) => {
         attributes: ['id', 'firstName', 'lastName', 'photo'],
         required: true,
       }],
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
       order: [['date', 'DESC'], ['createdAt', 'DESC']],
     });
 
@@ -378,8 +382,8 @@ export const getMyMedia = async (req, res) => {
       success: true,
       data: media.rows,
       total: media.count,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit: limit,
+      offset: offset,
     });
   } catch (error) {
     logger.error('Get my media error', { error: error.message, stack: error.stack });

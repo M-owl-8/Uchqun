@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -57,13 +58,15 @@ const AppRoutes = () => {
 
 function App() {
   return (
-    <I18nextProvider i18n={i18n}>
-      <BrowserRouter>
-        <AuthProvider>
-          <AppRoutes />
-        </AuthProvider>
-      </BrowserRouter>
-    </I18nextProvider>
+    <ErrorBoundary>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+          <AuthProvider>
+            <AppRoutes />
+          </AuthProvider>
+        </BrowserRouter>
+      </I18nextProvider>
+    </ErrorBoundary>
   );
 }
 

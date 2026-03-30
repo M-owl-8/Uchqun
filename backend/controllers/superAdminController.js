@@ -86,8 +86,8 @@ export const sendMessage = async (req, res) => {
  */
 export const getMessages = async (req, res) => {
   try {
-    const { page = 1, limit = 20, isRead, search } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { isRead, search } = req.query;
+    const { limit, offset } = parsePagination(req.query);
 
     const where = {};
     if (isRead !== undefined) {
@@ -112,18 +112,19 @@ export const getMessages = async (req, res) => {
         },
       ],
       order: [['createdAt', 'DESC']],
-      limit: parseInt(limit),
+      limit,
       offset,
     });
 
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
     res.json({
       success: true,
       data: messages.map(m => m.toJSON()),
       pagination: {
         total: count,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        totalPages: Math.ceil(count / parseInt(limit)),
+        page,
+        limit,
+        totalPages: Math.ceil(count / limit),
       },
     });
   } catch (error) {
@@ -283,9 +284,8 @@ export const getAllPayments = async (req, res) => {
       paymentType,
       startDate,
       endDate,
-      limit = 50,
-      offset = 0,
     } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
     const where = {};
 
@@ -309,8 +309,8 @@ export const getAllPayments = async (req, res) => {
 
     const payments = await Payment.findAndCountAll({
       where,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit,
+      offset,
       order: [['createdAt', 'DESC']],
       include: [
         {
@@ -350,8 +350,8 @@ export const getAllPayments = async (req, res) => {
         total: payments.count,
         totalAmount,
         completedAmount,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
       },
     });
   } catch (error) {

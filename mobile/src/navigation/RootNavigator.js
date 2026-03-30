@@ -15,6 +15,7 @@ export function RootNavigator() {
   const navigationRef = useRef(null);
   const prevAuthRef = useRef(undefined);
   const prevRoleRef = useRef(undefined);
+  const navTimerRef = useRef(null);
 
   // Stable role identifier to prevent re-renders
   const userRole = user?.role;
@@ -42,8 +43,13 @@ export function RootNavigator() {
     prevAuthRef.current = isAuthenticated;
     prevRoleRef.current = userRole;
 
+    // Clear any previous pending navigation timer to prevent race conditions
+    if (navTimerRef.current) {
+      clearTimeout(navTimerRef.current);
+    }
+
     // Navigate after a short delay to ensure state is ready
-    const timer = setTimeout(() => {
+    navTimerRef.current = setTimeout(() => {
       if (navigationRef.current) {
         try {
           let targetRoute = 'Login';
@@ -77,7 +83,12 @@ export function RootNavigator() {
       }
     }, 200);
 
-    return () => clearTimeout(timer);
+    return () => {
+      if (navTimerRef.current) {
+        clearTimeout(navTimerRef.current);
+        navTimerRef.current = null;
+      }
+    };
   }, [isAuthenticated, bootstrapping, userRole, isTeacher, isParent, isAdmin, isReception]);
 
   if (bootstrapping) {
