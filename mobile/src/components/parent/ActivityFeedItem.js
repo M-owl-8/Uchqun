@@ -13,18 +13,18 @@ const TYPE_ICONS = {
 const TYPE_COLORS = {
   activity: tokens.colors.semantic.success,
   meal: tokens.colors.semantic.warning,
-  media: tokens.colors.primary[500],
+  media: tokens.colors.accent.blue,
   notification: tokens.colors.semantic.info,
 };
 
-export function ActivityFeedItem({ 
+export function ActivityFeedItem({
   type = 'activity',
-  title, 
+  title,
   timestamp,
-  onPress 
+  onPress,
 }) {
   const icon = TYPE_ICONS[type] || 'ellipse';
-  const color = TYPE_COLORS[type] || tokens.colors.neutral[600];
+  const color = TYPE_COLORS[type] || tokens.colors.text.muted;
 
   const formatTimestamp = (ts) => {
     if (!ts) return '';
@@ -53,18 +53,20 @@ export function ActivityFeedItem({
           <Text style={styles.timestamp}>{formatTimestamp(timestamp)}</Text>
         )}
       </View>
-      <Ionicons 
-        name="chevron-forward" 
-        size={18} 
-        color={tokens.colors.neutral[400]} 
+      <Ionicons
+        name="chevron-forward"
+        size={18}
+        color={tokens.colors.text.muted}
       />
     </View>
   );
 
   if (onPress) {
     return (
-      <Pressable 
+      <Pressable
         onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`${type}: ${title}`}
         style={({ pressed }) => [
           pressed && styles.pressed
         ]}
@@ -81,13 +83,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: tokens.spacing[3],
-    paddingHorizontal: tokens.spacing[4],
+    paddingVertical: tokens.space.md,
+    paddingHorizontal: tokens.space.lg,
     borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.neutral[200],
+    borderBottomColor: tokens.colors.border.light,
   },
   pressed: {
-    backgroundColor: tokens.colors.neutral[100],
+    backgroundColor: tokens.colors.background.tertiary,
   },
   iconContainer: {
     width: 36,
@@ -95,7 +97,7 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: tokens.spacing[3],
+    marginRight: tokens.space.md,
   },
   content: {
     flex: 1,
@@ -103,11 +105,11 @@ const styles = StyleSheet.create({
   title: {
     fontSize: tokens.typography.fontSize.base,
     fontWeight: tokens.typography.fontWeight.medium,
-    color: tokens.colors.neutral[900],
-    marginBottom: tokens.spacing[1] / 2,
+    color: tokens.colors.text.primary,
+    marginBottom: 2,
   },
   timestamp: {
     fontSize: tokens.typography.fontSize.xs,
-    color: tokens.colors.neutral[600],
+    color: tokens.colors.text.secondary,
   },
 });

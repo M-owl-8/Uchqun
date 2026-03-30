@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { API_URL } from '../config';
-import { getStoredAuth, clearAuth } from '../storage/authStorage';
+import { getStoredAuth, storeAuth, clearAuth } from '../storage/authStorage';
 import { cacheService } from './cacheService';
 import { offlineQueue } from './offlineQueue';
 
@@ -47,7 +47,7 @@ api.interceptors.request.use(async (config) => {
   return Promise.reject(error);
 });
 
-// Response interceptor to handle 401 errors
+// Response interceptor to handle 401 with token refresh
 api.interceptors.response.use(
   (res) => {
     if (__DEV__) {
@@ -57,14 +57,34 @@ api.interceptors.response.use(
   },
   async (error) => {
     const originalRequest = error.config;
-    const isAuthEndpoint = originalRequest?.url?.includes('/auth/login');
+    const isAuthEndpoint = originalRequest?.url?.includes('/auth/login') || originalRequest?.url?.includes('/auth/refresh');
 
     if (__DEV__) {
       console.log('[API] Error:', originalRequest?.url, error.response?.status, error.message);
     }
 
-    // On 401 for non-auth endpoints, clear auth so user is redirected to login
-    if (error.response?.status === 401 && !isAuthEndpoint) {
+    // On 401 for non-auth endpoints, try to refresh the token
+    if (error.response?.status === 401 && !isAuthEndpoint && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        const { refreshToken } = await getStoredAuth();
+        if (refreshToken) {
+          const refreshResponse = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
+          const { accessToken: newAccessToken, refreshToken: newRefreshToken } = refreshResponse.data;
+          if (newAccessToken) {
+            const stored = await getStoredAuth();
+            await storeAuth({
+              accessToken: newAccessToken,
+              refreshToken: newRefreshToken || refreshToken,
+              user: stored.user,
+            });
+            originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+            return api(originalRequest);
+          }
+        }
+      } catch {
+        // Refresh failed — clear auth and force re-login
+      }
       await clearAuth();
     }
     return Promise.reject(error);

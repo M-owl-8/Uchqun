@@ -3,13 +3,13 @@ import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tokens from '../../styles/tokens';
 
-export function StatTile({ 
-  label, 
-  value, 
-  icon, 
+export function StatTile({
+  label,
+  value,
+  icon,
   onPress,
   variant = 'default',
-  color = tokens.colors.primary[500]
+  color = tokens.colors.accent.blue,
 }) {
   const content = (
     <View style={styles.container}>
@@ -25,8 +25,10 @@ export function StatTile({
 
   if (onPress) {
     return (
-      <Pressable 
-        onPress={onPress} 
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`${label}: ${value}`}
         style={({ pressed }) => [
           styles.pressable,
           pressed && styles.pressed
@@ -44,10 +46,10 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: tokens.colors.neutral[50],
+    backgroundColor: tokens.colors.background.tertiary,
     borderRadius: tokens.radius.md,
-    padding: tokens.spacing[3],
-    ...tokens.shadows.xs,
+    padding: tokens.space.md,
+    ...tokens.shadow.xs,
   },
   pressable: {
     borderRadius: tokens.radius.md,
@@ -61,7 +63,7 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius.sm,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: tokens.spacing[2],
+    marginRight: tokens.space.sm,
   },
   content: {
     flex: 1,
@@ -69,13 +71,12 @@ const styles = StyleSheet.create({
   value: {
     fontSize: tokens.typography.fontSize.lg,
     fontWeight: tokens.typography.fontWeight.bold,
-    color: tokens.colors.neutral[900],
-    lineHeight: tokens.typography.fontSize.lg * tokens.typography.lineHeight.tight,
+    color: tokens.colors.text.primary,
   },
   label: {
     fontSize: tokens.typography.fontSize.xs,
     fontWeight: tokens.typography.fontWeight.medium,
-    color: tokens.colors.neutral[600],
-    marginTop: tokens.spacing[1] / 2,
+    color: tokens.colors.text.secondary,
+    marginTop: 2,
   },
 });

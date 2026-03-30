@@ -42,8 +42,7 @@ export class ErrorBoundary extends React.Component {
           <Text style={styles.message}>
             The app encountered an unexpected error. Please try again.
           </Text>
-          {/* CRITICAL FIX: Show error details in production too (for debugging) */}
-          {this.state.error && (
+          {__DEV__ && this.state.error && (
             <View style={styles.errorDetails}>
               <Text style={styles.errorText}>
                 {this.state.error.toString()}

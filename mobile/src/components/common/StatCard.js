@@ -4,14 +4,14 @@ import { Ionicons } from '@expo/vector-icons';
 import tokens from '../../styles/tokens';
 import { ProgressBar } from './ProgressBar';
 
-export function StatCard({ 
-  title, 
-  value, 
+export function StatCard({
+  title,
+  value,
   subtitle,
-  icon, 
+  icon,
   progress,
   onPress,
-  color = tokens.colors.primary[500]
+  color = tokens.colors.accent.blue,
 }) {
   const content = (
     <View style={styles.container}>
@@ -27,9 +27,9 @@ export function StatCard({
       </View>
       {progress !== undefined && (
         <View style={styles.progressContainer}>
-          <ProgressBar 
-            value={progress} 
-            max={100} 
+          <ProgressBar
+            value={progress}
+            max={100}
             color={color}
             showLabel={false}
           />
@@ -40,8 +40,10 @@ export function StatCard({
 
   if (onPress) {
     return (
-      <Pressable 
-        onPress={onPress} 
+      <Pressable
+        onPress={onPress}
+        accessibilityRole="button"
+        accessibilityLabel={`${title}: ${value}`}
         style={({ pressed }) => [
           styles.pressable,
           pressed && styles.pressed
@@ -57,10 +59,10 @@ export function StatCard({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: tokens.colors.neutral[50],
+    backgroundColor: tokens.colors.background.tertiary,
     borderRadius: tokens.radius.md,
-    padding: tokens.spacing[4],
-    ...tokens.shadows.sm,
+    padding: tokens.space.lg,
+    ...tokens.shadow.sm,
   },
   pressable: {
     borderRadius: tokens.radius.md,
@@ -78,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius.md,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: tokens.spacing[3],
+    marginRight: tokens.space.md,
   },
   content: {
     flex: 1,
@@ -86,21 +88,20 @@ const styles = StyleSheet.create({
   value: {
     fontSize: tokens.typography.fontSize['2xl'],
     fontWeight: tokens.typography.fontWeight.bold,
-    color: tokens.colors.neutral[900],
-    lineHeight: tokens.typography.fontSize['2xl'] * tokens.typography.lineHeight.tight,
+    color: tokens.colors.text.primary,
   },
   title: {
     fontSize: tokens.typography.fontSize.sm,
     fontWeight: tokens.typography.fontWeight.medium,
-    color: tokens.colors.neutral[600],
-    marginTop: tokens.spacing[1],
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.xs,
   },
   subtitle: {
     fontSize: tokens.typography.fontSize.xs,
-    color: tokens.colors.neutral[400],
-    marginTop: tokens.spacing[1],
+    color: tokens.colors.text.muted,
+    marginTop: tokens.space.xs,
   },
   progressContainer: {
-    marginTop: tokens.spacing[3],
+    marginTop: tokens.space.md,
   },
 });
