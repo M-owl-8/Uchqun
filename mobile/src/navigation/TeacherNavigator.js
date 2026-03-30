@@ -47,6 +47,7 @@ function TeacherTabs() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarLabel: TAB_LABELS[route.name] ? t(TAB_LABELS[route.name]) : route.name,
+        tabBarAccessibilityLabel: TAB_LABELS[route.name] ? t(TAB_LABELS[route.name]) : route.name,
         tabBarIcon: ({ focused, color, size }) => {
           // CRITICAL: Safe route name access
           const routeName = route?.name;

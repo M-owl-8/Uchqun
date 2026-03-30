@@ -135,6 +135,9 @@ export default function FloatingAI({ contextHint = '' }) {
             styles.fabPressable,
             pressed && { transform: [{ scale: 0.95 }] }
           ]}
+          accessibilityRole="button"
+          accessibilityLabel="Uchi AI Assistant"
+          accessibilityHint="Open AI chat assistant"
         >
           {/* Main button with card background color */}
           <View style={styles.fab}>
@@ -186,7 +189,7 @@ export default function FloatingAI({ contextHint = '' }) {
                   <Text style={styles.headerSubtitle}>Always here to help! ✨</Text>
                 </View>
               </View>
-              <Pressable onPress={() => setIsOpen(false)} style={styles.closeButton}>
+              <Pressable onPress={() => setIsOpen(false)} style={styles.closeButton} accessibilityRole="button" accessibilityLabel="Close AI chat">
                 <Animated.View style={{ transform: [{ rotate: spin }] }}>
                   <Ionicons name="close" size={24} color="#fff" />
                 </Animated.View>
@@ -205,6 +208,8 @@ export default function FloatingAI({ contextHint = '' }) {
                   key={index}
                   style={styles.promptChip}
                   onPress={() => handleSend(prompt.text)}
+                  accessibilityRole="button"
+                  accessibilityLabel={prompt.text}
                 >
                   <Text style={styles.promptEmoji}>{prompt.emoji}</Text>
                   <Text style={styles.promptText} numberOfLines={1}>{prompt.text}</Text>
@@ -272,6 +277,8 @@ export default function FloatingAI({ contextHint = '' }) {
                 placeholderTextColor={tokens.colors.text.muted}
                 multiline
                 maxLength={500}
+                accessibilityLabel="AI chat message input"
+                accessibilityHint="Type your question for the AI assistant"
               />
               <Pressable
                 style={[
@@ -280,6 +287,9 @@ export default function FloatingAI({ contextHint = '' }) {
                 ]}
                 onPress={() => handleSend()}
                 disabled={!inputText.trim() || loading}
+                accessibilityRole="button"
+                accessibilityLabel="Send message to AI"
+                accessibilityState={{ disabled: !inputText.trim() || loading }}
               >
                 <LinearGradient
                   colors={inputText.trim() && !loading

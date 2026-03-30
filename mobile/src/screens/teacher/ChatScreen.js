@@ -294,6 +294,9 @@ export function ChatScreen() {
               <Pressable
                 style={styles.parentListItem}
                 onPress={() => handleParentSelect(item)}
+                accessibilityRole="button"
+                accessibilityLabel={`${item.firstName} ${item.lastName}${item.unreadCount > 0 ? `, ${item.unreadCount} unread` : ''}`}
+                accessibilityHint={t('chat.openConversation', { defaultValue: 'Open conversation' })}
               >
                 {/* Avatar */}
                 <View style={styles.parentAvatar}>
@@ -351,7 +354,7 @@ export function ChatScreen() {
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
         <View style={styles.chatHeader}>
-          <Pressable onPress={handleBackToList} style={styles.backButton}>
+          <Pressable onPress={handleBackToList} style={styles.backButton} accessibilityRole="button" accessibilityLabel={t('common.back', { defaultValue: 'Back' })}>
             <Ionicons name="arrow-back" size={24} color={tokens.colors.text.primary} />
           </Pressable>
           <View style={styles.chatHeaderAvatar}>

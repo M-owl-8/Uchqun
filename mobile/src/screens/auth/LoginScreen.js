@@ -132,7 +132,7 @@ export function LoginScreen() {
             {/* Login card */}
             <GlassCard style={styles.card}>
               {error ? (
-                <View style={styles.errorContainer}>
+                <View style={styles.errorContainer} accessibilityRole="alert" accessibilityLiveRegion="assertive">
                   <Ionicons name="alert-circle" size={18} color={tokens.colors.semantic.error} />
                   <Text style={styles.error}>{error}</Text>
                 </View>
@@ -156,6 +156,8 @@ export function LoginScreen() {
                       placeholder={t('login.emailPlaceholder', { defaultValue: 'sizning@email.com' })}
                       placeholderTextColor={tokens.colors.text.tertiary}
                       style={styles.input}
+                      accessibilityLabel={t('login.email', { defaultValue: 'Email manzil' })}
+                      accessibilityHint={t('login.emailHint', { defaultValue: 'Enter your email to log in' })}
                     />
                   </View>
                 </View>
@@ -175,6 +177,8 @@ export function LoginScreen() {
                       placeholder={t('login.passwordPlaceholder', { defaultValue: 'Parolni kiriting' })}
                       placeholderTextColor={tokens.colors.text.tertiary}
                       style={[styles.input, styles.inputWithIcon]}
+                      accessibilityLabel={t('login.password', { defaultValue: 'Parol' })}
+                      accessibilityHint={t('login.passwordHint', { defaultValue: 'Enter your password' })}
                     />
                     <Pressable
                       onPress={() => setShowPassword((v) => !v)}
@@ -183,6 +187,8 @@ export function LoginScreen() {
                         styles.eyeButton,
                         pressed && { opacity: 0.7 }
                       ]}
+                      accessibilityRole="button"
+                      accessibilityLabel={showPassword ? t('login.hidePassword', { defaultValue: 'Hide password' }) : t('login.showPassword', { defaultValue: 'Show password' })}
                     >
                       <Ionicons
                         name={showPassword ? 'eye-outline' : 'eye-off-outline'}
@@ -202,6 +208,10 @@ export function LoginScreen() {
                     pressed && !submitting && { opacity: 0.9, transform: [{ scale: 0.98 }] },
                     submitting && styles.buttonDisabled,
                   ]}
+                  accessibilityRole="button"
+                  accessibilityLabel={t('login.submit', { defaultValue: 'Kirish' })}
+                  accessibilityState={{ disabled: submitting }}
+                  accessibilityHint={t('login.submitHint', { defaultValue: 'Double tap to log in' })}
                 >
                   <LinearGradient
                     colors={submitting 

@@ -282,6 +282,9 @@ export function SettingsScreen() {
                       pressed && { opacity: 0.7 },
                     ]}
                     onPress={() => handleLanguageChange(lang.code)}
+                    accessibilityRole="radio"
+                    accessibilityLabel={`${lang.nativeName} (${lang.name})`}
+                    accessibilityState={{ selected: currentLanguage === lang.code }}
                   >
                     <View style={styles.languageInfo}>
                       <Text style={styles.languageName}>{lang.nativeName}</Text>
@@ -315,6 +318,10 @@ export function SettingsScreen() {
                         pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
                       ]}
                       onPress={item.onPress}
+                      accessibilityRole={item.hasToggle ? 'switch' : 'button'}
+                      accessibilityLabel={item.title}
+                      accessibilityHint={item.subtitle}
+                      accessibilityState={item.hasToggle ? { checked: isDark } : undefined}
                     >
                       <View style={[styles.iconCircle, { backgroundColor: `${item.color}20` }]}>
                         <Ionicons name={item.icon} size={18} color={item.color} />
@@ -351,7 +358,7 @@ export function SettingsScreen() {
             <GlassCard style={styles.modalContent}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.editProfile', { defaultValue: 'Edit Profile' })}</Text>
-                  <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10}>
+                  <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
                     <Ionicons name="close" size={24} color={tokens.colors.text.primary} />
                   </TouchableOpacity>
                 </View>
@@ -366,6 +373,7 @@ export function SettingsScreen() {
                         onChangeText={(text) => setProfileData({ ...profileData, firstName: text })}
                         placeholder={t('settings.firstName', { defaultValue: 'First Name' })}
                         placeholderTextColor={tokens.colors.text.muted}
+                        accessibilityLabel={t('settings.firstName', { defaultValue: 'First Name' })}
                       />
                     </View>
                   </View>
@@ -379,6 +387,7 @@ export function SettingsScreen() {
                         onChangeText={(text) => setProfileData({ ...profileData, lastName: text })}
                         placeholder={t('settings.lastName', { defaultValue: 'Last Name' })}
                         placeholderTextColor={tokens.colors.text.muted}
+                        accessibilityLabel={t('settings.lastName', { defaultValue: 'Last Name' })}
                       />
                     </View>
                   </View>
@@ -393,6 +402,7 @@ export function SettingsScreen() {
                         placeholder="+998 XX XXX XX XX"
                         placeholderTextColor={tokens.colors.text.muted}
                         keyboardType="phone-pad"
+                        accessibilityLabel={t('settings.phone', { defaultValue: 'Phone' })}
                       />
                     </View>
                   </View>
@@ -404,6 +414,9 @@ export function SettingsScreen() {
                     ]}
                     onPress={handleProfileUpdate}
                     disabled={profileLoading}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('settings.saveProfile', { defaultValue: 'Save Changes' })}
+                    accessibilityState={{ disabled: profileLoading }}
                   >
                     <View style={styles.saveButtonGradient}>
                       {profileLoading ? (

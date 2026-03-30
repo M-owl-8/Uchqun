@@ -125,6 +125,7 @@ function ParentTabs() {
           letterSpacing: 0.3,
         },
         tabBarLabel: getTabLabel(route.name),
+        tabBarAccessibilityLabel: getTabLabel(route.name),
         headerShown: false,
       })}
     >

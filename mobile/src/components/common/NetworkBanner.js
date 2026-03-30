@@ -53,7 +53,7 @@ export function NetworkBanner() {
   const icon = isConnected ? 'wifi' : 'cloud-offline';
 
   return (
-    <Animated.View style={[styles.container, { top: insets.top, backgroundColor: bgColor, transform: [{ translateY: slideAnim }] }]}>
+    <Animated.View style={[styles.container, { top: insets.top, backgroundColor: bgColor, transform: [{ translateY: slideAnim }] }]} accessibilityRole="alert" accessibilityLiveRegion="polite" accessibilityLabel={message}>
       <Ionicons name={icon} size={18} color="#fff" />
       <Text style={styles.text}>{message}</Text>
     </Animated.View>

@@ -63,7 +63,7 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
           !item.isRead && styles.unreadCard
         ]}
       >
-        <Pressable onPress={() => markAsRead(item.id)}>
+        <Pressable onPress={() => markAsRead(item.id)} accessibilityRole="button" accessibilityLabel={`${item.title || 'Notification'}: ${item.message || ''}`} accessibilityState={{ selected: item.isRead }} accessibilityHint={item.isRead ? undefined : 'Mark as read'}>
           <ListRow
             icon={item.isRead ? 'notifications-outline' : 'notifications'}
             iconColor={!item.isRead ? tokens.colors.accent.blue : tokens.colors.text.muted}
@@ -82,6 +82,8 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
           style={styles.deleteButton}
           onPress={() => onDelete(item.id)}
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+          accessibilityRole="button"
+          accessibilityLabel="Delete notification"
         >
           <Ionicons name="trash-outline" size={16} color={tokens.colors.text.secondary} />
         </TouchableOpacity>
@@ -182,6 +184,8 @@ export function NotificationsScreen() {
             style={styles.markAllButton}
             onPress={handleMarkAllAsRead}
             hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+            accessibilityRole="button"
+            accessibilityLabel="Mark all as read"
           >
             <Ionicons name="checkmark-done-outline" size={22} color={tokens.colors.accent.blue} />
           </TouchableOpacity>
@@ -223,6 +227,9 @@ export function NotificationsScreen() {
                       filter === f.key && styles.filterPillActive,
                     ]}
                     onPress={() => setFilter(f.key)}
+                    accessibilityRole="button"
+                    accessibilityLabel={`${f.label} (${f.count})`}
+                    accessibilityState={{ selected: filter === f.key }}
                   >
                     <Text style={[styles.filterLabel, filter === f.key && styles.filterLabelActive]}>
                       {f.label}

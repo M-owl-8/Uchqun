@@ -171,6 +171,8 @@ export function ParentDashboardScreen() {
           <Pressable
             style={styles.retryButton}
             onPress={() => loadData(true)}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
           >
             <Ionicons name="refresh" size={20} color="#fff" />
             <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
@@ -250,6 +252,9 @@ export function ParentDashboardScreen() {
                     setSelectedChildId(child.id);
                     navigation.navigate('ChildProfile', { childId: child.id });
                   }}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${child.firstName} ${child.lastName}`}
+                  accessibilityHint={t('dashboard.viewChildProfile', { defaultValue: 'View child profile' })}
                 >
                   <GlassCard style={styles.childCard}>
                     <View style={styles.childCardContent}>

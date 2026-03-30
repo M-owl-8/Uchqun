@@ -272,6 +272,9 @@ export function SettingsScreen() {
                       pressed && { opacity: 0.7 },
                     ]}
                     onPress={() => handleLanguageChange(lang.code)}
+                    accessibilityRole="radio"
+                    accessibilityLabel={`${lang.nativeName} (${lang.name})`}
+                    accessibilityState={{ selected: currentLanguage === lang.code }}
                   >
                     <View style={styles.languageInfo}>
                       <Text style={styles.languageName}>{lang.nativeName}</Text>
@@ -306,6 +309,10 @@ export function SettingsScreen() {
                         pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
                       ]}
                       onPress={item.onPress}
+                      accessibilityRole={item.hasToggle ? 'switch' : 'button'}
+                      accessibilityLabel={item.title}
+                      accessibilityHint={item.subtitle}
+                      accessibilityState={item.hasToggle ? { checked: isDark } : undefined}
                     >
                       <View style={[styles.iconCircle, { backgroundColor: `${item.color}20` }]}>
                         <Ionicons name={item.icon} size={18} color={item.color} />
@@ -346,7 +353,7 @@ export function SettingsScreen() {
               >
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.changePassword', { defaultValue: 'Change Password' })}</Text>
-                  <TouchableOpacity onPress={() => setShowPasswordModal(false)} hitSlop={10}>
+                  <TouchableOpacity onPress={() => setShowPasswordModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
                     <Ionicons name="close" size={24} color={tokens.colors.text.white} />
                   </TouchableOpacity>
                 </View>
@@ -369,10 +376,13 @@ export function SettingsScreen() {
                             placeholderTextColor={tokens.colors.text.muted}
                             secureTextEntry={!showPasswords[field.showKey]}
                             autoCapitalize="none"
+                            accessibilityLabel={field.label}
                           />
                           <TouchableOpacity
                             onPress={() => setShowPasswords({ ...showPasswords, [field.showKey]: !showPasswords[field.showKey] })}
                             hitSlop={8}
+                            accessibilityRole="button"
+                            accessibilityLabel={showPasswords[field.showKey] ? t('login.hidePassword', { defaultValue: 'Hide password' }) : t('login.showPassword', { defaultValue: 'Show password' })}
                           >
                             <Ionicons
                               name={showPasswords[field.showKey] ? 'eye-off-outline' : 'eye-outline'}
@@ -392,6 +402,9 @@ export function SettingsScreen() {
                     ]}
                     onPress={handlePasswordChange}
                     disabled={passwordLoading}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('settings.updatePassword', { defaultValue: 'Update Password' })}
+                    accessibilityState={{ disabled: passwordLoading }}
                   >
                     <LinearGradient
                       colors={passwordLoading ? ['#475569', '#334155'] : ['#EF4444', '#DC2626']}
@@ -430,7 +443,7 @@ export function SettingsScreen() {
               <View style={styles.modalGradient}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.editProfile', { defaultValue: 'Edit Profile' })}</Text>
-                  <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10}>
+                  <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
                     <Ionicons name="close" size={24} color={tokens.colors.text.white} />
                   </TouchableOpacity>
                 </View>
@@ -445,6 +458,7 @@ export function SettingsScreen() {
                         onChangeText={(text) => setProfileData({ ...profileData, firstName: text })}
                         placeholder={t('settings.firstName', { defaultValue: 'First Name' })}
                         placeholderTextColor={tokens.colors.text.muted}
+                        accessibilityLabel={t('settings.firstName', { defaultValue: 'First Name' })}
                       />
                     </View>
                   </View>
@@ -458,6 +472,7 @@ export function SettingsScreen() {
                         onChangeText={(text) => setProfileData({ ...profileData, lastName: text })}
                         placeholder={t('settings.lastName', { defaultValue: 'Last Name' })}
                         placeholderTextColor={tokens.colors.text.muted}
+                        accessibilityLabel={t('settings.lastName', { defaultValue: 'Last Name' })}
                       />
                     </View>
                   </View>
@@ -472,6 +487,7 @@ export function SettingsScreen() {
                         placeholder="+998 XX XXX XX XX"
                         placeholderTextColor={tokens.colors.text.muted}
                         keyboardType="phone-pad"
+                        accessibilityLabel={t('settings.phone', { defaultValue: 'Phone' })}
                       />
                     </View>
                   </View>
@@ -482,6 +498,9 @@ export function SettingsScreen() {
                       pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
                     ]}
                     onPress={handleProfileUpdate}
+                    accessibilityRole="button"
+                    accessibilityLabel={t('settings.saveProfile', { defaultValue: 'Save Changes' })}
+                    accessibilityState={{ disabled: profileLoading }}
                     disabled={profileLoading}
                   >
                     <LinearGradient
