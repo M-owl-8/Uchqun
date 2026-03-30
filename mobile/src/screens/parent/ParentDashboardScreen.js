@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable, AppState, Animated, RefreshControl, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, AppState, RefreshControl, Dimensions } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -9,9 +9,9 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useNotification } from '../../context/NotificationContext';
 import { parentService } from '../../services/parentService';
 import { api } from '../../services/api';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { StatCard } from '../../components/teacher/StatCard';
-import { DashboardHeader } from '../../components/parent/DashboardHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import QuickActionCard from '../../components/common/QuickActionCard';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import tokens from '../../styles/tokens';
@@ -41,9 +41,9 @@ export function ParentDashboardScreen() {
 
   // Calculate card width for 2-column grid
   const screenWidth = Dimensions.get('window').width;
-  const padding = tokens.space.lg * 2; // Left + right padding
-  const gap = tokens.space.md;
-  const cardWidth = (screenWidth - padding - gap) / 2;
+  const pagePadding = tokens.space.xl * 2; // Left + right padding
+  const gap = tokens.space.lg;
+  const cardWidth = (screenWidth - pagePadding - gap) / 2;
 
   useEffect(() => {
     loadData();
@@ -157,6 +157,18 @@ export function ParentDashboardScreen() {
     loadData();
   };
 
+  // Derive the selected child and welcome name
+  const selectedChild = children.find((c) => c.id === selectedChildId) || children[0];
+  const welcomeName = selectedChild
+    ? `${selectedChild.firstName}'s ${t('dashboard.journey', { defaultValue: 'Journey' })}`
+    : user?.firstName || t('dashboard.welcome', { defaultValue: 'Welcome' });
+
+  // Determine greeting based on time of day
+  const hour = new Date().getHours();
+  const greetingKey = hour < 12 ? 'goodMorning' : hour < 18 ? 'goodAfternoon' : 'goodEvening';
+  const greetingDefault = hour < 12 ? 'Good morning,' : hour < 18 ? 'Good afternoon,' : 'Good evening,';
+  const greeting = t(`dashboard.${greetingKey}`, { defaultValue: greetingDefault });
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -164,7 +176,11 @@ export function ParentDashboardScreen() {
   if (error) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <DashboardHeader />
+        <ScreenHeader
+          title={t('nav.dashboard', { defaultValue: 'Dashboard' })}
+          showNotificationBell
+          notificationCount={count}
+        />
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
           <Text style={styles.errorText}>{error}</Text>
@@ -184,8 +200,12 @@ export function ParentDashboardScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <DashboardHeader />
-      
+      <ScreenHeader
+        title={t('nav.dashboard', { defaultValue: 'Dashboard' })}
+        showNotificationBell
+        notificationCount={count}
+      />
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
@@ -194,51 +214,89 @@ export function ParentDashboardScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Stats Grid - 2x2 grid */}
+        {/* Welcome Card */}
+        <Card
+          gradient={tokens.colors.gradients.welcome}
+          style={styles.welcomeCard}
+          accessibilityLabel={t('dashboard.welcomeCard', { defaultValue: 'Welcome card' })}
+        >
+          <View style={styles.welcomeTop}>
+            <View style={styles.welcomeTextContainer}>
+              <Text style={styles.welcomeGreeting}>{greeting}</Text>
+              <Text style={styles.welcomeName} numberOfLines={1}>{welcomeName}</Text>
+            </View>
+            <View style={styles.welcomeIconContainer}>
+              <Ionicons name="heart" size={24} color="#E8C27E" />
+            </View>
+          </View>
+          <Text style={styles.welcomeMessage}>
+            {selectedChild
+              ? t('dashboard.progressMessage', {
+                  defaultValue: '{{name}} has completed {{count}} activities today. Great progress!',
+                  name: selectedChild.firstName,
+                  count: stats.activities,
+                })
+              : t('dashboard.noChildMessage', { defaultValue: 'Add a child to start tracking progress.' })}
+          </Text>
+        </Card>
+
+        {/* Quick Stats - 2 column grid */}
         <View style={styles.statsGrid}>
           <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="checkmark-circle"
-              iconColor={tokens.colors.semantic.success}
-              iconBg={tokens.colors.semantic.successSoft}
-              count={stats.activities}
-              label={t('dashboard.individualPlan', { defaultValue: 'Individual Plan' }) || t('dashboard.activities', { defaultValue: 'Activities' })}
-              onPress={() => navigation.navigate('Activities')}
-            />
+            <Card style={styles.statCard}>
+              <View style={[styles.statIconContainer, { backgroundColor: '#DFF4EC' }]}>
+                <Ionicons name="sparkles" size={24} color={tokens.colors.text.primary} />
+              </View>
+              <Text style={styles.statCount}>{stats.activities}</Text>
+              <Text style={styles.statLabel}>
+                {t('dashboard.activities', { defaultValue: 'Activities' })}
+              </Text>
+            </Card>
           </View>
           <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="restaurant"
-              iconColor={tokens.colors.semantic.warning}
-              iconBg={tokens.colors.semantic.warningSoft}
-              count={stats.meals}
-              label={t('dashboard.meals', { defaultValue: 'Meals' })}
+            <Card style={styles.statCard}>
+              <View style={[styles.statIconContainer, { backgroundColor: '#F8D7C4' }]}>
+                <Ionicons name="heart" size={24} color={tokens.colors.text.primary} />
+              </View>
+              <Text style={styles.statCount}>{stats.meals}</Text>
+              <Text style={styles.statLabel}>
+                {t('dashboard.meals', { defaultValue: 'Meals' })}
+              </Text>
+            </Card>
+          </View>
+        </View>
+
+        {/* Quick Actions */}
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>
+            {t('dashboard.quickActions', { defaultValue: 'Quick Actions' })}
+          </Text>
+          <View style={styles.quickActionsList}>
+            <QuickActionCard
+              icon="restaurant-outline"
+              title={t('dashboard.logMeal', { defaultValue: 'Log Meal' })}
+              subtitle={t('dashboard.logMealSub', { defaultValue: "Track today's nutrition" })}
+              color="#E8C27E"
               onPress={() => navigation.navigate('Meals')}
             />
-          </View>
-          <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="images"
-              iconColor={tokens.colors.joy.lavender}
-              iconBg={tokens.colors.joy.lavenderSoft}
-              count={stats.media}
-              label={t('dashboard.media', { defaultValue: 'Media' })}
-              onPress={() => navigation.navigate('Media')}
+            <QuickActionCard
+              icon="sparkles-outline"
+              title={t('dashboard.startActivity', { defaultValue: 'Start Activity' })}
+              subtitle={t('dashboard.startActivitySub', { defaultValue: 'Begin a new session' })}
+              color="#DFF4EC"
+              onPress={() => navigation.navigate('Activities')}
             />
-          </View>
-          <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="musical-notes"
-              iconColor={tokens.colors.joy.coral}
-              iconBg={tokens.colors.joy.coralSoft}
-              count={stats.therapies}
-              label={t('therapy.title', { defaultValue: 'Therapy' })}
-              onPress={() => navigation.navigate('Therapy')}
+            <QuickActionCard
+              icon="chatbubble-ellipses-outline"
+              title={t('dashboard.chatWithTeacher', { defaultValue: 'Chat with Teacher' })}
+              subtitle={t('dashboard.chatWithTeacherSub', { defaultValue: 'Send a message' })}
+              color="#BFD7EA"
+              onPress={() => navigation.navigate('Chat')}
             />
           </View>
         </View>
 
-        {/* Children Section */}
+        {/* My Children Section */}
         {children.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
@@ -256,9 +314,9 @@ export function ParentDashboardScreen() {
                   accessibilityLabel={`${child.firstName} ${child.lastName}`}
                   accessibilityHint={t('dashboard.viewChildProfile', { defaultValue: 'View child profile' })}
                 >
-                  <GlassCard style={styles.childCard}>
+                  <Card style={styles.childCard}>
                     <View style={styles.childCardContent}>
-                      <View style={[styles.childAvatar, { backgroundColor: tokens.colors.accent.blue + '20' }]}>
+                      <View style={[styles.childAvatar, { backgroundColor: tokens.colors.text.primary + '20' }]}>
                         <Text style={styles.childAvatarText}>
                           {child.firstName?.charAt(0) || ''}{child.lastName?.charAt(0) || ''}
                         </Text>
@@ -276,13 +334,13 @@ export function ParentDashboardScreen() {
                           </View>
                         )}
                       </View>
-                      <Ionicons 
-                        name="chevron-forward" 
-                        size={20} 
-                        color={tokens.colors.text.tertiary} 
+                      <Ionicons
+                        name="chevron-forward"
+                        size={20}
+                        color={tokens.colors.text.tertiary}
                       />
                     </View>
-                  </GlassCard>
+                  </Card>
                 </Pressable>
               ))}
             </View>
@@ -302,34 +360,96 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
+    gap: tokens.space['2xl'],
   },
-  // Stats Grid - 2x2 grid layout
+
+  // Welcome Card
+  welcomeCard: {
+    marginTop: tokens.space.sm,
+  },
+  welcomeTop: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.lg,
+  },
+  welcomeTextContainer: {
+    flex: 1,
+    minWidth: 0,
+  },
+  welcomeGreeting: {
+    fontSize: 14,
+    color: '#5A6B8C',
+    marginBottom: tokens.space.xs,
+  },
+  welcomeName: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  welcomeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(232, 194, 126, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: tokens.space.md,
+  },
+  welcomeMessage: {
+    fontSize: 14,
+    color: '#5A6B8C',
+    lineHeight: 22,
+  },
+
+  // Quick Stats - 2 column grid
   statsGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: tokens.space.md,
-    marginBottom: tokens.space.xl,
-    marginTop: tokens.space.md,
+    gap: tokens.space.lg,
   },
-  // Section
-  section: {
-    marginBottom: tokens.space.xl,
+  statCard: {
+    alignItems: 'center',
   },
-  sectionTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.primary,
+  statIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
     marginBottom: tokens.space.md,
-    paddingHorizontal: 2,
   },
+  statCount: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.xs,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#5A6B8C',
+  },
+
+  // Section
+  section: {},
+  sectionTitle: {
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#2E3A59',
+    marginBottom: tokens.space.md,
+    paddingHorizontal: 1,
+  },
+
+  // Quick Actions
+  quickActionsList: {
+    gap: tokens.space.md,
+  },
+
   // Children List
   childrenList: {
     gap: tokens.space.md,
   },
-  childCard: {
-    marginBottom: tokens.space.sm,
-  },
+  childCard: {},
   childCardContent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -367,6 +487,8 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.sub.fontSize,
     color: tokens.colors.text.secondary,
   },
+
+  // Error state
   errorContainer: {
     flex: 1,
     justifyContent: 'center',
