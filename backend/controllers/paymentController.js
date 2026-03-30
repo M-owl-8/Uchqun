@@ -5,6 +5,7 @@ import School from '../models/School.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { v4 as uuidv4 } from 'uuid';
+import { payme, click, getProvider } from '../services/paymentProviders.js';
 
 // Payment controller — payments stay 'pending' until confirmed via provider callback or admin action.
 
@@ -68,9 +69,17 @@ export const createPayment = async (req, res) => {
     // 2. Admin manual approval
     // No auto-completion — real provider integration required.
 
+    // Generate checkout URL if provider is specified and configured
+    let checkoutUrl = null;
+    const provider = getProvider(paymentProvider);
+    if (provider && provider.isConfigured()) {
+      checkoutUrl = provider.generateCheckoutUrl(payment);
+    }
+
     res.status(201).json({
       success: true,
       data: payment,
+      checkoutUrl,
     });
   } catch (error) {
     logger.error('Create payment error', { error: error.message, stack: error.stack });
@@ -370,5 +379,100 @@ export const refundPayment = async (req, res) => {
   } catch (error) {
     logger.error('Refund payment error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to refund payment' });
+  }
+};
+
+/**
+ * Payme callback (JSON-RPC)
+ * POST /api/payments/payme
+ */
+export const paymeCallback = async (req, res) => {
+  try {
+    if (!payme.isConfigured()) {
+      return res.status(503).json({ error: { code: -32400, message: 'Payme not configured' } });
+    }
+    if (!payme.verifyCallback(req.headers)) {
+      return res.status(403).json({ error: { code: -32504, message: 'Auth failed' } });
+    }
+
+    const { method, params } = req.body;
+    const orderId = params?.account?.order_id;
+
+    if (method === 'PerformTransaction' && orderId) {
+      const payment = await Payment.findByPk(orderId);
+      if (payment && payment.status === 'pending') {
+        await payment.update({ status: 'completed', paidAt: new Date(), metadata: { ...payment.metadata, payme: params } });
+      }
+    } else if (method === 'CancelTransaction' && orderId) {
+      const payment = await Payment.findByPk(orderId);
+      if (payment) {
+        await payment.update({ status: 'failed', metadata: { ...payment.metadata, payme: params } });
+      }
+    }
+
+    const result = payme.handleCallback(method, params);
+    res.json({ result });
+  } catch (error) {
+    logger.error('Payme callback error', { error: error.message });
+    res.status(500).json({ error: { code: -32400, message: 'Internal error' } });
+  }
+};
+
+/**
+ * Click callback (prepare + complete)
+ * POST /api/payments/click/prepare
+ * POST /api/payments/click/complete
+ */
+export const clickPrepare = async (req, res) => {
+  try {
+    if (!click.isConfigured()) {
+      return res.json({ error: -3, error_note: 'Click not configured' });
+    }
+    const result = click.handlePrepare(req.body);
+    if (result.error !== 0) return res.json(result);
+
+    const payment = await Payment.findByPk(req.body.merchant_trans_id);
+    if (!payment) {
+      return res.json({ error: -5, error_note: 'Order not found' });
+    }
+    if (payment.status !== 'pending') {
+      return res.json({ error: -4, error_note: 'Already processed' });
+    }
+
+    const amount = parseFloat(req.body.amount);
+    if (Math.abs(parseFloat(payment.amount) - amount) > 0.01) {
+      return res.json({ error: -2, error_note: 'Amount mismatch' });
+    }
+
+    await payment.update({ status: 'processing', metadata: { ...payment.metadata, click_prepare: req.body } });
+    res.json({ ...result, merchant_prepare_id: payment.id });
+  } catch (error) {
+    logger.error('Click prepare error', { error: error.message });
+    res.json({ error: -3, error_note: 'Internal error' });
+  }
+};
+
+export const clickComplete = async (req, res) => {
+  try {
+    if (!click.isConfigured()) {
+      return res.json({ error: -3, error_note: 'Click not configured' });
+    }
+    const result = click.handleComplete(req.body);
+    if (result.error !== 0) {
+      const payment = await Payment.findByPk(req.body.merchant_trans_id);
+      if (payment) await payment.update({ status: 'failed', metadata: { ...payment.metadata, click_complete: req.body } });
+      return res.json(result);
+    }
+
+    const payment = await Payment.findByPk(req.body.merchant_trans_id);
+    if (!payment) {
+      return res.json({ error: -5, error_note: 'Order not found' });
+    }
+
+    await payment.update({ status: 'completed', paidAt: new Date(), metadata: { ...payment.metadata, click_complete: req.body } });
+    res.json(result);
+  } catch (error) {
+    logger.error('Click complete error', { error: error.message });
+    res.json({ error: -3, error_note: 'Internal error' });
   }
 };

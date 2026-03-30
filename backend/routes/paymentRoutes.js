@@ -5,6 +5,9 @@ import {
   getPayment,
   paymentCallback,
   refundPayment,
+  paymeCallback,
+  clickPrepare,
+  clickComplete,
 } from '../controllers/paymentController.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
 
@@ -12,6 +15,11 @@ const router = express.Router();
 
 // Payment callback (public, but should be secured with webhook secret)
 router.post('/callback', paymentCallback);
+
+// Payment provider callbacks (no auth - called by providers)
+router.post('/payme', paymeCallback);
+router.post('/click/prepare', clickPrepare);
+router.post('/click/complete', clickComplete);
 
 router.use(authenticate);
 

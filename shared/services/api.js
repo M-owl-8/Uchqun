@@ -1,64 +1,63 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-});
+export function createApi({ tokenKey = 'accessToken', withCredentials = true } = {}) {
+  const api = axios.create({
+    baseURL: import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api',
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials,
+  });
 
-// Request interceptor to add token
-api.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('accessToken');
+  api.interceptors.request.use((config) => {
+    const token = localStorage.getItem(tokenKey);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
-// Response interceptor to handle token refresh
-api.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-
-      try {
-        const refreshToken = localStorage.getItem('refreshToken');
-        if (refreshToken) {
-          const response = await axios.post(
-            `${import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api'}/auth/refresh`,
-            { refreshToken }
-          );
-
-          const { accessToken } = response.data;
-          localStorage.setItem('accessToken', accessToken);
-          api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-          originalRequest.headers['Authorization'] = `Bearer ${accessToken}`;
-
-          return api(originalRequest);
-        }
-      } catch (refreshError) {
-        // Refresh failed, logout user
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
-        window.location.href = '/login';
-        return Promise.reject(refreshError);
-      }
+    if (config.data instanceof FormData) {
+      delete config.headers['Content-Type'];
     }
+    return config;
+  });
 
-    return Promise.reject(error);
-  }
-);
+  api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+      const originalRequest = error.config;
+      if (error.response?.status === 401 && !originalRequest._retry) {
+        originalRequest._retry = true;
+        try {
+          const refreshToken = localStorage.getItem('refreshToken');
+          if (refreshToken) {
+            const response = await axios.post(
+              `${api.defaults.baseURL}/auth/refresh`,
+              { refreshToken }
+            );
+            const { accessToken, refreshToken: newRefreshToken } = response.data;
+            localStorage.setItem(tokenKey, accessToken);
+            if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
+            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            return api(originalRequest);
+          }
+        } catch {
+          localStorage.removeItem(tokenKey);
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('user');
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
+      }
+      if (error.response?.status === 401) {
+        localStorage.removeItem(tokenKey);
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        window.location.href = '/login';
+      }
+      return Promise.reject(error);
+    }
+  );
 
+  return api;
+}
+
+// Default instance for backward compatibility
+const api = createApi();
 export default api;
-
-
-
