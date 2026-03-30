@@ -21,6 +21,7 @@ export function PaymentsScreen() {
   const [selectedChildId, setSelectedChildId] = useState(null);
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [daysRemaining, setDaysRemaining] = useState(0);
   const [nextPaymentDate, setNextPaymentDate] = useState(null);
   const [monthlyAmount, setMonthlyAmount] = useState(0);
@@ -58,6 +59,7 @@ export function PaymentsScreen() {
   }, [selectedChildId]);
 
   const loadPayments = async () => {
+    setError(null);
     try {
       setLoading(true);
       const params = { status: 'completed' };
@@ -67,15 +69,16 @@ export function PaymentsScreen() {
       const response = await api.get('/payments', { params });
       const paymentsData = response.data?.data?.payments || [];
       setPayments(Array.isArray(paymentsData) ? paymentsData : []);
-      
+
       // Calculate monthly amount from last payment
       if (paymentsData && paymentsData.length > 0) {
         const lastPayment = paymentsData[0];
         setMonthlyAmount(parseFloat(lastPayment.amount || 0));
       }
-    } catch (error) {
-      console.error('Error loading payments:', error);
+    } catch (err) {
+      console.error('Error loading payments:', err);
       setPayments([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -150,7 +153,16 @@ export function PaymentsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('payments.title', { defaultValue: 'To\'lovlar' })} showBack={true} />
-      
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadPayments()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

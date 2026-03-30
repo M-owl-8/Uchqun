@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useTranslation } from 'react-i18next';
 import tokens from '../../styles/tokens';
 
 const TYPE_ICONS = {
@@ -23,6 +24,7 @@ export function ActivityFeedItem({
   timestamp,
   onPress,
 }) {
+  const { t } = useTranslation();
   const icon = TYPE_ICONS[type] || 'ellipse';
   const color = TYPE_COLORS[type] || tokens.colors.text.muted;
 
@@ -35,10 +37,10 @@ export function ActivityFeedItem({
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins} ${diffMins === 1 ? 'minute' : 'minutes'} ago`;
-    if (diffHours < 24) return `${diffHours} ${diffHours === 1 ? 'hour' : 'hours'} ago`;
-    if (diffDays < 7) return `${diffDays} ${diffDays === 1 ? 'day' : 'days'} ago`;
+    if (diffMins < 1) return t('time.justNow', { defaultValue: 'Just now' });
+    if (diffMins < 60) return t('time.minutesAgo', { count: diffMins, defaultValue: `${diffMins} minutes ago` });
+    if (diffHours < 24) return t('time.hoursAgo', { count: diffHours, defaultValue: `${diffHours} hours ago` });
+    if (diffDays < 7) return t('time.daysAgo', { count: diffDays, defaultValue: `${diffDays} days ago` });
     return date.toLocaleDateString();
   };
 

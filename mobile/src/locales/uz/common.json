@@ -493,7 +493,33 @@
     "error": "Xatolik",
     "success": "Muvaffaqiyat",
     "notFound": "Topilmadi",
-    "more": "yana"
+    "more": "yana",
+    "selectDate": "Sanani tanlang"
+  },
+  "time": {
+    "justNow": "Hozir",
+    "minutesAgo": "{{count}} daqiqa oldin",
+    "hoursAgo": "{{count}} soat oldin",
+    "daysAgo": "{{count}} kun oldin"
+  },
+  "network": {
+    "offline": "Siz offlaysiz. O'zgarishlar qayta ulanganida sinxronlanadi.",
+    "backOnline": "Qayta ulandi",
+    "backOnlineSyncing": "Qayta ulandi. Sinxronlanmoqda...",
+    "pendingActions": "{{count}} ta kutilayotgan amal"
+  },
+  "ai": {
+    "headerTitle": "Uchi AI Yordamchi",
+    "headerSubtitle": "Doimo yordam berishga tayyor!",
+    "greeting": "Salom! Men Uchi, sizning AI yordamchingizman! Farzandingiz haqida har qanday savolni bering!",
+    "prompt1": "Farzandim bugun qanday?",
+    "prompt2": "Farzandim nima yedi?",
+    "prompt3": "Qanday mashg'ulotlar o'tkazildi?",
+    "prompt4": "Menga maslahatlar?",
+    "thinking": "O'ylayapman...",
+    "inputPlaceholder": "Har qanday savolingizni bering...",
+    "errorResponse": "Kechirasiz, javob olishda xatolik yuz berdi.",
+    "errorRetry": "Kechirasiz, xatolik yuz berdi. Yana urinib ko'ring?"
   },
   "settings": {
     "title": "Sozlamalar",
@@ -593,6 +619,10 @@
     "browseMedia": "Mediani ko'rib chiqish",
     "checkMeals": "Ovqatlanishni tekshirish",
     "accountSettings": "Hisob sozlamalari",
+    "email": "Email",
+    "emailAddress": "support@uchqunplatform.com",
+    "phone": "Telefon",
+    "phoneNumber": "+998 90 123 45 67",
     "faq1": {
       "question": "Farzandimning kunlik faoliyatlarini qanday ko'rish mumkin?",
       "answer": "Kunlik faoliyatlar va o'qituvchilardan yangilanishlarni ko'rish uchun pastki navigatsiyadan yoki bosh sahifadan Faoliyatlar sahifasiga o'ting."

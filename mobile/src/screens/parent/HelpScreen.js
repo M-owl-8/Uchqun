@@ -71,8 +71,8 @@ export function HelpScreen() {
               <Ionicons name="mail-outline" size={20} color={tokens.colors.accent.blue} />
             </View>
             <View style={styles.contactInfo}>
-              <Text style={styles.contactLabel} allowFontScaling={true}>Email</Text>
-              <Text style={styles.contactValue} allowFontScaling={true}>support@uchqunplatform.com</Text>
+              <Text style={styles.contactLabel} allowFontScaling={true}>{t('help.email', { defaultValue: 'Email' })}</Text>
+              <Text style={styles.contactValue} allowFontScaling={true}>{t('help.emailAddress', { defaultValue: 'support@uchqunplatform.com' })}</Text>
             </View>
           </Pressable>
           <Pressable style={styles.contactItem} onPress={handlePhonePress}>
@@ -80,8 +80,8 @@ export function HelpScreen() {
               <Ionicons name="call-outline" size={20} color={tokens.colors.accent.blue} />
             </View>
             <View style={styles.contactInfo}>
-              <Text style={styles.contactLabel} allowFontScaling={true}>Phone</Text>
-              <Text style={styles.contactValue} allowFontScaling={true}>+998 90 123 45 67</Text>
+              <Text style={styles.contactLabel} allowFontScaling={true}>{t('help.phone', { defaultValue: 'Phone' })}</Text>
+              <Text style={styles.contactValue} allowFontScaling={true}>{t('help.phoneNumber', { defaultValue: '+998 90 123 45 67' })}</Text>
             </View>
           </Pressable>
         </View>

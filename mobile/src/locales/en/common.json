@@ -462,7 +462,33 @@
     "error": "Error",
     "success": "Success",
     "notFound": "Not found",
-    "more": "more"
+    "more": "more",
+    "selectDate": "Select date"
+  },
+  "time": {
+    "justNow": "Just now",
+    "minutesAgo": "{{count}} minutes ago",
+    "hoursAgo": "{{count}} hours ago",
+    "daysAgo": "{{count}} days ago"
+  },
+  "network": {
+    "offline": "You're offline. Changes will sync when reconnected.",
+    "backOnline": "Back online",
+    "backOnlineSyncing": "Back online. Syncing...",
+    "pendingActions": "{{count}} pending action(s)"
+  },
+  "ai": {
+    "headerTitle": "Uchi AI Assistant",
+    "headerSubtitle": "Always here to help!",
+    "greeting": "Hello! I'm Uchi, your AI assistant! Ask me anything about your child!",
+    "prompt1": "How is my child today?",
+    "prompt2": "What did my child eat?",
+    "prompt3": "What activities were conducted?",
+    "prompt4": "Give me some advice?",
+    "thinking": "Thinking...",
+    "inputPlaceholder": "Ask me anything...",
+    "errorResponse": "Sorry, an error occurred while getting a response.",
+    "errorRetry": "Sorry, an error occurred. Try again?"
   },
   "settings": {
     "title": "Settings",
@@ -562,6 +588,10 @@
     "browseMedia": "Browse Media",
     "checkMeals": "Check Meals",
     "accountSettings": "Account Settings",
+    "email": "Email",
+    "emailAddress": "support@uchqunplatform.com",
+    "phone": "Phone",
+    "phoneNumber": "+998 90 123 45 67",
     "faq1": {
       "question": "How do I view my child's daily activities?",
       "answer": "Navigate to the Activities page from the bottom navigation or dashboard to see all daily activities and updates from teachers."

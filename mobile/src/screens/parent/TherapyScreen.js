@@ -52,6 +52,7 @@ export function TherapyScreen() {
   }, [filter, selectedChildId]);
 
   const loadTherapies = async () => {
+    setError(null);
     try {
       setLoading(true);
       const params = { isActive: true };
@@ -61,9 +62,10 @@ export function TherapyScreen() {
       const response = await api.get('/therapy', { params });
       const therapiesData = response.data?.data?.therapies || response.data?.data || response.data?.therapies || [];
       setTherapies(Array.isArray(therapiesData) ? therapiesData : []);
-    } catch (error) {
-      console.error('Error loading therapies:', error);
+    } catch (err) {
+      console.error('Error loading therapies:', err);
       setTherapies([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -146,7 +148,16 @@ export function TherapyScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('therapy.title', { defaultValue: 'Terapiya' })} showBack={true} />
-      
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadTherapies()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

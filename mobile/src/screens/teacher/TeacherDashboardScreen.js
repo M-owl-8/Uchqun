@@ -1,12 +1,10 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, Text, View, RefreshControl, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, RefreshControl, Dimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { Ionicons } from '@expo/vector-icons';
-import { useAuth } from '../../context/AuthContext';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { teacherService } from '../../services/teacherService';
 import { api } from '../../services/api';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import { GlassCard } from '../../components/teacher/GlassCard';
@@ -16,12 +14,12 @@ import { DashboardHeader } from '../../components/teacher/DashboardHeader';
 import tokens from '../../styles/tokens';
 
 export function TeacherDashboardScreen() {
-  const { user } = useAuth();
   const navigation = useNavigation();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     activities: 0,
     meals: 0,
@@ -44,52 +42,37 @@ export function TeacherDashboardScreen() {
   }, []);
 
   const loadData = async () => {
+    setError(null);
     try {
       setLoading(true);
-      // Load data like before: get parents, then count activities, meals, media
-      const parentsRes = await teacherService.getParents().catch(() => []);
-      const allParents = Array.isArray(parentsRes) ? parentsRes : [];
-      const parents = user?.id ? allParents.filter((p) => p.teacherId === user.id) : allParents;
-      const childIds = parents.flatMap((p) => Array.isArray(p.children) ? p.children.map(c => c.id) : []).filter(Boolean);
 
-      // Fetch counts for activities, meals, media
-      const fetchCount = async (path) => {
-        try {
-          if (childIds.length > 0) {
-            const requests = childIds.map((id) =>
-              api.get(`${path}?childId=${id}`).catch(() => ({ data: [] }))
-            );
-            const responses = await Promise.all(requests);
-            return responses.reduce((acc, res) => {
-              const data = res.data;
-              if (Array.isArray(data)) return acc + data.length;
-              if (Array.isArray(data?.activities)) return acc + data.activities.length;
-              if (Array.isArray(data?.meals)) return acc + data.meals.length;
-              if (Array.isArray(data?.media)) return acc + data.media.length;
-              return acc;
-            }, 0);
-          }
-          return 0;
-        } catch (err) {
-          console.warn(`[TeacherDashboard] Error fetching ${path}:`, err);
-          return 0;
-        }
-      };
-
-      const [activitiesCount, mealsCount, mediaCount] = await Promise.all([
-        fetchCount('/activities'),
-        fetchCount('/meals'),
-        fetchCount('/media'),
+      // Single request each for activities, meals, media (backend filters by teacher's children)
+      const [activitiesRes, mealsRes, mediaRes] = await Promise.all([
+        api.get('/activities').catch(() => ({ data: [] })),
+        api.get('/meals').catch(() => ({ data: [] })),
+        api.get('/media').catch(() => ({ data: [] })),
       ]);
 
+      const countFromResponse = (res) => {
+        const data = res.data;
+        if (Array.isArray(data)) return data.length;
+        if (Array.isArray(data?.activities)) return data.activities.length;
+        if (Array.isArray(data?.meals)) return data.meals.length;
+        if (Array.isArray(data?.media)) return data.media.length;
+        if (Array.isArray(data?.data)) return data.data.length;
+        if (data?.total != null) return data.total;
+        return 0;
+      };
+
       setStats({
-        activities: activitiesCount,
-        meals: mealsCount,
-        media: mediaCount,
-        monitoring: 'вЂ”',
+        activities: countFromResponse(activitiesRes),
+        meals: countFromResponse(mealsRes),
+        media: countFromResponse(mediaRes),
+        monitoring: '\u2014',
       });
-    } catch (error) {
-      console.error('Error loading dashboard:', error);
+    } catch (err) {
+      console.error('Error loading dashboard:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
       setRefreshing(false);
@@ -108,7 +91,16 @@ export function TeacherDashboardScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <DashboardHeader />
-      
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadData()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

@@ -28,6 +28,7 @@ export function ParentsListScreen() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [parents, setParents] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -40,13 +41,15 @@ export function ParentsListScreen() {
   }, []);
 
   const loadParents = async () => {
+    setError(null);
     try {
       setLoading(true);
       const data = await teacherService.getParents();
       setParents(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error('Error loading parents:', error);
+    } catch (err) {
+      console.error('Error loading parents:', err);
       setParents([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -74,6 +77,25 @@ export function ParentsListScreen() {
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <ScreenHeader
+          title={t('parentsPage.title', { defaultValue: 'Parents' })}
+          showBack={false}
+        />
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadParents()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   const renderParent = ({ item }) => (

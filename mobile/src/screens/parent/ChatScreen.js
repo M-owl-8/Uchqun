@@ -319,9 +319,9 @@ export function ChatScreen() {
                         )}
                         {msg.createdAt && (
                           <Text style={styles.ownMessageTime} allowFontScaling={true}>
-                            {new Date(msg.createdAt || msg.time).toLocaleTimeString('en-US', { 
-                              hour: 'numeric', 
-                              minute: '2-digit' 
+                            {new Date(msg.createdAt || msg.time).toLocaleTimeString([], {
+                              hour: 'numeric',
+                              minute: '2-digit'
                             })}
                           </Text>
                         )}
@@ -340,9 +340,9 @@ export function ChatScreen() {
                         </Text>
                         {msg.createdAt && (
                           <Text style={styles.messageTime}>
-                            {new Date(msg.createdAt || msg.time).toLocaleTimeString('en-US', { 
-                              hour: 'numeric', 
-                              minute: '2-digit' 
+                            {new Date(msg.createdAt || msg.time).toLocaleTimeString([], {
+                              hour: 'numeric',
+                              minute: '2-digit'
                             })}
                           </Text>
                         )}

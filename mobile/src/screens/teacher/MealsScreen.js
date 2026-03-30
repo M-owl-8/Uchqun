@@ -50,6 +50,7 @@ export function MealsScreen() {
   const { user } = useAuth();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -102,13 +103,15 @@ export function MealsScreen() {
   };
 
   const loadMeals = async () => {
+    setError(null);
     try {
       setLoading(true);
       const data = await mealService.getMeals({ date: selectedDate });
       setMeals(Array.isArray(data) ? data : []);
-    } catch (error) {
-      console.error('Error loading meals:', error);
+    } catch (err) {
+      console.error('Error loading meals:', err);
       setMeals([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -299,11 +302,21 @@ export function MealsScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
-        title={t('mealsPage.title', { defaultValue: 'Meals' })} 
+      <ScreenHeader
+        title={t('mealsPage.title', { defaultValue: 'Meals' })}
         rightActionIcon="add"
         onRightActionPress={handleCreate}
       />
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadMeals()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
 
       {/* Date Picker */}
       <View style={styles.datePickerContainer}>

@@ -19,6 +19,7 @@ export function AIWarningsScreen() {
   const insets = useSafeAreaInsets();
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('unresolved');
 
   const BOTTOM_NAV_HEIGHT = 75;
@@ -29,6 +30,7 @@ export function AIWarningsScreen() {
   }, [filter]);
 
   const loadWarnings = async () => {
+    setError(null);
     try {
       setLoading(true);
       const params = {};
@@ -40,10 +42,10 @@ export function AIWarningsScreen() {
       const response = await api.get('/ai-warnings', { params });
       const warningsData = response.data?.data?.warnings || [];
       setWarnings(Array.isArray(warningsData) ? warningsData : []);
-    } catch (error) {
-      console.error('Error loading warnings:', error);
-      // If 404 or other error, just return empty array (warnings may not be available)
+    } catch (err) {
+      console.error('Error loading warnings:', err);
       setWarnings([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -111,7 +113,16 @@ export function AIWarningsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('warnings.title', { defaultValue: 'AI Ogohlantirishlar' })} showBack={true} />
-      
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadWarnings()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

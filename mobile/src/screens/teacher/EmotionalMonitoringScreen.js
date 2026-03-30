@@ -29,6 +29,7 @@ export function EmotionalMonitoringScreen() {
   const [saving, setSaving] = useState(false);
   const [selectedStates, setSelectedStates] = useState([]);
   const [notes, setNotes] = useState('');
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   useEffect(() => {
@@ -143,13 +144,29 @@ export function EmotionalMonitoringScreen() {
 
             <ScrollView showsVerticalScrollIndicator={false}>
               <Text style={styles.inputLabel}>{t('emotional.date', { defaultValue: 'Date' })}</Text>
-              <TextInput
-                style={styles.input}
-                value={date}
-                onChangeText={setDate}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor={tokens.colors.text.tertiary}
-              />
+              <Pressable
+                onPress={() => setShowDatePicker(true)}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
+                style={{ borderWidth: 1, borderColor: tokens.colors.border.medium, borderRadius: tokens.radius.sm, padding: tokens.space.md }}
+              >
+                <Text style={{ fontSize: tokens.type.body.fontSize, color: date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                  {date || t('common.selectDate', { defaultValue: 'Select date' })}
+                </Text>
+              </Pressable>
+              {showDatePicker && (
+                <DateTimePicker
+                  value={date ? new Date(date) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker(false);
+                    if (selectedDate) {
+                      setDate(selectedDate.toISOString().split('T')[0]);
+                    }
+                  }}
+                />
+              )}
 
               <Text style={styles.inputLabel}>{t('emotional.states', { defaultValue: 'Emotional States' })}</Text>
               <View style={styles.checkboxGrid}>
