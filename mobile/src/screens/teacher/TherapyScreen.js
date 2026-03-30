@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View, Text, Modal, TextInput, TouchableOpacity, Pressable, Alert, SafeAreaView } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -26,6 +27,7 @@ export function TherapyScreen() {
   const [sessions, setSessions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [formData, setFormData] = useState({ type: 'speech', date: '', duration: '', notes: '' });
 
   useEffect(() => {
@@ -139,13 +141,30 @@ export function TherapyScreen() {
             </View>
 
             <Text style={styles.inputLabel}>{t('therapy.date', { defaultValue: 'Date' })}</Text>
-            <TextInput
-              style={styles.input}
-              value={formData.date}
-              onChangeText={(v) => setFormData({ ...formData, date: v })}
-              placeholder="YYYY-MM-DD"
-              placeholderTextColor={tokens.colors.text.tertiary}
-            />
+            <Pressable
+              onPress={() => setShowDatePicker(true)}
+              accessibilityRole="button"
+              accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
+              style={{ borderWidth: 1, borderColor: tokens.colors.border.medium, borderRadius: tokens.radius.sm, padding: tokens.space.md }}
+            >
+              <Text style={{ fontSize: tokens.type.body.fontSize, color: formData.date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                {formData.date || t('common.selectDate', { defaultValue: 'Select date' })}
+              </Text>
+            </Pressable>
+            {showDatePicker && (
+              <DateTimePicker
+                value={formData.date ? new Date(formData.date) : new Date()}
+                mode="date"
+                display="default"
+                onChange={(event, selectedDate) => {
+                  setShowDatePicker(false);
+                  if (selectedDate) {
+                    const formatted = selectedDate.toISOString().split('T')[0];
+                    setFormData({ ...formData, date: formatted });
+                  }
+                }}
+              />
+            )}
 
             <Text style={styles.inputLabel}>{t('therapy.duration', { defaultValue: 'Duration (minutes)' })}</Text>
             <TextInput

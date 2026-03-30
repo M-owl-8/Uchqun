@@ -15,6 +15,7 @@ import {
   Switch,
   SafeAreaView,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -58,6 +59,8 @@ export function MealsScreen() {
   const [showModal, setShowModal] = useState(false);
   const [editingMeal, setEditingMeal] = useState(null);
   const [children, setChildren] = useState([]);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [showFormDatePicker, setShowFormDatePicker] = useState(false);
   const [formData, setFormData] = useState({
     childId: '',
     mealName: '',
@@ -307,16 +310,30 @@ export function MealsScreen() {
         <Text style={styles.datePickerLabel}>
           {t('mealsPage.selectDay', { defaultValue: 'Kunni tanlang' })}
         </Text>
-        <View style={styles.datePickerRow}>
+        <Pressable
+          onPress={() => setShowDatePicker(true)}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
+          style={styles.datePickerRow}
+        >
           <Ionicons name="calendar-outline" size={20} color={tokens.colors.accent.blue} />
-          <TextInput
-            style={styles.dateInput}
-            value={selectedDate}
-            onChangeText={(text) => setSelectedDate(text)}
-            placeholder="YYYY-MM-DD"
-            placeholderTextColor={tokens.colors.text.tertiary}
+          <Text style={[styles.dateInput, { color: tokens.colors.text.primary }]}>
+            {selectedDate}
+          </Text>
+        </Pressable>
+        {showDatePicker && (
+          <DateTimePicker
+            value={selectedDate ? new Date(selectedDate) : new Date()}
+            mode="date"
+            display="default"
+            onChange={(event, selectedDateValue) => {
+              setShowDatePicker(false);
+              if (selectedDateValue) {
+                setSelectedDate(selectedDateValue.toISOString().split('T')[0]);
+              }
+            }}
           />
-        </View>
+        )}
       </View>
 
       {filteredMeals.length === 0 ? (
@@ -429,13 +446,30 @@ export function MealsScreen() {
                     <Text style={styles.label}>
                       {t('mealsPage.form.date', { defaultValue: 'Sana' })}
                     </Text>
-                    <TextInput
-                      style={styles.input}
-                      placeholder="YYYY-MM-DD"
-                      placeholderTextColor={tokens.colors.text.tertiary}
-                      value={formData.date}
-                      onChangeText={(text) => setFormData({ ...formData, date: text })}
-                    />
+                    <Pressable
+                      onPress={() => setShowFormDatePicker(true)}
+                      accessibilityRole="button"
+                      accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
+                      style={{ borderWidth: 1, borderColor: tokens.colors.border.medium, borderRadius: tokens.radius.sm, padding: tokens.space.md }}
+                    >
+                      <Text style={{ fontSize: tokens.type.body.fontSize, color: formData.date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                        {formData.date || t('common.selectDate', { defaultValue: 'Select date' })}
+                      </Text>
+                    </Pressable>
+                    {showFormDatePicker && (
+                      <DateTimePicker
+                        value={formData.date ? new Date(formData.date) : new Date()}
+                        mode="date"
+                        display="default"
+                        onChange={(event, selectedDateValue) => {
+                          setShowFormDatePicker(false);
+                          if (selectedDateValue) {
+                            const formatted = selectedDateValue.toISOString().split('T')[0];
+                            setFormData({ ...formData, date: formatted });
+                          }
+                        }}
+                      />
+                    )}
                   </View>
                 </View>
 

@@ -52,6 +52,7 @@ export function MediaScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [media, setMedia] = useState([]);
+  const [error, setError] = useState(null);
   const [selectedImage, setSelectedImage] = useState(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [viewerVisible, setViewerVisible] = useState(false);
@@ -103,12 +104,14 @@ export function MediaScreen() {
       setMedia([]);
       return;
     }
+    setError(null);
     try {
       setLoading(true);
       const data = await mediaService.getMedia({ childId: selectedChildId });
       setMedia(Array.isArray(data) ? data : []);
-    } catch (error) {
+    } catch (err) {
       setMedia([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -172,6 +175,16 @@ export function MediaScreen() {
         title={t('media.title', { defaultValue: 'Media' })}
         showBack={navigation.canGoBack()}
       />
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadMedia()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}

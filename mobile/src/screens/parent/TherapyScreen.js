@@ -21,6 +21,7 @@ export function TherapyScreen() {
   const [selectedChildId, setSelectedChildId] = useState(null);
   const [therapies, setTherapies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSession, setActiveSession] = useState(null);

@@ -22,6 +22,7 @@ export function ChatScreen() {
   const insets = useSafeAreaInsets();
   const conversationId = user?.id ? `parent:${user.id}` : null;
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [messages, setMessages] = useState([]);
   const [inputText, setInputText] = useState('');
   const [editingId, setEditingId] = useState(null);
@@ -51,10 +52,16 @@ export function ChatScreen() {
 
       const load = async () => {
         if (!conversationId) return;
-        const msgs = await loadMessages(conversationId);
-        if (!alive) return;
-        setMessages(Array.isArray(msgs) ? msgs : []);
-        await markRead(conversationId);
+        setError(null);
+        try {
+          const msgs = await loadMessages(conversationId);
+          if (!alive) return;
+          setMessages(Array.isArray(msgs) ? msgs : []);
+          await markRead(conversationId);
+        } catch (err) {
+          if (!alive) return;
+          setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
+        }
         if (loading) setLoading(false);
       };
 
@@ -181,7 +188,17 @@ export function ChatScreen() {
         showBack={navigation.canGoBack()}
       />
       
-      <KeyboardAvoidingView 
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadMessagesData()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
+      <KeyboardAvoidingView
         style={styles.keyboardView}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}

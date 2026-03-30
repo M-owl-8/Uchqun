@@ -104,6 +104,7 @@ export function ActivitiesScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [activities, setActivities] = useState([]);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -153,12 +154,14 @@ export function ActivitiesScreen() {
       setActivities([]);
       return;
     }
+    setError(null);
     try {
       setLoading(true);
       const data = await activityService.getActivities({ childId: selectedChildId });
       setActivities(Array.isArray(data) ? data : []);
-    } catch (error) {
+    } catch (err) {
       setActivities([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -434,6 +437,16 @@ export function ActivitiesScreen() {
         title={t('activities.title', { defaultValue: 'Individual Plan' }) || t('activitiesPage.title', { defaultValue: 'Activities' })}
         showBack={navigation.canGoBack()}
       />
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadActivities()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <FlatList
         data={loading ? [] : filteredActivities}
         renderItem={renderActivityItem}

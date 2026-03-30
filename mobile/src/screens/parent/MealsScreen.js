@@ -81,6 +81,7 @@ export function MealsScreen() {
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [meals, setMeals] = useState([]);
+  const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -128,12 +129,14 @@ export function MealsScreen() {
       setMeals([]);
       return;
     }
+    setError(null);
     try {
       setLoading(true);
       const data = await mealService.getMeals({ childId: selectedChildId });
       setMeals(Array.isArray(data) ? data : []);
-    } catch (error) {
+    } catch (err) {
       setMeals([]);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -443,6 +446,16 @@ export function MealsScreen() {
         title={t('meals.title', { defaultValue: 'Meals' })}
         showBack={navigation.canGoBack()}
       />
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadMeals()} accessibilityRole="button" accessibilityLabel="Retry"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <FlatList
         data={loading ? [] : flatListData}
         renderItem={renderMealItem}
