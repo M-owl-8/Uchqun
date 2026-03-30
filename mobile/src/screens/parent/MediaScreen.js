@@ -40,8 +40,25 @@ import { useTranslation } from 'react-i18next';
 const { width } = Dimensions.get('window');
 const GRID_GAP = tokens.space.sm;
 const GRID_PADDING = tokens.space.lg;
-const COLUMNS = 3;
-const itemSize = (width - GRID_PADDING * 2 - GRID_GAP * (COLUMNS - 1)) / COLUMNS;
+const COLUMNS = 2;
+const categoryItemSize = (width - GRID_PADDING * 2 - GRID_GAP) / COLUMNS;
+
+// Category configuration matching Figma MediaSection.tsx
+const CATEGORIES = [
+  { name: 'Photos', icon: 'image', color: '#BFD7EA', type: 'photo' },
+  { name: 'Videos', icon: 'videocam', color: '#DFF4EC', type: 'video' },
+  { name: 'Audio', icon: 'musical-notes', color: '#E8C27E', type: 'audio' },
+  { name: 'Documents', icon: 'document-text', color: '#F8D7C4', type: 'document' },
+];
+
+// Map media type to icon and color
+const MEDIA_TYPE_MAP = {
+  photo: { icon: 'image', color: '#BFD7EA' },
+  image: { icon: 'image', color: '#BFD7EA' },
+  video: { icon: 'videocam', color: '#DFF4EC' },
+  audio: { icon: 'musical-notes', color: '#E8C27E' },
+  document: { icon: 'document-text', color: '#F8D7C4' },
+};
 
 export function MediaScreen() {
   const navigation = useNavigation();
@@ -126,16 +143,13 @@ export function MediaScreen() {
   const getImageUrl = (item) => {
     const url = item.url || item.photoUrl || item.thumbnailUrl;
     if (!url) return null;
-    // If URL is already absolute, return as is
     if (url.startsWith('http://') || url.startsWith('https://')) {
       return url;
     }
-    // If URL starts with /, it's a relative path - prepend API base URL
     if (url.startsWith('/')) {
       const API_BASE = API_URL.replace('/api', '');
       return `${API_BASE}${url}`;
     }
-    // Otherwise, assume it's a relative path
     const API_BASE = API_URL.replace('/api', '');
     return `${API_BASE}/${url}`;
   };
@@ -152,6 +166,14 @@ export function MediaScreen() {
   const formatDate = (dateString) => {
     if (!dateString) return '';
     const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 14) return '1 week ago';
     return date.toLocaleDateString('uz-UZ', {
       month: 'short',
       day: 'numeric',
@@ -159,21 +181,36 @@ export function MediaScreen() {
     });
   };
 
-  // Group media by date
-  const groupedMedia = media.reduce((groups, item) => {
-    const dateKey = formatDate(item.createdAt || item.date);
-    if (!groups[dateKey]) {
-      groups[dateKey] = [];
-    }
-    groups[dateKey].push(item);
-    return groups;
-  }, {});
+  const getMediaTypeInfo = (item) => {
+    const type = item.type || item.mediaType || 'photo';
+    return MEDIA_TYPE_MAP[type] || MEDIA_TYPE_MAP.photo;
+  };
+
+  // Count media by type for categories
+  const getCategoryCount = (type) => {
+    return media.filter((item) => {
+      const itemType = item.type || item.mediaType || 'photo';
+      return itemType === type;
+    }).length;
+  };
+
+  // Get selected child name
+  const selectedChild = children.find((c) => c.id === selectedChildId);
+  const childName = selectedChild
+    ? `${selectedChild.firstName}'s`
+    : "Child's";
+
+  // Recent media (latest 6)
+  const recentMedia = [...media]
+    .sort((a, b) => new Date(b.createdAt || b.date || 0) - new Date(a.createdAt || a.date || 0))
+    .slice(0, 6);
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('media.title', { defaultValue: 'Media' })}
         showBack={navigation.canGoBack()}
+        showNotificationBell={false}
       />
       {error && (
         <View style={{ padding: 24, alignItems: 'center' }}>
@@ -192,7 +229,7 @@ export function MediaScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Child selector (same API as web: filter by childId) */}
+        {/* Child selector */}
         {children.length > 1 && (
           <View style={styles.childRow}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
@@ -219,6 +256,7 @@ export function MediaScreen() {
             </ScrollView>
           </View>
         )}
+
         {children.length === 0 && !loading && (
           <View style={styles.emptyContainer}>
             <GlassCard style={styles.emptyCard}>
@@ -230,96 +268,152 @@ export function MediaScreen() {
             </GlassCard>
           </View>
         )}
-        {children.length > 0 && (
-        <>
-        {loading ? (
-          <View style={styles.loadingGrid}>
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
-              <View key={i} style={styles.skeletonWrapper}>
-                <Skeleton
-                  width={itemSize}
-                  height={itemSize}
-                  style={styles.skeletonItem}
-                />
-              </View>
-            ))}
-          </View>
-        ) : media.length === 0 ? (
-          <View style={styles.emptyContainer}>
-            <GlassCard style={styles.emptyCard}>
-              <EmptyState
-                emoji="📷"
-                title={t('media.noMedia', { defaultValue: 'No Media Found' })}
-                description={t('media.noMediaDesc', { defaultValue: 'New photos and videos will be added soon' })}
-              />
-            </GlassCard>
-          </View>
-        ) : (
-          <Animated.View style={{ opacity: fadeAnim }}>
-            {Object.entries(groupedMedia).map(([date, dateMedia]) => (
-              <View key={date} style={styles.dateSection}>
-                <View style={styles.dateHeader}>
-                  <View style={styles.dateIcon}>
-                    <Text style={styles.dateEmoji}>📅</Text>
-                  </View>
-                  <Text style={styles.dateLabel}>{date}</Text>
-                  <Text style={styles.dateCount}>{dateMedia.length} ta</Text>
-                </View>
-                <View style={styles.grid}>
-                  {dateMedia.map((item, index) => {
-                    const imageUrl = getImageUrl(item);
-                    if (!imageUrl) return null;
 
+        {children.length > 0 && (
+          <>
+            {loading ? (
+              <View style={styles.loadingContainer}>
+                <Skeleton width={width - GRID_PADDING * 2} height={100} style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.lg }} />
+                <Skeleton width={120} height={24} style={{ borderRadius: tokens.radius.sm, marginBottom: tokens.space.md }} />
+                <View style={styles.categoryGrid}>
+                  {[1, 2, 3, 4].map((i) => (
+                    <Skeleton key={i} width={categoryItemSize - GRID_GAP / 2} height={120} style={{ borderRadius: tokens.radius.lg }} />
+                  ))}
+                </View>
+                <Skeleton width={150} height={24} style={{ borderRadius: tokens.radius.sm, marginTop: tokens.space.lg, marginBottom: tokens.space.md }} />
+                {[1, 2, 3].map((i) => (
+                  <Skeleton key={i} width={width - GRID_PADDING * 2} height={80} style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.sm }} />
+                ))}
+              </View>
+            ) : media.length === 0 ? (
+              <View style={styles.emptyContainer}>
+                <GlassCard style={styles.emptyCard}>
+                  <EmptyState
+                    emoji="📷"
+                    title={t('media.noMedia', { defaultValue: 'No Media Found' })}
+                    description={t('media.noMediaDesc', { defaultValue: 'New photos and videos will be added soon' })}
+                  />
+                </GlassCard>
+              </View>
+            ) : (
+              <Animated.View style={{ opacity: fadeAnim }}>
+                {/* Gallery Header Card */}
+                <LinearGradient
+                  colors={['rgba(191,215,234,0.3)', 'rgba(223,244,236,0.3)']}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.galleryHeader}
+                >
+                  <View style={styles.galleryHeaderTop}>
+                    <Text style={styles.galleryHeaderTitle}>{childName} Gallery</Text>
+                    <View style={styles.galleryHeaderIcons}>
+                      <Ionicons name="heart" size={20} color="#E8C27E" />
+                      <Ionicons name="happy-outline" size={20} color="#2E3A59" style={{ marginLeft: 4 }} />
+                    </View>
+                  </View>
+                  <Text style={styles.galleryHeaderText}>
+                    Cherished moments, progress tracking, and memories to treasure forever.
+                  </Text>
+                </LinearGradient>
+
+                {/* Categories Grid */}
+                <Text style={styles.sectionTitle}>Categories</Text>
+                <View style={styles.categoryGrid}>
+                  {CATEGORIES.map((category) => (
+                    <Pressable
+                      key={category.name}
+                      style={({ pressed }) => [
+                        styles.categoryCard,
+                        pressed && styles.categoryCardPressed,
+                      ]}
+                      onPress={() => {
+                        // Could navigate to filtered view in the future
+                      }}
+                    >
+                      <View style={[styles.categoryIconContainer, { backgroundColor: `${category.color}40` }]}>
+                        <Ionicons name={category.icon} size={28} color="#2E3A59" />
+                      </View>
+                      <Text style={styles.categoryName}>{category.name}</Text>
+                      <Text style={styles.categoryCount}>{getCategoryCount(category.type)} items</Text>
+                    </Pressable>
+                  ))}
+                </View>
+
+                {/* Recent Media List */}
+                <View style={styles.recentHeader}>
+                  <Text style={styles.sectionTitle}>Recent Media</Text>
+                  <Pressable>
+                    <Text style={styles.viewAllText}>View All</Text>
+                  </Pressable>
+                </View>
+
+                <View style={styles.recentList}>
+                  {recentMedia.map((item, index) => {
+                    const typeInfo = getMediaTypeInfo(item);
+                    const itemType = item.type || item.mediaType || 'photo';
+                    const isVideo = itemType === 'video';
                     const globalIndex = media.findIndex((m) => m.id === item.id);
-                    const isVideo = item.type === 'video' || item.mediaType === 'video';
 
                     return (
                       <Pressable
                         key={item.id || index}
                         style={({ pressed }) => [
-                          styles.mediaItem,
-                          pressed && styles.mediaItemPressed,
+                          styles.recentItem,
+                          pressed && styles.recentItemPressed,
                         ]}
                         onPress={() => {
                           if (isVideo) {
-                            // Open video in modal
-                            setVideoUri(imageUrl);
-                            setVideoVisible(true);
+                            const videoUrl = getImageUrl(item);
+                            if (videoUrl) {
+                              setVideoUri(videoUrl);
+                              setVideoVisible(true);
+                            }
                           } else {
                             openImageViewer(item, globalIndex);
                           }
                         }}
                       >
-                        <>
-                          <Image
-                            source={{ uri: imageUrl }}
-                            style={styles.image}
-                            resizeMode="cover"
-                            onError={(e) => {
-                              console.warn('[MediaScreen] Image load error:', imageUrl, e.nativeEvent.error);
-                            }}
-                          />
-                          {isVideo && (
-                            <View style={styles.videoOverlay}>
-                              <View style={styles.playButton}>
-                                <Ionicons name="play" size={20} color="#fff" />
-                              </View>
+                        <View style={[styles.recentItemIcon, { backgroundColor: `${typeInfo.color}40` }]}>
+                          <Ionicons name={typeInfo.icon} size={24} color="#2E3A59" />
+                        </View>
+                        <View style={styles.recentItemContent}>
+                          <Text style={styles.recentItemTitle} numberOfLines={1}>
+                            {item.title || item.name || `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} file`}
+                          </Text>
+                          <View style={styles.recentItemMeta}>
+                            <View style={styles.typeBadge}>
+                              <Text style={styles.typeBadgeText}>{itemType}</Text>
                             </View>
-                          )}
-                          <LinearGradient
-                            colors={['transparent', 'rgba(0,0,0,0.3)']}
-                            style={styles.imageGradient}
-                          />
-                        </>
+                            <Text style={styles.recentItemDate}>{formatDate(item.createdAt || item.date)}</Text>
+                          </View>
+                        </View>
+                        <Ionicons name="chevron-forward" size={20} color="#8C9BB5" />
                       </Pressable>
                     );
                   })}
                 </View>
-              </View>
-            ))}
-          </Animated.View>
-        )}
-        </>
+
+                {/* Upload Button */}
+                <Pressable
+                  style={({ pressed }) => [
+                    styles.uploadButton,
+                    pressed && styles.uploadButtonPressed,
+                  ]}
+                  onPress={() => {
+                    // Upload action — could trigger image picker
+                  }}
+                >
+                  <View style={styles.uploadIconContainer}>
+                    <Ionicons name="image-outline" size={24} color="#2E3A59" />
+                  </View>
+                  <View style={styles.uploadTextContainer}>
+                    <Text style={styles.uploadTitle}>Add New Media</Text>
+                    <Text style={styles.uploadSubtitle}>Photos, videos, or documents</Text>
+                  </View>
+                </Pressable>
+              </Animated.View>
+            )}
+          </>
         )}
       </ScrollView>
 
@@ -370,7 +464,6 @@ export function MediaScreen() {
                 />
               </View>
             ) : (
-              // Fallback: open in external player if neither Video nor WebView is available
               <View style={{ width: width, height: width * 9 / 16, justifyContent: 'center', alignItems: 'center' }}>
                 <Text style={{ color: '#fff', marginBottom: 20 }}>Video ko'rsatish uchun tashqi player ochiladi</Text>
                 <Pressable
@@ -418,11 +511,10 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.background.primary,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: GRID_PADDING,
   },
   childRow: {
     marginBottom: tokens.space.lg,
-    paddingHorizontal: GRID_PADDING,
   },
   childRowContent: {
     gap: tokens.space.sm,
@@ -445,172 +537,208 @@ const styles = StyleSheet.create({
   childPillTextActive: {
     color: '#fff',
   },
-  headerContainer: {
-    overflow: 'hidden',
+
+  // Loading
+  loadingContainer: {
+    paddingTop: tokens.space.sm,
   },
-  headerGradient: {
+
+  // Gallery Header Card
+  galleryHeader: {
+    borderRadius: tokens.radius.lg,
+    padding: tokens.space.xl,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    marginBottom: tokens.space.lg,
+    ...tokens.shadow.glass,
+  },
+  galleryHeaderTop: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: tokens.space.lg,
-    paddingVertical: tokens.space.md,
-    paddingTop: tokens.space.xl,
-    paddingBottom: tokens.space.lg,
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.sm,
   },
-  backButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.sm,
+  galleryHeaderTitle: {
+    fontSize: tokens.type.h3.fontSize,
+    fontWeight: tokens.type.h3.fontWeight,
+    color: '#2E3A59',
   },
-  headerTitleContainer: {
-    flex: 1,
+  galleryHeaderIcons: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginLeft: tokens.space.md,
-    gap: tokens.space.md,
   },
-  headerEmojiContainer: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
+  galleryHeaderText: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+    lineHeight: 22,
   },
-  headerEmoji: {
-    fontSize: 24,
+
+  // Section title
+  sectionTitle: {
+    fontSize: tokens.type.h3.fontSize - 2,
+    fontWeight: tokens.type.h3.fontWeight,
+    color: '#2E3A59',
+    marginBottom: tokens.space.md,
+    paddingHorizontal: 2,
   },
-  headerTextContainer: {
-    flex: 1,
-  },
-  headerTitle: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
-    color: '#fff',
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: tokens.type.caption.fontSize,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: tokens.type.sub.fontWeight,
-  },
-  headerRight: {
-    width: 40,
-  },
-  loadingGrid: {
+
+  // Category Grid
+  categoryGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    padding: GRID_PADDING,
     gap: GRID_GAP,
+    marginBottom: tokens.space.lg,
   },
-  skeletonWrapper: {
+  categoryCard: {
+    width: categoryItemSize - GRID_GAP / 2,
+    minHeight: 120,
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    padding: tokens.space.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...tokens.shadow.glass,
+  },
+  categoryCardPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  categoryIconContainer: {
+    width: 56,
+    height: 56,
     borderRadius: tokens.radius.md,
-    overflow: 'hidden',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: tokens.space.sm,
   },
-  skeletonItem: {
+  categoryName: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: 2,
+  },
+  categoryCount: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+
+  // Recent Media
+  recentHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.md,
+    paddingHorizontal: 2,
+  },
+  viewAllText: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '500',
+    color: '#2E3A59',
+  },
+  recentList: {
+    gap: tokens.space.sm,
+    marginBottom: tokens.space.lg,
+  },
+  recentItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    padding: tokens.space.md,
+    minHeight: 80,
+    gap: tokens.space.md,
+    ...tokens.shadow.glass,
+  },
+  recentItemPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  recentItemIcon: {
+    width: 56,
+    height: 56,
     borderRadius: tokens.radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
+  recentItemContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  recentItemTitle: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: 4,
+  },
+  recentItemMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
+  },
+  typeBadge: {
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    paddingHorizontal: tokens.space.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
+  },
+  typeBadgeText: {
+    fontSize: tokens.type.caption.fontSize,
+    color: '#5A6B8C',
+    textTransform: 'capitalize',
+  },
+  recentItemDate: {
+    fontSize: tokens.type.caption.fontSize,
+    color: '#8C9BB5',
+  },
+
+  // Upload Button
+  uploadButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: 'rgba(232,194,126,0.3)',
+    padding: tokens.space.xl,
+    gap: tokens.space.sm,
+  },
+  uploadButtonPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  uploadIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.md,
+    backgroundColor: 'rgba(232,194,126,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  uploadTextContainer: {
+    alignItems: 'flex-start',
+  },
+  uploadTitle: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  uploadSubtitle: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+
+  // Empty state
   emptyContainer: {
-    padding: GRID_PADDING,
     paddingTop: tokens.space.xl,
   },
   emptyCard: {
     marginTop: tokens.space.xl,
     backgroundColor: 'rgba(255,255,255,0.95)',
-  },
-  dateSection: {
-    marginBottom: tokens.space.lg,
-  },
-  dateHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: GRID_PADDING,
-    paddingVertical: tokens.space.lg,
-    gap: tokens.space.md,
-    marginBottom: tokens.space.sm,
-  },
-  dateIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: tokens.colors.joy.roseSoft,
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.sm,
-  },
-  dateEmoji: {
-    fontSize: 18,
-  },
-  dateLabel: {
-    flex: 1,
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.text.primary,
-  },
-  dateCount: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.text.secondary,
-    backgroundColor: tokens.colors.surface.secondary,
-    paddingHorizontal: tokens.space.md,
-    paddingVertical: tokens.space.xs,
-    borderRadius: tokens.radius.pill,
-    borderWidth: 1,
-    borderColor: tokens.colors.border.light,
-  },
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    paddingHorizontal: GRID_PADDING,
-    gap: GRID_GAP,
-  },
-  mediaItem: {
-    width: itemSize,
-    height: itemSize,
-    borderRadius: tokens.radius.lg,
-    overflow: 'hidden',
-    backgroundColor: tokens.colors.joy.skySoft,
-    ...tokens.shadow.sm,
-  },
-  mediaItemPressed: {
-    opacity: 0.9,
-    transform: [{ scale: 0.96 }],
-  },
-  image: {
-    width: '100%',
-    height: '100%',
-  },
-  imageGradient: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    height: 30,
-  },
-  videoContainer: {
-    width: '100%',
-    height: '100%',
-    position: 'relative',
-  },
-  videoPreview: {
-    width: '100%',
-    height: '100%',
-  },
-  videoOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  playButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0,0,0,0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

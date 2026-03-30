@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -31,7 +31,7 @@ const Stack = createNativeStackNavigator();
 // Icon size - optimized for touch targets
 const ICON_SIZE = 24;
 
-// Tab configuration per Mobile-icons.md design system
+// Tab configuration per BottomNav.tsx design
 const TAB_CONFIG = {
   Dashboard: {
     icon: 'home',
@@ -55,19 +55,16 @@ const TAB_CONFIG = {
   },
 };
 
-// Custom tab bar icon following Mobile-icons.md spec
+// Custom tab bar icon matching BottomNav.tsx Figma design
 function TabIcon({ route, focused, color }) {
-  // CRITICAL: Ensure route and route.name exist
   const routeName = route?.name;
   if (!routeName) {
     console.warn('[TabIcon] Missing route.name');
     return <Ionicons name="help-outline" size={ICON_SIZE} color={color} />;
   }
 
-  // CRITICAL: Safe lookup with optional chaining
   const config = TAB_CONFIG?.[routeName];
 
-  // CRITICAL: Fallback if config missing
   if (!config) {
     console.warn(`[TabIcon] Unknown route: ${routeName}`);
     return <Ionicons name="help-outline" size={ICON_SIZE} color={color} />;
@@ -75,18 +72,19 @@ function TabIcon({ route, focused, color }) {
 
   const baseIcon = config.icon || 'help';
 
-  // Active state with rounded container (matching teacher design)
+  // Active state: filled icon with gold dot below (matching BottomNav.tsx)
   if (focused) {
     return (
-      <View style={styles.activeTabIcon}>
-        <Ionicons name={baseIcon} size={ICON_SIZE} color={tokens.colors.text.white} />
+      <View style={styles.activeTabContainer}>
+        <Ionicons name={baseIcon} size={ICON_SIZE + 2} color={tokens.colors.text.primary} />
+        <View style={styles.activeIndicatorDot} />
       </View>
     );
   }
 
   // Inactive state: outline icon with muted color
   const iconName = `${baseIcon}-outline`;
-  return <Ionicons name={iconName} size={ICON_SIZE} color={color} />;
+  return <Ionicons name={iconName} size={ICON_SIZE} color={tokens.colors.text.muted} />;
 }
 
 function ParentTabs() {
@@ -111,18 +109,21 @@ function ParentTabs() {
         tabBarActiveTintColor: tokens.colors.nav.active,
         tabBarInactiveTintColor: tokens.colors.nav.inactive,
         tabBarStyle: {
-          backgroundColor: tokens.colors.background.secondary,
-          borderTopWidth: 0, // Remove border to match teacher design
+          backgroundColor: tokens.glass.bg,
+          borderTopWidth: 1,
+          borderTopColor: 'rgba(191,215,234,0.2)',
           height: 75 + insets.bottom,
           paddingBottom: 8 + insets.bottom,
           paddingTop: 10,
-          ...tokens.shadow.card,
         },
         tabBarLabelStyle: {
           fontSize: 11,
-          fontWeight: '600',
+          fontWeight: '500',
           marginTop: 4,
           letterSpacing: 0.3,
+        },
+        tabBarActiveTabLabelStyle: {
+          fontWeight: '600',
         },
         tabBarLabel: getTabLabel(route.name),
         tabBarAccessibilityLabel: getTabLabel(route.name),
@@ -165,7 +166,7 @@ export function ParentNavigator() {
           <Stack.Screen name="Diagnostics" component={DiagnosticsScreen} />
         )}
       </Stack.Navigator>
-      
+
       {/* Floating AI Chat Button - Appears on all parent screens */}
       <FloatingAI />
     </>
@@ -173,14 +174,15 @@ export function ParentNavigator() {
 }
 
 const styles = StyleSheet.create({
-  // Active tab icon matching teacher design
-  activeTabIcon: {
-    width: 48,
-    height: 48,
-    borderRadius: 16,
-    backgroundColor: tokens.colors.nav.active, // More vibrant blue
+  // Active tab: icon with gold dot below (BottomNav.tsx design)
+  activeTabContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.card, // Better shadow definition
+  },
+  activeIndicatorDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    backgroundColor: tokens.colors.nav.indicator,
+    marginTop: 4,
   },
 });
