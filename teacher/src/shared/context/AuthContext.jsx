@@ -94,10 +94,11 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { user: userData, accessToken } = response.data;
+      const { user: userData, accessToken, refreshToken } = response.data;
 
       if (userData) {
         if (accessToken) localStorage.setItem('accessToken', accessToken);
+        if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
         setUser(userData);
         localStorage.setItem('user', JSON.stringify(userData));
         return { success: true };
