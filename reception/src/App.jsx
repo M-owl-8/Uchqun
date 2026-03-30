@@ -63,15 +63,5 @@ function App() {
   );
 }
 
-// Error boundary for better error handling
-if (import.meta.env.PROD) {
-  window.addEventListener('error', (event) => {
-    console.error('Global error:', event.error);
-  });
-  
-  window.addEventListener('unhandledrejection', (event) => {
-    console.error('Unhandled promise rejection:', event.reason);
-  });
-}
 
 export default App;

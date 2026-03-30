@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import Group from '../models/Group.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
+import { parsePagination } from '../utils/pagination.js';
 
 /**
  * Get all therapies
@@ -18,9 +19,8 @@ export const getTherapies = async (req, res) => {
       difficultyLevel,
       search,
       isActive,
-      limit = 20,
-      offset = 0,
     } = req.query;
+    const { limit, offset } = parsePagination(req.query);
 
     const where = {};
 
@@ -56,8 +56,8 @@ export const getTherapies = async (req, res) => {
       // Try with full query first
       therapies = await Therapy.findAndCountAll({
         where,
-        limit: parseInt(limit) || 20,
-        offset: parseInt(offset) || 0,
+        limit,
+        offset,
         order: [['createdAt', 'DESC']], // Use createdAt instead of usageCount/rating to avoid potential issues
         include: [
           {
@@ -79,8 +79,8 @@ export const getTherapies = async (req, res) => {
         delete whereWithoutActive.isActive;
         therapies = await Therapy.findAndCountAll({
           where: whereWithoutActive,
-          limit: parseInt(limit) || 20,
-          offset: parseInt(offset) || 0,
+          limit,
+          offset,
           order: [['createdAt', 'DESC']],
           include: [
             {
@@ -102,8 +102,8 @@ export const getTherapies = async (req, res) => {
           delete whereSimple.isActive;
           therapies = await Therapy.findAndCountAll({
             where: whereSimple,
-            limit: parseInt(limit) || 20,
-            offset: parseInt(offset) || 0,
+            limit,
+            offset,
             order: [['createdAt', 'DESC']],
           });
         } catch (simpleError) {
@@ -115,8 +115,8 @@ export const getTherapies = async (req, res) => {
             data: {
               therapies: [],
               total: 0,
-              limit: parseInt(limit) || 20,
-              offset: parseInt(offset) || 0,
+              limit,
+              offset,
             },
           });
         }
@@ -128,8 +128,8 @@ export const getTherapies = async (req, res) => {
       data: {
         therapies: therapies.rows || [],
         total: therapies.count || 0,
-        limit: parseInt(limit) || 20,
-        offset: parseInt(offset) || 0,
+        limit,
+        offset,
       },
     });
   } catch (error) {
@@ -143,8 +143,8 @@ export const getTherapies = async (req, res) => {
       data: {
         therapies: [],
         total: 0,
-        limit: parseInt(req.query.limit) || 20,
-        offset: parseInt(req.query.offset) || 0,
+        limit: Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100),
+        offset: Math.max(parseInt(req.query.offset, 10) || 0, 0),
       },
     });
   }
@@ -556,7 +556,8 @@ export const deleteTherapy = async (req, res) => {
  */
 export const getTherapyUsage = async (req, res) => {
   try {
-    const { childId, therapyId, limit = 20, offset = 0 } = req.query;
+    const { childId, therapyId } = req.query;
+    const { limit, offset } = parsePagination(req.query);
     const userId = req.user.id;
 
     const where = {};
@@ -577,8 +578,8 @@ export const getTherapyUsage = async (req, res) => {
 
     const usages = await TherapyUsage.findAndCountAll({
       where,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit,
+      offset,
       order: [['startTime', 'DESC']],
       include: [
         {
@@ -599,8 +600,8 @@ export const getTherapyUsage = async (req, res) => {
       data: {
         usages: usages.rows,
         total: usages.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
       },
     });
   } catch (error) {

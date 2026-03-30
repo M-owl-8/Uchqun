@@ -4,10 +4,8 @@
   "description": "Enterprise-grade, privacy-first, multi-tenant, offline-first Flutter platform for Uzbekistan schools",
   "private": true,
   "scripts": {
-    "migrate": "node scripts/migrate.js",
-    "seed": "node scripts/seed.js",
-    "test:rls": "node scripts/test-rls.js",
-    "setup": "node scripts/setup.js",
+    "migrate": "cd backend && npm run migrate",
+    "seed": "cd backend && npm run seed",
     "build": "cd teacher && npm run build",
     "install": "cd teacher && npm install",
     "prepare": "husky"
@@ -43,7 +41,7 @@
   "author": "",
   "license": "MIT",
   "engines": {
-    "node": ">=18.0.0",
+    "node": ">=20.0.0",
     "npm": ">=9.0.0"
   },
   "devDependencies": {

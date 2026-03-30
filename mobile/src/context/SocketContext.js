@@ -53,7 +53,9 @@ export function SocketProvider({ children }) {
       socketRef.current.disconnect();
     }
 
-    logger.info('[Socket] Connecting with token:', accessToken?.substring(0, 20) + '...');
+    if (__DEV__) {
+      logger.info('[Socket] Connecting with token:', accessToken?.substring(0, 20) + '...');
+    }
 
     const socketUrl = getSocketUrl();
     const newSocket = io(socketUrl, {
@@ -105,6 +107,12 @@ export function SocketProvider({ children }) {
       logger.error('[Socket] Error:', error);
     });
 
+    // Clear any existing listeners before re-attaching event handlers
+    eventHandlersRef.current.forEach((handlers, event) => {
+      handlers.forEach(handler => {
+        newSocket.off(event, handler);
+      });
+    });
     // Re-attach event handlers
     eventHandlersRef.current.forEach((handlers, event) => {
       handlers.forEach(handler => {

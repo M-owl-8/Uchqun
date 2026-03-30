@@ -2,6 +2,7 @@ import ChatMessage from '../models/ChatMessage.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { sendPushToUser } from '../utils/expoPush.js';
+import { parsePagination } from '../utils/pagination.js';
 
 const buildConversationId = (parentId) => `parent:${parentId}`;
 
@@ -27,7 +28,8 @@ const canAccessConversation = async (req, conversationId) => {
 
 export const listMessages = async (req, res) => {
   try {
-    const { conversationId, limit = 200, offset = 0 } = req.query;
+    const { conversationId } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
     if (!conversationId) {
       return res.status(400).json({ error: 'conversationId is required' });
     }
@@ -38,8 +40,8 @@ export const listMessages = async (req, res) => {
     const msgs = await ChatMessage.findAll({
       where: { conversationId },
       order: [['createdAt', 'ASC']],
-      limit: Math.min(parseInt(limit, 10) || 200, 500),
-      offset: parseInt(offset, 10) || 0,
+      limit,
+      offset,
     });
 
     res.json(msgs);

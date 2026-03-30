@@ -13,10 +13,6 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const superAdminKey = import.meta.env.VITE_SUPER_ADMIN_SECRET_KEY;
-    if (superAdminKey) {
-      config.headers['x-super-admin-key'] = superAdminKey;
-    }
     if (config.data instanceof FormData) {
       delete config.headers['Content-Type'];
     }
@@ -50,8 +46,9 @@ api.interceptors.response.use(
       }
     }
 
-    // On 403, log the error for debugging
-    if (error.response?.status === 403) {
+    // On 403, log the error for debugging (dev only)
+    if (error.response?.status === 403 && import.meta.env.DEV) {
+      // eslint-disable-next-line no-console
       console.error('403 Forbidden error:', {
         url: originalRequest?.url,
         method: originalRequest?.method,
