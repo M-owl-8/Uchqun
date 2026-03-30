@@ -258,9 +258,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tokens.colors.background.primary,
   },
-  scrollView: {
-    flex: 1,
-  },
   scrollContent: {
     padding: tokens.space.lg,
   },
@@ -315,9 +312,6 @@ const styles = StyleSheet.create({
   },
   filterCountTextActive: {
     color: '#fff',
-  },
-  list: {
-    gap: tokens.space.md,
   },
   card: {
     marginBottom: tokens.space.sm,
