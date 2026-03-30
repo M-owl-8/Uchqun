@@ -80,6 +80,7 @@ const Child = sequelize.define('Child', {
 }, {
   tableName: 'children',
   timestamps: true,
+  paranoid: true,
 });
 
 // Note: All associations are defined in models/index.js
