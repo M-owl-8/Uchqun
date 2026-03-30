@@ -27,38 +27,38 @@ const MEAL_CONFIG = {
   breakfast: {
     emoji: '🥞',
     label: 'Nonushta',
-    color: tokens.colors.joy.sunflower,
-    bgColor: tokens.colors.joy.sunflowerSoft,
+    color: '#E8C27E',
+    bgColor: '#E8C27E',
   },
   lunch: {
     emoji: '🍱',
     label: 'Tushlik',
-    color: tokens.colors.joy.peach,
-    bgColor: tokens.colors.joy.peachSoft,
+    color: '#DFF4EC',
+    bgColor: '#DFF4EC',
   },
   dinner: {
     emoji: '🍝',
     label: 'Kechki ovqat',
-    color: tokens.colors.joy.lavender,
-    bgColor: tokens.colors.joy.lavenderSoft,
+    color: '#E8C27E',
+    bgColor: '#E8C27E',
   },
   snack: {
     emoji: '🍎',
     label: 'Gazak',
-    color: tokens.colors.joy.coral,
-    bgColor: tokens.colors.joy.coralSoft,
+    color: '#F8D7C4',
+    bgColor: '#F8D7C4',
   },
   drink: {
     emoji: '🥤',
     label: 'Ichimlik',
-    color: tokens.colors.joy.sky,
-    bgColor: tokens.colors.joy.skySoft,
+    color: '#BFD7EA',
+    bgColor: '#BFD7EA',
   },
   default: {
     emoji: '🍽️',
     label: 'Ovqat',
-    color: tokens.colors.joy.mint,
-    bgColor: tokens.colors.joy.mintSoft,
+    color: '#BFD7EA',
+    bgColor: '#BFD7EA',
   },
 };
 
@@ -192,6 +192,15 @@ export function MealsScreen() {
       ? meals
       : meals.filter((m) => isToday(m.date || m.createdAt));
 
+  // Compute nutrition summary stats
+  const eatenCount = filteredMeals.filter((m) => m.eaten).length;
+  const totalMealCount = filteredMeals.length;
+  // Estimate calories (placeholder since the API may not return calorie data)
+  const totalCalories = filteredMeals.reduce((sum, m) => sum + (m.calories || 0), 0);
+  const waterCups = filteredMeals.filter(
+    (m) => (m.mealType || '').toLowerCase().includes('drink')
+  ).length;
+
   // Group meals by date
   const groupedMeals = filteredMeals.reduce((groups, meal) => {
     const dateKey = formatDate(meal.date || meal.createdAt);
@@ -229,67 +238,72 @@ export function MealsScreen() {
     }
 
     const config = getMealConfig(item.mealType);
+    const isCompleted = item.eaten !== undefined ? item.eaten : true;
+
     return (
       <GlassCard style={styles.mealCard}>
         <View style={styles.mealRow}>
-          <LinearGradient
-            colors={[config.bgColor, config.bgColor + 'CC']}
-            style={styles.mealIconContainer}
+          {/* 48x48 icon container with tinted bg */}
+          <View
+            style={[
+              styles.mealIconContainer,
+              { backgroundColor: config.bgColor + '66' },
+            ]}
           >
             <Text style={styles.mealEmoji}>{config.emoji}</Text>
-          </LinearGradient>
+          </View>
+
+          {/* Content */}
           <View style={styles.mealInfo}>
-            <Text style={styles.mealType}>
-              {item.mealType || config.label}
-            </Text>
+            <View style={styles.mealTitleRow}>
+              <Text style={styles.mealType}>
+                {item.mealType || config.label}
+              </Text>
+              {isCompleted && (
+                <View style={styles.completedBadge}>
+                  <Text style={styles.completedBadgeText}>✓ Completed</Text>
+                </View>
+              )}
+            </View>
+
+            {/* Time */}
+            {item.time && (
+              <Text style={styles.mealTime}>{formatTime(item.time)}</Text>
+            )}
+
+            {/* Notes as description */}
             {item.notes && (
               <Text style={styles.mealNotes} numberOfLines={2}>
                 {item.notes}
               </Text>
             )}
-            {item.items && Array.isArray(item.items) && (
-              <View style={styles.mealItems}>
-                {item.items.slice(0, 3).map((food, i) => (
-                  <View key={i} style={styles.foodTag}>
-                    <Text style={styles.foodTagText}>{food}</Text>
+
+            {/* Food items as bullet list */}
+            {item.items && Array.isArray(item.items) && item.items.length > 0 && (
+              <View style={styles.foodItemsList}>
+                {item.items.map((food, i) => (
+                  <View key={i} style={styles.foodItemRow}>
+                    <View style={styles.foodBullet} />
+                    <Text style={styles.foodItemText}>{food}</Text>
                   </View>
                 ))}
-                {item.items.length > 3 && (
-                  <Text style={styles.moreItems}>
-                    +{item.items.length - 3}
-                  </Text>
-                )}
               </View>
             )}
           </View>
-          <View style={styles.mealMeta}>
-            {item.time && (
-              <View style={styles.timeContainer}>
-                <Ionicons
-                  name="time-outline"
-                  size={12}
-                  color={tokens.colors.text.muted}
-                />
-                <Text style={styles.mealTime}>
-                  {formatTime(item.time)}
-                </Text>
-              </View>
-            )}
-            {item.eaten !== undefined && (
-              <View
-                style={[
-                  styles.eatenBadge,
-                  item.eaten
-                    ? styles.eatenYes
-                    : styles.eatenNo,
-                ]}
-              >
-                <Text style={styles.eatenText}>
-                  {item.eaten ? '✅' : '❌'}
-                </Text>
-              </View>
-            )}
-          </View>
+
+          {/* Log button if not completed */}
+          {!isCompleted && (
+            <Pressable
+              style={({ pressed }) => [
+                styles.logButton,
+                pressed && { opacity: 0.9, transform: [{ scale: 0.95 }] },
+              ]}
+              accessibilityRole="button"
+              accessibilityLabel="Log meal"
+            >
+              <Text style={styles.logButtonText}>Log</Text>
+            </Pressable>
+          )}
         </View>
       </GlassCard>
     );
@@ -299,6 +313,11 @@ export function MealsScreen() {
     if (loading) {
       return (
         <>
+          <Skeleton
+            width="100%"
+            height={140}
+            style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space['2xl'] }}
+          />
           <View style={styles.filterRow}>
             {[1, 2].map((i) => (
               <Skeleton
@@ -323,7 +342,7 @@ export function MealsScreen() {
 
     return (
       <Animated.View style={{ opacity: fadeAnim }}>
-        {/* Child selector (same API as web: filter by childId) */}
+        {/* Child selector */}
         {children.length > 1 && (
           <View style={styles.childRow}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
@@ -361,6 +380,45 @@ export function MealsScreen() {
         )}
         {children.length > 0 && (
           <>
+            {/* Nutrition Summary Card — Figma: gold→peach gradient */}
+            <GlassCard style={styles.nutritionCard}>
+              <LinearGradient
+                colors={['rgba(232,194,126,0.3)', 'rgba(248,215,196,0.3)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.nutritionGradient}
+              >
+                <View style={styles.nutritionHeader}>
+                  <Text style={styles.nutritionTitle}>Today's Nutrition</Text>
+                  <View style={styles.nutritionIcon}>
+                    <Text style={{ fontSize: 24 }}>🍴</Text>
+                  </View>
+                </View>
+
+                {/* 3-column stats */}
+                <View style={styles.nutritionStats}>
+                  <View style={styles.nutritionStatItem}>
+                    <Text style={styles.nutritionStatValue}>
+                      {eatenCount}/{totalMealCount}
+                    </Text>
+                    <Text style={styles.nutritionStatLabel}>Meals</Text>
+                  </View>
+                  <View style={styles.nutritionStatDivider} />
+                  <View style={styles.nutritionStatItem}>
+                    <Text style={styles.nutritionStatValue}>
+                      {totalCalories || '—'}
+                    </Text>
+                    <Text style={styles.nutritionStatLabel}>Calories</Text>
+                  </View>
+                  <View style={styles.nutritionStatDivider} />
+                  <View style={styles.nutritionStatItem}>
+                    <Text style={styles.nutritionStatValue}>{waterCups}</Text>
+                    <Text style={styles.nutritionStatLabel}>Cups H₂O</Text>
+                  </View>
+                </View>
+              </LinearGradient>
+            </GlassCard>
+
             {/* Filter Pills */}
             <View style={styles.filterRow}>
               {filters.map((f) => (
@@ -386,38 +444,9 @@ export function MealsScreen() {
               ))}
             </View>
 
-            {/* Nutrition Summary */}
+            {/* Section title */}
             {filteredMeals.length > 0 && (
-              <GlassCard style={styles.summaryCard}>
-                <View style={styles.summaryGradient}>
-                  <Text style={styles.summaryTitle}>{t('meals.dailySummary', { defaultValue: 'Daily Summary' })}</Text>
-                  <View style={styles.summaryRow}>
-                    <View style={styles.summaryItem}>
-                      <View style={[styles.summaryIcon, { backgroundColor: tokens.colors.accent.blue + '20' }]}>
-                        <Text style={styles.summaryEmoji}>🍽️</Text>
-                      </View>
-                      <Text style={styles.summaryValue}>{filteredMeals.length}</Text>
-                      <Text style={styles.summaryLabel}>Jami</Text>
-                    </View>
-                    <View style={styles.summaryDivider} />
-                    <View style={styles.summaryItem}>
-                      <View style={[styles.summaryIcon, { backgroundColor: tokens.colors.semantic.successSoft }]}>
-                        <Text style={styles.summaryEmoji}>✅</Text>
-                      </View>
-                      <Text style={styles.summaryValue}>{filteredMeals.filter((m) => m.eaten).length}</Text>
-                      <Text style={styles.summaryLabel}>Yeyilgan</Text>
-                    </View>
-                    <View style={styles.summaryDivider} />
-                    <View style={styles.summaryItem}>
-                      <View style={[styles.summaryIcon, { backgroundColor: tokens.colors.semantic.errorSoft }]}>
-                        <Text style={styles.summaryEmoji}>❌</Text>
-                      </View>
-                      <Text style={styles.summaryValue}>{filteredMeals.filter((m) => !m.eaten).length}</Text>
-                      <Text style={styles.summaryLabel}>Tashlab yuborilgan</Text>
-                    </View>
-                  </View>
-                </View>
-              </GlassCard>
+              <Text style={styles.sectionTitle}>Meal Schedule</Text>
             )}
 
             {/* Empty state for meals */}
@@ -443,16 +472,16 @@ export function MealsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
-        title={t('meals.title', { defaultValue: 'Meals' })}
-        showBack={navigation.canGoBack()}
+        title="Meals"
+        showBack
+        showNotificationBell={false}
       />
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
-          <Pressable onPress={() => loadMeals()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable onPress={() => loadMeals()} accessibilityRole="button" accessibilityLabel="Retry" style={styles.retryButton}>
+            <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
@@ -479,8 +508,34 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.background.primary,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
   },
+
+  // ── Error ────────────────────────────────────────────────────
+  errorContainer: {
+    padding: tokens.space['2xl'],
+    alignItems: 'center',
+  },
+  errorText: {
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.md,
+    textAlign: 'center',
+    fontSize: tokens.type.body.fontSize,
+  },
+  retryButton: {
+    marginTop: tokens.space.lg,
+    paddingHorizontal: tokens.space['2xl'],
+    paddingVertical: tokens.space.md,
+    backgroundColor: tokens.colors.accent.blue,
+    borderRadius: tokens.radius.md,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: tokens.type.body.fontSize,
+  },
+
+  // ── Child selector ───────────────────────────────────────────
   childRow: {
     marginBottom: tokens.space.lg,
   },
@@ -505,61 +560,62 @@ const styles = StyleSheet.create({
   childPillTextActive: {
     color: '#fff',
   },
-  headerContainer: {
+
+  // ── Nutrition Summary Card (Figma: gold→peach gradient) ──────
+  nutritionCard: {
+    marginBottom: tokens.space['2xl'],
+    padding: 0,
     overflow: 'hidden',
   },
-  headerGradient: {
+  nutritionGradient: {
+    padding: tokens.space.xl,
+    borderRadius: tokens.radius.lg,
+  },
+  nutritionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: tokens.space.lg,
-    paddingVertical: tokens.space.md,
-    paddingTop: tokens.space.xl,
-    paddingBottom: tokens.space.lg,
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.lg,
   },
-  backButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.sm,
+  nutritionTitle: {
+    fontSize: tokens.type.h3.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
   },
-  headerTitleContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: tokens.space.md,
-    gap: tokens.space.md,
-  },
-  headerEmojiContainer: {
+  nutritionIcon: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#E8C27E',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerEmoji: {
-    fontSize: 24,
+  nutritionStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
   },
-  headerTextContainer: {
+  nutritionStatItem: {
+    alignItems: 'center',
     flex: 1,
   },
-  headerTitle: {
+  nutritionStatValue: {
     fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
-    color: '#fff',
-    marginBottom: 2,
+    fontWeight: '600',
+    color: '#2E3A59',
   },
-  headerSubtitle: {
+  nutritionStatLabel: {
     fontSize: tokens.type.caption.fontSize,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: tokens.type.sub.fontWeight,
+    color: '#5A6B8C',
+    marginTop: tokens.space.xs,
   },
-  headerRight: {
-    width: 40,
+  nutritionStatDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: 'rgba(191,215,234,0.3)',
   },
+
+  // ── Filters ──────────────────────────────────────────────────
   filterRow: {
     flexDirection: 'row',
     gap: tokens.space.sm,
@@ -570,16 +626,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: tokens.space.lg,
     paddingVertical: tokens.space.md,
-    backgroundColor: tokens.colors.card.base,
+    backgroundColor: tokens.colors.background.secondary,
     borderRadius: tokens.radius.pill,
     gap: tokens.space.sm,
-    borderWidth: 2,
-    borderColor: tokens.colors.border.light,
     ...tokens.shadow.sm,
   },
   filterPillActive: {
     backgroundColor: tokens.colors.semantic.warning,
-    borderColor: tokens.colors.semantic.warning,
     ...tokens.shadow.soft,
   },
   filterPillPressed: {
@@ -596,9 +649,17 @@ const styles = StyleSheet.create({
   filterLabelActive: {
     color: '#fff',
   },
-  list: {
-    paddingBottom: tokens.space.xl,
+
+  // ── Section title ────────────────────────────────────────────
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.lg,
+    paddingHorizontal: 1,
   },
+
+  // ── Date group headers ───────────────────────────────────────
   dateGroup: {
     marginBottom: tokens.space.lg,
   },
@@ -621,143 +682,103 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.border.light,
     borderRadius: 1,
   },
+
+  // ── Meal card (Figma template) ───────────────────────────────
   mealCard: {
     marginBottom: tokens.space.md,
   },
   mealRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    gap: tokens.space.md,
+    gap: tokens.space.lg,
   },
   mealIconContainer: {
-    width: 56,
-    height: 56,
-    borderRadius: 28,
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.sm,
+    flexShrink: 0,
   },
   mealEmoji: {
-    fontSize: 26,
+    fontSize: 24,
   },
   mealInfo: {
     flex: 1,
+    minWidth: 0,
   },
-  mealType: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.text.primary,
-    marginBottom: tokens.space.xs,
-    textTransform: 'capitalize',
-  },
-  mealNotes: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
-    lineHeight: 18,
-  },
-  mealItems: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: tokens.space.xs,
-    marginTop: tokens.space.sm,
-  },
-  foodTag: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    paddingHorizontal: tokens.space.sm,
-    paddingVertical: 2,
-    borderRadius: tokens.radius.sm,
-  },
-  foodTagText: {
-    fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.secondary,
-  },
-  moreItems: {
-    fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.muted,
-    alignSelf: 'center',
-    marginLeft: tokens.space.xs,
-  },
-  mealMeta: {
-    alignItems: 'flex-end',
-    gap: tokens.space.sm,
-  },
-  timeContainer: {
+  mealTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 4,
+    gap: tokens.space.sm,
+    marginBottom: 2,
+  },
+  mealType: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    textTransform: 'capitalize',
+  },
+  completedBadge: {
+    paddingHorizontal: tokens.space.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
+    backgroundColor: '#DFF4EC',
+  },
+  completedBadgeText: {
+    fontSize: tokens.type.caption.fontSize,
+    fontWeight: '500',
+    color: '#2E3A59',
   },
   mealTime: {
     fontSize: tokens.type.caption.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.muted,
+    color: '#8C9BB5',
+    marginBottom: tokens.space.sm,
   },
-  eatenBadge: {
-    width: 28,
-    height: 28,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  eatenYes: {
-    backgroundColor: tokens.colors.semantic.successSoft,
-  },
-  eatenNo: {
-    backgroundColor: tokens.colors.semantic.errorSoft,
-  },
-  eatenText: {
-    fontSize: 14,
-  },
-  emptyCard: {
-    marginTop: tokens.space.xl,
-  },
-  summaryCard: {
-    marginBottom: tokens.space.lg,
-    overflow: 'hidden',
-  },
-  summaryGradient: {
-    padding: tokens.space.lg,
-    padding: tokens.space.lg,
-    borderRadius: tokens.radius.lg,
-  },
-  summaryTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.text.primary,
-    marginBottom: tokens.space.md,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  summaryItem: {
-    alignItems: 'center',
-    flex: 1,
-  },
-  summaryIcon: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+  mealNotes: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+    lineHeight: 18,
     marginBottom: tokens.space.xs,
   },
-  summaryEmoji: {
-    fontSize: 18,
+
+  // ── Food items bullet list ───────────────────────────────────
+  foodItemsList: {
+    marginTop: tokens.space.xs,
+    gap: tokens.space.xs,
   },
-  summaryValue: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
-    color: tokens.colors.text.primary,
+  foodItemRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
   },
-  summaryLabel: {
-    fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.secondary,
-    marginTop: 2,
+  foodBullet: {
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: '#BFD7EA',
   },
-  summaryDivider: {
-    width: 1,
-    height: 48,
-    backgroundColor: tokens.colors.border.light,
+  foodItemText: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+
+  // ── Log button ───────────────────────────────────────────────
+  logButton: {
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.sm,
+    borderRadius: tokens.radius.xl,
+    backgroundColor: '#2E3A59',
+    alignSelf: 'flex-start',
+  },
+  logButtonText: {
+    color: '#FFFFFF',
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '500',
+  },
+
+  // ── Empty ───────────────────────────────────────────────────
+  emptyCard: {
+    marginTop: tokens.space.xl,
   },
 });

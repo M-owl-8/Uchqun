@@ -44,6 +44,24 @@ const ACTIVITY_EMOJIS = {
   default: '🎯',
 };
 
+// Activity type to color mapping (from Figma template)
+const ACTIVITY_COLORS = {
+  art: '#E8C27E',
+  music: '#BFD7EA',
+  sports: '#DFF4EC',
+  reading: '#F8D7C4',
+  writing: '#BFD7EA',
+  math: '#E8C27E',
+  science: '#DFF4EC',
+  language: '#F8D7C4',
+  social: '#BFD7EA',
+  motor: '#DFF4EC',
+  cognitive: '#E8C27E',
+  therapy: '#DFF4EC',
+  sensory: '#F8D7C4',
+  default: '#BFD7EA',
+};
+
 // Get emoji based on activity type or title
 const getActivityEmoji = (activity) => {
   const type = (activity.type || activity.category || '').toLowerCase();
@@ -57,7 +75,20 @@ const getActivityEmoji = (activity) => {
   return ACTIVITY_EMOJIS.default;
 };
 
-// Animated progress bar component
+// Get color based on activity type or title
+const getActivityColor = (activity) => {
+  const type = (activity.type || activity.category || '').toLowerCase();
+  const title = (activity.title || activity.skill || '').toLowerCase();
+
+  for (const [key, color] of Object.entries(ACTIVITY_COLORS)) {
+    if (type.includes(key) || title.includes(key)) {
+      return color;
+    }
+  }
+  return ACTIVITY_COLORS.default;
+};
+
+// Animated progress bar component (Figma: mint-to-gold gradient)
 function AnimatedProgress({ progress, delay = 0 }) {
   const widthAnim = useRef(new Animated.Value(0)).current;
 
@@ -85,7 +116,7 @@ function AnimatedProgress({ progress, delay = 0 }) {
         ]}
       >
         <LinearGradient
-          colors={['#10B981', '#34D399']}
+          colors={['#DFF4EC', '#E8C27E']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
@@ -224,6 +255,13 @@ export function ActivitiesScreen() {
     return true;
   });
 
+  // Compute progress stats
+  const completedCount = filteredActivities.filter(
+    (a) => a.status === 'completed'
+  ).length;
+  const totalCount = filteredActivities.length;
+  const progressPercent = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
+
   const filters = [
     { key: 'all', label: 'Hammasi', emoji: '📋' },
     { key: 'today', label: 'Bugun', emoji: '📆' },
@@ -232,84 +270,85 @@ export function ActivitiesScreen() {
 
   const renderActivityItem = ({ item, index }) => {
     const emoji = getActivityEmoji(item);
+    const activityColor = getActivityColor(item);
+    const isCompleted = item.status === 'completed';
     const hasProgress = item.progress !== undefined;
     const progress = item.progress || 0;
 
     return (
-      <Pressable onPress={() => { setSelectedActivity(item); setShowDetailsModal(true); }} accessibilityRole="button" accessibilityLabel={item.title || item.skill || item.description || 'Faoliyat'} accessibilityHint={t('activities.viewDetails', { defaultValue: 'View activity details' })}>
-      <GlassCard style={styles.activityCard}>
-        <View style={styles.activityHeader}>
-          <LinearGradient
-            colors={[tokens.colors.joy.lavenderSoft, tokens.colors.joy.skySoft]}
-            style={styles.activityIconContainer}
-          >
-            <Text style={styles.activityEmoji}>{emoji}</Text>
-          </LinearGradient>
-          <View style={styles.activityInfo}>
-            <Text style={styles.activityTitle} numberOfLines={2}>
-              {item.title || item.skill || item.description || "Faoliyat"}
-            </Text>
-            {item.description && item.title && (
-              <Text style={styles.activityDescription} numberOfLines={2}>
-                {item.description}
-              </Text>
-            )}
-          </View>
-          <View style={styles.activityMeta}>
-            <View style={styles.dateTimeContainer}>
-              <Ionicons name="calendar-outline" size={12} color={tokens.colors.accent.blue} />
-              <Text style={styles.activityDate}>
-                {formatDate(item.date || item.createdAt)}
-              </Text>
-            </View>
-            {item.createdAt && (
-              <View style={styles.dateTimeContainer}>
-                <Ionicons name="time-outline" size={12} color={tokens.colors.text.muted} />
-                <Text style={styles.activityTime}>
-                  {formatTime(item.createdAt)}
-                </Text>
-              </View>
-            )}
-          </View>
-        </View>
-
-        {hasProgress && (
-          <View style={styles.progressSection}>
-            <View style={styles.progressHeader}>
-              <Text style={styles.progressLabel}>Rivojlanish</Text>
-              <View style={styles.progressBadge}>
-                <Text style={styles.progressValue}>{progress}%</Text>
-              </View>
-            </View>
-            <AnimatedProgress progress={progress} delay={index * 100} />
-          </View>
-        )}
-
-        {item.status && (
-          <View style={styles.statusContainer}>
+      <Pressable
+        onPress={() => {
+          setSelectedActivity(item);
+          setShowDetailsModal(true);
+        }}
+        accessibilityRole="button"
+        accessibilityLabel={item.title || item.skill || item.description || 'Faoliyat'}
+        accessibilityHint={t('activities.viewDetails', { defaultValue: 'View activity details' })}
+        style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}
+      >
+        <GlassCard style={styles.activityCard}>
+          <View style={styles.activityRow}>
+            {/* 56x56 icon container with tinted bg */}
             <View
               style={[
-                styles.statusBadge,
-                item.status === 'completed' && styles.statusCompleted,
-                item.status === 'in_progress' && styles.statusInProgress,
+                styles.activityIconContainer,
+                { backgroundColor: activityColor + '66' },
               ]}
             >
-              <Text style={styles.statusText}>
-                {item.status === 'completed'
-                  ? '✅ Tugallandi'
-                  : item.status === 'in_progress'
-                  ? "🔄 Davom etmoqda"
-                  : item.status}
+              <Text style={styles.activityEmoji}>{emoji}</Text>
+            </View>
+
+            {/* Content */}
+            <View style={styles.activityInfo}>
+              <View style={styles.activityTitleRow}>
+                <Text style={styles.activityTitle} numberOfLines={2}>
+                  {item.title || item.skill || item.description || 'Faoliyat'}
+                </Text>
+                {isCompleted && (
+                  <View style={styles.doneBadge}>
+                    <Text style={styles.doneBadgeText}>✓ Done</Text>
+                  </View>
+                )}
+              </View>
+              {item.description && item.title && (
+                <Text style={styles.activityDescription} numberOfLines={2}>
+                  {item.description}
+                </Text>
+              )}
+              <Text style={styles.activityDuration}>
+                {formatDate(item.date || item.createdAt)}
+                {item.createdAt ? ` · ${formatTime(item.createdAt)}` : ''}
               </Text>
+
+              {/* Progress section inside card */}
+              {hasProgress && (
+                <View style={styles.progressSection}>
+                  <View style={styles.progressHeader}>
+                    <Text style={styles.progressLabel}>Rivojlanish</Text>
+                    <View style={styles.progressBadge}>
+                      <Text style={styles.progressValue}>{progress}%</Text>
+                    </View>
+                  </View>
+                  <AnimatedProgress progress={progress} delay={index * 100} />
+                </View>
+              )}
+            </View>
+
+            {/* Right circle indicator */}
+            <View
+              style={[
+                styles.statusCircle,
+                isCompleted
+                  ? styles.statusCircleCompleted
+                  : styles.statusCirclePending,
+              ]}
+            >
+              {isCompleted && (
+                <Text style={styles.statusCircleCheck}>✓</Text>
+              )}
             </View>
           </View>
-        )}
-
-        <View style={styles.detailHint}>
-          <Text style={styles.detailHintText}>Batafsil</Text>
-          <Ionicons name="chevron-forward" size={14} color={tokens.colors.accent.blue} />
-        </View>
-      </GlassCard>
+        </GlassCard>
       </Pressable>
     );
   };
@@ -318,6 +357,11 @@ export function ActivitiesScreen() {
     if (loading) {
       return (
         <>
+          <Skeleton
+            width="100%"
+            height={120}
+            style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space['2xl'] }}
+          />
           <View style={styles.filterRow}>
             {[1, 2, 3].map((i) => (
               <Skeleton
@@ -332,7 +376,7 @@ export function ActivitiesScreen() {
             <Skeleton
               key={i}
               width="100%"
-              height={120}
+              height={90}
               style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.md }}
             />
           ))}
@@ -342,7 +386,7 @@ export function ActivitiesScreen() {
 
     return (
       <Animated.View style={{ opacity: fadeAnim }}>
-        {/* Child selector (same API as web: filter by childId) */}
+        {/* Child selector */}
         {children.length > 1 && (
           <View style={styles.childRow}>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
@@ -383,7 +427,35 @@ export function ActivitiesScreen() {
         )}
         {children.length > 0 && (
           <>
-            {/* Filter Pills - Enhanced Design */}
+            {/* Progress Card — Figma: glass card with mint→blue gradient */}
+            <GlassCard style={styles.progressCard}>
+              <LinearGradient
+                colors={['rgba(223,244,236,0.4)', 'rgba(191,215,234,0.3)']}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.progressCardGradient}
+              >
+                <View style={styles.progressCardHeader}>
+                  <Text style={styles.progressCardTitle}>Today's Progress</Text>
+                  <View style={styles.progressCardIcon}>
+                    <Text style={{ fontSize: 24 }}>✨</Text>
+                  </View>
+                </View>
+                <View style={styles.progressCardBody}>
+                  <View>
+                    <Text style={styles.progressCardCount}>
+                      {completedCount}/{totalCount}
+                    </Text>
+                    <Text style={styles.progressCardLabel}>Activities completed</Text>
+                  </View>
+                  <View style={styles.progressCardBarWrap}>
+                    <AnimatedProgress progress={progressPercent} />
+                  </View>
+                </View>
+              </LinearGradient>
+            </GlassCard>
+
+            {/* Filter Pills */}
             <View style={styles.filterRow}>
               {filters.map((f) => (
                 <Pressable
@@ -411,6 +483,11 @@ export function ActivitiesScreen() {
               ))}
             </View>
 
+            {/* Section title */}
+            {filteredActivities.length > 0 && (
+              <Text style={styles.sectionTitle}>Scheduled Activities</Text>
+            )}
+
             {/* Empty state for activities */}
             {filteredActivities.length === 0 && (
               <GlassCard style={styles.emptyCard}>
@@ -434,16 +511,16 @@ export function ActivitiesScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
-        title={t('activities.title', { defaultValue: 'Individual Plan' }) || t('activitiesPage.title', { defaultValue: 'Activities' })}
-        showBack={navigation.canGoBack()}
+        title="Activities"
+        showBack
+        showNotificationBell={false}
       />
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
-          <Pressable onPress={() => loadActivities()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable onPress={() => loadActivities()} accessibilityRole="button" accessibilityLabel="Retry" style={styles.retryButton}>
+            <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
@@ -614,8 +691,34 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.background.primary,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
   },
+
+  // ── Error ────────────────────────────────────────────────────
+  errorContainer: {
+    padding: tokens.space['2xl'],
+    alignItems: 'center',
+  },
+  errorText: {
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.md,
+    textAlign: 'center',
+    fontSize: tokens.type.body.fontSize,
+  },
+  retryButton: {
+    marginTop: tokens.space.lg,
+    paddingHorizontal: tokens.space['2xl'],
+    paddingVertical: tokens.space.md,
+    backgroundColor: tokens.colors.accent.blue,
+    borderRadius: tokens.radius.md,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: tokens.type.body.fontSize,
+  },
+
+  // ── Child selector ───────────────────────────────────────────
   childRow: {
     marginBottom: tokens.space.lg,
   },
@@ -640,61 +743,56 @@ const styles = StyleSheet.create({
   childPillTextActive: {
     color: '#fff',
   },
-  headerContainer: {
+
+  // ── Progress Card (Figma: mint→blue gradient) ────────────────
+  progressCard: {
+    marginBottom: tokens.space['2xl'],
+    padding: 0,
     overflow: 'hidden',
   },
-  headerGradient: {
+  progressCardGradient: {
+    padding: tokens.space.xl,
+    borderRadius: tokens.radius.lg,
+  },
+  progressCardHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingHorizontal: tokens.space.lg,
-    paddingVertical: tokens.space.md,
-    paddingTop: tokens.space.xl,
-    paddingBottom: tokens.space.lg,
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.md,
   },
-  backButton: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    backgroundColor: 'rgba(255,255,255,0.2)',
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.sm,
+  progressCardTitle: {
+    fontSize: tokens.type.h3.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
   },
-  headerTitleContainer: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginLeft: tokens.space.md,
-    gap: tokens.space.md,
-  },
-  headerEmojiContainer: {
+  progressCardIcon: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    backgroundColor: 'rgba(255,255,255,0.2)',
+    backgroundColor: '#DFF4EC',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  headerEmoji: {
-    fontSize: 24,
+  progressCardBody: {
+    flexDirection: 'row',
+    alignItems: 'flex-end',
+    gap: tokens.space.lg,
   },
-  headerTextContainer: {
+  progressCardCount: {
+    fontSize: 30,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  progressCardLabel: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+  progressCardBarWrap: {
     flex: 1,
+    marginBottom: tokens.space.sm,
   },
-  headerTitle: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
-    color: '#fff',
-    marginBottom: 2,
-  },
-  headerSubtitle: {
-    fontSize: tokens.type.caption.fontSize,
-    color: 'rgba(255,255,255,0.9)',
-    fontWeight: tokens.type.sub.fontWeight,
-  },
-  headerRight: {
-    width: 44,
-  },
+
+  // ── Filters ──────────────────────────────────────────────────
   filterRow: {
     flexDirection: 'row',
     gap: tokens.space.sm,
@@ -728,25 +826,32 @@ const styles = StyleSheet.create({
   filterLabelActive: {
     color: '#fff',
   },
-  list: {
-    gap: tokens.space.md,
-    paddingBottom: tokens.space.xl,
+
+  // ── Section title ────────────────────────────────────────────
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.lg,
+    paddingHorizontal: 1,
   },
+
+  // ── Activity card (Figma template) ───────────────────────────
   activityCard: {
     marginBottom: tokens.space.md,
   },
-  activityHeader: {
+  activityRow: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
-    gap: tokens.space.md,
+    alignItems: 'center',
+    gap: tokens.space.lg,
   },
   activityIconContainer: {
     width: 56,
     height: 56,
-    borderRadius: 28,
+    borderRadius: tokens.radius.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.sm,
+    flexShrink: 0,
   },
   activityEmoji: {
     fontSize: 28,
@@ -755,47 +860,71 @@ const styles = StyleSheet.create({
     flex: 1,
     minWidth: 0,
   },
-  activityTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.text.primary,
-    marginBottom: tokens.space.xs,
-    lineHeight: 22,
-  },
-  activityDescription: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
-    lineHeight: 18,
-  },
-  activityMeta: {
-    alignItems: 'flex-end',
-    gap: tokens.space.xs / 2,
-  },
-  dateTimeContainer: {
+  activityTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: tokens.space.xs / 2,
+    gap: tokens.space.sm,
+    marginBottom: 2,
   },
-  activityDate: {
+  activityTitle: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    flexShrink: 1,
+  },
+  doneBadge: {
+    paddingHorizontal: tokens.space.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
+    backgroundColor: '#DFF4EC',
+  },
+  doneBadgeText: {
     fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.accent.blue,
+    fontWeight: '500',
+    color: '#2E3A59',
   },
-  activityTime: {
+  activityDescription: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+    marginBottom: 2,
+    lineHeight: 18,
+  },
+  activityDuration: {
     fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.muted,
+    color: '#8C9BB5',
   },
+
+  // ── Status circle (right side) ──────────────────────────────
+  statusCircle: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexShrink: 0,
+  },
+  statusCircleCompleted: {
+    backgroundColor: '#DFF4EC',
+  },
+  statusCirclePending: {
+    borderWidth: 2,
+    borderColor: '#BFD7EA',
+  },
+  statusCircleCheck: {
+    color: '#2E3A59',
+    fontWeight: '600',
+    fontSize: 14,
+  },
+
+  // ── Progress inside card ────────────────────────────────────
   progressSection: {
-    marginTop: tokens.space.md,
-    paddingTop: tokens.space.md,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.05)',
+    marginTop: tokens.space.sm,
   },
   progressHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: tokens.space.sm,
+    marginBottom: tokens.space.xs,
   },
   progressLabel: {
     fontSize: tokens.type.sub.fontSize,
@@ -813,8 +942,8 @@ const styles = StyleSheet.create({
     color: tokens.colors.semantic.success,
   },
   progressBarContainer: {
-    height: 8,
-    backgroundColor: 'rgba(0,0,0,0.05)',
+    height: 12,
+    backgroundColor: 'rgba(255,255,255,0.5)',
     borderRadius: tokens.radius.pill,
     overflow: 'hidden',
   },
@@ -823,46 +952,13 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius.pill,
     overflow: 'hidden',
   },
-  statusContainer: {
-    marginTop: tokens.space.md,
-    paddingTop: tokens.space.sm,
-  },
-  statusBadge: {
-    alignSelf: 'flex-start',
-    paddingHorizontal: tokens.space.sm,
-    paddingVertical: tokens.space.xs,
-    borderRadius: tokens.radius.sm,
-    backgroundColor: tokens.colors.text.muted + '20',
-  },
-  statusCompleted: {
-    backgroundColor: tokens.colors.semantic.successSoft,
-  },
-  statusInProgress: {
-    backgroundColor: tokens.colors.semantic.warningSoft,
-  },
-  statusText: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.secondary,
-  },
+
+  // ── Empty ───────────────────────────────────────────────────
   emptyCard: {
     marginTop: tokens.space.xl,
   },
-  detailHint: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginTop: tokens.space.md,
-    paddingTop: tokens.space.sm,
-    borderTopWidth: 1,
-    borderTopColor: 'rgba(0,0,0,0.05)',
-    gap: tokens.space.xs / 2,
-  },
-  detailHintText: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.accent.blue,
-  },
+
+  // ── Modal ───────────────────────────────────────────────────
   modalOverlay: {
     flex: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
