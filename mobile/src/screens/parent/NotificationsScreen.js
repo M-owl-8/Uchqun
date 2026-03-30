@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, ScrollView, Animated, Alert, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Pressable, FlatList, Animated, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { notificationService } from '../../services/notificationService';
@@ -9,6 +9,7 @@ import { ScreenHeader } from '../../components/teacher/ScreenHeader';
 import { GlassCard } from '../../components/teacher/GlassCard';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
+import ListRow from '../../components/common/ListRow';
 
 // Animated notification card component
 function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
@@ -187,67 +188,67 @@ export function NotificationsScreen() {
         ) : null}
       />
       
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
-        showsVerticalScrollIndicator={false}
-      >
-        {/* Filter Tabs */}
-        {!loading && notifications.length > 0 && (
-          <View style={styles.filterRow}>
-            {filters.map((f) => (
-              <Pressable
-                key={f.key}
-                style={[
-                  styles.filterPill,
-                  filter === f.key && styles.filterPillActive,
-                ]}
-                onPress={() => setFilter(f.key)}
-              >
-                <Text style={[styles.filterLabel, filter === f.key && styles.filterLabelActive]}>
-                  {f.label}
-                </Text>
-                <View style={[styles.filterCount, filter === f.key && styles.filterCountActive]}>
-                  <Text style={[styles.filterCountText, filter === f.key && styles.filterCountTextActive]}>
-                    {f.count}
-                  </Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        )}
-
-        {loading ? (
-          <>
-            <GlassCard style={styles.card}>
-              <Skeleton width="100%" height={80} />
-            </GlassCard>
-            <GlassCard style={styles.card}>
-              <Skeleton width="100%" height={80} />
-            </GlassCard>
-          </>
-        ) : filteredNotifications.length === 0 ? (
-          <GlassCard style={styles.emptyCard}>
-            <EmptyState
-              icon="notifications-outline"
-              title={filter !== 'all' ? `No ${filter} notifications` : 'No notifications'}
-              description={filter !== 'all' ? 'Try a different filter' : "You're all caught up!"}
-            />
+      {loading ? (
+        <View style={styles.scrollContent}>
+          <GlassCard style={styles.card}>
+            <Skeleton width="100%" height={80} />
           </GlassCard>
-        ) : (
-          <View style={styles.list}>
-            {filteredNotifications.map((item, index) => (
-              <AnimatedNotificationCard
-                key={item.id?.toString() || Math.random()}
-                item={item}
-                index={index}
-                markAsRead={markAsRead}
-                onDelete={handleDelete}
+          <GlassCard style={styles.card}>
+            <Skeleton width="100%" height={80} />
+          </GlassCard>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredNotifications}
+          renderItem={({ item, index }) => (
+            <AnimatedNotificationCard
+              item={item}
+              index={index}
+              markAsRead={markAsRead}
+              onDelete={handleDelete}
+            />
+          )}
+          keyExtractor={(item) => item.id?.toString() || String(Math.random())}
+          initialNumToRender={15}
+          contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
+          showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            notifications.length > 0 ? (
+              <View style={styles.filterRow}>
+                {filters.map((f) => (
+                  <Pressable
+                    key={f.key}
+                    style={[
+                      styles.filterPill,
+                      filter === f.key && styles.filterPillActive,
+                    ]}
+                    onPress={() => setFilter(f.key)}
+                  >
+                    <Text style={[styles.filterLabel, filter === f.key && styles.filterLabelActive]}>
+                      {f.label}
+                    </Text>
+                    <View style={[styles.filterCount, filter === f.key && styles.filterCountActive]}>
+                      <Text style={[styles.filterCountText, filter === f.key && styles.filterCountTextActive]}>
+                        {f.count}
+                      </Text>
+                    </View>
+                  </Pressable>
+                ))}
+              </View>
+            ) : null
+          }
+          ListEmptyComponent={
+            <GlassCard style={styles.emptyCard}>
+              <EmptyState
+                icon="notifications-outline"
+                title={filter !== 'all' ? `No ${filter} notifications` : 'No notifications'}
+                description={filter !== 'all' ? 'Try a different filter' : "You're all caught up!"}
               />
-            ))}
-          </View>
-        )}
-      </ScrollView>
+            </GlassCard>
+          }
+          ItemSeparatorComponent={() => <View style={{ height: tokens.space.md }} />}
+        />
+      )}
     </SafeAreaView>
   );
 }

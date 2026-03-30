@@ -123,6 +123,7 @@ export function ParentDashboardScreen() {
       }
     } catch (error) {
       console.error('[ParentDashboard] Error loading dashboard:', error);
+      setError('Failed to load dashboard data');
       setChildren([]);
       setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });
     } finally {
@@ -158,6 +159,25 @@ export function ParentDashboardScreen() {
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <SafeAreaView style={styles.container} edges={['top']}>
+        <DashboardHeader />
+        <View style={styles.errorContainer}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable
+            style={styles.retryButton}
+            onPress={() => loadData(true)}
+          >
+            <Ionicons name="refresh" size={20} color="#fff" />
+            <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
   }
 
   return (
@@ -341,5 +361,32 @@ const styles = StyleSheet.create({
   childAge: {
     fontSize: tokens.type.sub.fontSize,
     color: tokens.colors.text.secondary,
+  },
+  errorContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: tokens.space.xl,
+    gap: tokens.space.md,
+  },
+  errorText: {
+    fontSize: tokens.type.bodyLarge.fontSize,
+    color: tokens.colors.text.secondary,
+    textAlign: 'center',
+  },
+  retryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
+    backgroundColor: tokens.colors.accent.blue,
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.md,
+    borderRadius: tokens.radius.pill,
+    marginTop: tokens.space.sm,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
   },
 });
