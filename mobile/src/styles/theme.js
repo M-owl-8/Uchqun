@@ -1,15 +1,12 @@
 /**
  * Theme — re-exports tokens as the single source of truth.
- *
- * Legacy code imported named exports (Colors, Typography, etc.) from this file.
- * Those are now derived from tokens so every value stays in sync.
+ * All values derived from tokens.js which is aligned to the Figma design template.
  */
 
-import tokens, { getTokens, getThemeColors } from './tokens';
-
-// ── Named exports for backward compatibility ──────────────────────────
+import tokens, { getTokens, getThemeColors, palette } from './tokens';
 
 export const Colors = {
+  palette,
   primary: tokens.colors.primary,
   accent: tokens.colors.accent,
   semantic: tokens.colors.semantic,
@@ -22,6 +19,7 @@ export const Colors = {
   nav: tokens.colors.nav,
   neutral: tokens.colors.neutral,
   ui: tokens.colors.ui,
+  gradients: tokens.colors.gradients,
 };
 
 export const Typography = tokens.typography;
@@ -29,10 +27,11 @@ export const TypePresets = tokens.type;
 export const Spacing = tokens.space;
 export const Radius = tokens.radius;
 export const Shadows = tokens.shadow;
+export const Glass = tokens.glass;
 export const Gradients = tokens.colors.gradients;
 export const Animation = tokens.animation;
+export const TouchTarget = tokens.touchTarget;
+export const Icon = tokens.icon;
 
-// ── Default export (same as tokens) ───────────────────────────────────
-
-export { getTokens, getThemeColors };
+export { getTokens, getThemeColors, palette };
 export default tokens;

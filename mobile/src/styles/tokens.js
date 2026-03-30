@@ -1,45 +1,59 @@
 /**
- * Design Tokens - Teacher Dashboard
- * Elegant, Modern, Accessible Design System
- * Based on Figma design with glassmorphism
+ * Design Tokens — Uchqun Mobile App
+ * Single source of truth, aligned to Figma design template.
+ *
+ * Primary palette (globals.css):
+ *   Soft Navy  #2E3A59   — primary text, interactive
+ *   Powder Blue #BFD7EA  — light accent
+ *   Warm Sand  #F4EDE2   — page background
+ *   Blush Peach #F8D7C4  — warm accent
+ *   Mint Mist  #DFF4EC   — success/mint
+ *   Honey Gold #E8C27E   — accent/active indicator
  */
 
-// Light theme colors - New Design Palette
+// ── Named design palette ──────────────────────────────────────────────
+export const palette = {
+  softNavy: "#2E3A59",
+  powderBlue: "#BFD7EA",
+  warmSand: "#F4EDE2",
+  blushPeach: "#F8D7C4",
+  mintMist: "#DFF4EC",
+  honeyGold: "#E8C27E",
+};
+
+// ── Light theme ───────────────────────────────────────────────────────
 const lightColors = {
   text: {
-    primary: "#1E2A47", // Deeper navy for better contrast
-    secondary: "#4A5A7A", // More visible secondary text
-    muted: "#6B7A99", // Less faded, more readable
-    tertiary: "#6B7A99",
+    primary: "#2E3A59",     // Soft Navy (globals.css --color-text-primary)
+    secondary: "#5A6B8C",   // (globals.css --color-text-secondary)
+    muted: "#8C9BB5",       // (globals.css --color-text-tertiary)
+    tertiary: "#8C9BB5",
     white: "#FFFFFF",
     inverse: "#FFFFFF",
   },
-
   background: {
-    primary: "#F5F1E8", // Cleaner Warm Sand - slightly richer
-    secondary: "#FFFFFF", // White surface
+    primary: "#F4EDE2",     // Warm Sand (globals.css --color-background)
+    secondary: "#FFFFFF",   // White surface
     tertiary: "#F8F9FA",
-    soft: "#F5F1E8",
-    gradient: ["#BFD7EA", "#DFF4EC"], // Powder Blue to Mint
+    soft: "#F4EDE2",
+    gradient: ["#BFD7EA", "#DFF4EC"],
     parentGradient: ["#BFD7EA", "#DFF4EC"],
     teacherGradient: ["#BFD7EA", "#DFF4EC"],
   },
-
   nav: {
-    active: "#4A90E2", // More vibrant blue - less faded
-    inactive: "#6B7A99", // Darker, more visible
+    active: "#2E3A59",      // Soft Navy for active tab icon container
+    inactive: "#8C9BB5",    // Tertiary text for inactive
     background: "#FFFFFF",
+    indicator: "#E8C27E",   // Honey Gold dot under active tab
   },
-
   card: {
     base: "#FFFFFF",
     elevated: "#FFFFFF",
     light: "#F8F9FA",
-    border: "rgba(191, 215, 234, 0.3)",
-    borderLight: "rgba(191, 215, 234, 0.15)",
-    glass: "rgba(255, 255, 255, 0.7)", // Glassmorphism
+    border: "rgba(191, 215, 234, 0.3)",     // --color-border
+    borderLight: "rgba(191, 215, 234, 0.15)", // --color-border-soft
+    glass: "rgba(255, 255, 255, 0.7)",      // --color-surface-glass
   },
-
   surface: {
     card: "#FFFFFF",
     secondary: "#F8F9FA",
@@ -47,7 +61,6 @@ const lightColors = {
     overlay: "rgba(46, 58, 89, 0.5)",
     glass: "rgba(255, 255, 255, 0.7)",
   },
-
   border: {
     light: "rgba(191, 215, 234, 0.15)",
     medium: "rgba(191, 215, 234, 0.3)",
@@ -55,7 +68,7 @@ const lightColors = {
   },
 };
 
-// Dark theme colors
+// ── Dark theme ────────────────────────────────────────────────────────
 const darkColors = {
   text: {
     primary: "#FFFFFF",
@@ -65,51 +78,48 @@ const darkColors = {
     white: "#FFFFFF",
     inverse: "#000000",
   },
-
   background: {
-    primary: "#000000",
-    secondary: "#1A1A1A",
-    tertiary: "#333333",
-    soft: "#4D4D4D",
-    gradient: ["#000000", "#1A1A1A", "#333333"],
-    parentGradient: ["#000000", "#1A1A1A", "#333333"],
-    teacherGradient: ["#000000", "#1A1A1A", "#333333"],
+    primary: "#0A0F1A",
+    secondary: "#141B2D",
+    tertiary: "#1E2A47",
+    soft: "#141B2D",
+    gradient: ["#0A0F1A", "#141B2D"],
+    parentGradient: ["#0A0F1A", "#141B2D"],
+    teacherGradient: ["#0A0F1A", "#141B2D"],
   },
-
   nav: {
     active: "#FFFFFF",
-    inactive: "#999999",
-    background: "#1A1A1A",
+    inactive: "#666666",
+    background: "#141B2D",
+    indicator: "#E8C27E",
   },
-
   card: {
-    base: "#1A1A1A",
-    elevated: "#333333",
-    light: "#4D4D4D",
-    border: "#666666",
-    borderLight: "#4D4D4D",
+    base: "#141B2D",
+    elevated: "#1E2A47",
+    light: "#2E3A59",
+    border: "rgba(191, 215, 234, 0.15)",
+    borderLight: "rgba(191, 215, 234, 0.08)",
+    glass: "rgba(20, 27, 45, 0.7)",
   },
-
   surface: {
-    card: "#1A1A1A",
-    secondary: "#1A1A1A",
-    tertiary: "#333333",
+    card: "#141B2D",
+    secondary: "#1E2A47",
+    tertiary: "#2E3A59",
     overlay: "rgba(0, 0, 0, 0.8)",
+    glass: "rgba(20, 27, 45, 0.7)",
   },
-
   border: {
-    light: "#333333",
-    medium: "#4D4D4D",
-    dark: "#666666",
+    light: "rgba(191, 215, 234, 0.08)",
+    medium: "rgba(191, 215, 234, 0.15)",
+    dark: "rgba(191, 215, 234, 0.25)",
   },
 };
 
-// Function to get theme colors
+// ── Helpers ───────────────────────────────────────────────────────────
 export function getThemeColors(isDark = false) {
   return isDark ? darkColors : lightColors;
 }
 
-// Get complete tokens for a theme
 export function getTokens(isDark = false) {
   const colors = isDark ? darkColors : lightColors;
 
@@ -117,12 +127,18 @@ export function getTokens(isDark = false) {
     colors: {
       ...colors,
 
+      // Named palette (for direct reference)
+      palette,
+
       accent: {
-        blue: "#4A90E2", // More vibrant blue for active states
+        blue: "#2E3A59",        // Soft Navy (primary interactive)
         blueSoft: "#E8F4F8",
-        blueVibrant: "#2E3A59", // Soft Navy
-        purple: "#A78BFA", // Lavender
+        blueVibrant: "#2E3A59",
+        gold: "#E8C27E",        // Honey Gold (accent/indicator)
+        goldSoft: "#FAF3E7",
+        purple: "#A78BFA",
         purpleSoft: "#EDE9FE",
+        // Indexed aliases
         50: "#F8F9FA",
         100: "#E8F4F8",
         200: "#BFD7EA",
@@ -132,28 +148,28 @@ export function getTokens(isDark = false) {
       },
 
       semantic: {
-        success: "#34D399", // Green
-        successSoft: "#DFF4EC", // Mint Mist
-        warning: "#F59E0B", // Orange
+        success: "#34D399",
+        successSoft: "#DFF4EC",
+        warning: "#F59E0B",
         warningSoft: "#FEF3C7",
-        error: "#EF4444", // Red
+        error: "#EF4444",
         errorSoft: "#FEE2E2",
-        info: "#A78BFA", // Purple
-        infoSoft: "#EDE9FE",
+        info: "#4A90E2",
+        infoSoft: "#E8F4F8",
       },
 
       joy: {
-        coral: "#F472B6", // Pink
+        coral: "#F472B6",
         coralSoft: "#FCE7F3",
-        mint: "#DFF4EC", // Mint Mist
+        mint: "#DFF4EC",
         mintSoft: "#F0FAF7",
-        sunflower: "#E8C27E", // Honey Gold
+        sunflower: "#E8C27E",
         sunflowerSoft: "#FAF3E7",
-        lavender: "#A78BFA", // Purple
+        lavender: "#A78BFA",
         lavenderSoft: "#EDE9FE",
-        sky: "#BFD7EA", // Powder Blue
+        sky: "#BFD7EA",
         skySoft: "#E8F4F8",
-        peach: "#F8D7C4", // Blush Peach
+        peach: "#F8D7C4",
         peachSoft: "#FDF0EA",
         rose: "#F472B6",
         roseSoft: "#FCE7F3",
@@ -162,30 +178,34 @@ export function getTokens(isDark = false) {
       },
 
       gradients: {
-        primary: ["#BFD7EA", "#DFF4EC"], // Powder Blue to Mint
+        primary: ["#BFD7EA", "#DFF4EC"],
+        welcome: ["rgba(191,215,234,0.3)", "rgba(223,244,236,0.3)"],
         success: ["#DFF4EC", "#34D399"],
-        sunset: ["#F8D7C4", "#E8C27E"], // Peach to Gold
-        ocean: ["#BFD7EA", "#2E3A59"], // Blue to Navy
-        aurora: ["#A78BFA", "#F472B6"], // Purple to Pink
-        golden: ["#E8C27E", "#F8D7C4"], // Gold to Peach
+        sunset: ["#F8D7C4", "#E8C27E"],
+        ocean: ["#BFD7EA", "#2E3A59"],
+        aurora: ["#A78BFA", "#F472B6"],
+        golden: ["#E8C27E", "#F8D7C4"],
         forest: ["#DFF4EC", "#BFD7EA"],
         candy: ["#F472B6", "#A78BFA"],
+        nutrition: ["rgba(232,194,126,0.3)", "rgba(248,215,196,0.3)"],
+        hydration: ["#BFD7EA", "#DFF4EC"],
+        activityProgress: ["#DFF4EC", "#E8C27E"],
       },
 
       ui: {
-        shadow: "#000000",
-        shadowBlue: "#000000",
-        overlay: "rgba(0, 0, 0, 0.5)",
+        shadow: "#2E3A59",
+        overlay: "rgba(46, 58, 89, 0.02)",
+        overlayDark: "rgba(0, 0, 0, 0.5)",
       },
 
       // Indexed scales for backward compatibility
       primary: {
-        50: "#F8F9FA",
+        50: "#F4EDE2",
         100: "#E8F4F8",
         200: "#BFD7EA",
         300: "#9AC2DD",
         400: "#6FADD0",
-        500: "#4A90E2",
+        500: "#2E3A59",
         600: "#1E2A47",
         700: "#0E1A35",
         800: "#0A1228",
@@ -193,55 +213,61 @@ export function getTokens(isDark = false) {
       },
       neutral: {
         50: "#F8F9FA",
-        100: "#F1F3F5",
+        100: "#F4EDE2",
         200: "#E9ECEF",
         300: "#DEE2E6",
-        400: "#ADB5BD",
-        500: "#6B7A99",
-        600: "#4A5A7A",
-        700: "#3D4F6F",
-        800: "#2E3A59",
-        900: "#1E2A47",
+        400: "#8C9BB5",
+        500: "#5A6B8C",
+        600: "#2E3A59",
+        700: "#1E2A47",
+        800: "#0E1A35",
+        900: "#060D1C",
       },
     },
 
+    // ── Glass effect ────────────────────────────────────────────────
+    glass: {
+      bg: "rgba(255, 255, 255, 0.7)",
+      border: "rgba(255, 255, 255, 0.3)",
+      blur: 12,
+    },
+
+    // ── Spacing (px) ────────────────────────────────────────────────
     space: {
       xs: 4,
       sm: 8,
       md: 12,
       lg: 16,
-      xl: 24,
-      "2xl": 32,
-      "3xl": 48,
-      "4xl": 64,
-      // Numeric aliases for backward compatibility
-      1: 4,
-      2: 8,
-      3: 12,
-      4: 16,
-      5: 24,
-      6: 32,
+      xl: 20,    // Figma uses px-5 = 20px for page padding
+      "2xl": 24,
+      "3xl": 32,
+      "4xl": 48,
+      "5xl": 64,
+      // Numeric aliases
+      1: 4, 2: 8, 3: 12, 4: 16, 5: 20, 6: 24, 8: 32, 10: 40, 12: 48,
     },
 
+    // ── Border radius (px) — from globals.css ───────────────────────
     radius: {
-      sm: 4,
-      md: 8,
-      lg: 12,
-      xl: 16,
-      "2xl": 20,
+      sm: 8,     // --radius-sm
+      md: 12,    // --radius-md
+      lg: 16,    // --radius-lg
+      xl: 20,    // --radius-xl
+      "2xl": 24,
       pill: 999,
       full: 999,
     },
 
+    // ── Typography ──────────────────────────────────────────────────
     typography: {
       fontSize: {
-        xs: 12,
+        xs: 11,
         sm: 14,
         base: 16,
         lg: 18,
         xl: 20,
         "2xl": 24,
-        "3xl": 30,
+        "3xl": 28,
         "4xl": 36,
       },
       fontWeight: {
@@ -253,18 +279,20 @@ export function getTokens(isDark = false) {
       },
     },
 
+    // ── Type presets — from globals.css h1/h2/h3 ────────────────────
     type: {
-      hero: { fontSize: 28, fontWeight: "700", lineHeight: 34 },
-      h1: { fontSize: 22, fontWeight: "700", lineHeight: 28 },
-      h2: { fontSize: 18, fontWeight: "600", lineHeight: 24 },
-      h3: { fontSize: 16, fontWeight: "600", lineHeight: 20 },
-      body: { fontSize: 14, fontWeight: "400", lineHeight: 20 },
-      bodyLarge: { fontSize: 16, fontWeight: "500", lineHeight: 22 },
-      sub: { fontSize: 12, fontWeight: "500", lineHeight: 16 },
-      caption: { fontSize: 11, fontWeight: "600", lineHeight: 14 },
-      button: { fontSize: 14, fontWeight: "600", lineHeight: 18 },
+      hero: { fontSize: 28, fontWeight: "700", lineHeight: 34, letterSpacing: -0.5 },
+      h1:   { fontSize: 28, fontWeight: "700", lineHeight: 34, letterSpacing: -0.5 },
+      h2:   { fontSize: 24, fontWeight: "600", lineHeight: 30, letterSpacing: -0.3 },
+      h3:   { fontSize: 20, fontWeight: "600", lineHeight: 26 },
+      body:     { fontSize: 14, fontWeight: "400", lineHeight: 22 },
+      bodyLarge: { fontSize: 16, fontWeight: "500", lineHeight: 24 },
+      sub:      { fontSize: 12, fontWeight: "500", lineHeight: 16 },
+      caption:  { fontSize: 11, fontWeight: "600", lineHeight: 14 },
+      button:   { fontSize: 14, fontWeight: "600", lineHeight: 18 },
     },
 
+    // ── Shadows — from globals.css, navy-tinted ─────────────────────
     shadow: {
       none: {
         shadowColor: "transparent",
@@ -276,42 +304,56 @@ export function getTokens(isDark = false) {
       xs: {
         shadowColor: "#2E3A59",
         shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.04,
+        shadowOpacity: 0.03,
         shadowRadius: 2,
         elevation: 1,
       },
-      sm: {
+      soft: {                              // --shadow-soft
         shadowColor: "#2E3A59",
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.04,
-        shadowRadius: 3,
+        shadowRadius: 12,
         elevation: 2,
       },
-      soft: {
+      sm: {                                // alias for soft
         shadowColor: "#2E3A59",
         shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.06,
+        shadowOpacity: 0.04,
         shadowRadius: 12,
-        elevation: 3,
+        elevation: 2,
       },
-      card: {
+      card: {                              // --shadow-medium
         shadowColor: "#2E3A59",
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
+        shadowOpacity: 0.08,
         shadowRadius: 20,
         elevation: 4,
       },
-      elevated: {
+      elevated: {                          // --shadow-strong
         shadowColor: "#2E3A59",
         shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.12,
+        shadowRadius: 32,
+        elevation: 6,
+      },
+      float: {                             // --shadow-float
+        shadowColor: "#2E3A59",
+        shadowOffset: { width: 0, height: 12 },
         shadowOpacity: 0.15,
+        shadowRadius: 48,
+        elevation: 8,
+      },
+      glass: {                             // --glass-shadow
+        shadowColor: "#2E3A59",
+        shadowOffset: { width: 0, height: 8 },
+        shadowOpacity: 0.1,
         shadowRadius: 32,
         elevation: 5,
       },
       glow: {
-        shadowColor: "#A78BFA",
+        shadowColor: "#E8C27E",            // Honey Gold glow
         shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.2,
+        shadowOpacity: 0.25,
         shadowRadius: 12,
         elevation: 3,
       },
@@ -324,31 +366,36 @@ export function getTokens(isDark = false) {
       },
     },
 
+    // ── Animation ───────────────────────────────────────────────────
     animation: {
       instant: 100,
       fast: 200,
       normal: 300,
-      slow: 500,
+      slow: 400,                          // --transition-slow
       verySlow: 700,
       spring: { damping: 18, stiffness: 180 },
       springGentle: { damping: 25, stiffness: 120 },
       easing: {
-        easeInOut: [0.4, 0, 0.2, 1],
+        easeInOut: [0.4, 0, 0.2, 1],     // --transition-default
         easeOut: [0, 0, 0.2, 1],
         easeIn: [0.4, 0, 1, 1],
         sharp: [0.4, 0, 0.6, 1],
       },
+      float: { duration: 6000 },
+      pulseSoft: { duration: 3000 },
     },
 
-    // Alias for backward compatibility
+    // ── Backward-compat getters ─────────────────────────────────────
     get shadows() { return this.shadow; },
     get spacing() { return this.space; },
 
+    // ── Touch targets — from globals.css ─────────────────────────────
     touchTarget: {
-      min: 44,
-      comfortable: 48,
+      min: 48,                            // --touch-target-min
+      comfortable: 56,                    // --touch-target-comfortable
     },
 
+    // ── Icon sizes ──────────────────────────────────────────────────
     icon: {
       xs: 16,
       sm: 20,
@@ -356,78 +403,11 @@ export function getTokens(isDark = false) {
       lg: 28,
       xl: 32,
       "2xl": 48,
+      stroke: 1.5,                        // --icon-stroke
     },
   };
 }
 
-// Default tokens (light theme)
+// ── Default export (light theme) ────────────────────────────────────
 export const tokens = getTokens(false);
-
-// Icon mapping (kept for compatibility, removed emojis)
-export const joyfulIcons = {
-  home: "home",
-  dashboard: "dashboard",
-  back: "back",
-  forward: "forward",
-  menu: "menu",
-  close: "close",
-  settings: "settings",
-  activity: "activity",
-  activities: "activities",
-  meal: "meal",
-  meals: "meals",
-  media: "media",
-  photos: "photos",
-  video: "video",
-  child: "child",
-  children: "children",
-  parent: "parent",
-  teacher: "teacher",
-  student: "student",
-  success: "success",
-  warning: "warning",
-  error: "error",
-  info: "info",
-  love: "love",
-  star: "star",
-  trophy: "trophy",
-  add: "add",
-  edit: "edit",
-  delete: "delete",
-  save: "save",
-  send: "send",
-  download: "download",
-  upload: "upload",
-  chat: "chat",
-  ai: "ai",
-  notification: "notification",
-  message: "message",
-  calendar: "calendar",
-  clock: "clock",
-  today: "today",
-  school: "school",
-  book: "book",
-  pencil: "pencil",
-  art: "art",
-  music: "music",
-  sports: "sports",
-  science: "science",
-  math: "math",
-  breakfast: "breakfast",
-  lunch: "lunch",
-  snack: "snack",
-  dinner: "dinner",
-  drink: "drink",
-  sun: "sun",
-  cloud: "cloud",
-  rainbow: "rainbow",
-  flower: "flower",
-  tree: "tree",
-  sparkle: "sparkle",
-  magic: "magic",
-  gift: "gift",
-  balloon: "balloon",
-  confetti: "confetti",
-};
-
 export default tokens;
