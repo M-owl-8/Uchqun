@@ -1,0 +1,102 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background with gradient -->
+  <rect width="1024" height="1024" rx="226" fill="url(#background-gradient)"/>
+  
+  <!-- Decorative blobs in background -->
+  <circle cx="200" cy="200" r="150" fill="#DFF4EC" opacity="0.3"/>
+  <circle cx="850" cy="180" r="180" fill="#BFD7EA" opacity="0.25"/>
+  <circle cx="150" cy="850" r="200" fill="#F8D7C4" opacity="0.2"/>
+  <circle cx="900" cy="900" r="160" fill="#E8C27E" opacity="0.25"/>
+  
+  <!-- Main icon design - Heart with child silhouette -->
+  <g transform="translate(512, 512)">
+    <!-- Large caring heart -->
+    <path d="M 0,-180 
+             C -50,-230 -180,-230 -180,-130
+             C -180,-50 -80,80 0,180
+             C 80,80 180,-50 180,-130
+             C 180,-230 50,-230 0,-180 Z" 
+          fill="#2E3A59" 
+          opacity="0.95"/>
+    
+    <!-- Inner heart glow -->
+    <path d="M 0,-150 
+             C -40,-190 -150,-190 -150,-110
+             C -150,-45 -65,60 0,150
+             C 65,60 150,-45 150,-110
+             C 150,-190 40,-190 0,-150 Z" 
+          fill="url(#heart-gradient)"/>
+    
+    <!-- Child figure inside heart -->
+    <g transform="translate(0, -20)">
+      <!-- Head -->
+      <circle cx="0" cy="-35" r="32" fill="#F4EDE2"/>
+      
+      <!-- Body -->
+      <ellipse cx="0" cy="20" rx="35" ry="45" fill="#F4EDE2"/>
+      
+      <!-- Arms raised (joy/freedom) -->
+      <path d="M -30,0 Q -50,-10 -55,5" 
+            stroke="#F4EDE2" 
+            stroke-width="18" 
+            stroke-linecap="round" 
+            fill="none"/>
+      <path d="M 30,0 Q 50,-10 55,5" 
+            stroke="#F4EDE2" 
+            stroke-width="18" 
+            stroke-linecap="round" 
+            fill="none"/>
+      
+      <!-- Legs -->
+      <path d="M -12,55 L -18,85" 
+            stroke="#F4EDE2" 
+            stroke-width="16" 
+            stroke-linecap="round"/>
+      <path d="M 12,55 L 18,85" 
+            stroke="#F4EDE2" 
+            stroke-width="16" 
+            stroke-linecap="round"/>
+    </g>
+    
+    <!-- Sparkles around for hope/care -->
+    <g fill="#E8C27E">
+      <!-- Top right sparkle -->
+      <path d="M 120,-140 l 8,20 l 20,8 l -20,8 l -8,20 l -8,-20 l -20,-8 l 20,-8 Z" opacity="0.9"/>
+      
+      <!-- Left sparkle -->
+      <path d="M -140,-60 l 6,15 l 15,6 l -15,6 l -6,15 l -6,-15 l -15,-6 l 15,-6 Z" opacity="0.8"/>
+      
+      <!-- Right bottom sparkle -->
+      <path d="M 140,40 l 7,18 l 18,7 l -18,7 l -7,18 l -7,-18 l -18,-7 l 18,-7 Z" opacity="0.85"/>
+      
+      <!-- Small top left sparkle -->
+      <path d="M -100,-160 l 4,10 l 10,4 l -10,4 l -4,10 l -4,-10 l -10,-4 l 10,-4 Z" opacity="0.7"/>
+    </g>
+    
+    <!-- Caring hands supporting from sides (subtle) -->
+    <g opacity="0.6">
+      <!-- Left hand -->
+      <path d="M -190,-50 Q -160,-30 -150,10 L -170,15 Q -180,-20 -200,-45 Z" 
+            fill="#BFD7EA"/>
+      
+      <!-- Right hand -->
+      <path d="M 190,-50 Q 160,-30 150,10 L 170,15 Q 180,-20 200,-45 Z" 
+            fill="#BFD7EA"/>
+    </g>
+  </g>
+  
+  <!-- Gradient definitions -->
+  <defs>
+    <linearGradient id="background-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F4EDE2;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#FEFAF5;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#F4EDE2;stop-opacity:1" />
+    </linearGradient>
+    
+    <linearGradient id="heart-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#BFD7EA;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#DFF4EC;stop-opacity:0.9" />
+      <stop offset="100%" style="stop-color:#BFD7EA;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+</svg>
