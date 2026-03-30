@@ -39,13 +39,14 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { user: userData, accessToken } = response.data;
+      const { user: userData, accessToken, refreshToken } = response.data;
 
       if (userData.role !== 'admin') {
         return { success: false, error: 'Access denied. Admin role required.' };
       }
 
       if (accessToken) localStorage.setItem('super_admin_accessToken', accessToken);
+      if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('superAdminUser', JSON.stringify(userData));
       setUser(userData);
       return { success: true };
@@ -62,6 +63,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('superAdminUser');
     localStorage.removeItem('super_admin_accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   const value = {

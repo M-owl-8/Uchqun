@@ -90,11 +90,12 @@ function App() {
 
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
-            </Router>
-          </SocketProvider>
-        </AuthProvider>
-      </NotificationProvider>
-    </ToastProvider>
+              </Router>
+            </SocketProvider>
+          </AuthProvider>
+        </NotificationProvider>
+      </ToastProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { user: userData, accessToken } = response.data;
+      const { user: userData, accessToken, refreshToken } = response.data;
 
       if (userData.role !== 'government') {
         return { success: false, error: 'Access denied. Government role required.' };
@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
       if (accessToken) {
         localStorage.setItem('government_accessToken', accessToken);
       }
+      if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
       return { success: true };
@@ -64,6 +65,7 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
     localStorage.removeItem('user');
     localStorage.removeItem('government_accessToken');
+    localStorage.removeItem('refreshToken');
   };
 
   const value = {
