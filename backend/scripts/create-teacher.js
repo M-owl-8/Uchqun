@@ -6,6 +6,7 @@
  */
 
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import sequelize from '../config/database.js';
 import User from '../models/User.js';
 
@@ -17,9 +18,8 @@ const createTeacher = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    // Default teacher credentials
-    const email = 'teacher@example.com';
-    const password = 'teacher123';
+    const email = process.env.TEACHER_EMAIL || 'teacher@example.com';
+    const password = process.env.TEACHER_PASSWORD || crypto.randomBytes(16).toString('hex');
     const firstName = 'Teacher';
     const lastName = 'Admin';
 

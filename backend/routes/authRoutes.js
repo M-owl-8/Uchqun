@@ -1,5 +1,5 @@
 import express from 'express';
-import { login, getMe, logout } from '../controllers/authController.js';
+import { login, getMe, logout, refresh } from '../controllers/authController.js';
 import { authenticate } from '../middleware/auth.js';
 import { loginValidator } from '../validators/authValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
@@ -47,6 +47,7 @@ const router = express.Router();
  *         description: Not authenticated
  */
 router.post('/login', loginValidator, handleValidationErrors, login);
+router.post('/refresh', refresh);
 router.get('/me', authenticate, getMe);
 router.post('/logout', authenticate, logout);
 

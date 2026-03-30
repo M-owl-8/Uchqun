@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import sequelize from '../config/database.js';
-
 import User from '../models/User.js';
 
 dotenv.config();
@@ -11,9 +11,8 @@ const createAdmin = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    // Default admin credentials
-    const email = 'admin@uchqun.com';
-    const password = 'admin123';
+    const email = process.env.ADMIN_EMAIL || 'admin@uchqun.com';
+    const password = process.env.ADMIN_PASSWORD || crypto.randomBytes(16).toString('hex');
     const firstName = 'Admin';
     const lastName = 'User';
 

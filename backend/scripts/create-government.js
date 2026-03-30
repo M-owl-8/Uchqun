@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import sequelize from '../config/database.js';
 import User from '../models/User.js';
 
@@ -10,9 +11,8 @@ const createGovernment = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    // Default government credentials
-    const email = 'government@uchqun.com';
-    const password = 'government123';
+    const email = process.env.GOVERNMENT_EMAIL || 'government@uchqun.com';
+    const password = process.env.GOVERNMENT_PASSWORD || crypto.randomBytes(16).toString('hex');
     const firstName = 'Government';
     const lastName = 'User';
 

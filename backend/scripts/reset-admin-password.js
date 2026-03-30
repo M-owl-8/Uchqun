@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import sequelize from '../config/database.js';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
@@ -11,8 +12,8 @@ const resetAdminPassword = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    const email = 'admin@uchqun.com';
-    const newPassword = 'admin123';
+    const email = process.env.ADMIN_EMAIL || 'admin@uchqun.com';
+    const newPassword = process.env.ADMIN_PASSWORD || crypto.randomBytes(16).toString('hex');
 
     // Find admin user
     const admin = await User.findOne({ where: { email } });

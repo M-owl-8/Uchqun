@@ -141,7 +141,7 @@ async function runMigrations() {
         
         if (typeof upFunction === 'function') {
           await upFunction(sequelize.getQueryInterface(), Sequelize);
-          await sequelize.query(`INSERT INTO "SequelizeMeta" (name) VALUES ('${file}')`);
+          await sequelize.query('INSERT INTO "SequelizeMeta" (name) VALUES (:file)', { replacements: { file } });
           console.log(`✓ Completed ${file}`);
         } else {
           console.warn(`⚠ ${file} does not export an 'up' function`);
@@ -156,7 +156,7 @@ async function runMigrations() {
           console.warn(`⚠ ${file}: ${error.message} - skipping (already exists)`);
           // Mark as executed even if it failed (to avoid retrying)
           try {
-            await sequelize.query(`INSERT INTO "SequelizeMeta" (name) VALUES ('${file}') ON CONFLICT (name) DO NOTHING`);
+            await sequelize.query('INSERT INTO "SequelizeMeta" (name) VALUES (:file) ON CONFLICT (name) DO NOTHING', { replacements: { file } });
           } catch (insertError) {
             // Ignore insert errors
           }
