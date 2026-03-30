@@ -177,6 +177,32 @@ export function getTokens(isDark = false) {
         shadowBlue: "#000000",
         overlay: "rgba(0, 0, 0, 0.5)",
       },
+
+      // Indexed scales for backward compatibility
+      primary: {
+        50: "#F8F9FA",
+        100: "#E8F4F8",
+        200: "#BFD7EA",
+        300: "#9AC2DD",
+        400: "#6FADD0",
+        500: "#4A90E2",
+        600: "#1E2A47",
+        700: "#0E1A35",
+        800: "#0A1228",
+        900: "#060D1C",
+      },
+      neutral: {
+        50: "#F8F9FA",
+        100: "#F1F3F5",
+        200: "#E9ECEF",
+        300: "#DEE2E6",
+        400: "#ADB5BD",
+        500: "#6B7A99",
+        600: "#4A5A7A",
+        700: "#3D4F6F",
+        800: "#2E3A59",
+        900: "#1E2A47",
+      },
     },
 
     space: {
@@ -188,17 +214,13 @@ export function getTokens(isDark = false) {
       "2xl": 32,
       "3xl": 48,
       "4xl": 64,
-    },
-
-    spacing: {
-      xs: 4,
-      sm: 8,
-      md: 12,
-      lg: 16,
-      xl: 24,
-      "2xl": 32,
-      "3xl": 48,
-      "4xl": 64,
+      // Numeric aliases for backward compatibility
+      1: 4,
+      2: 8,
+      3: 12,
+      4: 16,
+      5: 24,
+      6: 32,
     },
 
     radius: {
@@ -317,6 +339,10 @@ export function getTokens(isDark = false) {
         sharp: [0.4, 0, 0.6, 1],
       },
     },
+
+    // Alias for backward compatibility
+    get shadows() { return this.shadow; },
+    get spacing() { return this.space; },
 
     touchTarget: {
       min: 44,
