@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import crypto from 'crypto';
 import sequelize from '../config/database.js';
 import User from '../models/User.js';
 
@@ -16,10 +17,9 @@ async function createSuperAdmin() {
     // Sync models
     await User.sync();
 
-    // Super admin details
     const superAdminData = {
-      email: 'superadmin@uchqun.uz',
-      password: 'SuperAdmin@2026', // Change this password!
+      email: process.env.SUPER_ADMIN_EMAIL || 'superadmin@uchqun.uz',
+      password: process.env.SUPER_ADMIN_DEFAULT_PASSWORD || crypto.randomBytes(16).toString('hex'),
       firstName: 'Super',
       lastName: 'Admin',
       role: 'admin', // Using 'admin' role (highest permission)

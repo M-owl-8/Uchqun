@@ -6,8 +6,7 @@ import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { v4 as uuidv4 } from 'uuid';
 
-// TODO: Integrate with payment providers (Payme, Click, Uzcard, etc.)
-// For now, this is a placeholder implementation
+// Payment controller — payments stay 'pending' until confirmed via provider callback or admin action.
 
 /**
  * Create payment
@@ -64,18 +63,10 @@ export const createPayment = async (req, res) => {
       metadata: metadata || {},
     });
 
-    // TODO: Process payment with payment provider
-    // For now, simulate payment processing
-    setTimeout(async () => {
-      try {
-        await payment.update({
-          status: 'completed',
-          paidAt: new Date(),
-        });
-      } catch (err) {
-        logger.error('Payment processing error', { error: err.message });
-      }
-    }, 2000);
+    // Payment stays in 'pending' status until confirmed by:
+    // 1. Payment provider callback (POST /api/payments/callback)
+    // 2. Admin manual approval
+    // No auto-completion — real provider integration required.
 
     res.status(201).json({
       success: true,
@@ -371,8 +362,6 @@ export const refundPayment = async (req, res) => {
       refundedAt: new Date(),
       refundReason,
     });
-
-    // TODO: Process refund with payment provider
 
     res.json({
       success: true,

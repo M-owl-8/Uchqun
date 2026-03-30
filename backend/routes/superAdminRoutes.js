@@ -124,12 +124,14 @@ router.post('/create-super-admin', passwordResetLimiter, async (req, res) => {
         }
         
         // Create super admin (using 'admin' role)
-        const plainPassword = 'admin123';
-        
-        // Pass PLAIN password - User model hook will hash it automatically
+        const plainPassword = req.body.password || process.env.SUPER_ADMIN_DEFAULT_PASSWORD;
+        if (!plainPassword || plainPassword.length < 8) {
+            return res.status(400).json({ error: 'Password must be at least 8 characters. Provide via request body or SUPER_ADMIN_DEFAULT_PASSWORD env var.' });
+        }
+
         const superAdmin = await User.create({
-            email: 'superadmin@uchqun.uz',
-            password: plainPassword, // Plain text - hook will hash
+            email: req.body.email || process.env.SUPER_ADMIN_EMAIL || 'superadmin@uchqun.uz',
+            password: plainPassword,
             firstName: 'Super',
             lastName: 'Admin',
             role: 'admin',
@@ -150,22 +152,8 @@ router.post('/create-super-admin', passwordResetLimiter, async (req, res) => {
     }
 });
 
-// Conditional middleware for create admin route
-// If role is 'superAdmin', skip authentication
-const conditionalAuth = async (req, res, next) => {
-  if (req.body.role === 'superAdmin') {
-    // Skip authentication for superAdmin creation
-    return next();
-  }
-  // Otherwise, require authentication
-  authenticate(req, res, (err) => {
-    if (err) return next(err);
-    requireAdmin(req, res, next);
-  });
-};
-
-// Create admin account (conditional authentication)
-router.post('/admins', conditionalAuth, createAdminValidator, handleValidationErrors, createAdmin);
+// Create admin account (always requires authenticated admin)
+router.post('/admins', authenticate, requireAdmin, createAdminValidator, handleValidationErrors, createAdmin);
 
 // All other routes require Admin authentication
 router.use(authenticate);

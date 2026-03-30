@@ -10,8 +10,12 @@ router.post('/run', async (req, res) => {
   try {
     // Optional: protect with secret key
     // Accept secret from body or query parameter to avoid CORS issues
-    const secret = req.body.secret || req.query.secret || req.headers['x-migration-secret'];
-    const expectedSecret = process.env.MIGRATION_SECRET || 'UchqunMigration2026';
+    const secret = req.body.secret || req.headers['x-migration-secret'];
+    const expectedSecret = process.env.MIGRATION_SECRET;
+
+    if (!expectedSecret) {
+      return res.status(500).json({ success: false, error: 'MIGRATION_SECRET env var is not configured' });
+    }
     
     if (secret !== expectedSecret) {
       return res.status(403).json({ 
