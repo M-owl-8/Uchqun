@@ -138,8 +138,8 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
                 />
               </View>
               <View style={styles.headerText}>
-                <Text style={styles.headerTitle}>Uchi AI Assistant</Text>
-                <Text style={styles.headerSubtitle}>Always here to help! ✨</Text>
+                <Text style={styles.headerTitle}>{t('ai.headerTitle', { defaultValue: 'Uchi AI Assistant' })}</Text>
+                <Text style={styles.headerSubtitle}>{t('ai.headerSubtitle', { defaultValue: 'Always here to help!' })}</Text>
               </View>
             </View>
             <Pressable onPress={onClose} style={styles.closeButton} accessibilityRole="button" accessibilityLabel="Close AI chat">
@@ -214,7 +214,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
                 />
                 <View style={[styles.messageContent, styles.aiContent, styles.typingIndicator]}>
                   <ActivityIndicator size="small" color={tokens.colors.accent.blue} />
-                  <Text style={styles.typingText}>Thinking...</Text>
+                  <Text style={styles.typingText}>{t('ai.thinking', { defaultValue: 'Thinking...' })}</Text>
                 </View>
               </View>
             )}
@@ -226,7 +226,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
               style={styles.input}
               value={inputText}
               onChangeText={setInputText}
-              placeholder="Ask me anything... 💭"
+              placeholder={t('ai.inputPlaceholder', { defaultValue: 'Ask me anything...' })}
               placeholderTextColor={tokens.colors.text.muted}
               multiline
               maxLength={500}
