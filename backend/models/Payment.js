@@ -34,6 +34,9 @@ const Payment = sequelize.define('Payment', {
   amount: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
+    validate: {
+      min: 0,
+    },
   },
   currency: {
     type: DataTypes.STRING(3),
