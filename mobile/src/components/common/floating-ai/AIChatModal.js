@@ -18,25 +18,27 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useThemeTokens } from '../../../hooks/useThemeTokens';
 import { useTheme } from '../../../context/ThemeContext';
 import { useAuth } from '../../../context/AuthContext';
+import { useTranslation } from 'react-i18next';
 import { parentService } from '../../../services/parentService';
 import { teacherService } from '../../../services/teacherService';
-
-const QUICK_PROMPTS = [
-  { emoji: '📊', text: "Farzandim bugun qanday?" },
-  { emoji: '🍎', text: "Farzandim nima yedi?" },
-  { emoji: '🎨', text: "Qanday mashg'ulotlar o'tkazildi?" },
-  { emoji: '💡', text: "Menga maslahatlar?" },
-];
 
 export default function AIChatModal({ visible, onClose, contextHint = '' }) {
   const tokens = useThemeTokens();
   const { isDark } = useTheme();
   const { user } = useAuth();
+  const { t } = useTranslation();
+
+  const QUICK_PROMPTS = [
+    { emoji: '📊', text: t('ai.prompt1', { defaultValue: "Farzandim bugun qanday?" }) },
+    { emoji: '🍎', text: t('ai.prompt2', { defaultValue: "Farzandim nima yedi?" }) },
+    { emoji: '🎨', text: t('ai.prompt3', { defaultValue: "Qanday mashg'ulotlar o'tkazildi?" }) },
+    { emoji: '💡', text: t('ai.prompt4', { defaultValue: "Menga maslahatlar?" }) },
+  ];
 
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: "Salom! Men Uchi, sizning AI yordamchingizman! 🌟 Farzandingiz haqida har qanday savolni bering!",
+      content: t('ai.greeting', { defaultValue: "Salom! Men Uchi, sizning AI yordamchingizman! Farzandingiz haqida har qanday savolni bering!" }),
     },
   ]);
   const [inputText, setInputText] = useState('');
@@ -79,14 +81,14 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
       const service = isTeacher ? teacherService : parentService;
 
       const response = await service.aiChat(fullMessage, 'uz', messages);
-      const aiMessage = response?.response || response?.data?.response || response?.advice || response?.message || "Kechirasiz, javob olishda xatolik yuz berdi. 🔄";
+      const aiMessage = response?.response || response?.data?.response || response?.advice || response?.message || t('ai.errorResponse', { defaultValue: "Kechirasiz, javob olishda xatolik yuz berdi." });
 
       setMessages(prev => [...prev, { role: 'assistant', content: aiMessage }]);
     } catch (error) {
       console.error('[AIChatModal] Error sending message:', error);
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: "Kechirasiz, xatolik yuz berdi. Yana urinib ko'ring? 🔄",
+        content: t('ai.errorRetry', { defaultValue: "Kechirasiz, xatolik yuz berdi. Yana urinib ko'ring?" }),
       }]);
     } finally {
       setLoading(false);
