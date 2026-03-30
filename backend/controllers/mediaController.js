@@ -594,8 +594,11 @@ export const updateMedia = async (req, res) => {
     // Get child for parent notification
     const child = await Child.findByPk(media.childId);
 
-    const payload = { ...req.body };
-    delete payload.thumbnail;
+    const allowedFields = ['title', 'description', 'caption', 'tags'];
+    const payload = {};
+    for (const field of allowedFields) {
+      if (req.body[field] !== undefined) payload[field] = req.body[field];
+    }
     await media.update(payload);
 
     const updatedMedia = await Media.findByPk(id, {

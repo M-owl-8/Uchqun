@@ -7,25 +7,6 @@ import { uploadChildPhoto } from '../middleware/uploadChildren.js';
 
 const router = express.Router();
 
-// Public debug endpoint
-router.get('/debug/appwrite', (req, res) => {
-    const appwriteConfigured = Boolean(
-        process.env.APPWRITE_ENDPOINT &&
-        process.env.APPWRITE_PROJECT_ID &&
-        process.env.APPWRITE_API_KEY &&
-        process.env.APPWRITE_BUCKET_ID
-    );
-    
-    res.json({
-        appwriteConfigured,
-        endpoint: process.env.APPWRITE_ENDPOINT ? 'Set' : 'Not set',
-        projectId: process.env.APPWRITE_PROJECT_ID ? 'Set' : 'Not set',
-        apiKey: process.env.APPWRITE_API_KEY ? 'Set' : 'Not set',
-        bucketId: process.env.APPWRITE_BUCKET_ID ? 'Set' : 'Not set',
-        nodeEnv: process.env.NODE_ENV || 'development'
-    });
-});
-
 router.use(authenticate);
 
 // GET endpoints

@@ -13,12 +13,11 @@ import { authenticate, requireRole } from '../middleware/auth.js';
 
 const router = express.Router();
 
-// Public routes
+// All therapy routes require authentication
+router.use(authenticate);
+
 router.get('/', getTherapies);
 router.get('/:id', getTherapy);
-
-// Protected routes
-router.use(authenticate);
 
 // Get therapy usage history (must come before /:id routes)
 router.get('/usage', getTherapyUsage);
