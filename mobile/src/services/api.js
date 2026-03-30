@@ -101,7 +101,27 @@ api.interceptors.response.use(
       } catch {}
     } else if (['post', 'put', 'delete', 'patch'].includes(method) && response.status >= 200 && response.status < 300) {
       try {
-        await cacheService.clear();
+        // Granular cache invalidation: only clear cache entries matching the resource type
+        const url = response.config?.url || '';
+        const resourcePatterns = [
+          /\/parent\/(activities|meals|media|children)/,
+          /\/teacher\/(activities|meals|media|children)/,
+          /\/child/,
+          /\/activities/,
+          /\/meals/,
+          /\/media/,
+          /\/chat/,
+          /\/notifications/,
+          /\/therapy/,
+          /\/payments/,
+        ];
+        const matchedPattern = resourcePatterns.find(p => p.test(url));
+        if (matchedPattern) {
+          await cacheService.clearMatching(matchedPattern);
+        } else {
+          // For unrecognized endpoints, clear all cache as fallback
+          await cacheService.clear();
+        }
       } catch {}
     }
     return response;

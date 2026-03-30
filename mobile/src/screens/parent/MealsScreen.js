@@ -5,6 +5,7 @@ import {
   View,
   Pressable,
   ScrollView,
+  FlatList,
   Animated,
   RefreshControl,
 } from 'react-native';
@@ -198,85 +199,165 @@ export function MealsScreen() {
     return groups;
   }, {});
 
+  // Flatten grouped meals into a list with date headers for FlatList
+  const flatListData = [];
+  Object.entries(groupedMeals).forEach(([date, dateMeals]) => {
+    flatListData.push({ type: 'header', date, id: `header-${date}` });
+    dateMeals.forEach((meal, index) => {
+      flatListData.push({ type: 'meal', ...meal, id: meal.id || `meal-${date}-${index}` });
+    });
+  });
+
   const filters = [
     { key: 'all', label: 'Hammasi', emoji: '📋' },
     { key: 'today', label: 'Bugun', emoji: '📆' },
   ];
 
-  return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
-        title={t('meals.title', { defaultValue: 'Meals' })}
-        showBack={navigation.canGoBack()}
-      />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {loading ? (
-          <>
-            <View style={styles.filterRow}>
-              {[1, 2].map((i) => (
-                <Skeleton
-                  key={i}
-                  width={90}
-                  height={40}
-                  style={{ borderRadius: tokens.radius.pill }}
-                />
-              ))}
-            </View>
-            {[1, 2, 3].map((i) => (
-              <Skeleton
-                key={i}
-                width="100%"
-                height={100}
-                style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.md }}
-              />
-            ))}
-          </>
-        ) : (
-          <Animated.View style={{ opacity: fadeAnim }}>
-            {/* Child selector (same API as web: filter by childId) */}
-            {children.length > 1 && (
-              <View style={styles.childRow}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
-                  {children.map((c) => (
-                    <Pressable
-                      key={c.id}
-                      style={[
-                        styles.childPill,
-                        selectedChildId === c.id && styles.childPillActive,
-                      ]}
-                      onPress={() => setSelectedChildId(c.id)}
-                    >
-                      <Text
-                        style={[
-                          styles.childPillText,
-                          selectedChildId === c.id && styles.childPillTextActive,
-                        ]}
-                        numberOfLines={1}
-                      >
-                        {c.firstName} {c.lastName}
-                      </Text>
-                    </Pressable>
-                  ))}
-                </ScrollView>
+  const renderMealItem = ({ item }) => {
+    if (item.type === 'header') {
+      return (
+        <View style={styles.dateGroup}>
+          <View style={styles.dateHeader}>
+            <Text style={styles.dateLabel}>{item.date}</Text>
+            <View style={styles.dateLine} />
+          </View>
+        </View>
+      );
+    }
+
+    const config = getMealConfig(item.mealType);
+    return (
+      <GlassCard style={styles.mealCard}>
+        <View style={styles.mealRow}>
+          <LinearGradient
+            colors={[config.bgColor, config.bgColor + 'CC']}
+            style={styles.mealIconContainer}
+          >
+            <Text style={styles.mealEmoji}>{config.emoji}</Text>
+          </LinearGradient>
+          <View style={styles.mealInfo}>
+            <Text style={styles.mealType}>
+              {item.mealType || config.label}
+            </Text>
+            {item.notes && (
+              <Text style={styles.mealNotes} numberOfLines={2}>
+                {item.notes}
+              </Text>
+            )}
+            {item.items && Array.isArray(item.items) && (
+              <View style={styles.mealItems}>
+                {item.items.slice(0, 3).map((food, i) => (
+                  <View key={i} style={styles.foodTag}>
+                    <Text style={styles.foodTagText}>{food}</Text>
+                  </View>
+                ))}
+                {item.items.length > 3 && (
+                  <Text style={styles.moreItems}>
+                    +{item.items.length - 3}
+                  </Text>
+                )}
               </View>
             )}
-            {children.length === 0 && !loading && (
-              <GlassCard style={styles.emptyCard}>
-                <EmptyState
-                  emoji="👶"
-                  title={t('meals.selectChild', { defaultValue: 'Select Child' })}
-                  description={t('meals.selectChildDesc', { defaultValue: 'After adding a child, meal records will appear' })}
+          </View>
+          <View style={styles.mealMeta}>
+            {item.time && (
+              <View style={styles.timeContainer}>
+                <Ionicons
+                  name="time-outline"
+                  size={12}
+                  color={tokens.colors.text.muted}
                 />
-              </GlassCard>
+                <Text style={styles.mealTime}>
+                  {formatTime(item.time)}
+                </Text>
+              </View>
             )}
-            {children.length > 0 && (
-            <>
+            {item.eaten !== undefined && (
+              <View
+                style={[
+                  styles.eatenBadge,
+                  item.eaten
+                    ? styles.eatenYes
+                    : styles.eatenNo,
+                ]}
+              >
+                <Text style={styles.eatenText}>
+                  {item.eaten ? '✅' : '❌'}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+      </GlassCard>
+    );
+  };
+
+  const listHeaderComponent = () => {
+    if (loading) {
+      return (
+        <>
+          <View style={styles.filterRow}>
+            {[1, 2].map((i) => (
+              <Skeleton
+                key={i}
+                width={90}
+                height={40}
+                style={{ borderRadius: tokens.radius.pill }}
+              />
+            ))}
+          </View>
+          {[1, 2, 3].map((i) => (
+            <Skeleton
+              key={i}
+              width="100%"
+              height={100}
+              style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.md }}
+            />
+          ))}
+        </>
+      );
+    }
+
+    return (
+      <Animated.View style={{ opacity: fadeAnim }}>
+        {/* Child selector (same API as web: filter by childId) */}
+        {children.length > 1 && (
+          <View style={styles.childRow}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
+              {children.map((c) => (
+                <Pressable
+                  key={c.id}
+                  style={[
+                    styles.childPill,
+                    selectedChildId === c.id && styles.childPillActive,
+                  ]}
+                  onPress={() => setSelectedChildId(c.id)}
+                >
+                  <Text
+                    style={[
+                      styles.childPillText,
+                      selectedChildId === c.id && styles.childPillTextActive,
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {c.firstName} {c.lastName}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+        {children.length === 0 && !loading && (
+          <GlassCard style={styles.emptyCard}>
+            <EmptyState
+              emoji="👶"
+              title={t('meals.selectChild', { defaultValue: 'Select Child' })}
+              description={t('meals.selectChildDesc', { defaultValue: 'After adding a child, meal records will appear' })}
+            />
+          </GlassCard>
+        )}
+        {children.length > 0 && (
+          <>
             {/* Filter Pills */}
             <View style={styles.filterRow}>
               {filters.map((f) => (
@@ -336,8 +417,8 @@ export function MealsScreen() {
               </GlassCard>
             )}
 
-            {/* Meals List */}
-            {filteredMeals.length === 0 ? (
+            {/* Empty state for meals */}
+            {filteredMeals.length === 0 && (
               <GlassCard style={styles.emptyCard}>
                 <EmptyState
                   emoji="🍽️"
@@ -349,93 +430,32 @@ export function MealsScreen() {
                   }
                 />
               </GlassCard>
-            ) : (
-              <View style={styles.list}>
-                {Object.entries(groupedMeals).map(([date, dateMeals]) => (
-                  <View key={date} style={styles.dateGroup}>
-                    <View style={styles.dateHeader}>
-                      <Text style={styles.dateLabel}>{date}</Text>
-                      <View style={styles.dateLine} />
-                    </View>
-                    {dateMeals.map((item, index) => {
-                      const config = getMealConfig(item.mealType);
-                      return (
-                        <GlassCard
-                          key={item.id || index}
-                          style={styles.mealCard}
-                        >
-                          <View style={styles.mealRow}>
-                            <LinearGradient
-                              colors={[config.bgColor, config.bgColor + 'CC']}
-                              style={styles.mealIconContainer}
-                            >
-                              <Text style={styles.mealEmoji}>{config.emoji}</Text>
-                            </LinearGradient>
-                            <View style={styles.mealInfo}>
-                              <Text style={styles.mealType}>
-                                {item.mealType || config.label}
-                              </Text>
-                              {item.notes && (
-                                <Text style={styles.mealNotes} numberOfLines={2}>
-                                  {item.notes}
-                                </Text>
-                              )}
-                              {item.items && Array.isArray(item.items) && (
-                                <View style={styles.mealItems}>
-                                  {item.items.slice(0, 3).map((food, i) => (
-                                    <View key={i} style={styles.foodTag}>
-                                      <Text style={styles.foodTagText}>{food}</Text>
-                                    </View>
-                                  ))}
-                                  {item.items.length > 3 && (
-                                    <Text style={styles.moreItems}>
-                                      +{item.items.length - 3}
-                                    </Text>
-                                  )}
-                                </View>
-                              )}
-                            </View>
-                            <View style={styles.mealMeta}>
-                              {item.time && (
-                                <View style={styles.timeContainer}>
-                                  <Ionicons
-                                    name="time-outline"
-                                    size={12}
-                                    color={tokens.colors.text.muted}
-                                  />
-                                  <Text style={styles.mealTime}>
-                                    {formatTime(item.time)}
-                                  </Text>
-                                </View>
-                              )}
-                              {item.eaten !== undefined && (
-                                <View
-                                  style={[
-                                    styles.eatenBadge,
-                                    item.eaten
-                                      ? styles.eatenYes
-                                      : styles.eatenNo,
-                                  ]}
-                                >
-                                  <Text style={styles.eatenText}>
-                                    {item.eaten ? '✅' : '❌'}
-                                  </Text>
-                                </View>
-                              )}
-                            </View>
-                          </View>
-                        </GlassCard>
-                      );
-                    })}
-                  </View>
-                ))}
-              </View>
             )}
-            </>
-            )}
-          </Animated.View>
+          </>
         )}
-      </ScrollView>
+      </Animated.View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScreenHeader
+        title={t('meals.title', { defaultValue: 'Meals' })}
+        showBack={navigation.canGoBack()}
+      />
+      <FlatList
+        data={loading ? [] : flatListData}
+        renderItem={renderMealItem}
+        keyExtractor={(item) => item.id?.toString() || String(Math.random())}
+        ListHeaderComponent={listHeaderComponent}
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        initialNumToRender={15}
+        maxToRenderPerBatch={10}
+      />
     </SafeAreaView>
   );
 }

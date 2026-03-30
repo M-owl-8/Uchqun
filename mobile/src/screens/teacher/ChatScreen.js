@@ -1,8 +1,9 @@
-﻿import React, { useEffect, useState, useRef, useMemo } from 'react';
+﻿import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
 import { StyleSheet, Text, View, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -16,6 +17,7 @@ import EmptyState from '../../components/common/EmptyState';
 
 export function ChatScreen() {
   const { user } = useAuth();
+  const { connected, on, off } = useSocket();
   const navigation = useNavigation();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -84,45 +86,53 @@ export function ChatScreen() {
     fetchParents();
   }, [user?.id]);
 
+  const loadMessagesForParent = useCallback(async () => {
+    if (!selectedParent) {
+      setMessages([]);
+      return;
+    }
+    const convoId = `parent:${selectedParent.id}`;
+    const msgs = await loadMessages(convoId);
+    setMessages(Array.isArray(msgs) ? msgs : []);
+    await markRead(convoId);
+
+    // Update parent list with latest message
+    setParentsWithLastMessage(prev => prev.map(p => {
+      if (p.id === selectedParent.id) {
+        const sorted = [...msgs].sort((a, b) => new Date(b.createdAt || b.time) - new Date(a.createdAt || a.time));
+        return {
+          ...p,
+          lastMessage: sorted[0] || null,
+          unreadCount: msgs.filter(m => m.senderRole === 'parent' && !m.readByTeacher).length,
+        };
+      }
+      return p;
+    }));
+  }, [selectedParent]);
+
   // Load messages when parent is selected
   useEffect(() => {
-    let alive = true;
-    let intervalId;
+    loadMessagesForParent();
+  }, [loadMessagesForParent]);
 
-    const load = async () => {
-      if (!selectedParent) {
-        setMessages([]);
-        return;
-      }
-      const convoId = `parent:${selectedParent.id}`;
-      const msgs = await loadMessages(convoId);
-      if (!alive) return;
-      setMessages(Array.isArray(msgs) ? msgs : []);
-      await markRead(convoId);
-      
-      // Update parent list with latest message
-      setParentsWithLastMessage(prev => prev.map(p => {
-        if (p.id === selectedParent.id) {
-          const sorted = [...msgs].sort((a, b) => new Date(b.createdAt || b.time) - new Date(a.createdAt || a.time));
-          return {
-            ...p,
-            lastMessage: sorted[0] || null,
-            unreadCount: msgs.filter(m => m.senderRole === 'parent' && !m.readByTeacher).length,
-          };
-        }
-        return p;
-      }));
-    };
+  // Listen for real-time socket events instead of polling
+  useEffect(() => {
+    if (!connected) return;
 
-    load();
-    // Poll for new messages every 15 seconds
-    intervalId = setInterval(load, 15000);
+    const handleNewMessage = () => loadMessagesForParent();
+    const handleMessageUpdate = () => loadMessagesForParent();
+    const handleMessageDelete = () => loadMessagesForParent();
+
+    on('message:created', handleNewMessage);
+    on('message:updated', handleMessageUpdate);
+    on('message:deleted', handleMessageDelete);
 
     return () => {
-      alive = false;
-      if (intervalId) clearInterval(intervalId);
+      off('message:created', handleNewMessage);
+      off('message:updated', handleMessageUpdate);
+      off('message:deleted', handleMessageDelete);
     };
-  }, [selectedParent]);
+  }, [connected, on, off, loadMessagesForParent]);
 
   const sorted = useMemo(
     () =>

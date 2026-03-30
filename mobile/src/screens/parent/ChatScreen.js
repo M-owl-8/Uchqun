@@ -4,6 +4,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../context/AuthContext';
+import { useSocket } from '../../context/SocketContext';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../services/chatStore';
@@ -15,6 +16,7 @@ import EmptyState from '../../components/common/EmptyState';
 
 export function ChatScreen() {
   const { user } = useAuth();
+  const { connected, on, off } = useSocket();
   const navigation = useNavigation();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -35,7 +37,14 @@ export function ChatScreen() {
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
 
-  // Only poll when screen is focused
+  const loadMessagesData = useCallback(async () => {
+    if (!conversationId) return;
+    const msgs = await loadMessages(conversationId);
+    setMessages(Array.isArray(msgs) ? msgs : []);
+    await markRead(conversationId);
+  }, [conversationId]);
+
+  // Load messages on mount and on focus
   useFocusEffect(
     useCallback(() => {
       let alive = true;
@@ -50,14 +59,31 @@ export function ChatScreen() {
       };
 
       load();
-      const intervalId = setInterval(load, 15000);
 
       return () => {
         alive = false;
-        clearInterval(intervalId);
       };
     }, [conversationId])
   );
+
+  // Listen for real-time socket events instead of polling
+  useEffect(() => {
+    if (!connected) return;
+
+    const handleNewMessage = () => loadMessagesData();
+    const handleMessageUpdate = () => loadMessagesData();
+    const handleMessageDelete = () => loadMessagesData();
+
+    on('message:created', handleNewMessage);
+    on('message:updated', handleMessageUpdate);
+    on('message:deleted', handleMessageDelete);
+
+    return () => {
+      off('message:created', handleNewMessage);
+      off('message:updated', handleMessageUpdate);
+      off('message:deleted', handleMessageDelete);
+    };
+  }, [connected, on, off, loadMessagesData]);
 
   const sorted = useMemo(
     () =>
@@ -220,12 +246,16 @@ export function ChatScreen() {
                                 setEditValue((msg.content || msg.text || '').toString());
                               }}
                               disabled={busyId === msg.id}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('chat.editMessage', { defaultValue: 'Edit message' })}
                             >
                               <Ionicons name="pencil" size={16} color={tokens.colors.text.white} />
                             </Pressable>
                             <Pressable
                               onPress={() => setConfirmDeleteId(msg.id)}
                               disabled={busyId === msg.id}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('chat.deleteMessage', { defaultValue: 'Delete message' })}
                             >
                               <Ionicons name="trash-outline" size={16} color={tokens.colors.text.white} />
                             </Pressable>
@@ -240,6 +270,7 @@ export function ChatScreen() {
                               onChangeText={setEditValue}
                               multiline
                               placeholderTextColor={tokens.colors.text.white}
+                              accessibilityLabel={t('chat.editMessageInput', { defaultValue: 'Edit message text' })}
                             />
                             <View style={styles.editActions}>
                               <Pressable
@@ -248,6 +279,8 @@ export function ChatScreen() {
                                   setEditingId(null);
                                   setEditValue('');
                                 }}
+                                accessibilityRole="button"
+                                accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
                               >
                                 <Text style={styles.editCancelText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
                               </Pressable>
@@ -255,6 +288,8 @@ export function ChatScreen() {
                                 style={styles.editSave}
                                 onPress={() => handleSaveEdit(msg.id)}
                                 disabled={!editValue.trim() || busyId === msg.id}
+                                accessibilityRole="button"
+                                accessibilityLabel={t('common.save', { defaultValue: 'Save' })}
                               >
                                 <Text style={styles.editSaveText}>{t('common.save', { defaultValue: 'Save' })}</Text>
                               </Pressable>
@@ -308,6 +343,8 @@ export function ChatScreen() {
           <Pressable
             style={styles.scrollToBottom}
             onPress={() => messagesWrapRef.current?.scrollToEnd({ animated: true })}
+            accessibilityRole="button"
+            accessibilityLabel={t('chat.scrollToBottom', { defaultValue: 'Scroll to latest messages' })}
           >
             <Ionicons name="arrow-down" size={20} color={tokens.colors.text.primary} />
           </Pressable>
@@ -325,6 +362,8 @@ export function ChatScreen() {
               multiline
               maxLength={500}
               allowFontScaling={true}
+              accessibilityLabel={t('chat.messageInput', { defaultValue: 'Message input' })}
+              accessibilityHint={t('chat.messageInputHint', { defaultValue: 'Type your message here' })}
             />
           </View>
           <Pressable
@@ -335,6 +374,9 @@ export function ChatScreen() {
             ]}
             onPress={handleSend}
             disabled={!inputText.trim()}
+            accessibilityRole="button"
+            accessibilityLabel={t('chat.send', { defaultValue: 'Send message' })}
+            accessibilityState={{ disabled: !inputText.trim() }}
           >
             <LinearGradient
               colors={inputText.trim() ? tokens.colors.gradients.aurora : [tokens.colors.border.medium, tokens.colors.border.medium]}
@@ -352,14 +394,16 @@ export function ChatScreen() {
 
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+        <View style={styles.modalOverlay} accessibilityViewIsModal={true}>
+          <View style={styles.modalContent} accessibilityRole="alert">
             <Text style={styles.modalTitle}>{t('chat.delete') || 'Delete'}</Text>
             <Text style={styles.modalText}>{t('chat.confirmDelete') || 'Delete this message?'}</Text>
             <View style={styles.modalActions}>
               <Pressable
                 style={styles.modalCancel}
                 onPress={() => setConfirmDeleteId(null)}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
               >
                 <Text style={styles.modalCancelText}>{t('common.cancel') || 'Cancel'}</Text>
               </Pressable>
@@ -367,6 +411,8 @@ export function ChatScreen() {
                 style={styles.modalDelete}
                 onPress={() => handleDelete(confirmDeleteId)}
                 disabled={busyId === confirmDeleteId}
+                accessibilityRole="button"
+                accessibilityLabel={t('chat.confirmDeleteAction', { defaultValue: 'Confirm delete message' })}
               >
                 <Text style={styles.modalDeleteText}>{t('chat.delete') || 'Delete'}</Text>
               </Pressable>

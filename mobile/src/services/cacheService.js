@@ -43,4 +43,16 @@ export const cacheService = {
       console.warn('[CacheService] Failed to clear cache:', error);
     }
   },
+
+  async clearMatching(pattern) {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      const cacheKeys = keys.filter(k => k.startsWith(CACHE_PREFIX) && pattern.test(k));
+      if (cacheKeys.length > 0) {
+        await AsyncStorage.multiRemove(cacheKeys);
+      }
+    } catch {
+      // Silently fail on cache clear errors
+    }
+  },
 };

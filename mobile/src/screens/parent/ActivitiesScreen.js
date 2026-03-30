@@ -5,6 +5,7 @@ import {
   View,
   Pressable,
   ScrollView,
+  FlatList,
   Animated,
   Easing,
   RefreshControl,
@@ -226,80 +227,159 @@ export function ActivitiesScreen() {
     { key: 'week', label: 'Hafta', emoji: '🗓️' },
   ];
 
-  return (
-    <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
-        title={t('activities.title', { defaultValue: 'Individual Plan' }) || t('activitiesPage.title', { defaultValue: 'Activities' })}
-        showBack={navigation.canGoBack()}
-      />
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      >
-        {loading ? (
-          <>
-            <View style={styles.filterRow}>
-              {[1, 2, 3].map((i) => (
-                <Skeleton
-                  key={i}
-                  width={80}
-                  height={40}
-                  style={{ borderRadius: tokens.radius.pill }}
-                />
-              ))}
+  const renderActivityItem = ({ item, index }) => {
+    const emoji = getActivityEmoji(item);
+    const hasProgress = item.progress !== undefined;
+    const progress = item.progress || 0;
+
+    return (
+      <Pressable onPress={() => { setSelectedActivity(item); setShowDetailsModal(true); }} accessibilityRole="button" accessibilityLabel={item.title || item.skill || item.description || 'Faoliyat'} accessibilityHint={t('activities.viewDetails', { defaultValue: 'View activity details' })}>
+      <GlassCard style={styles.activityCard}>
+        <View style={styles.activityHeader}>
+          <LinearGradient
+            colors={[tokens.colors.joy.lavenderSoft, tokens.colors.joy.skySoft]}
+            style={styles.activityIconContainer}
+          >
+            <Text style={styles.activityEmoji}>{emoji}</Text>
+          </LinearGradient>
+          <View style={styles.activityInfo}>
+            <Text style={styles.activityTitle} numberOfLines={2}>
+              {item.title || item.skill || item.description || "Faoliyat"}
+            </Text>
+            {item.description && item.title && (
+              <Text style={styles.activityDescription} numberOfLines={2}>
+                {item.description}
+              </Text>
+            )}
+          </View>
+          <View style={styles.activityMeta}>
+            <View style={styles.dateTimeContainer}>
+              <Ionicons name="calendar-outline" size={12} color={tokens.colors.accent.blue} />
+              <Text style={styles.activityDate}>
+                {formatDate(item.date || item.createdAt)}
+              </Text>
             </View>
+            {item.createdAt && (
+              <View style={styles.dateTimeContainer}>
+                <Ionicons name="time-outline" size={12} color={tokens.colors.text.muted} />
+                <Text style={styles.activityTime}>
+                  {formatTime(item.createdAt)}
+                </Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {hasProgress && (
+          <View style={styles.progressSection}>
+            <View style={styles.progressHeader}>
+              <Text style={styles.progressLabel}>Rivojlanish</Text>
+              <View style={styles.progressBadge}>
+                <Text style={styles.progressValue}>{progress}%</Text>
+              </View>
+            </View>
+            <AnimatedProgress progress={progress} delay={index * 100} />
+          </View>
+        )}
+
+        {item.status && (
+          <View style={styles.statusContainer}>
+            <View
+              style={[
+                styles.statusBadge,
+                item.status === 'completed' && styles.statusCompleted,
+                item.status === 'in_progress' && styles.statusInProgress,
+              ]}
+            >
+              <Text style={styles.statusText}>
+                {item.status === 'completed'
+                  ? '✅ Tugallandi'
+                  : item.status === 'in_progress'
+                  ? "🔄 Davom etmoqda"
+                  : item.status}
+              </Text>
+            </View>
+          </View>
+        )}
+
+        <View style={styles.detailHint}>
+          <Text style={styles.detailHintText}>Batafsil</Text>
+          <Ionicons name="chevron-forward" size={14} color={tokens.colors.accent.blue} />
+        </View>
+      </GlassCard>
+      </Pressable>
+    );
+  };
+
+  const listHeaderComponent = () => {
+    if (loading) {
+      return (
+        <>
+          <View style={styles.filterRow}>
             {[1, 2, 3].map((i) => (
               <Skeleton
                 key={i}
-                width="100%"
-                height={120}
-                style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.md }}
+                width={80}
+                height={40}
+                style={{ borderRadius: tokens.radius.pill }}
               />
             ))}
-          </>
-        ) : (
-          <Animated.View style={{ opacity: fadeAnim }}>
-            {/* Child selector (same API as web: filter by childId) */}
-            {children.length > 1 && (
-              <View style={styles.childRow}>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
-                  {children.map((c) => (
-                    <Pressable
-                      key={c.id}
-                      style={[
-                        styles.childPill,
-                        selectedChildId === c.id && styles.childPillActive,
-                      ]}
-                      onPress={() => setSelectedChildId(c.id)}
-                    >
-                      <Text
-                        style={[
-                          styles.childPillText,
-                          selectedChildId === c.id && styles.childPillTextActive,
-                        ]}
-                        numberOfLines={1}
-                      >
-                        {c.firstName} {c.lastName}
-                      </Text>
-                    </Pressable>
-                  ))}
-                </ScrollView>
-              </View>
-            )}
-            {children.length === 0 && !loading && (
-              <GlassCard style={styles.emptyCard}>
-                <EmptyState
-                  emoji="👶"
-                  title={t('child.selectPrompt', { defaultValue: 'Select Child' })}
-                  description={t('activities.selectChildDesc', { defaultValue: 'After adding a child, activities will appear' })}
-                />
-              </GlassCard>
-            )}
-            {children.length > 0 && (
-            <>
+          </View>
+          {[1, 2, 3].map((i) => (
+            <Skeleton
+              key={i}
+              width="100%"
+              height={120}
+              style={{ borderRadius: tokens.radius.lg, marginBottom: tokens.space.md }}
+            />
+          ))}
+        </>
+      );
+    }
+
+    return (
+      <Animated.View style={{ opacity: fadeAnim }}>
+        {/* Child selector (same API as web: filter by childId) */}
+        {children.length > 1 && (
+          <View style={styles.childRow}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.childRowContent}>
+              {children.map((c) => (
+                <Pressable
+                  key={c.id}
+                  style={[
+                    styles.childPill,
+                    selectedChildId === c.id && styles.childPillActive,
+                  ]}
+                  onPress={() => setSelectedChildId(c.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${c.firstName} ${c.lastName}`}
+                  accessibilityState={{ selected: selectedChildId === c.id }}
+                >
+                  <Text
+                    style={[
+                      styles.childPillText,
+                      selectedChildId === c.id && styles.childPillTextActive,
+                    ]}
+                    numberOfLines={1}
+                  >
+                    {c.firstName} {c.lastName}
+                  </Text>
+                </Pressable>
+              ))}
+            </ScrollView>
+          </View>
+        )}
+        {children.length === 0 && !loading && (
+          <GlassCard style={styles.emptyCard}>
+            <EmptyState
+              emoji="👶"
+              title={t('child.selectPrompt', { defaultValue: 'Select Child' })}
+              description={t('activities.selectChildDesc', { defaultValue: 'After adding a child, activities will appear' })}
+            />
+          </GlassCard>
+        )}
+        {children.length > 0 && (
+          <>
             {/* Filter Pills - Enhanced Design */}
             <View style={styles.filterRow}>
               {filters.map((f) => (
@@ -311,6 +391,9 @@ export function ActivitiesScreen() {
                     pressed && styles.filterPillPressed,
                   ]}
                   onPress={() => setFilter(f.key)}
+                  accessibilityRole="button"
+                  accessibilityLabel={f.label}
+                  accessibilityState={{ selected: filter === f.key }}
                 >
                   <Text style={styles.filterEmoji}>{f.emoji}</Text>
                   <Text
@@ -325,8 +408,8 @@ export function ActivitiesScreen() {
               ))}
             </View>
 
-            {/* Activities List */}
-            {filteredActivities.length === 0 ? (
+            {/* Empty state for activities */}
+            {filteredActivities.length === 0 && (
               <GlassCard style={styles.emptyCard}>
                 <EmptyState
                   emoji="📭"
@@ -338,98 +421,32 @@ export function ActivitiesScreen() {
                   }
                 />
               </GlassCard>
-            ) : (
-              <View style={styles.list}>
-                {filteredActivities.map((item, index) => {
-                  const emoji = getActivityEmoji(item);
-                  const hasProgress = item.progress !== undefined;
-                  const progress = item.progress || 0;
-
-                  return (
-                    <Pressable key={item.id || index} onPress={() => { setSelectedActivity(item); setShowDetailsModal(true); }}>
-                    <GlassCard style={styles.activityCard}>
-                      <View style={styles.activityHeader}>
-                        <LinearGradient
-                          colors={[tokens.colors.joy.lavenderSoft, tokens.colors.joy.skySoft]}
-                          style={styles.activityIconContainer}
-                        >
-                          <Text style={styles.activityEmoji}>{emoji}</Text>
-                        </LinearGradient>
-                        <View style={styles.activityInfo}>
-                          <Text style={styles.activityTitle} numberOfLines={2}>
-                            {item.title || item.skill || item.description || "Faoliyat"}
-                          </Text>
-                          {item.description && item.title && (
-                            <Text style={styles.activityDescription} numberOfLines={2}>
-                              {item.description}
-                            </Text>
-                          )}
-                        </View>
-                        <View style={styles.activityMeta}>
-                          <View style={styles.dateTimeContainer}>
-                            <Ionicons name="calendar-outline" size={12} color={tokens.colors.accent.blue} />
-                            <Text style={styles.activityDate}>
-                              {formatDate(item.date || item.createdAt)}
-                            </Text>
-                          </View>
-                          {item.createdAt && (
-                            <View style={styles.dateTimeContainer}>
-                              <Ionicons name="time-outline" size={12} color={tokens.colors.text.muted} />
-                              <Text style={styles.activityTime}>
-                                {formatTime(item.createdAt)}
-                              </Text>
-                            </View>
-                          )}
-                        </View>
-                      </View>
-
-                      {hasProgress && (
-                        <View style={styles.progressSection}>
-                          <View style={styles.progressHeader}>
-                            <Text style={styles.progressLabel}>Rivojlanish</Text>
-                            <View style={styles.progressBadge}>
-                              <Text style={styles.progressValue}>{progress}%</Text>
-                            </View>
-                          </View>
-                          <AnimatedProgress progress={progress} delay={index * 100} />
-                        </View>
-                      )}
-
-                      {item.status && (
-                        <View style={styles.statusContainer}>
-                          <View
-                            style={[
-                              styles.statusBadge,
-                              item.status === 'completed' && styles.statusCompleted,
-                              item.status === 'in_progress' && styles.statusInProgress,
-                            ]}
-                          >
-                            <Text style={styles.statusText}>
-                              {item.status === 'completed'
-                                ? '✅ Tugallandi'
-                                : item.status === 'in_progress'
-                                ? "🔄 Davom etmoqda"
-                                : item.status}
-                            </Text>
-                          </View>
-                        </View>
-                      )}
-
-                      <View style={styles.detailHint}>
-                        <Text style={styles.detailHintText}>Batafsil</Text>
-                        <Ionicons name="chevron-forward" size={14} color={tokens.colors.accent.blue} />
-                      </View>
-                    </GlassCard>
-                    </Pressable>
-                  );
-                })}
-              </View>
             )}
-            </>
-            )}
-          </Animated.View>
+          </>
         )}
-      </ScrollView>
+      </Animated.View>
+    );
+  };
+
+  return (
+    <SafeAreaView style={styles.container} edges={['top']}>
+      <ScreenHeader
+        title={t('activities.title', { defaultValue: 'Individual Plan' }) || t('activitiesPage.title', { defaultValue: 'Activities' })}
+        showBack={navigation.canGoBack()}
+      />
+      <FlatList
+        data={loading ? [] : filteredActivities}
+        renderItem={renderActivityItem}
+        keyExtractor={(item, index) => item.id?.toString() || String(index)}
+        ListHeaderComponent={listHeaderComponent}
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        initialNumToRender={15}
+        maxToRenderPerBatch={10}
+      />
 
       {/* Details Modal */}
       <Modal visible={showDetailsModal} animationType="slide" transparent>
@@ -439,7 +456,7 @@ export function ActivitiesScreen() {
               <Text style={styles.modalTitle} numberOfLines={2}>
                 {selectedActivity?.skill || selectedActivity?.title || 'Faoliyat'}
               </Text>
-              <TouchableOpacity onPress={() => setShowDetailsModal(false)}>
+              <TouchableOpacity onPress={() => setShowDetailsModal(false)} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
                 <Ionicons name="close" size={24} color={tokens.colors.text.secondary} />
               </TouchableOpacity>
             </View>
@@ -567,7 +584,7 @@ export function ActivitiesScreen() {
             </ScrollView>
 
             <View style={styles.detailsFooter}>
-              <Pressable style={styles.detailsCloseButton} onPress={() => setShowDetailsModal(false)}>
+              <Pressable style={styles.detailsCloseButton} onPress={() => setShowDetailsModal(false)} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
                 <Text style={styles.detailsCloseButtonText}>Yopish</Text>
               </Pressable>
             </View>
