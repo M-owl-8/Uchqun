@@ -42,16 +42,6 @@ export const authenticate = async (req, res, next) => {
     // Note: Parent role doesn't need isActive check - they can always access their own children
     // The updateChild controller already checks parentId: req.user.id
 
-    // Debug logging for authentication
-    console.log('Authentication successful:', {
-      userId: user.id,
-      userEmail: user.email,
-      userRole: user.role,
-      isActive: user.isActive,
-      path: req.path,
-      method: req.method,
-    });
-
     req.user = user;
     next();
   } catch (error) {
@@ -76,34 +66,10 @@ export const requireRole = (...roles) => {
     if (!req.user) {
       return res.status(401).json({ error: 'Authentication required' });
     }
-    
-    // Debug logging
-    console.log('requireRole check:', {
-      userId: req.user.id,
-      userEmail: req.user.email,
-      userRole: req.user.role,
-      requiredRoles: roles,
-      path: req.path,
-      method: req.method,
-    });
-    
+
     if (!roles.includes(req.user.role)) {
-      console.log('403 Forbidden - Role mismatch:', {
-        userId: req.user.id,
-        userEmail: req.user.email,
-        userRole: req.user.role,
-        requiredRoles: roles,
-        path: req.path,
-        method: req.method,
-      });
-      
-      return res.status(403).json({ 
+      return res.status(403).json({
         error: 'Insufficient permissions',
-        message: `This endpoint requires one of the following roles: ${roles.join(', ')}. Your current role: ${req.user.role}`,
-        requiredRoles: roles,
-        currentRole: req.user.role,
-        userId: req.user.id,
-        userEmail: req.user.email,
       });
     }
     next();

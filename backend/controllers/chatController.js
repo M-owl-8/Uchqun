@@ -5,14 +5,24 @@ import { sendPushToUser } from '../utils/expoPush.js';
 
 const buildConversationId = (parentId) => `parent:${parentId}`;
 
-const canAccessConversation = (req, conversationId) => {
-  const isParent = req.user.role === 'parent';
-  if (isParent) {
+const canAccessConversation = async (req, conversationId) => {
+  if (req.user.role === 'parent') {
     return conversationId === buildConversationId(req.user.id);
   }
-  // teacher/admin/reception can access any
-  const allowedRoles = ['teacher', 'admin', 'reception'];
-  return allowedRoles.includes(req.user.role);
+  // Admin can access all conversations
+  if (req.user.role === 'admin') return true;
+  // Teacher/reception can only access conversations of parents whose children they manage
+  if (['teacher', 'reception'].includes(req.user.role)) {
+    // Extract parentId from conversationId (format: "parent:<uuid>")
+    const parentId = conversationId.replace('parent:', '');
+    if (!parentId) return false;
+    const { default: Child } = await import('../models/Child.js');
+    const childCount = await Child.count({
+      where: { parentId, ...(req.user.role === 'teacher' ? { teacherId: req.user.id } : { createdBy: req.user.id }) }
+    });
+    return childCount > 0;
+  }
+  return false;
 };
 
 export const listMessages = async (req, res) => {
@@ -21,7 +31,7 @@ export const listMessages = async (req, res) => {
     if (!conversationId) {
       return res.status(400).json({ error: 'conversationId is required' });
     }
-    if (!canAccessConversation(req, conversationId)) {
+    if (!(await canAccessConversation(req, conversationId))) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -45,7 +55,7 @@ export const createMessage = async (req, res) => {
     if (!conversationId || !content?.trim()) {
       return res.status(400).json({ error: 'conversationId and content are required' });
     }
-    if (!canAccessConversation(req, conversationId)) {
+    if (!(await canAccessConversation(req, conversationId))) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -95,7 +105,7 @@ export const markConversationRead = async (req, res) => {
     if (!conversationId) {
       return res.status(400).json({ error: 'conversationId is required' });
     }
-    if (!canAccessConversation(req, conversationId)) {
+    if (!(await canAccessConversation(req, conversationId))) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -123,7 +133,7 @@ export const updateMessage = async (req, res) => {
     const msg = await ChatMessage.findByPk(id);
     if (!msg) return res.status(404).json({ error: 'Message not found' });
 
-    if (!canAccessConversation(req, msg.conversationId)) {
+    if (!(await canAccessConversation(req, msg.conversationId))) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
@@ -151,7 +161,7 @@ export const deleteMessage = async (req, res) => {
     const msg = await ChatMessage.findByPk(id);
     if (!msg) return res.status(404).json({ error: 'Message not found' });
 
-    if (!canAccessConversation(req, msg.conversationId)) {
+    if (!(await canAccessConversation(req, msg.conversationId))) {
       return res.status(403).json({ error: 'Forbidden' });
     }
 

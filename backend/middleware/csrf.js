@@ -40,19 +40,8 @@ export const verifyCsrfToken = (req, res, next) => {
   const cookieToken = req.cookies?.csrfToken;
 
   if (!headerToken || !cookieToken || headerToken !== cookieToken) {
-    return res.status(403).json({ 
+    return res.status(403).json({
       error: 'Invalid CSRF token',
-      message: 'CSRF token is required for cookie-based authentication. If using Bearer token, ensure Authorization header is set correctly.',
-      debug: {
-        method: req.method,
-        path: req.path,
-        hasAuthHeader: !!authHeader,
-        authHeaderValue: authHeader ? (authHeader.length > 30 ? authHeader.substring(0, 30) + '...' : authHeader) : null,
-        hasCookieToken: !!req.cookies?.accessToken || !!req.cookies?.refreshToken,
-        hasHeaderToken: !!headerToken,
-        hasCookieCsrfToken: !!cookieToken,
-        contentType: contentType.substring(0, 50),
-      }
     });
   }
 

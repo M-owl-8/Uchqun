@@ -5,6 +5,7 @@ import { loginValidator } from '../validators/authValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { submitRegistrationRequest } from '../controllers/adminRegistrationController.js';
 import { uploadDocuments, handleUploadError, debugMulter } from '../middleware/upload.js';
+import { authLimiter } from '../middleware/rateLimiter.js';
 import logger from '../utils/logger.js';
 
 const router = express.Router();
@@ -46,14 +47,14 @@ const router = express.Router();
  *       401:
  *         description: Not authenticated
  */
-router.post('/login', loginValidator, handleValidationErrors, login);
-router.post('/refresh', refresh);
+router.post('/login', authLimiter, loginValidator, handleValidationErrors, login);
+router.post('/refresh', authLimiter, refresh);
 router.get('/me', authenticate, getMe);
 router.post('/logout', authenticate, logout);
 
 // Admin registration request (public endpoint) - with file uploads
 // Debug middleware to see what multer receives
-router.post('/admin-register', (req, res, next) => {
+router.post('/admin-register', authLimiter, (req, res, next) => {
   logger.info('Admin register request received', {
     contentType: req.headers['content-type'],
     hasBody: !!req.body,

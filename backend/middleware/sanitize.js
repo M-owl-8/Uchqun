@@ -1,17 +1,12 @@
+import sanitizeHtml from 'sanitize-html';
+
 /**
- * Basic string sanitization without jsdom/DOMPurify
- * Removes potentially dangerous HTML/script tags
+ * Sanitize a string by stripping all HTML tags.
+ * Uses sanitize-html for robust, spec-compliant sanitization.
  */
 function sanitizeString(str) {
   if (typeof str !== 'string') return str;
-  
-  // Remove script tags and event handlers
-  return str
-    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
-    .replace(/on\w+\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]*)/gi, '')
-    .replace(/javascript:/gi, '')
-    .replace(/data:text\/html/gi, '')
-    .trim();
+  return sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }).trim();
 }
 
 /**

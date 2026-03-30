@@ -22,30 +22,25 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
     dialect: 'postgres',
     logging: process.env.NODE_ENV === 'development' ? console.log : false,
     pool: {
-      max: 5,
+      max: parseInt(process.env.DB_POOL_MAX, 10) || 20,
       min: 0,
-      acquire: 60000, // Increased to 60 seconds
+      acquire: 60000,
       idle: 10000,
-      evict: 1000, // Check for idle connections every second
-    },
-    retry: {
-      max: 3, // Retry connection up to 3 times
+      evict: 1000,
     },
     dialectOptions: {
-      // Only use SSL in production and not for local databases
       ssl: useSSL && !isLocalDatabase ? {
         require: true,
-        rejectUnauthorized: false
+        rejectUnauthorized: true,
       } : false,
-      connectTimeout: 60000, // 60 seconds connection timeout
+      connectTimeout: 60000,
     },
     retry: {
-      max: 3, // Retry up to 3 times
+      max: 3,
       match: [
         /ETIMEDOUT/,
         /EHOSTUNREACH/,
         /ECONNREFUSED/,
-        /ETIMEDOUT/,
         /SequelizeConnectionError/,
       ],
     }
@@ -62,11 +57,11 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
       dialect: 'postgres',
       logging: process.env.NODE_ENV === 'development' ? console.log : false,
       pool: {
-        max: 5,
+        max: parseInt(process.env.DB_POOL_MAX, 10) || 20,
         min: 0,
-        acquire: 60000, // Increased to 60 seconds
+        acquire: 60000,
         idle: 10000,
-        evict: 1000, // Check for idle connections every second
+        evict: 1000,
       },
       dialectOptions: {
         // No SSL for local development
