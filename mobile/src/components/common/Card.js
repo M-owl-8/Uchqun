@@ -4,158 +4,79 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tokens from '../../styles/tokens';
 
 /**
- * Premium Card Component
- * Supports glassmorphism, gradients, and interactive states
+ * Card — Authoritative glass card component.
+ *
+ * Matches the Figma GlassCard spec:
+ *   bg: rgba(255,255,255,0.7)  border: rgba(255,255,255,0.3)
+ *   radius: 16  shadow: glass  padding: 20  press: scale(0.98)
+ *
+ * Props:
+ *   children, style, onPress, gradient (color[]), padding (number override)
  */
-export default function Card({
-  children,
-  style,
-  padding = 'lg',
-  variant = 'glass', // 'glass' | 'elevated' | 'flat' | 'gradient'
-  gradientColors,
-  onPress,
-  disabled = false,
-  shadow = 'card',
-}) {
-  // CRITICAL FIX: Add defensive checks to prevent crashes if tokens is undefined
-  if (!tokens) {
-    console.error('[Card] tokens is undefined!');
-    // Return a basic card as fallback
-    return <View style={[{ padding: 16, borderRadius: 12, backgroundColor: '#fff' }, style]}>{children}</View>;
-  }
+export default function Card({ children, style, onPress, gradient, padding }) {
+  const paddingValue = padding !== undefined ? padding : tokens.space.xl;
 
-  const paddingValue = typeof padding === 'number' ? padding : (tokens?.space?.[padding] || tokens?.space?.lg || 16);
-  const shadowStyle = tokens?.shadow?.[shadow] || tokens?.shadow?.card || {};
-
-  const getVariantStyle = () => {
-    switch (variant) {
-      case 'elevated':
-        return {
-          backgroundColor: tokens?.colors?.card?.elevated || 'rgba(255, 255, 255, 0.95)',
-          // Removed: borderColor - no borders per design requirements
-        };
-      case 'flat':
-        return {
-          backgroundColor: '#fff',
-          // Removed: borderColor - no borders per design requirements
-          ...(tokens?.shadow?.xs || {}),
-        };
-      case 'gradient':
-        return {};
-      default: // glass
-        return {
-          backgroundColor: tokens?.colors?.card?.base || 'rgba(255, 255, 255, 0.88)',
-          // Removed: borderColor - no borders per design requirements
-        };
-    }
-  };
-
-  const cardStyle = [
-    styles.card,
-    shadowStyle,
-    getVariantStyle(),
-    { padding: paddingValue },
-    style,
-  ];
-
-  if (variant === 'gradient') {
-    const colors = gradientColors || tokens?.colors?.gradients?.primary || ['#3B82F6', '#8B5CF6'];
-    const content = (
-      <LinearGradient
-        colors={colors}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y: 1 }}
-        style={[styles.card, styles.gradientCard, { padding: paddingValue }, style]}
-      >
-        {children}
-      </LinearGradient>
-    );
-
-    if (onPress) {
-      return (
-        <Pressable
-          onPress={onPress}
-          disabled={disabled}
-          style={({ pressed }) => [
-            styles.pressable,
-            pressed && styles.pressed,
-            disabled && styles.disabled,
-          ]}
-        >
-          {content}
-        </Pressable>
-      );
-    }
-    return <View style={shadowStyle}>{content}</View>;
-  }
+  const cardContent = gradient ? (
+    <LinearGradient
+      colors={gradient}
+      start={{ x: 0, y: 0 }}
+      end={{ x: 1, y: 1 }}
+      style={[styles.card, { padding: paddingValue }, style]}
+    >
+      {children}
+    </LinearGradient>
+  ) : (
+    <View style={[styles.card, { padding: paddingValue }, style]}>
+      {children}
+    </View>
+  );
 
   if (onPress) {
     return (
       <Pressable
         onPress={onPress}
-        disabled={disabled}
-        style={({ pressed }) => [
-          cardStyle,
-          pressed && styles.pressed,
-          disabled && styles.disabled,
-        ]}
+        accessibilityRole="button"
+        style={({ pressed }) => [pressed && styles.pressed]}
       >
-        {children}
+        {cardContent}
       </Pressable>
     );
   }
 
-  return <View style={cardStyle}>{children}</View>;
+  return cardContent;
 }
 
-// Pre-styled card variants
+// Named re-exports for backward compatibility
 export function GlassCard(props) {
-  return <Card variant="glass" {...props} />;
+  return <Card {...props} />;
 }
 
 export function ElevatedCard(props) {
-  return <Card variant="elevated" shadow="elevated" {...props} />;
+  return <Card {...props} />;
 }
 
-export function GradientCard(props) {
-  return <Card variant="gradient" {...props} />;
+export function GradientCard({ gradientColors, ...props }) {
+  return <Card gradient={gradientColors} {...props} />;
 }
 
 export function FlatCard(props) {
-  return <Card variant="flat" shadow="xs" {...props} />;
+  return <Card {...props} />;
 }
 
-// Interactive stat card with gradient background
-export function HighlightCard({
-  children,
-  gradientColors = tokens?.colors?.gradients?.primary || ['#3B82F6', '#8B5CF6'],
-  ...props
-}) {
-  return (
-    <Card variant="gradient" gradientColors={gradientColors} {...props}>
-      {children}
-    </Card>
-  );
+export function HighlightCard({ gradientColors, ...props }) {
+  return <Card gradient={gradientColors} {...props} />;
 }
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: tokens?.radius?.xl || 24,
-    // Removed: borderWidth - no borders per design requirements
-    overflow: 'hidden',
-  },
-  gradientCard: {
-    borderWidth: 0,
-  },
-  pressable: {
-    borderRadius: tokens?.radius?.xl || 24,
-    overflow: 'hidden',
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    ...tokens.shadow.glass,
   },
   pressed: {
-    opacity: 0.9,
     transform: [{ scale: 0.98 }],
-  },
-  disabled: {
-    opacity: 0.5,
+    opacity: 0.95,
   },
 });
