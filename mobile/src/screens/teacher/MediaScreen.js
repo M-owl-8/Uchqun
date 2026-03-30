@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
@@ -26,17 +27,33 @@ import { teacherService } from '../../services/teacherService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ImageViewer } from '../../components/common/ImageViewer';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { API_URL } from '../../config';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import tokens from '../../styles/tokens';
 
 const { width } = Dimensions.get('window');
-const itemSize = (width - 48) / 3;
+const GRID_GAP = tokens.space.sm;
+const GRID_PADDING = tokens.space.xl;
+const COLUMNS = 2;
+const categoryItemSize = (width - GRID_PADDING * 2 - GRID_GAP) / COLUMNS;
 
 const MEDIA_TYPES = ['photo', 'video'];
+
+// Category configuration matching Figma MediaSection.tsx
+const CATEGORIES = [
+  { name: 'Photos', icon: 'image', color: '#BFD7EA', type: 'photo' },
+  { name: 'Videos', icon: 'videocam', color: '#DFF4EC', type: 'video' },
+];
+
+// Map media type to icon and color
+const MEDIA_TYPE_MAP = {
+  photo: { icon: 'image', color: '#BFD7EA' },
+  image: { icon: 'image', color: '#BFD7EA' },
+  video: { icon: 'videocam', color: '#DFF4EC' },
+};
 
 export function MediaScreen() {
   const navigation = useNavigation();
@@ -258,17 +275,17 @@ export function MediaScreen() {
 
   const handleDelete = async (id) => {
     Alert.alert(
-      t('mediaPage.confirmDelete', { defaultValue: 'O\'chirishni tasdiqlash' }),
-      t('mediaPage.confirmDeleteMessage', { defaultValue: 'Bu mediani o\'chirishni xohlaysizmi?' }),
+      t('mediaPage.confirmDelete', { defaultValue: "O'chirishni tasdiqlash" }),
+      t('mediaPage.confirmDeleteMessage', { defaultValue: "Bu mediani o'chirishni xohlaysizmi?" }),
       [
         { text: t('common.cancel', { defaultValue: 'Bekor qilish' }), style: 'cancel' },
         {
-          text: t('common.delete', { defaultValue: 'O\'chirish' }),
+          text: t('common.delete', { defaultValue: "O'chirish" }),
           style: 'destructive',
           onPress: async () => {
             try {
               await mediaService.deleteMedia(id);
-              Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mediaPage.toastDelete', { defaultValue: 'Media o\'chirildi' }));
+              Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mediaPage.toastDelete', { defaultValue: "Media o'chirildi" }));
               loadMedia();
             } catch (error) {
               console.error('Error deleting media:', error);
@@ -283,16 +300,11 @@ export function MediaScreen() {
   const getImageUrl = (item) => {
     const url = item.url || item.photoUrl || item.thumbnailUrl;
     if (!url) return null;
-    // If URL is already absolute, return as is
-    if (url.startsWith('http://') || url.startsWith('https://')) {
-      return url;
-    }
-    // If URL starts with /, it's a relative path - prepend API base URL
+    if (url.startsWith('http://') || url.startsWith('https://')) return url;
     if (url.startsWith('/')) {
       const API_BASE = API_URL.replace('/api', '');
       return `${API_BASE}${url}`;
     }
-    // Otherwise, assume it's a relative path
     const API_BASE = API_URL.replace('/api', '');
     return `${API_BASE}/${url}`;
   };
@@ -305,119 +317,196 @@ export function MediaScreen() {
     }
   };
 
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const now = new Date();
+    const diffMs = now - date;
+    const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return 'Yesterday';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    if (diffDays < 14) return '1 week ago';
+    return date.toLocaleDateString('uz-UZ', { month: 'short', day: 'numeric', year: 'numeric' });
+  };
+
+  const getMediaTypeInfo = (item) => {
+    const type = item.type || item.mediaType || 'photo';
+    return MEDIA_TYPE_MAP[type] || MEDIA_TYPE_MAP.photo;
+  };
+
+  const getCategoryCount = (type) => {
+    return media.filter((item) => {
+      const itemType = item.type || item.mediaType || 'photo';
+      return itemType === type;
+    }).length;
+  };
+
   const filteredMedia = filter === 'all' ? media : media.filter((item) => item.type === filter);
+
+  // Recent media (latest 6)
+  const recentMedia = [...filteredMedia]
+    .sort((a, b) => new Date(b.createdAt || b.date || 0) - new Date(a.createdAt || a.date || 0))
+    .slice(0, 6);
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
-  const renderMediaItem = ({ item }) => {
-    const imageUrl = getImageUrl(item);
-    if (!imageUrl) return null;
-
-    return (
-      <View style={styles.mediaItemContainer}>
-        <Pressable onPress={() => item.type === 'photo' ? openImageViewer(item) : null}>
-          {item.type === 'photo' ? (
-            <Image
-              source={{ uri: imageUrl }}
-              style={styles.image}
-              onError={(e) => {
-                console.warn('[MediaScreen] Image load error:', imageUrl, e.nativeEvent.error);
-              }}
-            />
-          ) : (
-            <View style={styles.videoContainer}>
-              <Ionicons name="play-circle" size={40} color={tokens.colors.text.white} />
-              <Text style={styles.videoLabel}>{t('mediaPage.videoLabel', { defaultValue: 'Video' })}</Text>
-            </View>
-          )}
-        </Pressable>
-        <Pressable
-          style={styles.editButton}
-          onPress={() => handleEdit(item)}
-        >
-          <Ionicons name="pencil-outline" size={18} color={tokens.colors.text.white} />
-        </Pressable>
-        <Pressable
-          style={styles.deleteButton}
-          onPress={() => handleDelete(item.id)}
-        >
-          <Ionicons name="trash-outline" size={18} color={tokens.colors.text.white} />
-        </Pressable>
-        {item.type === 'video' && (
-          <View style={styles.videoBadge}>
-            <Ionicons name="videocam" size={12} color={tokens.colors.text.white} />
-          </View>
-        )}
-      </View>
-    );
-  };
-
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
         title={t('mediaPage.title', { defaultValue: 'Media' })}
+        showBack
         rightActionIcon="add"
         onRightActionPress={handleCreate}
       />
+
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
-          <Pressable onPress={() => loadMedia()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable
+            onPress={() => loadMedia()}
+            accessibilityRole="button"
+            accessibilityLabel="Retry"
+            style={styles.retryBtn}
+          >
+            <Text style={styles.retryBtnText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
 
-      {/* Filters */}
-      <View style={styles.filtersContainer}>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.filters}>
-          {[
-            { id: 'all', label: t('mediaPage.filters.all', { defaultValue: 'All' }), icon: 'grid-outline' },
-            { id: 'photo', label: t('mediaPage.photoLabel', { defaultValue: 'Photos' }), icon: 'image-outline' },
-            { id: 'video', label: t('mediaPage.videoLabel', { defaultValue: 'Videos' }), icon: 'videocam-outline' },
-          ].map((filterOption) => (
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
+        refreshing={loading}
+      >
+        {/* Gallery Header Card */}
+        <Card
+          gradient={tokens.colors.gradients.welcome}
+          style={styles.galleryHeader}
+        >
+          <View style={styles.galleryHeaderTop}>
+            <Text style={styles.galleryHeaderTitle}>
+              {t('mediaPage.gallery', { defaultValue: 'Media Gallery' })}
+            </Text>
+            <View style={styles.galleryHeaderIcons}>
+              <Ionicons name="heart" size={20} color="#E8C27E" />
+              <Ionicons name="happy-outline" size={20} color="#2E3A59" style={{ marginLeft: 4 }} />
+            </View>
+          </View>
+          <Text style={styles.galleryHeaderText}>
+            {t('mediaPage.galleryDescription', { defaultValue: 'Cherished moments, progress tracking, and memories to treasure forever.' })}
+          </Text>
+        </Card>
+
+        {/* Categories Grid */}
+        <Text style={styles.sectionTitle}>
+          {t('mediaPage.categories', { defaultValue: 'Categories' })}
+        </Text>
+        <View style={styles.categoryGrid}>
+          {CATEGORIES.map((category) => (
             <Pressable
-              key={filterOption.id}
-              style={[
-                styles.filterButton,
-                filter === filterOption.id && styles.filterButtonActive
+              key={category.name}
+              style={({ pressed }) => [
+                styles.categoryCard,
+                pressed && styles.categoryCardPressed,
               ]}
-              onPress={() => setFilter(filterOption.id)}
+              onPress={() => setFilter(filter === category.type ? 'all' : category.type)}
             >
-              <Ionicons
-                name={filterOption.icon}
-                size={18}
-                color={filter === filterOption.id ? tokens.colors.text.white : tokens.colors.text.secondary}
-              />
-              <Text style={[
-                styles.filterText,
-                filter === filterOption.id && styles.filterTextActive
-              ]}>
-                {filterOption.label}
-              </Text>
+              <View style={[styles.categoryIconContainer, { backgroundColor: `${category.color}40` }]}>
+                <Ionicons name={category.icon} size={28} color="#2E3A59" />
+              </View>
+              <Text style={styles.categoryName}>{category.name}</Text>
+              <Text style={styles.categoryCount}>{getCategoryCount(category.type)} items</Text>
             </Pressable>
           ))}
-        </ScrollView>
-      </View>
+        </View>
 
-      {filteredMedia.length === 0 ? (
-        <EmptyState icon="images-outline" message={t('mediaPage.empty', { defaultValue: 'No media found' })} />
-      ) : (
-        <FlatList
-          data={filteredMedia}
-          renderItem={renderMediaItem}
-          keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
-          numColumns={3}
-          contentContainerStyle={[styles.list, { paddingBottom: bottomPadding }]}
-          refreshing={loading}
-          onRefresh={loadMedia}
-          showsVerticalScrollIndicator={false}
-        />
-      )}
+        {/* Recent Media List */}
+        <View style={styles.recentHeader}>
+          <Text style={styles.sectionTitle}>
+            {t('mediaPage.recentMedia', { defaultValue: 'Recent Media' })}
+          </Text>
+        </View>
+
+        {recentMedia.length === 0 ? (
+          <EmptyState icon="images-outline" message={t('mediaPage.empty', { defaultValue: 'No media found' })} />
+        ) : (
+          <View style={styles.recentList}>
+            {recentMedia.map((item, index) => {
+              const typeInfo = getMediaTypeInfo(item);
+              const itemType = item.type || item.mediaType || 'photo';
+
+              return (
+                <Pressable
+                  key={item.id || index}
+                  style={({ pressed }) => [
+                    styles.recentItem,
+                    pressed && styles.recentItemPressed,
+                  ]}
+                  onPress={() => {
+                    if (itemType === 'photo') openImageViewer(item);
+                  }}
+                >
+                  <View style={[styles.recentItemIcon, { backgroundColor: `${typeInfo.color}40` }]}>
+                    <Ionicons name={typeInfo.icon} size={24} color="#2E3A59" />
+                  </View>
+                  <View style={styles.recentItemContent}>
+                    <Text style={styles.recentItemTitle} numberOfLines={1}>
+                      {item.title || item.name || `${itemType.charAt(0).toUpperCase() + itemType.slice(1)} file`}
+                    </Text>
+                    <View style={styles.recentItemMeta}>
+                      <View style={styles.typeBadge}>
+                        <Text style={styles.typeBadgeText}>{itemType}</Text>
+                      </View>
+                      <Text style={styles.recentItemDate}>{formatDate(item.createdAt || item.date)}</Text>
+                    </View>
+                  </View>
+                  <View style={styles.recentItemActions}>
+                    <Pressable
+                      style={styles.iconBtn}
+                      onPress={() => handleEdit(item)}
+                      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                    >
+                      <Ionicons name="pencil-outline" size={16} color={tokens.colors.accent.blue} />
+                    </Pressable>
+                    <Pressable
+                      style={styles.iconBtn}
+                      onPress={() => handleDelete(item.id)}
+                      hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                    >
+                      <Ionicons name="trash-outline" size={16} color={tokens.colors.semantic.error} />
+                    </Pressable>
+                  </View>
+                </Pressable>
+              );
+            })}
+          </View>
+        )}
+
+        {/* Upload Button */}
+        <Pressable
+          style={({ pressed }) => [
+            styles.uploadButton,
+            pressed && styles.uploadButtonPressed,
+          ]}
+          onPress={handleCreate}
+        >
+          <View style={styles.uploadIconContainer}>
+            <Ionicons name="image-outline" size={24} color="#2E3A59" />
+          </View>
+          <View style={styles.uploadTextContainer}>
+            <Text style={styles.uploadTitle}>
+              {t('mediaPage.addNewMedia', { defaultValue: 'Add New Media' })}
+            </Text>
+            <Text style={styles.uploadSubtitle}>
+              {t('mediaPage.addNewMediaSub', { defaultValue: 'Photos, videos, or documents' })}
+            </Text>
+          </View>
+        </Pressable>
+      </ScrollView>
 
       {/* Floating Action Button */}
       <TouchableOpacity style={[styles.fab, { bottom: bottomPadding - 20 }]} onPress={handleCreate}>
@@ -511,7 +600,7 @@ export function MediaScreen() {
                             ]}
                             onPress={() => {
                               setFormData(prev => ({ ...prev, type }));
-                              setSelectedFile(null); // Reset file when type changes
+                              setSelectedFile(null);
                             }}
                           >
                             <Text style={[
@@ -536,7 +625,7 @@ export function MediaScreen() {
                       {t('mediaPage.modal.date', { defaultValue: 'Sana' })}
                     </Text>
                     <TextInput
-                      style={styles.input}
+                      style={styles.textInput}
                       placeholder="YYYY-MM-DD"
                       placeholderTextColor={tokens.colors.text.tertiary}
                       value={formData.date}
@@ -633,42 +722,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tokens.colors.background.primary,
   },
-  filtersContainer: {
-    paddingVertical: tokens.space.md,
-    backgroundColor: tokens.colors.card.base,
-    borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border.light,
-  },
-  filters: {
-    paddingHorizontal: tokens.space.md,
-    gap: tokens.space.sm,
-  },
-  filterButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: tokens.space.xs,
-    paddingHorizontal: tokens.space.md,
-    paddingVertical: tokens.space.sm,
-    borderRadius: tokens.radius.md,
-    backgroundColor: tokens.colors.surface.secondary,
-    borderWidth: 1,
-    borderColor: tokens.colors.border.medium,
-  },
-  filterButtonActive: {
-    backgroundColor: tokens.colors.joy.lavender, // Purple
-    borderColor: tokens.colors.joy.lavender,
-  },
-  filterText: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
-    fontWeight: tokens.typography.fontWeight.medium,
-  },
-  filterTextActive: {
-    color: tokens.colors.text.white,
+  scrollContent: {
+    padding: GRID_PADDING,
   },
   fab: {
     position: 'absolute',
-    right: tokens.space.lg,
+    right: tokens.space.xl,
     width: 56,
     height: 56,
     borderRadius: 28,
@@ -677,61 +736,224 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...tokens.shadow.elevated,
   },
-  list: {
-    padding: tokens.space.lg,
+
+  // Gallery Header Card
+  galleryHeader: {
+    marginBottom: tokens.space.lg,
   },
-  mediaItemContainer: {
-    width: itemSize,
-    height: itemSize,
-    margin: 4,
-    borderRadius: tokens.radius.sm,
-    overflow: 'hidden',
-    position: 'relative',
-    ...tokens.shadow.sm,
+  galleryHeaderTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.sm,
   },
-  image: {
-    width: '100%',
-    height: '100%',
+  galleryHeaderTitle: {
+    fontSize: tokens.type.h3.fontSize,
+    fontWeight: tokens.type.h3.fontWeight,
+    color: '#2E3A59',
   },
-  videoContainer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: tokens.colors.surface.tertiary,
+  galleryHeaderIcons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  galleryHeaderText: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+    lineHeight: 22,
+  },
+
+  // Section title
+  sectionTitle: {
+    fontSize: tokens.type.h3.fontSize - 2,
+    fontWeight: tokens.type.h3.fontWeight,
+    color: '#2E3A59',
+    marginBottom: tokens.space.md,
+    paddingHorizontal: 2,
+  },
+
+  // Category Grid
+  categoryGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: GRID_GAP,
+    marginBottom: tokens.space.lg,
+  },
+  categoryCard: {
+    width: categoryItemSize - GRID_GAP / 2,
+    minHeight: 120,
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    padding: tokens.space.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...tokens.shadow.glass,
+  },
+  categoryCardPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  categoryIconContainer: {
+    width: 56,
+    height: 56,
+    borderRadius: tokens.radius.md,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: tokens.space.sm,
+  },
+  categoryName: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: 2,
+  },
+  categoryCount: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+
+  // Recent Media
+  recentHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.md,
+    paddingHorizontal: 2,
+  },
+  recentList: {
+    gap: tokens.space.sm,
+    marginBottom: tokens.space.lg,
+  },
+  recentItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    padding: tokens.space.md,
+    minHeight: 80,
+    gap: tokens.space.md,
+    ...tokens.shadow.glass,
+  },
+  recentItemPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  recentItemIcon: {
+    width: 56,
+    height: 56,
+    borderRadius: tokens.radius.md,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  videoLabel: {
+  recentItemContent: {
+    flex: 1,
+    minWidth: 0,
+  },
+  recentItemTitle: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: 4,
+  },
+  recentItemMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
+  },
+  typeBadge: {
+    backgroundColor: 'rgba(255,255,255,0.5)',
+    paddingHorizontal: tokens.space.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
+  },
+  typeBadgeText: {
     fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.white,
-    marginTop: tokens.space.xs,
-    fontWeight: tokens.typography.fontWeight.medium,
+    color: '#5A6B8C',
+    textTransform: 'capitalize',
   },
-  editButton: {
-    position: 'absolute',
-    top: 4,
-    left: 4,
+  recentItemDate: {
+    fontSize: tokens.type.caption.fontSize,
+    color: '#8C9BB5',
+  },
+  recentItemActions: {
+    flexDirection: 'row',
+    gap: tokens.space.sm,
+  },
+  iconBtn: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: tokens.colors.surface.secondary,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+  // Upload Button
+  uploadButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: tokens.glass.bg,
+    borderRadius: tokens.radius.lg,
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: 'rgba(232,194,126,0.3)',
+    padding: tokens.space.xl,
+    gap: tokens.space.sm,
+  },
+  uploadButtonPressed: {
+    transform: [{ scale: 0.98 }],
+    opacity: 0.95,
+  },
+  uploadIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.md,
+    backgroundColor: 'rgba(232,194,126,0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  uploadTextContainer: {
+    alignItems: 'flex-start',
+  },
+  uploadTitle: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  uploadSubtitle: {
+    fontSize: tokens.type.body.fontSize,
+    color: '#5A6B8C',
+  },
+
+  // Error
+  errorContainer: {
+    padding: tokens.space['2xl'],
+    alignItems: 'center',
+  },
+  errorText: {
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.md,
+    textAlign: 'center',
+    fontSize: tokens.type.body.fontSize,
+  },
+  retryBtn: {
+    marginTop: tokens.space.lg,
+    paddingHorizontal: tokens.space['2xl'],
+    paddingVertical: tokens.space.md,
     backgroundColor: tokens.colors.accent.blue,
-    borderRadius: tokens.radius.sm,
-    padding: 6,
-    ...tokens.shadow.sm,
+    borderRadius: tokens.radius.md,
   },
-  deleteButton: {
-    position: 'absolute',
-    top: 4,
-    right: 4,
-    backgroundColor: tokens.colors.semantic.error,
-    borderRadius: tokens.radius.sm,
-    padding: 6,
-    ...tokens.shadow.sm,
+  retryBtnText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: tokens.type.body.fontSize,
   },
-  videoBadge: {
-    position: 'absolute',
-    bottom: 4,
-    left: 4,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: tokens.radius.sm,
-    padding: 4,
-  },
+
+  // Modal
   modalContainer: {
     flex: 1,
   },
@@ -773,7 +995,7 @@ const styles = StyleSheet.create({
     color: tokens.colors.text.primary,
     marginBottom: tokens.space.xs,
   },
-  input: {
+  textInput: {
     borderWidth: 1,
     borderColor: tokens.colors.border.medium,
     borderRadius: tokens.radius.sm,
@@ -781,10 +1003,6 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.primary,
     backgroundColor: tokens.colors.card.base,
-  },
-  textArea: {
-    height: 80,
-    textAlignVertical: 'top',
   },
   row: {
     flexDirection: 'row',
@@ -894,7 +1112,7 @@ const styles = StyleSheet.create({
     paddingVertical: tokens.space.md,
     alignItems: 'center',
     borderRadius: tokens.radius.sm,
-    backgroundColor: tokens.colors.joy.lavender, // Purple
+    backgroundColor: tokens.colors.joy.lavender,
   },
   saveButtonDisabled: {
     opacity: 0.7,

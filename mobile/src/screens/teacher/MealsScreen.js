@@ -15,6 +15,7 @@ import {
   Switch,
   SafeAreaView,
 } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
@@ -23,16 +24,33 @@ import { mealService } from '../../services/mealService';
 import { teacherService } from '../../services/teacherService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import tokens from '../../styles/tokens';
 
+// Meal type config matching Figma design
+const MEAL_CONFIG = {
+  breakfast: { emoji: '🥞', color: '#E8C27E' },
+  lunch: { emoji: '🍱', color: '#DFF4EC' },
+  dinner: { emoji: '🍝', color: '#E8C27E' },
+  snack: { emoji: '🍎', color: '#F8D7C4' },
+  default: { emoji: '🍽️', color: '#BFD7EA' },
+};
+
+const getMealConfig = (mealType) => {
+  const type = (mealType || '').toLowerCase();
+  for (const [key, config] of Object.entries(MEAL_CONFIG)) {
+    if (type.includes(key)) return config;
+  }
+  return MEAL_CONFIG.default;
+};
+
 export function MealsScreen() {
   const navigation = useNavigation();
   const { t } = useTranslation();
-  
+
   // Meal types with translations
   const MEAL_TYPES = [
     { key: 'breakfast', label: t('mealsPage.types.breakfast', { defaultValue: 'Breakfast' }) },
@@ -40,7 +58,7 @@ export function MealsScreen() {
     { key: 'snack', label: t('mealsPage.types.snack', { defaultValue: 'Snack' }) },
     { key: 'dinner', label: t('mealsPage.types.dinner', { defaultValue: 'Dinner' }) },
   ];
-  
+
   // Quantity options with translations
   const QUANTITY_OPTIONS = [
     { key: 'full', label: t('mealsPage.quantity.full', { defaultValue: 'Full portion' }) },
@@ -159,7 +177,7 @@ export function MealsScreen() {
       if (!formData.mealName || !formData.description || !formData.date) {
         Alert.alert(
           t('common.error', { defaultValue: 'Error' }),
-          t('mealsPage.form.requiredFields', { defaultValue: 'Barcha majburiy maydonlarni to\'ldiring' })
+          t('mealsPage.form.requiredFields', { defaultValue: "Barcha majburiy maydonlarni to'ldiring" })
         );
         return;
       }
@@ -184,17 +202,17 @@ export function MealsScreen() {
 
   const handleDelete = async (id) => {
     Alert.alert(
-      t('mealsPage.form.confirmDelete', { defaultValue: 'O\'chirishni tasdiqlash' }),
-      t('mealsPage.form.confirmDeleteMessage', { defaultValue: 'Bu taomni o\'chirishni xohlaysizmi?' }),
+      t('mealsPage.form.confirmDelete', { defaultValue: "O'chirishni tasdiqlash" }),
+      t('mealsPage.form.confirmDeleteMessage', { defaultValue: "Bu taomni o'chirishni xohlaysizmi?" }),
       [
         { text: t('common.cancel', { defaultValue: 'Bekor qilish' }), style: 'cancel' },
         {
-          text: t('common.delete', { defaultValue: 'O\'chirish' }),
+          text: t('common.delete', { defaultValue: "O'chirish" }),
           style: 'destructive',
           onPress: async () => {
             try {
               await mealService.deleteMeal(id);
-              Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mealsPage.form.toastDelete', { defaultValue: 'Taom o\'chirildi' }));
+              Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mealsPage.form.toastDelete', { defaultValue: "Taom o'chirildi" }));
               loadMeals();
             } catch (error) {
               console.error('Error deleting meal:', error);
@@ -207,155 +225,200 @@ export function MealsScreen() {
   };
 
   // Get unique dates from meals
-  const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
+
+  // Compute nutrition summary stats
+  const eatenCount = filteredMeals.filter((m) => m.eaten).length;
+  const totalMealCount = filteredMeals.length;
 
   if (loading) {
     return <LoadingSpinner />;
   }
 
   const renderMeal = ({ item }) => {
-    const mealTypeIcons = {
-      breakfast: 'sunny-outline',
-      lunch: 'restaurant-outline',
-      snack: 'cafe-outline',
-      dinner: 'moon-outline',
-    };
-    const mealTypeColors = {
-      breakfast: tokens.colors.semantic.warning,
-      lunch: tokens.colors.semantic.success,
-      snack: tokens.colors.joy.sunflower,
-      dinner: tokens.colors.joy.lavender,
-    };
+    const config = getMealConfig(item.mealType);
+    const isCompleted = item.eaten;
 
     return (
-      <GlassCard style={styles.card}>
-        <View style={styles.mealHeader}>
-          <View style={[styles.mealIconContainer, { backgroundColor: mealTypeColors[item.mealType] + '20' }]}>
-            <Ionicons name={mealTypeIcons[item.mealType] || 'restaurant'} size={24} color={mealTypeColors[item.mealType]} />
+      <Card style={styles.card}>
+        <View style={styles.mealRow}>
+          {/* 48x48 icon container with tinted bg */}
+          <View
+            style={[
+              styles.mealIconContainer,
+              { backgroundColor: config.color + '66' },
+            ]}
+          >
+            <Text style={styles.mealEmoji}>{config.emoji}</Text>
           </View>
-          <View style={styles.mealContent}>
+
+          {/* Content */}
+          <View style={styles.mealInfo}>
             <View style={styles.mealTitleRow}>
               <Text style={styles.mealName}>{item.mealName}</Text>
-              <View style={[styles.mealTypeBadge, { backgroundColor: mealTypeColors[item.mealType] + '20' }]}>
-                <Text style={[styles.mealTypeText, { color: mealTypeColors[item.mealType] }]}>
-                  {MEAL_TYPES.find(t => t.key === item.mealType)?.label || item.mealType}
+              {isCompleted && (
+                <View style={styles.completedBadge}>
+                  <Text style={styles.completedBadgeText}>✓ {t('mealsPage.eaten', { defaultValue: 'Yeyilgan' })}</Text>
+                </View>
+              )}
+            </View>
+
+            <View style={styles.mealTypeBadgeRow}>
+              <View style={[styles.mealTypeBadge, { backgroundColor: config.color + '33' }]}>
+                <Text style={[styles.mealTypeText, { color: '#2E3A59' }]}>
+                  {MEAL_TYPES.find(mt => mt.key === item.mealType)?.label || item.mealType}
                 </Text>
               </View>
+              {item.time && (
+                <Text style={styles.mealTime}>{item.time}</Text>
+              )}
             </View>
-            <View style={styles.timeContainer}>
-              <Ionicons name="time-outline" size={14} color={tokens.colors.text.secondary} />
-              <Text style={styles.time}>{item.time}</Text>
-            </View>
-          </View>
-        </View>
 
-        <Text style={styles.description}>{item.description}</Text>
+            {item.description && (
+              <Text style={styles.description} numberOfLines={2}>{item.description}</Text>
+            )}
 
-        <View style={styles.mealDetails}>
-          <View style={styles.detailRow}>
-            <Text style={styles.detailLabel}>
-              {t('mealsPage.quantity', { defaultValue: 'Miqdori' })}:
-            </Text>
-            <Text style={styles.detailValue}>{QUANTITY_OPTIONS.find(q => q.key === item.quantity)?.label || item.quantity}</Text>
-          </View>
-          <View style={styles.detailRow}>
-            <Ionicons
-              name={item.eaten ? 'checkmark-circle' : 'close-circle'}
-              size={18}
-              color={item.eaten ? tokens.colors.semantic.success : tokens.colors.semantic.error}
-            />
-            <Text style={[styles.eatenStatus, { color: item.eaten ? tokens.colors.semantic.success : tokens.colors.semantic.error }]}>
-              {item.eaten
-                ? t('mealsPage.eaten', { defaultValue: 'Yeyilgan' })
-                : t('mealsPage.notEaten', { defaultValue: 'Yeyilmagan' })
-              }
-            </Text>
-          </View>
-        </View>
-
-        {item.specialNotes && (
-          <View style={styles.notesContainer}>
-            <Ionicons name="information-circle-outline" size={16} color={tokens.colors.accent.blue} />
-            <Text style={styles.notesText}>
-              <Text style={styles.notesLabel}>
-                {t('mealsPage.form.specialNotes', { defaultValue: 'Eslatma' })}:
+            {/* Quantity */}
+            <View style={styles.detailRow}>
+              <Text style={styles.detailLabel}>
+                {t('mealsPage.quantity', { defaultValue: 'Miqdori' })}:
               </Text>
-              {' '}{item.specialNotes}
-            </Text>
-          </View>
-        )}
+              <Text style={styles.detailValue}>{QUANTITY_OPTIONS.find(q => q.key === item.quantity)?.label || item.quantity}</Text>
+            </View>
 
+            {item.specialNotes && (
+              <View style={styles.notesContainer}>
+                <Ionicons name="information-circle-outline" size={14} color={tokens.colors.accent.blue} />
+                <Text style={styles.notesText} numberOfLines={2}>{item.specialNotes}</Text>
+              </View>
+            )}
+          </View>
+        </View>
+
+        {/* Edit/Delete actions */}
         <View style={styles.actions}>
           <Pressable style={styles.editButton} onPress={() => handleEdit(item)}>
-            <Ionicons name="pencil" size={18} color={tokens.colors.accent.blue} />
+            <Ionicons name="pencil" size={16} color={tokens.colors.accent.blue} />
             <Text style={styles.editButtonText}>{t('common.edit', { defaultValue: 'Edit' })}</Text>
           </Pressable>
-          <Pressable style={styles.deleteButton} onPress={() => handleDelete(item.id)}>
-            <Ionicons name="trash-outline" size={18} color={tokens.colors.semantic.error} />
-            <Text style={styles.deleteButtonText}>{t('common.delete', { defaultValue: 'Delete' })}</Text>
+          <Pressable style={styles.deleteBtn} onPress={() => handleDelete(item.id)}>
+            <Ionicons name="trash-outline" size={16} color={tokens.colors.semantic.error} />
+            <Text style={styles.deleteBtnText}>{t('common.delete', { defaultValue: 'Delete' })}</Text>
           </Pressable>
         </View>
-      </GlassCard>
+      </Card>
     );
   };
+
+  const listHeaderComponent = () => (
+    <View>
+      {/* Nutrition Summary Card */}
+      <Card
+        gradient={tokens.colors.gradients.nutrition}
+        style={styles.nutritionCard}
+      >
+        <View style={styles.nutritionHeader}>
+          <Text style={styles.nutritionTitle}>
+            {t('mealsPage.todayNutrition', { defaultValue: "Today's Nutrition" })}
+          </Text>
+          <View style={styles.nutritionIcon}>
+            <Text style={{ fontSize: 24 }}>🍴</Text>
+          </View>
+        </View>
+        <View style={styles.nutritionStats}>
+          <View style={styles.nutritionStatItem}>
+            <Text style={styles.nutritionStatValue}>
+              {eatenCount}/{totalMealCount}
+            </Text>
+            <Text style={styles.nutritionStatLabel}>
+              {t('mealsPage.mealsLabel', { defaultValue: 'Meals' })}
+            </Text>
+          </View>
+          <View style={styles.nutritionStatDivider} />
+          <View style={styles.nutritionStatItem}>
+            <Text style={styles.nutritionStatValue}>{selectedDate}</Text>
+            <Text style={styles.nutritionStatLabel}>
+              {t('mealsPage.dateLabel', { defaultValue: 'Date' })}
+            </Text>
+          </View>
+        </View>
+      </Card>
+
+      {/* Date Picker */}
+      <Card style={styles.datePickerCard}>
+        <View style={styles.datePickerInner}>
+          <Text style={styles.datePickerLabel}>
+            {t('mealsPage.selectDay', { defaultValue: 'Kunni tanlang' })}
+          </Text>
+          <Pressable
+            onPress={() => setShowDatePicker(true)}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
+            style={styles.datePickerRow}
+          >
+            <Ionicons name="calendar-outline" size={20} color={tokens.colors.accent.blue} />
+            <Text style={styles.dateInput}>{selectedDate}</Text>
+          </Pressable>
+          {showDatePicker && (
+            <DateTimePicker
+              value={selectedDate ? new Date(selectedDate) : new Date()}
+              mode="date"
+              display="default"
+              onChange={(event, selectedDateValue) => {
+                setShowDatePicker(false);
+                if (selectedDateValue) {
+                  setSelectedDate(selectedDateValue.toISOString().split('T')[0]);
+                }
+              }}
+            />
+          )}
+        </View>
+      </Card>
+
+      {/* Section title */}
+      {filteredMeals.length > 0 && (
+        <Text style={styles.sectionTitle}>
+          {t('mealsPage.mealSchedule', { defaultValue: 'Meal Schedule' })}
+        </Text>
+      )}
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
         title={t('mealsPage.title', { defaultValue: 'Meals' })}
+        showBack
         rightActionIcon="add"
         onRightActionPress={handleCreate}
       />
+
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
-          <Pressable onPress={() => loadMeals()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable
+            onPress={() => loadMeals()}
+            accessibilityRole="button"
+            accessibilityLabel="Retry"
+            style={styles.retryBtn}
+          >
+            <Text style={styles.retryBtnText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
 
-      {/* Date Picker */}
-      <View style={styles.datePickerContainer}>
-        <Text style={styles.datePickerLabel}>
-          {t('mealsPage.selectDay', { defaultValue: 'Kunni tanlang' })}
-        </Text>
-        <Pressable
-          onPress={() => setShowDatePicker(true)}
-          accessibilityRole="button"
-          accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
-          style={styles.datePickerRow}
-        >
-          <Ionicons name="calendar-outline" size={20} color={tokens.colors.accent.blue} />
-          <Text style={[styles.dateInput, { color: tokens.colors.text.primary }]}>
-            {selectedDate}
-          </Text>
-        </Pressable>
-        {showDatePicker && (
-          <DateTimePicker
-            value={selectedDate ? new Date(selectedDate) : new Date()}
-            mode="date"
-            display="default"
-            onChange={(event, selectedDateValue) => {
-              setShowDatePicker(false);
-              if (selectedDateValue) {
-                setSelectedDate(selectedDateValue.toISOString().split('T')[0]);
-              }
-            }}
-          />
-        )}
-      </View>
-
-      {filteredMeals.length === 0 ? (
-        <EmptyState icon="restaurant-outline" message={t('mealsPage.empty', { defaultValue: 'No meals found' })} />
+      {filteredMeals.length === 0 && !error ? (
+        <View style={{ flex: 1 }}>
+          {listHeaderComponent()}
+          <EmptyState icon="restaurant-outline" message={t('mealsPage.empty', { defaultValue: 'No meals found' })} />
+        </View>
       ) : (
         <FlatList
           data={filteredMeals}
           renderItem={renderMeal}
           keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
+          ListHeaderComponent={listHeaderComponent}
           contentContainerStyle={[styles.list, { paddingBottom: bottomPadding }]}
           refreshing={loading}
           onRefresh={loadMeals}
@@ -463,7 +526,7 @@ export function MealsScreen() {
                       onPress={() => setShowFormDatePicker(true)}
                       accessibilityRole="button"
                       accessibilityLabel={t('common.selectDate', { defaultValue: 'Select date' })}
-                      style={{ borderWidth: 1, borderColor: tokens.colors.border.medium, borderRadius: tokens.radius.sm, padding: tokens.space.md }}
+                      style={styles.input}
                     >
                       <Text style={{ fontSize: tokens.type.body.fontSize, color: formData.date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
                         {formData.date || t('common.selectDate', { defaultValue: 'Select date' })}
@@ -492,7 +555,7 @@ export function MealsScreen() {
                     {t('mealsPage.form.mealName', { defaultValue: 'Taom nomi' })}
                   </Text>
                   <TextInput
-                    style={styles.input}
+                    style={styles.textInput}
                     placeholder={t('mealsPage.form.mealNamePlaceholder', { defaultValue: 'Taom nomini kiriting' })}
                     placeholderTextColor={tokens.colors.text.tertiary}
                     value={formData.mealName}
@@ -506,7 +569,7 @@ export function MealsScreen() {
                     {t('mealsPage.form.description', { defaultValue: 'Tavsif' })}
                   </Text>
                   <TextInput
-                    style={[styles.input, styles.textArea]}
+                    style={[styles.textInput, styles.textArea]}
                     placeholder={t('mealsPage.form.descriptionPlaceholder', { defaultValue: 'Taom tavsifini kiriting' })}
                     placeholderTextColor={tokens.colors.text.tertiary}
                     value={formData.description}
@@ -523,7 +586,7 @@ export function MealsScreen() {
                       {t('mealsPage.form.time', { defaultValue: 'Vaqt' })}
                     </Text>
                     <TextInput
-                      style={styles.input}
+                      style={styles.textInput}
                       placeholder="HH:MM"
                       placeholderTextColor={tokens.colors.text.tertiary}
                       value={formData.time}
@@ -567,7 +630,7 @@ export function MealsScreen() {
                     {t('mealsPage.form.specialNotes', { defaultValue: 'Maxsus eslatmalar' })}
                   </Text>
                   <TextInput
-                    style={[styles.input, styles.textArea]}
+                    style={[styles.textInput, styles.textArea]}
                     placeholder={t('mealsPage.form.specialNotesPlaceholder', { defaultValue: 'Maxsus eslatmalarni kiriting' })}
                     placeholderTextColor={tokens.colors.text.tertiary}
                     value={formData.specialNotes}
@@ -621,12 +684,74 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tokens.colors.background.primary,
   },
-  datePickerContainer: {
-    padding: tokens.space.md,
-    backgroundColor: tokens.colors.card.base,
-    borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border.light,
+  list: {
+    padding: tokens.space.xl,
   },
+  fab: {
+    position: 'absolute',
+    right: tokens.space.xl,
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: '#E8C27E',
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...tokens.shadow.elevated,
+  },
+
+  // Nutrition Summary Card
+  nutritionCard: {
+    marginBottom: tokens.space.lg,
+  },
+  nutritionHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.lg,
+  },
+  nutritionTitle: {
+    fontSize: tokens.type.h3.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  nutritionIcon: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: '#E8C27E',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  nutritionStats: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  nutritionStatItem: {
+    alignItems: 'center',
+    flex: 1,
+  },
+  nutritionStatValue: {
+    fontSize: tokens.type.h2.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  nutritionStatLabel: {
+    fontSize: tokens.type.caption.fontSize,
+    color: '#5A6B8C',
+    marginTop: tokens.space.xs,
+  },
+  nutritionStatDivider: {
+    width: 1,
+    height: 40,
+    backgroundColor: 'rgba(191,215,234,0.3)',
+  },
+
+  // Date Picker
+  datePickerCard: {
+    marginBottom: tokens.space['2xl'],
+  },
+  datePickerInner: {},
   datePickerLabel: {
     fontSize: tokens.type.caption.fontSize,
     fontWeight: tokens.typography.fontWeight.bold,
@@ -648,111 +773,108 @@ const styles = StyleSheet.create({
     color: tokens.colors.text.primary,
     fontWeight: tokens.typography.fontWeight.semibold,
   },
-  fab: {
-    position: 'absolute',
-    right: tokens.space.lg,
-    width: 56,
-    height: 56,
-    borderRadius: 28,
-    backgroundColor: '#F59E0B', // Orange/Amber
-    alignItems: 'center',
-    justifyContent: 'center',
-    ...tokens.shadow.elevated,
+
+  // Section title
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.lg,
+    paddingHorizontal: 1,
   },
-  list: {
-    padding: tokens.space.lg,
-  },
+
+  // Meal Card
   card: {
     marginBottom: tokens.space.md,
   },
-  mealHeader: {
+  mealRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: tokens.space.sm,
+    gap: tokens.space.lg,
   },
   mealIconContainer: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: tokens.space.md,
+    flexShrink: 0,
   },
-  mealContent: {
+  mealEmoji: {
+    fontSize: 24,
+  },
+  mealInfo: {
     flex: 1,
+    minWidth: 0,
   },
   mealTitleRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    gap: tokens.space.sm,
+    marginBottom: 2,
     flexWrap: 'wrap',
-    gap: tokens.space.xs,
-    marginBottom: tokens.space.xs,
   },
   mealName: {
-    fontSize: tokens.type.bodyLarge.fontSize,
-    fontWeight: tokens.typography.fontWeight.bold,
-    color: tokens.colors.text.primary,
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  completedBadge: {
+    paddingHorizontal: tokens.space.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
+    backgroundColor: '#DFF4EC',
+  },
+  completedBadgeText: {
+    fontSize: tokens.type.caption.fontSize,
+    fontWeight: '500',
+    color: '#2E3A59',
+  },
+  mealTypeBadgeRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
+    marginBottom: tokens.space.xs,
   },
   mealTypeBadge: {
     paddingHorizontal: tokens.space.sm,
-    paddingVertical: tokens.space.xs / 2,
-    borderRadius: tokens.radius.sm,
+    paddingVertical: 2,
+    borderRadius: tokens.radius.pill,
   },
   mealTypeText: {
     fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.typography.fontWeight.bold,
-    textTransform: 'uppercase',
+    fontWeight: '600',
   },
-  timeContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: tokens.space.xs / 2,
-    gap: tokens.space.xs / 2,
-  },
-  time: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
+  mealTime: {
+    fontSize: tokens.type.caption.fontSize,
+    color: '#8C9BB5',
   },
   description: {
     fontSize: tokens.type.body.fontSize,
-    color: tokens.colors.text.secondary,
-    marginTop: tokens.space.sm,
-    lineHeight: 20,
-  },
-  mealDetails: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginTop: tokens.space.md,
-    paddingTop: tokens.space.md,
-    borderTopWidth: 1,
-    borderTopColor: tokens.colors.border.light,
+    color: '#5A6B8C',
+    lineHeight: 18,
+    marginBottom: tokens.space.xs,
   },
   detailRow: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: tokens.space.xs,
+    marginBottom: tokens.space.xs,
   },
   detailLabel: {
     fontSize: tokens.type.caption.fontSize,
     fontWeight: tokens.typography.fontWeight.bold,
     color: tokens.colors.text.secondary,
-    textTransform: 'uppercase',
   },
   detailValue: {
     fontSize: tokens.type.sub.fontSize,
     fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.primary,
   },
-  eatenStatus: {
-    fontSize: tokens.type.sub.fontSize,
-    fontWeight: tokens.typography.fontWeight.semibold,
-  },
   notesContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: tokens.space.xs,
-    marginTop: tokens.space.sm,
     padding: tokens.space.sm,
     backgroundColor: tokens.colors.surface.secondary,
     borderRadius: tokens.radius.md,
@@ -761,11 +883,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: tokens.type.sub.fontSize,
     color: tokens.colors.text.secondary,
-    lineHeight: 18,
-  },
-  notesLabel: {
-    fontWeight: tokens.typography.fontWeight.bold,
-    color: tokens.colors.text.primary,
+    lineHeight: 16,
   },
   actions: {
     flexDirection: 'row',
@@ -780,25 +898,51 @@ const styles = StyleSheet.create({
     marginRight: tokens.space.md,
     paddingVertical: tokens.space.xs,
     paddingHorizontal: tokens.space.sm,
+    gap: tokens.space.xs,
   },
   editButtonText: {
     color: tokens.colors.accent.blue,
-    marginLeft: tokens.space.xs,
     fontSize: tokens.type.sub.fontSize,
     fontWeight: tokens.typography.fontWeight.medium,
   },
-  deleteButton: {
+  deleteBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: tokens.space.xs,
     paddingHorizontal: tokens.space.sm,
+    gap: tokens.space.xs,
   },
-  deleteButtonText: {
+  deleteBtnText: {
     color: tokens.colors.semantic.error,
-    marginLeft: tokens.space.xs,
     fontSize: tokens.type.sub.fontSize,
     fontWeight: tokens.typography.fontWeight.medium,
   },
+
+  // Error
+  errorContainer: {
+    padding: tokens.space['2xl'],
+    alignItems: 'center',
+  },
+  errorText: {
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.md,
+    textAlign: 'center',
+    fontSize: tokens.type.body.fontSize,
+  },
+  retryBtn: {
+    marginTop: tokens.space.lg,
+    paddingHorizontal: tokens.space['2xl'],
+    paddingVertical: tokens.space.md,
+    backgroundColor: tokens.colors.accent.blue,
+    borderRadius: tokens.radius.md,
+  },
+  retryBtnText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: tokens.type.body.fontSize,
+  },
+
+  // Modal
   modalContainer: {
     flex: 1,
   },
@@ -841,6 +985,13 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.xs,
   },
   input: {
+    borderWidth: 1,
+    borderColor: tokens.colors.border.medium,
+    borderRadius: tokens.radius.sm,
+    padding: tokens.space.md,
+    backgroundColor: tokens.colors.card.base,
+  },
+  textInput: {
     borderWidth: 1,
     borderColor: tokens.colors.border.medium,
     borderRadius: tokens.radius.sm,
@@ -919,7 +1070,7 @@ const styles = StyleSheet.create({
     paddingVertical: tokens.space.md,
     alignItems: 'center',
     borderRadius: tokens.radius.sm,
-    backgroundColor: '#F59E0B', // Orange/Amber
+    backgroundColor: '#E8C27E',
   },
   saveButtonText: {
     color: tokens.colors.text.white,

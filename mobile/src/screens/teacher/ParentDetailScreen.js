@@ -8,8 +8,7 @@ import { teacherService } from '../../services/teacherService';
 import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
 
 export function ParentDetailScreen() {
@@ -27,14 +26,14 @@ export function ParentDetailScreen() {
   if (!parentId) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <ScreenHeader title={t('parentsPage.parentDetail', { defaultValue: 'Parent Detail' })} />
+        <ScreenHeader title={t('parentsPage.parentDetail', { defaultValue: 'Parent Detail' })} showBack />
         <View style={styles.content}>
-          <GlassCard>
+          <Card>
             <View style={styles.errorContainer}>
               <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
               <Text style={styles.errorText}>Missing parentId parameter</Text>
             </View>
-          </GlassCard>
+          </Card>
         </View>
       </SafeAreaView>
     );
@@ -80,13 +79,13 @@ export function ParentDetailScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader title={`${parent.firstName ?? '—'} ${parent.lastName ?? ''}`} />
-      <ScrollView 
-        contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]} 
+      <ScreenHeader title={`${parent.firstName ?? '\u2014'} ${parent.lastName ?? ''}`} showBack />
+      <ScrollView
+        contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
         {/* Profile Card */}
-        <GlassCard style={styles.card}>
+        <Card style={styles.card}>
           <View style={styles.avatarContainer}>
             <View style={styles.avatar}>
               <Text style={styles.avatarText}>
@@ -112,7 +111,7 @@ export function ParentDetailScreen() {
             <View style={styles.infoContent}>
               <Text style={styles.label}>{t('parentsPage.name') || 'Name'}</Text>
               <Text style={styles.value}>
-                {parent.firstName ?? '—'} {parent.lastName ?? ''}
+                {parent.firstName ?? '\u2014'} {parent.lastName ?? ''}
               </Text>
             </View>
           </View>
@@ -161,11 +160,11 @@ export function ParentDetailScreen() {
               </View>
             </View>
           )}
-        </GlassCard>
+        </Card>
 
         {/* Children Card */}
         {parent.children && Array.isArray(parent.children) && parent.children.length > 0 && (
-          <GlassCard style={styles.card}>
+          <Card style={styles.card}>
             <View style={styles.sectionHeader}>
               <Ionicons name="people" size={20} color={tokens.colors.accent.blue} />
               <Text style={styles.sectionTitle}>{t('parentsPage.children') || 'Children'}</Text>
@@ -187,7 +186,7 @@ export function ParentDetailScreen() {
                 </View>
                 <View style={styles.childContent}>
                   <Text style={styles.childName}>
-                    {child.firstName ?? '—'} {child.lastName ?? ''}
+                    {child.firstName ?? '\u2014'} {child.lastName ?? ''}
                   </Text>
 
                   {/* Child Details Grid */}
@@ -248,9 +247,8 @@ export function ParentDetailScreen() {
                 </View>
               </View>
             ))}
-          </GlassCard>
+          </Card>
         )}
-
       </ScrollView>
     </SafeAreaView>
   );
@@ -262,11 +260,10 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.background.primary,
   },
   content: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
   },
   card: {
-    marginBottom: tokens.space.md,
-    padding: tokens.space.lg,
+    marginBottom: tokens.space.lg,
   },
   errorContainer: {
     padding: tokens.space.xl,

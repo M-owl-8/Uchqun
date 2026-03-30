@@ -1,4 +1,4 @@
-﻿import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, RefreshControl, Dimensions, Pressable } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -7,10 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../services/api';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { StatCard } from '../../components/teacher/StatCard';
-import { QuickActionCard } from '../../components/teacher/QuickActionCard';
-import { DashboardHeader } from '../../components/teacher/DashboardHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import QuickActionCard from '../../components/common/QuickActionCard';
 import tokens from '../../styles/tokens';
 
 export function TeacherDashboardScreen() {
@@ -24,7 +23,7 @@ export function TeacherDashboardScreen() {
     activities: 0,
     meals: 0,
     media: 0,
-    monitoring: 'вЂ”',
+    monitoring: '\u2014',
   });
 
   // Bottom nav height + safe area + padding
@@ -33,9 +32,9 @@ export function TeacherDashboardScreen() {
 
   // Calculate card width for 2-column grid
   const screenWidth = Dimensions.get('window').width;
-  const padding = tokens.space.lg * 2; // Left + right padding
-  const gap = tokens.space.md;
-  const cardWidth = (screenWidth - padding - gap) / 2;
+  const pagePadding = tokens.space.xl * 2; // Left + right padding
+  const gap = tokens.space.lg;
+  const cardWidth = (screenWidth - pagePadding - gap) / 2;
 
   useEffect(() => {
     loadData();
@@ -84,23 +83,39 @@ export function TeacherDashboardScreen() {
     loadData();
   };
 
+  // Determine greeting based on time of day
+  const hour = new Date().getHours();
+  const greetingDefault = hour < 12 ? 'Good morning,' : hour < 18 ? 'Good afternoon,' : 'Good evening,';
+  const greetingKey = hour < 12 ? 'goodMorning' : hour < 18 ? 'goodAfternoon' : 'goodEvening';
+  const greeting = t(`dashboard.${greetingKey}`, { defaultValue: greetingDefault });
+
   if (loading) {
     return <LoadingSpinner />;
   }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <DashboardHeader />
+      <ScreenHeader
+        title={t('nav.dashboard', { defaultValue: 'Dashboard' })}
+        showNotificationBell
+      />
+
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
-          <Pressable onPress={() => loadData()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          <Text style={styles.errorText}>{error}</Text>
+          <Pressable
+            onPress={() => loadData()}
+            accessibilityRole="button"
+            accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
+            style={styles.retryButton}
+          >
+            <Ionicons name="refresh" size={20} color="#fff" />
+            <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
@@ -109,82 +124,85 @@ export function TeacherDashboardScreen() {
           <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
         }
       >
-        {/* Stats Grid - 2x2 grid: Individual Plan, Meals, Media, Monitoring */}
+        {/* Welcome Card */}
+        <Card
+          gradient={tokens.colors.gradients.welcome}
+          style={styles.welcomeCard}
+          accessibilityLabel={t('dashboard.welcomeCard', { defaultValue: 'Welcome card' })}
+        >
+          <View style={styles.welcomeTop}>
+            <View style={styles.welcomeTextContainer}>
+              <Text style={styles.welcomeGreeting}>{greeting}</Text>
+              <Text style={styles.welcomeName} numberOfLines={1}>
+                {t('dashboard.teacherDashboard', { defaultValue: 'Teacher Dashboard' })}
+              </Text>
+            </View>
+            <View style={styles.welcomeIconContainer}>
+              <Ionicons name="heart" size={24} color="#E8C27E" />
+            </View>
+          </View>
+          <Text style={styles.welcomeMessage}>
+            {t('dashboard.teacherWelcomeMessage', {
+              defaultValue: `You have ${stats.activities} activities tracked today. Keep up the great work!`,
+              count: stats.activities,
+            })}
+          </Text>
+        </Card>
+
+        {/* Quick Stats - 2 column grid */}
         <View style={styles.statsGrid}>
           <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="checkmark-circle"
-              iconColor={tokens.colors.semantic.success}
-              iconBg={tokens.colors.semantic.successSoft}
-              count={stats.activities}
-              label={t('dashboard.individualPlan', { defaultValue: 'Individual Plan' })}
-              onPress={() => navigation.navigate('Activities')}
-            />
+            <Card style={styles.statCard} onPress={() => navigation.navigate('TeacherTabs', { screen: 'Parents' })}>
+              <View style={[styles.statIconContainer, { backgroundColor: '#F8D7C4' }]}>
+                <Ionicons name="people" size={24} color={tokens.colors.text.primary} />
+              </View>
+              <Text style={styles.statCount}>{stats.meals}</Text>
+              <Text style={styles.statLabel}>
+                {t('dashboard.parents', { defaultValue: 'Parents' })}
+              </Text>
+            </Card>
           </View>
           <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="close-circle"
-              iconColor={tokens.colors.joy.sunflower}
-              iconBg={tokens.colors.joy.sunflowerSoft}
-              count={stats.meals}
-              label={t('dashboard.meals', { defaultValue: 'Meals' })}
-              onPress={() => navigation.navigate('Meals')}
-            />
-          </View>
-          <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="images"
-              iconColor={tokens.colors.joy.lavender}
-              iconBg={tokens.colors.joy.lavenderSoft}
-              count={stats.media}
-              label={t('dashboard.media', { defaultValue: 'Media' })}
-              onPress={() => navigation.navigate('Media')}
-            />
-          </View>
-          <View style={{ width: cardWidth }}>
-            <StatCard
-              icon="heart"
-              iconColor={tokens.colors.joy.coral}
-              iconBg={tokens.colors.joy.coralSoft}
-              count={stats.monitoring}
-              label={t('dashboard.monitoring', { defaultValue: 'Monitoring' })}
-              onPress={() => navigation.navigate('MonitoringJournal')}
-            />
+            <Card style={styles.statCard} onPress={() => navigation.navigate('Activities')}>
+              <View style={[styles.statIconContainer, { backgroundColor: '#DFF4EC' }]}>
+                <Ionicons name="sparkles" size={24} color={tokens.colors.text.primary} />
+              </View>
+              <Text style={styles.statCount}>{stats.activities}</Text>
+              <Text style={styles.statLabel}>
+                {t('dashboard.activities', { defaultValue: 'Activities' })}
+              </Text>
+            </Card>
           </View>
         </View>
 
-        {/* Quick Actions Section */}
+        {/* Quick Actions */}
         <View style={styles.section}>
           <Text style={styles.sectionTitle}>
             {t('dashboard.quickActions', { defaultValue: 'Quick Actions' })}
           </Text>
-
-          <QuickActionCard
-            icon="checkmark-circle"
-            iconColor={tokens.colors.semantic.success}
-            iconBg={tokens.colors.semantic.successSoft}
-            title={t('dashboard.updatePlan', { defaultValue: 'Update Individual Plan' })}
-            subtitle={t('dashboard.updatePlanDesc', { defaultValue: 'Manage student goals and progress' })}
-            onPress={() => navigation.navigate('Activities')}
-          />
-
-          <QuickActionCard
-            icon="people"
-            iconColor={tokens.colors.joy.lavender}
-            iconBg={tokens.colors.joy.lavenderSoft}
-            title={t('dashboard.contactParents', { defaultValue: 'Contact Parents' })}
-            subtitle={t('dashboard.contactParentsDesc', { defaultValue: 'Send updates and messages' })}
-            onPress={() => navigation.navigate('TeacherTabs', { screen: 'Parents' })}
-          />
-
-          <QuickActionCard
-            icon="heart"
-            iconColor={tokens.colors.joy.coral}
-            iconBg={tokens.colors.joy.coralSoft}
-            title={t('dashboard.healthMonitoring', { defaultValue: 'Health Monitoring' })}
-            subtitle={t('dashboard.healthMonitoringDesc', { defaultValue: 'Track vitals and wellness' })}
-            onPress={() => navigation.navigate('EmotionalMonitoring')}
-          />
+          <View style={styles.quickActionsList}>
+            <QuickActionCard
+              icon="checkmark-circle-outline"
+              title={t('dashboard.addActivity', { defaultValue: 'Add Activity' })}
+              subtitle={t('dashboard.addActivitySub', { defaultValue: 'Create a new activity plan' })}
+              color="#DFF4EC"
+              onPress={() => navigation.navigate('Activities')}
+            />
+            <QuickActionCard
+              icon="restaurant-outline"
+              title={t('dashboard.logMeal', { defaultValue: 'Log Meal' })}
+              subtitle={t('dashboard.logMealSub', { defaultValue: "Track today's nutrition" })}
+              color="#E8C27E"
+              onPress={() => navigation.navigate('Meals')}
+            />
+            <QuickActionCard
+              icon="camera-outline"
+              title={t('dashboard.uploadMedia', { defaultValue: 'Upload Media' })}
+              subtitle={t('dashboard.uploadMediaSub', { defaultValue: 'Photos, videos, and documents' })}
+              color="#BFD7EA"
+              onPress={() => navigation.navigate('Media')}
+            />
+          </View>
         </View>
 
         {/* Recent Updates Section */}
@@ -193,10 +211,10 @@ export function TeacherDashboardScreen() {
             {t('dashboard.recentUpdates', { defaultValue: 'Recent Updates' })}
           </Text>
 
-          <GlassCard style={styles.updateCard}>
+          <Card style={styles.updateCard}>
             <View style={styles.updateRow}>
-              <View style={[styles.updateIcon, { backgroundColor: tokens.colors.semantic.successSoft }]}>
-                <Ionicons name="checkmark-circle" size={20} color={tokens.colors.semantic.success} />
+              <View style={[styles.updateIcon, { backgroundColor: '#DFF4EC' }]}>
+                <Ionicons name="checkmark-circle" size={20} color={tokens.colors.text.primary} />
               </View>
               <View style={styles.updateContent}>
                 <Text style={styles.updateTitle}>
@@ -204,7 +222,7 @@ export function TeacherDashboardScreen() {
                 </Text>
                 <Text style={styles.updateDesc}>
                   {t('dashboard.planUpdatedDesc', {
-                    defaultValue: 'Emma\'s speech therapy goals have been updated for this week.',
+                    defaultValue: "Emma's speech therapy goals have been updated for this week.",
                   })}
                 </Text>
                 <Text style={styles.updateTime}>
@@ -212,12 +230,12 @@ export function TeacherDashboardScreen() {
                 </Text>
               </View>
             </View>
-          </GlassCard>
+          </Card>
 
-          <GlassCard style={styles.updateCard}>
+          <Card style={styles.updateCard}>
             <View style={styles.updateRow}>
-              <View style={[styles.updateIcon, { backgroundColor: tokens.colors.joy.lavenderSoft }]}>
-                <Ionicons name="chatbubble-ellipses" size={20} color={tokens.colors.joy.lavender} />
+              <View style={[styles.updateIcon, { backgroundColor: '#F8D7C4' }]}>
+                <Ionicons name="chatbubble-ellipses" size={20} color={tokens.colors.text.primary} />
               </View>
               <View style={styles.updateContent}>
                 <Text style={styles.updateTitle}>
@@ -225,7 +243,7 @@ export function TeacherDashboardScreen() {
                 </Text>
                 <Text style={styles.updateDesc}>
                   {t('dashboard.parentMessageDesc', {
-                    defaultValue: 'Sarah Johnson asked about tomorrow\'s activities.',
+                    defaultValue: "Sarah Johnson asked about tomorrow's activities.",
                   })}
                 </Text>
                 <Text style={styles.updateTime}>
@@ -233,7 +251,7 @@ export function TeacherDashboardScreen() {
                 </Text>
               </View>
             </View>
-          </GlassCard>
+          </Card>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -249,28 +267,89 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
+    gap: tokens.space['2xl'],
   },
 
-  // Stats Grid - 2x2 grid layout
+  // Welcome Card
+  welcomeCard: {
+    marginTop: tokens.space.sm,
+  },
+  welcomeTop: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    justifyContent: 'space-between',
+    marginBottom: tokens.space.lg,
+  },
+  welcomeTextContainer: {
+    flex: 1,
+    minWidth: 0,
+  },
+  welcomeGreeting: {
+    fontSize: 14,
+    color: '#5A6B8C',
+    marginBottom: tokens.space.xs,
+  },
+  welcomeName: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  welcomeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(232, 194, 126, 0.2)',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: tokens.space.md,
+  },
+  welcomeMessage: {
+    fontSize: 14,
+    color: '#5A6B8C',
+    lineHeight: 22,
+  },
+
+  // Quick Stats - 2 column grid
   statsGrid: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: tokens.space.md,
-    marginBottom: tokens.space.xl,
-    marginTop: tokens.space.md,
+    gap: tokens.space.lg,
+  },
+  statCard: {
+    alignItems: 'center',
+  },
+  statIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: tokens.radius.xl,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: tokens.space.md,
+  },
+  statCount: {
+    fontSize: 24,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.xs,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: '#5A6B8C',
   },
 
   // Section
-  section: {
-    marginBottom: tokens.space.xl,
-  },
+  section: {},
   sectionTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.primary,
+    fontSize: 20,
+    fontWeight: '700',
+    color: '#2E3A59',
     marginBottom: tokens.space.md,
-    paddingHorizontal: 2,
+    paddingHorizontal: 1,
+  },
+
+  // Quick Actions
+  quickActionsList: {
+    gap: tokens.space.md,
   },
 
   // Update Cards
@@ -307,6 +386,31 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.caption.fontSize,
     color: tokens.colors.text.muted,
   },
+
+  // Error state
+  errorContainer: {
+    padding: tokens.space.xl,
+    alignItems: 'center',
+    gap: tokens.space.md,
+  },
+  errorText: {
+    fontSize: tokens.type.bodyLarge.fontSize,
+    color: tokens.colors.text.secondary,
+    textAlign: 'center',
+  },
+  retryButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: tokens.space.sm,
+    backgroundColor: tokens.colors.accent.blue,
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.md,
+    borderRadius: tokens.radius.pill,
+    marginTop: tokens.space.sm,
+  },
+  retryButtonText: {
+    color: '#fff',
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '600',
+  },
 });
-
-
