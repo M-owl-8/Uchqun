@@ -422,6 +422,8 @@ export function ChatScreen() {
                                 setEditValue((msg.content || msg.text || '').toString());
                               }}
                               disabled={busyId === msg.id}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('chat.editMessage', { defaultValue: 'Edit message' })}
                             >
                               <Ionicons name="pencil" size={16} color={isYou ? '#fff' : tokens.colors.text.secondary} />
                             </Pressable>
@@ -429,6 +431,8 @@ export function ChatScreen() {
                           <Pressable
                             onPress={() => setConfirmDeleteId(msg.id)}
                             disabled={busyId === msg.id}
+                            accessibilityRole="button"
+                            accessibilityLabel={t('chat.deleteMessage', { defaultValue: 'Delete message' })}
                           >
                             <Ionicons name="trash-outline" size={16} color={isYou ? '#fff' : tokens.colors.semantic.error} />
                           </Pressable>
@@ -443,6 +447,7 @@ export function ChatScreen() {
                           value={editValue}
                           onChangeText={setEditValue}
                           multiline
+                          accessibilityLabel={t('chat.editMessageInput', { defaultValue: 'Edit message text' })}
                         />
                         <View style={styles.editActions}>
                           <Pressable
@@ -451,6 +456,8 @@ export function ChatScreen() {
                               setEditingId(null);
                               setEditValue('');
                             }}
+                            accessibilityRole="button"
+                            accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
                           >
                             <Text style={styles.editCancelText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
                           </Pressable>
@@ -458,6 +465,8 @@ export function ChatScreen() {
                             style={styles.editSave}
                             onPress={() => handleSaveEdit(msg.id)}
                             disabled={!editValue.trim() || busyId === msg.id}
+                            accessibilityRole="button"
+                            accessibilityLabel={t('common.save', { defaultValue: 'Save' })}
                           >
                             <Text style={styles.editSaveText}>{t('common.save', { defaultValue: 'Save' })}</Text>
                           </Pressable>
@@ -480,6 +489,8 @@ export function ChatScreen() {
           <Pressable
             style={styles.scrollToBottom}
             onPress={() => messagesWrapRef.current?.scrollToEnd({ animated: true })}
+            accessibilityRole="button"
+            accessibilityLabel={t('chat.scrollToBottom', { defaultValue: 'Scroll to latest messages' })}
           >
             <Ionicons name="arrow-down" size={20} color={tokens.colors.text.primary} />
           </Pressable>
@@ -494,11 +505,16 @@ export function ChatScreen() {
             placeholderTextColor={tokens.colors.text.tertiary}
             multiline
             maxLength={500}
+            accessibilityLabel={t('chat.messageInput', { defaultValue: 'Message input' })}
+            accessibilityHint={t('chat.messageInputHint', { defaultValue: 'Type your message here' })}
           />
           <Pressable
             style={[styles.sendButton, !inputText.trim() && styles.sendButtonDisabled]}
             onPress={handleSend}
             disabled={!inputText.trim()}
+            accessibilityRole="button"
+            accessibilityLabel={t('chat.send', { defaultValue: 'Send message' })}
+            accessibilityState={{ disabled: !inputText.trim() }}
           >
             <Ionicons name="send" size={20} color={tokens.colors.text.inverse} />
           </Pressable>
@@ -507,14 +523,16 @@ export function ChatScreen() {
 
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
-        <View style={styles.modalOverlay}>
-          <View style={styles.modalContent}>
+        <View style={styles.modalOverlay} accessibilityViewIsModal={true}>
+          <View style={styles.modalContent} accessibilityRole="alert">
             <Text style={styles.modalTitle}>{t('chat.delete', { defaultValue: 'Delete' })}</Text>
             <Text style={styles.modalText}>{t('chat.confirmDelete', { defaultValue: 'Delete this message?' })}</Text>
             <View style={styles.modalActions}>
               <Pressable
                 style={styles.modalCancel}
                 onPress={() => setConfirmDeleteId(null)}
+                accessibilityRole="button"
+                accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
               >
                 <Text style={styles.modalCancelText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
               </Pressable>
@@ -522,6 +540,8 @@ export function ChatScreen() {
                 style={styles.modalDelete}
                 onPress={() => handleDelete(confirmDeleteId)}
                 disabled={busyId === confirmDeleteId}
+                accessibilityRole="button"
+                accessibilityLabel={t('chat.confirmDeleteAction', { defaultValue: 'Confirm delete message' })}
               >
                 <Text style={styles.modalDeleteText}>{t('chat.delete', { defaultValue: 'Delete' })}</Text>
               </Pressable>
