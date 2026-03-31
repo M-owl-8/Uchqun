@@ -74,8 +74,6 @@ export function MediaScreen() {
   const [viewerVisible, setViewerVisible] = useState(false);
   const [videoUri, setVideoUri] = useState(null);
   const [videoVisible, setVideoVisible] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
@@ -104,16 +102,6 @@ export function MediaScreen() {
       setLoading(false);
     }
   }, [selectedChildId]);
-
-  useEffect(() => {
-    if (!loading) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [loading]);
 
   const loadMedia = async () => {
     if (!selectedChildId) {
@@ -295,7 +283,7 @@ export function MediaScreen() {
                 </Card>
               </View>
             ) : (
-              <Animated.View style={{ opacity: fadeAnim }}>
+              <View>
                 {/* Gallery Header Card */}
                 <LinearGradient
                   colors={['rgba(191,215,234,0.3)', 'rgba(223,244,236,0.3)']}
@@ -410,7 +398,7 @@ export function MediaScreen() {
                     <Text style={styles.uploadSubtitle}>Photos, videos, or documents</Text>
                   </View>
                 </Pressable>
-              </Animated.View>
+              </View>
             )}
           </>
         )}

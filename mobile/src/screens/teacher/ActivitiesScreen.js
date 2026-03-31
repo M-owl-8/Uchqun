@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   FlatList,
   StyleSheet,
@@ -7,8 +7,6 @@ import {
   View,
   Text,
   Pressable,
-  Animated,
-  Easing,
   RefreshControl,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -79,31 +77,16 @@ const getActivityColor = (activity) => {
   return ACTIVITY_COLORS.default;
 };
 
-// Animated progress bar component
-function AnimatedProgress({ progress, delay = 0 }) {
-  const widthAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(widthAnim, {
-      toValue: Math.min(progress || 0, 100),
-      duration: 800,
-      delay,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: false,
-    }).start();
-  }, [progress]);
+// Static progress bar component
+function ProgressBar({ progress }) {
+  const clampedProgress = Math.min(progress || 0, 100);
 
   return (
     <View style={styles.progressBarContainer}>
-      <Animated.View
+      <View
         style={[
           styles.progressBar,
-          {
-            width: widthAnim.interpolate({
-              inputRange: [0, 100],
-              outputRange: ['0%', '100%'],
-            }),
-          },
+          { width: `${clampedProgress}%` },
         ]}
       >
         <LinearGradient
@@ -112,7 +95,7 @@ function AnimatedProgress({ progress, delay = 0 }) {
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
         />
-      </Animated.View>
+      </View>
     </View>
   );
 }
@@ -129,8 +112,6 @@ export function ActivitiesScreen() {
   const [editingActivity, setEditingActivity] = useState(null);
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
@@ -138,16 +119,6 @@ export function ActivitiesScreen() {
   useEffect(() => {
     loadActivities();
   }, []);
-
-  useEffect(() => {
-    if (!loading) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [loading]);
 
   const loadActivities = async () => {
     setError(null);
@@ -312,7 +283,7 @@ export function ActivitiesScreen() {
                       <Text style={styles.progressValue}>{progress}%</Text>
                     </View>
                   </View>
-                  <AnimatedProgress progress={progress} delay={index * 100} />
+                  <ProgressBar progress={progress} />
                 </View>
               )}
             </View>
@@ -345,7 +316,7 @@ export function ActivitiesScreen() {
   };
 
   const listHeaderComponent = () => (
-    <Animated.View style={{ opacity: fadeAnim }}>
+    <View>
       {/* Progress Card */}
       <Card
         gradient={['rgba(223,244,236,0.4)', 'rgba(191,215,234,0.3)']}
@@ -390,7 +361,7 @@ export function ActivitiesScreen() {
           {t('activities.scheduledActivities', { defaultValue: 'Scheduled Activities' })}
         </Text>
       )}
-    </Animated.View>
+    </View>
   );
 
   return (
