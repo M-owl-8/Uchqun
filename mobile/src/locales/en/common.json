@@ -22,7 +22,18 @@
     "submit": "Login",
     "loading": "Logging in...",
     "invalid": "Invalid email or password",
-    "invalidRole": "Invalid user role"
+    "invalidRole": "Invalid user role",
+    "fillAllFields": "Please enter email and password",
+    "networkError": "Cannot connect to server. Check your internet connection.",
+    "emailPlaceholder": "your@email.com",
+    "passwordPlaceholder": "Enter your password",
+    "emailHint": "Enter your email to log in",
+    "passwordHint": "Enter your password",
+    "submitHint": "Double tap to log in",
+    "hidePassword": "Hide password",
+    "showPassword": "Show password",
+    "secureAuth": "Secure authentication with JWT",
+    "enterEmailPassword": "Enter email and password"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -58,7 +69,31 @@
     "yearsOld": "years old",
     "quickActions": "Quick Actions",
     "aiAssistant": "AI Assistant",
-    "children": "children"
+    "children": "children",
+    "logMeal": "Log Meal",
+    "logMealSub": "Track today's nutrition",
+    "startActivity": "Start Activity",
+    "startActivitySub": "Begin a new session",
+    "chatWithTeacher": "Chat with Teacher",
+    "chatWithTeacherSub": "Send a message",
+    "journey": "Journey",
+    "progressMessage": "{{name}} completed {{count}} activities today. Great job!",
+    "noChildMessage": "Add a child to start tracking progress.",
+    "welcomeCard": "Welcome card",
+    "viewChildProfile": "View child profile",
+    "addActivity": "Add Activity",
+    "addActivitySub": "Create a new activity plan",
+    "uploadMedia": "Upload Media",
+    "uploadMediaSub": "Photos, videos, and documents",
+    "teacherDashboard": "Teacher Dashboard",
+    "teacherWelcomeMessage": "Do your best for your students as a teacher!",
+    "recentUpdates": "Recent Updates",
+    "planUpdated": "Individual Plan Updated",
+    "planUpdatedDesc": "Individual plan updated successfully",
+    "timeAgo": "1 hour ago",
+    "parentMessage": "Parent Message",
+    "parentMessageDesc": "New message received",
+    "timeAgo3h": "3 hours ago"
   },
   "parentsPage": {
     "title": "Parent Management",
@@ -72,7 +107,9 @@
     "children_plural": "{{count}} children",
     "noChildInfo": "No child information",
     "noParents": "No parents yet",
-    "noParentsFound": "No parents found"
+    "noParentsFound": "No parents found",
+    "parentDetail": "Parent Detail",
+    "notFound": "Parent not found"
   },
   "activitiesPage": {
     "title": "Individual Plan",
@@ -116,6 +153,7 @@
     "toastError": "Error saving individual plan",
     "toastLoadError": "Error loading individual plans",
     "selectChildError": "Please select a child",
+    "confirmDeleteMessage": "Are you sure you want to delete this individual plan?",
     "showDetails": "Show Details",
     "hideDetails": "Hide Details",
     "close": "Close",
@@ -185,7 +223,16 @@
     "services": "Services",
     "showDetails": "Show Details",
     "hideDetails": "Hide Details",
-    "close": "Close"
+    "close": "Close",
+    "todayProgress": "Today's Progress",
+    "activitiesCompleted": "Activities completed",
+    "scheduledActivities": "Scheduled Activities",
+    "noActivities": "No Activities Found",
+    "noActivitiesDesc": "New activities will be added soon",
+    "viewDetails": "View activity details",
+    "done": "Done",
+    "selectChildDesc": "After adding a child, activities will appear",
+    "changeFilter": "Try changing the filter"
   },
   "mealsPage": {
     "title": "Meals & Nutrition",
@@ -231,8 +278,59 @@
       "toastUpdate": "Meal updated successfully",
       "toastDelete": "Meal deleted successfully",
       "toastError": "Error saving meal",
-      "toastLoadError": "Error loading meals"
+      "toastLoadError": "Error loading meals",
+      "requiredFields": "Please fill all required fields",
+      "confirmDeleteMessage": "Are you sure you want to delete this meal?",
+      "toastChildrenEmpty": "No children found. First add a parent with child data."
+    },
+    "quantity": {
+      "full": "Full portion",
+      "half": "Half portion",
+      "small": "Small portion"
+    },
+    "types": {
+      "breakfast": "Breakfast",
+      "lunch": "Lunch",
+      "snack": "Snack",
+      "dinner": "Dinner"
     }
+  },
+  "meals": {
+    "title": "Meals & Nutrition",
+    "subtitle": "Daily meal plan and intake tracking",
+    "selectDay": "Select day",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "snack": "Snack",
+    "dinner": "Dinner",
+    "quantity": "Quantity",
+    "eaten": "Eaten",
+    "notEaten": "Not eaten",
+    "note": "Note",
+    "empty": "No meals recorded for this day",
+    "dailySummary": "Daily summary",
+    "totalMeals": "Total meals",
+    "skipped": "Skipped",
+    "quality": "Quality",
+    "excellent": "Excellent",
+    "types": {
+      "Breakfast": "Breakfast",
+      "Lunch": "Lunch",
+      "Snack": "Snack",
+      "Dinner": "Dinner"
+    },
+    "todayNutrition": "Today's Nutrition",
+    "mealsCount": "Meals",
+    "calories": "Calories",
+    "water": "Water",
+    "completed": "Completed",
+    "log": "Log",
+    "mealSchedule": "Meal Schedule",
+    "selectChild": "Select Child",
+    "selectChildDesc": "After adding a child, meal records will appear",
+    "noMeals": "No Meal Records Found",
+    "noMealsDesc": "Meal records will be added soon",
+    "changeFilter": "Try changing the filter"
   },
   "mediaPage": {
     "title": "Media Gallery",
@@ -261,13 +359,32 @@
       "cancel": "Cancel",
       "save": "Save",
       "update": "Update",
-      "create": "Create"
+      "create": "Create",
+      "childHelp": "No children available",
+      "fileRequired": "Please select a file to upload",
+      "pickFromLibrary": "Pick from library",
+      "takePhoto": "Take photo",
+      "fileHelp": "Upload an image or video"
     },
     "confirmDelete": "Are you sure you want to delete this media?",
+    "confirmDeleteMessage": "Are you sure you want to delete this media?",
     "toastCreate": "Media created successfully",
     "toastUpdate": "Media updated successfully",
     "toastDelete": "Media deleted successfully",
-    "toastError": "Error saving media"
+    "toastError": "Error saving media",
+    "permissionRequired": "Photo library permission is required",
+    "pickError": "Failed to pick media",
+    "cameraPermissionRequired": "Camera permission is required",
+    "cameraError": "Failed to take photo",
+    "gallery": "Media Gallery",
+    "galleryDescription": "Cherished moments, progress tracking, and memories to treasure forever.",
+    "categories": "Categories",
+    "recentMedia": "Recent Media",
+    "addNewMedia": "Add New Media",
+    "addNewMediaSub": "Photos, videos, or documents",
+    "selectedFile": "Selected file",
+    "toastLoadError": "Error loading media",
+    "toastChildrenEmpty": "No children found. First add a parent with child data."
   },
   "chat": {
     "title": "Chat with Parent",
@@ -284,7 +401,19 @@
     "selectParent": "Select a parent",
     "errorSend": "Failed to send message",
     "errorUpdate": "Failed to update message",
-    "errorDelete": "Failed to delete message"
+    "errorDelete": "Failed to delete message",
+    "noMessages": "No messages yet",
+    "noMessagesDesc": "Send a message to your child's teacher",
+    "editMessage": "Edit message",
+    "deleteMessage": "Delete message",
+    "scrollToBottom": "Scroll to latest messages",
+    "messageInput": "Message input",
+    "confirmDeleteAction": "Delete",
+    "noParents": "No parents",
+    "noParentsDesc": "No parents have been assigned yet",
+    "openConversation": "Open conversation",
+    "messageInputHint": "Type your message here",
+    "editMessageInput": "Edit message text"
   },
   "profile": {
     "title": "Profile",
@@ -329,7 +458,23 @@
     "photoUploadFailed": "Failed to upload photo",
     "uploadImage": "Upload image",
     "selectImageFromGallery": "Select image from gallery",
-    "imageFormatHint": "JPG, PNG or GIF (max. 5MB)"
+    "imageFormatHint": "JPG, PNG or GIF (max. 5MB)",
+    "avatarUpdated": "Avatar updated successfully",
+    "uploadError": "Failed to upload avatar",
+    "logoutDesc": "Sign out of your account",
+    "notFound": "Profile not found",
+    "myGroups": "My Groups",
+    "parents": "parents",
+    "capacity": "Capacity",
+    "myParents": "My Parents",
+    "child": "child",
+    "children": "children",
+    "moreParents": "more parents",
+    "teacherRatings": "Teacher Ratings",
+    "you": "You",
+    "ratings": "ratings",
+    "moreTeachers": "more teachers",
+    "monitoringJournal": "Monitoring Journal"
   },
   "child": {
     "title": "Child Profile",
@@ -396,7 +541,16 @@
     "noPhone": "Phone not provided",
     "allRatings": "All Ratings",
     "noRatings": "No ratings yet",
-    "anonymous": "Anonymous"
+    "anonymous": "Anonymous",
+    "tapStars": "Tap stars to rate",
+    "poor": "Poor",
+    "fair": "Fair",
+    "good": "Good",
+    "veryGood": "Very Good",
+    "excellent": "Excellent!",
+    "saving": "Saving...",
+    "successDesc": "Thank you for your feedback",
+    "noTeacherDesc": "You will be able to rate your teacher once assigned"
   },
   "schoolRatingPage": {
     "title": "School Rating",
@@ -448,7 +602,20 @@
     "delete": "Delete",
     "empty": "No notifications yet",
     "emptyUnread": "No unread notifications",
-    "emptyRead": "No read notifications"
+    "emptyRead": "No read notifications",
+    "all": "All",
+    "unread": "Unread",
+    "read": "Read",
+    "confirmDelete": "Are you sure you want to delete this notification?",
+    "justNow": "Just now",
+    "minutesAgo": "{{count}}m ago",
+    "hoursAgo": "{{count}}h ago",
+    "daysAgo": "{{count}}d ago",
+    "notification": "Notification",
+    "noNotifications": "No notifications",
+    "noFiltered": "No {{filter}} notifications",
+    "tryDifferentFilter": "Try a different filter",
+    "allCaughtUp": "You're all caught up!"
   },
   "common": {
     "loading": "Loading...",
@@ -463,7 +630,11 @@
     "success": "Success",
     "notFound": "Not found",
     "more": "more",
-    "selectDate": "Select date"
+    "selectDate": "Select date",
+    "loadError": "Failed to load data",
+    "retry": "Retry",
+    "saving": "Saving...",
+    "confirm": "Confirm"
   },
   "time": {
     "justNow": "Just now",
@@ -532,7 +703,23 @@
     "tasks": "Tasks",
     "workHistory": "Work History",
     "contactAdmin": "Contact Admin",
-    "logout": "Logout"
+    "logout": "Logout",
+    "darkMode": "Dark Mode",
+    "darkModeDesc": "Switch between light and dark theme",
+    "general": "General",
+    "work": "Work",
+    "viewResponsibilities": "View assigned duties",
+    "viewTasks": "Manage your tasks",
+    "viewHistory": "Employment records",
+    "theme": "Theme",
+    "profile": "Profile",
+    "password": "Change Password",
+    "logoutConfirm": "Are you sure you want to logout?",
+    "notificationsDesc": "Manage notification preferences",
+    "support": "Support",
+    "allFieldsRequired": "All fields are required",
+    "passwordMinLength": "Password must be at least 8 characters",
+    "passwordsMismatch": "New passwords do not match"
   },
   "about": {
     "title": "About",
@@ -581,6 +768,7 @@
   "help": {
     "title": "Help & Support",
     "subtitle": "Find answers to common questions and get support",
+    "desc": "Get help and contact support",
     "contactUs": "Contact Us",
     "faq": "Frequently Asked Questions",
     "quickLinks": "Quick Links",
@@ -627,6 +815,49 @@
     "noWarnings": "Ogohlantirishlar yo'q",
     "noWarningsDesc": "Hozircha ogohlantirishlar mavjud emas",
     "resolveError": "Failed to resolve warning"
+  },
+  "responsibilities": {
+    "title": "Responsibilities",
+    "noResponsibilities": "No responsibilities assigned",
+    "responsibility": "Responsibility",
+    "deadline": "Deadline"
+  },
+  "tasks": {
+    "title": "Tasks",
+    "noTasks": "No tasks assigned",
+    "task": "Task",
+    "completed": "Completed",
+    "pending": "Pending",
+    "markCompleted": "Mark as Completed"
+  },
+  "workHistory": {
+    "title": "Work History",
+    "noHistory": "No work history",
+    "workItem": "Work Item",
+    "completed": "Completed",
+    "pending": "Pending",
+    "markCompleted": "Mark as Completed"
+  },
+  "emotional": {
+    "date": "Date",
+    "states": "Emotional States",
+    "notes": "Notes",
+    "notesPlaceholder": "Optional notes..."
+  },
+  "loading": {
+    "tagline": "Making learning fun",
+    "message": "Loading..."
+  },
+  "teacher": {
+    "addActivity": "Add Activity",
+    "logMeal": "Log Meal",
+    "uploadMedia": "Upload Media",
+    "parents": "Parents",
+    "tasks": "Tasks",
+    "responsibilities": "Responsibilities",
+    "workHistory": "Work History",
+    "emotionalMonitoring": "Emotional Monitoring",
+    "monitoringJournal": "Monitoring Journal"
   },
   "monitoring": {
     "title": "Weekly Monitoring Journal",

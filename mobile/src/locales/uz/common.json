@@ -22,7 +22,18 @@
     "submit": "Kirish",
     "loading": "Kirish...",
     "invalid": "Email yoki parol noto'g'ri",
-    "invalidRole": "Noto'g'ri foydalanuvchi roli"
+    "invalidRole": "Noto'g'ri foydalanuvchi roli",
+    "fillAllFields": "Iltimos, email va parolni kiriting",
+    "networkError": "Serverga ulanib bo'lmadi. Internet aloqasini tekshiring.",
+    "emailPlaceholder": "sizning@email.com",
+    "passwordPlaceholder": "Parolni kiriting",
+    "emailHint": "Kirish uchun email kiriting",
+    "passwordHint": "Parolingizni kiriting",
+    "submitHint": "Kirish uchun ikki marta bosing",
+    "hidePassword": "Parolni yashirish",
+    "showPassword": "Parolni ko'rsatish",
+    "secureAuth": "JWT bilan xavfsiz autentifikatsiya",
+    "enterEmailPassword": "Email va parolni kiriting"
   },
   "dashboard": {
     "title": "Bosh sahifa",
@@ -58,7 +69,31 @@
     "yearsOld": "yosh",
     "quickActions": "Tezkor harakatlar",
     "aiAssistant": "AI Yordamchi",
-    "children": "farzand"
+    "children": "farzand",
+    "logMeal": "Ovqat kiritish",
+    "logMealSub": "Bugungi ovqatlanishni kuzating",
+    "startActivity": "Mashg'ulot boshlash",
+    "startActivitySub": "Yangi sessiya boshlang",
+    "chatWithTeacher": "O'qituvchi bilan chat",
+    "chatWithTeacherSub": "Xabar yuborish",
+    "journey": "sayohati",
+    "progressMessage": "{{name}} bugun {{count}} ta mashg'ulotni yakunladi. Ajoyib natija!",
+    "noChildMessage": "Rivojlanishni kuzatish uchun bola qo'shing.",
+    "welcomeCard": "Xush kelibsiz kartasi",
+    "viewChildProfile": "Bola profilini ko'rish",
+    "addActivity": "Mashg'ulot qo'shish",
+    "addActivitySub": "Yangi mashg'ulot rejasi yarating",
+    "uploadMedia": "Media yuklash",
+    "uploadMediaSub": "Rasm, video va hujjatlar",
+    "teacherDashboard": "O'qituvchi paneli",
+    "teacherWelcomeMessage": "O'qituvchi sifatida o'quvchilaringiz uchun eng yaxshisini qiling!",
+    "recentUpdates": "So'nggi yangilanishlar",
+    "planUpdated": "Individual reja yangilandi",
+    "planUpdatedDesc": "Individual reja muvaffaqiyatli yangilandi",
+    "timeAgo": "1 soat oldin",
+    "parentMessage": "Ota-ona xabari",
+    "parentMessageDesc": "Yangi xabar keldi",
+    "timeAgo3h": "3 soat oldin"
   },
   "parentsPage": {
     "title": "Ota-onalarni boshqarish",
@@ -71,7 +106,10 @@
     "children_plural": "{{count}} bola",
     "noChildInfo": "Bola haqida ma'lumot yo'q",
     "noParents": "Hozircha ota-onalar yo'q",
-    "noParentsFound": "Mos ota-onalar topilmadi"
+    "noParentsFound": "Mos ota-onalar topilmadi",
+    "parentDetail": "Ota-ona tafsilotlari",
+    "notFound": "Ota-ona topilmadi",
+    "childCount": "{{count}} bola"
   },
   "activitiesPage": {
     "title": "Individual reja",
@@ -115,6 +153,7 @@
     "toastError": "Individual rejani saqlashda xatolik",
     "toastLoadError": "Individual rejalarni yuklashda xatolik",
     "selectChildError": "Iltimos, bolani tanlang",
+    "confirmDeleteMessage": "Bu individual rejani o'chirishni xohlaysizmi?",
     "showDetails": "Batafsil",
     "hideDetails": "Yashirish",
     "close": "Yopish",
@@ -184,7 +223,16 @@
     "services": "Xizmatlar",
     "showDetails": "Batafsil",
     "hideDetails": "Yashirish",
-    "close": "Yopish"
+    "close": "Yopish",
+    "todayProgress": "Bugungi natija",
+    "activitiesCompleted": "Mashg'ulotlar bajarildi",
+    "scheduledActivities": "Rejalashtirilgan mashg'ulotlar",
+    "noActivities": "Mashg'ulotlar yo'q",
+    "noActivitiesDesc": "Hali mashg'ulotlar qo'shilmagan",
+    "viewDetails": "Batafsil ko'rish",
+    "done": "Bajarildi",
+    "selectChildDesc": "Mashg'ulotlarni ko'rish uchun bolani tanlang",
+    "changeFilter": "Filtrni o'zgartiring"
   },
   "meals": {
     "title": "Taomlar va ovqatlanish",
@@ -209,7 +257,19 @@
       "Lunch": "Tushlik",
       "Snack": "Tamaddi",
       "Dinner": "Kechki ovqat"
-    }
+    },
+    "todayNutrition": "Bugungi ovqatlanish",
+    "mealsCount": "Taomlar",
+    "calories": "Kaloriyalar",
+    "water": "Suv",
+    "completed": "Bajarildi",
+    "log": "Yozish",
+    "mealSchedule": "Ovqat jadvali",
+    "selectChild": "Bolani tanlang",
+    "selectChildDesc": "Bola qo'shganingizdan so'ng ovqatlanish yozuvlari paydo bo'ladi",
+    "noMeals": "Ovqatlanish yozuvlari topilmadi",
+    "noMealsDesc": "Ovqatlanish yozuvlari tez orada qo'shiladi",
+    "changeFilter": "Filtrni o'zgartiring"
   },
   "mealsPage": {
     "title": "Taomlar va ovqatlanish",
@@ -255,7 +315,21 @@
       "toastUpdate": "Taom muvaffaqiyatli yangilandi",
       "toastDelete": "Taom o'chirildi",
       "toastError": "Taomni saqlashda xatolik",
-      "toastLoadError": "Taomlarni yuklashda xatolik"
+      "toastLoadError": "Taomlarni yuklashda xatolik",
+      "requiredFields": "Barcha majburiy maydonlarni to'ldiring",
+      "confirmDeleteMessage": "Bu taomni o'chirishni xohlaysizmi?",
+      "toastChildrenEmpty": "Bolalar topilmadi. Avval ota-onaga bola ma'lumotlarini qo'shing."
+    },
+    "quantity": {
+      "full": "To'liq porsiya",
+      "half": "Yarim porsiya",
+      "small": "Kichik porsiya"
+    },
+    "types": {
+      "breakfast": "Nonushta",
+      "lunch": "Tushlik",
+      "snack": "Tamaddi",
+      "dinner": "Kechki ovqat"
     }
   },
   "mediaPage": {
@@ -285,13 +359,32 @@
       "cancel": "Bekor qilish",
       "save": "Saqlash",
       "update": "Yangilash",
-      "create": "Yaratish"
+      "create": "Yaratish",
+      "childHelp": "Bolalar mavjud emas",
+      "fileRequired": "Iltimos, yuklash uchun fayl tanlang",
+      "pickFromLibrary": "Kutubxonadan tanlash",
+      "takePhoto": "Kameradan olish",
+      "fileHelp": "Rasm yoki video yuklang"
     },
     "confirmDelete": "Ushbu mediani o'chirmoqchimisiz?",
     "toastCreate": "Media muvaffaqiyatli yaratildi",
     "toastUpdate": "Media muvaffaqiyatli yangilandi",
     "toastDelete": "Media o'chirildi",
-    "toastError": "Mediani saqlashda xatolik"
+    "toastError": "Mediani saqlashda xatolik",
+    "confirmDeleteMessage": "Bu mediani o'chirishni xohlaysizmi?",
+    "permissionRequired": "Foto kutubxonaga ruxsat talab qilinadi",
+    "pickError": "Media tanlashda xatolik",
+    "cameraPermissionRequired": "Kamera ruxsati talab qilinadi",
+    "cameraError": "Rasm olishda xatolik",
+    "gallery": "Media galereya",
+    "galleryDescription": "Qadrli lahzalar, taraqqiyot kuzatuvi va abadiy xotiralar.",
+    "categories": "Kategoriyalar",
+    "recentMedia": "So'nggi media",
+    "addNewMedia": "Yangi media qo'shish",
+    "addNewMediaSub": "Rasmlar, videolar yoki hujjatlar",
+    "selectedFile": "Tanlangan fayl",
+    "toastLoadError": "Mediani yuklashda xatolik",
+    "toastChildrenEmpty": "Bolalar topilmadi. Avval ota-onaga bola ma'lumotlarini qo'shing."
   },
   "chat": {
     "title": "O'qituvchi bilan chat",
@@ -308,7 +401,19 @@
     "selectParent": "Ota-onani tanlang",
     "errorSend": "Xabar yuborishda xatolik",
     "errorUpdate": "Xabarni yangilashda xatolik",
-    "errorDelete": "Xabarni o'chirishda xatolik"
+    "errorDelete": "Xabarni o'chirishda xatolik",
+    "noMessages": "Hozircha xabarlar yo'q",
+    "noMessagesDesc": "Farzandingiz o'qituvchisiga xabar yuboring",
+    "editMessage": "Xabarni tahrirlash",
+    "deleteMessage": "Xabarni o'chirish",
+    "scrollToBottom": "Oxirgi xabarlarga o'tish",
+    "messageInput": "Xabar maydoni",
+    "confirmDeleteAction": "O'chirish",
+    "noParents": "Ota-onalar yo'q",
+    "noParentsDesc": "Hali ota-onalar biriktirilmagan",
+    "openConversation": "Suhbatni ochish",
+    "messageInputHint": "Xabaringizni shu yerga yozing",
+    "editMessageInput": "Xabarni tahrirlash maydoni"
   },
   "profile": {
     "title": "Profil",
@@ -353,7 +458,23 @@
     "photoUploadFailed": "Rasmni yuklashda xatolik",
     "uploadImage": "Rasm yuklash",
     "selectImageFromGallery": "Galeriyadan rasm tanlash",
-    "imageFormatHint": "JPG, PNG yoki GIF (maks. 5MB)"
+    "imageFormatHint": "JPG, PNG yoki GIF (maks. 5MB)",
+    "avatarUpdated": "Avatar muvaffaqiyatli yangilandi",
+    "uploadError": "Avatar yuklashda xatolik",
+    "logoutDesc": "Hisobingizdan chiqish",
+    "notFound": "Profil topilmadi",
+    "myGroups": "Mening guruhlarim",
+    "parents": "ota-onalar",
+    "capacity": "Sig'imi",
+    "myParents": "Mening ota-onalarim",
+    "child": "farzand",
+    "children": "farzandlar",
+    "moreParents": "yana ota-onalar",
+    "teacherRatings": "O'qituvchi reytinglari",
+    "you": "Siz",
+    "ratings": "baho",
+    "moreTeachers": "yana o'qituvchilar",
+    "monitoringJournal": "Monitoring jurnali"
   },
   "child": {
     "title": "Farzand profili",
@@ -427,7 +548,16 @@
     "noPhone": "Telefon ko'rsatilmagan",
     "allRatings": "Barcha fikrlar",
     "noRatings": "Hozircha fikr bildirilmagan",
-    "anonymous": "Anonim"
+    "anonymous": "Anonim",
+    "tapStars": "Baholash uchun yulduzlarni bosing",
+    "poor": "Yomon",
+    "fair": "O'rtacha",
+    "good": "Yaxshi",
+    "veryGood": "Juda yaxshi",
+    "excellent": "A'lo!",
+    "saving": "Saqlanmoqda...",
+    "successDesc": "Fikringiz uchun rahmat",
+    "noTeacherDesc": "O'qituvchi biriktirilgandan so'ng baholash mumkin bo'ladi"
   },
   "schoolRatingPage": {
     "title": "Maktabni baholash",
@@ -479,7 +609,20 @@
     "delete": "O'chirish",
     "empty": "Hozircha bildirishnomalar yo'q",
     "emptyUnread": "O'qilmagan bildirishnomalar yo'q",
-    "emptyRead": "O'qilgan bildirishnomalar yo'q"
+    "emptyRead": "O'qilgan bildirishnomalar yo'q",
+    "all": "Hammasi",
+    "unread": "O'qilmagan",
+    "read": "O'qilgan",
+    "confirmDelete": "Bildirishnomani o'chirmoqchimisiz?",
+    "justNow": "Hozir",
+    "minutesAgo": "{{count}} daqiqa oldin",
+    "hoursAgo": "{{count}} soat oldin",
+    "daysAgo": "{{count}} kun oldin",
+    "notification": "Bildirishnoma",
+    "noNotifications": "Bildirishnomalar yo'q",
+    "noFiltered": "{{filter}} bildirishnomalar yo'q",
+    "tryDifferentFilter": "Boshqa filtrni sinab ko'ring",
+    "allCaughtUp": "Barcha bildirishnomalar o'qilgan!"
   },
   "common": {
     "loading": "Yuklanmoqda...",
@@ -494,7 +637,11 @@
     "success": "Muvaffaqiyat",
     "notFound": "Topilmadi",
     "more": "yana",
-    "selectDate": "Sanani tanlang"
+    "selectDate": "Sanani tanlang",
+    "loadError": "Ma'lumotlarni yuklashda xatolik",
+    "retry": "Qayta urinish",
+    "saving": "Saqlanmoqda...",
+    "confirm": "Tasdiqlash"
   },
   "time": {
     "justNow": "Hozir",
@@ -563,7 +710,23 @@
     "tasks": "Vazifalar ro'yxati",
     "workHistory": "Ish tarixi",
     "contactAdmin": "Adminga murojaat",
-    "logout": "Chiqish"
+    "logout": "Chiqish",
+    "darkMode": "Tungi rejim",
+    "darkModeDesc": "Yorug'/qorong'u mavzuga o'tish",
+    "general": "Umumiy",
+    "work": "Ish",
+    "viewResponsibilities": "Biriktirilgan vazifalarni ko'rish",
+    "viewTasks": "Vazifalarni boshqarish",
+    "viewHistory": "Ish tarixi yozuvlari",
+    "theme": "Mavzu",
+    "profile": "Profil",
+    "password": "Parolni o'zgartirish",
+    "logoutConfirm": "Haqiqatan ham chiqmoqchimisiz?",
+    "notificationsDesc": "Bildirishnoma sozlamalarini boshqarish",
+    "support": "Yordam",
+    "allFieldsRequired": "Barcha maydonlar to'ldirilishi kerak",
+    "passwordMinLength": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+    "passwordsMismatch": "Yangi parollar mos kelmadi"
   },
   "about": {
     "title": "Haqida",
@@ -612,6 +775,7 @@
   "help": {
     "title": "Yordam va qo'llab-quvvatlash",
     "subtitle": "Ko'p beriladigan savollarga javob toping va yordam oling",
+    "desc": "Yordam olish va qo'llab-quvvatlash bilan bog'lanish",
     "contactUs": "Biz bilan bog'lanish",
     "faq": "Ko'p beriladigan savollar",
     "quickLinks": "Tezkor havolalar",
@@ -658,6 +822,49 @@
     "noWarnings": "Ogohlantirishlar yo'q",
     "noWarningsDesc": "Hozircha ogohlantirishlar mavjud emas",
     "resolveError": "Ogohlantirishni yechishda xatolik"
+  },
+  "responsibilities": {
+    "title": "Mas'uliyatlar",
+    "noResponsibilities": "Mas'uliyatlar biriktirilmagan",
+    "responsibility": "Mas'uliyat",
+    "deadline": "Muddat"
+  },
+  "tasks": {
+    "title": "Vazifalar",
+    "noTasks": "Vazifalar biriktirilmagan",
+    "task": "Vazifa",
+    "completed": "Bajarildi",
+    "pending": "Kutilmoqda",
+    "markCompleted": "Bajarildi deb belgilash"
+  },
+  "workHistory": {
+    "title": "Ish tarixi",
+    "noHistory": "Ish tarixi yo'q",
+    "workItem": "Ish yozuvi",
+    "completed": "Bajarildi",
+    "pending": "Kutilmoqda",
+    "markCompleted": "Bajarildi deb belgilash"
+  },
+  "emotional": {
+    "date": "Sana",
+    "states": "Hissiy holatlar",
+    "notes": "Izohlar",
+    "notesPlaceholder": "Ixtiyoriy izohlar..."
+  },
+  "loading": {
+    "tagline": "O'qishni qiziqarli qilamiz",
+    "message": "Yuklanmoqda..."
+  },
+  "teacher": {
+    "addActivity": "Mashg'ulot qo'shish",
+    "logMeal": "Ovqat kiritish",
+    "uploadMedia": "Media yuklash",
+    "parents": "Ota-onalar",
+    "tasks": "Vazifalar",
+    "responsibilities": "Mas'uliyatlar",
+    "workHistory": "Ish tarixi",
+    "emotionalMonitoring": "Hissiy monitoring",
+    "monitoringJournal": "Monitoring jurnali"
   },
   "monitoring": {
     "title": "Haftalik monitoring jurnali",

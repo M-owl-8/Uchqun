@@ -30,7 +30,15 @@
     "enterEmailPassword": "Введите email и пароль",
     "failedGeneric": "Вход не удался. Проверьте email/пароль и попробуйте снова.",
     "emailPlaceholder": "Введите ваш email",
-    "passwordPlaceholder": "Введите ваш пароль"
+    "passwordPlaceholder": "Введите ваш пароль",
+    "fillAllFields": "Пожалуйста, введите email и пароль",
+    "networkError": "Не удалось подключиться к серверу. Проверьте интернет-соединение.",
+    "emailHint": "Введите email для входа",
+    "passwordHint": "Введите ваш пароль",
+    "submitHint": "Нажмите дважды для входа",
+    "hidePassword": "Скрыть пароль",
+    "showPassword": "Показать пароль",
+    "secureAuth": "Безопасная аутентификация с JWT"
   },
   "dashboard": {
     "title": "Главная",
@@ -67,7 +75,31 @@
     "quickActions": "Быстрые действия",
     "aiAssistant": "AI Помощник",
     "individualPlan": "Индивидуальный план",
-    "children": "детей"
+    "children": "детей",
+    "logMeal": "Записать приём пищи",
+    "logMealSub": "Отслеживание сегодняшнего питания",
+    "startActivity": "Начать занятие",
+    "startActivitySub": "Начать новую сессию",
+    "chatWithTeacher": "Чат с учителем",
+    "chatWithTeacherSub": "Отправить сообщение",
+    "journey": "путь",
+    "progressMessage": "{{name}} завершил(а) {{count}} занятий сегодня. Отличный результат!",
+    "noChildMessage": "Добавьте ребёнка, чтобы начать отслеживать прогресс.",
+    "welcomeCard": "Приветственная карточка",
+    "viewChildProfile": "Просмотр профиля ребёнка",
+    "addActivity": "Добавить занятие",
+    "addActivitySub": "Создать новый план занятий",
+    "uploadMedia": "Загрузить медиа",
+    "uploadMediaSub": "Фото, видео и документы",
+    "teacherDashboard": "Панель учителя",
+    "teacherWelcomeMessage": "Делайте всё лучшее для своих учеников!",
+    "recentUpdates": "Последние обновления",
+    "planUpdated": "Индивидуальный план обновлён",
+    "planUpdatedDesc": "Индивидуальный план успешно обновлён",
+    "timeAgo": "1 час назад",
+    "parentMessage": "Сообщение от родителя",
+    "parentMessageDesc": "Получено новое сообщение",
+    "timeAgo3h": "3 часа назад"
   },
   "parentsPage": {
     "title": "Управление родителями",
@@ -80,7 +112,10 @@
     "children_plural": "{{count}} детей",
     "noChildInfo": "Нет информации о детях",
     "noParents": "Пока нет родителей",
-    "noParentsFound": "Родители не найдены"
+    "noParentsFound": "Родители не найдены",
+    "parentDetail": "Информация о родителе",
+    "notFound": "Родитель не найден",
+    "childCount": "{{count}} ребёнок"
   },
   "activitiesPage": {
     "title": "Индивидуальный план",
@@ -124,6 +159,7 @@
     "toastError": "Ошибка при сохранении индивидуального плана",
     "toastLoadError": "Ошибка загрузки индивидуальных планов",
     "selectChildError": "Пожалуйста, выберите ребенка",
+    "confirmDeleteMessage": "Вы уверены, что хотите удалить этот индивидуальный план?",
     "weeklySchedule": "Недельное расписание",
     "lastAdded": "Последние добавленные слоты",
     "scheduleDay": "День недели",
@@ -191,7 +227,16 @@
     "services": "Услуги",
     "showDetails": "Подробнее",
     "hideDetails": "Скрыть",
-    "close": "Закрыть"
+    "close": "Закрыть",
+    "todayProgress": "Прогресс за сегодня",
+    "activitiesCompleted": "Занятий выполнено",
+    "scheduledActivities": "Запланированные занятия",
+    "noActivities": "Занятия не найдены",
+    "noActivitiesDesc": "Новые занятия скоро будут добавлены",
+    "viewDetails": "Просмотр деталей занятия",
+    "done": "Выполнено",
+    "selectChildDesc": "После добавления ребёнка появятся занятия",
+    "changeFilter": "Попробуйте изменить фильтр"
   },
   "mealsPage": {
     "title": "Питание и рацион",
@@ -238,7 +283,20 @@
       "toastDelete": "Прием пищи удален",
       "toastError": "Ошибка при сохранении приема пищи",
       "toastLoadError": "Ошибка загрузки приема пищи",
-      "toastChildrenEmpty": "Дети не найдены. Сначала создайте родителя с данными ребенка."
+      "toastChildrenEmpty": "Дети не найдены. Сначала создайте родителя с данными ребенка.",
+      "requiredFields": "Пожалуйста, заполните все обязательные поля",
+      "confirmDeleteMessage": "Вы уверены, что хотите удалить этот приём пищи?"
+    },
+    "quantity": {
+      "full": "Полная порция",
+      "half": "Половина порции",
+      "small": "Маленькая порция"
+    },
+    "types": {
+      "breakfast": "Завтрак",
+      "lunch": "Обед",
+      "snack": "Перекус",
+      "dinner": "Ужин"
     }
   },
   "meals": {
@@ -264,7 +322,19 @@
       "Lunch": "Обед",
       "Snack": "Перекус",
       "Dinner": "Ужин"
-    }
+    },
+    "todayNutrition": "Сегодняшнее питание",
+    "mealsCount": "Приёмы пищи",
+    "calories": "Калории",
+    "water": "Вода",
+    "completed": "Выполнено",
+    "log": "Записать",
+    "mealSchedule": "График питания",
+    "selectChild": "Выберите ребёнка",
+    "selectChildDesc": "После добавления ребёнка появятся записи о питании",
+    "noMeals": "Записи о питании не найдены",
+    "noMealsDesc": "Записи о питании скоро будут добавлены",
+    "changeFilter": "Попробуйте изменить фильтр"
   },
   "mediaPage": {
     "title": "Медиа-галерея",
@@ -297,7 +367,12 @@
       "cancel": "Отмена",
       "save": "Сохранить",
       "update": "Обновить",
-      "create": "Создать"
+      "create": "Создать",
+      "childHelp": "Дети не найдены",
+      "fileRequired": "Пожалуйста, выберите файл для загрузки",
+      "pickFromLibrary": "Выбрать из галереи",
+      "takePhoto": "Сделать фото",
+      "fileHelp": "Загрузите изображение или видео"
     },
     "video": {
       "loading": "Загрузка видео...",
@@ -308,12 +383,24 @@
       "openNewTab": "Открыть в новой вкладке"
     },
     "confirmDelete": "Удалить этот медиаматериал?",
+    "confirmDeleteMessage": "Вы уверены, что хотите удалить этот медиаматериал?",
     "toastCreate": "Медиа успешно создано",
     "toastUpdate": "Медиа успешно обновлено",
     "toastDelete": "Медиа удалено",
     "toastError": "Ошибка при сохранении медиа",
     "toastLoadError": "Ошибка загрузки медиа",
-    "toastChildrenEmpty": "Дети не найдены. Сначала создайте родителя с данными ребенка."
+    "toastChildrenEmpty": "Дети не найдены. Сначала создайте родителя с данными ребенка.",
+    "permissionRequired": "Требуется разрешение на доступ к галерее",
+    "pickError": "Ошибка выбора медиа",
+    "cameraPermissionRequired": "Требуется разрешение на доступ к камере",
+    "cameraError": "Ошибка при съёмке фото",
+    "gallery": "Медиа-галерея",
+    "galleryDescription": "Дорогие моменты, отслеживание прогресса и воспоминания навсегда.",
+    "categories": "Категории",
+    "recentMedia": "Последние медиа",
+    "addNewMedia": "Добавить новое медиа",
+    "addNewMediaSub": "Фото, видео или документы",
+    "selectedFile": "Выбранный файл"
   },
   "media": {
     "title": "Медиа-галерея",
@@ -351,7 +438,18 @@
     "scrollToBottom": "Прокрутить вниз",
     "errorSend": "Ошибка отправки сообщения",
     "errorUpdate": "Ошибка обновления сообщения",
-    "errorDelete": "Ошибка удаления сообщения"
+    "errorDelete": "Ошибка удаления сообщения",
+    "noMessages": "Пока нет сообщений",
+    "noMessagesDesc": "Отправьте сообщение учителю вашего ребёнка",
+    "editMessage": "Редактировать сообщение",
+    "deleteMessage": "Удалить сообщение",
+    "messageInput": "Поле ввода сообщения",
+    "confirmDeleteAction": "Удалить",
+    "noParents": "Нет родителей",
+    "noParentsDesc": "Родители ещё не назначены",
+    "openConversation": "Открыть беседу",
+    "messageInputHint": "Введите сообщение здесь",
+    "editMessageInput": "Редактирование текста сообщения"
   },
   "profile": {
     "title": "Профиль",
@@ -397,7 +495,23 @@
     "updateFailed": "Не удалось обновить профиль",
     "photoPermissionRequired": "Требуется разрешение на доступ к фото",
     "photoUploaded": "Фото профиля успешно обновлено",
-    "photoUploadFailed": "Не удалось загрузить фото"
+    "photoUploadFailed": "Не удалось загрузить фото",
+    "avatarUpdated": "Аватар успешно обновлён",
+    "uploadError": "Ошибка загрузки аватара",
+    "logoutDesc": "Выйти из аккаунта",
+    "notFound": "Профиль не найден",
+    "myGroups": "Мои группы",
+    "parents": "родителей",
+    "capacity": "Вместимость",
+    "myParents": "Мои родители",
+    "child": "ребёнок",
+    "children": "детей",
+    "moreParents": "ещё родителей",
+    "teacherRatings": "Рейтинг учителей",
+    "you": "Вы",
+    "ratings": "оценок",
+    "moreTeachers": "ещё учителей",
+    "monitoringJournal": "Журнал мониторинга"
   },
   "cancel": "Отмена",
   "save": "Сохранить",
@@ -414,7 +528,11 @@
     "success": "Успех",
     "notFound": "Не найдено",
     "more": "еще",
-    "selectDate": "Выберите дату"
+    "selectDate": "Выберите дату",
+    "loadError": "Ошибка загрузки данных",
+    "retry": "Повторить",
+    "saving": "Сохранение...",
+    "confirm": "Подтвердить"
   },
   "time": {
     "justNow": "Только что",
@@ -454,7 +572,20 @@
     "delete": "Удалить",
     "empty": "Пока нет уведомлений",
     "emptyUnread": "Нет непрочитанных уведомлений",
-    "emptyRead": "Нет прочитанных уведомлений"
+    "emptyRead": "Нет прочитанных уведомлений",
+    "all": "Все",
+    "unread": "Непрочитанные",
+    "read": "Прочитанные",
+    "confirmDelete": "Удалить это уведомление?",
+    "justNow": "Только что",
+    "minutesAgo": "{{count}} мин. назад",
+    "hoursAgo": "{{count}} ч. назад",
+    "daysAgo": "{{count}} дн. назад",
+    "notification": "Уведомление",
+    "noNotifications": "Нет уведомлений",
+    "noFiltered": "Нет {{filter}} уведомлений",
+    "tryDifferentFilter": "Попробуйте другой фильтр",
+    "allCaughtUp": "Все уведомления прочитаны!"
   },
   "ratingPage": {
     "title": "Оценка учителя",
@@ -481,7 +612,16 @@
     "noPhone": "Телефон не указан",
     "allRatings": "Все отзывы",
     "noRatings": "Пока нет отзывов",
-    "anonymous": "Анонимный"
+    "anonymous": "Анонимный",
+    "tapStars": "Нажмите на звёзды для оценки",
+    "poor": "Плохо",
+    "fair": "Удовлетворительно",
+    "good": "Хорошо",
+    "veryGood": "Очень хорошо",
+    "excellent": "Отлично!",
+    "saving": "Сохранение...",
+    "successDesc": "Спасибо за ваш отзыв",
+    "noTeacherDesc": "Вы сможете оценить учителя после назначения"
   },
   "schoolRatingPage": {
     "title": "Оценка школы",
@@ -613,7 +753,23 @@
     "tasks": "Задачи",
     "workHistory": "История работы",
     "contactAdmin": "Связаться с админом",
-    "logout": "Выход"
+    "logout": "Выход",
+    "darkMode": "Тёмная тема",
+    "darkModeDesc": "Переключение между светлой и тёмной темой",
+    "general": "Общее",
+    "work": "Работа",
+    "viewResponsibilities": "Просмотр назначенных обязанностей",
+    "viewTasks": "Управление задачами",
+    "viewHistory": "Записи о трудоустройстве",
+    "theme": "Тема",
+    "profile": "Профиль",
+    "password": "Изменить пароль",
+    "logoutConfirm": "Вы уверены, что хотите выйти?",
+    "notificationsDesc": "Управление настройками уведомлений",
+    "support": "Поддержка",
+    "allFieldsRequired": "Все поля обязательны",
+    "passwordMinLength": "Пароль должен содержать не менее 8 символов",
+    "passwordsMismatch": "Новые пароли не совпадают"
   },
   "about": {
     "title": "О приложении",
@@ -662,6 +818,7 @@
   "help": {
     "title": "Помощь и поддержка",
     "subtitle": "Найдите ответы на часто задаваемые вопросы и получите поддержку",
+    "desc": "Получите помощь и свяжитесь со службой поддержки",
     "contactUs": "Свяжитесь с нами",
     "faq": "Часто задаваемые вопросы",
     "quickLinks": "Быстрые ссылки",
@@ -708,6 +865,49 @@
     "noWarnings": "Нет предупреждений",
     "noWarningsDesc": "Пока нет предупреждений",
     "resolveError": "Ошибка при решении предупреждения"
+  },
+  "responsibilities": {
+    "title": "Обязанности",
+    "noResponsibilities": "Обязанности не назначены",
+    "responsibility": "Обязанность",
+    "deadline": "Срок"
+  },
+  "tasks": {
+    "title": "Задачи",
+    "noTasks": "Задачи не назначены",
+    "task": "Задача",
+    "completed": "Выполнено",
+    "pending": "Ожидание",
+    "markCompleted": "Отметить как выполненное"
+  },
+  "workHistory": {
+    "title": "История работы",
+    "noHistory": "Нет истории работы",
+    "workItem": "Запись о работе",
+    "completed": "Выполнено",
+    "pending": "Ожидание",
+    "markCompleted": "Отметить как выполненное"
+  },
+  "emotional": {
+    "date": "Дата",
+    "states": "Эмоциональные состояния",
+    "notes": "Заметки",
+    "notesPlaceholder": "Необязательные заметки..."
+  },
+  "loading": {
+    "tagline": "Делаем обучение увлекательным",
+    "message": "Загрузка..."
+  },
+  "teacher": {
+    "addActivity": "Добавить занятие",
+    "logMeal": "Записать приём пищи",
+    "uploadMedia": "Загрузить медиа",
+    "parents": "Родители",
+    "tasks": "Задачи",
+    "responsibilities": "Обязанности",
+    "workHistory": "История работы",
+    "emotionalMonitoring": "Эмоциональный мониторинг",
+    "monitoringJournal": "Журнал мониторинга"
   },
   "monitoring": {
     "title": "Еженедельный журнал мониторинга",
