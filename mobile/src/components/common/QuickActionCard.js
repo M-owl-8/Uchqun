@@ -38,11 +38,9 @@ export default function QuickActionCard({ icon, title, subtitle, color, onPress 
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.card,
     padding: tokens.space.xl,
     flexDirection: 'row',
     alignItems: 'center',

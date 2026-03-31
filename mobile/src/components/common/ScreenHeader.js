@@ -6,19 +6,10 @@ import { useNavigation } from '@react-navigation/native';
 import tokens from '../../styles/tokens';
 
 /**
- * ScreenHeader — Sticky glass header matching the Figma Header spec.
+ * ScreenHeader — clean header for all screens.
  *
- * Glass bg, left menu/back, center title, right bell with gold dot.
- *
- * Props:
- *   title                  — header text
- *   showBack               — show chevron-back instead of menu (default false)
- *   onBackPress            — custom back handler
- *   showNotificationBell   — show bell icon on right (default false)
- *   notificationCount      — unread count (shows gold dot when > 0)
- *   rightAction            — ReactNode for custom right content
- *   rightActionIcon        — Ionicon name for right button (backward compat)
- *   onRightActionPress     — handler for rightActionIcon press (backward compat)
+ * Tab screens: just centered title + optional right action. NO burger menu.
+ * Stack screens (showBack=true): back chevron + centered title + optional right action.
  */
 export function ScreenHeader({
   title,
@@ -38,7 +29,6 @@ export function ScreenHeader({
     else if (navigation.canGoBack()) navigation.goBack();
   };
 
-  // Determine right-side content
   const renderRight = () => {
     if (rightAction) return rightAction;
 
@@ -73,14 +63,13 @@ export function ScreenHeader({
       );
     }
 
-    // Empty spacer to keep title centered
     return <View style={styles.iconButton} />;
   };
 
   return (
     <View style={[styles.container, { paddingTop: insets.top + tokens.space.sm }]}>
       <View style={styles.row}>
-        {/* Left button */}
+        {/* Left: back button on stack screens, empty spacer on tab screens */}
         {showBack ? (
           <Pressable
             onPress={handleBack}
@@ -91,15 +80,11 @@ export function ScreenHeader({
             <Ionicons name="chevron-back" size={24} color={tokens.colors.text.primary} />
           </Pressable>
         ) : (
-          <View style={styles.iconButton}>
-            <Ionicons name="menu" size={24} color={tokens.colors.text.primary} />
-          </View>
+          <View style={styles.iconButton} />
         )}
 
-        {/* Title */}
         <Text style={styles.title} numberOfLines={1}>{title}</Text>
 
-        {/* Right */}
         {renderRight()}
       </View>
     </View>
@@ -108,9 +93,7 @@ export function ScreenHeader({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: tokens.glass.bg,
-    borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border.light,
+    backgroundColor: tokens.colors.background.primary,
     paddingHorizontal: tokens.space.xl,
     paddingBottom: tokens.space.md,
   },

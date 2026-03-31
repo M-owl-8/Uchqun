@@ -1,71 +1,43 @@
 import React, { useRef, useEffect } from 'react';
-import {
-  StyleSheet,
-  View,
-  Pressable,
-  Animated,
-  Image,
-} from 'react-native';
-import { useThemeTokens } from '../../../hooks/useThemeTokens';
+import { StyleSheet, View, Pressable, Animated } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import tokens from '../../../styles/tokens';
 
 export default function FloatingAIButton({ onPress }) {
-  const tokens = useThemeTokens();
   const pulseAnim = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {
     const pulse = Animated.loop(
       Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.15,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 2000,
-          useNativeDriver: true,
-        }),
+        Animated.timing(pulseAnim, { toValue: 1.08, duration: 2000, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 2000, useNativeDriver: true }),
       ])
     );
     pulse.start();
     return () => pulse.stop();
   }, []);
 
-  const styles = getStyles(tokens);
-
   return (
     <Animated.View style={[styles.fabContainer, { transform: [{ scale: pulseAnim }] }]}>
       <Pressable
         onPress={onPress}
-        style={({ pressed }) => [
-          styles.fabPressable,
-          pressed && { transform: [{ scale: 0.95 }] },
-        ]}
+        style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
         accessibilityRole="button"
-        accessibilityLabel="Uchi AI Assistant"
+        accessibilityLabel="AI Assistant"
         accessibilityHint="Open AI chat assistant"
       >
-        <View style={styles.fab}>
-          <Image
-            source={require('../../../../assets/Uchqun logo.png')}
-            style={styles.fabIcon}
-            resizeMode="contain"
-          />
-        </View>
+        <Ionicons name="sparkles" size={24} color="#FFFFFF" />
       </Pressable>
     </Animated.View>
   );
 }
 
-const getStyles = (tokens) => StyleSheet.create({
+const styles = StyleSheet.create({
   fabContainer: {
     position: 'absolute',
-    bottom: 90,
-    right: 18,
+    bottom: 100,
+    right: 20,
     zIndex: 1000,
-  },
-  fabPressable: {
-    position: 'relative',
   },
   fab: {
     width: 56,
@@ -73,12 +45,11 @@ const getStyles = (tokens) => StyleSheet.create({
     borderRadius: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.colors.background.secondary,
-    ...tokens.shadow.card,
+    backgroundColor: tokens.colors.accent.blue,
+    ...tokens.shadow.elevated,
   },
-  fabIcon: {
-    width: 28,
-    height: 28,
-    tintColor: tokens.colors.accent.blue,
+  fabPressed: {
+    transform: [{ scale: 0.93 }],
+    opacity: 0.9,
   },
 });

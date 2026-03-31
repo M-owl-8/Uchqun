@@ -4,11 +4,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import tokens from '../../styles/tokens';
 
 /**
- * Card — Authoritative glass card component.
+ * Card — primary card component for the design system.
  *
- * Matches the Figma GlassCard spec:
- *   bg: rgba(255,255,255,0.7)  border: rgba(255,255,255,0.3)
- *   radius: 16  shadow: glass  padding: 20  press: scale(0.98)
+ * Solid white background with warm navy-tinted shadow.
+ * No border (borders look gray on Android against warm sand bg).
  *
  * Props:
  *   children, style, onPress, gradient (color[]), padding (number override)
@@ -47,36 +46,21 @@ export default function Card({ children, style, onPress, gradient, padding }) {
 }
 
 // Named re-exports for backward compatibility
-export function GlassCard(props) {
-  return <Card {...props} />;
-}
-
-export function ElevatedCard(props) {
-  return <Card {...props} />;
-}
-
-export function GradientCard({ gradientColors, ...props }) {
-  return <Card gradient={gradientColors} {...props} />;
-}
-
-export function FlatCard(props) {
-  return <Card {...props} />;
-}
-
-export function HighlightCard({ gradientColors, ...props }) {
-  return <Card gradient={gradientColors} {...props} />;
-}
+export function GlassCard(props) { return <Card {...props} />; }
+export function ElevatedCard(props) { return <Card {...props} />; }
+export function GradientCard({ gradientColors, ...props }) { return <Card gradient={gradientColors} {...props} />; }
+export function FlatCard(props) { return <Card {...props} />; }
+export function HighlightCard({ gradientColors, ...props }) { return <Card gradient={gradientColors} {...props} />; }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
-    ...tokens.shadow.glass,
+    // No borderWidth — transparent borders look gray on Android
+    ...tokens.shadow.card,
   },
   pressed: {
     transform: [{ scale: 0.98 }],
-    opacity: 0.95,
+    opacity: 0.9,
   },
 });
