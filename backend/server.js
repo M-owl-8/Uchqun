@@ -52,6 +52,7 @@ import governmentRoutes from './routes/governmentRoutes.js';
 import businessRoutes from './routes/businessRoutes.js';
 import childAssessmentRoutes from './routes/childAssessmentRoutes.js';
 import servicePlanRoutes from './routes/servicePlanRoutes.js';
+import mealPlanRoutes from './routes/mealPlanRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -270,6 +271,7 @@ app.use('/api/government', governmentRoutes);
 app.use('/api/business', businessRoutes);
 app.use('/api/assessments', childAssessmentRoutes);
 app.use('/api/service-plans', servicePlanRoutes);
+app.use('/api/meal-plans', mealPlanRoutes);
 
 // API Documentation (non-production only)
 if (process.env.NODE_ENV !== 'production') {

@@ -980,5 +980,23 @@
     "saved": "Baholash saqlandi",
     "noAssessments": "Hali baholanmagan",
     "noChanges": "Saqlash uchun o'zgarishlar yo'q"
+  },
+  "mealPlan": {
+    "title": "Ovqat rejasi",
+    "date": "Sana",
+    "breakfast": "Nonushta",
+    "lunch": "Tushlik",
+    "snack": "Yengil tamaddi",
+    "dinner": "Kechki ovqat",
+    "plannedMenu": "Rejalashtirilgan menyu",
+    "notes": "Izoh",
+    "save": "Saqlash",
+    "saved": "Reja saqlandi",
+    "noPlans": "Bu kun uchun reja yo'q",
+    "selectChildren": "Bolalarni tanlang",
+    "selectedCount": "{{count}} ta bola tanlandi",
+    "bulkSaved": "Reja {{count}} ta bola uchun saqlandi",
+    "addPlan": "Reja qo'shish",
+    "editPlan": "Rejani tahrirlash"
   }
 }

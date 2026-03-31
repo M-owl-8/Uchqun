@@ -973,5 +973,23 @@
     "saved": "Assessment saved",
     "noAssessments": "Not assessed yet",
     "noChanges": "No changes to save"
+  },
+  "mealPlan": {
+    "title": "Meal Plan",
+    "date": "Date",
+    "breakfast": "Breakfast",
+    "lunch": "Lunch",
+    "snack": "Snack",
+    "dinner": "Dinner",
+    "plannedMenu": "Planned Menu",
+    "notes": "Notes",
+    "save": "Save",
+    "saved": "Plan saved",
+    "noPlans": "No plan for this day",
+    "selectChildren": "Select Children",
+    "selectedCount": "{{count}} children selected",
+    "bulkSaved": "Plan saved for {{count}} children",
+    "addPlan": "Add Plan",
+    "editPlan": "Edit Plan"
   }
 }

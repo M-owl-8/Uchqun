@@ -31,6 +31,7 @@ import BusinessStats from './BusinessStats.js';
 import RefreshToken from './RefreshToken.js';
 import ChildAssessment from './ChildAssessment.js';
 import ServicePlan from './ServicePlan.js';
+import MealPlan from './MealPlan.js';
 
 // Initialize all models
 const models = {
@@ -66,6 +67,7 @@ const models = {
   RefreshToken,
   ChildAssessment,
   ServicePlan,
+  MealPlan,
   sequelize,
 };
 
@@ -222,6 +224,12 @@ ServicePlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(ServicePlan, { foreignKey: 'createdBy', as: 'createdServicePlans' });
 ServicePlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
+// Meal Plan relationships
+Child.hasMany(MealPlan, { foreignKey: 'childId', as: 'mealPlans' });
+MealPlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(MealPlan, { foreignKey: 'createdBy', as: 'createdMealPlans' });
+MealPlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
 // Sync database (use with caution in production)
 export const syncDatabase = async (force = false) => {
   try {
@@ -310,5 +318,6 @@ export {
   RefreshToken,
   ChildAssessment,
   ServicePlan,
+  MealPlan,
   sequelize,
 };

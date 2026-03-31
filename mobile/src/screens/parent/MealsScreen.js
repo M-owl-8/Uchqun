@@ -463,6 +463,21 @@ export function MealsScreen() {
         showBack
         showNotificationBell={false}
       />
+      {selectedChildId && (
+        <Pressable
+          style={{ flexDirection: 'row', alignItems: 'center', gap: 6, marginHorizontal: 16, marginBottom: 8, backgroundColor: '#E8C27E20', paddingVertical: 10, paddingHorizontal: 14, borderRadius: 10 }}
+          onPress={() => {
+            const child = children.find(c => c.id === selectedChildId);
+            navigation.navigate('MealPlan', { childId: selectedChildId, childName: child?.firstName });
+          }}
+        >
+          <Ionicons name="calendar-outline" size={18} color="#E8A030" />
+          <Text style={{ fontSize: 14, fontWeight: '600', color: '#E8A030' }}>
+            {t('mealPlan.title', { defaultValue: 'Meal Plan' })}
+          </Text>
+          <Ionicons name="chevron-forward" size={16} color="#E8A030" style={{ marginLeft: 'auto' }} />
+        </Pressable>
+      )}
       {error && (
         <View style={styles.errorContainer}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
