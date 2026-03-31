@@ -1,7 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useNavigation } from '@react-navigation/native';
 import tokens from '../../styles/tokens';
 
@@ -21,7 +20,6 @@ export function ScreenHeader({
   rightActionIcon,
   onRightActionPress,
 }) {
-  const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 
   const handleBack = () => {
@@ -67,7 +65,7 @@ export function ScreenHeader({
   };
 
   return (
-    <View style={[styles.container, { paddingTop: insets.top + tokens.space.sm }]}>
+    <View style={styles.container}>
       <View style={styles.row}>
         {/* Left: back button on stack screens, empty spacer on tab screens */}
         {showBack ? (
@@ -95,7 +93,8 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: tokens.colors.background.primary,
     paddingHorizontal: tokens.space.xl,
-    paddingBottom: tokens.space.md,
+    paddingTop: tokens.space.xs,
+    paddingBottom: tokens.space.sm,
   },
   row: {
     flexDirection: 'row',
