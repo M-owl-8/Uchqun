@@ -56,8 +56,11 @@ const styles = StyleSheet.create({
   card: {
     backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    // No borderWidth — transparent borders look gray on Android
-    ...tokens.shadow.card,
+    shadowColor: '#2E3A59',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 8,
+    elevation: 3,
   },
   pressed: {
     transform: [{ scale: 0.98 }],
