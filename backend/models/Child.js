@@ -72,6 +72,54 @@ const Child = sequelize.define('Child', {
       key: 'id',
     },
   },
+  medicalDiagnosis: {
+    type: DataTypes.STRING(500),
+    allowNull: true,
+  },
+  institutionStartDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  fatherFullName: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  fatherDOB: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  fatherOccupation: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  motherFullName: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  motherDOB: {
+    type: DataTypes.DATEONLY,
+    allowNull: true,
+  },
+  motherOccupation: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  address: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  contactPhone: {
+    type: DataTypes.STRING(50),
+    allowNull: true,
+  },
+  childDescription: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
+  expectedOutcomes: {
+    type: DataTypes.TEXT,
+    allowNull: true,
+  },
   emergencyContact: {
     type: DataTypes.JSONB,
     allowNull: false,
