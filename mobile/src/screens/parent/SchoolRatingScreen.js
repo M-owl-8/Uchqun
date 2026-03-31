@@ -7,8 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { parentService } from '../../services/parentService';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
 
 const CRITERIA_KEYS = [
@@ -99,29 +99,26 @@ export function SchoolRatingScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('schoolRatingPage.title', { defaultValue: 'School Rating' })}
-        showBack={navigation.canGoBack()}
+        showBack={true}
       />
       <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}>
         {loading ? (
-          <GlassCard style={styles.card}>
+          <Card style={styles.loadingCard}>
             <Skeleton width={80} height={80} variant="circle" style={{ alignSelf: 'center', marginBottom: tokens.space.lg }} />
             <Skeleton width="60%" height={24} variant="text" style={{ alignSelf: 'center', marginBottom: tokens.space.md }} />
             <Skeleton width="80%" height={60} variant="text" style={{ alignSelf: 'center' }} />
-          </GlassCard>
+          </Card>
         ) : (
           <>
             {/* School Info Card */}
             {rating?.school && (
-              <GlassCard style={styles.infoCard}>
+              <Card style={styles.infoCard} padding={tokens.space.lg}>
                 <View style={styles.schoolInfo}>
-                  <LinearGradient
-                    colors={[tokens.colors.accent.blue + '30', tokens.colors.accent.blue + '15']}
-                    style={styles.schoolIcon}
-                  >
+                  <View style={styles.schoolIconCircle}>
                     <Ionicons name="school" size={28} color={tokens.colors.accent.blue} />
-                  </LinearGradient>
+                  </View>
                   <View style={styles.schoolDetails}>
                     <Text style={styles.schoolName} allowFontScaling={true}>
                       {rating.school.name}
@@ -133,7 +130,7 @@ export function SchoolRatingScreen() {
                   {rating?.averageRating > 0 && (
                     <View style={styles.averageContainer}>
                       <View style={styles.averageBadge}>
-                        <Ionicons name="star" size={16} color={tokens.colors.semantic.warning} />
+                        <Ionicons name="star" size={16} color={tokens.colors.nav.indicator} />
                         <Text style={styles.averageText}>{rating.averageRating.toFixed(1)}</Text>
                       </View>
                       <Text style={styles.ratingsCount}>
@@ -142,12 +139,12 @@ export function SchoolRatingScreen() {
                     </View>
                   )}
                 </View>
-              </GlassCard>
+              </Card>
             )}
 
             {/* Evaluation Checklist Card */}
-            <GlassCard style={styles.card}>
-              <View style={[styles.iconContainer, { backgroundColor: tokens.colors.accent.blue + '20' }]}>
+            <Card style={styles.ratingCard}>
+              <View style={styles.iconContainer}>
                 <Ionicons name="clipboard-outline" size={48} color={tokens.colors.accent.blue} />
               </View>
               <Text style={styles.title} allowFontScaling={true}>
@@ -195,7 +192,7 @@ export function SchoolRatingScreen() {
                       <Ionicons
                         name={star <= selectedRating ? 'star' : 'star-outline'}
                         size={36}
-                        color={star <= selectedRating ? tokens.colors.semantic.warning : tokens.colors.border.medium}
+                        color={star <= selectedRating ? tokens.colors.nav.indicator : tokens.colors.border.light}
                       />
                     </Pressable>
                   ))}
@@ -238,11 +235,11 @@ export function SchoolRatingScreen() {
                   {submitting ? t('common.loading', { defaultValue: 'Loading...' }) : t('schoolRatingPage.submit', { defaultValue: 'Submit' })}
                 </Text>
               </Pressable>
-            </GlassCard>
+            </Card>
 
             {/* Previous Rating */}
             {rating?.yourRating != null && (
-              <GlassCard style={styles.previousCard}>
+              <Card style={styles.previousCard}>
                 <Text style={styles.previousTitle} allowFontScaling={true}>
                   {t('schoolRatingPage.yourRating')}
                 </Text>
@@ -271,7 +268,7 @@ export function SchoolRatingScreen() {
                   </View>
                 )}
 
-                {/* Previous Star Rating (legacy or optional) */}
+                {/* Previous Star Rating */}
                 {rating.yourRating > 0 && (
                   <View style={styles.previousStars}>
                     {[1, 2, 3, 4, 5].map((star) => (
@@ -279,7 +276,7 @@ export function SchoolRatingScreen() {
                         key={star}
                         name={star <= rating.yourRating ? 'star' : 'star-outline'}
                         size={20}
-                        color={star <= rating.yourRating ? tokens.colors.semantic.warning : tokens.colors.border.medium}
+                        color={star <= rating.yourRating ? tokens.colors.nav.indicator : tokens.colors.border.light}
                       />
                     ))}
                   </View>
@@ -287,7 +284,7 @@ export function SchoolRatingScreen() {
 
                 {rating.yourComment && (
                   <Text style={styles.previousComment} allowFontScaling={true}>
-                    "{rating.yourComment}"
+                    &ldquo;{rating.yourComment}&rdquo;
                   </Text>
                 )}
                 {rating.lastUpdated && (
@@ -295,7 +292,7 @@ export function SchoolRatingScreen() {
                     {t('schoolRatingPage.lastUpdated', { date: new Date(rating.lastUpdated).toLocaleDateString() })}
                   </Text>
                 )}
-              </GlassCard>
+              </Card>
             )}
           </>
         )}
@@ -312,23 +309,25 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: tokens.space.lg,
   },
+  loadingCard: {
+    alignItems: 'center',
+  },
   // School Info Card
   infoCard: {
     marginBottom: tokens.space.lg,
-    padding: tokens.space.lg,
   },
   schoolInfo: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  schoolIcon: {
+  schoolIconCircle: {
     width: 64,
     height: 64,
     borderRadius: 32,
+    backgroundColor: tokens.colors.accent.blueSoft,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: tokens.space.md,
-    ...tokens.shadow.sm,
   },
   schoolDetails: {
     flex: 1,
@@ -349,7 +348,7 @@ const styles = StyleSheet.create({
   averageBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: `${tokens.colors.semantic.warning}15`,
+    backgroundColor: tokens.colors.joy.sunflowerSoft,
     paddingHorizontal: tokens.space.sm,
     paddingVertical: 4,
     borderRadius: tokens.radius.md,
@@ -358,7 +357,7 @@ const styles = StyleSheet.create({
   averageText: {
     fontSize: tokens.type.body.fontSize,
     fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.semantic.warning,
+    color: tokens.colors.nav.indicator,
   },
   ratingsCount: {
     fontSize: tokens.type.caption.fontSize,
@@ -366,7 +365,7 @@ const styles = StyleSheet.create({
     marginTop: 4,
   },
   // Rating Card
-  card: {
+  ratingCard: {
     alignItems: 'center',
     marginBottom: tokens.space.lg,
   },
@@ -374,11 +373,11 @@ const styles = StyleSheet.create({
     width: 88,
     height: 88,
     borderRadius: 44,
+    backgroundColor: tokens.colors.accent.blueSoft,
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: tokens.space.lg,
     alignSelf: 'center',
-    ...tokens.shadow.soft,
   },
   title: {
     fontSize: tokens.type.h2.fontSize,
@@ -417,7 +416,7 @@ const styles = StyleSheet.create({
   },
   checkLabelActive: {
     color: tokens.colors.text.primary,
-    fontWeight: '500',
+    fontWeight: tokens.typography.fontWeight.medium,
   },
   // Star section
   starSection: {
@@ -465,6 +464,8 @@ const styles = StyleSheet.create({
     padding: tokens.space.md,
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.primary,
+    borderWidth: 1,
+    borderColor: tokens.colors.border.light,
   },
   submitButton: {
     width: '100%',

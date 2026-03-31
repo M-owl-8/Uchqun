@@ -1,14 +1,13 @@
-import React, { useEffect, useState, useMemo, useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, TextInput, Alert, ScrollView, Animated, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { StyleSheet, Text, View, Pressable, TextInput, ScrollView, Animated, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { api } from '../../services/api';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 
@@ -41,7 +40,7 @@ function AnimatedStar({ value, currentRating, onPress }) {
         <Ionicons
           name={isActive ? "star" : "star-outline"}
           size={36}
-          color={isActive ? "#FBBF24" : "rgba(148, 163, 184, 0.4)"}
+          color={isActive ? tokens.colors.nav.indicator : tokens.colors.border.light}
         />
       </Animated.View>
     </Pressable>
@@ -51,7 +50,7 @@ function AnimatedStar({ value, currentRating, onPress }) {
 export function TeacherRatingScreen() {
   const navigation = useNavigation();
   const route = useRoute();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { childId = null } = route?.params || {};
 
@@ -184,13 +183,13 @@ export function TeacherRatingScreen() {
 
       {!teacher ? (
         <View style={styles.emptyContainer}>
-          <GlassCard style={styles.emptyCard}>
+          <Card style={styles.emptyCard}>
             <EmptyState
               icon="person-outline"
               title={t('ratingPage.noTeacher', { defaultValue: 'No Teacher Assigned' })}
               description={t('ratingPage.noTeacherDesc', { defaultValue: 'You will be able to rate your teacher once assigned' })}
             />
-          </GlassCard>
+          </Card>
         </View>
       ) : (
         <ScrollView
@@ -205,7 +204,7 @@ export function TeacherRatingScreen() {
             }}
           >
             {/* Teacher Card */}
-            <GlassCard style={styles.teacherCard}>
+            <Card style={styles.teacherCard} padding={tokens.space.xl}>
               <View style={styles.teacherInfo}>
                 <View style={styles.teacherAvatar}>
                   <Text style={styles.teacherAvatarText}>
@@ -225,17 +224,19 @@ export function TeacherRatingScreen() {
               {/* Average Rating Badge */}
               <View style={styles.averageBadge}>
                 <View style={styles.averageBadgeContent}>
-                  <Ionicons name="star" size={18} color="#FBBF24" />
+                  <Ionicons name="star" size={18} color={tokens.colors.nav.indicator} />
                   <Text style={styles.averageValue}>{summary.average?.toFixed(1) || '0.0'}</Text>
                   <Text style={styles.averageCount}>({summary.count || 0})</Text>
                 </View>
               </View>
-            </GlassCard>
+            </Card>
 
             {/* Rating Section */}
-            <GlassCard style={styles.ratingCard}>
+            <Card style={styles.ratingCard} padding={tokens.space.xl}>
               <View style={styles.ratingHeader}>
-                <Ionicons name="star-outline" size={22} color="#FBBF24" />
+                <View style={styles.ratingHeaderIcon}>
+                  <Ionicons name="star-outline" size={20} color={tokens.colors.nav.indicator} />
+                </View>
                 <Text style={styles.ratingTitle}>{t('ratingPage.starsLabel', { defaultValue: 'Rate Your Teacher' })}</Text>
               </View>
 
@@ -269,58 +270,49 @@ export function TeacherRatingScreen() {
                   <Text style={styles.commentLabel}>{t('ratingPage.commentLabel', { defaultValue: 'Comments' })}</Text>
                   <Text style={styles.optionalLabel}>{t('ratingPage.optional', { defaultValue: 'Optional' })}</Text>
                 </View>
-                <View style={styles.commentInputContainer}>
-                  <TextInput
-                    style={styles.commentInput}
-                    value={comment}
-                    onChangeText={setComment}
-                    placeholder={t('ratingPage.commentPlaceholder', { defaultValue: 'Share your thoughts...' })}
-                    placeholderTextColor={tokens.colors.text.tertiary}
-                    multiline
-                    numberOfLines={4}
-                    textAlignVertical="top"
-                  />
-                </View>
+                <TextInput
+                  style={styles.commentInput}
+                  value={comment}
+                  onChangeText={setComment}
+                  placeholder={t('ratingPage.commentPlaceholder', { defaultValue: 'Share your thoughts...' })}
+                  placeholderTextColor={tokens.colors.text.tertiary}
+                  multiline
+                  numberOfLines={4}
+                  textAlignVertical="top"
+                />
               </View>
 
               {/* Error Message */}
-              {error && (
+              {error ? (
                 <View style={styles.errorContainer}>
                   <Ionicons name="alert-circle" size={16} color={tokens.colors.semantic.error} />
                   <Text style={styles.errorText}>{error}</Text>
                 </View>
-              )}
+              ) : null}
 
               {/* Submit Button */}
               <Pressable
                 style={({ pressed }) => [
                   styles.submitButton,
                   pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-                  saving && { opacity: 0.7 },
+                  saving && styles.submitButtonSaving,
                 ]}
                 onPress={handleSubmit}
                 disabled={saving}
               >
-                <LinearGradient
-                  colors={saving ? [tokens.colors.border.medium, tokens.colors.border.medium] : [tokens.colors.semantic.warning, tokens.colors.semantic.warningVibrant]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  style={styles.submitButtonGradient}
-                >
-                  {saving ? (
-                    <>
-                      <ActivityIndicator color="#FFFFFF" size="small" />
-                      <Text style={styles.submitButtonText}>{t('ratingPage.saving', { defaultValue: 'Saving...' })}</Text>
-                    </>
-                  ) : (
-                    <>
-                      <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-                      <Text style={styles.submitButtonText}>
-                        {rating ? t('ratingPage.update', { defaultValue: 'Update Rating' }) : t('ratingPage.submit', { defaultValue: 'Submit Rating' })}
-                      </Text>
-                    </>
-                  )}
-                </LinearGradient>
+                {saving ? (
+                  <View style={styles.submitButtonInner}>
+                    <ActivityIndicator color={tokens.colors.text.white} size="small" />
+                    <Text style={styles.submitButtonText}>{t('ratingPage.saving', { defaultValue: 'Saving...' })}</Text>
+                  </View>
+                ) : (
+                  <View style={styles.submitButtonInner}>
+                    <Ionicons name="checkmark-circle" size={18} color={tokens.colors.text.white} />
+                    <Text style={styles.submitButtonText}>
+                      {rating ? t('ratingPage.update', { defaultValue: 'Update Rating' }) : t('ratingPage.submit', { defaultValue: 'Submit Rating' })}
+                    </Text>
+                  </View>
+                )}
               </Pressable>
 
               {/* Last Updated */}
@@ -332,7 +324,7 @@ export function TeacherRatingScreen() {
                   })}
                 </Text>
               )}
-            </GlassCard>
+            </Card>
           </Animated.View>
         </ScrollView>
       )}
@@ -353,16 +345,13 @@ export function TeacherRatingScreen() {
             },
           ]}
         >
-          <GlassCard style={styles.successContent}>
-            <LinearGradient
-              colors={[tokens.colors.semantic.success, tokens.colors.semantic.successVibrant]}
-              style={StyleSheet.absoluteFill}
-              borderRadius={tokens.radius['2xl']}
-            />
-            <Ionicons name="checkmark-circle" size={64} color="#FFFFFF" />
+          <Card style={styles.successContent}>
+            <View style={styles.successIconCircle}>
+              <Ionicons name="checkmark-circle" size={64} color={tokens.colors.semantic.success} />
+            </View>
             <Text style={styles.successTitle}>{t('ratingPage.success', { defaultValue: 'Rating Submitted!' })}</Text>
             <Text style={styles.successMessage}>{t('ratingPage.successDesc', { defaultValue: 'Thank you for your feedback' })}</Text>
-          </GlassCard>
+          </Card>
         </Animated.View>
       )}
     </SafeAreaView>
@@ -389,7 +378,6 @@ const styles = StyleSheet.create({
   },
   teacherCard: {
     marginBottom: tokens.space.xl,
-    padding: tokens.space.xl,
   },
   teacherInfo: {
     flexDirection: 'row',
@@ -403,12 +391,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: tokens.space.md,
-    backgroundColor: tokens.colors.semantic.warning,
-    ...tokens.shadow.sm,
+    backgroundColor: tokens.colors.accent.blue,
+    ...tokens.shadow.soft,
   },
   teacherAvatarText: {
     fontSize: 24,
-    fontWeight: '700',
+    fontWeight: tokens.typography.fontWeight.bold,
     color: tokens.colors.text.white,
   },
   teacherDetails: {
@@ -416,8 +404,8 @@ const styles = StyleSheet.create({
   },
   teacherLabel: {
     fontSize: tokens.type.caption.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.semantic.warning,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.accent.blue,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
     marginBottom: 2,
@@ -440,7 +428,7 @@ const styles = StyleSheet.create({
   averageBadge: {
     borderRadius: tokens.radius.pill,
     alignSelf: 'flex-start',
-    backgroundColor: tokens.colors.semantic.warningSoft,
+    backgroundColor: tokens.colors.joy.sunflowerSoft,
   },
   averageBadgeContent: {
     flexDirection: 'row',
@@ -451,8 +439,8 @@ const styles = StyleSheet.create({
   },
   averageValue: {
     fontSize: tokens.type.h3.fontSize,
-    fontWeight: '700',
-    color: tokens.colors.semantic.warning,
+    fontWeight: tokens.typography.fontWeight.bold,
+    color: tokens.colors.nav.indicator,
   },
   averageCount: {
     fontSize: tokens.type.sub.fontSize,
@@ -460,13 +448,20 @@ const styles = StyleSheet.create({
   },
   ratingCard: {
     marginBottom: tokens.space.xl,
-    padding: tokens.space.xl,
   },
   ratingHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     gap: tokens.space.sm,
     marginBottom: tokens.space.xl,
+  },
+  ratingHeaderIcon: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: tokens.colors.joy.sunflowerSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   ratingTitle: {
     fontSize: tokens.type.h3.fontSize,
@@ -486,8 +481,8 @@ const styles = StyleSheet.create({
   },
   ratingDescText: {
     fontSize: tokens.type.body.fontSize,
-    fontWeight: '600',
-    color: '#FBBF24',
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.nav.indicator,
     letterSpacing: 0.3,
   },
   commentSection: {
@@ -501,7 +496,7 @@ const styles = StyleSheet.create({
   },
   commentLabel: {
     fontSize: tokens.type.sub.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.primary,
     letterSpacing: 0.2,
   },
@@ -509,16 +504,16 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.caption.fontSize,
     color: tokens.colors.text.secondary,
   },
-  commentInputContainer: {
+  commentInput: {
     borderRadius: tokens.radius.md,
     backgroundColor: tokens.colors.background.tertiary,
     padding: tokens.space.md,
-  },
-  commentInput: {
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.primary,
     minHeight: 100,
     textAlignVertical: 'top',
+    borderWidth: 1,
+    borderColor: tokens.colors.border.light,
   },
   errorContainer: {
     flexDirection: 'row',
@@ -536,21 +531,25 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     borderRadius: tokens.radius.md,
-    overflow: 'hidden',
-    ...tokens.shadow.glow,
+    backgroundColor: tokens.colors.accent.blue,
+    paddingVertical: tokens.space.lg,
+    alignItems: 'center',
+    justifyContent: 'center',
+    ...tokens.shadow.soft,
   },
-  submitButtonGradient: {
+  submitButtonSaving: {
+    opacity: 0.7,
+  },
+  submitButtonInner: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    paddingVertical: tokens.space.lg,
     gap: tokens.space.sm,
   },
   submitButtonText: {
     fontSize: tokens.type.button.fontSize,
     fontWeight: tokens.type.button.fontWeight,
     color: tokens.colors.text.white,
-    letterSpacing: tokens.type.button.letterSpacing,
   },
   lastUpdated: {
     fontSize: tokens.type.caption.fontSize,
@@ -562,26 +561,30 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: tokens.colors.surface.overlay,
   },
   successContent: {
-    borderRadius: tokens.radius['2xl'],
-    padding: tokens.space['3xl'],
     alignItems: 'center',
-    ...tokens.shadow.elevated,
     minWidth: '80%',
-    overflow: 'hidden',
+  },
+  successIconCircle: {
+    width: 88,
+    height: 88,
+    borderRadius: 44,
+    backgroundColor: tokens.colors.semantic.successSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: tokens.space.md,
   },
   successTitle: {
-    fontSize: tokens.type.h1.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
-    color: tokens.colors.text.white,
-    marginTop: tokens.space.lg,
+    fontSize: tokens.type.h2.fontSize,
+    fontWeight: tokens.type.h2.fontWeight,
+    color: tokens.colors.text.primary,
     marginBottom: tokens.space.sm,
   },
   successMessage: {
     fontSize: tokens.type.body.fontSize,
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: tokens.colors.text.secondary,
     textAlign: 'center',
   },
 });

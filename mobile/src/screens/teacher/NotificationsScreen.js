@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View, Pressable, SafeAreaView } from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -7,9 +8,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { notificationService } from '../../services/notificationService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import tokens from '../../styles/tokens';
+
+const NOTIFICATION_TYPE_COLORS = {
+  info: tokens.colors.semantic.info,
+  success: tokens.colors.semantic.success,
+  warning: tokens.colors.semantic.warning,
+  error: tokens.colors.semantic.error,
+  default: tokens.colors.accent.blue,
+};
+
+function getAccentColor(item) {
+  return NOTIFICATION_TYPE_COLORS[item.type] || NOTIFICATION_TYPE_COLORS.default;
+}
 
 export function NotificationsScreen() {
   const navigation = useNavigation();
@@ -17,6 +30,7 @@ export function NotificationsScreen() {
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
+  const [filter, setFilter] = useState('all');
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -64,35 +78,59 @@ export function NotificationsScreen() {
     return date.toLocaleDateString();
   };
 
-  const renderNotification = ({ item }) => (
-    <Pressable
-      onPress={() => markAsRead(item.id)}
-    >
-      <GlassCard style={[styles.card, !item.isRead && styles.unreadCard]}>
-        <View style={styles.cardRow}>
-          <View style={[styles.iconContainer, !item.isRead && styles.unreadIconContainer]}>
-            <Ionicons
-              name={item.isRead ? 'notifications-outline' : 'notifications'}
-              size={20}
-              color={!item.isRead ? tokens.colors.accent.blue : tokens.colors.text.secondary}
-            />
-          </View>
-          <View style={styles.contentContainer}>
-            <View style={styles.titleRow}>
-              <Text style={[styles.title, !item.isRead && styles.unreadTitle]} numberOfLines={1}>
-                {item.title || t('notifications.notification', { defaultValue: 'Notification' })}
-              </Text>
-              {!item.isRead && <View style={styles.unreadDot} />}
+  const filteredNotifications = notifications.filter((n) => {
+    if (filter === 'unread') return !n.isRead;
+    if (filter === 'read') return n.isRead;
+    return true;
+  });
+
+  const unreadCount = notifications.filter((n) => !n.isRead).length;
+  const readCount = notifications.filter((n) => n.isRead).length;
+
+  const filters = [
+    { key: 'all', label: t('notifications.all', { defaultValue: 'All' }), count: notifications.length },
+    { key: 'unread', label: t('notifications.unread', { defaultValue: 'Unread' }), count: unreadCount },
+    { key: 'read', label: t('notifications.read', { defaultValue: 'Read' }), count: readCount },
+  ];
+
+  const renderNotification = ({ item }) => {
+    const accentColor = getAccentColor(item);
+
+    return (
+      <Pressable onPress={() => markAsRead(item.id)}>
+        <Card
+          style={[
+            styles.card,
+            { borderLeftWidth: 4, borderLeftColor: accentColor },
+            !item.isRead && styles.unreadCard,
+          ]}
+          padding={tokens.space.lg}
+        >
+          <View style={styles.cardRow}>
+            <View style={[styles.iconCircle, { backgroundColor: accentColor + '15' }]}>
+              <Ionicons
+                name={item.isRead ? 'notifications-outline' : 'notifications'}
+                size={20}
+                color={accentColor}
+              />
             </View>
-            {item.message ? (
-              <Text style={styles.message} numberOfLines={2}>{item.message}</Text>
-            ) : null}
-            <Text style={styles.time}>{formatTimestamp(item.createdAt)}</Text>
+            <View style={styles.contentContainer}>
+              <View style={styles.titleRow}>
+                <Text style={[styles.title, !item.isRead && styles.unreadTitle]} numberOfLines={1}>
+                  {item.title || t('notifications.notification', { defaultValue: 'Notification' })}
+                </Text>
+                {!item.isRead && <View style={styles.unreadDot} />}
+              </View>
+              {item.message ? (
+                <Text style={styles.message} numberOfLines={2}>{item.message}</Text>
+              ) : null}
+              <Text style={styles.time}>{formatTimestamp(item.createdAt)}</Text>
+            </View>
           </View>
-        </View>
-      </GlassCard>
-    </Pressable>
-  );
+        </Card>
+      </Pressable>
+    );
+  };
 
   if (loading) {
     return (
@@ -106,17 +144,58 @@ export function NotificationsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('notifications.title', { defaultValue: 'Notifications' })} showBack={false} />
+
       {notifications.length === 0 ? (
         <EmptyState icon="notifications-outline" message={t('notifications.noNotifications', { defaultValue: 'No notifications' })} />
       ) : (
         <FlatList
-          data={notifications}
+          data={filteredNotifications}
           renderItem={renderNotification}
           keyExtractor={(item) => item.id?.toString() || Math.random().toString()}
           contentContainerStyle={[styles.list, { paddingBottom: bottomPadding }]}
           refreshing={loading}
           onRefresh={loadNotifications}
           showsVerticalScrollIndicator={false}
+          ListHeaderComponent={
+            <View style={styles.filterRow}>
+              {filters.map((f) => (
+                <Pressable
+                  key={f.key}
+                  style={[
+                    styles.filterPill,
+                    filter === f.key && styles.filterPillActive,
+                  ]}
+                  onPress={() => setFilter(f.key)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`${f.label} (${f.count})`}
+                  accessibilityState={{ selected: filter === f.key }}
+                >
+                  <Text style={[styles.filterLabel, filter === f.key && styles.filterLabelActive]}>
+                    {f.label}
+                  </Text>
+                  <View style={[styles.filterCount, filter === f.key && styles.filterCountActive]}>
+                    <Text style={[styles.filterCountText, filter === f.key && styles.filterCountTextActive]}>
+                      {f.count}
+                    </Text>
+                  </View>
+                </Pressable>
+              ))}
+            </View>
+          }
+          ListEmptyComponent={
+            <Card style={styles.emptyCard}>
+              <EmptyState
+                icon="notifications-outline"
+                title={filter !== 'all'
+                  ? t('notifications.noFiltered', { defaultValue: `No ${filter} notifications` })
+                  : t('notifications.noNotifications', { defaultValue: 'No notifications' })}
+                description={filter !== 'all'
+                  ? t('notifications.tryDifferentFilter', { defaultValue: 'Try a different filter' })
+                  : t('notifications.allCaughtUp', { defaultValue: "You're all caught up!" })}
+              />
+            </Card>
+          }
+          ItemSeparatorComponent={() => <View style={{ height: tokens.space.md }} />}
         />
       )}
     </SafeAreaView>
@@ -131,28 +210,75 @@ const styles = StyleSheet.create({
   list: {
     padding: tokens.space.lg,
   },
+  filterRow: {
+    flexDirection: 'row',
+    gap: tokens.space.sm,
+    marginBottom: tokens.space.lg,
+  },
+  filterPill: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: tokens.space.md,
+    paddingVertical: tokens.space.sm,
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    borderRadius: tokens.radius.pill,
+    gap: tokens.space.xs,
+    ...tokens.shadow.glass,
+  },
+  filterPillActive: {
+    backgroundColor: tokens.colors.accent.blue,
+    borderColor: tokens.colors.accent.blue,
+  },
+  filterLabel: {
+    fontSize: tokens.type.sub.fontSize,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.accent.blue,
+  },
+  filterLabelActive: {
+    color: tokens.colors.text.white,
+  },
+  filterCount: {
+    backgroundColor: 'rgba(46,58,89,0.08)',
+    borderRadius: 10,
+    minWidth: 20,
+    height: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 6,
+  },
+  filterCountActive: {
+    backgroundColor: 'rgba(255,255,255,0.25)',
+  },
+  filterCountText: {
+    fontSize: tokens.type.caption.fontSize,
+    fontWeight: tokens.typography.fontWeight.bold,
+    color: tokens.colors.accent.blue,
+  },
+  filterCountTextActive: {
+    color: tokens.colors.text.white,
+  },
   card: {
-    marginBottom: tokens.space.md,
+    marginBottom: 0,
   },
   unreadCard: {
-    borderLeftWidth: 4,
-    borderLeftColor: tokens.colors.accent.blue,
+    backgroundColor: tokens.colors.accent[50],
+  },
+  emptyCard: {
+    marginTop: tokens.space.xl,
   },
   cardRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
-  iconContainer: {
+  iconCircle: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: tokens.colors.surface.secondary,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: tokens.space.md,
-  },
-  unreadIconContainer: {
-    backgroundColor: tokens.colors.accent.blue + '15',
   },
   contentContainer: {
     flex: 1,
@@ -185,7 +311,7 @@ const styles = StyleSheet.create({
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: tokens.colors.accent.blue,
+    backgroundColor: tokens.colors.nav.indicator,
     marginLeft: tokens.space.sm,
   },
 });

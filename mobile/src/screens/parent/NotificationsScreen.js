@@ -5,11 +5,23 @@ import { useNavigation } from '@react-navigation/native';
 import { notificationService } from '../../services/notificationService';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import ListRow from '../../components/common/ListRow';
+
+const NOTIFICATION_TYPE_COLORS = {
+  info: tokens.colors.semantic.info,
+  success: tokens.colors.semantic.success,
+  warning: tokens.colors.semantic.warning,
+  error: tokens.colors.semantic.error,
+  default: tokens.colors.accent.blue,
+};
+
+function getAccentColor(item) {
+  return NOTIFICATION_TYPE_COLORS[item.type] || NOTIFICATION_TYPE_COLORS.default;
+}
 
 // Animated notification card component
 function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
@@ -21,7 +33,7 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 400,
-        delay: index * 80, // Stagger by 80ms
+        delay: index * 80,
         useNativeDriver: true,
       }),
       Animated.spring(slideAnim, {
@@ -50,6 +62,8 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
     return date.toLocaleDateString();
   };
 
+  const accentColor = getAccentColor(item);
+
   return (
     <Animated.View
       style={{
@@ -57,26 +71,42 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
         transform: [{ translateY: slideAnim }],
       }}
     >
-      <GlassCard
+      <Card
         style={[
           styles.card,
-          !item.isRead && styles.unreadCard
+          { borderLeftWidth: 4, borderLeftColor: accentColor },
+          !item.isRead && styles.unreadCard,
         ]}
+        padding={tokens.space.lg}
       >
-        <Pressable onPress={() => markAsRead(item.id)} accessibilityRole="button" accessibilityLabel={`${item.title || 'Notification'}: ${item.message || ''}`} accessibilityState={{ selected: item.isRead }} accessibilityHint={item.isRead ? undefined : 'Mark as read'}>
-          <ListRow
-            icon={item.isRead ? 'notifications-outline' : 'notifications'}
-            iconColor={!item.isRead ? tokens.colors.accent.blue : tokens.colors.text.muted}
-            title={item.title || 'Notification'}
-            subtitle={item.message}
-            time={formatTimestamp(item.createdAt)}
-            chevron={false}
-          />
-          {!item.isRead && (
-            <View style={styles.unreadBadge}>
-              <View style={styles.unreadDot} />
+        <Pressable
+          onPress={() => markAsRead(item.id)}
+          accessibilityRole="button"
+          accessibilityLabel={`${item.title || 'Notification'}: ${item.message || ''}`}
+          accessibilityState={{ selected: item.isRead }}
+          accessibilityHint={item.isRead ? undefined : 'Mark as read'}
+        >
+          <View style={styles.cardRow}>
+            <View style={[styles.iconCircle, { backgroundColor: accentColor + '15' }]}>
+              <Ionicons
+                name={item.isRead ? 'notifications-outline' : 'notifications'}
+                size={20}
+                color={accentColor}
+              />
             </View>
-          )}
+            <View style={styles.contentContainer}>
+              <View style={styles.titleRow}>
+                <Text style={[styles.title, !item.isRead && styles.unreadTitle]} numberOfLines={1}>
+                  {item.title || 'Notification'}
+                </Text>
+                {!item.isRead && <View style={styles.unreadDot} />}
+              </View>
+              {item.message ? (
+                <Text style={styles.message} numberOfLines={2}>{item.message}</Text>
+              ) : null}
+              <Text style={styles.time}>{formatTimestamp(item.createdAt)}</Text>
+            </View>
+          </View>
         </Pressable>
         <TouchableOpacity
           style={styles.deleteButton}
@@ -87,7 +117,7 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
         >
           <Ionicons name="trash-outline" size={16} color={tokens.colors.text.secondary} />
         </TouchableOpacity>
-      </GlassCard>
+      </Card>
     </Animated.View>
   );
 }
@@ -176,10 +206,10 @@ export function NotificationsScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title="Notifications"
         showBack={true}
-        rightComponent={unreadCount > 0 ? (
+        rightAction={unreadCount > 0 ? (
           <TouchableOpacity
             style={styles.markAllButton}
             onPress={handleMarkAllAsRead}
@@ -191,15 +221,15 @@ export function NotificationsScreen() {
           </TouchableOpacity>
         ) : null}
       />
-      
+
       {loading ? (
         <View style={styles.scrollContent}>
-          <GlassCard style={styles.card}>
+          <Card style={styles.card}>
             <Skeleton width="100%" height={80} />
-          </GlassCard>
-          <GlassCard style={styles.card}>
+          </Card>
+          <Card style={styles.card}>
             <Skeleton width="100%" height={80} />
-          </GlassCard>
+          </Card>
         </View>
       ) : (
         <FlatList
@@ -245,13 +275,13 @@ export function NotificationsScreen() {
             ) : null
           }
           ListEmptyComponent={
-            <GlassCard style={styles.emptyCard}>
+            <Card style={styles.emptyCard}>
               <EmptyState
                 icon="notifications-outline"
                 title={filter !== 'all' ? `No ${filter} notifications` : 'No notifications'}
                 description={filter !== 'all' ? 'Try a different filter' : "You're all caught up!"}
               />
-            </GlassCard>
+            </Card>
           }
           ItemSeparatorComponent={() => <View style={{ height: tokens.space.md }} />}
         />
@@ -284,9 +314,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: tokens.space.md,
     paddingVertical: tokens.space.sm,
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
     borderRadius: tokens.radius.pill,
     gap: tokens.space.xs,
+    ...tokens.shadow.glass,
   },
   filterPillActive: {
     backgroundColor: tokens.colors.accent.blue,
@@ -294,14 +327,14 @@ const styles = StyleSheet.create({
   },
   filterLabel: {
     fontSize: tokens.type.sub.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.secondary,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.accent.blue,
   },
   filterLabelActive: {
-    color: '#fff',
+    color: tokens.colors.text.white,
   },
   filterCount: {
-    backgroundColor: 'rgba(0,0,0,0.08)',
+    backgroundColor: 'rgba(46,58,89,0.08)',
     borderRadius: 10,
     minWidth: 20,
     height: 20,
@@ -313,35 +346,68 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.25)',
   },
   filterCountText: {
-    fontSize: 11,
-    fontWeight: '700',
-    color: tokens.colors.text.secondary,
+    fontSize: tokens.type.caption.fontSize,
+    fontWeight: tokens.typography.fontWeight.bold,
+    color: tokens.colors.accent.blue,
   },
   filterCountTextActive: {
-    color: '#fff',
+    color: tokens.colors.text.white,
   },
   card: {
     marginBottom: tokens.space.sm,
     position: 'relative',
   },
   unreadCard: {
-    borderLeftWidth: 4,
-    borderLeftColor: tokens.colors.accent.blue,
     backgroundColor: tokens.colors.accent[50],
   },
   emptyCard: {
     marginTop: tokens.space.xl,
   },
-  unreadBadge: {
-    position: 'absolute',
-    top: tokens.space.md,
-    right: tokens.space.md,
+  cardRow: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  iconCircle: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: tokens.space.md,
+  },
+  contentContainer: {
+    flex: 1,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  title: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: tokens.typography.fontWeight.medium,
+    color: tokens.colors.text.primary,
+    flex: 1,
+  },
+  unreadTitle: {
+    fontWeight: tokens.typography.fontWeight.bold,
+  },
+  message: {
+    fontSize: tokens.type.sub.fontSize,
+    color: tokens.colors.text.secondary,
+    marginTop: 4,
+  },
+  time: {
+    fontSize: tokens.type.caption.fontSize,
+    color: tokens.colors.text.tertiary,
+    marginTop: 6,
   },
   unreadDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: tokens.colors.accent.blue,
+    backgroundColor: tokens.colors.nav.indicator,
+    marginLeft: tokens.space.sm,
   },
   deleteButton: {
     position: 'absolute',

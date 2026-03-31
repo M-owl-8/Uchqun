@@ -1,12 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, Animated, ScrollView } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import tokens from '../../styles/tokens';
 
 export function RatingScreen() {
@@ -44,18 +43,19 @@ export function RatingScreen() {
       title: t('schoolRatingPage.title', { defaultValue: 'Maktabni baholash' }),
       subtitle: t('schoolRatingPage.desc', { defaultValue: 'Maktab xizmatlari va sharoitlarini baholang' }),
       icon: 'business',
-      gradient: ['#8B5CF6', '#A78BFA'],
+      iconBg: tokens.colors.joy.lavenderSoft,
+      iconColor: tokens.colors.joy.lavender,
       screen: 'SchoolRating',
     },
   ];
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('nav.rating', { defaultValue: 'Rating' })}
         showBack={false}
       />
-      
+
       <ScrollView
         style={styles.scrollView}
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
@@ -67,41 +67,39 @@ export function RatingScreen() {
             transform: [{ translateY: slideAnim }],
           }}
         >
-          {ratingOptions.map((option, index) => (
-            <Pressable
+          {ratingOptions.map((option) => (
+            <Card
               key={option.id}
+              style={styles.optionCard}
               onPress={() => navigation.navigate(option.screen)}
-              style={({ pressed }) => [
-                styles.optionCard,
-                pressed && { opacity: 0.9, transform: [{ scale: 0.98 }] },
-              ]}
+              padding={tokens.space.xl}
             >
-              <GlassCard style={styles.optionCardInner}>
-                <View style={styles.optionContent}>
-                  <View style={styles.optionIconContainer}>
-                    <View style={styles.optionIconCircle}>
-                      <Ionicons name={option.icon} size={32} color={tokens.colors.accent.blue} />
-                    </View>
-                  </View>
-                  <View style={styles.optionTextContainer}>
-                    <Text style={styles.optionTitle}>{option.title}</Text>
-                    <Text style={styles.optionSubtitle}>{option.subtitle}</Text>
-                  </View>
-                  <View style={styles.optionArrow}>
-                    <Ionicons name="chevron-forward" size={24} color={tokens.colors.text.tertiary} />
-                  </View>
+              <View style={styles.optionContent}>
+                <View style={[styles.optionIconCircle, { backgroundColor: option.iconBg }]}>
+                  <Ionicons name={option.icon} size={32} color={option.iconColor} />
                 </View>
-              </GlassCard>
-            </Pressable>
+                <View style={styles.optionTextContainer}>
+                  <Text style={styles.optionTitle}>{option.title}</Text>
+                  <Text style={styles.optionSubtitle}>{option.subtitle}</Text>
+                </View>
+                <View style={styles.optionArrow}>
+                  <Ionicons name="chevron-forward" size={24} color={tokens.colors.text.tertiary} />
+                </View>
+              </View>
+            </Card>
           ))}
 
           {/* Info Card */}
-          <GlassCard style={styles.infoCard}>
-            <Ionicons name="information-circle" size={20} color={tokens.colors.accent.blue} />
-            <Text style={styles.infoText}>
-              {t('rating.infoText', { defaultValue: 'Your feedback helps us improve our service' })}
-            </Text>
-          </GlassCard>
+          <Card style={styles.infoCard} padding={tokens.space.md}>
+            <View style={styles.infoRow}>
+              <View style={styles.infoIconCircle}>
+                <Ionicons name="information-circle" size={20} color={tokens.colors.accent.blue} />
+              </View>
+              <Text style={styles.infoText}>
+                {t('rating.infoText', { defaultValue: 'Your feedback helps us improve our service' })}
+              </Text>
+            </View>
+          </Card>
         </Animated.View>
       </ScrollView>
     </SafeAreaView>
@@ -123,24 +121,18 @@ const styles = StyleSheet.create({
   optionCard: {
     marginBottom: tokens.space.lg,
   },
-  optionCardInner: {
-    padding: tokens.space.xl,
-  },
   optionContent: {
     flexDirection: 'row',
     alignItems: 'center',
     minHeight: 100,
   },
-  optionIconContainer: {
-    marginRight: tokens.space.md,
-  },
   optionIconCircle: {
     width: 64,
     height: 64,
     borderRadius: 32,
-    backgroundColor: tokens.colors.accent[50],
     alignItems: 'center',
     justifyContent: 'center',
+    marginRight: tokens.space.md,
   },
   optionTextContainer: {
     flex: 1,
@@ -160,11 +152,20 @@ const styles = StyleSheet.create({
     marginLeft: tokens.space.sm,
   },
   infoCard: {
+    marginTop: tokens.space.md,
+  },
+  infoRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    padding: tokens.space.md,
     gap: tokens.space.sm,
-    marginTop: tokens.space.md,
+  },
+  infoIconCircle: {
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: tokens.colors.accent.blueSoft,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   infoText: {
     flex: 1,

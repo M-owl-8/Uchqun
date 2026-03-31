@@ -9,8 +9,8 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../services/chatStore';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 
@@ -183,18 +183,18 @@ export function ChatScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('chat.title', { defaultValue: 'Chat' })}
-        showBack={navigation.canGoBack()}
+        showBack={false}
       />
-      
+
       {error && (
-        <View style={{ padding: 24, alignItems: 'center' }}>
+        <View style={styles.errorBanner}>
           <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
-          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Text style={styles.errorText}>{error}</Text>
           <Pressable onPress={() => loadMessagesData()} accessibilityRole="button" accessibilityLabel="Retry"
-            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
-            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+            style={styles.retryButton}>
+            <Text style={styles.retryButtonText}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
           </Pressable>
         </View>
       )}
@@ -203,11 +203,11 @@ export function ChatScreen() {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
       >
-        <ScrollView 
+        <ScrollView
           ref={messagesWrapRef}
           style={styles.messagesContainer}
           contentContainerStyle={[
-            styles.messagesContent, 
+            styles.messagesContent,
             { paddingBottom: INPUT_BAR_HEIGHT + inputBarBottomOffset + tokens.space.lg }
           ]}
           showsVerticalScrollIndicator={false}
@@ -220,21 +220,25 @@ export function ChatScreen() {
         >
           {loading ? (
             <>
-              <GlassCard style={styles.messageCard}>
-                <Skeleton width="70%" height={60} />
-              </GlassCard>
-              <GlassCard style={[styles.messageCard, styles.ownMessageCard]}>
-                <Skeleton width="70%" height={60} />
-              </GlassCard>
+              <View style={[styles.messageWrapper]}>
+                <Card style={styles.skeletonBubble}>
+                  <Skeleton width="70%" height={60} />
+                </Card>
+              </View>
+              <View style={[styles.messageWrapper, styles.ownMessageWrapper]}>
+                <Card style={styles.skeletonBubble}>
+                  <Skeleton width="70%" height={60} />
+                </Card>
+              </View>
             </>
           ) : sorted.length === 0 ? (
-            <GlassCard style={styles.emptyCard}>
+            <Card style={styles.emptyCard}>
               <EmptyState
                 icon="chatbubbles-outline"
                 title={t('chat.empty', { defaultValue: 'No messages yet' })}
                 description={t('chat.subtitle', { defaultValue: 'Start a conversation with your child\'s teacher' })}
               />
-            </GlassCard>
+            </Card>
           ) : (
             sorted.map((msg) => {
               const isYou = msg.senderRole === 'parent';
@@ -248,7 +252,9 @@ export function ChatScreen() {
                 >
                   {isYou ? (
                     <LinearGradient
-                      colors={[tokens.colors.accent.blue, tokens.colors.accent.blueVibrant]}
+                      colors={[tokens.colors.primary[500], tokens.colors.primary[700]]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
                       style={[styles.messageBubble, styles.ownMessageBubble]}
                     >
                       <View style={styles.messageBubbleContent}>
@@ -328,7 +334,7 @@ export function ChatScreen() {
                       </View>
                     </LinearGradient>
                   ) : (
-                    <GlassCard style={styles.messageBubble}>
+                    <View style={[styles.messageBubble, styles.receivedBubble]}>
                       <View style={styles.messageBubbleContent}>
                         <View style={styles.messageHeader}>
                           <Text style={styles.messageSender}>
@@ -347,7 +353,7 @@ export function ChatScreen() {
                           </Text>
                         )}
                       </View>
-                    </GlassCard>
+                    </View>
                   )}
                 </View>
               );
@@ -395,16 +401,11 @@ export function ChatScreen() {
             accessibilityLabel={t('chat.send', { defaultValue: 'Send message' })}
             accessibilityState={{ disabled: !inputText.trim() }}
           >
-            <LinearGradient
-              colors={inputText.trim() ? tokens.colors.gradients.aurora : [tokens.colors.border.medium, tokens.colors.border.medium]}
-              style={styles.sendButtonGradient}
-            >
-              <Ionicons 
-                name="send" 
-                size={20} 
-                color={tokens.colors.text.white}
-              />
-            </LinearGradient>
+            <Ionicons
+              name="send"
+              size={20}
+              color={tokens.colors.text.white}
+            />
           </Pressable>
         </View>
       </KeyboardAvoidingView>
@@ -412,7 +413,7 @@ export function ChatScreen() {
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
         <View style={styles.modalOverlay} accessibilityViewIsModal={true}>
-          <View style={styles.modalContent} accessibilityRole="alert">
+          <Card style={styles.modalContent}>
             <Text style={styles.modalTitle}>{t('chat.delete') || 'Delete'}</Text>
             <Text style={styles.modalText}>{t('chat.confirmDelete') || 'Delete this message?'}</Text>
             <View style={styles.modalActions}>
@@ -434,7 +435,7 @@ export function ChatScreen() {
                 <Text style={styles.modalDeleteText}>{t('chat.delete') || 'Delete'}</Text>
               </Pressable>
             </View>
-          </View>
+          </Card>
         </View>
       )}
     </SafeAreaView>
@@ -469,16 +470,22 @@ const styles = StyleSheet.create({
   },
   ownMessageBubble: {
     borderRadius: tokens.radius.lg,
+    borderBottomRightRadius: tokens.radius.sm,
     padding: tokens.space.md,
+    ...tokens.shadow.soft,
+  },
+  receivedBubble: {
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    borderBottomLeftRadius: tokens.radius.sm,
+    ...tokens.shadow.glass,
   },
   messageBubbleContent: {
     gap: tokens.space.xs,
   },
-  messageCard: {
-    marginBottom: tokens.space.sm,
-  },
-  ownMessageCard: {
-    alignSelf: 'flex-end',
+  skeletonBubble: {
+    maxWidth: '75%',
   },
   messageText: {
     fontSize: tokens.type.body.fontSize,
@@ -487,6 +494,8 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.xs,
   },
   ownMessageText: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: tokens.type.body.fontWeight,
     color: tokens.colors.text.white,
   },
   messageTime: {
@@ -496,11 +505,36 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
   },
   ownMessageTime: {
+    fontSize: tokens.type.sub.fontSize,
+    fontWeight: tokens.type.sub.fontWeight,
     color: tokens.colors.text.white,
     opacity: 0.8,
+    alignSelf: 'flex-end',
   },
   emptyCard: {
     marginTop: tokens.space.xl,
+  },
+  errorBanner: {
+    padding: tokens.space['2xl'],
+    alignItems: 'center',
+  },
+  errorText: {
+    color: tokens.colors.text.secondary,
+    marginTop: tokens.space.md,
+    textAlign: 'center',
+    fontSize: tokens.type.body.fontSize,
+  },
+  retryButton: {
+    marginTop: tokens.space.lg,
+    paddingHorizontal: tokens.space['2xl'],
+    paddingVertical: tokens.space.md,
+    backgroundColor: tokens.colors.accent.blue,
+    borderRadius: tokens.radius.md,
+  },
+  retryButtonText: {
+    color: tokens.colors.text.white,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    fontSize: tokens.type.body.fontSize,
   },
   inputContainer: {
     position: 'absolute',
@@ -510,11 +544,14 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     padding: tokens.space.md,
     paddingBottom: tokens.space.md,
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderBottomWidth: 0,
     gap: tokens.space.sm,
-    borderTopWidth: 1,
-    borderTopColor: tokens.colors.border.light,
-    ...tokens.shadow.elevated,
+    ...tokens.shadow.glass,
   },
   inputWrapper: {
     flex: 1,
@@ -527,19 +564,17 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.primary,
     maxHeight: 100,
+    borderWidth: 1,
+    borderColor: tokens.colors.border.light,
   },
   sendButton: {
     width: 48,
     height: 48,
     borderRadius: 24,
-    overflow: 'hidden',
-    ...tokens.shadow.soft,
-  },
-  sendButtonGradient: {
-    width: '100%',
-    height: '100%',
+    backgroundColor: tokens.colors.accent.blue,
     alignItems: 'center',
     justifyContent: 'center',
+    ...tokens.shadow.soft,
   },
   sendButtonDisabled: {
     opacity: 0.5,
@@ -560,6 +595,8 @@ const styles = StyleSheet.create({
     color: tokens.colors.text.secondary,
   },
   ownMessageSender: {
+    fontSize: tokens.type.sub.fontSize,
+    fontWeight: tokens.type.h3.fontWeight,
     color: tokens.colors.text.white,
     opacity: 0.9,
   },
@@ -571,7 +608,7 @@ const styles = StyleSheet.create({
     marginTop: tokens.space.sm,
   },
   editInput: {
-    backgroundColor: tokens.colors.background.tertiary,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: tokens.radius.md,
     padding: tokens.space.sm,
     fontSize: tokens.type.body.fontSize,
@@ -590,11 +627,11 @@ const styles = StyleSheet.create({
     paddingVertical: tokens.space.sm,
   },
   editCancelText: {
-    color: tokens.colors.text.secondary,
+    color: 'rgba(255,255,255,0.7)',
     fontSize: tokens.type.sub.fontSize,
   },
   editSave: {
-    backgroundColor: tokens.colors.accent.blue,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     paddingHorizontal: tokens.space.md,
     paddingVertical: tokens.space.sm,
     borderRadius: tokens.radius.sm,
@@ -606,15 +643,17 @@ const styles = StyleSheet.create({
   },
   scrollToBottom: {
     position: 'absolute',
-    bottom: 140, // Above input bar + navbar
+    bottom: 140,
     right: tokens.space.md,
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: tokens.colors.card.base,
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.card,
+    ...tokens.shadow.glass,
   },
   modalOverlay: {
     position: 'absolute',
@@ -622,18 +661,14 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: tokens.colors.surface.overlay,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
   },
   modalContent: {
-    backgroundColor: tokens.colors.card.base,
-    borderRadius: tokens.radius.xl,
-    padding: tokens.space.xl,
     width: '80%',
     maxWidth: 400,
-    ...tokens.shadow.lg,
   },
   modalTitle: {
     fontSize: tokens.type.h3.fontSize,

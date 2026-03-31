@@ -1,7 +1,8 @@
-﻿import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
-import { StyleSheet, Text, View, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity, Alert, FlatList } from 'react-native';
+import React, { useEffect, useState, useRef, useMemo, useCallback } from 'react';
+import { StyleSheet, Text, View, TextInput, Pressable, ScrollView, KeyboardAvoidingView, Platform, Alert, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
 import { useAuth } from '../../context/AuthContext';
 import { useSocket } from '../../context/SocketContext';
 import { useNavigation } from '@react-navigation/native';
@@ -10,8 +11,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
 import { teacherService } from '../../services/teacherService';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../services/chatStore';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 
@@ -55,11 +56,11 @@ export function ChatScreen() {
           list.map(async (parent) => {
             const convoId = `parent:${parent.id}`;
             const msgs = await loadMessages(convoId);
-            const sorted = Array.isArray(msgs) 
+            const sorted = Array.isArray(msgs)
               ? [...msgs].sort((a, b) => new Date(b.createdAt || b.time) - new Date(a.createdAt || a.time))
               : [];
             const lastMsg = sorted[0] || null;
-            
+
             return {
               ...parent,
               lastMessage: lastMsg,
@@ -274,15 +275,15 @@ export function ChatScreen() {
   if (!selectedParent) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <ScreenHeader 
-          title={t('chat.title', { defaultValue: 'Chat' })} 
+        <ScreenHeader
+          title={t('chat.title', { defaultValue: 'Chat' })}
           showBack={false}
         />
-        
+
         {parentsWithLastMessage.length === 0 ? (
-          <EmptyState 
-            icon="people-outline" 
-            title={t('chat.noParents', { defaultValue: 'No parents available' })} 
+          <EmptyState
+            icon="people-outline"
+            title={t('chat.noParents', { defaultValue: 'No parents available' })}
             description={t('chat.noParentsDesc', { defaultValue: 'Parents will appear here when available' })}
           />
         ) : (
@@ -348,30 +349,17 @@ export function ChatScreen() {
   // Show chat with selected parent
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
+      <ScreenHeader
+        title={`${selectedParent.firstName} ${selectedParent.lastName}`}
+        showBack={true}
+        onBackPress={handleBackToList}
+      />
+
       <KeyboardAvoidingView
-        style={styles.container}
+        style={styles.keyboardFlex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 20}
       >
-        <View style={styles.chatHeader}>
-          <Pressable onPress={handleBackToList} style={styles.backButton} accessibilityRole="button" accessibilityLabel={t('common.back', { defaultValue: 'Back' })}>
-            <Ionicons name="arrow-back" size={24} color={tokens.colors.text.primary} />
-          </Pressable>
-          <View style={styles.chatHeaderAvatar}>
-            <Text style={styles.chatHeaderAvatarText}>
-              {getParentInitials(selectedParent)}
-            </Text>
-          </View>
-          <View style={styles.chatHeaderInfo}>
-            <Text style={styles.chatHeaderName} numberOfLines={1}>
-              {selectedParent.firstName} {selectedParent.lastName}
-            </Text>
-            <Text style={styles.chatHeaderStatus}>
-              {t('chat.online', { defaultValue: 'Online' })}
-            </Text>
-          </View>
-        </View>
-
         <ScrollView
           ref={messagesWrapRef}
           style={styles.messagesContainer}
@@ -386,9 +374,9 @@ export function ChatScreen() {
           keyboardShouldPersistTaps="handled"
         >
           {sorted.length === 0 ? (
-            <EmptyState 
-              icon="chatbubbles-outline" 
-              title={t('chat.empty', { defaultValue: 'No messages yet' })} 
+            <EmptyState
+              icon="chatbubbles-outline"
+              title={t('chat.empty', { defaultValue: 'No messages yet' })}
               description={t('chat.subtitle', { defaultValue: 'Start a conversation' })}
             />
           ) : (
@@ -403,81 +391,119 @@ export function ChatScreen() {
                     isYou && styles.ownMessageRow,
                   ]}
                 >
-                  <View
-                    style={[
-                      styles.messageBubble,
-                      isYou ? styles.ownMessageBubble : styles.otherMessageBubble,
-                    ]}
-                  >
-                    <View style={styles.messageHeader}>
-                      <Text style={styles.messageSender}>
-                        {isYou ? t('chat.you', { defaultValue: 'You' }) : t('chat.parent', { defaultValue: 'Parent' })}
-                      </Text>
-                      {(isYou || user?.role === 'teacher' || user?.role === 'admin') && (
+                  {isYou ? (
+                    <LinearGradient
+                      colors={[tokens.colors.primary[500], tokens.colors.primary[700]]}
+                      start={{ x: 0, y: 0 }}
+                      end={{ x: 1, y: 1 }}
+                      style={[styles.messageBubble, styles.ownMessageBubble]}
+                    >
+                      <View style={styles.messageHeader}>
+                        <Text style={styles.ownSenderLabel}>
+                          {t('chat.you', { defaultValue: 'You' })}
+                        </Text>
                         <View style={styles.messageActions}>
-                          {isYou && (
-                            <Pressable
-                              onPress={() => {
-                                setEditingId(msg.id);
-                                setEditValue((msg.content || msg.text || '').toString());
-                              }}
-                              disabled={busyId === msg.id}
-                              accessibilityRole="button"
-                              accessibilityLabel={t('chat.editMessage', { defaultValue: 'Edit message' })}
-                            >
-                              <Ionicons name="pencil" size={16} color={isYou ? '#fff' : tokens.colors.text.secondary} />
-                            </Pressable>
-                          )}
+                          <Pressable
+                            onPress={() => {
+                              setEditingId(msg.id);
+                              setEditValue((msg.content || msg.text || '').toString());
+                            }}
+                            disabled={busyId === msg.id}
+                            accessibilityRole="button"
+                            accessibilityLabel={t('chat.editMessage', { defaultValue: 'Edit message' })}
+                          >
+                            <Ionicons name="pencil" size={16} color={tokens.colors.text.white} />
+                          </Pressable>
                           <Pressable
                             onPress={() => setConfirmDeleteId(msg.id)}
                             disabled={busyId === msg.id}
                             accessibilityRole="button"
                             accessibilityLabel={t('chat.deleteMessage', { defaultValue: 'Delete message' })}
                           >
-                            <Ionicons name="trash-outline" size={16} color={isYou ? '#fff' : tokens.colors.semantic.error} />
-                          </Pressable>
-                        </View>
-                      )}
-                    </View>
-
-                    {editingId === msg.id ? (
-                      <View style={styles.editContainer}>
-                        <TextInput
-                          style={styles.editInput}
-                          value={editValue}
-                          onChangeText={setEditValue}
-                          multiline
-                          accessibilityLabel={t('chat.editMessageInput', { defaultValue: 'Edit message text' })}
-                        />
-                        <View style={styles.editActions}>
-                          <Pressable
-                            style={styles.editCancel}
-                            onPress={() => {
-                              setEditingId(null);
-                              setEditValue('');
-                            }}
-                            accessibilityRole="button"
-                            accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
-                          >
-                            <Text style={styles.editCancelText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
-                          </Pressable>
-                          <Pressable
-                            style={styles.editSave}
-                            onPress={() => handleSaveEdit(msg.id)}
-                            disabled={!editValue.trim() || busyId === msg.id}
-                            accessibilityRole="button"
-                            accessibilityLabel={t('common.save', { defaultValue: 'Save' })}
-                          >
-                            <Text style={styles.editSaveText}>{t('common.save', { defaultValue: 'Save' })}</Text>
+                            <Ionicons name="trash-outline" size={16} color={tokens.colors.text.white} />
                           </Pressable>
                         </View>
                       </View>
-                    ) : (
-                      <Text style={[styles.messageText, isYou && styles.ownMessageText]}>
+
+                      {editingId === msg.id ? (
+                        <View style={styles.editContainer}>
+                          <TextInput
+                            style={styles.editInput}
+                            value={editValue}
+                            onChangeText={setEditValue}
+                            multiline
+                            accessibilityLabel={t('chat.editMessageInput', { defaultValue: 'Edit message text' })}
+                          />
+                          <View style={styles.editActions}>
+                            <Pressable
+                              style={styles.editCancel}
+                              onPress={() => {
+                                setEditingId(null);
+                                setEditValue('');
+                              }}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('common.cancel', { defaultValue: 'Cancel' })}
+                            >
+                              <Text style={styles.editCancelText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
+                            </Pressable>
+                            <Pressable
+                              style={styles.editSave}
+                              onPress={() => handleSaveEdit(msg.id)}
+                              disabled={!editValue.trim() || busyId === msg.id}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('common.save', { defaultValue: 'Save' })}
+                            >
+                              <Text style={styles.editSaveText}>{t('common.save', { defaultValue: 'Save' })}</Text>
+                            </Pressable>
+                          </View>
+                        </View>
+                      ) : (
+                        <Text style={styles.ownMessageText}>
+                          {msg.content || msg.text}
+                        </Text>
+                      )}
+
+                      {msg.createdAt && (
+                        <Text style={styles.ownMessageTime}>
+                          {new Date(msg.createdAt || msg.time).toLocaleTimeString([], {
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </Text>
+                      )}
+                    </LinearGradient>
+                  ) : (
+                    <View style={[styles.messageBubble, styles.receivedBubble]}>
+                      <View style={styles.messageHeader}>
+                        <Text style={styles.senderLabel}>
+                          {t('chat.parent', { defaultValue: 'Parent' })}
+                        </Text>
+                        {(user?.role === 'teacher' || user?.role === 'admin') && (
+                          <View style={styles.messageActions}>
+                            <Pressable
+                              onPress={() => setConfirmDeleteId(msg.id)}
+                              disabled={busyId === msg.id}
+                              accessibilityRole="button"
+                              accessibilityLabel={t('chat.deleteMessage', { defaultValue: 'Delete message' })}
+                            >
+                              <Ionicons name="trash-outline" size={16} color={tokens.colors.semantic.error} />
+                            </Pressable>
+                          </View>
+                        )}
+                      </View>
+                      <Text style={styles.messageText}>
                         {msg.content || msg.text}
                       </Text>
-                    )}
-                  </View>
+                      {msg.createdAt && (
+                        <Text style={styles.messageTime}>
+                          {new Date(msg.createdAt || msg.time).toLocaleTimeString([], {
+                            hour: 'numeric',
+                            minute: '2-digit'
+                          })}
+                        </Text>
+                      )}
+                    </View>
+                  )}
                 </View>
               );
             })
@@ -516,7 +542,7 @@ export function ChatScreen() {
             accessibilityLabel={t('chat.send', { defaultValue: 'Send message' })}
             accessibilityState={{ disabled: !inputText.trim() }}
           >
-            <Ionicons name="send" size={20} color={tokens.colors.text.inverse} />
+            <Ionicons name="send" size={20} color={tokens.colors.text.white} />
           </Pressable>
         </View>
       </KeyboardAvoidingView>
@@ -524,7 +550,7 @@ export function ChatScreen() {
       {/* Delete confirmation modal */}
       {confirmDeleteId && (
         <View style={styles.modalOverlay} accessibilityViewIsModal={true}>
-          <View style={styles.modalContent} accessibilityRole="alert">
+          <Card style={styles.modalCard}>
             <Text style={styles.modalTitle}>{t('chat.delete', { defaultValue: 'Delete' })}</Text>
             <Text style={styles.modalText}>{t('chat.confirmDelete', { defaultValue: 'Delete this message?' })}</Text>
             <View style={styles.modalActions}>
@@ -546,7 +572,7 @@ export function ChatScreen() {
                 <Text style={styles.modalDeleteText}>{t('chat.delete', { defaultValue: 'Delete' })}</Text>
               </Pressable>
             </View>
-          </View>
+          </Card>
         </View>
       )}
     </SafeAreaView>
@@ -558,7 +584,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: tokens.colors.background.primary,
   },
-  // Parent List Styles (Telegram style)
+  keyboardFlex: {
+    flex: 1,
+  },
+  // Parent List Styles
   parentListContent: {
     padding: 0,
   },
@@ -566,26 +595,26 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: tokens.space.md,
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: tokens.glass.bg,
     paddingHorizontal: tokens.space.lg,
   },
   parentListSeparator: {
     height: 1,
     backgroundColor: tokens.colors.border.light,
-    marginLeft: 80, // Align with content after avatar
+    marginLeft: 80,
   },
   parentAvatar: {
     width: 56,
     height: 56,
     borderRadius: 28,
-    backgroundColor: tokens.colors.joy.lavender,
+    backgroundColor: tokens.colors.accent.blue,
     alignItems: 'center',
     justifyContent: 'center',
     marginRight: tokens.space.md,
   },
   parentAvatarText: {
     fontSize: 20,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.white,
   },
   parentItemContent: {
@@ -600,7 +629,7 @@ const styles = StyleSheet.create({
   },
   parentItemName: {
     fontSize: tokens.type.body.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.primary,
     flex: 1,
   },
@@ -622,7 +651,7 @@ const styles = StyleSheet.create({
     minWidth: 20,
     height: 20,
     borderRadius: 10,
-    backgroundColor: tokens.colors.joy.lavender,
+    backgroundColor: tokens.colors.nav.indicator,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 6,
@@ -630,48 +659,8 @@ const styles = StyleSheet.create({
   },
   unreadBadgeText: {
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.white,
-  },
-  // Chat Header
-  chatHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: tokens.space.md,
-    paddingHorizontal: tokens.space.lg,
-    backgroundColor: tokens.colors.background.secondary,
-    borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border.light,
-  },
-  backButton: {
-    padding: tokens.space.xs,
-    marginRight: tokens.space.sm,
-  },
-  chatHeaderAvatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: tokens.colors.joy.lavender,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginRight: tokens.space.sm,
-  },
-  chatHeaderAvatarText: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: tokens.colors.text.white,
-  },
-  chatHeaderInfo: {
-    flex: 1,
-  },
-  chatHeaderName: {
-    fontSize: tokens.type.body.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.primary,
-  },
-  chatHeaderStatus: {
-    fontSize: tokens.type.caption.fontSize,
-    color: tokens.colors.text.muted,
   },
   // Messages
   messagesContainer: {
@@ -692,15 +681,17 @@ const styles = StyleSheet.create({
     maxWidth: '85%',
     padding: tokens.space.md,
     borderRadius: tokens.radius.lg,
-    ...tokens.shadow.soft,
   },
   ownMessageBubble: {
-    backgroundColor: tokens.colors.joy.lavender,
-    borderBottomRightRadius: tokens.radius.xs,
+    borderBottomRightRadius: tokens.radius.sm,
+    ...tokens.shadow.soft,
   },
-  otherMessageBubble: {
-    backgroundColor: tokens.colors.background.secondary,
-    borderBottomLeftRadius: tokens.radius.xs,
+  receivedBubble: {
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
+    borderBottomLeftRadius: tokens.radius.sm,
+    ...tokens.shadow.glass,
   },
   messageHeader: {
     flexDirection: 'row',
@@ -708,10 +699,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: tokens.space.xs,
   },
-  messageSender: {
+  senderLabel: {
     fontSize: tokens.type.caption.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
     color: tokens.colors.text.secondary,
+  },
+  ownSenderLabel: {
+    fontSize: tokens.type.caption.fontSize,
+    fontWeight: tokens.typography.fontWeight.semibold,
+    color: tokens.colors.text.white,
+    opacity: 0.9,
   },
   messageActions: {
     flexDirection: 'row',
@@ -723,17 +720,32 @@ const styles = StyleSheet.create({
     lineHeight: 20,
   },
   ownMessageText: {
+    fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.white,
+    lineHeight: 20,
+  },
+  messageTime: {
+    fontSize: tokens.type.caption.fontSize,
+    color: tokens.colors.text.muted,
+    alignSelf: 'flex-end',
+    marginTop: tokens.space.xs,
+  },
+  ownMessageTime: {
+    fontSize: tokens.type.caption.fontSize,
+    color: tokens.colors.text.white,
+    opacity: 0.8,
+    alignSelf: 'flex-end',
+    marginTop: tokens.space.xs,
   },
   editContainer: {
     marginTop: tokens.space.sm,
   },
   editInput: {
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: 'rgba(255,255,255,0.15)',
     borderRadius: tokens.radius.md,
     padding: tokens.space.sm,
     fontSize: tokens.type.body.fontSize,
-    color: tokens.colors.text.primary,
+    color: tokens.colors.text.white,
     minHeight: 60,
     textAlignVertical: 'top',
   },
@@ -748,11 +760,11 @@ const styles = StyleSheet.create({
     paddingVertical: tokens.space.sm,
   },
   editCancelText: {
-    color: tokens.colors.text.secondary,
+    color: 'rgba(255,255,255,0.7)',
     fontSize: tokens.type.sub.fontSize,
   },
   editSave: {
-    backgroundColor: tokens.colors.accent.blue,
+    backgroundColor: 'rgba(255,255,255,0.2)',
     paddingHorizontal: tokens.space.md,
     paddingVertical: tokens.space.sm,
     borderRadius: tokens.radius.sm,
@@ -760,7 +772,7 @@ const styles = StyleSheet.create({
   editSaveText: {
     color: tokens.colors.text.white,
     fontSize: tokens.type.sub.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
   },
   scrollToBottom: {
     position: 'absolute',
@@ -769,20 +781,23 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: tokens.glass.bg,
+    borderWidth: 1,
+    borderColor: tokens.glass.border,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.soft,
+    ...tokens.shadow.glass,
   },
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'flex-end',
     paddingHorizontal: tokens.space.md,
     paddingTop: tokens.space.sm,
-    backgroundColor: tokens.colors.background.secondary,
+    backgroundColor: tokens.glass.bg,
     borderTopWidth: 1,
     borderTopColor: tokens.colors.border.light,
     minHeight: 60,
+    ...tokens.shadow.glass,
   },
   input: {
     flex: 1,
@@ -794,16 +809,18 @@ const styles = StyleSheet.create({
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.text.primary,
     backgroundColor: tokens.colors.background.tertiary,
+    borderWidth: 1,
+    borderColor: tokens.colors.border.light,
     minHeight: 44,
   },
   sendButton: {
-    backgroundColor: tokens.colors.joy.lavender,
+    backgroundColor: tokens.colors.accent.blue,
     width: 44,
     height: 44,
     borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
-    ...tokens.shadow.sm,
+    ...tokens.shadow.soft,
   },
   sendButtonDisabled: {
     opacity: 0.5,
@@ -815,22 +832,18 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: tokens.colors.surface.overlay,
     justifyContent: 'center',
     alignItems: 'center',
     zIndex: 1000,
   },
-  modalContent: {
-    backgroundColor: tokens.colors.background.secondary,
-    borderRadius: tokens.radius.lg,
-    padding: tokens.space.lg,
+  modalCard: {
     width: '80%',
     maxWidth: 400,
-    ...tokens.shadow.card,
   },
   modalTitle: {
     fontSize: tokens.type.h3.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.type.h3.fontWeight,
     color: tokens.colors.text.primary,
     marginBottom: tokens.space.sm,
   },
@@ -861,8 +874,6 @@ const styles = StyleSheet.create({
   modalDeleteText: {
     color: tokens.colors.text.white,
     fontSize: tokens.type.body.fontSize,
-    fontWeight: '600',
+    fontWeight: tokens.typography.fontWeight.semibold,
   },
 });
-
-
