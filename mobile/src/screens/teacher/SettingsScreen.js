@@ -5,7 +5,6 @@ import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
-import { useTheme } from '../../context/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, getCurrentLanguage, getAvailableLanguages } from '../../i18n/config';
 import Card from '../../components/common/Card';
@@ -23,7 +22,7 @@ function getAvatarUrl(avatar) {
 
 export function SettingsScreen() {
   const { user, logout, refreshUser } = useAuth();
-  const { theme, toggleTheme, isDark } = useTheme();
+
   const navigation = useNavigation();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
@@ -220,14 +219,6 @@ export function SettingsScreen() {
       title: t('settings.general', { defaultValue: 'General' }),
       items: [
         {
-          icon: isDark ? 'moon' : 'sunny',
-          title: t('settings.darkMode', { defaultValue: 'Dark Mode' }),
-          subtitle: t('settings.darkModeDesc', { defaultValue: isDark ? 'Switch to light theme' : 'Switch to dark theme' }),
-          onPress: toggleTheme,
-          color: isDark ? tokens.colors.semantic.warning : tokens.colors.accent.blue,
-          hasToggle: true,
-        },
-        {
           icon: 'information-circle-outline',
           title: t('settings.about', { defaultValue: 'About' }),
           subtitle: 'Uchqun Platform v1.0.0',
@@ -313,7 +304,7 @@ export function SettingsScreen() {
                       accessibilityRole={item.hasToggle ? 'switch' : 'button'}
                       accessibilityLabel={item.title}
                       accessibilityHint={item.subtitle}
-                      accessibilityState={item.hasToggle ? { checked: isDark } : undefined}
+                      accessibilityState={item.hasToggle ? { checked: false } : undefined}
                     >
                       <View style={[styles.iconCircle, { backgroundColor: `${item.color}20` }]}>
                         <Ionicons name={item.icon} size={20} color={item.color} />
