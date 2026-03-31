@@ -29,6 +29,7 @@ import Payment from './Payment.js';
 import GovernmentStats from './GovernmentStats.js';
 import BusinessStats from './BusinessStats.js';
 import RefreshToken from './RefreshToken.js';
+import ChildAssessment from './ChildAssessment.js';
 
 // Initialize all models
 const models = {
@@ -62,6 +63,7 @@ const models = {
   GovernmentStats,
   BusinessStats,
   RefreshToken,
+  ChildAssessment,
   sequelize,
 };
 
@@ -206,6 +208,12 @@ BusinessStats.belongsTo(User, { foreignKey: 'businessId', as: 'business' });
 User.hasMany(RefreshToken, { foreignKey: 'userId', as: 'refreshTokens' });
 RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
+// Child Assessment relationships
+Child.hasMany(ChildAssessment, { foreignKey: 'childId', as: 'assessments' });
+ChildAssessment.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(ChildAssessment, { as: 'teacherAssessments', foreignKey: 'teacherId' });
+ChildAssessment.belongsTo(User, { as: 'teacher', foreignKey: 'teacherId' });
+
 // Sync database (use with caution in production)
 export const syncDatabase = async (force = false) => {
   try {
@@ -292,5 +300,6 @@ export {
   GovernmentStats,
   BusinessStats,
   RefreshToken,
+  ChildAssessment,
   sequelize,
 };

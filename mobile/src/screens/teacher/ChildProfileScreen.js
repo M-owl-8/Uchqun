@@ -443,6 +443,21 @@ export function TeacherChildProfileScreen() {
               </Text>
             </View>
           </Card>
+
+          {/* Assessment Button */}
+          <Pressable
+            style={styles.assessmentButton}
+            onPress={() => navigation.navigate('ChildAssessment', {
+              childId,
+              childName: childName,
+            })}
+          >
+            <Ionicons name="clipboard-outline" size={22} color="#fff" />
+            <Text style={styles.assessmentButtonText}>
+              {t('assessment.title', { defaultValue: 'Assessment' })}
+            </Text>
+            <Ionicons name="chevron-forward" size={20} color="#fff" />
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     );
@@ -818,6 +833,22 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   saveButtonText: {
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: tokens.type.h3.fontWeight,
+    color: '#fff',
+  },
+  assessmentButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: tokens.space.sm,
+    padding: tokens.space.lg,
+    borderRadius: tokens.radius.md,
+    backgroundColor: tokens.colors.accent.blue,
+    marginBottom: tokens.space.md,
+  },
+  assessmentButtonText: {
+    flex: 1,
     fontSize: tokens.type.body.fontSize,
     fontWeight: tokens.type.h3.fontWeight,
     color: '#fff',

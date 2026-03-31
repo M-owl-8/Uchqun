@@ -22,6 +22,20 @@
     "cancel": "Cancel",
     "delete": "Delete",
     "edit": "Edit"
+  },
+  "assessment": {
+    "title": "Assessment",
+    "cognitive": "Cognitive Development",
+    "motor": "Motor Development",
+    "speech": "Speech Development",
+    "behavior": "Behavior",
+    "social": "Social Skills",
+    "selfCare": "Self-Care",
+    "score": "Score",
+    "notes": "Notes",
+    "save": "Save",
+    "saved": "Assessment saved",
+    "noAssessments": "Not assessed yet"
   }
 }
 

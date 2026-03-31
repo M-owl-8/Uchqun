@@ -50,6 +50,7 @@ import pushNotificationRoutes from './routes/pushNotificationRoutes.js';
 import paymentRoutes from './routes/paymentRoutes.js';
 import governmentRoutes from './routes/governmentRoutes.js';
 import businessRoutes from './routes/businessRoutes.js';
+import childAssessmentRoutes from './routes/childAssessmentRoutes.js';
 
 // Load environment variables
 dotenv.config();
@@ -266,6 +267,7 @@ app.use('/api/push-notifications', pushNotificationRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/government', governmentRoutes);
 app.use('/api/business', businessRoutes);
+app.use('/api/assessments', childAssessmentRoutes);
 
 // API Documentation (non-production only)
 if (process.env.NODE_ENV !== 'production') {

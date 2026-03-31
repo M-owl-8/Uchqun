@@ -928,5 +928,20 @@
       "stableMood": "Mood is stable throughout the day",
       "trustingRelationship": "Relationship with teacher is trusting and strong"
     }
+  },
+  "assessment": {
+    "title": "Assessment",
+    "cognitive": "Cognitive Development",
+    "motor": "Motor Development",
+    "speech": "Speech Development",
+    "behavior": "Behavior",
+    "social": "Social Skills",
+    "selfCare": "Self-Care",
+    "score": "Score",
+    "notes": "Notes",
+    "save": "Save",
+    "saved": "Assessment saved",
+    "noAssessments": "Not assessed yet",
+    "noChanges": "No changes to save"
   }
 }

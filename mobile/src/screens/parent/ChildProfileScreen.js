@@ -973,6 +973,9 @@ export function ChildProfileScreen() {
           </View>
         </Card>
 
+        {/* Teacher Assessments */}
+        <TeacherAssessmentsSection childId={selectedChildId} t={t} />
+
         {/* Emotional Monitoring */}
         {monitoringRecords.length > 0 && (
           <Card style={styles.card}>
@@ -1301,6 +1304,102 @@ function StatRow({ label, value }) {
       </View>
       <Text style={styles.statValue} allowFontScaling={true}>{value}</Text>
     </View>
+  );
+}
+
+const ASSESSMENT_CATEGORIES = [
+  { key: 'cognitive', icon: 'bulb-outline', translationKey: 'cognitive' },
+  { key: 'motor', icon: 'body-outline', translationKey: 'motor' },
+  { key: 'speech', icon: 'mic-outline', translationKey: 'speech' },
+  { key: 'behavior', icon: 'happy-outline', translationKey: 'behavior' },
+  { key: 'social', icon: 'people-outline', translationKey: 'social' },
+  { key: 'self_care', icon: 'hand-left-outline', translationKey: 'selfCare' },
+];
+
+const ASSESSMENT_SCORE_COLORS = {
+  1: '#EF4444',
+  2: '#F97316',
+  3: '#EAB308',
+  4: '#84CC16',
+  5: '#22C55E',
+};
+
+function TeacherAssessmentsSection({ childId, t }) {
+  const [assessments, setAssessments] = useState([]);
+  const [loadingAssessments, setLoadingAssessments] = useState(true);
+
+  useEffect(() => {
+    if (!childId) return;
+    let mounted = true;
+    (async () => {
+      try {
+        const response = await api.get(`/assessments/latest?childId=${childId}`);
+        if (mounted) {
+          setAssessments(response.data?.data || []);
+        }
+      } catch (error) {
+        console.error('Error loading assessments:', error);
+      } finally {
+        if (mounted) setLoadingAssessments(false);
+      }
+    })();
+    return () => { mounted = false; };
+  }, [childId]);
+
+  if (loadingAssessments) {
+    return (
+      <Card style={styles.card}>
+        <View style={styles.sectionHeader}>
+          <Ionicons name="clipboard" size={24} color={tokens.colors.accent.blue} />
+          <Text style={styles.sectionTitle} allowFontScaling={true}>
+            {t('assessment.title', { defaultValue: 'Assessment' })}
+          </Text>
+        </View>
+        <ActivityIndicator size="small" color={tokens.colors.accent.blue} />
+      </Card>
+    );
+  }
+
+  const assessmentMap = {};
+  assessments.forEach((a) => { assessmentMap[a.category] = a; });
+
+  return (
+    <Card style={styles.card}>
+      <View style={styles.sectionHeader}>
+        <Ionicons name="clipboard" size={24} color={tokens.colors.accent.blue} />
+        <Text style={styles.sectionTitle} allowFontScaling={true}>
+          {t('assessment.title', { defaultValue: 'Assessment' })}
+        </Text>
+      </View>
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.assessmentRow}>
+        {ASSESSMENT_CATEGORIES.map((cat) => {
+          const assessment = assessmentMap[cat.key];
+          const score = assessment?.score;
+          const bgColor = score ? ASSESSMENT_SCORE_COLORS[score] : tokens.colors.surface.secondary;
+          const textColor = score ? '#fff' : tokens.colors.text.muted;
+
+          return (
+            <View key={cat.key} style={styles.assessmentBadge}>
+              <View style={[styles.assessmentScoreCircle, { backgroundColor: bgColor }]}>
+                {score ? (
+                  <Text style={[styles.assessmentScoreText, { color: textColor }]}>{score}</Text>
+                ) : (
+                  <Ionicons name={cat.icon} size={18} color={textColor} />
+                )}
+              </View>
+              <Text style={styles.assessmentCategoryText} numberOfLines={2} allowFontScaling={true}>
+                {t(`assessment.${cat.translationKey}`, { defaultValue: cat.key })}
+              </Text>
+            </View>
+          );
+        })}
+      </ScrollView>
+      {assessments.length === 0 && (
+        <Text style={styles.assessmentEmptyText} allowFontScaling={true}>
+          {t('assessment.noAssessments', { defaultValue: 'Not assessed yet' })}
+        </Text>
+      )}
+    </Card>
   );
 }
 
@@ -1984,5 +2083,39 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.accent[50],
     padding: tokens.space.md,
     borderRadius: tokens.radius.md,
+  },
+  assessmentRow: {
+    flexDirection: 'row',
+    gap: tokens.space.md,
+    paddingVertical: tokens.space.sm,
+  },
+  assessmentBadge: {
+    alignItems: 'center',
+    width: 64,
+  },
+  assessmentScoreCircle: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: tokens.space.xs,
+  },
+  assessmentScoreText: {
+    fontSize: 18,
+    fontWeight: '700',
+  },
+  assessmentCategoryText: {
+    fontSize: 10,
+    fontWeight: '600',
+    color: tokens.colors.text.secondary,
+    textAlign: 'center',
+  },
+  assessmentEmptyText: {
+    fontSize: tokens.type.caption.fontSize,
+    color: tokens.colors.text.muted,
+    fontStyle: 'italic',
+    textAlign: 'center',
+    marginTop: tokens.space.sm,
   },
 });

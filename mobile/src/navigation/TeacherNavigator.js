@@ -22,6 +22,7 @@ import { EmotionalMonitoringScreen } from '../screens/teacher/EmotionalMonitorin
 import { MonitoringJournalScreen } from '../screens/teacher/MonitoringJournalScreen';
 import { TherapyScreen } from '../screens/teacher/TherapyScreen';
 import { TeacherChildProfileScreen } from '../screens/teacher/ChildProfileScreen';
+import { ChildAssessmentScreen } from '../screens/teacher/ChildAssessmentScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -135,6 +136,7 @@ export function TeacherNavigator() {
       <Stack.Screen name="MonitoringJournal" component={MonitoringJournalScreen} />
       <Stack.Screen name="Therapy" component={TherapyScreen} />
       <Stack.Screen name="ChildProfile" component={TeacherChildProfileScreen} />
+      <Stack.Screen name="ChildAssessment" component={ChildAssessmentScreen} />
     </Stack.Navigator>
   );
 }

@@ -935,5 +935,20 @@
     "profileUpdated": "Profil yangilandi",
     "profileUpdateError": "Profilni yangilashda xatolik",
     "notProvided": "Ko'rsatilmagan"
+  },
+  "assessment": {
+    "title": "Baholash",
+    "cognitive": "Aqliy rivojlanish",
+    "motor": "Harakat rivojlanishi",
+    "speech": "Nutq rivojlanishi",
+    "behavior": "Xulq-atvor",
+    "social": "Ijtimoiy ko'nikmalar",
+    "selfCare": "O'z-o'ziga xizmat ko'rsatish",
+    "score": "Baho",
+    "notes": "Izoh",
+    "save": "Saqlash",
+    "saved": "Baholash saqlandi",
+    "noAssessments": "Hali baholanmagan",
+    "noChanges": "Saqlash uchun o'zgarishlar yo'q"
   }
 }
