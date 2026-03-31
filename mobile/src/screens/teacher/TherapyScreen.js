@@ -98,7 +98,7 @@ export function TherapyScreen() {
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('therapy.title', { defaultValue: 'Therapy' })} />
       {sessions.length === 0 ? (
-        <EmptyState icon="medkit-outline" message={t('therapy.noSessions', { defaultValue: 'No therapy sessions found' })} />
+        <EmptyState icon="bulb-outline" message={t('therapy.noSessions', { defaultValue: 'No recommendations found' })} />
       ) : (
         <FlatList
           data={sessions}
