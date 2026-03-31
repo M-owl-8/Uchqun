@@ -21,7 +21,7 @@ import { useAuth } from '../../context/AuthContext';
 import { clearAuth } from '../../storage/authStorage';
 import { API_URL } from '../../config';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import Card from '../../components/common/Card';
 
 const { width } = Dimensions.get('window');
 
@@ -130,7 +130,7 @@ export function LoginScreen() {
             </View>
 
             {/* Login card */}
-            <GlassCard style={styles.card}>
+            <Card style={styles.card}>
               {error ? (
                 <View style={styles.errorContainer} accessibilityRole="alert" accessibilityLiveRegion="assertive">
                   <Ionicons name="alert-circle" size={18} color={tokens.colors.semantic.error} />
@@ -233,7 +233,7 @@ export function LoginScreen() {
                   </LinearGradient>
                 </Pressable>
               </View>
-            </GlassCard>
+            </Card>
 
             {/* Footer hint */}
             <Text style={styles.footerText}>

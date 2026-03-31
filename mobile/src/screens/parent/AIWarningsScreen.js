@@ -7,8 +7,8 @@ import { useNavigation } from '@react-navigation/native';
 import { api } from '../../services/api';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -165,7 +165,7 @@ export function AIWarningsScreen() {
             const iconName = getSeverityIcon(warning.severity);
             const iconColor = getSeverityColor(warning.severity);
             return (
-              <GlassCard key={warning.id} style={styles.warningCard}>
+              <Card key={warning.id} style={styles.warningCard}>
                 <View style={styles.warningHeader}>
                   <LinearGradient
                     colors={[iconColor + '30', iconColor + '15']}
@@ -228,18 +228,18 @@ export function AIWarningsScreen() {
                     </View>
                   </View>
                 </View>
-              </GlassCard>
+              </Card>
             );
           })}
         </View>
       ) : (
-        <GlassCard style={styles.emptyCard}>
+        <Card style={styles.emptyCard}>
           <EmptyState
             icon="checkmark-circle-outline"
             title={t('warnings.noWarnings', { defaultValue: 'Ogohlantirishlar yo\'q' })}
             description={t('warnings.noWarningsDesc', { defaultValue: 'Hozircha ogohlantirishlar mavjud emas' })}
           />
-        </GlassCard>
+        </Card>
       )}
       </ScrollView>
     </SafeAreaView>

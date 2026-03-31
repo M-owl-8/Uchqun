@@ -29,8 +29,8 @@ import { mediaService } from '../../services/mediaService';
 import { api } from '../../services/api';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import ListRow from '../../components/common/ListRow';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
@@ -506,7 +506,7 @@ export function ChildProfileScreen() {
           showBack={navigation.canGoBack()}
         />
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}>
-          <GlassCard style={styles.card}>
+          <Card style={styles.card}>
             <Text style={styles.sectionTitle} allowFontScaling={true}>{t('child.selectPrompt', { defaultValue: 'Select your child' })}</Text>
             <View style={styles.childrenGrid}>
               {children.map((c) => (
@@ -515,7 +515,7 @@ export function ChildProfileScreen() {
                   onPress={() => setSelectedChildId(c.id)}
                   style={styles.childSelectorCard}
                 >
-                  <GlassCard>
+                  <Card>
                     <View style={styles.childSelectorContent}>
                       <View style={[styles.childSelectorAvatar, { backgroundColor: tokens.colors.accent.blue + '30' }]}>
                         <Text style={styles.childSelectorAvatarText}>
@@ -533,11 +533,11 @@ export function ChildProfileScreen() {
                         )}
                       </View>
                     </View>
-                  </GlassCard>
+                  </Card>
                 </Pressable>
               ))}
             </View>
-          </GlassCard>
+          </Card>
         </ScrollView>
       </SafeAreaView>
     );
@@ -551,13 +551,13 @@ export function ChildProfileScreen() {
           showBack={navigation.canGoBack()}
         />
         <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}>
-          <GlassCard style={styles.emptyCard}>
+          <Card style={styles.emptyCard}>
             <EmptyState
               icon="person-outline"
               title={t('child.notFoundTitle', { defaultValue: 'Child not found' })}
               description={t('child.notFoundDesc', { defaultValue: 'No information found about your child' })}
             />
-          </GlassCard>
+          </Card>
         </ScrollView>
       </SafeAreaView>
     );
@@ -572,7 +572,7 @@ export function ChildProfileScreen() {
       <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}>
       {/* Child Selector (if multiple children) */}
       {Array.isArray(children) && children.length > 1 && (
-        <GlassCard style={styles.selectorCard}>
+        <Card style={styles.selectorCard}>
           <View style={styles.selectorHeader}>
             <Ionicons name="people" size={20} color={tokens.colors.accent.blue} />
             <Text style={styles.selectorLabel} allowFontScaling={true}>
@@ -607,11 +607,11 @@ export function ChildProfileScreen() {
               </Pressable>
             ))}
           </View>
-        </GlassCard>
+        </Card>
       )}
 
       {/* Top Profile Hero - Like Web */}
-      <GlassCard style={styles.heroCard}>
+      <Card style={styles.heroCard}>
         <View style={styles.heroContent}>
           <Pressable
             style={styles.avatarContainer}
@@ -706,11 +706,11 @@ export function ChildProfileScreen() {
             </View>
           </View>
         </View>
-      </GlassCard>
+      </Card>
 
       <View style={styles.contentContainer}>
         {/* Basic Info */}
-        <GlassCard style={styles.card}>
+        <Card style={styles.card}>
           <View style={styles.sectionHeader}>
             <Ionicons name="person" size={24} color={tokens.colors.accent.blue} />
             <Text style={styles.sectionTitle} allowFontScaling={true}>{t('child.basicInfo', { defaultValue: 'Basic Information' })}</Text>
@@ -743,11 +743,11 @@ export function ChildProfileScreen() {
               color={tokens.colors.accent.blue}
             />
           </View>
-        </GlassCard>
+        </Card>
 
         {/* Special Needs */}
         {child.specialNeeds && (
-          <GlassCard style={styles.card}>
+          <Card style={styles.card}>
             <View style={styles.specialNeedsHeader}>
               <Ionicons name="heart" size={24} color={tokens.colors.semantic.error} />
               <Text style={styles.specialNeedsTitle} allowFontScaling={true}>
@@ -759,11 +759,11 @@ export function ChildProfileScreen() {
                 {child.specialNeeds}
               </Text>
             </View>
-          </GlassCard>
+          </Card>
         )}
 
         {/* Weekly Stats */}
-        <GlassCard style={styles.statsCard}>
+        <Card style={styles.statsCard}>
           <Text style={styles.statsTitle} allowFontScaling={true}>
             {t('child.weeklyResults', { defaultValue: 'Weekly Results' })}
           </Text>
@@ -781,11 +781,11 @@ export function ChildProfileScreen() {
               value={weeklyStats.media}
             />
           </View>
-        </GlassCard>
+        </Card>
 
         {/* Emotional Monitoring */}
         {monitoringRecords.length > 0 && (
-          <GlassCard style={styles.card}>
+          <Card style={styles.card}>
             <View style={styles.sectionHeader}>
               <Ionicons name="heart" size={24} color={tokens.colors.joy.rose} />
               <Text style={styles.sectionTitle} allowFontScaling={true}>
@@ -833,7 +833,7 @@ export function ChildProfileScreen() {
                 +{monitoringRecords.length - 5} {t('common.more', { defaultValue: 'more' })}
               </Text>
             )}
-          </GlassCard>
+          </Card>
         )}
       </View>
 

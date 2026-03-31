@@ -8,8 +8,8 @@ import { parentService } from '../../services/parentService';
 import { api } from '../../services/api';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -173,7 +173,7 @@ export function PaymentsScreen() {
       </Text>
 
       {/* Monthly Payment Card */}
-      <GlassCard style={styles.monthlyCard}>
+      <Card style={styles.monthlyCard}>
         <LinearGradient
           colors={[tokens.colors.accent.blue, tokens.colors.accent.blueVibrant]}
           style={StyleSheet.absoluteFill}
@@ -216,7 +216,7 @@ export function PaymentsScreen() {
             <Text style={styles.noteLabel}>{t('payments.note', { defaultValue: 'Eslatma' })}:</Text> {t('payments.noteText', { defaultValue: 'To\'lov qilish uchun admin bilan bog\'laning yoki admin panel orqali to\'lov qiling.' })}
           </Text>
         </View>
-      </GlassCard>
+      </Card>
 
       {/* Payment History */}
       <View style={styles.historySection}>
@@ -230,7 +230,7 @@ export function PaymentsScreen() {
         {payments && payments.length > 0 ? (
           <View style={styles.paymentsList}>
             {payments.map((payment) => (
-              <GlassCard key={payment.id} style={styles.paymentCard}>
+              <Card key={payment.id} style={styles.paymentCard}>
                 <View style={styles.paymentCardContent}>
                   <View style={styles.paymentCardLeft}>
                     <View style={styles.paymentIconContainer}>
@@ -254,17 +254,17 @@ export function PaymentsScreen() {
                     </Text>
                   </View>
                 </View>
-              </GlassCard>
+              </Card>
             ))}
           </View>
         ) : (
-          <GlassCard style={styles.emptyCard}>
+          <Card style={styles.emptyCard}>
             <EmptyState
               icon="card-outline"
               title={t('payments.noPayments', { defaultValue: 'To\'lovlar yo\'q' })}
               description={t('payments.noPaymentsDesc', { defaultValue: 'Hozircha to\'lovlar mavjud emas' })}
             />
-          </GlassCard>
+          </Card>
         )}
       </View>
       </ScrollView>

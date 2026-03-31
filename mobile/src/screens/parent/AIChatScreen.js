@@ -19,7 +19,7 @@ import { parentService } from '../../services/parentService';
 import { useTranslation } from 'react-i18next';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 
 const CHAT_STORAGE_KEY = '@uchqun/ai-chat-messages';
 const getDefaultMessage = (t) => ({

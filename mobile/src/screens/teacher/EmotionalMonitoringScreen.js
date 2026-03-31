@@ -9,7 +9,7 @@ import { teacherService } from '../../services/teacherService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import Card from '../../components/common/Card';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
 
 const EMOTIONAL_STATES = ['happy', 'sad', 'angry', 'anxious', 'calm', 'excited', 'tired', 'focused'];

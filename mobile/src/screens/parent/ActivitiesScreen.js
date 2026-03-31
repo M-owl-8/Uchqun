@@ -21,8 +21,8 @@ import { activityService } from '../../services/activityService';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 
@@ -286,7 +286,7 @@ export function ActivitiesScreen() {
         accessibilityHint={t('activities.viewDetails', { defaultValue: 'View activity details' })}
         style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}
       >
-        <GlassCard style={styles.activityCard}>
+        <Card style={styles.activityCard}>
           <View style={styles.activityRow}>
             {/* 56x56 icon container with tinted bg */}
             <View
@@ -348,7 +348,7 @@ export function ActivitiesScreen() {
               )}
             </View>
           </View>
-        </GlassCard>
+        </Card>
       </Pressable>
     );
   };
@@ -417,18 +417,18 @@ export function ActivitiesScreen() {
           </View>
         )}
         {children.length === 0 && !loading && (
-          <GlassCard style={styles.emptyCard}>
+          <Card style={styles.emptyCard}>
             <EmptyState
               emoji="👶"
               title={t('child.selectPrompt', { defaultValue: 'Select Child' })}
               description={t('activities.selectChildDesc', { defaultValue: 'After adding a child, activities will appear' })}
             />
-          </GlassCard>
+          </Card>
         )}
         {children.length > 0 && (
           <>
             {/* Progress Card — Figma: glass card with mint→blue gradient */}
-            <GlassCard style={styles.progressCard}>
+            <Card style={styles.progressCard}>
               <LinearGradient
                 colors={['rgba(223,244,236,0.4)', 'rgba(191,215,234,0.3)']}
                 start={{ x: 0, y: 0 }}
@@ -453,7 +453,7 @@ export function ActivitiesScreen() {
                   </View>
                 </View>
               </LinearGradient>
-            </GlassCard>
+            </Card>
 
             {/* Filter Pills */}
             <View style={styles.filterRow}>
@@ -490,7 +490,7 @@ export function ActivitiesScreen() {
 
             {/* Empty state for activities */}
             {filteredActivities.length === 0 && (
-              <GlassCard style={styles.emptyCard}>
+              <Card style={styles.emptyCard}>
                 <EmptyState
                   emoji="📭"
                   title={t('activities.noActivities', { defaultValue: 'No Activities Found' })}
@@ -500,7 +500,7 @@ export function ActivitiesScreen() {
                       : t('activities.noActivitiesDesc', { defaultValue: 'New activities will be added soon' })
                   }
                 />
-              </GlassCard>
+              </Card>
             )}
           </>
         )}

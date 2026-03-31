@@ -16,8 +16,8 @@ import { parentService } from '../../services/parentService';
 import { mealService } from '../../services/mealService';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { useTranslation } from 'react-i18next';
@@ -241,7 +241,7 @@ export function MealsScreen() {
     const isCompleted = item.eaten !== undefined ? item.eaten : true;
 
     return (
-      <GlassCard style={styles.mealCard}>
+      <Card style={styles.mealCard}>
         <View style={styles.mealRow}>
           {/* 48x48 icon container with tinted bg */}
           <View
@@ -305,7 +305,7 @@ export function MealsScreen() {
             </Pressable>
           )}
         </View>
-      </GlassCard>
+      </Card>
     );
   };
 
@@ -370,18 +370,18 @@ export function MealsScreen() {
           </View>
         )}
         {children.length === 0 && !loading && (
-          <GlassCard style={styles.emptyCard}>
+          <Card style={styles.emptyCard}>
             <EmptyState
               emoji="👶"
               title={t('meals.selectChild', { defaultValue: 'Select Child' })}
               description={t('meals.selectChildDesc', { defaultValue: 'After adding a child, meal records will appear' })}
             />
-          </GlassCard>
+          </Card>
         )}
         {children.length > 0 && (
           <>
             {/* Nutrition Summary Card — Figma: gold→peach gradient */}
-            <GlassCard style={styles.nutritionCard}>
+            <Card style={styles.nutritionCard}>
               <LinearGradient
                 colors={['rgba(232,194,126,0.3)', 'rgba(248,215,196,0.3)']}
                 start={{ x: 0, y: 0 }}
@@ -417,7 +417,7 @@ export function MealsScreen() {
                   </View>
                 </View>
               </LinearGradient>
-            </GlassCard>
+            </Card>
 
             {/* Filter Pills */}
             <View style={styles.filterRow}>
@@ -451,7 +451,7 @@ export function MealsScreen() {
 
             {/* Empty state for meals */}
             {filteredMeals.length === 0 && (
-              <GlassCard style={styles.emptyCard}>
+              <Card style={styles.emptyCard}>
                 <EmptyState
                   emoji="🍽️"
                   title={t('meals.noMeals', { defaultValue: 'No Meal Records Found' })}
@@ -461,7 +461,7 @@ export function MealsScreen() {
                       : t('meals.noMealsDesc', { defaultValue: 'Meal records will be added soon' })
                   }
                 />
-              </GlassCard>
+              </Card>
             )}
           </>
         )}

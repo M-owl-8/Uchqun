@@ -5,8 +5,8 @@ import { useTranslation } from 'react-i18next';
 import { useNavigation } from '@react-navigation/native';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 
 export function HelpScreen() {
   const navigation = useNavigation();
@@ -58,7 +58,7 @@ export function HelpScreen() {
       </Text>
 
       {/* Contact Information */}
-      <GlassCard style={styles.card}>
+      <Card style={styles.card}>
         <View style={styles.sectionHeader}>
           <Ionicons name="chatbubbles-outline" size={24} color={tokens.colors.accent.blue} />
           <Text style={styles.sectionTitle} allowFontScaling={true}>
@@ -85,7 +85,7 @@ export function HelpScreen() {
             </View>
           </Pressable>
         </View>
-      </GlassCard>
+      </Card>
 
       {/* FAQ Section */}
       <View style={styles.faqSection}>
@@ -97,7 +97,7 @@ export function HelpScreen() {
         </View>
         <View style={styles.faqList}>
           {faqs.map((faq, index) => (
-            <GlassCard key={index} style={styles.faqCard}>
+            <Card key={index} style={styles.faqCard}>
               <Pressable
                 style={styles.faqHeader}
                 onPress={() => setExpandedFaq(expandedFaq === index ? null : index)}
@@ -112,13 +112,13 @@ export function HelpScreen() {
               {expandedFaq === index && (
                 <Text style={styles.faqAnswer} allowFontScaling={true}>{faq.answer}</Text>
               )}
-            </GlassCard>
+            </Card>
           ))}
         </View>
       </View>
 
       {/* Quick Links */}
-      <GlassCard style={styles.quickLinksCard}>
+      <Card style={styles.quickLinksCard}>
         <Text style={styles.quickLinksTitle} allowFontScaling={true}>
           {t('help.quickLinks', { defaultValue: 'Quick Links' })}
         </Text>
@@ -156,7 +156,7 @@ export function HelpScreen() {
             </Text>
           </Pressable>
         </View>
-      </GlassCard>
+      </Card>
       </ScrollView>
     </SafeAreaView>
   );

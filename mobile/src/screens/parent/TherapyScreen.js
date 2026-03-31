@@ -8,8 +8,8 @@ import { parentService } from '../../services/parentService';
 import { api } from '../../services/api';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -209,7 +209,7 @@ export function TherapyScreen() {
 
       {/* Active Session */}
       {activeSession && selectedTherapy && (
-        <GlassCard style={styles.activeSessionCard}>
+        <Card style={styles.activeSessionCard}>
           <LinearGradient
             colors={[tokens.colors.accent.blue, tokens.colors.accent.blueVibrant]}
             style={StyleSheet.absoluteFill}
@@ -233,7 +233,7 @@ export function TherapyScreen() {
               </Text>
             </Pressable>
           </View>
-        </GlassCard>
+        </Card>
       )}
 
       {/* Therapies List */}
@@ -243,7 +243,7 @@ export function TherapyScreen() {
             const iconName = getTherapyIcon(therapy.therapyType);
             const iconColor = getTherapyColor(therapy.therapyType);
             return (
-              <GlassCard key={therapy.id} style={styles.therapyCard}>
+              <Card key={therapy.id} style={styles.therapyCard}>
                 <View style={styles.therapyHeader}>
                   <LinearGradient
                     colors={[iconColor + '30', iconColor + '15']}
@@ -302,18 +302,18 @@ export function TherapyScreen() {
                     {t('therapy.start', { defaultValue: 'Boshlash' })}
                   </Text>
                 </Pressable>
-              </GlassCard>
+              </Card>
             );
           })}
         </View>
       ) : (
-        <GlassCard style={styles.emptyCard}>
+        <Card style={styles.emptyCard}>
           <EmptyState
             icon="musical-notes-outline"
             title={t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}
             description={t('therapy.noTherapiesDesc', { defaultValue: 'Qidiruv natijalari bo\'sh' })}
           />
-        </GlassCard>
+        </Card>
       )}
       </ScrollView>
     </SafeAreaView>

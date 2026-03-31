@@ -6,7 +6,7 @@ import { teacherService } from '../../services/teacherService';
 import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
 
 export function TasksScreen() {

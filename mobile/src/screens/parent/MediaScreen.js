@@ -29,8 +29,8 @@ import { parentService } from '../../services/parentService';
 import { mediaService } from '../../services/mediaService';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { ImageViewer } from '../../components/common/ImageViewer';
@@ -259,13 +259,13 @@ export function MediaScreen() {
 
         {children.length === 0 && !loading && (
           <View style={styles.emptyContainer}>
-            <GlassCard style={styles.emptyCard}>
+            <Card style={styles.emptyCard}>
               <EmptyState
                 emoji="👶"
                 title={t('media.selectChild', { defaultValue: 'Select Child' })}
                 description={t('media.selectChildDesc', { defaultValue: 'After adding a child, media will appear' })}
               />
-            </GlassCard>
+            </Card>
           </View>
         )}
 
@@ -287,13 +287,13 @@ export function MediaScreen() {
               </View>
             ) : media.length === 0 ? (
               <View style={styles.emptyContainer}>
-                <GlassCard style={styles.emptyCard}>
+                <Card style={styles.emptyCard}>
                   <EmptyState
                     emoji="📷"
                     title={t('media.noMedia', { defaultValue: 'No Media Found' })}
                     description={t('media.noMediaDesc', { defaultValue: 'New photos and videos will be added soon' })}
                   />
-                </GlassCard>
+                </Card>
               </View>
             ) : (
               <Animated.View style={{ opacity: fadeAnim }}>

@@ -8,8 +8,8 @@ import { useNavigation } from '@react-navigation/native';
 import { safeNavigate, safeNavigateToTab } from '../../utils/safeNavigation';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
-import { GlassCard } from '../../components/teacher/GlassCard';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
+import Card from '../../components/common/Card';
 
 export function DiagnosticsScreen() {
   const navigation = useNavigation();
@@ -92,7 +92,7 @@ export function DiagnosticsScreen() {
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
-      <GlassCard style={styles.card}>
+      <Card style={styles.card}>
         <Text style={styles.sectionTitle}>Navigation Tests</Text>
         <Text style={styles.description}>
           Tests all navigation routes to ensure no crashes occur.
@@ -115,10 +115,10 @@ export function DiagnosticsScreen() {
             </Text>
           </View>
         )}
-      </GlassCard>
+      </Card>
 
       {results.length > 0 && (
-        <GlassCard style={styles.card}>
+        <Card style={styles.card}>
           <Text style={styles.sectionTitle}>Test Results</Text>
           <ScrollView style={styles.resultsList}>
             {results.map((result, index) => (
@@ -138,7 +138,7 @@ export function DiagnosticsScreen() {
               </View>
             ))}
           </ScrollView>
-        </GlassCard>
+        </Card>
       )}
       </ScrollView>
     </SafeAreaView>
