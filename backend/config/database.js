@@ -31,7 +31,7 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
     dialectOptions: {
       ssl: useSSL && !isLocalDatabase ? {
         require: true,
-        rejectUnauthorized: true,
+        rejectUnauthorized: false,
       } : false,
       connectTimeout: 60000,
     },
