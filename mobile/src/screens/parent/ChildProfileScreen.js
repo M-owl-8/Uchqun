@@ -762,6 +762,196 @@ export function ChildProfileScreen() {
           </Card>
         )}
 
+        {/* Medical Information */}
+        {(child.medicalDiagnosis || child.disabilityType) && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="medkit" size={24} color={tokens.colors.semantic.error} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.medicalInfo', { defaultValue: 'Medical Information' })}
+              </Text>
+            </View>
+            <View style={styles.infoGrid}>
+              <ProfileInfoRow
+                label={t('childProfile.medicalDiagnosis', { defaultValue: 'Diagnosis' })}
+                value={child.medicalDiagnosis}
+                icon="document-text-outline"
+                color={tokens.colors.semantic.error}
+                t={t}
+              />
+              {child.disabilityType && (
+                <ProfileInfoRow
+                  label={t('childProfile.disabilityType', { defaultValue: 'Disability Type' })}
+                  value={child.disabilityType}
+                  icon="medical-outline"
+                  color={tokens.colors.semantic.warning}
+                  t={t}
+                />
+              )}
+            </View>
+          </Card>
+        )}
+
+        {/* Institution Info */}
+        {child.institutionStartDate && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="business" size={24} color={tokens.colors.accent.blue} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.institutionDuration', { defaultValue: 'Institution Duration' })}
+              </Text>
+            </View>
+            <View style={styles.infoGrid}>
+              <ProfileInfoRow
+                label={t('childProfile.institutionStartDate', { defaultValue: 'Admission Date' })}
+                value={formatDate(child.institutionStartDate)}
+                icon="calendar-outline"
+                color={tokens.colors.accent.blue}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.institutionDuration', { defaultValue: 'Institution Duration' })}
+                value={`${calculateAge(child.institutionStartDate)} ${t('childProfile.years', { defaultValue: 'years' })}`}
+                icon="time-outline"
+                color={tokens.colors.accent.blue}
+                t={t}
+              />
+            </View>
+          </Card>
+        )}
+
+        {/* Father Info */}
+        {(child.fatherFullName || child.fatherDOB || child.fatherOccupation) && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="man" size={24} color={tokens.colors.accent.blue} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.fatherInfo', { defaultValue: 'Father' })}
+              </Text>
+            </View>
+            <View style={styles.infoGrid}>
+              <ProfileInfoRow
+                label={t('childProfile.fatherFullName', { defaultValue: 'Full Name' })}
+                value={child.fatherFullName}
+                icon="person-outline"
+                color={tokens.colors.accent.blue}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.fatherDOB', { defaultValue: 'Date of Birth' })}
+                value={child.fatherDOB ? formatDate(child.fatherDOB) : null}
+                icon="calendar-outline"
+                color={tokens.colors.accent.blue}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.fatherOccupation', { defaultValue: 'Occupation' })}
+                value={child.fatherOccupation}
+                icon="briefcase-outline"
+                color={tokens.colors.accent.blue}
+                t={t}
+              />
+            </View>
+          </Card>
+        )}
+
+        {/* Mother Info */}
+        {(child.motherFullName || child.motherDOB || child.motherOccupation) && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="woman" size={24} color={tokens.colors.joy.coral} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.motherInfo', { defaultValue: 'Mother' })}
+              </Text>
+            </View>
+            <View style={styles.infoGrid}>
+              <ProfileInfoRow
+                label={t('childProfile.motherFullName', { defaultValue: 'Full Name' })}
+                value={child.motherFullName}
+                icon="person-outline"
+                color={tokens.colors.joy.coral}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.motherDOB', { defaultValue: 'Date of Birth' })}
+                value={child.motherDOB ? formatDate(child.motherDOB) : null}
+                icon="calendar-outline"
+                color={tokens.colors.joy.coral}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.motherOccupation', { defaultValue: 'Occupation' })}
+                value={child.motherOccupation}
+                icon="briefcase-outline"
+                color={tokens.colors.joy.coral}
+                t={t}
+              />
+            </View>
+          </Card>
+        )}
+
+        {/* Contact Info */}
+        {(child.contactPhone || child.address) && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="call" size={24} color={tokens.colors.semantic.success} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.contactPhone', { defaultValue: 'Contact' })}
+              </Text>
+            </View>
+            <View style={styles.infoGrid}>
+              <ProfileInfoRow
+                label={t('childProfile.contactPhone', { defaultValue: 'Phone Number' })}
+                value={child.contactPhone}
+                icon="call-outline"
+                color={tokens.colors.semantic.success}
+                t={t}
+              />
+              <ProfileInfoRow
+                label={t('childProfile.address', { defaultValue: 'Address' })}
+                value={child.address}
+                icon="location-outline"
+                color={tokens.colors.semantic.info}
+                t={t}
+              />
+            </View>
+          </Card>
+        )}
+
+        {/* Child Description */}
+        {child.childDescription && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="information-circle" size={24} color={tokens.colors.semantic.info} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.childDescription', { defaultValue: 'Child Description' })}
+              </Text>
+            </View>
+            <View style={styles.profileTextBlock}>
+              <Text style={styles.profileTextContent} allowFontScaling={true}>
+                {child.childDescription}
+              </Text>
+            </View>
+          </Card>
+        )}
+
+        {/* Expected Outcomes */}
+        {child.expectedOutcomes && (
+          <Card style={styles.card}>
+            <View style={styles.sectionHeader}>
+              <Ionicons name="flag" size={24} color={tokens.colors.semantic.success} />
+              <Text style={styles.sectionTitle} allowFontScaling={true}>
+                {t('childProfile.expectedOutcomes', { defaultValue: 'Expected Outcomes' })}
+              </Text>
+            </View>
+            <View style={[styles.profileTextBlock, { backgroundColor: tokens.colors.semantic.successSoft }]}>
+              <Text style={[styles.profileTextContent, { color: tokens.colors.text.primary }]} allowFontScaling={true}>
+                {child.expectedOutcomes}
+              </Text>
+            </View>
+          </Card>
+        )}
+
         {/* Weekly Stats */}
         <Card style={styles.statsCard}>
           <Text style={styles.statsTitle} allowFontScaling={true}>
@@ -1086,6 +1276,22 @@ function InfoItem({ label, value, icon, color = tokens.colors.accent.blue }) {
   );
 }
 
+function ProfileInfoRow({ label, value, icon, color = tokens.colors.accent.blue, t }) {
+  const displayValue = value || t('childProfile.notProvided', { defaultValue: 'Not provided' });
+  const isMuted = !value;
+  return (
+    <View style={styles.infoItem}>
+      <View style={styles.infoItemLabelRow}>
+        <Ionicons name={icon} size={16} color={color} />
+        <Text style={styles.infoItemLabel} allowFontScaling={true}>{label}</Text>
+      </View>
+      <Text style={[styles.infoItemValue, isMuted && styles.mutedText]} allowFontScaling={true}>
+        {displayValue}
+      </Text>
+    </View>
+  );
+}
+
 function StatRow({ label, value }) {
   return (
     <View style={styles.statRow}>
@@ -1352,6 +1558,21 @@ const styles = StyleSheet.create({
   specialNeedsText: {
     fontSize: tokens.type.body.fontSize,
     color: tokens.colors.semantic.error,
+    lineHeight: 22,
+  },
+  mutedText: {
+    color: tokens.colors.text.muted,
+    fontStyle: 'italic',
+    fontWeight: tokens.typography.fontWeight.regular,
+  },
+  profileTextBlock: {
+    backgroundColor: tokens.colors.surface.secondary,
+    borderRadius: tokens.radius.lg,
+    padding: tokens.space.lg,
+  },
+  profileTextContent: {
+    fontSize: tokens.type.body.fontSize,
+    color: tokens.colors.text.primary,
     lineHeight: 22,
   },
   monitoringList: {

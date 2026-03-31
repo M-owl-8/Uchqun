@@ -903,5 +903,37 @@
       "stableMood": "Kayfiyati kun davomida barqaror turadi",
       "trustingRelationship": "Tarbiyachi bilan munosabati ishonchli va mustahkam"
     }
+  },
+  "childProfile": {
+    "title": "Bola profili",
+    "medicalInfo": "Tibbiy ma'lumot",
+    "medicalDiagnosis": "Tashxis",
+    "institutionDuration": "Muassasada bo'lish muddati",
+    "institutionStartDate": "Qabul qilingan sana",
+    "years": "yil",
+    "fatherInfo": "Otasi",
+    "fatherFullName": "To'liq ism",
+    "fatherDOB": "Tug'ilgan sanasi",
+    "fatherOccupation": "Kasbi",
+    "motherInfo": "Onasi",
+    "motherFullName": "To'liq ism",
+    "motherDOB": "Tug'ilgan sanasi",
+    "motherOccupation": "Kasbi",
+    "address": "Manzil",
+    "contactPhone": "Telefon raqami",
+    "childDescription": "Bolaning umumiy tavsifi",
+    "expectedOutcomes": "Kutilotgan natija",
+    "dateOfBirth": "Tug'ilgan sanasi",
+    "gender": "Jinsi",
+    "school": "Maktab",
+    "class": "Sinf",
+    "teacher": "O'qituvchi",
+    "disabilityType": "Nogironlik turi",
+    "specialNeeds": "Maxsus ehtiyojlar",
+    "editProfile": "Profilni tahrirlash",
+    "saveProfile": "Profilni saqlash",
+    "profileUpdated": "Profil yangilandi",
+    "profileUpdateError": "Profilni yangilashda xatolik",
+    "notProvided": "Ko'rsatilmagan"
   }
 }

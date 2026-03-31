@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, TouchableOpacity, Linking, SafeAreaView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { teacherService } from '../../services/teacherService';
@@ -13,6 +13,7 @@ import tokens from '../../styles/tokens';
 
 export function ParentDetailScreen() {
   const route = useRoute();
+  const navigation = useNavigation();
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const { parentId = null } = route?.params || {};
@@ -174,9 +175,11 @@ export function ParentDetailScreen() {
             </View>
 
             {parent.children.map((child, index) => (
-              <View
+              <TouchableOpacity
                 key={child?.id || index}
                 style={[styles.childItem, index < parent.children.length - 1 && styles.childItemBorder]}
+                onPress={() => navigation.navigate('ChildProfile', { childId: child.id, childData: child })}
+                activeOpacity={0.7}
               >
                 <View style={styles.childAvatar}>
                   <Text style={styles.childAvatarText}>
@@ -245,7 +248,8 @@ export function ParentDetailScreen() {
                     </View>
                   )}
                 </View>
-              </View>
+                <Ionicons name="chevron-forward" size={20} color={tokens.colors.text.muted} style={{ alignSelf: 'center' }} />
+              </TouchableOpacity>
             ))}
           </Card>
         )}

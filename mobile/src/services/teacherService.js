@@ -68,6 +68,12 @@ export const teacherService = {
     return extractResponseData(response);
   },
 
+  // Child update
+  updateChild: async (childId, data) => {
+    const response = await api.put(`/child/${childId}`, data);
+    return extractResponseData(response);
+  },
+
   // Parents (read-only)
   // Special case: Backend returns { parents: [...], total: N } NOT { success: true, data: ... }
   getParents: async () => {
