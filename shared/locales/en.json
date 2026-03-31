@@ -23,6 +23,36 @@
     "delete": "Delete",
     "edit": "Edit"
   },
+  "servicePlan": {
+    "title": "Annual Plan",
+    "year": "Year",
+    "save": "Save",
+    "saved": "Plan saved",
+    "services": {
+      "logoped": "Speech Therapist",
+      "defektolog": "Defectologist",
+      "selfCare": "Self-Care Training",
+      "ipotherapy": "Hippotherapy",
+      "music": "Music Therapy",
+      "labor": "Labor Class",
+      "tmc": "TMC Treatment",
+      "physiotherapy": "Physiotherapy"
+    },
+    "months": {
+      "jan": "Jan",
+      "feb": "Feb",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Jun",
+      "jul": "Jul",
+      "aug": "Aug",
+      "sep": "Sep",
+      "oct": "Oct",
+      "nov": "Nov",
+      "dec": "Dec"
+    }
+  },
   "assessment": {
     "title": "Assessment",
     "cognitive": "Cognitive Development",

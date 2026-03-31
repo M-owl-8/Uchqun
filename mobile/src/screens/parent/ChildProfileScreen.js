@@ -976,6 +976,31 @@ export function ChildProfileScreen() {
         {/* Teacher Assessments */}
         <TeacherAssessmentsSection childId={selectedChildId} t={t} />
 
+        {/* Annual Service Plan */}
+        <Pressable
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            backgroundColor: '#059669',
+            marginHorizontal: 16,
+            marginTop: 12,
+            paddingVertical: 14,
+            paddingHorizontal: 16,
+            borderRadius: 12,
+            gap: 8,
+          }}
+          onPress={() => navigation.navigate('ServicePlan', {
+            childId: selectedChildId,
+            childName: child?.firstName,
+          })}
+        >
+          <Ionicons name="calendar-outline" size={22} color="#fff" />
+          <Text style={{ color: '#fff', fontSize: 15, fontWeight: '600', flex: 1 }}>
+            {t('servicePlan.title', { defaultValue: 'Annual Plan' })}
+          </Text>
+          <Ionicons name="chevron-forward" size={20} color="#fff" />
+        </Pressable>
+
         {/* Emotional Monitoring */}
         {monitoringRecords.length > 0 && (
           <Card style={styles.card}>

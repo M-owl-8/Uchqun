@@ -936,6 +936,36 @@
     "profileUpdateError": "Profilni yangilashda xatolik",
     "notProvided": "Ko'rsatilmagan"
   },
+  "servicePlan": {
+    "title": "Yillik reja",
+    "year": "Yil",
+    "save": "Saqlash",
+    "saved": "Reja saqlandi",
+    "services": {
+      "logoped": "Logoped",
+      "defektolog": "Defektolog",
+      "selfCare": "O'ziga xizmat ko'rsatish",
+      "ipotherapy": "Ipoterapiya",
+      "music": "Musiqa mashg'uloti",
+      "labor": "Mehnat darsi",
+      "tmc": "TMC orqali davolash",
+      "physiotherapy": "Fizioterapiya"
+    },
+    "months": {
+      "jan": "Yan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Iyun",
+      "jul": "Iyul",
+      "aug": "Avg",
+      "sep": "Sen",
+      "oct": "Okt",
+      "nov": "Noy",
+      "dec": "Dek"
+    }
+  },
   "assessment": {
     "title": "Baholash",
     "cognitive": "Aqliy rivojlanish",

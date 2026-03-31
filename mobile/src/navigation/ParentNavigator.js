@@ -21,6 +21,7 @@ import { PaymentsScreen } from '../screens/parent/PaymentsScreen';
 import { HelpScreen } from '../screens/parent/HelpScreen';
 import { AIWarningsScreen } from '../screens/parent/AIWarningsScreen';
 import { DiagnosticsScreen } from '../screens/parent/DiagnosticsScreen';
+import { ServicePlanScreen } from '../screens/parent/ServicePlanScreen';
 import FloatingAI from '../components/common/FloatingAI';
 import tokens from '../styles/tokens';
 import { useTranslation } from 'react-i18next';
@@ -165,6 +166,7 @@ export function ParentNavigator() {
         <Stack.Screen name="Payments" component={PaymentsScreen} />
         <Stack.Screen name="Help" component={HelpScreen} />
         <Stack.Screen name="AIWarnings" component={AIWarningsScreen} />
+        <Stack.Screen name="ServicePlan" component={ServicePlanScreen} />
         {__DEV__ && (
           <Stack.Screen name="Diagnostics" component={DiagnosticsScreen} />
         )}

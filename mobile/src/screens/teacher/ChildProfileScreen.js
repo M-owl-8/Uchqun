@@ -458,6 +458,21 @@ export function TeacherChildProfileScreen() {
             </Text>
             <Ionicons name="chevron-forward" size={20} color="#fff" />
           </Pressable>
+
+          {/* Service Plan Button */}
+          <Pressable
+            style={[styles.assessmentButton, { backgroundColor: '#059669' }]}
+            onPress={() => navigation.navigate('ServicePlan', {
+              childId,
+              childName: childName,
+            })}
+          >
+            <Ionicons name="calendar-outline" size={22} color="#fff" />
+            <Text style={styles.assessmentButtonText}>
+              {t('servicePlan.title', { defaultValue: 'Annual Plan' })}
+            </Text>
+            <Ionicons name="chevron-forward" size={20} color="#fff" />
+          </Pressable>
         </ScrollView>
       </SafeAreaView>
     );
