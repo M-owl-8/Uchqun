@@ -8,8 +8,8 @@ import { parentService } from '../../services/parentService';
 import { activityService } from '../../services/activityService';
 import { mealService } from '../../services/mealService';
 import { mediaService } from '../../services/mediaService';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import tokens from '../../styles/tokens';
@@ -117,7 +117,7 @@ export function ParentProfileScreen() {
 
   const loadChildData = async (childId) => {
     if (!childId) return;
-    
+
     try {
       const [childResponse, activitiesResponse, mealsResponse, mediaResponse, profileResponse, monitoringResponse] = await Promise.all([
         parentService.getChildById(childId).catch(() => null),
@@ -136,7 +136,7 @@ export function ParentProfileScreen() {
       const assignedTeacher = profileResponse?.user?.assignedTeacher;
       const parentGroup = profileResponse?.user?.group;
       setParentGroupName(parentGroup?.name || '');
-      
+
       const combinedTeacherName = assignedTeacher
         ? [assignedTeacher.firstName, assignedTeacher.lastName].filter(Boolean).join(' ')
         : (childResponse?.teacher || '');
@@ -195,10 +195,10 @@ export function ParentProfileScreen() {
     if (!dateString) return '';
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
-        year: 'numeric', 
-        month: 'long', 
-        day: 'numeric' 
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
       });
     } catch {
       return dateString;
@@ -259,8 +259,7 @@ export function ParentProfileScreen() {
         type: mimeType,
       });
 
-      // Do NOT set Content-Type manually — the API interceptor removes it
-      // so React Native can auto-set the multipart boundary
+      // Do NOT set Content-Type manually
       await api.put('/user/avatar', formData, {
         timeout: 60000,
       });
@@ -320,12 +319,11 @@ export function ParentProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('nav.profile', { defaultValue: 'Profile' })}
-        showBack={false}
       />
-      <ScrollView 
-        style={styles.scrollView} 
+      <ScrollView
+        style={styles.scrollView}
         contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
@@ -336,99 +334,98 @@ export function ParentProfileScreen() {
           }}
         >
           {/* Profile Card */}
-          <GlassCard style={styles.profileCard}>
-              <TouchableOpacity onPress={handleAvatarUpload} disabled={uploadingAvatar}>
-                <View style={styles.avatarContainer}>
-                  {u.avatar ? (
-                    <Image source={{ uri: getAvatarUrl(u.avatar, avatarVersion > 0) }} style={styles.avatarImage} resizeMode="cover" />
-                  ) : (
-                    <LinearGradient colors={['#A78BFA', '#8B5CF6']} style={styles.avatarGradient}>
-                      <Text style={styles.avatarText}>
-                        {u.firstName?.charAt(0) || ''}{u.lastName?.charAt(0) || ''}
-                      </Text>
-                    </LinearGradient>
-                  )}
-                  {uploadingAvatar && (
-                    <View style={styles.uploadingOverlay}>
-                      <ActivityIndicator color="#FFFFFF" size="small" />
-                    </View>
-                  )}
-                  <View style={styles.cameraButton}>
-                    <Ionicons name="camera" size={12} color="#FFFFFF" />
+          <Card style={styles.profileCard}>
+            <TouchableOpacity onPress={handleAvatarUpload} disabled={uploadingAvatar}>
+              <View style={styles.avatarContainer}>
+                {u.avatar ? (
+                  <Image source={{ uri: getAvatarUrl(u.avatar, avatarVersion > 0) }} style={styles.avatarImage} resizeMode="cover" />
+                ) : (
+                  <LinearGradient colors={tokens.colors.gradients.ocean} style={styles.avatarGradient}>
+                    <Text style={styles.avatarText}>
+                      {u.firstName?.charAt(0) || ''}{u.lastName?.charAt(0) || ''}
+                    </Text>
+                  </LinearGradient>
+                )}
+                {uploadingAvatar && (
+                  <View style={styles.uploadingOverlay}>
+                    <ActivityIndicator color="#FFFFFF" size="small" />
                   </View>
+                )}
+                <View style={styles.cameraButton}>
+                  <Ionicons name="camera" size={12} color="#FFFFFF" />
                 </View>
-              </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
 
-              {!editing ? (
-                <View style={styles.profileInfo}>
-                  <Text style={styles.profileName}>
-                    {u.firstName ?? '—'} {u.lastName ?? ''}
-                  </Text>
-                  <View style={styles.emailRow}>
-                    <Ionicons name="mail-outline" size={12} color="rgba(255, 255, 255, 0.7)" />
-                    <Text style={styles.profileEmail}>{u.email ?? '—'}</Text>
-                  </View>
-                  <TouchableOpacity style={styles.editButton} onPress={() => setEditing(true)}>
-                    <Ionicons name="create-outline" size={16} color="#FFFFFF" />
-                    <Text style={styles.editButtonText}>{t('profile.editProfile', { defaultValue: 'Edit Profile' })}</Text>
+            {!editing ? (
+              <View style={styles.profileInfo}>
+                <Text style={styles.profileName}>
+                  {u.firstName ?? '\u2014'} {u.lastName ?? ''}
+                </Text>
+                <View style={styles.emailRow}>
+                  <Ionicons name="mail-outline" size={14} color={tokens.colors.text.secondary} />
+                  <Text style={styles.profileEmail}>{u.email ?? '\u2014'}</Text>
+                </View>
+                <View style={styles.roleBadge}>
+                  <Ionicons name="heart" size={14} color={tokens.colors.accent.blue} />
+                  <Text style={styles.roleText}>{t('dashboard.roleParent', { defaultValue: 'Parent' })}</Text>
+                </View>
+                <TouchableOpacity style={styles.editButton} onPress={() => setEditing(true)}>
+                  <Ionicons name="create-outline" size={16} color={tokens.colors.text.white} />
+                  <Text style={styles.editButtonText}>{t('profile.editProfile', { defaultValue: 'Edit Profile' })}</Text>
+                </TouchableOpacity>
+              </View>
+            ) : (
+              <View style={styles.editForm}>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>{t('profile.firstName', { defaultValue: 'First Name' })}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={editForm.firstName}
+                    onChangeText={(text) => setEditForm({ ...editForm, firstName: text })}
+                    placeholderTextColor={tokens.colors.text.muted}
+                  />
+                </View>
+                <View style={styles.inputGroup}>
+                  <Text style={styles.inputLabel}>{t('profile.lastName', { defaultValue: 'Last Name' })}</Text>
+                  <TextInput
+                    style={styles.input}
+                    value={editForm.lastName}
+                    onChangeText={(text) => setEditForm({ ...editForm, lastName: text })}
+                    placeholderTextColor={tokens.colors.text.muted}
+                  />
+                </View>
+                <View style={styles.buttonRow}>
+                  <TouchableOpacity style={styles.cancelButton} onPress={() => setEditing(false)}>
+                    <Text style={styles.cancelButtonText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
+                    <Text style={styles.saveButtonText}>{t('common.save', { defaultValue: 'Save' })}</Text>
                   </TouchableOpacity>
                 </View>
-              ) : (
-                <View style={styles.editForm}>
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>{t('profile.firstName', { defaultValue: 'First Name' })}</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={editForm.firstName}
-                      onChangeText={(text) => setEditForm({ ...editForm, firstName: text })}
-                      placeholderTextColor={tokens.colors.text.tertiary}
-                    />
-                  </View>
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputLabel}>{t('profile.lastName', { defaultValue: 'Last Name' })}</Text>
-                    <TextInput
-                      style={styles.input}
-                      value={editForm.lastName}
-                      onChangeText={(text) => setEditForm({ ...editForm, lastName: text })}
-                      placeholderTextColor={tokens.colors.text.tertiary}
-                    />
-                  </View>
-                  <View style={styles.buttonRow}>
-                    <TouchableOpacity style={styles.cancelButton} onPress={() => setEditing(false)}>
-                      <Text style={styles.cancelButtonText}>{t('common.cancel', { defaultValue: 'Cancel' })}</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.saveButton} onPress={handleSaveProfile}>
-                      <LinearGradient colors={tokens.colors.gradients.aurora} style={styles.saveButtonGradient}>
-                        <Text style={styles.saveButtonText}>{t('common.save', { defaultValue: 'Save' })}</Text>
-                      </LinearGradient>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              )}
-          </GlassCard>
+              </View>
+            )}
+          </Card>
 
           {/* Child Information Section - Full Details */}
           {child ? (
             <>
               {/* Child Profile Hero */}
-              <GlassCard style={styles.childHeroCard}>
+              <Card style={styles.childHeroCard}>
                 <View style={styles.childHeroContent}>
                   <View style={styles.childAvatarContainer}>
                     {child.photo ? (
-                      <Image 
-                        source={{ uri: getPhotoUrl(child.photo) }} 
-                        style={styles.childAvatarImage} 
-                        resizeMode="cover" 
+                      <Image
+                        source={{ uri: getPhotoUrl(child.photo) }}
+                        style={styles.childAvatarImage}
+                        resizeMode="cover"
                       />
                     ) : (
-                      <LinearGradient
-                        colors={[tokens.colors.accent.blue + '30', tokens.colors.accent.blue + '15']}
-                        style={styles.childAvatar}
-                      >
+                      <View style={styles.childAvatar}>
                         <Text style={styles.childAvatarText}>
                           {child.firstName?.charAt(0) || ''}{child.lastName?.charAt(0) || ''}
                         </Text>
-                      </LinearGradient>
+                      </View>
                     )}
                   </View>
 
@@ -469,50 +466,54 @@ export function ParentProfileScreen() {
                     </View>
                   </View>
                 </View>
-              </GlassCard>
+              </Card>
 
               {/* Basic Information */}
-              <GlassCard style={styles.sectionCard}>
+              <Card style={styles.sectionCard}>
                 <View style={styles.sectionHeader}>
-                  <Ionicons name="person" size={24} color={tokens.colors.accent.blue} />
+                  <View style={[styles.sectionIconContainer, { backgroundColor: tokens.colors.accent.blueSoft }]}>
+                    <Ionicons name="person" size={20} color={tokens.colors.accent.blue} />
+                  </View>
                   <Text style={styles.sectionTitle}>{t('child.basicInfo', { defaultValue: 'Basic Information' })}</Text>
                 </View>
                 <View style={styles.infoGrid}>
-                  <InfoItem 
-                    label={t('child.fullName', { defaultValue: 'Full name' })} 
-                    value={`${child.firstName} ${child.lastName}`} 
+                  <InfoItem
+                    label={t('child.fullName', { defaultValue: 'Full name' })}
+                    value={`${child.firstName} ${child.lastName}`}
                     icon="person-outline"
                   />
                   {child.dateOfBirth && (
-                    <InfoItem 
-                      label={t('child.birthDate', { defaultValue: 'Date of birth' })} 
-                      value={formatDate(child.dateOfBirth)} 
+                    <InfoItem
+                      label={t('child.birthDate', { defaultValue: 'Date of birth' })}
+                      value={formatDate(child.dateOfBirth)}
                       icon="calendar-outline"
                     />
                   )}
                   {child.disabilityType && (
-                    <InfoItem 
-                      label={t('child.diagnosis', { defaultValue: 'Diagnosis' })} 
-                      value={child.disabilityType} 
+                    <InfoItem
+                      label={t('child.diagnosis', { defaultValue: 'Diagnosis' })}
+                      value={child.disabilityType}
                       icon="medical-outline"
                       color={tokens.colors.semantic.error}
                     />
                   )}
-                  <InfoItem 
-                    label={t('child.teacher', { defaultValue: 'Teacher' })} 
-                    value={(teacherName && teacherName.trim()) || child.teacher || '—'} 
+                  <InfoItem
+                    label={t('child.teacher', { defaultValue: 'Teacher' })}
+                    value={(teacherName && teacherName.trim()) || child.teacher || '\u2014'}
                     icon="school-outline"
                     color={tokens.colors.accent.blue}
                   />
                 </View>
-              </GlassCard>
+              </Card>
 
               {/* Special Needs */}
               {child.specialNeeds && (
-                <GlassCard style={styles.sectionCard}>
-                  <View style={styles.specialNeedsHeader}>
-                    <Ionicons name="heart" size={24} color={tokens.colors.semantic.error} />
-                    <Text style={styles.specialNeedsTitle}>
+                <Card style={styles.sectionCard}>
+                  <View style={styles.sectionHeader}>
+                    <View style={[styles.sectionIconContainer, { backgroundColor: tokens.colors.semantic.errorSoft }]}>
+                      <Ionicons name="heart" size={20} color={tokens.colors.semantic.error} />
+                    </View>
+                    <Text style={[styles.sectionTitle, { color: tokens.colors.semantic.error }]}>
                       {t('child.specialNeeds', { defaultValue: 'Special Needs' })}
                     </Text>
                   </View>
@@ -521,11 +522,11 @@ export function ParentProfileScreen() {
                       {child.specialNeeds}
                     </Text>
                   </View>
-                </GlassCard>
+                </Card>
               )}
 
               {/* Weekly Stats */}
-              <GlassCard style={styles.statsCard}>
+              <Card style={styles.sectionCard}>
                 <Text style={styles.statsTitle}>
                   {t('child.weeklyResults', { defaultValue: 'Weekly Results' })}
                 </Text>
@@ -543,13 +544,15 @@ export function ParentProfileScreen() {
                     value={weeklyStats.media}
                   />
                 </View>
-              </GlassCard>
+              </Card>
 
               {/* Emotional Monitoring */}
               {monitoringRecords.length > 0 && (
-                <GlassCard style={styles.sectionCard}>
+                <Card style={styles.sectionCard}>
                   <View style={styles.sectionHeader}>
-                    <Ionicons name="heart" size={24} color={tokens.colors.joy.rose} />
+                    <View style={[styles.sectionIconContainer, { backgroundColor: tokens.colors.joy.roseSoft }]}>
+                      <Ionicons name="heart" size={20} color={tokens.colors.joy.rose} />
+                    </View>
                     <Text style={styles.sectionTitle}>
                       {t('profile.monitoringJournal', { defaultValue: 'Monitoring Journal' })}
                     </Text>
@@ -560,7 +563,7 @@ export function ParentProfileScreen() {
                       const checkedCount = Object.values(emotionalState).filter(Boolean).length;
                       const totalCount = Object.keys(emotionalState).length;
                       const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
-                      
+
                       return (
                         <View key={record.id} style={styles.monitoringCard}>
                           <View style={styles.monitoringHeader}>
@@ -595,16 +598,16 @@ export function ParentProfileScreen() {
                       +{monitoringRecords.length - 5} {t('common.more', { defaultValue: 'more' })}
                     </Text>
                   )}
-                </GlassCard>
+                </Card>
               )}
             </>
           ) : children.length === 0 ? (
-            <GlassCard style={styles.sectionCard}>
+            <Card style={styles.sectionCard}>
               <EmptyState
                 icon="people-outline"
                 message={t('profile.noChildren', { defaultValue: 'No children attached' })}
               />
-            </GlassCard>
+            </Card>
           ) : null}
         </Animated.View>
       </ScrollView>
@@ -646,16 +649,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: tokens.space.lg,
-  },
-  profileCard: {
-    marginBottom: tokens.space.xl,
-    alignItems: 'center',
     padding: tokens.space.xl,
+    gap: tokens.space['2xl'],
+  },
+
+  // Profile Card
+  profileCard: {
+    alignItems: 'center',
   },
   avatarContainer: {
     position: 'relative',
-    marginBottom: tokens.space.md,
+    marginBottom: tokens.space.lg,
   },
   avatarImage: {
     width: 100,
@@ -668,7 +672,6 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.colors.accent.blue,
   },
   avatarText: {
     fontSize: 36,
@@ -704,154 +707,99 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   profileName: {
-    fontSize: 24,
-    fontWeight: '700',
+    ...tokens.type.h2,
     color: tokens.colors.text.primary,
-    marginBottom: 8,
-    letterSpacing: -0.5,
+    marginBottom: tokens.space.sm,
   },
   emailRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 12,
-    gap: 6,
+    marginBottom: tokens.space.md,
+    gap: tokens.space.xs,
   },
   profileEmail: {
-    fontSize: 14,
+    ...tokens.type.body,
     color: tokens.colors.text.secondary,
+  },
+  roleBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: tokens.colors.accent.blueSoft,
+    paddingHorizontal: tokens.space.md,
+    paddingVertical: tokens.space.sm,
+    borderRadius: tokens.radius.pill,
+    gap: tokens.space.xs,
+    marginBottom: tokens.space.lg,
+  },
+  roleText: {
+    ...tokens.type.sub,
+    fontWeight: '600',
+    color: tokens.colors.accent.blue,
   },
   editButton: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: tokens.colors.accent.blue,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 20,
-    gap: 8,
+    paddingHorizontal: tokens.space.xl,
+    paddingVertical: tokens.space.md,
+    borderRadius: tokens.radius.pill,
+    gap: tokens.space.sm,
   },
   editButtonText: {
-    fontSize: 14,
-    fontWeight: '600',
+    ...tokens.type.button,
     color: tokens.colors.text.white,
   },
   editForm: {
     width: '100%',
-    marginTop: 16,
+    marginTop: tokens.space.lg,
   },
   inputGroup: {
-    marginBottom: 16,
+    marginBottom: tokens.space.lg,
   },
   inputLabel: {
-    fontSize: 13,
+    ...tokens.type.sub,
     fontWeight: '600',
     color: tokens.colors.text.primary,
-    marginBottom: 8,
+    marginBottom: tokens.space.sm,
   },
   input: {
     backgroundColor: tokens.colors.background.tertiary,
-    borderRadius: 12,
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    fontSize: 15,
-    color: '#FFFFFF',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: tokens.radius.md,
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.md,
+    ...tokens.type.body,
+    color: tokens.colors.text.primary,
   },
   buttonRow: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 8,
+    gap: tokens.space.md,
+    marginTop: tokens.space.sm,
   },
   cancelButton: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
-    borderRadius: 12,
-    paddingVertical: 14,
+    backgroundColor: tokens.colors.background.tertiary,
+    borderRadius: tokens.radius.md,
+    paddingVertical: tokens.space.lg,
     alignItems: 'center',
   },
   cancelButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
-    color: '#FFFFFF',
+    ...tokens.type.button,
+    color: tokens.colors.text.primary,
   },
   saveButton: {
     flex: 1,
-    borderRadius: 12,
-    overflow: 'hidden',
-  },
-  saveButtonGradient: {
-    paddingVertical: 14,
+    borderRadius: tokens.radius.md,
+    backgroundColor: tokens.colors.accent.blue,
+    paddingVertical: tokens.space.lg,
     alignItems: 'center',
   },
   saveButtonText: {
-    fontSize: 15,
-    fontWeight: '600',
+    ...tokens.type.button,
     color: '#FFFFFF',
   },
-  sectionCard: {
-    marginBottom: tokens.space.lg,
-    padding: tokens.space.lg,
-  },
-  sectionTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: '600',
-    color: tokens.colors.text.primary,
-    marginBottom: tokens.space.md,
-    paddingHorizontal: 2,
-  },
-  childItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingVertical: tokens.space.md,
-    borderBottomWidth: 1,
-    borderBottomColor: tokens.colors.border.light,
-  },
-  lastChildItem: {
-    borderBottomWidth: 0,
-  },
-  childIconContainer: {
-    marginRight: tokens.space.sm,
-  },
-  childIconGradient: {
-    width: 48,
-    height: 48,
-    borderRadius: 24,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: tokens.colors.joy.lavenderSoft,
-  },
-  childContent: {
-    flex: 1,
-  },
-  childName: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: tokens.colors.text.primary,
-    marginBottom: 4,
-  },
-  childMeta: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  childAge: {
-    fontSize: 13,
-    color: tokens.colors.text.secondary,
-  },
-  childGender: {
-    fontSize: 13,
-    color: tokens.colors.text.secondary,
-  },
-  childDisability: {
-    fontSize: 12,
-    color: tokens.colors.text.muted,
-    marginTop: 2,
-    fontStyle: 'italic',
-  },
-  // Child Hero Section
-  childHeroCard: {
-    marginBottom: tokens.space.xl,
-    padding: tokens.space.lg,
-  },
+
+  // Child Hero
+  childHeroCard: {},
   childHeroContent: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -861,21 +809,21 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   childAvatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
     alignItems: 'center',
     justifyContent: 'center',
+    backgroundColor: tokens.colors.accent.blue + '20',
     ...tokens.shadow.soft,
   },
   childAvatarImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
+    width: 80,
+    height: 80,
+    borderRadius: 40,
   },
   childAvatarText: {
-    fontSize: tokens.type.h1.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
+    ...tokens.type.h1,
     color: tokens.colors.accent.blue,
   },
   childHeroInfo: {
@@ -889,8 +837,7 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.sm,
   },
   childHeroName: {
-    fontSize: tokens.type.h1.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
+    ...tokens.type.h2,
     color: tokens.colors.text.primary,
   },
   genderBadge: {
@@ -900,8 +847,7 @@ const styles = StyleSheet.create({
     borderRadius: tokens.radius.pill,
   },
   genderBadgeText: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.caption,
     color: tokens.colors.accent.blue,
     textTransform: 'uppercase',
   },
@@ -912,7 +858,7 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.md,
   },
   ageText: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     color: tokens.colors.text.secondary,
   },
   infoBadges: {
@@ -931,17 +877,31 @@ const styles = StyleSheet.create({
     ...tokens.shadow.sm,
   },
   infoBadgeText: {
-    fontSize: tokens.type.sub.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.sub,
+    fontWeight: '600',
     color: tokens.colors.text.primary,
   },
-  // Section Header
+
+  // Section Cards
+  sectionCard: {},
   sectionHeader: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: tokens.space.sm,
+    gap: tokens.space.md,
     marginBottom: tokens.space.lg,
   },
+  sectionIconContainer: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sectionTitle: {
+    ...tokens.type.h3,
+    color: tokens.colors.text.primary,
+  },
+
   // Info Grid
   infoGrid: {
     gap: tokens.space.lg,
@@ -953,50 +913,34 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: tokens.space.xs,
-    marginBottom: tokens.space.xs / 2,
+    marginBottom: 2,
   },
   infoItemLabel: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.caption,
     color: tokens.colors.text.secondary,
     textTransform: 'uppercase',
     letterSpacing: 0.5,
   },
   infoItemValue: {
-    fontSize: tokens.type.bodyLarge.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.bodyLarge,
     color: tokens.colors.text.primary,
   },
+
   // Special Needs
-  specialNeedsHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: tokens.space.sm,
-    marginBottom: tokens.space.md,
-  },
-  specialNeedsTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
-    color: tokens.colors.semantic.error,
-  },
   specialNeedsContent: {
     backgroundColor: tokens.colors.semantic.errorSoft,
     borderRadius: tokens.radius.lg,
     padding: tokens.space.lg,
   },
   specialNeedsText: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     color: tokens.colors.semantic.error,
     lineHeight: 22,
   },
+
   // Stats
-  statsCard: {
-    marginBottom: tokens.space.lg,
-    padding: tokens.space.lg,
-  },
   statsTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.h3,
     color: tokens.colors.text.primary,
     marginBottom: tokens.space.lg,
   },
@@ -1020,21 +964,20 @@ const styles = StyleSheet.create({
     backgroundColor: tokens.colors.accent.blue,
   },
   statLabel: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.secondary,
   },
   statValue: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
+    ...tokens.type.h2,
     color: tokens.colors.text.primary,
   },
+
   // Monitoring
   monitoringList: {
     gap: tokens.space.md,
   },
   monitoringCard: {
-    borderWidth: 1,
-    borderColor: tokens.colors.border.light,
+    backgroundColor: tokens.colors.background.tertiary,
     borderRadius: tokens.radius.lg,
     padding: tokens.space.md,
   },
@@ -1045,30 +988,29 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.sm,
   },
   monitoringDate: {
-    fontSize: tokens.type.body.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.body,
+    fontWeight: '600',
     color: tokens.colors.text.primary,
   },
   monitoringTeacher: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.secondary,
-    marginTop: tokens.space.xs / 2,
+    marginTop: 2,
   },
   monitoringPercentage: {
     alignItems: 'flex-end',
   },
   monitoringPercentageText: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h1.fontWeight,
+    ...tokens.type.h2,
     color: tokens.colors.accent.blue,
   },
   monitoringCount: {
-    fontSize: tokens.type.caption.fontSize,
+    ...tokens.type.caption,
     color: tokens.colors.text.secondary,
-    marginTop: tokens.space.xs / 2,
+    marginTop: 2,
   },
   monitoringNotes: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.secondary,
     marginTop: tokens.space.sm,
     paddingTop: tokens.space.sm,
@@ -1076,9 +1018,10 @@ const styles = StyleSheet.create({
     borderTopColor: tokens.colors.border.light,
   },
   moreRecords: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
+    ...tokens.type.sub,
+    color: tokens.colors.accent.blue,
     textAlign: 'center',
-    marginTop: tokens.space.sm,
+    marginTop: tokens.space.md,
+    fontWeight: '600',
   },
 });

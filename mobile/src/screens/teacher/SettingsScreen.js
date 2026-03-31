@@ -1,16 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity, Alert, Modal, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, Image, Animated, SafeAreaView } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, TouchableOpacity, Alert, Modal, TextInput, ActivityIndicator, KeyboardAvoidingView, Platform, Image, Animated } from 'react-native';
+import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import * as ImagePicker from 'expo-image-picker';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
 import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, getCurrentLanguage, getAvailableLanguages } from '../../i18n/config';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
 import { api } from '../../services/api';
 import { API_URL } from '../../config';
@@ -249,9 +248,8 @@ export function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
-        title={t('settings.title', { defaultValue: 'Settings' })} 
-        showBack={false}
+      <ScreenHeader
+        title={t('settings.title', { defaultValue: 'Settings' })}
       />
 
       <ScrollView
@@ -267,77 +265,72 @@ export function SettingsScreen() {
         >
           {/* Language Section */}
           <View style={styles.section}>
-            <View style={styles.sectionHeader}>
-              <Ionicons name="language-outline" size={18} color={tokens.colors.joy.lavender} />
-              <Text style={styles.sectionTitle}>{t('settings.language', { defaultValue: 'Language' })}</Text>
-            </View>
-            <GlassCard style={styles.sectionCard}>
-                {(getAvailableLanguages() || []).map((lang, index) => (
-                  <Pressable
-                    key={lang.code}
-                    style={({ pressed }) => [
-                      styles.languageItem,
-                      currentLanguage === lang.code && styles.languageItemActive,
-                      index === getAvailableLanguages().length - 1 && styles.lastItem,
-                      pressed && { opacity: 0.7 },
-                    ]}
-                    onPress={() => handleLanguageChange(lang.code)}
-                    accessibilityRole="radio"
-                    accessibilityLabel={`${lang.nativeName} (${lang.name})`}
-                    accessibilityState={{ selected: currentLanguage === lang.code }}
-                  >
-                    <View style={styles.languageInfo}>
-                      <Text style={styles.languageName}>{lang.nativeName}</Text>
-                      <Text style={styles.languageSubtitle}>{lang.name}</Text>
+            <Text style={styles.sectionTitle}>{t('settings.language', { defaultValue: 'Language' })}</Text>
+            <Card padding={tokens.space.sm}>
+              {(getAvailableLanguages() || []).map((lang, index) => (
+                <Pressable
+                  key={lang.code}
+                  style={({ pressed }) => [
+                    styles.languageItem,
+                    currentLanguage === lang.code && styles.languageItemActive,
+                    index === getAvailableLanguages().length - 1 && styles.lastItem,
+                    pressed && { opacity: 0.7 },
+                  ]}
+                  onPress={() => handleLanguageChange(lang.code)}
+                  accessibilityRole="radio"
+                  accessibilityLabel={`${lang.nativeName} (${lang.name})`}
+                  accessibilityState={{ selected: currentLanguage === lang.code }}
+                >
+                  <View style={styles.languageInfo}>
+                    <Text style={styles.languageName}>{lang.nativeName}</Text>
+                    <Text style={styles.languageSubtitle}>{lang.name}</Text>
+                  </View>
+                  {currentLanguage === lang.code ? (
+                    <View style={styles.checkCircle}>
+                      <Ionicons name="checkmark" size={14} color="#FFFFFF" />
                     </View>
-                    {currentLanguage === lang.code ? (
-                      <View style={styles.checkCircle}>
-                        <Ionicons name="checkmark" size={14} color="#FFFFFF" />
-                      </View>
-                    ) : (
-                      <View style={styles.emptyCircle} />
-                    )}
-                  </Pressable>
-                ))}
-            </GlassCard>
+                  ) : (
+                    <View style={styles.emptyCircle} />
+                  )}
+                </Pressable>
+              ))}
+            </Card>
           </View>
 
           {/* Settings Sections */}
           {settingsSections.map((section, sectionIndex) => (
             <View key={sectionIndex} style={styles.section}>
-              <View style={styles.sectionHeader}>
-                <Text style={styles.sectionTitle}>{section.title}</Text>
-              </View>
-              <GlassCard style={styles.sectionCard}>
-                  {section.items.map((item, itemIndex) => (
-                    <Pressable
-                      key={itemIndex}
-                      style={({ pressed }) => [
-                        styles.settingsItem,
-                        itemIndex === section.items.length - 1 && styles.lastItem,
-                        pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
-                      ]}
-                      onPress={item.onPress}
+              <Text style={styles.sectionTitle}>{section.title}</Text>
+              <View style={styles.settingsItems}>
+                {section.items.map((item, itemIndex) => (
+                  <Card
+                    key={itemIndex}
+                    onPress={item.onPress}
+                    padding={0}
+                  >
+                    <View
+                      style={styles.settingsItem}
                       accessibilityRole={item.hasToggle ? 'switch' : 'button'}
                       accessibilityLabel={item.title}
                       accessibilityHint={item.subtitle}
                       accessibilityState={item.hasToggle ? { checked: isDark } : undefined}
                     >
                       <View style={[styles.iconCircle, { backgroundColor: `${item.color}20` }]}>
-                        <Ionicons name={item.icon} size={18} color={item.color} />
+                        <Ionicons name={item.icon} size={20} color={item.color} />
                       </View>
                       <View style={styles.settingsItemContent}>
-                        <Text style={[styles.settingsItemTitle, item.destructive && { color: '#FCA5A5' }]}>
+                        <Text style={[styles.settingsItemTitle, item.destructive && styles.destructiveText]}>
                           {item.title}
                         </Text>
                         {item.subtitle && (
                           <Text style={styles.settingsItemSubtitle}>{item.subtitle}</Text>
                         )}
                       </View>
-                      <Ionicons name="chevron-forward" size={16} color={tokens.colors.text.muted} />
-                    </Pressable>
-                  ))}
-              </GlassCard>
+                      <Ionicons name="chevron-forward" size={18} color={tokens.colors.text.muted} />
+                    </View>
+                  </Card>
+                ))}
+              </View>
             </View>
           ))}
         </Animated.View>
@@ -355,7 +348,8 @@ export function SettingsScreen() {
           style={styles.modalContainer}
         >
           <View style={styles.modalOverlay}>
-            <GlassCard style={styles.modalContent}>
+            <View style={styles.modalSheet}>
+              <Card style={styles.modalCard} padding={tokens.space.xl}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.editProfile', { defaultValue: 'Edit Profile' })}</Text>
                   <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
@@ -418,19 +412,18 @@ export function SettingsScreen() {
                     accessibilityLabel={t('settings.saveProfile', { defaultValue: 'Save Changes' })}
                     accessibilityState={{ disabled: profileLoading }}
                   >
-                    <View style={styles.saveButtonGradient}>
-                      {profileLoading ? (
-                        <ActivityIndicator color="#FFFFFF" size="small" />
-                      ) : (
-                        <>
-                          <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-                          <Text style={styles.saveButtonText}>{t('settings.saveProfile', { defaultValue: 'Save Changes' })}</Text>
-                        </>
-                      )}
-                    </View>
+                    {profileLoading ? (
+                      <ActivityIndicator color="#FFFFFF" size="small" />
+                    ) : (
+                      <>
+                        <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
+                        <Text style={styles.saveButtonText}>{t('settings.saveProfile', { defaultValue: 'Save Changes' })}</Text>
+                      </>
+                    )}
                   </Pressable>
                 </View>
-            </GlassCard>
+              </Card>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </Modal>
@@ -441,160 +434,25 @@ export function SettingsScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: tokens.colors.background.primary, // Warm Sand - beige background
-  },
-  backgroundGradient: {
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    top: 0,
-    bottom: 0,
-    backgroundColor: tokens.colors.background.primary, // Warm Sand
-  },
-  header: {
-    paddingTop: 50,
-    paddingBottom: tokens.space.lg,
-    paddingHorizontal: tokens.space.xl,
-  },
-  headerCard: {
-    padding: tokens.space.md,
-  },
-  headerContent: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: tokens.space.sm,
-  },
-  headerIconContainer: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: tokens.colors.joy.lavenderSoft, // Purple soft
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  headerTitle: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
-    color: tokens.colors.text.primary,
-    letterSpacing: -0.3,
+    backgroundColor: tokens.colors.background.primary,
   },
   scrollView: {
     flex: 1,
   },
   scrollContent: {
-    padding: tokens.space.lg,
-    paddingBottom: tokens.space['3xl'],
-  },
-  profileCard: {
-    borderRadius: tokens.radius.xl,
-    marginBottom: tokens.space.xl,
-    overflow: 'hidden',
-    backgroundColor: tokens.colors.background.secondary, // Solid white
-    // Removed: borderWidth, borderColor - no borders per design requirements
-    ...tokens.shadow.soft,
-  },
-  profileCardGradient: {
     padding: tokens.space.xl,
-    alignItems: 'center',
-  },
-  avatarContainer: {
-    width: 80,
-    height: 80,
-    borderRadius: 40,
-    marginBottom: tokens.space.md,
-    position: 'relative',
-    overflow: 'hidden',
-  },
-  avatarImage: {
-    width: '100%',
-    height: '100%',
-  },
-  avatarGradient: {
-    width: '100%',
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: tokens.colors.text.white,
-  },
-  cameraButton: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    backgroundColor: tokens.colors.accent.blue,
-    alignItems: 'center',
-    justifyContent: 'center',
-    // Removed: borderWidth, borderColor - no borders per design requirements
-    ...tokens.shadow.sm,
-  },
-  uploadingOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  profileInfo: {
-    alignItems: 'center',
-  },
-  profileName: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
-    color: tokens.colors.text.white,
-    marginBottom: tokens.space.xs,
-    letterSpacing: -0.3,
-  },
-  emailRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: tokens.space.xs,
-    marginBottom: tokens.space.sm,
-  },
-  profileEmail: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.muted,
-  },
-  roleBadge: {
-    borderRadius: tokens.radius.pill,
-    overflow: 'hidden',
-  },
-  roleBadgeGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: tokens.space.md,
-    paddingVertical: tokens.space.sm,
-    gap: tokens.space.xs,
-  },
-  roleText: {
-    fontSize: tokens.type.sub.fontSize,
-    fontWeight: '600',
-    color: '#22D3EE',
-    letterSpacing: 0.3,
   },
   section: {
-    marginBottom: tokens.space.xl,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: tokens.space.sm,
-    marginBottom: tokens.space.md,
-    paddingHorizontal: tokens.space.sm,
+    marginBottom: tokens.space['2xl'],
   },
   sectionTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    ...tokens.type.h3,
     color: tokens.colors.text.primary,
-    letterSpacing: -0.1,
+    marginBottom: tokens.space.lg,
+    paddingHorizontal: 2,
   },
-  sectionCard: {
-    padding: tokens.space.xs,
+  settingsItems: {
+    gap: tokens.space.lg,
   },
   languageItem: {
     flexDirection: 'row',
@@ -603,24 +461,22 @@ const styles = StyleSheet.create({
     padding: tokens.space.md,
     borderRadius: tokens.radius.md,
     marginBottom: tokens.space.xs,
-    backgroundColor: tokens.colors.background.secondary, // Solid white
-    // Removed: borderWidth, borderColor - no borders per design requirements
+    minHeight: tokens.touchTarget.comfortable,
   },
   languageItemActive: {
-    backgroundColor: tokens.colors.joy.lavenderSoft, // Purple soft
-    // Removed: borderColor - no borders per design requirements
+    backgroundColor: tokens.colors.joy.lavenderSoft,
   },
   languageInfo: {
     flex: 1,
   },
   languageName: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     marginBottom: 2,
   },
   languageSubtitle: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.muted,
   },
   checkCircle: {
@@ -629,22 +485,24 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.colors.joy.lavender, // Purple
+    backgroundColor: tokens.colors.accent.blue,
     ...tokens.shadow.sm,
   },
   emptyCircle: {
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: tokens.colors.background.secondary, // Solid white instead of border
-    // Removed: borderWidth, borderColor - no borders per design requirements
+    backgroundColor: tokens.colors.background.tertiary,
+  },
+  lastItem: {
+    marginBottom: 0,
   },
   settingsItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: tokens.space.md,
-    borderRadius: tokens.radius.md,
-    marginBottom: tokens.space.xs,
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.md,
+    minHeight: tokens.touchTarget.comfortable,
     gap: tokens.space.md,
   },
   iconCircle: {
@@ -658,31 +516,34 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   settingsItemTitle: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     marginBottom: 2,
   },
   settingsItemSubtitle: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.muted,
   },
-  lastItem: {
-    marginBottom: 0,
+  destructiveText: {
+    color: tokens.colors.semantic.error,
   },
   modalContainer: {
     flex: 1,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: tokens.colors.surface.overlay,
     justifyContent: 'flex-end',
   },
-  modalContent: {
+  modalSheet: {
+    maxHeight: '80%',
+  },
+  modalCard: {
     borderTopLeftRadius: tokens.radius['2xl'],
     borderTopRightRadius: tokens.radius['2xl'],
-    maxHeight: '80%',
-    padding: tokens.space.xl,
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -691,10 +552,8 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.xl,
   },
   modalTitle: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
+    ...tokens.type.h2,
     color: tokens.colors.text.primary,
-    letterSpacing: -0.3,
   },
   modalBody: {
     gap: tokens.space.lg,
@@ -703,40 +562,34 @@ const styles = StyleSheet.create({
     gap: tokens.space.sm,
   },
   inputLabel: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     letterSpacing: 0.3,
   },
   inputContainer: {
     borderRadius: tokens.radius.md,
-    // Removed: borderWidth, borderColor - no borders per design requirements
-    padding: tokens.space.md,
-    backgroundColor: tokens.colors.background.secondary, // Solid white
+    backgroundColor: tokens.colors.background.tertiary,
+    paddingHorizontal: tokens.space.md,
+    paddingVertical: tokens.space.md,
   },
   textInput: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     color: tokens.colors.text.primary,
     padding: 0,
   },
   saveButton: {
     marginTop: tokens.space.md,
     borderRadius: tokens.radius.md,
-    overflow: 'hidden',
-  },
-  saveButtonGradient: {
+    backgroundColor: tokens.colors.accent.blue,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     paddingVertical: tokens.space.lg,
     gap: tokens.space.sm,
-    backgroundColor: tokens.colors.joy.lavender, // Purple
-    borderRadius: tokens.radius.md,
   },
   saveButtonText: {
-    fontSize: tokens.type.button.fontSize,
-    fontWeight: tokens.type.button.fontWeight,
-    color: '#FFFFFF',
-    letterSpacing: tokens.type.button.letterSpacing,
+    ...tokens.type.button,
+    color: tokens.colors.text.white,
   },
 });

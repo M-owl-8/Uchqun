@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable, Alert, Modal, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform, Image, Animated } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, Alert, Modal, TextInput, TouchableOpacity, ActivityIndicator, KeyboardAvoidingView, Platform, Animated } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import { useTheme } from '../../context/ThemeContext';
@@ -10,8 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import { changeLanguage, getCurrentLanguage, getAvailableLanguages } from '../../i18n/config';
 import tokens from '../../styles/tokens';
 import { api } from '../../services/api';
-import { GlassCard } from '../../components/teacher/GlassCard';
-import { ScreenHeader } from '../../components/teacher/ScreenHeader';
+import Card from '../../components/common/Card';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 
 export function SettingsScreen() {
   const { user, logout, refreshUser } = useAuth();
@@ -193,7 +192,7 @@ export function SettingsScreen() {
           icon: 'notifications-outline',
           title: t('settings.notifications', { defaultValue: 'Notifications' }),
           subtitle: t('settings.notificationsDesc', { defaultValue: 'Manage notification preferences' }),
-          onPress: () => {}, // Handled inline
+          onPress: () => {},
           color: '#F59E0B',
         },
       ],
@@ -242,9 +241,8 @@ export function SettingsScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader 
+      <ScreenHeader
         title={t('settings.title', { defaultValue: 'Settings' })}
-        showBack={false}
       />
 
       <ScrollView
@@ -261,74 +259,71 @@ export function SettingsScreen() {
           {/* Language Section */}
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>{t('settings.language', { defaultValue: 'Language' })}</Text>
-            <GlassCard style={styles.sectionCard}>
-                {(getAvailableLanguages() || []).map((lang, index) => (
-                  <Pressable
-                    key={lang.code}
-                    style={({ pressed }) => [
-                      styles.languageItem,
-                      currentLanguage === lang.code && styles.languageItemActive,
-                      index === getAvailableLanguages().length - 1 && styles.lastItem,
-                      pressed && { opacity: 0.7 },
-                    ]}
-                    onPress={() => handleLanguageChange(lang.code)}
-                    accessibilityRole="radio"
-                    accessibilityLabel={`${lang.nativeName} (${lang.name})`}
-                    accessibilityState={{ selected: currentLanguage === lang.code }}
-                  >
-                    <View style={styles.languageInfo}>
-                      <Text style={styles.languageName}>{lang.nativeName}</Text>
-                      <Text style={styles.languageSubtitle}>{lang.name}</Text>
+            <Card padding={tokens.space.sm}>
+              {(getAvailableLanguages() || []).map((lang, index) => (
+                <Pressable
+                  key={lang.code}
+                  style={({ pressed }) => [
+                    styles.languageItem,
+                    currentLanguage === lang.code && styles.languageItemActive,
+                    index === getAvailableLanguages().length - 1 && styles.lastItem,
+                    pressed && { opacity: 0.7 },
+                  ]}
+                  onPress={() => handleLanguageChange(lang.code)}
+                  accessibilityRole="radio"
+                  accessibilityLabel={`${lang.nativeName} (${lang.name})`}
+                  accessibilityState={{ selected: currentLanguage === lang.code }}
+                >
+                  <View style={styles.languageInfo}>
+                    <Text style={styles.languageName}>{lang.nativeName}</Text>
+                    <Text style={styles.languageSubtitle}>{lang.name}</Text>
+                  </View>
+                  {currentLanguage === lang.code ? (
+                    <View style={styles.checkCircle}>
+                      <Ionicons name="checkmark" size={14} color="#FFFFFF" />
                     </View>
-                    {currentLanguage === lang.code ? (
-                      <LinearGradient
-                        colors={['#8B5CF6', '#6366F1']}
-                        style={styles.checkCircle}
-                      >
-                        <Ionicons name="checkmark" size={14} color="#FFFFFF" />
-                      </LinearGradient>
-                    ) : (
-                      <View style={styles.emptyCircle} />
-                    )}
-                  </Pressable>
-                ))}
-            </GlassCard>
+                  ) : (
+                    <View style={styles.emptyCircle} />
+                  )}
+                </Pressable>
+              ))}
+            </Card>
           </View>
 
           {/* Settings Sections */}
           {settingsSections.map((section, sectionIndex) => (
             <View key={sectionIndex} style={styles.section}>
               <Text style={styles.sectionTitle}>{section.title}</Text>
-              <GlassCard style={styles.sectionCard}>
-                  {section.items.map((item, itemIndex) => (
-                    <Pressable
-                      key={itemIndex}
-                      style={({ pressed }) => [
-                        styles.settingsItem,
-                        itemIndex === section.items.length - 1 && styles.lastItem,
-                        pressed && { opacity: 0.7, transform: [{ scale: 0.98 }] },
-                      ]}
-                      onPress={item.onPress}
+              <View style={styles.settingsItems}>
+                {section.items.map((item, itemIndex) => (
+                  <Card
+                    key={itemIndex}
+                    onPress={item.onPress}
+                    padding={0}
+                  >
+                    <View
+                      style={styles.settingsItem}
                       accessibilityRole={item.hasToggle ? 'switch' : 'button'}
                       accessibilityLabel={item.title}
                       accessibilityHint={item.subtitle}
                       accessibilityState={item.hasToggle ? { checked: isDark } : undefined}
                     >
                       <View style={[styles.iconCircle, { backgroundColor: `${item.color}20` }]}>
-                        <Ionicons name={item.icon} size={18} color={item.color} />
+                        <Ionicons name={item.icon} size={20} color={item.color} />
                       </View>
                       <View style={styles.settingsItemContent}>
-                        <Text style={[styles.settingsItemTitle, item.destructive && { color: '#FCA5A5' }]}>
+                        <Text style={[styles.settingsItemTitle, item.destructive && styles.destructiveText]}>
                           {item.title}
                         </Text>
                         {item.subtitle && (
                           <Text style={styles.settingsItemSubtitle}>{item.subtitle}</Text>
                         )}
                       </View>
-                      <Ionicons name="chevron-forward" size={16} color={tokens.colors.text.muted} />
-                    </Pressable>
-                  ))}
-              </GlassCard>
+                      <Ionicons name="chevron-forward" size={18} color={tokens.colors.text.muted} />
+                    </View>
+                  </Card>
+                ))}
+              </View>
             </View>
           ))}
         </Animated.View>
@@ -346,15 +341,12 @@ export function SettingsScreen() {
           style={styles.modalContainer}
         >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <LinearGradient
-                colors={['rgba(51, 65, 85, 0.95)', 'rgba(30, 41, 59, 0.95)']}
-                style={styles.modalGradient}
-              >
+            <View style={styles.modalSheet}>
+              <Card style={styles.modalCard} padding={tokens.space.xl}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.changePassword', { defaultValue: 'Change Password' })}</Text>
                   <TouchableOpacity onPress={() => setShowPasswordModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
-                    <Ionicons name="close" size={24} color={tokens.colors.text.white} />
+                    <Ionicons name="close" size={24} color={tokens.colors.text.primary} />
                   </TouchableOpacity>
                 </View>
 
@@ -367,30 +359,28 @@ export function SettingsScreen() {
                     <View key={field.key} style={styles.inputGroup}>
                       <Text style={styles.inputLabel}>{field.label}</Text>
                       <View style={styles.inputContainer}>
-                        <View style={styles.passwordInputGradient}>
-                          <TextInput
-                            style={styles.passwordTextInput}
-                            value={passwordData[field.key]}
-                            onChangeText={(text) => setPasswordData({ ...passwordData, [field.key]: text })}
-                            placeholder={field.label}
-                            placeholderTextColor={tokens.colors.text.muted}
-                            secureTextEntry={!showPasswords[field.showKey]}
-                            autoCapitalize="none"
-                            accessibilityLabel={field.label}
+                        <TextInput
+                          style={styles.passwordTextInput}
+                          value={passwordData[field.key]}
+                          onChangeText={(text) => setPasswordData({ ...passwordData, [field.key]: text })}
+                          placeholder={field.label}
+                          placeholderTextColor={tokens.colors.text.muted}
+                          secureTextEntry={!showPasswords[field.showKey]}
+                          autoCapitalize="none"
+                          accessibilityLabel={field.label}
+                        />
+                        <TouchableOpacity
+                          onPress={() => setShowPasswords({ ...showPasswords, [field.showKey]: !showPasswords[field.showKey] })}
+                          hitSlop={8}
+                          accessibilityRole="button"
+                          accessibilityLabel={showPasswords[field.showKey] ? t('login.hidePassword', { defaultValue: 'Hide password' }) : t('login.showPassword', { defaultValue: 'Show password' })}
+                        >
+                          <Ionicons
+                            name={showPasswords[field.showKey] ? 'eye-off-outline' : 'eye-outline'}
+                            size={20}
+                            color={tokens.colors.text.muted}
                           />
-                          <TouchableOpacity
-                            onPress={() => setShowPasswords({ ...showPasswords, [field.showKey]: !showPasswords[field.showKey] })}
-                            hitSlop={8}
-                            accessibilityRole="button"
-                            accessibilityLabel={showPasswords[field.showKey] ? t('login.hidePassword', { defaultValue: 'Hide password' }) : t('login.showPassword', { defaultValue: 'Show password' })}
-                          >
-                            <Ionicons
-                              name={showPasswords[field.showKey] ? 'eye-off-outline' : 'eye-outline'}
-                              size={20}
-                              color={tokens.colors.text.muted}
-                            />
-                          </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
                       </View>
                     </View>
                   ))}
@@ -406,22 +396,17 @@ export function SettingsScreen() {
                     accessibilityLabel={t('settings.updatePassword', { defaultValue: 'Update Password' })}
                     accessibilityState={{ disabled: passwordLoading }}
                   >
-                    <LinearGradient
-                      colors={passwordLoading ? ['#475569', '#334155'] : ['#EF4444', '#DC2626']}
-                      style={styles.saveButtonGradient}
-                    >
-                      {passwordLoading ? (
-                        <ActivityIndicator color="#FFFFFF" size="small" />
-                      ) : (
-                        <>
-                          <Ionicons name="lock-closed" size={18} color="#FFFFFF" />
-                          <Text style={styles.saveButtonText}>{t('settings.updatePassword', { defaultValue: 'Update Password' })}</Text>
-                        </>
-                      )}
-                    </LinearGradient>
+                    {passwordLoading ? (
+                      <ActivityIndicator color="#FFFFFF" size="small" />
+                    ) : (
+                      <>
+                        <Ionicons name="lock-closed" size={18} color="#FFFFFF" />
+                        <Text style={styles.saveButtonText}>{t('settings.updatePassword', { defaultValue: 'Update Password' })}</Text>
+                      </>
+                    )}
                   </Pressable>
                 </View>
-              </LinearGradient>
+              </Card>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -439,12 +424,12 @@ export function SettingsScreen() {
           style={styles.modalContainer}
         >
           <View style={styles.modalOverlay}>
-            <View style={styles.modalContent}>
-              <View style={styles.modalGradient}>
+            <View style={styles.modalSheet}>
+              <Card style={styles.modalCard} padding={tokens.space.xl}>
                 <View style={styles.modalHeader}>
                   <Text style={styles.modalTitle}>{t('settings.editProfile', { defaultValue: 'Edit Profile' })}</Text>
                   <TouchableOpacity onPress={() => setShowProfileModal(false)} hitSlop={10} accessibilityRole="button" accessibilityLabel={t('common.close', { defaultValue: 'Close' })}>
-                    <Ionicons name="close" size={24} color={tokens.colors.text.white} />
+                    <Ionicons name="close" size={24} color={tokens.colors.text.primary} />
                   </TouchableOpacity>
                 </View>
 
@@ -503,22 +488,17 @@ export function SettingsScreen() {
                     accessibilityState={{ disabled: profileLoading }}
                     disabled={profileLoading}
                   >
-                    <LinearGradient
-                      colors={profileLoading ? ['#475569', '#334155'] : ['#8B5CF6', '#6366F1']}
-                      style={styles.saveButtonGradient}
-                    >
-                      {profileLoading ? (
-                        <ActivityIndicator color="#FFFFFF" size="small" />
-                      ) : (
-                        <>
-                          <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
-                          <Text style={styles.saveButtonText}>{t('settings.saveProfile', { defaultValue: 'Save Changes' })}</Text>
-                        </>
-                      )}
-                    </LinearGradient>
+                    {profileLoading ? (
+                      <ActivityIndicator color="#FFFFFF" size="small" />
+                    ) : (
+                      <>
+                        <Ionicons name="checkmark-circle" size={18} color="#FFFFFF" />
+                        <Text style={styles.saveButtonText}>{t('settings.saveProfile', { defaultValue: 'Save Changes' })}</Text>
+                      </>
+                    )}
                   </Pressable>
                 </View>
-              </View>
+              </Card>
             </View>
           </View>
         </KeyboardAvoidingView>
@@ -536,20 +516,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
-    padding: tokens.space.lg,
+    padding: tokens.space.xl,
   },
   section: {
-    marginBottom: tokens.space.xl,
+    marginBottom: tokens.space['2xl'],
   },
   sectionTitle: {
-    fontSize: tokens.type.h3.fontSize,
-    fontWeight: '600',
+    ...tokens.type.h3,
     color: tokens.colors.text.primary,
-    marginBottom: tokens.space.md,
+    marginBottom: tokens.space.lg,
     paddingHorizontal: 2,
   },
-  sectionCard: {
-    padding: tokens.space.xs,
+  settingsItems: {
+    gap: tokens.space.lg,
   },
   languageItem: {
     flexDirection: 'row',
@@ -558,7 +537,7 @@ const styles = StyleSheet.create({
     padding: tokens.space.md,
     borderRadius: tokens.radius.md,
     marginBottom: tokens.space.xs,
-    backgroundColor: tokens.colors.background.secondary,
+    minHeight: tokens.touchTarget.comfortable,
   },
   languageItemActive: {
     backgroundColor: tokens.colors.joy.lavenderSoft,
@@ -567,14 +546,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   languageName: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     marginBottom: 2,
   },
   languageSubtitle: {
-    fontSize: tokens.type.sub.fontSize,
-    color: tokens.colors.text.secondary,
+    ...tokens.type.sub,
+    color: tokens.colors.text.muted,
   },
   checkCircle: {
     width: 24,
@@ -591,14 +570,16 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: tokens.colors.background.tertiary,
   },
+  lastItem: {
+    marginBottom: 0,
+  },
   settingsItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: tokens.space.md,
-    borderRadius: tokens.radius.md,
-    marginBottom: tokens.space.xs,
+    paddingHorizontal: tokens.space.lg,
+    paddingVertical: tokens.space.md,
+    minHeight: tokens.touchTarget.comfortable,
     gap: tokens.space.md,
-    backgroundColor: tokens.colors.background.secondary,
   },
   iconCircle: {
     width: 40,
@@ -611,35 +592,34 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   settingsItemTitle: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     marginBottom: 2,
   },
   settingsItemSubtitle: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     color: tokens.colors.text.muted,
   },
-  lastItem: {
-    marginBottom: 0,
+  destructiveText: {
+    color: tokens.colors.semantic.error,
   },
   modalContainer: {
     flex: 1,
   },
   modalOverlay: {
     flex: 1,
-    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+    backgroundColor: tokens.colors.surface.overlay,
     justifyContent: 'flex-end',
   },
-  modalContent: {
-    borderTopLeftRadius: tokens.radius['2xl'],
-    borderTopRightRadius: tokens.radius['2xl'],
-    overflow: 'hidden',
+  modalSheet: {
     maxHeight: '80%',
   },
-  modalGradient: {
-    padding: tokens.space.xl,
-    backgroundColor: tokens.colors.background.secondary,
+  modalCard: {
+    borderTopLeftRadius: tokens.radius['2xl'],
+    borderTopRightRadius: tokens.radius['2xl'],
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
   },
   modalHeader: {
     flexDirection: 'row',
@@ -648,10 +628,8 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.xl,
   },
   modalTitle: {
-    fontSize: tokens.type.h2.fontSize,
-    fontWeight: tokens.type.h2.fontWeight,
+    ...tokens.type.h2,
     color: tokens.colors.text.primary,
-    letterSpacing: -0.3,
   },
   modalBody: {
     gap: tokens.space.lg,
@@ -660,28 +638,35 @@ const styles = StyleSheet.create({
     gap: tokens.space.sm,
   },
   inputLabel: {
-    fontSize: tokens.type.sub.fontSize,
+    ...tokens.type.sub,
     fontWeight: '600',
     color: tokens.colors.text.primary,
     letterSpacing: 0.3,
   },
   inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     borderRadius: tokens.radius.md,
     backgroundColor: tokens.colors.background.tertiary,
-    padding: tokens.space.md,
+    paddingHorizontal: tokens.space.md,
+    paddingVertical: tokens.space.md,
   },
   textInput: {
-    fontSize: tokens.type.body.fontSize,
+    ...tokens.type.body,
+    color: tokens.colors.text.primary,
+    flex: 1,
+    padding: 0,
+  },
+  passwordTextInput: {
+    flex: 1,
+    ...tokens.type.body,
     color: tokens.colors.text.primary,
     padding: 0,
   },
   saveButton: {
     marginTop: tokens.space.md,
     borderRadius: tokens.radius.md,
-    overflow: 'hidden',
-    ...tokens.shadow.glow,
-  },
-  saveButtonGradient: {
+    backgroundColor: tokens.colors.accent.blue,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -689,20 +674,7 @@ const styles = StyleSheet.create({
     gap: tokens.space.sm,
   },
   saveButtonText: {
-    fontSize: tokens.type.button.fontSize,
-    fontWeight: tokens.type.button.fontWeight,
+    ...tokens.type.button,
     color: tokens.colors.text.white,
-    letterSpacing: tokens.type.button.letterSpacing,
-  },
-  passwordInputGradient: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    flex: 1,
-  },
-  passwordTextInput: {
-    flex: 1,
-    fontSize: tokens.type.body.fontSize,
-    color: tokens.colors.text.primary,
-    padding: 0,
   },
 });
