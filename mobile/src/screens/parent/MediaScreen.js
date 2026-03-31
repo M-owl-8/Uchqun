@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Image,
@@ -6,7 +6,6 @@ import {
   Pressable,
   Text,
   Dimensions,
-  Animated,
   RefreshControl,
   ScrollView,
   Modal,

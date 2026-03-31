@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, FlatList, Animated, Alert, TouchableOpacity } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, FlatList, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { notificationService } from '../../services/notificationService';
@@ -23,29 +23,8 @@ function getAccentColor(item) {
   return NOTIFICATION_TYPE_COLORS[item.type] || NOTIFICATION_TYPE_COLORS.default;
 }
 
-// Animated notification card component
-function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(20)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        delay: index * 80,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 50,
-        friction: 8,
-        delay: index * 80,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
-
+// Static notification card component
+function NotificationCard({ item, index, markAsRead, onDelete }) {
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp);
@@ -65,12 +44,7 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
   const accentColor = getAccentColor(item);
 
   return (
-    <Animated.View
-      style={{
-        opacity: fadeAnim,
-        transform: [{ translateY: slideAnim }],
-      }}
-    >
+    <View>
       <Card
         style={[
           styles.card,
@@ -118,7 +92,7 @@ function AnimatedNotificationCard({ item, index, markAsRead, onDelete }) {
           <Ionicons name="trash-outline" size={16} color={tokens.colors.text.secondary} />
         </TouchableOpacity>
       </Card>
-    </Animated.View>
+    </View>
   );
 }
 
@@ -235,7 +209,7 @@ export function NotificationsScreen() {
         <FlatList
           data={filteredNotifications}
           renderItem={({ item, index }) => (
-            <AnimatedNotificationCard
+            <NotificationCard
               item={item}
               index={index}
               markAsRead={markAsRead}

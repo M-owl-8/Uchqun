@@ -8,8 +8,6 @@ import {
   ScrollView,
   KeyboardAvoidingView,
   Platform,
-  Animated,
-  Easing,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -35,38 +33,8 @@ const QUICK_PROMPTS = [
   { emoji: '🤝', text: "Ijtimoiy ko'nikmalar" },
 ];
 
-// Animated loading dots component
+// Static loading dots component
 function TypingIndicator() {
-  const dots = [
-    useRef(new Animated.Value(0)).current,
-    useRef(new Animated.Value(0)).current,
-    useRef(new Animated.Value(0)).current,
-  ];
-
-  useEffect(() => {
-    const animations = dots.map((dot, index) =>
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(index * 150),
-          Animated.timing(dot, {
-            toValue: 1,
-            duration: 300,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(dot, {
-            toValue: 0,
-            duration: 300,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ])
-      )
-    );
-    animations.forEach((a) => a.start());
-    return () => animations.forEach((a) => a.stop());
-  }, []);
-
   return (
     <View style={styles.typingContainer}>
       <View style={styles.typingAvatar}>
@@ -74,27 +42,8 @@ function TypingIndicator() {
       </View>
       <View style={styles.typingBubble}>
         <View style={styles.typingDots}>
-          {dots.map((dot, i) => (
-            <Animated.View
-              key={i}
-              style={[
-                styles.typingDot,
-                {
-                  transform: [
-                    {
-                      translateY: dot.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -6],
-                      }),
-                    },
-                  ],
-                  opacity: dot.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: [0.4, 1],
-                  }),
-                },
-              ]}
-            />
+          {[0, 1, 2].map((i) => (
+            <View key={i} style={styles.typingDot} />
           ))}
         </View>
       </View>
@@ -111,18 +60,8 @@ export function AIChatScreen() {
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
   const scrollViewRef = useRef(null);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
   const BOTTOM_NAV_HEIGHT = 75;
   const keyboardVerticalOffset = Platform.OS === 'ios' ? (insets.bottom > 0 ? insets.bottom + 60 : 90) : 0;
-
-  useEffect(() => {
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
-  }, []);
 
   useEffect(() => {
     const loadMessages = async () => {
@@ -258,7 +197,7 @@ export function AIChatScreen() {
           </Pressable>
         }
       />
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      <View style={styles.content}>
         <KeyboardAvoidingView
           style={styles.keyboardView}
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -395,7 +334,7 @@ export function AIChatScreen() {
             </View>
           </View>
         </KeyboardAvoidingView>
-      </Animated.View>
+      </View>
     </SafeAreaView>
   );
 }

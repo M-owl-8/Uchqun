@@ -1,5 +1,5 @@
-import React, { useRef, useEffect } from 'react';
-import { StyleSheet, Text, View, Pressable, Animated, ScrollView } from 'react-native';
+import React from 'react';
+import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -16,26 +16,6 @@ export function RatingScreen() {
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
-
-  // Animation refs
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 50,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
 
   const ratingOptions = [
     {
@@ -61,12 +41,7 @@ export function RatingScreen() {
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View
-          style={{
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }}
-        >
+        <View>
           {ratingOptions.map((option) => (
             <Card
               key={option.id}
@@ -100,7 +75,7 @@ export function RatingScreen() {
               </Text>
             </View>
           </Card>
-        </Animated.View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

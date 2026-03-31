@@ -1,82 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, View, Text, Animated, Easing } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Text } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path } from 'react-native-svg';
 import { useTranslation } from 'react-i18next';
 
 export function LoadingScreen() {
   const { t } = useTranslation();
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const rotateAnim = useRef(new Animated.Value(0)).current;
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const dotAnims = [
-    useRef(new Animated.Value(0)).current,
-    useRef(new Animated.Value(0)).current,
-    useRef(new Animated.Value(0)).current,
-  ];
-
-  useEffect(() => {
-    // Fade in
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true,
-    }).start();
-
-    // Pulse animation for logo
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, {
-          toValue: 1.1,
-          duration: 1000,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-        Animated.timing(pulseAnim, {
-          toValue: 1,
-          duration: 1000,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
-
-    // Rotate animation for sparkles
-    Animated.loop(
-      Animated.timing(rotateAnim, {
-        toValue: 1,
-        duration: 4000,
-        easing: Easing.linear,
-        useNativeDriver: true,
-      })
-    ).start();
-
-    // Bouncing dots animation
-    dotAnims.forEach((anim, index) => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.delay(index * 150),
-          Animated.timing(anim, {
-            toValue: 1,
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(anim, {
-            toValue: 0,
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
-    });
-  }, []);
-
-  const spin = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '360deg'],
-  });
 
   return (
     <View style={styles.container}>
@@ -87,54 +16,35 @@ export function LoadingScreen() {
         style={StyleSheet.absoluteFill}
       />
 
-      {/* Floating sparkles */}
-      <Animated.View style={[styles.sparkleContainer, { transform: [{ rotate: spin }] }]}>
+      {/* Static sparkles */}
+      <View style={styles.sparkleContainer}>
         <Text style={[styles.sparkle, styles.sparkle1]}>✨</Text>
         <Text style={[styles.sparkle, styles.sparkle2]}>⭐</Text>
         <Text style={[styles.sparkle, styles.sparkle3]}>💫</Text>
         <Text style={[styles.sparkle, styles.sparkle4]}>🌟</Text>
-      </Animated.View>
+      </View>
 
-      <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
+      <View style={styles.content}>
         {/* Logo */}
-        <Animated.View style={[styles.logoContainer, { transform: [{ scale: pulseAnim }] }]}>
+        <View style={styles.logoContainer}>
           <View style={styles.logoCircle}>
             <Text style={styles.logoEmoji}>🌟</Text>
           </View>
-        </Animated.View>
+        </View>
 
         {/* App name */}
         <Text style={styles.appName}>Uchqun</Text>
         <Text style={styles.tagline}>{t('loading.tagline', { defaultValue: 'O\'qishni qiziqarli qilamiz ✨' })}</Text>
 
-        {/* Loading dots */}
+        {/* Static dots */}
         <View style={styles.dotsContainer}>
-          {dotAnims.map((anim, index) => (
-            <Animated.View
-              key={index}
-              style={[
-                styles.dot,
-                {
-                  transform: [
-                    {
-                      translateY: anim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: [0, -12],
-                      }),
-                    },
-                  ],
-                  opacity: anim.interpolate({
-                    inputRange: [0, 0.5, 1],
-                    outputRange: [0.5, 1, 0.5],
-                  }),
-                },
-              ]}
-            />
-          ))}
+          <View style={styles.dot} />
+          <View style={styles.dot} />
+          <View style={styles.dot} />
         </View>
 
         <Text style={styles.loadingText}>{t('loading.message', { defaultValue: 'Yuklanmoqda...' })}</Text>
-      </Animated.View>
+      </View>
 
       {/* Bottom decoration */}
       <View style={styles.bottomDecoration}>
@@ -216,6 +126,7 @@ const styles = StyleSheet.create({
     height: 12,
     borderRadius: 6,
     backgroundColor: '#fff',
+    opacity: 0.7,
   },
   loadingText: {
     fontSize: 15,

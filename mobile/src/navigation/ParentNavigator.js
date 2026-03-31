@@ -149,8 +149,7 @@ export function ParentNavigator() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: 'slide_from_right',
-          animationDuration: 250,
+          animation: 'none',
         }}
       >
         <Stack.Screen name="ParentTabs" component={ParentTabs} />

@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { StyleSheet, Text, View, Pressable, TextInput, ScrollView, Animated, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View, Pressable, TextInput, ScrollView, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -11,38 +11,19 @@ import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 
-// Animated Star Component
-function AnimatedStar({ value, currentRating, onPress }) {
-  const scaleAnim = useRef(new Animated.Value(1)).current;
+// Static Star Component
+function StarButton({ value, currentRating, onPress }) {
   const isActive = currentRating >= value;
 
-  const handlePress = () => {
-    Animated.sequence([
-      Animated.spring(scaleAnim, {
-        toValue: 1.3,
-        useNativeDriver: true,
-        tension: 100,
-        friction: 3,
-      }),
-      Animated.spring(scaleAnim, {
-        toValue: 1,
-        useNativeDriver: true,
-        tension: 100,
-        friction: 5,
-      }),
-    ]).start();
-    onPress(value);
-  };
-
   return (
-    <Pressable onPress={handlePress} hitSlop={8}>
-      <Animated.View style={{ transform: [{ scale: scaleAnim }] }}>
+    <Pressable onPress={() => onPress(value)} hitSlop={8}>
+      <View>
         <Ionicons
           name={isActive ? "star" : "star-outline"}
           size={36}
           color={isActive ? tokens.colors.nav.indicator : tokens.colors.border.light}
         />
-      </Animated.View>
+      </View>
     </Pressable>
   );
 }
@@ -64,31 +45,11 @@ export function TeacherRatingScreen() {
   const [error, setError] = useState('');
   const [showSuccess, setShowSuccess] = useState(false);
 
-  // Animations
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
-  const successAnim = useRef(new Animated.Value(0)).current;
-
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
 
   useEffect(() => {
     loadData();
-
-    // Entrance animation
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 60,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
   }, [childId]);
 
   const loadData = async () => {
@@ -144,22 +105,9 @@ export function TeacherRatingScreen() {
         updatedAt: new Date().toISOString(),
       });
 
-      // Show success animation
+      // Show success briefly
       setShowSuccess(true);
-      Animated.sequence([
-        Animated.spring(successAnim, {
-          toValue: 1,
-          useNativeDriver: true,
-          tension: 60,
-          friction: 7,
-        }),
-        Animated.delay(2000),
-        Animated.timing(successAnim, {
-          toValue: 0,
-          duration: 300,
-          useNativeDriver: true,
-        }),
-      ]).start(() => setShowSuccess(false));
+      setTimeout(() => setShowSuccess(false), 2500);
 
       // Refresh summary
       const refreshRes = await api.get('/parent/ratings').catch(() => ({ data: { data: { summary: { average: 0, count: 0 } } } }));
@@ -197,12 +145,7 @@ export function TeacherRatingScreen() {
           contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
           showsVerticalScrollIndicator={false}
         >
-          <Animated.View
-            style={{
-              opacity: fadeAnim,
-              transform: [{ translateY: slideAnim }],
-            }}
-          >
+          <View>
             {/* Teacher Card */}
             <Card style={styles.teacherCard} padding={tokens.space.xl}>
               <View style={styles.teacherInfo}>
@@ -243,7 +186,7 @@ export function TeacherRatingScreen() {
               {/* Star Rating */}
               <View style={styles.starsContainer}>
                 {[1, 2, 3, 4, 5].map((value) => (
-                  <AnimatedStar
+                  <StarButton
                     key={value}
                     value={value}
                     currentRating={stars}
@@ -325,26 +268,13 @@ export function TeacherRatingScreen() {
                 </Text>
               )}
             </Card>
-          </Animated.View>
+          </View>
         </ScrollView>
       )}
 
       {/* Success Animation Overlay */}
       {showSuccess && (
-        <Animated.View
-          style={[
-            styles.successOverlay,
-            {
-              opacity: successAnim,
-              transform: [{
-                scale: successAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: [0.8, 1],
-                }),
-              }],
-            },
-          ]}
-        >
+        <View style={styles.successOverlay}>
           <Card style={styles.successContent}>
             <View style={styles.successIconCircle}>
               <Ionicons name="checkmark-circle" size={64} color={tokens.colors.semantic.success} />
@@ -352,7 +282,7 @@ export function TeacherRatingScreen() {
             <Text style={styles.successTitle}>{t('ratingPage.success', { defaultValue: 'Rating Submitted!' })}</Text>
             <Text style={styles.successMessage}>{t('ratingPage.successDesc', { defaultValue: 'Thank you for your feedback' })}</Text>
           </Card>
-        </Animated.View>
+        </View>
       )}
     </SafeAreaView>
   );

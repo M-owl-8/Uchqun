@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   ActivityIndicator,
   KeyboardAvoidingView,
@@ -8,7 +8,6 @@ import {
   Text,
   TextInput,
   View,
-  Animated,
   Dimensions,
   Image,
   ScrollView,
@@ -34,31 +33,12 @@ export function LoginScreen() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
 
-  // Animations
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(50)).current;
-
   // Clear any stale auth data when LoginScreen mounts
   useEffect(() => {
     clearAuth().catch(() => {});
     if (__DEV__) {
       console.log('[LoginScreen] API URL:', API_URL);
     }
-
-    // Entrance animation
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 600,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 50,
-        friction: 7,
-        useNativeDriver: true,
-      }),
-    ]).start();
   }, []);
 
   const onSubmit = async () => {
@@ -107,14 +87,8 @@ export function LoginScreen() {
           showsVerticalScrollIndicator={false}
           keyboardShouldPersistTaps="handled"
         >
-          <Animated.View
-            style={[
-              styles.content,
-              {
-                opacity: fadeAnim,
-                transform: [{ translateY: slideAnim }],
-              },
-            ]}
+          <View
+            style={styles.content}
           >
             {/* Logo and header */}
             <View style={styles.header}>
@@ -240,7 +214,7 @@ export function LoginScreen() {
               <Ionicons name="shield-checkmark-outline" size={12} color={tokens.colors.text.muted} />
               {' '}{t('login.secureAuth', { defaultValue: 'JWT bilan xavfsiz autentifikatsiya' })}
             </Text>
-          </Animated.View>
+          </View>
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>

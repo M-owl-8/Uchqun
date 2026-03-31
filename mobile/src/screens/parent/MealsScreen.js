@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,7 +6,6 @@ import {
   Pressable,
   ScrollView,
   FlatList,
-  Animated,
   RefreshControl,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -83,8 +82,6 @@ export function MealsScreen() {
   const [meals, setMeals] = useState([]);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState('all');
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
@@ -113,16 +110,6 @@ export function MealsScreen() {
       setLoading(false);
     }
   }, [selectedChildId]);
-
-  useEffect(() => {
-    if (!loading) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [loading]);
 
   const loadMeals = async () => {
     if (!selectedChildId) {
@@ -341,7 +328,7 @@ export function MealsScreen() {
     }
 
     return (
-      <Animated.View style={{ opacity: fadeAnim }}>
+      <View>
         {/* Child selector */}
         {children.length > 1 && (
           <View style={styles.childRow}>
@@ -465,7 +452,7 @@ export function MealsScreen() {
             )}
           </>
         )}
-      </Animated.View>
+      </View>
     );
   };
 

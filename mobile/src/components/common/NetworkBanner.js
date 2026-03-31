@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { Animated, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -15,7 +15,7 @@ export function NetworkBanner() {
   const [wasDisconnected, setWasDisconnected] = useState(false);
   const [syncing, setSyncing] = useState(false);
   const [pendingCount, setPendingCount] = useState(0);
-  const slideAnim = useRef(new Animated.Value(-80)).current;
+  const [showBanner, setShowBanner] = useState(false);
   const insets = useSafeAreaInsets();
 
   // Periodically check pending offline actions count while offline
@@ -44,10 +44,11 @@ export function NetworkBanner() {
       if (!connected) {
         setIsConnected(false);
         setWasDisconnected(true);
-        Animated.timing(slideAnim, { toValue: 0, duration: 300, useNativeDriver: true }).start();
+        setShowBanner(true);
       } else if (wasDisconnected) {
         setIsConnected(true);
         setSyncing(true);
+        setShowBanner(true);
         // Replay offline queue
         (async () => {
           try {
@@ -59,7 +60,7 @@ export function NetworkBanner() {
           setTimeout(() => {
             setSyncing(false);
             setWasDisconnected(false);
-            Animated.timing(slideAnim, { toValue: -80, duration: 300, useNativeDriver: true }).start();
+            setShowBanner(false);
           }, 2500);
         })();
       }
@@ -67,7 +68,7 @@ export function NetworkBanner() {
     return () => unsubscribe();
   }, [wasDisconnected]);
 
-  if (isConnected && !wasDisconnected) return null;
+  if (!showBanner) return null;
 
   const bgColor = isConnected ? '#4CAF50' : '#F44336';
   const icon = isConnected ? 'wifi' : 'cloud-offline';
@@ -82,7 +83,7 @@ export function NetworkBanner() {
   }
 
   return (
-    <Animated.View style={[styles.container, { top: insets.top, backgroundColor: bgColor, transform: [{ translateY: slideAnim }] }]} accessibilityRole="alert" accessibilityLiveRegion="polite" accessibilityLabel={message}>
+    <View style={[styles.container, { top: insets.top, backgroundColor: bgColor }]} accessibilityRole="alert" accessibilityLiveRegion="polite" accessibilityLabel={message}>
       <View style={styles.row}>
         <Ionicons name={icon} size={18} color="#fff" />
         <Text style={styles.text}>{message}</Text>
@@ -95,7 +96,7 @@ export function NetworkBanner() {
           </Text>
         </View>
       )}
-    </Animated.View>
+    </View>
   );
 }
 

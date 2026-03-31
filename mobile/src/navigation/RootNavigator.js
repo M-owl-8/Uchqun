@@ -120,8 +120,7 @@ export function RootNavigator() {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          animation: 'fade',
-          animationDuration: 300,
+          animation: 'none',
         }}
         initialRouteName={initialRoute}
       >

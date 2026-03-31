@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, Alert, ActivityIndicator, Animated, TextInput, Platform } from 'react-native';
+import React, { useEffect, useState, useCallback } from 'react';
+import { ScrollView, StyleSheet, Text, View, Image, TouchableOpacity, Alert, ActivityIndicator, TextInput, Platform } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -64,9 +64,6 @@ export function ParentProfileScreen() {
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
 
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-  const slideAnim = useRef(new Animated.Value(30)).current;
-
   // Refresh profile data when screen gains focus (picks up web changes)
   useFocusEffect(
     useCallback(() => {
@@ -74,22 +71,6 @@ export function ParentProfileScreen() {
       refreshUser();
     }, [])
   );
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 500,
-        useNativeDriver: true,
-      }),
-      Animated.spring(slideAnim, {
-        toValue: 0,
-        tension: 60,
-        friction: 8,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, []);
 
   const loadProfile = async () => {
     try {
@@ -327,12 +308,7 @@ export function ParentProfileScreen() {
         contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
-        <Animated.View
-          style={{
-            opacity: fadeAnim,
-            transform: [{ translateY: slideAnim }],
-          }}
-        >
+        <View>
           {/* Profile Card */}
           <Card style={styles.profileCard}>
             <TouchableOpacity onPress={handleAvatarUpload} disabled={uploadingAvatar}>
@@ -609,7 +585,7 @@ export function ParentProfileScreen() {
               />
             </Card>
           ) : null}
-        </Animated.View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

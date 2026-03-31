@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -6,8 +6,6 @@ import {
   Pressable,
   ScrollView,
   FlatList,
-  Animated,
-  Easing,
   RefreshControl,
   Modal,
   TouchableOpacity,
@@ -88,30 +86,17 @@ const getActivityColor = (activity) => {
   return ACTIVITY_COLORS.default;
 };
 
-// Animated progress bar component (Figma: mint-to-gold gradient)
-function AnimatedProgress({ progress, delay = 0 }) {
-  const widthAnim = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    Animated.timing(widthAnim, {
-      toValue: Math.min(progress || 0, 100),
-      duration: 800,
-      delay,
-      easing: Easing.out(Easing.cubic),
-      useNativeDriver: false,
-    }).start();
-  }, [progress]);
+// Static progress bar component (Figma: mint-to-gold gradient)
+function StaticProgress({ progress }) {
+  const clampedProgress = Math.min(progress || 0, 100);
 
   return (
     <View style={styles.progressBarContainer}>
-      <Animated.View
+      <View
         style={[
           styles.progressBar,
           {
-            width: widthAnim.interpolate({
-              inputRange: [0, 100],
-              outputRange: ['0%', '100%'],
-            }),
+            width: `${clampedProgress}%`,
           },
         ]}
       >
@@ -121,7 +106,7 @@ function AnimatedProgress({ progress, delay = 0 }) {
           end={{ x: 1, y: 0 }}
           style={StyleSheet.absoluteFill}
         />
-      </Animated.View>
+      </View>
     </View>
   );
 }
@@ -139,8 +124,6 @@ export function ActivitiesScreen() {
   const [filter, setFilter] = useState('all');
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
-  const fadeAnim = useRef(new Animated.Value(0)).current;
-
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
@@ -170,15 +153,6 @@ export function ActivitiesScreen() {
     }
   }, [selectedChildId]);
 
-  useEffect(() => {
-    if (!loading) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 400,
-        useNativeDriver: true,
-      }).start();
-    }
-  }, [loading]);
 
   const loadActivities = async () => {
     if (!selectedChildId) {
@@ -329,7 +303,7 @@ export function ActivitiesScreen() {
                       <Text style={styles.progressValue}>{progress}%</Text>
                     </View>
                   </View>
-                  <AnimatedProgress progress={progress} delay={index * 100} />
+                  <StaticProgress progress={progress} />
                 </View>
               )}
             </View>
@@ -385,7 +359,7 @@ export function ActivitiesScreen() {
     }
 
     return (
-      <Animated.View style={{ opacity: fadeAnim }}>
+      <View>
         {/* Child selector */}
         {children.length > 1 && (
           <View style={styles.childRow}>
@@ -449,7 +423,7 @@ export function ActivitiesScreen() {
                     <Text style={styles.progressCardLabel}>Activities completed</Text>
                   </View>
                   <View style={styles.progressCardBarWrap}>
-                    <AnimatedProgress progress={progressPercent} />
+                    <StaticProgress progress={progressPercent} />
                   </View>
                 </View>
               </LinearGradient>
@@ -504,7 +478,7 @@ export function ActivitiesScreen() {
             )}
           </>
         )}
-      </Animated.View>
+      </View>
     );
   };
 

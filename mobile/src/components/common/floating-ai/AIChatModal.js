@@ -1,10 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
   Text,
   Pressable,
-  Animated,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -44,25 +43,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const rotateAnim = useRef(new Animated.Value(0)).current;
-  const scaleAnim = useRef(new Animated.Value(0)).current;
   const scrollViewRef = useRef(null);
-
-  useEffect(() => {
-    Animated.parallel([
-      Animated.spring(scaleAnim, {
-        toValue: visible ? 1 : 0,
-        useNativeDriver: true,
-        damping: 15,
-        stiffness: 150,
-      }),
-      Animated.timing(rotateAnim, {
-        toValue: visible ? 1 : 0,
-        duration: 200,
-        useNativeDriver: true,
-      }),
-    ]).start();
-  }, [visible]);
 
   const handleSend = async (text = inputText) => {
     const messageToSend = text.trim();
@@ -96,11 +77,6 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
     }
   };
 
-  const spin = rotateAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: ['0deg', '180deg'],
-  });
-
   const styles = getStyles(tokens, isDark);
 
   return (
@@ -116,11 +92,8 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
       >
         <Pressable style={styles.modalOverlay} onPress={onClose} />
 
-        <Animated.View
-          style={[
-            styles.chatContainer,
-            { transform: [{ scale: scaleAnim }] },
-          ]}
+        <View
+          style={styles.chatContainer}
         >
           {/* Header */}
           <LinearGradient
@@ -143,9 +116,9 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
               </View>
             </View>
             <Pressable onPress={onClose} style={styles.closeButton} accessibilityRole="button" accessibilityLabel="Close AI chat">
-              <Animated.View style={{ transform: [{ rotate: spin }] }}>
+              <View>
                 <Ionicons name="close" size={24} color="#fff" />
-              </Animated.View>
+              </View>
             </Pressable>
           </LinearGradient>
 
@@ -258,7 +231,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
               </LinearGradient>
             </Pressable>
           </View>
-        </Animated.View>
+        </View>
       </KeyboardAvoidingView>
     </Modal>
   );

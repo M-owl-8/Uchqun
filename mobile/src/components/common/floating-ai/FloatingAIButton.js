@@ -1,24 +1,11 @@
-import React, { useRef, useEffect } from 'react';
-import { StyleSheet, View, Pressable, Animated } from 'react-native';
+import React from 'react';
+import { StyleSheet, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import tokens from '../../../styles/tokens';
 
 export default function FloatingAIButton({ onPress }) {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-
-  useEffect(() => {
-    const pulse = Animated.loop(
-      Animated.sequence([
-        Animated.timing(pulseAnim, { toValue: 1.08, duration: 2000, useNativeDriver: true }),
-        Animated.timing(pulseAnim, { toValue: 1, duration: 2000, useNativeDriver: true }),
-      ])
-    );
-    pulse.start();
-    return () => pulse.stop();
-  }, []);
-
   return (
-    <Animated.View style={[styles.fabContainer, { transform: [{ scale: pulseAnim }] }]}>
+    <View style={styles.fabContainer}>
       <Pressable
         onPress={onPress}
         style={({ pressed }) => [styles.fab, pressed && styles.fabPressed]}
@@ -28,7 +15,7 @@ export default function FloatingAIButton({ onPress }) {
       >
         <Ionicons name="sparkles" size={24} color="#FFFFFF" />
       </Pressable>
-    </Animated.View>
+    </View>
   );
 }
 
