@@ -4,6 +4,7 @@ import Child from '../models/Child.js';
 import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 export const getActivities = async (req, res) => {
   try {
@@ -221,10 +222,10 @@ export const createActivity = async (req, res) => {
       return res.status(400).json({ error: 'childId, skill, goal, startDate, and endDate are required' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Ensure tasks is an array

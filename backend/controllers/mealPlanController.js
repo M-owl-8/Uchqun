@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import MealPlan from '../models/MealPlan.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 const VALID_MEAL_TYPES = ['breakfast', 'lunch', 'snack', 'dinner'];
 
@@ -56,9 +57,9 @@ export const createMealPlan = async (req, res) => {
       return res.status(400).json({ error: `Invalid mealType. Must be one of: ${VALID_MEAL_TYPES.join(', ')}` });
     }
 
-    const child = await Child.findByPk(childId);
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Upsert: update if exists for same child+date+mealType
@@ -109,14 +110,12 @@ export const bulkCreateMealPlans = async (req, res) => {
       return res.status(400).json({ error: `Invalid mealType. Must be one of: ${VALID_MEAL_TYPES.join(', ')}` });
     }
 
-    // Verify all children exist
-    const children = await Child.findAll({
-      where: { id: { [Op.in]: childIds } },
-      attributes: ['id'],
-    });
-
-    if (children.length !== childIds.length) {
-      return res.status(404).json({ error: 'One or more children not found' });
+    // Verify all children exist and belong to same school
+    for (const childId of childIds) {
+      const child = await validateChildAccess(childId, req);
+      if (!child) {
+        return res.status(403).json({ error: `Access denied to child ${childId}` });
+      }
     }
 
     const results = [];

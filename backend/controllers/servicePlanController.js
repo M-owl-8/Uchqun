@@ -1,6 +1,7 @@
 import ServicePlan from '../models/ServicePlan.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 const VALID_SERVICE_TYPES = ['logoped', 'defektolog', 'self_care', 'ipotherapy', 'music', 'labor', 'tmc', 'physiotherapy'];
 const VALID_MONTHS = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
@@ -82,10 +83,10 @@ export const upsertServicePlan = async (req, res) => {
       return res.status(400).json({ error: 'Invalid months object. Must contain boolean values for month keys.' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     const mergedMonths = { ...DEFAULT_MONTHS, ...months };
@@ -126,10 +127,10 @@ export const bulkUpsertServicePlans = async (req, res) => {
       return res.status(400).json({ error: 'childId, year, and plans array are required' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Validate all plans

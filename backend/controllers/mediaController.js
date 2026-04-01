@@ -10,6 +10,7 @@ import fs from 'fs';
 import path from 'path';
 import logger from '../utils/logger.js';
 import axios from 'axios';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 // sharp is loaded dynamically to avoid startup crashes in containers
 let sharpModule = null;
@@ -341,8 +342,8 @@ export const uploadMedia = async (req, res) => {
       return res.status(400).json({ error: 'Invalid file type. Only images and videos are allowed.' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
       // Clean up uploaded file
       if (req.file.path) {
@@ -352,7 +353,7 @@ export const uploadMedia = async (req, res) => {
           logger.warn('Error deleting file during cleanup', { error: e.message, path: req.file?.path });
         }
       }
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Validate activity if provided
@@ -494,10 +495,10 @@ export const createMedia = async (req, res) => {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found. Please select a valid child.' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Validate activity if provided

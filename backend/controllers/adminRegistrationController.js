@@ -154,6 +154,7 @@ export const submitRegistrationRequest = async (req, res) => {
     }
 
     // Create registration request
+    const schoolId = req.body?.schoolId || null;
     const request = await AdminRegistrationRequest.create({
       firstName: firstName.trim(),
       lastName: lastName.trim(),
@@ -162,6 +163,7 @@ export const submitRegistrationRequest = async (req, res) => {
       telegramUsername: telegramUsername,
       certificateFile: certificateFilePath,
       passportFile: passportFilePath,
+      schoolId: schoolId,
       status: 'pending',
     });
 
@@ -301,7 +303,7 @@ export const getRegistrationRequestById = async (req, res) => {
 export const approveRegistrationRequest = async (req, res) => {
   try {
     const { id } = req.params;
-    const { password } = req.body;
+    const { password, schoolId } = req.body;
 
     // Generate cryptographically secure password if not provided
     const generatedPassword = password || generateSecurePassword(16);
@@ -347,6 +349,7 @@ export const approveRegistrationRequest = async (req, res) => {
       isVerified: true,
       documentsApproved: true,
       isActive: true,
+      schoolId: schoolId || request.schoolId, // From approval body or registration request
     });
 
     // Update request status

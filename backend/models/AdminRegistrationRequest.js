@@ -89,6 +89,14 @@ const AdminRegistrationRequest = sequelize.define('AdminRegistrationRequest', {
       key: 'id',
     },
   },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: 'schools',
+      key: 'id',
+    },
+  },
 }, {
   tableName: 'admin_registration_requests',
   timestamps: true,

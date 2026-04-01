@@ -302,11 +302,13 @@ export const createParent = async (req, res) => {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
-    // Validate teacher exists and was created by this reception user if teacherId is provided
+    // Validate teacher exists, was created by this reception user, and belongs to same school
     if (teacherId) {
-      const teacher = await User.findOne({ 
-        where: { id: teacherId, role: 'teacher', createdBy: req.user.id } 
-      });
+      const teacherWhere = { id: teacherId, role: 'teacher', createdBy: req.user.id };
+      if (req.user.schoolId) {
+        teacherWhere.schoolId = req.user.schoolId;
+      }
+      const teacher = await User.findOne({ where: teacherWhere });
       if (!teacher) {
         return res.status(400).json({ error: 'Invalid teacher selected or you do not have permission to assign this teacher' });
       }
@@ -414,7 +416,12 @@ export const createParent = async (req, res) => {
           // Continue without schoolId if lookup fails
         }
       }
-      
+
+      // Force reception's school to ensure child is assigned to correct school
+      if (req.user.schoolId) {
+        schoolId = req.user.schoolId;
+      }
+
       await Child.create({
         parentId: parent.id,
         firstName: child.firstName,
@@ -618,11 +625,13 @@ export const updateParent = async (req, res) => {
       return res.status(404).json({ error: 'Parent not found' });
     }
 
-    // Validate teacher exists and was created by this reception user if teacherId is provided
+    // Validate teacher exists, was created by this reception user, and belongs to same school
     if (teacherId) {
-      const teacher = await User.findOne({ 
-        where: { id: teacherId, role: 'teacher', createdBy: req.user.id } 
-      });
+      const teacherWhere = { id: teacherId, role: 'teacher', createdBy: req.user.id };
+      if (req.user.schoolId) {
+        teacherWhere.schoolId = req.user.schoolId;
+      }
+      const teacher = await User.findOne({ where: teacherWhere });
       if (!teacher) {
         return res.status(400).json({ error: 'Invalid teacher selected or you do not have permission to assign this teacher' });
       }

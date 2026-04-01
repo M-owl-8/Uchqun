@@ -129,6 +129,7 @@ export const createGroup = async (req, res) => {
       teacherId,
       capacity,
       ageRange,
+      schoolId: req.user.schoolId,
     });
 
     await group.reload({

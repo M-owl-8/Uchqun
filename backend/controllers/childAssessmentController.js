@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import { Op } from 'sequelize';
 import sequelize from '../config/database.js';
 import logger from '../utils/logger.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 const VALID_CATEGORIES = ['cognitive', 'motor', 'speech', 'behavior', 'social', 'self_care'];
 
@@ -116,10 +117,10 @@ export const createAssessment = async (req, res) => {
       return res.status(400).json({ error: 'Score must be between 1 and 5' });
     }
 
-    // Verify child exists
-    const child = await Child.findByPk(childId);
+    // Verify child exists and belongs to same school
+    const child = await validateChildAccess(childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Child not found' });
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     const assessmentDate = date || new Date().toISOString().split('T')[0];
