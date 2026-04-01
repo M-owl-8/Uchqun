@@ -26,40 +26,38 @@ export const getOverview = async (req, res) => {
       where.district = district;
     }
 
+    // Build school filter (government can optionally filter by region/school)
+    const schoolWhere = { isActive: true, ...where };
+    const schoolIdFilter = req.query.schoolId ? { schoolId: req.query.schoolId } : {};
+
     // Get schools count
     let schoolsCount = 0;
     try {
-      schoolsCount = await School.count({
-        where: { isActive: true },
-      });
+      schoolsCount = await School.count({ where: schoolWhere });
     } catch (error) {
       logger.warn('Failed to count schools', { error: error.message });
     }
 
-    // Get total students
+    // Get total students (filtered by school if specified)
     let studentsCount = 0;
     try {
-      studentsCount = await Child.count();
+      studentsCount = await Child.count({ where: schoolIdFilter });
     } catch (error) {
       logger.warn('Failed to count students', { error: error.message });
     }
 
-    // Get total teachers
+    // Get total teachers (filtered by school if specified)
     let teachersCount = 0;
     try {
-      teachersCount = await User.count({
-        where: { role: 'teacher' },
-      });
+      teachersCount = await User.count({ where: { role: 'teacher', ...schoolIdFilter } });
     } catch (error) {
       logger.warn('Failed to count teachers', { error: error.message });
     }
 
-    // Get total parents
+    // Get total parents (filtered by school if specified)
     let parentsCount = 0;
     try {
-      parentsCount = await User.count({
-        where: { role: 'parent' },
-      });
+      parentsCount = await User.count({ where: { role: 'parent', ...schoolIdFilter } });
     } catch (error) {
       logger.warn('Failed to count parents', { error: error.message });
     }

@@ -892,6 +892,11 @@ export const rateSchool = async (req, res) => {
         }
         finalSchoolId = school.id;
         logger.info('School found by ID', { schoolId: finalSchoolId, schoolName: school.name });
+
+        // Validate parent belongs to this school
+        if (req.user.schoolId && req.user.schoolId !== finalSchoolId) {
+          return res.status(403).json({ error: 'You can only rate your own school' });
+        }
       } catch (schoolError) {
         logger.error('Database error finding school by ID', {
           error: schoolError.message,
