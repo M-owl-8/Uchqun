@@ -243,7 +243,7 @@ export function ParentDashboardScreen() {
         {/* Quick Stats - 2 column grid */}
         <View style={styles.statsGrid}>
           <View style={{ width: cardWidth }}>
-            <Card style={styles.statCard}>
+            <Card style={styles.statCard} onPress={() => navigation.navigate('Activities')}>
               <View style={[styles.statIconContainer, { backgroundColor: '#DFF4EC' }]}>
                 <Ionicons name="sparkles" size={24} color={tokens.colors.text.primary} />
               </View>
@@ -254,7 +254,7 @@ export function ParentDashboardScreen() {
             </Card>
           </View>
           <View style={{ width: cardWidth }}>
-            <Card style={styles.statCard}>
+            <Card style={styles.statCard} onPress={() => navigation.navigate('Meals')}>
               <View style={[styles.statIconContainer, { backgroundColor: '#F8D7C4' }]}>
                 <Ionicons name="heart" size={24} color={tokens.colors.text.primary} />
               </View>
