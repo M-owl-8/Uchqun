@@ -13,6 +13,7 @@ import {
   Modal,
   TouchableOpacity,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
@@ -46,8 +47,9 @@ export function TeacherChildProfileScreen() {
   const [saving, setSaving] = useState(false);
   const [child, setChild] = useState(childData || null);
   const [isEditing, setIsEditing] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const [activeDateField, setActiveDateField] = useState(null);
+  const [showDatePicker_institutionStartDate, setShowDatePicker_institutionStartDate] = useState(false);
+  const [showDatePicker_fatherDOB, setShowDatePicker_fatherDOB] = useState(false);
+  const [showDatePicker_motherDOB, setShowDatePicker_motherDOB] = useState(false);
 
   // Editable form fields
   const [form, setForm] = useState({
@@ -519,13 +521,29 @@ export function TeacherChildProfileScreen() {
                 {t('childProfile.institutionStartDate', { defaultValue: 'Admission Date' })}
               </Text>
             </View>
-            <FormField
-              label={t('childProfile.institutionStartDate', { defaultValue: 'Admission Date' })}
-              value={form.institutionStartDate}
-              onChangeText={(v) => updateFormField('institutionStartDate', v)}
-              placeholder="YYYY-MM-DD"
-              keyboardType="default"
-            />
+            <View style={styles.formField}>
+              <Text style={styles.formLabel} allowFontScaling={true}>{t('childProfile.institutionStartDate', { defaultValue: 'Admission Date' })}</Text>
+              <Pressable onPress={() => setShowDatePicker_institutionStartDate(true)} accessibilityRole="button"
+                style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                <Text style={{ color: form.institutionStartDate ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                  {form.institutionStartDate || t('common.selectDate', { defaultValue: 'Select date' })}
+                </Text>
+              </Pressable>
+              {showDatePicker_institutionStartDate && (
+                <DateTimePicker
+                  value={form.institutionStartDate ? new Date(form.institutionStartDate) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker_institutionStartDate(false);
+                    if (selectedDate) {
+                      const formatted = selectedDate.toISOString().split('T')[0];
+                      updateFormField('institutionStartDate', formatted);
+                    }
+                  }}
+                />
+              )}
+            </View>
           </Card>
 
           {/* Father Info */}
@@ -541,12 +559,29 @@ export function TeacherChildProfileScreen() {
               value={form.fatherFullName}
               onChangeText={(v) => updateFormField('fatherFullName', v)}
             />
-            <FormField
-              label={t('childProfile.fatherDOB', { defaultValue: 'Date of Birth' })}
-              value={form.fatherDOB}
-              onChangeText={(v) => updateFormField('fatherDOB', v)}
-              placeholder="YYYY-MM-DD"
-            />
+            <View style={styles.formField}>
+              <Text style={styles.formLabel} allowFontScaling={true}>{t('childProfile.fatherDOB', { defaultValue: 'Date of Birth' })}</Text>
+              <Pressable onPress={() => setShowDatePicker_fatherDOB(true)} accessibilityRole="button"
+                style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                <Text style={{ color: form.fatherDOB ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                  {form.fatherDOB || t('common.selectDate', { defaultValue: 'Select date' })}
+                </Text>
+              </Pressable>
+              {showDatePicker_fatherDOB && (
+                <DateTimePicker
+                  value={form.fatherDOB ? new Date(form.fatherDOB) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker_fatherDOB(false);
+                    if (selectedDate) {
+                      const formatted = selectedDate.toISOString().split('T')[0];
+                      updateFormField('fatherDOB', formatted);
+                    }
+                  }}
+                />
+              )}
+            </View>
             <FormField
               label={t('childProfile.fatherOccupation', { defaultValue: 'Occupation' })}
               value={form.fatherOccupation}
@@ -567,12 +602,29 @@ export function TeacherChildProfileScreen() {
               value={form.motherFullName}
               onChangeText={(v) => updateFormField('motherFullName', v)}
             />
-            <FormField
-              label={t('childProfile.motherDOB', { defaultValue: 'Date of Birth' })}
-              value={form.motherDOB}
-              onChangeText={(v) => updateFormField('motherDOB', v)}
-              placeholder="YYYY-MM-DD"
-            />
+            <View style={styles.formField}>
+              <Text style={styles.formLabel} allowFontScaling={true}>{t('childProfile.motherDOB', { defaultValue: 'Date of Birth' })}</Text>
+              <Pressable onPress={() => setShowDatePicker_motherDOB(true)} accessibilityRole="button"
+                style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                <Text style={{ color: form.motherDOB ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                  {form.motherDOB || t('common.selectDate', { defaultValue: 'Select date' })}
+                </Text>
+              </Pressable>
+              {showDatePicker_motherDOB && (
+                <DateTimePicker
+                  value={form.motherDOB ? new Date(form.motherDOB) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker_motherDOB(false);
+                    if (selectedDate) {
+                      const formatted = selectedDate.toISOString().split('T')[0];
+                      updateFormField('motherDOB', formatted);
+                    }
+                  }}
+                />
+              )}
+            </View>
             <FormField
               label={t('childProfile.motherOccupation', { defaultValue: 'Occupation' })}
               value={form.motherOccupation}

@@ -12,6 +12,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { teacherService } from '../../../services/teacherService';
 import { useTranslation } from 'react-i18next';
@@ -43,6 +44,8 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
 
   const [parents, setParents] = useState([]);
   const [children, setChildren] = useState([]);
+  const [showDatePicker_startDate, setShowDatePicker_startDate] = useState(false);
+  const [showDatePicker_endDate, setShowDatePicker_endDate] = useState(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA(user, t));
 
   // Load parents on mount
@@ -338,25 +341,51 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
                   <Text style={styles.label}>
                     {t('activitiesPage.formStartDate', { defaultValue: 'Boshlanish' })}
                   </Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="YYYY-MM-DD"
-                    placeholderTextColor={tokens.colors.text.tertiary}
-                    value={formData.startDate}
-                    onChangeText={(text) => setFormData(prev => ({ ...prev, startDate: text }))}
-                  />
+                  <Pressable onPress={() => setShowDatePicker_startDate(true)} accessibilityRole="button"
+                    style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                    <Text style={{ color: formData.startDate ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                      {formData.startDate || t('common.selectDate', { defaultValue: 'Select date' })}
+                    </Text>
+                  </Pressable>
+                  {showDatePicker_startDate && (
+                    <DateTimePicker
+                      value={formData.startDate ? new Date(formData.startDate) : new Date()}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowDatePicker_startDate(false);
+                        if (selectedDate) {
+                          const formatted = selectedDate.toISOString().split('T')[0];
+                          setFormData(prev => ({ ...prev, startDate: formatted }));
+                        }
+                      }}
+                    />
+                  )}
                 </View>
                 <View style={[styles.inputGroup, styles.halfWidth]}>
                   <Text style={styles.label}>
                     {t('activitiesPage.formEndDate', { defaultValue: 'Tugash' })}
                   </Text>
-                  <TextInput
-                    style={styles.input}
-                    placeholder="YYYY-MM-DD"
-                    placeholderTextColor={tokens.colors.text.tertiary}
-                    value={formData.endDate}
-                    onChangeText={(text) => setFormData(prev => ({ ...prev, endDate: text }))}
-                  />
+                  <Pressable onPress={() => setShowDatePicker_endDate(true)} accessibilityRole="button"
+                    style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                    <Text style={{ color: formData.endDate ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                      {formData.endDate || t('common.selectDate', { defaultValue: 'Select date' })}
+                    </Text>
+                  </Pressable>
+                  {showDatePicker_endDate && (
+                    <DateTimePicker
+                      value={formData.endDate ? new Date(formData.endDate) : new Date()}
+                      mode="date"
+                      display="default"
+                      onChange={(event, selectedDate) => {
+                        setShowDatePicker_endDate(false);
+                        if (selectedDate) {
+                          const formatted = selectedDate.toISOString().split('T')[0];
+                          setFormData(prev => ({ ...prev, endDate: formatted }));
+                        }
+                      }}
+                    />
+                  )}
                 </View>
               </View>
 

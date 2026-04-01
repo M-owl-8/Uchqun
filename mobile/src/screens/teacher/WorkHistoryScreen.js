@@ -12,6 +12,7 @@ import tokens from '../../styles/tokens';
 export function WorkHistoryScreen() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [workHistory, setWorkHistory] = useState([]);
 
   useEffect(() => {
@@ -21,10 +22,12 @@ export function WorkHistoryScreen() {
   const loadWorkHistory = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await teacherService.getWorkHistory();
       setWorkHistory(Array.isArray(data) ? data : []);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading work history:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading work history:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setWorkHistory([]);
     } finally {
       setLoading(false);
@@ -42,6 +45,22 @@ export function WorkHistoryScreen() {
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <ScreenHeader title={t('workHistory.title', { defaultValue: 'Work History' })} />
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadWorkHistory()} accessibilityRole="button" accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      </View>
+    );
   }
 
   if (workHistory.length === 0) {

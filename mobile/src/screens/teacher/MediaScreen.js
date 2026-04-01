@@ -17,6 +17,7 @@ import {
   ActivityIndicator,
   SafeAreaView,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import * as ImagePicker from 'expo-image-picker';
@@ -75,6 +76,7 @@ export function MediaScreen() {
   const [children, setChildren] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [showDatePicker_date, setShowDatePicker_date] = useState(false);
   const [formData, setFormData] = useState({
     childId: '',
     type: 'photo',
@@ -624,13 +626,26 @@ export function MediaScreen() {
                     <Text style={styles.label}>
                       {t('mediaPage.modal.date', { defaultValue: 'Sana' })}
                     </Text>
-                    <TextInput
-                      style={styles.textInput}
-                      placeholder="YYYY-MM-DD"
-                      placeholderTextColor={tokens.colors.text.tertiary}
-                      value={formData.date}
-                      onChangeText={(text) => setFormData({ ...formData, date: text })}
-                    />
+                    <Pressable onPress={() => setShowDatePicker_date(true)} accessibilityRole="button"
+                      style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                      <Text style={{ color: formData.date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                        {formData.date || t('common.selectDate', { defaultValue: 'Select date' })}
+                      </Text>
+                    </Pressable>
+                    {showDatePicker_date && (
+                      <DateTimePicker
+                        value={formData.date ? new Date(formData.date) : new Date()}
+                        mode="date"
+                        display="default"
+                        onChange={(event, selectedDate) => {
+                          setShowDatePicker_date(false);
+                          if (selectedDate) {
+                            const formatted = selectedDate.toISOString().split('T')[0];
+                            setFormData(prev => ({ ...prev, date: formatted }));
+                          }
+                        }}
+                      />
+                    )}
                   </View>
                 </View>
 

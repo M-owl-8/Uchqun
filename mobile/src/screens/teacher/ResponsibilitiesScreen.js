@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, StyleSheet, Text, View, Pressable } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { teacherService } from '../../services/teacherService';
@@ -12,6 +12,7 @@ import tokens from '../../styles/tokens';
 export function ResponsibilitiesScreen() {
   const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [responsibilities, setResponsibilities] = useState([]);
 
   useEffect(() => {
@@ -21,10 +22,12 @@ export function ResponsibilitiesScreen() {
   const loadResponsibilities = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await teacherService.getResponsibilities();
       setResponsibilities(Array.isArray(data) ? data : []);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading responsibilities:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading responsibilities:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setResponsibilities([]);
     } finally {
       setLoading(false);
@@ -33,6 +36,22 @@ export function ResponsibilitiesScreen() {
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (error) {
+    return (
+      <View style={styles.container}>
+        <ScreenHeader title={t('responsibilities.title', { defaultValue: 'Responsibilities' })} />
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadResponsibilities()} accessibilityRole="button" accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      </View>
+    );
   }
 
   if (responsibilities.length === 0) {

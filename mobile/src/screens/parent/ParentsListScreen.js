@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { useTranslation } from 'react-i18next';
 import { parentService } from '../../services/parentService';
 import tokens from '../../styles/tokens';
 import Screen from '../../components/layout/Screen';
 import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
+import { ScreenHeader } from '../../components/common/ScreenHeader';
 
 export function ParentsListScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [children, setChildren] = useState([]);
 
@@ -61,11 +64,7 @@ export function ParentsListScreen() {
   };
 
   const header = (
-    <View style={styles.topBar}>
-      <View style={styles.placeholder} />
-      <Text style={styles.topBarTitle} allowFontScaling={true}>My Children</Text>
-      <View style={styles.placeholder} />
-    </View>
+    <ScreenHeader title={t('nav.parents', { defaultValue: 'My Children' })} />
   );
 
   return (

@@ -11,6 +11,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
@@ -41,6 +42,7 @@ export function MonitoringJournalScreen() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -51,6 +53,7 @@ export function MonitoringJournalScreen() {
   const [editingRecord, setEditingRecord] = useState(null);
   const [selectedChild, setSelectedChild] = useState(null);
   const [saving, setSaving] = useState(false);
+  const [showDatePicker_date, setShowDatePicker_date] = useState(false);
   const [formData, setFormData] = useState({
     childId: '',
     date: new Date().toISOString().split('T')[0],
@@ -87,10 +90,12 @@ export function MonitoringJournalScreen() {
   const loadMonitoringRecords = async () => {
     try {
       setLoading(true);
+      setError(null);
       const records = await teacherService.getAllMonitoringRecords();
       setMonitoringRecords(Array.isArray(records) ? records : []);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading monitoring records:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading monitoring records:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setMonitoringRecords([]);
     } finally {
       setLoading(false);
@@ -208,6 +213,16 @@ export function MonitoringJournalScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('monitoring.title', { defaultValue: 'Weekly Monitoring Journal' })} />
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadMonitoringRecords()} accessibilityRole="button" accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         style={styles.scroll}
         contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
@@ -300,13 +315,26 @@ export function MonitoringJournalScreen() {
               )}
 
               <Text style={styles.label}>{t('monitoring.date')}</Text>
-              <TextInput
-                style={styles.input}
-                value={formData.date}
-                onChangeText={(text) => setFormData((prev) => ({ ...prev, date: text }))}
-                placeholder="YYYY-MM-DD"
-                placeholderTextColor={tokens.colors.text.tertiary}
-              />
+              <Pressable onPress={() => setShowDatePicker_date(true)} accessibilityRole="button"
+                style={{ borderWidth: 0, backgroundColor: tokens.colors.background.tertiary, borderRadius: tokens.radius.md, padding: tokens.space.md }}>
+                <Text style={{ color: formData.date ? tokens.colors.text.primary : tokens.colors.text.muted }}>
+                  {formData.date || t('common.selectDate', { defaultValue: 'Select date' })}
+                </Text>
+              </Pressable>
+              {showDatePicker_date && (
+                <DateTimePicker
+                  value={formData.date ? new Date(formData.date) : new Date()}
+                  mode="date"
+                  display="default"
+                  onChange={(event, selectedDate) => {
+                    setShowDatePicker_date(false);
+                    if (selectedDate) {
+                      const formatted = selectedDate.toISOString().split('T')[0];
+                      setFormData((prev) => ({ ...prev, date: formatted }));
+                    }
+                  }}
+                />
+              )}
 
               <Text style={styles.label}>{t('monitoring.emotionalState')}</Text>
               {EMOTIONAL_STATE_KEYS.map((key) => (

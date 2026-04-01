@@ -24,6 +24,7 @@ export function EmotionalMonitoringScreen() {
   const BOTTOM_NAV_HEIGHT = 75;
   const bottomPadding = BOTTOM_NAV_HEIGHT + insets.bottom + 16;
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [records, setRecords] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [saving, setSaving] = useState(false);
@@ -39,10 +40,12 @@ export function EmotionalMonitoringScreen() {
   const loadRecords = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await teacherService.getEmotionalRecords(childId);
       setRecords(data);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading emotional records:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading emotional records:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setRecords([]);
     } finally {
       setLoading(false);
@@ -114,7 +117,17 @@ export function EmotionalMonitoringScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('emotional.title', { defaultValue: 'Emotional Monitoring' })} />
-      {records.length === 0 ? (
+      {error && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadRecords()} accessibilityRole="button" accessibilityLabel={t('common.retry', { defaultValue: 'Retry' })}
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
+      {records.length === 0 && !error ? (
         <EmptyState icon="heart-outline" message={t('emotional.noRecords', { defaultValue: 'No emotional records found' })} />
       ) : (
         <FlatList
