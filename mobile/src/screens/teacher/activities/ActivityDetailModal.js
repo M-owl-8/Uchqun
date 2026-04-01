@@ -25,7 +25,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
         <View style={styles.modalContent}>
           <View style={styles.modalHeader}>
             <Text style={styles.modalTitle} numberOfLines={2}>
-              {activity.skill || activity.title || 'Faoliyat'}
+              {activity.skill || activity.title || t('activityDetail.activity')}
             </Text>
             <TouchableOpacity onPress={onClose}>
               <Ionicons name="close" size={24} color={tokens.colors.text.secondary} />
@@ -39,7 +39,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
                 <View style={styles.detailGoalCard}>
                   <View style={styles.detailSectionHeader}>
                     <Ionicons name="flag" size={18} color={tokens.colors.accent.blue} />
-                    <Text style={styles.detailSectionTitle}>Maqsad</Text>
+                    <Text style={styles.detailSectionTitle}>{t('activityDetail.goal')}</Text>
                   </View>
                   <Text style={styles.detailGoalText}>{activity.goal}</Text>
                 </View>
@@ -51,14 +51,14 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="calendar" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Sanalar</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.dates')}</Text>
                 </View>
                 <View style={styles.detailDatesRow}>
                   {activity.startDate ? (
                     <View style={styles.detailDateCard}>
                       <Ionicons name="calendar-outline" size={16} color={tokens.colors.accent.blue} />
                       <View>
-                        <Text style={styles.detailDateLabel}>Boshlanish</Text>
+                        <Text style={styles.detailDateLabel}>{t('activityDetail.startDate')}</Text>
                         <Text style={styles.detailDateValue}>{new Date(activity.startDate).toLocaleDateString()}</Text>
                       </View>
                     </View>
@@ -67,7 +67,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
                     <View style={styles.detailDateCard}>
                       <Ionicons name="calendar-outline" size={16} color={tokens.colors.semantic.error} />
                       <View>
-                        <Text style={styles.detailDateLabel}>Tugash</Text>
+                        <Text style={styles.detailDateLabel}>{t('activityDetail.endDate')}</Text>
                         <Text style={styles.detailDateValue}>{new Date(activity.endDate).toLocaleDateString()}</Text>
                       </View>
                     </View>
@@ -81,20 +81,20 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="person" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>O&apos;qituvchi</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.teacher')}</Text>
                 </View>
                 <Text style={styles.detailText}>{activity.teacher}</Text>
               </View>
             ) : null}
 
             {/* Tasks */}
-            {activity.tasks && Array.isArray(activity.tasks) && activity.tasks.filter(t => t).length > 0 ? (
+            {activity.tasks && Array.isArray(activity.tasks) && activity.tasks.filter(v => v).length > 0 ? (
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="checkmark-circle" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Vazifalar</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.tasks')}</Text>
                 </View>
-                {activity.tasks.filter(t => t).map((task, idx) => (
+                {activity.tasks.filter(v => v).map((task, idx) => (
                   <View key={idx} style={styles.detailTaskItem}>
                     <View style={styles.detailTaskBullet} />
                     <Text style={styles.detailText}>{task}</Text>
@@ -108,7 +108,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="bulb" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Usullar</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.methods')}</Text>
                 </View>
                 <Text style={styles.detailText}>{activity.methods}</Text>
               </View>
@@ -119,7 +119,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="trending-up" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Jarayon/Taraqqiyot</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.progress')}</Text>
                 </View>
                 <Text style={styles.detailText}>{activity.progress}</Text>
               </View>
@@ -130,7 +130,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="eye" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Kuzatish</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.observation')}</Text>
                 </View>
                 <Text style={styles.detailText}>{activity.observation}</Text>
               </View>
@@ -141,7 +141,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
               <View style={styles.detailSection}>
                 <View style={styles.detailSectionHeader}>
                   <Ionicons name="medkit" size={18} color={tokens.colors.semantic.success} />
-                  <Text style={styles.detailSectionTitle}>Xizmatlar</Text>
+                  <Text style={styles.detailSectionTitle}>{t('activityDetail.services')}</Text>
                 </View>
                 <View style={styles.detailServicesWrap}>
                   {activity.services.map((serviceKey, idx) => {
@@ -159,7 +159,7 @@ export default function ActivityDetailModal({ visible, activity, onClose }) {
 
           <View style={styles.detailsFooter}>
             <Pressable style={styles.detailsCloseButton} onPress={onClose}>
-              <Text style={styles.detailsCloseButtonText}>Yopish</Text>
+              <Text style={styles.detailsCloseButtonText}>{t('activityDetail.close')}</Text>
             </Pressable>
           </View>
         </View>

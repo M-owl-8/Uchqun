@@ -10,6 +10,7 @@ import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import ListRow from '../../components/common/ListRow';
+import { useTranslation } from 'react-i18next';
 
 const NOTIFICATION_TYPE_COLORS = {
   info: tokens.colors.semantic.info,
@@ -24,7 +25,7 @@ function getAccentColor(item) {
 }
 
 // Static notification card component
-function NotificationCard({ item, index, markAsRead, onDelete }) {
+function NotificationCard({ item, index, markAsRead, onDelete, t }) {
   const formatTimestamp = (timestamp) => {
     if (!timestamp) return '';
     const date = new Date(timestamp);
@@ -34,10 +35,10 @@ function NotificationCard({ item, index, markAsRead, onDelete }) {
     const diffHours = Math.floor(diffMs / 3600000);
     const diffDays = Math.floor(diffMs / 86400000);
 
-    if (diffMins < 1) return 'Just now';
-    if (diffMins < 60) return `${diffMins}m ago`;
-    if (diffHours < 24) return `${diffHours}h ago`;
-    if (diffDays < 7) return `${diffDays}d ago`;
+    if (diffMins < 1) return t('notifications.justNow');
+    if (diffMins < 60) return t('notifications.minutesAgo', { count: diffMins });
+    if (diffHours < 24) return t('notifications.hoursAgo', { count: diffHours });
+    if (diffDays < 7) return t('notifications.daysAgo', { count: diffDays });
     return date.toLocaleDateString();
   };
 
@@ -98,6 +99,7 @@ function NotificationCard({ item, index, markAsRead, onDelete }) {
 
 export function NotificationsScreen() {
   const navigation = useNavigation();
+  const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
   const [notifications, setNotifications] = useState([]);
@@ -143,12 +145,12 @@ export function NotificationsScreen() {
 
   const handleDelete = (id) => {
     Alert.alert(
-      'Delete Notification',
-      'Are you sure you want to delete this notification?',
+      t('notifications.deleteTitle'),
+      t('notifications.deleteConfirm'),
       [
-        { text: 'Cancel', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Delete',
+          text: t('common.delete'),
           style: 'destructive',
           onPress: async () => {
             try {
@@ -173,15 +175,15 @@ export function NotificationsScreen() {
   const readCount = notifications.filter((n) => n.isRead).length;
 
   const filters = [
-    { key: 'all', label: 'All', count: notifications.length },
-    { key: 'unread', label: 'Unread', count: unreadCount },
-    { key: 'read', label: 'Read', count: readCount },
+    { key: 'all', label: t('notifications.filterAll'), count: notifications.length },
+    { key: 'unread', label: t('notifications.filterUnread'), count: unreadCount },
+    { key: 'read', label: t('notifications.filterRead'), count: readCount },
   ];
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
-        title="Notifications"
+        title={t('notifications.title')}
         showBack={true}
         rightAction={unreadCount > 0 ? (
           <TouchableOpacity
@@ -214,6 +216,7 @@ export function NotificationsScreen() {
               index={index}
               markAsRead={markAsRead}
               onDelete={handleDelete}
+              t={t}
             />
           )}
           keyExtractor={(item) => item.id?.toString() || String(Math.random())}
@@ -252,8 +255,8 @@ export function NotificationsScreen() {
             <Card style={styles.emptyCard}>
               <EmptyState
                 icon="notifications-outline"
-                title={filter !== 'all' ? `No ${filter} notifications` : 'No notifications'}
-                description={filter !== 'all' ? 'Try a different filter' : "You're all caught up!"}
+                title={filter !== 'all' ? t('notifications.noFiltered', { filter }) : t('notifications.noNotifications')}
+                description={filter !== 'all' ? t('notifications.tryDifferentFilter') : t('notifications.allCaughtUp')}
               />
             </Card>
           }

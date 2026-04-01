@@ -252,11 +252,11 @@ export function ActivitiesScreen() {
             <View style={styles.activityInfo}>
               <View style={styles.activityTitleRow}>
                 <Text style={styles.activityTitle} numberOfLines={2}>
-                  {item.title || item.skill || item.description || 'Faoliyat'}
+                  {item.title || item.skill || item.description || t('activityDetail.activity')}
                 </Text>
                 {isCompleted && (
                   <View style={styles.doneBadge}>
-                    <Text style={styles.doneBadgeText}>✓ Done</Text>
+                    <Text style={styles.doneBadgeText}>✓ {t('activities.done')}</Text>
                   </View>
                 )}
               </View>
@@ -278,7 +278,7 @@ export function ActivitiesScreen() {
               {hasProgress && (
                 <View style={styles.progressSection}>
                   <View style={styles.progressHeader}>
-                    <Text style={styles.progressLabel}>Progress</Text>
+                    <Text style={styles.progressLabel}>{t('activityDetail.progress')}</Text>
                     <View style={styles.progressBadge}>
                       <Text style={styles.progressValue}>{progress}%</Text>
                     </View>

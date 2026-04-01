@@ -130,9 +130,10 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
     const parentsList = await loadParents();
     let parentId = '';
 
-    if (activity.child && activity.child.id) {
+    const childId = activity?.child?.id || activity?.childId || '';
+    if (childId) {
       const parent = parentsList.find(p =>
-        p.children && p.children.some(c => c.id === activity.child.id)
+        p.children && p.children.some(c => c.id === childId)
       );
       if (parent) {
         parentId = parent.id;
@@ -142,7 +143,7 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
 
     setFormData({
       parentId,
-      childId: activity.childId || '',
+      childId: childId || '',
       teacher: activity.teacher || (user?.firstName && user?.lastName
         ? `${user.firstName} ${user.lastName}`
         : t('activitiesPage.teacher', { defaultValue: 'Teacher' })),

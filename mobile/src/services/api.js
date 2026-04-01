@@ -82,7 +82,7 @@ api.interceptors.response.use(
             return api(originalRequest);
           }
         }
-      } catch {
+      } catch (_e) {
         // Refresh failed — clear auth and force re-login
       }
       await clearAuth();
@@ -98,7 +98,7 @@ api.interceptors.response.use(
     if (method === 'get' && response.status >= 200 && response.status < 300) {
       try {
         cacheService.set(response.config.url, response.config.params, response.data);
-      } catch {}
+      } catch (_e) { /* cache write error ignored */ }
     } else if (['post', 'put', 'delete', 'patch'].includes(method) && response.status >= 200 && response.status < 300) {
       try {
         // Granular cache invalidation: only clear cache entries matching the resource type
@@ -122,7 +122,7 @@ api.interceptors.response.use(
           // For unrecognized endpoints, clear all cache as fallback
           await cacheService.clear();
         }
-      } catch {}
+      } catch (_e) { /* cache invalidation error ignored */ }
     }
     return response;
   },
@@ -137,7 +137,7 @@ api.interceptors.response.use(
           const safeConfig = config || { method: 'get', url: '', params: undefined };
           return { data: cached.data, status: 200, config: safeConfig, _fromCache: true, _isStale: cached.isStale };
         }
-      } catch {}
+      } catch (_e) { /* cache read error ignored */ }
     }
 
     // On network error for mutation requests, queue for later
@@ -150,7 +150,7 @@ api.interceptors.response.use(
           headers: { Authorization: config.headers?.Authorization },
         });
         console.log('[API] Request queued for offline replay:', config.method, config.url);
-      } catch {}
+      } catch (_e) { /* offline queue error ignored */ }
     }
 
     return Promise.reject(error);
@@ -161,5 +161,5 @@ api.interceptors.response.use(
 api.clearCache = async () => {
   try {
     await cacheService.clear();
-  } catch {}
+  } catch (_e) { /* cache clear error ignored */ }
 };

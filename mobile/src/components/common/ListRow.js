@@ -4,26 +4,31 @@ import { Ionicons } from "@expo/vector-icons";
 import tokens from "../../styles/tokens";
 import IconBubble from "./IconBubble";
 
-export default function ListRow({ 
+export { ListRow };
+export default function ListRow({
   icon,
   iconColor,
-  title, 
+  leading,
+  title,
   subtitle,
   time,
   onPress,
   chevron = true,
   rightContent,
+  selected,
   style
 }) {
   const content = (
-    <View style={[styles.row, style]}>
-      {icon && (
-        <IconBubble 
-          icon={icon} 
+    <View style={[styles.row, selected && styles.selected, style]}>
+      {leading ? (
+        <View style={styles.icon}>{leading}</View>
+      ) : icon ? (
+        <IconBubble
+          icon={icon}
           color={iconColor || tokens.colors.accent.blue}
           style={styles.icon}
         />
-      )}
+      ) : null}
       <View style={styles.content}>
         <Text 
           style={styles.title} 
@@ -108,5 +113,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.7,
+  },
+  selected: {
+    backgroundColor: tokens.colors.accent[50] || 'rgba(59,130,246,0.06)',
+    borderRadius: tokens.radius.md,
   },
 });

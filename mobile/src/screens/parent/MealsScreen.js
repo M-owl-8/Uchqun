@@ -22,53 +22,31 @@ import EmptyState from '../../components/common/EmptyState';
 import { useTranslation } from 'react-i18next';
 
 // Meal type to emoji and color mapping
-const MEAL_CONFIG = {
-  breakfast: {
-    emoji: '🥞',
-    label: 'Nonushta',
-    color: '#E8C27E',
-    bgColor: '#E8C27E',
-  },
-  lunch: {
-    emoji: '🍱',
-    label: 'Tushlik',
-    color: '#DFF4EC',
-    bgColor: '#DFF4EC',
-  },
-  dinner: {
-    emoji: '🍝',
-    label: 'Kechki ovqat',
-    color: '#E8C27E',
-    bgColor: '#E8C27E',
-  },
-  snack: {
-    emoji: '🍎',
-    label: 'Gazak',
-    color: '#F8D7C4',
-    bgColor: '#F8D7C4',
-  },
-  drink: {
-    emoji: '🥤',
-    label: 'Ichimlik',
-    color: '#BFD7EA',
-    bgColor: '#BFD7EA',
-  },
-  default: {
-    emoji: '🍽️',
-    label: 'Ovqat',
-    color: '#BFD7EA',
-    bgColor: '#BFD7EA',
-  },
+const MEAL_CONFIG_BASE = {
+  breakfast: { emoji: '🥞', color: '#E8C27E', bgColor: '#E8C27E' },
+  lunch: { emoji: '🍱', color: '#DFF4EC', bgColor: '#DFF4EC' },
+  dinner: { emoji: '🍝', color: '#E8C27E', bgColor: '#E8C27E' },
+  snack: { emoji: '🍎', color: '#F8D7C4', bgColor: '#F8D7C4' },
+  drink: { emoji: '🥤', color: '#BFD7EA', bgColor: '#BFD7EA' },
+  default: { emoji: '🍽️', color: '#BFD7EA', bgColor: '#BFD7EA' },
 };
 
-const getMealConfig = (mealType) => {
+const getMealConfig = (mealType, t) => {
+  const labels = {
+    breakfast: t('parentMeals.breakfast'),
+    lunch: t('parentMeals.lunch'),
+    dinner: t('parentMeals.dinner'),
+    snack: t('parentMeals.snack'),
+    drink: t('parentMeals.drink'),
+    default: t('parentMeals.meal'),
+  };
   const type = (mealType || '').toLowerCase();
-  for (const [key, config] of Object.entries(MEAL_CONFIG)) {
+  for (const [key, config] of Object.entries(MEAL_CONFIG_BASE)) {
     if (type.includes(key)) {
-      return config;
+      return { ...config, label: labels[key] || key };
     }
   }
-  return MEAL_CONFIG.default;
+  return { ...MEAL_CONFIG_BASE.default, label: labels.default };
 };
 
 export function MealsScreen() {
@@ -143,10 +121,10 @@ export function MealsScreen() {
     yesterday.setDate(yesterday.getDate() - 1);
 
     if (date.toDateString() === today.toDateString()) {
-      return 'Bugun';
+      return t('parentMeals.today');
     }
     if (date.toDateString() === yesterday.toDateString()) {
-      return 'Kecha';
+      return t('parentMeals.yesterday');
     }
     return date.toLocaleDateString('uz-UZ', {
       weekday: 'short',
@@ -208,8 +186,8 @@ export function MealsScreen() {
   });
 
   const filters = [
-    { key: 'all', label: 'Hammasi', emoji: '📋' },
-    { key: 'today', label: 'Bugun', emoji: '📆' },
+    { key: 'all', label: t('parentMeals.filterAll'), emoji: '📋' },
+    { key: 'today', label: t('parentMeals.filterToday'), emoji: '📆' },
   ];
 
   const renderMealItem = ({ item }) => {
@@ -224,7 +202,7 @@ export function MealsScreen() {
       );
     }
 
-    const config = getMealConfig(item.mealType);
+    const config = getMealConfig(item.mealType, t);
     const isCompleted = item.eaten !== undefined ? item.eaten : true;
 
     return (
@@ -248,7 +226,7 @@ export function MealsScreen() {
               </Text>
               {isCompleted && (
                 <View style={styles.completedBadge}>
-                  <Text style={styles.completedBadgeText}>✓ Completed</Text>
+                  <Text style={styles.completedBadgeText}>✓ {t('parentMeals.completed')}</Text>
                 </View>
               )}
             </View>
@@ -376,7 +354,7 @@ export function MealsScreen() {
                 style={styles.nutritionGradient}
               >
                 <View style={styles.nutritionHeader}>
-                  <Text style={styles.nutritionTitle}>Today's Nutrition</Text>
+                  <Text style={styles.nutritionTitle}>{t('parentMeals.todayNutrition')}</Text>
                   <View style={styles.nutritionIcon}>
                     <Text style={{ fontSize: 24 }}>🍴</Text>
                   </View>
@@ -388,19 +366,19 @@ export function MealsScreen() {
                     <Text style={styles.nutritionStatValue}>
                       {eatenCount}/{totalMealCount}
                     </Text>
-                    <Text style={styles.nutritionStatLabel}>Meals</Text>
+                    <Text style={styles.nutritionStatLabel}>{t('parentMeals.mealsLabel')}</Text>
                   </View>
                   <View style={styles.nutritionStatDivider} />
                   <View style={styles.nutritionStatItem}>
                     <Text style={styles.nutritionStatValue}>
                       {totalCalories || '—'}
                     </Text>
-                    <Text style={styles.nutritionStatLabel}>Calories</Text>
+                    <Text style={styles.nutritionStatLabel}>{t('parentMeals.calories')}</Text>
                   </View>
                   <View style={styles.nutritionStatDivider} />
                   <View style={styles.nutritionStatItem}>
                     <Text style={styles.nutritionStatValue}>{waterCups}</Text>
-                    <Text style={styles.nutritionStatLabel}>Cups H₂O</Text>
+                    <Text style={styles.nutritionStatLabel}>{t('parentMeals.cupsWater')}</Text>
                   </View>
                 </View>
               </LinearGradient>
@@ -433,7 +411,7 @@ export function MealsScreen() {
 
             {/* Section title */}
             {filteredMeals.length > 0 && (
-              <Text style={styles.sectionTitle}>Meal Schedule</Text>
+              <Text style={styles.sectionTitle}>{t('parentMeals.mealSchedule')}</Text>
             )}
 
             {/* Empty state for meals */}
@@ -459,7 +437,7 @@ export function MealsScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
-        title="Meals"
+        title={t('parentMeals.title')}
         showBack
         showNotificationBell={false}
       />

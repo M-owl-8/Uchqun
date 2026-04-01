@@ -43,11 +43,11 @@ const COLUMNS = 2;
 const categoryItemSize = (width - GRID_PADDING * 2 - GRID_GAP) / COLUMNS;
 
 // Category configuration matching Figma MediaSection.tsx
-const CATEGORIES = [
-  { name: 'Photos', icon: 'image', color: '#BFD7EA', type: 'photo' },
-  { name: 'Videos', icon: 'videocam', color: '#DFF4EC', type: 'video' },
-  { name: 'Audio', icon: 'musical-notes', color: '#E8C27E', type: 'audio' },
-  { name: 'Documents', icon: 'document-text', color: '#F8D7C4', type: 'document' },
+const CATEGORIES_BASE = [
+  { key: 'photos', icon: 'image', color: '#BFD7EA', type: 'photo' },
+  { key: 'videos', icon: 'videocam', color: '#DFF4EC', type: 'video' },
+  { key: 'audio', icon: 'musical-notes', color: '#E8C27E', type: 'audio' },
+  { key: 'documents', icon: 'document-text', color: '#F8D7C4', type: 'document' },
 ];
 
 // Map media type to icon and color
@@ -157,10 +157,10 @@ export function MediaScreen() {
     const diffMs = now - date;
     const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
-    if (diffDays === 0) return 'Today';
-    if (diffDays === 1) return 'Yesterday';
-    if (diffDays < 7) return `${diffDays} days ago`;
-    if (diffDays < 14) return '1 week ago';
+    if (diffDays === 0) return t('parentMedia.today');
+    if (diffDays === 1) return t('parentMedia.yesterday');
+    if (diffDays < 7) return t('parentMedia.daysAgo', { count: diffDays });
+    if (diffDays < 14) return t('parentMedia.weekAgo');
     return date.toLocaleDateString('uz-UZ', {
       month: 'short',
       day: 'numeric',
@@ -292,23 +292,23 @@ export function MediaScreen() {
                   style={styles.galleryHeader}
                 >
                   <View style={styles.galleryHeaderTop}>
-                    <Text style={styles.galleryHeaderTitle}>{childName} Gallery</Text>
+                    <Text style={styles.galleryHeaderTitle}>{childName} {t('parentMedia.gallery')}</Text>
                     <View style={styles.galleryHeaderIcons}>
                       <Ionicons name="heart" size={20} color="#E8C27E" />
                       <Ionicons name="happy-outline" size={20} color="#2E3A59" style={{ marginLeft: 4 }} />
                     </View>
                   </View>
                   <Text style={styles.galleryHeaderText}>
-                    Cherished moments, progress tracking, and memories to treasure forever.
+                    {t('parentMedia.galleryDescription')}
                   </Text>
                 </LinearGradient>
 
                 {/* Categories Grid */}
-                <Text style={styles.sectionTitle}>Categories</Text>
+                <Text style={styles.sectionTitle}>{t('parentMedia.categories')}</Text>
                 <View style={styles.categoryGrid}>
-                  {CATEGORIES.map((category) => (
+                  {CATEGORIES_BASE.map((category) => (
                     <Pressable
-                      key={category.name}
+                      key={category.key}
                       style={({ pressed }) => [
                         styles.categoryCard,
                         pressed && styles.categoryCardPressed,
@@ -320,17 +320,17 @@ export function MediaScreen() {
                       <View style={[styles.categoryIconContainer, { backgroundColor: `${category.color}40` }]}>
                         <Ionicons name={category.icon} size={28} color="#2E3A59" />
                       </View>
-                      <Text style={styles.categoryName}>{category.name}</Text>
-                      <Text style={styles.categoryCount}>{getCategoryCount(category.type)} items</Text>
+                      <Text style={styles.categoryName}>{t(`parentMedia.cat.${category.key}`)}</Text>
+                      <Text style={styles.categoryCount}>{getCategoryCount(category.type)} {t('parentMedia.items')}</Text>
                     </Pressable>
                   ))}
                 </View>
 
                 {/* Recent Media List */}
                 <View style={styles.recentHeader}>
-                  <Text style={styles.sectionTitle}>Recent Media</Text>
+                  <Text style={styles.sectionTitle}>{t('parentMedia.recentMedia')}</Text>
                   <Pressable>
-                    <Text style={styles.viewAllText}>View All</Text>
+                    <Text style={styles.viewAllText}>{t('parentMedia.viewAll')}</Text>
                   </Pressable>
                 </View>
 
@@ -394,8 +394,8 @@ export function MediaScreen() {
                     <Ionicons name="image-outline" size={24} color="#2E3A59" />
                   </View>
                   <View style={styles.uploadTextContainer}>
-                    <Text style={styles.uploadTitle}>Add New Media</Text>
-                    <Text style={styles.uploadSubtitle}>Photos, videos, or documents</Text>
+                    <Text style={styles.uploadTitle}>{t('parentMedia.addNewMedia')}</Text>
+                    <Text style={styles.uploadSubtitle}>{t('parentMedia.addNewMediaSub')}</Text>
                   </View>
                 </Pressable>
               </View>
@@ -452,7 +452,7 @@ export function MediaScreen() {
               </View>
             ) : (
               <View style={{ width: width, height: width * 9 / 16, justifyContent: 'center', alignItems: 'center' }}>
-                <Text style={{ color: '#fff', marginBottom: 20 }}>Video ko'rsatish uchun tashqi player ochiladi</Text>
+                <Text style={{ color: '#fff', marginBottom: 20 }}>{t('parentMedia.videoExternalPlayer')}</Text>
                 <Pressable
                   onPress={async () => {
                     try {
@@ -461,16 +461,16 @@ export function MediaScreen() {
                         await Linking.openURL(videoUri);
                         setVideoVisible(false);
                       } else {
-                        Alert.alert('Xatolik', 'Video ochib bo\'lmadi');
+                        Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                       }
                     } catch (error) {
                       console.warn('Failed to open video:', error);
-                      Alert.alert('Xatolik', 'Video ochib bo\'lmadi');
+                      Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                     }
                   }}
                   style={{ backgroundColor: '#fff', padding: 12, borderRadius: 8 }}
                 >
-                  <Text style={{ color: '#000', fontWeight: 'bold' }}>Tashqi playerda ochish</Text>
+                  <Text style={{ color: '#000', fontWeight: 'bold' }}>{t('parentMedia.openExternal')}</Text>
                 </Pressable>
               </View>
             )
