@@ -27,7 +27,11 @@ export default function App() {
   const [i18nLoaded, setI18nLoaded] = useState(false);
 
   useEffect(() => {
-    i18nReady.then(() => setI18nLoaded(true)).catch(() => setI18nLoaded(true));
+    const timeout = setTimeout(() => setI18nLoaded(true), 1500);
+    i18nReady
+      .then(() => { clearTimeout(timeout); setI18nLoaded(true); })
+      .catch(() => { clearTimeout(timeout); setI18nLoaded(true); });
+    return () => clearTimeout(timeout);
   }, []);
 
   if (!i18nLoaded) return null;

@@ -6,7 +6,7 @@ export async function loadMessages(conversationId) {
     const res = await api.get('/chat/messages', { params: { conversationId, limit: 200 } });
     return Array.isArray(res.data) ? res.data : [];
   } catch (e) {
-    if (__DEV__) console.warn('loadMessages error', e?.response?.status, e?.response?.data);
+    if (__DEV__ && e?.response) console.warn('loadMessages error', e.response.status, e.response.data);
     return [];
   }
 }
@@ -27,7 +27,7 @@ export async function markRead(conversationId) {
   try {
     await api.post('/chat/read', { conversationId });
   } catch (e) {
-    if (__DEV__) console.warn('markRead error', e?.response?.status);
+    if (__DEV__) console.warn('markRead error', e?.response?.status, e?.message);
   }
 }
 

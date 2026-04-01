@@ -28,6 +28,10 @@ export function SocketProvider({ children }) {
   const socketRef = useRef(null);
   const reconnectTimeoutRef = useRef(null);
   const eventHandlersRef = useRef(new Map());
+  const userRef = useRef(user);
+
+  // Keep userRef current without triggering reconnects
+  useEffect(() => { userRef.current = user; }, [user]);
 
   // Get the base URL for WebSocket connection (remove /api suffix)
   const getSocketUrl = () => {
@@ -64,29 +68,29 @@ export function SocketProvider({ children }) {
       },
       transports: ['websocket', 'polling'],
       reconnection: true,
-      reconnectionDelay: 2000,
+      reconnectionDelay: 5000,
       reconnectionDelayMax: 30000,
-      reconnectionAttempts: 5,
-      timeout: 20000,
+      reconnectionAttempts: 3,
+      timeout: 10000,
     });
 
     // Connection event handlers
     newSocket.on('connect', () => {
       logger.info('[Socket] Connected successfully', {
         socketId: newSocket.id,
-        userId: user?.id,
-        role: user?.role,
+        userId: userRef.current?.id,
+        role: userRef.current?.role,
       });
       setConnected(true);
     });
 
     newSocket.on('connect_error', (error) => {
-      logger.error('[Socket] Connection error:', {
-        message: error.message,
-        description: error.description,
-        context: error.context,
-      });
+      if (__DEV__) logger.warn('[Socket] Connection failed:', error.message);
       setConnected(false);
+    });
+
+    newSocket.on('reconnect_failed', () => {
+      if (__DEV__) logger.warn('[Socket] Giving up after 3 attempts — real-time disabled until next session');
     });
 
     newSocket.on('disconnect', (reason) => {
@@ -129,7 +133,7 @@ export function SocketProvider({ children }) {
       }
       newSocket.disconnect();
     };
-  }, [accessToken, isAuthenticated, user]);
+  }, [accessToken, isAuthenticated]);
 
   // Disconnect from WebSocket server
   const disconnect = useCallback(() => {
@@ -155,14 +159,8 @@ export function SocketProvider({ children }) {
     };
   }, [isAuthenticated, accessToken, connect, disconnect]);
 
-  // Reconnect when token changes
-  useEffect(() => {
-    if (socketRef.current && isAuthenticated && accessToken) {
-      logger.info('[Socket] Token changed, reconnecting...');
-      disconnect();
-      setTimeout(() => connect(), 500);
-    }
-  }, [accessToken]);
+  // Token changes are handled by the main useEffect above via connect()
+  // (removed duplicate reconnect that was creating extra socket instances)
 
   // Subscribe to an event
   const on = useCallback((event, handler) => {

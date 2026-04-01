@@ -30,11 +30,11 @@ uchqun/
 ```
 backend/
 ├── config/          # database.js, env.js, storage.js, swagger.js, migrate.js
-├── controllers/     # 24 controllers (one per domain)
-├── middleware/       # auth, rateLimiter, sanitize, security, csrf, upload, validation, errorHandler, requestLogger
-├── migrations/      # 16+ Sequelize migration files
-├── models/          # 31 models + index.js
-├── routes/          # 24 route files
+├── controllers/     # 27 controllers (one per domain)
+├── middleware/       # auth, rateLimiter, sanitize, security, csrf, upload, uploadChildren, validation, errorHandler, requestLogger, schoolScope
+├── migrations/      # 26 Sequelize migration files
+├── models/          # 35 models + index.js
+├── routes/          # 27 route files
 ├── scripts/         # 17+ utility scripts
 ├── utils/           # email, expoPush, logger, errorTracker, governmentLevel, uuidValidator
 ├── validators/      # 11 input validators (express-validator + Joi)
@@ -47,7 +47,7 @@ backend/
 
 | Layer | Technology | Version |
 |-------|-----------|---------|
-| Runtime | Node.js | >=18.0.0 |
+| Runtime | Node.js | >=20.0.0 |
 | Backend Framework | Express | 4.18.2 |
 | Database | PostgreSQL | 15 |
 | ORM | Sequelize | 6.35.2 |
@@ -65,14 +65,16 @@ backend/
 | Testing (Frontend) | Vitest | 4.0.18 |
 | Icons (Web) | lucide-react | 0.562.0 |
 | AI | OpenAI / OpenRouter | 4.20.0 |
+| Real-time | Socket.io | - |
 | File Storage | Appwrite | Cloud |
+| Payments | Payme / Click | - |
 | Error Tracking | Sentry | 10.37.0 |
 | Logging | Winston | 3.11.0 |
 
 ## Getting Started
 
 ### Prerequisites
-- Node.js >=18, npm >=9
+- Node.js >=20, npm >=9
 - PostgreSQL 15 (or use Docker)
 
 ### Setup
@@ -184,10 +186,14 @@ All routes prefixed with `/api/`:
 | `/payments` | Authenticated | Payment processing |
 | `/ai-warnings` | Authenticated | AI-based alerts |
 | `/news` | Authenticated | News/announcements |
+| `/child-assessments` | Authenticated | Child diagnostic assessments |
+| `/service-plans` | Authenticated | Individual service plans |
+| `/meal-plans` | Authenticated | Meal planning |
+| `/emotional-monitoring` | Authenticated | Emotional state tracking |
 | `/migrations` | Public | Database migration endpoints |
 | `/health` | Public | Health check |
 
-### Database Models (31)
+### Database Models (35)
 All in `backend/models/`:
 
 | Model | Purpose |
@@ -199,6 +205,7 @@ All in `backend/models/`:
 | Activity | Daily activities |
 | ParentActivity | Parent-submitted activities |
 | Meal | Meal records |
+| MealPlan | Structured meal planning |
 | ParentMeal | Parent-submitted meals |
 | Media | Photos/videos |
 | ParentMedia | Parent-submitted media |
@@ -220,6 +227,8 @@ All in `backend/models/`:
 | BusinessStats | Business analytics data |
 | News | News/announcements |
 | AIWarning | AI-generated alerts |
+| ChildAssessment | Child diagnostic assessments |
+| ServicePlan | Individual education service plans |
 | AdminRegistrationRequest | Admin registration workflow |
 | SuperAdminMessage | System-wide messages |
 | RefreshToken | JWT refresh token storage |
@@ -234,7 +243,7 @@ All in `backend/models/`:
 7. **Request Logger** - Correlation ID tracking (UUID v4)
 8. **Rate Limiter** - Per-endpoint limits (see Security section)
 9. **Static Files** - `/uploads` directory
-10. **Route Handlers** - `authenticate` → `requireRole()` → controller
+10. **Route Handlers** - `authenticate` → `requireRole()` → `schoolScope` (where applicable) → controller
 
 ### Security
 
@@ -301,6 +310,26 @@ Teacher app (`teacher/vite.config.js`) has a dev proxy:
 - React Navigation 7.x with native stack + bottom tabs
 - `@react-navigation/native-stack` for screen transitions
 - `@react-navigation/bottom-tabs` for main navigation
+- `RootNavigator.js` → `ParentNavigator.js` / `TeacherNavigator.js`
+
+### Screens (47 total)
+- **Parent** (22): Dashboard, Profile, Activities, Media, Meals, Notifications, Payments, Settings, Child Profile, Therapy, Service Plan, Meal Plan, Diagnostics, AI Warnings, AI Chat, School Rating, Teacher Rating, Rating, Chat, Help, Parents List, Emotional Monitoring
+- **Teacher** (20): Dashboard, Profile, Settings, Parents List, Parent Detail, Meals, Meal Plan, Activities, Media, Therapy, Monitoring Journal, Emotional Monitoring, Tasks, Responsibilities, Work History, Child Profile, Child Assessment, Service Plan, Notifications, Chat
+- **Auth** (1): LoginScreen
+- **Shared activity components**: ActivityCard, ActivityDetailModal, ActivityForm
+
+### Context Providers
+- `AuthContext.js` - Authentication state
+- `SocketContext.js` - WebSocket/real-time connection
+- `ThemeContext.js` - Light/dark theming
+- `ToastContext.jsx` - Toast notifications
+- `NotificationContext.jsx` - Push notification state
+
+### Mobile Utilities
+- `storage/authStorage.js` - Persistent token storage (AsyncStorage)
+- `utils/logger.js`, `utils/errorHandler.js`, `utils/safeNavigation.js`, `utils/responseHandler.js`
+- `types/navigation.ts`, `types/models.ts` - TypeScript type definitions
+- `config.js` - App-level configuration
 
 ### Offline Support
 - **Offline Queue** (`mobile/src/services/offlineQueue.js`): Stores failed API requests in AsyncStorage, replays on reconnection, auto-cleans after 24h
@@ -356,6 +385,7 @@ Triggers on push/PR to `main`.
 | Job | Description |
 |-----|-------------|
 | `lint` | ESLint across backend + frontends (non-blocking) |
+| `security` | `npm audit` for backend and all frontends |
 | `test-backend` | Jest tests with PostgreSQL 15 service container |
 | `test-frontend` | Vitest for each of 5 web apps (matrix strategy) |
 | `build` | Build all 5 web apps (depends on lint + tests) |
@@ -436,6 +466,7 @@ feat(scope): description
 | What | Path |
 |------|------|
 | Auth middleware | `backend/middleware/auth.js` |
+| School scope middleware | `backend/middleware/schoolScope.js` |
 | Security middleware | `backend/middleware/security.js` |
 | Rate limiter | `backend/middleware/rateLimiter.js` |
 | Input sanitizer | `backend/middleware/sanitize.js` |
@@ -448,8 +479,10 @@ feat(scope): description
 | Mobile offline queue | `mobile/src/services/offlineQueue.js` |
 | Mobile cache service | `mobile/src/services/cacheService.js` |
 | Mobile push service | `mobile/src/services/pushNotificationService.js` |
+| Mobile auth storage | `mobile/src/storage/authStorage.js` |
 | Mobile design tokens | `mobile/src/styles/tokens.js` |
 | Mobile theme | `mobile/src/styles/theme.js` |
+| Mobile root navigator | `mobile/src/navigation/RootNavigator.js` |
 | CI pipeline | `.github/workflows/ci.yml` |
 | Docker compose | `docker-compose.yml` |
 | Backend Dockerfile | `backend/Dockerfile` |

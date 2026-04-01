@@ -10,7 +10,7 @@
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "updates": {
-      "enabled": true,
+      "enabled": false,
       "checkAutomatically": "ON_LAUNCH",
       "fallbackToCacheTimeout": 5000
     },

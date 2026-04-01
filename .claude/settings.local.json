@@ -12,7 +12,8 @@
       "Bash(./gradlew assembleRelease)",
       "Bash(npx expo run:android)",
       "Bash(npm run dev:*)",
-      "Bash(node:*)"
+      "Bash(node:*)",
+      "Bash(JAVA_OPTS=\"-Djava.net.preferIPv4Stack=true -Dsun.net.spi.nameservice.provider.1=sun,default\" ./gradlew app:assembleDebug -x lint -x test --configure-on-demand --build-cache -PreactNativeDevServerPort=8081 -PreactNativeArchitectures=arm64-v8a,armeabi-v7a)"
     ]
   }
 }

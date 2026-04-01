@@ -1,71 +1,97 @@
-// Socket.io configuration (if needed in the future)
-// Currently not used, but file exists to prevent import errors
-
-// Import User model correctly from models/index.js (using named export)
+import { Server } from 'socket.io';
+import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
 import logger from '../utils/logger.js';
 
-// Export for potential future use
 export { User };
 
-// Placeholder socket.io instance (will be initialized when socket.io is set up)
 let io = null;
 
-// Initialize socket.io
+// Map userId -> Set of socketIds for targeted emission
+const userSockets = new Map();
+
 export const initializeSocket = (server) => {
-  // Socket.io initialization code would go here
-  // For now, this is just a placeholder
-  // When socket.io is added, uncomment and configure:
-  /*
-  import { Server } from 'socket.io';
+  const allowedOrigins = process.env.FRONTEND_URL?.split(',').map(s => s.trim()) || [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+  ];
+
   io = new Server(server, {
     cors: {
-      origin: process.env.FRONTEND_URL?.split(',') || ['http://localhost:5173'],
+      origin: allowedOrigins,
       credentials: true,
     },
+    transports: ['websocket', 'polling'],
+    pingTimeout: 60000,
+    pingInterval: 25000,
   });
-  */
-  logger.info('Socket.io placeholder initialized (not configured yet)');
+
+  // Auth middleware — validate JWT on every connection
+  io.use(async (socket, next) => {
+    try {
+      const token = socket.handshake.auth?.token;
+      if (!token) return next(new Error('No token provided'));
+
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const user = await User.findByPk(decoded.id, {
+        attributes: ['id', 'role', 'schoolId', 'isActive'],
+      });
+
+      if (!user) return next(new Error('User not found'));
+
+      socket.userId = user.id;
+      socket.userRole = user.role;
+      socket.schoolId = user.schoolId;
+      next();
+    } catch (err) {
+      next(new Error('Invalid token'));
+    }
+  });
+
+  io.on('connection', (socket) => {
+    const { userId, userRole } = socket;
+    logger.info('[Socket] Client connected', { socketId: socket.id, userId, userRole });
+
+    // Track socket by userId
+    if (!userSockets.has(userId)) userSockets.set(userId, new Set());
+    userSockets.get(userId).add(socket.id);
+
+    // Join a room per user for targeted messages
+    socket.join(`user:${userId}`);
+
+    socket.on('disconnect', (reason) => {
+      logger.info('[Socket] Client disconnected', { socketId: socket.id, userId, reason });
+      const sockets = userSockets.get(userId);
+      if (sockets) {
+        sockets.delete(socket.id);
+        if (sockets.size === 0) userSockets.delete(userId);
+      }
+    });
+
+    socket.on('error', (err) => {
+      logger.error('[Socket] Socket error', { socketId: socket.id, error: err.message });
+    });
+  });
+
+  logger.info('[Socket] Socket.io initialized');
   return io;
 };
 
-// Emit event to a specific user (placeholder function)
+// Emit an event to all sockets belonging to a user
 export const emitToUser = async (userId, event, data) => {
   try {
     if (!io) {
-      // Socket.io not initialized, just log for now
-      logger.debug('emitToUser called but socket.io not initialized', {
-        userId,
-        event,
-        hasData: !!data,
-      });
+      logger.debug('[Socket] emitToUser skipped — not initialized', { userId, event });
       return;
     }
-
-    // When socket.io is set up, implement actual emission:
-    /*
-    const userSockets = await getUserSockets(userId);
-    userSockets.forEach(socketId => {
-      io.to(socketId).emit(event, data);
-    });
-    */
-    
-    logger.debug('emitToUser (placeholder)', { userId, event });
+    io.to(`user:${userId}`).emit(event, data);
+    logger.debug('[Socket] Emitted to user', { userId, event });
   } catch (error) {
-    logger.error('emitToUser error', {
-      error: error.message,
-      userId,
-      event,
-    });
+    logger.error('[Socket] emitToUser error', { error: error.message, userId, event });
   }
 };
 
-// Get socket.io instance (for future use)
 export const getIO = () => io;
 
-export default {
-  User,
-  initializeSocket,
-  emitToUser,
-  getIO,
-};
+export default { User, initializeSocket, emitToUser, getIO };
