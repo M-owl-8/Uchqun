@@ -64,6 +64,7 @@ export function ChildProfileScreen() {
   const { childId = null } = route?.params || {};
   
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -181,6 +182,7 @@ export function ChildProfileScreen() {
   const loadChildren = async () => {
     try {
       setLoading(true);
+      setError(null);
       const childrenData = await parentService.getChildren();
       const childrenList = Array.isArray(childrenData) ? childrenData : [];
       setChildren(childrenList);
@@ -188,8 +190,9 @@ export function ChildProfileScreen() {
       if (childrenList.length > 0 && !selectedChildId) {
         setSelectedChildId(childrenList[0].id);
       }
-    } catch (error) {
-      if (__DEV__) console.error('Error loading children:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading children:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setChildren([]);
     } finally {
       setLoading(false);
@@ -569,6 +572,16 @@ export function ChildProfileScreen() {
         title={`${child.firstName} ${child.lastName}`}
         showBack={navigation.canGoBack()}
       />
+      {error && !loading && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadChildren()} accessibilityRole="button"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}>
       {/* Child Selector (if multiple children) */}
       {Array.isArray(children) && children.length > 1 && (

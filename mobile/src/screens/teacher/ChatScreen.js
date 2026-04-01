@@ -23,6 +23,7 @@ export function ChatScreen() {
   const { t } = useTranslation();
   const insets = useSafeAreaInsets();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -80,6 +81,7 @@ export function ChatScreen() {
         setParentsWithLastMessage(parentsWithMessages);
       } catch (err) {
         if (__DEV__) console.error('Failed to load parents for chat', err);
+        setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       } finally {
         setLoading(false);
       }
