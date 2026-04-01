@@ -50,6 +50,9 @@ export const getGroups = async (req, res) => {
 
       // Filter teachers created by these receptions
       includeTeacher.where = { createdBy: { [Op.in]: receptionIds } };
+    } else if (req.user.role === 'teacher') {
+      // Teacher only sees their own groups
+      includeTeacher.where = { id: req.user.id };
     }
 
     const groups = await Group.findAndCountAll({
