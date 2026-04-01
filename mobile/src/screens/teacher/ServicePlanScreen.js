@@ -59,9 +59,7 @@ export function ServicePlanScreen() {
       originalPlansRef.current = JSON.stringify(data);
       setHasChanges(false);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading service plans:', error);
-      }
+      if (__DEV__) console.error('Error loading service plans:', error);
     } finally {
       setLoading(false);
     }
@@ -111,9 +109,7 @@ export function ServicePlanScreen() {
         t('servicePlan.saved', { defaultValue: 'Plan saved' })
       );
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error saving service plans:', error);
-      }
+      if (__DEV__) console.error('Error saving service plans:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         error.response?.data?.error || 'Failed to save service plans'

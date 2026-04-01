@@ -137,9 +137,7 @@ export function SettingsScreen() {
             try {
               await logout();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Logout error:', error);
-              }
+              if (__DEV__) console.error('Logout error:', error);
             }
           },
         },
@@ -150,25 +148,19 @@ export function SettingsScreen() {
   const navigateToStackScreen = (screenName) => {
     try {
       if (!screenName) {
-        if (__DEV__) {
-          console.error('[SettingsScreen] Invalid screenName');
-        }
+        if (__DEV__) console.error('[SettingsScreen] Invalid screenName');
         return;
       }
       if (parentNavigation) {
         parentNavigation.navigate(screenName);
       } else {
-        if (__DEV__) {
-          console.warn(`Cannot navigate to ${screenName}: Parent navigator not found`);
-        }
+        if (__DEV__) console.warn(`Cannot navigate to ${screenName}: Parent navigator not found`);
         if (navigation?.navigate) {
           navigation.navigate(screenName);
         }
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error(`Navigation error to ${screenName}:`, error);
-      }
+      if (__DEV__) console.error(`Navigation error to ${screenName}:`, error);
     }
   };
 

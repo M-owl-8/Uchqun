@@ -24,9 +24,7 @@ export function ResponsibilitiesScreen() {
       const data = await teacherService.getResponsibilities();
       setResponsibilities(Array.isArray(data) ? data : []);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading responsibilities:', error);
-      }
+      if (__DEV__) console.error('Error loading responsibilities:', error);
       setResponsibilities([]);
     } finally {
       setLoading(false);

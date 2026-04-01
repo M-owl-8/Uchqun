@@ -63,9 +63,7 @@ function TeacherTabs() {
         tabBarIcon: ({ focused, color }) => {
           const routeName = route?.name;
           if (!routeName) {
-            if (__DEV__) {
-              console.warn('[TeacherTabIcon] Missing route.name');
-            }
+            if (__DEV__) console.warn('[TeacherTabIcon] Missing route.name');
             return <Ionicons name="help-outline" size={ICON_SIZE} color={color} />;
           }
 

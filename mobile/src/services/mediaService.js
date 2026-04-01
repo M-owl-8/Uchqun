@@ -37,10 +37,8 @@ export const mediaService = {
     const timeoutId = setTimeout(() => controller.abort(), 120000); // 2 min timeout
 
     try {
-      if (__DEV__) {
-        console.log('[MediaUpload] Uploading to:', `${API_URL}/media/upload`);
-        console.log('[MediaUpload] Has token:', !!accessToken);
-      }
+      if (__DEV__) console.log('[MediaUpload] Uploading to:', `${API_URL}/media/upload`);
+      if (__DEV__) console.log('[MediaUpload] Has token:', !!accessToken);
       const response = await fetch(`${API_URL}/media/upload`, {
         method: 'POST',
         headers: {

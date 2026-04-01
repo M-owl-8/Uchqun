@@ -24,9 +24,7 @@ export function WorkHistoryScreen() {
       const data = await teacherService.getWorkHistory();
       setWorkHistory(Array.isArray(data) ? data : []);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading work history:', error);
-      }
+      if (__DEV__) console.error('Error loading work history:', error);
       setWorkHistory([]);
     } finally {
       setLoading(false);
@@ -38,9 +36,7 @@ export function WorkHistoryScreen() {
       await teacherService.updateWorkHistoryStatus(id, status);
       loadWorkHistory();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error updating work history status:', error);
-      }
+      if (__DEV__) console.error('Error updating work history status:', error);
     }
   };
 

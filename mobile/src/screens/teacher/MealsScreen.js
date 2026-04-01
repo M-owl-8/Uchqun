@@ -115,9 +115,7 @@ export function MealsScreen() {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading children:', error);
-      }
+      if (__DEV__) console.error('Error loading children:', error);
       setChildren([]);
     }
   };
@@ -129,9 +127,7 @@ export function MealsScreen() {
       const data = await mealService.getMeals({ date: selectedDate });
       setMeals(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading meals:', err);
-      }
+      if (__DEV__) console.error('Error loading meals:', err);
       setMeals([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -196,9 +192,7 @@ export function MealsScreen() {
       setShowModal(false);
       loadMeals();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error saving meal:', error);
-      }
+      if (__DEV__) console.error('Error saving meal:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         error.response?.data?.error || t('mealsPage.form.toastError', { defaultValue: 'Xatolik yuz berdi' })
@@ -221,9 +215,7 @@ export function MealsScreen() {
               Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mealsPage.form.toastDelete', { defaultValue: "Taom o'chirildi" }));
               loadMeals();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Error deleting meal:', error);
-              }
+              if (__DEV__) console.error('Error deleting meal:', error);
               Alert.alert(t('common.error', { defaultValue: 'Error' }), t('mealsPage.form.toastError', { defaultValue: 'Xatolik yuz berdi' }));
             }
           },

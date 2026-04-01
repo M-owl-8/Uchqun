@@ -69,9 +69,7 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
       setParents(Array.isArray(parentsList) ? parentsList : []);
       return Array.isArray(parentsList) ? parentsList : [];
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading parents:', error);
-      }
+      if (__DEV__) console.error('Error loading parents:', error);
       setParents([]);
       return [];
     }
@@ -89,9 +87,7 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
         return [];
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading children for parent:', error);
-      }
+      if (__DEV__) console.error('Error loading children for parent:', error);
       setChildren([]);
       return [];
     }

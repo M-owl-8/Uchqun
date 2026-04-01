@@ -127,9 +127,7 @@ export function ActivitiesScreen() {
       const data = await activityService.getActivities();
       setActivities(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading activities:', err);
-      }
+      if (__DEV__) console.error('Error loading activities:', err);
       setActivities([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -171,12 +169,8 @@ export function ActivitiesScreen() {
       setShowModal(false);
       loadActivities();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error saving activity:', error);
-      }
-      if (__DEV__) {
-        console.error('Error response:', error.response?.data);
-      }
+      if (__DEV__) console.error('Error saving activity:', error);
+      if (__DEV__) console.error('Error response:', error.response?.data);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         error.response?.data?.error || t('activitiesPage.toastError', { defaultValue: 'Xatolik yuz berdi' })
@@ -202,9 +196,7 @@ export function ActivitiesScreen() {
               );
               loadActivities();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Error deleting activity:', error);
-              }
+              if (__DEV__) console.error('Error deleting activity:', error);
               Alert.alert(
                 t('common.error', { defaultValue: 'Error' }),
                 t('activitiesPage.toastError', { defaultValue: 'Xatolik yuz berdi' })

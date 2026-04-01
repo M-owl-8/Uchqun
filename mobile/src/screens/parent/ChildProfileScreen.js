@@ -122,9 +122,7 @@ export function ChildProfileScreen() {
     if (!connected || !selectedChildId) return;
 
     const handleChildUpdate = (data) => {
-      if (__DEV__) {
-        console.log('[ChildProfile] Child updated:', data);
-      }
+      if (__DEV__) console.log('[ChildProfile] Child updated:', data);
       if (data.child?.id === selectedChildId) {
         // Update photo timestamp to force image refresh
         setPhotoTimestamp(Date.now());
@@ -133,27 +131,21 @@ export function ChildProfileScreen() {
     };
 
     const handleActivityChange = (data) => {
-      if (__DEV__) {
-        console.log('[ChildProfile] Activity change:', data);
-      }
+      if (__DEV__) console.log('[ChildProfile] Activity change:', data);
       if (data.activity?.childId === selectedChildId || data.childId === selectedChildId) {
         loadChild(); // Reload to update stats
       }
     };
 
     const handleMealChange = (data) => {
-      if (__DEV__) {
-        console.log('[ChildProfile] Meal change:', data);
-      }
+      if (__DEV__) console.log('[ChildProfile] Meal change:', data);
       if (data.meal?.childId === selectedChildId || data.childId === selectedChildId) {
         loadChild(); // Reload to update stats
       }
     };
 
     const handleMediaChange = (data) => {
-      if (__DEV__) {
-        console.log('[ChildProfile] Media change:', data);
-      }
+      if (__DEV__) console.log('[ChildProfile] Media change:', data);
       if (data.media?.childId === selectedChildId || data.childId === selectedChildId) {
         loadChild(); // Reload to update stats
       }
@@ -197,9 +189,7 @@ export function ChildProfileScreen() {
         setSelectedChildId(childrenList[0].id);
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading children:', error);
-      }
+      if (__DEV__) console.error('Error loading children:', error);
       setChildren([]);
     } finally {
       setLoading(false);
@@ -280,9 +270,7 @@ export function ChildProfileScreen() {
       const monitoring = Array.isArray(monitoringResponse.data?.data) ? monitoringResponse.data.data : [];
       setMonitoringRecords(monitoring);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading child data:', error);
-      }
+      if (__DEV__) console.error('Error loading child data:', error);
     } finally {
       setLoading(false);
     }
@@ -296,9 +284,7 @@ export function ChildProfileScreen() {
       setMyMessages(Array.isArray(messages) ? messages : []);
     } catch (error) {
       // This catch is for any unexpected errors
-      if (__DEV__) {
-        console.error('[ChildProfile] Error loading messages:', error);
-      }
+      if (__DEV__) console.error('[ChildProfile] Error loading messages:', error);
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);
@@ -353,9 +339,7 @@ export function ChildProfileScreen() {
           type: type,
         });
         
-        if (__DEV__) {
-          console.log('[Upload] Attempting FormData upload:', { filename, type, uri: uri.substring(0, 50) });
-        }
+        if (__DEV__) console.log('[Upload] Attempting FormData upload:', { filename, type, uri: uri.substring(0, 50) });
         
         await api.put(`/child/${selectedChildId}`, formData, {
           timeout: 90000, // 90 seconds
@@ -365,13 +349,9 @@ export function ChildProfileScreen() {
         });
         
         uploadSuccess = true;
-        if (__DEV__) {
-          console.log('[Upload] FormData upload successful');
-        }
+        if (__DEV__) console.log('[Upload] FormData upload successful');
       } catch (formDataError) {
-        if (__DEV__) {
-          console.warn('[Upload] FormData upload failed:', formDataError.message);
-        }
+        if (__DEV__) console.warn('[Upload] FormData upload failed:', formDataError.message);
         lastError = formDataError;
         
         // Method 2: Fallback to base64 if FormData fails
@@ -381,20 +361,16 @@ export function ChildProfileScreen() {
             
             // Check if base64 is too large
             if (base64.length > 3 * 1024 * 1024) { // > 3MB
-              if (__DEV__) {
-                console.warn('[Upload] Base64 image is large:', Math.round(base64.length / 1024 / 1024), 'MB');
-              }
+              if (__DEV__) console.warn('[Upload] Base64 image is large:', Math.round(base64.length / 1024 / 1024), 'MB');
             }
             
-            if (__DEV__) {
-              console.log('[Upload] Attempting base64 upload:', { 
-                size: Math.round(base64.length / 1024), 
-                'KB': true,
-                mimeType,
-                photoBase64Length: photoBase64.length,
-                photoBase64Prefix: photoBase64.substring(0, 50)
-              });
-            }
+            if (__DEV__) console.log('[Upload] Attempting base64 upload:', {
+              size: Math.round(base64.length / 1024),
+              'KB': true,
+              mimeType,
+              photoBase64Length: photoBase64.length,
+              photoBase64Prefix: photoBase64.substring(0, 50)
+            });
             
             const response = await api.put(`/child/${selectedChildId}`, { photoBase64 }, {
               timeout: 90000, // 90 seconds
@@ -403,21 +379,15 @@ export function ChildProfileScreen() {
               },
             });
             
-            if (__DEV__) {
-              console.log('[Upload] Base64 upload response:', {
-                status: response.status,
-                hasData: !!response.data
-              });
-            }
+            if (__DEV__) console.log('[Upload] Base64 upload response:', {
+              status: response.status,
+              hasData: !!response.data
+            });
             
             uploadSuccess = true;
-            if (__DEV__) {
-              console.log('[Upload] Base64 upload successful');
-            }
+            if (__DEV__) console.log('[Upload] Base64 upload successful');
           } catch (base64Error) {
-            if (__DEV__) {
-              console.error('[Upload] Base64 upload also failed:', base64Error.message);
-            }
+            if (__DEV__) console.error('[Upload] Base64 upload also failed:', base64Error.message);
             lastError = base64Error;
           }
         }
@@ -430,9 +400,7 @@ export function ChildProfileScreen() {
       setPhotoTimestamp(Date.now());
       await loadChild();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error uploading photo:', error);
-      }
+      if (__DEV__) console.error('Error uploading photo:', error);
       
       let errorMessage = t('child.photoUploadFailed', { defaultValue: 'Failed to upload photo' });
       
@@ -473,9 +441,7 @@ export function ChildProfileScreen() {
       setShowMessageModal(false);
       await loadMessages();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error sending message:', error);
-      }
+      if (__DEV__) console.error('Error sending message:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), error.response?.data?.error || t('profile.messageError', { defaultValue: 'Error sending message' }));
     } finally {
       setSendingMessage(false);
@@ -491,9 +457,7 @@ export function ChildProfileScreen() {
     try {
       await logout();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Logout error:', error);
-      }
+      if (__DEV__) console.error('Logout error:', error);
     }
   };
 
@@ -682,9 +646,7 @@ export function ChildProfileScreen() {
                 ]}
                 onLoad={() => setImageLoading(false)}
                 onError={(error) => {
-                  if (__DEV__) {
-                    console.error('Image load error:', error);
-                  }
+                  if (__DEV__) console.error('Image load error:', error);
                   setImageLoading(false);
                 }}
                 resizeMode="cover"
@@ -1401,9 +1363,7 @@ function TeacherAssessmentsSection({ childId, t }) {
           setAssessments(response.data?.data || []);
         }
       } catch (error) {
-        if (__DEV__) {
-          console.error('Error loading assessments:', error);
-        }
+        if (__DEV__) console.error('Error loading assessments:', error);
       } finally {
         if (mounted) setLoadingAssessments(false);
       }

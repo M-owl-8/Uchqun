@@ -79,9 +79,7 @@ export function ChatScreen() {
 
         setParentsWithLastMessage(parentsWithMessages);
       } catch (err) {
-        if (__DEV__) {
-          console.error('Failed to load parents for chat', err);
-        }
+        if (__DEV__) console.error('Failed to load parents for chat', err);
       } finally {
         setLoading(false);
       }
@@ -597,7 +595,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     padding: tokens.space.md,
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     paddingHorizontal: tokens.space.lg,
   },
   parentListSeparator: {
@@ -689,11 +687,10 @@ const styles = StyleSheet.create({
     ...tokens.shadow.soft,
   },
   receivedBubble: {
-    backgroundColor: tokens.glass.bg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 0,
     borderBottomLeftRadius: tokens.radius.sm,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   messageHeader: {
     flexDirection: 'row',
@@ -783,12 +780,11 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: tokens.glass.bg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   inputContainer: {
     flexDirection: 'row',

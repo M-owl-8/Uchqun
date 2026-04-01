@@ -104,9 +104,7 @@ export function MediaScreen() {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading children:', error);
-      }
+      if (__DEV__) console.error('Error loading children:', error);
       setChildren([]);
     }
   };
@@ -119,9 +117,7 @@ export function MediaScreen() {
       const data = await mediaService.getMedia(params);
       setMedia(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading media:', err);
-      }
+      if (__DEV__) console.error('Error loading media:', err);
       setMedia([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -177,9 +173,7 @@ export function MediaScreen() {
         });
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error picking image:', error);
-      }
+      if (__DEV__) console.error('Error picking image:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('mediaPage.pickError', { defaultValue: 'Failed to pick media' })
@@ -213,9 +207,7 @@ export function MediaScreen() {
         });
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error taking photo:', error);
-      }
+      if (__DEV__) console.error('Error taking photo:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('mediaPage.cameraError', { defaultValue: 'Failed to take photo' })
@@ -273,9 +265,7 @@ export function MediaScreen() {
       setSelectedFile(null);
       loadMedia();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error saving media:', error);
-      }
+      if (__DEV__) console.error('Error saving media:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || error.message || t('mediaPage.toastError', { defaultValue: 'Xatolik yuz berdi' });
       Alert.alert(t('common.error', { defaultValue: 'Error' }), errorMessage);
     } finally {
@@ -298,9 +288,7 @@ export function MediaScreen() {
               Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mediaPage.toastDelete', { defaultValue: "Media o'chirildi" }));
               loadMedia();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Error deleting media:', error);
-              }
+              if (__DEV__) console.error('Error deleting media:', error);
               Alert.alert(t('common.error', { defaultValue: 'Error' }), t('mediaPage.toastError', { defaultValue: 'Xatolik yuz berdi' }));
             }
           },
@@ -793,14 +781,13 @@ const styles = StyleSheet.create({
   categoryCard: {
     width: categoryItemSize - GRID_GAP / 2,
     minHeight: 120,
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    borderWidth: 0,
     padding: tokens.space.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   categoryCardPressed: {
     transform: [{ scale: 0.98 }],
@@ -840,14 +827,13 @@ const styles = StyleSheet.create({
   recentItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    borderWidth: 0,
     padding: tokens.space.md,
     minHeight: 80,
     gap: tokens.space.md,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   recentItemPressed: {
     transform: [{ scale: 0.98 }],
@@ -908,7 +894,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
     borderWidth: 2,
     borderStyle: 'dashed',

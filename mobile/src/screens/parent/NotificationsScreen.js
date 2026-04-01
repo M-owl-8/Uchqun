@@ -118,9 +118,7 @@ export function NotificationsScreen() {
       const result = await notificationService.getNotifications();
       setNotifications(Array.isArray(result?.data) ? result.data : (Array.isArray(result) ? result : []));
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading notifications:', error);
-      }
+      if (__DEV__) console.error('Error loading notifications:', error);
       setNotifications([]);
     } finally {
       setLoading(false);
@@ -132,9 +130,7 @@ export function NotificationsScreen() {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error marking notification as read:', error);
-      }
+      if (__DEV__) console.error('Error marking notification as read:', error);
     }
   };
 
@@ -143,9 +139,7 @@ export function NotificationsScreen() {
       await notificationService.markAllAsRead();
       loadNotifications();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error marking all as read:', error);
-      }
+      if (__DEV__) console.error('Error marking all as read:', error);
     }
   };
 
@@ -163,9 +157,7 @@ export function NotificationsScreen() {
               await notificationService.deleteNotification(id);
               loadNotifications();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Error deleting notification:', error);
-              }
+              if (__DEV__) console.error('Error deleting notification:', error);
             }
           },
         },
@@ -299,12 +291,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: tokens.space.md,
     paddingVertical: tokens.space.sm,
-    backgroundColor: tokens.glass.bg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    backgroundColor: '#FFFFFF',
+    borderWidth: 0,
     borderRadius: tokens.radius.pill,
     gap: tokens.space.xs,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   filterPillActive: {
     backgroundColor: tokens.colors.accent.blue,

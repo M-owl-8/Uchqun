@@ -61,18 +61,14 @@ const TAB_CONFIG = {
 function TabIcon({ route, focused, color }) {
   const routeName = route?.name;
   if (!routeName) {
-    if (__DEV__) {
-      console.warn('[TabIcon] Missing route.name');
-    }
+    if (__DEV__) console.warn('[TabIcon] Missing route.name');
     return <Ionicons name="help-outline" size={ICON_SIZE} color={color} />;
   }
 
   const config = TAB_CONFIG?.[routeName];
 
   if (!config) {
-    if (__DEV__) {
-      console.warn(`[TabIcon] Unknown route: ${routeName}`);
-    }
+    if (__DEV__) console.warn(`[TabIcon] Unknown route: ${routeName}`);
     return <Ionicons name="help-outline" size={ICON_SIZE} color={color} />;
   }
 

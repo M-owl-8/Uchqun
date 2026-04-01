@@ -5,9 +5,7 @@ import { cacheService } from './cacheService';
 import { offlineQueue } from './offlineQueue';
 
 // Log API URL for debugging
-if (__DEV__) {
-  console.log('[API] Base URL:', API_URL);
-}
+if (__DEV__) console.log('[API] Base URL:', API_URL);
 
 export const api = axios.create({
   baseURL: API_URL,
@@ -38,9 +36,7 @@ api.interceptors.request.use(async (config) => {
     config.timeout = 60000;
   }
 
-  if (__DEV__) {
-    console.log('[API] Request:', config.method?.toUpperCase(), config.url);
-  }
+  if (__DEV__) console.log('[API] Request:', config.method?.toUpperCase(), config.url);
 
   return config;
 }, (error) => {
@@ -50,18 +46,14 @@ api.interceptors.request.use(async (config) => {
 // Response interceptor to handle 401 with token refresh
 api.interceptors.response.use(
   (res) => {
-    if (__DEV__) {
-      console.log('[API] Response:', res.config?.url, res.status);
-    }
+    if (__DEV__) console.log('[API] Response:', res.config?.url, res.status);
     return res;
   },
   async (error) => {
     const originalRequest = error.config;
     const isAuthEndpoint = originalRequest?.url?.includes('/auth/login') || originalRequest?.url?.includes('/auth/refresh');
 
-    if (__DEV__) {
-      console.log('[API] Error:', originalRequest?.url, error.response?.status, error.message);
-    }
+    if (__DEV__) console.log('[API] Error:', originalRequest?.url, error.response?.status, error.message);
 
     // On 401 for non-auth endpoints, try to refresh the token
     if (error.response?.status === 401 && !isAuthEndpoint && !originalRequest._retry) {
@@ -149,9 +141,7 @@ api.interceptors.response.use(
           data: config.data,
           headers: { Authorization: config.headers?.Authorization },
         });
-        if (__DEV__) {
-          console.log('[API] Request queued for offline replay:', config.method, config.url);
-        }
+        if (__DEV__) console.log('[API] Request queued for offline replay:', config.method, config.url);
       } catch (_e) { /* offline queue error ignored */ }
     }
 

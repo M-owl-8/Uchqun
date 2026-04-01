@@ -6,9 +6,7 @@ export async function loadMessages(conversationId) {
     const res = await api.get('/chat/messages', { params: { conversationId, limit: 200 } });
     return Array.isArray(res.data) ? res.data : [];
   } catch (e) {
-    if (__DEV__) {
-      console.warn('loadMessages error', e?.response?.status, e?.response?.data);
-    }
+    if (__DEV__) console.warn('loadMessages error', e?.response?.status, e?.response?.data);
     return [];
   }
 }
@@ -19,9 +17,7 @@ export async function addMessage(author, text, conversationId) {
     const res = await api.post('/chat/messages', { conversationId, content: text });
     return res.data;
   } catch (e) {
-    if (__DEV__) {
-      console.warn('addMessage error', e?.response?.status, e?.response?.data);
-    }
+    if (__DEV__) console.warn('addMessage error', e?.response?.status, e?.response?.data);
     return null;
   }
 }
@@ -31,9 +27,7 @@ export async function markRead(conversationId) {
   try {
     await api.post('/chat/read', { conversationId });
   } catch (e) {
-    if (__DEV__) {
-      console.warn('markRead error', e?.response?.status);
-    }
+    if (__DEV__) console.warn('markRead error', e?.response?.status);
   }
 }
 
@@ -61,9 +55,7 @@ export async function updateMessage(messageId, content) {
     const res = await api.put(`/chat/messages/${messageId}`, { content: content.trim() });
     return res.data;
   } catch (e) {
-    if (__DEV__) {
-      console.warn('updateMessage error', e?.response?.status, e?.response?.data);
-    }
+    if (__DEV__) console.warn('updateMessage error', e?.response?.status, e?.response?.data);
     return null;
   }
 }
@@ -74,9 +66,7 @@ export async function deleteMessage(messageId) {
     const res = await api.delete(`/chat/messages/${messageId}`);
     return res.data;
   } catch (e) {
-    if (__DEV__) {
-      console.warn('deleteMessage error', e?.response?.status, e?.response?.data);
-    }
+    if (__DEV__) console.warn('deleteMessage error', e?.response?.status, e?.response?.data);
     return null;
   }
 }

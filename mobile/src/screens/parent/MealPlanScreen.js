@@ -76,9 +76,7 @@ export function MealPlanScreen() {
       });
       setPlans(response.data?.data || []);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading meal plans:', error);
-      }
+      if (__DEV__) console.error('Error loading meal plans:', error);
     } finally {
       setLoading(false);
     }

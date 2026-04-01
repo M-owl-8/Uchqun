@@ -36,9 +36,7 @@ export function LoginScreen() {
   // Clear any stale auth data when LoginScreen mounts
   useEffect(() => {
     clearAuth().catch(() => {});
-    if (__DEV__) {
-      console.log('[LoginScreen] API URL:', API_URL);
-    }
+    if (__DEV__) console.log('[LoginScreen] API URL:', API_URL);
   }, []);
 
   const onSubmit = async () => {
@@ -67,9 +65,7 @@ export function LoginScreen() {
         msg = t('login.networkError', { defaultValue: 'Serverga ulanib bo\'lmadi. Internet aloqasini tekshiring.' });
       }
       setError(msg);
-      if (__DEV__) {
-        console.error('[LoginScreen] Login error:', e?.response?.data || e?.message || e);
-      }
+      if (__DEV__) console.error('[LoginScreen] Login error:', e?.response?.data || e?.message || e);
     } finally {
       setSubmitting(false);
     }

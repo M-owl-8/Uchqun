@@ -80,9 +80,7 @@ export function MonitoringJournalScreen() {
       });
       setChildren(allChildren);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading parents:', error);
-      }
+      if (__DEV__) console.error('Error loading parents:', error);
     }
   };
 
@@ -92,9 +90,7 @@ export function MonitoringJournalScreen() {
       const records = await teacherService.getAllMonitoringRecords();
       setMonitoringRecords(Array.isArray(records) ? records : []);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading monitoring records:', error);
-      }
+      if (__DEV__) console.error('Error loading monitoring records:', error);
       setMonitoringRecords([]);
     } finally {
       setLoading(false);
@@ -174,9 +170,7 @@ export function MonitoringJournalScreen() {
       handleCloseModal();
       loadMonitoringRecords();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error saving monitoring record:', error);
-      }
+      if (__DEV__) console.error('Error saving monitoring record:', error);
       Alert.alert('', error.response?.data?.error || t('monitoring.toastError'));
     } finally {
       setSaving(false);
@@ -198,9 +192,7 @@ export function MonitoringJournalScreen() {
               handleCloseModal();
               loadMonitoringRecords();
             } catch (error) {
-              if (__DEV__) {
-                console.error('Error deleting record:', error);
-              }
+              if (__DEV__) console.error('Error deleting record:', error);
               Alert.alert('', t('monitoring.toastError'));
             }
           },

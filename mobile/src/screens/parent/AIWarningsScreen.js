@@ -43,9 +43,7 @@ export function AIWarningsScreen() {
       const warningsData = response.data?.data?.warnings || [];
       setWarnings(Array.isArray(warningsData) ? warningsData : []);
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading warnings:', err);
-      }
+      if (__DEV__) console.error('Error loading warnings:', err);
       setWarnings([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -59,9 +57,7 @@ export function AIWarningsScreen() {
       Alert.alert(t('common.success', { defaultValue: 'Success' }), t('warnings.resolved', { defaultValue: 'Warning resolved' }));
       loadWarnings();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error resolving warning:', error);
-      }
+      if (__DEV__) console.error('Error resolving warning:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), error.response?.data?.error || t('warnings.resolveError', { defaultValue: 'Failed to resolve warning' }));
     }
   };

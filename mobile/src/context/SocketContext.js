@@ -9,9 +9,7 @@ const SocketContext = createContext(null);
 export function useSocket() {
   const ctx = useContext(SocketContext);
   if (!ctx) {
-    if (__DEV__) {
-      console.warn('[useSocket] Used outside SocketProvider, returning safe defaults');
-    }
+    if (__DEV__) console.warn('[useSocket] Used outside SocketProvider, returning safe defaults');
     return {
       socket: null,
       connected: false,

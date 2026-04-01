@@ -18,9 +18,7 @@ export const notificationService = {
         total: data?.total || 0,
       };
     } catch (error) {
-      if (__DEV__) {
-        console.error('[notificationService] Error getting notifications:', error);
-      }
+      if (__DEV__) console.error('[notificationService] Error getting notifications:', error);
       // Return safe defaults instead of throwing
       return {
         data: [],
@@ -39,9 +37,7 @@ export const notificationService = {
       // Extract count from { success: true, count: N }
       return data?.count || 0;
     } catch (error) {
-      if (__DEV__) {
-        console.error('[notificationService] Error getting unread count:', error);
-      }
+      if (__DEV__) console.error('[notificationService] Error getting unread count:', error);
       return 0;
     }
   },
@@ -53,9 +49,7 @@ export const notificationService = {
       const response = await api.put(`/notifications/${id}/read`);
       return extractResponseData(response);
     } catch (error) {
-      if (__DEV__) {
-        console.error('[notificationService] Error marking notification as read:', error);
-      }
+      if (__DEV__) console.error('[notificationService] Error marking notification as read:', error);
       throw error; // Re-throw for UI to handle
     }
   },
@@ -67,9 +61,7 @@ export const notificationService = {
       const response = await api.put('/notifications/read-all');
       return extractResponseData(response);
     } catch (error) {
-      if (__DEV__) {
-        console.error('[notificationService] Error marking all as read:', error);
-      }
+      if (__DEV__) console.error('[notificationService] Error marking all as read:', error);
       throw error; // Re-throw for UI to handle
     }
   },
@@ -81,9 +73,7 @@ export const notificationService = {
       const response = await api.delete(`/notifications/${id}`);
       return extractResponseData(response);
     } catch (error) {
-      if (__DEV__) {
-        console.error('[notificationService] Error deleting notification:', error);
-      }
+      if (__DEV__) console.error('[notificationService] Error deleting notification:', error);
       throw error; // Re-throw for UI to handle
     }
   },

@@ -21,9 +21,7 @@ let WebView;
 try {
   WebView = require('react-native-webview').WebView;
 } catch (error) {
-  if (__DEV__) {
-    console.warn('react-native-webview not available:', error);
-  }
+  if (__DEV__) console.warn('react-native-webview not available:', error);
   WebView = null;
 }
 import { parentService } from '../../services/parentService';
@@ -466,9 +464,7 @@ export function MediaScreen() {
                         Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                       }
                     } catch (error) {
-                      if (__DEV__) {
-                        console.warn('Failed to open video:', error);
-                      }
+                      if (__DEV__) console.warn('Failed to open video:', error);
                       Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                     }
                   }}
@@ -538,10 +534,9 @@ const styles = StyleSheet.create({
   galleryHeader: {
     borderRadius: tokens.radius.lg,
     padding: tokens.space.xl,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    borderWidth: 0,
     marginBottom: tokens.space.lg,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   galleryHeaderTop: {
     flexDirection: 'row',
@@ -583,14 +578,13 @@ const styles = StyleSheet.create({
   categoryCard: {
     width: categoryItemSize - GRID_GAP / 2,
     minHeight: 120,
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    borderWidth: 0,
     padding: tokens.space.xl,
     alignItems: 'center',
     justifyContent: 'center',
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   categoryCardPressed: {
     transform: [{ scale: 0.98 }],
@@ -635,14 +629,13 @@ const styles = StyleSheet.create({
   recentItem: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
-    borderWidth: 1,
-    borderColor: tokens.glass.border,
+    borderWidth: 0,
     padding: tokens.space.md,
     minHeight: 80,
     gap: tokens.space.md,
-    ...tokens.shadow.glass,
+    ...tokens.shadow.soft,
   },
   recentItemPressed: {
     transform: [{ scale: 0.98 }],
@@ -691,7 +684,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: tokens.glass.bg,
+    backgroundColor: '#FFFFFF',
     borderRadius: tokens.radius.lg,
     borderWidth: 2,
     borderStyle: 'dashed',

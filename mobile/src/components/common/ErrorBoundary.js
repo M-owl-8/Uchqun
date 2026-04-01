@@ -14,17 +14,11 @@ export class ErrorBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
-    if (__DEV__) {
-      console.error('EB_MESSAGE', error?.message || String(error));
-      console.error('EB_STACK', error?.stack);
-      console.error('EB_COMPONENT_STACK', errorInfo?.componentStack);
-      if (__DEV__) {
-        console.error('[ErrorBoundary] Full error object:', error);
-      }
-      if (__DEV__) {
-        console.error('[ErrorBoundary] Full errorInfo:', errorInfo);
-      }
-    }
+    if (__DEV__) console.error('EB_MESSAGE', error?.message || String(error));
+    if (__DEV__) console.error('EB_STACK', error?.stack);
+    if (__DEV__) console.error('EB_COMPONENT_STACK', errorInfo?.componentStack);
+    if (__DEV__) console.error('[ErrorBoundary] Full error object:', error);
+    if (__DEV__) console.error('[ErrorBoundary] Full errorInfo:', errorInfo);
 
     this.setState({
       error,

@@ -66,9 +66,7 @@ export function ProfileScreen() {
         email: user?.email || '',
       });
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading profile:', error);
-      }
+      if (__DEV__) console.error('Error loading profile:', error);
     } finally {
       setLoading(false);
     }
@@ -95,9 +93,7 @@ export function ProfileScreen() {
         );
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Profile update error:', error);
-      }
+      if (__DEV__) console.error('Profile update error:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('profile.updateFailed', { defaultValue: 'Failed to update profile' })
@@ -175,9 +171,7 @@ export function ProfileScreen() {
         t('profile.avatarUpdated', { defaultValue: 'Avatar updated successfully' })
       );
     } catch (error) {
-      if (__DEV__) {
-        console.error('Avatar upload error:', error);
-      }
+      if (__DEV__) console.error('Avatar upload error:', error);
       const errorMessage = error.response?.data?.error ||
                           error.response?.data?.message ||
                           error.message ||

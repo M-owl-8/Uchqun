@@ -70,9 +70,7 @@ export function TeacherDashboardScreen() {
         monitoring: '\u2014',
       });
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading dashboard:', err);
-      }
+      if (__DEV__) console.error('Error loading dashboard:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);

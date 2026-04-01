@@ -42,9 +42,7 @@ export function EmotionalMonitoringScreen() {
       const data = await teacherService.getEmotionalRecords(childId);
       setRecords(data);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading emotional records:', error);
-      }
+      if (__DEV__) console.error('Error loading emotional records:', error);
       setRecords([]);
     } finally {
       setLoading(false);
@@ -79,9 +77,7 @@ export function EmotionalMonitoringScreen() {
       setShowModal(false);
       loadRecords();
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error creating emotional record:', error);
-      }
+      if (__DEV__) console.error('Error creating emotional record:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), t('emotional.createFailed', { defaultValue: 'Failed to create record.' }));
     } finally {
       setSaving(false);

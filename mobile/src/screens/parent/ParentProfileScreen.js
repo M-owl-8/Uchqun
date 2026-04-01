@@ -90,9 +90,7 @@ export function ParentProfileScreen() {
         await loadChildData(childId);
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading profile:', error);
-      }
+      if (__DEV__) console.error('Error loading profile:', error);
     } finally {
       setLoading(false);
     }
@@ -158,9 +156,7 @@ export function ParentProfileScreen() {
       const monitoring = Array.isArray(monitoringResponse.data?.data) ? monitoringResponse.data.data : [];
       setMonitoringRecords(monitoring);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading child data:', error);
-      }
+      if (__DEV__) console.error('Error loading child data:', error);
     }
   };
 
@@ -256,9 +252,7 @@ export function ParentProfileScreen() {
         t('profile.photoUploaded', { defaultValue: 'Profile photo updated successfully' })
       );
     } catch (error) {
-      if (__DEV__) {
-        console.error('Avatar upload error:', error);
-      }
+      if (__DEV__) console.error('Avatar upload error:', error);
       const errorMessage = error?.response?.data?.error || error?.message || t('profile.photoUploadFailed', { defaultValue: 'Failed to upload photo' });
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
@@ -290,9 +284,7 @@ export function ParentProfileScreen() {
         );
       }
     } catch (error) {
-      if (__DEV__) {
-        console.error('Profile update error:', error);
-      }
+      if (__DEV__) console.error('Profile update error:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('profile.updateFailed', { defaultValue: 'Failed to update profile' })

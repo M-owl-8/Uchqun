@@ -10,17 +10,13 @@ try {
   Device = require('expo-device');
   Constants = require('expo-constants');
 } catch (e) {
-  if (__DEV__) {
-    console.warn('[PushNotification] expo-notifications or expo-device not installed');
-  }
+  if (__DEV__) console.warn('[PushNotification] expo-notifications or expo-device not installed');
 }
 
 export async function registerForPushNotifications() {
   if (!Notifications || !Device) return null;
   if (!Device.isDevice) {
-    if (__DEV__) {
-      console.warn('[PushNotification] Push notifications require a physical device');
-    }
+    if (__DEV__) console.warn('[PushNotification] Push notifications require a physical device');
     return null;
   }
 
@@ -33,9 +29,7 @@ export async function registerForPushNotifications() {
   }
 
   if (finalStatus !== 'granted') {
-    if (__DEV__) {
-      console.warn('[PushNotification] Permission not granted');
-    }
+    if (__DEV__) console.warn('[PushNotification] Permission not granted');
     return null;
   }
 
@@ -45,9 +39,7 @@ export async function registerForPushNotifications() {
   );
   const token = tokenData?.data;
   if (!token) {
-    if (__DEV__) {
-      console.warn('[PushNotification] No push token received');
-    }
+    if (__DEV__) console.warn('[PushNotification] No push token received');
     return null;
   }
 
@@ -58,9 +50,7 @@ export async function registerForPushNotifications() {
       platform: Platform.OS,
     });
   } catch (error) {
-    if (__DEV__) {
-      console.error('[PushNotification] Failed to register token:', error);
-    }
+    if (__DEV__) console.error('[PushNotification] Failed to register token:', error);
   }
 
   // Configure notification behavior
@@ -85,8 +75,6 @@ export async function unregisterPushNotifications() {
       await api.delete(`/push-notifications/device/${encodeURIComponent(token)}`);
     }
   } catch (error) {
-    if (__DEV__) {
-      console.error('[PushNotification] Failed to unregister:', error);
-    }
+    if (__DEV__) console.error('[PushNotification] Failed to unregister:', error);
   }
 }

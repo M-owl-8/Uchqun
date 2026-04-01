@@ -51,9 +51,7 @@ export function ServicePlanScreen() {
       const response = await api.get(`/service-plans?childId=${childId}&year=${selectedYear}`);
       setPlans(response.data?.data || []);
     } catch (error) {
-      if (__DEV__) {
-        console.error('Error loading service plans:', error);
-      }
+      if (__DEV__) console.error('Error loading service plans:', error);
     } finally {
       setLoading(false);
     }

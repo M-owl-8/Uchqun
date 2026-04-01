@@ -38,9 +38,7 @@ export function PaymentsScreen() {
           setSelectedChildId(children[0].id);
         }
       } catch (error) {
-        if (__DEV__) {
-          console.error('Error loading children:', error);
-        }
+        if (__DEV__) console.error('Error loading children:', error);
       }
     };
     loadChildren();
@@ -78,9 +76,7 @@ export function PaymentsScreen() {
         setMonthlyAmount(parseFloat(lastPayment.amount || 0));
       }
     } catch (err) {
-      if (__DEV__) {
-        console.error('Error loading payments:', err);
-      }
+      if (__DEV__) console.error('Error loading payments:', err);
       setPayments([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
