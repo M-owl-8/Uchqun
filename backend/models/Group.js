@@ -37,6 +37,14 @@ const Group = sequelize.define('Group', {
     type: DataTypes.STRING(50),
     allowNull: true,
   },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: 'schools',
+      key: 'id',
+    },
+  },
 }, {
   tableName: 'groups',
   timestamps: true,

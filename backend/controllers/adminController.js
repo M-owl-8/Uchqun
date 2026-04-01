@@ -416,8 +416,9 @@ export const createReception = async (req, res) => {
       role: 'reception',
       isVerified: false,
       documentsApproved: false,
-      isActive: false, // Reception cannot log in until documents are approved
+      isActive: false,
       createdBy: req.user.id,
+      schoolId: req.user.schoolId, // Inherit school from admin
     });
 
     logger.info('Reception account created by Admin', {
@@ -1070,7 +1071,7 @@ export const getStatistics = async (req, res) => {
           media: totalMedia,
           total: totalActivities + totalMeals + totalMedia,
         },
-        groups: {
+        groupsDetail: {
           total: groups,
         },
         recentActivity: {

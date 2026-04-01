@@ -160,8 +160,9 @@ export const createTeacher = async (req, res) => {
       lastName,
       phone,
       role: 'teacher',
-      isActive: true, // Teachers are active immediately
-      createdBy: req.user.id, // Track which reception user created this teacher
+      isActive: true,
+      createdBy: req.user.id,
+      schoolId: req.user.schoolId, // Inherit school from reception
     });
 
     logger.info('Teacher created by Reception', {
@@ -333,10 +334,11 @@ export const createParent = async (req, res) => {
       lastName,
       phone,
       role: 'parent',
-      isActive: true, // Parents are active immediately
+      isActive: true,
       teacherId: teacherId || (groupId ? (await Group.findByPk(groupId)).teacherId : null),
       groupId: groupId || null,
-      createdBy: req.user.id, // Track which reception user created this parent
+      createdBy: req.user.id,
+      schoolId: req.user.schoolId, // Inherit school from reception
     });
 
     // Create child if child data is provided

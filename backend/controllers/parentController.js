@@ -486,9 +486,14 @@ export const getParentData = async (req, res) => {
   try {
     const { parentId } = req.params;
 
-    // Verify the user is a parent
+    // Verify the user is a parent AND belongs to the same school
+    const where = { id: parentId, role: 'parent' };
+    if (req.user.schoolId) {
+      where.schoolId = req.user.schoolId;
+    }
+
     const parent = await User.findOne({
-      where: { id: parentId, role: 'parent' },
+      where,
       attributes: { exclude: ['password'] },
     });
 

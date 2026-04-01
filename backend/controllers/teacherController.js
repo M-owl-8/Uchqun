@@ -511,8 +511,14 @@ export const getParentById = async (req, res) => {
   try {
     const { id } = req.params;
 
+    // School-scoped: teacher can only see parents from same school
+    const where = { id, role: 'parent' };
+    if (req.user.schoolId) {
+      where.schoolId = req.user.schoolId;
+    }
+
     const parent = await User.findOne({
-      where: { id, role: 'parent' },
+      where,
       attributes: { exclude: ['password'] },
       include: [
         {
@@ -622,8 +628,14 @@ export const getMyGroups = async (req, res) => {
  */
 export const getTeacherRatings = async (req, res) => {
   try {
+    // School-scoped: only show teachers from same school
+    const where = { role: 'teacher' };
+    if (req.user.schoolId) {
+      where.schoolId = req.user.schoolId;
+    }
+
     const teachers = await User.findAll({
-      where: { role: 'teacher' },
+      where,
       attributes: ['id', 'firstName', 'lastName', 'email', 'avatar', 'rating', 'totalRatings'],
       order: [
         ['rating', 'DESC'],

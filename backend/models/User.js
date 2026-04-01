@@ -92,6 +92,15 @@ const User = sequelize.define('User', {
       key: 'id',
     },
   },
+  // School assignment — every user belongs to a school (except superadmin)
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: {
+      model: 'schools',
+      key: 'id',
+    },
+  },
   // Teacher rating system
   rating: {
     type: DataTypes.FLOAT,
