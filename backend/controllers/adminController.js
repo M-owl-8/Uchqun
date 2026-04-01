@@ -450,8 +450,11 @@ export const updateReception = async (req, res) => {
     const { id } = req.params;
     const { email, firstName, lastName, phone, password } = req.body;
 
+    const receptionWhere = { id, role: 'reception' };
+    if (req.user.schoolId) receptionWhere.schoolId = req.user.schoolId;
+
     const reception = await User.findOne({
-      where: { id, role: 'reception' },
+      where: receptionWhere,
     });
 
     if (!reception) {
@@ -506,9 +509,10 @@ export const deleteReception = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const reception = await User.findOne({
-      where: { id, role: 'reception' },
-    });
+    const deleteWhere = { id, role: 'reception' };
+    if (req.user.schoolId) deleteWhere.schoolId = req.user.schoolId;
+
+    const reception = await User.findOne({ where: deleteWhere });
 
     if (!reception) {
       return res.status(404).json({ error: 'Reception account not found' });
