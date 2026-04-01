@@ -155,7 +155,7 @@ export function ServicePlanScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: tokens.colors.bg.primary,
+    backgroundColor: tokens.colors.background.primary,
   },
   yearSelector: {
     flexDirection: 'row',
@@ -168,10 +168,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 10,
     borderRadius: 20,
-    backgroundColor: tokens.colors.bg.secondary,
+    backgroundColor: tokens.colors.background.secondary,
   },
   yearTabActive: {
-    backgroundColor: tokens.colors.primary,
+    backgroundColor: tokens.colors.accent.blue,
   },
   yearTabText: {
     fontSize: 15,
@@ -219,7 +219,7 @@ const styles = StyleSheet.create({
     borderBottomColor: tokens.colors.border.light,
   },
   dataRowEven: {
-    backgroundColor: tokens.colors.bg.secondary,
+    backgroundColor: tokens.colors.background.secondary,
   },
   serviceText: {
     fontSize: 13,
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#34D399',
   },
   cellInactive: {
-    backgroundColor: tokens.colors.bg.secondary,
+    backgroundColor: tokens.colors.background.secondary,
     borderWidth: 1,
     borderColor: tokens.colors.border.light,
   },

@@ -199,7 +199,7 @@ const styles = StyleSheet.create({
     marginRight: 6,
   },
   dateTabActive: {
-    backgroundColor: tokens.colors.primary || '#4A90D9',
+    backgroundColor: tokens.colors.accent.blue,
   },
   dateDayName: {
     fontSize: 11,
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     width: 5,
     height: 5,
     borderRadius: 2.5,
-    backgroundColor: tokens.colors.primary || '#4A90D9',
+    backgroundColor: tokens.colors.accent.blue,
     marginTop: 3,
   },
   content: {

@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
   },
   selectedCount: {
     fontSize: 13,
-    color: tokens.colors.primary || '#4A90D9',
+    color: tokens.colors.accent.blue,
     fontWeight: '600',
   },
   dateButton: {
@@ -438,7 +438,7 @@ const styles = StyleSheet.create({
   selectAllText: {
     fontSize: 14,
     fontWeight: '600',
-    color: tokens.colors.primary || '#4A90D9',
+    color: tokens.colors.accent.blue,
   },
   childRow: {
     flexDirection: 'row',
@@ -453,8 +453,8 @@ const styles = StyleSheet.create({
     borderColor: '#E5E5EA',
   },
   childRowActive: {
-    borderColor: tokens.colors.primary || '#4A90D9',
-    backgroundColor: (tokens.colors.primary || '#4A90D9') + '10',
+    borderColor: tokens.colors.accent.blue,
+    backgroundColor: (tokens.colors.accent.blue) + '10',
   },
   checkbox: {
     width: 22,
@@ -466,8 +466,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   checkboxActive: {
-    backgroundColor: tokens.colors.primary || '#4A90D9',
-    borderColor: tokens.colors.primary || '#4A90D9',
+    backgroundColor: tokens.colors.accent.blue,
+    borderColor: tokens.colors.accent.blue,
   },
   childInfo: {
     flex: 1,
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: tokens.colors.primary || '#4A90D9',
+    backgroundColor: tokens.colors.accent.blue,
     paddingVertical: 14,
     paddingHorizontal: 24,
     borderRadius: 12,

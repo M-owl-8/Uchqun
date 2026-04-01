@@ -13,7 +13,7 @@ const getApiUrl = () => {
     }
     return url;
   }
-  return 'https://uchqun-production.up.railway.app/api';
+  return 'https://uchqun-production-b484.up.railway.app/api';
 };
 
 export const API_URL = getApiUrl();

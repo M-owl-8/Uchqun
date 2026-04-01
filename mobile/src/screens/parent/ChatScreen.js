@@ -175,9 +175,6 @@ export function ChatScreen() {
     setConfirmDeleteId(null);
   };
 
-  // Bottom nav height + safe area + padding
-  const BOTTOM_NAV_HEIGHT = 75;
-
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader
