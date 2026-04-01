@@ -111,7 +111,9 @@ export function SettingsScreen() {
         type: type,
       });
 
-      console.log('[Avatar Upload] Uploading avatar:', { filename, type, uri: uri.substring(0, 50) });
+      if (__DEV__) {
+        console.log('[Avatar Upload] Uploading avatar:', { filename, type, uri: uri.substring(0, 50) });
+      }
 
       const response = await api.put('/user/avatar', formData, {
         headers: {
@@ -119,7 +121,9 @@ export function SettingsScreen() {
         },
       });
 
-      console.log('[Avatar Upload] Success:', response.data);
+      if (__DEV__) {
+        console.log('[Avatar Upload] Success:', response.data);
+      }
 
       if (refreshUser) {
         await refreshUser();
@@ -130,8 +134,12 @@ export function SettingsScreen() {
         t('profile.avatarUpdated', { defaultValue: 'Avatar muvaffaqiyatli yangilandi' })
       );
     } catch (error) {
-      console.error('[Avatar Upload] Error:', error);
-      console.error('[Avatar Upload] Error response:', error?.response?.data);
+      if (__DEV__) {
+        console.error('[Avatar Upload] Error:', error);
+      }
+      if (__DEV__) {
+        console.error('[Avatar Upload] Error response:', error?.response?.data);
+      }
       const errorMessage = error?.response?.data?.error || error?.message || t('profile.uploadError', { defaultValue: 'Avatar yuklashda xatolik' });
       Alert.alert(
         t('common.error', { defaultValue: 'Xatolik' }),
@@ -161,7 +169,9 @@ export function SettingsScreen() {
             try {
               await logout();
             } catch (error) {
-              console.error('Logout error:', error);
+              if (__DEV__) {
+                console.error('Logout error:', error);
+              }
             }
           },
         },

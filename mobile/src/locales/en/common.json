@@ -12,7 +12,11 @@
     "profile": "Profile",
     "menu": "Menu",
     "rating": "Rating",
-    "aiChat": "AI Chat"
+    "aiChat": "AI Chat",
+    "home": "Home",
+    "schoolRating": "School Rating",
+    "notifications": "Notifications",
+    "exit": "Exit"
   },
   "login": {
     "title": "Uchqun Portal",
@@ -386,6 +390,26 @@
     "toastLoadError": "Error loading media",
     "toastChildrenEmpty": "No children found. First add a parent with child data."
   },
+  "media": {
+    "title": "Media Gallery",
+    "subtitle": "Best moments from school life",
+    "filterAll": "All",
+    "filterPhoto": "Photo",
+    "filterVideo": "Video",
+    "empty": "No media available yet",
+    "back": "Back",
+    "date": "Date",
+    "photoLabel": "Photo",
+    "videoLabel": "Video",
+    "video": {
+      "loading": "Loading video...",
+      "failedTitle": "Failed to load video",
+      "failedDesc": "Check the video link",
+      "unsupportedTitle": "Video link not supported",
+      "unsupportedDesc": "Use YouTube, Vimeo, or direct video files (.mp4, .webm, etc.)",
+      "openNewTab": "Open in new tab"
+    }
+  },
   "chat": {
     "title": "Chat with Parent",
     "subtitle": "Exchange messages with parents",
@@ -634,7 +658,9 @@
     "loadError": "Failed to load data",
     "retry": "Retry",
     "saving": "Saving...",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "details": "Details",
+    "noData": "No data available"
   },
   "time": {
     "justNow": "Just now",
@@ -1063,5 +1089,8 @@
     "noFiltered": "No {{filter}} notifications",
     "tryDifferentFilter": "Try a different filter",
     "allCaughtUp": "You're all caught up!"
-  }
+  },
+  "cancel": "Cancel",
+  "save": "Save",
+  "locale": "en-US"
 }

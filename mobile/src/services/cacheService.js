@@ -28,7 +28,9 @@ export const cacheService = {
       const key = getCacheKey(endpoint, params);
       await AsyncStorage.setItem(key, JSON.stringify({ data, timestamp: Date.now(), ttl }));
     } catch (error) {
-      console.warn('[CacheService] Failed to cache:', error);
+      if (__DEV__) {
+        console.warn('[CacheService] Failed to cache:', error);
+      }
     }
   },
 
@@ -40,7 +42,9 @@ export const cacheService = {
         await AsyncStorage.multiRemove(cacheKeys);
       }
     } catch (error) {
-      console.warn('[CacheService] Failed to clear cache:', error);
+      if (__DEV__) {
+        console.warn('[CacheService] Failed to clear cache:', error);
+      }
     }
   },
 

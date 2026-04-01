@@ -20,7 +20,9 @@ export function ThemeProvider({ children }) {
         setTheme(savedTheme);
       }
     } catch (error) {
-      console.error('Error loading theme:', error);
+      if (__DEV__) {
+        console.error('Error loading theme:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -32,7 +34,9 @@ export function ThemeProvider({ children }) {
       setTheme(newTheme);
       await AsyncStorage.setItem(THEME_KEY, newTheme);
     } catch (error) {
-      console.error('Error saving theme:', error);
+      if (__DEV__) {
+        console.error('Error saving theme:', error);
+      }
     }
   };
 
@@ -41,7 +45,9 @@ export function ThemeProvider({ children }) {
       setTheme('light');
       await AsyncStorage.setItem(THEME_KEY, 'light');
     } catch (error) {
-      console.error('Error saving theme:', error);
+      if (__DEV__) {
+        console.error('Error saving theme:', error);
+      }
     }
   };
 
@@ -50,7 +56,9 @@ export function ThemeProvider({ children }) {
       setTheme('dark');
       await AsyncStorage.setItem(THEME_KEY, 'dark');
     } catch (error) {
-      console.error('Error saving theme:', error);
+      if (__DEV__) {
+        console.error('Error saving theme:', error);
+      }
     }
   };
 

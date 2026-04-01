@@ -62,15 +62,21 @@ export function RootNavigator() {
             } else if (isAdmin || isReception) {
               // Admin and Reception should use Teacher navigator as fallback
               // But log a warning
-              console.warn('[RootNavigator] Admin/Reception user using Teacher navigator as fallback');
+              if (__DEV__) {
+                console.warn('[RootNavigator] Admin/Reception user using Teacher navigator as fallback');
+              }
               targetRoute = 'Teacher';
             } else {
               // Unknown role - log error and stay on login
-              console.error('[RootNavigator] Unknown user role:', user?.role);
+              if (__DEV__) {
+                console.error('[RootNavigator] Unknown user role:', user?.role);
+              }
               targetRoute = 'Login';
             }
           }
-          console.log('[RootNavigator] Navigating to:', targetRoute, 'Role:', user?.role);
+          if (__DEV__) {
+            console.log('[RootNavigator] Navigating to:', targetRoute, 'Role:', user?.role);
+          }
           navigationRef.current.dispatch(
             CommonActions.reset({
               index: 0,
@@ -78,7 +84,9 @@ export function RootNavigator() {
             })
           );
         } catch (error) {
-          console.error('[RootNavigator] Navigation error:', error);
+          if (__DEV__) {
+            console.error('[RootNavigator] Navigation error:', error);
+          }
         }
       }
     }, 200);
@@ -105,15 +113,21 @@ export function RootNavigator() {
       initialRoute = 'Teacher';
     } else if (isAdmin || isReception) {
       // Admin and Reception use Teacher navigator as fallback
-      console.warn('[RootNavigator] Admin/Reception user using Teacher navigator as fallback');
+      if (__DEV__) {
+        console.warn('[RootNavigator] Admin/Reception user using Teacher navigator as fallback');
+      }
       initialRoute = 'Teacher';
     } else {
       // Unknown role - log error
-      console.error('[RootNavigator] Unknown user role for initial route:', user?.role);
+      if (__DEV__) {
+        console.error('[RootNavigator] Unknown user role for initial route:', user?.role);
+      }
       initialRoute = 'Login';
     }
   }
-  console.log('[RootNavigator] Initial route:', initialRoute, 'User:', user?.email, 'Role:', user?.role);
+  if (__DEV__) {
+    console.log('[RootNavigator] Initial route:', initialRoute, 'User:', user?.email, 'Role:', user?.role);
+  }
 
   return (
     <NavigationContainer ref={navigationRef}>

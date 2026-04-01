@@ -10,7 +10,9 @@ export function useAuth() {
   // TEMP STABILITY: Return safe defaults instead of throwing
   // This prevents crashes if hook is used outside provider
   if (!ctx) {
-    console.warn('[useAuth] Used outside AuthProvider, returning safe defaults');
+    if (__DEV__) {
+      console.warn('[useAuth] Used outside AuthProvider, returning safe defaults');
+    }
     return {
       user: null,
       accessToken: null,
@@ -20,11 +22,15 @@ export function useAuth() {
       isTeacher: false,
       isParent: false,
       login: async () => {
-        console.warn('[useAuth] login called but not in provider');
+        if (__DEV__) {
+          console.warn('[useAuth] login called but not in provider');
+        }
         throw new Error('AuthProvider not available');
       },
       logout: async () => {
-        console.warn('[useAuth] logout called but not in provider');
+        if (__DEV__) {
+          console.warn('[useAuth] logout called but not in provider');
+        }
       },
       setUser: () => {},
       refreshUser: async () => {},
@@ -49,10 +55,14 @@ export function AuthProvider({ children }) {
         setAccessToken(stored.accessToken || null);
         setRefreshToken(stored.refreshToken || null);
         if (stored.accessToken && stored.user) {
-          registerForPushNotifications().catch((err) => console.warn('[AuthContext] Push register on load failed', err));
+          if (__DEV__) {
+            registerForPushNotifications().catch((err) => console.warn('[AuthContext] Push register on load failed', err));
+          }
         }
       } catch (error) {
-        console.error('[AuthContext] Bootstrap error:', error);
+        if (__DEV__) {
+          console.error('[AuthContext] Bootstrap error:', error);
+        }
       } finally {
         setBootstrapping(false);
       }
@@ -78,7 +88,9 @@ export function AuthProvider({ children }) {
     setAccessToken(accessToken);
     setRefreshToken(refreshToken || null);
     // Register device for push notifications (teacher and parent)
-    registerForPushNotifications().catch((err) => console.warn('[AuthContext] Push register failed', err));
+    if (__DEV__) {
+      registerForPushNotifications().catch((err) => console.warn('[AuthContext] Push register failed', err));
+    }
     return user;
   };
 
@@ -86,7 +98,9 @@ export function AuthProvider({ children }) {
     try {
       await unregisterPushNotifications();
     } catch (err) {
-      console.error('[AuthContext] Failed to unregister push notifications during logout:', err);
+      if (__DEV__) {
+        console.error('[AuthContext] Failed to unregister push notifications during logout:', err);
+      }
     }
     await clearAuth();
     setUser(null);
@@ -104,7 +118,9 @@ export function AuthProvider({ children }) {
         await storeAuth({ ...stored, user: updatedUser });
       }
     } catch (error) {
-      console.error('[AuthContext] refreshUser error:', error);
+      if (__DEV__) {
+        console.error('[AuthContext] refreshUser error:', error);
+      }
     }
   };
 

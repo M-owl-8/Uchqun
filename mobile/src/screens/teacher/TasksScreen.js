@@ -24,7 +24,9 @@ export function TasksScreen() {
       const data = await teacherService.getTasks();
       setTasks(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error('Error loading tasks:', error);
+      if (__DEV__) {
+        console.error('Error loading tasks:', error);
+      }
       setTasks([]);
     } finally {
       setLoading(false);
@@ -36,7 +38,9 @@ export function TasksScreen() {
       await teacherService.updateTaskStatus(id, status);
       loadTasks();
     } catch (error) {
-      console.error('Error updating task status:', error);
+      if (__DEV__) {
+        console.error('Error updating task status:', error);
+      }
     }
   };
 

@@ -28,7 +28,9 @@ export function DiagnosticsScreen() {
       timestamp: new Date().toISOString(),
     };
     setResults((prev) => [...prev, result]);
-    console.log(`[Diagnostics] ${route}: ${success ? '✓' : '✗'}`, error || '');
+    if (__DEV__) {
+      console.log(`[Diagnostics] ${route}: ${success ? '✓' : '✗'}`, error || '');
+    }
   };
 
   const testRoute = async (routeName, params = {}) => {

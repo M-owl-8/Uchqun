@@ -27,7 +27,9 @@ export function ParentsListScreen() {
       const data = await parentService.getChildren();
       setChildren(Array.isArray(data) ? data : []);
     } catch (error) {
-      console.error('Error loading children:', error);
+      if (__DEV__) {
+        console.error('Error loading children:', error);
+      }
       setChildren([]);
     } finally {
       setLoading(false);
@@ -38,7 +40,9 @@ export function ParentsListScreen() {
   const navigateToChildProfile = (childId) => {
     try {
       if (!childId) {
-        console.error('[ParentsListScreen] Invalid childId');
+        if (__DEV__) {
+          console.error('[ParentsListScreen] Invalid childId');
+        }
         return;
       }
       if (parentNavigation) {
@@ -50,7 +54,9 @@ export function ParentsListScreen() {
         }
       }
     } catch (error) {
-      console.error('Navigation error to ChildProfile:', error);
+      if (__DEV__) {
+        console.error('Navigation error to ChildProfile:', error);
+      }
     }
   };
 

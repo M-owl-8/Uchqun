@@ -79,7 +79,9 @@ export function ChatScreen() {
 
         setParentsWithLastMessage(parentsWithMessages);
       } catch (err) {
-        console.error('Failed to load parents for chat', err);
+        if (__DEV__) {
+          console.error('Failed to load parents for chat', err);
+        }
       } finally {
         setLoading(false);
       }

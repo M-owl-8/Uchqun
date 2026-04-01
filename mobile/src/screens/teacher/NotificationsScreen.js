@@ -46,7 +46,9 @@ export function NotificationsScreen() {
       const result = await notificationService.getNotifications();
       setNotifications(Array.isArray(result?.data) ? result.data : (Array.isArray(result) ? result : []));
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      if (__DEV__) {
+        console.error('Error loading notifications:', error);
+      }
       setNotifications([]);
     } finally {
       setLoading(false);
@@ -58,7 +60,9 @@ export function NotificationsScreen() {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      if (__DEV__) {
+        console.error('Error marking notification as read:', error);
+      }
     }
   };
 

@@ -21,7 +21,9 @@ let WebView;
 try {
   WebView = require('react-native-webview').WebView;
 } catch (error) {
-  console.warn('react-native-webview not available:', error);
+  if (__DEV__) {
+    console.warn('react-native-webview not available:', error);
+  }
   WebView = null;
 }
 import { parentService } from '../../services/parentService';
@@ -464,7 +466,9 @@ export function MediaScreen() {
                         Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                       }
                     } catch (error) {
-                      console.warn('Failed to open video:', error);
+                      if (__DEV__) {
+                        console.warn('Failed to open video:', error);
+                      }
                       Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                     }
                   }}

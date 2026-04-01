@@ -52,7 +52,9 @@ export function ParentDetailScreen() {
       const data = await teacherService.getParentById(parentId);
       setParent(data);
     } catch (error) {
-      console.error('Error loading parent:', error);
+      if (__DEV__) {
+        console.error('Error loading parent:', error);
+      }
     } finally {
       setLoading(false);
     }

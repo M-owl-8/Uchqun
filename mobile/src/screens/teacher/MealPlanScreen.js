@@ -85,7 +85,9 @@ export function MealPlanScreen() {
       }
       setChildren(allChildren);
     } catch (error) {
-      console.error('Error loading children:', error);
+      if (__DEV__) {
+        console.error('Error loading children:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -124,7 +126,9 @@ export function MealPlanScreen() {
       }
       setMealData(newMealData);
     } catch (error) {
-      console.error('Error loading existing plans:', error);
+      if (__DEV__) {
+        console.error('Error loading existing plans:', error);
+      }
     }
   };
 
@@ -199,7 +203,9 @@ export function MealPlanScreen() {
 
       Alert.alert('', message);
     } catch (error) {
-      console.error('Error saving meal plans:', error);
+      if (__DEV__) {
+        console.error('Error saving meal plans:', error);
+      }
       Alert.alert('Error', error.response?.data?.error || 'Failed to save meal plans');
     } finally {
       setSaving(false);

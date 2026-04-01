@@ -149,7 +149,9 @@ api.interceptors.response.use(
           data: config.data,
           headers: { Authorization: config.headers?.Authorization },
         });
-        console.log('[API] Request queued for offline replay:', config.method, config.url);
+        if (__DEV__) {
+          console.log('[API] Request queued for offline replay:', config.method, config.url);
+        }
       } catch (_e) { /* offline queue error ignored */ }
     }
 

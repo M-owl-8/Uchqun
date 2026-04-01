@@ -66,7 +66,9 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
 
       setMessages(prev => [...prev, { role: 'assistant', content: aiMessage }]);
     } catch (error) {
-      console.error('[AIChatModal] Error sending message:', error);
+      if (__DEV__) {
+        console.error('[AIChatModal] Error sending message:', error);
+      }
       setMessages(prev => [...prev, {
         role: 'assistant',
         content: t('ai.errorRetry', { defaultValue: "Kechirasiz, xatolik yuz berdi. Yana urinib ko'ring?" }),

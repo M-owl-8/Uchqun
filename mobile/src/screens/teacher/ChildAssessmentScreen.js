@@ -77,7 +77,9 @@ export function ChildAssessmentScreen() {
       setFormData(formMap);
       setChanged({});
     } catch (error) {
-      console.error('Error loading assessments:', error);
+      if (__DEV__) {
+        console.error('Error loading assessments:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -144,7 +146,9 @@ export function ChildAssessmentScreen() {
       setChanged({});
       await loadAssessments();
     } catch (error) {
-      console.error('Error saving assessments:', error);
+      if (__DEV__) {
+        console.error('Error saving assessments:', error);
+      }
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         error.response?.data?.error || t('common.genericError', { defaultValue: 'Something went wrong' })

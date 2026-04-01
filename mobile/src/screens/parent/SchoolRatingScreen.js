@@ -60,7 +60,9 @@ export function SchoolRatingScreen() {
         setComment(data.comment);
       }
     } catch (error) {
-      console.error('Error loading rating:', error);
+      if (__DEV__) {
+        console.error('Error loading rating:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -88,7 +90,9 @@ export function SchoolRatingScreen() {
       Alert.alert(t('common.success'), t('schoolRatingPage.success'));
       await loadRating();
     } catch (error) {
-      console.error('Error submitting rating:', error);
+      if (__DEV__) {
+        console.error('Error submitting rating:', error);
+      }
       Alert.alert(t('common.error'), t('schoolRatingPage.errorSave'));
     } finally {
       setSubmitting(false);

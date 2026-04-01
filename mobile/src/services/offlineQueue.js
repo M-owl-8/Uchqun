@@ -13,7 +13,9 @@ export const offlineQueue = {
       });
       await AsyncStorage.setItem(QUEUE_KEY, JSON.stringify(queue));
     } catch (error) {
-      console.error('[OfflineQueue] Failed to add request:', error);
+      if (__DEV__) {
+        console.error('[OfflineQueue] Failed to add request:', error);
+      }
     }
   },
 

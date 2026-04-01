@@ -8,7 +8,9 @@ export const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context) {
     // Return safe defaults instead of throwing
-    console.warn('[useNotification] Used outside NotificationProvider, returning safe defaults');
+    if (__DEV__) {
+      console.warn('[useNotification] Used outside NotificationProvider, returning safe defaults');
+    }
     return {
       count: 0,
       notifications: [],
@@ -38,7 +40,9 @@ export const NotificationProvider = ({ children }) => {
       const response = await api.get('/notifications/count');
       setCount(response.data?.count || response.data?.data?.count || 0);
     } catch (error) {
-      console.error('Error loading notification count:', error);
+      if (__DEV__) {
+        console.error('Error loading notification count:', error);
+      }
       setCount(0);
     }
   }, [isAuthenticated]);
@@ -56,7 +60,9 @@ export const NotificationProvider = ({ children }) => {
       setNotifications(Array.isArray(data) ? data : []);
       setCount(response.data?.unreadCount || 0);
     } catch (error) {
-      console.error('Error loading notifications:', error);
+      if (__DEV__) {
+        console.error('Error loading notifications:', error);
+      }
       setNotifications([]);
     } finally {
       setLoading(false);
@@ -84,7 +90,9 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error marking notification as read:', error);
+      if (__DEV__) {
+        console.error('Error marking notification as read:', error);
+      }
     }
   }, [loadNotifications, loadAllNotifications]);
 
@@ -94,7 +102,9 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error marking all as read:', error);
+      if (__DEV__) {
+        console.error('Error marking all as read:', error);
+      }
     }
   }, [loadNotifications, loadAllNotifications]);
 
@@ -104,7 +114,9 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error deleting notification:', error);
+      if (__DEV__) {
+        console.error('Error deleting notification:', error);
+      }
     }
   }, [loadNotifications, loadAllNotifications]);
 

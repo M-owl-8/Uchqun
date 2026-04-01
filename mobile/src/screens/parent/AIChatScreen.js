@@ -78,7 +78,9 @@ export function AIChatScreen() {
           setMessages([getDefaultMessage(t)]);
         }
       } catch (e) {
-        console.warn('Failed to load saved AI chat:', e);
+        if (__DEV__) {
+          console.warn('Failed to load saved AI chat:', e);
+        }
         setMessages([getDefaultMessage(t)]);
       } finally {
         setInitialLoading(false);
@@ -93,7 +95,9 @@ export function AIChatScreen() {
       try {
         await AsyncStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
       } catch (e) {
-        console.warn('Failed to save AI chat history:', e);
+        if (__DEV__) {
+          console.warn('Failed to save AI chat history:', e);
+        }
       }
     };
     saveMessages();
@@ -170,7 +174,9 @@ export function AIChatScreen() {
     try {
       await AsyncStorage.removeItem(CHAT_STORAGE_KEY);
     } catch (e) {
-      console.warn('Failed to clear chat:', e);
+      if (__DEV__) {
+        console.warn('Failed to clear chat:', e);
+      }
     }
   };
 

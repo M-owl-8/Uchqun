@@ -122,7 +122,9 @@ export function ParentDashboardScreen() {
         setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });
       }
     } catch (error) {
-      console.error('[ParentDashboard] Error loading dashboard:', error);
+      if (__DEV__) {
+        console.error('[ParentDashboard] Error loading dashboard:', error);
+      }
       setError('Failed to load dashboard data');
       setChildren([]);
       setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });

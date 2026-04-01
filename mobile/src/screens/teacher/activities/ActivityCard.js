@@ -44,7 +44,7 @@ export default function ActivityCard({ activity, onViewDetails, onEdit, onDelete
       <View style={styles.actions}>
         <Pressable style={styles.detailButton} onPress={() => onViewDetails(activity)}>
           <Ionicons name="eye-outline" size={18} color={tokens.colors.semantic.success} />
-          <Text style={styles.detailButtonText}>Batafsil</Text>
+          <Text style={styles.detailButtonText}>{t('common.details', { defaultValue: 'Details' })}</Text>
         </Pressable>
         <Pressable style={styles.editButton} onPress={() => onEdit(activity)}>
           <Ionicons name="pencil" size={18} color={tokens.colors.accent.blue} />

@@ -39,7 +39,9 @@ export const extractResponseDataWithFallback = (response, fallback = null) => {
     const data = extractResponseData(response);
     return data !== undefined && data !== null ? data : fallback;
   } catch (error) {
-    console.error('[ResponseHandler] Error extracting response data:', error);
+    if (__DEV__) {
+      console.error('[ResponseHandler] Error extracting response data:', error);
+    }
     return fallback;
   }
 };

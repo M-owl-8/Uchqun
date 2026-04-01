@@ -12,7 +12,11 @@
     "profile": "Profil",
     "menu": "Menyu",
     "rating": "Baholash",
-    "aiChat": "AI Chat"
+    "aiChat": "AI Chat",
+    "home": "Bosh sahifa",
+    "schoolRating": "Maktab baholash",
+    "notifications": "Bildirishnomalar",
+    "exit": "Chiqish"
   },
   "login": {
     "title": "Uchqun Portal",
@@ -386,6 +390,26 @@
     "toastLoadError": "Mediani yuklashda xatolik",
     "toastChildrenEmpty": "Bolalar topilmadi. Avval ota-onaga bola ma'lumotlarini qo'shing."
   },
+  "media": {
+    "title": "Media galereya",
+    "subtitle": "Maktab hayotidan eng yaxshi lahzalar",
+    "filterAll": "Hammasi",
+    "filterPhoto": "Rasm",
+    "filterVideo": "Video",
+    "empty": "Hozircha media mavjud emas",
+    "back": "Orqaga",
+    "date": "Sana",
+    "photoLabel": "Rasm",
+    "videoLabel": "Video",
+    "video": {
+      "loading": "Video yuklanmoqda...",
+      "failedTitle": "Videoni yuklashda xatolik",
+      "failedDesc": "Video havolasini tekshiring",
+      "unsupportedTitle": "Video havolasi qo'llab-quvvatlanmaydi",
+      "unsupportedDesc": "YouTube, Vimeo yoki to'g'ridan-to'g'ri video fayllardan (.mp4, .webm va boshqalar) foydalaning",
+      "openNewTab": "Yangi oynada ochish"
+    }
+  },
   "chat": {
     "title": "O'qituvchi bilan chat",
     "subtitle": "Farzandingiz o'qituvchisiga xabar yuboring",
@@ -641,7 +665,9 @@
     "loadError": "Ma'lumotlarni yuklashda xatolik",
     "retry": "Qayta urinish",
     "saving": "Saqlanmoqda...",
-    "confirm": "Tasdiqlash"
+    "confirm": "Tasdiqlash",
+    "details": "Batafsil",
+    "noData": "Ma'lumot mavjud emas"
   },
   "time": {
     "justNow": "Hozir",
@@ -1070,5 +1096,8 @@
     "noFiltered": "{{filter}} bildirishnomalar yo'q",
     "tryDifferentFilter": "Boshqa filtrni sinab ko'ring",
     "allCaughtUp": "Barcha bildirishnomalar o'qilgan!"
-  }
+  },
+  "cancel": "Bekor qilish",
+  "save": "Saqlash",
+  "locale": "uz-UZ"
 }

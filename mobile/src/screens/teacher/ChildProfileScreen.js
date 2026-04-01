@@ -76,7 +76,9 @@ export function TeacherChildProfileScreen() {
         populateForm(data);
       }
     } catch (error) {
-      console.error('Error loading child:', error);
+      if (__DEV__) {
+        console.error('Error loading child:', error);
+      }
     } finally {
       setLoading(false);
     }
@@ -159,7 +161,9 @@ export function TeacherChildProfileScreen() {
       setIsEditing(false);
       await loadChild();
     } catch (error) {
-      console.error('Error updating child:', error);
+      if (__DEV__) {
+        console.error('Error updating child:', error);
+      }
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('childProfile.profileUpdateError', { defaultValue: 'Failed to update profile' })

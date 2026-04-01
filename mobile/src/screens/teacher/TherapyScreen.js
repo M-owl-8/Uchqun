@@ -40,7 +40,9 @@ export function TherapyScreen() {
       const data = await teacherService.getTherapySessions(childId);
       setSessions(data);
     } catch (error) {
-      console.error('Error loading therapy sessions:', error);
+      if (__DEV__) {
+        console.error('Error loading therapy sessions:', error);
+      }
       setSessions([]);
     } finally {
       setLoading(false);
@@ -66,7 +68,9 @@ export function TherapyScreen() {
       setShowModal(false);
       loadSessions();
     } catch (error) {
-      console.error('Error creating therapy session:', error);
+      if (__DEV__) {
+        console.error('Error creating therapy session:', error);
+      }
       Alert.alert(t('common.error', { defaultValue: 'Error' }), t('therapy.createFailed', { defaultValue: 'Failed to create session.' }));
     } finally {
       setSaving(false);

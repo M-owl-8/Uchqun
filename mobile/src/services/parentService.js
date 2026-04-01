@@ -109,7 +109,9 @@ export const parentService = {
         return [];
       }
       // Only log non-404 errors
-      console.error('[parentService] Error getting messages:', error);
+      if (__DEV__) {
+        console.error('[parentService] Error getting messages:', error);
+      }
       return [];
     }
   },
