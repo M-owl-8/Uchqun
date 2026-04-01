@@ -51,11 +51,13 @@ export function ChildAssessmentScreen() {
   const [assessments, setAssessments] = useState({});
   const [formData, setFormData] = useState({});
   const [changed, setChanged] = useState({});
+  const [error, setError] = useState(null);
 
   const loadAssessments = useCallback(async () => {
     if (!childId) return;
     try {
       setLoading(true);
+      setError(null);
       const response = await api.get(`/assessments/latest?childId=${childId}`);
       const data = response.data?.data || [];
 
@@ -76,8 +78,9 @@ export function ChildAssessmentScreen() {
       setAssessments(assessmentMap);
       setFormData(formMap);
       setChanged({});
-    } catch (error) {
-      if (__DEV__) console.error('Error loading assessments:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading assessments:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -167,6 +170,16 @@ export function ChildAssessmentScreen() {
         subtitle={childName || ''}
         showBack
       />
+      {error && !loading && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadAssessments()} accessibilityRole="button"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       <ScrollView
         contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}

@@ -58,6 +58,7 @@ export function MealPlanScreen() {
   const [selectedChildIds, setSelectedChildIds] = useState([]);
   const [selectedDate, setSelectedDate] = useState(formatDate(new Date()));
   const [showDatePicker, setShowDatePicker] = useState(false);
+  const [error, setError] = useState(null);
   const [mealData, setMealData] = useState({
     breakfast: { plannedMenu: '', notes: '' },
     lunch: { plannedMenu: '', notes: '' },
@@ -69,6 +70,7 @@ export function MealPlanScreen() {
   const loadChildren = useCallback(async () => {
     try {
       setLoading(true);
+      setError(null);
       const response = await teacherService.getAssignedParents();
       const parents = Array.isArray(response) ? response : response?.data || [];
       const allChildren = [];
@@ -84,8 +86,9 @@ export function MealPlanScreen() {
         }
       }
       setChildren(allChildren);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading children:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading children:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -229,6 +232,17 @@ export function MealPlanScreen() {
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <ScreenHeader title={t('mealPlan.title', { defaultValue: 'Meal Plan' })} />
+
+      {error && !loading && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadChildren()} accessibilityRole="button"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
 
       <KeyboardAvoidingView
         style={{ flex: 1 }}

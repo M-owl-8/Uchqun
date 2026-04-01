@@ -44,6 +44,7 @@ export function TeacherChildProfileScreen() {
   }[i18n.language] || 'en-US';
 
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [saving, setSaving] = useState(false);
   const [child, setChild] = useState(childData || null);
   const [isEditing, setIsEditing] = useState(false);
@@ -71,14 +72,16 @@ export function TeacherChildProfileScreen() {
     if (!childId) return;
     try {
       setLoading(true);
+      setError(null);
       const response = await api.get(`/child/${childId}`);
       const data = extractResponseData(response);
       if (data) {
         setChild(data);
         populateForm(data);
       }
-    } catch (error) {
-      if (__DEV__) console.error('Error loading child:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading child:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -228,6 +231,16 @@ export function TeacherChildProfileScreen() {
             </Pressable>
           }
         />
+        {error && !loading && (
+          <View style={{ padding: 24, alignItems: 'center' }}>
+            <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+            <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+            <Pressable onPress={() => loadChild()} accessibilityRole="button"
+              style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+              <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+            </Pressable>
+          </View>
+        )}
         <ScrollView
           contentContainerStyle={[styles.content, { paddingBottom: bottomPadding }]}
           showsVerticalScrollIndicator={false}

@@ -7,6 +7,7 @@ import {
   Pressable,
   RefreshControl,
 } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 import { useRoute } from '@react-navigation/native';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -64,6 +65,7 @@ export function MealPlanScreen() {
   const todayStr = formatDate(new Date());
   const [selectedDate, setSelectedDate] = useState(todayStr);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [refreshing, setRefreshing] = useState(false);
   const [plans, setPlans] = useState([]);
 
@@ -71,6 +73,7 @@ export function MealPlanScreen() {
     if (!childId) return;
     try {
       setLoading(true);
+      setError(null);
       const response = await api.get('/meal-plans', {
         params: { childId, startDate: selectedDate, endDate: selectedDate },
       });

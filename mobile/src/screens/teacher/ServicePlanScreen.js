@@ -45,6 +45,7 @@ export function ServicePlanScreen() {
   const [saving, setSaving] = useState(false);
   const [plans, setPlans] = useState([]);
   const [hasChanges, setHasChanges] = useState(false);
+  const [error, setError] = useState(null);
   const originalPlansRef = useRef(null);
 
   const years = [currentYear - 1, currentYear, currentYear + 1];
@@ -53,13 +54,15 @@ export function ServicePlanScreen() {
     if (!childId) return;
     try {
       setLoading(true);
+      setError(null);
       const response = await api.get(`/service-plans?childId=${childId}&year=${selectedYear}`);
       const data = response.data?.data || [];
       setPlans(data);
       originalPlansRef.current = JSON.stringify(data);
       setHasChanges(false);
-    } catch (error) {
-      if (__DEV__) console.error('Error loading service plans:', error);
+    } catch (err) {
+      if (__DEV__) console.error('Error loading service plans:', err);
+      setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -166,6 +169,16 @@ export function ServicePlanScreen() {
         ))}
       </View>
 
+      {error && !loading && (
+        <View style={{ padding: 24, alignItems: 'center' }}>
+          <Ionicons name="alert-circle-outline" size={48} color={tokens.colors.semantic.error} />
+          <Text style={{ color: tokens.colors.text.secondary, marginTop: 12, textAlign: 'center' }}>{error}</Text>
+          <Pressable onPress={() => loadPlans()} accessibilityRole="button"
+            style={{ marginTop: 16, paddingHorizontal: 24, paddingVertical: 12, backgroundColor: tokens.colors.accent.blue, borderRadius: tokens.radius.md }}>
+            <Text style={{ color: '#fff', fontWeight: '600' }}>{t('common.retry', { defaultValue: 'Retry' })}</Text>
+          </Pressable>
+        </View>
+      )}
       {loading ? (
         <LoadingSpinner />
       ) : (
