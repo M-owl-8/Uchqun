@@ -34,7 +34,7 @@ export const initializeSocket = (server) => {
       if (!token) return next(new Error('No token provided'));
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      const user = await User.findByPk(decoded.id, {
+      const user = await User.findByPk(decoded.userId, {
         attributes: ['id', 'role', 'schoolId', 'isActive'],
       });
 
