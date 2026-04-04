@@ -14,6 +14,7 @@
     "home": "Главная",
     "aiChat": "AI Помощник",
     "rating": "Обратная связь",
+    "foydali": "Полезное",
     "schoolRating": "Оценка школы",
     "notifications": "Уведомления",
     "exit": "Выход"
@@ -89,6 +90,8 @@
     "viewChildProfile": "Просмотр профиля ребёнка",
     "addActivity": "Добавить занятие",
     "addActivitySub": "Создать новый план занятий",
+    "activities": "Занятия",
+    "activitiesSub": "Планы и питание для учеников",
     "uploadMedia": "Загрузить медиа",
     "uploadMediaSub": "Фото, видео и документы",
     "teacherDashboard": "Панель учителя",
@@ -1116,5 +1119,28 @@
     "noFiltered": "Нет {{filter}} уведомлений",
     "tryDifferentFilter": "Попробуйте другой фильтр",
     "allCaughtUp": "Все уведомления прочитаны!"
+  },
+  "resources": {
+    "screenTitle": "Полезные материалы",
+    "subtitle": "Добавляйте музыку, видео и рекомендации для учеников",
+    "music": "Музыка",
+    "musicSub": "Добавить музыку для учеников",
+    "video": "Видео",
+    "videoSub": "Добавить обучающие видео",
+    "recommendation": "Рекомендация",
+    "recommendationSub": "Советы и рекомендации для родителей",
+    "quickActionSub": "Музыка, видео, рекомендации",
+    "all": "Все",
+    "addNew": "Новый материал",
+    "type": "Тип",
+    "titleLabel": "Заголовок *",
+    "titlePlaceholder": "Введите заголовок...",
+    "descLabel": "Описание",
+    "descPlaceholder": "Краткое описание (необязательно)",
+    "urlLabel": "Ссылка (URL)",
+    "titleRequired": "Заголовок обязателен",
+    "saveError": "Не удалось сохранить",
+    "emptyTitle": "Нет материалов",
+    "emptyDesc": "Нажмите + чтобы добавить материал"
   }
 }

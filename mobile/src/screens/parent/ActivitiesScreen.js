@@ -390,17 +390,25 @@ export function ActivitiesScreen() {
             </ScrollView>
           </View>
         )}
-        {children.length === 0 && !loading && (
-          <Card style={styles.emptyCard}>
-            <EmptyState
-              emoji="👶"
-              title={t('child.selectPrompt', { defaultValue: 'Select Child' })}
-              description={t('activities.selectChildDesc', { defaultValue: 'After adding a child, activities will appear' })}
-            />
-          </Card>
-        )}
         {children.length > 0 && (
           <>
+            {/* Log Meal shortcut */}
+            <Pressable
+              onPress={() => navigation.navigate('Meals')}
+              accessibilityRole="button"
+              accessibilityLabel="Ovqat kiritish"
+              style={({ pressed }) => [styles.mealShortcut, pressed && { opacity: 0.85 }]}
+            >
+              <View style={styles.mealShortcutIcon}>
+                <Ionicons name="restaurant-outline" size={22} color="#2E3A59" />
+              </View>
+              <View style={{ flex: 1 }}>
+                <Text style={styles.mealShortcutTitle}>Ovqat kiritish</Text>
+                <Text style={styles.mealShortcutSub}>Bugungi ovqatni qayd eting</Text>
+              </View>
+              <Ionicons name="chevron-forward" size={18} color="#8A97B0" />
+            </Pressable>
+
             {/* Progress Card — Figma: glass card with mint→blue gradient */}
             <Card style={styles.progressCard}>
               <LinearGradient
@@ -666,6 +674,37 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     padding: tokens.space.xl,
+  },
+
+  // Meal shortcut
+  mealShortcut: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFF8F0',
+    borderRadius: tokens.radius.lg,
+    padding: tokens.space.md,
+    marginBottom: tokens.space.lg,
+    borderWidth: 1,
+    borderColor: '#E8C27E44',
+    gap: tokens.space.md,
+  },
+  mealShortcutIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: tokens.radius.md,
+    backgroundColor: '#E8C27E33',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mealShortcutTitle: {
+    fontSize: 14,
+    fontWeight: '600',
+    color: '#2E3A59',
+  },
+  mealShortcutSub: {
+    fontSize: 12,
+    color: '#8A97B0',
+    marginTop: 2,
   },
 
   // ── Error ────────────────────────────────────────────────────

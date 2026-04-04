@@ -13,6 +13,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { activityService } from '../../services/activityService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
@@ -102,6 +103,7 @@ function ProgressBar({ progress }) {
 
 export function ActivitiesScreen() {
   const { t } = useTranslation();
+  const navigation = useNavigation();
   const insets = useSafeAreaInsets();
 
   const [loading, setLoading] = useState(true);
@@ -355,6 +357,26 @@ export function ActivitiesScreen() {
         </View>
       </Card>
 
+      {/* Meal shortcut */}
+      <Pressable
+        onPress={() => navigation.navigate('Meals')}
+        accessibilityRole="button"
+        style={({ pressed }) => [styles.mealShortcut, pressed && { opacity: 0.8 }]}
+      >
+        <View style={styles.mealShortcutIcon}>
+          <Ionicons name="restaurant-outline" size={22} color="#2E3A59" />
+        </View>
+        <View style={styles.mealShortcutText}>
+          <Text style={styles.mealShortcutTitle}>
+            {t('dashboard.logMeal', { defaultValue: "Ovqat kiritish" })}
+          </Text>
+          <Text style={styles.mealShortcutSub}>
+            {t('dashboard.logMealSub', { defaultValue: "Bugungi ovqatlanishni kuzating" })}
+          </Text>
+        </View>
+        <Ionicons name="chevron-forward" size={18} color="#8A97B0" />
+      </Pressable>
+
       {/* Section title */}
       {activities.length > 0 && (
         <Text style={styles.sectionTitle}>
@@ -446,6 +468,29 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     ...tokens.shadow.elevated,
   },
+
+  // Meal shortcut
+  mealShortcut: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    borderRadius: tokens.radius.xl,
+    padding: tokens.space.md,
+    marginBottom: tokens.space.lg,
+    gap: tokens.space.md,
+    ...tokens.shadow.sm,
+  },
+  mealShortcutIcon: {
+    width: 44,
+    height: 44,
+    borderRadius: tokens.radius.md,
+    backgroundColor: '#E8C27E33',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  mealShortcutText: { flex: 1 },
+  mealShortcutTitle: { fontSize: 15, fontWeight: '600', color: '#2E3A59' },
+  mealShortcutSub: { fontSize: 12, color: '#8A97B0', marginTop: 2 },
 
   // Progress Card
   progressCard: {

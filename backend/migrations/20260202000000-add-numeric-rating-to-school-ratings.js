@@ -8,7 +8,7 @@ export async function up(queryInterface, Sequelize) {
     console.log('✓ Added numericRating column to school_ratings table');
   } catch (error) {
     // Column might already exist, ignore error
-    if (!error.message.includes('already exists') && !error.message.includes('duplicate column')) {
+    if (!error.message.includes('already exists') && !error.message.includes('duplicate column') && !error.message.includes('does not exist')) {
       console.warn('Could not add numericRating column:', error.message);
       throw error;
     } else {

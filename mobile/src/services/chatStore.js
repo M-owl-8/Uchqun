@@ -40,12 +40,23 @@ export async function getUnreadCount(conversationId, role = 'parent') {
 }
 
 export async function getUnreadTotalForPrefix(prefix = 'parent:', role = 'teacher') {
-  // Not implemented for server-side yet; fallback to zero
-  return 0;
+  try {
+    const res = await api.get('/chat/unread-count', { params: { prefix, role } });
+    return res.data?.count ?? 0;
+  } catch (e) {
+    if (__DEV__) console.warn('getUnreadTotalForPrefix error', e?.response?.status, e?.message);
+    return 0;
+  }
 }
 
 export async function listConversations() {
-  return [];
+  try {
+    const res = await api.get('/chat/conversations');
+    return Array.isArray(res.data) ? res.data : [];
+  } catch (e) {
+    if (__DEV__) console.warn('listConversations error', e?.response?.status, e?.message);
+    return [];
+  }
 }
 
 export async function updateMessage(messageId, content) {

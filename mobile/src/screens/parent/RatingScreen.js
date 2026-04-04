@@ -27,6 +27,15 @@ export function RatingScreen() {
       iconColor: tokens.colors.joy.lavender,
       screen: 'SchoolRating',
     },
+    {
+      id: 'teacher',
+      title: t('teacherRatingPage.title', { defaultValue: "O'qituvchini baholash" }),
+      subtitle: t('teacherRatingPage.desc', { defaultValue: "O'qituvchingizni baholang va fikr bildiring" }),
+      icon: 'person',
+      iconBg: tokens.colors.joy.mintSoft || '#DFF4EC',
+      iconColor: tokens.colors.joy.mint || '#34C759',
+      screen: 'TeacherRating',
+    },
   ];
 
   return (

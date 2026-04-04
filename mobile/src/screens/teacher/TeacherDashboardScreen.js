@@ -6,6 +6,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { api } from '../../services/api';
+import { teacherService } from '../../services/teacherService';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
@@ -21,9 +22,8 @@ export function TeacherDashboardScreen() {
   const [error, setError] = useState(null);
   const [stats, setStats] = useState({
     activities: 0,
-    meals: 0,
+    parents: 0,
     media: 0,
-    monitoring: '\u2014',
   });
 
   // Bottom nav height + safe area + padding
@@ -45,18 +45,16 @@ export function TeacherDashboardScreen() {
     try {
       setLoading(true);
 
-      // Single request each for activities, meals, media (backend filters by teacher's children)
-      const [activitiesRes, mealsRes, mediaRes] = await Promise.all([
+      const [activitiesRes, mediaRes, parentsData] = await Promise.all([
         api.get('/activities').catch(() => ({ data: [] })),
-        api.get('/meals').catch(() => ({ data: [] })),
         api.get('/media').catch(() => ({ data: [] })),
+        teacherService.getParents().catch(() => []),
       ]);
 
       const countFromResponse = (res) => {
         const data = res.data;
         if (Array.isArray(data)) return data.length;
         if (Array.isArray(data?.activities)) return data.activities.length;
-        if (Array.isArray(data?.meals)) return data.meals.length;
         if (Array.isArray(data?.media)) return data.media.length;
         if (Array.isArray(data?.data)) return data.data.length;
         if (data?.total != null) return data.total;
@@ -65,9 +63,8 @@ export function TeacherDashboardScreen() {
 
       setStats({
         activities: countFromResponse(activitiesRes),
-        meals: countFromResponse(mealsRes),
+        parents: Array.isArray(parentsData) ? parentsData.length : 0,
         media: countFromResponse(mediaRes),
-        monitoring: '\u2014',
       });
     } catch (err) {
       if (__DEV__) console.error('Error loading dashboard:', err);
@@ -156,7 +153,7 @@ export function TeacherDashboardScreen() {
               <View style={[styles.statIconContainer, { backgroundColor: '#F8D7C4' }]}>
                 <Ionicons name="people" size={24} color={tokens.colors.text.primary} />
               </View>
-              <Text style={styles.statCount}>{stats.meals}</Text>
+              <Text style={styles.statCount}>{stats.parents}</Text>
               <Text style={styles.statLabel}>
                 {t('dashboard.parents', { defaultValue: 'Parents' })}
               </Text>
@@ -183,17 +180,10 @@ export function TeacherDashboardScreen() {
           <View style={styles.quickActionsList}>
             <QuickActionCard
               icon="checkmark-circle-outline"
-              title={t('dashboard.addActivity', { defaultValue: 'Add Activity' })}
-              subtitle={t('dashboard.addActivitySub', { defaultValue: 'Create a new activity plan' })}
+              title={t('dashboard.activities', { defaultValue: 'Activities' })}
+              subtitle={t('dashboard.activitiesSub', { defaultValue: 'Plans & meals for students' })}
               color="#DFF4EC"
               onPress={() => navigation.navigate('Activities')}
-            />
-            <QuickActionCard
-              icon="restaurant-outline"
-              title={t('dashboard.logMeal', { defaultValue: 'Log Meal' })}
-              subtitle={t('dashboard.logMealSub', { defaultValue: "Track today's nutrition" })}
-              color="#E8C27E"
-              onPress={() => navigation.navigate('Meals')}
             />
             <QuickActionCard
               icon="camera-outline"
@@ -202,57 +192,36 @@ export function TeacherDashboardScreen() {
               color="#BFD7EA"
               onPress={() => navigation.navigate('Media')}
             />
+            <QuickActionCard
+              icon="bulb-outline"
+              title={t('resources.screenTitle', { defaultValue: 'Foydali materiallar' })}
+              subtitle={t('resources.quickActionSub', { defaultValue: "Musiqa, video, tavsiya qo'shish" })}
+              color="#E8C27E"
+              onPress={() => navigation.navigate('Resources')}
+            />
           </View>
         </View>
 
-        {/* Recent Updates Section */}
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>
-            {t('dashboard.recentUpdates', { defaultValue: 'Recent Updates' })}
-          </Text>
-
-          <Card style={styles.updateCard}>
-            <View style={styles.updateRow}>
-              <View style={[styles.updateIcon, { backgroundColor: '#DFF4EC' }]}>
-                <Ionicons name="checkmark-circle" size={20} color={tokens.colors.text.primary} />
-              </View>
-              <View style={styles.updateContent}>
-                <Text style={styles.updateTitle}>
-                  {t('dashboard.planUpdated', { defaultValue: 'Individual Plan Updated' })}
-                </Text>
-                <Text style={styles.updateDesc}>
-                  {t('dashboard.planUpdatedDesc', {
-                    defaultValue: "Emma's speech therapy goals have been updated for this week.",
-                  })}
-                </Text>
-                <Text style={styles.updateTime}>
-                  {t('dashboard.timeAgo', { defaultValue: '1 hour ago' })}
-                </Text>
-              </View>
+        {/* Media count stat */}
+        <Card style={styles.statCard} onPress={() => navigation.navigate('Media')}>
+          <View style={styles.updateRow}>
+            <View style={[styles.updateIcon, { backgroundColor: '#BFD7EA' }]}>
+              <Ionicons name="images" size={20} color={tokens.colors.text.primary} />
             </View>
-          </Card>
-
-          <Card style={styles.updateCard}>
-            <View style={styles.updateRow}>
-              <View style={[styles.updateIcon, { backgroundColor: '#F8D7C4' }]}>
-                <Ionicons name="chatbubble-ellipses" size={20} color={tokens.colors.text.primary} />
-              </View>
-              <View style={styles.updateContent}>
-                <Text style={styles.updateTitle}>
-                  {t('dashboard.parentMessage', { defaultValue: 'Parent Message' })}
-                </Text>
-                <Text style={styles.updateDesc}>
-                  {t('dashboard.parentMessageDesc', {
-                    defaultValue: "Sarah Johnson asked about tomorrow's activities.",
-                  })}
-                </Text>
-                <Text style={styles.updateTime}>
-                  {t('dashboard.timeAgo3h', { defaultValue: '3 hours ago' })}
-                </Text>
-              </View>
+            <View style={styles.updateContent}>
+              <Text style={styles.updateTitle}>
+                {t('dashboard.media', { defaultValue: 'Media' })}
+              </Text>
+              <Text style={styles.updateDesc}>
+                {t('dashboard.mediaUploaded', {
+                  defaultValue: '{{count}} files uploaded',
+                  count: stats.media,
+                })}
+              </Text>
             </View>
-          </Card>
-        </View>
+            <Ionicons name="chevron-forward" size={16} color={tokens.colors.text.muted} />
+          </View>
+        </Card>
       </ScrollView>
     </SafeAreaView>
   );

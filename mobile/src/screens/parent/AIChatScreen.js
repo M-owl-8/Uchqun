@@ -55,7 +55,7 @@ export function AIChatScreen() {
   const navigation = useNavigation();
   const { t, i18n } = useTranslation();
   const insets = useSafeAreaInsets();
-  const [messages, setMessages] = useState([DEFAULT_MESSAGE]);
+  const [messages, setMessages] = useState([getDefaultMessage(t)]);
   const [inputText, setInputText] = useState('');
   const [loading, setLoading] = useState(false);
   const [initialLoading, setInitialLoading] = useState(true);
@@ -300,7 +300,7 @@ export function AIChatScreen() {
                 style={styles.input}
                 value={inputText}
                 onChangeText={setInputText}
-                placeholder="Savol yozing..."
+                placeholder={t('aiChat.inputPlaceholder', { defaultValue: 'Savol yozing...' })}
                 placeholderTextColor={tokens.colors.text.tertiary}
                 multiline
                 maxLength={500}

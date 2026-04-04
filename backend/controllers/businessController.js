@@ -241,22 +241,26 @@ export const generateStats = async (req, res) => {
     let data = {};
 
     switch (statType) {
-      case 'overview':
+      case 'overview': {
         const overview = await getOverviewData(periodStart, periodEnd);
         data = overview;
         break;
-      case 'users':
+      }
+      case 'users': {
         const users = await getUsersData(periodStart, periodEnd);
         data = users;
         break;
-      case 'revenue':
+      }
+      case 'revenue': {
         const revenue = await getRevenueData(periodStart, periodEnd);
         data = revenue;
         break;
-      case 'usage':
+      }
+      case 'usage': {
         const usage = await getUsageData(periodStart, periodEnd);
         data = usage;
         break;
+      }
       default:
         return res.status(400).json({ error: 'Invalid stat type' });
     }

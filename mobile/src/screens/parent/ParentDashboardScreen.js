@@ -16,6 +16,15 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import tokens from '../../styles/tokens';
 
+const CATEGORY_LABELS = {
+  cognitive: 'Kognitiv',
+  motor: 'Motor',
+  speech: 'Nutq',
+  behavior: 'Xulq-atvor',
+  social: 'Ijtimoiy',
+  self_care: "O'ziga g'amxo'rlik",
+};
+
 export function ParentDashboardScreen() {
   const { user } = useAuth();
   const { on, off, connected } = useSocket();
@@ -34,6 +43,7 @@ export function ParentDashboardScreen() {
   });
   const [children, setChildren] = useState([]);
   const [selectedChildId, setSelectedChildId] = useState(null);
+  const [assessments, setAssessments] = useState([]);
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -44,10 +54,6 @@ export function ParentDashboardScreen() {
   const pagePadding = tokens.space.xl * 2; // Left + right padding
   const gap = tokens.space.lg;
   const cardWidth = (screenWidth - pagePadding - gap) / 2;
-
-  useEffect(() => {
-    loadData();
-  }, []);
 
   const initialLoadDone = useRef(false);
 
@@ -99,11 +105,12 @@ export function ParentDashboardScreen() {
       }
 
       if (activeChildId) {
-        const [activitiesRes, mealsRes, mediaRes, therapiesRes] = await Promise.all([
+        const [activitiesRes, mealsRes, mediaRes, therapiesRes, assessmentsRes] = await Promise.all([
           parentService.getActivities({ childId: activeChildId }).catch(() => []),
           parentService.getMeals({ childId: activeChildId }).catch(() => []),
           parentService.getMedia({ childId: activeChildId }).catch(() => []),
           api.get('/therapy', { params: { isActive: true } }).catch(() => ({ data: { data: { therapies: [] } } })),
+          api.get('/assessments/latest', { params: { childId: activeChildId } }).catch(() => ({ data: { data: [] } })),
         ]);
 
         const activities = Array.isArray(activitiesRes) ? activitiesRes : (activitiesRes?.activities || []);
@@ -111,6 +118,7 @@ export function ParentDashboardScreen() {
         const media = Array.isArray(mediaRes) ? mediaRes : (mediaRes?.media || []);
         const therapiesData = therapiesRes?.data?.data?.therapies || therapiesRes?.data?.data || therapiesRes?.data?.therapies || [];
         const therapies = Array.isArray(therapiesData) ? therapiesData : [];
+        const assessmentsData = assessmentsRes?.data?.data || [];
 
         setStats({
           activities: activities.length,
@@ -118,14 +126,17 @@ export function ParentDashboardScreen() {
           media: media.length,
           therapies: therapies.length,
         });
+        setAssessments(Array.isArray(assessmentsData) ? assessmentsData : []);
       } else {
         setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });
+        setAssessments([]);
       }
     } catch (error) {
       if (__DEV__) console.error('[ParentDashboard] Error loading dashboard:', error);
       setError('Failed to load dashboard data');
       setChildren([]);
       setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });
+      setAssessments([]);
     } finally {
       if (isInitial) setLoading(false);
       setRefreshing(false);
@@ -273,28 +284,55 @@ export function ParentDashboardScreen() {
           </Text>
           <View style={styles.quickActionsList}>
             <QuickActionCard
-              icon="restaurant-outline"
-              title={t('dashboard.logMeal', { defaultValue: 'Log Meal' })}
-              subtitle={t('dashboard.logMealSub', { defaultValue: "Track today's nutrition" })}
-              color="#E8C27E"
-              onPress={() => navigation.navigate('Meals')}
-            />
-            <QuickActionCard
               icon="sparkles-outline"
-              title={t('dashboard.startActivity', { defaultValue: 'Start Activity' })}
-              subtitle={t('dashboard.startActivitySub', { defaultValue: 'Begin a new session' })}
+              title={t('dashboard.activities', { defaultValue: 'Mashg\'ulotlar' })}
+              subtitle={t('dashboard.startActivitySub', { defaultValue: 'Barcha mashg\'ulotlarni ko\'rish' })}
               color="#DFF4EC"
               onPress={() => navigation.navigate('Activities')}
             />
-            <QuickActionCard
-              icon="chatbubble-ellipses-outline"
-              title={t('dashboard.chatWithTeacher', { defaultValue: 'Chat with Teacher' })}
-              subtitle={t('dashboard.chatWithTeacherSub', { defaultValue: 'Send a message' })}
-              color="#BFD7EA"
-              onPress={() => navigation.navigate('Chat')}
-            />
           </View>
         </View>
+
+        {/* Assessments Section */}
+        {selectedChild && (
+          <View style={styles.section}>
+            <Text style={styles.sectionTitle}>
+              {t('dashboard.assessments', { defaultValue: "Tarbiyachi Baholari" })}
+            </Text>
+            {assessments.length === 0 ? (
+              <Card style={styles.emptyAssessmentCard}>
+                <Text style={styles.emptyAssessmentText}>
+                  {t('dashboard.noAssessments', { defaultValue: 'Hozircha baholar yo\'q' })}
+                </Text>
+              </Card>
+            ) : (
+              <View style={styles.assessmentGrid}>
+                {assessments.map((item) => (
+                  <Card key={item.id} style={styles.assessmentCard}>
+                    <Text style={styles.assessmentCategory}>
+                      {CATEGORY_LABELS[item.category] || item.category}
+                    </Text>
+                    <View style={styles.starsRow}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Ionicons
+                          key={star}
+                          name={star <= item.score ? 'star' : 'star-outline'}
+                          size={16}
+                          color={star <= item.score ? '#E8C27E' : '#C8D0DC'}
+                        />
+                      ))}
+                    </View>
+                    {item.teacher && (
+                      <Text style={styles.assessmentTeacher} numberOfLines={1}>
+                        {item.teacher.firstName} {item.teacher.lastName}
+                      </Text>
+                    )}
+                  </Card>
+                ))}
+              </View>
+            )}
+          </View>
+        )}
 
         {/* My Children Section */}
         {children.length > 0 && (
@@ -443,6 +481,45 @@ const styles = StyleSheet.create({
   // Quick Actions
   quickActionsList: {
     gap: tokens.space.md,
+  },
+
+  // Assessments
+  assessmentGrid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: tokens.space.md,
+  },
+  assessmentCard: {
+    width: '47%',
+    alignItems: 'center',
+    paddingVertical: tokens.space.md,
+  },
+  assessmentCategory: {
+    fontSize: 12,
+    fontWeight: '600',
+    color: '#2E3A59',
+    marginBottom: tokens.space.sm,
+    textAlign: 'center',
+  },
+  starsRow: {
+    flexDirection: 'row',
+    gap: 2,
+    marginBottom: tokens.space.xs,
+  },
+  assessmentTeacher: {
+    fontSize: 11,
+    color: tokens.colors.text.secondary,
+    textAlign: 'center',
+    marginTop: tokens.space.xs,
+  },
+  emptyAssessmentCard: {
+    alignItems: 'center',
+    paddingVertical: tokens.space.lg,
+  },
+  emptyAssessmentText: {
+    fontSize: 14,
+    color: tokens.colors.text.secondary,
+    textAlign: 'center',
   },
 
   // Children List

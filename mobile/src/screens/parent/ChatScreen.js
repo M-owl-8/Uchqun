@@ -49,7 +49,10 @@ export function ChatScreen() {
       let alive = true;
 
       const load = async () => {
-        if (!conversationId) return;
+        if (!conversationId) {
+          setLoading(false);
+          return;
+        }
         setError(null);
         try {
           const msgs = await loadMessages(conversationId);
@@ -59,8 +62,9 @@ export function ChatScreen() {
         } catch (err) {
           if (!alive) return;
           setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
+        } finally {
+          if (alive) setLoading(false);
         }
-        if (loading) setLoading(false);
       };
 
       load();

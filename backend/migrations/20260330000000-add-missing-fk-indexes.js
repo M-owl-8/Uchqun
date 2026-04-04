@@ -25,8 +25,8 @@ export async function up(queryInterface) {
     try {
       await queryInterface.addIndex(idx.table, idx.fields, { name: idx.name });
     } catch (err) {
-      if (err.message && err.message.includes('already exists')) {
-        // Index already exists, skip
+      if (err.message && (err.message.includes('already exists') || err.message.includes('does not exist'))) {
+        // Index already exists or column not yet added — skip
       } else {
         throw err;
       }

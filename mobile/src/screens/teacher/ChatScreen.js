@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import tokens from '../../styles/tokens';
 import { teacherService } from '../../services/teacherService';
-import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../services/chatStore';
+import { loadMessages, addMessage, markRead, updateMessage, deleteMessage, listConversations } from '../../services/chatStore';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
@@ -42,40 +42,37 @@ export function ChatScreen() {
   const justSentRef = useRef(false);
   const [isAtBottom, setIsAtBottom] = useState(true);
 
-  // Load parents and their last messages
+  // Load parents with last message using the conversations endpoint (single API call)
   useEffect(() => {
     const fetchParents = async () => {
       try {
-        const parentsData = await teacherService.getParents();
-        const list = Array.isArray(parentsData) ? parentsData.filter(
-          (p) => !user?.id || p.teacherId === user.id
-        ) : [];
+        const [parentsData, conversations] = await Promise.all([
+          teacherService.getParents().catch(() => []),
+          listConversations().catch(() => []),
+        ]);
+
+        const list = Array.isArray(parentsData) ? parentsData : [];
         setParents(list);
 
-        // Load last message for each parent
-        const parentsWithMessages = await Promise.all(
-          list.map(async (parent) => {
-            const convoId = `parent:${parent.id}`;
-            const msgs = await loadMessages(convoId);
-            const sorted = Array.isArray(msgs)
-              ? [...msgs].sort((a, b) => new Date(b.createdAt || b.time) - new Date(a.createdAt || a.time))
-              : [];
-            const lastMsg = sorted[0] || null;
+        // Build a lookup from conversationId → conversation data
+        const convoMap = {};
+        conversations.forEach((c) => { convoMap[c.conversationId] = c; });
 
-            return {
-              ...parent,
-              lastMessage: lastMsg,
-              unreadCount: msgs.filter(m => m.senderRole === 'parent' && !m.readByTeacher).length,
-            };
-          })
-        );
+        const parentsWithMessages = list.map((parent) => {
+          const convo = convoMap[`parent:${parent.id}`] || null;
+          return {
+            ...parent,
+            lastMessage: convo?.lastMessage || null,
+            unreadCount: convo?.unreadCount || 0,
+          };
+        });
 
-        // Sort by last message time (most recent first)
+        // Sort: parents with recent messages first
         parentsWithMessages.sort((a, b) => {
           if (!a.lastMessage && !b.lastMessage) return 0;
           if (!a.lastMessage) return 1;
           if (!b.lastMessage) return -1;
-          return new Date(b.lastMessage.createdAt || b.lastMessage.time) - new Date(a.lastMessage.createdAt || a.lastMessage.time);
+          return new Date(b.lastMessage.createdAt || b.lastMessage.updatedAt) - new Date(a.lastMessage.createdAt || a.lastMessage.updatedAt);
         });
 
         setParentsWithLastMessage(parentsWithMessages);

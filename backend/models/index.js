@@ -32,6 +32,7 @@ import RefreshToken from './RefreshToken.js';
 import ChildAssessment from './ChildAssessment.js';
 import ServicePlan from './ServicePlan.js';
 import MealPlan from './MealPlan.js';
+import TeacherResource from './TeacherResource.js';
 
 // Initialize all models
 const models = {
@@ -68,6 +69,7 @@ const models = {
   ChildAssessment,
   ServicePlan,
   MealPlan,
+  TeacherResource,
   sequelize,
 };
 
@@ -230,6 +232,12 @@ MealPlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(MealPlan, { foreignKey: 'createdBy', as: 'createdMealPlans' });
 MealPlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
+// Teacher Resource relationships
+User.hasMany(TeacherResource, { foreignKey: 'teacherId', as: 'teacherResources' });
+TeacherResource.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+School.hasMany(TeacherResource, { foreignKey: 'schoolId', as: 'teacherResources' });
+TeacherResource.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
 // Sync database (use with caution in production)
 export const syncDatabase = async (force = false) => {
   try {
@@ -319,5 +327,6 @@ export {
   ChildAssessment,
   ServicePlan,
   MealPlan,
+  TeacherResource,
   sequelize,
 };

@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import ChatMessage from '../models/ChatMessage.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
@@ -180,5 +181,98 @@ export const deleteMessage = async (req, res) => {
   } catch (err) {
     logger.error('deleteMessage error', err);
     res.status(500).json({ error: 'Failed to delete message' });
+  }
+};
+
+const getAccessibleConversationIds = async (req, prefix) => {
+  if (req.user.role === 'parent') {
+    const id = `parent:${req.user.id}`;
+    return prefix ? (id.startsWith(prefix) ? [id] : []) : [id];
+  }
+
+  if (req.user.role === 'admin') {
+    const rows = await ChatMessage.findAll({
+      attributes: ['conversationId'],
+      group: ['conversationId'],
+      raw: true,
+      ...(prefix && { where: { conversationId: { [Op.like]: `${prefix}%` } } }),
+    });
+    return rows.map((r) => r.conversationId);
+  }
+
+  // teacher / reception: derive from children they manage
+  const { default: Child } = await import('../models/Child.js');
+  const children = await Child.findAll({
+    attributes: ['parentId'],
+    where: req.user.role === 'teacher' ? { teacherId: req.user.id } : { createdBy: req.user.id },
+    group: ['parentId'],
+    raw: true,
+  });
+  const ids = children.map((c) => `parent:${c.parentId}`);
+  return prefix ? ids.filter((id) => id.startsWith(prefix)) : ids;
+};
+
+export const getUnreadCount = async (req, res) => {
+  try {
+    const { prefix = 'parent:', role } = req.query;
+    const countRole = role || (req.user.role === 'parent' ? 'parent' : 'teacher');
+
+    const conversationIds = await getAccessibleConversationIds(req, prefix);
+    if (conversationIds.length === 0) return res.json({ count: 0 });
+
+    const unreadWhere =
+      countRole === 'parent'
+        ? { readByParent: false, senderRole: 'teacher' }
+        : { readByTeacher: false, senderRole: 'parent' };
+
+    const count = await ChatMessage.count({
+      where: { conversationId: { [Op.in]: conversationIds }, ...unreadWhere },
+    });
+
+    res.json({ count });
+  } catch (err) {
+    logger.error('getUnreadCount error', err);
+    res.status(500).json({ error: 'Failed to get unread count' });
+  }
+};
+
+export const listConversations = async (req, res) => {
+  try {
+    const conversationIds = await getAccessibleConversationIds(req, null);
+    if (conversationIds.length === 0) return res.json([]);
+
+    const isParent = req.user.role === 'parent';
+    const unreadWhere = isParent
+      ? { readByParent: false, senderRole: 'teacher' }
+      : { readByTeacher: false, senderRole: 'parent' };
+
+    const conversations = await Promise.all(
+      conversationIds.map(async (conversationId) => {
+        const [lastMessage, unreadCount] = await Promise.all([
+          ChatMessage.findOne({
+            where: { conversationId },
+            order: [['createdAt', 'DESC']],
+          }),
+          ChatMessage.count({ where: { conversationId, ...unreadWhere } }),
+        ]);
+        return {
+          conversationId,
+          lastMessage: lastMessage || null,
+          unreadCount,
+          updatedAt: lastMessage?.createdAt || null,
+        };
+      })
+    );
+
+    conversations.sort((a, b) => {
+      if (!a.updatedAt) return 1;
+      if (!b.updatedAt) return -1;
+      return new Date(b.updatedAt) - new Date(a.updatedAt);
+    });
+
+    res.json(conversations);
+  } catch (err) {
+    logger.error('listConversations error', err);
+    res.status(500).json({ error: 'Failed to list conversations' });
   }
 };

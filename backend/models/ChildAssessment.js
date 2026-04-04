@@ -16,9 +16,9 @@ const ChildAssessment = sequelize.define('ChildAssessment', {
   tableName: 'child_assessments',
   timestamps: true,
   indexes: [
-    { fields: ['child_id'] },
-    { fields: ['teacher_id'] },
-    { fields: ['child_id', 'category', 'date'], unique: true },
+    { fields: ['childId'] },
+    { fields: ['teacherId'] },
+    { fields: ['childId', 'category', 'date'], unique: true },
   ],
 });
 

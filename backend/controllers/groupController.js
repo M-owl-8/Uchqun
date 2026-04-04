@@ -162,6 +162,10 @@ export const updateGroup = async (req, res) => {
       return res.status(404).json({ error: 'Group not found' });
     }
 
+    if (req.user.schoolId && group.schoolId && group.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Access denied to this group' });
+    }
+
     // If teacherId is being updated, verify teacher exists
     if (teacherId && teacherId !== group.teacherId) {
       const teacher = await User.findByPk(teacherId);
@@ -202,6 +206,10 @@ export const deleteGroup = async (req, res) => {
     const group = await Group.findByPk(id);
     if (!group) {
       return res.status(404).json({ error: 'Group not found' });
+    }
+
+    if (req.user.schoolId && group.schoolId && group.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Access denied to this group' });
     }
 
     await group.destroy();

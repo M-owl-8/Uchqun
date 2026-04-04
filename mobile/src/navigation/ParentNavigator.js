@@ -10,7 +10,10 @@ import { ChildProfileScreen } from '../screens/parent/ChildProfileScreen';
 import { ActivitiesScreen } from '../screens/parent/ActivitiesScreen';
 import { MealsScreen } from '../screens/parent/MealsScreen';
 import { MediaScreen } from '../screens/parent/MediaScreen';
-import { ChatScreen } from '../screens/parent/ChatScreen';
+import { FoydaliScreen } from '../screens/parent/FoydaliScreen';
+import { MusiqaScreen } from '../screens/parent/MusiqaScreen';
+import { VideoScreen } from '../screens/parent/VideoScreen';
+import { TavsiyaScreen } from '../screens/parent/TavsiyaScreen';
 
 import { SchoolRatingScreen } from '../screens/parent/SchoolRatingScreen';
 import { SettingsScreen } from '../screens/parent/SettingsScreen';
@@ -23,6 +26,8 @@ import { AIWarningsScreen } from '../screens/parent/AIWarningsScreen';
 import { DiagnosticsScreen } from '../screens/parent/DiagnosticsScreen';
 import { ServicePlanScreen } from '../screens/parent/ServicePlanScreen';
 import { MealPlanScreen } from '../screens/parent/MealPlanScreen';
+import { ChatScreen } from '../screens/parent/ChatScreen';
+import { TeacherRatingScreen } from '../screens/parent/TeacherRatingScreen';
 import FloatingAI from '../components/common/FloatingAI';
 import tokens from '../styles/tokens';
 import { useTranslation } from 'react-i18next';
@@ -43,9 +48,9 @@ const TAB_CONFIG = {
     icon: 'star',
     label: 'Rating',
   },
-  Chat: {
-    icon: 'chatbubble-ellipses',
-    label: 'Chat',
+  Foydali: {
+    icon: 'bulb',
+    label: 'Foydali',
   },
   Profile: {
     icon: 'person',
@@ -97,7 +102,7 @@ function ParentTabs() {
     const labelMap = {
       Dashboard: t('nav.dashboard'),
       Rating: t('nav.rating'),
-      Chat: t('nav.chat'),
+      Foydali: t('nav.foydali'),
       Profile: t('nav.profile'),
       Settings: t('nav.menu'),
     };
@@ -138,7 +143,7 @@ function ParentTabs() {
     >
       <Tab.Screen name="Dashboard" component={ParentDashboardScreen} />
       <Tab.Screen name="Rating" component={RatingScreen} />
-      <Tab.Screen name="Chat" component={ChatScreen} />
+      <Tab.Screen name="Foydali" component={FoydaliScreen} />
       <Tab.Screen name="Profile" component={ParentProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
@@ -159,7 +164,9 @@ export function ParentNavigator() {
         <Stack.Screen name="Activities" component={ActivitiesScreen} />
         <Stack.Screen name="Meals" component={MealsScreen} />
         <Stack.Screen name="Media" component={MediaScreen} />
-        <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="Musiqa" component={MusiqaScreen} />
+        <Stack.Screen name="Video" component={VideoScreen} />
+        <Stack.Screen name="Tavsiya" component={TavsiyaScreen} />
 
         <Stack.Screen name="SchoolRating" component={SchoolRatingScreen} />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
@@ -169,6 +176,8 @@ export function ParentNavigator() {
         <Stack.Screen name="AIWarnings" component={AIWarningsScreen} />
         <Stack.Screen name="ServicePlan" component={ServicePlanScreen} />
         <Stack.Screen name="MealPlan" component={MealPlanScreen} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+        <Stack.Screen name="TeacherRating" component={TeacherRatingScreen} />
         {__DEV__ && (
           <Stack.Screen name="Diagnostics" component={DiagnosticsScreen} />
         )}

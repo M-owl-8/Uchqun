@@ -16,8 +16,8 @@ const MealPlan = sequelize.define('MealPlan', {
   tableName: 'meal_plans',
   timestamps: true,
   indexes: [
-    { fields: ['child_id', 'date', 'meal_type'], unique: true },
-    { fields: ['child_id'] },
+    { fields: ['childId', 'date', 'mealType'], unique: true },
+    { fields: ['childId'] },
     { fields: ['date'] },
   ],
 });

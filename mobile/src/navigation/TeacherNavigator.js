@@ -25,6 +25,8 @@ import { TeacherChildProfileScreen } from '../screens/teacher/ChildProfileScreen
 import { ChildAssessmentScreen } from '../screens/teacher/ChildAssessmentScreen';
 import { ServicePlanScreen } from '../screens/teacher/ServicePlanScreen';
 import { MealPlanScreen } from '../screens/teacher/MealPlanScreen';
+import { ResourcesScreen } from '../screens/teacher/ResourcesScreen';
+import { TeacherResourceDetailScreen } from '../screens/teacher/TeacherResourceDetailScreen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -132,7 +134,6 @@ export function TeacherNavigator() {
       <Stack.Screen name="Activities" component={ActivitiesScreen} />
       <Stack.Screen name="Meals" component={MealsScreen} />
       <Stack.Screen name="Media" component={MediaScreen} />
-      <Stack.Screen name="Chat" component={ChatScreen} />
       <Stack.Screen name="Notifications" component={NotificationsScreen} />
       <Stack.Screen name="EmotionalMonitoring" component={EmotionalMonitoringScreen} />
       <Stack.Screen name="MonitoringJournal" component={MonitoringJournalScreen} />
@@ -141,6 +142,22 @@ export function TeacherNavigator() {
       <Stack.Screen name="ChildAssessment" component={ChildAssessmentScreen} />
       <Stack.Screen name="ServicePlan" component={ServicePlanScreen} />
       <Stack.Screen name="MealPlan" component={MealPlanScreen} />
+      <Stack.Screen name="Resources" component={ResourcesScreen} />
+      <Stack.Screen
+        name="ResourceMusic"
+        component={TeacherResourceDetailScreen}
+        initialParams={{ type: 'music' }}
+      />
+      <Stack.Screen
+        name="ResourceVideo"
+        component={TeacherResourceDetailScreen}
+        initialParams={{ type: 'video' }}
+      />
+      <Stack.Screen
+        name="ResourceRecommendation"
+        component={TeacherResourceDetailScreen}
+        initialParams={{ type: 'recommendation' }}
+      />
     </Stack.Navigator>
   );
 }

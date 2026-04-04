@@ -26,7 +26,7 @@ export async function up(queryInterface, Sequelize) {
   }
 }
 
-export async function down(queryInterface) {
+export async function down(queryInterface, Sequelize) {
   // Revert stars field to allow NULL
   try {
     await queryInterface.changeColumn('school_ratings', 'stars', {
