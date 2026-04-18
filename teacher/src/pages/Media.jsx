@@ -38,7 +38,7 @@ const getProxyUrl = (url, mediaId) => {
   if (url.includes('appwrite.io') && (url.includes('/storage/buckets/') || url.includes('/files/'))) {
     // Use VITE_API_URL if available, otherwise use Railway backend URL (same as api.js)
     // This ensures consistency with the API base URL
-    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
     const apiBase = apiUrl.replace('/api', '');
     const proxyUrl = `${apiBase}/api/media/proxy/${mediaId}`;
     return proxyUrl;

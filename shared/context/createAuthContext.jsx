@@ -16,7 +16,7 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
     useEffect(() => {
       const token = localStorage.getItem(tokenKey);
       if (!token) { setLoading(false); return; }
-      const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api';
+      const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
       axios.get(`${baseURL}/auth/me`, {
         headers: { Authorization: `Bearer ${token}` },
       }).then(res => {
@@ -39,7 +39,7 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
     }, []);
 
     const login = async (email, password) => {
-      const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api';
+      const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
       const res = await axios.post(`${baseURL}/auth/login`, { email, password }, { withCredentials: true });
       const { accessToken, refreshToken, user: userData } = res.data;
       if (requiredRole && userData.role !== requiredRole) {
@@ -55,7 +55,7 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
     const logout = async () => {
       try {
         const token = localStorage.getItem(tokenKey);
-        const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api';
+        const baseURL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
         if (token) {
           await axios.post(`${baseURL}/auth/logout`, {}, {
             headers: { Authorization: `Bearer ${token}` },
@@ -70,8 +70,19 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
       }
     };
 
+    const role = user?.role || null;
     return (
-      <AuthContext.Provider value={{ user, setUser, loading, login, logout, isAuthenticated: !!user }}>
+      <AuthContext.Provider value={{
+        user, setUser, loading, login, logout,
+        isAuthenticated: !!user,
+        isAdmin: role === 'admin',
+        isReception: role === 'reception',
+        isTeacher: role === 'teacher',
+        isParent: role === 'parent',
+        isGovernment: role === 'government',
+        isBusiness: role === 'business',
+        isSuperAdmin: role === 'super-admin',
+      }}>
         {children}
       </AuthContext.Provider>
     );

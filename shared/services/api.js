@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export function createApi({ tokenKey = 'accessToken', withCredentials = true } = {}) {
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api',
+    baseURL: import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api',
     headers: { 'Content-Type': 'application/json' },
     withCredentials,
   });

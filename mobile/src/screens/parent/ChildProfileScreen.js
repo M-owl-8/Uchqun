@@ -45,7 +45,7 @@ function getPhotoUrl(photo) {
     return photo;
   }
   // Get base URL without /api
-  const base = (API_URL || '').replace(/\/api\/?$/, '') || 'https://uchqun-production.up.railway.app';
+  const base = (API_URL || '').replace(/\/api\/?$/, '') || 'https://uchqun-production-2d8a.up.railway.app';
   // Handle /avatars/ paths (Appwrite storage)
   if (photo.startsWith('/avatars/')) {
     return `${base}${photo}`;

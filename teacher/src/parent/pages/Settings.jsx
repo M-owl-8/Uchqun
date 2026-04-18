@@ -24,7 +24,7 @@ const Settings = () => {
   const { user, setUser, logout } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production.up.railway.app';
+  const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production-2d8a.up.railway.app';
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);

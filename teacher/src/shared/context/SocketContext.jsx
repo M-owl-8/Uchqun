@@ -28,7 +28,7 @@ export function SocketProvider({ children }) {
 
   // Get the base URL for WebSocket connection
   const getSocketUrl = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production.up.railway.app/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
     const baseUrl = apiUrl.replace(/\/api\/?$/, '');
     console.log('[Socket] Connecting to:', baseUrl);
     return baseUrl;

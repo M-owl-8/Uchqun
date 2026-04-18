@@ -17,7 +17,7 @@ export default defineConfig({
     port: 5174,
     proxy: {
       '/api': {
-        target: process.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production.up.railway.app',
+        target: process.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production-2d8a.up.railway.app',
         changeOrigin: true,
         secure: true, // Use secure for HTTPS Railway backend
         configure: (proxy, _options) => {
@@ -52,7 +52,7 @@ export default defineConfig({
         },
       },
       '/uploads': {
-        target: process.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production.up.railway.app',
+        target: process.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production-2d8a.up.railway.app',
         changeOrigin: true,
         secure: true, // Use secure for HTTPS Railway backend
       },
