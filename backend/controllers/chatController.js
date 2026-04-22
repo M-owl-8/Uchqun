@@ -200,11 +200,26 @@ const getAccessibleConversationIds = async (req, prefix) => {
     return rows.map((r) => r.conversationId);
   }
 
-  // teacher / reception: derive from children they manage
+  // teacher: derive from children in groups they own (Child has no teacherId
+  // column — link goes Group.teacherId -> Group -> Child.groupId)
   const { default: Child } = await import('../models/Child.js');
+  let where;
+  if (req.user.role === 'teacher') {
+    const { default: Group } = await import('../models/Group.js');
+    const groups = await Group.findAll({
+      attributes: ['id'],
+      where: { teacherId: req.user.id },
+      raw: true,
+    });
+    const groupIds = groups.map((g) => g.id);
+    if (groupIds.length === 0) return [];
+    where = { groupId: { [Op.in]: groupIds } };
+  } else {
+    where = { createdBy: req.user.id };
+  }
   const children = await Child.findAll({
     attributes: ['parentId'],
-    where: req.user.role === 'teacher' ? { teacherId: req.user.id } : { createdBy: req.user.id },
+    where,
     group: ['parentId'],
     raw: true,
   });
