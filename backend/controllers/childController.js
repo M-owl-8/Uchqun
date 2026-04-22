@@ -158,59 +158,33 @@ export const updateChild = async (req, res) => {
 
     const updateData = { ...req.body };
 
-    // Handle photo upload - supports both multipart (req.file) and base64 (req.body.photoBase64)
+    // Handle photo upload - store as base64 data URI in DB so the image
+    // survives Railway container restarts (ephemeral disk wipes /uploads).
+    const MAX_PHOTO_BYTES = 1.5 * 1024 * 1024; // ~1.5 MB raw
     if (req.file) {
       try {
-        // Delete old photo if exists
-        if (child.photo) {
-          try {
-            await deleteFile(child.photo);
-            logger.info('Old child photo deleted', { childId: id, oldPhotoUrl: child.photo });
-          } catch (deleteError) {
-            logger.warn('Failed to delete old child photo', {
-              childId: id,
-              error: deleteError.message,
-              oldPhotoUrl: child.photo,
-            });
-          }
+        if (req.file.buffer.length > MAX_PHOTO_BYTES) {
+          return res.status(413).json({
+            error: 'Photo too large',
+            message: 'Please pick an image smaller than 1.5 MB.',
+          });
         }
-
-        const fileBuffer = req.file.buffer;
-        let extension = req.file.originalname.substring(req.file.originalname.lastIndexOf('.') + 1) ||
-                     req.file.mimetype.split('/')[1] || 'jpg';
-        
-        if (extension === 'jpeg') extension = 'jpg';
-        
-        const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        if (!validExtensions.includes(extension.toLowerCase())) {
-          extension = 'jpg';
-        }
-        
-        const filename = `child-${id}-${Date.now()}.${extension.toLowerCase()}`;
-
-        const uploadResult = await uploadFile(fileBuffer, filename, req.file.mimetype);
-        
-        if (!uploadResult?.url) {
-          throw new Error('Upload succeeded but no URL returned');
-        }
-        
-        updateData.photo = uploadResult.url;
+        const mimetype = req.file.mimetype || 'image/jpeg';
+        updateData.photo = `data:${mimetype};base64,${req.file.buffer.toString('base64')}`;
         delete updateData.photoBase64;
-        
       } catch (uploadError) {
-        logger.error('Photo upload error (multipart)', { 
+        logger.error('Photo encode error (multipart)', {
           error: uploadError.message,
           childId: id,
-          stack: uploadError.stack,
         });
-        return res.status(500).json({ 
-          error: 'Failed to upload photo',
+        return res.status(500).json({
+          error: 'Failed to process photo',
           details: process.env.NODE_ENV === 'development' ? uploadError.message : undefined,
         });
       }
-      
+
     } else if (req.body.photoBase64 && req.body.photoBase64 !== child.photo) {
-      // Only process if photoBase64 is provided AND it's different from current photo
+      // photoBase64 path — accept "data:image/...;base64,..." and persist as-is
       try {
         if (typeof req.body.photoBase64 !== 'string') {
           return res.status(400).json({ error: 'photoBase64 must be a string' });
@@ -218,87 +192,26 @@ export const updateChild = async (req, res) => {
 
         const matches = req.body.photoBase64.match(/^data:(.+);base64,(.+)$/);
         if (!matches || matches.length !== 3) {
-          logger.warn('Invalid base64 format', {
-            hasPrefix: req.body.photoBase64.startsWith('data:'),
-            length: req.body.photoBase64.length,
-          });
-          return res.status(400).json({ 
-            error: 'Invalid base64 photo format. Expected format: data:image/jpeg;base64,...' 
+          return res.status(400).json({
+            error: 'Invalid base64 photo format. Expected format: data:image/jpeg;base64,...'
           });
         }
 
-        const mimetype = matches[1];
         const base64Data = matches[2];
-        
         if (!base64Data || base64Data.length === 0) {
           return res.status(400).json({ error: 'Empty base64 data' });
         }
 
-        let fileBuffer;
-        try {
-          fileBuffer = Buffer.from(base64Data, 'base64');
-          if (fileBuffer.length === 0) {
-            return res.status(400).json({ error: 'Failed to decode base64 data' });
-          }
-        } catch (decodeError) {
-          logger.error('Base64 decode error', { error: decodeError.message });
-          return res.status(400).json({ error: 'Invalid base64 encoding' });
-        }
-
-        // Delete old photo if exists
-        if (child.photo) {
-          try {
-            await deleteFile(child.photo);
-            logger.info('Old child photo deleted', { childId: id, oldPhotoUrl: child.photo });
-          } catch (deleteError) {
-            logger.warn('Failed to delete old child photo', {
-              childId: id,
-              error: deleteError.message,
-              oldPhotoUrl: child.photo,
-            });
-          }
-        }
-
-        // Normalize extension
-        let extension = mimetype.split('/')[1] || 'jpg';
-        if (extension === 'jpeg') extension = 'jpg';
-        
-        const validExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-        if (!validExtensions.includes(extension.toLowerCase())) {
-          extension = 'jpg';
-        }
-        
-        const filename = `child-${id}-${Date.now()}.${extension.toLowerCase()}`;
-
-        logger.info('Uploading child photo', {
-          childId: id,
-          filename,
-          mimetype,
-          size: fileBuffer.length,
-        });
-
-        const uploadResult = await uploadFile(fileBuffer, filename, mimetype);
-        
-        logger.info('Upload file result:', {
-          hasUrl: !!uploadResult?.url,
-          url: uploadResult?.url?.substring(0, 100),
-        });
-
-        if (!uploadResult || !uploadResult.url) {
-          logger.error('Upload result missing URL', { uploadResult, childId: id });
-          return res.status(500).json({
-            error: 'Upload succeeded but no URL returned',
-            details: process.env.NODE_ENV === 'development' ? 'Upload result is missing URL field' : undefined,
+        const decodedSize = Math.floor((base64Data.length * 3) / 4);
+        if (decodedSize > MAX_PHOTO_BYTES) {
+          return res.status(413).json({
+            error: 'Photo too large',
+            message: 'Please pick an image smaller than 1.5 MB.',
           });
         }
 
-        updateData.photo = uploadResult.url;
+        updateData.photo = req.body.photoBase64;
         delete updateData.photoBase64;
-        
-        logger.info('Child photo uploaded successfully', {
-          childId: id,
-          url: uploadResult.url.substring(0, 100),
-        });
         
       } catch (uploadError) {
         logger.error('Photo upload error (base64)', {
