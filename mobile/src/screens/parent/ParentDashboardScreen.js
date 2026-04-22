@@ -176,11 +176,12 @@ export function ParentDashboardScreen() {
     : user?.firstName || t('dashboard.welcome', { defaultValue: 'Welcome' });
 
   const BASE_URL = API_URL.replace(/\/api$/, '');
-  const avatarUri = user?.avatar
-    ? user.avatar.startsWith('http')
-      ? user.avatar
-      : `${BASE_URL}${user.avatar}`
-    : null;
+  const resolveImageUri = (raw) => {
+    if (!raw) return null;
+    if (raw.startsWith('data:') || raw.startsWith('http')) return raw;
+    return `${BASE_URL}${raw.startsWith('/') ? '' : '/'}${raw}`;
+  };
+  const avatarUri = resolveImageUri(user?.avatar);
 
   // Determine greeting based on time of day
   const hour = new Date().getHours();
@@ -373,11 +374,7 @@ export function ParentDashboardScreen() {
                     <View style={styles.childCardContent}>
                       {child.photo || child.photoUrl ? (
                         <Image
-                          source={{
-                            uri: (child.photo || child.photoUrl).startsWith('http')
-                              ? (child.photo || child.photoUrl)
-                              : `${BASE_URL}${child.photo || child.photoUrl}`,
-                          }}
+                          source={{ uri: resolveImageUri(child.photo || child.photoUrl) }}
                           style={styles.childAvatar}
                         />
                       ) : (
