@@ -334,16 +334,18 @@ export const updateChild = async (req, res) => {
     }
 
     try {
-      // Validate required fields before update
+      // Only validate required fields that are being EXPLICITLY set — skip if
+      // the caller is doing a partial update (e.g. photo-only upload).
       const requiredFields = ['firstName', 'lastName', 'dateOfBirth', 'disabilityType'];
-      const missingFields = requiredFields.filter(field => 
-        !updateData[field] && updateData[field] !== ''
+      const blankedRequired = requiredFields.filter(field =>
+        Object.prototype.hasOwnProperty.call(updateData, field) &&
+        (updateData[field] === null || updateData[field] === ''),
       );
-      
-      if (missingFields.length > 0) {
+
+      if (blankedRequired.length > 0) {
         return res.status(400).json({
-          error: 'Missing required fields',
-          missing: missingFields,
+          error: 'Required fields cannot be blank',
+          missing: blankedRequired,
         });
       }
 
