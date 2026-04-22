@@ -276,7 +276,7 @@ export function ChatScreen() {
       <SafeAreaView style={styles.container} edges={['top']}>
         <ScreenHeader
           title={t('chat.title', { defaultValue: 'Chat' })}
-          showBack={false}
+          showBack
         />
 
         {parentsWithLastMessage.length === 0 ? (
