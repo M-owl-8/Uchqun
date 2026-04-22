@@ -216,12 +216,17 @@ export async function uploadFile(file, filename, mimetype) {
     });
   }
 
-  // Local disk fallback (development/unstaged environments only)
-  // In production, we should use Appwrite or GCS, not local storage
+  // Local disk fallback. Writing to the container filesystem on Railway is
+  // ephemeral (files are lost on restart), but it keeps uploads working while
+  // external storage is being configured. Set LOCAL_STORAGE_FALLBACK=false to
+  // opt out in strict production environments.
   if (process.env.NODE_ENV === 'production' && !appwriteConfigured && !bucket) {
-    throw new Error(
-      'Storage not configured for production. Please configure Appwrite (APPWRITE_*) or Google Cloud Storage (GCP_*) environment variables.'
-    );
+    if (process.env.LOCAL_STORAGE_FALLBACK === 'false') {
+      throw new Error(
+        'Storage not configured for production. Please configure Appwrite (APPWRITE_*) or Google Cloud Storage (GCP_*) environment variables.'
+      );
+    }
+    console.warn('⚠ No cloud storage configured; using ephemeral local disk. Files will be lost on container restart. Configure APPWRITE_* or GCP_* env vars.');
   }
 
   try {
