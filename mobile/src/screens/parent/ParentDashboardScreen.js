@@ -45,6 +45,7 @@ export function ParentDashboardScreen() {
   const [children, setChildren] = useState([]);
   const [selectedChildId, setSelectedChildId] = useState(null);
   const [assessments, setAssessments] = useState([]);
+  const [brokenChildPhotoIds, setBrokenChildPhotoIds] = useState(new Set());
 
   // Bottom nav height + safe area + padding
   const BOTTOM_NAV_HEIGHT = 75;
@@ -386,10 +387,17 @@ export function ParentDashboardScreen() {
                 >
                   <Card style={styles.childCard}>
                     <View style={styles.childCardContent}>
-                      {child.photo || child.photoUrl ? (
+                      {(child.photo || child.photoUrl) && !brokenChildPhotoIds.has(child.id) ? (
                         <Image
                           source={{ uri: resolveImageUri(child.photo || child.photoUrl) }}
                           style={styles.childAvatar}
+                          onError={() => {
+                            setBrokenChildPhotoIds((prev) => {
+                              const next = new Set(prev);
+                              next.add(child.id);
+                              return next;
+                            });
+                          }}
                         />
                       ) : (
                         <View style={[styles.childAvatar, { backgroundColor: tokens.colors.text.primary + '20' }]}>
