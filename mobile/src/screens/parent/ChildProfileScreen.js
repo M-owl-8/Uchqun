@@ -1665,16 +1665,16 @@ const styles = StyleSheet.create({
     marginBottom: tokens.space.xs / 2,
   },
   infoItemLabel: {
-    fontSize: tokens.type.caption.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    fontSize: tokens.type.body.fontSize,
+    fontWeight: '500',
     color: tokens.colors.text.secondary,
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    letterSpacing: 0,
   },
   infoItemValue: {
     fontSize: tokens.type.bodyLarge.fontSize,
-    fontWeight: tokens.type.h3.fontWeight,
+    fontWeight: '600',
     color: tokens.colors.text.primary,
+    marginTop: 2,
   },
   specialNeedsHeader: {
     flexDirection: 'row',
