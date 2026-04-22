@@ -114,9 +114,16 @@
     "noChildInfo": "Bola haqida ma'lumot yo'q",
     "noParents": "Hozircha ota-onalar yo'q",
     "noParentsFound": "Mos ota-onalar topilmadi",
-    "parentDetail": "Ota-ona tafsilotlari",
+    "parentDetail": "Ota-ona ma'lumotlari",
+    "parentInfo": "Ota-ona ma'lumotlari",
     "notFound": "Ota-ona topilmadi",
-    "childCount": "{{count}} bola"
+    "childCount": "{{count}} bola",
+    "name": "Ism familiya",
+    "email": "Email",
+    "phone": "Telefon raqami",
+    "address": "Manzil",
+    "callAction": "Qo'ng'iroq qilish",
+    "emailAction": "Xabar yuborish"
   },
   "activitiesPage": {
     "title": "Individual reja",
