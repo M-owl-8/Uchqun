@@ -10,14 +10,17 @@ import uz from '../locales/uz/common.json';
 
 const LANGUAGE_KEY = '@app_language';
 
-// Get the device's locale
-const deviceLanguage = Localization.getLocales()[0]?.languageCode || 'en';
+// Get the device's locale, but only honor it if the device speaks one of our
+// supported languages — otherwise default to Uzbek (the primary app language).
+const SUPPORTED = ['uz', 'ru', 'en'];
+const rawDeviceLanguage = Localization.getLocales()[0]?.languageCode || '';
+const deviceLanguage = SUPPORTED.includes(rawDeviceLanguage) ? rawDeviceLanguage : 'uz';
 
 // Initialize i18n
 const initI18n = async () => {
   // Try to get saved language
   const savedLanguage = await AsyncStorage.getItem(LANGUAGE_KEY);
-  const initialLanguage = savedLanguage || deviceLanguage || 'en';
+  const initialLanguage = savedLanguage || deviceLanguage || 'uz';
 
   i18n
     .use(initReactI18next)
@@ -29,7 +32,7 @@ const initI18n = async () => {
         uz: { translation: uz },
       },
       lng: initialLanguage,
-      fallbackLng: 'en',
+      fallbackLng: 'uz',
       interpolation: {
         escapeValue: false,
       },
