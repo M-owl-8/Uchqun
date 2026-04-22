@@ -268,6 +268,7 @@ export const createParent = async (req, res) => {
         dateOfBirth: req.body['child[dateOfBirth]'] || req.body.child?.dateOfBirth || '',
         gender: req.body['child[gender]'] || req.body.child?.gender || 'Male',
         disabilityType: req.body['child[disabilityType]'] || req.body.child?.disabilityType || '',
+        medicalDiagnosis: req.body['child[medicalDiagnosis]'] || req.body.child?.medicalDiagnosis || null,
         specialNeeds: req.body['child[specialNeeds]'] || req.body.child?.specialNeeds || null,
         school: req.body['child[school]'] || req.body.child?.school || 'Uchqun School',
         photo: null, // Will be handled from req.files
@@ -429,6 +430,7 @@ export const createParent = async (req, res) => {
         dateOfBirth: child.dateOfBirth,
         gender: child.gender,
         disabilityType: child.disabilityType,
+        medicalDiagnosis: child.medicalDiagnosis || null,
         specialNeeds: child.specialNeeds || null,
         photo: photoUrl,
         school: child.school,
@@ -459,7 +461,7 @@ export const createParent = async (req, res) => {
         {
           model: Child,
           as: 'children',
-          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
           required: false,
         },
       ],
@@ -539,7 +541,7 @@ export const getParents = async (req, res) => {
         {
           model: Child,
           as: 'children',
-          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
           required: false,
         },
       ],
@@ -680,7 +682,7 @@ export const updateParent = async (req, res) => {
         {
           model: Child,
           as: 'children',
-          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
+          attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'],
           required: false,
         },
       ],
@@ -822,6 +824,7 @@ export const createChildForParent = async (req, res) => {
     const dateOfBirth = req.body['child[dateOfBirth]'] || req.body['child.dateOfBirth'] || req.body.dateOfBirth || req.body.child?.dateOfBirth;
     const gender = req.body['child[gender]'] || req.body['child.gender'] || req.body.gender || req.body.child?.gender || 'Male';
     const disabilityType = req.body['child[disabilityType]'] || req.body['child.disabilityType'] || req.body.disabilityType || req.body.child?.disabilityType;
+    const medicalDiagnosis = req.body['child[medicalDiagnosis]'] || req.body['child.medicalDiagnosis'] || req.body.medicalDiagnosis || req.body.child?.medicalDiagnosis || null;
     const specialNeeds = req.body['child[specialNeeds]'] || req.body['child.specialNeeds'] || req.body.specialNeeds || req.body.child?.specialNeeds || null;
     const school = req.body['child[school]'] || req.body['child.school'] || req.body.school || req.body.child?.school || 'Uchqun School';
 
@@ -936,6 +939,7 @@ export const createChildForParent = async (req, res) => {
       dateOfBirth,
       gender,
       disabilityType,
+      medicalDiagnosis,
       specialNeeds,
       photo: photoUrl,
       school,
@@ -986,6 +990,9 @@ export const updateChildForReception = async (req, res) => {
     const dateOfBirth = req.body['child[dateOfBirth]'] ?? req.body.child?.dateOfBirth ?? child.dateOfBirth;
     const gender = req.body['child[gender]'] ?? req.body.child?.gender ?? child.gender;
     const disabilityType = req.body['child[disabilityType]'] ?? req.body.child?.disabilityType ?? child.disabilityType;
+    const medicalDiagnosis = req.body['child[medicalDiagnosis]'] !== undefined
+      ? (req.body['child[medicalDiagnosis]'] ?? req.body.child?.medicalDiagnosis ?? null)
+      : child.medicalDiagnosis;
     const specialNeeds = req.body['child[specialNeeds]'] !== undefined ? (req.body['child[specialNeeds]'] ?? req.body.child?.specialNeeds ?? null) : child.specialNeeds;
     const school = req.body['child[school]'] ?? req.body.child?.school ?? child.school;
 
@@ -1044,6 +1051,7 @@ export const updateChildForReception = async (req, res) => {
       dateOfBirth,
       gender,
       disabilityType: disabilityType.trim(),
+      medicalDiagnosis: medicalDiagnosis === '' ? null : (medicalDiagnosis && String(medicalDiagnosis).trim()) || null,
       specialNeeds: specialNeeds === '' ? null : (specialNeeds && specialNeeds.trim()) || null,
       school: school.trim(),
       schoolId: schoolId ?? child.schoolId,

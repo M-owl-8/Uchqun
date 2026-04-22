@@ -141,12 +141,16 @@ export const updateChild = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const child = await Child.findOne({
-      where: {
-        id,
-        parentId: req.user.id,
-      },
-    });
+    // The route middleware has already verified permission and attached req.child.
+    // Fallback for direct controller calls: honor parent-only rule when role is parent.
+    let child = req.child;
+    if (!child) {
+      const where = { id };
+      if (req.user?.role === 'parent') {
+        where.parentId = req.user.id;
+      }
+      child = await Child.findOne({ where });
+    }
 
     if (!child) {
       return res.status(404).json({ error: 'Child not found' });

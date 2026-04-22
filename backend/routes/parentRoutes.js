@@ -23,6 +23,10 @@ import {
   getMonitoringByChild,
   getMonitoringById,
 } from '../controllers/emotionalMonitoringController.js';
+import {
+  submitParentEvaluation,
+  getMyEvaluations,
+} from '../controllers/parentEvaluationController.js';
 
 const router = express.Router();
 
@@ -54,6 +58,10 @@ router.post('/ratings', authenticate, requireParent, rateMyTeacher);
 router.get('/school-rating', authenticate, requireParent, getMySchoolRating);
 router.post('/school-rating', authenticate, requireParent, rateSchool);
 router.get('/schools', authenticate, requireParent, getSchools);
+
+// Parent monitoring evaluations (daily / weekly / monthly)
+router.post('/evaluations', authenticate, requireParent, submitParentEvaluation);
+router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 
 // Send message to super-admin
 router.post('/message-to-super-admin', authenticate, requireParent, sendMessage);

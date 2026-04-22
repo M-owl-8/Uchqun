@@ -33,6 +33,7 @@ import ChildAssessment from './ChildAssessment.js';
 import ServicePlan from './ServicePlan.js';
 import MealPlan from './MealPlan.js';
 import TeacherResource from './TeacherResource.js';
+import ParentEvaluation from './ParentEvaluation.js';
 
 // Initialize all models
 const models = {
@@ -70,8 +71,15 @@ const models = {
   ServicePlan,
   MealPlan,
   TeacherResource,
+  ParentEvaluation,
   sequelize,
 };
+
+// ParentEvaluation relationships
+User.hasMany(ParentEvaluation, { foreignKey: 'parentId', as: 'parentEvaluations' });
+ParentEvaluation.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
+User.hasMany(ParentEvaluation, { foreignKey: 'teacherId', as: 'receivedEvaluations' });
+ParentEvaluation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
 // Define model relationships
 // User -> Document (One-to-Many: Reception can have multiple documents)
@@ -328,5 +336,6 @@ export {
   ServicePlan,
   MealPlan,
   TeacherResource,
+  ParentEvaluation,
   sequelize,
 };

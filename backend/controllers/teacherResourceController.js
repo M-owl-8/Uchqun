@@ -65,13 +65,35 @@ export const createResource = async (req, res) => {
       return res.status(400).json({ error: 'title must be 500 characters or fewer' });
     }
 
+    // Normalize URL: accept "//host/..." (protocol-relative), "host/..." (bare host), or full URL.
+    // If a file was uploaded via multer, use its storage URL instead.
+    let finalUrl = null;
+    if (req.file) {
+      const base = (process.env.API_URL || '').replace(/\/api\/?$/, '');
+      finalUrl = `${base}/uploads/${req.file.filename}`;
+    } else if (url && typeof url === 'string' && url.trim()) {
+      const trimmed = url.trim();
+      if (/^https?:\/\//i.test(trimmed)) {
+        finalUrl = trimmed;
+      } else if (trimmed.startsWith('//')) {
+        finalUrl = `https:${trimmed}`;
+      } else if (/^[\w.-]+\.[\w.-]+/.test(trimmed)) {
+        finalUrl = `https://${trimmed}`;
+      } else {
+        finalUrl = trimmed;
+      }
+      if (finalUrl.length > 1000) {
+        return res.status(400).json({ error: 'URL is too long' });
+      }
+    }
+
     const resource = await TeacherResource.create({
       teacherId: req.user.id,
       schoolId: req.user.schoolId || null,
       type,
       title,
       description: description || null,
-      url: url || null,
+      url: finalUrl,
       isActive: true,
     });
 

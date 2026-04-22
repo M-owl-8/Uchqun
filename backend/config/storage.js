@@ -108,14 +108,11 @@ export async function uploadFile(file, filename, mimetype) {
         bucketId: appwriteBucketId,
       });
 
-      // Create file with proper permissions and content type
+      // Use bucket's default permissions — avoids needing permission-management scope on the API key
       const createdFile = await appwriteStorage.createFile(
         appwriteBucketId,
         fileId,
-        InputFile.fromBuffer(buffer, filename),
-        [
-          'read("any")', // Allow anyone to read the file (for public bucket)
-        ]
+        InputFile.fromBuffer(buffer, filename)
       );
 
       console.log('✓ Appwrite file created:', {
@@ -169,8 +166,11 @@ export async function uploadFile(file, filename, mimetype) {
         endpoint: process.env.APPWRITE_ENDPOINT,
       });
 
-      // In production, never fallback to local storage - throw error instead
-      if (process.env.NODE_ENV === 'production') {
+      // Allow local fallback unless explicitly disabled. Avatars and child photos
+      // should keep working even when Appwrite is mis-configured; files land in
+      // uploads/ and are served statically by Express. Set
+      // LOCAL_STORAGE_FALLBACK=false to restore strict-production behavior.
+      if (process.env.LOCAL_STORAGE_FALLBACK === 'false') {
         const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
         const errorCode = err.code || err.response?.status || 'UNKNOWN';
         const detailedError = new Error(`Appwrite upload failed (${errorCode}): ${errorMessage}. Check Appwrite credentials, bucket permissions, and endpoint connectivity.`);
@@ -178,15 +178,7 @@ export async function uploadFile(file, filename, mimetype) {
         detailedError.originalError = err;
         throw detailedError;
       }
-      // In development, allow fallback if explicitly enabled
-      if (process.env.LOCAL_STORAGE_FALLBACK !== 'false') {
-        console.warn('⚠ Appwrite upload failed, falling back to local storage:', err.message);
-      } else {
-        const detailedError = new Error(`Appwrite upload failed: ${err.message}`);
-        detailedError.code = err.code;
-        detailedError.originalError = err;
-        throw detailedError;
-      }
+      console.warn('⚠ Appwrite upload failed, falling back to local storage:', err.message);
     }
   }
 

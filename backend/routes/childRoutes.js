@@ -77,25 +77,44 @@ router.put(
 // Update child with photo support (BETTER VERSION)
 router.put(
     '/:id',
-    // First check child exists
+    // First check child exists and user has permission
     async (req, res, next) => {
         try {
             const Child = (await import('../models/Child.js')).default;
+            const User = (await import('../models/User.js')).default;
             const { id } = req.params;
-            
-            const child = await Child.findOne({
-                where: { 
-                    id, 
-                    parentId: req.user.id 
-                }
-            });
-            
+            const role = req.user?.role;
+
+            // Parents can only update their own children; other allowed roles
+            // (teacher, admin, reception, superadmin) can update children in scope.
+            const where = { id };
+            if (role === 'parent') {
+                where.parentId = req.user.id;
+            }
+
+            const child = await Child.findOne({ where });
+
             if (!child) {
-                return res.status(404).json({ 
-                    error: 'Child not found or you do not have permission' 
+                return res.status(404).json({
+                    error: 'Child not found or you do not have permission'
                 });
             }
-            
+
+            // For non-parent roles, additionally enforce school scope
+            if (role !== 'parent') {
+                const allowedRoles = ['teacher', 'admin', 'reception', 'superadmin', 'government', 'business'];
+                if (!allowedRoles.includes(role)) {
+                    return res.status(403).json({ error: 'Forbidden' });
+                }
+                // If requester has a schoolId, ensure child's parent is in the same school
+                if (req.user.schoolId) {
+                    const parent = await User.findByPk(child.parentId);
+                    if (parent?.schoolId && parent.schoolId !== req.user.schoolId) {
+                        return res.status(403).json({ error: 'You can only edit children in your institution' });
+                    }
+                }
+            }
+
             req.child = child; // Attach child to request
             next();
         } catch (error) {

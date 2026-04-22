@@ -785,7 +785,7 @@ export const rateSchool = async (req, res) => {
       });
     }
 
-    const { schoolId, schoolName, stars, comment } = req.body;
+    const { schoolId, schoolName, stars, comment, evaluation } = req.body;
 
     // 2. Validate authentication
     const parentId = req.user?.id;
@@ -1026,12 +1026,15 @@ export const rateSchool = async (req, res) => {
         },
       });
 
+      const evaluationValue = evaluation && typeof evaluation === 'object' ? evaluation : null;
+
       if (rating) {
         // Update existing rating - only update fields that exist
         const updateData = {
           stars: starsNum,
           comment: commentValue,
         };
+        if (evaluationValue) updateData.evaluation = evaluationValue;
         await rating.update(updateData);
         created = false;
         logger.info('School rating updated', {
@@ -1048,6 +1051,7 @@ export const rateSchool = async (req, res) => {
           stars: starsNum,
           comment: commentValue,
         };
+        if (evaluationValue) createData.evaluation = evaluationValue;
         rating = await SchoolRating.create(createData);
         created = true;
         logger.info('School rating created', {
