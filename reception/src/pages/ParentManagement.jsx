@@ -49,6 +49,7 @@ const ParentManagement = () => {
       dateOfBirth: '',
       gender: 'Male',
       disabilityType: '',
+      medicalDiagnosis: '',
       specialNeeds: '',
       school: 'Uchqun School',
     },
@@ -59,6 +60,7 @@ const ParentManagement = () => {
     dateOfBirth: '',
     gender: 'Male',
     disabilityType: '',
+    medicalDiagnosis: '',
     specialNeeds: '',
     school: 'Uchqun School',
     photo: null,
@@ -234,6 +236,9 @@ const ParentManagement = () => {
       formDataToSend.append('child[dateOfBirth]', childFormData.dateOfBirth);
       formDataToSend.append('child[gender]', childFormData.gender || 'Male');
       formDataToSend.append('child[disabilityType]', childFormData.disabilityType.trim());
+      if (childFormData.medicalDiagnosis) {
+        formDataToSend.append('child[medicalDiagnosis]', childFormData.medicalDiagnosis.trim());
+      }
       if (childFormData.specialNeeds) {
         formDataToSend.append('child[specialNeeds]', childFormData.specialNeeds.trim());
       }
@@ -291,6 +296,9 @@ const ParentManagement = () => {
       formDataToSend.append('child[dateOfBirth]', childFormData.dateOfBirth);
       formDataToSend.append('child[gender]', childFormData.gender || 'Male');
       formDataToSend.append('child[disabilityType]', childFormData.disabilityType.trim());
+      if (childFormData.medicalDiagnosis) {
+        formDataToSend.append('child[medicalDiagnosis]', childFormData.medicalDiagnosis.trim());
+      }
       if (childFormData.specialNeeds) {
         formDataToSend.append('child[specialNeeds]', childFormData.specialNeeds.trim());
       }
@@ -378,6 +386,7 @@ const ParentManagement = () => {
           formDataToSend.append('child[dateOfBirth]', formData.child.dateOfBirth);
           formDataToSend.append('child[gender]', formData.child.gender);
           formDataToSend.append('child[disabilityType]', formData.child.disabilityType);
+          if (formData.child.medicalDiagnosis) formDataToSend.append('child[medicalDiagnosis]', formData.child.medicalDiagnosis);
           if (formData.child.specialNeeds) formDataToSend.append('child[specialNeeds]', formData.child.specialNeeds);
           formDataToSend.append('child[school]', formData.child.school);
           // Add photo file if selected
@@ -532,9 +541,6 @@ const ParentManagement = () => {
                                     {child.firstName} {child.lastName}
                                   </p>
                                   <div className="mt-1 space-y-1">
-                                    <p className="text-xs text-gray-600">
-                                      <span className="font-medium">{t('parentsPage.class')}</span> {child.class}
-                                    </p>
                                     {child.teacher && (
                                       <p className="text-xs text-gray-600">
                                         <span className="font-medium">Teacher:</span> {child.teacher}
@@ -543,6 +549,11 @@ const ParentManagement = () => {
                                     {child.disabilityType && (
                                       <p className="text-xs text-gray-600">
                                         <span className="font-medium">{t('parentsPage.disability')}</span> {child.disabilityType}
+                                      </p>
+                                    )}
+                                    {child.medicalDiagnosis && (
+                                      <p className="text-xs text-gray-600">
+                                        <span className="font-medium">{t('parentsPage.diagnosis')}</span> {child.medicalDiagnosis}
                                       </p>
                                     )}
                                   </div>
@@ -843,10 +854,26 @@ const ParentManagement = () => {
                         type="text"
                         required
                         value={formData.child.disabilityType}
-                        onChange={(e) => setFormData({ 
-                          ...formData, 
+                        onChange={(e) => setFormData({
+                          ...formData,
                           child: { ...formData.child, disabilityType: e.target.value }
                         })}
+                        className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                      />
+                    </div>
+
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        {t('parentsPage.form.childDiagnosis', { defaultValue: 'Tashxis' })}
+                      </label>
+                      <input
+                        type="text"
+                        value={formData.child.medicalDiagnosis || ''}
+                        onChange={(e) => setFormData({
+                          ...formData,
+                          child: { ...formData.child, medicalDiagnosis: e.target.value }
+                        })}
+                        placeholder="F71 - ..."
                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>

@@ -11,7 +11,7 @@
   },
   "login": {
     "title": "Uchqun Portal",
-    "subtitle": "Maxsus ta'lim maktabi boshqaruvi",
+    "subtitle": "Maxsus ta'lim muassasasi boshqaruvi",
     "email": "Email manzil",
     "password": "Parol",
     "submit": "Kirish",
@@ -129,7 +129,7 @@
   },
   "mediaPage": {
     "title": "Media galereya",
-    "subtitle": "Maktab hayotidan eng sara lahzalar",
+    "subtitle": "Muassasa hayotidan eng sara lahzalar",
     "filters": {
       "all": "Hammasi",
       "photo": "Rasmlar",

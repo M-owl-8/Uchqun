@@ -474,8 +474,8 @@ const TherapyManagement = () => {
                     <option value="all">{t('therapy.allAges', { defaultValue: 'Barcha' })}</option>
                     <option value="infant">{t('therapy.infant', { defaultValue: 'Chaqaloq' })}</option>
                     <option value="toddler">{t('therapy.toddler', { defaultValue: 'Yosh bola' })}</option>
-                    <option value="preschool">{t('therapy.preschool', { defaultValue: 'Maktabgacha' })}</option>
-                    <option value="school_age">{t('therapy.schoolAge', { defaultValue: 'Maktab yoshi' })}</option>
+                    <option value="preschool">{t('therapy.preschool', { defaultValue: 'Muassasagacha' })}</option>
+                    <option value="school_age">{t('therapy.schoolAge', { defaultValue: 'Muassasa yoshi' })}</option>
                     <option value="adolescent">{t('therapy.adolescent', { defaultValue: 'O\'smir' })}</option>
                   </select>
                 </div>

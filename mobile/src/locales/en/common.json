@@ -678,7 +678,7 @@
     "pendingActions": "{{count}} pending action(s)"
   },
   "ai": {
-    "headerTitle": "Uchi AI Assistant",
+    "headerTitle": "Uchqun AI Assistant",
     "headerSubtitle": "Always here to help!",
     "greeting": "Hello! I'm Uchi, your AI assistant! Ask me anything about your child!",
     "prompt1": "How is my child today?",

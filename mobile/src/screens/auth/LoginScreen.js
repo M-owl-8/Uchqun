@@ -96,7 +96,7 @@ export function LoginScreen() {
                 />
               </View>
               <Text style={styles.title}>{t('login.title', { defaultValue: 'Uchqun Portal' })}</Text>
-              <Text style={styles.subtitle}>{t('login.subtitle', { defaultValue: 'Maxsus ta\'lim maktabi boshqaruvi' })}</Text>
+              <Text style={styles.subtitle}>{t('login.subtitle', { defaultValue: 'Maxsus ta\'lim muassasasi boshqaruvi' })}</Text>
             </View>
 
             {/* Login card */}

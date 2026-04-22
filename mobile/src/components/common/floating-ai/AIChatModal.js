@@ -37,7 +37,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
   const [messages, setMessages] = useState([
     {
       role: 'assistant',
-      content: t('ai.greeting', { defaultValue: "Salom! Men Uchi, sizning AI yordamchingizman! Farzandingiz haqida har qanday savolni bering!" }),
+      content: t('ai.greeting', { defaultValue: "Salom! Men Uchqun, sizning AI yordamchingizman! Farzandingiz haqida har qanday savolni bering!" }),
     },
   ]);
   const [inputText, setInputText] = useState('');
@@ -111,7 +111,7 @@ export default function AIChatModal({ visible, onClose, contextHint = '' }) {
                 />
               </View>
               <View style={styles.headerText}>
-                <Text style={styles.headerTitle}>{t('ai.headerTitle', { defaultValue: 'Uchi AI Assistant' })}</Text>
+                <Text style={styles.headerTitle}>{t('ai.headerTitle', { defaultValue: 'Uchqun AI Assistant' })}</Text>
                 <Text style={styles.headerSubtitle}>{t('ai.headerSubtitle', { defaultValue: 'Always here to help!' })}</Text>
               </View>
             </View>

@@ -24,7 +24,7 @@ const Sidebar = ({ onClose }) => {
 
   const navigation = [
     { name: t('nav.dashboard', { defaultValue: 'Dashboard' }), href: '/government', icon: Home },
-    { name: t('nav.schools', { defaultValue: 'Maktablar' }), href: '/government/schools', icon: Building2 },
+    { name: t('nav.schools', { defaultValue: 'Muassasalar' }), href: '/government/schools', icon: Building2 },
     { name: t('nav.ratings', { defaultValue: 'Reytinglar' }), href: '/government/ratings', icon: Star },
     { name: t('nav.profile', { defaultValue: 'Profil' }), href: '/government/profile', icon: User },
   ];

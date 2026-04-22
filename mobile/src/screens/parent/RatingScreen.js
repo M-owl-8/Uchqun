@@ -19,9 +19,36 @@ export function RatingScreen() {
 
   const ratingOptions = [
     {
+      id: 'daily',
+      title: t('monitoringHub.daily', { defaultValue: 'Kunlik baholash' }),
+      subtitle: t('monitoringHub.dailyDesc', { defaultValue: "Gigienik va sog'liq holatini kuzatish" }),
+      icon: 'sunny',
+      iconBg: '#FFF2D6',
+      iconColor: '#E8B04E',
+      screen: 'DailyEvaluation',
+    },
+    {
+      id: 'weekly',
+      title: t('monitoringHub.weekly', { defaultValue: 'Haftalik baholash' }),
+      subtitle: t('monitoringHub.weeklyDesc', { defaultValue: 'Emotsional holat monitoringi' }),
+      icon: 'calendar',
+      iconBg: '#DFF4EC',
+      iconColor: '#34C759',
+      screen: 'WeeklyEvaluation',
+    },
+    {
+      id: 'monthly',
+      title: t('monitoringHub.monthly', { defaultValue: 'Oylik baholash' }),
+      subtitle: t('monitoringHub.monthlyDesc', { defaultValue: "Umumiy xizmat va ota-ona bilan ishlash" }),
+      icon: 'calendar-number',
+      iconBg: '#E3DFFB',
+      iconColor: '#7C6EDB',
+      screen: 'MonthlyEvaluation',
+    },
+    {
       id: 'school',
-      title: t('schoolRatingPage.title', { defaultValue: 'Maktabni baholash' }),
-      subtitle: t('schoolRatingPage.desc', { defaultValue: 'Maktab xizmatlari va sharoitlarini baholang' }),
+      title: t('schoolRatingPage.title', { defaultValue: 'Muassasani baholash' }),
+      subtitle: t('schoolRatingPage.desc', { defaultValue: 'Muassasa xizmatlari va sharoitlarini baholang' }),
       icon: 'business',
       iconBg: tokens.colors.joy.lavenderSoft,
       iconColor: tokens.colors.joy.lavender,
@@ -50,6 +77,11 @@ export function RatingScreen() {
         contentContainerStyle={[styles.scrollContent, { paddingBottom: bottomPadding }]}
         showsVerticalScrollIndicator={false}
       >
+        <Text style={styles.headerSubtitle}>
+          {t('monitoringHub.headerSubtitle', {
+            defaultValue: 'Kunduzgi parvarish xizmatini monitoring qilish',
+          })}
+        </Text>
         <View>
           {ratingOptions.map((option) => (
             <Card
@@ -101,6 +133,12 @@ const styles = StyleSheet.create({
   scrollContent: {
     padding: tokens.space.lg,
     paddingTop: tokens.space.md,
+  },
+  headerSubtitle: {
+    fontSize: tokens.type.body.fontSize,
+    color: tokens.colors.text.secondary,
+    marginBottom: tokens.space.lg,
+    textAlign: 'center',
   },
   optionCard: {
     marginBottom: tokens.space.lg,

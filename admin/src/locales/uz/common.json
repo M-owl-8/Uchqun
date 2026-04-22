@@ -5,7 +5,7 @@
     "parents": "Ota-onalar",
     "teachers": "O'qituvchilar",
     "groups": "Guruhlar",
-    "schoolRatings": "Maktab baholari",
+    "schoolRatings": "Muassasa baholari",
     "profile": "Profil",
     "settings": "Sozlamalar",
     "payments": "To'lovlar",
@@ -153,17 +153,17 @@
     }
   },
   "schoolRatings": {
-    "title": "Maktab baholari",
-    "subtitle": "Ota-onalar tomonidan maktab va bog'chalarga berilgan baholarni ko'ring",
-    "errorLoad": "Maktab baholarini yuklab bo'lmadi",
+    "title": "Muassasa baholari",
+    "subtitle": "Ota-onalar tomonidan muassasa va bog'chalarga berilgan baholarni ko'ring",
+    "errorLoad": "Muassasa baholarini yuklab bo'lmadi",
     "error": "Xatolik",
-    "empty": "Hozircha maktab baholari yo'q",
+    "empty": "Hozircha muassasa baholari yo'q",
     "ratingsCount": "{{count}} ta baho",
     "recentRatings": "So'nggi baholar",
     "by": "Muallif",
-    "typeSchool": "Maktab",
+    "typeSchool": "Muassasa",
     "typeKindergarten": "Bog'cha",
-    "typeBoth": "Maktab va Bog'cha"
+    "typeBoth": "Muassasa va Bog'cha"
   },
   "profile": {
     "title": "Profil",

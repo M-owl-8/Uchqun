@@ -552,7 +552,7 @@
     "pendingActions": "{{count}} ожидающих действий"
   },
   "ai": {
-    "headerTitle": "Uchi AI Помощник",
+    "headerTitle": "Uchqun AI Помощник",
     "headerSubtitle": "Всегда готов помочь!",
     "greeting": "Привет! Я Учи, ваш AI помощник! Задайте любой вопрос о вашем ребенке!",
     "prompt1": "Как мой ребенок сегодня?",

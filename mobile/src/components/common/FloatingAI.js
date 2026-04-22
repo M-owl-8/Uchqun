@@ -1,18 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useNavigation } from '@react-navigation/native';
 import FloatingAIButton from './floating-ai/FloatingAIButton';
-import AIChatModal from './floating-ai/AIChatModal';
 
-export default function FloatingAI({ contextHint = '' }) {
-  const [isOpen, setIsOpen] = useState(false);
+export default function FloatingAI() {
+  const navigation = useNavigation();
 
   return (
-    <>
-      <FloatingAIButton onPress={() => setIsOpen(true)} />
-      <AIChatModal
-        visible={isOpen}
-        onClose={() => setIsOpen(false)}
-        contextHint={contextHint}
-      />
-    </>
+    <FloatingAIButton onPress={() => navigation.navigate('AIChat')} />
   );
 }

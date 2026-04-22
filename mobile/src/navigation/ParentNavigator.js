@@ -16,6 +16,8 @@ import { VideoScreen } from '../screens/parent/VideoScreen';
 import { TavsiyaScreen } from '../screens/parent/TavsiyaScreen';
 
 import { SchoolRatingScreen } from '../screens/parent/SchoolRatingScreen';
+import { EvaluationScreen } from '../screens/parent/EvaluationScreen';
+import { AIChatScreen } from '../screens/parent/AIChatScreen';
 import { SettingsScreen } from '../screens/parent/SettingsScreen';
 import { ParentProfileScreen } from '../screens/parent/ParentProfileScreen';
 import { NotificationsScreen } from '../screens/parent/NotificationsScreen';
@@ -47,10 +49,6 @@ const TAB_CONFIG = {
   Rating: {
     icon: 'star',
     label: 'Rating',
-  },
-  Foydali: {
-    icon: 'bulb',
-    label: 'Foydali',
   },
   Profile: {
     icon: 'person',
@@ -102,7 +100,6 @@ function ParentTabs() {
     const labelMap = {
       Dashboard: t('nav.dashboard'),
       Rating: t('nav.rating'),
-      Foydali: t('nav.foydali'),
       Profile: t('nav.profile'),
       Settings: t('nav.menu'),
     };
@@ -110,6 +107,7 @@ function ParentTabs() {
   };
 
   return (
+    <>
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: (props) => <TabIcon route={route} {...props} />,
@@ -143,16 +141,16 @@ function ParentTabs() {
     >
       <Tab.Screen name="Dashboard" component={ParentDashboardScreen} />
       <Tab.Screen name="Rating" component={RatingScreen} />
-      <Tab.Screen name="Foydali" component={FoydaliScreen} />
       <Tab.Screen name="Profile" component={ParentProfileScreen} />
       <Tab.Screen name="Settings" component={SettingsScreen} />
     </Tab.Navigator>
+    <FloatingAI />
+    </>
   );
 }
 
 export function ParentNavigator() {
   return (
-    <>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
@@ -164,11 +162,27 @@ export function ParentNavigator() {
         <Stack.Screen name="Activities" component={ActivitiesScreen} />
         <Stack.Screen name="Meals" component={MealsScreen} />
         <Stack.Screen name="Media" component={MediaScreen} />
+        <Stack.Screen name="Foydali" component={FoydaliScreen} />
         <Stack.Screen name="Musiqa" component={MusiqaScreen} />
         <Stack.Screen name="Video" component={VideoScreen} />
         <Stack.Screen name="Tavsiya" component={TavsiyaScreen} />
 
         <Stack.Screen name="SchoolRating" component={SchoolRatingScreen} />
+        <Stack.Screen
+          name="DailyEvaluation"
+          component={EvaluationScreen}
+          initialParams={{ period: 'daily' }}
+        />
+        <Stack.Screen
+          name="WeeklyEvaluation"
+          component={EvaluationScreen}
+          initialParams={{ period: 'weekly' }}
+        />
+        <Stack.Screen
+          name="MonthlyEvaluation"
+          component={EvaluationScreen}
+          initialParams={{ period: 'monthly' }}
+        />
         <Stack.Screen name="Notifications" component={NotificationsScreen} />
         <Stack.Screen name="Therapy" component={TherapyScreen} />
         <Stack.Screen name="Payments" component={PaymentsScreen} />
@@ -178,14 +192,11 @@ export function ParentNavigator() {
         <Stack.Screen name="MealPlan" component={MealPlanScreen} />
         <Stack.Screen name="Chat" component={ChatScreen} />
         <Stack.Screen name="TeacherRating" component={TeacherRatingScreen} />
+        <Stack.Screen name="AIChat" component={AIChatScreen} />
         {__DEV__ && (
           <Stack.Screen name="Diagnostics" component={DiagnosticsScreen} />
         )}
       </Stack.Navigator>
-
-      {/* Floating AI Chat Button - Appears on all parent screens */}
-      <FloatingAI />
-    </>
   );
 }
 

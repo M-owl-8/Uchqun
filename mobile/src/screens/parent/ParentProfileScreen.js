@@ -748,7 +748,7 @@ const styles = StyleSheet.create({
   },
   buttonRow: {
     flexDirection: 'row',
-    gap: tokens.space.md,
+    gap: tokens.space.lg,
     marginTop: tokens.space.sm,
   },
   cancelButton: {

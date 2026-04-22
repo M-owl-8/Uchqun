@@ -46,13 +46,13 @@
     },
     "status": {
       "loadingAdmins": "Adminlar yuklanmoqda...",
-      "loadingSchools": "Maktablar yuklanmoqda..."
+      "loadingSchools": "Muassasalar yuklanmoqda..."
     },
-    "schoolsTitle": "Barcha maktablar va bog'chalar",
-    "schoolsEmpty": "Maktablar topilmadi",
-    "schoolTypeSchool": "Maktab",
+    "schoolsTitle": "Barcha muassasalar va bog'chalar",
+    "schoolsEmpty": "Muassasalar topilmadi",
+    "schoolTypeSchool": "Muassasa",
     "schoolTypeKindergarten": "Bog'cha",
-    "schoolTypeBoth": "Maktab va Bog'cha",
+    "schoolTypeBoth": "Muassasa va Bog'cha",
     "ratings": "ta baho",
     "profile": {
       "name": "Ism",

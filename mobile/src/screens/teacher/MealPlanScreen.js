@@ -71,8 +71,8 @@ export function MealPlanScreen() {
     try {
       setLoading(true);
       setError(null);
-      const response = await teacherService.getAssignedParents();
-      const parents = Array.isArray(response) ? response : response?.data || [];
+      const response = await teacherService.getParents();
+      const parents = Array.isArray(response) ? response : response?.parents || response?.data || [];
       const allChildren = [];
       for (const parent of parents) {
         const parentChildren = parent.children || [];

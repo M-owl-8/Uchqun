@@ -215,7 +215,7 @@ const AdminDetails = () => {
       {schools.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
-            {t('adminDetails.schools', { defaultValue: 'Maktablar' })} ({schools.length})
+            {t('adminDetails.schools', { defaultValue: 'Muassasalar' })} ({schools.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {schools.map((school) => (

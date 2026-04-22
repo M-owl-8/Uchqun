@@ -55,10 +55,10 @@ const Schools = () => {
     <div className="space-y-8">
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {t('schools.title', { defaultValue: 'Maktablar' })}
+          {t('schools.title', { defaultValue: 'Muassasalar' })}
         </h1>
         <p className="text-gray-600">
-          {t('schools.subtitle', { defaultValue: 'Barcha maktablar ro\'yxati' })}
+          {t('schools.subtitle', { defaultValue: 'Barcha muassasalar ro\'yxati' })}
         </p>
       </div>
 
@@ -66,7 +66,7 @@ const Schools = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-6">
           <p className="text-sm text-gray-600 mb-1">
-            {t('schools.totalSchools', { defaultValue: 'Jami maktablar' })}
+            {t('schools.totalSchools', { defaultValue: 'Jami muassasalar' })}
           </p>
           <p className="text-2xl font-bold text-gray-900">{globalStats.total}</p>
         </Card>
@@ -83,7 +83,7 @@ const Schools = () => {
           <div className="text-center">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-600">
-              {t('schools.notFound', { defaultValue: 'Maktablar topilmadi' })}
+              {t('schools.notFound', { defaultValue: 'Muassasalar topilmadi' })}
             </p>
           </div>
         </Card>

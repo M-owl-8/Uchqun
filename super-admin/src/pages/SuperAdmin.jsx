@@ -542,7 +542,7 @@ const SuperAdmin = () => {
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
-            {t('superAdmin.tabs.schools', { defaultValue: 'Maktablar' })}
+            {t('superAdmin.tabs.schools', { defaultValue: 'Muassasalar' })}
           </button>
           <button
             onClick={() => setActiveTab('messages')}
@@ -764,7 +764,7 @@ const SuperAdmin = () => {
                 <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
                   {t('superAdmin.schoolsTitle')}
                 </h2>
-                <p className="text-gray-600 font-medium">{t('superAdmin.schoolsSubtitle', { defaultValue: 'Barcha maktablar va ularning baholari' })}</p>
+                <p className="text-gray-600 font-medium">{t('superAdmin.schoolsSubtitle', { defaultValue: 'Barcha muassasalar va ularning baholari' })}</p>
               </div>
 
               <Card className="p-6 space-y-4">
@@ -779,7 +779,7 @@ const SuperAdmin = () => {
                     {/* Statistics Summary */}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
                       <div className="bg-blue-50 rounded-xl p-4">
-                        <p className="text-sm text-blue-600 font-medium mb-1">{t('superAdmin.totalSchools', { defaultValue: 'Jami Maktablar' })}</p>
+                        <p className="text-sm text-blue-600 font-medium mb-1">{t('superAdmin.totalSchools', { defaultValue: 'Jami Muassasalar' })}</p>
                         <p className="text-2xl font-bold text-blue-900">{schools.length}</p>
                       </div>
                       <div className="bg-purple-50 rounded-xl p-4">

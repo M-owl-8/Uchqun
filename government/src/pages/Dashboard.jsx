@@ -69,7 +69,7 @@ const Dashboard = () => {
 
   const overviewCards = [
     {
-      title: t('dashboard.totalSchools', { defaultValue: 'Jami Maktablar' }),
+      title: t('dashboard.totalSchools', { defaultValue: 'Jami Muassasalar' }),
       value: stats?.schools || 0,
       icon: Building2,
       color: 'bg-blue-500',
@@ -196,10 +196,10 @@ const Dashboard = () => {
         <div className="flex items-center justify-between mb-6">
           <div>
             <h2 className="text-xl font-bold text-gray-900">
-              {t('dashboard.schoolsList', { defaultValue: 'Maktablar va Baholari' })}
+              {t('dashboard.schoolsList', { defaultValue: 'Muassasalar va Baholari' })}
             </h2>
             <p className="text-sm text-gray-600 mt-1">
-              {t('dashboard.schoolsListDesc', { defaultValue: 'Maktablar reytinglari va statistikasi' })}
+              {t('dashboard.schoolsListDesc', { defaultValue: 'Muassasalar reytinglari va statistikasi' })}
             </p>
           </div>
           <BarChart3 className="w-6 h-6 text-gray-400" />
@@ -209,7 +209,7 @@ const Dashboard = () => {
           <div className="text-center py-12">
             <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
             <p className="text-gray-600">
-              {t('dashboard.schoolsNotFound', { defaultValue: 'Maktablar topilmadi' })}
+              {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
             </p>
           </div>
         ) : (

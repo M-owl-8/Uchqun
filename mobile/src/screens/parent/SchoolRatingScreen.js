@@ -80,16 +80,27 @@ export function SchoolRatingScreen() {
 
     try {
       setSubmitting(true);
+      // Backend requires integer stars 1-5. Derive from checklist if user didn't select stars.
+      const checkedCount = CRITERIA_KEYS.reduce((n, k) => n + (evaluation[k] ? 1 : 0), 0);
+      const derivedStars = Math.max(
+        1,
+        Math.min(5, Math.round((checkedCount / CRITERIA_KEYS.length) * 5)),
+      );
+      const starsToSend = selectedRating > 0 ? selectedRating : derivedStars;
+
       await parentService.rateSchool({
+        stars: starsToSend,
+        schoolId: rating?.school?.id,
+        schoolName: rating?.school?.name,
         evaluation,
-        rating: selectedRating || null,
         comment,
       });
       Alert.alert(t('common.success'), t('schoolRatingPage.success'));
       await loadRating();
     } catch (error) {
       if (__DEV__) console.error('Error submitting rating:', error);
-      Alert.alert(t('common.error'), t('schoolRatingPage.errorSave'));
+      const serverMsg = error?.response?.data?.message || error?.response?.data?.error;
+      Alert.alert(t('common.error'), serverMsg || t('schoolRatingPage.errorSave'));
     } finally {
       setSubmitting(false);
     }

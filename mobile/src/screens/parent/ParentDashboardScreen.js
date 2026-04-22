@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { ScrollView, StyleSheet, Text, View, Pressable, AppState, RefreshControl, Dimensions } from 'react-native';
+import { ScrollView, StyleSheet, Text, View, Pressable, AppState, RefreshControl, Dimensions, Image } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useTranslation } from 'react-i18next';
@@ -9,6 +9,7 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useNotification } from '../../context/NotificationContext';
 import { parentService } from '../../services/parentService';
 import { api } from '../../services/api';
+import { API_URL } from '../../config';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import QuickActionCard from '../../components/common/QuickActionCard';
@@ -174,6 +175,13 @@ export function ParentDashboardScreen() {
     ? `${selectedChild.firstName}'s ${t('dashboard.journey', { defaultValue: 'Journey' })}`
     : user?.firstName || t('dashboard.welcome', { defaultValue: 'Welcome' });
 
+  const BASE_URL = API_URL.replace(/\/api$/, '');
+  const avatarUri = user?.avatar
+    ? user.avatar.startsWith('http')
+      ? user.avatar
+      : `${BASE_URL}${user.avatar}`
+    : null;
+
   // Determine greeting based on time of day
   const hour = new Date().getHours();
   const greetingKey = hour < 12 ? 'goodMorning' : hour < 18 ? 'goodAfternoon' : 'goodEvening';
@@ -232,6 +240,16 @@ export function ParentDashboardScreen() {
           accessibilityLabel={t('dashboard.welcomeCard', { defaultValue: 'Welcome card' })}
         >
           <View style={styles.welcomeTop}>
+            {avatarUri ? (
+              <Image source={{ uri: avatarUri }} style={styles.welcomeAvatar} />
+            ) : (
+              <View style={[styles.welcomeAvatar, styles.welcomeAvatarFallback]}>
+                <Text style={styles.welcomeAvatarText}>
+                  {(user?.firstName?.charAt(0) || '') + (user?.lastName?.charAt(0) || '')}
+                </Text>
+              </View>
+            )}
+
             <View style={styles.welcomeTextContainer}>
               <Text style={styles.welcomeGreeting}>{greeting}</Text>
               <Text style={styles.welcomeName} numberOfLines={1}>{welcomeName}</Text>
@@ -284,53 +302,52 @@ export function ParentDashboardScreen() {
           </Text>
           <View style={styles.quickActionsList}>
             <QuickActionCard
-              icon="sparkles-outline"
-              title={t('dashboard.activities', { defaultValue: 'Mashg\'ulotlar' })}
-              subtitle={t('dashboard.startActivitySub', { defaultValue: 'Barcha mashg\'ulotlarni ko\'rish' })}
+              icon="images-outline"
+              title={t('dashboard.mediaQuick', { defaultValue: 'Media' })}
+              subtitle={t('dashboard.mediaQuickSub', { defaultValue: 'Rasm, video va hujjatlar' })}
               color="#DFF4EC"
-              onPress={() => navigation.navigate('Activities')}
+              onPress={() => navigation.navigate('Media')}
+            />
+            <QuickActionCard
+              icon="star-outline"
+              title={t('nav.foydali', { defaultValue: 'Foydali' })}
+              subtitle={t('dashboard.foydaliSub', { defaultValue: 'Musiqa, video va tavsiyalar' })}
+              color="#BFD7EA"
+              onPress={() => navigation.navigate('Foydali')}
             />
           </View>
         </View>
 
-        {/* Assessments Section */}
-        {selectedChild && (
+        {/* Assessments Section — only shown when teacher has submitted ratings */}
+        {selectedChild && assessments.length > 0 && (
           <View style={styles.section}>
             <Text style={styles.sectionTitle}>
               {t('dashboard.assessments', { defaultValue: "Tarbiyachi Baholari" })}
             </Text>
-            {assessments.length === 0 ? (
-              <Card style={styles.emptyAssessmentCard}>
-                <Text style={styles.emptyAssessmentText}>
-                  {t('dashboard.noAssessments', { defaultValue: 'Hozircha baholar yo\'q' })}
-                </Text>
-              </Card>
-            ) : (
-              <View style={styles.assessmentGrid}>
-                {assessments.map((item) => (
-                  <Card key={item.id} style={styles.assessmentCard}>
-                    <Text style={styles.assessmentCategory}>
-                      {CATEGORY_LABELS[item.category] || item.category}
+            <View style={styles.assessmentGrid}>
+              {assessments.map((item) => (
+                <Card key={item.id} style={styles.assessmentCard}>
+                  <Text style={styles.assessmentCategory}>
+                    {CATEGORY_LABELS[item.category] || item.category}
+                  </Text>
+                  <View style={styles.starsRow}>
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <Ionicons
+                        key={star}
+                        name={star <= item.score ? 'star' : 'star-outline'}
+                        size={16}
+                        color={star <= item.score ? '#E8C27E' : '#C8D0DC'}
+                      />
+                    ))}
+                  </View>
+                  {item.teacher && (
+                    <Text style={styles.assessmentTeacher} numberOfLines={1}>
+                      {item.teacher.firstName} {item.teacher.lastName}
                     </Text>
-                    <View style={styles.starsRow}>
-                      {[1, 2, 3, 4, 5].map((star) => (
-                        <Ionicons
-                          key={star}
-                          name={star <= item.score ? 'star' : 'star-outline'}
-                          size={16}
-                          color={star <= item.score ? '#E8C27E' : '#C8D0DC'}
-                        />
-                      ))}
-                    </View>
-                    {item.teacher && (
-                      <Text style={styles.assessmentTeacher} numberOfLines={1}>
-                        {item.teacher.firstName} {item.teacher.lastName}
-                      </Text>
-                    )}
-                  </Card>
-                ))}
-              </View>
-            )}
+                  )}
+                </Card>
+              ))}
+            </View>
           </View>
         )}
 
@@ -354,11 +371,22 @@ export function ParentDashboardScreen() {
                 >
                   <Card style={styles.childCard}>
                     <View style={styles.childCardContent}>
-                      <View style={[styles.childAvatar, { backgroundColor: tokens.colors.text.primary + '20' }]}>
-                        <Text style={styles.childAvatarText}>
-                          {child.firstName?.charAt(0) || ''}{child.lastName?.charAt(0) || ''}
-                        </Text>
-                      </View>
+                      {child.photo || child.photoUrl ? (
+                        <Image
+                          source={{
+                            uri: (child.photo || child.photoUrl).startsWith('http')
+                              ? (child.photo || child.photoUrl)
+                              : `${BASE_URL}${child.photo || child.photoUrl}`,
+                          }}
+                          style={styles.childAvatar}
+                        />
+                      ) : (
+                        <View style={[styles.childAvatar, { backgroundColor: tokens.colors.text.primary + '20' }]}>
+                          <Text style={styles.childAvatarText}>
+                            {child.firstName?.charAt(0) || ''}{child.lastName?.charAt(0) || ''}
+                          </Text>
+                        </View>
+                      )}
                       <View style={styles.childInfo}>
                         <Text style={styles.childName} numberOfLines={1}>
                           {child.firstName} {child.lastName}
@@ -408,9 +436,25 @@ const styles = StyleSheet.create({
   },
   welcomeTop: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     justifyContent: 'space-between',
     marginBottom: tokens.space.lg,
+    gap: tokens.space.md,
+  },
+  welcomeAvatar: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+  },
+  welcomeAvatarFallback: {
+    backgroundColor: 'rgba(46, 58, 89, 0.15)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  welcomeAvatarText: {
+    fontSize: 18,
+    fontWeight: '700',
+    color: '#2E3A59',
   },
   welcomeTextContainer: {
     flex: 1,

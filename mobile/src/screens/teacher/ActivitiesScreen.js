@@ -357,26 +357,6 @@ export function ActivitiesScreen() {
         </View>
       </Card>
 
-      {/* Meal shortcut */}
-      <Pressable
-        onPress={() => navigation.navigate('Meals')}
-        accessibilityRole="button"
-        style={({ pressed }) => [styles.mealShortcut, pressed && { opacity: 0.8 }]}
-      >
-        <View style={styles.mealShortcutIcon}>
-          <Ionicons name="restaurant-outline" size={22} color="#2E3A59" />
-        </View>
-        <View style={styles.mealShortcutText}>
-          <Text style={styles.mealShortcutTitle}>
-            {t('dashboard.logMeal', { defaultValue: "Ovqat kiritish" })}
-          </Text>
-          <Text style={styles.mealShortcutSub}>
-            {t('dashboard.logMealSub', { defaultValue: "Bugungi ovqatlanishni kuzating" })}
-          </Text>
-        </View>
-        <Ionicons name="chevron-forward" size={18} color="#8A97B0" />
-      </Pressable>
-
       {/* Section title */}
       {activities.length > 0 && (
         <Text style={styles.sectionTitle}>
