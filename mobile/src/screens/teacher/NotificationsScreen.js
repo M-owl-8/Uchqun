@@ -138,7 +138,7 @@ export function NotificationsScreen() {
   if (loading) {
     return (
       <SafeAreaView style={styles.container} edges={['top']}>
-        <ScreenHeader title={t('notifications.title', { defaultValue: 'Notifications' })} showBack={false} />
+        <ScreenHeader title={t('notifications.title', { defaultValue: 'Notifications' })} showBack />
         <LoadingSpinner />
       </SafeAreaView>
     );
@@ -146,7 +146,7 @@ export function NotificationsScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
-      <ScreenHeader title={t('notifications.title', { defaultValue: 'Notifications' })} showBack={false} />
+      <ScreenHeader title={t('notifications.title', { defaultValue: 'Notifications' })} showBack />
 
       {error && !loading ? (
         <View style={{ padding: 24, alignItems: 'center' }}>
