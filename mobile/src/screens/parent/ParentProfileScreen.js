@@ -21,6 +21,8 @@ import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 function getAvatarUrl(avatar, bustCache = false) {
   if (!avatar) return null;
+  // base64 data URIs render directly — no cache-busting needed
+  if (avatar.startsWith('data:')) return avatar;
   let url;
   if (avatar.startsWith('http')) {
     url = avatar;

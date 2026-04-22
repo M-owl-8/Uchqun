@@ -58,14 +58,21 @@ export const updateAvatar = async (req, res) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    // Normalize extension - Appwrite expects jpg, not jpeg
-    let extension = (req.file.mimetype.split('/')[1] || 'jpg').toLowerCase();
-    if (extension === 'jpeg') extension = 'jpg';
-    const validExtensions = ['jpg', 'png', 'gif', 'webp'];
-    if (!validExtensions.includes(extension)) extension = 'jpg';
-    const filename = `avatar-${user.id}-${Date.now()}.${extension}`;
-    const uploadResult = await uploadFile(req.file.buffer, filename, req.file.mimetype);
-    await user.update({ avatar: uploadResult.url });
+
+    // Store avatar as a base64 data URI directly in the DB so it survives
+    // Railway container restarts (which wipe ephemeral disk and any uploaded
+    // files). Using TEXT column on users.avatar.
+    const mimetype = req.file.mimetype || 'image/jpeg';
+    const MAX_BYTES = 1.5 * 1024 * 1024; // ~1.5 MB raw before base64
+    if (req.file.buffer.length > MAX_BYTES) {
+      return res.status(413).json({
+        error: 'Avatar too large',
+        message: 'Please pick an image smaller than 1.5 MB.',
+      });
+    }
+    const dataUri = `data:${mimetype};base64,${req.file.buffer.toString('base64')}`;
+
+    await user.update({ avatar: dataUri });
     await user.reload();
 
     const userData = user.toJSON();
