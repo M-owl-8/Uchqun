@@ -168,7 +168,7 @@ export function ParentDetailScreen() {
           <Card style={styles.card}>
             <View style={styles.sectionHeader}>
               <Ionicons name="people" size={20} color={tokens.colors.accent.blue} />
-              <Text style={styles.sectionTitle}>{t('parentsPage.children') || 'Children'}</Text>
+              <Text style={styles.sectionTitle}>{t('parentsPage.childCount', { defaultValue: 'Bola' })}</Text>
               <View style={styles.countBadge}>
                 <Text style={styles.countText}>{parent.children.length}</Text>
               </View>
