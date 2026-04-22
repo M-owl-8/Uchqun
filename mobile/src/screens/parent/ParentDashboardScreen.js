@@ -303,6 +303,20 @@ export function ParentDashboardScreen() {
           </Text>
           <View style={styles.quickActionsList}>
             <QuickActionCard
+              icon="chatbubbles-outline"
+              title={t('dashboard.chatWithTeacher', { defaultValue: "O'qituvchi bilan chat" })}
+              subtitle={t('dashboard.chatWithTeacherSub', { defaultValue: 'Xabar yuborish' })}
+              color="#F8D7C4"
+              onPress={() => {
+                const teacherId = selectedChild?.teacherId || selectedChild?.teacher?.id;
+                navigation.navigate('Chat', {
+                  conversationId: `parent:${user?.id}`,
+                  childId: selectedChild?.id,
+                  teacherId,
+                });
+              }}
+            />
+            <QuickActionCard
               icon="images-outline"
               title={t('dashboard.mediaQuick', { defaultValue: 'Media' })}
               subtitle={t('dashboard.mediaQuickSub', { defaultValue: 'Rasm, video va hujjatlar' })}

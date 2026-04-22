@@ -19,9 +19,22 @@ const canAccessConversation = async (req, conversationId) => {
     const parentId = conversationId.replace('parent:', '');
     if (!parentId) return false;
     const { default: Child } = await import('../models/Child.js');
-    const childCount = await Child.count({
-      where: { parentId, ...(req.user.role === 'teacher' ? { teacherId: req.user.id } : { createdBy: req.user.id }) }
-    });
+    let where;
+    if (req.user.role === 'teacher') {
+      // Child has no teacherId — link via Group.teacherId -> Child.groupId
+      const { default: Group } = await import('../models/Group.js');
+      const groups = await Group.findAll({
+        attributes: ['id'],
+        where: { teacherId: req.user.id },
+        raw: true,
+      });
+      const groupIds = groups.map((g) => g.id);
+      if (groupIds.length === 0) return false;
+      where = { parentId, groupId: { [Op.in]: groupIds } };
+    } else {
+      where = { parentId, createdBy: req.user.id };
+    }
+    const childCount = await Child.count({ where });
     return childCount > 0;
   }
   return false;
