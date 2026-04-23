@@ -17,6 +17,8 @@ import { useTranslation } from 'react-i18next';
 
 function getAvatarUrl(avatar) {
   if (!avatar) return null;
+  // base64 data URIs render directly
+  if (avatar.startsWith('data:')) return avatar;
   if (avatar.startsWith('http')) return avatar;
   const base = (API_URL || '').replace(/\/api\/?$/, '');
   return `${base}${avatar.startsWith('/') ? '' : '/'}${avatar}`;

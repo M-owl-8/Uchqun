@@ -190,6 +190,7 @@ export function ParentProfileScreen() {
 
   const getPhotoUrl = (photo) => {
     if (!photo) return null;
+    if (photo.startsWith('data:')) return photo;
     if (photo.startsWith('http')) return photo;
     const base = (API_URL || '').replace(/\/api\/?$/, '');
     return `${base}${photo.startsWith('/') ? '' : '/'}${photo}`;

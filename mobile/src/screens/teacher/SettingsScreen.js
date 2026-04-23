@@ -15,6 +15,7 @@ import { API_URL } from '../../config';
 
 function getAvatarUrl(avatar) {
   if (!avatar) return null;
+  if (avatar.startsWith('data:')) return avatar;
   if (avatar.startsWith('http')) return avatar;
   const base = (API_URL || '').replace(/\/api\/?$/, '');
   return `${base}${avatar.startsWith('/') ? '' : '/'}${avatar}`;
