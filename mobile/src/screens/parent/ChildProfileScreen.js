@@ -82,6 +82,7 @@ export function ChildProfileScreen() {
   const [monitoringRecords, setMonitoringRecords] = useState([]);
   const [photoTimestamp, setPhotoTimestamp] = useState(Date.now());
   const [imageLoading, setImageLoading] = useState(true);
+  const [imageError, setImageError] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [showAvatarSelector, setShowAvatarSelector] = useState(false);
   const [showLogoutModal, setShowLogoutModal] = useState(false);
@@ -636,13 +637,13 @@ export function ChildProfileScreen() {
                 <ActivityIndicator size="small" color={tokens.colors.accent.blue} />
               </View>
             )}
-            {child.photo ? (
+            {child.photo && !imageError ? (
               <Image
                 key={`${child.photo}-${photoTimestamp}`}
                 source={{
                   uri: (() => {
                     const photoUrl = getPhotoUrl(child.photo);
-                    // Add timestamp for cache busting (except for Appwrite URLs which have query params)
+                    // Add timestamp for cache busting (except for data URIs and Appwrite URLs which have query params)
                     if (photoUrl && (photoUrl.startsWith('http://') || photoUrl.startsWith('https://'))) {
                       // Check if URL already has query params
                       if (photoUrl.includes('?')) {
@@ -657,10 +658,13 @@ export function ChildProfileScreen() {
                   styles.avatarImage,
                   imageLoading && styles.avatarImageLoading,
                 ]}
-                onLoad={() => setImageLoading(false)}
-                onError={(error) => {
-                  if (__DEV__) console.error('Image load error:', error);
+                onLoad={() => {
                   setImageLoading(false);
+                  setImageError(false);
+                }}
+                onError={() => {
+                  setImageLoading(false);
+                  setImageError(true);
                 }}
                 resizeMode="cover"
               />
