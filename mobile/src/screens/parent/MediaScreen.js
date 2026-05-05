@@ -21,7 +21,7 @@ let WebView;
 try {
   WebView = require('react-native-webview').WebView;
 } catch (error) {
-  if (__DEV__) console.warn('react-native-webview not available:', error);
+  logger.warn('react-native-webview not available:', error);
   WebView = null;
 }
 import { parentService } from '../../services/parentService';
@@ -35,6 +35,7 @@ import EmptyState from '../../components/common/EmptyState';
 import { ImageViewer } from '../../components/common/ImageViewer';
 import { API_URL } from '../../config';
 import { useTranslation } from 'react-i18next';
+import logger from '../../utils/logger';
 
 const { width } = Dimensions.get('window');
 const GRID_GAP = tokens.space.sm;
@@ -464,7 +465,7 @@ export function MediaScreen() {
                         Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                       }
                     } catch (error) {
-                      if (__DEV__) console.warn('Failed to open video:', error);
+                      logger.warn('Failed to open video:', error);
                       Alert.alert(t('common.error'), t('parentMedia.videoOpenError'));
                     }
                   }}

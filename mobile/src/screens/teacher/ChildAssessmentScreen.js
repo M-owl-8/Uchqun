@@ -18,6 +18,7 @@ import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const CATEGORIES = [
   { key: 'cognitive', icon: 'bulb-outline', translationKey: 'cognitive' },
@@ -79,7 +80,7 @@ export function ChildAssessmentScreen() {
       setFormData(formMap);
       setChanged({});
     } catch (err) {
-      if (__DEV__) console.error('Error loading assessments:', err);
+      logger.error('Error loading assessments:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
@@ -147,7 +148,7 @@ export function ChildAssessmentScreen() {
       setChanged({});
       await loadAssessments();
     } catch (error) {
-      if (__DEV__) console.error('Error saving assessments:', error);
+      logger.error('Error saving assessments:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         error.response?.data?.error || t('common.genericError', { defaultValue: 'Something went wrong' })

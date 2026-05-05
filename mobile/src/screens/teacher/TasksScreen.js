@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function TasksScreen() {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export function TasksScreen() {
       const data = await teacherService.getTasks();
       setTasks(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading tasks:', err);
+      logger.error('Error loading tasks:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setTasks([]);
     } finally {
@@ -39,7 +40,7 @@ export function TasksScreen() {
       await teacherService.updateTaskStatus(id, status);
       loadTasks();
     } catch (error) {
-      if (__DEV__) console.error('Error updating task status:', error);
+      logger.error('Error updating task status:', error);
     }
   };
 

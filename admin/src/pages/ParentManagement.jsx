@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Card from '../components/Card';
@@ -72,7 +72,7 @@ const ParentManagement = () => {
     }
   };
 
-  const filteredParents = parents.filter((parent) => {
+  const filteredParents = useMemo(() => parents.filter((parent) => {
     const query = searchQuery.toLowerCase();
     return (
       parent.firstName?.toLowerCase().includes(query) ||
@@ -80,7 +80,7 @@ const ParentManagement = () => {
       parent.email?.toLowerCase().includes(query) ||
       parent.phone?.toLowerCase().includes(query)
     );
-  });
+  }), [parents, searchQuery]);
 
   if (loading) {
     return <SkeletonList items={8} />;
@@ -94,16 +94,17 @@ const ParentManagement = () => {
           <p className="text-gray-500 font-medium mt-1">{t('parentsPage.subtitle')}</p>
         </div>
 
-        <div className="relative flex-1 md:flex-initial md:w-64">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+        <form role="search" aria-label={t('parentsPage.search')} className="relative flex-1 md:flex-initial md:w-64">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
           <input
             type="text"
             placeholder={t('parentsPage.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            aria-label={t('parentsPage.search')}
             className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full"
           />
-        </div>
+        </form>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -128,11 +129,15 @@ const ParentManagement = () => {
                       : 'hover:bg-gray-50'
                   }`}
                   onClick={() => handleViewParent(parent)}
+                  aria-label={`${t('parentsPage.viewLabel') || 'View'} ${parent.firstName} ${parent.lastName}`}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => e.key === 'Enter' && handleViewParent(parent)}
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
                       <div className="flex items-center gap-3 mb-1">
-                        <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+                        <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold" aria-hidden="true">
                           {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
                         </div>
                         <div>
@@ -144,12 +149,12 @@ const ParentManagement = () => {
                       </div>
                       {parent.phone && (
                         <div className="flex items-center gap-2 text-sm text-gray-500 mt-2">
-                          <Phone className="w-4 h-4" />
+                          <Phone className="w-4 h-4" aria-hidden="true" />
                           <span>{parent.phone}</span>
                         </div>
                       )}
                     </div>
-                    <Eye className="w-5 h-5 text-gray-400" />
+                    <Eye className="w-5 h-5 text-gray-400" aria-hidden="true" />
                   </div>
                 </div>
               ))
@@ -168,7 +173,7 @@ const ParentManagement = () => {
                 <p className="text-sm text-gray-600">{selectedParent.email}</p>
               </div>
               {loadingParentData ? (
-                <div className="p-8 text-center">
+                <div className="p-8 text-center" role="status" aria-label="Loading parent data">
                   <LoadingSpinner size="md" />
                 </div>
               ) : parentData ? (

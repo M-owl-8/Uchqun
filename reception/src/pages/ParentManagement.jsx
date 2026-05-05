@@ -1,5 +1,5 @@
 // Reception ParentManagement - Updated with Edit Child functionality
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
@@ -406,7 +406,7 @@ const ParentManagement = () => {
     }
   };
 
-  const filteredParents = parents.filter((parent) => {
+  const filteredParents = useMemo(() => parents.filter((parent) => {
     const query = searchQuery.toLowerCase();
     return (
       parent.firstName?.toLowerCase().includes(query) ||
@@ -414,7 +414,7 @@ const ParentManagement = () => {
       parent.email?.toLowerCase().includes(query) ||
       parent.phone?.toLowerCase().includes(query)
     );
-  });
+  }), [parents, searchQuery]);
 
   if (loading) {
     return <SkeletonList items={8} />;

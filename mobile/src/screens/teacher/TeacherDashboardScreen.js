@@ -12,6 +12,7 @@ import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import QuickActionCard from '../../components/common/QuickActionCard';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function TeacherDashboardScreen() {
   const navigation = useNavigation();
@@ -67,7 +68,7 @@ export function TeacherDashboardScreen() {
         media: countFromResponse(mediaRes),
       });
     } catch (err) {
-      if (__DEV__) console.error('Error loading dashboard:', err);
+      logger.error('Error loading dashboard:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);

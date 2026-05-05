@@ -14,8 +14,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!token) { setLoading(false); return; }
+    // Validate session via HTTP-only cookie (no localStorage token needed)
     api.get('/auth/me')
       .then((res) => {
         const userData = res.data;
@@ -23,8 +22,6 @@ export const AuthProvider = ({ children }) => {
         setUser(userData);
       })
       .catch(() => {
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
         setUser(null);
       })
@@ -34,12 +31,10 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { accessToken, refreshToken, user: userData } = response.data;
-      if (userData && accessToken) {
+      const { user: userData } = response.data;
+      if (userData) {
         setUser(userData);
         try { localStorage.setItem('user', JSON.stringify(userData)); } catch { /* quota */ }
-        localStorage.setItem('accessToken', accessToken);
-        if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
         return { success: true };
       }
       return { success: false, error: 'Invalid response from server' };
@@ -54,8 +49,6 @@ export const AuthProvider = ({ children }) => {
     } finally {
       setUser(null);
       localStorage.removeItem('user');
-      localStorage.removeItem('accessToken');
-      localStorage.removeItem('refreshToken');
     }
   };
 

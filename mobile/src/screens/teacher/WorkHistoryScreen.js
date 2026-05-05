@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function WorkHistoryScreen() {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export function WorkHistoryScreen() {
       const data = await teacherService.getWorkHistory();
       setWorkHistory(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading work history:', err);
+      logger.error('Error loading work history:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setWorkHistory([]);
     } finally {
@@ -39,7 +40,7 @@ export function WorkHistoryScreen() {
       await teacherService.updateWorkHistoryStatus(id, status);
       loadWorkHistory();
     } catch (error) {
-      if (__DEV__) console.error('Error updating work history status:', error);
+      logger.error('Error updating work history status:', error);
     }
   };
 

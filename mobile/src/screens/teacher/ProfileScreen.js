@@ -14,6 +14,7 @@ import { API_URL } from '../../config';
 import { api } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import logger from '../../utils/logger';
 
 function getAvatarUrl(avatar) {
   if (!avatar) return null;
@@ -68,7 +69,7 @@ export function ProfileScreen() {
         email: user?.email || '',
       });
     } catch (error) {
-      if (__DEV__) console.error('Error loading profile:', error);
+      logger.error('Error loading profile:', error);
     } finally {
       setLoading(false);
     }
@@ -95,7 +96,7 @@ export function ProfileScreen() {
         );
       }
     } catch (error) {
-      if (__DEV__) console.error('Profile update error:', error);
+      logger.error('Profile update error:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('profile.updateFailed', { defaultValue: 'Failed to update profile' })
@@ -173,7 +174,7 @@ export function ProfileScreen() {
         t('profile.avatarUpdated', { defaultValue: 'Avatar updated successfully' })
       );
     } catch (error) {
-      if (__DEV__) console.error('Avatar upload error:', error);
+      logger.error('Avatar upload error:', error);
       const errorMessage = error.response?.data?.error ||
                           error.response?.data?.message ||
                           error.message ||

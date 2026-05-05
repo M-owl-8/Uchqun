@@ -11,6 +11,7 @@ import EmptyState from '../../components/common/EmptyState';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const EMOTIONAL_STATES = ['happy', 'sad', 'angry', 'anxious', 'calm', 'excited', 'tired', 'focused'];
 
@@ -44,7 +45,7 @@ export function EmotionalMonitoringScreen() {
       const data = await teacherService.getEmotionalRecords(childId);
       setRecords(data);
     } catch (err) {
-      if (__DEV__) console.error('Error loading emotional records:', err);
+      logger.error('Error loading emotional records:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setRecords([]);
     } finally {
@@ -80,7 +81,7 @@ export function EmotionalMonitoringScreen() {
       setShowModal(false);
       loadRecords();
     } catch (error) {
-      if (__DEV__) console.error('Error creating emotional record:', error);
+      logger.error('Error creating emotional record:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), t('emotional.createFailed', { defaultValue: 'Failed to create record.' }));
     } finally {
       setSaving(false);

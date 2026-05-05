@@ -211,6 +211,19 @@ const shutdown = async (signal) => {
 process.on('SIGTERM', () => shutdown('SIGTERM'));
 process.on('SIGINT', () => shutdown('SIGINT'));
 
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Promise Rejection', {
+    reason: reason instanceof Error ? reason.message : String(reason),
+    stack: reason instanceof Error ? reason.stack : undefined,
+    promise: String(promise),
+  });
+});
+
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception — shutting down', { error: error.message, stack: error.stack });
+  shutdown('uncaughtException');
+});
+
 httpServer.listen(PORT, '0.0.0.0', () => {
   logger.info('Server started', {
     port: PORT,

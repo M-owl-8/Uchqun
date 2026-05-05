@@ -21,6 +21,7 @@ import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context'
 import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const EMOTIONAL_STATE_KEYS = [
   'stable',
@@ -83,7 +84,7 @@ export function MonitoringJournalScreen() {
       });
       setChildren(allChildren);
     } catch (error) {
-      if (__DEV__) console.error('Error loading parents:', error);
+      logger.error('Error loading parents:', error);
     }
   };
 
@@ -94,7 +95,7 @@ export function MonitoringJournalScreen() {
       const records = await teacherService.getAllMonitoringRecords();
       setMonitoringRecords(Array.isArray(records) ? records : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading monitoring records:', err);
+      logger.error('Error loading monitoring records:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setMonitoringRecords([]);
     } finally {
@@ -175,7 +176,7 @@ export function MonitoringJournalScreen() {
       handleCloseModal();
       loadMonitoringRecords();
     } catch (error) {
-      if (__DEV__) console.error('Error saving monitoring record:', error);
+      logger.error('Error saving monitoring record:', error);
       Alert.alert('', error.response?.data?.error || t('monitoring.toastError'));
     } finally {
       setSaving(false);
@@ -197,7 +198,7 @@ export function MonitoringJournalScreen() {
               handleCloseModal();
               loadMonitoringRecords();
             } catch (error) {
-              if (__DEV__) console.error('Error deleting record:', error);
+              logger.error('Error deleting record:', error);
               Alert.alert('', t('monitoring.toastError'));
             }
           },

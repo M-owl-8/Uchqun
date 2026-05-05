@@ -20,6 +20,7 @@ import { teacherService } from '../../services/teacherService';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'snack', 'dinner'];
 
@@ -87,7 +88,7 @@ export function MealPlanScreen() {
       }
       setChildren(allChildren);
     } catch (err) {
-      if (__DEV__) console.error('Error loading children:', err);
+      logger.error('Error loading children:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
@@ -127,7 +128,7 @@ export function MealPlanScreen() {
       }
       setMealData(newMealData);
     } catch (error) {
-      if (__DEV__) console.error('Error loading existing plans:', error);
+      logger.error('Error loading existing plans:', error);
     }
   };
 
@@ -202,7 +203,7 @@ export function MealPlanScreen() {
 
       Alert.alert('', message);
     } catch (error) {
-      if (__DEV__) console.error('Error saving meal plans:', error);
+      logger.error('Error saving meal plans:', error);
       Alert.alert('Error', error.response?.data?.error || 'Failed to save meal plans');
     } finally {
       setSaving(false);

@@ -19,6 +19,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../../context/AuthContext';
 import tokens from '../../../styles/tokens';
 import { buildServicesList } from './constants';
+import logger from '../../../utils/logger';
 
 const INITIAL_FORM_DATA = (user, t) => ({
   parentId: '',
@@ -72,7 +73,7 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
       setParents(Array.isArray(parentsList) ? parentsList : []);
       return Array.isArray(parentsList) ? parentsList : [];
     } catch (error) {
-      if (__DEV__) console.error('Error loading parents:', error);
+      logger.error('Error loading parents:', error);
       setParents([]);
       return [];
     }
@@ -90,7 +91,7 @@ export default function ActivityForm({ visible, editingActivity, onSubmit, onClo
         return [];
       }
     } catch (error) {
-      if (__DEV__) console.error('Error loading children for parent:', error);
+      logger.error('Error loading children for parent:', error);
       setChildren([]);
       return [];
     }

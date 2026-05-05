@@ -11,6 +11,7 @@ import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Card from '../../components/common/Card';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const NOTIFICATION_TYPE_COLORS = {
   info: tokens.colors.semantic.info,
@@ -48,7 +49,7 @@ export function NotificationsScreen() {
       const result = await notificationService.getNotifications();
       setNotifications(Array.isArray(result?.data) ? result.data : (Array.isArray(result) ? result : []));
     } catch (err) {
-      if (__DEV__) console.error('Error loading notifications:', err);
+      logger.error('Error loading notifications:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setNotifications([]);
     } finally {
@@ -61,7 +62,7 @@ export function NotificationsScreen() {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      if (__DEV__) console.error('Error marking notification as read:', error);
+      logger.error('Error marking notification as read:', error);
     }
   };
 

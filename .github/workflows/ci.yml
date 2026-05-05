@@ -90,7 +90,15 @@ jobs:
           node-version: 20
           cache: npm
       - run: cd ${{ matrix.app }} && npm ci
-      - run: cd ${{ matrix.app }} && npm test -- --run
+      - name: Run frontend tests (fail if no tests found)
+        run: |
+          cd ${{ matrix.app }}
+          RESULT=$(npm test -- --run --reporter=verbose 2>&1)
+          echo "$RESULT"
+          if echo "$RESULT" | grep -q "No test files found"; then
+            echo "ERROR: No test files found in ${{ matrix.app }}. Tests are required."
+            exit 1
+          fi
 
   build:
     runs-on: ubuntu-latest

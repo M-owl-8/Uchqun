@@ -11,6 +11,7 @@ import EmptyState from '../../components/common/EmptyState';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const THERAPY_TYPES = ['speech', 'occupational', 'physical', 'behavioral', 'other'];
 
@@ -40,7 +41,7 @@ export function TherapyScreen() {
       const data = await teacherService.getTherapySessions(childId);
       setSessions(data);
     } catch (error) {
-      if (__DEV__) console.error('Error loading therapy sessions:', error);
+      logger.error('Error loading therapy sessions:', error);
       setSessions([]);
     } finally {
       setLoading(false);
@@ -66,7 +67,7 @@ export function TherapyScreen() {
       setShowModal(false);
       loadSessions();
     } catch (error) {
-      if (__DEV__) console.error('Error creating therapy session:', error);
+      logger.error('Error creating therapy session:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), t('therapy.createFailed', { defaultValue: 'Failed to create session.' }));
     } finally {
       setSaving(false);

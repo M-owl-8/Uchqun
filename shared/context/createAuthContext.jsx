@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { createApi } from '../services/api';
 
-export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredRole = null }) {
+export function createAuthContext({ userStorageKey = 'user', requiredRole = null } = {}) {
   const AuthContext = createContext(null);
 
   function AuthProvider({ children }) {
@@ -13,18 +13,15 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
     });
     const [loading, setLoading] = useState(true);
 
-    const api = createApi({ tokenKey });
+    const api = createApi();
 
     useEffect(() => {
-      const token = localStorage.getItem(tokenKey);
-      if (!token) { setLoading(false); return; }
+      // Validate session via HTTP-only cookie — no localStorage token dependency
       api.get('/auth/me')
         .then((res) => {
           const userData = res.data;
           if (requiredRole && userData.role !== requiredRole) {
-            localStorage.removeItem(tokenKey);
             localStorage.removeItem(userStorageKey);
-            localStorage.removeItem('refreshToken');
             setUser(null);
           } else {
             try { localStorage.setItem(userStorageKey, JSON.stringify(userData)); } catch { /* quota */ }
@@ -32,9 +29,7 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
           }
         })
         .catch(() => {
-          localStorage.removeItem(tokenKey);
           localStorage.removeItem(userStorageKey);
-          localStorage.removeItem('refreshToken');
           setUser(null);
         })
         .finally(() => setLoading(false));
@@ -42,13 +37,11 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
     }, []);
 
     const login = async (email, password) => {
-      const res = await api.post('/auth/login', { email, password }, { withCredentials: true });
-      const { accessToken, refreshToken, user: userData } = res.data;
+      const res = await api.post('/auth/login', { email, password });
+      const { user: userData } = res.data;
       if (requiredRole && userData.role !== requiredRole) {
         throw new Error(`Access denied. Required role: ${requiredRole}`);
       }
-      localStorage.setItem(tokenKey, accessToken);
-      if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
       try { localStorage.setItem(userStorageKey, JSON.stringify(userData)); } catch { /* quota */ }
       setUser(userData);
       return res.data;
@@ -58,8 +51,6 @@ export function createAuthContext({ tokenKey, userStorageKey = 'user', requiredR
       try {
         await api.post('/auth/logout', {}, { withCredentials: true }).catch(() => {});
       } finally {
-        localStorage.removeItem(tokenKey);
-        localStorage.removeItem('refreshToken');
         localStorage.removeItem(userStorageKey);
         setUser(null);
       }

@@ -26,6 +26,7 @@ import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function TeacherChildProfileScreen() {
   const route = useRoute();
@@ -80,7 +81,7 @@ export function TeacherChildProfileScreen() {
         populateForm(data);
       }
     } catch (err) {
-      if (__DEV__) console.error('Error loading child:', err);
+      logger.error('Error loading child:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
@@ -164,7 +165,7 @@ export function TeacherChildProfileScreen() {
       setIsEditing(false);
       await loadChild();
     } catch (error) {
-      if (__DEV__) console.error('Error updating child:', error);
+      logger.error('Error updating child:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('childProfile.profileUpdateError', { defaultValue: 'Failed to update profile' })

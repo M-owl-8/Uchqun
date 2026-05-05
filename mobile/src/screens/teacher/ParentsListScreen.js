@@ -20,6 +20,7 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function ParentsListScreen() {
   const navigation = useNavigation();
@@ -45,7 +46,7 @@ export function ParentsListScreen() {
       const data = await teacherService.getParents();
       setParents(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading parents:', err);
+      logger.error('Error loading parents:', err);
       setParents([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -106,7 +107,7 @@ export function ParentsListScreen() {
         try {
           navigation.navigate('ParentDetail', { parentId: item.id });
         } catch (error) {
-          if (__DEV__) console.error('[TeacherParentsList] Navigation error:', error);
+          logger.error('[TeacherParentsList] Navigation error:', error);
         }
       }}
       style={({ pressed }) => [pressed && { transform: [{ scale: 0.98 }] }]}

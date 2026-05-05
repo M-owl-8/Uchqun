@@ -8,6 +8,7 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function ResponsibilitiesScreen() {
   const { t } = useTranslation();
@@ -26,7 +27,7 @@ export function ResponsibilitiesScreen() {
       const data = await teacherService.getResponsibilities();
       setResponsibilities(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading responsibilities:', err);
+      logger.error('Error loading responsibilities:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       setResponsibilities([]);
     } finally {

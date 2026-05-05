@@ -3,14 +3,13 @@ import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
 
 export function createApi({
-  tokenKey = 'accessToken',
-  withCredentials = true,
   onUnauthenticated = null,
 } = {}) {
   const api = axios.create({
     baseURL: BASE_URL,
     headers: { 'Content-Type': 'application/json' },
-    withCredentials,
+    // Sends HTTP-only cookies automatically — no localStorage token needed
+    withCredentials: true,
     timeout: 30000,
   });
 
@@ -18,18 +17,12 @@ export function createApi({
   let refreshPromise = null;
 
   const doRefresh = async () => {
-    const refreshToken = localStorage.getItem('refreshToken');
-    if (!refreshToken) throw new Error('No refresh token');
-    const res = await axios.post(`${BASE_URL}/auth/refresh`, { refreshToken }, { timeout: 10000 });
-    const { accessToken, refreshToken: newRefreshToken } = res.data;
-    localStorage.setItem(tokenKey, accessToken);
-    if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
-    return accessToken;
+    // Cookie-based refresh — backend reads refreshToken from HTTP-only cookie
+    await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true, timeout: 10000 });
   };
 
   const clearAuth = () => {
-    localStorage.removeItem(tokenKey);
-    localStorage.removeItem('refreshToken');
+    // Only user metadata lives in localStorage — tokens are HTTP-only cookies cleared by backend
     localStorage.removeItem('user');
     if (typeof onUnauthenticated === 'function') {
       onUnauthenticated();
@@ -39,8 +32,7 @@ export function createApi({
   };
 
   api.interceptors.request.use((config) => {
-    const token = localStorage.getItem(tokenKey);
-    if (token) config.headers.Authorization = `Bearer ${token}`;
+    // No Bearer token injection — cookies are sent automatically via withCredentials
     if (config.data instanceof FormData) delete config.headers['Content-Type'];
     return config;
   });
@@ -55,8 +47,7 @@ export function createApi({
           if (!refreshPromise) {
             refreshPromise = doRefresh().finally(() => { refreshPromise = null; });
           }
-          const accessToken = await refreshPromise;
-          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          await refreshPromise;
           return api(originalRequest);
         } catch {
           clearAuth();

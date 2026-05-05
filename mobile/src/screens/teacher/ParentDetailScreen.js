@@ -10,6 +10,7 @@ import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 export function ParentDetailScreen() {
   const route = useRoute();
@@ -52,7 +53,7 @@ export function ParentDetailScreen() {
       const data = await teacherService.getParentById(parentId);
       setParent(data);
     } catch (error) {
-      if (__DEV__) console.error('Error loading parent:', error);
+      logger.error('Error loading parent:', error);
     } finally {
       setLoading(false);
     }

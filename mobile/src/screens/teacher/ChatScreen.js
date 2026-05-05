@@ -15,6 +15,7 @@ import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
+import logger from '../../utils/logger';
 
 export function ChatScreen() {
   const { user } = useAuth();
@@ -77,7 +78,7 @@ export function ChatScreen() {
 
         setParentsWithLastMessage(parentsWithMessages);
       } catch (err) {
-        if (__DEV__) console.error('Failed to load parents for chat', err);
+        logger.error('Failed to load parents for chat', err);
         setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
       } finally {
         setLoading(false);

@@ -34,6 +34,7 @@ import { API_URL } from '../../config';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const { width } = Dimensions.get('window');
 const GRID_GAP = tokens.space.sm;
@@ -106,7 +107,7 @@ export function MediaScreen() {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
     } catch (error) {
-      if (__DEV__) console.error('Error loading children:', error);
+      logger.error('Error loading children:', error);
       setChildren([]);
     }
   };
@@ -119,7 +120,7 @@ export function MediaScreen() {
       const data = await mediaService.getMedia(params);
       setMedia(Array.isArray(data) ? data : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading media:', err);
+      logger.error('Error loading media:', err);
       setMedia([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -175,7 +176,7 @@ export function MediaScreen() {
         });
       }
     } catch (error) {
-      if (__DEV__) console.error('Error picking image:', error);
+      logger.error('Error picking image:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('mediaPage.pickError', { defaultValue: 'Failed to pick media' })
@@ -209,7 +210,7 @@ export function MediaScreen() {
         });
       }
     } catch (error) {
-      if (__DEV__) console.error('Error taking photo:', error);
+      logger.error('Error taking photo:', error);
       Alert.alert(
         t('common.error', { defaultValue: 'Error' }),
         t('mediaPage.cameraError', { defaultValue: 'Failed to take photo' })
@@ -267,7 +268,7 @@ export function MediaScreen() {
       setSelectedFile(null);
       loadMedia();
     } catch (error) {
-      if (__DEV__) console.error('Error saving media:', error);
+      logger.error('Error saving media:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || error.message || t('mediaPage.toastError', { defaultValue: 'Xatolik yuz berdi' });
       Alert.alert(t('common.error', { defaultValue: 'Error' }), errorMessage);
     } finally {
@@ -290,7 +291,7 @@ export function MediaScreen() {
               Alert.alert(t('common.success', { defaultValue: 'Success' }), t('mediaPage.toastDelete', { defaultValue: "Media o'chirildi" }));
               loadMedia();
             } catch (error) {
-              if (__DEV__) console.error('Error deleting media:', error);
+              logger.error('Error deleting media:', error);
               Alert.alert(t('common.error', { defaultValue: 'Error' }), t('mediaPage.toastError', { defaultValue: 'Xatolik yuz berdi' }));
             }
           },

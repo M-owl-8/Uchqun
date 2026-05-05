@@ -29,13 +29,13 @@ export function SocketProvider({ children }) {
   }, []);
 
   const connect = useCallback(() => {
-    const token = localStorage.getItem('accessToken');
-    if (!isAuthenticated || !token) return;
+    if (!isAuthenticated) return;
     if (socketRef.current?.connected) return;
     if (socketRef.current) socketRef.current.disconnect();
 
     const socket = io(getSocketUrl(), {
-      auth: { token },
+      // Cookie-based auth — no localStorage token needed
+      // Backend reads HTTP-only accessToken cookie from handshake headers
       transports: ['websocket', 'polling'],
       reconnection: true,
       reconnectionDelay: 1000,

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, memo, useMemo } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
@@ -45,7 +45,7 @@ const TeacherManagement = () => {
     }
   };
 
-  const filteredTeachers = teachers.filter((teacher) => {
+  const filteredTeachers = useMemo(() => teachers.filter((teacher) => {
     const query = searchQuery.toLowerCase();
     return (
       teacher.firstName?.toLowerCase().includes(query) ||
@@ -53,7 +53,7 @@ const TeacherManagement = () => {
       teacher.email?.toLowerCase().includes(query) ||
       teacher.phone?.toLowerCase().includes(query)
     );
-  });
+  }), [teachers, searchQuery]);
 
   if (loading) {
     return <SkeletonList items={6} />;
@@ -82,38 +82,7 @@ const TeacherManagement = () => {
       {filteredTeachers.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTeachers.map((teacher) => (
-            <Card key={teacher.id} className="p-6 hover:shadow-lg transition-shadow">
-              <div className="flex items-start justify-between mb-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
-                    {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
-                  </div>
-                  <div>
-                    <h3 className="text-lg font-bold text-gray-900">
-                      {teacher.firstName} {teacher.lastName}
-                    </h3>
-                    <p className="text-sm text-gray-500">{teacher.email}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail className="w-4 h-4 text-gray-400" />
-                  <span>{teacher.email}</span>
-                </div>
-                {teacher.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone className="w-4 h-4 text-gray-400" />
-                    <span>{teacher.phone}</span>
-                  </div>
-                )}
-                <div className="flex items-center gap-2 text-sm text-blue-600 mt-3 pt-3 border-t border-gray-100">
-                  <UserCheck className="w-4 h-4" />
-                  <span className="font-medium">{t('teachersPage.badge')}</span>
-                </div>
-              </div>
-            </Card>
+            <TeacherCard key={teacher.id} teacher={teacher} t={t} />
           ))}
         </div>
       ) : (
@@ -127,5 +96,37 @@ const TeacherManagement = () => {
     </div>
   );
 };
+
+const TeacherCard = memo(({ teacher, t }) => (
+  <Card className="p-6 hover:shadow-lg transition-shadow">
+    <div className="flex items-start justify-between mb-4">
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+          {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
+        </div>
+        <div>
+          <h3 className="text-lg font-bold text-gray-900">{teacher.firstName} {teacher.lastName}</h3>
+          <p className="text-sm text-gray-500">{teacher.email}</p>
+        </div>
+      </div>
+    </div>
+    <div className="space-y-3">
+      <div className="flex items-center gap-2 text-sm text-gray-600">
+        <Mail className="w-4 h-4 text-gray-400" aria-hidden="true" />
+        <span>{teacher.email}</span>
+      </div>
+      {teacher.phone && (
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <Phone className="w-4 h-4 text-gray-400" aria-hidden="true" />
+          <span>{teacher.phone}</span>
+        </div>
+      )}
+      <div className="flex items-center gap-2 text-sm text-primary-600 mt-3 pt-3 border-t border-gray-100">
+        <UserCheck className="w-4 h-4" aria-hidden="true" />
+        <span className="font-medium">{t('teachersPage.badge')}</span>
+      </div>
+    </div>
+  </Card>
+));
 
 export default TeacherManagement;
