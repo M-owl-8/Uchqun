@@ -93,42 +93,42 @@
 **Goal:** Enforced constraints, no orphaned data, no silent data loss.
 
 ### 3a — Critical Model Fixes
-- [ ] `models/index.js` — import and register `News` model
-- [ ] `models/News.js` — move associations into `index.js`
-- [ ] `models/TeacherResource.js` — add explicit `field:` snake_case mappings or align migration
-- [ ] `models/ChatMessage.js` — add `references:` block to `senderId`
-- [ ] `models/ParentEvaluation.js` — add `references:` blocks to `parentId`, `teacherId`, `schoolId`
-- [ ] `models/TeacherRating.js` — add `references:` blocks to `teacherId`, `parentId`
+- [x] `models/index.js` — imported and registered `News` model; moved News associations here
+- [x] `models/News.js` — associations moved to `index.js`; added `onDelete: RESTRICT` to `createdById`
+- [x] `models/TeacherResource.js` — added `references` + `onDelete` to `teacherId` (CASCADE) and `schoolId` (SET NULL)
+- [x] `models/ChatMessage.js` — added `references` + `onDelete: CASCADE` to `senderId`; added missing `conversationId` index
+- [x] `models/ParentEvaluation.js` — added `references` + cascade rules to `parentId` (CASCADE), `teacherId` (SET NULL), `schoolId` (SET NULL)
+- [x] `models/TeacherRating.js` — added `references` + `onDelete: CASCADE` to `teacherId` and `parentId`; added `paranoid: true`
 
 ### 3b — Foreign Key Cascade Audit
 Add proper `onDelete`/`onUpdate` to every FK missing them:
-- [ ] `Activity.childId` → `CASCADE`
-- [ ] `Meal.childId` → `CASCADE`
-- [ ] `Media.childId`, `Media.activityId` → `CASCADE` / `SET NULL`
-- [ ] `Progress.childId` → `CASCADE`
-- [ ] `SchoolRating.schoolId`, `SchoolRating.parentId` → `CASCADE`
-- [ ] `SuperAdminMessage.senderId` → `SET NULL`
-- [ ] `PushNotification.userId` → `CASCADE`
-- [ ] `Payment.parentId`, `Payment.childId`, `Payment.schoolId` → appropriate cascades
-- [ ] `RefreshToken.userId` → `CASCADE`
-- [ ] `Therapy.createdBy` → `SET NULL`
-- [ ] `TherapyUsage` — all 4 FKs
+- [x] `Activity.childId` → `CASCADE` + `paranoid: true`
+- [x] `Meal.childId` → `CASCADE` + `paranoid: true`
+- [x] `Media.childId` → `CASCADE`, `Media.activityId` → `SET NULL` + `paranoid: true`; added missing `activityId` index
+- [x] `Progress.childId` → `CASCADE`
+- [x] `SchoolRating.schoolId` → `CASCADE`, `SchoolRating.parentId` → `CASCADE` + `paranoid: true`
+- [x] `SuperAdminMessage.senderId` → `SET NULL`; `allowNull` changed to `true` (migration alters column + FK)
+- [x] `PushNotification.userId` → `CASCADE`
+- [x] `Payment.parentId` → `RESTRICT`, `Payment.childId` → `SET NULL`, `Payment.schoolId` → `SET NULL` + `paranoid: true`
+- [x] `RefreshToken.userId` → `CASCADE`; replaced `console.error` with `logger.error`
+- [x] `Therapy.createdBy` → `SET NULL` + `paranoid: true`
+- [x] `TherapyUsage.therapyId` → `CASCADE`, `TherapyUsage.childId` → `CASCADE`, `TherapyUsage.parentId` → `RESTRICT`, `TherapyUsage.teacherId` → `SET NULL` + `paranoid: true`
 
 ### 3c — Soft Delete (Paranoid)
 Add `paranoid: true` + `deletedAt` migration to:
-- [ ] `Activity`, `Meal`, `Media`, `Payment`
-- [ ] `Therapy`, `TherapyUsage`, `ServicePlan`, `MealPlan`
-- [ ] `TeacherRating`, `SchoolRating`
+- [x] `Activity`, `Meal`, `Media`, `Payment` — `paranoid: true` added
+- [x] `Therapy`, `TherapyUsage`, `ServicePlan`, `MealPlan` — `paranoid: true` added
+- [x] `TeacherRating`, `SchoolRating` — `paranoid: true` added
 
 ### 3d — Indexes & Constraints
-- [ ] Fix table name mismatch in `migrations/20260330000000-add-missing-fk-indexes.js:21` (`teacher_work_histories` vs `teacher_work_history`)
-- [ ] Add missing unique constraints at model level: `Progress.childId`, `Payment.transactionId`
-- [ ] Add indexes on all FK columns that lack them
+- [x] Fixed table name: `teacher_work_histories` → `teacher_work_history` in FK indexes migration
+- [x] `Progress.childId` unique already present; `Payment.transactionId` unique already present — confirmed correct
+- [x] Added missing `activityId` index on `media` table; existing indexes verified for all other FKs
 
 ### 3e — Scopes
-- [ ] Add default scope to `User` (filter by `isActive`)
-- [ ] Add school-scoped named scopes to `Activity`, `Child`, `Meal`, `Media`
-- [ ] Reduce User's 25+ unfiltered `hasMany` associations with proper scoping
+- [x] Added named scopes on `User`: `active`, `bySchool`, `teachers`, `parents` (named rather than default to preserve login lookup semantics)
+- [x] Added school-scoped named scopes: `Child.bySchool`, `Activity.bySchool/byChild`, `Meal.bySchool/byChild`, `Media.bySchool/byChild`
+- [x] Associations reorganized in `index.js`; school/role filtering via named scopes rather than default association scopes (safer — avoids breaking existing queries)
 
 ---
 

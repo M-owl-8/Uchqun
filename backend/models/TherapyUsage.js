@@ -10,74 +10,50 @@ const TherapyUsage = sequelize.define('TherapyUsage', {
   therapyId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'therapies',
-      key: 'id',
-    },
+    references: { model: 'therapies', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   childId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'children',
-      key: 'id',
-    },
+    references: { model: 'children', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   parentId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
+    references: { model: 'users', key: 'id' },
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
   },
   teacherId: {
     type: DataTypes.UUID,
     allowNull: true,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
+    references: { model: 'users', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   },
-  startTime: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
-  endTime: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  duration: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
+  startTime: { type: DataTypes.DATE, allowNull: false },
+  endTime: { type: DataTypes.DATE, allowNull: true },
+  duration: { type: DataTypes.INTEGER, allowNull: true },
   progress: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    validate: {
-      min: 0,
-      max: 100,
-    },
+    validate: { min: 0, max: 100 },
   },
-  notes: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
+  notes: { type: DataTypes.TEXT, allowNull: true },
   rating: {
     type: DataTypes.INTEGER,
     allowNull: true,
-    validate: {
-      min: 1,
-      max: 5,
-    },
+    validate: { min: 1, max: 5 },
   },
-  feedback: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
+  feedback: { type: DataTypes.TEXT, allowNull: true },
 }, {
   tableName: 'therapy_usages',
   timestamps: true,
+  paranoid: true,
   indexes: [
     { fields: ['therapyId'] },
     { fields: ['childId'] },

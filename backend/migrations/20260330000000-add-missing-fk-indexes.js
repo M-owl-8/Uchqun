@@ -18,7 +18,7 @@ export async function up(queryInterface) {
     { table: 'chat_messages', fields: ['sender_id'], name: 'idx_chat_messages_sender_id' },
     { table: 'teacher_responsibilities', fields: ['teacher_id'], name: 'idx_teacher_responsibilities_teacher_id' },
     { table: 'teacher_tasks', fields: ['teacher_id'], name: 'idx_teacher_tasks_teacher_id' },
-    { table: 'teacher_work_histories', fields: ['teacher_id'], name: 'idx_teacher_work_histories_teacher_id' },
+    { table: 'teacher_work_history', fields: ['teacher_id'], name: 'idx_teacher_work_history_teacher_id' },
   ];
 
   for (const idx of indexes) {

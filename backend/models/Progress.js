@@ -12,33 +12,19 @@ const Progress = sequelize.define('Progress', {
     type: DataTypes.UUID,
     allowNull: false,
     unique: true,
-    references: {
-      model: 'children',
-      key: 'id',
-    },
+    references: { model: 'children', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
-  academic: {
-    type: DataTypes.JSONB,
-    defaultValue: {},
-  },
-  social: {
-    type: DataTypes.JSONB,
-    defaultValue: {},
-  },
-  behavioral: {
-    type: DataTypes.JSONB,
-    defaultValue: {},
-  },
+  academic: { type: DataTypes.JSONB, defaultValue: {} },
+  social: { type: DataTypes.JSONB, defaultValue: {} },
+  behavioral: { type: DataTypes.JSONB, defaultValue: {} },
 }, {
   tableName: 'progress',
   timestamps: true,
 });
 
-// Define associations
 Progress.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 Child.hasOne(Progress, { foreignKey: 'childId', as: 'progress' });
 
 export default Progress;
-
-
-

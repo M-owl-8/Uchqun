@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import User from './User.js';
 
 const News = sequelize.define('News', {
   id: {
@@ -8,19 +7,9 @@ const News = sequelize.define('News', {
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
   },
-  title: {
-    type: DataTypes.STRING(500),
-    allowNull: false,
-  },
-  content: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  published: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
-  },
+  title: { type: DataTypes.STRING(500), allowNull: false },
+  content: { type: DataTypes.TEXT, allowNull: false },
+  published: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false },
   targetAudience: {
     type: DataTypes.ENUM('all', 'parents', 'teachers', 'admins'),
     defaultValue: 'all',
@@ -29,29 +18,19 @@ const News = sequelize.define('News', {
   createdById: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
+    references: { model: 'users', key: 'id' },
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
   },
 }, {
   tableName: 'news',
   timestamps: true,
   indexes: [
-    {
-      fields: ['published', 'targetAudience'],
-    },
-    {
-      fields: ['createdById'],
-    },
+    { fields: ['published', 'targetAudience'] },
+    { fields: ['createdById'] },
   ],
 });
 
-// Define associations
-News.belongsTo(User, { foreignKey: 'createdById', as: 'createdBy' });
-User.hasMany(News, { foreignKey: 'createdById', as: 'newsCreated' });
+// Associations defined in models/index.js
 
 export default News;
-
-
-

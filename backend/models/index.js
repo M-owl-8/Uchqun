@@ -1,4 +1,5 @@
 import sequelize from '../config/database.js';
+import logger from '../utils/logger.js';
 import User from './User.js';
 import Document from './Document.js';
 import ParentActivity from './ParentActivity.js';
@@ -34,8 +35,8 @@ import ServicePlan from './ServicePlan.js';
 import MealPlan from './MealPlan.js';
 import TeacherResource from './TeacherResource.js';
 import ParentEvaluation from './ParentEvaluation.js';
+import News from './News.js';
 
-// Initialize all models
 const models = {
   User,
   Document,
@@ -72,65 +73,57 @@ const models = {
   MealPlan,
   TeacherResource,
   ParentEvaluation,
+  News,
   sequelize,
 };
 
-// ParentEvaluation relationships
+// ─── Associations ─────────────────────────────────────────────────────────────
+
+// ParentEvaluation
 User.hasMany(ParentEvaluation, { foreignKey: 'parentId', as: 'parentEvaluations' });
 ParentEvaluation.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 User.hasMany(ParentEvaluation, { foreignKey: 'teacherId', as: 'receivedEvaluations' });
 ParentEvaluation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
-// Define model relationships
-// User -> Document (One-to-Many: Reception can have multiple documents)
+// User → Document
 User.hasMany(Document, { foreignKey: 'userId', as: 'documents' });
 Document.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
-// User -> Document (reviewedBy relationship: Admin reviews documents)
 User.hasMany(Document, { foreignKey: 'reviewedBy', as: 'reviewedDocuments' });
 Document.belongsTo(User, { foreignKey: 'reviewedBy', as: 'reviewer' });
 
-// User -> ParentActivity (One-to-Many: Parent has multiple activities)
+// User → ParentActivity / ParentMeal / ParentMedia
 User.hasMany(ParentActivity, { foreignKey: 'parentId', as: 'activities' });
 ParentActivity.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
-
-// User -> ParentMeal (One-to-Many: Parent has multiple meals)
 User.hasMany(ParentMeal, { foreignKey: 'parentId', as: 'meals' });
 ParentMeal.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
-
-// User -> ParentMedia (One-to-Many: Parent has multiple media files)
 User.hasMany(ParentMedia, { foreignKey: 'parentId', as: 'media' });
 ParentMedia.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 
-// User -> TeacherResponsibility (One-to-Many: Teacher has multiple responsibilities)
+// User → Teacher responsibilities, tasks, work history
 User.hasMany(TeacherResponsibility, { foreignKey: 'teacherId', as: 'responsibilities' });
 TeacherResponsibility.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
-
-// User -> TeacherTask (One-to-Many: Teacher has multiple tasks)
 User.hasMany(TeacherTask, { foreignKey: 'teacherId', as: 'tasks' });
 TeacherTask.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
-
-// User -> TeacherWorkHistory (One-to-Many: Teacher has multiple work history records)
 User.hasMany(TeacherWorkHistory, { foreignKey: 'teacherId', as: 'workHistory' });
 TeacherWorkHistory.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
-// User -> User (teacher relationship: Parent belongs to a Teacher)
+// User → User (teacher–parent relationship)
 User.belongsTo(User, { foreignKey: 'teacherId', as: 'assignedTeacher' });
 User.hasMany(User, { foreignKey: 'teacherId', as: 'assignedParents' });
 
-// User -> Group (parent belongs to a group)
+// User → Group
 User.belongsTo(Group, { foreignKey: 'groupId', as: 'group' });
 Group.hasMany(User, { foreignKey: 'groupId', as: 'parents' });
 
-// User -> Notification (One-to-Many: User has multiple notifications)
+// User → Notification
 User.hasMany(Notification, { foreignKey: 'userId', as: 'notifications' });
 Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-// User -> Child (One-to-Many: Parent has multiple children)
+// User → Child
 User.hasMany(Child, { foreignKey: 'parentId', as: 'children' });
 Child.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 
-// Child -> Notification (One-to-Many: Child has multiple notifications)
+// Child → Notification
 Child.hasMany(Notification, { foreignKey: 'childId', as: 'notifications' });
 Notification.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 
@@ -150,35 +143,31 @@ SchoolRating.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(SchoolRating, { foreignKey: 'parentId', as: 'schoolRatings' });
 SchoolRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
 
-// Child -> School (child belongs to a school)
+// Child → School / Group
 Child.belongsTo(School, { foreignKey: 'schoolId', as: 'childSchool' });
 School.hasMany(Child, { foreignKey: 'schoolId', as: 'schoolChildren' });
-
-// Child -> Group (child belongs to a group)
 Child.belongsTo(Group, { foreignKey: 'groupId', as: 'childGroup' });
 Group.hasMany(Child, { foreignKey: 'groupId', as: 'groupChildren' });
 
-// Super Admin Messages
+// SuperAdminMessage
 User.hasMany(SuperAdminMessage, { foreignKey: 'senderId', as: 'superAdminMessages' });
 SuperAdminMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
 
-// Admin Registration Requests
+// AdminRegistrationRequest
 User.hasMany(AdminRegistrationRequest, { foreignKey: 'reviewedBy', as: 'reviewedAdminRequests' });
 AdminRegistrationRequest.belongsTo(User, { foreignKey: 'reviewedBy', as: 'reviewer' });
 User.hasOne(AdminRegistrationRequest, { foreignKey: 'approvedUserId', as: 'adminRegistrationRequest' });
 AdminRegistrationRequest.belongsTo(User, { foreignKey: 'approvedUserId', as: 'approvedUser' });
 
-// Emotional Monitoring
+// EmotionalMonitoring
 Child.hasMany(EmotionalMonitoring, { foreignKey: 'childId', as: 'emotionalMonitoring' });
 EmotionalMonitoring.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(EmotionalMonitoring, { foreignKey: 'teacherId', as: 'emotionalMonitoringRecords' });
 EmotionalMonitoring.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
-// Therapy relationships
+// Therapy
 User.hasMany(Therapy, { foreignKey: 'createdBy', as: 'createdTherapies' });
 Therapy.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
-
-// Therapy Usage relationships
 Therapy.hasMany(TherapyUsage, { foreignKey: 'therapyId', as: 'usages' });
 TherapyUsage.belongsTo(Therapy, { foreignKey: 'therapyId', as: 'therapy' });
 User.hasMany(TherapyUsage, { foreignKey: 'parentId', as: 'therapyUsages' });
@@ -188,7 +177,7 @@ TherapyUsage.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 Child.hasMany(TherapyUsage, { foreignKey: 'childId', as: 'therapyUsages' });
 TherapyUsage.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 
-// AI Warning relationships
+// AIWarning
 School.hasMany(AIWarning, { foreignKey: 'schoolId', as: 'warnings' });
 AIWarning.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(AIWarning, { foreignKey: 'parentId', as: 'parentWarnings' });
@@ -196,11 +185,11 @@ AIWarning.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 User.hasMany(AIWarning, { foreignKey: 'resolvedBy', as: 'resolvedWarnings' });
 AIWarning.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
 
-// Push Notification relationships
+// PushNotification
 User.hasMany(PushNotification, { foreignKey: 'userId', as: 'pushNotifications' });
 PushNotification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-// Payment relationships
+// Payment
 User.hasMany(Payment, { foreignKey: 'parentId', as: 'payments' });
 Payment.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 Child.hasMany(Payment, { foreignKey: 'childId', as: 'payments' });
@@ -208,99 +197,89 @@ Payment.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 School.hasMany(Payment, { foreignKey: 'schoolId', as: 'payments' });
 Payment.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
-// Government Stats relationships
+// GovernmentStats
 School.hasMany(GovernmentStats, { foreignKey: 'schoolId', as: 'governmentStats' });
 GovernmentStats.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(GovernmentStats, { foreignKey: 'generatedBy', as: 'generatedStats' });
 GovernmentStats.belongsTo(User, { foreignKey: 'generatedBy', as: 'generator' });
 
-// Business Stats relationships
+// BusinessStats
 User.hasMany(BusinessStats, { foreignKey: 'businessId', as: 'businessStats' });
 BusinessStats.belongsTo(User, { foreignKey: 'businessId', as: 'business' });
 
-// Refresh Token relationships
+// RefreshToken
 User.hasMany(RefreshToken, { foreignKey: 'userId', as: 'refreshTokens' });
 RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 
-// Child Assessment relationships
+// ChildAssessment
 Child.hasMany(ChildAssessment, { foreignKey: 'childId', as: 'assessments' });
 ChildAssessment.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-User.hasMany(ChildAssessment, { as: 'teacherAssessments', foreignKey: 'teacherId' });
-ChildAssessment.belongsTo(User, { as: 'teacher', foreignKey: 'teacherId' });
+User.hasMany(ChildAssessment, { foreignKey: 'teacherId', as: 'teacherAssessments' });
+ChildAssessment.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
-// Service Plan relationships
+// ServicePlan
 Child.hasMany(ServicePlan, { foreignKey: 'childId', as: 'servicePlans' });
 ServicePlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(ServicePlan, { foreignKey: 'createdBy', as: 'createdServicePlans' });
 ServicePlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
-// Meal Plan relationships
+// MealPlan
 Child.hasMany(MealPlan, { foreignKey: 'childId', as: 'mealPlans' });
 MealPlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(MealPlan, { foreignKey: 'createdBy', as: 'createdMealPlans' });
 MealPlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
-// Teacher Resource relationships
+// TeacherResource
 User.hasMany(TeacherResource, { foreignKey: 'teacherId', as: 'teacherResources' });
 TeacherResource.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 School.hasMany(TeacherResource, { foreignKey: 'schoolId', as: 'teacherResources' });
 TeacherResource.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
-// Sync database (use with caution in production)
+// News
+User.hasMany(News, { foreignKey: 'createdById', as: 'newsCreated' });
+News.belongsTo(User, { foreignKey: 'createdById', as: 'createdBy' });
+
+// ─── School-scoped named scopes ───────────────────────────────────────────────
+Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
+Activity.addScope('byChild', (childId) => ({ where: { childId } }));
+Activity.addScope('bySchool', (schoolId) => ({
+  include: [{ model: Child, as: 'child', where: { schoolId }, required: true, attributes: [] }],
+}));
+Meal.addScope('byChild', (childId) => ({ where: { childId } }));
+Meal.addScope('bySchool', (schoolId) => ({
+  include: [{ model: Child, as: 'child', where: { schoolId }, required: true, attributes: [] }],
+}));
+Media.addScope('byChild', (childId) => ({ where: { childId } }));
+Media.addScope('bySchool', (schoolId) => ({
+  include: [{ model: Child, as: 'child', where: { schoolId }, required: true, attributes: [] }],
+}));
+
+// ─── Database sync ─────────────────────────────────────────────────────────────
 export const syncDatabase = async (force = false) => {
   try {
-    // Test connection with retry logic
     let retries = 3;
-    let connected = false;
-    
-    while (retries > 0 && !connected) {
+    while (retries > 0) {
       try {
         await sequelize.authenticate();
-        console.log('Database connection established successfully.');
-        connected = true;
+        logger.info('Database connection established');
+        break;
       } catch (authError) {
         retries--;
-        if (retries > 0) {
-          console.log(`⚠ Database connection failed, retrying... (${3 - retries}/3)`);
-          await new Promise(resolve => setTimeout(resolve, 2000)); // Wait 2 seconds
-        } else {
-          throw authError;
-        }
+        if (retries === 0) throw authError;
+        logger.warn(`Database connection failed, retrying... (${3 - retries}/3)`);
+        await new Promise((resolve) => setTimeout(resolve, 2000));
       }
     }
-    
-    if (!connected) {
-      throw new Error('Failed to connect to database after 3 retries');
-    }
-    
     await sequelize.sync({ force });
-    console.log('Database synchronized successfully.');
+    logger.info('Database synchronized');
   } catch (error) {
-    console.error('Unable to connect to the database:', error.message || error);
-    
-    // Provide helpful error messages
-    if (error.message && error.message.includes('Connection terminated')) {
-      console.error('\n💡 Tip: Make sure PostgreSQL server is running');
-      console.error('   On Windows: Check if PostgreSQL service is running in Services');
-      console.error('   Or try: net start postgresql-x64-XX (replace XX with version)');
-    } else if (error.message && error.message.includes('ECONNREFUSED')) {
-      console.error('\n💡 Tip: PostgreSQL server is not accepting connections');
-      console.error('   Check if PostgreSQL is running on the correct host and port');
-    } else if (error.message && error.message.includes('password authentication failed')) {
-      console.error('\n💡 Tip: Database password is incorrect');
-      console.error('   Check your .env file DB_PASSWORD setting');
-    } else if (error.message && error.message.includes('database') && error.message.includes('does not exist')) {
-      console.error('\n💡 Tip: Database does not exist');
-      console.error('   Run: npm run create:db to create the database');
-    }
-    
+    logger.error('Database sync failed', { error: error.message });
     throw error;
   }
 };
 
 export default models;
 
-// Named exports for convenience
 export {
   User,
   Document,
@@ -337,5 +316,6 @@ export {
   MealPlan,
   TeacherResource,
   ParentEvaluation,
+  News,
   sequelize,
 };

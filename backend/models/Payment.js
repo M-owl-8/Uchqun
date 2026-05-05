@@ -10,39 +10,30 @@ const Payment = sequelize.define('Payment', {
   parentId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
+    references: { model: 'users', key: 'id' },
+    onDelete: 'RESTRICT',
+    onUpdate: 'CASCADE',
   },
   childId: {
     type: DataTypes.UUID,
     allowNull: true,
-    references: {
-      model: 'children',
-      key: 'id',
-    },
+    references: { model: 'children', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   },
   schoolId: {
     type: DataTypes.UUID,
     allowNull: true,
-    references: {
-      model: 'schools',
-      key: 'id',
-    },
+    references: { model: 'schools', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   },
   amount: {
     type: DataTypes.DECIMAL(10, 2),
     allowNull: false,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
   },
-  currency: {
-    type: DataTypes.STRING(3),
-    defaultValue: 'UZS',
-    allowNull: false,
-  },
+  currency: { type: DataTypes.STRING(3), defaultValue: 'UZS', allowNull: false },
   paymentType: {
     type: DataTypes.ENUM('tuition', 'therapy', 'meal', 'activity', 'other'),
     allowNull: false,
@@ -51,51 +42,24 @@ const Payment = sequelize.define('Payment', {
     type: DataTypes.ENUM('card', 'bank_transfer', 'cash', 'mobile_payment', 'online', 'other'),
     allowNull: false,
   },
-  paymentProvider: {
-    type: DataTypes.STRING(100),
-    allowNull: true,
-  },
-  transactionId: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-    unique: true,
-  },
+  paymentProvider: { type: DataTypes.STRING(100), allowNull: true },
+  transactionId: { type: DataTypes.STRING(255), allowNull: true, unique: true },
   status: {
     type: DataTypes.ENUM('pending', 'processing', 'completed', 'failed', 'cancelled', 'refunded'),
     defaultValue: 'pending',
     allowNull: false,
   },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  metadata: {
-    type: DataTypes.JSONB,
-    allowNull: true,
-  },
-  paidAt: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  receiptUrl: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  refundAmount: {
-    type: DataTypes.DECIMAL(10, 2),
-    allowNull: true,
-  },
-  refundedAt: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
-  refundReason: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
+  description: { type: DataTypes.TEXT, allowNull: true },
+  metadata: { type: DataTypes.JSONB, allowNull: true },
+  paidAt: { type: DataTypes.DATE, allowNull: true },
+  receiptUrl: { type: DataTypes.TEXT, allowNull: true },
+  refundAmount: { type: DataTypes.DECIMAL(10, 2), allowNull: true },
+  refundedAt: { type: DataTypes.DATE, allowNull: true },
+  refundReason: { type: DataTypes.TEXT, allowNull: true },
 }, {
   tableName: 'payments',
   timestamps: true,
+  paranoid: true,
   indexes: [
     { fields: ['parentId'] },
     { fields: ['childId'] },

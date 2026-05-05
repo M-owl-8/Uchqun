@@ -10,26 +10,27 @@ const TeacherRating = sequelize.define('TeacherRating', {
   teacherId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   parentId: {
     type: DataTypes.UUID,
     allowNull: false,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   stars: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    validate: {
-      min: 1,
-      max: 5,
-    },
+    validate: { min: 1, max: 5 },
   },
-  comment: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
+  comment: { type: DataTypes.TEXT, allowNull: true },
 }, {
   tableName: 'teacher_ratings',
   timestamps: true,
+  paranoid: true,
   indexes: [
     { fields: ['teacherId'] },
     { unique: true, fields: ['teacherId', 'parentId'] },
@@ -37,4 +38,3 @@ const TeacherRating = sequelize.define('TeacherRating', {
 });
 
 export default TeacherRating;
-
