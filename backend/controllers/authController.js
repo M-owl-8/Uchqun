@@ -8,6 +8,34 @@ import logger from '../utils/logger.js';
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY_DAYS = 7;
 
+// Per-account lockout (single-instance; replace Map with Redis for multi-instance)
+const loginAttempts = new Map();
+const MAX_LOGIN_ATTEMPTS = 5;
+const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
+
+function recordFailedAttempt(email) {
+  const entry = loginAttempts.get(email) || { attempts: 0, lockedUntil: null };
+  entry.attempts += 1;
+  if (entry.attempts >= MAX_LOGIN_ATTEMPTS) {
+    entry.lockedUntil = Date.now() + LOCKOUT_DURATION_MS;
+  }
+  loginAttempts.set(email, entry);
+}
+
+function clearAttempts(email) {
+  loginAttempts.delete(email);
+}
+
+function isLockedOut(email) {
+  const entry = loginAttempts.get(email);
+  if (!entry?.lockedUntil) return false;
+  if (Date.now() > entry.lockedUntil) {
+    loginAttempts.delete(email);
+    return false;
+  }
+  return true;
+}
+
 const generateAccessToken = (userId) => {
   return jwt.sign(
     { userId, jti: crypto.randomUUID() },
@@ -30,6 +58,14 @@ const generateRefreshToken = async (userId) => {
   return rawToken;
 };
 
+export const generateSetPasswordToken = (userId) => {
+  return jwt.sign(
+    { userId, purpose: 'set-password', jti: crypto.randomUUID() },
+    process.env.JWT_SECRET,
+    { expiresIn: '24h' }
+  );
+};
+
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -42,11 +78,21 @@ export const login = async (req, res) => {
     if (!email || !password) {
       logger.warn('Login attempt with missing credentials');
       return res.status(400).json({
+        success: false,
         error: 'Email and password are required',
       });
     }
 
     const normalizedEmail = (email || '').toLowerCase().trim();
+
+    if (isLockedOut(normalizedEmail)) {
+      logger.warn('Login blocked — account locked out', { email: normalizedEmail.substring(0, 3) + '***' });
+      return res.status(429).json({
+        success: false,
+        error: 'Account temporarily locked',
+        message: 'Too many failed login attempts. Please try again in 15 minutes.',
+      });
+    }
 
     let user = await User.findOne({ where: { email: normalizedEmail } });
 
@@ -58,8 +104,10 @@ export const login = async (req, res) => {
     }
 
     if (!user) {
+      recordFailedAttempt(normalizedEmail);
       logger.warn('Login attempt with non-existent email');
       return res.status(401).json({
+        success: false,
         error: 'Invalid email or password',
         message: 'The email address or password you entered is incorrect. Please check and try again.'
       });
@@ -67,28 +115,31 @@ export const login = async (req, res) => {
 
     if (!user.password) {
       logger.error('User found but password field is missing', { userId: user.id });
-      return res.status(500).json({ error: 'User account error. Please contact support.' });
+      return res.status(500).json({ success: false, error: 'User account error. Please contact support.' });
     }
 
     if (!user.password.startsWith('$2')) {
       logger.error('User password is not properly hashed', { userId: user.id });
-      return res.status(500).json({ error: 'User account error. Password needs to be reset.' });
+      return res.status(500).json({ success: false, error: 'User account error. Password needs to be reset.' });
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
+      recordFailedAttempt(normalizedEmail);
       logger.warn('Login attempt with invalid password', { userId: user.id });
       return res.status(401).json({
+        success: false,
         error: 'Invalid email or password',
         message: 'The email address or password you entered is incorrect. Please check and try again.'
       });
     }
 
-    // Business Logic: Reception cannot log in until documents are approved by Admin
+    // Reception cannot log in until documents are approved by Admin
     if (user.role === 'reception') {
       if (!user.documentsApproved || !user.isActive) {
         return res.status(403).json({
+          success: false,
           error: 'Account not approved. Please wait for Admin approval.',
           requiresApproval: true,
           documentsApproved: user.documentsApproved,
@@ -97,10 +148,11 @@ export const login = async (req, res) => {
       }
     }
 
-    // Business Logic: Admin must be active to log in (except super-admin email)
+    // Admin must be active to log in (except super-admin email)
     if (user.role === 'admin' && user.email !== (process.env.SUPER_ADMIN_EMAIL || 'superadmin@uchqun.uz')) {
       if (!user.isActive) {
         return res.status(403).json({
+          success: false,
           error: 'Admin account is not active. Please contact super-admin.',
           requiresApproval: true,
         });
@@ -110,10 +162,13 @@ export const login = async (req, res) => {
     if (!process.env.JWT_SECRET) {
       logger.error('JWT_SECRET not configured');
       return res.status(500).json({
+        success: false,
         error: 'Server configuration error',
         message: 'Authentication service is not properly configured. Please contact support.'
       });
     }
+
+    clearAttempts(normalizedEmail);
 
     const accessToken = generateAccessToken(user.id);
     const refreshToken = await generateRefreshToken(user.id);
@@ -130,7 +185,7 @@ export const login = async (req, res) => {
 
     res.cookie('accessToken', accessToken, {
       ...cookieOptions,
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      maxAge: 15 * 60 * 1000,
     });
 
     res.cookie('refreshToken', refreshToken, {
@@ -150,7 +205,7 @@ export const login = async (req, res) => {
       error: error.message,
       stack: error.stack,
     });
-    res.status(500).json({ error: 'Login failed' });
+    res.status(500).json({ success: false, error: 'Login failed' });
   }
 };
 
@@ -159,10 +214,9 @@ export const refresh = async (req, res) => {
     const rawToken = req.body.refreshToken || req.cookies?.refreshToken;
 
     if (!rawToken) {
-      return res.status(401).json({ error: 'Refresh token is required' });
+      return res.status(401).json({ success: false, error: 'Refresh token is required' });
     }
 
-    // Decode the old access token (ignoring expiry) to get userId for lookup
     let userId;
     const accessTokenFromCookie = req.cookies?.accessToken;
     const authHeader = req.headers.authorization;
@@ -173,11 +227,10 @@ export const refresh = async (req, res) => {
         const decoded = jwt.verify(accessTokenRaw, process.env.JWT_SECRET, { ignoreExpiration: true });
         userId = decoded.userId;
       } catch {
-        // ignore – we'll try to find the token by hash alone
+        // ignore — fall through to hash-only lookup
       }
     }
 
-    // Look up the refresh token
     const tokenHash = RefreshToken.hashToken(rawToken);
     const whereClause = { tokenHash, revoked: false };
     if (userId) whereClause.userId = userId;
@@ -185,18 +238,16 @@ export const refresh = async (req, res) => {
     const storedToken = await RefreshToken.findOne({ where: whereClause });
 
     if (!storedToken) {
-      return res.status(401).json({ error: 'Invalid refresh token' });
+      return res.status(401).json({ success: false, error: 'Invalid refresh token' });
     }
 
     if (new Date() > storedToken.expiresAt) {
       await storedToken.update({ revoked: true, revokedAt: new Date() });
-      return res.status(401).json({ error: 'Refresh token expired' });
+      return res.status(401).json({ success: false, error: 'Refresh token expired' });
     }
 
-    // Rotate: revoke the old refresh token
     await storedToken.update({ revoked: true, revokedAt: new Date() });
 
-    // Issue new tokens
     const newAccessToken = generateAccessToken(storedToken.userId);
     const newRefreshToken = await generateRefreshToken(storedToken.userId);
 
@@ -226,13 +277,12 @@ export const refresh = async (req, res) => {
     });
   } catch (error) {
     logger.error('Token refresh error', { error: error.message });
-    res.status(500).json({ error: 'Token refresh failed' });
+    res.status(500).json({ success: false, error: 'Token refresh failed' });
   }
 };
 
 export const logout = async (req, res) => {
   try {
-    // Revoke all refresh tokens for this user
     if (req.user?.id) {
       await RefreshToken.update(
         { revoked: true, revokedAt: new Date() },
@@ -253,7 +303,7 @@ export const logout = async (req, res) => {
     res.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {
     logger.error('Logout error', { error: error.message, userId: req.user?.id });
-    res.status(500).json({ error: 'Logout failed' });
+    res.status(500).json({ success: false, error: 'Logout failed' });
   }
 };
 
@@ -264,12 +314,56 @@ export const getMe = async (req, res) => {
     });
 
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ success: false, error: 'User not found' });
     }
 
-    res.json(user.toJSON());
+    res.json({ success: true, data: user.toJSON() });
   } catch (error) {
     logger.error('Get me error', { error: error.message, userId: req.user?.id });
-    res.status(500).json({ error: 'Failed to get user' });
+    res.status(500).json({ success: false, error: 'Failed to get user' });
+  }
+};
+
+export const setPassword = async (req, res) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ success: false, error: 'Token and password are required' });
+    }
+
+    let decoded;
+    try {
+      decoded = jwt.verify(token, process.env.JWT_SECRET);
+    } catch {
+      return res.status(400).json({ success: false, error: 'Invalid or expired token' });
+    }
+
+    if (decoded.purpose !== 'set-password') {
+      return res.status(400).json({ success: false, error: 'Invalid token' });
+    }
+
+    if (
+      password.length < 8 ||
+      !/(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: 'Password must be at least 8 characters with uppercase, lowercase, and a number',
+      });
+    }
+
+    const user = await User.findByPk(decoded.userId);
+    if (!user) {
+      return res.status(404).json({ success: false, error: 'User not found' });
+    }
+
+    await user.update({ password });
+    logger.info('Password set via token', { userId: user.id });
+
+    res.json({ success: true, message: 'Password set successfully. You can now log in.' });
+  } catch (error) {
+    logger.error('Set password error', { error: error.message });
+    res.status(500).json({ success: false, error: 'Failed to set password' });
   }
 };

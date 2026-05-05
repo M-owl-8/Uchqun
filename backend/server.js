@@ -12,6 +12,7 @@ import { initializeSocket } from './config/socket.js';
 import { securityHeaders, enforceHTTPS } from './middleware/security.js';
 import { sanitizeBody } from './middleware/sanitize.js';
 import { requestLogger } from './middleware/requestLogger.js';
+import { apiLimiter } from './middleware/rateLimiter.js';
 import logger from './utils/logger.js';
 import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
@@ -144,6 +145,9 @@ app.use(cookieParser());
 app.use(sanitizeBody);
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+
+// Global rate limiter — applies to all /api/* routes; health and static files are above
+app.use('/api', apiLimiter);
 
 app.use('/health', healthRoutes);
 app.use('/api/auth', authRoutes);

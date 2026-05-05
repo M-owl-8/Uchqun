@@ -31,8 +31,9 @@ export const createAdminValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s\-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const updateAdminValidator = [
@@ -56,8 +57,9 @@ export const updateAdminValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s\-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const deleteAdminValidator = [
@@ -86,8 +88,9 @@ export const createGovernmentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s\-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const updateGovernmentValidator = [
@@ -111,8 +114,9 @@ export const updateGovernmentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s\-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const deleteGovernmentValidator = [

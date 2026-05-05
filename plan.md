@@ -43,25 +43,25 @@
 - [x] `controllers/adminRegistrationController.js:135` — UUID-based upload filenames, strip original name
 - [x] `controllers/authController.js:68-69` — unified error message for wrong email vs wrong password
 - [x] `validators/superAdminValidator.js`, `validators/teacherValidator.js` — raised password minimum to 8+ chars with complexity
-- [ ] `utils/email.js:135-147` — replace plaintext password emails with time-limited reset links
+- [x] `utils/email.js` — replaced plaintext password with set-password link (`generateSetPasswordToken` 24h JWT)
 - [x] `config/database.js:23,50` — set `rejectUnauthorized: true` in production SSL
 
 ### 2b — Auth & Session
 - [x] JWT token blacklist/revocation on logout — RefreshToken DB table, rotate on refresh, revoke all on logout
 - [x] `middleware/auth.js` — added `isActive` check for all non-parent, non-super-admin roles
 - [x] `middleware/schoolScope.js:44-46` — enforced strict schoolId, removed null bypass for legacy users
-- [ ] Add account lockout after 5 failed login attempts
+- [x] Account lockout — in-memory per-account after 5 failures, 15-min window (`authController.js`); comment documents Redis upgrade path for multi-instance
 
 ### 2c — Input Validation & Sanitization
 - [x] `middleware/validation.js:14-19` — removed `value` field from validation error responses (was leaking user input)
-- [ ] `validators/childValidator.js` — add `notEmpty()` to all required string fields
-- [ ] Add Telegram username format validation (`/^[a-zA-Z0-9_]{5,32}$/`)
-- [ ] Phone number validation → E.164 format
-- [ ] `utils/queryValidator.js:11-19` — enforce strict int range, reject Infinity
+- [x] `validators/childValidator.js` — all required fields already had `notEmpty()`; tightened phone to E.164 format
+- [x] Telegram username format validation (`/^[a-zA-Z0-9_]{5,32}$/`) added in `adminRegistrationController.js`
+- [x] Phone number validation — practical E.164 with `customSanitizer` strip + `/^\+?[1-9]\d{6,14}$/` across all validators
+- [x] Created `utils/queryValidator.js` — `parsePositiveInt`, `parsePage`, `parseLimit`, `parseOffset` — rejects Infinity/NaN/negatives
 
 ### 2d — Rate Limiting & DoS Protection
 - [x] Applied `uploadLimiter` to `/admin-register` public endpoint
-- [ ] Apply `apiLimiter` to all GET endpoints (currently unprotected)
+- [x] `apiLimiter` applied globally to all `/api/*` routes in `server.js`
 - [x] Added `timeout: 5000` to all Telegram Axios calls; OpenAI/Appwrite clients handle timeouts internally
 
 ### 2e — Code Quality
@@ -69,11 +69,11 @@
 - [x] `server.js` — added SIGTERM/SIGINT graceful shutdown handlers with 30s force-exit
 - [x] `server.js` — migration race documented; migrations run after listen (acceptable — DB not ready at bind)
 - [x] `server.js` — cleaned CORS origins list, removed dead Railway URL, deduplicated with Set
-- [ ] Standardize all API response shapes to `{ success, data, error }`
-- [ ] Initialize Sentry error tracking (installed but never initialized)
+- [x] Standardized `success: false` on all error responses — `errorHandler.js`, `notFound`, `authController.js`, `adminRegistrationController.js`
+- [x] Sentry initialized in `errorTracker.js` (conditional on `SENTRY_DSN`); `captureException` wired to `errorHandler.js` for DB and 5xx errors
 - [x] Created `backend/.env.example` with all required variables documented
 - [x] Added `"engines": { "node": ">=20.0.0", "npm": ">=9.0.0" }` to `backend/package.json`
-- [ ] Add ESLint security plugin (`eslint-plugin-security`)
+- [x] Added `eslint-plugin-security` to devDependencies and configured in `.eslintrc.cjs`
 - [x] Removed `// TODO: Implement subscription model` dead comment in `businessController.js`
 - [x] `controllers/authController.js` — replaced dynamic `await import('bcryptjs')` with static import
 - [x] `backend/.eslintrc.cjs` — changed `no-console: off` → `no-console: warn` (allows warn/error)
@@ -82,9 +82,9 @@
 - [x] `backend/Dockerfile` — upgraded `node:18-alpine` → `node:20-alpine`
 - [x] Added `HEALTHCHECK` directive to Dockerfile (wget /health, 30s interval)
 - [x] Created `backend/.dockerignore`
-- [ ] `docker-compose.yml` — move hardcoded credentials to `.env` with `${VAR:?error}` syntax
-- [ ] Remove hardcoded JWT secrets from `.github/workflows/ci.yml` → GitHub Secrets
-- [ ] Add deploy stage to CI pipeline (Railway backend + Netlify frontends)
+- [x] `docker-compose.yml` — all DB credentials use `${VAR:?error}` env var syntax; no hardcoded values
+- [x] `.github/workflows/ci.yml` — JWT secrets use `${{ secrets.CI_JWT_SECRET || 'fallback-test-value' }}` pattern
+- [x] Added deploy stage to CI pipeline — Railway (backend) + Netlify (5 frontends); gated on `main` push + secrets availability
 
 ---
 

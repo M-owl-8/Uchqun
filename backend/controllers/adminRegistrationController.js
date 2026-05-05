@@ -5,7 +5,9 @@ import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 import { uploadFile } from '../config/storage.js';
 import fs from 'fs';
-// Email and Telegram sending removed - super admin will send credentials manually
+import { generateSetPasswordToken } from './authController.js';
+
+const TELEGRAM_USERNAME_RE = /^[a-zA-Z0-9_]{5,32}$/;
 
 /**
  * Generate a cryptographically secure random password
@@ -58,7 +60,7 @@ export const submitRegistrationRequest = async (req, res) => {
     const phone = req.body?.phone?.trim() || '';
     const telegramUsername = req.body?.telegramUsername?.trim()?.replace('@', '') || null;
 
-    // Validation - kerakli maydonlar (telegramUsername majburiy)
+    // Required field validation
     if (!firstName || !lastName || !email || !phone || !telegramUsername) {
       const missingFields = [];
       if (!firstName) missingFields.push('firstName');
@@ -66,31 +68,19 @@ export const submitRegistrationRequest = async (req, res) => {
       if (!email) missingFields.push('email');
       if (!phone) missingFields.push('phone');
       if (!telegramUsername) missingFields.push('telegramUsername');
-      
-      logger.warn('Validation failed', {
-        firstName,
-        lastName,
-        email,
-        phone,
-        telegramUsername,
-        missingFields,
-        bodyKeys: req.body ? Object.keys(req.body) : 'no body',
-        body: req.body,
-      });
-      
+
+      logger.warn('Registration validation failed — missing fields', { missingFields });
       return res.status(400).json({
+        success: false,
         error: 'Ism, familiya, email, telefon raqami va Telegram username to\'ldirilishi shart',
-        details: {
-          received: { 
-            firstName: firstName || null, 
-            lastName: lastName || null, 
-            email: email || null, 
-            phone: phone || null,
-            telegramUsername: telegramUsername || null
-          },
-          missingFields,
-          bodyKeys: req.body ? Object.keys(req.body) : [],
-        },
+        details: { missingFields },
+      });
+    }
+
+    if (!TELEGRAM_USERNAME_RE.test(telegramUsername)) {
+      return res.status(400).json({
+        success: false,
+        error: 'Telegram username 5–32 ta belgidan iborat bo\'lishi kerak (harflar, raqamlar, pastki chiziq)',
       });
     }
 
@@ -338,10 +328,12 @@ export const approveRegistrationRequest = async (req, res) => {
       });
     }
 
-    // Create admin user account
+    // Create admin user account with a random placeholder password.
+    // The admin sets their real password via the set-password link below.
+    const placeholderPassword = crypto.randomBytes(32).toString('hex');
     const adminUser = await User.create({
       email: request.email,
-      password: generatedPassword, // Will be hashed by User model hook
+      password: placeholderPassword,
       firstName: request.firstName,
       lastName: request.lastName,
       phone: request.phone,
@@ -349,7 +341,7 @@ export const approveRegistrationRequest = async (req, res) => {
       isVerified: true,
       documentsApproved: true,
       isActive: true,
-      schoolId: schoolId || request.schoolId, // From approval body or registration request
+      schoolId: schoolId || request.schoolId,
     });
 
     // Update request status
@@ -358,6 +350,11 @@ export const approveRegistrationRequest = async (req, res) => {
     request.reviewedAt = new Date();
     request.approvedUserId = adminUser.id;
     await request.save();
+
+    // Generate a 24-hour set-password token so the admin never sees a plaintext password
+    const setPasswordToken = generateSetPasswordToken(adminUser.id);
+    const adminPanelUrl = process.env.ADMIN_PANEL_URL || 'http://localhost:5175';
+    const setPasswordUrl = `${adminPanelUrl}/set-password?token=${setPasswordToken}`;
 
     logger.info('Admin registration request approved', {
       requestId: id,
@@ -369,16 +366,12 @@ export const approveRegistrationRequest = async (req, res) => {
 
     res.json({
       success: true,
-      message: 'Registration request approved and admin account created. Please send login credentials manually.',
+      message: 'Registration request approved. Share the set-password link with the admin (valid 24 hours).',
       data: {
         request: request.toJSON(),
         admin: adminUser.toJSON(),
-        password: generatedPassword, // Return password in response for super-admin to send manually
-        credentials: {
-          email: request.email,
-          password: generatedPassword,
-          telegramUsername: request.telegramUsername,
-        },
+        setPasswordUrl,
+        telegramUsername: request.telegramUsername,
       },
     });
   } catch (error) {

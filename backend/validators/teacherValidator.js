@@ -36,8 +36,9 @@ export const createParentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
   body('child')
     .optional()
     .isObject()
@@ -65,8 +66,9 @@ export const updateParentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const setParentPasswordValidator = [
@@ -129,8 +131,9 @@ export const createTeacherValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const updateTeacherValidator = [
@@ -154,8 +157,9 @@ export const updateTeacherValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const setTeacherPasswordValidator = [
