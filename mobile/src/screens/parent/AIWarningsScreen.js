@@ -12,6 +12,7 @@ import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import logger from '../../utils/logger';
 
 export function AIWarningsScreen() {
   const navigation = useNavigation();
@@ -43,7 +44,7 @@ export function AIWarningsScreen() {
       const warningsData = response.data?.data?.warnings || [];
       setWarnings(Array.isArray(warningsData) ? warningsData : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading warnings:', err);
+      logger.error('Error loading warnings:', err);
       setWarnings([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -57,7 +58,7 @@ export function AIWarningsScreen() {
       Alert.alert(t('common.success', { defaultValue: 'Success' }), t('warnings.resolved', { defaultValue: 'Warning resolved' }));
       loadWarnings();
     } catch (error) {
-      if (__DEV__) console.error('Error resolving warning:', error);
+      logger.error('Error resolving warning:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), error.response?.data?.error || t('warnings.resolveError', { defaultValue: 'Failed to resolve warning' }));
     }
   };

@@ -15,6 +15,7 @@ import { api } from '../../services/api';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const MEAL_TYPES = ['breakfast', 'lunch', 'snack', 'dinner'];
 
@@ -79,7 +80,7 @@ export function MealPlanScreen() {
       });
       setPlans(response.data?.data || []);
     } catch (error) {
-      if (__DEV__) console.error('Error loading meal plans:', error);
+      logger.error('Error loading meal plans:', error);
     } finally {
       setLoading(false);
     }

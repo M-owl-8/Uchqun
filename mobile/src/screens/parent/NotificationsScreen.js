@@ -11,6 +11,7 @@ import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import ListRow from '../../components/common/ListRow';
 import { useTranslation } from 'react-i18next';
+import logger from '../../utils/logger';
 
 const NOTIFICATION_TYPE_COLORS = {
   info: tokens.colors.semantic.info,
@@ -118,7 +119,7 @@ export function NotificationsScreen() {
       const result = await notificationService.getNotifications();
       setNotifications(Array.isArray(result?.data) ? result.data : (Array.isArray(result) ? result : []));
     } catch (error) {
-      if (__DEV__) console.error('Error loading notifications:', error);
+      logger.error('Error loading notifications:', error);
       setNotifications([]);
     } finally {
       setLoading(false);
@@ -130,7 +131,7 @@ export function NotificationsScreen() {
       await notificationService.markAsRead(id);
       loadNotifications();
     } catch (error) {
-      if (__DEV__) console.error('Error marking notification as read:', error);
+      logger.error('Error marking notification as read:', error);
     }
   };
 
@@ -139,7 +140,7 @@ export function NotificationsScreen() {
       await notificationService.markAllAsRead();
       loadNotifications();
     } catch (error) {
-      if (__DEV__) console.error('Error marking all as read:', error);
+      logger.error('Error marking all as read:', error);
     }
   };
 
@@ -157,7 +158,7 @@ export function NotificationsScreen() {
               await notificationService.deleteNotification(id);
               loadNotifications();
             } catch (error) {
-              if (__DEV__) console.error('Error deleting notification:', error);
+              logger.error('Error deleting notification:', error);
             }
           },
         },

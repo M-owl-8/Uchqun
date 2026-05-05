@@ -13,6 +13,7 @@ import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import logger from '../../utils/logger';
 
 export function TherapyScreen() {
   const navigation = useNavigation();
@@ -39,7 +40,7 @@ export function TherapyScreen() {
           setSelectedChildId(children[0].id);
         }
       } catch (error) {
-        if (__DEV__) console.error('Error loading children:', error);
+        logger.error('Error loading children:', error);
       }
     };
     loadChildren();
@@ -63,7 +64,7 @@ export function TherapyScreen() {
       const therapiesData = response.data?.data?.therapies || response.data?.data || response.data?.therapies || [];
       setTherapies(Array.isArray(therapiesData) ? therapiesData : []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading therapies:', err);
+      logger.error('Error loading therapies:', err);
       setTherapies([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
@@ -80,7 +81,7 @@ export function TherapyScreen() {
       setSelectedTherapy(therapies.find(t => t.id === therapyId));
       Alert.alert(t('common.success', { defaultValue: 'Success' }), t('therapy.started', { defaultValue: 'Therapy session started' }));
     } catch (error) {
-      if (__DEV__) console.error('Error starting therapy:', error);
+      logger.error('Error starting therapy:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), error.response?.data?.error || t('therapy.startError', { defaultValue: 'Failed to start therapy' }));
     }
   };
@@ -93,7 +94,7 @@ export function TherapyScreen() {
       loadTherapies();
       Alert.alert(t('common.success', { defaultValue: 'Success' }), t('therapy.ended', { defaultValue: 'Therapy session ended' }));
     } catch (error) {
-      if (__DEV__) console.error('Error ending therapy:', error);
+      logger.error('Error ending therapy:', error);
       Alert.alert(t('common.error', { defaultValue: 'Error' }), t('therapy.endError', { defaultValue: 'Failed to end therapy' }));
     }
   };

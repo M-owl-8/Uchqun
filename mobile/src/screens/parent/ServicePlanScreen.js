@@ -15,6 +15,7 @@ import { api } from '../../services/api';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const SERVICE_TYPES = [
   'logoped',
@@ -54,7 +55,7 @@ export function ServicePlanScreen() {
       const response = await api.get(`/service-plans?childId=${childId}&year=${selectedYear}`);
       setPlans(response.data?.data || []);
     } catch (err) {
-      if (__DEV__) console.error('Error loading service plans:', err);
+      logger.error('Error loading service plans:', err);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);

@@ -13,6 +13,7 @@ import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
+import logger from '../../utils/logger';
 
 export function PaymentsScreen() {
   const navigation = useNavigation();
@@ -38,7 +39,7 @@ export function PaymentsScreen() {
           setSelectedChildId(children[0].id);
         }
       } catch (error) {
-        if (__DEV__) console.error('Error loading children:', error);
+        logger.error('Error loading children:', error);
       }
     };
     loadChildren();
@@ -76,7 +77,7 @@ export function PaymentsScreen() {
         setMonthlyAmount(parseFloat(lastPayment.amount || 0));
       }
     } catch (err) {
-      if (__DEV__) console.error('Error loading payments:', err);
+      logger.error('Error loading payments:', err);
       setPayments([]);
       setError(t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {

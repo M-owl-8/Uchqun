@@ -10,6 +10,7 @@ import Card from '../../components/common/Card';
 import Skeleton from '../../components/common/Skeleton';
 import EmptyState from '../../components/common/EmptyState';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
+import logger from '../../utils/logger';
 
 export function ParentsListScreen() {
   const navigation = useNavigation();
@@ -30,7 +31,7 @@ export function ParentsListScreen() {
       const data = await parentService.getChildren();
       setChildren(Array.isArray(data) ? data : []);
     } catch (error) {
-      if (__DEV__) console.error('Error loading children:', error);
+      logger.error('Error loading children:', error);
       setChildren([]);
     } finally {
       setLoading(false);
@@ -41,7 +42,7 @@ export function ParentsListScreen() {
   const navigateToChildProfile = (childId) => {
     try {
       if (!childId) {
-        if (__DEV__) console.error('[ParentsListScreen] Invalid childId');
+        logger.error('[ParentsListScreen] Invalid childId');
         return;
       }
       if (parentNavigation) {
@@ -53,7 +54,7 @@ export function ParentsListScreen() {
         }
       }
     } catch (error) {
-      if (__DEV__) console.error('Navigation error to ChildProfile:', error);
+      logger.error('Navigation error to ChildProfile:', error);
     }
   };
 

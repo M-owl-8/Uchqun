@@ -10,6 +10,7 @@ import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Card from '../../components/common/Card';
+import logger from '../../utils/logger';
 
 export function DiagnosticsScreen() {
   const navigation = useNavigation();
@@ -28,7 +29,6 @@ export function DiagnosticsScreen() {
       timestamp: new Date().toISOString(),
     };
     setResults((prev) => [...prev, result]);
-    if (__DEV__) console.log(`[Diagnostics] ${route}: ${success ? '✓' : '✗'}`, error || '');
   };
 
   const testRoute = async (routeName, params = {}) => {

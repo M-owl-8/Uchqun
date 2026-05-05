@@ -938,20 +938,26 @@ const ParentManagement = () => {
       {/* Add Child Modal */}
       {showChildModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="add-child-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">Bola qo'shish</h2>
+              <h2 id="add-child-modal-title" className="text-2xl font-bold text-gray-900">Bola qo'shish</h2>
               <button
                 onClick={() => {
                   setShowChildModal(false);
                 }}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmitChild} className="p-6 space-y-4">
+            <form onSubmit={handleSubmitChild} aria-label={t('parentsPage.buttons.addChild')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1116,20 +1122,26 @@ const ParentManagement = () => {
       {/* Edit Child Modal */}
       {showEditChildModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-child-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">{t('parentsPage.editChildTitle')}</h2>
+              <h2 id="edit-child-modal-title" className="text-2xl font-bold text-gray-900">{t('parentsPage.editChildTitle')}</h2>
               <button
                 onClick={() => {
                   setShowEditChildModal(false);
                 }}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleUpdateChild} className="p-6 space-y-4">
+            <form onSubmit={handleUpdateChild} aria-label={t('parentsPage.editChildTitle')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">

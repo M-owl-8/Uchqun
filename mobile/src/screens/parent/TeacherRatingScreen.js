@@ -10,6 +10,7 @@ import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Card from '../../components/common/Card';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
+import logger from '../../utils/logger';
 
 // Static Star Component
 function StarButton({ value, currentRating, onPress }) {
@@ -75,7 +76,7 @@ export function TeacherRatingScreen() {
       setComment(ratingData.rating?.comment || '');
       setSummary(ratingData.summary || { average: 0, count: 0 });
     } catch (err) {
-      if (__DEV__) console.error('Error loading rating data:', err);
+      logger.error('Error loading rating data:', err);
       setError(t('ratingPage.errorLoad', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
@@ -114,7 +115,7 @@ export function TeacherRatingScreen() {
       const ratingData = refreshRes?.data?.data || {};
       setSummary(ratingData.summary || { average: 0, count: 0 });
     } catch (err) {
-      if (__DEV__) console.error('Error saving rating:', err);
+      logger.error('Error saving rating:', err);
       setError(err.response?.data?.error || t('ratingPage.errorSave', { defaultValue: 'Failed to save rating' }));
     } finally {
       setSaving(false);

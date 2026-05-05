@@ -18,6 +18,7 @@ import { useTranslation } from 'react-i18next';
 import tokens from '../../styles/tokens';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
+import logger from '../../utils/logger';
 
 const CHAT_STORAGE_KEY = '@uchqun/ai-chat-messages';
 const getDefaultMessage = (t) => ({
@@ -78,7 +79,7 @@ export function AIChatScreen() {
           setMessages([getDefaultMessage(t)]);
         }
       } catch (e) {
-        if (__DEV__) console.warn('Failed to load saved AI chat:', e);
+        logger.warn('Failed to load saved AI chat:', e);
         setMessages([getDefaultMessage(t)]);
       } finally {
         setInitialLoading(false);
@@ -93,7 +94,7 @@ export function AIChatScreen() {
       try {
         await AsyncStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
       } catch (e) {
-        if (__DEV__) console.warn('Failed to save AI chat history:', e);
+        logger.warn('Failed to save AI chat history:', e);
       }
     };
     saveMessages();
@@ -170,7 +171,7 @@ export function AIChatScreen() {
     try {
       await AsyncStorage.removeItem(CHAT_STORAGE_KEY);
     } catch (e) {
-      if (__DEV__) console.warn('Failed to clear chat:', e);
+      logger.warn('Failed to clear chat:', e);
     }
   };
 

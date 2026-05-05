@@ -21,6 +21,7 @@ import { clearAuth } from '../../storage/authStorage';
 import { API_URL } from '../../config';
 import tokens from '../../styles/tokens';
 import Card from '../../components/common/Card';
+import logger from '../../utils/logger';
 
 const { width } = Dimensions.get('window');
 
@@ -36,7 +37,6 @@ export function LoginScreen() {
   // Clear any stale auth data when LoginScreen mounts
   useEffect(() => {
     clearAuth().catch(() => {});
-    if (__DEV__) console.log('[LoginScreen] API URL:', API_URL);
   }, []);
 
   const onSubmit = async () => {
@@ -65,7 +65,7 @@ export function LoginScreen() {
         msg = t('login.networkError', { defaultValue: 'Serverga ulanib bo\'lmadi. Internet aloqasini tekshiring.' });
       }
       setError(msg);
-      if (__DEV__) console.error('[LoginScreen] Login error:', e?.response?.data || e?.message || e);
+      logger.error('[LoginScreen] Login error:', e?.response?.data || e?.message || e);
     } finally {
       setSubmitting(false);
     }

@@ -10,6 +10,7 @@ import tokens from '../../styles/tokens';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
 import Skeleton from '../../components/common/Skeleton';
+import logger from '../../utils/logger';
 
 const CRITERIA_KEYS = [
   'officiallyRegistered',
@@ -60,7 +61,7 @@ export function SchoolRatingScreen() {
         setComment(data.comment);
       }
     } catch (error) {
-      if (__DEV__) console.error('Error loading rating:', error);
+      logger.error('Error loading rating:', error);
     } finally {
       setLoading(false);
     }
@@ -98,7 +99,7 @@ export function SchoolRatingScreen() {
       Alert.alert(t('common.success'), t('schoolRatingPage.success'));
       await loadRating();
     } catch (error) {
-      if (__DEV__) console.error('Error submitting rating:', error);
+      logger.error('Error submitting rating:', error);
       const serverMsg = error?.response?.data?.message || error?.response?.data?.error;
       Alert.alert(t('common.error'), serverMsg || t('schoolRatingPage.errorSave'));
     } finally {

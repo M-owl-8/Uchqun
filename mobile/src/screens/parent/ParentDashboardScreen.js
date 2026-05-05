@@ -16,6 +16,7 @@ import QuickActionCard from '../../components/common/QuickActionCard';
 import { LoadingSpinner } from '../../components/common/LoadingSpinner';
 import EmptyState from '../../components/common/EmptyState';
 import tokens from '../../styles/tokens';
+import logger from '../../utils/logger';
 
 const CATEGORY_LABELS = {
   cognitive: 'Kognitiv',
@@ -134,7 +135,7 @@ export function ParentDashboardScreen() {
         setAssessments([]);
       }
     } catch (error) {
-      if (__DEV__) console.error('[ParentDashboard] Error loading dashboard:', error);
+      logger.error('[ParentDashboard] Error loading dashboard:', error);
       setError('Failed to load dashboard data');
       setChildren([]);
       setStats({ activities: 0, meals: 0, media: 0, therapies: 0 });

@@ -10,6 +10,7 @@ import tokens from '../../styles/tokens';
 import { api } from '../../services/api';
 import Card from '../../components/common/Card';
 import { ScreenHeader } from '../../components/common/ScreenHeader';
+import logger from '../../utils/logger';
 
 export function SettingsScreen() {
   const { user, logout, refreshUser } = useAuth();
@@ -137,7 +138,7 @@ export function SettingsScreen() {
             try {
               await logout();
             } catch (error) {
-              if (__DEV__) console.error('Logout error:', error);
+              logger.error('Logout error:', error);
             }
           },
         },
@@ -148,19 +149,19 @@ export function SettingsScreen() {
   const navigateToStackScreen = (screenName) => {
     try {
       if (!screenName) {
-        if (__DEV__) console.error('[SettingsScreen] Invalid screenName');
+        logger.error('[SettingsScreen] Invalid screenName');
         return;
       }
       if (parentNavigation) {
         parentNavigation.navigate(screenName);
       } else {
-        if (__DEV__) console.warn(`Cannot navigate to ${screenName}: Parent navigator not found`);
+        logger.warn(`Cannot navigate to ${screenName}: Parent navigator not found`);
         if (navigation?.navigate) {
           navigation.navigate(screenName);
         }
       }
     } catch (error) {
-      if (__DEV__) console.error(`Navigation error to ${screenName}:`, error);
+      logger.error(`Navigation error to ${screenName}:`, error);
     }
   };
 
