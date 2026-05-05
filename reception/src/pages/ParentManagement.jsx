@@ -429,16 +429,17 @@ const ParentManagement = () => {
         </div>
 
         <div className="flex gap-3">
-          <div className="relative flex-1 md:flex-initial">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <form role="search" aria-label={t('parentsPage.search')} className="relative flex-1 md:flex-initial">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
               type="text"
               placeholder={t('parentsPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label={t('parentsPage.search')}
               className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
             />
-          </div>
+          </form>
 
           <button
             onClick={handleCreate}
@@ -559,15 +560,17 @@ const ParentManagement = () => {
                                 onClick={() => handleEditChild(parent.id, child)}
                                 className="p-1 text-gray-500 hover:text-primary-600 transition-colors"
                                 title={t('parentsPage.editChildTitle')}
+                                aria-label={`${t('parentsPage.editChildTitle')} — ${child.firstName} ${child.lastName}`}
                               >
-                                <Edit2 className="w-4 h-4" />
+                                <Edit2 className="w-4 h-4" aria-hidden="true" />
                               </button>
                               <button
                                 onClick={() => handleDeleteChild(parent.id, child.id)}
                                 className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                                 title={t('parentsPage.buttons.delete')}
+                                aria-label={`${t('parentsPage.buttons.delete')} — ${child.firstName} ${child.lastName}`}
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-4 h-4" aria-hidden="true" />
                               </button>
                             </div>
                           </div>
@@ -629,20 +632,26 @@ const ParentManagement = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="parent-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 id="parent-modal-title" className="text-2xl font-bold text-gray-900">
                 {editingParent ? t('parentsPage.form.update') + ' ' + t('nav.parents') : t('parentsPage.add')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} aria-label={editingParent ? t('parentsPage.form.update') : t('parentsPage.add')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">{t('parentsPage.form.firstName')}</label>
