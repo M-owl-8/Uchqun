@@ -1,19 +1,27 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Layout from './components/Layout';
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import ParentManagement from './pages/ParentManagement';
-import TeacherManagement from './pages/TeacherManagement';
-import GroupManagement from './pages/GroupManagement';
-import Settings from './pages/Settings';
-import Profile from './pages/Profile';
-import NotFound from './pages/NotFound';
 import { ToastContainer } from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
+
+const Layout = lazy(() => import('./components/Layout'));
+const Login = lazy(() => import('./pages/Login'));
+const Dashboard = lazy(() => import('./pages/Dashboard'));
+const ParentManagement = lazy(() => import('./pages/ParentManagement'));
+const TeacherManagement = lazy(() => import('./pages/TeacherManagement'));
+const GroupManagement = lazy(() => import('./pages/GroupManagement'));
+const Settings = lazy(() => import('./pages/Settings'));
+const Profile = lazy(() => import('./pages/Profile'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[200px]">
+    <LoadingSpinner size="md" />
+  </div>
+);
 
 const AppRoutes = () => {
   const { isAuthenticated, isReception, loading } = useAuth();
@@ -27,28 +35,30 @@ const AppRoutes = () => {
   }
 
   return (
-    <Routes>
-      <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/reception" replace />} />
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/reception" replace />} />
 
-      <Route
-        path="/reception"
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
-        <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
-        <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
-        <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
-        <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
-        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
-      </Route>
+        <Route
+          path="/reception"
+          element={
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
+          }
+        >
+          <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+          <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+          <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
+          <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
+          <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+          <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+        </Route>
 
-      <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />
-      <Route path="*" element={<NotFound />} />
-    </Routes>
+        <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
