@@ -4,6 +4,7 @@ export function useAsync(asyncFn, immediate = false) {
   const [loading, setLoading] = useState(immediate);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
+  const [isStale, setIsStale] = useState(false);
   const mountedRef = useRef(true);
 
   useEffect(() => {
@@ -19,10 +20,17 @@ export function useAsync(asyncFn, immediate = false) {
       if (mountedRef.current) {
         setData(result);
         setError(null);
+        setIsStale(false);
       }
       return result;
     } catch (err) {
-      if (mountedRef.current) setError(err);
+      if (mountedRef.current) {
+        setError(err);
+        // Keep existing data but mark it stale on network failure
+        if (err?.code === 'ERR_NETWORK' || err?.message === 'Network Error') {
+          setIsStale(true);
+        }
+      }
       throw err;
     } finally {
       if (mountedRef.current) setLoading(false);
@@ -34,5 +42,17 @@ export function useAsync(asyncFn, immediate = false) {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { loading, error, data, execute };
+  return { loading, error, data, isStale, execute, retry: execute };
+}
+
+export function useOnlineStatus() {
+  const [online, setOnline] = useState(navigator.onLine);
+  useEffect(() => {
+    const on = () => setOnline(true);
+    const off = () => setOnline(false);
+    window.addEventListener('online', on);
+    window.addEventListener('offline', off);
+    return () => { window.removeEventListener('online', on); window.removeEventListener('offline', off); };
+  }, []);
+  return online;
 }

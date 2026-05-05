@@ -1,50 +1,60 @@
-﻿import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Bell, Menu, Settings } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
 
-const TopBar = ({ onMenuClick }) => {
+const TopBar = ({ onMenuClick, title }) => {
   const { count } = useNotification();
   const navigate = useNavigate();
 
   return (
-    <div className="fixed top-0 left-0 right-0 h-16 bg-blue-500 z-50 flex items-center justify-between px-4 shadow-md">
-      {/* Hamburger Menu */}
+    <header
+      role="banner"
+      className="fixed top-0 left-0 right-0 h-16 bg-primary-600 z-50 flex items-center justify-between px-4 shadow-md"
+    >
       <button
+        type="button"
         onClick={onMenuClick}
-        className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
-        aria-label="Menu"
+        className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+        aria-label="Open menu"
+        aria-haspopup="true"
       >
-        <Menu className="w-6 h-6" />
+        <Menu className="w-6 h-6" aria-hidden="true" />
       </button>
 
-      {/* Right Side Icons */}
-      <div className="flex items-center gap-4">
-        {/* Bell Icon with Notification Badge */}
+      {title && (
+        <span className="absolute left-1/2 -translate-x-1/2 text-white font-semibold text-sm truncate max-w-[60%]">
+          {title}
+        </span>
+      )}
+
+      <div className="flex items-center gap-2">
         <button
+          type="button"
           onClick={() => navigate('/notifications')}
-          className="relative text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
-          aria-label="Notifications"
+          className="relative text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          aria-label={count > 0 ? `Notifications, ${count} unread` : 'Notifications'}
         >
-          <Bell className="w-6 h-6" />
+          <Bell className="w-6 h-6" aria-hidden="true" />
           {count > 0 && (
-            <span className="absolute -top-1 -right-1 bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-blue-500">
+            <span
+              aria-hidden="true"
+              className="absolute -top-1 -right-1 bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-primary-600"
+            >
               {count > 9 ? '9+' : count}
             </span>
           )}
         </button>
 
-        {/* Settings Icon */}
         <Link
           to="/settings"
-          className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors"
+          className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="Settings"
         >
-          <Settings className="w-6 h-6" />
+          <Settings className="w-6 h-6" aria-hidden="true" />
         </Link>
       </div>
-    </div>
+    </header>
   );
 };
 
 export default TopBar;
-

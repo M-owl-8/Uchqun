@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { SkeletonDashboard } from '../../../shared/components/Skeleton';
+import { StaleIndicator } from '../../../shared/components/OfflineBanner';
 import {
   Building2,
   Users,
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [schools, setSchools] = useState([]);
   const [admins, setAdmins] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isStale, setIsStale] = useState(false);
 
   useEffect(() => {
     loadData();
@@ -36,19 +38,16 @@ const Dashboard = () => {
       api.get('/government/admins'),
     ]);
 
+    const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
     if (overviewRes.status === 'fulfilled') setStats(overviewRes.value.data.data);
     if (schoolsRes.status === 'fulfilled') setSchools(schoolsRes.value.data.data?.schools || []);
     if (adminsRes.status === 'fulfilled') setAdmins(adminsRes.value.data?.data || []);
-
+    setIsStale(anyFailed);
     setLoading(false);
   };
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonDashboard stats={4} cards={3} />;
   }
 
   const LEVEL_COLORS = {
@@ -93,6 +92,7 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-8">
+      <StaleIndicator isStale={isStale} onRetry={loadData} />
       <div>
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
           {t('dashboard.title', { defaultValue: 'Davlat Nazorat Paneli' })}

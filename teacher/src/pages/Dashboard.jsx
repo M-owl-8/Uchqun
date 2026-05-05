@@ -8,7 +8,7 @@ import {
   Star,
 } from 'lucide-react';
 import Card from '../shared/components/Card';
-import LoadingSpinner from '../shared/components/LoadingSpinner';
+import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { useAuth } from '../shared/context/AuthContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
@@ -72,11 +72,7 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonDashboard stats={5} cards={3} />;
   }
 
   const overviewCards = [

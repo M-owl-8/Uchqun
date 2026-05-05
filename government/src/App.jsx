@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
+import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
@@ -38,6 +39,7 @@ const AppRoutes = () => {
 
   return (
     <Suspense fallback={<PageLoader />}>
+      <OfflineBanner />
       <Routes>
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/government" replace />} />
 

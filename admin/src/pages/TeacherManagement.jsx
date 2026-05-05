@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { SkeletonList } from '../../../shared/components/Skeleton';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import { 
@@ -56,11 +56,7 @@ const TeacherManagement = () => {
   });
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonList items={6} />;
   }
 
   return (

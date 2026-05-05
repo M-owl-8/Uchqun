@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
+import { SkeletonList } from '../../../shared/components/Skeleton';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { 
@@ -416,11 +417,7 @@ const ParentManagement = () => {
   });
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonList items={8} />;
   }
 
   return (

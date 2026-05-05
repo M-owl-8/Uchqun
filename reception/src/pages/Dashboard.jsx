@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import {
   Users,
   Shield,
@@ -68,11 +68,7 @@ const Dashboard = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonDashboard stats={4} cards={2} />;
   }
 
   return (

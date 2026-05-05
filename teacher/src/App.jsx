@@ -1,6 +1,7 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
+import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { AuthProvider } from './shared/context/AuthContext';
 import { SocketProvider } from './shared/context/SocketContext';
 import { ToastProvider } from './shared/context/ToastContext';
@@ -49,6 +50,7 @@ function App() {
           <AuthProvider>
             <SocketProvider>
               <Router>
+                <OfflineBanner />
                 <ToastContainer />
                 <Suspense fallback={<PageLoader />}>
                   <Routes>
