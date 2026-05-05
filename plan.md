@@ -22,13 +22,14 @@
 
 **Goal:** Clean slate. No dead weight.
 
-- [ ] Delete `mobile/` directory entirely
-- [ ] Remove mobile-related scripts from root `package.json`
-- [ ] Remove `backend/utils/expoPush.js` and push notification references
-- [ ] Audit which web apps use push notifications — keep backend route only if needed
-- [ ] Update `CLAUDE.md` to reflect mobile removal
-- [ ] Remove any mobile build/test steps from `.github/workflows/ci.yml`
-- [ ] Commit: `chore: remove mobile app (will be rebuilt in Flutter)`
+- [x] Delete `mobile/` directory entirely
+- [x] Remove mobile-related scripts from root `package.json` (none existed)
+- [x] Backend push notification infrastructure kept (dormant until Flutter Phase 6)
+- [x] Delete stale nested `uchqun/` directory (old project copy)
+- [x] Delete superseded `AUDIT.md`
+- [x] Update `CLAUDE.md` to reflect mobile removal
+- [x] CI/CD already clean — no mobile steps existed
+- [x] Commit: `chore(phase-1): remove mobile app and stale project copy`
 
 ---
 
