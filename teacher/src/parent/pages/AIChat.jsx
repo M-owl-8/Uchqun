@@ -18,7 +18,6 @@ const AIChat = () => {
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
     } catch (e) {
-      console.warn('Failed to load saved AI chat', e);
     }
     return [
       {
@@ -46,14 +45,12 @@ const AIChat = () => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     } catch (e) {
-      console.warn('Failed to save AI chat history', e);
     }
   }, [messages]);
 
   // Ensure translation function is available
   useEffect(() => {
     if (typeof t !== 'function') {
-      console.error('Translation function not available');
     }
   }, [t]);
 
@@ -96,7 +93,6 @@ const AIChat = () => {
         throw new Error('Failed to get AI response');
       }
     } catch (error) {
-      console.error('AI chat error:', error);
       const errorMessage = {
         role: 'assistant',
         content: t('aiChat.errorMessage') || 'I apologize, but I encountered an error. Please try again in a moment.',

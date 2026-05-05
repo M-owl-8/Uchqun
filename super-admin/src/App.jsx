@@ -5,6 +5,7 @@ import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Login from './pages/Login';
 import SuperAdmin from './pages/SuperAdmin';
+import NotFound from './pages/NotFound';
 import { ToastContainer } from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -26,11 +27,13 @@ const AppRoutes = () => {
         path="/"
         element={
           <ProtectedRoute>
-            <SuperAdmin />
+            <ErrorBoundary>
+              <SuperAdmin />
+            </ErrorBoundary>
           </ProtectedRoute>
         }
       />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
@@ -51,4 +54,3 @@ function App() {
 }
 
 export default App;
-

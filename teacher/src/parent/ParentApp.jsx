@@ -2,7 +2,6 @@ import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { ToastProvider } from './context/ToastContext';
 import { NotificationProvider } from './context/NotificationContext';
-import { AuthProvider } from './context/AuthContext';
 import { ChildProvider } from './context/ChildContext';
 import { ToastContainer } from './components/Toast';
 import Layout from './components/Layout';
@@ -12,12 +11,10 @@ const ParentApp = () => {
     <I18nextProvider i18n={i18n}>
       <ToastProvider>
         <NotificationProvider>
-          <AuthProvider>
-            <ChildProvider>
-              <ToastContainer />
-              <Layout />
-            </ChildProvider>
-          </AuthProvider>
+          <ChildProvider>
+            <ToastContainer />
+            <Layout />
+          </ChildProvider>
         </NotificationProvider>
       </ToastProvider>
     </I18nextProvider>
@@ -25,4 +22,3 @@ const ParentApp = () => {
 };
 
 export default ParentApp;
-

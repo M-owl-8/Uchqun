@@ -11,6 +11,7 @@ import TeacherManagement from './pages/TeacherManagement';
 import GroupManagement from './pages/GroupManagement';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 import { ToastContainer } from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -28,7 +29,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/reception" replace />} />
-      
+
       <Route
         path="/reception"
         element={
@@ -37,16 +38,16 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="parents" element={<ParentManagement />} />
-        <Route path="teachers" element={<TeacherManagement />} />
-        <Route path="groups" element={<GroupManagement />} />
-        <Route path="settings" element={<Settings />} />
-        <Route path="profile" element={<Profile />} />
+        <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+        <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
+        <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
+        <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
       </Route>
 
-      <Route path="/" element={<Navigate to={isAuthenticated && isReception ? "/reception" : "/login"} replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
@@ -65,6 +66,5 @@ function App() {
     </ErrorBoundary>
   );
 }
-
 
 export default App;

@@ -1,4 +1,5 @@
 import React from 'react';
+import * as Sentry from '@sentry/react';
 
 class ErrorBoundary extends React.Component {
   constructor(props) {
@@ -10,8 +11,14 @@ class ErrorBoundary extends React.Component {
     return { hasError: true, error };
   }
 
+  componentDidCatch(error, info) {
+    Sentry.captureException(error, { extra: { componentStack: info.componentStack } });
+  }
+
   render() {
     if (this.state.hasError) {
+      const { fallback } = this.props;
+      if (fallback) return fallback;
       return (
         <div style={{ padding: '2rem', textAlign: 'center' }}>
           <h2>Something went wrong</h2>

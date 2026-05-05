@@ -15,6 +15,7 @@ import Teachers from './pages/Teachers';
 import Parents from './pages/Parents';
 import AdminDetails from './pages/AdminDetails';
 import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
 import LoadingSpinner from './components/LoadingSpinner';
 
 const AppRoutes = () => {
@@ -31,7 +32,7 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/government" replace />} />
-      
+
       <Route
         path="/government"
         element={
@@ -40,18 +41,18 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="schools" element={<Schools />} />
-        <Route path="students" element={<Students />} />
-        <Route path="teachers" element={<Teachers />} />
-        <Route path="parents" element={<Parents />} />
-        <Route path="ratings" element={<Ratings />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="admin/:id" element={<AdminDetails />} />
+        <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="schools" element={<ErrorBoundary><Schools /></ErrorBoundary>} />
+        <Route path="students" element={<ErrorBoundary><Students /></ErrorBoundary>} />
+        <Route path="teachers" element={<ErrorBoundary><Teachers /></ErrorBoundary>} />
+        <Route path="parents" element={<ErrorBoundary><Parents /></ErrorBoundary>} />
+        <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />
+        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+        <Route path="admin/:id" element={<ErrorBoundary><AdminDetails /></ErrorBoundary>} />
       </Route>
 
-      <Route path="/" element={<Navigate to={isAuthenticated && isGovernment ? "/government" : "/login"} replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Navigate to={isAuthenticated && isGovernment ? '/government' : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

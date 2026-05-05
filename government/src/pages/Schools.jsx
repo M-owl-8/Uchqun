@@ -36,7 +36,6 @@ const Schools = () => {
         globalAverageRating: data.globalAverageRating || 0,
       });
     } catch (error) {
-      console.error('Error loading schools:', error);
       setSchools([]);
     } finally {
       setLoading(false);

@@ -73,7 +73,6 @@ i18n.use(initReactI18next).init({
 if (import.meta.env.DEV) {
   // Quick debug to verify translations are loaded
   // eslint-disable-next-line no-console
-  console.log('i18n resources loaded:', Object.keys(i18n.options.resources || {}));
 }
 
 export const changeLanguage = (lng) => {

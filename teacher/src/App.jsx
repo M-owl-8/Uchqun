@@ -31,6 +31,7 @@ import AIChat from './parent/pages/AIChat';
 import TeacherRating from './parent/pages/TeacherRating';
 import ParentSettings from './parent/pages/Settings';
 import Therapy from './parent/pages/Therapy';
+import NotFound from './pages/NotFound';
 
 function App() {
   return (
@@ -40,56 +41,54 @@ function App() {
           <AuthProvider>
             <SocketProvider>
               <Router>
-              <ToastContainer />
-              <Routes>
-              <Route path="/login" element={<Login />} />
+                <ToastContainer />
+                <Routes>
+                  <Route path="/login" element={<Login />} />
 
-              {/* Parent routes */}
-              <Route
-                path="/"
-                element={
-                  <ProtectedRoute requireRole="parent">
-                    <ParentApp />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<ParentDashboard />} />
-                <Route path="child" element={<ChildProfile />} />
-                <Route path="activities" element={<ParentActivities />} />
-                <Route path="meals" element={<ParentMeals />} />
-                <Route path="media" element={<ParentMedia />} />
-                <Route path="ai-chat" element={<AIChat />} />
-                <Route path="chat" element={<ParentChat />} />
-                <Route path="notifications" element={<Notifications />} />
-                <Route path="help" element={<Help />} />
-                <Route path="rating" element={<TeacherRating />} />
-                <Route path="settings" element={<ParentSettings />} />
-                <Route path="therapy" element={<Therapy />} />
-              </Route>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRoute requireRole="parent">
+                        <ParentApp />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<ErrorBoundary><ParentDashboard /></ErrorBoundary>} />
+                    <Route path="child" element={<ErrorBoundary><ChildProfile /></ErrorBoundary>} />
+                    <Route path="activities" element={<ErrorBoundary><ParentActivities /></ErrorBoundary>} />
+                    <Route path="meals" element={<ErrorBoundary><ParentMeals /></ErrorBoundary>} />
+                    <Route path="media" element={<ErrorBoundary><ParentMedia /></ErrorBoundary>} />
+                    <Route path="ai-chat" element={<ErrorBoundary><AIChat /></ErrorBoundary>} />
+                    <Route path="chat" element={<ErrorBoundary><ParentChat /></ErrorBoundary>} />
+                    <Route path="notifications" element={<ErrorBoundary><Notifications /></ErrorBoundary>} />
+                    <Route path="help" element={<ErrorBoundary><Help /></ErrorBoundary>} />
+                    <Route path="rating" element={<ErrorBoundary><TeacherRating /></ErrorBoundary>} />
+                    <Route path="settings" element={<ErrorBoundary><ParentSettings /></ErrorBoundary>} />
+                    <Route path="therapy" element={<ErrorBoundary><Therapy /></ErrorBoundary>} />
+                  </Route>
 
-              {/* Teacher routes */}
-              <Route
-                path="/teacher"
-                element={
-                  <ProtectedRoute requireRole="teacher">
-                    <Layout />
-                  </ProtectedRoute>
-                }
-              >
-                <Route index element={<Dashboard />} />
-                <Route path="parents" element={<ParentManagement />} />
-                <Route path="profile" element={<Profile />} />
-                <Route path="activities" element={<Activities />} />
-                <Route path="meals" element={<Meals />} />
-                <Route path="media" element={<Media />} />
-                <Route path="chat" element={<Chat />} />
-                <Route path="monitoring" element={<MonitoringJournal />} />
-                <Route path="therapy" element={<TherapyManagement />} />
-                <Route path="settings" element={<Settings />} />
-              </Route>
+                  <Route
+                    path="/teacher"
+                    element={
+                      <ProtectedRoute requireRole="teacher">
+                        <Layout />
+                      </ProtectedRoute>
+                    }
+                  >
+                    <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+                    <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+                    <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+                    <Route path="activities" element={<ErrorBoundary><Activities /></ErrorBoundary>} />
+                    <Route path="meals" element={<ErrorBoundary><Meals /></ErrorBoundary>} />
+                    <Route path="media" element={<ErrorBoundary><Media /></ErrorBoundary>} />
+                    <Route path="chat" element={<ErrorBoundary><Chat /></ErrorBoundary>} />
+                    <Route path="monitoring" element={<ErrorBoundary><MonitoringJournal /></ErrorBoundary>} />
+                    <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
+                    <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+                  </Route>
 
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
               </Router>
             </SocketProvider>
           </AuthProvider>
@@ -100,4 +99,3 @@ function App() {
 }
 
 export default App;
-

@@ -97,7 +97,6 @@ const SchoolCard = ({ school, t }) => {
       setPage(pageNum);
       setReviewsLoaded(true);
     } catch (error) {
-      console.error('Error loading reviews:', error);
     } finally {
       setReviewsLoading(false);
     }
@@ -260,7 +259,6 @@ const Ratings = () => {
         average: data.average || 0,
       });
     } catch (error) {
-      console.error('Error loading ratings:', error);
       setSchools([]);
     } finally {
       setLoading(false);

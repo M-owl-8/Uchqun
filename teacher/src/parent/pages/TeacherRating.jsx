@@ -60,7 +60,6 @@ const TeacherRating = () => {
         api.get(`/parent/school-rating${childIdParam}`).catch((err) => {
           // Handle 400, 404, and 500 errors gracefully
           if (err.response?.status === 400 || err.response?.status === 404 || err.response?.status === 500) {
-            console.warn('School rating endpoint error (handled gracefully):', err.response?.status, err.response?.data);
             return { data: { data: { rating: null, school: null, summary: { average: 0, count: 0 }, allRatings: [] } } };
           }
           throw err;
@@ -85,7 +84,6 @@ const TeacherRating = () => {
       setSchoolSummary(schoolRatingData.summary || { average: 0, count: 0 });
       setSchoolAllRatings(schoolRatingData.allRatings || []); // Set all ratings
     } catch (err) {
-      console.error('Error loading rating data:', err);
       setError(t('ratingPage.errorLoad'));
     } finally {
       setLoading(false);
@@ -130,9 +128,6 @@ const TeacherRating = () => {
       const ratingData = refreshRes?.data?.data || {};
       setSummary(ratingData.summary || { average: 0, count: 0 });
     } catch (err) {
-      console.error('Error saving rating:', err);
-      console.error('Error response:', err.response?.data);
-      console.error('Error status:', err.response?.status);
       
       // Get error message from response
       let errorMessage = t('ratingPage.errorSave');
@@ -196,7 +191,6 @@ const TeacherRating = () => {
         };
       }
       
-      console.log('Sending school rating payload:', payload);
       await api.post('/parent/school-rating', payload);
       setSchoolRating({
         stars: schoolStars,
@@ -221,9 +215,6 @@ const TeacherRating = () => {
         setSchool(ratingData.school);
       }
     } catch (err) {
-      console.error('Error saving school rating:', err);
-      console.error('Error response:', err.response?.data);
-      console.error('Error status:', err.response?.status);
 
       // Get error message from response
       let errorMessage = t('schoolRatingPage.errorSave');

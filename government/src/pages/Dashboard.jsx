@@ -29,25 +29,18 @@ const Dashboard = () => {
   }, []);
 
   const loadData = async () => {
-    try {
-      setLoading(true);
-      const [overviewRes, schoolsRes, adminsRes] = await Promise.all([
-        api.get('/government/overview'),
-        api.get('/government/schools?limit=10'),
-        api.get('/government/admins'),
-      ]);
+    setLoading(true);
+    const [overviewRes, schoolsRes, adminsRes] = await Promise.allSettled([
+      api.get('/government/overview'),
+      api.get('/government/schools?limit=10'),
+      api.get('/government/admins'),
+    ]);
 
-      const overviewData = overviewRes.data.data;
-      const schoolsData = schoolsRes.data.data?.schools || [];
-      const adminsData = adminsRes.data?.data || [];
+    if (overviewRes.status === 'fulfilled') setStats(overviewRes.value.data.data);
+    if (schoolsRes.status === 'fulfilled') setSchools(schoolsRes.value.data.data?.schools || []);
+    if (adminsRes.status === 'fulfilled') setAdmins(adminsRes.value.data?.data || []);
 
-      setStats(overviewData);
-      setSchools(schoolsData);
-      setAdmins(adminsData);
-    } catch {
-    } finally {
-      setLoading(false);
-    }
+    setLoading(false);
   };
 
   if (loading) {

@@ -53,7 +53,6 @@ const Dashboard = () => {
         setTeachers(teachers);
         setParents(parents);
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
         // Set default stats if error occurs
         setStats({
           parents: 0,

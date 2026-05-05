@@ -16,6 +16,7 @@ import GroupManagement from './pages/GroupManagement';
 import SchoolRatings from './pages/SchoolRatings';
 import Profile from './pages/Profile';
 import Settings from './pages/Settings';
+import NotFound from './pages/NotFound';
 import { ToastContainer } from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -34,7 +35,7 @@ const AppRoutes = () => {
     <Routes>
       <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/admin" replace />} />
       <Route path="/admin-register" element={!isAuthenticated ? <AdminRegister /> : <Navigate to="/admin" replace />} />
-      
+
       <Route
         path="/admin"
         element={
@@ -43,20 +44,20 @@ const AppRoutes = () => {
           </ProtectedRoute>
         }
       >
-        <Route index element={<Dashboard />} />
-        <Route path="receptions" element={<ReceptionManagement />} />
-        <Route path="parents" element={<ParentManagement />} />
-        <Route path="teachers" element={<TeacherManagement />} />
-        <Route path="groups" element={<GroupManagement />} />
-        <Route path="school-ratings" element={<SchoolRatings />} />
-        <Route path="users" element={<UsersStats />} />
-        <Route path="payments" element={<PaymentManagement />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="settings" element={<Settings />} />
+        <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="receptions" element={<ErrorBoundary><ReceptionManagement /></ErrorBoundary>} />
+        <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+        <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
+        <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
+        <Route path="school-ratings" element={<ErrorBoundary><SchoolRatings /></ErrorBoundary>} />
+        <Route path="users" element={<ErrorBoundary><UsersStats /></ErrorBoundary>} />
+        <Route path="payments" element={<ErrorBoundary><PaymentManagement /></ErrorBoundary>} />
+        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+        <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
       </Route>
 
-      <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? "/admin" : "/login"} replace />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };
@@ -77,4 +78,3 @@ function App() {
 }
 
 export default App;
-

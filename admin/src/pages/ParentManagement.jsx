@@ -49,11 +49,9 @@ const ParentManagement = () => {
         // Strict check: must be exactly 'parent' role
         return user && user.role === 'parent' && user.role !== 'reception' && user.role !== 'admin' && user.role !== 'teacher';
       });
-      console.log('Fetched parents:', parentsData.length, 'Filtered from:', (response.data.data || []).length);
       setParents(parentsData);
     } catch (error) {
       showToast(t('parentsPage.loadError') || 'Error', 'error');
-      console.error('Error fetching parents:', error);
       setParents([]);
     } finally {
       setLoading(false);
@@ -68,7 +66,6 @@ const ParentManagement = () => {
       setParentData(response.data.data);
     } catch (error) {
       showToast(t('parentsPage.dataError') || 'Error', 'error');
-      console.error('Error fetching parent data:', error);
     } finally {
       setLoadingParentData(false);
     }

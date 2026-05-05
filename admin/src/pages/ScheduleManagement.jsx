@@ -42,7 +42,6 @@ const ScheduleManagement = () => {
       setSchedules(Array.isArray(schedulesData) ? schedulesData : []);
       setGroups(Array.isArray(groupsData) ? groupsData : []);
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Error loading data');
     } finally {
       setLoading(false);
@@ -89,7 +88,6 @@ const ScheduleManagement = () => {
       success('Schedule deleted successfully');
       loadData();
     } catch (error) {
-      console.error('Error deleting schedule:', error);
       showError('Error deleting schedule');
     }
   };
@@ -109,7 +107,6 @@ const ScheduleManagement = () => {
       setShowModal(false);
       loadData();
     } catch (error) {
-      console.error('Error saving schedule:', error);
       showError(error.message || 'Error saving schedule');
     }
   };

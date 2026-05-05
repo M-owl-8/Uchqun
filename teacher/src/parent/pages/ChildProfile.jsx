@@ -146,13 +146,11 @@ const ChildProfile = () => {
         setChild(childResponse.data);
         setPhotoTimestamp(Date.now());
       } catch (reloadError) {
-        console.error('Error reloading child data:', reloadError);
         // Continue with local update if reload fails
       }
       
       toastSuccess(t('profile.avatarUpdated', { defaultValue: 'Rasm muvaffaqiyatli yuklandi' }));
     } catch (err) {
-      console.error('Avatar yuklash xatolik:', err);
       
       let errorMessage = t('profile.uploadError', { defaultValue: 'Rasm yuklashda xatolik yuz berdi' });
       
@@ -233,7 +231,6 @@ const ChildProfile = () => {
       const response = await api.get('/parent/messages');
       setMyMessages(response.data.data || []);
     } catch (error) {
-      console.error('Error sending message:', error);
       toastError(error.response?.data?.error || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
     } finally {
       setSendingMessage(false);
@@ -248,7 +245,6 @@ const ChildProfile = () => {
         const response = await api.get('/parent/messages');
         setMyMessages(response.data.data || []);
       } catch (error) {
-        console.error('Error loading messages:', error);
         setMyMessages([]);
       } finally {
         setLoadingMessages(false);
@@ -332,7 +328,6 @@ const ChildProfile = () => {
           const monitoring = Array.isArray(monitoringResponse.data?.data) ? monitoringResponse.data.data : [];
           setMonitoringRecords(monitoring);
         } catch (error) {
-          console.error('Error loading child data:', error);
           if (error.response?.status === 404) {
             setError(t('child.errorNotFound'));
           } else {
@@ -354,7 +349,6 @@ const ChildProfile = () => {
     if (!connected || !selectedChildId) return;
 
     const handleChildUpdate = (data) => {
-      console.log('[ChildProfile] Child updated:', data);
       if (data.child?.id === selectedChildId) {
         // Update photo timestamp to force image refresh
         setPhotoTimestamp(Date.now());
@@ -364,7 +358,6 @@ const ChildProfile = () => {
     };
 
     const handleDataChange = (data) => {
-      console.log('[ChildProfile] Data change:', data);
       // Check if event is for our selected child
       const eventChildId = data.activity?.childId || data.meal?.childId || data.media?.childId || data.childId;
       if (eventChildId === selectedChildId) {

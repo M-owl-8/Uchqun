@@ -63,7 +63,6 @@ const Settings = () => {
       const response = await api.get('/reception/messages');
       setMyMessages(response.data.data || []);
     } catch (error) {
-      console.error('Error loading messages:', error);
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);
@@ -89,7 +88,6 @@ const Settings = () => {
       // Reload messages
       await loadMessages();
     } catch (error) {
-      console.error('Error sending message:', error);
       showError(error.response?.data?.error || t('profile.messageError'));
     } finally {
       setSendingMessage(false);
@@ -115,7 +113,6 @@ const Settings = () => {
         setUser(userData);
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
       showError(error.response?.data?.error || t('settings.loadProfileError'));
     } finally {
       setLoading(false);
@@ -132,7 +129,6 @@ const Settings = () => {
         setUser(response.data);
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
       showError(error.response?.data?.error || t('settings.profileUpdateError'));
     }
   };
@@ -157,7 +153,6 @@ const Settings = () => {
         confirmPassword: '',
       });
     } catch (error) {
-      console.error('Error changing password:', error);
       showError(error.response?.data?.error || t('settings.passwordChangeError'));
     }
   };

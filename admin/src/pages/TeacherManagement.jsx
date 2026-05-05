@@ -39,7 +39,6 @@ const TeacherManagement = () => {
       setTeachers(response.data.data || []);
     } catch (error) {
       showToast(t('teachersPage.loadError') || 'Error', 'error');
-      console.error('Error fetching teachers:', error);
       setTeachers([]);
     } finally {
       setLoading(false);

@@ -35,7 +35,6 @@ const UsersStats = () => {
       const response = await api.get('/business/users', { params });
       setStats(response.data.data);
     } catch (error) {
-      console.error('Error loading users statistics:', error);
     } finally {
       setLoading(false);
     }

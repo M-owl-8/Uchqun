@@ -34,7 +34,6 @@ const AIWarnings = () => {
       const response = await api.get('/ai-warnings', { params });
       setWarnings(response.data.data.warnings || []);
     } catch (error) {
-      console.error('Error loading warnings:', error);
     } finally {
       setLoading(false);
     }
@@ -45,7 +44,6 @@ const AIWarnings = () => {
       await api.put(`/ai-warnings/${warningId}/resolve`);
       loadWarnings();
     } catch (error) {
-      console.error('Error resolving warning:', error);
       alert(error.response?.data?.error || 'Failed to resolve warning');
     }
   };

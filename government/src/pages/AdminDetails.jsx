@@ -15,6 +15,8 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 const AdminDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -23,7 +25,12 @@ const AdminDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!id || !UUID_RE.test(id)) {
+      setLoading(false);
+      return;
+    }
     loadAdminDetails();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const loadAdminDetails = async () => {
@@ -31,8 +38,8 @@ const AdminDetails = () => {
       setLoading(true);
       const res = await api.get(`/government/admins/${id}`);
       setData(res.data?.data || null);
-    } catch (error) {
-      console.error('Error loading admin details:', error);
+    } catch {
+      // handled by empty data state
     } finally {
       setLoading(false);
     }

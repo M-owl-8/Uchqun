@@ -1,20 +1,47 @@
 import axios from 'axios';
 
-export function createApi({ tokenKey = 'accessToken', withCredentials = true } = {}) {
+const BASE_URL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
+
+export function createApi({
+  tokenKey = 'accessToken',
+  withCredentials = true,
+  onUnauthenticated = null,
+} = {}) {
   const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api',
+    baseURL: BASE_URL,
     headers: { 'Content-Type': 'application/json' },
     withCredentials,
+    timeout: 30000,
   });
+
+  // Mutex: single in-flight refresh at a time
+  let refreshPromise = null;
+
+  const doRefresh = async () => {
+    const refreshToken = localStorage.getItem('refreshToken');
+    if (!refreshToken) throw new Error('No refresh token');
+    const res = await axios.post(`${BASE_URL}/auth/refresh`, { refreshToken }, { timeout: 10000 });
+    const { accessToken, refreshToken: newRefreshToken } = res.data;
+    localStorage.setItem(tokenKey, accessToken);
+    if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
+    return accessToken;
+  };
+
+  const clearAuth = () => {
+    localStorage.removeItem(tokenKey);
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    if (typeof onUnauthenticated === 'function') {
+      onUnauthenticated();
+    } else {
+      window.location.href = '/login';
+    }
+  };
 
   api.interceptors.request.use((config) => {
     const token = localStorage.getItem(tokenKey);
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    if (config.data instanceof FormData) {
-      delete config.headers['Content-Type'];
-    }
+    if (token) config.headers.Authorization = `Bearer ${token}`;
+    if (config.data instanceof FormData) delete config.headers['Content-Type'];
     return config;
   });
 
@@ -25,31 +52,19 @@ export function createApi({ tokenKey = 'accessToken', withCredentials = true } =
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
-          const refreshToken = localStorage.getItem('refreshToken');
-          if (refreshToken) {
-            const response = await axios.post(
-              `${api.defaults.baseURL}/auth/refresh`,
-              { refreshToken }
-            );
-            const { accessToken, refreshToken: newRefreshToken } = response.data;
-            localStorage.setItem(tokenKey, accessToken);
-            if (newRefreshToken) localStorage.setItem('refreshToken', newRefreshToken);
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-            return api(originalRequest);
+          if (!refreshPromise) {
+            refreshPromise = doRefresh().finally(() => { refreshPromise = null; });
           }
+          const accessToken = await refreshPromise;
+          originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+          return api(originalRequest);
         } catch {
-          localStorage.removeItem(tokenKey);
-          localStorage.removeItem('refreshToken');
-          localStorage.removeItem('user');
-          window.location.href = '/login';
+          clearAuth();
           return Promise.reject(error);
         }
       }
       if (error.response?.status === 401) {
-        localStorage.removeItem(tokenKey);
-        localStorage.removeItem('refreshToken');
-        localStorage.removeItem('user');
-        window.location.href = '/login';
+        clearAuth();
       }
       return Promise.reject(error);
     }

@@ -70,7 +70,6 @@ const Settings = () => {
       const response = await api.get('/admin/messages');
       setMyMessages(response.data.data || []);
     } catch (error) {
-      console.error('Error loading messages:', error);
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);
@@ -95,7 +94,6 @@ const Settings = () => {
       setShowMessageModal(false);
       await loadMessages();
     } catch (error) {
-      console.error('Error sending message:', error);
       showError(error.response?.data?.error || t('settings.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
     } finally {
       setSendingMessage(false);
@@ -121,7 +119,6 @@ const Settings = () => {
         setUser(userData);
       }
     } catch (error) {
-      console.error('Error loading profile:', error);
       showError(error.response?.data?.error || t('settings.loadError', { defaultValue: 'Profil yuklashda xatolik' }));
     } finally {
       setLoading(false);
@@ -144,7 +141,6 @@ const Settings = () => {
         setUser(response.data);
       }
     } catch (error) {
-      console.error('Error updating profile:', error);
       showError(error.response?.data?.error || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
     } finally {
       setSaving(false);
@@ -177,7 +173,6 @@ const Settings = () => {
         confirmPassword: '',
       });
     } catch (error) {
-      console.error('Error changing password:', error);
       showError(error.response?.data?.error || t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
     } finally {
       setSavingPassword(false);

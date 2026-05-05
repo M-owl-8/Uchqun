@@ -137,57 +137,57 @@ Add `paranoid: true` + `deletedAt` migration to:
 **Goal:** Consistent, secure, maintainable dashboards. No console.logs, no dead code, no duplicates.
 
 ### 4a — Shared Code First
-- [ ] `shared/services/api.js` — implement token refresh mutex (fix race condition)
-- [ ] `shared/services/api.js` — add `timeout: 30000` to axios instance
-- [ ] `shared/services/api.js` — add AbortController / request cancellation support
-- [ ] `shared/services/api.js` — replace `window.location.href = '/login'` with router callback
-- [ ] `shared/context/AuthContext.jsx` — validate token expiry on app load (call `/auth/me`)
-- [ ] `shared/context/AuthContext.jsx` — wrap all `localStorage.getItem/JSON.parse` in try-catch
-- [ ] `shared/components/ErrorBoundary.jsx` — add Sentry error reporting
-- [ ] `shared/context/NotificationContext.jsx` — store notification items array, not just count
-- [ ] `shared/context/createAuthContext.jsx` — remove 3× hardcoded production Railway URL
-- [ ] Create `shared/utils/imageUrl.js` — centralize avatar/media URL construction
-- [ ] Create `shared/hooks/useAsync.js` — standardize loading/error/data pattern
+- [x] `shared/services/api.js` — implement token refresh mutex (fix race condition)
+- [x] `shared/services/api.js` — add `timeout: 30000` to axios instance
+- [x] `shared/services/api.js` — add AbortController / request cancellation support
+- [x] `shared/services/api.js` — replace `window.location.href = '/login'` with router callback
+- [x] `shared/context/AuthContext.jsx` — validate token expiry on app load (call `/auth/me`)
+- [x] `shared/context/AuthContext.jsx` — wrap all `localStorage.getItem/JSON.parse` in try-catch
+- [x] `shared/components/ErrorBoundary.jsx` — add Sentry error reporting
+- [x] `shared/context/NotificationContext.jsx` — store notification items array, not just count
+- [x] `shared/context/createAuthContext.jsx` — remove 3× hardcoded production Railway URL
+- [x] Create `shared/utils/imageUrl.js` — centralize avatar/media URL construction
+- [x] Create `shared/hooks/useAsync.js` — standardize loading/error/data pattern
 
 ### 4b — All 5 Apps: Common Fixes
-- [ ] Remove all `console.log/error` in production code (30+ teacher, 27+ reception, etc.)
-- [ ] Add `<NotFound />` page and wire wildcard route in all 5 `App.jsx` files
-- [ ] Add per-page error boundaries
-- [ ] Add debounce on all form submit handlers
-- [ ] Standardize i18next version → `^23.10.1` across all apps
-- [ ] Standardize jsdom version → `^27.4.0` across all apps
-- [ ] Add `VITE_API_URL` validation at build time (fail build if missing)
+- [x] Remove all `console.log/error` in production code (30+ teacher, 27+ reception, etc.)
+- [x] Add `<NotFound />` page and wire wildcard route in all 5 `App.jsx` files
+- [x] Add per-page error boundaries
+- [x] Add debounce on all form submit handlers
+- [x] Standardize i18next version → `^23.10.1` across all apps
+- [x] Standardize jsdom version → `^27.4.0` across all apps
+- [x] Add `VITE_API_URL` validation at build time (fail build if missing)
 
 ### 4c — App-Specific Fixes
 
 **super-admin:**
-- [ ] Break `SuperAdmin.jsx` (1,724 lines, 78 state vars) into 6 separate page components
-- [ ] Add pagination to all admin/school/message list endpoints
-- [ ] Password creation: add strength rules + confirmation field
-- [ ] Remove plaintext generated password from UI — email only
+- [x] Break `SuperAdmin.jsx` (1,724 lines, 78 state vars) into 6 separate page components
+- [x] Add pagination to all admin/school/message list endpoints
+- [x] Password creation: add strength rules + confirmation field
+- [x] Remove plaintext generated password from UI — email only
 
 **admin:**
-- [ ] Remove `console.log('Sending form data:')` and all sensitive logs
-- [ ] Add proper email/phone/required validation to `ParentManagement.jsx`, `ChildManagement.jsx`
-- [ ] Fix manual axios resolution in `vite.config.js`
+- [x] Remove `console.log('Sending form data:')` and all sensitive logs
+- [x] Add proper email/phone/required validation to `ParentManagement.jsx`, `ChildManagement.jsx`
+- [x] Fix manual axios resolution in `vite.config.js`
 
 **reception:**
-- [ ] File upload: add MIME type + size validation before submitting
-- [ ] Replace `window.confirm()` with proper modal dialogs
-- [ ] Wrap `JSON.parse` in `dataStore.js` with try-catch
-- [ ] Remove `medicalDiagnosis` from localStorage — fetch from API only
+- [x] File upload: add MIME type + size validation before submitting
+- [x] Replace `window.confirm()` with proper modal dialogs
+- [x] Wrap `JSON.parse` in `dataStore.js` with try-catch
+- [x] Remove `medicalDiagnosis` from localStorage — fetch from API only
 
 **teacher:**
-- [ ] Fix dual auth context architecture (merge shared + parent contexts)
-- [ ] Extract duplicate URL construction to `shared/utils/imageUrl.js`
-- [ ] Fix socket reconnection debouncing
-- [ ] Add retry on failed chat message delivery
+- [x] Fix dual auth context architecture (merge shared + parent contexts)
+- [x] Extract duplicate URL construction to `shared/utils/imageUrl.js`
+- [x] Fix socket reconnection debouncing
+- [x] Add retry on failed chat message delivery
 
 **government:**
-- [ ] Validate `:id` route param in `AdminDetails.jsx`
-- [ ] Replace hardcoded Uzbek error string in `Login.jsx:28` with i18n key
-- [ ] Use `Promise.allSettled` instead of `Promise.all` in Dashboard data load
-- [ ] Fix `I18nextProvider` wrapping order in `App.jsx`
+- [x] Validate `:id` route param in `AdminDetails.jsx`
+- [x] Replace hardcoded Uzbek error string in `Login.jsx:28` with i18n key
+- [x] Use `Promise.allSettled` instead of `Promise.all` in Dashboard data load
+- [x] Fix `I18nextProvider` wrapping order in `App.jsx`
 
 ---
 

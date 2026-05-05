@@ -54,7 +54,6 @@ const TeacherManagement = () => {
       const response = await api.get('/reception/teachers');
       setTeachers(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
-      console.error('Error loading teachers:', error);
       showError(error.response?.data?.error || t('teachersPage.toastLoadError'));
       setTeachers([]);
     } finally {
@@ -98,7 +97,6 @@ const TeacherManagement = () => {
         ratings: Array.isArray(data.ratings) ? data.ratings : [],
       });
     } catch (err) {
-      console.error('Error loading ratings:', err);
       showError(err.response?.data?.error || t('teachersPage.ratings.toastError'));
       setRatingData({ summary: { average: 0, count: 0 }, ratings: [] });
     } finally {
@@ -127,7 +125,6 @@ const TeacherManagement = () => {
       success(t('teachersPage.toastDelete'));
       loadTeachers();
     } catch (error) {
-      console.error('Error deleting teacher:', error);
       showError(error.response?.data?.error || t('teachersPage.toastDeleteError'));
     }
   };
@@ -166,7 +163,6 @@ const TeacherManagement = () => {
       setShowModal(false);
       loadTeachers();
     } catch (error) {
-      console.error('Error saving teacher:', error);
       showError(error.response?.data?.error || t('teachersPage.toastSaveError'));
     }
   };

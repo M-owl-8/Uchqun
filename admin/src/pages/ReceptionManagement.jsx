@@ -76,7 +76,6 @@ const ReceptionManagement = () => {
       }
     } catch (error) {
       showError(t('receptionsPage.loadError'));
-      console.error('Error fetching receptions:', error);
     } finally {
       if (showLoading) {
         setLoading(false);
@@ -90,7 +89,6 @@ const ReceptionManagement = () => {
       setDocuments(response.data.data || []);
     } catch (error) {
       showError(t('receptionsPage.docsLoadError'));
-      console.error('Error fetching documents:', error);
     }
   };
 

@@ -63,7 +63,6 @@ const Dashboard = () => {
           statusEntries: monitoringRecords.length,
         });
       } catch (error) {
-        console.error('Error loading dashboard data:', error);
       } finally {
         setLoading(false);
       }

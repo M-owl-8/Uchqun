@@ -36,7 +36,6 @@ const Chat = () => {
           setSelectedParent(list[0]);
         }
       } catch (err) {
-        console.error('Failed to load parents for chat', err);
       }
     };
     fetchParents();

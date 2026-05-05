@@ -20,10 +20,8 @@ const SchoolRatings = () => {
     setError('');
     try {
       const response = await api.get('/admin/school-ratings');
-      console.log('School ratings response:', response.data);
       setSchoolRatings(response.data.data || []);
     } catch (err) {
-      console.error('Error loading school ratings:', err);
       setError(err.response?.data?.error || t('schoolRatings.errorLoad'));
     } finally {
       setLoading(false);

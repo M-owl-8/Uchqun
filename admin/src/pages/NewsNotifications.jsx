@@ -42,7 +42,6 @@ const NewsNotifications = () => {
       setNews(Array.isArray(newsData) ? newsData : []);
       setNotifications(Array.isArray(notificationsData) ? notificationsData : []);
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Error loading data');
     } finally {
       setLoading(false);
@@ -86,7 +85,6 @@ const NewsNotifications = () => {
       }
       loadData();
     } catch (error) {
-      console.error('Error deleting:', error);
       showError('Error deleting item');
     }
   };
@@ -116,7 +114,6 @@ const NewsNotifications = () => {
       setShowModal(false);
       loadData();
     } catch (error) {
-      console.error('Error saving:', error);
       showError(error.message || 'Error saving item');
     }
   };

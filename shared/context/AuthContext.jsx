@@ -5,9 +5,7 @@ const AuthContext = createContext(null);
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used within AuthProvider');
-  }
+  if (!context) throw new Error('useAuth must be used within AuthProvider');
   return context;
 };
 
@@ -16,42 +14,49 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check for stored user in localStorage
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    setLoading(false);
+    const token = localStorage.getItem('accessToken');
+    if (!token) { setLoading(false); return; }
+    api.get('/auth/me')
+      .then((res) => {
+        const userData = res.data;
+        try { localStorage.setItem('user', JSON.stringify(userData)); } catch { /* quota */ }
+        setUser(userData);
+      })
+      .catch(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
+        setUser(null);
+      })
+      .finally(() => setLoading(false));
   }, []);
 
   const login = async (email, password) => {
     try {
       const response = await api.post('/auth/login', { email, password });
-      const { accessToken, refreshToken, user } = response.data;
-      
-      if (user && accessToken) {
-        setUser(user);
-        localStorage.setItem('user', JSON.stringify(user));
+      const { accessToken, refreshToken, user: userData } = response.data;
+      if (userData && accessToken) {
+        setUser(userData);
+        try { localStorage.setItem('user', JSON.stringify(userData)); } catch { /* quota */ }
         localStorage.setItem('accessToken', accessToken);
-        if (refreshToken) {
-          localStorage.setItem('refreshToken', refreshToken);
-        }
+        if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
         return { success: true };
       }
       return { success: false, error: 'Invalid response from server' };
     } catch (error) {
-      return { 
-        success: false, 
-        error: error.response?.data?.error || error.message || 'Login failed' 
-      };
+      return { success: false, error: error.response?.data?.error || error.message || 'Login failed' };
     }
   };
 
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+  const logout = async () => {
+    try {
+      await api.post('/auth/logout').catch(() => {});
+    } finally {
+      setUser(null);
+      localStorage.removeItem('user');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }
   };
 
   const value = {
@@ -67,4 +72,3 @@ export const AuthProvider = ({ children }) => {
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
-

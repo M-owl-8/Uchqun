@@ -81,7 +81,7 @@ export const dataStore = {
   // ========== PARENTS ==========
   getParents: () => {
     const data = localStorage.getItem(STORAGE_KEYS.PARENTS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createParent: (parentData) => {
@@ -118,7 +118,7 @@ export const dataStore = {
   // ========== TEACHERS ==========
   getTeachers: () => {
     const data = localStorage.getItem(STORAGE_KEYS.TEACHERS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createTeacher: (teacherData) => {
@@ -155,7 +155,7 @@ export const dataStore = {
   // ========== CHILDREN ==========
   getChildren: () => {
     const data = localStorage.getItem(STORAGE_KEYS.CHILDREN);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createChild: (childData) => {
@@ -191,7 +191,7 @@ export const dataStore = {
   // ========== GROUPS ==========
   getGroups: () => {
     const data = localStorage.getItem(STORAGE_KEYS.GROUPS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createGroup: (groupData) => {
@@ -227,7 +227,7 @@ export const dataStore = {
   // ========== SCHEDULES ==========
   getSchedules: () => {
     const data = localStorage.getItem(STORAGE_KEYS.SCHEDULES);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createSchedule: (scheduleData) => {
@@ -263,7 +263,7 @@ export const dataStore = {
   // ========== MEDIA ==========
   getMedia: () => {
     const data = localStorage.getItem(STORAGE_KEYS.MEDIA);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createMedia: (mediaData) => {
@@ -301,7 +301,7 @@ export const dataStore = {
   // ========== ACTIVITIES ==========
   getActivities: () => {
     const data = localStorage.getItem(STORAGE_KEYS.ACTIVITIES);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createActivity: (activityData) => {
@@ -338,7 +338,7 @@ export const dataStore = {
   // ========== MEALS ==========
   getMeals: () => {
     const data = localStorage.getItem(STORAGE_KEYS.MEALS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createMeal: (mealData) => {
@@ -375,7 +375,7 @@ export const dataStore = {
   // ========== MENUS ==========
   getMenus: () => {
     const data = localStorage.getItem(STORAGE_KEYS.MENUS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createMenu: (menuData) => {
@@ -411,7 +411,7 @@ export const dataStore = {
   // ========== NEWS ==========
   getNews: () => {
     const data = localStorage.getItem(STORAGE_KEYS.NEWS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createNews: (newsData) => {
@@ -454,7 +454,7 @@ export const dataStore = {
   // ========== NOTIFICATIONS ==========
   getNotifications: () => {
     const data = localStorage.getItem(STORAGE_KEYS.NOTIFICATIONS);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createNotification: (notificationData) => {
@@ -491,7 +491,7 @@ export const dataStore = {
   // ========== ATTENDANCE ==========
   getAttendance: () => {
     const data = localStorage.getItem(STORAGE_KEYS.ATTENDANCE);
-    return data ? JSON.parse(data) : [];
+    try { return data ? JSON.parse(data) : []; } catch { return []; }
   },
 
   createAttendance: (attendanceData) => {
@@ -527,7 +527,7 @@ export const dataStore = {
   // ========== SYSTEM SETTINGS ==========
   getSettings: () => {
     const data = localStorage.getItem(STORAGE_KEYS.SYSTEM_SETTINGS);
-    return data ? JSON.parse(data) : {};
+    try { return data ? JSON.parse(data) : {}; } catch { return {}; }
   },
 
   updateSettings: (settingsData) => {

@@ -66,6 +66,7 @@ const ParentManagement = () => {
     photo: null,
     photoPreview: null,
   });
+  const [confirmDialog, setConfirmDialog] = useState(null); // { message, onConfirm }
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -85,7 +86,6 @@ const ParentManagement = () => {
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) {
-      console.error('Error loading teachers and groups:', error);
     }
   };
 
@@ -97,11 +97,9 @@ const ParentManagement = () => {
   const loadParents = async () => {
     try {
       setLoading(true);
-      console.log('Loading parents from /reception/parents endpoint');
       const response = await api.get('/reception/parents');
       setParents(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
-      console.error('Error loading parents:', error);
       showError(error.response?.data?.error || t('parentsPage.toastLoadError'));
       setParents([]);
     } finally {
@@ -147,19 +145,20 @@ const ParentManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (parentId) => {
-    if (!window.confirm(t('parentsPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/reception/parents/${parentId}`);
-      success(t('parentsPage.toastDelete'));
-      loadParents();
-    } catch (error) {
-      console.error('Error deleting parent:', error);
-      showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
-    }
+  const handleDelete = (parentId) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/parents/${parentId}`);
+          success(t('parentsPage.toastDelete'));
+          loadParents();
+        } catch (error) {
+          showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   // NEW: Handle Edit Child
@@ -181,19 +180,20 @@ const ParentManagement = () => {
   };
 
   // NEW: Handle Delete Child
-  const handleDeleteChild = async (parentId, childId) => {
-    if (!window.confirm(t('parentsPage.confirmDeleteChild'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/reception/children/${childId}`);
-      success(t('parentsPage.toastDeleteChild'));
-      loadParents();
-    } catch (error) {
-      console.error('Error deleting child:', error);
-      showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
-    }
+  const handleDeleteChild = (parentId, childId) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmDeleteChild'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/children/${childId}`);
+          success(t('parentsPage.toastDeleteChild'));
+          loadParents();
+        } catch (error) {
+          showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   const handleAddChild = (parentId) => {
@@ -248,24 +248,12 @@ const ParentManagement = () => {
       }
       
       // Debug: Log FormData contents
-      console.log('Sending FormData:', {
-        parentId: selectedParentId,
-        firstName: childFormData.firstName,
-        lastName: childFormData.lastName,
-        dateOfBirth: childFormData.dateOfBirth,
-        gender: childFormData.gender,
-        disabilityType: childFormData.disabilityType,
-        school: childFormData.school,
-        hasPhoto: !!childFormData.photo,
-      });
       
       await api.post('/reception/children', formDataToSend);
       success(t('parentsPage.toastChildAdded'));
       setShowChildModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error adding child:', error);
-      console.error('Error response:', error.response?.data);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedAddChild');
       const errorDetails = error.response?.data?.missing ? `Missing: ${JSON.stringify(error.response.data.missing)}` : '';
       showError(`${errorMessage}${errorDetails ? ` - ${errorDetails}` : ''}`);
@@ -312,8 +300,6 @@ const ParentManagement = () => {
       setShowEditChildModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error updating child:', error);
-      console.error('Error response:', error.response?.data);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedUpdateChild');
       const errorDetails = error.response?.data?.missing ? `Missing: ${JSON.stringify(error.response.data.missing)}` : '';
       showError(`${errorMessage}${errorDetails ? ` - ${errorDetails}` : ''}`);
@@ -321,15 +307,27 @@ const ParentManagement = () => {
   };
 
   // NEW: Handle photo change for child
+  const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5 MB
+
   const handleChildPhotoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setChildFormData({
-        ...childFormData,
-        photo: file,
-        photoPreview: URL.createObjectURL(file)
-      });
+    if (!file) return;
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      showError(t('parentsPage.invalidFileType', { defaultValue: 'Only JPEG, PNG, WebP and GIF images are allowed' }));
+      e.target.value = '';
+      return;
     }
+    if (file.size > MAX_PHOTO_SIZE) {
+      showError(t('parentsPage.fileTooLarge', { defaultValue: 'Image must be smaller than 5 MB' }));
+      e.target.value = '';
+      return;
+    }
+    setChildFormData({
+      ...childFormData,
+      photo: file,
+      photoPreview: URL.createObjectURL(file),
+    });
   };
 
   // NEW: Remove photo
@@ -403,7 +401,6 @@ const ParentManagement = () => {
       setShowModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error saving parent:', error);
       showError(error.response?.data?.error || t('parentsPage.toastSaveError'));
     }
   };
@@ -1284,6 +1281,28 @@ const ParentManagement = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {confirmDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+            <p className="text-gray-800 mb-6">{confirmDialog.message}</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDialog(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                {t('common.cancel', { defaultValue: 'Cancel' })}
+              </button>
+              <button
+                onClick={confirmDialog.onConfirm}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                {t('common.confirm', { defaultValue: 'Confirm' })}
+              </button>
+            </div>
           </div>
         </div>
       )}
