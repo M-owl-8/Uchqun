@@ -4,7 +4,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-Uchqun is a full-stack platform for special education school management in Uzbekistan. It's a monorepo with a Node.js/Express backend, six React web dashboards, and a React Native mobile app.
+Uchqun is a full-stack platform for special education school management in Uzbekistan. It's a monorepo with a Node.js/Express backend and five React web dashboards. A Flutter mobile app will be built in Phase 6 once the web platform is complete.
 
 **Role hierarchy**: Super Admin > Government > Business > Admin > Reception > Teacher > Parent
 
@@ -13,7 +13,6 @@ Uchqun is a full-stack platform for special education school management in Uzbek
 ```
 uchqun/
 ├── backend/           # Node.js/Express API (PostgreSQL + Sequelize)
-├── mobile/            # React Native (Expo SDK 55) mobile app
 ├── admin/             # Admin dashboard (React + Vite, port 5175)
 ├── teacher/           # Teacher dashboard (React + Vite, port 5174)
 ├── super-admin/       # Super admin panel (React + Vite, port 5176)
@@ -22,6 +21,7 @@ uchqun/
 ├── shared/            # Shared components, services & i18n locales
 ├── .github/workflows/ # CI pipeline (GitHub Actions)
 ├── .husky/            # Git hooks (pre-commit → lint-staged)
+├── plan.md            # Master development plan (7 phases)
 └── docker-compose.yml # Local dev environment (PostgreSQL 15 + backend)
 ```
 
@@ -30,16 +30,16 @@ uchqun/
 ```
 backend/
 ├── config/          # database.js, env.js, storage.js, swagger.js, migrate.js
-├── controllers/     # 27 controllers (one per domain)
-├── middleware/       # auth, rateLimiter, sanitize, security, csrf, upload, uploadChildren, validation, errorHandler, requestLogger, schoolScope
-├── migrations/      # 26 Sequelize migration files
-├── models/          # 35 models + index.js
-├── routes/          # 27 route files
+├── controllers/     # 29 controllers (one per domain)
+├── middleware/      # auth, rateLimiter, sanitize, security, csrf, upload, uploadChildren, validation, errorHandler, requestLogger, schoolScope
+├── migrations/      # 31 Sequelize migration files
+├── models/          # 36 models + index.js
+├── routes/          # 28 route files
 ├── scripts/         # 17+ utility scripts
 ├── utils/           # email, expoPush, logger, errorTracker, governmentLevel, uuidValidator
 ├── validators/      # 11 input validators (express-validator + Joi)
 ├── __tests__/       # Jest test files
-├── Dockerfile       # Production Docker image (node:18-alpine)
+├── Dockerfile       # Production Docker image (node:20-alpine)
 └── railway.toml     # Railway deployment config
 ```
 
@@ -55,10 +55,6 @@ backend/
 | Build Tool | Vite | 5.0.8 |
 | CSS | Tailwind CSS | 3.3.6 |
 | Routing (Web) | React Router | 6.20.1 |
-| Mobile | React Native | 0.83.1 |
-| Mobile Platform | Expo SDK | 55 (preview) |
-| Mobile React | React | 19.2.0 |
-| Navigation (Mobile) | React Navigation | 7.x |
 | HTTP Client | Axios | 1.13.x |
 | i18n | i18next | 23.x |
 | Testing (Backend) | Jest | 30.2.0 |
@@ -84,7 +80,7 @@ npm install                  # Installs root deps + Husky hooks
 cd backend && npm install    # Backend deps
 
 # 2. Configure environment
-cp backend/env.example backend/.env
+cp backend/.env.example backend/.env
 # Edit .env with your database credentials
 
 # 3. Database
@@ -122,17 +118,6 @@ npm run create:super-admin   # Create a super admin account
 npm run reset:admin          # Reset admin credentials
 ```
 
-### Mobile (Expo)
-```bash
-cd mobile
-npm run dev                  # Start Expo dev server
-npm run dev:tunnel           # Tunnel mode for real devices
-npm run android              # Run on Android
-npm run ios                  # Run on iOS
-npm run build:apk            # Build Android APK
-npm run prebuild:android     # Prebuild Android native project
-```
-
 ### Web Frontends (admin, teacher, reception, super-admin, government)
 ```bash
 cd [app-name]
@@ -145,17 +130,16 @@ npm start                    # Serve built app via Express
 
 ### Root-Level
 ```bash
-npm run setup                # Full project setup
-npm run build                # Build teacher app (default)
 npm run migrate              # Run backend migrations
 npm run seed                 # Seed database
+npm run build                # Build teacher app (default)
 ```
 
 ## Architecture
 
 ### Authentication Flow
 - JWT-based with short-lived access tokens (15m) and refresh tokens (7d)
-- Token sources: HTTP-only cookies (primary), Bearer header (mobile fallback)
+- Token sources: HTTP-only cookies (primary), Bearer header (API client fallback)
 - Role-based access control via `backend/middleware/auth.js`
 - `authenticate` middleware validates token, `requireRole()` factory enforces role
 - Reception access requires `documentsApproved` and `isActive` status
@@ -182,7 +166,7 @@ All routes prefixed with `/api/`:
 | `/chat` | Authenticated | AI chat assistant |
 | `/therapy` | Authenticated | Therapy sessions |
 | `/notifications` | Authenticated | In-app notifications |
-| `/push-notifications` | Authenticated | Push token registration |
+| `/push-notifications` | Authenticated | Push token registration (reserved for Flutter) |
 | `/payments` | Authenticated | Payment processing |
 | `/ai-warnings` | Authenticated | AI-based alerts |
 | `/news` | Authenticated | News/announcements |
@@ -193,7 +177,7 @@ All routes prefixed with `/api/`:
 | `/migrations` | Public | Database migration endpoints |
 | `/health` | Public | Health check |
 
-### Database Models (35)
+### Database Models (36)
 All in `backend/models/`:
 
 | Model | Purpose |
@@ -213,7 +197,7 @@ All in `backend/models/`:
 | Progress | Student progress tracking |
 | ChatMessage | AI chat conversations |
 | Notification | In-app notifications |
-| PushNotification | Push device tokens |
+| PushNotification | Push device tokens (reserved for Flutter Phase 6) |
 | Payment | Payment records |
 | Therapy | Therapy session definitions |
 | TherapyUsage | Therapy session usage |
@@ -232,6 +216,8 @@ All in `backend/models/`:
 | AdminRegistrationRequest | Admin registration workflow |
 | SuperAdminMessage | System-wide messages |
 | RefreshToken | JWT refresh token storage |
+| TeacherResource | Teacher resource management |
+| ParentEvaluation | Parent evaluation records |
 
 ### Middleware Chain (request order)
 1. **Helmet** - Security headers (CSP, HSTS, X-Frame-Options)
@@ -269,10 +255,10 @@ Configurable via env: `AUTH_LIMIT_MAX`, `AUTH_LIMIT_WINDOW_MS`, `UPLOAD_LIMIT_MA
 ## Frontend Architecture
 
 ### Shared Code (`shared/`)
-- `components/` - BottomNav, Card, LoadingSpinner, TopBar
+- `components/` - BottomNav, Card, LoadingSpinner, TopBar, ErrorBoundary
 - `services/api.js` - Axios instance with Bearer token injection and automatic 401 refresh
 - `locales/` - i18n translation files
-- `context/` - Shared React context providers
+- `context/` - Shared React context providers (AuthContext, NotificationContext, ToastContext)
 
 ### Per-App Pattern
 Each web app follows the same structure:
@@ -304,59 +290,6 @@ Teacher app (`teacher/vite.config.js`) has a dev proxy:
 - Returns JSON error for failed API requests
 - Other apps connect directly via `VITE_API_URL`
 
-## Mobile Architecture
-
-### Navigation
-- React Navigation 7.x with native stack + bottom tabs
-- `@react-navigation/native-stack` for screen transitions
-- `@react-navigation/bottom-tabs` for main navigation
-- `RootNavigator.js` → `ParentNavigator.js` / `TeacherNavigator.js`
-
-### Screens (47 total)
-- **Parent** (22): Dashboard, Profile, Activities, Media, Meals, Notifications, Payments, Settings, Child Profile, Therapy, Service Plan, Meal Plan, Diagnostics, AI Warnings, AI Chat, School Rating, Teacher Rating, Rating, Chat, Help, Parents List, Emotional Monitoring
-- **Teacher** (20): Dashboard, Profile, Settings, Parents List, Parent Detail, Meals, Meal Plan, Activities, Media, Therapy, Monitoring Journal, Emotional Monitoring, Tasks, Responsibilities, Work History, Child Profile, Child Assessment, Service Plan, Notifications, Chat
-- **Auth** (1): LoginScreen
-- **Shared activity components**: ActivityCard, ActivityDetailModal, ActivityForm
-
-### Context Providers
-- `AuthContext.js` - Authentication state
-- `SocketContext.js` - WebSocket/real-time connection
-- `ThemeContext.js` - Light/dark theming
-- `ToastContext.jsx` - Toast notifications
-- `NotificationContext.jsx` - Push notification state
-
-### Mobile Utilities
-- `storage/authStorage.js` - Persistent token storage (AsyncStorage)
-- `utils/logger.js`, `utils/errorHandler.js`, `utils/safeNavigation.js`, `utils/responseHandler.js`
-- `types/navigation.ts`, `types/models.ts` - TypeScript type definitions
-- `config.js` - App-level configuration
-
-### Offline Support
-- **Offline Queue** (`mobile/src/services/offlineQueue.js`): Stores failed API requests in AsyncStorage, replays on reconnection, auto-cleans after 24h
-- **Cache Service** (`mobile/src/services/cacheService.js`): TTL-based caching (5min default), returns `{ data, isStale }` for conditional freshness
-
-### Push Notifications
-- `expo-notifications` for permission and token management
-- Device-only (skips simulator)
-- Registers Expo push token with backend via `/api/push-notifications/register`
-
-### Design Tokens (`mobile/src/styles/tokens.js`)
-- Light/dark theme modes
-- Color palette: semantic (success/warning/error/info), joyful (coral/mint/sunflower/lavender/sky/peach/rose/emerald)
-- 8 gradient presets (primary, success, sunset, ocean, aurora, golden, forest, candy)
-- Typography scale: xs(11) → 4xl(36) with presets (hero, h1-h3, body, sub, caption, button)
-- Spacing: xs(4) → 4xl(48)
-- Shadows: 7 levels (none → glow) with Android elevation mapping
-- Animation: timing (100ms–700ms), spring configs, easing functions
-- 60+ emoji icon mappings for UI elements
-
-### Expo Config
-- SDK 55, New Architecture enabled
-- iOS bundle: `com.uchqun.platform`
-- Android package: `com.uchqun.platform`
-- Target SDK 34, Compile SDK 36
-- OTA updates enabled (ON_LAUNCH)
-
 ## Deployment
 
 ### Backend (Railway)
@@ -374,7 +307,7 @@ Each frontend has both `netlify.toml` and `vercel.json`:
 - Asset caching: 1 year immutable
 
 ### Docker
-- `backend/Dockerfile`: Two-stage Alpine build, non-root user (UID 1001), exposes port 5000
+- `backend/Dockerfile`: Alpine build, non-root user (UID 1001), exposes port 5000
 - `docker-compose.yml`: PostgreSQL 15 + backend with volume persistence
 
 ## CI/CD
@@ -384,13 +317,13 @@ Triggers on push/PR to `main`.
 
 | Job | Description |
 |-----|-------------|
-| `lint` | ESLint across backend + frontends (non-blocking) |
+| `lint` | ESLint across backend + frontends |
 | `security` | `npm audit` for backend and all frontends |
 | `test-backend` | Jest tests with PostgreSQL 15 service container |
 | `test-frontend` | Vitest for each of 5 web apps (matrix strategy) |
 | `build` | Build all 5 web apps (depends on lint + tests) |
 
-All jobs use Node 18 with npm caching.
+All jobs use Node 20 with npm caching.
 
 ## Coding Conventions
 
@@ -404,8 +337,8 @@ All jobs use Node 18 with npm caching.
 - Unused vars warn (ignores `_` prefix)
 
 ### File Naming
-- Components: PascalCase (`ActivitiesScreen.js`, `LoadingSpinner.jsx`)
-- Services/utils: camelCase (`api.js`, `cacheService.js`, `offlineQueue.js`)
+- Components: PascalCase (`LoadingSpinner.jsx`)
+- Services/utils: camelCase (`api.js`, `expoPush.js`)
 - Models: PascalCase (`User.js`, `ChatMessage.js`)
 - Routes/controllers: camelCase (`authRoutes.js`, `adminController.js`)
 - Validators: camelCase (`authValidator.js`)
@@ -415,15 +348,16 @@ All jobs use Node 18 with npm caching.
 - Frontends: ES Modules (Vite default)
 
 ### Commit Messages
-Follow conventional commit style based on recent history:
+Follow conventional commit style:
 ```
 fix(scope): description
 feat(scope): description
+chore(scope): description
 ```
 
 ## Environment Variables
 
-### Backend (`backend/.env`, copy from `env.example`)
+### Backend (`backend/.env`, copy from `.env.example`)
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
@@ -434,8 +368,8 @@ feat(scope): description
 | `DB_PASSWORD` | Yes | - | PostgreSQL password |
 | `DB_HOST` | Yes | localhost | PostgreSQL host |
 | `DB_PORT` | Yes | 5432 | PostgreSQL port |
-| `JWT_SECRET` | Yes | - | Access token signing key |
-| `JWT_REFRESH_SECRET` | Yes | - | Refresh token signing key |
+| `JWT_SECRET` | Yes | - | Access token signing key (32+ chars) |
+| `JWT_REFRESH_SECRET` | Yes | - | Refresh token signing key (32+ chars, different from JWT_SECRET) |
 | `JWT_EXPIRE` | No | 15m | Access token TTL |
 | `JWT_REFRESH_EXPIRE` | No | 7d | Refresh token TTL |
 | `FRONTEND_URL` | Yes | - | Comma-separated allowed CORS origins |
@@ -476,17 +410,11 @@ feat(scope): description
 | Storage config | `backend/config/storage.js` |
 | Model index | `backend/models/index.js` |
 | Shared API service | `shared/services/api.js` |
-| Mobile offline queue | `mobile/src/services/offlineQueue.js` |
-| Mobile cache service | `mobile/src/services/cacheService.js` |
-| Mobile push service | `mobile/src/services/pushNotificationService.js` |
-| Mobile auth storage | `mobile/src/storage/authStorage.js` |
-| Mobile design tokens | `mobile/src/styles/tokens.js` |
-| Mobile theme | `mobile/src/styles/theme.js` |
-| Mobile root navigator | `mobile/src/navigation/RootNavigator.js` |
 | CI pipeline | `.github/workflows/ci.yml` |
 | Docker compose | `docker-compose.yml` |
 | Backend Dockerfile | `backend/Dockerfile` |
 | Railway config | `backend/railway.toml` |
+| Master plan | `plan.md` |
 
 ## Behavioral Instructions
 
@@ -501,6 +429,8 @@ Rules:
 - Follow existing patterns in the codebase
 - Use ES Module syntax (import/export) in backend code
 - Use the shared API service for new frontend HTTP calls
+- Always work on `main` branch
+- Keep `plan.md` up to date — tick off completed items
 
 Behavior:
 - If unsure, ask one clear question
