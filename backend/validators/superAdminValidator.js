@@ -1,14 +1,21 @@
 import { body, param } from 'express-validator';
 
+const passwordRules = (field = 'password', optional = false) => {
+  const chain = optional ? body(field).optional() : body(field);
+  return chain
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number');
+};
+
 export const createAdminValidator = [
   body('email')
     .trim()
     .isEmail()
     .withMessage('Please provide a valid email address')
     .normalizeEmail(),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters'),
+  passwordRules('password'),
   body('firstName')
     .trim()
     .notEmpty()
@@ -29,9 +36,7 @@ export const createAdminValidator = [
 ];
 
 export const updateAdminValidator = [
-  param('id')
-    .isUUID()
-    .withMessage('Invalid admin ID'),
+  param('id').isUUID().withMessage('Invalid admin ID'),
   body('email')
     .optional()
     .trim()
@@ -56,9 +61,7 @@ export const updateAdminValidator = [
 ];
 
 export const deleteAdminValidator = [
-  param('id')
-    .isUUID()
-    .withMessage('Invalid admin ID'),
+  param('id').isUUID().withMessage('Invalid admin ID'),
 ];
 
 export const createGovernmentValidator = [
@@ -67,9 +70,7 @@ export const createGovernmentValidator = [
     .isEmail()
     .withMessage('Please provide a valid email address')
     .normalizeEmail(),
-  body('password')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters'),
+  passwordRules('password'),
   body('firstName')
     .trim()
     .notEmpty()
@@ -90,9 +91,7 @@ export const createGovernmentValidator = [
 ];
 
 export const updateGovernmentValidator = [
-  param('id')
-    .isUUID()
-    .withMessage('Invalid government account ID'),
+  param('id').isUUID().withMessage('Invalid government account ID'),
   body('email')
     .optional()
     .trim()
@@ -117,7 +116,5 @@ export const updateGovernmentValidator = [
 ];
 
 export const deleteGovernmentValidator = [
-  param('id')
-    .isUUID()
-    .withMessage('Invalid government account ID'),
+  param('id').isUUID().withMessage('Invalid government account ID'),
 ];

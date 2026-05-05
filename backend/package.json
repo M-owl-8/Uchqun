@@ -25,6 +25,10 @@
     "migrate:undo": "echo 'Manual rollback required - check migrations directory'",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --forceExit --detectOpenHandles"
   },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
   "keywords": [
     "education",
     "special-needs",

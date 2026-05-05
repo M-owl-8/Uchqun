@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
@@ -74,8 +75,7 @@ export const login = async (req, res) => {
       return res.status(500).json({ error: 'User account error. Password needs to be reset.' });
     }
 
-    const bcrypt = await import('bcryptjs');
-    const isPasswordValid = await bcrypt.default.compare(password, user.password);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
       logger.warn('Login attempt with invalid password', { userId: user.id });
@@ -249,7 +249,6 @@ export const logout = async (req, res) => {
     };
     res.clearCookie('accessToken', cookieOptions);
     res.clearCookie('refreshToken', cookieOptions);
-    res.clearCookie('csrfToken', { ...cookieOptions, httpOnly: false });
 
     res.json({ success: true, message: 'Logged out successfully' });
   } catch (error) {

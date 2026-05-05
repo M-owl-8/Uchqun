@@ -58,7 +58,7 @@ export async function sendTelegramMessageByChatId(chatId, message, parseMode = '
       chat_id: chatId,
       text: message,
       parse_mode: parseMode,
-    });
+    }, { timeout: 5000 });
 
     logger.info('Telegram message sent successfully', {
       chatId,
@@ -94,7 +94,7 @@ async function getUserChatIdByUsername(username) {
 
     // Try to get updates and find user by username
     const url = `https://api.telegram.org/bot${botToken}/getUpdates`;
-    const response = await axios.get(url);
+    const response = await axios.get(url, { timeout: 5000 });
     
     if (response.data?.ok && response.data?.result) {
       // Search through updates to find user with matching username

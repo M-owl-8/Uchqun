@@ -132,7 +132,7 @@ export const submitRegistrationRequest = async (req, res) => {
       const certBuffer = await fs.promises.readFile(certFile.path);
       const certUpload = await uploadFile(
         certBuffer,
-        `admin-registration/certificate-${Date.now()}-${certFile.originalname}`,
+        `admin-registration/certificate-${crypto.randomUUID()}`,
         certFile.mimetype
       );
       certificateFilePath = certUpload.url || certUpload.path;
@@ -145,7 +145,7 @@ export const submitRegistrationRequest = async (req, res) => {
       const passBuffer = await fs.promises.readFile(passFile.path);
       const passUpload = await uploadFile(
         passBuffer,
-        `admin-registration/passport-${Date.now()}-${passFile.originalname}`,
+        `admin-registration/passport-${crypto.randomUUID()}`,
         passFile.mimetype
       );
       passportFilePath = passUpload.url || passUpload.path;
@@ -308,9 +308,9 @@ export const approveRegistrationRequest = async (req, res) => {
     // Generate cryptographically secure password if not provided
     const generatedPassword = password || generateSecurePassword(16);
 
-    if (generatedPassword.length < 6) {
+    if (generatedPassword.length < 8) {
       return res.status(400).json({
-        error: 'Password must be at least 6 characters',
+        error: 'Password must be at least 8 characters',
       });
     }
 
