@@ -8,7 +8,6 @@
     "schoolRatings": "Оценки школ",
     "profile": "Профиль",
     "settings": "Настройки",
-    "payments": "Платежи",
     "menu": "Главное меню"
   },
   "sidebar": {
@@ -172,9 +171,9 @@
     "email": "Email",
     "phone": "Телефон",
     "language": "Язык",
-    "contactSuperAdmin": "Связаться с супер-админом",
-    "contactDescription": "Нажмите кнопку ниже, чтобы отправить сообщение супер-админу",
-    "sendMessage": "Отправить сообщение супер-админу",
+    "contactSuperAdmin": "Связаться с государствоом",
+    "contactDescription": "Нажмите кнопку ниже, чтобы отправить сообщение государствоу",
+    "sendMessage": "Отправить сообщение государствоу",
     "myMessages": "Мои сообщения",
     "subject": "Тема",
     "message": "Сообщение",
@@ -188,62 +187,7 @@
     "messageError": "Ошибка отправки сообщения",
     "noMessages": "Пока нет сообщений",
     "yourMessage": "Ваше сообщение",
-    "superAdminReply": "Ответ супер-админа",
+    "superAdminReply": "Ответ государствоа",
     "replied": "Получен ответ"
-  },
-  "payment": {
-    "management": "Управление платежами",
-    "managementDesc": "Создавайте и управляйте платежами для родителей",
-    "create": "Новый платеж",
-    "parent": "Родитель",
-    "selectParent": "Выберите родителя",
-    "child": "Ребенок",
-    "selectChild": "Выберите ребенка (необязательно)",
-    "amount": "Сумма платежа (UZS)",
-    "currency": "Валюта",
-    "description": "Описание",
-    "descriptionPlaceholder": "Описание платежа...",
-    "cancel": "Отмена",
-    "save": "Сохранить",
-    "saving": "Сохранение...",
-    "createSuccess": "Платеж успешно выполнен",
-    "saveError": "Ошибка сохранения",
-    "loadError": "Ошибка загрузки платежей",
-    "search": "Поиск...",
-    "noPayments": "Платежи не найдены",
-    "noPaymentsDesc": "Пока нет платежей",
-    "validation": {
-      "required": "Все обязательные поля должны быть заполнены"
-    },
-    "stats": {
-      "totalRevenue": "Общий доход",
-      "totalPayments": "Всего платежей",
-      "completed": "Завершено",
-      "pending": "В ожидании",
-      "failed": "Отменено",
-      "averagePayment": "Средний платеж",
-      "byType": "По типу платежа",
-      "byMonth": "Месячный доход",
-      "taTolov": "платежей",
-      "ortacha": "Среднее"
-    },
-    "card": {
-      "cardNumber": "Номер карты",
-      "cardName": "Владелец карты",
-      "cardExpiry": "Срок действия",
-      "cvv": "CVV",
-      "cardNumberPlaceholder": "1234 5678 9012 3456",
-      "cardNamePlaceholder": "ИВАН ИВАНОВ",
-      "expiryPlaceholder": "ММ/ГГ",
-      "cvvPlaceholder": "123",
-      "security": "Безопасность: Все данные обрабатываются безопасно. Данные карты не сохраняются.",
-      "validation": {
-        "cardNumberInvalid": "Неверный номер карты. Пожалуйста, введите 16 цифр",
-        "expiryInvalid": "Неверный срок действия. Формат: ММ/ГГ",
-        "cvvInvalid": "Неверный CVV. Пожалуйста, введите 3 цифры",
-        "allFieldsRequired": "Пожалуйста, введите все данные карты"
-      }
-    }
   }
 }
-

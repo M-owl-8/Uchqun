@@ -102,7 +102,7 @@ router.put(
 
             // For non-parent roles, additionally enforce school scope
             if (role !== 'parent') {
-                const allowedRoles = ['teacher', 'admin', 'reception', 'superadmin', 'government', 'business'];
+                const allowedRoles = ['teacher', 'admin', 'reception', 'government', 'business'];
                 if (!allowedRoles.includes(role)) {
                     return res.status(403).json({ error: 'Forbidden' });
                 }

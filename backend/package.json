@@ -16,7 +16,6 @@
     "create:teacher": "node scripts/create-teacher.js",
     "create:admin": "node scripts/create-admin.js",
     "create:government": "node scripts/create-government.js",
-    "create:super-admin": "node scripts/create-super-admin.js",
     "create:demo": "node scripts/create-demo-accounts.js",
     "create:reception": "node scripts/create-reception.js",
     "reset:admin": "node scripts/reset-admin-password.js",

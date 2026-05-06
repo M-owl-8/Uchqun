@@ -56,7 +56,7 @@ const Profile = () => {
 
     setSendingMessage(true);
     try {
-      await api.post('/reception/message-to-super-admin', {
+      await api.post('/reception/message-to-government', {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
@@ -134,14 +134,14 @@ const Profile = () => {
         </div>
       </Card>
 
-      {/* Contact Super-Admin */}
+      {/* Contact Government */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactSuperAdmin', { defaultValue: 'Contact Super-Admin' })}</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactSuperAdmin', { defaultValue: 'Contact Government' })}</h2>
         </div>
         <p className="text-sm text-gray-600 mb-4">
-          {t('profile.contactDescription', { defaultValue: 'Super-adminga xabar yuborish uchun quyidagi tugmani bosing' })}
+          {t('profile.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
         </p>
         <div className="flex gap-3">
           <button
@@ -149,7 +149,7 @@ const Profile = () => {
             className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
-            {t('profile.sendMessage', { defaultValue: 'Super-adminga xabar yuborish' })}
+            {t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}
           </button>
           {myMessages.length > 0 && (
             <button
@@ -188,7 +188,7 @@ const Profile = () => {
                 <div className="p-3 bg-blue-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{t('profile.sendMessage', { defaultValue: 'Super-adminga xabar yuborish' })}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
@@ -314,7 +314,7 @@ const Profile = () => {
                           <div className="p-2 bg-blue-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">{t('profile.superAdminReply', { defaultValue: 'Super-admin javobi' })}</p>
+                          <p className="text-sm font-medium text-blue-700">{t('profile.superAdminReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
                               year: 'numeric', 

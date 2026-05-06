@@ -278,24 +278,6 @@ const Settings = () => {
               </div>
             </label>
 
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={profileForm.notificationPreferences.push}
-                onChange={(e) => setProfileForm({
-                  ...profileForm,
-                  notificationPreferences: {
-                    ...profileForm.notificationPreferences,
-                    push: e.target.checked,
-                  },
-                })}
-                className="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
-              />
-              <div>
-                <span className="text-sm font-medium text-gray-700">{t('settings.pushNotifications', { defaultValue: 'Push bildirishnomalari' })}</span>
-                <p className="text-xs text-gray-500">{t('settings.pushNotificationsDesc', { defaultValue: 'Brauzerda push bildirishnomalar olish' })}</p>
-              </div>
-            </label>
           </div>
 
           <div className="mt-6 flex justify-end">

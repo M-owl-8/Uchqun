@@ -63,9 +63,11 @@ router.get('/schools', authenticate, requireParent, getSchools);
 router.post('/evaluations', authenticate, requireParent, submitParentEvaluation);
 router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 
-// Send message to super-admin
+// Send message to government
+router.post('/message-to-government', authenticate, requireParent, sendMessage);
+// Backward-compatible alias (legacy clients)
 router.post('/message-to-super-admin', authenticate, requireParent, sendMessage);
-// Get my messages to super-admin (with replies)
+// Get my messages to government (with replies)
 router.get('/messages', authenticate, requireParent, getMyMessages);
 
 // Emotional Monitoring (read-only for parents)

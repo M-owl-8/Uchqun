@@ -45,7 +45,6 @@ import mealPlanRoutes from './routes/mealPlanRoutes.js';
 import teacherResourceRoutes from './routes/teacherResourceRoutes.js';
 import migrationRoutes from './routes/migrationRoutes.js';
 import newsRoutes from './routes/newsRoutes.js';
-import emotionalMonitoringRoutes from './routes/emotionalMonitoringRoutes.js';
 
 dotenv.config();
 
@@ -170,7 +169,6 @@ app.use('/api/service-plans', servicePlanRoutes);
 app.use('/api/meal-plans', mealPlanRoutes);
 app.use('/api/resources', teacherResourceRoutes);
 app.use('/api/news', newsRoutes);
-app.use('/api/emotional-monitoring', emotionalMonitoringRoutes);
 
 if (process.env.NODE_ENV !== 'production') {
   app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));

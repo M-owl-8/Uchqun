@@ -1,6 +1,6 @@
 {
   "language": "Language",
-    "nav": {
+  "nav": {
     "home": "Home",
     "activities": "Individual Plan",
     "media": "Media",
@@ -21,12 +21,22 @@
     "menu": "Main menu"
   },
   "profile": {
-    "account": "Account",
-    "logoutTitle": "Logout",
-    "confirmLogout": "Do you want to logout?",
-    "logoutSuccess": "Successfully logged out",
-    "cancel": "No",
-    "yes": "Yes"
+    "contactSuperAdmin": "Send message to davlat",
+    "myMessages": "My messages",
+    "messageRequired": "Subject and message are required",
+    "messageSent": "Message sent successfully",
+    "messageError": "Error sending message",
+    "subject": "Subject",
+    "message": "Message",
+    "subjectPlaceholder": "Message subject...",
+    "messagePlaceholder": "Write your message...",
+    "cancel": "Cancel",
+    "send": "Send",
+    "sending": "Sending...",
+    "noMessages": "No messages yet",
+    "yourMessage": "Your message",
+    "superAdminReply": "Davlat reply",
+    "replied": "Replied"
   },
   "child": {
     "title": "Child Profile",
@@ -255,45 +265,6 @@
       "kindAttitude": "Kind attitude towards the child"
     }
   },
-  "profile": {
-    "contactSuperAdmin": "Send message to super-admin",
-    "myMessages": "My messages",
-    "messageRequired": "Subject and message are required",
-    "messageSent": "Message sent successfully",
-    "messageError": "Error sending message",
-    "subject": "Subject",
-    "message": "Message",
-    "subjectPlaceholder": "Message subject...",
-    "messagePlaceholder": "Write your message...",
-    "cancel": "Cancel",
-    "send": "Send",
-    "sending": "Sending...",
-    "noMessages": "No messages yet",
-    "yourMessage": "Your message",
-    "superAdminReply": "Super-admin reply",
-    "replied": "Replied"
-  },
-  "payments": {
-    "title": "Payments",
-    "subtitle": "Monthly payments and payment history",
-    "monthlyPayment": "Monthly Payment",
-    "nextPayment": "Next Payment",
-    "daysRemaining": "{{count}} days remaining",
-    "daysOverdue": "{{count}} days overdue",
-    "amountNotSet": "Amount not set",
-    "note": "Note",
-    "noteText": "To make a payment, contact the admin or make a payment through the admin panel.",
-    "history": "Payment History",
-    "noPayments": "No payments",
-    "noPaymentsDesc": "No payments yet",
-    "paymentProvider": {
-      "payme": "Payme",
-      "click": "Click",
-      "card": "Card",
-      "other": "Payment"
-    },
-    "monthlyPaymentLabel": "Monthly payment"
-  },
   "login": {
     "title": "Uchqun Platform",
     "subtitle": "Special Education School Management",
@@ -306,7 +277,5 @@
     "contactTeacher": "Please contact your teacher for login credentials",
     "showPassword": "Show password",
     "hidePassword": "Hide password"
-  },
-  "language": "Language"
+  }
 }
-

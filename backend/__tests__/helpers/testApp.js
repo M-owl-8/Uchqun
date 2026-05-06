@@ -182,10 +182,7 @@ RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 User.hasMany(Child, { foreignKey: 'parentId', as: 'children' });
 Child.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 
-// Mock the modules that authController imports
-// We need to override the module resolution
 import jwt from 'jsonwebtoken';
-import { generateCsrfToken } from '../../middleware/csrf.js';
 
 const generateTokens = (userId) => {
   const jti = crypto.randomUUID();
@@ -226,12 +223,10 @@ function createTestApp() {
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
 
-      const csrfToken = generateCsrfToken();
       res.cookie('accessToken', accessToken, { httpOnly: true, path: '/' });
       res.cookie('refreshToken', refreshToken, { httpOnly: true, path: '/' });
-      res.cookie('csrfToken', csrfToken, { httpOnly: false, path: '/' });
 
-      res.json({ success: true, accessToken, refreshToken, csrfToken, user: user.toJSON() });
+      res.json({ success: true, accessToken, refreshToken, user: user.toJSON() });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -264,12 +259,10 @@ function createTestApp() {
         expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
       });
 
-      const csrfToken = generateCsrfToken();
       res.cookie('accessToken', accessToken, { httpOnly: true, path: '/' });
       res.cookie('refreshToken', newRefreshToken, { httpOnly: true, path: '/' });
-      res.cookie('csrfToken', csrfToken, { httpOnly: false, path: '/' });
 
-      res.json({ success: true, accessToken, csrfToken });
+      res.json({ success: true, accessToken });
     } catch (error) {
       if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
         return res.status(401).json({ error: 'Invalid or expired refresh token' });
@@ -310,7 +303,6 @@ function createTestApp() {
     );
     res.clearCookie('accessToken');
     res.clearCookie('refreshToken');
-    res.clearCookie('csrfToken');
     res.json({ success: true, message: 'Logged out successfully' });
   });
 

@@ -21,12 +21,22 @@
     "menu": "Главное меню"
   },
   "profile": {
-    "account": "Аккаунт",
-    "logoutTitle": "Выход",
-    "confirmLogout": "Вы хотите выйти?",
-    "logoutSuccess": "Успешно вышли",
-    "cancel": "Нет",
-    "yes": "Да"
+    "contactSuperAdmin": "Отправить сообщение государствоу",
+    "myMessages": "Мои сообщения",
+    "messageRequired": "Тема и сообщение обязательны",
+    "messageSent": "Сообщение успешно отправлено",
+    "messageError": "Ошибка отправки сообщения",
+    "subject": "Тема",
+    "message": "Сообщение",
+    "subjectPlaceholder": "Тема сообщения...",
+    "messagePlaceholder": "Напишите ваше сообщение...",
+    "cancel": "Отмена",
+    "send": "Отправить",
+    "sending": "Отправка...",
+    "noMessages": "Пока нет сообщений",
+    "yourMessage": "Ваше сообщение",
+    "superAdminReply": "Ответ государствоа",
+    "replied": "Получен ответ"
   },
   "child": {
     "title": "Профиль ребенка",
@@ -255,45 +265,6 @@
       "kindAttitude": "Доброе отношение к ребенку"
     }
   },
-  "profile": {
-    "contactSuperAdmin": "Отправить сообщение супер-админу",
-    "myMessages": "Мои сообщения",
-    "messageRequired": "Тема и сообщение обязательны",
-    "messageSent": "Сообщение успешно отправлено",
-    "messageError": "Ошибка отправки сообщения",
-    "subject": "Тема",
-    "message": "Сообщение",
-    "subjectPlaceholder": "Тема сообщения...",
-    "messagePlaceholder": "Напишите ваше сообщение...",
-    "cancel": "Отмена",
-    "send": "Отправить",
-    "sending": "Отправка...",
-    "noMessages": "Пока нет сообщений",
-    "yourMessage": "Ваше сообщение",
-    "superAdminReply": "Ответ супер-админа",
-    "replied": "Получен ответ"
-  },
-  "payments": {
-    "title": "Платежи",
-    "subtitle": "Ежемесячные платежи и история платежей",
-    "monthlyPayment": "Ежемесячный платеж",
-    "nextPayment": "Следующий платеж",
-    "daysRemaining": "Осталось {{count}} дней",
-    "daysOverdue": "Просрочено на {{count}} дней",
-    "amountNotSet": "Сумма не установлена",
-    "note": "Примечание",
-    "noteText": "Для оплаты свяжитесь с администратором или произведите оплату через панель администратора.",
-    "history": "История платежей",
-    "noPayments": "Нет платежей",
-    "noPaymentsDesc": "Пока нет платежей",
-    "paymentProvider": {
-      "payme": "Payme",
-      "click": "Click",
-      "card": "Карта",
-      "other": "Платеж"
-    },
-    "monthlyPaymentLabel": "Ежемесячный платеж"
-  },
   "login": {
     "title": "Uchqun Platform",
     "subtitle": "Управление школой спецобразования",
@@ -306,7 +277,5 @@
     "contactTeacher": "Обратитесь к учителю для получения учетных данных",
     "showPassword": "Показать пароль",
     "hidePassword": "Скрыть пароль"
-  },
-  "language": "Язык"
+  }
 }
-

@@ -9,7 +9,6 @@
     "parents": "Parents",
     "profile": "Profile",
     "settings": "Settings",
-    "payments": "Payments",
     "menu": "Main menu"
   },
   "sidebar": {
@@ -173,9 +172,9 @@
     "email": "Email",
     "phone": "Phone",
     "language": "Language",
-    "contactSuperAdmin": "Contact Super-Admin",
-    "contactDescription": "Click the button below to send a message to super-admin",
-    "sendMessage": "Send message to super-admin",
+    "contactSuperAdmin": "Contact Government",
+    "contactDescription": "Click the button below to send a message to davlat",
+    "sendMessage": "Send message to davlat",
     "myMessages": "My messages",
     "subject": "Subject",
     "message": "Message",
@@ -189,62 +188,7 @@
     "messageError": "Error sending message",
     "noMessages": "No messages yet",
     "yourMessage": "Your message",
-    "superAdminReply": "Super-admin reply",
+    "superAdminReply": "Davlat reply",
     "replied": "Replied"
-  },
-  "payment": {
-    "management": "Payment Management",
-    "managementDesc": "Create and manage payments for parents",
-    "create": "New Payment",
-    "parent": "Parent",
-    "selectParent": "Select parent",
-    "child": "Child",
-    "selectChild": "Select child (optional)",
-    "amount": "Payment Amount (UZS)",
-    "currency": "Currency",
-    "description": "Description",
-    "descriptionPlaceholder": "Payment description...",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "createSuccess": "Payment processed successfully",
-    "saveError": "Error saving",
-    "loadError": "Error loading payments",
-    "search": "Search...",
-    "noPayments": "No payments found",
-    "noPaymentsDesc": "No payments yet",
-    "validation": {
-      "required": "All required fields must be filled"
-    },
-    "stats": {
-      "totalRevenue": "Total Revenue",
-      "totalPayments": "Total Payments",
-      "completed": "Completed",
-      "pending": "Pending",
-      "failed": "Failed",
-      "averagePayment": "Average Payment",
-      "byType": "By Payment Type",
-      "byMonth": "Monthly Revenue",
-      "taTolov": "payments",
-      "ortacha": "Average"
-    },
-    "card": {
-      "cardNumber": "Card Number",
-      "cardName": "Card Holder",
-      "cardExpiry": "Expiry Date",
-      "cvv": "CVV",
-      "cardNumberPlaceholder": "1234 5678 9012 3456",
-      "cardNamePlaceholder": "JOHN DOE",
-      "expiryPlaceholder": "MM/YY",
-      "cvvPlaceholder": "123",
-      "security": "Security: All data is processed securely. Card information is not stored.",
-      "validation": {
-        "cardNumberInvalid": "Invalid card number. Please enter 16 digits",
-        "expiryInvalid": "Invalid expiry date. Format: MM/YY",
-        "cvvInvalid": "Invalid CVV. Please enter 3 digits",
-        "allFieldsRequired": "Please enter all card information"
-      }
-    }
   }
 }
-

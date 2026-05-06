@@ -63,9 +63,11 @@ router.delete('/children/:id', deleteChildForReception);
 // Groups (for parent assignment)
 router.get('/groups', getGroups);
 
-// Send message to super-admin
+// Send message to government
+router.post('/message-to-government', sendMessage);
+// Backward-compatible alias (legacy clients)
 router.post('/message-to-super-admin', sendMessage);
-// Get my messages to super-admin (with replies)
+// Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 
 export default router;

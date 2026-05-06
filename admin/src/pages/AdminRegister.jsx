@@ -131,7 +131,7 @@ const AdminRegister = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Muvaffaqiyatli yuborildi!</h1>
           <p className="text-gray-600 mb-4">
-            Sizning so'rovingiz super-admin ko'rib chiqish uchun yuborildi. 
+            Sizning so'rovingiz davlat ko'rib chiqishi uchun yuborildi. 
             Tasdiqlangandan so'ng login ma'lumotlari sizga yuboriladi.
           </p>
           <p className="text-sm text-gray-500">
@@ -338,7 +338,7 @@ const AdminRegister = () => {
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
             <p className="font-semibold mb-1">Eslatma:</p>
-            <p>So'rovingiz super-admin tomonidan ko'rib chiqiladi. Tasdiqlangandan so'ng login ma'lumotlari sizga yuboriladi.</p>
+            <p>So'rovingiz davlat tomonidan ko'rib chiqiladi. Tasdiqlangandan so'ng login ma'lumotlari sizga yuboriladi.</p>
             {formData.telegramUsername && (
               <p className="mt-2">Telegram username kiritilgan: @{formData.telegramUsername}</p>
             )}

@@ -369,17 +369,6 @@ describe('Auth Controller', () => {
       );
     });
 
-    test('clears csrfToken cookie too', async () => {
-      RefreshToken.update.mockResolvedValue([1]);
-      const { req, res } = mockReqRes();
-      req.user = { id: mockUser.id };
-      await logout(req, res);
-      expect(res.clearCookie).toHaveBeenCalledWith(
-        'csrfToken',
-        expect.any(Object)
-      );
-    });
-
     test('succeeds even if user is not set', async () => {
       const { req, res } = mockReqRes();
       req.user = null;

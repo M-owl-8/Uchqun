@@ -119,10 +119,10 @@ async function checkAuth() {
         } else {
           console.log('   ✅ Reception account is approved and active');
         }
-      } else if (user.role === 'admin' && user.email !== 'superadmin@uchqun.uz') {
+      } else if (user.role === 'admin') {
         if (!user.isActive) {
           console.log('   ⚠️  Admin account is not active');
-          console.log('   💡 Super-admin must activate this account');
+          console.log('   💡 Government must activate this account');
         } else {
           console.log('   ✅ Admin account is active');
         }

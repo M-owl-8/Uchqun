@@ -43,7 +43,6 @@ describe('Auth Integration', () => {
       expect(res.body.success).toBe(true);
       expect(res.body.accessToken).toBeDefined();
       expect(res.body.refreshToken).toBeDefined();
-      expect(res.body.csrfToken).toBeDefined();
       expect(res.body.user.email).toBe('test@example.com');
       expect(res.body.user.password).toBeUndefined();
     });

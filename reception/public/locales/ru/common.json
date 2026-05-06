@@ -70,36 +70,8 @@
     "toastDeleteError": "Ошибка при удалении аккаунта родителя",
     "toastLoadError": "Ошибка загрузки родителей",
     "form": {
-      "firstName": "Имя",
-      "lastName": "Фамилия",
-      "email": "Email",
-      "phone": "Телефон",
-      "password": "Пароль",
-      "teacher": "Учитель",
-      "group": "Группа",
-      "child": "Ребенок (необязательно)",
-      "childFirstName": "Имя ребенка",
-      "childLastName": "Фамилия ребенка",
-      "childDob": "Дата рождения",
-      "childGender": "Пол",
-      "childDisability": "Тип особенностей",
-      "childDiagnosis": "Диагноз",
-      "childSpecialNeeds": "Особые потребности",
-      "childSchool": "Учреждение",
-      "childGroup": "Группа",
-      "childPhoto": "Фото URL",
-      "uploadPhoto": "Загрузить фото",
-      "photoSize": "Макс: 5MB",
-      "emergencyName": "Контакт для связи",
-      "emergencyRelationship": "Родство",
-      "emergencyPhone": "Телефон экстренной связи",
-      "save": "Сохранить",
-      "cancel": "Отмена",
-      "create": "Создать",
-      "update": "Обновить",
-      "edit": "Редактировать",
-      "delete": "Удалить",
-      "addChild": "Добавить ребенка"
+      "groupRequired": "Выбор группы обязателен",
+      "groupRequiredHint": "Нужен для просмотра активностей и питания ребенка"
     },
     "buttons": {
       "edit": "Редактировать",
@@ -117,10 +89,6 @@
     "confirmDeleteChild": "Удалить этого ребенка?",
     "failedAddChild": "Ошибка при добавлении ребенка",
     "failedUpdateChild": "Ошибка при обновлении ребенка",
-    "form": {
-      "groupRequired": "Выбор группы обязателен",
-      "groupRequiredHint": "Нужен для просмотра активностей и питания ребенка"
-    },
     "gender": {
       "male": "Мужской",
       "female": "Женский",
@@ -217,8 +185,6 @@
     "notificationPreferences": "Настройки уведомлений",
     "emailNotifications": "Email уведомления",
     "emailNotificationsDesc": "Получать обновления по email",
-    "pushNotifications": "Push уведомления",
-    "pushNotificationsDesc": "Получать push в браузере",
     "savePreferences": "Сохранить настройки",
     "changePassword": "Изменить пароль",
     "currentPassword": "Текущий пароль",
@@ -239,9 +205,9 @@
     "profileInfo": "Информация профиля",
     "email": "Email",
     "phone": "Телефон",
-    "contactSuperAdmin": "Связаться с супер-админом",
-    "contactDescription": "Нажмите кнопку ниже, чтобы отправить сообщение супер-админу",
-    "sendMessage": "Отправить сообщение супер-админу",
+    "contactSuperAdmin": "Связаться с государствоом",
+    "contactDescription": "Нажмите кнопку ниже, чтобы отправить сообщение государствоу",
+    "sendMessage": "Отправить сообщение государствоу",
     "myMessages": "Мои сообщения",
     "subject": "Тема",
     "message": "Сообщение",
@@ -255,9 +221,8 @@
     "messageError": "Ошибка отправки сообщения",
     "noMessages": "Пока нет сообщений",
     "yourMessage": "Ваше сообщение",
-    "superAdminReply": "Ответ супер-админа",
+    "superAdminReply": "Ответ государствоа",
     "replied": "Получен ответ",
     "logout": "Выход"
   }
 }
-

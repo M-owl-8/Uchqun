@@ -36,12 +36,12 @@ uchqun/
 ```
 backend/
 ├── config/          # database.js, env.js, storage.js, swagger.js, migrate.js
-├── controllers/     # 29 controllers (one per domain)
-├── middleware/      # auth, rateLimiter, sanitize, security, csrf, upload, uploadChildren, validation, errorHandler, requestLogger, schoolScope
-├── migrations/      # 31 Sequelize migration files
-├── models/          # 36 models + index.js
-├── routes/          # 28 route files
-├── scripts/         # 17+ utility scripts
+├── controllers/     # 41 controllers (top-level + admin/* + parent/*)
+├── middleware/      # auth, rateLimiter, sanitize, security, upload, uploadChildren, validation, errorHandler, requestLogger, schoolScope
+├── migrations/      # 36 Sequelize migration files
+├── models/          # 34 models + index.js
+├── routes/          # 25 route files
+├── scripts/         # 16 utility scripts
 ├── utils/           # email, logger, errorTracker, governmentLevel, uuidValidator
 ├── validators/      # 11 input validators (express-validator + Joi)
 ├── __tests__/       # Jest test files
@@ -223,11 +223,10 @@ All in `backend/models/`:
 3. **Cookie Parser** - Parse auth cookies
 4. **Body Parser** - JSON + URL-encoded (10mb limit for media)
 5. **Body Sanitization** - XSS prevention (strips `<script>`, `on*=`, `javascript:`, `data:text/html`)
-6. **CSRF Protection** - Cookie-based sessions only (skips Bearer token auth)
-7. **Request Logger** - Correlation ID tracking (UUID v4)
-8. **Rate Limiter** - Per-endpoint limits (see Security section)
-9. **Static Files** - `/uploads` directory
-10. **Route Handlers** - `authenticate` → `requireRole()` → `schoolScope` (where applicable) → controller
+6. **Request Logger** - Correlation ID tracking (UUID v4)
+7. **Rate Limiter** - Per-endpoint limits (see Security section)
+8. **Static Files** - `/uploads` directory
+9. **Route Handlers** - `authenticate` → `requireRole()` → `schoolScope` (where applicable) → controller
 
 ### Security
 
@@ -254,7 +253,7 @@ Configurable via env: `AUTH_LIMIT_MAX`, `AUTH_LIMIT_WINDOW_MS`, `UPLOAD_LIMIT_MA
 
 ### Shared Code (`shared/`)
 - `components/` - BottomNav, Card, LoadingSpinner, TopBar, ErrorBoundary
-- `services/api.js` - Axios instance with Bearer token injection and automatic 401 refresh
+- `services/api.js` - Axios instance using HTTP-only cookies with automatic 401 refresh
 - `locales/` - i18n translation files
 - `context/` - Shared React context providers (AuthContext, NotificationContext, ToastContext)
 

@@ -8,7 +8,6 @@
     "schoolRatings": "Muassasa baholari",
     "profile": "Profil",
     "settings": "Sozlamalar",
-    "payments": "To'lovlar",
     "menu": "Asosiy menyu"
   },
   "sidebar": {
@@ -172,9 +171,9 @@
     "email": "Email",
     "phone": "Telefon",
     "language": "Til",
-    "contactSuperAdmin": "Super-adminga bog'lanish",
-    "contactDescription": "Super-adminga xabar yuborish uchun quyidagi tugmani bosing",
-    "sendMessage": "Super-adminga xabar yuborish",
+    "contactSuperAdmin": "Davlatga bog'lanish",
+    "contactDescription": "Davlatga xabar yuborish uchun quyidagi tugmani bosing",
+    "sendMessage": "Davlatga xabar yuborish",
     "myMessages": "Mening xabarlarim",
     "subject": "Mavzu",
     "message": "Xabar",
@@ -188,62 +187,7 @@
     "messageError": "Xabar yuborishda xatolik",
     "noMessages": "Hozircha xabarlar yo'q",
     "yourMessage": "Sizning xabaringiz",
-    "superAdminReply": "Super-admin javobi",
+    "superAdminReply": "Davlat javobi",
     "replied": "Javob berildi"
-  },
-  "payment": {
-    "management": "To'lov Boshqaruvi",
-    "managementDesc": "Ota-onalar uchun to'lovlar yarating va boshqaring",
-    "create": "Yangi To'lov",
-    "parent": "Ota-ona",
-    "selectParent": "Ota-onani tanlang",
-    "child": "Bola",
-    "selectChild": "Bolani tanlang (ixtiyoriy)",
-    "amount": "To'lov Summasi (UZS)",
-    "currency": "Valyuta",
-    "description": "Tavsif",
-    "descriptionPlaceholder": "To'lov tavsifi...",
-    "cancel": "Bekor qilish",
-    "save": "Saqlash",
-    "saving": "Saqlanmoqda...",
-    "createSuccess": "To'lov muvaffaqiyatli amalga oshirildi",
-    "saveError": "Saqlashda xatolik",
-    "loadError": "To'lovlarni yuklashda xatolik",
-    "search": "Qidirish...",
-    "noPayments": "To'lovlar topilmadi",
-    "noPaymentsDesc": "Hozircha to'lovlar yo'q",
-    "validation": {
-      "required": "Barcha majburiy maydonlar to'ldirilishi kerak"
-    },
-    "stats": {
-      "totalRevenue": "Jami Daromad",
-      "totalPayments": "Jami To'lovlar",
-      "completed": "Yakunlangan",
-      "pending": "Kutilmoqda",
-      "failed": "Bekor qilingan",
-      "averagePayment": "O'rtacha To'lov",
-      "byType": "To'lov Turi Bo'yicha",
-      "byMonth": "Oylik Daromad",
-      "taTolov": "ta to'lov",
-      "ortacha": "O'rtacha"
-    },
-    "card": {
-      "cardNumber": "Karta raqami",
-      "cardName": "Karta Egasi",
-      "cardExpiry": "Muddati",
-      "cvv": "CVV",
-      "cardNumberPlaceholder": "1234 5678 9012 3456",
-      "cardNamePlaceholder": "JOHN DOE",
-      "expiryPlaceholder": "MM/YY",
-      "cvvPlaceholder": "123",
-      "security": "Barcha ma'lumotlar xavfsiz tarzda qayta ishlanadi. Karta ma'lumotlari saqlanmaydi.",
-      "validation": {
-        "cardNumberInvalid": "Karta raqami noto'g'ri. Iltimos, 16 raqam kiriting",
-        "expiryInvalid": "Muddati noto'g'ri. Format: MM/YY",
-        "cvvInvalid": "CVV noto'g'ri. Iltimos, 3 raqam kiriting",
-        "allFieldsRequired": "Iltimos, barcha karta ma'lumotlarini kiriting"
-      }
-    }
   }
 }
-

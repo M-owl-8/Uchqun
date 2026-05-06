@@ -16,7 +16,7 @@ const BusinessStats = sequelize.define('BusinessStats', {
     },
   },
   statType: {
-    type: DataTypes.ENUM('overview', 'users', 'schools', 'revenue', 'subscriptions', 'usage', 'engagement', 'custom'),
+    type: DataTypes.ENUM('overview', 'users', 'usage'),
     allowNull: false,
   },
   period: {

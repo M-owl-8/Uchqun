@@ -71,7 +71,7 @@ const Chat = () => {
     [messages]
   );
 
-  const canModerateDelete = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'superAdmin';
+  const canModerateDelete = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'government';
 
   useEffect(() => {
     if (isAtBottom || justSentRef.current) {

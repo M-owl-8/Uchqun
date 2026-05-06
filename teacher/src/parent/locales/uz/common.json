@@ -21,12 +21,26 @@
     "menu": "Asosiy menyu"
   },
   "profile": {
-    "account": "Hisob",
-    "logoutTitle": "Chiqish",
-    "confirmLogout": "Chiqishni xohlaysizmi?",
-    "logoutSuccess": "Muvaffaqiyatli chiqildi",
-    "cancel": "Yo'q",
-    "yes": "Ha"
+    "contactSuperAdmin": "Davlatga xabar yuborish",
+    "myMessages": "Mening xabarlarim",
+    "messageRequired": "Subject va xabar to'ldirilishi kerak",
+    "messageSent": "Xabar muvaffaqiyatli yuborildi",
+    "messageError": "Xabar yuborishda xatolik",
+    "subject": "Mavzu",
+    "message": "Xabar",
+    "subjectPlaceholder": "Xabar mavzusi...",
+    "messagePlaceholder": "Xabaringizni yozing...",
+    "cancel": "Bekor qilish",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda...",
+    "noMessages": "Hozircha xabarlar yo'q",
+    "yourMessage": "Sizning xabaringiz",
+    "superAdminReply": "Davlat javobi",
+    "replied": "Javob berildi",
+    "invalidImage": "Faqat rasm fayllari qabul qilinadi",
+    "imageTooLarge": "Rasm hajmi 5MB dan katta bo'lmasligi kerak",
+    "avatarUpdated": "Rasm muvaffaqiyatli yuklandi",
+    "uploadError": "Rasm yuklashda xatolik yuz berdi"
   },
   "child": {
     "title": "Farzand profili",
@@ -256,49 +270,6 @@
       "kindAttitude": "Bolaga nisbatan mehribon munosabat"
     }
   },
-  "profile": {
-    "contactSuperAdmin": "Super-adminga xabar yuborish",
-    "myMessages": "Mening xabarlarim",
-    "messageRequired": "Subject va xabar to'ldirilishi kerak",
-    "messageSent": "Xabar muvaffaqiyatli yuborildi",
-    "messageError": "Xabar yuborishda xatolik",
-    "subject": "Mavzu",
-    "message": "Xabar",
-    "subjectPlaceholder": "Xabar mavzusi...",
-    "messagePlaceholder": "Xabaringizni yozing...",
-    "cancel": "Bekor qilish",
-    "send": "Yuborish",
-    "sending": "Yuborilmoqda...",
-    "noMessages": "Hozircha xabarlar yo'q",
-    "yourMessage": "Sizning xabaringiz",
-    "superAdminReply": "Super-admin javobi",
-    "replied": "Javob berildi",
-    "invalidImage": "Faqat rasm fayllari qabul qilinadi",
-    "imageTooLarge": "Rasm hajmi 5MB dan katta bo'lmasligi kerak",
-    "avatarUpdated": "Rasm muvaffaqiyatli yuklandi",
-    "uploadError": "Rasm yuklashda xatolik yuz berdi"
-  },
-  "payments": {
-    "title": "To'lovlar",
-    "subtitle": "Oylik to'lovlar va to'lov tarixi",
-    "monthlyPayment": "Oylik To'lov",
-    "nextPayment": "Keyingi to'lov",
-    "daysRemaining": "{{count}} kun qoldi",
-    "daysOverdue": "{{count}} kun kechikdi",
-    "amountNotSet": "Summa belgilanmagan",
-    "note": "Eslatma",
-    "noteText": "To'lov qilish uchun admin bilan bog'laning yoki admin panel orqali to'lov qiling.",
-    "history": "To'lov Tarixi",
-    "noPayments": "To'lovlar yo'q",
-    "noPaymentsDesc": "Hozircha to'lovlar mavjud emas",
-    "paymentProvider": {
-      "payme": "Payme",
-      "click": "Click",
-      "card": "Karta",
-      "other": "To'lov"
-    },
-    "monthlyPaymentLabel": "Oylik to'lov"
-  },
   "login": {
     "title": "Uchqun Platform",
     "subtitle": "Maxsus ta'lim muassasasi boshqaruvi",
@@ -311,7 +282,5 @@
     "contactTeacher": "Kirish ma'lumotlari uchun o'qituvchiga murojaat qiling",
     "showPassword": "Parolni ko'rsatish",
     "hidePassword": "Parolni yashirish"
-  },
-  "language": "Til"
+  }
 }
-

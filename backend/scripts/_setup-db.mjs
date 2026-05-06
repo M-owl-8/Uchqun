@@ -15,7 +15,6 @@ for (const col of [
   'ADD COLUMN IF NOT EXISTS "teacherId" UUID',
   'ADD COLUMN IF NOT EXISTS "createdBy" UUID',
   'ADD COLUMN IF NOT EXISTS status VARCHAR(255) DEFAULT \'active\'',
-  'ADD COLUMN IF NOT EXISTS "isSuperAdmin" BOOLEAN DEFAULT false',
   'ADD COLUMN IF NOT EXISTS "deletedAt" TIMESTAMP',
 ]) {
   await s.query(`ALTER TABLE users ${col}`).catch(e => console.log('users skip:', e.message.split('\n')[0]));
@@ -132,7 +131,7 @@ console.log('✓ ai_warnings table ready');
 // Create government_stats table if not exists
 await s.query(`
   DO $$ BEGIN
-    CREATE TYPE "enum_government_stats_statType" AS ENUM ('overview','schools','students','teachers','ratings','payments','therapies','activities','complaints');
+    CREATE TYPE "enum_government_stats_statType" AS ENUM ('overview','schools','students','teachers','ratings','therapies','activities','complaints');
   EXCEPTION WHEN duplicate_object THEN null; END $$;
   DO $$ BEGIN
     CREATE TYPE "enum_government_stats_period" AS ENUM ('daily','weekly','monthly','quarterly','yearly');
@@ -161,7 +160,7 @@ console.log('✓ government_stats table ready');
 // Create business_stats table if not exists
 await s.query(`
   DO $$ BEGIN
-    CREATE TYPE "enum_business_stats_statType" AS ENUM ('overview','users','schools','revenue','subscriptions','usage','engagement','custom');
+    CREATE TYPE "enum_business_stats_statType" AS ENUM ('overview','users','usage');
   EXCEPTION WHEN duplicate_object THEN null; END $$;
   DO $$ BEGIN
     CREATE TYPE "enum_business_stats_period" AS ENUM ('daily','weekly','monthly','quarterly','yearly');

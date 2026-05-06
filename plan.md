@@ -37,7 +37,7 @@ The platform is being transferred to government ownership. As a result:
 
 - [x] Delete `mobile/` directory entirely
 - [x] Remove mobile-related scripts from root `package.json` (none existed)
-- [x] Backend push notification infrastructure kept (dormant until Flutter Phase 6)
+- [x] Backend push notification infrastructure (Expo) removed entirely (post-pivot)
 - [x] Delete stale nested `uchqun/` directory (old project copy)
 - [x] Delete superseded `AUDIT.md`
 - [x] Update `CLAUDE.md` to reflect mobile removal
@@ -121,8 +121,6 @@ Add proper `onDelete`/`onUpdate` to every FK missing them:
 - [x] `Progress.childId` → `CASCADE`
 - [x] `SchoolRating.schoolId` → `CASCADE`, `SchoolRating.parentId` → `CASCADE` + `paranoid: true`
 - [x] `SuperAdminMessage.senderId` → `SET NULL`; `allowNull` changed to `true` (migration alters column + FK)
-- [x] `PushNotification.userId` → `CASCADE`
-- [x] `Payment.parentId` → `RESTRICT`, `Payment.childId` → `SET NULL`, `Payment.schoolId` → `SET NULL` + `paranoid: true`
 - [x] `RefreshToken.userId` → `CASCADE`; replaced `console.error` with `logger.error`
 - [x] `Therapy.createdBy` → `SET NULL` + `paranoid: true`
 - [x] `TherapyUsage.therapyId` → `CASCADE`, `TherapyUsage.childId` → `CASCADE`, `TherapyUsage.parentId` → `RESTRICT`, `TherapyUsage.teacherId` → `SET NULL` + `paranoid: true`
@@ -219,24 +217,7 @@ Add `paranoid: true` + `deletedAt` migration to:
 - [ ] Performance audit (bundle size, image optimization, API call deduplication)
 - [ ] Full Vitest component test coverage (target 80%+)
 - [ ] E2E tests with Playwright for critical user flows
-- [ ] Lock and document final API contracts (response shapes, error codes) for Flutter
-
----
-
-## PHASE 6 — FLUTTER MOBILE APP
-
-**Goal:** Native mobile experience built against a stable, documented API.
-
-*(Starts only after Phase 5 API contracts are locked)*
-
-- [ ] Set up Flutter project structure
-- [ ] Implement auth flow (JWT + refresh token, FlutterSecureStorage)
-- [ ] SSL certificate pinning from day one
-- [ ] Build parent screens
-- [ ] Build teacher screens
-- [ ] Push notifications (FCM)
-- [ ] Offline-first architecture
-- [ ] Android + iOS builds
+- [ ] Lock and document final API contracts (response shapes, error codes)
 
 ---
 
@@ -244,11 +225,10 @@ Add `paranoid: true` + `deletedAt` migration to:
 
 **Goal:** Ship-ready.
 
-- [ ] Full backend test coverage audit — target 80% (currently 21%)
-- [ ] Write tests for all 21 previously untested routes
+- [ ] Full backend test coverage audit — target 80%
+- [ ] Write tests for all previously untested routes
 - [ ] Add error-case tests to all existing test files
 - [ ] End-to-end integration tests (backend + frontend)
-- [ ] Flutter integration tests
 - [ ] Security penetration test (re-run full audit checklist)
 - [ ] Load test backend (k6 or Artillery)
 - [ ] Beta deployment — real users, monitored environment
@@ -256,19 +236,3 @@ Add `paranoid: true` + `deletedAt` migration to:
 - [ ] Performance baselines established
 - [ ] Documentation complete (API docs, deployment runbook)
 - [ ] Final sign-off → production launch
-
----
-
-## AUDIT BASELINE (2026-05-05)
-
-| Area | Issues | Health |
-|------|--------|--------|
-| Backend Security | 62 | 36% |
-| Test Coverage | 35 | 21% |
-| Database / Models | 27 | 66% |
-| CI/CD & Shared Code | 40 | 58% |
-| Web Frontends (5 apps) | 118 | 56% |
-| Mobile (deleted Phase 1) | 27 | — |
-| **Total** | **309** | **47%** |
-
-**Target after Phase 7: 90%+**

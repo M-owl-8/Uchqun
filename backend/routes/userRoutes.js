@@ -15,7 +15,9 @@ router.put('/profile', updateProfileValidator, handleValidationErrors, updatePro
 router.put('/avatar', uploadUserAvatar.single('avatar'), updateAvatar);
 router.put('/password', passwordResetLimiter, changePasswordValidator, handleValidationErrors, changePassword);
 
-// Send message to super-admin (available for all authenticated users)
+// Send message to government (available for all authenticated users)
+router.post('/message-to-government', sendMessage);
+// Backward-compatible alias (legacy clients)
 router.post('/message-to-super-admin', sendMessage);
 
 export default router;

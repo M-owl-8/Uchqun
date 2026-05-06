@@ -60,7 +60,7 @@ const MessagesModal = ({ onClose, messages = [] }) => {
                       <div className="p-2 bg-blue-100 rounded-full">
                         <MessageSquare className="w-4 h-4 text-blue-600" />
                       </div>
-                      <p className="text-sm font-medium text-blue-700">Super-admin javobi</p>
+                      <p className="text-sm font-medium text-blue-700">Davlat javobi</p>
                       <span className="text-xs text-gray-500 ml-auto">
                         {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
                           year: 'numeric', 

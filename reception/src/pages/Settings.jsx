@@ -77,7 +77,7 @@ const Settings = () => {
 
     setSendingMessage(true);
     try {
-      await api.post('/reception/message-to-super-admin', {
+      await api.post('/reception/message-to-government', {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
@@ -274,24 +274,6 @@ const Settings = () => {
               </div>
             </label>
 
-            <label className="flex items-center gap-3 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={profileForm.notificationPreferences.push}
-                onChange={(e) => setProfileForm({
-                  ...profileForm,
-                  notificationPreferences: {
-                    ...profileForm.notificationPreferences,
-                    push: e.target.checked,
-                  },
-                })}
-                className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
-              />
-              <div>
-                <span className="text-sm font-medium text-gray-700">{t('settings.pushNotifications')}</span>
-                <p className="text-xs text-gray-500">{t('settings.pushNotificationsDesc')}</p>
-              </div>
-            </label>
           </div>
 
           <div className="mt-6 flex justify-end">
@@ -391,7 +373,7 @@ const Settings = () => {
         </Card>
       </form>
 
-      {/* Contact Super-Admin */}
+      {/* Contact Government */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="w-6 h-6 text-primary-600" />
@@ -434,7 +416,7 @@ const Settings = () => {
                 <div className="p-3 bg-blue-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Super-adminga xabar yuborish</h2>
+                <h2 className="text-2xl font-bold text-gray-900">Davlatga xabar yuborish</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
@@ -560,7 +542,7 @@ const Settings = () => {
                           <div className="p-2 bg-blue-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">Super-admin javobi</p>
+                          <p className="text-sm font-medium text-blue-700">Davlat javobi</p>
                           <span className="text-xs text-gray-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
                               year: 'numeric', 

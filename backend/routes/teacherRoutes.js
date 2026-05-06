@@ -75,9 +75,11 @@ router.get('/ratings', getTeacherRatings);
 // AI Chat
 router.post('/ai/chat', getAIAdvice);
 
-// Send message to super-admin
+// Send message to government (top-level platform owner)
+router.post('/message-to-government', sendMessage);
+// Backward-compatible alias (legacy clients)
 router.post('/message-to-super-admin', sendMessage);
-// Get my messages to super-admin (with replies)
+// Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 
 // Emotional Monitoring

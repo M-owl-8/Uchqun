@@ -1,6 +1,5 @@
 import { Op } from 'sequelize';
 import ChatMessage from '../models/ChatMessage.js';
-import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
 
@@ -84,17 +83,6 @@ export const createMessage = async (req, res) => {
       readByTeacher: senderRole === 'teacher',
     });
 
-    // Push notification to recipient
-    let recipientUserId = null;
-    if (conversationId.startsWith('parent:')) {
-      const parentId = conversationId.replace('parent:', '');
-      if (senderRole === 'teacher') {
-        recipientUserId = parentId;
-      } else {
-        const parentUser = await User.findByPk(parentId, { attributes: ['teacherId'] });
-        if (parentUser?.teacherId) recipientUserId = parentUser.teacherId;
-      }
-    }
     res.status(201).json(msg);
   } catch (err) {
     logger.error('createMessage error', err);

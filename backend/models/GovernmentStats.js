@@ -24,7 +24,7 @@ const GovernmentStats = sequelize.define('GovernmentStats', {
     },
   },
   statType: {
-    type: DataTypes.ENUM('overview', 'schools', 'students', 'teachers', 'ratings', 'payments', 'therapies', 'activities', 'complaints'),
+    type: DataTypes.ENUM('overview', 'schools', 'students', 'teachers', 'ratings', 'therapies', 'activities', 'complaints'),
     allowNull: false,
   },
   period: {

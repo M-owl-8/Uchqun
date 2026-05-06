@@ -1,6 +1,5 @@
 // Frontend-only data store using localStorage
 // Compatible with existing backend data models
-// Super Admin - Full System Control
 
 const STORAGE_KEYS = {
   PARENTS: 'uchqun_parents',

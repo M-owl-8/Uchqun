@@ -17,7 +17,7 @@ const MessageModal = ({ onClose }) => {
 
     setSendingMessage(true);
     try {
-      await api.post('/admin/message-to-super-admin', {
+      await api.post('/admin/message-to-government', {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
@@ -42,7 +42,7 @@ const MessageModal = ({ onClose }) => {
             <div className="p-3 bg-blue-100 rounded-full">
               <MessageSquare className="w-6 h-6 text-blue-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Super-adminga xabar yuborish</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Davlatga xabar yuborish</h2>
           </div>
           <button
             onClick={() => {

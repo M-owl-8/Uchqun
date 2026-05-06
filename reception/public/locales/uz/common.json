@@ -208,8 +208,6 @@
     "notificationPreferences": "Bildirishnoma sozlamalari",
     "emailNotifications": "Email bildirishnomalari",
     "emailNotificationsDesc": "Email orqali yangilanishlar",
-    "pushNotifications": "Push bildirishnomalari",
-    "pushNotificationsDesc": "Brauzerda push bildirishnomalar",
     "savePreferences": "Sozlamalarni saqlash",
     "changePassword": "Parolni o'zgartirish",
     "currentPassword": "Joriy parol",
@@ -230,9 +228,9 @@
     "profileInfo": "Profil ma'lumotlari",
     "email": "Email",
     "phone": "Telefon",
-    "contactSuperAdmin": "Super-adminga bog'lanish",
-    "contactDescription": "Super-adminga xabar yuborish uchun quyidagi tugmani bosing",
-    "sendMessage": "Super-adminga xabar yuborish",
+    "contactSuperAdmin": "Davlatga bog'lanish",
+    "contactDescription": "Davlatga xabar yuborish uchun quyidagi tugmani bosing",
+    "sendMessage": "Davlatga xabar yuborish",
     "myMessages": "Mening xabarlarim",
     "subject": "Mavzu",
     "message": "Xabar",
@@ -246,9 +244,8 @@
     "messageError": "Xabar yuborishda xatolik",
     "noMessages": "Hozircha xabarlar yo'q",
     "yourMessage": "Sizning xabaringiz",
-    "superAdminReply": "Super-admin javobi",
+    "superAdminReply": "Davlat javobi",
     "replied": "Javob berildi",
     "logout": "Chiqish"
   }
 }
-
