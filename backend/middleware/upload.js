@@ -84,14 +84,6 @@ export const uploadDocuments = uploadDocument.fields([
   { name: 'passportFile', maxCount: 1 },
 ]);
 
-// Debug middleware to log multer processing
-export const debugMulter = (req, res, next) => {
-  console.log('=== Multer Debug ===');
-  console.log('Content-Type:', req.headers['content-type']);
-  console.log('Body before multer:', req.body);
-  console.log('Files before multer:', req.files);
-  next();
-};
 
 // Error handler for multer errors
 export const handleUploadError = (err, req, res, next) => {

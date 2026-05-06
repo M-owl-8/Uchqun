@@ -23,7 +23,7 @@ const Profile = () => {
   const [showMessagesModal, setShowMessagesModal] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef(null);
-  const API_BASE = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
+  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     loadMessages();

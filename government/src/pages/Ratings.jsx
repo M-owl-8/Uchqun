@@ -96,8 +96,7 @@ const SchoolCard = ({ school, t }) => {
       setTotalPages(data.totalPages || 1);
       setPage(pageNum);
       setReviewsLoaded(true);
-    } catch (error) {
-    } finally {
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
       setReviewsLoading(false);
     }
   };

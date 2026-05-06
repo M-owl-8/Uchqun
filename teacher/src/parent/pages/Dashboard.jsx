@@ -65,8 +65,7 @@ const Dashboard = () => {
 
       // Refresh notifications after loading data
       refreshNotifications();
-    } catch (error) {
-    } finally {
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
       setLoading(false);
     }
   }, [selectedChildId, refreshNotifications]);

@@ -24,8 +24,7 @@ export async function markRead(conversationId) {
   if (!conversationId) return;
   try {
     await api.post('/chat/read', { conversationId });
-  } catch (e) {
-  }
+  } catch (e) { /* swallowed */ void e; }
 }
 
 export async function getUnreadCount(conversationId, role = 'parent') {

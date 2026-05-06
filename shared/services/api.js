@@ -1,6 +1,8 @@
 import axios from 'axios';
 
-const BASE_URL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
+import { API_BASE } from './config';
+
+const BASE_URL = API_BASE;
 
 export function createApi({
   onUnauthenticated = null,

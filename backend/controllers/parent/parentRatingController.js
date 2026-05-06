@@ -241,7 +241,7 @@ export const rateSchool = async (req, res) => {
   try {
     // 1. Validate request body exists
     if (!req.body || typeof req.body !== 'object') {
-      logger.warn('Invalid request body', { body: req.body });
+      logger.warn('Invalid request body shape', { bodyType: typeof req.body });
       return res.status(400).json({
         error: 'Invalid request',
         message: 'Request body is required and must be a valid JSON object',
@@ -274,7 +274,7 @@ export const rateSchool = async (req, res) => {
 
     // 4. Validate stars rating
     if (stars === undefined || stars === null || stars === '') {
-      logger.warn('Missing stars rating', { body: req.body });
+      logger.warn('Missing stars rating', { hasStars: false });
       return res.status(400).json({
         error: 'Stars rating required',
         message: 'Please provide a star rating from 1 to 5',
@@ -626,7 +626,6 @@ export const rateSchool = async (req, res) => {
       errorName: error.name,
       errorCode: error.code,
       parentId: req.user?.id,
-      body: req.body,
       originalError: error.original?.message,
       originalCode: error.original?.code,
       errors: error.errors?.map(e => ({ message: e.message, path: e.path, value: e.value })),

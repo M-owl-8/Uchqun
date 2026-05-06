@@ -23,7 +23,7 @@ const MessagesModal = ({ onClose, messages = [] }) => {
         {messages.length === 0 ? (
           <div className="text-center py-12">
             <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">Hozircha xabarlar yo'q</p>
+            <p className="text-gray-500">Hozircha xabarlar yo&apos;q</p>
           </div>
         ) : (
           <div className="space-y-4">

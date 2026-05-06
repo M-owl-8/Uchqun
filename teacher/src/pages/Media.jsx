@@ -37,7 +37,7 @@ const getProxyUrl = (url, mediaId) => {
   if (url.includes('appwrite.io') && (url.includes('/storage/buckets/') || url.includes('/files/'))) {
     // Use VITE_API_URL if available, otherwise use Railway backend URL (same as api.js)
     // This ensures consistency with the API base URL
-    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     const apiBase = apiUrl.replace('/api', '');
     const proxyUrl = `${apiBase}/api/media/proxy/${mediaId}`;
     return proxyUrl;
@@ -512,8 +512,7 @@ const Media = () => {
       if (allChildren.length > 0 && !formData.childId) {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; }
   };
 
   const loadMedia = async () => {

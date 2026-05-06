@@ -45,7 +45,6 @@ const generateSecurePassword = (length = 16) => {
 export const submitRegistrationRequest = async (req, res) => {
   try {
     logger.info('Admin registration request received', {
-      body: req.body,
       bodyKeys: req.body ? Object.keys(req.body) : 'no body',
       files: req.files ? Object.keys(req.files) : 'no files',
       hasCertificate: !!(req.files?.certificateFile),

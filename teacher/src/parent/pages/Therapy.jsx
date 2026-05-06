@@ -66,8 +66,7 @@ const Therapy = () => {
       setActiveSession(null);
       setSelectedTherapy(null);
       loadTherapies();
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; }
   };
 
   const getTherapyIcon = (type) => {

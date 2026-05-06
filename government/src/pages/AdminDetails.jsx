@@ -301,7 +301,7 @@ const AdminDetails = () => {
                 </div>
                 {child.birthDate && (
                   <p className="text-sm text-gray-600">
-                    Tug'ilgan: {new Date(child.birthDate).toLocaleDateString('uz-UZ')}
+                    Tug&apos;ilgan: {new Date(child.birthDate).toLocaleDateString('uz-UZ')}
                   </p>
                 )}
               </div>

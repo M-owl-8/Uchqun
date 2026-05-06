@@ -18,7 +18,7 @@ export function SocketProvider({ children }) {
   const eventHandlersRef = useRef(new Map());
 
   const getSocketUrl = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a.up.railway.app/api';
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     return apiUrl.replace(/\/api\/?$/, '');
   };
 

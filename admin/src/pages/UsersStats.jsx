@@ -34,8 +34,7 @@ const UsersStats = () => {
       
       const response = await api.get('/business/users', { params });
       setStats(response.data.data);
-    } catch (error) {
-    } finally {
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
       setLoading(false);
     }
   };

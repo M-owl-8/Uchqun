@@ -287,7 +287,6 @@ export const createTherapy = async (req, res) => {
       error: error.message,
       stack: error.stack,
       userId: req.user?.id,
-      body: req.body,
     });
     
     // Provide more specific error messages

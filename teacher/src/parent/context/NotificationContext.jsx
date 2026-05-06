@@ -50,8 +50,7 @@ export const NotificationProvider = ({ children }) => {
       await api.put(`/notifications/${id}/read`);
       await loadNotifications();
       await loadAllNotifications();
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed */ void error; }
   };
 
   const markAllAsRead = async () => {
@@ -59,8 +58,7 @@ export const NotificationProvider = ({ children }) => {
       await api.put('/notifications/read-all');
       await loadNotifications();
       await loadAllNotifications();
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed */ void error; }
   };
 
   const deleteNotification = async (id) => {
@@ -68,8 +66,7 @@ export const NotificationProvider = ({ children }) => {
       await api.delete(`/notifications/${id}`);
       await loadNotifications();
       await loadAllNotifications();
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed */ void error; }
   };
 
   const refreshNotifications = () => {

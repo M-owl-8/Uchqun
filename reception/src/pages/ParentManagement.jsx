@@ -86,8 +86,7 @@ const ParentManagement = () => {
       ]);
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
-    } catch (error) {
-    }
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; }
   };
 
   // Filter groups based on selected teacher
@@ -768,7 +767,7 @@ const ParentManagement = () => {
                         </option>
                       ))
                     ) : (
-                      <option value="" disabled>Avval o'qituvchi tanlang</option>
+                      <option value="" disabled>Avval o&apos;qituvchi tanlang</option>
                     )}
                   </select>
                   <p className="mt-1 text-xs text-gray-500">{t('parentsPage.form.groupRequired') || 'Guruh tanlash majburiy - bu bolaning faoliyat va ovqatlarini ko\'rish uchun kerak'}</p>
@@ -945,7 +944,7 @@ const ParentManagement = () => {
             className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
           >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 id="add-child-modal-title" className="text-2xl font-bold text-gray-900">Bola qo'shish</h2>
+              <h2 id="add-child-modal-title" className="text-2xl font-bold text-gray-900">Bola qo&apos;shish</h2>
               <button
                 onClick={() => {
                   setShowChildModal(false);

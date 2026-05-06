@@ -117,13 +117,13 @@ const Login = () => {
 
         <div className="mt-6 pt-6 border-t border-gray-200">
           <p className="text-center text-sm text-gray-600 mb-3">
-            Admin bo'lishni xohlaysizmi?
+            Admin bo&apos;lishni xohlaysizmi?
           </p>
           <Link
             to="/admin-register"
             className="block w-full text-center px-4 py-2 text-sm font-medium text-primary-600 hover:text-primary-700 hover:bg-primary-50 rounded-lg transition-colors"
           >
-            Admin ro'yxatdan o'tish
+            Admin ro&apos;yxatdan o&apos;tish
           </Link>
         </div>
       </div>

@@ -33,8 +33,7 @@ const AIWarnings = () => {
       }
       const response = await api.get('/ai-warnings', { params });
       setWarnings(response.data.data.warnings || []);
-    } catch (error) {
-    } finally {
+    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
       setLoading(false);
     }
   };

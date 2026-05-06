@@ -131,11 +131,11 @@ const AdminRegister = () => {
           </div>
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Muvaffaqiyatli yuborildi!</h1>
           <p className="text-gray-600 mb-4">
-            Sizning so'rovingiz davlat ko'rib chiqishi uchun yuborildi. 
-            Tasdiqlangandan so'ng login ma'lumotlari sizga yuboriladi.
+            Sizning so&apos;rovingiz davlat ko&apos;rib chiqishi uchun yuborildi.
+            Tasdiqlangandan so&apos;ng login ma&apos;lumotlari sizga yuboriladi.
           </p>
           <p className="text-sm text-gray-500">
-            Login sahifasiga yo'naltirilmoqdasiz...
+            Login sahifasiga yo&apos;naltirilmoqdasiz...
           </p>
         </div>
       </div>
@@ -149,8 +149,8 @@ const AdminRegister = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
             <Crown className="w-8 h-8 text-primary-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Ro'yxatdan O'tish</h1>
-          <p className="text-gray-600">Ma'lumotlaringizni kiriting va hujjatlarni yuklang</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Ro&apos;yxatdan O&apos;tish</h1>
+          <p className="text-gray-600">Ma&apos;lumotlaringizni kiriting va hujjatlarni yuklang</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -254,7 +254,7 @@ const AdminRegister = () => {
               />
             </div>
             <p className="mt-1 text-xs text-gray-500">
-              Login ma'lumotlari Telegram orqali yuboriladi
+              Login ma&apos;lumotlari Telegram orqali yuboriladi
             </p>
           </div>
 
@@ -338,7 +338,7 @@ const AdminRegister = () => {
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
             <p className="font-semibold mb-1">Eslatma:</p>
-            <p>So'rovingiz davlat tomonidan ko'rib chiqiladi. Tasdiqlangandan so'ng login ma'lumotlari sizga yuboriladi.</p>
+            <p>So&apos;rovingiz davlat tomonidan ko&apos;rib chiqiladi. Tasdiqlangandan so&apos;ng login ma&apos;lumotlari sizga yuboriladi.</p>
             {formData.telegramUsername && (
               <p className="mt-2">Telegram username kiritilgan: @{formData.telegramUsername}</p>
             )}

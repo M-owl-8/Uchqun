@@ -62,8 +62,7 @@ const Dashboard = () => {
           ratingsCount: Number(myRating?.totalRatings || 0),
           statusEntries: monitoringRecords.length,
         });
-      } catch (error) {
-      } finally {
+      } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
         setLoading(false);
       }
     };

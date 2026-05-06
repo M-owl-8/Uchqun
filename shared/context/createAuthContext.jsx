@@ -8,6 +8,10 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
   const storageKey = userStorageKey || (tokenKey ? `${tokenKey}_user` : 'user');
   const AuthContext = createContext(null);
 
+  // Single Axios instance shared by every AuthProvider rendered for this
+  // factory call — re-created per render would re-attach interceptors.
+  const api = createApi();
+
   function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
       try {
@@ -16,8 +20,6 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
       } catch { return null; }
     });
     const [loading, setLoading] = useState(true);
-
-    const api = createApi();
 
     useEffect(() => {
       // Validate session via HTTP-only cookie — no localStorage token dependency

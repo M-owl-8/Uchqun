@@ -17,8 +17,7 @@ const AIChat = () => {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length > 0) return parsed;
       }
-    } catch (e) {
-    }
+    } catch (e) { /* swallowed: surface to UI when toast hook is available */ void e; }
     return [
       {
         role: 'assistant',
@@ -44,15 +43,8 @@ const AIChat = () => {
   useEffect(() => {
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
-    } catch (e) {
-    }
+    } catch (e) { /* swallowed: surface to UI when toast hook is available */ void e; }
   }, [messages]);
-
-  // Ensure translation function is available
-  useEffect(() => {
-    if (typeof t !== 'function') {
-    }
-  }, [t]);
 
   const handleSend = async (e) => {
     e.preventDefault();

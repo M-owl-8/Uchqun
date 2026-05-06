@@ -207,7 +207,6 @@ export const createGovernment = async (req, res) => {
     logger.error('Create government error', {
       error: error.message,
       stack: error.stack,
-      body: req.body,
       userId: req.user?.id,
     });
 

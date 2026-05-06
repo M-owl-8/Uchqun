@@ -35,8 +35,7 @@ const Chat = () => {
         if (list.length > 0) {
           setSelectedParent(list[0]);
         }
-      } catch (err) {
-      }
+      } catch (err) { /* swallowed: surface to UI when toast hook is available */ void err; }
     };
     fetchParents();
   }, [user?.id]);

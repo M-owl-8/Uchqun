@@ -98,7 +98,8 @@ const TeacherManagement = () => {
   );
 };
 
-const TeacherCard = memo(({ teacher, t }) => (
+const TeacherCard = memo(function TeacherCard({ teacher, t }) {
+  return (
   <Card className="p-6 hover:shadow-lg transition-shadow">
     <div className="flex items-start justify-between mb-4">
       <div className="flex items-center gap-3">
@@ -128,6 +129,7 @@ const TeacherCard = memo(({ teacher, t }) => (
       </div>
     </div>
   </Card>
-));
+  );
+});
 
 export default TeacherManagement;
