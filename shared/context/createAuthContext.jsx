@@ -67,7 +67,6 @@ export function createAuthContext({ userStorageKey = 'user', requiredRole = null
         isParent: role === 'parent',
         isGovernment: role === 'government',
         isBusiness: role === 'business',
-        isSuperAdmin: role === 'super-admin',
       }}>
         {children}
       </AuthContext.Provider>

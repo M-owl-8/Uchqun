@@ -16,7 +16,6 @@ import {
   getParents,
   getParentById,
   getStatistics,
-  createAdmin,
   getSchoolRatings,
   getMyMessages,
 } from '../controllers/adminController.js';
@@ -41,9 +40,11 @@ const router = express.Router();
 router.use(authenticate);
 router.use(requireAdmin);
 
-// Send message to super-admin
+// Send message to government (top-level platform owner)
+router.post('/message-to-government', sendMessage);
+// Backward-compatible alias (legacy clients)
 router.post('/message-to-super-admin', sendMessage);
-// Get my messages to super-admin (with replies)
+// Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 
 // Reception management (Admin can CREATE, EDIT, DELETE and MANAGE)
@@ -73,9 +74,6 @@ router.get('/statistics', getStatistics); // Admin can view all statistics
 
 // School ratings
 router.get('/school-ratings', getSchoolRatings); // View school ratings from parents created by admin's receptions
-
-// Admin management (Super admin can create Admin accounts)
-router.post('/admins', createAdmin); // Create admin account with email and password
 
 export default router;
 

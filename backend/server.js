@@ -23,7 +23,6 @@ import './utils/errorTracker.js';
 import healthRoutes from './routes/health.js';
 import authRoutes from './routes/authRoutes.js';
 import adminRoutes from './routes/adminRoutes.js';
-import superAdminRoutes from './routes/superAdminRoutes.js';
 import receptionRoutes from './routes/receptionRoutes.js';
 import parentRoutes from './routes/parentRoutes.js';
 import teacherRoutes from './routes/teacherRoutes.js';
@@ -79,7 +78,6 @@ const defaultOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
-  'http://localhost:5176',
   'http://localhost:5177',
   'https://uchqun-platform.vercel.app',
   'https://uchqunedu.uz',
@@ -88,7 +86,6 @@ const defaultOrigins = [
   'https://uchqun-admin.netlify.app',
   'https://uchqun-teacher.netlify.app',
   'https://uchqun-government.netlify.app',
-  'https://uchqun-super-admin.netlify.app',
 ];
 
 const allowedOrigins = process.env.FRONTEND_URL
@@ -108,7 +105,8 @@ app.use(cors({
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
     if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) return callback(null, true);
-    if (process.env.NODE_ENV === 'production' && (origin.includes('.netlify.app') || origin.includes('.vercel.app'))) {
+    // Allow only known Uchqun deploy preview hostnames; not arbitrary subdomains
+    if (process.env.NODE_ENV === 'production' && /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/.test(origin)) {
       return callback(null, true);
     }
     logger.warn('CORS blocked', { origin });
@@ -149,7 +147,6 @@ app.use('/api', apiLimiter);
 
 app.use('/health', healthRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api/super-admin', superAdminRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/reception', receptionRoutes);
 app.use('/api/parent', parentRoutes);

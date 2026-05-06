@@ -33,17 +33,17 @@ describe('authenticate middleware', () => {
   it('reads token from cookie', async () => {
     const token = jwt.sign({ userId: 'user-1' }, process.env.JWT_SECRET);
     req.cookies = { accessToken: token };
-    mockFindByPk.mockResolvedValue({ id: 'user-1', role: 'admin' });
+    mockFindByPk.mockResolvedValue({ id: 'user-1', role: 'admin', isActive: true });
 
     await authenticate(req, res, next);
     expect(next).toHaveBeenCalled();
-    expect(req.user).toEqual({ id: 'user-1', role: 'admin' });
+    expect(req.user).toEqual({ id: 'user-1', role: 'admin', isActive: true });
   });
 
   it('reads token from Authorization header', async () => {
     const token = jwt.sign({ userId: 'user-1' }, process.env.JWT_SECRET);
     req.headers.authorization = `Bearer ${token}`;
-    mockFindByPk.mockResolvedValue({ id: 'user-1', role: 'teacher' });
+    mockFindByPk.mockResolvedValue({ id: 'user-1', role: 'teacher', isActive: true });
 
     await authenticate(req, res, next);
     expect(next).toHaveBeenCalled();

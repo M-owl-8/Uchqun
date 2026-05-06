@@ -109,7 +109,7 @@ export async function up(queryInterface, Sequelize) {
       throw error;
     }
   }
-};
+}
 
 export async function down(queryInterface, Sequelize) {
   await queryInterface.dropTable('emotional_monitoring');

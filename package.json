@@ -1,13 +1,11 @@
 {
-  "name": "uzbekistan-schools-platform",
+  "name": "uchqun-platform",
   "version": "1.0.0",
-  "description": "Enterprise-grade, privacy-first, multi-tenant, offline-first Flutter platform for Uzbekistan schools",
+  "description": "Government-owned web platform for special education school management in Uzbekistan",
   "private": true,
   "scripts": {
     "migrate": "cd backend && npm run migrate",
     "seed": "cd backend && npm run seed",
-    "build": "cd teacher && npm run build",
-    "install": "cd teacher && npm install",
     "prepare": "husky"
   },
   "lint-staged": {
@@ -23,9 +21,6 @@
     "reception/src/**/*.{js,jsx}": [
       "npx eslint --fix --config reception/.eslintrc.cjs"
     ],
-    "super-admin/src/**/*.{js,jsx}": [
-      "npx eslint --fix --config super-admin/.eslintrc.cjs"
-    ],
     "government/src/**/*.{js,jsx}": [
       "npx eslint --fix --config government/.eslintrc.cjs"
     ]
@@ -34,9 +29,9 @@
     "education",
     "schools",
     "multi-tenant",
-    "flutter",
-    "nestjs",
-    "privacy"
+    "uzbekistan",
+    "government",
+    "special-education"
   ],
   "author": "",
   "license": "MIT",

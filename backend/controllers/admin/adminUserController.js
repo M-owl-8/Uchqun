@@ -113,40 +113,32 @@ export const createAdmin = async (req, res) => {
       });
     }
 
-    // If role is 'superAdmin', allow creation without authentication
-    const isSuperAdmin = role === 'superAdmin';
-
-    // For regular admin creation, require authentication
-    if (!isSuperAdmin && !req.user) {
+    if (!req.user) {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
-    // Check if user already exists
     const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
 
-    // Create admin with provided firstName and lastName
-    // If role is 'superAdmin', create as 'admin' role (since User model only has 'admin' role)
     const admin = await User.create({
       email: email.toLowerCase(),
       password,
       firstName,
       lastName,
-      role: 'admin', // User model only supports 'admin', 'reception', 'teacher', 'parent'
+      role: 'admin',
     });
 
     logger.info('Admin account created', {
       adminId: admin.id,
       email: admin.email,
-      isSuperAdmin,
-      createdBy: req.user?.id || (isSuperAdmin ? 'direct-creation' : 'unknown'),
+      createdBy: req.user.id,
     });
 
     res.status(201).json({
       success: true,
-      message: isSuperAdmin ? 'Super admin account created successfully' : 'Admin account created successfully',
+      message: 'Admin account created successfully',
       data: admin.toJSON(),
     });
   } catch (error) {

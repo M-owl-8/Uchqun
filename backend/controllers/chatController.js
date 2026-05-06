@@ -140,7 +140,7 @@ export const updateMessage = async (req, res) => {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    const isAdmin = req.user.role === 'admin' || req.user.role === 'superAdmin';
+    const isAdmin = req.user.role === 'admin' || req.user.role === 'government';
     const isOwner = msg.senderId === req.user.id;
     if (!isAdmin && !isOwner) {
       return res.status(403).json({ error: 'Only the sender can edit this message' });
@@ -168,7 +168,7 @@ export const deleteMessage = async (req, res) => {
       return res.status(403).json({ error: 'Forbidden' });
     }
 
-    const isAdmin = req.user.role === 'admin' || req.user.role === 'superAdmin';
+    const isAdmin = req.user.role === 'admin' || req.user.role === 'government';
     const isTeacher = req.user.role === 'teacher';
     const isOwner = msg.senderId === req.user.id;
     // Allow moderation: teacher/admin can delete any message in allowed conversations

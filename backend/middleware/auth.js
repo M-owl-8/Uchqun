@@ -1,8 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
-const SUPER_ADMIN_EMAIL = process.env.SUPER_ADMIN_EMAIL || 'superadmin@uchqun.uz';
-
 export const authenticate = async (req, res, next) => {
   try {
     let token = req.cookies?.accessToken;
@@ -23,9 +21,9 @@ export const authenticate = async (req, res, next) => {
     }
 
     const isParent = user.role === 'parent';
-    const isSuperAdmin = user.role === 'admin' && user.email === SUPER_ADMIN_EMAIL;
+    const isGovernment = user.role === 'government';
 
-    if (!isParent && !isSuperAdmin && !user.isActive) {
+    if (!isParent && !isGovernment && !user.isActive) {
       return res.status(403).json({ error: 'Account is not active' });
     }
 

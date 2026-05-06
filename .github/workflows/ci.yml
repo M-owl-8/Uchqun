@@ -36,7 +36,7 @@ jobs:
         run: cd backend && npm audit --audit-level=high
       - name: Audit frontend dependencies
         run: |
-          for app in admin teacher reception super-admin government; do
+          for app in admin teacher reception government; do
             echo "Auditing $app..."
             cd $GITHUB_WORKSPACE/$app && npm audit --audit-level=high
           done
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        app: [admin, teacher, reception, super-admin, government]
+        app: [admin, teacher, reception, government]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -105,7 +105,7 @@ jobs:
     needs: [lint, security, test-backend, test-frontend]
     strategy:
       matrix:
-        app: [admin, teacher, reception, super-admin, government]
+        app: [admin, teacher, reception, government]
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -161,16 +161,6 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_RECEPTION_SITE_ID }}
         run: |
           cd reception && npm ci && npm run build
-          npx netlify-cli deploy --prod --dir=dist
-        continue-on-error: true
-
-      - name: Deploy super-admin to Netlify
-        if: secrets.NETLIFY_AUTH_TOKEN != ''
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SUPER_ADMIN_SITE_ID }}
-        run: |
-          cd super-admin && npm ci && npm run build
           npx netlify-cli deploy --prod --dir=dist
         continue-on-error: true
 

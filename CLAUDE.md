@@ -4,9 +4,16 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-Uchqun is a full-stack platform for special education school management in Uzbekistan. It's a monorepo with a Node.js/Express backend and five React web dashboards. A Flutter mobile app will be built in Phase 6 once the web platform is complete.
+Uchqun is a government-owned web platform for special education school management in Uzbekistan. It's a monorepo with a Node.js/Express backend and four React web dashboards. The platform is web-only — there is no mobile app, and there is no in-platform payment processing (the service is funded by the state).
 
-**Role hierarchy**: Super Admin > Government > Business > Admin > Reception > Teacher > Parent
+**Role hierarchy**: Government > Business > Admin > Reception > Teacher > Parent
+
+- **Government** — top-level platform owner. Oversees all schools, manages admin and government accounts, approves admin registrations, handles user messages, views ratings and stats.
+- **Business** — school owner.
+- **Admin** — school manager (employed by Business).
+- **Reception** — school front-desk staff.
+- **Teacher** — classroom staff.
+- **Parent** — service consumer (parent of a student).
 
 ## Repository Structure
 
@@ -15,13 +22,12 @@ uchqun/
 ├── backend/           # Node.js/Express API (PostgreSQL + Sequelize)
 ├── admin/             # Admin dashboard (React + Vite, port 5175)
 ├── teacher/           # Teacher dashboard (React + Vite, port 5174)
-├── super-admin/       # Super admin panel (React + Vite, port 5176)
 ├── reception/         # Reception management (React + Vite, port 5177)
-├── government/        # Government dashboard (React + Vite, port 5173)
+├── government/        # Government dashboard (React + Vite, port 5173) — top-level platform owner
 ├── shared/            # Shared components, services & i18n locales
 ├── .github/workflows/ # CI pipeline (GitHub Actions)
 ├── .husky/            # Git hooks (pre-commit → lint-staged)
-├── plan.md            # Master development plan (7 phases)
+├── plan.md            # Master development plan
 └── docker-compose.yml # Local dev environment (PostgreSQL 15 + backend)
 ```
 
@@ -36,7 +42,7 @@ backend/
 ├── models/          # 36 models + index.js
 ├── routes/          # 28 route files
 ├── scripts/         # 17+ utility scripts
-├── utils/           # email, expoPush, logger, errorTracker, governmentLevel, uuidValidator
+├── utils/           # email, logger, errorTracker, governmentLevel, uuidValidator
 ├── validators/      # 11 input validators (express-validator + Joi)
 ├── __tests__/       # Jest test files
 ├── Dockerfile       # Production Docker image (node:20-alpine)
@@ -63,7 +69,6 @@ backend/
 | AI | OpenAI / OpenRouter | 4.20.0 |
 | Real-time | Socket.io | - |
 | File Storage | Appwrite | Cloud |
-| Payments | Payme / Click | - |
 | Error Tracking | Sentry | 10.37.0 |
 | Logging | Winston | 3.11.0 |
 
@@ -114,11 +119,10 @@ npm run test:db              # Test database connection
 npm run create:teacher       # Create a teacher account
 npm run create:admin         # Create an admin account
 npm run create:government    # Create a government account
-npm run create:super-admin   # Create a super admin account
 npm run reset:admin          # Reset admin credentials
 ```
 
-### Web Frontends (admin, teacher, reception, super-admin, government)
+### Web Frontends (admin, teacher, reception, government)
 ```bash
 cd [app-name]
 npm run dev                  # Start Vite dev server
@@ -132,7 +136,6 @@ npm start                    # Serve built app via Express
 ```bash
 npm run migrate              # Run backend migrations
 npm run seed                 # Seed database
-npm run build                # Build teacher app (default)
 ```
 
 ## Architecture
@@ -152,13 +155,12 @@ All routes prefixed with `/api/`:
 | Prefix | Auth | Description |
 |--------|------|-------------|
 | `/auth` | Public | Login, registration, token refresh |
-| `/super-admin` | Secret key | Super admin management |
+| `/government` | Government | Top-level platform owner: dashboard, ratings, stats, admin/government CRUD, user messages, registrations |
 | `/admin` | Admin | School admin operations |
 | `/reception` | Reception | Student intake, documents |
 | `/teacher` | Teacher | Activities, meals, progress |
 | `/parent` | Parent | View child data, chat |
-| `/government` | Government | Dashboard, school ratings, stats |
-| `/business` | Business | Business analytics |
+| `/business` | Business / Government | Business analytics |
 | `/child` | Authenticated | Child CRUD |
 | `/activities` | Authenticated | Activity management |
 | `/meals` | Authenticated | Meal tracking |
@@ -166,8 +168,6 @@ All routes prefixed with `/api/`:
 | `/chat` | Authenticated | AI chat assistant |
 | `/therapy` | Authenticated | Therapy sessions |
 | `/notifications` | Authenticated | In-app notifications |
-| `/push-notifications` | Authenticated | Push token registration (reserved for Flutter) |
-| `/payments` | Authenticated | Payment processing |
 | `/ai-warnings` | Authenticated | AI-based alerts |
 | `/news` | Authenticated | News/announcements |
 | `/child-assessments` | Authenticated | Child diagnostic assessments |
@@ -177,7 +177,7 @@ All routes prefixed with `/api/`:
 | `/migrations` | Public | Database migration endpoints |
 | `/health` | Public | Health check |
 
-### Database Models (36)
+### Database Models
 All in `backend/models/`:
 
 | Model | Purpose |
@@ -197,8 +197,6 @@ All in `backend/models/`:
 | Progress | Student progress tracking |
 | ChatMessage | AI chat conversations |
 | Notification | In-app notifications |
-| PushNotification | Push device tokens (reserved for Flutter Phase 6) |
-| Payment | Payment records |
 | Therapy | Therapy session definitions |
 | TherapyUsage | Therapy session usage |
 | EmotionalMonitoring | Emotional state tracking |
@@ -280,7 +278,6 @@ Each web app follows the same structure:
 | Government | 5173 |
 | Teacher | 5174 |
 | Admin | 5175 |
-| Super Admin | 5176 |
 | Reception | 5177 |
 
 ### Proxy Configuration
@@ -320,8 +317,8 @@ Triggers on push/PR to `main`.
 | `lint` | ESLint across backend + frontends |
 | `security` | `npm audit` for backend and all frontends |
 | `test-backend` | Jest tests with PostgreSQL 15 service container |
-| `test-frontend` | Vitest for each of 5 web apps (matrix strategy) |
-| `build` | Build all 5 web apps (depends on lint + tests) |
+| `test-frontend` | Vitest for each of 4 web apps (matrix strategy) |
+| `build` | Build all 4 web apps (depends on lint + tests) |
 
 All jobs use Node 20 with npm caching.
 
@@ -338,7 +335,7 @@ All jobs use Node 20 with npm caching.
 
 ### File Naming
 - Components: PascalCase (`LoadingSpinner.jsx`)
-- Services/utils: camelCase (`api.js`, `expoPush.js`)
+- Services/utils: camelCase (`api.js`, `logger.js`)
 - Models: PascalCase (`User.js`, `ChatMessage.js`)
 - Routes/controllers: camelCase (`authRoutes.js`, `adminController.js`)
 - Validators: camelCase (`authValidator.js`)
@@ -374,7 +371,6 @@ chore(scope): description
 | `JWT_REFRESH_EXPIRE` | No | 7d | Refresh token TTL |
 | `FRONTEND_URL` | Yes | - | Comma-separated allowed CORS origins |
 | `FORCE_SYNC` | No | false | Drop and recreate tables (dangerous) |
-| `SUPER_ADMIN_SECRET_KEY` | Prod | - | Secret key for super admin routes |
 | `OPENAI_API_KEY` | No | - | OpenAI or OpenRouter API key |
 | `OPENAI_BASE_URL` | No | - | Custom AI API base URL (e.g. OpenRouter) |
 | `OPENAI_MODEL` | No | - | AI model identifier |

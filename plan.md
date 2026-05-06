@@ -1,20 +1,33 @@
 # UCHQUN PLATFORM — MASTER DEVELOPMENT PLAN
 
-**Status: LOCKED** | Based on 309-issue audit across 878 files | Date: 2026-05-05
+**Status: ACTIVE** | Pivot to government-owned web platform | Updated: 2026-05-06
+
+---
+
+## SCOPE PIVOT (2026-05-06)
+
+The platform is being transferred to government ownership. As a result:
+
+- ✅ **Mobile app removed** — web-only going forward (Expo app + Expo push stack deleted)
+- ✅ **Payments removed** — service is state-funded, no in-platform payment processing
+- ✅ **Super-admin app removed** — features merged into the Government dashboard at `/government/platform`
+- ✅ **Role hierarchy now:** Government > Business > Admin > Reception > Teacher > Parent (Government replaces super-admin as top)
+- ⏭ **Phase 6 (Flutter)** — cancelled
+- ⏭ **Phase 7** — narrowed to web-only QA + beta
 
 ---
 
 ## PHASES OVERVIEW
 
-| Phase | Focus | Blocker For |
-|-------|-------|-------------|
-| 1 — Remove Mobile | Clean repo | Nothing blocked |
-| 2 — Backend | Security + stability | Everything |
-| 3 — Database | Data integrity | Phase 5 features |
-| 4 — Web Cleanup | Consistency + safety | Phase 5 |
-| 5 — Ultimate Web | Features + polish | Phase 6 (API contracts) |
-| 6 — Flutter | Mobile rebuild | Phase 7 |
-| 7 — QA + Beta | Ship readiness | Launch |
+| Phase | Focus | Status |
+|-------|-------|--------|
+| 1 — Remove Mobile | Clean repo | ✅ Completed (re-done after Expo rebuild attempt) |
+| 2 — Backend | Security + stability | In progress |
+| 3 — Database | Data integrity | In progress |
+| 4 — Web Cleanup | Consistency + safety | In progress |
+| 5 — Ultimate Web | Features + polish | Pending |
+| 6 — Flutter | Mobile rebuild | ❌ Cancelled |
+| 7 — QA + Beta | Ship readiness | Pending |
 
 ---
 

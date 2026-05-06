@@ -5,6 +5,7 @@ import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import LoadingSpinner from './components/LoadingSpinner';
 
@@ -18,6 +19,7 @@ const Teachers = lazy(() => import('./pages/Teachers'));
 const Parents = lazy(() => import('./pages/Parents'));
 const AdminDetails = lazy(() => import('./pages/AdminDetails'));
 const Profile = lazy(() => import('./pages/Profile'));
+const Platform = lazy(() => import('./pages/Platform'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -57,6 +59,7 @@ const AppRoutes = () => {
           <Route path="teachers" element={<ErrorBoundary><Teachers /></ErrorBoundary>} />
           <Route path="parents" element={<ErrorBoundary><Parents /></ErrorBoundary>} />
           <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />
+          <Route path="platform" element={<ErrorBoundary><Platform /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
           <Route path="admin/:id" element={<ErrorBoundary><AdminDetails /></ErrorBoundary>} />
         </Route>
@@ -74,7 +77,9 @@ function App() {
       <I18nextProvider i18n={i18n}>
         <BrowserRouter>
           <AuthProvider>
-            <AppRoutes />
+            <ToastProvider>
+              <AppRoutes />
+            </ToastProvider>
           </AuthProvider>
         </BrowserRouter>
       </I18nextProvider>

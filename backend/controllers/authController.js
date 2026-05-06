@@ -148,15 +148,13 @@ export const login = async (req, res) => {
       }
     }
 
-    // Admin must be active to log in (except super-admin email)
-    if (user.role === 'admin' && user.email !== (process.env.SUPER_ADMIN_EMAIL || 'superadmin@uchqun.uz')) {
-      if (!user.isActive) {
-        return res.status(403).json({
-          success: false,
-          error: 'Admin account is not active. Please contact super-admin.',
-          requiresApproval: true,
-        });
-      }
+    // Admin must be active to log in
+    if (user.role === 'admin' && !user.isActive) {
+      return res.status(403).json({
+        success: false,
+        error: 'Admin account is not active. Please contact government.',
+        requiresApproval: true,
+      });
     }
 
     if (!process.env.JWT_SECRET) {
