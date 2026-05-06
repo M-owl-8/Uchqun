@@ -1126,12 +1126,12 @@ export const deleteChildForReception = async (req, res) => {
 };
 
 /**
- * Get reception's messages to super-admin
+ * Get reception's messages to government
  * GET /api/reception/messages
  * 
  * Business Logic:
- * - Reception can view their own messages sent to super-admin
- * - Includes replies from super-admin
+ * - Reception can view their own messages sent to government
+ * - Includes replies from government
  */
 export const getMyMessages = async (req, res) => {
   try {

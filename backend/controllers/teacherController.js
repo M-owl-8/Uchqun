@@ -550,12 +550,12 @@ export const getParentById = async (req, res) => {
 };
 
 /**
- * Get teacher's messages to super-admin
+ * Get teacher's messages to government
  * GET /api/teacher/messages
  *
  * Business Logic:
- * - Teacher can view their own messages sent to super-admin
- * - Includes replies from super-admin
+ * - Teacher can view their own messages sent to government
+ * - Includes replies from government
  */
 export const getMyMessages = async (req, res) => {
   try {

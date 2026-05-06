@@ -2,12 +2,12 @@ import SuperAdminMessage from '../../models/SuperAdminMessage.js';
 import logger from '../../utils/logger.js';
 
 /**
- * Get admin's messages to super-admin
+ * Get admin's messages to government
  * GET /api/admin/messages
  *
  * Business Logic:
- * - Admin can view their own messages sent to super-admin
- * - Includes replies from super-admin
+ * - Admin can view their own messages sent to government
+ * - Includes replies from government
  */
 export const getMyMessages = async (req, res) => {
   try {

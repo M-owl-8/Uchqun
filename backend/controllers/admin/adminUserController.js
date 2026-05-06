@@ -2,8 +2,8 @@ import User from '../../models/User.js';
 import logger from '../../utils/logger.js';
 
 /**
- * Get all Admin accounts (Super Admin view)
- * GET /api/super-admin/admins
+ * Get all Admin accounts (Government view)
+ * GET /api/government/admins
  */
 export const getAdmins = async (req, res) => {
   try {
@@ -24,8 +24,8 @@ export const getAdmins = async (req, res) => {
 };
 
 /**
- * Update an Admin account (Super Admin only)
- * PUT /api/super-admin/admins/:id
+ * Update an Admin account (Government only)
+ * PUT /api/government/admins/:id
  */
 export const updateAdminBySuper = async (req, res) => {
   try {
@@ -64,8 +64,8 @@ export const updateAdminBySuper = async (req, res) => {
 };
 
 /**
- * Delete an Admin account (Super Admin only)
- * DELETE /api/super-admin/admins/:id
+ * Delete an Admin account (Government only)
+ * DELETE /api/government/admins/:id
  */
 export const deleteAdminBySuper = async (req, res) => {
   try {
@@ -100,8 +100,8 @@ export const deleteAdminBySuper = async (req, res) => {
 };
 
 /**
- * Create an Admin account
- * POST /api/admin/admins
+ * Create an Admin account (Government only)
+ * POST /api/government/admins
  */
 export const createAdmin = async (req, res) => {
   try {
@@ -148,8 +148,8 @@ export const createAdmin = async (req, res) => {
 };
 
 /**
- * Create government user (Super Admin only)
- * POST /api/super-admin/government
+ * Create government user (Government only)
+ * POST /api/government/users
  */
 export const createGovernment = async (req, res) => {
   try {
@@ -246,7 +246,7 @@ export const createGovernment = async (req, res) => {
 
 /**
  * Get all government accounts
- * GET /api/super-admin/government
+ * GET /api/government/users
  */
 export const getGovernments = async (req, res) => {
   try {
@@ -280,8 +280,8 @@ export const getGovernments = async (req, res) => {
 };
 
 /**
- * Update a Government account (Super Admin only)
- * PUT /api/super-admin/government/:id
+ * Update a Government account (Government only)
+ * PUT /api/government/users/:id
  */
 export const updateGovernmentBySuper = async (req, res) => {
   try {
@@ -327,8 +327,8 @@ export const updateGovernmentBySuper = async (req, res) => {
 };
 
 /**
- * Delete a Government account (Super Admin only)
- * DELETE /api/super-admin/government/:id
+ * Delete a Government account (Government only)
+ * DELETE /api/government/users/:id
  */
 export const deleteGovernmentBySuper = async (req, res) => {
   try {

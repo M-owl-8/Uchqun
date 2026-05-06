@@ -5,8 +5,8 @@ import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
 
 /**
- * Send message to super-admin
- * POST /api/super-admin/messages
+ * Send message to government
+ * POST /api/government/messages
  * Available for all authenticated users (parent, teacher, admin, reception)
  */
 export const sendMessage = async (req, res) => {
@@ -22,7 +22,7 @@ export const sendMessage = async (req, res) => {
       return res.status(400).json({ error: 'Subject and message cannot be empty' });
     }
 
-    logger.info('Attempting to create super-admin message', {
+    logger.info('Attempting to create government message', {
       senderId,
       senderRole: req.user.role,
       subject: subject.substring(0, 50),
@@ -35,7 +35,7 @@ export const sendMessage = async (req, res) => {
       isRead: false,
     });
 
-    logger.info('Message sent to super-admin', {
+    logger.info('Message sent to government', {
       messageId: superAdminMessage.id,
       senderId,
       senderRole: req.user.role,
@@ -53,8 +53,6 @@ export const sendMessage = async (req, res) => {
       senderId: req.user?.id,
       senderRole: req.user?.role
     });
-    console.error('Send message error details:', error);
-    
     // Check if it's a table not found error
     if (error.message && error.message.includes('does not exist')) {
       return res.status(500).json({ 
@@ -71,8 +69,8 @@ export const sendMessage = async (req, res) => {
 };
 
 /**
- * Get all messages for super-admin
- * GET /api/super-admin/messages
+ * Get all messages for government
+ * GET /api/government/messages
  */
 export const getMessages = async (req, res) => {
   try {
@@ -125,7 +123,7 @@ export const getMessages = async (req, res) => {
 
 /**
  * Get single message by ID
- * GET /api/super-admin/messages/:id
+ * GET /api/government/messages/:id
  */
 export const getMessageById = async (req, res) => {
   try {
@@ -165,7 +163,7 @@ export const getMessageById = async (req, res) => {
 
 /**
  * Reply to message
- * POST /api/super-admin/messages/:id/reply
+ * POST /api/government/messages/:id/reply
  */
 export const replyToMessage = async (req, res) => {
   try {
@@ -185,7 +183,7 @@ export const replyToMessage = async (req, res) => {
     message.repliedAt = new Date();
     await message.save();
 
-    logger.info('Super-admin replied to message', {
+    logger.info('Government replied to message', {
       messageId: id,
       senderId: message.senderId,
     });
@@ -203,7 +201,7 @@ export const replyToMessage = async (req, res) => {
 
 /**
  * Mark message as read/unread
- * PUT /api/super-admin/messages/:id/read
+ * PUT /api/government/messages/:id/read
  */
 export const markMessageRead = async (req, res) => {
   try {
@@ -236,7 +234,7 @@ export const markMessageRead = async (req, res) => {
 
 /**
  * Delete message
- * DELETE /api/super-admin/messages/:id
+ * DELETE /api/government/messages/:id
  */
 export const deleteMessage = async (req, res) => {
   try {
@@ -249,7 +247,7 @@ export const deleteMessage = async (req, res) => {
 
     await message.destroy();
 
-    logger.info('Message deleted by super-admin', {
+    logger.info('Message deleted by government', {
       messageId: id,
     });
 

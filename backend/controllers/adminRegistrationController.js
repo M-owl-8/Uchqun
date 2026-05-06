@@ -166,7 +166,7 @@ export const submitRegistrationRequest = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      message: 'Registration request submitted successfully. Please wait for super-admin approval.',
+      message: 'Registration request submitted successfully. Please wait for government approval.',
       data: request.toJSON(),
     });
   } catch (error) {
@@ -201,9 +201,9 @@ export const submitRegistrationRequest = async (req, res) => {
 };
 
 /**
- * Get all admin registration requests (for super-admin)
- * GET /api/super-admin/admin-registrations
- * Requires super-admin authentication
+ * Get all admin registration requests (for government)
+ * GET /api/government/admin-registrations
+ * Requires government authentication
  */
 export const getRegistrationRequests = async (req, res) => {
   try {
@@ -243,7 +243,7 @@ export const getRegistrationRequests = async (req, res) => {
 
 /**
  * Get single registration request by ID
- * GET /api/super-admin/admin-registrations/:id
+ * GET /api/government/admin-registrations/:id
  */
 export const getRegistrationRequestById = async (req, res) => {
   try {
@@ -285,8 +285,8 @@ export const getRegistrationRequestById = async (req, res) => {
 
 /**
  * Approve admin registration request
- * POST /api/super-admin/admin-registrations/:id/approve
- * Requires super-admin authentication
+ * POST /api/government/admin-registrations/:id/approve
+ * Requires government authentication
  * 
  * Creates the admin user account after approval
  */
@@ -388,8 +388,8 @@ export const approveRegistrationRequest = async (req, res) => {
 
 /**
  * Reject admin registration request
- * POST /api/super-admin/admin-registrations/:id/reject
- * Requires super-admin authentication
+ * POST /api/government/admin-registrations/:id/reject
+ * Requires government authentication
  */
 export const rejectRegistrationRequest = async (req, res) => {
   try {
