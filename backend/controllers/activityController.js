@@ -342,7 +342,11 @@ export const createActivity = async (req, res) => {
   }
 };
 
-// Update activity (teachers only)
+const ALLOWED_ACTIVITY_FIELDS = [
+  'type', 'description', 'date', 'duration', 'tasks', 'services', 'notes', 'mood', 'image',
+];
+
+// Update activity (teacher / admin / reception of the same school)
 export const updateActivity = async (req, res) => {
   try {
     if (req.user.role !== 'teacher' && req.user.role !== 'admin' && req.user.role !== 'reception') {
@@ -356,11 +360,19 @@ export const updateActivity = async (req, res) => {
       return res.status(404).json({ error: 'Activity not found' });
     }
 
-    // Get child for parent notification
+    // Get child for ownership check + parent notification
     const child = await Child.findByPk(activity.childId);
+    if (!child) {
+      return res.status(404).json({ error: 'Activity child not found' });
+    }
+    if (req.user.schoolId && child.schoolId && child.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Forbidden: cross-school update' });
+    }
 
-    // Handle services array
-    const updateData = { ...req.body };
+    const updateData = {};
+    for (const k of ALLOWED_ACTIVITY_FIELDS) {
+      if (Object.prototype.hasOwnProperty.call(req.body, k)) updateData[k] = req.body[k];
+    }
     if (updateData.services !== undefined) {
       updateData.services = Array.isArray(updateData.services)
         ? updateData.services

@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-// Color scheme per Mobile-icons.md
+
 const COLORS = {
   softNavy: '#2E3A59',
   textTertiary: '#8F9BB3',
@@ -24,7 +24,7 @@ const Sidebar = ({ onClose }) => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  // Icon mapping per Mobile-icons.md
+  
   const navigation = [
     { name: t('nav.dashboard'), href: '/reception', icon: Home },
     { name: t('nav.parents'), href: '/reception/parents', icon: Users },

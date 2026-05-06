@@ -1,13 +1,17 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { createApi } from '../services/api';
 
-export function createAuthContext({ userStorageKey = 'user', requiredRole = null } = {}) {
+export function createAuthContext({ userStorageKey, tokenKey, requiredRole = null } = {}) {
+  // tokenKey is accepted as an alias for userStorageKey so each app
+  // has its own localStorage namespace (prevents cross-app session
+  // collisions when users share a browser).
+  const storageKey = userStorageKey || (tokenKey ? `${tokenKey}_user` : 'user');
   const AuthContext = createContext(null);
 
   function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
       try {
-        const stored = localStorage.getItem(userStorageKey);
+        const stored = localStorage.getItem(storageKey);
         return stored ? JSON.parse(stored) : null;
       } catch { return null; }
     });
@@ -21,15 +25,15 @@ export function createAuthContext({ userStorageKey = 'user', requiredRole = null
         .then((res) => {
           const userData = res.data;
           if (requiredRole && userData.role !== requiredRole) {
-            localStorage.removeItem(userStorageKey);
+            localStorage.removeItem(storageKey);
             setUser(null);
           } else {
-            try { localStorage.setItem(userStorageKey, JSON.stringify(userData)); } catch { /* quota */ }
+            try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
             setUser(userData);
           }
         })
         .catch(() => {
-          localStorage.removeItem(userStorageKey);
+          localStorage.removeItem(storageKey);
           setUser(null);
         })
         .finally(() => setLoading(false));
@@ -42,7 +46,7 @@ export function createAuthContext({ userStorageKey = 'user', requiredRole = null
       if (requiredRole && userData.role !== requiredRole) {
         throw new Error(`Access denied. Required role: ${requiredRole}`);
       }
-      try { localStorage.setItem(userStorageKey, JSON.stringify(userData)); } catch { /* quota */ }
+      try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
       setUser(userData);
       return res.data;
     };
@@ -51,7 +55,7 @@ export function createAuthContext({ userStorageKey = 'user', requiredRole = null
       try {
         await api.post('/auth/logout', {}, { withCredentials: true }).catch(() => {});
       } finally {
-        localStorage.removeItem(userStorageKey);
+        localStorage.removeItem(storageKey);
         setUser(null);
       }
     };

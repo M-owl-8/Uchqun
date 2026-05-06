@@ -427,6 +427,11 @@ export const getParents = async (req, res) => {
 
     const where = { role: 'parent' };
 
+    // Admin / Reception scoped to their own school
+    if (req.user.role === 'admin' || req.user.role === 'reception') {
+      if (req.user.schoolId) where.schoolId = req.user.schoolId;
+    }
+
     // If user is a teacher, show parents from all their groups
     if (req.user.role === 'teacher') {
       // Get all groups assigned to this teacher

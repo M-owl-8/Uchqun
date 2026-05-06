@@ -13,6 +13,7 @@ import Progress from '../models/Progress.js';
 import logger from '../utils/logger.js';
 import bcrypt from 'bcryptjs';
 import { Op, fn, col } from 'sequelize';
+import sequelize from '../config/database.js';
 import { uploadFile, deleteFile } from '../config/storage.js';
 import fs from 'fs';
 
@@ -752,12 +753,10 @@ export const deleteParent = async (req, res) => {
       return res.status(404).json({ error: 'Parent not found' });
     }
 
-    // Delete children first (cascade delete)
-    await Child.destroy({
-      where: { parentId: id },
+    await sequelize.transaction(async (t) => {
+      await Child.destroy({ where: { parentId: id }, transaction: t });
+      await parent.destroy({ transaction: t });
     });
-
-    await parent.destroy();
 
     logger.info('Parent deleted by Reception', {
       parentId: id,
@@ -1100,14 +1099,15 @@ export const deleteChildForReception = async (req, res) => {
       }
     }
 
-    // Remove dependent records so FK does not block child.destroy()
-    await TherapyUsage.destroy({ where: { childId } });
-    await Activity.destroy({ where: { childId } });
-    await Media.destroy({ where: { childId } });
-    await Meal.destroy({ where: { childId } });
-    await Progress.destroy({ where: { childId } });
-
-    await child.destroy();
+    await sequelize.transaction(async (t) => {
+      // Remove dependent records so FK does not block child.destroy()
+      await TherapyUsage.destroy({ where: { childId }, transaction: t });
+      await Activity.destroy({ where: { childId }, transaction: t });
+      await Media.destroy({ where: { childId }, transaction: t });
+      await Meal.destroy({ where: { childId }, transaction: t });
+      await Progress.destroy({ where: { childId }, transaction: t });
+      await child.destroy({ transaction: t });
+    });
 
     logger.info('Child deleted by Reception', {
       childId,

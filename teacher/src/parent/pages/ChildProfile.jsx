@@ -37,6 +37,7 @@ const ChildProfile = () => {
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [refreshKey, setRefreshKey] = useState(0);
   const [photoTimestamp, setPhotoTimestamp] = useState(Date.now());
   const [imageLoading, setImageLoading] = useState(true);
   const [teacherName, setTeacherName] = useState('');
@@ -342,7 +343,7 @@ const ChildProfile = () => {
       setError(t('child.errorNotFound'));
       setLoading(false);
     }
-  }, [selectedChildId, children, childrenLoading, t, API_BASE]);
+  }, [selectedChildId, children, childrenLoading, t, API_BASE, refreshKey]);
 
   // Real-time WebSocket listeners
   useEffect(() => {
@@ -353,7 +354,7 @@ const ChildProfile = () => {
         // Update photo timestamp to force image refresh
         setPhotoTimestamp(Date.now());
         // Trigger reload by updating a dependency
-        window.location.reload(); // Simple but effective for now
+        setRefreshKey((k) => k + 1); // Soft refresh — re-runs data effect
       }
     };
 
@@ -362,7 +363,7 @@ const ChildProfile = () => {
       const eventChildId = data.activity?.childId || data.meal?.childId || data.media?.childId || data.childId;
       if (eventChildId === selectedChildId) {
         // Trigger reload by updating a dependency
-        window.location.reload(); // Simple but effective for now
+        setRefreshKey((k) => k + 1); // Soft refresh — re-runs data effect
       }
     };
 

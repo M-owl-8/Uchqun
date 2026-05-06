@@ -64,8 +64,6 @@ const Activity = sequelize.define('Activity', {
   paranoid: true,
   indexes: [{ fields: ['childId', 'date'] }],
 });
-
-Activity.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-Child.hasMany(Activity, { foreignKey: 'childId', as: 'activities' });
+// Associations are declared in models/index.js
 
 export default Activity;

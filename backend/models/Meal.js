@@ -37,7 +37,6 @@ const Meal = sequelize.define('Meal', {
   indexes: [{ fields: ['childId', 'date'] }],
 });
 
-Meal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-Child.hasMany(Meal, { foreignKey: 'childId', as: 'meals' });
+// Associations are declared in models/index.js
 
 export default Meal;

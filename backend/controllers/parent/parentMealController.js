@@ -121,19 +121,28 @@ export const getMyMeals = async (req, res) => {
 export const getMealById = async (req, res) => {
   try {
     const { id } = req.params;
+    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+
+    if (parent?.groupId) {
+      const meal = await Meal.findOne({
+        where: { id },
+        include: [{
+          model: Child,
+          as: 'child',
+          where: { groupId: parent.groupId },
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
+          required: true,
+        }],
+      });
+      if (!meal) return res.status(404).json({ error: 'Meal not found' });
+      return res.json({ success: true, data: meal });
+    }
 
     const meal = await ParentMeal.findOne({
       where: { id, parentId: req.user.id },
     });
-
-    if (!meal) {
-      return res.status(404).json({ error: 'Meal not found' });
-    }
-
-    res.json({
-      success: true,
-      data: meal,
-    });
+    if (!meal) return res.status(404).json({ error: 'Meal not found' });
+    res.json({ success: true, data: meal });
   } catch (error) {
     logger.error('Get meal by id error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch meal' });

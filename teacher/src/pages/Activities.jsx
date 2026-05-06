@@ -43,6 +43,8 @@ const Activities = () => {
   });
   const [parents, setParents] = useState([]);
   const [children, setChildren] = useState([]);
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const locale = (() => {
     if (i18n.language === 'uz') return 'uz-UZ';
@@ -70,6 +72,7 @@ const Activities = () => {
         await loadChildrenForParent(parentId);
       }
     } catch (error) {
+      showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
     }
   };
 
@@ -227,8 +230,6 @@ const Activities = () => {
   };
 
   const filteredActivities = activities; // Individual plans don't use type filter
-  const [selectedActivity, setSelectedActivity] = useState(null);
-  const [showDetailsModal, setShowDetailsModal] = useState(false);
 
   const openDetailsModal = (activity) => {
     setSelectedActivity(activity);

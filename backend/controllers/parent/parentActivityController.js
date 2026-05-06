@@ -121,19 +121,28 @@ export const getMyActivities = async (req, res) => {
 export const getActivityById = async (req, res) => {
   try {
     const { id } = req.params;
+    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+
+    if (parent?.groupId) {
+      const activity = await Activity.findOne({
+        where: { id },
+        include: [{
+          model: Child,
+          as: 'child',
+          where: { groupId: parent.groupId },
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
+          required: true,
+        }],
+      });
+      if (!activity) return res.status(404).json({ error: 'Activity not found' });
+      return res.json({ success: true, data: activity });
+    }
 
     const activity = await ParentActivity.findOne({
       where: { id, parentId: req.user.id },
     });
-
-    if (!activity) {
-      return res.status(404).json({ error: 'Activity not found' });
-    }
-
-    res.json({
-      success: true,
-      data: activity,
-    });
+    if (!activity) return res.status(404).json({ error: 'Activity not found' });
+    res.json({ success: true, data: activity });
   } catch (error) {
     logger.error('Get activity by id error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch activity' });

@@ -13,7 +13,7 @@ import {
   Settings,
 } from 'lucide-react';
 
-// Color scheme per Mobile-icons.md
+
 const COLORS = {
   softNavy: '#2E3A59',
   textTertiary: '#8F9BB3',
@@ -26,7 +26,7 @@ const Sidebar = ({ onClose }) => {
   const { user } = useAuth();
   const { t } = useTranslation();
 
-  // Icon mapping per Mobile-icons.md
+  
   const navigation = [
     { name: t('nav.dashboard'), href: '/admin', icon: Home },
     { name: t('nav.receptions'), href: '/admin/receptions', icon: Shield },

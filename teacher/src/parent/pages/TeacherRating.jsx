@@ -584,7 +584,7 @@ const TeacherRating = () => {
                 {/* Display Evaluation Criteria if any */}
                 {schoolRating?.evaluation && Object.keys(schoolRating.evaluation).length > 0 && (
                   <div className="space-y-2 pt-2 border-t border-gray-200">
-                    {Object.keys(schoolEvaluation).map((key) => {
+                    {Object.keys(schoolRating.evaluation).map((key) => {
                       const isChecked = (schoolRating?.evaluation?.[key]) === true;
                       if (!isChecked) return null;
                       return (

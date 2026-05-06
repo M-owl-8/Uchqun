@@ -58,9 +58,7 @@ const Group = sequelize.define('Group', {
   ],
 });
 
-// Define associations
-Group.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
-User.hasMany(Group, { foreignKey: 'teacherId', as: 'groups' });
+// Associations are declared in models/index.js
 
 export default Group;
 

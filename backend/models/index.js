@@ -145,6 +145,20 @@ School.hasMany(Child, { foreignKey: 'schoolId', as: 'schoolChildren' });
 Child.belongsTo(Group, { foreignKey: 'groupId', as: 'childGroup' });
 Group.hasMany(Child, { foreignKey: 'groupId', as: 'groupChildren' });
 
+// Group → User (teacher)
+Group.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+User.hasMany(Group, { foreignKey: 'teacherId', as: 'groups' });
+
+// Activity / Meal / Media → Child / Activity
+Activity.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+Child.hasMany(Activity, { foreignKey: 'childId', as: 'activities' });
+Meal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+Child.hasMany(Meal, { foreignKey: 'childId', as: 'meals' });
+Media.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+Child.hasMany(Media, { foreignKey: 'childId', as: 'media' });
+Media.belongsTo(Activity, { foreignKey: 'activityId', as: 'activity' });
+Activity.hasMany(Media, { foreignKey: 'activityId', as: 'media' });
+
 // SuperAdminMessage
 User.hasMany(SuperAdminMessage, { foreignKey: 'senderId', as: 'superAdminMessages' });
 SuperAdminMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });

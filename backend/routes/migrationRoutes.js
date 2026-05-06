@@ -1,42 +1,39 @@
 import express from 'express';
+import crypto from 'crypto';
 import { runMigrations } from '../config/migrate.js';
+import logger from '../utils/logger.js';
 
 const router = express.Router();
 
-// Public endpoint to check migration status and run migrations
-// This is useful for Railway where migrations might not run automatically
-// Protected by secret key to prevent abuse
+const secretMatches = (provided, expected) => {
+  if (!provided || !expected) return false;
+  const a = crypto.createHash('sha256').update(String(provided)).digest();
+  const b = crypto.createHash('sha256').update(String(expected)).digest();
+  return crypto.timingSafeEqual(a, b);
+};
+
 router.post('/run', async (req, res) => {
   try {
-    // Optional: protect with secret key
-    // Accept secret from body or query parameter to avoid CORS issues
     const secret = req.body.secret || req.headers['x-migration-secret'];
     const expectedSecret = process.env.MIGRATION_SECRET;
 
     if (!expectedSecret) {
       return res.status(500).json({ success: false, error: 'MIGRATION_SECRET env var is not configured' });
     }
-    
-    if (secret !== expectedSecret) {
-      return res.status(403).json({ 
-        success: false, 
-        error: 'Invalid migration secret key' 
-      });
+
+    if (!secretMatches(secret, expectedSecret)) {
+      return res.status(403).json({ success: false, error: 'Invalid migration secret key' });
     }
-    
-    console.log('Manual migration trigger requested');
+
+    logger.info('Manual migration trigger requested');
     const result = await runMigrations();
-    res.json({ 
-      success: true, 
-      message: 'Migrations completed successfully',
-      ...result
-    });
+    res.json({ success: true, message: 'Migrations completed successfully', ...result });
   } catch (error) {
-    console.error('Migration error:', error);
-    res.status(500).json({ 
-      success: false, 
+    logger.error('Migration error', { error: error.message, stack: error.stack });
+    res.status(500).json({
+      success: false,
       error: error.message,
-      details: process.env.NODE_ENV === 'development' ? error.stack : undefined
+      details: process.env.NODE_ENV === 'development' ? error.stack : undefined,
     });
   }
 });

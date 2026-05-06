@@ -17,24 +17,16 @@ const router = express.Router();
 router.use(authenticate);
 
 router.get('/', getTherapies);
-router.get('/:id', getTherapy);
 
-// Get therapy usage history (must come before /:id routes)
+// Specific paths must come before /:id paths so Express matches them first
 router.get('/usage', getTherapyUsage);
-
-// Start therapy session (Parent, Teacher) - must come before /:id routes
+router.put('/usage/:id/end', requireRole('parent', 'teacher'), endTherapy);
 router.post('/:id/start', requireRole('parent', 'teacher'), startTherapy);
 
-// End therapy session (Parent, Teacher) - must come before /:id routes
-router.put('/usage/:id/end', requireRole('parent', 'teacher'), endTherapy);
+router.get('/:id', getTherapy);
 
-// Create therapy (Admin, Teacher)
 router.post('/', requireRole('admin', 'teacher'), createTherapy);
-
-// Update therapy (Admin, Teacher)
 router.put('/:id', requireRole('admin', 'teacher'), updateTherapy);
-
-// Delete therapy (Admin, Teacher)
 router.delete('/:id', requireRole('admin', 'teacher'), deleteTherapy);
 
 export default router;

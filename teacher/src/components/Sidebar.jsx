@@ -16,7 +16,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { getUnreadTotalForPrefix } from '../shared/services/chatStore';
 
-// Color scheme per Mobile-icons.md
+
 const COLORS = {
   softNavy: '#2E3A59',
   textTertiary: '#8F9BB3',
@@ -52,7 +52,7 @@ const Sidebar = ({ onClose }) => {
     };
   }, []);
 
-  // Icon mapping per Mobile-icons.md
+  
   const navigation = [
     { name: t('nav.dashboard'), href: '/teacher', icon: Home },
     { name: t('nav.parents'), href: '/teacher/parents', icon: Users },

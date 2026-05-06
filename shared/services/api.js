@@ -4,6 +4,10 @@ const BASE_URL = import.meta.env.VITE_API_URL || 'https://uchqun-production-2d8a
 
 export function createApi({
   onUnauthenticated = null,
+  // tokenKey is accepted for backward compatibility with apps that pass
+  // it; auth is cookie-based so this argument has no effect.
+  // eslint-disable-next-line no-unused-vars
+  tokenKey = null,
 } = {}) {
   const api = axios.create({
     baseURL: BASE_URL,

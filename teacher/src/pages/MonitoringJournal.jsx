@@ -99,7 +99,7 @@ const MonitoringJournal = () => {
         date: record.date,
         emotionalState: record.emotionalState || formData.emotionalState,
         notes: record.notes || '',
-        teacherSignature: record.teacherSignature || user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : '',
+        teacherSignature: record.teacherSignature || ((user?.firstName && user?.lastName) ? `${user.firstName} ${user.lastName}` : ''),
       });
     } else {
       // Creating new record

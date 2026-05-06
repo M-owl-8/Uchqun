@@ -23,7 +23,7 @@ import uzParent from '../locales/uz/common.json';
 import ruParent from '../locales/ru/common.json';
 import enParent from '../locales/en/common.json';
 
-// Color scheme per Mobile-icons.md
+
 const COLORS = {
   softNavy: '#2E3A59',
   textTertiary: '#8F9BB3',
@@ -78,7 +78,7 @@ const Sidebar = ({ onClose }) => {
     };
   }, [user?.id]);
 
-  // Icon mapping per Mobile-icons.md
+  
   const navigation = [
     { name: t('nav.profile'), href: '/child', icon: UserCircle },
     { name: t('nav.activities'), href: '/activities', icon: CheckCircle },

@@ -1,6 +1,6 @@
 import express from 'express';
 import { getChildren, getChild, updateChild, deleteChild } from '../controllers/childController.js';
-import { authenticate, requireParent } from '../middleware/auth.js';
+import { authenticate, requireRole } from '../middleware/auth.js';
 import { updateChildValidator, childIdValidator } from '../validators/childValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { uploadChildPhoto } from '../middleware/uploadChildren.js';
@@ -13,10 +13,11 @@ router.use(authenticate);
 router.get('/', getChildren);
 router.get('/:id', childIdValidator, handleValidationErrors, getChild);
 
-// DELETE child endpoint
-router.delete('/:id', 
-    childIdValidator, 
-    handleValidationErrors, 
+// DELETE child endpoint — admin / reception of the same school only
+router.delete('/:id',
+    requireRole('admin', 'reception', 'government'),
+    childIdValidator,
+    handleValidationErrors,
     deleteChild
 );
 
@@ -130,33 +131,5 @@ router.put(
     // Finally update
     updateChild
 );
-
-// Test endpoint
-router.post('/test-upload', uploadChildPhoto.single('photo'), (req, res) => {
-    console.log('=== TEST UPLOAD ===');
-    console.log('req.file:', req.file);
-    console.log('req.body:', req.body);
-    console.log('Content-Type:', req.headers['content-type']);
-    
-    if (req.file) {
-        res.json({ 
-            success: true, 
-            message: 'File received!', 
-            file: {
-                filename: req.file.filename,
-                size: req.file.size,
-                mimetype: req.file.mimetype,
-                path: req.file.path
-            }
-        });
-    } else {
-        res.json({ 
-            success: false, 
-            message: 'No file received',
-            body: req.body,
-            headers: req.headers
-        });
-    }
-});
 
 export default router;

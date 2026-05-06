@@ -1,5 +1,6 @@
 import EmotionalMonitoring from '../models/EmotionalMonitoring.js';
 import Child from '../models/Child.js';
+import Group from '../models/Group.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
@@ -82,14 +83,17 @@ export const createOrUpdateMonitoring = async (req, res) => {
       return res.status(404).json({ error: 'Child not found' });
     }
 
-    // Check if teacher has access to this child (through parent assignment)
-    // For admin, skip this check
-    if (req.user.role !== 'admin') {
-      const parent = await User.findOne({
-        where: { id: child.parentId, teacherId },
-      });
-
-      if (!parent) {
+    // Check if teacher has access to this child:
+    //   • legacy direct parent.teacherId assignment, OR
+    //   • the child's group is taught by this teacher (modern assignment)
+    if (req.user.role !== 'admin' && req.user.role !== 'government') {
+      const parent = await User.findOne({ where: { id: child.parentId, teacherId } });
+      let allowed = !!parent;
+      if (!allowed && child.groupId) {
+        const group = await Group.findOne({ where: { id: child.groupId, teacherId } });
+        allowed = !!group;
+      }
+      if (!allowed) {
         return res.status(403).json({ error: 'You do not have access to this child' });
       }
     }

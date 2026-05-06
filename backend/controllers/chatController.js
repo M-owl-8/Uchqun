@@ -11,15 +11,12 @@ const canAccessConversation = async (req, conversationId) => {
   }
   // Admin can access all conversations
   if (req.user.role === 'admin') return true;
-  // Teacher/reception can only access conversations of parents whose children they manage
+  if (req.user.role === 'government') return true;
   if (['teacher', 'reception'].includes(req.user.role)) {
-    // Extract parentId from conversationId (format: "parent:<uuid>")
     const parentId = conversationId.replace('parent:', '');
     if (!parentId) return false;
-    const { default: Child } = await import('../models/Child.js');
-    let where;
     if (req.user.role === 'teacher') {
-      // Child has no teacherId — link via Group.teacherId -> Child.groupId
+      const { default: Child } = await import('../models/Child.js');
       const { default: Group } = await import('../models/Group.js');
       const groups = await Group.findAll({
         attributes: ['id'],
@@ -28,12 +25,13 @@ const canAccessConversation = async (req, conversationId) => {
       });
       const groupIds = groups.map((g) => g.id);
       if (groupIds.length === 0) return false;
-      where = { parentId, groupId: { [Op.in]: groupIds } };
-    } else {
-      where = { parentId, createdBy: req.user.id };
+      const childCount = await Child.count({ where: { parentId, groupId: { [Op.in]: groupIds } } });
+      return childCount > 0;
     }
-    const childCount = await Child.count({ where });
-    return childCount > 0;
+    // reception: scope by parents they themselves created
+    const { default: User } = await import('../models/User.js');
+    const parent = await User.findOne({ where: { id: parentId, role: 'parent', createdBy: req.user.id } });
+    return !!parent;
   }
   return false;
 };

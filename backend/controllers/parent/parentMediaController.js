@@ -86,19 +86,28 @@ export const getMyMedia = async (req, res) => {
 export const getMediaById = async (req, res) => {
   try {
     const { id } = req.params;
+    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+
+    if (parent?.groupId) {
+      const media = await Media.findOne({
+        where: { id },
+        include: [{
+          model: Child,
+          as: 'child',
+          where: { groupId: parent.groupId },
+          attributes: ['id', 'firstName', 'lastName', 'photo'],
+          required: true,
+        }],
+      });
+      if (!media) return res.status(404).json({ error: 'Media not found' });
+      return res.json({ success: true, data: media });
+    }
 
     const media = await ParentMedia.findOne({
       where: { id, parentId: req.user.id },
     });
-
-    if (!media) {
-      return res.status(404).json({ error: 'Media not found' });
-    }
-
-    res.json({
-      success: true,
-      data: media,
-    });
+    if (!media) return res.status(404).json({ error: 'Media not found' });
+    res.json({ success: true, data: media });
   } catch (error) {
     logger.error('Get media by id error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch media' });

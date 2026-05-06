@@ -44,9 +44,6 @@ const Media = sequelize.define('Media', {
   ],
 });
 
-Media.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-Media.belongsTo(Activity, { foreignKey: 'activityId', as: 'activity' });
-Child.hasMany(Media, { foreignKey: 'childId', as: 'media' });
-Activity.hasMany(Media, { foreignKey: 'activityId', as: 'media' });
+// Associations are declared in models/index.js
 
 export default Media;
