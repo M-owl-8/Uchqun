@@ -25,6 +25,10 @@
     "migrate:undo": "echo 'Manual rollback required - check migrations directory'",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --forceExit --detectOpenHandles"
   },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
   "keywords": [
     "education",
     "special-needs",
@@ -74,6 +78,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.10",
     "eslint": "^8.55.0",
+    "eslint-plugin-security": "^2.1.1",
     "jest": "^30.2.0",
     "nodemon": "^3.0.2",
     "sqlite3": "^5.1.7",

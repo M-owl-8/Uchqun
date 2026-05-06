@@ -1,7 +1,8 @@
 // Reception ParentManagement - Updated with Edit Child functionality
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo, useCallback } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
+import { SkeletonList } from '../../../shared/components/Skeleton';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { 
@@ -66,6 +67,7 @@ const ParentManagement = () => {
     photo: null,
     photoPreview: null,
   });
+  const [confirmDialog, setConfirmDialog] = useState(null); // { message, onConfirm }
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
@@ -85,7 +87,6 @@ const ParentManagement = () => {
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) {
-      console.error('Error loading teachers and groups:', error);
     }
   };
 
@@ -97,11 +98,9 @@ const ParentManagement = () => {
   const loadParents = async () => {
     try {
       setLoading(true);
-      console.log('Loading parents from /reception/parents endpoint');
       const response = await api.get('/reception/parents');
       setParents(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
-      console.error('Error loading parents:', error);
       showError(error.response?.data?.error || t('parentsPage.toastLoadError'));
       setParents([]);
     } finally {
@@ -147,19 +146,20 @@ const ParentManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (parentId) => {
-    if (!window.confirm(t('parentsPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/reception/parents/${parentId}`);
-      success(t('parentsPage.toastDelete'));
-      loadParents();
-    } catch (error) {
-      console.error('Error deleting parent:', error);
-      showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
-    }
+  const handleDelete = (parentId) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/parents/${parentId}`);
+          success(t('parentsPage.toastDelete'));
+          loadParents();
+        } catch (error) {
+          showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   // NEW: Handle Edit Child
@@ -181,19 +181,20 @@ const ParentManagement = () => {
   };
 
   // NEW: Handle Delete Child
-  const handleDeleteChild = async (parentId, childId) => {
-    if (!window.confirm(t('parentsPage.confirmDeleteChild'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/reception/children/${childId}`);
-      success(t('parentsPage.toastDeleteChild'));
-      loadParents();
-    } catch (error) {
-      console.error('Error deleting child:', error);
-      showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
-    }
+  const handleDeleteChild = (parentId, childId) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmDeleteChild'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/children/${childId}`);
+          success(t('parentsPage.toastDeleteChild'));
+          loadParents();
+        } catch (error) {
+          showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   const handleAddChild = (parentId) => {
@@ -248,24 +249,12 @@ const ParentManagement = () => {
       }
       
       // Debug: Log FormData contents
-      console.log('Sending FormData:', {
-        parentId: selectedParentId,
-        firstName: childFormData.firstName,
-        lastName: childFormData.lastName,
-        dateOfBirth: childFormData.dateOfBirth,
-        gender: childFormData.gender,
-        disabilityType: childFormData.disabilityType,
-        school: childFormData.school,
-        hasPhoto: !!childFormData.photo,
-      });
       
       await api.post('/reception/children', formDataToSend);
       success(t('parentsPage.toastChildAdded'));
       setShowChildModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error adding child:', error);
-      console.error('Error response:', error.response?.data);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedAddChild');
       const errorDetails = error.response?.data?.missing ? `Missing: ${JSON.stringify(error.response.data.missing)}` : '';
       showError(`${errorMessage}${errorDetails ? ` - ${errorDetails}` : ''}`);
@@ -312,8 +301,6 @@ const ParentManagement = () => {
       setShowEditChildModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error updating child:', error);
-      console.error('Error response:', error.response?.data);
       const errorMessage = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedUpdateChild');
       const errorDetails = error.response?.data?.missing ? `Missing: ${JSON.stringify(error.response.data.missing)}` : '';
       showError(`${errorMessage}${errorDetails ? ` - ${errorDetails}` : ''}`);
@@ -321,15 +308,27 @@ const ParentManagement = () => {
   };
 
   // NEW: Handle photo change for child
+  const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+  const MAX_PHOTO_SIZE = 5 * 1024 * 1024; // 5 MB
+
   const handleChildPhotoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setChildFormData({
-        ...childFormData,
-        photo: file,
-        photoPreview: URL.createObjectURL(file)
-      });
+    if (!file) return;
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      showError(t('parentsPage.invalidFileType', { defaultValue: 'Only JPEG, PNG, WebP and GIF images are allowed' }));
+      e.target.value = '';
+      return;
     }
+    if (file.size > MAX_PHOTO_SIZE) {
+      showError(t('parentsPage.fileTooLarge', { defaultValue: 'Image must be smaller than 5 MB' }));
+      e.target.value = '';
+      return;
+    }
+    setChildFormData({
+      ...childFormData,
+      photo: file,
+      photoPreview: URL.createObjectURL(file),
+    });
   };
 
   // NEW: Remove photo
@@ -403,12 +402,11 @@ const ParentManagement = () => {
       setShowModal(false);
       loadParents();
     } catch (error) {
-      console.error('Error saving parent:', error);
       showError(error.response?.data?.error || t('parentsPage.toastSaveError'));
     }
   };
 
-  const filteredParents = parents.filter((parent) => {
+  const filteredParents = useMemo(() => parents.filter((parent) => {
     const query = searchQuery.toLowerCase();
     return (
       parent.firstName?.toLowerCase().includes(query) ||
@@ -416,14 +414,10 @@ const ParentManagement = () => {
       parent.email?.toLowerCase().includes(query) ||
       parent.phone?.toLowerCase().includes(query)
     );
-  });
+  }), [parents, searchQuery]);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
+    return <SkeletonList items={8} />;
   }
 
   return (
@@ -435,16 +429,17 @@ const ParentManagement = () => {
         </div>
 
         <div className="flex gap-3">
-          <div className="relative flex-1 md:flex-initial">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <form role="search" aria-label={t('parentsPage.search')} className="relative flex-1 md:flex-initial">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
               type="text"
               placeholder={t('parentsPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label={t('parentsPage.search')}
               className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
             />
-          </div>
+          </form>
 
           <button
             onClick={handleCreate}
@@ -565,15 +560,17 @@ const ParentManagement = () => {
                                 onClick={() => handleEditChild(parent.id, child)}
                                 className="p-1 text-gray-500 hover:text-primary-600 transition-colors"
                                 title={t('parentsPage.editChildTitle')}
+                                aria-label={`${t('parentsPage.editChildTitle')} — ${child.firstName} ${child.lastName}`}
                               >
-                                <Edit2 className="w-4 h-4" />
+                                <Edit2 className="w-4 h-4" aria-hidden="true" />
                               </button>
                               <button
                                 onClick={() => handleDeleteChild(parent.id, child.id)}
                                 className="p-1 text-gray-500 hover:text-red-600 transition-colors"
                                 title={t('parentsPage.buttons.delete')}
+                                aria-label={`${t('parentsPage.buttons.delete')} — ${child.firstName} ${child.lastName}`}
                               >
-                                <Trash2 className="w-4 h-4" />
+                                <Trash2 className="w-4 h-4" aria-hidden="true" />
                               </button>
                             </div>
                           </div>
@@ -635,20 +632,26 @@ const ParentManagement = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="parent-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 id="parent-modal-title" className="text-2xl font-bold text-gray-900">
                 {editingParent ? t('parentsPage.form.update') + ' ' + t('nav.parents') : t('parentsPage.add')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} aria-label={editingParent ? t('parentsPage.form.update') : t('parentsPage.add')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">{t('parentsPage.form.firstName')}</label>
@@ -935,20 +938,26 @@ const ParentManagement = () => {
       {/* Add Child Modal */}
       {showChildModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="add-child-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">Bola qo'shish</h2>
+              <h2 id="add-child-modal-title" className="text-2xl font-bold text-gray-900">Bola qo'shish</h2>
               <button
                 onClick={() => {
                   setShowChildModal(false);
                 }}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmitChild} className="p-6 space-y-4">
+            <form onSubmit={handleSubmitChild} aria-label={t('parentsPage.buttons.addChild')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1113,20 +1122,26 @@ const ParentManagement = () => {
       {/* Edit Child Modal */}
       {showEditChildModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="edit-child-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">{t('parentsPage.editChildTitle')}</h2>
+              <h2 id="edit-child-modal-title" className="text-2xl font-bold text-gray-900">{t('parentsPage.editChildTitle')}</h2>
               <button
                 onClick={() => {
                   setShowEditChildModal(false);
                 }}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleUpdateChild} className="p-6 space-y-4">
+            <form onSubmit={handleUpdateChild} aria-label={t('parentsPage.editChildTitle')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -1284,6 +1299,28 @@ const ParentManagement = () => {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {confirmDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl p-6 max-w-sm w-full shadow-xl">
+            <p className="text-gray-800 mb-6">{confirmDialog.message}</p>
+            <div className="flex gap-3">
+              <button
+                onClick={() => setConfirmDialog(null)}
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+              >
+                {t('common.cancel', { defaultValue: 'Cancel' })}
+              </button>
+              <button
+                onClick={confirmDialog.onConfirm}
+                className="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+              >
+                {t('common.confirm', { defaultValue: 'Confirm' })}
+              </button>
+            </div>
           </div>
         </div>
       )}

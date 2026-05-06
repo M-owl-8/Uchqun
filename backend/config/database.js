@@ -31,19 +31,14 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
     dialectOptions: {
       ssl: useSSL && !isLocalDatabase ? {
         require: true,
-        rejectUnauthorized: false,
+        rejectUnauthorized: true,
       } : false,
       connectTimeout: 60000,
     },
     retry: {
       max: 3,
-      match: [
-        /ETIMEDOUT/,
-        /EHOSTUNREACH/,
-        /ECONNREFUSED/,
-        /SequelizeConnectionError/,
-      ],
-    }
+      match: [/ETIMEDOUT/, /EHOSTUNREACH/, /ECONNREFUSED/, /SequelizeConnectionError/],
+    },
   });
 } else {
   // Use individual variables (local development)
@@ -69,15 +64,9 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
         connectTimeout: 60000, // 60 seconds connection timeout
       },
       retry: {
-        max: 3, // Retry up to 3 times
-        match: [
-          /ETIMEDOUT/,
-          /EHOSTUNREACH/,
-          /ECONNREFUSED/,
-          /ETIMEDOUT/,
-          /SequelizeConnectionError/,
-        ],
-      }
+        max: 3,
+        match: [/ETIMEDOUT/, /EHOSTUNREACH/, /ECONNREFUSED/, /SequelizeConnectionError/],
+      },
     }
   );
 }

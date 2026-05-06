@@ -45,7 +45,6 @@ export const ChildProvider = ({ children: childrenProp }) => {
       const childrenData = Array.isArray(response.data) ? response.data : [];
       setChildrenList(childrenData);
     } catch (error) {
-      console.error('Error loading children:', error);
       setChildrenList([]);
     } finally {
       setLoading(false);

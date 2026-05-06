@@ -42,7 +42,6 @@ const Therapy = () => {
       const therapiesData = response.data.data?.therapies || response.data.data || response.data.therapies || [];
       setTherapies(Array.isArray(therapiesData) ? therapiesData : []);
     } catch (error) {
-      console.error('Error loading therapies:', error);
       setTherapies([]);
     } finally {
       setLoading(false);
@@ -57,7 +56,6 @@ const Therapy = () => {
       setActiveSession(response.data.data);
       setSelectedTherapy(therapies.find(t => t.id === therapyId));
     } catch (error) {
-      console.error('Error starting therapy:', error);
       alert(error.response?.data?.error || 'Failed to start therapy');
     }
   };
@@ -69,7 +67,6 @@ const Therapy = () => {
       setSelectedTherapy(null);
       loadTherapies();
     } catch (error) {
-      console.error('Error ending therapy:', error);
     }
   };
 

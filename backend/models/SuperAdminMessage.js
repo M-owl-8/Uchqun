@@ -9,37 +9,17 @@ const SuperAdminMessage = sequelize.define('SuperAdminMessage', {
   },
   senderId: {
     type: DataTypes.UUID,
-    allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
-  },
-  subject: {
-    type: DataTypes.STRING(500),
-    allowNull: false,
-  },
-  message: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  isRead: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-    allowNull: false,
-  },
-  readAt: {
-    type: DataTypes.DATE,
     allowNull: true,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
   },
-  reply: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  repliedAt: {
-    type: DataTypes.DATE,
-    allowNull: true,
-  },
+  subject: { type: DataTypes.STRING(500), allowNull: false },
+  message: { type: DataTypes.TEXT, allowNull: false },
+  isRead: { type: DataTypes.BOOLEAN, defaultValue: false, allowNull: false },
+  readAt: { type: DataTypes.DATE, allowNull: true },
+  reply: { type: DataTypes.TEXT, allowNull: true },
+  repliedAt: { type: DataTypes.DATE, allowNull: true },
 }, {
   tableName: 'super_admin_messages',
   timestamps: true,

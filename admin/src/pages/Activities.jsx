@@ -42,7 +42,6 @@ const Activities = () => {
       const activitiesData = dataStore.getActivities();
       setActivities(Array.isArray(activitiesData) ? activitiesData : []);
     } catch (error) {
-      console.error('Error loading activities:', error);
       setActivities([]);
     } finally {
       setLoading(false);
@@ -89,7 +88,6 @@ const Activities = () => {
       success('Activity deleted successfully');
       loadActivities();
     } catch (error) {
-      console.error('Error deleting activity:', error);
       showError('Error deleting activity');
     }
   };
@@ -109,7 +107,6 @@ const Activities = () => {
       setShowModal(false);
       loadActivities();
     } catch (error) {
-      console.error('Error saving activity:', error);
       showError(error.message || 'Error saving activity');
     }
   };

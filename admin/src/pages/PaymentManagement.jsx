@@ -76,7 +76,6 @@ const PaymentManagement = () => {
       setParents(parentsRes.data.data || []);
     } catch (error) {
       showError(t('payment.loadError', { defaultValue: 'To\'lovlarni yuklashda xatolik' }));
-      console.error('Error loading data:', error);
     } finally {
       setLoading(false);
     }
@@ -94,7 +93,6 @@ const PaymentManagement = () => {
       const parentData = response.data.data;
       setChildren(parentData.children || []);
     } catch (error) {
-      console.error('Error loading children:', error);
       setChildren([]);
     } finally {
       setLoadingParents(false);

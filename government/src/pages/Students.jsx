@@ -23,7 +23,6 @@ const Students = () => {
       setStudents(data.students || []);
       setTotal(data.total ?? 0);
     } catch (error) {
-      console.error('Error loading students:', error);
       setStudents([]);
       setTotal(0);
     } finally {

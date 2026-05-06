@@ -72,7 +72,6 @@ const MonitoringJournal = () => {
       });
       setChildren(allChildren);
     } catch (error) {
-      console.error('Error loading parents:', error);
       showError(t('monitoring.toastLoadParentsError'));
     }
   };
@@ -84,7 +83,6 @@ const MonitoringJournal = () => {
       const records = Array.isArray(response.data.data) ? response.data.data : [];
       setMonitoringRecords(records);
     } catch (error) {
-      console.error('Error loading monitoring records:', error);
       showError(t('monitoring.toastLoadError'));
     } finally {
       setLoading(false);
@@ -153,7 +151,6 @@ const MonitoringJournal = () => {
       handleCloseModal();
       loadMonitoringRecords();
     } catch (error) {
-      console.error('Error saving monitoring record:', error);
       showError(error.response?.data?.error || t('monitoring.toastError'));
     }
   };
@@ -168,7 +165,6 @@ const MonitoringJournal = () => {
       success(t('monitoring.toastDelete'));
       loadMonitoringRecords();
     } catch (error) {
-      console.error('Error deleting monitoring record:', error);
       showError(t('monitoring.toastError'));
     }
   };

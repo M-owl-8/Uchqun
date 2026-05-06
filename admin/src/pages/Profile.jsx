@@ -43,7 +43,6 @@ const Profile = () => {
       const response = await api.get('/admin/messages');
       setMyMessages(response.data.data || []);
     } catch (error) {
-      console.error('Error loading messages:', error);
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);
@@ -69,7 +68,6 @@ const Profile = () => {
       // Reload messages
       await loadMessages();
     } catch (error) {
-      console.error('Error sending message:', error);
       showError(error.response?.data?.error || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
     } finally {
       setSendingMessage(false);

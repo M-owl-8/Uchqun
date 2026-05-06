@@ -33,7 +33,6 @@ const ParentManagement = () => {
       const filtered = user?.id ? list.filter((p) => p.teacherId === user.id) : list;
       setParents(filtered);
     } catch (error) {
-      console.error('Error loading parents:', error);
       showError(error.response?.data?.error || t('parentsPage.noParentsFound'));
       setParents([]);
     } finally {

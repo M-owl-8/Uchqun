@@ -3,8 +3,20 @@ import sequelize from '../config/database.js';
 
 const TeacherResource = sequelize.define('TeacherResource', {
   id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
-  teacherId: { type: DataTypes.UUID, allowNull: false },
-  schoolId: { type: DataTypes.UUID, allowNull: true },
+  teacherId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: { model: 'schools', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  },
   type: { type: DataTypes.ENUM('music', 'video', 'recommendation'), allowNull: false },
   title: { type: DataTypes.STRING(500), allowNull: false },
   description: { type: DataTypes.TEXT, allowNull: true },

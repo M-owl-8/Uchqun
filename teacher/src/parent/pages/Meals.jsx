@@ -81,7 +81,6 @@ const Meals = () => {
         const mealsData = response.data?.meals || response.data || [];
         setMeals(Array.isArray(mealsData) ? mealsData : []);
       } catch (error) {
-        console.error('Error loading meals:', error);
         setMeals([]);
       } finally {
         setLoading(false);

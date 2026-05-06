@@ -53,7 +53,6 @@ const ChildManagement = () => {
       setGroups(Array.isArray(groupsData) ? groupsData : []);
       setParents(Array.isArray(parentsData) ? parentsData : []);
     } catch (error) {
-      console.error('Error loading data:', error);
       showError('Error loading data');
     } finally {
       setLoading(false);
@@ -106,14 +105,24 @@ const ChildManagement = () => {
       success('Child profile deleted successfully');
       loadData();
     } catch (error) {
-      console.error('Error deleting child:', error);
       showError('Error deleting child profile');
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    if (!formData.firstName.trim() || !formData.lastName.trim()) {
+      showError('First name and last name are required');
+      return;
+    }
+    if (!formData.dateOfBirth) {
+      showError('Date of birth is required');
+      return;
+    }
+    if (formData.emergencyPhone && !/^\+?[1-9]\d{6,14}$/.test(formData.emergencyPhone.replace(/[\s\-().]/g, ''))) {
+      showError('Emergency phone must be a valid phone number');
+      return;
+    }
     try {
       if (editingChild) {
         dataStore.updateChild(editingChild.id, formData);
@@ -122,11 +131,9 @@ const ChildManagement = () => {
         dataStore.createChild(formData);
         success('Child profile created successfully');
       }
-      
       setShowModal(false);
       loadData();
     } catch (error) {
-      console.error('Error saving child:', error);
       showError(error.message || 'Error saving child profile');
     }
   };

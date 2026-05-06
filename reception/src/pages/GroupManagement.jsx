@@ -47,7 +47,6 @@ const GroupManagement = () => {
       const groupsRes = await api.get('/groups').catch(() => ({ data: { groups: [] } }));
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) {
-      console.error('Error loading data:', error);
       showError(error.response?.data?.error || t('groupsPage.toastLoadError'));
       setGroups([]);
     } finally {
@@ -90,7 +89,6 @@ const GroupManagement = () => {
       success(t('groupsPage.toastDelete'));
       loadData();
     } catch (error) {
-      console.error('Error deleting group:', error);
       showError(error.response?.data?.error || t('groupsPage.toastDeleteError'));
     }
   };
@@ -115,7 +113,6 @@ const GroupManagement = () => {
       setShowModal(false);
       loadData();
     } catch (error) {
-      console.error('Error saving group:', error);
       showError(error.response?.data?.error || t('groupsPage.toastSaveError'));
     }
   };

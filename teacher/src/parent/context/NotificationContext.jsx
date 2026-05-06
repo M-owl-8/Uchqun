@@ -21,7 +21,6 @@ export const NotificationProvider = ({ children }) => {
       const response = await api.get('/notifications/count');
       setCount(response.data.count || 0);
     } catch (error) {
-      console.error('Error loading notification count:', error);
       setCount(0);
     }
   };
@@ -33,7 +32,6 @@ export const NotificationProvider = ({ children }) => {
       setNotifications(response.data.data || []);
       setCount(response.data.unreadCount || 0);
     } catch (error) {
-      console.error('Error loading notifications:', error);
       setNotifications([]);
     } finally {
       setLoading(false);
@@ -53,7 +51,6 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error marking notification as read:', error);
     }
   };
 
@@ -63,7 +60,6 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error marking all as read:', error);
     }
   };
 
@@ -73,7 +69,6 @@ export const NotificationProvider = ({ children }) => {
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) {
-      console.error('Error deleting notification:', error);
     }
   };
 

@@ -1,37 +1,45 @@
+import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
+import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import Login from './pages/Login';
-import SuperAdmin from './pages/SuperAdmin';
 import { ToastContainer } from './components/Toast';
 import LoadingSpinner from './components/LoadingSpinner';
+
+const Login = lazy(() => import('./pages/Login'));
+const SuperAdmin = lazy(() => import('./pages/SuperAdmin'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-screen">
+    <LoadingSpinner size="lg" />
+  </div>
+);
 
 const AppRoutes = () => {
   const { isAuthenticated, loading } = useAuth();
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
+  if (loading) return <PageLoader />;
 
   return (
-    <Routes>
-      <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} />
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute>
-            <SuperAdmin />
-          </ProtectedRoute>
-        }
-      />
-      <Route path="*" element={<Navigate to="/" replace />} />
-    </Routes>
+    <Suspense fallback={<PageLoader />}>
+      <Routes>
+        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <ErrorBoundary>
+                <SuperAdmin />
+              </ErrorBoundary>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </Suspense>
   );
 };
 
@@ -41,6 +49,7 @@ function App() {
       <BrowserRouter>
         <AuthProvider>
           <ToastProvider>
+            <OfflineBanner />
             <AppRoutes />
             <ToastContainer />
           </ToastProvider>
@@ -51,4 +60,3 @@ function App() {
 }
 
 export default App;
-

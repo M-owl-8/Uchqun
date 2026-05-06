@@ -92,8 +92,9 @@ export const createChildValidator = [
   body('emergencyContact.phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Emergency contact phone must be a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Emergency contact phone must be a valid phone number (e.g. +998901234567)'),
   body('emergencyContact.relationship')
     .optional()
     .trim()
@@ -196,8 +197,9 @@ export const updateChildValidator = [
   body('emergencyContact.phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Emergency contact phone must be a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Emergency contact phone must be a valid phone number (e.g. +998901234567)'),
   body('emergencyContact.relationship')
     .optional()
     .trim()

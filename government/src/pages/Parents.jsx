@@ -23,7 +23,6 @@ const Parents = () => {
       setParents(data.parents || []);
       setTotal(data.total ?? 0);
     } catch (error) {
-      console.error('Error loading parents:', error);
       setParents([]);
       setTotal(0);
     } finally {

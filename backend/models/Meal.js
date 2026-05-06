@@ -11,10 +11,9 @@ const Meal = sequelize.define('Meal', {
   childId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'children',
-      key: 'id',
-    },
+    references: { model: 'children', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   date: {
     type: DataTypes.DATEONLY,
@@ -25,43 +24,20 @@ const Meal = sequelize.define('Meal', {
     type: DataTypes.ENUM('Breakfast', 'Lunch', 'Snack', 'Dinner'),
     allowNull: false,
   },
-  mealName: {
-    type: DataTypes.STRING(500),
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  quantity: {
-    type: DataTypes.STRING(255),
-    allowNull: true,
-  },
-  specialNotes: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  time: {
-    type: DataTypes.TIME,
-    allowNull: true,
-  },
-  eaten: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: true,
-  },
+  mealName: { type: DataTypes.STRING(500), allowNull: false },
+  description: { type: DataTypes.TEXT, allowNull: true },
+  quantity: { type: DataTypes.STRING(255), allowNull: true },
+  specialNotes: { type: DataTypes.TEXT, allowNull: true },
+  time: { type: DataTypes.TIME, allowNull: true },
+  eaten: { type: DataTypes.BOOLEAN, defaultValue: true },
 }, {
   tableName: 'meals',
   timestamps: true,
-  indexes: [
-    {
-      fields: ['childId', 'date'],
-    },
-  ],
+  paranoid: true,
+  indexes: [{ fields: ['childId', 'date'] }],
 });
 
-// Define associations
 Meal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 Child.hasMany(Meal, { foreignKey: 'childId', as: 'meals' });
 
 export default Meal;
-

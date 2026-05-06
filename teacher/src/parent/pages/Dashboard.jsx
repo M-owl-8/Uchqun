@@ -66,7 +66,6 @@ const Dashboard = () => {
       // Refresh notifications after loading data
       refreshNotifications();
     } catch (error) {
-      console.error('Error loading dashboard data:', error);
     } finally {
       setLoading(false);
     }
@@ -81,7 +80,6 @@ const Dashboard = () => {
     if (!connected || !selectedChildId) return;
 
     const handleDataChange = (data) => {
-      console.log('[Dashboard] Data change received:', data);
       loadData(); // Reload dashboard data
     };
 

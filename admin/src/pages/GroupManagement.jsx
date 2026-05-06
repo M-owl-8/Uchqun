@@ -36,7 +36,6 @@ const GroupManagement = () => {
       setGroups(response.data.groups || response.data.data || []);
     } catch (error) {
       showToast(t('groupsPage.loadError') || 'Error', 'error');
-      console.error('Error fetching groups:', error);
       setGroups([]);
     } finally {
       setLoading(false);

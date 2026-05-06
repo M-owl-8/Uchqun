@@ -30,7 +30,6 @@ import { useTranslation } from 'react-i18next';
 const getProxyUrl = (url, mediaId) => {
   if (!url) return url;
   if (!mediaId) {
-    console.warn('getProxyUrl: mediaId is missing', { url });
     return url;
   }
   
@@ -101,7 +100,6 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
     if (video) {
       if (video.paused) {
         video.play().catch((err) => {
-          console.warn('Play failed:', err);
         });
       } else {
         video.pause();
@@ -206,7 +204,6 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
     // Auto-play video when it loads if autoPlay is true
     if (autoPlay && videoRef.current && isDirectVideo) {
       videoRef.current.play().catch((err) => {
-        console.warn('Auto-play failed:', err);
       });
     }
 
@@ -290,7 +287,6 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               // Try to play if autoPlay is enabled
               if (autoPlay) {
                 videoRef.current.play().catch((err) => {
-                  console.warn('Auto-play failed:', err);
                 });
               }
             }
@@ -309,7 +305,6 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
             }
           }}
           onError={(e) => {
-            console.error('Video load error:', url, e);
             setIsLoading(false);
             setError(true);
           }}
@@ -518,7 +513,6 @@ const Media = () => {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
     } catch (error) {
-      console.error('Error loading children:', error);
     }
   };
 
@@ -528,7 +522,6 @@ const Media = () => {
       const response = await api.get('/media');
       setMedia(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error loading media:', error);
       showError(error.response?.data?.error || t('mediaPage.toastLoadError'));
       setMedia([]);
     } finally {
@@ -574,7 +567,6 @@ const Media = () => {
       success(t('mediaPage.toastDelete'));
       loadMedia();
     } catch (error) {
-      console.error('Error deleting media:', error);
       showError(error.response?.data?.error || t('mediaPage.toastError'));
     }
   };
@@ -623,7 +615,6 @@ const Media = () => {
       setShowModal(false);
       loadMedia();
     } catch (error) {
-      console.error('Error saving media:', error);
       const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || error.message || t('mediaPage.toastError');
       showError(errorMessage);
     }
@@ -712,12 +703,6 @@ const Media = () => {
                       onError={(e) => {
                         const originalUrl = item.url;
                         const proxyUrl = getProxyUrl(originalUrl, item.id);
-                        console.error('Video load error:', {
-                          original: originalUrl,
-                          proxy: proxyUrl,
-                          mediaId: item.id,
-                          error: e
-                        });
                       }}
                     />
                     {/* Video Play Icon - Always visible */}
@@ -737,12 +722,6 @@ const Media = () => {
                       onError={(e) => {
                         const originalUrl = item.url || item.imageUrl || item.photoUrl;
                         const proxyUrl = getProxyUrl(originalUrl, item.id);
-                        console.error('Image load error:', {
-                          original: originalUrl,
-                          proxy: proxyUrl,
-                          mediaId: item.id,
-                          error: e
-                        });
                         e.target.style.display = 'none';
                       }}
                     />
@@ -833,12 +812,6 @@ const Media = () => {
                   onError={(e) => {
                     const originalUrl = selectedMedia.url || selectedMedia.imageUrl || selectedMedia.photoUrl;
                     const proxyUrl = getProxyUrl(originalUrl, selectedMedia.id);
-                    console.error('Image load error in modal:', {
-                      original: originalUrl,
-                      proxy: proxyUrl,
-                      mediaId: selectedMedia.id,
-                      error: e
-                    });
                     e.target.style.display = 'none';
                   }}
                 />

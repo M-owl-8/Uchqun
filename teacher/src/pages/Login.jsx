@@ -23,18 +23,14 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      const user = result.user || JSON.parse(localStorage.getItem('user') || '{}');
 
-      // Only allow teacher and parent roles - reject all other roles
       if (user.role === 'teacher') {
         navigate('/teacher');
       } else if (user.role === 'parent') {
         navigate('/');
       } else {
-        // Clear tokens if wrong role (admin, reception, government, super-admin, etc.)
         localStorage.removeItem('user');
-        localStorage.removeItem('accessToken');
-        localStorage.removeItem('refreshToken');
         setError(t('login.invalidRole', { defaultValue: 'Faqat o\'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.' }));
       }
     } else {

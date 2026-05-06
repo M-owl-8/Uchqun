@@ -26,7 +26,6 @@ const MessageModal = ({ onClose }) => {
       setMessageText('');
       if (onClose) onClose();
     } catch (error) {
-      console.error('Error sending message:', error);
       showError(error.response?.data?.error || 'Xabar yuborishda xatolik');
     } finally {
       setSendingMessage(false);

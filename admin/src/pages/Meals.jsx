@@ -41,7 +41,6 @@ const Meals = () => {
       const mealsData = dataStore.getMeals();
       setMeals(Array.isArray(mealsData) ? mealsData : []);
     } catch (error) {
-      console.error('Error loading meals:', error);
       setMeals([]);
     } finally {
       setLoading(false);
@@ -88,7 +87,6 @@ const Meals = () => {
       success('Meal deleted successfully');
       loadMeals();
     } catch (error) {
-      console.error('Error deleting meal:', error);
       showError('Error deleting meal');
     }
   };
@@ -108,7 +106,6 @@ const Meals = () => {
       setShowModal(false);
       loadMeals();
     } catch (error) {
-      console.error('Error saving meal:', error);
       showError(error.message || 'Error saving meal');
     }
   };

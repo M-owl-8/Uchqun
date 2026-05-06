@@ -88,14 +88,6 @@ const AdminRegister = () => {
       formDataToSend.append('telegramUsername', formData.telegramUsername || '');
 
       // Debug: Log what we're sending
-      console.log('Sending form data:', {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        hasCertificate: !!certificateFile,
-        hasPassport: !!passportFile,
-      });
 
       // Add files
       if (certificateFile) {
@@ -119,12 +111,9 @@ const AdminRegister = () => {
         }, 3000);
       }
     } catch (err) {
-      console.error('Registration error:', err);
-      console.error('Error response:', err.response?.data);
       const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'Ro\'yxatdan o\'tishda xatolik yuz berdi';
       let fullErrorMessage = errorMessage;
       if (err.response?.data?.details) {
-        console.error('Error details:', err.response.data.details);
         fullErrorMessage += `\n\nTafsilotlar: ${JSON.stringify(err.response.data.details, null, 2)}`;
       }
       setError(fullErrorMessage);

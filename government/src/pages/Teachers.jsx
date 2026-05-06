@@ -23,7 +23,6 @@ const Teachers = () => {
       setTeachers(data.teachers || []);
       setTotal(data.total ?? 0);
     } catch (error) {
-      console.error('Error loading teachers:', error);
       setTeachers([]);
       setTotal(0);
     } finally {

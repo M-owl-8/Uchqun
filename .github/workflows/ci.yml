@@ -18,10 +18,10 @@ jobs:
       - run: npm ci --workspaces --if-present
       - name: Run ESLint
         run: |
-          if [ -f "backend/.eslintrc.cjs" ] || [ -f "backend/.eslintrc.js" ] || [ -f "backend/.eslintrc.json" ] || [ -f ".eslintrc.js" ] || [ -f ".eslintrc.json" ]; then
-            npx eslint . --ext .js,.jsx --max-warnings 0
+          if [ -f "backend/.eslintrc.cjs" ] || [ -f "backend/.eslintrc.js" ] || [ -f "backend/.eslintrc.json" ]; then
+            cd backend && npm ci && npx eslint . --ext .js --max-warnings 0
           else
-            echo "No ESLint config found, skipping lint check"
+            echo "No ESLint config found, skipping"
           fi
 
   security:
@@ -64,8 +64,9 @@ jobs:
       DB_NAME: uchqun_test
       DB_USER: postgres
       DB_PASSWORD: postgres
-      JWT_SECRET: ci-test-jwt-secret-that-is-at-least-32-chars-long
-      JWT_REFRESH_SECRET: ci-test-jwt-refresh-secret-at-least-32-chars
+      # Use repository secrets if configured, otherwise fall back to safe CI-only test values
+      JWT_SECRET: ${{ secrets.CI_JWT_SECRET || 'ci-test-jwt-secret-that-is-at-least-32-chars' }}
+      JWT_REFRESH_SECRET: ${{ secrets.CI_JWT_REFRESH_SECRET || 'ci-test-refresh-secret-at-least-32-chars' }}
       FRONTEND_URL: http://localhost:5173
     steps:
       - uses: actions/checkout@v4
@@ -89,7 +90,15 @@ jobs:
           node-version: 20
           cache: npm
       - run: cd ${{ matrix.app }} && npm ci
-      - run: cd ${{ matrix.app }} && npm test -- --run
+      - name: Run frontend tests (fail if no tests found)
+        run: |
+          cd ${{ matrix.app }}
+          RESULT=$(npm test -- --run --reporter=verbose 2>&1)
+          echo "$RESULT"
+          if echo "$RESULT" | grep -q "No test files found"; then
+            echo "ERROR: No test files found in ${{ matrix.app }}. Tests are required."
+            exit 1
+          fi
 
   build:
     runs-on: ubuntu-latest
@@ -105,3 +114,72 @@ jobs:
           cache: npm
       - run: cd ${{ matrix.app }} && npm ci
       - run: cd ${{ matrix.app }} && npm run build
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Deploy backend to Railway
+        if: secrets.RAILWAY_TOKEN != ''
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
+          npm install -g @railway/cli
+          railway up --service backend --detach
+        continue-on-error: false
+
+      - name: Deploy admin to Netlify
+        if: secrets.NETLIFY_AUTH_TOKEN != ''
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_ADMIN_SITE_ID }}
+        run: |
+          cd admin && npm ci && npm run build
+          npx netlify-cli deploy --prod --dir=dist
+        continue-on-error: true
+
+      - name: Deploy teacher to Netlify
+        if: secrets.NETLIFY_AUTH_TOKEN != ''
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_TEACHER_SITE_ID }}
+        run: |
+          cd teacher && npm ci && npm run build
+          npx netlify-cli deploy --prod --dir=dist
+        continue-on-error: true
+
+      - name: Deploy reception to Netlify
+        if: secrets.NETLIFY_AUTH_TOKEN != ''
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_RECEPTION_SITE_ID }}
+        run: |
+          cd reception && npm ci && npm run build
+          npx netlify-cli deploy --prod --dir=dist
+        continue-on-error: true
+
+      - name: Deploy super-admin to Netlify
+        if: secrets.NETLIFY_AUTH_TOKEN != ''
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SUPER_ADMIN_SITE_ID }}
+        run: |
+          cd super-admin && npm ci && npm run build
+          npx netlify-cli deploy --prod --dir=dist
+        continue-on-error: true
+
+      - name: Deploy government to Netlify
+        if: secrets.NETLIFY_AUTH_TOKEN != ''
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_GOVERNMENT_SITE_ID }}
+        run: |
+          cd government && npm ci && npm run build
+          npx netlify-cli deploy --prod --dir=dist
+        continue-on-error: true

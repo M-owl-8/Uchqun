@@ -54,7 +54,6 @@ const TeacherManagement = () => {
       const response = await api.get('/reception/teachers');
       setTeachers(Array.isArray(response.data.data) ? response.data.data : []);
     } catch (error) {
-      console.error('Error loading teachers:', error);
       showError(error.response?.data?.error || t('teachersPage.toastLoadError'));
       setTeachers([]);
     } finally {
@@ -98,7 +97,6 @@ const TeacherManagement = () => {
         ratings: Array.isArray(data.ratings) ? data.ratings : [],
       });
     } catch (err) {
-      console.error('Error loading ratings:', err);
       showError(err.response?.data?.error || t('teachersPage.ratings.toastError'));
       setRatingData({ summary: { average: 0, count: 0 }, ratings: [] });
     } finally {
@@ -127,7 +125,6 @@ const TeacherManagement = () => {
       success(t('teachersPage.toastDelete'));
       loadTeachers();
     } catch (error) {
-      console.error('Error deleting teacher:', error);
       showError(error.response?.data?.error || t('teachersPage.toastDeleteError'));
     }
   };
@@ -166,7 +163,6 @@ const TeacherManagement = () => {
       setShowModal(false);
       loadTeachers();
     } catch (error) {
-      console.error('Error saving teacher:', error);
       showError(error.response?.data?.error || t('teachersPage.toastSaveError'));
     }
   };
@@ -183,7 +179,7 @@ const TeacherManagement = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-96">
+      <div className="flex justify-center items-center h-96" role="status" aria-label="Loading teachers">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -198,16 +194,17 @@ const TeacherManagement = () => {
         </div>
 
         <div className="flex gap-3">
-          <div className="relative flex-1 md:flex-initial">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <form role="search" aria-label={t('teachersPage.search')} className="relative flex-1 md:flex-initial">
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
             <input
               type="text"
               placeholder={t('teachersPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label={t('teachersPage.search')}
               className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
             />
-          </div>
+          </form>
 
           <button
             onClick={handleCreate}
@@ -299,28 +296,34 @@ const TeacherManagement = () => {
 
       {showRatings && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ratings-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
               <div>
                 <p className="text-xs font-semibold text-primary-600 uppercase tracking-wide">
                   {t('teachersPage.ratings.title')}
                 </p>
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 id="ratings-modal-title" className="text-2xl font-bold text-gray-900">
                   {selectedTeacher?.firstName} {selectedTeacher?.lastName}
                 </h2>
               </div>
               <button
                 onClick={closeRatings}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
             <div className="p-6 space-y-6">
               <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <div className="flex items-center gap-2">
-                  <Star className="w-6 h-6 text-primary-500 fill-primary-500" />
+                  <Star className="w-6 h-6 text-primary-500 fill-primary-500" aria-hidden="true" />
                   <div>
                     <p className="text-sm text-gray-500">{t('teachersPage.ratings.average')}</p>
                     <p className="text-2xl font-bold text-gray-900">
@@ -335,7 +338,7 @@ const TeacherManagement = () => {
               </div>
 
               {ratingsLoading ? (
-                <div className="flex justify-center items-center py-16">
+                <div className="flex justify-center items-center py-16" role="status" aria-label="Loading ratings">
                   <LoadingSpinner size="lg" />
                 </div>
               ) : ratingData.ratings.length > 0 ? (
@@ -383,20 +386,26 @@ const TeacherManagement = () => {
 
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+          <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="teacher-modal-title"
+            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+          >
             <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
+              <h2 id="teacher-modal-title" className="text-2xl font-bold text-gray-900">
                 {editingTeacher ? t('teachersPage.form.update') : t('teachersPage.form.create')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
               </button>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-4">
+            <form onSubmit={handleSubmit} aria-label={editingTeacher ? t('teachersPage.form.update') : t('teachersPage.form.create')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">{t('teachersPage.form.firstName')}</label>
@@ -457,6 +466,7 @@ const TeacherManagement = () => {
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    aria-label={showPassword ? t('common.hidePassword', { defaultValue: 'Hide password' }) : t('common.showPassword', { defaultValue: 'Show password' })}
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                   </button>

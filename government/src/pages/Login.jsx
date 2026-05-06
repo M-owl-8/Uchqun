@@ -25,7 +25,7 @@ const Login = () => {
     if (result.success) {
       navigate('/government');
     } else {
-      setError(result.error || 'Email yoki parol noto\'g\'ri');
+      setError(result.error || t('login.invalidCredentials', { defaultValue: 'Invalid email or password' }));
     }
 
     setLoading(false);

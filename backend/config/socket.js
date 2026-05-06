@@ -28,9 +28,14 @@ export const initializeSocket = (server) => {
   });
 
   // Auth middleware — validate JWT on every connection
+  // Supports both cookie-based auth (web) and Bearer token auth (mobile)
   io.use(async (socket, next) => {
     try {
-      const token = socket.handshake.auth?.token;
+      // 1. Try auth.token (mobile/legacy)
+      // 2. Fall back to HTTP-only accessToken cookie (web)
+      const cookieHeader = socket.handshake.headers?.cookie || '';
+      const cookieToken = cookieHeader.match(/(?:^|;\s*)accessToken=([^;]+)/)?.[1];
+      const token = socket.handshake.auth?.token || cookieToken;
       if (!token) return next(new Error('No token provided'));
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET);

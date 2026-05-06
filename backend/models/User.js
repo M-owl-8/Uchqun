@@ -146,5 +146,11 @@ User.prototype.toJSON = function() {
   return values;
 };
 
+// Named scopes — use User.scope('active') or User.scope(['active', { method: ['bySchool', schoolId] }])
+User.addScope('active', { where: { isActive: true } });
+User.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
+User.addScope('teachers', { where: { role: 'teacher', isActive: true } });
+User.addScope('parents', { where: { role: 'parent' } });
+
 export default User;
 

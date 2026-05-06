@@ -1,6 +1,7 @@
 import { DataTypes, Op } from 'sequelize';
 import crypto from 'crypto';
 import sequelize from '../config/database.js';
+import logger from '../utils/logger.js';
 
 const RefreshToken = sequelize.define('RefreshToken', {
   id: {
@@ -16,10 +17,9 @@ const RefreshToken = sequelize.define('RefreshToken', {
   userId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'users',
-      key: 'id',
-    },
+    references: { model: 'users', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
     field: 'user_id',
   },
   expiresAt: {
@@ -40,7 +40,7 @@ const RefreshToken = sequelize.define('RefreshToken', {
 }, {
   tableName: 'refresh_tokens',
   timestamps: true,
-  underscored: false, // We're using explicit field mappings
+  underscored: false,
   createdAt: 'created_at',
   updatedAt: 'updated_at',
 });
@@ -52,25 +52,16 @@ RefreshToken.hashToken = (token) => {
 RefreshToken.verifyToken = async (token, userId) => {
   try {
     const hash = RefreshToken.hashToken(token);
-    const now = new Date();
-    
-    // Optimized query with expiration check in WHERE clause
-    const record = await RefreshToken.findOne({
-      where: { 
-        tokenHash: hash, 
-        userId, 
+    return await RefreshToken.findOne({
+      where: {
+        tokenHash: hash,
+        userId,
         revoked: false,
-        expiresAt: {
-          [Op.gt]: now, // expiresAt > now
-        },
+        expiresAt: { [Op.gt]: new Date() },
       },
     });
-    
-    // If record found, it's valid (expiration already checked in query)
-    return record;
   } catch (error) {
-    // Log error but don't throw - let controller handle it
-    console.error('RefreshToken.verifyToken error:', error.message);
+    logger.error('RefreshToken.verifyToken error', { error: error.message });
     return null;
   }
 };

@@ -11,10 +11,9 @@ const Activity = sequelize.define('Activity', {
   childId: {
     type: DataTypes.UUID,
     allowNull: false,
-    references: {
-      model: 'children',
-      key: 'id',
-    },
+    references: { model: 'children', key: 'id' },
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
   },
   date: {
     type: DataTypes.DATEONLY,
@@ -36,9 +35,7 @@ const Activity = sequelize.define('Activity', {
   duration: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    validate: {
-      min: 0,
-    },
+    validate: { min: 0 },
   },
   teacher: {
     type: DataTypes.STRING(255),
@@ -52,58 +49,23 @@ const Activity = sequelize.define('Activity', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
-  // Individual Plan fields
-  skill: {
-    type: DataTypes.STRING(500),
-    allowNull: true,
-  },
-  goal: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  startDate: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-  },
-  endDate: {
-    type: DataTypes.DATEONLY,
-    allowNull: true,
-  },
-  tasks: {
-    type: DataTypes.JSONB,
-    allowNull: true,
-    defaultValue: [],
-  },
-  methods: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  progress: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  observation: {
-    type: DataTypes.TEXT,
-    allowNull: true,
-  },
-  services: {
-    type: DataTypes.JSONB,
-    allowNull: true,
-    defaultValue: [],
-  },
+  skill: { type: DataTypes.STRING(500), allowNull: true },
+  goal: { type: DataTypes.TEXT, allowNull: true },
+  startDate: { type: DataTypes.DATEONLY, allowNull: true },
+  endDate: { type: DataTypes.DATEONLY, allowNull: true },
+  tasks: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
+  methods: { type: DataTypes.TEXT, allowNull: true },
+  progress: { type: DataTypes.TEXT, allowNull: true },
+  observation: { type: DataTypes.TEXT, allowNull: true },
+  services: { type: DataTypes.JSONB, allowNull: true, defaultValue: [] },
 }, {
   tableName: 'activities',
   timestamps: true,
-  indexes: [
-    {
-      fields: ['childId', 'date'],
-    },
-  ],
+  paranoid: true,
+  indexes: [{ fields: ['childId', 'date'] }],
 });
 
-// Define associations
 Activity.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 Child.hasMany(Activity, { foreignKey: 'childId', as: 'activities' });
 
 export default Activity;
-

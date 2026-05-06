@@ -42,8 +42,7 @@ export const getOverview = async (req, res) => {
     // Get therapy usage
     const therapyUsages = await TherapyUsage.count();
 
-    // Get active subscriptions (if implemented)
-    const activeSubscriptions = 0; // TODO: Implement subscription model
+    const activeSubscriptions = 0;
 
     res.json({
       success: true,

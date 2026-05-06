@@ -19,6 +19,7 @@ const ServicePlan = sequelize.define('ServicePlan', {
 }, {
   tableName: 'service_plans',
   timestamps: true,
+  paranoid: true,
   underscored: true,
   indexes: [
     { fields: ['child_id', 'year', 'service_type'], unique: true },

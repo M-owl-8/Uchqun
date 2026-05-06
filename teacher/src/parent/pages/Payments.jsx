@@ -55,7 +55,6 @@ const Payments = () => {
         setMonthlyAmount(parseFloat(lastPayment.amount || 0));
       }
     } catch (error) {
-      console.error('Error loading payments:', error);
       setPayments([]);
     } finally {
       setLoading(false);

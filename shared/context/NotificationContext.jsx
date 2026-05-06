@@ -1,38 +1,35 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useCallback } from 'react';
 
 const NotificationContext = createContext(null);
 
 export const useNotification = () => {
   const context = useContext(NotificationContext);
-  if (!context) {
-    throw new Error('useNotification must be used within NotificationProvider');
-  }
+  if (!context) throw new Error('useNotification must be used within NotificationProvider');
   return context;
 };
 
+let nextId = 1;
+
 export const NotificationProvider = ({ children }) => {
-  const [count, setCount] = useState(3); // Default to 3 notifications
+  const [notifications, setNotifications] = useState([]);
 
-  const addNotification = () => {
-    setCount((prev) => prev + 1);
-  };
+  const addNotification = useCallback((notification) => {
+    const id = nextId++;
+    setNotifications((prev) => [...prev, { id, ...notification, createdAt: new Date().toISOString() }]);
+    return id;
+  }, []);
 
-  const removeNotification = () => {
-    setCount((prev) => Math.max(0, prev - 1));
-  };
+  const removeNotification = useCallback((id) => {
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  }, []);
 
-  const clearNotifications = () => {
-    setCount(0);
-  };
+  const clearNotifications = useCallback(() => setNotifications([]), []);
+
+  const count = notifications.length;
 
   return (
-    <NotificationContext.Provider
-      value={{ count, addNotification, removeNotification, clearNotifications }}
-    >
+    <NotificationContext.Provider value={{ notifications, count, addNotification, removeNotification, clearNotifications }}>
       {children}
     </NotificationContext.Provider>
   );
 };
-
-
-

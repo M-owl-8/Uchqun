@@ -38,7 +38,6 @@ const Activities = () => {
         const activitiesData = response.data?.activities || response.data || [];
         setActivities(Array.isArray(activitiesData) ? activitiesData : []);
       } catch (error) {
-        console.error('Error loading activities:', error);
         setActivities([]);
       } finally {
         setLoading(false);

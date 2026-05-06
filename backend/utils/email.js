@@ -1,14 +1,12 @@
 import nodemailer from 'nodemailer';
 import logger from './logger.js';
 
-// Create transporter based on environment variables
 const createTransporter = () => {
-  // If SMTP is configured, use it
   if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
       port: parseInt(process.env.SMTP_PORT || '587'),
-      secure: process.env.SMTP_SECURE === 'true', // true for 465, false for other ports
+      secure: process.env.SMTP_SECURE === 'true',
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
@@ -16,7 +14,6 @@ const createTransporter = () => {
     });
   }
 
-  // Fallback to Gmail OAuth2 if configured
   if (process.env.GMAIL_CLIENT_ID && process.env.GMAIL_CLIENT_SECRET && process.env.GMAIL_REFRESH_TOKEN) {
     return nodemailer.createTransport({
       service: 'gmail',
@@ -30,62 +27,29 @@ const createTransporter = () => {
     });
   }
 
-  // Development: Use console logging for testing (no real emails sent)
-  // But only if explicitly in development AND no email config
-  if (process.env.NODE_ENV === 'development' && !process.env.SMTP_HOST && !process.env.GMAIL_CLIENT_ID) {
-    logger.warn('No email configuration found. Using console logging for email in development.');
+  if (process.env.NODE_ENV !== 'production') {
+    logger.warn('No email configuration found. Emails will not be sent in development.');
     return {
       sendMail: async (options) => {
-        logger.info('📧 Email would be sent (Development Mode - NOT SENT):', {
+        logger.info('Email suppressed (development, no SMTP configured)', {
           to: options.to,
           subject: options.subject,
-          text: options.text?.substring(0, 100) + '...',
         });
-        console.log('\n=== EMAIL (Development Mode - NOT SENT) ===');
-        console.log('To:', options.to);
-        console.log('Subject:', options.subject);
-        console.log('Body:', options.text || options.html);
-        console.log('===========================================\n');
-        // Return a special flag to indicate this is dev mode
         return { messageId: 'dev-' + Date.now(), devMode: true };
       },
     };
   }
 
-  // Production or if email config is missing in production
-  if (process.env.NODE_ENV !== 'development') {
-    throw new Error('Email configuration not found. Please set SMTP or Gmail OAuth2 credentials in production.');
-  }
-  
-  // If we reach here in development without config, use console mode
-  logger.warn('No email configuration found. Using console logging for email.');
-  return {
-    sendMail: async (options) => {
-      logger.info('📧 Email would be sent (NOT SENT):', {
-        to: options.to,
-        subject: options.subject,
-      });
-      console.log('\n=== EMAIL (NOT SENT - No Config) ===');
-      console.log('To:', options.to);
-      console.log('Subject:', options.subject);
-      console.log('====================================\n');
-      return { messageId: 'no-config-' + Date.now(), devMode: true };
-    },
-  };
+  throw new Error('Email configuration not found. Set SMTP or Gmail OAuth2 credentials.');
 };
 
 /**
- * Send email
- * @param {string} to - Recipient email
- * @param {string} subject - Email subject
- * @param {string} text - Plain text body
- * @param {string} html - HTML body (optional)
- * @returns {Promise<Object>}
+ * Send an email.
  */
 export async function sendEmail(to, subject, text, html = null) {
   try {
     const transporter = createTransporter();
-    
+
     const mailOptions = {
       from: process.env.EMAIL_FROM || process.env.SMTP_USER || 'noreply@uchqun.uz',
       to,
@@ -95,60 +59,43 @@ export async function sendEmail(to, subject, text, html = null) {
     };
 
     const info = await transporter.sendMail(mailOptions);
-    
-    // Check if email was actually sent (not dev mode)
+
     if (info.devMode) {
-      logger.warn('Email NOT sent - using development/mock mode', {
-        to,
-        subject,
-      });
-      // Throw error so caller knows email wasn't sent
+      logger.warn('Email NOT sent — development mode, no SMTP configured', { to, subject });
       throw new Error('Email konfiguratsiyasi topilmadi. SMTP yoki Gmail OAuth2 sozlamalari kerak.');
     }
-    
-    logger.info('Email sent successfully', {
-      to,
-      subject,
-      messageId: info.messageId,
-    });
+
+    logger.info('Email sent successfully', { to, subject, messageId: info.messageId });
     return info;
   } catch (error) {
-    logger.error('Failed to send email', {
-      to,
-      subject,
-      error: error.message,
-      stack: error.stack,
-    });
+    logger.error('Failed to send email', { to, subject, error: error.message });
     throw error;
   }
 }
 
 /**
- * Send admin registration approval email with login credentials
- * @param {string} email - Admin email
- * @param {string} password - Generated password
+ * Send admin approval email with a set-password link (no plaintext password).
+ * @param {string} email - Admin email address
+ * @param {string} setPasswordUrl - Time-limited URL for the admin to set their password
  * @param {string} firstName - Admin first name
- * @returns {Promise<Object>}
  */
-export async function sendAdminApprovalEmail(email, password, firstName) {
-  const subject = 'Uchqun Admin Panel - Login Ma\'lumotlari';
+export async function sendAdminApprovalEmail(email, setPasswordUrl, firstName) {
+  const subject = 'Uchqun Admin Panel — Hisobingiz tasdiqlandi';
+
   const text = `
 Salom ${firstName},
 
-Sizning admin ro'yxatdan o'tish so'rovingiz super-admin tomonidan tasdiqlandi.
+Sizning admin ro'yxatdan o'tish so'rovingiz tasdiqlandi.
 
-Quyidagi ma'lumotlar bilan tizimga kirishingiz mumkin:
+Quyidagi havola orqali parolingizni o'rnating (24 soat davomida amal qiladi):
 
-Email: ${email}
-Parol: ${password}
+${setPasswordUrl}
 
-Eslatma: Xavfsizlik uchun iltimos, birinchi marta kirgandan so'ng parolingizni o'zgartiring.
-
-Admin panel: ${process.env.ADMIN_PANEL_URL || 'http://localhost:5174'}
+Havola muddati o'tib ketsa, super-admin bilan bog'laning.
 
 Hurmat bilan,
 Uchqun Jamoasi
-  `;
+  `.trim();
 
   const html = `
     <!DOCTYPE html>
@@ -160,66 +107,32 @@ Uchqun Jamoasi
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9f9f9; padding: 30px; border-radius: 0 0 10px 10px; }
-        .credentials { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #667eea; }
-        .credential-item { margin: 10px 0; }
-        .label { font-weight: bold; color: #667eea; }
-        .value { font-family: monospace; background: #f0f0f0; padding: 5px 10px; border-radius: 4px; }
         .warning { background: #fff3cd; border-left: 4px solid #ffc107; padding: 15px; margin: 20px 0; border-radius: 4px; }
         .footer { text-align: center; margin-top: 30px; color: #666; font-size: 12px; }
       </style>
     </head>
     <body>
       <div class="container">
-        <div class="header">
-          <h1>Uchqun Admin Panel</h1>
-        </div>
+        <div class="header"><h1>Uchqun Admin Panel</h1></div>
         <div class="content">
           <p>Salom <strong>${firstName}</strong>,</p>
-          <p>Sizning admin ro'yxatdan o'tish so'rovingiz super-admin tomonidan tasdiqlandi.</p>
-          
-          <div class="credentials">
-            <h3>Login Ma'lumotlari:</h3>
-            <div class="credential-item">
-              <span class="label">Email:</span>
-              <span class="value">${email}</span>
-            </div>
-            <div class="credential-item">
-              <span class="label">Parol:</span>
-              <span class="value">${password}</span>
-            </div>
-          </div>
-
-          <div class="warning">
-            <strong>⚠️ Eslatma:</strong> Xavfsizlik uchun iltimos, birinchi marta kirgandan so'ng parolingizni o'zgartiring.
-          </div>
-
+          <p>Sizning admin ro'yxatdan o'tish so'rovingiz tasdiqlandi.</p>
+          <p>Quyidagi tugma orqali parolingizni o'rnating:</p>
           <p>
-            <a href="${process.env.ADMIN_PANEL_URL || 'http://localhost:5174'}/login" 
-               style="display: inline-block; background: #667eea; color: white; padding: 12px 24px; text-decoration: none; border-radius: 6px; margin-top: 20px;">
-              Admin Panelga Kirish
+            <a href="${setPasswordUrl}"
+               style="display:inline-block;background:#667eea;color:white;padding:12px 24px;text-decoration:none;border-radius:6px;margin-top:10px;">
+              Parol O'rnatish
             </a>
           </p>
+          <div class="warning">
+            <strong>⚠️ Eslatma:</strong> Bu havola 24 soat davomida amal qiladi.
+          </div>
         </div>
-        <div class="footer">
-          <p>Hurmat bilan,<br>Uchqun Jamoasi</p>
-        </div>
+        <div class="footer"><p>Hurmat bilan,<br>Uchqun Jamoasi</p></div>
       </div>
     </body>
     </html>
-  `;
+  `.trim();
 
-  try {
-    const result = await sendEmail(email, subject, text, html);
-    // If in dev mode and no real email was sent, throw an error
-    if (result.devMode) {
-      throw new Error('Email konfiguratsiyasi topilmadi. Production muhitida SMTP yoki Gmail OAuth2 sozlamalari kerak.');
-    }
-    return result;
-  } catch (error) {
-    logger.error('sendAdminApprovalEmail failed', {
-      email,
-      error: error.message,
-    });
-    throw error;
-  }
+  return sendEmail(email, subject, text, html);
 }

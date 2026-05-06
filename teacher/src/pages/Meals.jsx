@@ -87,7 +87,6 @@ const Meals = () => {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
     } catch (error) {
-      console.error('Error loading children:', error);
     }
   };
 
@@ -97,7 +96,6 @@ const Meals = () => {
       const response = await api.get('/meals');
       setMeals(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error loading meals:', error);
       showError(error.response?.data?.error || t('mealsPage.form.toastLoadError'));
       setMeals([]);
     } finally {
@@ -147,7 +145,6 @@ const Meals = () => {
       success(t('mealsPage.form.toastDelete'));
       loadMeals();
     } catch (error) {
-      console.error('Error deleting meal:', error);
       showError(error.response?.data?.error || t('mealsPage.form.toastError'));
     }
   };
@@ -171,7 +168,6 @@ const Meals = () => {
       setShowModal(false);
       loadMeals();
     } catch (error) {
-      console.error('Error saving meal:', error);
       showError(error.response?.data?.error || t('mealsPage.form.toastError'));
     }
   };

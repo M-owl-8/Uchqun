@@ -36,7 +36,6 @@ const Schools = () => {
         globalAverageRating: data.globalAverageRating || 0,
       });
     } catch (error) {
-      console.error('Error loading schools:', error);
       setSchools([]);
     } finally {
       setLoading(false);
@@ -45,7 +44,7 @@ const Schools = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
+      <div className="flex items-center justify-center min-h-[400px]" role="status" aria-label={t('schools.loading', { defaultValue: 'Loading schools' })}>
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -63,7 +62,7 @@ const Schools = () => {
       </div>
 
       {/* Global stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4" aria-label={t('schools.globalStats', { defaultValue: 'Global statistics' })} role="region">
         <Card className="p-6">
           <p className="text-sm text-gray-600 mb-1">
             {t('schools.totalSchools', { defaultValue: 'Jami muassasalar' })}
@@ -88,7 +87,7 @@ const Schools = () => {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label={t('schools.title', { defaultValue: 'Muassasalar' })}>
           {schools
             .sort((a, b) => {
               // Sort by average rating (descending), then by ratings count (descending)
@@ -102,7 +101,7 @@ const Schools = () => {
             .map((school, index) => {
               const rank = index + 1;
               return (
-                <Card key={school.id} className="p-6">
+                <Card key={school.id} className="p-6" role="listitem">
                   <div className="flex items-start justify-between mb-4">
                     <div className="flex items-center gap-3 flex-1">
                       {/* Rank Badge */}
@@ -150,8 +149,8 @@ const Schools = () => {
                       {t('schools.averageRating', { defaultValue: 'O\'rtacha reyting' })}:
                     </span>
                     <div className="flex items-center gap-1">
-                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                      <span className="font-semibold text-gray-900">
+                      <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
+                      <span className="font-semibold text-gray-900" aria-label={`${t('schools.averageRating', { defaultValue: "O'rtacha reyting" })}: ${(school.averageRating || 0).toFixed(1)}`}>
                         {(school.averageRating || 0).toFixed(1)}
                       </span>
                     </div>

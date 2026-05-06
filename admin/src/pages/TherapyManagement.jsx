@@ -65,7 +65,6 @@ const TherapyManagement = () => {
       setTherapies(response.data.data?.therapies || response.data.data || []);
     } catch (error) {
       showError(t('therapy.loadError', { defaultValue: 'Terapiyalarni yuklashda xatolik' }));
-      console.error('Error fetching therapies:', error);
       setTherapies([]);
     } finally {
       setLoading(false);

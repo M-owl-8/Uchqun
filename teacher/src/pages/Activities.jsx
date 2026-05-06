@@ -70,7 +70,6 @@ const Activities = () => {
         await loadChildrenForParent(parentId);
       }
     } catch (error) {
-      console.error('Error loading parents:', error);
     }
   };
 
@@ -94,7 +93,6 @@ const Activities = () => {
         setFormData(prev => ({ ...prev, childId: '' }));
       }
     } catch (error) {
-      console.error('Error loading children for parent:', error);
       setChildren([]);
       setFormData(prev => ({ ...prev, childId: '' }));
     }
@@ -106,7 +104,6 @@ const Activities = () => {
       const response = await api.get('/activities');
       setActivities(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error loading activities:', error);
       showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
       setActivities([]);
     } finally {
@@ -197,7 +194,6 @@ const Activities = () => {
       success(t('activitiesPage.toastDelete'));
       loadActivities();
     } catch (error) {
-      console.error('Error deleting activity:', error);
       showError(error.response?.data?.error || t('activitiesPage.toastError'));
     }
   };
@@ -226,7 +222,6 @@ const Activities = () => {
       setShowModal(false);
       loadActivities();
     } catch (error) {
-      console.error('Error saving activity:', error);
       showError(error.response?.data?.error || t('activitiesPage.toastError'));
     }
   };

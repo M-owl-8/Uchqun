@@ -17,8 +17,10 @@ export const createParentValidator = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
   body('firstName')
     .trim()
     .notEmpty()
@@ -34,8 +36,9 @@ export const createParentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
   body('child')
     .optional()
     .isObject()
@@ -63,16 +66,19 @@ export const updateParentValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const setParentPasswordValidator = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
   param('id')
     .notEmpty()
     .withMessage('Parent ID is required')
@@ -106,8 +112,10 @@ export const createTeacherValidator = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
   body('firstName')
     .trim()
     .notEmpty()
@@ -123,8 +131,9 @@ export const createTeacherValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const updateTeacherValidator = [
@@ -148,16 +157,19 @@ export const updateTeacherValidator = [
   body('phone')
     .optional()
     .trim()
-    .matches(/^\+?[\d\s-()]+$/)
-    .withMessage('Please provide a valid phone number'),
+    .customSanitizer(v => v.replace(/[\s\-().]/g, ''))
+    .matches(/^\+?[1-9]\d{6,14}$/)
+    .withMessage('Please provide a valid phone number (e.g. +998901234567)'),
 ];
 
 export const setTeacherPasswordValidator = [
   body('password')
     .notEmpty()
     .withMessage('Password is required')
-    .isLength({ min: 6 })
-    .withMessage('Password must be at least 6 characters long'),
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('Password must contain at least one uppercase letter, one lowercase letter, and one number'),
   param('id')
     .notEmpty()
     .withMessage('Teacher ID is required')
