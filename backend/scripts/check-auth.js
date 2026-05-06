@@ -138,7 +138,6 @@ async function checkAuth() {
   console.log('   - Wrong email/password');
   console.log('   - CORS configuration');
   console.log('   - Network/firewall issues');
-  console.log('\n💡 For more help, see: backend/TROUBLESHOOTING_401.md');
 
   await sequelize.close();
 }
