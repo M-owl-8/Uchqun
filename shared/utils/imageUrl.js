@@ -1,6 +1,6 @@
 const BASE = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL.replace('/api', '')
-  : 'https://uchqun-production-2d8a.up.railway.app';
+  : 'http://localhost:5000';
 
 export function avatarUrl(path) {
   if (!path) return null;
