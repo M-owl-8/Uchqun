@@ -42,4 +42,30 @@ describe('sanitizeBody middleware', () => {
     sanitizeBody(req, res, next);
     expect(next).toHaveBeenCalled();
   });
+
+  it('strips javascript: URI inside HTML', () => {
+    req.body = { url: '<a href="javascript:alert(1)">click</a>' };
+    sanitizeBody(req, res, next);
+    expect(req.body.url).not.toMatch(/javascript:/i);
+  });
+
+  it('preserves non-string types (numbers/booleans/null)', () => {
+    req.body = { age: 30, active: true, tag: null };
+    sanitizeBody(req, res, next);
+    expect(req.body.age).toBe(30);
+    expect(req.body.active).toBe(true);
+    expect(req.body.tag).toBeNull();
+  });
+
+  it('trims whitespace in strings', () => {
+    req.body = { name: '  spaced  ' };
+    sanitizeBody(req, res, next);
+    expect(req.body.name).toBe('spaced');
+  });
+
+  it('handles deeply nested arrays of objects', () => {
+    req.body = { items: [{ tags: ['<script>x</script>safe'] }] };
+    sanitizeBody(req, res, next);
+    expect(req.body.items[0].tags[0]).toBe('safe');
+  });
 });

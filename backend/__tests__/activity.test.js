@@ -1,24 +1,29 @@
 import { jest } from '@jest/globals';
 
 const mockActivityFindByPk = jest.fn();
+const mockActivityFindAll = jest.fn();
 const mockChildFindByPk = jest.fn();
+const mockChildFindAll = jest.fn();
+const mockUserFindAll = jest.fn();
 
 jest.unstable_mockModule('../models/Activity.js', () => ({
-  default: { findByPk: mockActivityFindByPk },
+  default: { findByPk: mockActivityFindByPk, findAll: mockActivityFindAll, create: jest.fn() },
 }));
 
 jest.unstable_mockModule('../models/Child.js', () => ({
-  default: { findByPk: mockChildFindByPk },
+  default: { findByPk: mockChildFindByPk, findAll: mockChildFindAll },
 }));
 
 jest.unstable_mockModule('../models/Media.js', () => ({ default: {} }));
-jest.unstable_mockModule('../models/User.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: mockUserFindAll } }));
+jest.unstable_mockModule('../utils/schoolValidation.js', () => ({ validateChildAccess: jest.fn() }));
+jest.unstable_mockModule('../controllers/notificationController.js', () => ({ createNotification: jest.fn() }));
 jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: jest.fn() }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { updateActivity } = await import('../controllers/activityController.js');
+const { updateActivity, getActivities } = await import('../controllers/activityController.js');
 
 const mkRes = () => {
   const res = {};
@@ -54,6 +59,41 @@ describe('updateActivity', () => {
     await updateActivity(req, res);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(fakeUpdate).not.toHaveBeenCalled();
+  });
+
+  describe('getActivities scope', () => {
+    it('parent: empty array when parent has no children', async () => {
+      mockChildFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'p1', role: 'parent' }, query: {} };
+      const res = mkRes();
+      await getActivities(req, res);
+      expect(res.json).toHaveBeenCalledWith([]);
+    });
+
+    it('parent: 403 when childId not owned', async () => {
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]);
+      const req = { user: { id: 'p1', role: 'parent' }, query: { childId: 'OTHER' } };
+      const res = mkRes();
+      await getActivities(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('teacher: empty array when no assigned parents', async () => {
+      mockUserFindAll.mockResolvedValue([]);
+      const req = { user: { id: 't1', role: 'teacher' }, query: {} };
+      const res = mkRes();
+      await getActivities(req, res);
+      expect(res.json).toHaveBeenCalledWith([]);
+    });
+
+    it('admin: returns all activities (no scope filter)', async () => {
+      mockActivityFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'a1', role: 'admin' }, query: {} };
+      const res = mkRes();
+      await getActivities(req, res);
+      const where = mockActivityFindAll.mock.calls[0][0].where;
+      expect(where.childId).toBeUndefined();
+    });
   });
 
   it('whitelists allowed fields and strips schoolId/childId from body', async () => {
