@@ -28,11 +28,8 @@ export const initializeSocket = (server) => {
   });
 
   // Auth middleware — validate JWT on every connection
-  // Supports both cookie-based auth (web) and Bearer token auth (mobile)
   io.use(async (socket, next) => {
     try {
-      // 1. Try auth.token (mobile/legacy)
-      // 2. Fall back to HTTP-only accessToken cookie (web)
       const cookieHeader = socket.handshake.headers?.cookie || '';
       const cookieToken = cookieHeader.match(/(?:^|;\s*)accessToken=([^;]+)/)?.[1];
       const token = socket.handshake.auth?.token || cookieToken;

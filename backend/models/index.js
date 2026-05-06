@@ -25,7 +25,6 @@ import EmotionalMonitoring from './EmotionalMonitoring.js';
 import Therapy from './Therapy.js';
 import TherapyUsage from './TherapyUsage.js';
 import AIWarning from './AIWarning.js';
-import PushNotification from './PushNotification.js';
 import Payment from './Payment.js';
 import GovernmentStats from './GovernmentStats.js';
 import BusinessStats from './BusinessStats.js';
@@ -63,7 +62,6 @@ const models = {
   Therapy,
   TherapyUsage,
   AIWarning,
-  PushNotification,
   Payment,
   GovernmentStats,
   BusinessStats,
@@ -185,10 +183,6 @@ AIWarning.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 User.hasMany(AIWarning, { foreignKey: 'resolvedBy', as: 'resolvedWarnings' });
 AIWarning.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
 
-// PushNotification
-User.hasMany(PushNotification, { foreignKey: 'userId', as: 'pushNotifications' });
-PushNotification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
 // Payment
 User.hasMany(Payment, { foreignKey: 'parentId', as: 'payments' });
 Payment.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
@@ -306,7 +300,6 @@ export {
   Therapy,
   TherapyUsage,
   AIWarning,
-  PushNotification,
   Payment,
   GovernmentStats,
   BusinessStats,

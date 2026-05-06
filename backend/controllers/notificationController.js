@@ -2,7 +2,6 @@ import Notification from '../models/Notification.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
-import { sendPushToUser } from '../utils/expoPush.js';
 
 /**
  * Get all notifications for the logged-in user
@@ -188,15 +187,6 @@ export const createNotification = async (userId, childId, type, title, message, 
       userId,
       type,
     });
-
-    // Send push notification to user's device(s)
-    sendPushToUser(userId, title, message, {
-      notificationId: notification.id,
-      type,
-      relatedId,
-      relatedType,
-      childId: childId || undefined,
-    }, type).catch((err) => logger.warn('Push after createNotification failed', { userId, err: err.message }));
 
     return notification;
   } catch (error) {

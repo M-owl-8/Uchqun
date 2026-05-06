@@ -1,8 +1,7 @@
 import React from 'react';
 
 /**
- * JoyfulBackground - Matches the mobile app's BackgroundScene
- * Features: Sky gradient, sun with face, clouds, green hills, sparkles
+ * JoyfulBackground - Sky gradient, sun with face, clouds, green hills, sparkles
  */
 const JoyfulBackground = () => {
   return (

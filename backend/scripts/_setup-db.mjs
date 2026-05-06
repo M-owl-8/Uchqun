@@ -73,44 +73,6 @@ await s.query(`
 `).catch(e => console.log('notifications skip:', e.message.split('\n')[0]));
 console.log('✓ notifications table ready');
 
-// Create push_notifications table if not exists
-await s.query(`
-  DO $$ BEGIN
-    CREATE TYPE "enum_push_notifications_platform" AS ENUM ('ios','android','web');
-  EXCEPTION WHEN duplicate_object THEN null; END $$;
-  DO $$ BEGIN
-    CREATE TYPE "enum_push_notifications_notificationType" AS ENUM ('activity','meal','media','rating','warning','message','system','payment','therapy','other');
-  EXCEPTION WHEN duplicate_object THEN null; END $$;
-  DO $$ BEGIN
-    CREATE TYPE "enum_push_notifications_priority" AS ENUM ('low','normal','high');
-  EXCEPTION WHEN duplicate_object THEN null; END $$;
-  DO $$ BEGIN
-    CREATE TYPE "enum_push_notifications_status" AS ENUM ('pending','sent','delivered','failed','opened');
-  EXCEPTION WHEN duplicate_object THEN null; END $$;
-`).catch(e => console.log('push enum skip:', e.message.split('\n')[0]));
-await s.query(`
-  CREATE TABLE IF NOT EXISTS push_notifications (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    "userId" UUID NOT NULL REFERENCES users(id),
-    "deviceToken" TEXT NOT NULL,
-    platform "enum_push_notifications_platform" NOT NULL,
-    title VARCHAR(500) NOT NULL,
-    body TEXT NOT NULL,
-    data JSONB,
-    "notificationType" "enum_push_notifications_notificationType" NOT NULL,
-    priority "enum_push_notifications_priority" NOT NULL DEFAULT 'normal',
-    status "enum_push_notifications_status" NOT NULL DEFAULT 'pending',
-    "sentAt" TIMESTAMP,
-    "deliveredAt" TIMESTAMP,
-    "openedAt" TIMESTAMP,
-    "errorMessage" TEXT,
-    "retryCount" INTEGER NOT NULL DEFAULT 0,
-    "createdAt" TIMESTAMP NOT NULL DEFAULT NOW(),
-    "updatedAt" TIMESTAMP NOT NULL DEFAULT NOW()
-  )
-`).catch(e => console.log('push_notifications skip:', e.message.split('\n')[0]));
-console.log('✓ push_notifications table ready');
-
 // Create news table if not exists
 await s.query(`
   DO $$ BEGIN

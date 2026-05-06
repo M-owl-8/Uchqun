@@ -2,7 +2,6 @@ import AIWarning from '../models/AIWarning.js';
 import SchoolRating from '../models/SchoolRating.js';
 import School from '../models/School.js';
 import User from '../models/User.js';
-import PushNotification from '../models/PushNotification.js';
 import Child from '../models/Child.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
@@ -326,41 +325,7 @@ async function sendWarningNotifications(warning, specificUserIds = null) {
       }
     }
 
-    // Send push notifications to all target users
-    for (const user of targetUsers) {
-      // Get user's registered devices
-      const devices = await PushNotification.findAll({
-        where: {
-          userId: user.id,
-          status: { [Op.in]: ['pending', 'sent', 'delivered'] },
-        },
-        limit: 10, // Limit to prevent spam
-      });
-
-      // Create push notification for each device
-      for (const device of devices) {
-        await PushNotification.create({
-          userId: user.id,
-          deviceToken: device.deviceToken,
-          platform: device.platform,
-          title: warning.title,
-          body: warning.message,
-          data: {
-            warningId: warning.id,
-            warningType: warning.warningType,
-            severity: warning.severity,
-            targetType: warning.targetType,
-            targetId: warning.targetId,
-            schoolId: warning.schoolId,
-          },
-          notificationType: 'warning',
-          priority: warning.severity === 'critical' ? 'high' : warning.severity === 'high' ? 'high' : 'normal',
-          status: 'pending',
-        });
-      }
-    }
-
-    logger.info('Warning notifications sent', {
+    logger.info('Warning recipients resolved', {
       warningId: warning.id,
       usersNotified: targetUsers.length,
     });
