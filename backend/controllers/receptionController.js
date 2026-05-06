@@ -6,7 +6,6 @@ import TeacherRating from '../models/TeacherRating.js';
 import SuperAdminMessage from '../models/SuperAdminMessage.js';
 import School from '../models/School.js';
 import TherapyUsage from '../models/TherapyUsage.js';
-import Payment from '../models/Payment.js';
 import Activity from '../models/Activity.js';
 import Media from '../models/Media.js';
 import Meal from '../models/Meal.js';
@@ -1101,9 +1100,8 @@ export const deleteChildForReception = async (req, res) => {
       }
     }
 
-    // Remove or nullify dependent records so FK does not block child.destroy()
+    // Remove dependent records so FK does not block child.destroy()
     await TherapyUsage.destroy({ where: { childId } });
-    await Payment.update({ childId: null }, { where: { childId } });
     await Activity.destroy({ where: { childId } });
     await Media.destroy({ where: { childId } });
     await Meal.destroy({ where: { childId } });

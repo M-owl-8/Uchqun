@@ -13,7 +13,6 @@ const Login = lazy(() => import('./pages/Login'));
 const AdminRegister = lazy(() => import('./pages/AdminRegister'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
 const UsersStats = lazy(() => import('./pages/UsersStats'));
-const PaymentManagement = lazy(() => import('./pages/PaymentManagement'));
 const ReceptionManagement = lazy(() => import('./pages/ReceptionManagement'));
 const ParentManagement = lazy(() => import('./pages/ParentManagement'));
 const TeacherManagement = lazy(() => import('./pages/TeacherManagement'));
@@ -61,7 +60,6 @@ const AppRoutes = () => {
           <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
           <Route path="school-ratings" element={<ErrorBoundary><SchoolRatings /></ErrorBoundary>} />
           <Route path="users" element={<ErrorBoundary><UsersStats /></ErrorBoundary>} />
-          <Route path="payments" element={<ErrorBoundary><PaymentManagement /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
           <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
         </Route>

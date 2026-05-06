@@ -1,8 +1,5 @@
 import SuperAdminMessage from '../models/SuperAdminMessage.js';
 import User from '../models/User.js';
-import Payment from '../models/Payment.js';
-import School from '../models/School.js';
-import Child from '../models/Child.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
@@ -14,13 +11,6 @@ import { parsePagination } from '../utils/pagination.js';
  */
 export const sendMessage = async (req, res) => {
   try {
-    console.log('sendMessage called', { 
-      hasUser: !!req.user, 
-      userId: req.user?.id, 
-      role: req.user?.role,
-      body: req.body 
-    });
-    
     const { subject, message } = req.body;
     const senderId = req.user.id;
 
@@ -273,89 +263,3 @@ export const deleteMessage = async (req, res) => {
   }
 };
 
-/**
- * Get all payments (Super Admin view)
- * GET /api/super-admin/payments
- */
-export const getAllPayments = async (req, res) => {
-  try {
-    const {
-      status,
-      paymentType,
-      startDate,
-      endDate,
-    } = req.query;
-    const { limit, offset } = parsePagination(req.query, { limit: 50 });
-
-    const where = {};
-
-    if (status) {
-      where.status = status;
-    }
-
-    if (paymentType) {
-      where.paymentType = paymentType;
-    }
-
-    if (startDate || endDate) {
-      where.paidAt = {};
-      if (startDate) {
-        where.paidAt[Op.gte] = new Date(startDate);
-      }
-      if (endDate) {
-        where.paidAt[Op.lte] = new Date(endDate);
-      }
-    }
-
-    const payments = await Payment.findAndCountAll({
-      where,
-      limit,
-      offset,
-      order: [['createdAt', 'DESC']],
-      include: [
-        {
-          model: User,
-          as: 'parent',
-          required: false,
-          attributes: ['id', 'firstName', 'lastName', 'email'],
-        },
-        {
-          model: Child,
-          as: 'child',
-          required: false,
-          attributes: ['id', 'firstName', 'lastName'],
-        },
-        {
-          model: School,
-          as: 'school',
-          required: false,
-          attributes: ['id', 'name'],
-        },
-      ],
-    });
-
-    // Calculate totals
-    const totalAmount = payments.rows.reduce((sum, p) => {
-      return sum + (parseFloat(p.amount) || 0);
-    }, 0);
-
-    const completedAmount = payments.rows
-      .filter(p => p.status === 'completed')
-      .reduce((sum, p) => sum + (parseFloat(p.amount) || 0), 0);
-
-    res.json({
-      success: true,
-      data: {
-        payments: payments.rows,
-        total: payments.count,
-        totalAmount,
-        completedAmount,
-        limit,
-        offset,
-      },
-    });
-  } catch (error) {
-    logger.error('Get all payments error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to fetch payments' });
-  }
-};

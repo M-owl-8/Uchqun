@@ -3,7 +3,6 @@ import School from '../models/School.js';
 import SchoolRating from '../models/SchoolRating.js';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
-import Payment from '../models/Payment.js';
 import _TherapyUsage from '../models/TherapyUsage.js';
 import AIWarning from '../models/AIWarning.js';
 import { Op } from 'sequelize';
@@ -74,26 +73,6 @@ export const getOverview = async (req, res) => {
       logger.warn('Failed to calculate average rating', { error: error.message });
     }
 
-    // Get total payments
-    let totalRevenue = 0;
-    try {
-      const paymentsWhere = {};
-      if (startDate) {
-        paymentsWhere.paidAt = { [Op.gte]: new Date(startDate) };
-      }
-      if (endDate) {
-        paymentsWhere.paidAt = { ...paymentsWhere.paidAt, [Op.lte]: new Date(endDate) };
-      }
-
-      const payments = await Payment.findAll({
-        where: { ...paymentsWhere, status: 'completed' },
-        attributes: ['amount'],
-      });
-      totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-    } catch (error) {
-      logger.warn('Failed to calculate total revenue', { error: error.message });
-    }
-
     // Get active warnings
     let warningsCount = 0;
     try {
@@ -112,7 +91,6 @@ export const getOverview = async (req, res) => {
         teachers: teachersCount,
         parents: parentsCount,
         averageRating: avgRating,
-        totalRevenue,
         activeWarnings: warningsCount,
       },
     });
@@ -483,161 +461,6 @@ export const getRatingsStats = async (req, res) => {
   }
 };
 
-/**
- * Get payments statistics
- * GET /api/government/payments
- */
-export const getPaymentsStats = async (req, res) => {
-  try {
-    const { startDate, endDate, schoolId } = req.query;
-
-    const where = { status: 'completed' };
-    if (schoolId) {
-      where.schoolId = schoolId;
-    }
-    if (startDate || endDate) {
-      where.paidAt = {};
-      if (startDate) {
-        where.paidAt[Op.gte] = new Date(startDate);
-      }
-      if (endDate) {
-        where.paidAt[Op.lte] = new Date(endDate);
-      }
-    }
-
-    const payments = await Payment.findAll({
-      where,
-      include: [
-        {
-          model: User,
-          as: 'parent',
-          required: false,
-          attributes: ['id', 'firstName', 'lastName', 'email'],
-        },
-        {
-          model: School,
-          as: 'school',
-          required: false,
-          attributes: ['id', 'name'],
-        },
-      ],
-      order: [['createdAt', 'DESC']],
-      limit: 100,
-    });
-
-    // If some payments don't have parent or school, fetch them separately
-    const parentIds = [...new Set(payments.map(p => p.parentId).filter(Boolean))];
-    const schoolIds = [...new Set(payments.map(p => p.schoolId).filter(Boolean))];
-    
-    const parentsMap = new Map();
-    const schoolsMap = new Map();
-    
-    if (parentIds.length > 0) {
-      const parents = await User.findAll({
-        where: { id: { [Op.in]: parentIds } },
-        attributes: ['id', 'firstName', 'lastName', 'email'],
-      });
-      parents.forEach(p => parentsMap.set(p.id, p));
-    }
-    
-    if (schoolIds.length > 0) {
-      try {
-        const schools = await School.findAll({
-          where: { id: { [Op.in]: schoolIds } },
-          attributes: ['id', 'name'],
-        });
-        schools.forEach(s => {
-          schoolsMap.set(s.id, s);
-          logger.debug('Added school to map', { schoolId: s.id, schoolName: s.name });
-        });
-        logger.info('Fetched schools for payments', {
-          schoolIdsCount: schoolIds.length,
-          schoolsFound: schools.length,
-          schoolIds: schoolIds.slice(0, 5), // Log first 5 for debugging
-        });
-      } catch (error) {
-        logger.error('Error fetching schools for payments', {
-          error: error.message,
-          stack: error.stack,
-          schoolIds: schoolIds,
-        });
-      }
-    } else {
-      logger.warn('No schoolIds found in payments', {
-        paymentsCount: payments.length,
-        paymentsWithSchoolId: payments.filter(p => p.schoolId).length,
-      });
-    }
-
-    const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-    const byType = {};
-    payments.forEach(p => {
-      const type = p.paymentType;
-      if (!byType[type]) {
-        byType[type] = { count: 0, amount: 0 };
-      }
-      byType[type].count++;
-      byType[type].amount += parseFloat(p.amount || 0);
-    });
-
-    // Format payments with parent and school names
-    const formattedPayments = payments.map(payment => {
-      const paymentData = payment.toJSON();
-      
-      // Get parent from include or from map
-      const parent = payment.parent || (payment.parentId ? parentsMap.get(payment.parentId) : null);
-      const parentName = parent 
-        ? `${parent.firstName || ''} ${parent.lastName || ''}`.trim() || parent.email || null
-        : null;
-      
-      // Get school from include or from map
-      const school = payment.school || (payment.schoolId ? schoolsMap.get(payment.schoolId) : null);
-      const schoolName = school?.name || null;
-      
-      // Debug logging
-      if (!schoolName && payment.schoolId) {
-        logger.warn('School not found for payment', {
-          paymentId: payment.id,
-          schoolId: payment.schoolId,
-          schoolFromInclude: !!payment.school,
-          schoolFromMap: !!schoolsMap.get(payment.schoolId),
-          schoolsMapSize: schoolsMap.size,
-          allSchoolIds: Array.from(schoolsMap.keys()),
-        });
-      }
-      
-      return {
-        ...paymentData,
-        parentName: parentName,
-        schoolName: schoolName,
-        // Also include parent and school objects for fallback
-        parent: parent ? {
-          id: parent.id,
-          firstName: parent.firstName,
-          lastName: parent.lastName,
-          email: parent.email,
-        } : null,
-        school: school ? {
-          id: school.id,
-          name: school.name,
-        } : null,
-      };
-    });
-
-    res.json({
-      success: true,
-      data: {
-        totalRevenue,
-        totalPayments: payments.length,
-        byType,
-        payments: formattedPayments,
-      },
-    });
-  } catch (error) {
-    logger.error('Get payments stats error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to fetch payments statistics' });
-  }
-};
 
 /**
  * Generate and save statistics
@@ -676,11 +499,6 @@ export const generateStats = async (req, res) => {
       case 'ratings': {
         const ratings = await getRatingsData(schoolId, periodStart, periodEnd);
         data = ratings;
-        break;
-      }
-      case 'payments': {
-        const payments = await getPaymentsData(schoolId, periodStart, periodEnd);
-        data = payments;
         break;
       }
       default:
@@ -863,19 +681,6 @@ async function getRatingsData(schoolId, startDate, endDate) {
   return { ratings: ratings.length, data: ratings };
 }
 
-async function getPaymentsData(schoolId, startDate, endDate) {
-  const where = { status: 'completed' };
-  if (schoolId) where.schoolId = schoolId;
-  if (startDate || endDate) {
-    where.paidAt = {};
-    if (startDate) where.paidAt[Op.gte] = new Date(startDate);
-    if (endDate) where.paidAt[Op.lte] = new Date(endDate);
-  }
-  const payments = await Payment.findAll({ where });
-  const total = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-  return { totalRevenue: total, payments: payments.length, data: payments };
-}
-
 /**
  * Get all Admin accounts (Government view)
  * GET /api/government/admins
@@ -1005,21 +810,6 @@ export const getAdminDetails = async (req, res) => {
     // Get total students count
     const studentsCount = children.length;
 
-    // Get total revenue from payments
-    let totalRevenue = 0;
-    if (parentIds.length > 0) {
-      try {
-        const payments = await Payment.findAll({
-          where: { parentId: { [Op.in]: parentIds } },
-          attributes: ['amount'],
-        });
-        totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-      } catch (error) {
-        logger.warn('Failed to fetch payments for admin', { error: error.message, adminId: id });
-        totalRevenue = 0;
-      }
-    }
-
     // Get school ratings (supports both stars and evaluation formats)
     const schoolIds = schools.map(s => s.id);
     let ratingsResult = { average: 0, count: 0 };
@@ -1055,7 +845,6 @@ export const getAdminDetails = async (req, res) => {
           teachers: teachers.length,
           parents: parents.length,
           students: studentsCount,
-          totalRevenue,
           averageRating: ratingsResult.average,
           ratingsCount: ratingsResult.count,
         },

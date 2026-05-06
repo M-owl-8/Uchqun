@@ -11,7 +11,6 @@ import {
   Building2,
   User,
   Settings,
-  CreditCard
 } from 'lucide-react';
 
 // Color scheme per Mobile-icons.md
@@ -35,7 +34,6 @@ const Sidebar = ({ onClose }) => {
     { name: t('nav.teachers'), href: '/admin/teachers', icon: UserCheck },
     { name: t('nav.groups'), href: '/admin/groups', icon: UsersRound },
     { name: t('nav.schoolRatings'), href: '/admin/school-ratings', icon: Building2 },
-    { name: t('nav.payments', { defaultValue: 'To\'lovlar' }), href: '/admin/payments', icon: CreditCard },
     { name: t('nav.profile', { defaultValue: 'Profile' }), href: '/admin/profile', icon: User },
     { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/admin/settings', icon: Settings },
   ];

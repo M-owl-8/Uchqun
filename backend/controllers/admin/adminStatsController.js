@@ -1,4 +1,4 @@
-import { Op, QueryTypes, fn, col } from 'sequelize';
+import { Op, QueryTypes } from 'sequelize';
 import User from '../../models/User.js';
 import Child from '../../models/Child.js';
 import Group from '../../models/Group.js';
@@ -8,7 +8,6 @@ import Document from '../../models/Document.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
-import Payment from '../../models/Payment.js';
 import TherapyUsage from '../../models/TherapyUsage.js';
 import logger from '../../utils/logger.js';
 
@@ -212,18 +211,13 @@ export const getStatistics = async (req, res) => {
         : Promise.resolve(0),
     ]);
 
-    // Get additional statistics: schools (with ratings via eager load), revenue, therapy usages
-    const [schoolsWithRatings, totalRevenue, therapyUsages] = await Promise.all([
+    // Get additional statistics: schools (with ratings via eager load), therapy usages
+    const [schoolsWithRatings, therapyUsages] = await Promise.all([
       School.findAll({
         where: { isActive: true },
         include: [{ model: SchoolRating, as: 'ratings', attributes: ['stars'], required: false }],
         attributes: ['id'],
       }).catch(() => []),
-      Payment.findOne({
-        where: { status: 'completed' },
-        attributes: [[fn('SUM', col('amount')), 'total']],
-        raw: true,
-      }).then(result => parseFloat(result?.total || 0)).catch(() => 0),
       TherapyUsage.count().catch(() => 0),
     ]);
 

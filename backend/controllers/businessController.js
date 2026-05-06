@@ -1,7 +1,6 @@
 import BusinessStats from '../models/BusinessStats.js';
 import User from '../models/User.js';
 import School from '../models/School.js';
-import Payment from '../models/Payment.js';
 import TherapyUsage from '../models/TherapyUsage.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
@@ -12,9 +11,6 @@ import logger from '../utils/logger.js';
  */
 export const getOverview = async (req, res) => {
   try {
-    const { startDate, endDate } = req.query;
-    const businessId = req.user.id;
-
     // Get total users
     const totalUsers = await User.count({
       where: {
@@ -27,31 +23,15 @@ export const getOverview = async (req, res) => {
       where: { isActive: true },
     });
 
-    // Get revenue (from payments)
-    const paymentsWhere = { status: 'completed' };
-    if (startDate) {
-      paymentsWhere.paidAt = { [Op.gte]: new Date(startDate) };
-    }
-    if (endDate) {
-      paymentsWhere.paidAt = { ...paymentsWhere.paidAt, [Op.lte]: new Date(endDate) };
-    }
-
-    const payments = await Payment.findAll({ where: paymentsWhere });
-    const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-
     // Get therapy usage
     const therapyUsages = await TherapyUsage.count();
-
-    const activeSubscriptions = 0;
 
     res.json({
       success: true,
       data: {
         totalUsers,
         totalSchools,
-        totalRevenue,
         therapyUsages,
-        activeSubscriptions,
       },
     });
   } catch (error) {
@@ -108,71 +88,6 @@ export const getUsersStats = async (req, res) => {
   } catch (error) {
     logger.error('Get users stats error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch users statistics' });
-  }
-};
-
-/**
- * Get revenue statistics
- * GET /api/business/revenue
- */
-export const getRevenueStats = async (req, res) => {
-  try {
-    const { startDate, endDate, paymentType } = req.query;
-
-    const where = { status: 'completed' };
-    if (paymentType) {
-      where.paymentType = paymentType;
-    }
-    if (startDate || endDate) {
-      where.paidAt = {};
-      if (startDate) {
-        where.paidAt[Op.gte] = new Date(startDate);
-      }
-      if (endDate) {
-        where.paidAt[Op.lte] = new Date(endDate);
-      }
-    }
-
-    const payments = await Payment.findAll({ where });
-
-    const totalRevenue = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-
-    // Group by payment type
-    const byType = {};
-    payments.forEach(p => {
-      const type = p.paymentType;
-      if (!byType[type]) {
-        byType[type] = { count: 0, amount: 0 };
-      }
-      byType[type].count++;
-      byType[type].amount += parseFloat(p.amount || 0);
-    });
-
-    // Group by month
-    const byMonth = {};
-    payments.forEach(p => {
-      if (p.paidAt) {
-        const month = new Date(p.paidAt).toISOString().substring(0, 7);
-        if (!byMonth[month]) {
-          byMonth[month] = { count: 0, amount: 0 };
-        }
-        byMonth[month].count++;
-        byMonth[month].amount += parseFloat(p.amount || 0);
-      }
-    });
-
-    res.json({
-      success: true,
-      data: {
-        totalRevenue,
-        totalPayments: payments.length,
-        byType,
-        byMonth,
-      },
-    });
-  } catch (error) {
-    logger.error('Get revenue stats error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to fetch revenue statistics' });
   }
 };
 
@@ -248,11 +163,6 @@ export const generateStats = async (req, res) => {
       case 'users': {
         const users = await getUsersData(periodStart, periodEnd);
         data = users;
-        break;
-      }
-      case 'revenue': {
-        const revenue = await getRevenueData(periodStart, periodEnd);
-        data = revenue;
         break;
       }
       case 'usage': {
@@ -348,18 +258,6 @@ async function getUsersData(startDate, endDate) {
   }
   const users = await User.findAll({ where });
   return { users: users.length, data: users };
-}
-
-async function getRevenueData(startDate, endDate) {
-  const where = { status: 'completed' };
-  if (startDate || endDate) {
-    where.paidAt = {};
-    if (startDate) where.paidAt[Op.gte] = new Date(startDate);
-    if (endDate) where.paidAt[Op.lte] = new Date(endDate);
-  }
-  const payments = await Payment.findAll({ where });
-  const total = payments.reduce((sum, p) => sum + parseFloat(p.amount || 0), 0);
-  return { totalRevenue: total, payments: payments.length };
 }
 
 async function getUsageData(startDate, endDate) {

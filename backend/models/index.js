@@ -25,7 +25,6 @@ import EmotionalMonitoring from './EmotionalMonitoring.js';
 import Therapy from './Therapy.js';
 import TherapyUsage from './TherapyUsage.js';
 import AIWarning from './AIWarning.js';
-import Payment from './Payment.js';
 import GovernmentStats from './GovernmentStats.js';
 import BusinessStats from './BusinessStats.js';
 import RefreshToken from './RefreshToken.js';
@@ -62,7 +61,6 @@ const models = {
   Therapy,
   TherapyUsage,
   AIWarning,
-  Payment,
   GovernmentStats,
   BusinessStats,
   RefreshToken,
@@ -183,13 +181,6 @@ AIWarning.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 User.hasMany(AIWarning, { foreignKey: 'resolvedBy', as: 'resolvedWarnings' });
 AIWarning.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
 
-// Payment
-User.hasMany(Payment, { foreignKey: 'parentId', as: 'payments' });
-Payment.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
-Child.hasMany(Payment, { foreignKey: 'childId', as: 'payments' });
-Payment.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-School.hasMany(Payment, { foreignKey: 'schoolId', as: 'payments' });
-Payment.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
 // GovernmentStats
 School.hasMany(GovernmentStats, { foreignKey: 'schoolId', as: 'governmentStats' });
@@ -300,7 +291,6 @@ export {
   Therapy,
   TherapyUsage,
   AIWarning,
-  Payment,
   GovernmentStats,
   BusinessStats,
   RefreshToken,
