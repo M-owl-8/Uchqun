@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Read", "Write", "Edit", "Glob", "Grep",
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
       "Bash(npm:*)",
       "Bash(node:*)",
       "Bash(npx:*)",
@@ -30,7 +34,8 @@
       "Bash(docker-compose:*)",
       "Bash(eslint:*)",
       "Bash(jest:*)",
-      "Bash(vitest:*)"
+      "Bash(vitest:*)",
+      "Bash(git merge *)"
     ],
     "deny": [
       "Bash(git push --force:*)",
@@ -50,7 +55,6 @@
       "Bash(railway deploy:*)",
       "Bash(netlify deploy --prod:*)",
       "Bash(vercel --prod:*)",
-      "Bash(psql:* DROP DATABASE)",
       "Bash(dropdb:*)",
       "Bash(*FORCE_SYNC=true*)",
       "Read(./.env)",
