@@ -42,14 +42,13 @@ Reception additionally requires `documentsApproved && isActive`.
 - Frontend: Vitest — CI fails if no test files in an app
 - Run full suite before any PR
 
-## Open Security Audit Findings
-See `AUDIT_REPORT.md` for full context. **Confirm resolution status before touching related code:**
-- C-01: Missing `emotionalMonitoringRoutes.js` (server crash on startup)
-- C-02: Cross-parent media data leak (groupId scope bug)
-- C-03: Mass assignment in `progressController.js`
-- C-05: Activity scope bypass (teacher updating any activity)
-- C-06: Payment callback signature validation missing
-- C-07: CORS wildcard for Netlify/Vercel subdomains
+## Security Audit Status (per AUDIT_REPORT.md)
+- ✅ C-01: Resolved — emotionalMonitoring consumed inline in parent/teacher routes (commit c1bd08d)
+- ⚠️ C-02: Documented as intentional design ("group-wide media visibility") — REQUIRES product/legal sign-off before launch (commits 9b2994c, 2ef0c4d)
+- ✅ C-03: Resolved — ALLOWED_FIELDS whitelist in progressController (commit 9b2994c)
+- ✅ C-05: Resolved — ALLOWED_ACTIVITY_FIELDS + schoolId guard in activityController (commits 9b2994c, 10df6d0)
+- ✅ C-06: Resolved — payment routes/controller deleted entirely (commit ca2039b)
+- ⚠️ C-07: Partial — regex replaces substring CORS check; PRE-LAUNCH TODO: replace with explicit env-driven allowlist (commit c1bd08d)
 
 ## Scaling Constraints (single-instance only — TODO confirm)
 - Login lockout is in-memory (5 attempts → 15min). Not Redis-backed.
@@ -73,3 +72,11 @@ Use plan mode (Shift+Tab twice) before any changes to:
 - Migrations
 - `routes/` index or CORS config
 - Payment, media upload, or scope-checking logic
+
+## MCP Servers Available
+This project has three MCP servers configured (see ~/.claude.json):
+- **context7** — live library docs. Workflow: call `resolve-library-id` first, then `query-docs` (NOT `get-library-docs` — that name is outdated).
+- **github** — repo M-owl-8/Uchqun, read-only on contents, read+write on issues/PRs.
+- **postgres-uchqun** — Railway DB, READ-ONLY (restricted mode). Use for schema inspection, debugging queries, NEVER for migrations. Tools: list_schemas, list_objects, get_object_details, explain_query, execute_sql (SELECT only).
+
+When debugging a Sequelize query or model relationship, query the live schema via postgres-uchqun BEFORE assuming.
