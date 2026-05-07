@@ -1,8 +1,7 @@
-import { Op } from 'sequelize';
 import Child from '../models/Child.js';
 import User from '../models/User.js';
 import Group from '../models/Group.js';
-import { uploadFile, deleteFile } from '../config/storage.js'; // deleteFile qo'shildi
+import { deleteFile } from '../config/storage.js';
 import logger from '../utils/logger.js';
 import { emitToUser } from '../config/socket.js';
 

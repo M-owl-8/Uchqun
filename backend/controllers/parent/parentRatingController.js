@@ -479,7 +479,6 @@ export const rateSchool = async (req, res) => {
 
     // 11. Create or update rating (using findOne + create/update for reliability)
     let rating;
-    let created;
     try {
       // First try to find existing rating
       rating = await SchoolRating.findOne({
@@ -499,7 +498,6 @@ export const rateSchool = async (req, res) => {
         };
         if (evaluationValue) updateData.evaluation = evaluationValue;
         await rating.update(updateData);
-        created = false;
         logger.info('School rating updated', {
           ratingId: rating.id,
           schoolId: finalSchoolId,
@@ -516,7 +514,6 @@ export const rateSchool = async (req, res) => {
         };
         if (evaluationValue) createData.evaluation = evaluationValue;
         rating = await SchoolRating.create(createData);
-        created = true;
         logger.info('School rating created', {
           ratingId: rating.id,
           schoolId: finalSchoolId,

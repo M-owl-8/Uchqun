@@ -1,7 +1,6 @@
 import Notification from '../models/Notification.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
-import { Op } from 'sequelize';
 
 /**
  * Get all notifications for the logged-in user

@@ -23,8 +23,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 
 const {
   getAdmins, updateAdminBySuper, deleteAdminBySuper,
-  createAdmin, createGovernment, getGovernments,
-  updateGovernmentBySuper, deleteGovernmentBySuper,
+  createAdmin, createGovernment,
 } = await import('../controllers/admin/adminUserController.js');
 
 const mkRes = () => {

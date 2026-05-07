@@ -12,7 +12,7 @@ import logger from '../utils/logger.js';
  */
 export const analyzeRatings = async (req, res) => {
   try {
-    const { schoolId, parentId } = req.body;
+    const { schoolId, parentId: _parentId } = req.body;
 
     const warnings = [];
 

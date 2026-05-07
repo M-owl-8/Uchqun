@@ -221,7 +221,7 @@ export const getMediaItem = async (req, res) => {
 };
 
 // Generate thumbnail for image
-async function generateThumbnail(filePath, filename) {
+async function _generateThumbnail(filePath, filename) {
   try {
     const sharp = await getSharp();
     if (!sharp) {

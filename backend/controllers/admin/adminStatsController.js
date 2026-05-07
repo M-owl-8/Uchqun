@@ -212,7 +212,7 @@ export const getStatistics = async (req, res) => {
     ]);
 
     // Get additional statistics: schools (with ratings via eager load), therapy usages
-    const [schoolsWithRatings, therapyUsages] = await Promise.all([
+    const [schoolsWithRatings, _therapyUsages] = await Promise.all([
       School.findAll({
         where: { isActive: true },
         include: [{ model: SchoolRating, as: 'ratings', attributes: ['stars'], required: false }],

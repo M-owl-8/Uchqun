@@ -3,7 +3,7 @@ import logger from '../../utils/logger.js';
 
 export const getAIAdvice = async (req, res) => {
   try {
-    const { message, childInfo } = req.body;
+    const { message, childInfo: _childInfo } = req.body;
 
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return res.status(400).json({ error: 'Message is required' });
@@ -253,7 +253,7 @@ Please provide helpful, practical advice about caring for children with special 
  */
 function generateFallbackResponse(context) {
   const message = context.message.toLowerCase();
-  const child = context.child;
+  const _child = context.child;
 
   // Basic keyword-based responses
   if (message.includes('uy') || message.includes('home') || message.includes('qanday qarash') || message.includes('care')) {

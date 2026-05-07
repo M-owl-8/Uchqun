@@ -241,7 +241,7 @@ export const getSavedStats = async (req, res) => {
 };
 
 // Helper functions
-async function getOverviewData(startDate, endDate) {
+async function getOverviewData(_startDate, _endDate) {
   const totalUsers = await User.count({
     where: { role: { [Op.in]: ['parent', 'teacher', 'reception'] } },
   });

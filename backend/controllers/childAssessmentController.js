@@ -1,5 +1,4 @@
 import ChildAssessment from '../models/ChildAssessment.js';
-import Child from '../models/Child.js';
 import User from '../models/User.js';
 import { Op } from 'sequelize';
 import sequelize from '../config/database.js';

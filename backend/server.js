@@ -105,6 +105,7 @@ app.use(cors({
     if (allowedOrigins.includes(origin)) return callback(null, true);
     if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) return callback(null, true);
     // Allow only known Uchqun deploy preview hostnames; not arbitrary subdomains
+    // eslint-disable-next-line security/detect-unsafe-regex
     if (process.env.NODE_ENV === 'production' && /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/.test(origin)) {
       return callback(null, true);
     }

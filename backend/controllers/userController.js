@@ -1,5 +1,4 @@
 import User from '../models/User.js';
-import { uploadFile } from '../config/storage.js';
 import { emitToUser } from '../config/socket.js';
 
 export const updateProfile = async (req, res) => {

@@ -11,7 +11,6 @@ import Media from '../models/Media.js';
 import Meal from '../models/Meal.js';
 import Progress from '../models/Progress.js';
 import logger from '../utils/logger.js';
-import bcrypt from 'bcryptjs';
 import { Op, fn, col } from 'sequelize';
 import sequelize from '../config/database.js';
 import { uploadFile, deleteFile } from '../config/storage.js';

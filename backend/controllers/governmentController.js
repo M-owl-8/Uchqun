@@ -15,7 +15,7 @@ import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAve
  */
 export const getOverview = async (req, res) => {
   try {
-    const { region, district, startDate, endDate } = req.query;
+    const { region, district, startDate: _startDate, endDate: _endDate } = req.query;
 
     const where = {};
     if (region) {

@@ -1,7 +1,5 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
-import Child from './Child.js';
-import Activity from './Activity.js';
 
 const Media = sequelize.define('Media', {
   id: {

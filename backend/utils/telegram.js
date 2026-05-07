@@ -7,7 +7,7 @@ import logger from './logger.js';
  * @param {string} message - Message text
  * @returns {Promise<Object>}
  */
-export async function sendTelegramMessage(username, message) {
+export async function sendTelegramMessage(username, _message) {
   try {
     const botToken = process.env.TELEGRAM_BOT_TOKEN;
     
