@@ -16,7 +16,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci --workspaces --if-present
+      - run: npm ci
       - name: Run ESLint
         run: |
           if [ -f "backend/.eslintrc.cjs" ] || [ -f "backend/.eslintrc.js" ] || [ -f "backend/.eslintrc.json" ]; then
