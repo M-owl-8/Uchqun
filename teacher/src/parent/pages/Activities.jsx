@@ -46,8 +46,6 @@ const Activities = () => {
     loadActivities();
   }, [selectedChildId]);
 
-  // For Individual Plans, we don't filter by type anymore
-  const filteredActivities = activities;
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
@@ -76,9 +74,9 @@ const Activities = () => {
       </Card>
 
       {/* Activities Cards Grid */}
-      {filteredActivities.length > 0 ? (
+      {activities.length > 0 ? (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-          {filteredActivities.map((activity) => {
+          {activities.map((activity) => {
             return (
               <div
                 key={activity.id}

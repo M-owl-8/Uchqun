@@ -71,7 +71,6 @@ const ParentManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
-  const [showChildPassword, setShowChildPassword] = useState(false);
 
   useEffect(() => {
     loadParents();
