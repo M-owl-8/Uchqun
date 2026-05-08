@@ -9,8 +9,10 @@ restartPolicyMaxRetries = 5
 [phases.setup]
 nixPkgs = ["nodejs_20", "npm"]
 
+# dist/ is pre-built in GitHub Actions where ../shared is accessible.
+# Railway only needs production deps to run server.js.
 [phases.install]
-cmds = ["npm ci"]
+cmds = ["npm ci --omit=dev"]
 
 [phases.build]
-cmds = ["npm run build"]
+cmds = ["echo 'Pre-built in CI'"]
