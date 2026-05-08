@@ -19,7 +19,7 @@ async function getSharp() {
     try {
       sharpModule = (await import('sharp')).default;
     } catch (error) {
-      console.warn('Sharp module not available, thumbnails will be skipped:', error.message);
+      logger.warn('Sharp module not available, thumbnails will be skipped', { error: error.message });
       return null;
     }
   }
@@ -365,7 +365,7 @@ export const uploadMedia = async (req, res) => {
           try {
             fs.unlinkSync(req.file.path);
           } catch (e) {
-            console.error('Error deleting file:', e);
+            logger.error('Error deleting file', { error: e.message });
           }
         }
         return res.status(404).json({ error: 'Activity not found' });

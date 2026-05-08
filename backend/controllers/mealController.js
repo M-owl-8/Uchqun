@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
 import { validateChildAccess } from '../utils/schoolValidation.js';
+import logger from '../utils/logger.js';
 
 export const getMeals = async (req, res) => {
   try {
@@ -105,7 +106,7 @@ export const getMeals = async (req, res) => {
 
     res.json(Array.isArray(meals) ? meals : []);
   } catch (error) {
-    console.error('Get meals error:', error);
+    logger.error('Get meals error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to get meals' });
   }
 };
@@ -172,7 +173,7 @@ export const getMeal = async (req, res) => {
 
     res.json(meal);
   } catch (error) {
-    console.error('Get meal error:', error);
+    logger.error('Get meal error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to get meal' });
   }
 };
@@ -239,7 +240,7 @@ export const createMeal = async (req, res) => {
 
     res.status(201).json(createdMeal);
   } catch (error) {
-    console.error('Create meal error:', error);
+    logger.error('Create meal error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to create meal' });
   }
 };
@@ -283,7 +284,7 @@ export const updateMeal = async (req, res) => {
 
     res.json(updatedMeal);
   } catch (error) {
-    console.error('Update meal error:', error);
+    logger.error('Update meal error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to update meal' });
   }
 };
@@ -319,7 +320,7 @@ export const deleteMeal = async (req, res) => {
 
     res.json({ success: true, message: 'Meal deleted successfully' });
   } catch (error) {
-    console.error('Delete meal error:', error);
+    logger.error('Delete meal error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to delete meal' });
   }
 };

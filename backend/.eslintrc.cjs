@@ -13,7 +13,7 @@ module.exports = {
   ignorePatterns: ['scripts/', 'node_modules/'],
   rules: {
     'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
-    'no-console': ['warn', { allow: ['warn', 'error'] }],
+    'no-console': 'error',
     // These security rules produce too many false positives on legitimate patterns
     'security/detect-object-injection': 'off',
     'security/detect-non-literal-fs-filename': 'off',
@@ -21,8 +21,8 @@ module.exports = {
   },
   overrides: [
     {
-      // Config and migration files legitimately use console for startup logging
-      files: ['config/**/*.js', 'migrations/**/*.js'],
+      // Config, migrations, and logger itself legitimately use console for startup logging
+      files: ['config/**/*.js', 'migrations/**/*.js', 'utils/logger.js'],
       rules: { 'no-console': 'off' },
     },
     {

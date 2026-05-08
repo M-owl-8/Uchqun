@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
 import { validateChildAccess } from '../utils/schoolValidation.js';
+import logger from '../utils/logger.js';
 
 export const getActivities = async (req, res) => {
   try {
@@ -134,7 +135,7 @@ export const getActivities = async (req, res) => {
 
     res.json(Array.isArray(activitiesJson) ? activitiesJson : []);
   } catch (error) {
-    console.error('Get activities error:', error);
+    logger.error('Get activities error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to get activities' });
   }
 };
@@ -201,7 +202,7 @@ export const getActivity = async (req, res) => {
 
     res.json(activity);
   } catch (error) {
-    console.error('Get activity error:', error);
+    logger.error('Get activity error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to get activity' });
   }
 };
@@ -302,7 +303,7 @@ export const createActivity = async (req, res) => {
         `${child.firstName} uchun "${skill || 'Individual reja'}" qo'shildi`,
         activity.id,
         'activity'
-      ).catch(err => console.error('Error creating notification:', err));
+      ).catch(err => logger.error('Error creating notification', { error: err.message }));
 
       // Emit real-time update to parent
       emitToUser(child.parentId, 'activity:created', {
@@ -313,9 +314,8 @@ export const createActivity = async (req, res) => {
 
     res.status(201).json(activityJson);
   } catch (error) {
-    console.error('Create activity error:', error);
-    console.error('Error details:', {
-      message: error.message,
+    logger.error('Create activity error', {
+      error: error.message,
       stack: error.stack,
       name: error.name,
       code: error.original?.code,
@@ -418,7 +418,7 @@ export const updateActivity = async (req, res) => {
 
     res.json(activityJson);
   } catch (error) {
-    console.error('Update activity error:', error);
+    logger.error('Update activity error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to update activity' });
   }
 };
@@ -454,7 +454,7 @@ export const deleteActivity = async (req, res) => {
 
     res.json({ success: true, message: 'Activity deleted successfully' });
   } catch (error) {
-    console.error('Delete activity error:', error);
+    logger.error('Delete activity error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to delete activity' });
   }
 };

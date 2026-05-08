@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import { emitToUser } from '../config/socket.js';
+import logger from '../utils/logger.js';
 
 export const updateProfile = async (req, res) => {
   try {
@@ -42,7 +43,7 @@ export const updateProfile = async (req, res) => {
 
     res.json(userData);
   } catch (error) {
-    console.error('Update profile error:', error);
+    logger.error('Update profile error', { error: error.message, stack: error.stack });
     const errorMessage = error.message || 'Failed to update profile';
     res.status(500).json({ error: errorMessage });
   }
@@ -84,7 +85,7 @@ export const updateAvatar = async (req, res) => {
 
     res.json(userData);
   } catch (error) {
-    console.error('Update avatar error:', error);
+    logger.error('Update avatar error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: error.message || 'Failed to update avatar' });
   }
 };
@@ -116,7 +117,7 @@ export const changePassword = async (req, res) => {
 
     res.json({ success: true, message: 'Password changed successfully' });
   } catch (error) {
-    console.error('Change password error:', error);
+    logger.error('Change password error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to change password' });
   }
 };

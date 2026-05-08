@@ -4,6 +4,7 @@ import { authenticate, requireRole } from '../middleware/auth.js';
 import { updateChildValidator, childIdValidator } from '../validators/childValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { uploadChildPhoto } from '../middleware/uploadChildren.js';
+import logger from '../utils/logger.js';
 
 const router = express.Router();
 
@@ -66,7 +67,7 @@ router.put(
             });
             
         } catch (error) {
-            console.error('Update avatar error:', error);
+            logger.error('Update avatar error', { error: error.message, stack: error.stack });
             res.status(500).json({ 
                 error: 'Failed to update avatar',
                 details: process.env.NODE_ENV === 'development' ? error.message : undefined
@@ -119,7 +120,7 @@ router.put(
             req.child = child; // Attach child to request
             next();
         } catch (error) {
-            console.error('Child check error:', error);
+            logger.error('Child check error', { error: error.message, stack: error.stack });
             res.status(500).json({ error: 'Server error' });
         }
     },
