@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import ChatMessage from '../models/ChatMessage.js';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
+import { emitToUser } from '../config/socket.js';
 
 const buildConversationId = (parentId) => `parent:${parentId}`;
 
@@ -82,6 +83,26 @@ export const createMessage = async (req, res) => {
     });
 
     res.status(201).json(msg);
+
+    // Emit real-time notification to the other party (best-effort)
+    try {
+      const parentId = msg.conversationId.replace('parent:', '');
+      if (senderRole === 'teacher') {
+        emitToUser(parseInt(parentId, 10), 'chat:message', msg.toJSON());
+      } else {
+        const { default: Child } = await import('../models/Child.js');
+        const { default: Group } = await import('../models/Group.js');
+        const children = await Child.findAll({ where: { parentId }, attributes: ['groupId'], raw: true });
+        const groupIds = [...new Set(children.map((c) => c.groupId).filter(Boolean))];
+        if (groupIds.length > 0) {
+          const groups = await Group.findAll({ where: { id: { [Op.in]: groupIds } }, attributes: ['teacherId'], raw: true });
+          const teacherIds = [...new Set(groups.map((g) => g.teacherId).filter(Boolean))];
+          teacherIds.forEach((tid) => emitToUser(tid, 'chat:message', msg.toJSON()));
+        }
+      }
+    } catch (socketErr) {
+      logger.warn('chat:message socket emit failed', { error: socketErr.message });
+    }
   } catch (err) {
     logger.error('createMessage error', err);
     res.status(500).json({ error: 'Failed to send message' });

@@ -5,12 +5,14 @@ import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from
 import api from '../shared/services/api';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
+import { useSocket } from '../shared/context/SocketContext';
 import Card from '../shared/components/Card';
 
 const Chat = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { success: toastSuccess, error: toastError } = useToast();
+  const { on, off } = useSocket();
   const [parents, setParents] = useState([]);
   const [selectedParent, setSelectedParent] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -40,7 +42,6 @@ const Chat = () => {
 
   useEffect(() => {
     let alive = true;
-    let intervalId;
 
     const load = async () => {
       if (!selectedParent) return;
@@ -52,13 +53,25 @@ const Chat = () => {
     };
 
     load();
-    intervalId = setInterval(load, 5000);
 
-    return () => {
-      alive = false;
-      if (intervalId) clearInterval(intervalId);
-    };
+    return () => { alive = false; };
   }, [selectedParent]);
+
+  useEffect(() => {
+    if (!selectedParent) return;
+    const convoId = `parent:${selectedParent.id}`;
+
+    const handleMessage = async (msg) => {
+      if (msg.conversationId !== convoId) return;
+      setMessages((prev) =>
+        prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]
+      );
+      await markRead(convoId);
+    };
+
+    on('chat:message', handleMessage);
+    return () => off('chat:message', handleMessage);
+  }, [selectedParent, on, off]);
 
   const sorted = useMemo(
     () =>
