@@ -4,37 +4,10 @@ import bcrypt from 'bcryptjs';
 import User from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
+import { recordFailedAttempt, clearAttempts, isLockedOut } from '../utils/loginRateLimitStore.js';
 
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY_DAYS = 7;
-
-// Per-account lockout (single-instance; replace Map with Redis for multi-instance)
-const loginAttempts = new Map();
-const MAX_LOGIN_ATTEMPTS = 5;
-const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
-
-function recordFailedAttempt(email) {
-  const entry = loginAttempts.get(email) || { attempts: 0, lockedUntil: null };
-  entry.attempts += 1;
-  if (entry.attempts >= MAX_LOGIN_ATTEMPTS) {
-    entry.lockedUntil = Date.now() + LOCKOUT_DURATION_MS;
-  }
-  loginAttempts.set(email, entry);
-}
-
-function clearAttempts(email) {
-  loginAttempts.delete(email);
-}
-
-function isLockedOut(email) {
-  const entry = loginAttempts.get(email);
-  if (!entry?.lockedUntil) return false;
-  if (Date.now() > entry.lockedUntil) {
-    loginAttempts.delete(email);
-    return false;
-  }
-  return true;
-}
 
 const generateAccessToken = (userId) => {
   return jwt.sign(
