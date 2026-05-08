@@ -88,7 +88,7 @@ const Meals = () => {
       if (allChildren.length > 0 && !formData.childId) {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
       }
-    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; }
+    } catch (error) { showError(error.response?.data?.error || error.message); }
   };
 
   const loadMeals = async () => {

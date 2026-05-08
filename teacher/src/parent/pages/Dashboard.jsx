@@ -5,6 +5,7 @@ import { useSocket } from '../../shared/context/SocketContext';
 import { useTranslation } from 'react-i18next';
 import { useChild } from '../context/ChildContext';
 import { useNotification } from '../context/NotificationContext';
+import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
+  const { error: showError } = useToast();
 
   const loadData = useCallback(async () => {
     if (!selectedChildId) return;
@@ -65,7 +67,7 @@ const Dashboard = () => {
 
       // Refresh notifications after loading data
       refreshNotifications();
-    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
+    } catch (error) { showError(error.response?.data?.error || error.message); } finally {
       setLoading(false);
     }
   }, [selectedChildId, refreshNotifications]);

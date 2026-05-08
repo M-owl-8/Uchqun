@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -14,6 +15,7 @@ import {
 
 const UsersStats = () => {
   const { user } = useAuth();
+  const { error: showError } = useToast();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
@@ -34,7 +36,7 @@ const UsersStats = () => {
       
       const response = await api.get('/business/users', { params });
       setStats(response.data.data);
-    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
+    } catch (error) { showError(error.response?.data?.error || error.message); } finally {
       setLoading(false);
     }
   };
