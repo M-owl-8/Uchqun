@@ -1,4 +1,4 @@
-import User from '../../models/User.js';
+import { getParentGroupId } from '../../utils/parentDataSource.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import Child from '../../models/Child.js';
 import Meal from '../../models/Meal.js';
@@ -19,10 +19,9 @@ export const getMyMeals = async (req, res) => {
     const { mealType, startDate, endDate, childId } = req.query;
     const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
-    // Get parent's groupId
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (!parent || !parent.groupId) {
+    if (!groupId) {
       // Fallback to legacy parent_meals if no group assigned
       const where = { parentId: req.user.id };
 
@@ -121,15 +120,15 @@ export const getMyMeals = async (req, res) => {
 export const getMealById = async (req, res) => {
   try {
     const { id } = req.params;
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (parent?.groupId) {
+    if (groupId) {
       const meal = await Meal.findOne({
         where: { id },
         include: [{
           model: Child,
           as: 'child',
-          where: { groupId: parent.groupId },
+          where: { groupId },
           attributes: ['id', 'firstName', 'lastName', 'photo'],
           required: true,
         }],

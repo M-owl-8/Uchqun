@@ -1,4 +1,4 @@
-import User from '../../models/User.js';
+import { getParentGroupId } from '../../utils/parentDataSource.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import Child from '../../models/Child.js';
 import Activity from '../../models/Activity.js';
@@ -19,10 +19,9 @@ export const getMyActivities = async (req, res) => {
     const { activityType, startDate, endDate, childId } = req.query;
     const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
-    // Get parent's groupId
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (!parent || !parent.groupId) {
+    if (!groupId) {
       // Fallback to legacy parent_activities if no group assigned
       const where = { parentId: req.user.id };
 
@@ -121,15 +120,15 @@ export const getMyActivities = async (req, res) => {
 export const getActivityById = async (req, res) => {
   try {
     const { id } = req.params;
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (parent?.groupId) {
+    if (groupId) {
       const activity = await Activity.findOne({
         where: { id },
         include: [{
           model: Child,
           as: 'child',
-          where: { groupId: parent.groupId },
+          where: { groupId },
           attributes: ['id', 'firstName', 'lastName', 'photo'],
           required: true,
         }],

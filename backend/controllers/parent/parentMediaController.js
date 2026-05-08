@@ -1,4 +1,4 @@
-import User from '../../models/User.js';
+import { getParentGroupId } from '../../utils/parentDataSource.js';
 import ParentMedia from '../../models/ParentMedia.js';
 import Child from '../../models/Child.js';
 import Media from '../../models/Media.js';
@@ -18,10 +18,9 @@ export const getMyMedia = async (req, res) => {
     const { fileType } = req.query;
     const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
-    // Get parent's groupId
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (!parent || !parent.groupId) {
+    if (!groupId) {
       // Fallback to legacy parent_media if no group assigned
       const where = { parentId: req.user.id };
 
@@ -45,7 +44,6 @@ export const getMyMedia = async (req, res) => {
       });
     }
 
-    // Query teacher-created media for all children in the parent's group
     const whereMedia = {};
 
     if (fileType) {
@@ -57,7 +55,7 @@ export const getMyMedia = async (req, res) => {
       include: [{
         model: Child,
         as: 'child',
-        where: { groupId: parent.groupId },
+        where: { groupId },
         attributes: ['id', 'firstName', 'lastName', 'photo'],
         required: true,
       }],
@@ -86,15 +84,15 @@ export const getMyMedia = async (req, res) => {
 export const getMediaById = async (req, res) => {
   try {
     const { id } = req.params;
-    const parent = await User.findByPk(req.user.id, { attributes: ['groupId'] });
+    const groupId = await getParentGroupId(req.user.id);
 
-    if (parent?.groupId) {
+    if (groupId) {
       const media = await Media.findOne({
         where: { id },
         include: [{
           model: Child,
           as: 'child',
-          where: { groupId: parent.groupId },
+          where: { groupId },
           attributes: ['id', 'firstName', 'lastName', 'photo'],
           required: true,
         }],
