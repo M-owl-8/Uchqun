@@ -31,9 +31,19 @@
 - [x] H-01 through H-12 — pre-resolved in codebase before this session
 - [x] H-13 FK indexes used snake_case columns — migration 20260508000001 re-creates as camelCase (6076932)
 - [x] H-16 Dev proxy missing for admin/reception/government vite configs — added proxy blocks (70d1906)
-- [x] H-20 Broken `node server.js` start script — changed to `vite preview`, removed stray express dep (9534f65)
+- [x] H-20 Broken `node server.js` start script — changed to `vite preview` in all 4 frontends (9534f65, de1e296)
 - [x] M-06 SchoolRating.stars allowNull: true — made NOT NULL with backfill migration (161504f)
 
-## Phases 4-13 (Queued)
+## Phase 4 — Remaining High + Medium + Low Cleanup (COMPLETE)
 
-To be detailed as Phase 4 begins.
+- [x] H-18 isTeacher granted admin role — removed admin from predicate (4747b9b)
+- [x] L-08 No engines field in frontend package.json — added to all 4 apps (de1e296)
+- [x] L-01 Dead exports/imports — removed addChild, showChildPassword, filteredActivities (8fd92cc)
+- [x] L-02 Debug artifacts in production — gated error details to dev-only, removed empty comments (c3e71d2)
+- [x] M-13 window.confirm blocking dialogs — replaced with ConfirmDialog modal in 6 pages (f07bb8f)
+- [x] H-14, H-15, H-17, H-19, C-04, C-08, C-09, C-10, C-11, C-12, C-13 — pre-resolved before this session
+
+## Phases 5-13 (Queued)
+
+Remaining open: M-01 (Redis rate limiting), M-02 (raw SQL in statsController), M-03 (group-vs-legacy DRY),
+M-09 (empty catch blocks), L-03 through L-07, L-10, M-21, M-22 and others.
