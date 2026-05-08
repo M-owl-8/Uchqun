@@ -15,16 +15,16 @@
 - [x] #11-004 Node.js version pinned — verified nixpacks.toml uses nodejs_20 (a296de7)
 - [x] #00-001 Config test for Node version — added backend/__tests__/config.test.js (a296de7)
 
-## Phase 2 — Cross-Cutting Infrastructure (IN PROGRESS)
+## Phase 2 — Cross-Cutting Infrastructure (COMPLETE)
 
-- [ ] #02-007 console.* replaced with logger.* in all backend controllers and routes
-- [ ] #11-011 ESLint no-console rule for backend/
-- [ ] #11-010 Input validators added to 13 route groups (chat, parent, teacher, admin, progress, reception, servicePlan, childAssessment, therapy, mealPlan, notification, business, aiWarning)
-- [ ] #11-002 Backend CI test coverage threshold
-- [ ] #11-003 Frontend lint step in CI
-- [ ] #11-007 jsdom moved to devDependencies
-- [ ] #00-013 vercel.json consolidation
-- [ ] #00-012 SAST/secret-scanning in CI
+- [x] #02-007 console.* replaced with logger.* in all backend controllers and routes (b73da75)
+- [x] #11-011 ESLint no-console rule for backend/ tightened to error (b73da75)
+- [x] #11-010 Input validators added to 13 route groups (b73da75, 778ea37)
+- [x] #11-002 Backend CI test coverage threshold (10% lines/statements, 5% branches) (932c387)
+- [x] #11-003 Frontend lint step in CI matrix job added (932c387)
+- [x] #11-007 jsdom moved from backend dependencies to devDependencies (9d602bb)
+- [x] #00-013 Root-level vercel.json removed (0b9e03e)
+- [x] #00-012 SAST/secret-scanning (gitleaks + Trivy) added to CI (bf2a1ef)
 
 ## Phase 3 — Security Hardening
 
