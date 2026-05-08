@@ -21,6 +21,7 @@ const Profile = lazy(() => import('./pages/Profile'));
 const Settings = lazy(() => import('./pages/Settings'));
 const MonitoringJournal = lazy(() => import('./pages/MonitoringJournal'));
 const TherapyManagement = lazy(() => import('./pages/TherapyManagement'));
+const AIWarnings = lazy(() => import('./parent/pages/AIWarnings'));
 const ParentApp = lazy(() => import('./parent/ParentApp'));
 const ParentDashboard = lazy(() => import('./parent/pages/Dashboard'));
 const ChildProfile = lazy(() => import('./parent/pages/ChildProfile'));
@@ -95,6 +96,7 @@ function App() {
                       <Route path="chat" element={<ErrorBoundary><Chat /></ErrorBoundary>} />
                       <Route path="monitoring" element={<ErrorBoundary><MonitoringJournal /></ErrorBoundary>} />
                       <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
+                      <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
                       <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
                     </Route>
 
