@@ -16,7 +16,16 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: { outDir: 'dist' },
-    server: { port: 5175, open: true },
+    server: {
+      port: 5175,
+      open: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          changeOrigin: true,
+        },
+      },
+    },
     test: {
       globals: true,
       environment: 'jsdom',

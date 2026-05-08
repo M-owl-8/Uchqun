@@ -9,7 +9,16 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios') } },
-    server: { port: 5173, open: true },
+    server: {
+      port: 5173,
+      open: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          changeOrigin: true,
+        },
+      },
+    },
     build: { outDir: 'dist', assetsDir: 'assets', sourcemap: false },
     base: '/',
     test: {

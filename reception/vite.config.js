@@ -12,7 +12,16 @@ export default defineConfig(({ mode }) => {
     resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios') } },
     publicDir: 'public',
     build: { outDir: 'dist' },
-    server: { port: 5177, open: true },
+    server: {
+      port: 5177,
+      open: true,
+      proxy: {
+        '/api': {
+          target: 'http://localhost:5000',
+          changeOrigin: true,
+        },
+      },
+    },
     test: {
       globals: true,
       environment: 'jsdom',
