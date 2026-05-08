@@ -8,10 +8,23 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - service: backend
+            label: Backend
+          - service: admin
+            label: Admin
+          - service: teacher
+            label: Teacher
+          - service: reception
+            label: Reception
+          - service: government
+            label: Government
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy backend to Railway
+      - name: Deploy ${{ matrix.label }} to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
@@ -21,5 +34,5 @@ jobs:
             exit 0
           fi
           npm install -g @railway/cli
-          railway up --service backend --detach
-          echo "Railway deployment triggered successfully."
+          railway up --service ${{ matrix.service }} --detach
+          echo "${{ matrix.label }} deployment triggered successfully."
