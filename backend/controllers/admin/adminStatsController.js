@@ -335,8 +335,9 @@ export const getSchoolRatings = async (req, res) => {
           u."lastName" as "parent_lastName",
           u.email as "parent_email"
         FROM school_ratings sr
-        LEFT JOIN schools s ON sr."schoolId" = s.id
-        LEFT JOIN users u ON sr."parentId" = u.id
+        LEFT JOIN schools s ON sr."schoolId" = s.id AND s."deletedAt" IS NULL
+        LEFT JOIN users u ON sr."parentId" = u.id AND u."deletedAt" IS NULL
+        WHERE sr."deletedAt" IS NULL
         ORDER BY sr."updatedAt" DESC
       `, {
         type: QueryTypes.SELECT,
@@ -403,7 +404,7 @@ export const getSchoolRatings = async (req, res) => {
               s.type,
               s.address
             FROM schools s
-            WHERE s."isActive" = true
+            WHERE s."isActive" = true AND s."deletedAt" IS NULL
             ORDER BY s.name ASC
           `, {
             type: QueryTypes.SELECT,
@@ -421,6 +422,7 @@ export const getSchoolRatings = async (req, res) => {
                 s.type,
                 s.address
               FROM schools s
+              WHERE s."deletedAt" IS NULL
               ORDER BY s.name ASC
             `, {
               type: QueryTypes.SELECT,
