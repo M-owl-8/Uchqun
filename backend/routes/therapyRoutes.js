@@ -10,6 +10,13 @@ import {
   getTherapyUsage,
 } from '../controllers/therapyController.js';
 import { authenticate, requireRole } from '../middleware/auth.js';
+import { handleValidationErrors } from '../middleware/validation.js';
+import {
+  createTherapyValidator,
+  updateTherapyValidator,
+  endTherapyValidator,
+  therapyIdValidator,
+} from '../validators/therapyValidator.js';
 
 const router = express.Router();
 
@@ -20,13 +27,13 @@ router.get('/', getTherapies);
 
 // Specific paths must come before /:id paths so Express matches them first
 router.get('/usage', getTherapyUsage);
-router.put('/usage/:id/end', requireRole('parent', 'teacher'), endTherapy);
-router.post('/:id/start', requireRole('parent', 'teacher'), startTherapy);
+router.put('/usage/:id/end', requireRole('parent', 'teacher'), endTherapyValidator, handleValidationErrors, endTherapy);
+router.post('/:id/start', requireRole('parent', 'teacher'), therapyIdValidator, handleValidationErrors, startTherapy);
 
-router.get('/:id', getTherapy);
+router.get('/:id', therapyIdValidator, handleValidationErrors, getTherapy);
 
-router.post('/', requireRole('admin', 'teacher'), createTherapy);
-router.put('/:id', requireRole('admin', 'teacher'), updateTherapy);
-router.delete('/:id', requireRole('admin', 'teacher'), deleteTherapy);
+router.post('/', requireRole('admin', 'teacher'), createTherapyValidator, handleValidationErrors, createTherapy);
+router.put('/:id', requireRole('admin', 'teacher'), updateTherapyValidator, handleValidationErrors, updateTherapy);
+router.delete('/:id', requireRole('admin', 'teacher'), therapyIdValidator, handleValidationErrors, deleteTherapy);
 
 export default router;

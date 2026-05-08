@@ -21,6 +21,9 @@ import {
 } from '../controllers/receptionController.js';
 import { getGroups } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/superAdminController.js';
+import { handleValidationErrors } from '../middleware/validation.js';
+import { createStaffValidator, createParentValidator } from '../validators/receptionValidator.js';
+import { messageToGovValidator } from '../validators/messageValidator.js';
 
 const router = express.Router();
 
@@ -44,14 +47,15 @@ router.get('/documents', getMyDocuments);
 router.get('/verification-status', getVerificationStatus);
 
 // Teacher management
-router.post('/teachers', createTeacher);
+router.post('/teachers', createStaffValidator, handleValidationErrors, createTeacher);
 router.get('/teachers', getTeachers);
 router.get('/teachers/:id/ratings', getTeacherRatings);
 router.put('/teachers/:id', updateTeacher);
 router.delete('/teachers/:id', deleteTeacher);
 
 // Parent management (with file upload support for child photo)
-router.post('/parents', upload.fields([{ name: 'child[photo]', maxCount: 1 }]), createParent);
+// Validators run after multer so req.body is populated from multipart form
+router.post('/parents', upload.fields([{ name: 'child[photo]', maxCount: 1 }]), createParentValidator, handleValidationErrors, createParent);
 router.get('/parents', getParents);
 router.put('/parents/:id', updateParent);
 router.delete('/parents/:id', deleteParent);
@@ -64,9 +68,9 @@ router.delete('/children/:id', deleteChildForReception);
 router.get('/groups', getGroups);
 
 // Send message to government
-router.post('/message-to-government', sendMessage);
+router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
 // Backward-compatible alias (legacy clients)
-router.post('/message-to-super-admin', sendMessage);
+router.post('/message-to-super-admin', messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 

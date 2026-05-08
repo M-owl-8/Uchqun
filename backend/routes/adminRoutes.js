@@ -21,6 +21,9 @@ import {
 } from '../controllers/adminController.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/superAdminController.js';
+import { handleValidationErrors } from '../middleware/validation.js';
+import { createReceptionValidator, rejectDocumentValidator, adminIdParamValidator } from '../validators/adminValidator.js';
+import { messageToGovValidator } from '../validators/messageValidator.js';
 
 const router = express.Router();
 
@@ -41,14 +44,14 @@ router.use(authenticate);
 router.use(requireAdmin);
 
 // Send message to government (top-level platform owner)
-router.post('/message-to-government', sendMessage);
+router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
 // Backward-compatible alias (legacy clients)
-router.post('/message-to-super-admin', sendMessage);
+router.post('/message-to-super-admin', messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 
 // Reception management (Admin can CREATE, EDIT, DELETE and MANAGE)
-router.post('/receptions', createReception); // Admin can create Reception
+router.post('/receptions', createReceptionValidator, handleValidationErrors, createReception); // Admin can create Reception
 router.get('/receptions', getReceptions);
 router.get('/receptions/:id', getReceptionById);
 router.put('/receptions/:id', updateReception); // Admin can edit Reception
@@ -59,8 +62,8 @@ router.put('/receptions/:id/deactivate', deactivateReception);
 // Document management
 router.get('/documents/pending', getPendingDocuments);
 router.get('/receptions/:id/documents', getReceptionDocuments);
-router.put('/documents/:id/approve', approveDocument);
-router.put('/documents/:id/reject', rejectDocument);
+router.put('/documents/:id/approve', adminIdParamValidator, handleValidationErrors, approveDocument);
+router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErrors, rejectDocument);
 
 // Read-only access to Teachers, Parents, and Groups
 router.get('/teachers', getTeachers); // View only
