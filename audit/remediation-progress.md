@@ -43,7 +43,23 @@
 - [x] M-13 window.confirm blocking dialogs — replaced with ConfirmDialog modal in 6 pages (f07bb8f)
 - [x] H-14, H-15, H-17, H-19, C-04, C-08, C-09, C-10, C-11, C-12, C-13 — pre-resolved before this session
 
-## Phases 5-13 (Queued)
+## Phase 5 — Medium + Low Remaining (COMPLETE)
 
-Remaining open: M-01 (Redis rate limiting), M-02 (raw SQL in statsController), M-03 (group-vs-legacy DRY),
-M-09 (empty catch blocks), L-03 through L-07, L-10, M-21, M-22 and others.
+- [x] M-14 useAsync eslint-disable stale closure — added execute + immediate to dep array (1c3cb2e)
+- [x] L-12 AIWarnings page orphaned — wired route /teacher/ai-warnings in App.jsx (b1e23ec)
+- [x] M-09 Swallowed catch blocks — UsersStats, parent Dashboard, Meals now show errors (5c1a3a0)
+- [x] M-22 Hardcoded Uzbek strings in ChildProfile — extracted to emotionalCriteria i18n keys (d2f966e)
+- [x] M-02 Raw SQL bypasses paranoid in adminStatsController — added deletedAt IS NULL guards (3d184db)
+- [x] M-21 — pre-resolved (parentheses already correct before this session)
+
+## Remaining Open (Phase 6+)
+
+- M-01: In-memory login rate limiting — requires Redis adapter (out of scope without infra)
+- M-03: Group-vs-legacy DRY refactor — high regression risk, deferred
+- M-10: Client-side parent filtering in Chat — pre-resolved
+- M-11: Polling instead of WebSocket in Chat — significant refactor
+- L-03: Business logic in route closures — style/architecture, low risk
+- L-04: Files over 300 lines — refactor, low priority
+- L-07: lint-staged missing mobile — mobile removed, N/A
+- L-10: CI JWT hardcoded — acceptable for test-only env
+- L-13: calculateStats not memoized — pre-resolved or N/A
