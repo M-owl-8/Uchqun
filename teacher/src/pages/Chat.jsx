@@ -28,9 +28,7 @@ const Chat = () => {
     const fetchParents = async () => {
       try {
         const res = await api.get('/teacher/parents');
-        const list = (res.data.parents || []).filter(
-          (p) => !user?.id || p.teacherId === user.id
-        );
+        const list = res.data.parents || [];
         setParents(list);
         if (list.length > 0) {
           setSelectedParent(list[0]);
