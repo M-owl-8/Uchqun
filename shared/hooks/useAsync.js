@@ -39,8 +39,7 @@ export function useAsync(asyncFn, immediate = false) {
 
   useEffect(() => {
     if (immediate) execute();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [immediate, execute]);
 
   return { loading, error, data, isStale, execute, retry: execute };
 }
