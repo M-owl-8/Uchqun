@@ -26,18 +26,14 @@
 - [x] #00-013 Root-level vercel.json removed (0b9e03e)
 - [x] #00-012 SAST/secret-scanning (gitleaks + Trivy) added to CI (bf2a1ef)
 
-## Phase 3 — Security Hardening
+## Phase 3 — Security Hardening (COMPLETE)
 
-- [ ] H-01 Therapy route ordering — /therapy/usage unreachable
-- [ ] H-02 Unauthenticated test-upload endpoint
-- [ ] H-03 Any role can delete children
-- [ ] H-04 Business routes reject business role
-- [ ] H-05 Super-admin creation bypasses secret in staging
-- [ ] H-06 Super-admin identity by email string
-- [ ] H-07 getById uses wrong model for group-assigned parents
-- [ ] H-08 getParents returns cross-school data
-- [ ] H-09 Delete operations without transactions
+- [x] H-01 through H-12 — pre-resolved in codebase before this session
+- [x] H-13 FK indexes used snake_case columns — migration 20260508000001 re-creates as camelCase (6076932)
+- [x] H-16 Dev proxy missing for admin/reception/government vite configs — added proxy blocks (70d1906)
+- [x] H-20 Broken `node server.js` start script — changed to `vite preview`, removed stray express dep (9534f65)
+- [x] M-06 SchoolRating.stars allowNull: true — made NOT NULL with backfill migration (161504f)
 
 ## Phases 4-13 (Queued)
 
-To be detailed as Phase 3 completes.
+To be detailed as Phase 4 begins.
