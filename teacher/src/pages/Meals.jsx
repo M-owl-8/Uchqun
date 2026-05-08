@@ -22,6 +22,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 
 const Meals = () => {
   const { isTeacher } = useAuth();
@@ -29,6 +30,7 @@ const Meals = () => {
   const { t, i18n } = useTranslation();
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const [showModal, setShowModal] = useState(false);
   const [editingMeal, setEditingMeal] = useState(null);
@@ -134,18 +136,20 @@ const Meals = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (mealId) => {
-    if (!window.confirm(t('mealsPage.form.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/meals/${mealId}`);
-      success(t('mealsPage.form.toastDelete'));
-      loadMeals();
-    } catch (error) {
-      showError(error.response?.data?.error || t('mealsPage.form.toastError'));
-    }
+  const handleDelete = (mealId) => {
+    setConfirmDialog({
+      message: t('mealsPage.form.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/meals/${mealId}`);
+          success(t('mealsPage.form.toastDelete'));
+          loadMeals();
+        } catch (error) {
+          showError(error.response?.data?.error || t('mealsPage.form.toastError'));
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -520,6 +524,7 @@ const Meals = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

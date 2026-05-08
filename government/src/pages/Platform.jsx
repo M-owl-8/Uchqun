@@ -8,6 +8,7 @@ import SchoolsTab from '../components/tabs/SchoolsTab';
 import MessagesTab from '../components/tabs/MessagesTab';
 import GovernmentTab from '../components/tabs/GovernmentTab';
 import RegistrationsTab from '../components/tabs/RegistrationsTab';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
 
@@ -17,6 +18,7 @@ const Platform = () => {
   useAuth();
 
   const [activeTab, setActiveTab] = useState('admins');
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   const [loading, setLoading] = useState(false);
   const [admins, setAdmins] = useState([]);
@@ -180,15 +182,20 @@ const Platform = () => {
     } finally { setEditSaving(false); }
   };
 
-  const handleDeleteAdmin = async (id) => {
-    if (!window.confirm(t('superAdmin.confirmDelete'))) return;
-    try {
-      await api.delete(`/government/admins/${id}`);
-      success(t('superAdmin.toastDelete'));
-      setAdmins((prev) => prev.filter((a) => a.id !== id));
-    } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.toastDeleteError'));
-    }
+  const handleDeleteAdmin = (id) => {
+    setConfirmDialog({
+      message: t('superAdmin.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/government/admins/${id}`);
+          success(t('superAdmin.toastDelete'));
+          setAdmins((prev) => prev.filter((a) => a.id !== id));
+        } catch (error) {
+          showError(error.response?.data?.error || t('superAdmin.toastDeleteError'));
+        }
+      },
+    });
   };
 
   const handleCreateGovernment = async (e) => {
@@ -245,33 +252,43 @@ const Platform = () => {
     } finally { setEditGovSaving(false); }
   };
 
-  const handleDeleteGovernment = async (id) => {
-    if (!window.confirm(t('superAdmin.confirmDeleteGovernment', { defaultValue: 'Delete this government user?' }))) return;
-    try {
-      await api.delete(`/government/users/${id}`);
-      success(t('superAdmin.governmentDeleted', { defaultValue: 'Government user deleted' }));
-      setGovernments((prev) => prev.filter((g) => g.id !== id));
-    } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.governmentDeleteError', { defaultValue: 'Delete failed' }));
-    }
+  const handleDeleteGovernment = (id) => {
+    setConfirmDialog({
+      message: t('superAdmin.confirmDeleteGovernment', { defaultValue: 'Delete this government user?' }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/government/users/${id}`);
+          success(t('superAdmin.governmentDeleted', { defaultValue: 'Government user deleted' }));
+          setGovernments((prev) => prev.filter((g) => g.id !== id));
+        } catch (error) {
+          showError(error.response?.data?.error || t('superAdmin.governmentDeleteError', { defaultValue: 'Delete failed' }));
+        }
+      },
+    });
   };
 
-  const handleApproveRequest = async (id) => {
-    if (!window.confirm(t('superAdmin.confirmApprove', { defaultValue: 'Approve this request?' }))) return;
-    setApprovingRequest(true);
-    try {
-      const res = await api.post(`/government/admin-registrations/${id}/approve`, {});
-      setApprovedCredentials(res.data?.data?.credentials || res.data?.data);
-      success(t('superAdmin.requestApproved', { defaultValue: 'Request approved' }));
-      const [reqRes, admRes] = await Promise.allSettled([
-        api.get('/government/admin-registrations?status=pending'),
-        api.get('/government/admins'),
-      ]);
-      if (reqRes.status === 'fulfilled') setRegistrationRequests(reqRes.value.data?.data || []);
-      if (admRes.status === 'fulfilled') setAdmins(admRes.value.data?.data || []);
-    } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.approveError', { defaultValue: 'Approve failed' }));
-    } finally { setApprovingRequest(false); }
+  const handleApproveRequest = (id) => {
+    setConfirmDialog({
+      message: t('superAdmin.confirmApprove', { defaultValue: 'Approve this request?' }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        setApprovingRequest(true);
+        try {
+          const res = await api.post(`/government/admin-registrations/${id}/approve`, {});
+          setApprovedCredentials(res.data?.data?.credentials || res.data?.data);
+          success(t('superAdmin.requestApproved', { defaultValue: 'Request approved' }));
+          const [reqRes, admRes] = await Promise.allSettled([
+            api.get('/government/admin-registrations?status=pending'),
+            api.get('/government/admins'),
+          ]);
+          if (reqRes.status === 'fulfilled') setRegistrationRequests(reqRes.value.data?.data || []);
+          if (admRes.status === 'fulfilled') setAdmins(admRes.value.data?.data || []);
+        } catch (error) {
+          showError(error.response?.data?.error || t('superAdmin.approveError', { defaultValue: 'Approve failed' }));
+        } finally { setApprovingRequest(false); }
+      },
+    });
   };
 
   const handleRejectRequest = async (id) => {
@@ -369,6 +386,7 @@ const Platform = () => {
           />
         )}
       </div>
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

@@ -19,6 +19,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const TeacherManagement = () => {
   const [teachers, setTeachers] = useState([]);
@@ -26,6 +27,7 @@ const TeacherManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const [showRatings, setShowRatings] = useState(false);
   const [selectedTeacher, setSelectedTeacher] = useState(null);
   const [ratingsLoading, setRatingsLoading] = useState(false);
@@ -115,18 +117,20 @@ const TeacherManagement = () => {
     return new Date(value).toLocaleString();
   };
 
-  const handleDelete = async (teacherId) => {
-    if (!window.confirm(t('teachersPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/reception/teachers/${teacherId}`);
-      success(t('teachersPage.toastDelete'));
-      loadTeachers();
-    } catch (error) {
-      showError(error.response?.data?.error || t('teachersPage.toastDeleteError'));
-    }
+  const handleDelete = (teacherId) => {
+    setConfirmDialog({
+      message: t('teachersPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/teachers/${teacherId}`);
+          success(t('teachersPage.toastDelete'));
+          loadTeachers();
+        } catch (error) {
+          showError(error.response?.data?.error || t('teachersPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -493,6 +497,7 @@ const TeacherManagement = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

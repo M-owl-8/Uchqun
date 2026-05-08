@@ -14,6 +14,7 @@ import {
   Save
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const GroupManagement = () => {
   const [groups, setGroups] = useState([]);
@@ -22,6 +23,7 @@ const GroupManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingGroup, setEditingGroup] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -79,18 +81,20 @@ const GroupManagement = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (groupId) => {
-    if (!window.confirm(t('groupsPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/groups/${groupId}`);
-      success(t('groupsPage.toastDelete'));
-      loadData();
-    } catch (error) {
-      showError(error.response?.data?.error || t('groupsPage.toastDeleteError'));
-    }
+  const handleDelete = (groupId) => {
+    setConfirmDialog({
+      message: t('groupsPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/groups/${groupId}`);
+          success(t('groupsPage.toastDelete'));
+          loadData();
+        } catch (error) {
+          showError(error.response?.data?.error || t('groupsPage.toastDeleteError'));
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -335,6 +339,7 @@ const GroupManagement = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

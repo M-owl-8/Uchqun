@@ -25,6 +25,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 
 // Helper function to convert Appwrite URL to proxy URL
 const getProxyUrl = (url, mediaId) => {
@@ -467,6 +468,7 @@ const Media = () => {
   const [children, setChildren] = useState([]);
   const { t, i18n } = useTranslation();
   const [file, setFile] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   // Defensive: remove any legacy thumbnail field rendered from old bundles
   useEffect(() => {
     if (!showModal) return;
@@ -555,19 +557,21 @@ const Media = () => {
     setFile(null);
   };
 
-  const handleDelete = async (mediaId, e) => {
+  const handleDelete = (mediaId, e) => {
     e?.stopPropagation();
-    if (!window.confirm(t('mediaPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/media/${mediaId}`);
-      success(t('mediaPage.toastDelete'));
-      loadMedia();
-    } catch (error) {
-      showError(error.response?.data?.error || t('mediaPage.toastError'));
-    }
+    setConfirmDialog({
+      message: t('mediaPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/media/${mediaId}`);
+          success(t('mediaPage.toastDelete'));
+          loadMedia();
+        } catch (error) {
+          showError(error.response?.data?.error || t('mediaPage.toastError'));
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -1000,6 +1004,7 @@ const Media = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

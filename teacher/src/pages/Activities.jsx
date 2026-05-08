@@ -17,6 +17,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 
 const Activities = () => {
   const { isTeacher, user } = useAuth();
@@ -26,6 +27,7 @@ const Activities = () => {
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [editingActivity, setEditingActivity] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const [formData, setFormData] = useState({
     parentId: '',
     childId: '',
@@ -187,18 +189,20 @@ const Activities = () => {
     setShowModal(true);
   };
 
-  const handleDelete = async (activityId) => {
-    if (!window.confirm(t('activitiesPage.confirmDelete'))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/activities/${activityId}`);
-      success(t('activitiesPage.toastDelete'));
-      loadActivities();
-    } catch (error) {
-      showError(error.response?.data?.error || t('activitiesPage.toastError'));
-    }
+  const handleDelete = (activityId) => {
+    setConfirmDialog({
+      message: t('activitiesPage.confirmDelete'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/activities/${activityId}`);
+          success(t('activitiesPage.toastDelete'));
+          loadActivities();
+        } catch (error) {
+          showError(error.response?.data?.error || t('activitiesPage.toastError'));
+        }
+      },
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -815,6 +819,7 @@ const Activities = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

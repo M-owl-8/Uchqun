@@ -19,9 +19,11 @@ import {
   Trash2
 } from 'lucide-react';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ConfirmDialog from '../components/ConfirmDialog';
 
 const ReceptionManagement = () => {
   const [receptions, setReceptions] = useState([]);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const [selectedReception, setSelectedReception] = useState(null);
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -301,32 +303,28 @@ const ReceptionManagement = () => {
     }
   };
 
-  const handleDeleteReception = async (receptionId) => {
-    if (!window.confirm(t('receptionsPage.deleteConfirm'))) {
-      return;
-    }
-
-    try {
-      setActionLoading(true);
-      await api.delete(`/admin/receptions/${receptionId}`);
-      
-      // Remove from list without full refresh
-      setReceptions(prevReceptions => prevReceptions.filter(r => r.id !== receptionId));
-      
-      // Clear selection if deleting the selected reception
-      if (selectedReception?.id === receptionId) {
-        setSelectedReception(null);
-        setDocuments([]);
-      }
-      
-      success(t('receptionsPage.deleteSuccess'));
-    } catch (error) {
-      showError(error.response?.data?.error || t('receptionsPage.loadError'));
-      // On error, refresh to ensure consistency
-      await fetchReceptions();
-    } finally {
-      setActionLoading(false);
-    }
+  const handleDeleteReception = (receptionId) => {
+    setConfirmDialog({
+      message: t('receptionsPage.deleteConfirm'),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          setActionLoading(true);
+          await api.delete(`/admin/receptions/${receptionId}`);
+          setReceptions(prevReceptions => prevReceptions.filter(r => r.id !== receptionId));
+          if (selectedReception?.id === receptionId) {
+            setSelectedReception(null);
+            setDocuments([]);
+          }
+          success(t('receptionsPage.deleteSuccess'));
+        } catch (error) {
+          showError(error.response?.data?.error || t('receptionsPage.loadError'));
+          await fetchReceptions();
+        } finally {
+          setActionLoading(false);
+        }
+      },
+    });
   };
 
   const getStatusBadge = (reception) => {
@@ -801,6 +799,7 @@ const ReceptionManagement = () => {
           </div>
         </div>
       )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };
