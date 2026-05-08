@@ -23,10 +23,9 @@ const SchoolRating = sequelize.define('SchoolRating', {
   },
   stars: {
     type: DataTypes.INTEGER,
-    allowNull: true,
+    allowNull: false,
     validate: {
       isValidStars(value) {
-        if (value === null || value === undefined) return true;
         const num = Number(value);
         if (isNaN(num) || !Number.isInteger(num)) throw new Error('Stars must be an integer');
         if (num < 1 || num > 5) throw new Error('Stars must be between 1 and 5');
