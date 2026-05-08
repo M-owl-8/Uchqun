@@ -35,7 +35,7 @@ const Chat = () => {
         if (list.length > 0) {
           setSelectedParent(list[0]);
         }
-      } catch (err) { /* swallowed: surface to UI when toast hook is available */ void err; }
+      } catch (err) { toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })); }
     };
     fetchParents();
   }, [user?.id]);
