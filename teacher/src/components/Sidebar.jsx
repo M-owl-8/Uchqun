@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { getUnreadTotalForPrefix } from '../shared/services/chatStore';
+import api from '../shared/services/api';
 
 
 const COLORS = {
@@ -24,27 +24,31 @@ const COLORS = {
   mintMist: '#E5F7F0',
 };
 
+const UNREAD_POLL_MS = 30000; // 30s — lightweight endpoint, no N+1
+
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user } = useAuth();
   const { t } = useTranslation();
   const [unreadChat, setUnreadChat] = useState(0);
 
-  // Load unread chat count and refresh every 5 seconds
+  // Fetch unread count from the dedicated endpoint (single query, no N+1)
   useEffect(() => {
     let alive = true;
     let intervalId;
 
     const loadUnread = async () => {
       if (!alive) return;
-      const count = await getUnreadTotalForPrefix('parent:', 'teacher');
-      if (alive) {
-        setUnreadChat(count);
+      try {
+        const res = await api.get('/chat/unread-count', { params: { prefix: 'parent:', role: 'teacher' } });
+        if (alive) setUnreadChat(res.data.count ?? 0);
+      } catch {
+        // Non-critical — badge stays at last known value
       }
     };
 
     loadUnread();
-    intervalId = setInterval(loadUnread, 5000);
+    intervalId = setInterval(loadUnread, UNREAD_POLL_MS);
 
     return () => {
       alive = false;
