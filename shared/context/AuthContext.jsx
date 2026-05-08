@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     isAuthenticated: !!user,
-    isTeacher: user?.role === 'teacher' || user?.role === 'admin',
+    isTeacher: user?.role === 'teacher',
     isParent: user?.role === 'parent',
   };
 
