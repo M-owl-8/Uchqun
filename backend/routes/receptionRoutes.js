@@ -1,24 +1,9 @@
 import express from 'express';
 import { authenticate, requireReception } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
-import {
-  uploadDocument,
-  getMyDocuments,
-  getVerificationStatus,
-  createTeacher,
-  createParent,
-  getTeachers,
-  getParents,
-  updateTeacher,
-  updateParent,
-  deleteTeacher,
-  deleteParent,
-  createChildForParent,
-  updateChildForReception,
-  deleteChildForReception,
-  getTeacherRatings,
-  getMyMessages,
-} from '../controllers/receptionController.js';
+import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages } from '../controllers/receptionController.js';
+import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher } from '../controllers/receptionTeacherController.js';
+import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception } from '../controllers/receptionParentController.js';
 import { getGroups } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/superAdminController.js';
 import { handleValidationErrors } from '../middleware/validation.js';

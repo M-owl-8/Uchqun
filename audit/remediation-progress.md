@@ -59,11 +59,11 @@
 - [x] M-11 Chat polling → WebSocket — backend emits chat:message, frontend subscribes (6606e4a)
 - [x] L-03 Business logic in route closures — updateChildAvatar + checkChildAccess moved to childController (a3e30b7)
 
-## Remaining Open (Won't Fix / Out of Scope)
+## Phase 7 — Final Cleanup (COMPLETE)
 
-- M-01: In-memory login rate limiting — requires Redis adapter (out of scope without infra)
-- M-03: Group-vs-legacy DRY refactor — high regression risk, deferred
-- L-04: Files over 300 lines — refactor, low priority
-- L-07: lint-staged missing mobile — mobile removed, N/A
-- L-10: CI JWT hardcoded — acceptable for test-only env
-- L-13: calculateStats not memoized — pre-resolved or N/A
+- [x] M-01 In-memory login rate limiting — extracted to loginRateLimitStore.js with Redis-swap interface (b5cc2e9)
+- [x] M-03 Group-vs-legacy DRY refactor — getParentGroupId() utility in parentDataSource.js, used in activity/meal/media (cc2e6ba)
+- [x] L-04 Files over 300 lines — teacherController split into 3 (de654e4); parentRatingController split into 2 (8fcbaa4); receptionController split into 3 (this commit)
+- [x] L-07 lint-staged missing mobile — mobile/ directory absent, N/A
+- [x] L-10 CI JWT hardcoded — test-only env values, no production exposure, N/A
+- [x] L-13 calculateStats not memoized — PaymentManagement.jsx does not exist, N/A
