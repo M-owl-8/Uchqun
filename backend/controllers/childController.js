@@ -135,6 +135,70 @@ export const deleteChild = async (req, res) => {
   }
 };
 
+export const updateChildAvatar = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { photo } = req.body;
+
+    const child = await Child.findOne({ where: { id, parentId: req.user.id } });
+
+    if (!child) {
+      return res.status(404).json({ error: 'Child not found or you do not have permission' });
+    }
+
+    await child.update({ photo, updatedAt: new Date() });
+    await child.reload();
+
+    const childData = child.toJSON();
+    childData.age = child.getAge ? child.getAge() : null;
+
+    res.json({ success: true, message: 'Avatar updated successfully', data: childData });
+  } catch (error) {
+    logger.error('Update avatar error', { error: error.message, stack: error.stack });
+    res.status(500).json({
+      error: 'Failed to update avatar',
+      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+    });
+  }
+};
+
+export const checkChildAccess = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const role = req.user?.role;
+
+    const where = { id };
+    if (role === 'parent') {
+      where.parentId = req.user.id;
+    }
+
+    const child = await Child.findOne({ where });
+
+    if (!child) {
+      return res.status(404).json({ error: 'Child not found or you do not have permission' });
+    }
+
+    if (role !== 'parent') {
+      const allowedRoles = ['teacher', 'admin', 'reception', 'government', 'business'];
+      if (!allowedRoles.includes(role)) {
+        return res.status(403).json({ error: 'Forbidden' });
+      }
+      if (req.user.schoolId) {
+        const parent = await User.findByPk(child.parentId);
+        if (parent?.schoolId && parent.schoolId !== req.user.schoolId) {
+          return res.status(403).json({ error: 'You can only edit children in your institution' });
+        }
+      }
+    }
+
+    req.child = child;
+    next();
+  } catch (error) {
+    logger.error('Child check error', { error: error.message, stack: error.stack });
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 // Update child
 export const updateChild = async (req, res) => {
   try {
