@@ -246,8 +246,6 @@ const ParentManagement = () => {
         formDataToSend.append('child[photo]', childFormData.photo);
       }
       
-      // Debug: Log FormData contents
-      
       await api.post('/reception/children', formDataToSend);
       success(t('parentsPage.toastChildAdded'));
       setShowChildModal(false);

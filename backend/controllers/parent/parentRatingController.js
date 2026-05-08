@@ -630,18 +630,18 @@ export const rateSchool = async (req, res) => {
       parameters: error.parameters,
     });
 
-    // Return error response with details for debugging (always include in response for now)
     res.status(500).json({
       error: 'Internal server error',
       message: 'An unexpected error occurred. Please try again later.',
-      // Always include error details for debugging (remove in production after fixing)
-      details: {
-        message: error.message,
-        name: error.name,
-        originalError: error.original?.message,
-        originalCode: error.original?.code,
-        errors: error.errors?.map(e => ({ message: e.message, path: e.path })),
-      },
+      ...(process.env.NODE_ENV === 'development' && {
+        details: {
+          message: error.message,
+          name: error.name,
+          originalError: error.original?.message,
+          originalCode: error.original?.code,
+          errors: error.errors?.map(e => ({ message: e.message, path: e.path })),
+        },
+      }),
     });
   }
 };

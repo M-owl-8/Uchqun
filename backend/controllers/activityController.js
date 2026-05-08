@@ -328,10 +328,12 @@ export const createActivity = async (req, res) => {
       error.message.includes('does not exist') ||
       error.original?.code === '42703' // PostgreSQL undefined column error
     )) {
-      return res.status(500).json({ 
-        error: 'Database migration required. Please ensure migrations have run successfully.',
-        hint: 'The Individual Plan fields may not exist in the database. Check migration logs.',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
+      return res.status(500).json({
+        error: 'Database migration required.',
+        ...(process.env.NODE_ENV === 'development' && {
+          hint: 'Individual Plan fields may not exist — check migration logs.',
+          details: error.message,
+        }),
       });
     }
     

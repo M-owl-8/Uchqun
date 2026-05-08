@@ -87,8 +87,6 @@ const AdminRegister = () => {
       formDataToSend.append('phone', formData.phone || '');
       formDataToSend.append('telegramUsername', formData.telegramUsername || '');
 
-      // Debug: Log what we're sending
-
       // Add files
       if (certificateFile) {
         formDataToSend.append('certificateFile', certificateFile);
