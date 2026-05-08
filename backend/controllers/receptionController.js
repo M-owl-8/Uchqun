@@ -35,6 +35,7 @@ import fs from 'fs';
  * - Reception cannot log in until documents are approved
  */
 export const uploadDocument = async (req, res) => {
+  let tempPath = null;
   try {
     const { documentType } = req.body;
     const file = req.file;
@@ -47,23 +48,30 @@ export const uploadDocument = async (req, res) => {
       return res.status(400).json({ error: 'Document type is required' });
     }
 
+    // Read buffer from multer's temp disk file, then upload to persistent storage
+    // (Appwrite → GCS → local fallback). Storing the raw temp path would lose the
+    // file on every container restart (#02-010).
+    tempPath = file.path;
+    const buffer = await fs.promises.readFile(tempPath);
+    const { url: persistentUrl } = await uploadFile(buffer, file.filename, file.mimetype);
+
     const document = await Document.create({
       userId: req.user.id,
       documentType,
       fileName: file.originalname,
-      filePath: file.path,
+      filePath: persistentUrl,
       fileSize: file.size,
       mimeType: file.mimetype,
       status: 'pending',
     });
 
-    // Mark user as having uploaded documents
     await req.user.update({ isVerified: true });
 
     logger.info('Document uploaded by Reception', {
       documentId: document.id,
       userId: req.user.id,
       documentType,
+      storageUrl: persistentUrl,
     });
 
     res.status(201).json({
@@ -74,6 +82,11 @@ export const uploadDocument = async (req, res) => {
   } catch (error) {
     logger.error('Upload document error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to upload document' });
+  } finally {
+    // Clean up temp file regardless of outcome
+    if (tempPath) {
+      fs.promises.unlink(tempPath).catch(() => {});
+    }
   }
 };
 
