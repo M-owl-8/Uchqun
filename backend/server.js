@@ -11,7 +11,7 @@ import { errorHandler, notFound } from './middleware/errorHandler.js';
 import { initializeSocket } from './config/socket.js';
 import { securityHeaders, enforceHTTPS } from './middleware/security.js';
 import { sanitizeBody } from './middleware/sanitize.js';
-import { requestLogger } from './middleware/requestLogger.js';
+import { requestLogger, errorLogger } from './middleware/requestLogger.js';
 import { apiLimiter } from './middleware/rateLimiter.js';
 import logger from './utils/logger.js';
 import swaggerUi from 'swagger-ui-express';
@@ -176,6 +176,7 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(notFound);
+app.use(errorLogger);
 app.use(errorHandler);
 
 const httpServer = createServer(app);

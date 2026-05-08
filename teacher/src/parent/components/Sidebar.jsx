@@ -18,7 +18,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '../context/NotificationContext';
-import { getUnreadCount } from '../../shared/services/chatStore';
+import api from '../services/api';
 import uzParent from '../locales/uz/common.json';
 import ruParent from '../locales/ru/common.json';
 import enParent from '../locales/en/common.json';
@@ -55,22 +55,23 @@ const Sidebar = ({ onClose }) => {
     return value || defaultValue || key;
   };
 
-  // Load unread chat count and refresh every 5 seconds
+  // Fetch unread count from dedicated endpoint (single query, no N+1)
   useEffect(() => {
     let alive = true;
     let intervalId;
 
     const loadUnread = async () => {
       if (!user?.id || !alive) return;
-      const conversationId = `parent:${user.id}`;
-      const count = await getUnreadCount(conversationId, 'parent');
-      if (alive) {
-        setUnreadChat(count);
+      try {
+        const res = await api.get('/chat/unread-count', { params: { role: 'parent' } });
+        if (alive) setUnreadChat(res.data.count ?? 0);
+      } catch {
+        // Non-critical — badge stays at last known value
       }
     };
 
     loadUnread();
-    intervalId = setInterval(loadUnread, 5000);
+    intervalId = setInterval(loadUnread, 30000); // 30s — lightweight endpoint
 
     return () => {
       alive = false;

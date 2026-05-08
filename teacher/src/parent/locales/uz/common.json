@@ -270,6 +270,29 @@
       "kindAttitude": "Bolaga nisbatan mehribon munosabat"
     }
   },
+  "help": {
+    "title": "Yordam va qo'llab-quvvatlash",
+    "subtitle": "Tez-tez beriladigan savollarga javob toping va yordam oling",
+    "contactUs": "Biz bilan bog'laning",
+    "email": "Email",
+    "emailValue": "support@uchqun.uz",
+    "phone": "Telefon",
+    "phoneValue": "+998 71 200 00 00",
+    "faq": "Ko'p beriladigan savollar",
+    "quickLinks": "Tezkor havolalar",
+    "q1": "Farzandimning kunlik faoliyatlarini qanday ko'raman?",
+    "a1": "Barcha kunlik faoliyatlar va o'qituvchilarning yangilanishlarini ko'rish uchun pastki navigatsiyadan yoki boshqaruv panelidan Faoliyatlar sahifasiga o'ting.",
+    "q2": "Rasm va videolarni qayerda ko'raman?",
+    "a2": "O'qituvchilar tomonidan maktab tadbirlaridan ulashilgan barcha rasm va videolarni ko'rish uchun Media sahifasiga o'ting.",
+    "q3": "Farzandimning ovqatlanishini qanday kuzataman?",
+    "a3": "Har kunlik ovqatlanish yozuvlarini, shu jumladan farzandingiz nima eyishi va maxsus parhez eslatmalarini ko'rish uchun Ovqatlanish sahifasiga tashrif buyuring.",
+    "q4": "Profil ma'lumotlarimni yangilay olamanmi?",
+    "a4": "Ha, aloqa ma'lumotlari va afzalliklaringizni yangilash uchun yuqori menyudan yoki Profil sahifasidan Sozlamalar bo'limiga o'ting.",
+    "linkActivities": "Faoliyatlarni ko'rish →",
+    "linkMedia": "Mediaga ko'z tashlash →",
+    "linkMeals": "Ovqatlanishni tekshirish →",
+    "linkSettings": "Hisob sozlamalari →"
+  },
   "login": {
     "title": "Uchqun Platform",
     "subtitle": "Maxsus ta'lim muassasasi boshqaruvi",

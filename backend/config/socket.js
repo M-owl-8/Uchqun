@@ -10,12 +10,26 @@ let io = null;
 // Map userId -> Set of socketIds for targeted emission
 const userSockets = new Map();
 
+const SOCKET_DEFAULT_ORIGINS = [
+  'http://localhost:5173',
+  'http://localhost:5174',
+  'http://localhost:5175',
+  'http://localhost:5177',
+  'https://uchqunedu.uz',
+  'https://www.uchqunedu.uz',
+  'https://uchqun-reception.netlify.app',
+  'https://uchqun-admin.netlify.app',
+  'https://uchqun-teacher.netlify.app',
+  'https://uchqun-government.netlify.app',
+];
+
 export const initializeSocket = (server) => {
-  const allowedOrigins = process.env.FRONTEND_URL?.split(',').map(s => s.trim()) || [
-    'http://localhost:5173',
-    'http://localhost:5174',
-    'http://localhost:5175',
-  ];
+  const envOrigins = process.env.FRONTEND_URL
+    ? process.env.FRONTEND_URL.split(',').map((s) => s.trim()).filter(Boolean)
+    : [];
+  const allowedOrigins = envOrigins.length > 0
+    ? [...new Set([...SOCKET_DEFAULT_ORIGINS, ...envOrigins])]
+    : SOCKET_DEFAULT_ORIGINS;
 
   io = new Server(server, {
     cors: {

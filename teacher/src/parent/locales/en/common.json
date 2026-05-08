@@ -265,6 +265,29 @@
       "kindAttitude": "Kind attitude towards the child"
     }
   },
+  "help": {
+    "title": "Help & Support",
+    "subtitle": "Find answers to common questions and get support",
+    "contactUs": "Contact Us",
+    "email": "Email",
+    "emailValue": "support@uchqun.uz",
+    "phone": "Phone",
+    "phoneValue": "+998 71 200 00 00",
+    "faq": "Frequently Asked Questions",
+    "quickLinks": "Quick Links",
+    "q1": "How do I view my child's daily activities?",
+    "a1": "Navigate to the Activities page from the bottom navigation or dashboard to see all daily activities and updates from teachers.",
+    "q2": "Where can I see photos and videos?",
+    "a2": "Go to the Media page to browse all photos and videos shared by teachers from school activities.",
+    "q3": "How do I track my child's meals?",
+    "a3": "Visit the Meals page to see daily meal records, including what your child ate and any special dietary notes.",
+    "q4": "Can I update my profile information?",
+    "a4": "Yes, go to Settings from the top menu or Profile page to update your contact information and preferences.",
+    "linkActivities": "View Activities →",
+    "linkMedia": "Browse Media →",
+    "linkMeals": "Check Meals →",
+    "linkSettings": "Account Settings →"
+  },
   "login": {
     "title": "Uchqun Platform",
     "subtitle": "Special Education School Management",

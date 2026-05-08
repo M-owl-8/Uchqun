@@ -1,38 +1,29 @@
+import { useTranslation } from 'react-i18next';
 import { HelpCircle, Mail, Phone, MessageCircle, BookOpen } from 'lucide-react';
 import Card from '../components/Card';
+import { Link } from 'react-router-dom';
 
 const Help = () => {
+  const { t } = useTranslation();
+
   const faqs = [
-    {
-      question: 'How do I view my child\'s daily activities?',
-      answer: 'Navigate to the Activities page from the bottom navigation or dashboard to see all daily activities and updates from teachers.',
-    },
-    {
-      question: 'Where can I see photos and videos?',
-      answer: 'Go to the Media page to browse all photos and videos shared by teachers from school activities.',
-    },
-    {
-      question: 'How do I track my child\'s meals?',
-      answer: 'Visit the Meals page to see daily meal records, including what your child ate and any special dietary notes.',
-    },
-    {
-      question: 'Can I update my profile information?',
-      answer: 'Yes, go to Settings from the top menu or Profile page to update your contact information and preferences.',
-    },
+    { question: t('help.q1'), answer: t('help.a1') },
+    { question: t('help.q2'), answer: t('help.a2') },
+    { question: t('help.q3'), answer: t('help.a3') },
+    { question: t('help.q4'), answer: t('help.a4') },
   ];
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <Card className="bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">Help & Support</h1>
-        <p className="text-white/90 text-sm md:text-base">Find answers to common questions and get support</p>
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('help.title')}</h1>
+        <p className="text-white/90 text-sm md:text-base">{t('help.subtitle')}</p>
       </Card>
 
-      {/* Contact Information */}
       <Card className="p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-blue-600" />
-          Contact Us
+          {t('help.contactUs')}
         </h2>
         <div className="space-y-4">
           <div className="flex items-center gap-3">
@@ -40,8 +31,10 @@ const Help = () => {
               <Mail className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Email</p>
-              <p className="font-medium text-gray-900">support@uchqunplatform.com</p>
+              <p className="text-sm text-gray-600">{t('help.email')}</p>
+              <a href={`mailto:${t('help.emailValue')}`} className="font-medium text-gray-900 hover:text-blue-600">
+                {t('help.emailValue')}
+              </a>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -49,18 +42,19 @@ const Help = () => {
               <Phone className="w-5 h-5 text-blue-600" />
             </div>
             <div>
-              <p className="text-sm text-gray-600">Phone</p>
-              <p className="font-medium text-gray-900">+1 (555) 123-4567</p>
+              <p className="text-sm text-gray-600">{t('help.phone')}</p>
+              <a href={`tel:${t('help.phoneValue').replace(/\s/g, '')}`} className="font-medium text-gray-900 hover:text-blue-600">
+                {t('help.phoneValue')}
+              </a>
             </div>
           </div>
         </div>
       </Card>
 
-      {/* FAQ Section */}
       <div>
         <h2 className="text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-blue-600" />
-          Frequently Asked Questions
+          {t('help.faq')}
         </h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
@@ -72,22 +66,21 @@ const Help = () => {
         </div>
       </div>
 
-      {/* Quick Links */}
       <Card className="p-6 bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200 shadow-lg">
-        <h2 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h2>
+        <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('help.quickLinks')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <a href="/activities" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-            View Activities →
-          </a>
-          <a href="/media" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-            Browse Media →
-          </a>
-          <a href="/meals" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-            Check Meals →
-          </a>
-          <a href="/settings" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
-            Account Settings →
-          </a>
+          <Link to="/activities" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+            {t('help.linkActivities')}
+          </Link>
+          <Link to="/media" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+            {t('help.linkMedia')}
+          </Link>
+          <Link to="/meals" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+            {t('help.linkMeals')}
+          </Link>
+          <Link to="/settings" className="text-blue-600 hover:text-blue-700 font-medium text-sm">
+            {t('help.linkSettings')}
+          </Link>
         </div>
       </Card>
     </div>
@@ -95,4 +88,3 @@ const Help = () => {
 };
 
 export default Help;
-

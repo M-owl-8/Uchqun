@@ -43,7 +43,7 @@ const envSchema = Joi.object({
       'string.min': 'JWT_REFRESH_SECRET must be at least 32 characters long for security',
       'any.required': 'JWT_REFRESH_SECRET is required',
     }),
-  JWT_EXPIRE: Joi.string().default('30d'),
+  JWT_EXPIRE: Joi.string().default('15m'),
   JWT_REFRESH_EXPIRE: Joi.string().default('7d'),
 
   // CORS Configuration
