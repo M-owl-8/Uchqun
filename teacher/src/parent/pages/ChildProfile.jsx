@@ -684,21 +684,11 @@ const ChildProfile = () => {
                       </div>
                       
                       <div className="space-y-2 mb-4">
-                        {Object.entries({
-                          stable: 'Боланинг ҳиссий ҳолати барқарор',
-                          positiveEmotions: 'Бола ижобий ҳис-туйғуларни намоён этади',
-                          noAnxiety: 'Хавотирланиш белгилари йўқ',
-                          noHostility: 'Душманлик муносабати кузатилмайди',
-                          calmResponse: 'Танбеҳ ва илтимосларга хотиржам муносабат',
-                          showsEmpathy: 'Бошқа болаларга ҳамдардлик кўрсатади',
-                          quickRecovery: 'Стрессли вазиятдан кейин тезда ўзини ўнглаб олади',
-                          stableMood: 'Кайфияти кун давомида барқарор туради',
-                          trustingRelationship: 'Тарбиячи билан муносабати ишончли',
-                        }).map(([key, label]) => (
+                        {['stable', 'positiveEmotions', 'noAnxiety', 'noHostility', 'calmResponse', 'showsEmpathy', 'quickRecovery', 'stableMood', 'trustingRelationship'].map((key) => (
                           emotionalState[key] && (
                             <div key={key} className="flex items-center gap-2 text-sm text-gray-700">
                               <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                              <span>{label}</span>
+                              <span>{t(`child.emotionalCriteria.${key}`)}</span>
                             </div>
                           )
                         ))}
@@ -706,7 +696,7 @@ const ChildProfile = () => {
                       
                       {record.notes && (
                         <div className="mt-4 pt-4 border-t border-gray-200">
-                          <p className="text-sm font-medium text-gray-700 mb-1">Изоҳ:</p>
+                          <p className="text-sm font-medium text-gray-700 mb-1">{t('child.emotionalCriteria.notes')}</p>
                           <p className="text-sm text-gray-600">{record.notes}</p>
                         </div>
                       )}

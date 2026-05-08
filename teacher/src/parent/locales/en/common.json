@@ -64,6 +64,18 @@
       "female": "Female",
       "MALE": "Male",
       "FEMALE": "Female"
+    },
+    "emotionalCriteria": {
+      "notes": "Notes:",
+      "stable": "Child's emotional state is stable",
+      "positiveEmotions": "Child shows positive emotions",
+      "noAnxiety": "No signs of anxiety",
+      "noHostility": "No hostile behaviour observed",
+      "calmResponse": "Calm response to instructions and requests",
+      "showsEmpathy": "Shows empathy towards other children",
+      "quickRecovery": "Recovers quickly from stressful situations",
+      "stableMood": "Mood remains stable throughout the day",
+      "trustingRelationship": "Trusting relationship with the teacher"
     }
   },
   "dashboard": {
