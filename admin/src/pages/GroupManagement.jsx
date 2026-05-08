@@ -22,7 +22,7 @@ const GroupManagement = () => {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const { showToast } = useToast();
+  const { error: toastError } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const GroupManagement = () => {
       const response = await api.get('/admin/groups');
       setGroups(response.data.groups || response.data.data || []);
     } catch (error) {
-      showToast(t('groupsPage.loadError') || 'Error', 'error');
+      toastError(t('groupsPage.loadError') || 'Error');
       setGroups([]);
     } finally {
       setLoading(false);

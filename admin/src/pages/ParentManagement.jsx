@@ -33,7 +33,7 @@ const ParentManagement = () => {
   const [selectedParent, setSelectedParent] = useState(null);
   const [parentData, setParentData] = useState(null);
   const [loadingParentData, setLoadingParentData] = useState(false);
-  const { showToast } = useToast();
+  const { error: toastError } = useToast();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -52,7 +52,7 @@ const ParentManagement = () => {
       });
       setParents(parentsData);
     } catch (error) {
-      showToast(t('parentsPage.loadError') || 'Error', 'error');
+      toastError(t('parentsPage.loadError') || 'Error');
       setParents([]);
     } finally {
       setLoading(false);
@@ -66,7 +66,7 @@ const ParentManagement = () => {
       const response = await api.get(`/admin/parents/${parent.id}`);
       setParentData(response.data.data);
     } catch (error) {
-      showToast(t('parentsPage.dataError') || 'Error', 'error');
+      toastError(t('parentsPage.dataError') || 'Error');
     } finally {
       setLoadingParentData(false);
     }

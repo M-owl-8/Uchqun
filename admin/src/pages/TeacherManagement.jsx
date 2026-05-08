@@ -25,7 +25,7 @@ const TeacherManagement = () => {
   const [teachers, setTeachers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
-  const { showToast } = useToast();
+  const { error: toastError } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const TeacherManagement = () => {
       const response = await api.get('/admin/teachers');
       setTeachers(response.data.data || []);
     } catch (error) {
-      showToast(t('teachersPage.loadError') || 'Error', 'error');
+      toastError(t('teachersPage.loadError') || 'Error');
       setTeachers([]);
     } finally {
       setLoading(false);
