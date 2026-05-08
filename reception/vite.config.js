@@ -9,7 +9,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     base: '/',
-    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared') } },
+    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios') } },
     publicDir: 'public',
     build: { outDir: 'dist' },
     server: { port: 5177, open: true },
