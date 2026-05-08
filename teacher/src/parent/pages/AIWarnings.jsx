@@ -173,7 +173,7 @@ const AIWarnings = () => {
                     <span className="text-sm text-gray-500">
                       {new Date(warning.createdAt).toLocaleString()}
                     </span>
-                    {!warning.isResolved && (
+                    {!warning.isResolved && user?.role !== 'parent' && (
                       <button
                         onClick={() => resolveWarning(warning.id)}
                         className="px-4 py-2 bg-green-600 text-white rounded-lg font-semibold hover:bg-green-700 transition-colors flex items-center gap-2"
