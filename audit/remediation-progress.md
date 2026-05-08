@@ -52,13 +52,17 @@
 - [x] M-02 Raw SQL bypasses paranoid in adminStatsController — added deletedAt IS NULL guards (3d184db)
 - [x] M-21 — pre-resolved (parentheses already correct before this session)
 
-## Remaining Open (Phase 6+)
+## Phase 6 — Chat WebSocket + Route Cleanup (COMPLETE)
+
+- [x] M-09 (Chat) fetchParents swallowed catch — wired toastError (bb3e573)
+- [x] M-10 Client-side parent filter in Chat — removed; backend already scopes (1639dec)
+- [x] M-11 Chat polling → WebSocket — backend emits chat:message, frontend subscribes (6606e4a)
+- [x] L-03 Business logic in route closures — updateChildAvatar + checkChildAccess moved to childController (a3e30b7)
+
+## Remaining Open (Won't Fix / Out of Scope)
 
 - M-01: In-memory login rate limiting — requires Redis adapter (out of scope without infra)
 - M-03: Group-vs-legacy DRY refactor — high regression risk, deferred
-- M-10: Client-side parent filtering in Chat — pre-resolved
-- M-11: Polling instead of WebSocket in Chat — significant refactor
-- L-03: Business logic in route closures — style/architecture, low risk
 - L-04: Files over 300 lines — refactor, low priority
 - L-07: lint-staged missing mobile — mobile removed, N/A
 - L-10: CI JWT hardcoded — acceptable for test-only env
