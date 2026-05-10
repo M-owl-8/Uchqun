@@ -205,7 +205,7 @@
     "profileInfo": "Информация профиля",
     "email": "Email",
     "phone": "Телефон",
-    "contactSuperAdmin": "Связаться с государствоом",
+    "contactGovernment": "Связаться с государствоом",
     "contactDescription": "Нажмите кнопку ниже, чтобы отправить сообщение государствоу",
     "sendMessage": "Отправить сообщение государствоу",
     "myMessages": "Мои сообщения",
@@ -221,7 +221,7 @@
     "messageError": "Ошибка отправки сообщения",
     "noMessages": "Пока нет сообщений",
     "yourMessage": "Ваше сообщение",
-    "superAdminReply": "Ответ государствоа",
+    "governmentReply": "Ответ государствоа",
     "replied": "Получен ответ",
     "logout": "Выход"
   }

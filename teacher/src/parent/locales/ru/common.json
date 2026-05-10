@@ -21,7 +21,7 @@
     "menu": "Главное меню"
   },
   "profile": {
-    "contactSuperAdmin": "Отправить сообщение государствоу",
+    "contactGovernment": "Отправить сообщение государствоу",
     "myMessages": "Мои сообщения",
     "messageRequired": "Тема и сообщение обязательны",
     "messageSent": "Сообщение успешно отправлено",
@@ -35,7 +35,7 @@
     "sending": "Отправка...",
     "noMessages": "Пока нет сообщений",
     "yourMessage": "Ваше сообщение",
-    "superAdminReply": "Ответ государствоа",
+    "governmentReply": "Ответ государствоа",
     "replied": "Получен ответ"
   },
   "child": {

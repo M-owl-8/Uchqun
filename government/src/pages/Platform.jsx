@@ -119,13 +119,13 @@ const Platform = () => {
     setReplying(true);
     try {
       await api.post(`/government/messages/${messageId}/reply`, { reply: replyText.trim() });
-      success(t('superAdmin.replySent', { defaultValue: 'Reply sent' }));
+      success(t('government.replySent', { defaultValue: 'Reply sent' }));
       setReplyText('');
       setSelectedMessage(null);
       const res = await api.get('/government/messages');
       setMessages(res.data?.data || []);
     } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.replyError', { defaultValue: 'Reply failed' }));
+      showError(error.response?.data?.error || t('government.replyError', { defaultValue: 'Reply failed' }));
     } finally { setReplying(false); }
   };
 
@@ -139,18 +139,18 @@ const Platform = () => {
 
   const handleSubmitAdmin = async ({ firstName, lastName, email, password }, reset) => {
     if (!firstName || !lastName || !email || !password) {
-      showError(t('superAdmin.validation.required'));
+      showError(t('government.validation.required'));
       return;
     }
     try {
       setLoading(true);
       await api.post('/government/admins', { firstName, lastName, email, password });
-      success(t('superAdmin.toastCreate'));
+      success(t('government.toastCreate'));
       reset?.();
       const res = await api.get('/government/admins');
       setAdmins(res.data?.data || []);
     } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.toastSaveError'));
+      showError(error.response?.data?.error || t('government.toastSaveError'));
     } finally { setLoading(false); }
   };
 
@@ -172,27 +172,27 @@ const Platform = () => {
         firstName: editFirstName, lastName: editLastName, email: editEmail,
         phone: editPhone, password: editPassword || undefined,
       });
-      success(t('superAdmin.toastUpdate'));
+      success(t('government.toastUpdate'));
       const res = await api.get('/government/admins');
       setAdmins(res.data?.data || []);
       setEditingAdmin(null);
       setEditPassword('');
     } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.toastSaveError'));
+      showError(error.response?.data?.error || t('government.toastSaveError'));
     } finally { setEditSaving(false); }
   };
 
   const handleDeleteAdmin = (id) => {
     setConfirmDialog({
-      message: t('superAdmin.confirmDelete'),
+      message: t('government.confirmDelete'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
           await api.delete(`/government/admins/${id}`);
-          success(t('superAdmin.toastDelete'));
+          success(t('government.toastDelete'));
           setAdmins((prev) => prev.filter((a) => a.id !== id));
         } catch (error) {
-          showError(error.response?.data?.error || t('superAdmin.toastDeleteError'));
+          showError(error.response?.data?.error || t('government.toastDeleteError'));
         }
       },
     });
@@ -202,26 +202,26 @@ const Platform = () => {
     e.preventDefault();
     const fn = govFirstName.trim(), ln = govLastName.trim(), em = govEmail.trim(), pw = govPassword.trim();
     if (!fn || !ln || !em || !pw) {
-      showError(t('superAdmin.validation.allFieldsRequired', { defaultValue: 'All fields are required' }));
+      showError(t('government.validation.allFieldsRequired', { defaultValue: 'All fields are required' }));
       return;
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
-      showError(t('superAdmin.validation.invalidEmail', { defaultValue: 'Invalid email format' }));
+      showError(t('government.validation.invalidEmail', { defaultValue: 'Invalid email format' }));
       return;
     }
     if (pw.length < 8) {
-      showError(t('superAdmin.validation.passwordMinLength', { defaultValue: 'Password must be at least 8 characters' }));
+      showError(t('government.validation.passwordMinLength', { defaultValue: 'Password must be at least 8 characters' }));
       return;
     }
     try {
       setGovLoading(true);
       await api.post('/government/users', { firstName: fn, lastName: ln, email: em, password: pw });
-      success(t('superAdmin.governmentCreated', { defaultValue: 'Government user created' }));
+      success(t('government.governmentCreated', { defaultValue: 'Government user created' }));
       setGovFirstName(''); setGovLastName(''); setGovEmail(''); setGovPassword('');
       const res = await api.get('/government/users');
       setGovernments(res.data?.data || []);
     } catch (error) {
-      showError(error.response?.data?.error || error.message || t('superAdmin.governmentCreateError', { defaultValue: 'Create failed' }));
+      showError(error.response?.data?.error || error.message || t('government.governmentCreateError', { defaultValue: 'Create failed' }));
     } finally { setGovLoading(false); }
   };
 
@@ -242,27 +242,27 @@ const Platform = () => {
         firstName: editGovFirstName, lastName: editGovLastName,
         email: editGovEmail, password: editGovPassword || undefined,
       });
-      success(t('superAdmin.governmentUpdated', { defaultValue: 'Government user updated' }));
+      success(t('government.governmentUpdated', { defaultValue: 'Government user updated' }));
       const res = await api.get('/government/users');
       setGovernments(res.data?.data || []);
       setEditingGovernment(null);
       setEditGovPassword('');
     } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.governmentUpdateError', { defaultValue: 'Update failed' }));
+      showError(error.response?.data?.error || t('government.governmentUpdateError', { defaultValue: 'Update failed' }));
     } finally { setEditGovSaving(false); }
   };
 
   const handleDeleteGovernment = (id) => {
     setConfirmDialog({
-      message: t('superAdmin.confirmDeleteGovernment', { defaultValue: 'Delete this government user?' }),
+      message: t('government.confirmDeleteGovernment', { defaultValue: 'Delete this government user?' }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
           await api.delete(`/government/users/${id}`);
-          success(t('superAdmin.governmentDeleted', { defaultValue: 'Government user deleted' }));
+          success(t('government.governmentDeleted', { defaultValue: 'Government user deleted' }));
           setGovernments((prev) => prev.filter((g) => g.id !== id));
         } catch (error) {
-          showError(error.response?.data?.error || t('superAdmin.governmentDeleteError', { defaultValue: 'Delete failed' }));
+          showError(error.response?.data?.error || t('government.governmentDeleteError', { defaultValue: 'Delete failed' }));
         }
       },
     });
@@ -270,14 +270,14 @@ const Platform = () => {
 
   const handleApproveRequest = (id) => {
     setConfirmDialog({
-      message: t('superAdmin.confirmApprove', { defaultValue: 'Approve this request?' }),
+      message: t('government.confirmApprove', { defaultValue: 'Approve this request?' }),
       onConfirm: async () => {
         setConfirmDialog(null);
         setApprovingRequest(true);
         try {
           const res = await api.post(`/government/admin-registrations/${id}/approve`, {});
           setApprovedCredentials(res.data?.data?.credentials || res.data?.data);
-          success(t('superAdmin.requestApproved', { defaultValue: 'Request approved' }));
+          success(t('government.requestApproved', { defaultValue: 'Request approved' }));
           const [reqRes, admRes] = await Promise.allSettled([
             api.get('/government/admin-registrations?status=pending'),
             api.get('/government/admins'),
@@ -285,7 +285,7 @@ const Platform = () => {
           if (reqRes.status === 'fulfilled') setRegistrationRequests(reqRes.value.data?.data || []);
           if (admRes.status === 'fulfilled') setAdmins(admRes.value.data?.data || []);
         } catch (error) {
-          showError(error.response?.data?.error || t('superAdmin.approveError', { defaultValue: 'Approve failed' }));
+          showError(error.response?.data?.error || t('government.approveError', { defaultValue: 'Approve failed' }));
         } finally { setApprovingRequest(false); }
       },
     });
@@ -295,13 +295,13 @@ const Platform = () => {
     setRejectingRequest(true);
     try {
       await api.post(`/government/admin-registrations/${id}/reject`, { reason: rejectionReason.trim() || null });
-      success(t('superAdmin.requestRejected', { defaultValue: 'Request rejected' }));
+      success(t('government.requestRejected', { defaultValue: 'Request rejected' }));
       setSelectedRequest(null);
       setRejectionReason('');
       const res = await api.get('/government/admin-registrations?status=pending');
       setRegistrationRequests(res.data?.data || []);
     } catch (error) {
-      showError(error.response?.data?.error || t('superAdmin.rejectError', { defaultValue: 'Reject failed' }));
+      showError(error.response?.data?.error || t('government.rejectError', { defaultValue: 'Reject failed' }));
     } finally { setRejectingRequest(false); }
   };
 

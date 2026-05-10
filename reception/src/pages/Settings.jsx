@@ -377,7 +377,7 @@ const Settings = () => {
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactSuperAdmin')}</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactGovernment')}</h2>
         </div>
         <p className="text-sm text-gray-600 mb-4">
           {t('profile.contactDescription')}

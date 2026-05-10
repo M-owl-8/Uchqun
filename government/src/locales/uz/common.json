@@ -118,7 +118,7 @@
       "registrations": "Ro'yxatdan o'tish so'rovlari"
     }
   },
-  "superAdmin": {
+  "government": {
     "createTitle": "Yangi Admin yaratish",
     "createSubtitle": "Yangi admin uchun barcha ma'lumotlarni kiriting",
     "listTitle": "Mavjud Adminlar",

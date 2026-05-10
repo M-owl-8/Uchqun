@@ -737,7 +737,7 @@ const ChildProfile = () => {
               className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-100 transition-colors"
             >
               <MessageSquare className="w-4 h-4" />
-              {t('profile.contactSuperAdmin', { defaultValue: 'Davlatga xabar yuborish' })}
+              {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
             </button>
             {myMessages.length > 0 && (
               <button
@@ -889,7 +889,7 @@ const ChildProfile = () => {
                 <div className="p-3 bg-blue-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{t('profile.contactSuperAdmin', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
@@ -1015,7 +1015,7 @@ const ChildProfile = () => {
                           <div className="p-2 bg-blue-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">{t('profile.superAdminReply', { defaultValue: 'Davlat javobi' })}</p>
+                          <p className="text-sm font-medium text-blue-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
                               year: 'numeric', 

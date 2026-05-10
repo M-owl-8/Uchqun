@@ -249,7 +249,7 @@
   "profile": {
     "title": "Profil",
     "subtitle": "Hisobingizni boshqaring",
-    "contactSuperAdmin": "Davlatga bog'lanish",
+    "contactGovernment": "Davlatga bog'lanish",
     "contactDescription": "Davlatga xabar yuborish uchun quyidagi tugmani bosing",
     "sendMessage": "Davlatga xabar yuborish",
     "myMessages": "Mening xabarlarim",
@@ -265,7 +265,7 @@
     "messageError": "Xabar yuborishda xatolik",
     "noMessages": "Hozircha xabarlar yo'q",
     "yourMessage": "Sizning xabaringiz",
-    "superAdminReply": "Davlat javobi",
+    "governmentReply": "Davlat javobi",
     "replied": "Javob berildi"
   },
   "monitoring": {

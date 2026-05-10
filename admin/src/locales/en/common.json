@@ -172,7 +172,7 @@
     "email": "Email",
     "phone": "Phone",
     "language": "Language",
-    "contactSuperAdmin": "Contact Government",
+    "contactGovernment": "Contact Government",
     "contactDescription": "Click the button below to send a message to davlat",
     "sendMessage": "Send message to davlat",
     "myMessages": "My messages",
@@ -188,7 +188,7 @@
     "messageError": "Error sending message",
     "noMessages": "No messages yet",
     "yourMessage": "Your message",
-    "superAdminReply": "Davlat reply",
+    "governmentReply": "Davlat reply",
     "replied": "Replied"
   }
 }

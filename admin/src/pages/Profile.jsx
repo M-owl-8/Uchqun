@@ -141,7 +141,7 @@ const Profile = () => {
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactSuperAdmin', { defaultValue: 'Contact Government' })}</h2>
+          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactGovernment', { defaultValue: 'Contact Government' })}</h2>
         </div>
         <p className="text-sm text-gray-600 mb-4">
           {t('profile.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
@@ -317,7 +317,7 @@ const Profile = () => {
                           <div className="p-2 bg-blue-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">{t('profile.superAdminReply', { defaultValue: 'Davlat javobi' })}</p>
+                          <p className="text-sm font-medium text-blue-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
                               year: 'numeric', 

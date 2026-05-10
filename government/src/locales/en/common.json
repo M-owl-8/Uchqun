@@ -118,7 +118,7 @@
       "registrations": "Registrations"
     }
   },
-  "superAdmin": {
+  "government": {
     "createTitle": "Create New Admin",
     "createSubtitle": "Enter all information for the new admin",
     "listTitle": "Existing Admins",

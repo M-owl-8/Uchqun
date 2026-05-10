@@ -21,7 +21,7 @@
     "menu": "Asosiy menyu"
   },
   "profile": {
-    "contactSuperAdmin": "Davlatga xabar yuborish",
+    "contactGovernment": "Davlatga xabar yuborish",
     "myMessages": "Mening xabarlarim",
     "messageRequired": "Subject va xabar to'ldirilishi kerak",
     "messageSent": "Xabar muvaffaqiyatli yuborildi",
@@ -35,7 +35,7 @@
     "sending": "Yuborilmoqda...",
     "noMessages": "Hozircha xabarlar yo'q",
     "yourMessage": "Sizning xabaringiz",
-    "superAdminReply": "Davlat javobi",
+    "governmentReply": "Davlat javobi",
     "replied": "Javob berildi",
     "invalidImage": "Faqat rasm fayllari qabul qilinadi",
     "imageTooLarge": "Rasm hajmi 5MB dan katta bo'lmasligi kerak",

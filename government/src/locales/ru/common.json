@@ -118,7 +118,7 @@
       "registrations": "Регистрации"
     }
   },
-  "superAdmin": {
+  "government": {
     "createTitle": "Создать нового администратора",
     "createSubtitle": "Введите все данные нового администратора",
     "listTitle": "Существующие администраторы",

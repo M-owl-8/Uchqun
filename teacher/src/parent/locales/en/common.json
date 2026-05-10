@@ -21,7 +21,7 @@
     "menu": "Main menu"
   },
   "profile": {
-    "contactSuperAdmin": "Send message to davlat",
+    "contactGovernment": "Send message to davlat",
     "myMessages": "My messages",
     "messageRequired": "Subject and message are required",
     "messageSent": "Message sent successfully",
@@ -35,7 +35,7 @@
     "sending": "Sending...",
     "noMessages": "No messages yet",
     "yourMessage": "Your message",
-    "superAdminReply": "Davlat reply",
+    "governmentReply": "Davlat reply",
     "replied": "Replied"
   },
   "child": {
