@@ -50,3 +50,4 @@ temp/
 
 # Audit reports generated at root (canonical location: /audit/)
 /AUDIT_REPORT.md
+.claude/settings.local.json
