@@ -27,7 +27,7 @@ export const getAdmins = async (req, res) => {
  * Update an Admin account (Government only)
  * PUT /api/government/admins/:id
  */
-export const updateAdminBySuper = async (req, res) => {
+export const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
     const { firstName, lastName, email, phone, password } = req.body;
@@ -67,7 +67,7 @@ export const updateAdminBySuper = async (req, res) => {
  * Delete an Admin account (Government only)
  * DELETE /api/government/admins/:id
  */
-export const deleteAdminBySuper = async (req, res) => {
+export const deleteAdmin = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -282,7 +282,7 @@ export const getGovernments = async (req, res) => {
  * Update a Government account (Government only)
  * PUT /api/government/users/:id
  */
-export const updateGovernmentBySuper = async (req, res) => {
+export const updateGovernmentUser = async (req, res) => {
   try {
     const { id } = req.params;
     const { firstName, lastName, email, password } = req.body;
@@ -329,7 +329,7 @@ export const updateGovernmentBySuper = async (req, res) => {
  * Delete a Government account (Government only)
  * DELETE /api/government/users/:id
  */
-export const deleteGovernmentBySuper = async (req, res) => {
+export const deleteGovernmentUser = async (req, res) => {
   try {
     const { id } = req.params;
 

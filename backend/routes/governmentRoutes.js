@@ -14,12 +14,12 @@ import {
 } from '../controllers/governmentController.js';
 import {
   createAdmin,
-  updateAdminBySuper,
-  deleteAdminBySuper,
+  updateAdmin,
+  deleteAdmin,
   createGovernment,
   getGovernments,
-  updateGovernmentBySuper,
-  deleteGovernmentBySuper,
+  updateGovernmentUser,
+  deleteGovernmentUser,
   getAllSchools,
 } from '../controllers/adminController.js';
 import {
@@ -72,14 +72,14 @@ router.get('/stats', getSavedStats);
 router.get('/admins', getAdmins);
 router.get('/admins/:id', getAdminDetails);
 router.post('/admins', createAdminValidator, handleValidationErrors, createAdmin);
-router.put('/admins/:id', updateAdminValidator, handleValidationErrors, updateAdminBySuper);
-router.delete('/admins/:id', deleteAdminValidator, handleValidationErrors, deleteAdminBySuper);
+router.put('/admins/:id', updateAdminValidator, handleValidationErrors, updateAdmin);
+router.delete('/admins/:id', deleteAdminValidator, handleValidationErrors, deleteAdmin);
 
 // Government user management (additional government accounts)
 router.get('/users', getGovernments);
 router.post('/users', createGovernmentValidator, handleValidationErrors, createGovernment);
-router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, updateGovernmentBySuper);
-router.delete('/users/:id', deleteGovernmentValidator, handleValidationErrors, deleteGovernmentBySuper);
+router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, updateGovernmentUser);
+router.delete('/users/:id', deleteGovernmentValidator, handleValidationErrors, deleteGovernmentUser);
 
 // User messages
 router.get('/messages', getMessages);
