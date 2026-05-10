@@ -37,7 +37,8 @@ const ChildProfile = () => {
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [childRefreshKey, setChildRefreshKey] = useState(0);
+  const [statsRefreshKey, setStatsRefreshKey] = useState(0);
   const [photoTimestamp, setPhotoTimestamp] = useState(Date.now());
   const [imageLoading, setImageLoading] = useState(true);
   const [teacherName, setTeacherName] = useState('');
@@ -254,24 +255,21 @@ const ChildProfile = () => {
     loadMessages();
   }, []);
 
+  // Effect 1: child profile, teacher/group info, monitoring — re-runs on child:updated events
   useEffect(() => {
     if (selectedChildId) {
       const loadChild = async () => {
         try {
           setLoading(true);
           setError(null);
-          const [childResponse, activitiesResponse, mealsResponse, mediaResponse, profileResponse, monitoringResponse] = await Promise.all([
+          const [childResponse, profileResponse, monitoringResponse] = await Promise.all([
             api.get(`/child/${selectedChildId}`),
-            api.get(`/activities?childId=${selectedChildId}`).catch(() => ({ data: [] })),
-            api.get(`/meals?childId=${selectedChildId}`).catch(() => ({ data: [] })),
-            api.get(`/media?childId=${selectedChildId}`).catch(() => ({ data: [] })),
             api.get('/parent/profile').catch(() => null),
             api.get(`/parent/emotional-monitoring/child/${selectedChildId}`).catch(() => ({ data: { data: [] } })),
           ]);
 
           setChild(childResponse.data);
-          
-          // Preload image for faster display
+
           if (childResponse.data?.photo) {
             const img = new Image();
             const photoUrl = childResponse.data.photo.startsWith('/avatars/')
@@ -285,47 +283,15 @@ const ChildProfile = () => {
           } else {
             setImageLoading(false);
           }
-          
+
           const assignedTeacher = profileResponse?.data?.data?.user?.assignedTeacher;
-          // Faqat guruh nomini parent'dan olamiz
           const parentGroup = profileResponse?.data?.data?.user?.group;
           setParentGroupName(parentGroup?.name || '');
-          
           const combinedTeacherName = assignedTeacher
             ? [assignedTeacher.firstName, assignedTeacher.lastName].filter(Boolean).join(' ')
             : childResponse.data?.teacher;
           setTeacherName(combinedTeacherName || '');
 
-          // Calculate weekly stats (last 7 days)
-          const now = new Date();
-          const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
-
-          const activities = Array.isArray(activitiesResponse.data) ? activitiesResponse.data : [];
-          const meals = Array.isArray(mealsResponse.data) ? mealsResponse.data : [];
-          const media = Array.isArray(mediaResponse.data) ? mediaResponse.data : [];
-
-          const activitiesThisWeek = activities.filter(a => {
-            const activityDate = new Date(a.date);
-            return activityDate >= weekAgo;
-          }).length;
-
-          const mealsThisWeek = meals.filter(m => {
-            const mealDate = new Date(m.date);
-            return mealDate >= weekAgo;
-          }).length;
-
-          const mediaThisWeek = media.filter(m => {
-            const mediaDate = new Date(m.date);
-            return mediaDate >= weekAgo;
-          }).length;
-
-          setWeeklyStats({
-            activities: activitiesThisWeek,
-            meals: mealsThisWeek,
-            media: mediaThisWeek,
-          });
-
-          // Load monitoring records
           const monitoring = Array.isArray(monitoringResponse.data?.data) ? monitoringResponse.data.data : [];
           setMonitoringRecords(monitoring);
         } catch (error) {
@@ -343,7 +309,35 @@ const ChildProfile = () => {
       setError(t('child.errorNotFound'));
       setLoading(false);
     }
-  }, [selectedChildId, children, childrenLoading, t, API_BASE, refreshKey]);
+  }, [selectedChildId, children, childrenLoading, t, API_BASE, childRefreshKey]);
+
+  // Effect 2: activity/meal/media stats — re-runs only on data-change events, not child profile updates
+  useEffect(() => {
+    if (!selectedChildId) return;
+    const loadStats = async () => {
+      try {
+        const [activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
+          api.get(`/activities?childId=${selectedChildId}`).catch(() => ({ data: [] })),
+          api.get(`/meals?childId=${selectedChildId}`).catch(() => ({ data: [] })),
+          api.get(`/media?childId=${selectedChildId}`).catch(() => ({ data: [] })),
+        ]);
+        const now = new Date();
+        const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+        const inWeek = (item) => new Date(item.date) >= weekAgo;
+        const activities = Array.isArray(activitiesResponse.data) ? activitiesResponse.data : [];
+        const meals = Array.isArray(mealsResponse.data) ? mealsResponse.data : [];
+        const media = Array.isArray(mediaResponse.data) ? mediaResponse.data : [];
+        setWeeklyStats({
+          activities: activities.filter(inWeek).length,
+          meals: meals.filter(inWeek).length,
+          media: media.filter(inWeek).length,
+        });
+      } catch {
+        // Stats are non-critical; leave previous values on error
+      }
+    };
+    loadStats();
+  }, [selectedChildId, statsRefreshKey]);
 
   // Real-time WebSocket listeners
   useEffect(() => {
@@ -351,19 +345,15 @@ const ChildProfile = () => {
 
     const handleChildUpdate = (data) => {
       if (data.child?.id === selectedChildId) {
-        // Update photo timestamp to force image refresh
         setPhotoTimestamp(Date.now());
-        // Trigger reload by updating a dependency
-        setRefreshKey((k) => k + 1); // Soft refresh — re-runs data effect
+        setChildRefreshKey((k) => k + 1);
       }
     };
 
     const handleDataChange = (data) => {
-      // Check if event is for our selected child
       const eventChildId = data.activity?.childId || data.meal?.childId || data.media?.childId || data.childId;
       if (eventChildId === selectedChildId) {
-        // Trigger reload by updating a dependency
-        setRefreshKey((k) => k + 1); // Soft refresh — re-runs data effect
+        setStatsRefreshKey((k) => k + 1);
       }
     };
 
