@@ -6,6 +6,14 @@ import Child from '../models/Child.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 
+// #03-009 — targetId is a polymorphic FK; validate the target exists before insert
+const TARGET_MODEL = { school: School, parent: User, teacher: User, child: Child };
+async function validateTargetExists(targetType, targetId) {
+  const Model = TARGET_MODEL[targetType];
+  if (!Model) return false;
+  return !!(await Model.findByPk(targetId, { attributes: ['id'] }));
+}
+
 /**
  * Analyze ratings and generate warnings
  * POST /api/ai-warnings/analyze
@@ -115,7 +123,7 @@ export const analyzeRatings = async (req, res) => {
         },
       });
 
-      if (!existing) {
+      if (!existing && await validateTargetExists(warning.targetType, warning.targetId)) {
         const created = await AIWarning.create(warning);
         createdWarnings.push(created);
 

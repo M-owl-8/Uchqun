@@ -20,6 +20,9 @@ const AIWarning = sequelize.define('AIWarning', {
     type: DataTypes.ENUM('school', 'parent', 'teacher', 'child'),
     allowNull: false,
   },
+  // Polymorphic FK — references schools, users, or children depending on targetType.
+  // A traditional DB FK constraint is not possible; application-level validation
+  // via validateTargetExists() must be called before creating a warning.
   targetId: {
     type: DataTypes.UUID,
     allowNull: false,
