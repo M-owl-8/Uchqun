@@ -35,6 +35,7 @@ npm test -- path/to/file.test.js
 JWT: 15m access (HTTP-only cookie) + 7d refresh. Middleware order:
 `authenticate → requireRole(...) → schoolScope → controller`.
 Reception additionally requires `documentsApproved && isActive`.
+`requireTeacher` allows roles `['teacher', 'reception', 'admin']` — intentional: reception and admin can view teacher-scoped resources.
 
 ## Testing Requirements
 - New controllers MUST ship with tests in `backend/__tests__/controllers/`
