@@ -3,7 +3,7 @@ import { ArrowDown, MessageCircle, Pencil, Send, Trash2, X } from 'lucide-react'
 import { useTranslation } from 'react-i18next';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../shared/services/chatStore';
 import { useAuth } from '../context/AuthContext';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '../../shared/context/ToastContext';
 import Card from '../components/Card';
 
 const Chat = () => {

@@ -33,6 +33,10 @@ vi.mock('../../parent/context/AuthContext', () => ({
   useAuth: () => ({ user: { id: '1', role: 'parent' } }),
 }));
 
+vi.mock('../../shared/context/ToastContext', () => ({
+  useToast: () => ({ error: vi.fn(), success: vi.fn() }),
+}));
+
 vi.mock('../../parent/components/Card', () => ({
   default: ({ children }) => React.createElement('div', null, children),
 }));

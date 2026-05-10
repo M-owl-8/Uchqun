@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Send, Bot, User, Loader2 } from 'lucide-react';
 import api from '../services/api';
 import Card from '../components/Card';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '../../shared/context/ToastContext';
 
 const AIChat = () => {
   const { t, i18n } = useTranslation();

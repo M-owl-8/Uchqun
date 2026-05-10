@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import api from '../../shared/services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '../../shared/context/ToastContext';
 import { useAuth } from '../../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/LanguageSwitcher';
