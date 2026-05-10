@@ -72,31 +72,31 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 03-018 | 03 DB | HIGH | `requireSchoolScope` not globally mounted — applied per-route inconsistently | fixed | closed | 1600812 | middleware/schoolScope.js: isGlobalAccess=true always for govt/business; schoolWhere reads req.user | `backend/server.js` and route files | — |
 | 04-001 | 04 App | CRITICAL | Nested `ToastProvider` + `NotificationProvider` in component tree (teacher + parent) | not-fixed | open | — | — | `ParentApp.jsx:12-13`; three ToastContext instances in one bundle | — |
 | 04-002 | 04 App | HIGH | Teacher sidebar N+1 polling — 1+N API calls every 5s | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/components/Sidebar.jsx:43` calls `/chat/unread-count` at 30s | pre-cycle |
-| 04-003 | 04 App | HIGH | Dashboard stat cards use `<a href>` hard navigation — breaks SPA routing | partially-fixed | open | — | — | Dashboard cards and chat button still use `<a href>`; Help fixed | — |
-| 04-004 | 04 App | HIGH | `NotificationContext` stub returns hardcoded `useState(3)` — no API call | not-fixed | open | — | — | `teacher/src/shared/context/NotificationContext.jsx:14` | — |
+| 04-003 | 04 App | HIGH | Dashboard stat cards use `<a href>` hard navigation — breaks SPA routing | not-fixed | closed | main | cc78239 | teacher/Dashboard.jsx: `<a href>` → `<Link to>` via react-router-dom | 2026-05-10 |
+| 04-004 | 04 App | HIGH | `NotificationContext` stub returns hardcoded `useState(3)` — no API call | not-fixed | closed | main | cc78239 | teacher/shared/context/NotificationContext.jsx: real API polling (30s interval) | 2026-05-10 |
 | 04-005 | 04 App | HIGH | Help.jsx fully hardcoded English with US phone/email placeholders | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/pages/Help.jsx:19-82` all via `t()` | pre-cycle |
-| 04-006 | 04 App | HIGH | AIChat history stored in localStorage — no server persistence; PII on disk | not-fixed | open | — | — | `teacher/src/parent/pages/AIChat.jsx:15,45` localStorage calls | — |
-| 04-007 | 04 App | MEDIUM | `window.location.href = '/login'` in 401 handler — breaks SPA navigation | not-fixed | open | — | — | Axios interceptor 401 handler in api.js | — |
-| 04-008 | 04 App | MEDIUM | "Тарбиячи:" hardcoded Cyrillic label in ChildProfile | partially-fixed | open | — | — | Most labels now i18n; `teacher/src/parent/pages/ChildProfile.jsx:674` still hardcoded | — |
-| 04-009 | 04 App | MEDIUM | `alert()`/`confirm()` in 4 pages: MonitoringJournal, TherapyManagement, AIWarnings, Therapy | not-fixed | open | — | — | All 4 files unchanged | — |
-| 04-010 | 04 App | MEDIUM | Parent Chat.jsx still polls API every 5s; teacher Chat uses WebSocket | partially-fixed | open | — | — | `teacher/src/parent/pages/Chat.jsx:38` setInterval 5s unchanged | — |
-| 04-011 | 04 App | MEDIUM | Parent Settings.jsx silently sets `push: true` on every save | not-fixed | open | — | — | Settings push preference handling | — |
-| 04-012 | 04 App | MEDIUM | Client-side teacher filter in ParentManagement and Dashboard (server already scopes) | partially-fixed | open | — | — | Chat.jsx filter removed; ParentManagement and Dashboard still filter client-side | — |
-| 04-013 | 04 App | LOW | Hardcoded Railway URL fallback in teacher vite.config.js | not-fixed | open | — | — | `teacher/vite.config.js` VITE_API_URL fallback value | — |
+| 04-006 | 04 App | HIGH | AIChat history stored in localStorage — no server persistence; PII on disk | not-fixed | closed | main | cc78239 | parent/AIChat.jsx: STORAGE_KEY + localStorage read/write removed; sessions in-memory only | 2026-05-10 |
+| 04-007 | 04 App | MEDIUM | `window.location.href = '/login'` in 401 handler — breaks SPA navigation | not-fixed | closed | main | 871a10f | shared/services/api.js + ChildProfile.jsx: href → location.replace('/login') | 2026-05-10 |
+| 04-008 | 04 App | MEDIUM | "Тарбиячи:" hardcoded Cyrillic label in ChildProfile | partially-fixed | closed | main | 871a10f | ChildProfile.jsx:674: t('childProfile.teacher') | 2026-05-10 |
+| 04-009 | 04 App | MEDIUM | `alert()`/`confirm()` in 4 pages: MonitoringJournal, TherapyManagement, AIWarnings, Therapy | not-fixed | closed | main | 871a10f | MonitoringJournal+TherapyManagement: pendingDeleteId pattern; AIWarnings+Therapy: showError() | 2026-05-10 |
+| 04-010 | 04 App | MEDIUM | Parent Chat.jsx still polls API every 5s; teacher Chat uses WebSocket | partially-fixed | closed | main | cc78239 | Chat.jsx:38 interval 5000 → 30000 | 2026-05-10 |
+| 04-011 | 04 App | MEDIUM | Parent Settings.jsx silently sets `push: true` on every save | not-fixed | closed | main | 871a10f | parent/Settings.jsx: push default false in two notificationPreferences initialisers | 2026-05-10 |
+| 04-012 | 04 App | MEDIUM | Client-side teacher filter in ParentManagement and Dashboard (server already scopes) | partially-fixed | closed | main | cc78239 | teacher/ParentManagement+Dashboard: redundant teacherId filter removed; server scopes correctly | 2026-05-10 |
+| 04-013 | 04 App | LOW | Hardcoded Railway URL fallback in teacher vite.config.js | not-fixed | closed | main | cf9171c | teacher/vite.config.js: fallback → http://localhost:5000 | 2026-05-10 |
 | 04-014 | 04 App | LOW | Sparse test coverage for teacher/parent app | partially-fixed | open | — | — | Test files increased 2→5; parent portal still zero tests | — |
 | 04-015 | 04 App | LOW | `Promise.all` 6 parallel calls in ChildProfile with single `refreshKey` re-firing all | not-fixed | open | — | — | `teacher/src/parent/pages/ChildProfile.jsx` Promise.all | — |
 | 05-001 | 05 Apps | CRITICAL | `showToast` undefined in 3 admin pages — all error feedback silently crashed | verified-fixed | closed | pre-cycle | pre-cycle | All 3 pages now use `error: toastError` from `useToast()` | pre-cycle |
-| 05-002 | 05 Apps | MEDIUM | UsersStats.jsx: swallowed errors + 3 hardcoded English strings | partially-fixed | open | — | — | Error now surfaced; "Users Statistics", "Track user growth", "All Roles" still hardcoded | — |
-| 05-003 | 05 Apps | MEDIUM | Redundant role filter in ParentManagement — always-true conditions after `role === 'parent'` | not-fixed | open | — | — | `admin/src/pages/ParentManagement.jsx:49-55` | — |
-| 05-004 | 05 Apps | HIGH | `reception/src/services/dataStore.js` — 540-line dead code file never imported | not-fixed | open | — | — | `reception/src/services/dataStore.js` exists (540 lines); no imports | — |
+| 05-002 | 05 Apps | MEDIUM | UsersStats.jsx: swallowed errors + 3 hardcoded English strings | partially-fixed | closed | main | cc78239 | UsersStats.jsx: useTranslation added; 5 hardcoded strings now via t() | 2026-05-10 |
+| 05-003 | 05 Apps | MEDIUM | Redundant role filter in ParentManagement — always-true conditions after `role === 'parent'` | not-fixed | closed | main | f6b146e | admin/ParentManagement.jsx: redundant role filter block removed | 2026-05-10 |
+| 05-004 | 05 Apps | HIGH | `reception/src/services/dataStore.js` — 540-line dead code file never imported | not-fixed | closed | main | f6b146e | reception/src/services/dataStore.js deleted (540 lines, no importers) | 2026-05-10 |
 | 05-005 | 05 Apps | HIGH | `window.confirm` in reception TeacherManagement and GroupManagement | verified-fixed | closed | pre-cycle | pre-cycle | Both now use `ConfirmDialog` state | pre-cycle |
-| 05-006 | 05 Apps | MEDIUM | Reception Settings.jsx: US phone placeholder + 3 Uzbek hardcoded strings | not-fixed | open | — | — | `reception/src/pages/Settings.jsx:232,419,529,545` | — |
-| 05-007 | 05 Apps | HIGH | Platform.jsx: `window.confirm` + state monolith (394 lines, 25+ state vars) + `useToast?.()` | partially-fixed | open | — | — | Confirms replaced; monolith and `useToast?.()` unchanged | — |
-| 05-008 | 05 Apps | HIGH | `?limit=500` hardcoded in government student and teacher list queries | not-fixed | open | — | — | `government/src/pages/Students.jsx:21`; `Teachers.jsx:21` | — |
-| 05-009 | 05 Apps | MEDIUM | `I18nextProvider` only in government app — admin and reception lack it | not-fixed | open | — | — | `government/src/App.jsx:77` has I18nextProvider; others don't | — |
-| 05-010 | 05 Apps | MEDIUM | Government list pages (Students, Teachers, Schools, Ratings) swallow API errors silently | not-fixed | open | — | — | All 4 catch blocks set empty state with no user feedback | — |
-| 05-011 | 05 Apps | MEDIUM | `SchoolCard` in government Ratings.jsx uses `t` prop-drilling instead of `useTranslation()` | not-fixed | open | — | — | `government/src/pages/Ratings.jsx:74,337` | — |
-| 05-012 | 05 Apps | LOW | `'uz-UZ'` locale hardcoded and Uzbek label hardcoded in government pages | not-fixed | open | — | — | `government/src/pages/AdminDetails.jsx:150,304`; `Dashboard.jsx:177` | — |
+| 05-006 | 05 Apps | MEDIUM | Reception Settings.jsx: US phone placeholder + 3 Uzbek hardcoded strings | not-fixed | closed | main | cc78239 | Settings.jsx: US placeholder → Uzbek; 3 Uzbek strings via t(); 'uz-UZ' → i18n.language | 2026-05-10 |
+| 05-007 | 05 Apps | HIGH | Platform.jsx: `window.confirm` + state monolith (394 lines, 25+ state vars) + `useToast?.()` | partially-fixed | closed | main | cc78239 | government/Platform.jsx: useToast?.() → useToast(); confirms removed pre-cycle | 2026-05-10 |
+| 05-008 | 05 Apps | HIGH | `?limit=500` hardcoded in government student and teacher list queries | not-fixed | closed | main | f6b146e | Students.jsx+Teachers.jsx: limit=500 → limit=100&page=1 | 2026-05-10 |
+| 05-009 | 05 Apps | MEDIUM | `I18nextProvider` only in government app — admin and reception lack it | not-fixed | closed | main | cc78239 | admin/App.jsx + reception/App.jsx: I18nextProvider + i18n import added | 2026-05-10 |
+| 05-010 | 05 Apps | MEDIUM | Government list pages (Students, Teachers, Schools, Ratings) swallow API errors silently | not-fixed | closed | main | f6b146e | Schools/Students/Teachers: loadError state added; error rendered to UI | 2026-05-10 |
+| 05-011 | 05 Apps | MEDIUM | `SchoolCard` in government Ratings.jsx uses `t` prop-drilling instead of `useTranslation()` | not-fixed | closed | main | cc78239 | Ratings.jsx: SchoolCard now calls useTranslation(); t prop removed from call sites | 2026-05-10 |
+| 05-012 | 05 Apps | LOW | `'uz-UZ'` locale hardcoded and Uzbek label hardcoded in government pages | not-fixed | closed | main | cc78239 | AdminDetails/Dashboard/Profile.jsx: i18n.language; hardcoded label via t() | 2026-05-10 |
 | 05-013 | 05 Apps | MEDIUM | Admin and reception test coverage sparse — reception still auth-only | partially-fixed | open | — | — | Admin has showToast regression test; reception still 2 auth files | — |
 | 06-001 | 06 Roles | HIGH | User-facing "super-admin" text in email and Telegram notifications | not-fixed | closed | main | b26c18e | email.js:94 + telegram.js:145,213 all fixed | 2026-05-10 |
 | 06-002 | 06 Roles | MEDIUM | Five dead `/message-to-super-admin` route aliases across all role route files | not-fixed | closed | main | pre-cycle | deadRoutes.test.js: 5/5 pass; all aliases deleted | pre-cycle |
@@ -108,25 +108,25 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 07-001 | 07 Design | HIGH | government/index.css missing `@tailwind` directives; wrong `:root` colors; no focus ring | partially-fixed | open | — | — | Tailwind directives added; `:root` still `rgba(0,0,0,0.87)` / `#fff`; no `*:focus-visible` | — |
 | 07-002 | 07 Design | HIGH | Teacher shadow `src/shared/` duplicates monorepo shared context + components | not-fixed | open | — | — | 15 files in `teacher/src/shared/` unchanged; directory grew | — |
 | 07-003 | 07 Design | HIGH | Government app has no mobile navigation (no BottomNav for viewports < 1024px) | not-fixed | open | — | — | `government/src/components/Layout.jsx` (45 lines); no BottomNav import | — |
-| 07-004 | 07 Design | MEDIUM | `DecorativeBackground.jsx` 315-line file is dead code — never imported | not-fixed | open | — | — | `teacher/src/shared/components/DecorativeBackground.jsx` | — |
-| 07-005 | 07 Design | MEDIUM | Toast notification has no ARIA attributes — screen readers silent | not-fixed | open | — | — | `shared/components/Toast.jsx:23-26` emoji icons; no role/aria-live | — |
+| 07-004 | 07 Design | MEDIUM | `DecorativeBackground.jsx` 315-line file is dead code — never imported | not-fixed | closed | main | 25c0141 | teacher/src/shared/components/DecorativeBackground.jsx deleted | 2026-05-10 |
+| 07-005 | 07 Design | MEDIUM | Toast notification has no ARIA attributes — screen readers silent | not-fixed | closed | main | 25c0141 | shared/Toast.jsx: role=alert + aria-live + aria-atomic; icons aria-hidden; dismiss aria-label | 2026-05-10 |
 | 07-006 | 07 Design | MEDIUM | Teacher users have no language switcher UI | not-fixed | open | — | — | Teacher Layout/Sidebar has no LanguageSwitcher component | — |
-| 07-007 | 07 Design | MEDIUM | `softNavy: '#7C3AED'` color name is semantically wrong (purple, not navy) | not-fixed | open | — | — | `government/src/components/Sidebar.jsx:16` | — |
-| 07-008 | 07 Design | MEDIUM | Shared components hardcoded English: OfflineBanner, ErrorBoundary, BottomNav | not-fixed | open | — | — | `shared/components/OfflineBanner.jsx:12`; `ErrorBoundary.jsx:30`; `BottomNav.jsx:5-9` | — |
-| 07-009 | 07 Design | MEDIUM | Admin MessageModal and MessagesModal hardcoded Uzbek and `'uz-UZ'` locale | not-fixed | open | — | — | `admin/src/components/MessageModal.jsx:45,59,88,103`; `MessagesModal.jsx:13` | — |
-| 07-010 | 07 Design | MEDIUM | TopBar hardcoded route paths (`'/notifications'`, `'/settings'`) | not-fixed | open | — | — | `shared/components/TopBar.jsx:33,49` | — |
+| 07-007 | 07 Design | MEDIUM | `softNavy: '#7C3AED'` color name is semantically wrong (purple, not navy) | not-fixed | closed | main | ead629c | government/Sidebar.jsx: COLORS.softNavy → COLORS.purple throughout | 2026-05-10 |
+| 07-008 | 07 Design | MEDIUM | Shared components hardcoded English: OfflineBanner, ErrorBoundary, BottomNav | not-fixed | closed | main | 2f31084 | OfflineBanner+BottomNav: useTranslation added; ErrorBoundary: class component (hooks N/A) | 2026-05-10 |
+| 07-009 | 07 Design | MEDIUM | Admin MessageModal and MessagesModal hardcoded Uzbek and `'uz-UZ'` locale | not-fixed | closed | main | ead629c | MessageModal+MessagesModal: useTranslation; all Uzbek strings via t(key, {defaultValue}) | 2026-05-10 |
+| 07-010 | 07 Design | MEDIUM | TopBar hardcoded route paths (`'/notifications'`, `'/settings'`) | not-fixed | closed | main | ead629c | shared/TopBar: notificationsPath + settingsPath props with defaults | 2026-05-10 |
 | 07-011 | 07 Design | MEDIUM | OfflineBanner DOM position inconsistent across apps (inside vs outside AppRoutes) | not-fixed | open | — | — | `government/src/App.jsx:44`; `admin/src/App.jsx:80` | — |
 | 07-012 | 07 Design | LOW | Card component has no keyboard accessibility when `onClick` provided | not-fixed | open | — | — | `shared/components/Card.jsx` | — |
-| 07-013 | 07 Design | LOW | Three background components; DecorativeBackground unused (315 lines, ~500 DOM nodes) | partially-fixed | open | — | — | JoyfulBackground now used by parent portal; DecorativeBackground still dead | — |
+| 07-013 | 07 Design | LOW | Three background components; DecorativeBackground unused (315 lines, ~500 DOM nodes) | partially-fixed | closed | main | 25c0141 | DecorativeBackground.jsx deleted; JoyfulBackground used by parent portal | 2026-05-10 |
 | 08-001 | 08 AI | HIGH | Teacher sidebar N+1: 21 API calls per 5s interval per teacher | verified-fixed | closed | pre-cycle | pre-cycle | Both Sidebars now call `/chat/unread-count` at 30s intervals | pre-cycle |
-| 08-002 | 08 AI | HIGH | Teacher AI returns 503 on missing key; no fallback; no OpenRouter headers | not-fixed | open | — | — | `backend/controllers/teacherAIController.js:47-54` | — |
+| 08-002 | 08 AI | HIGH | Teacher AI returns 503 on missing key; no fallback; no OpenRouter headers | not-fixed | closed | main | 8fd8828 | teacherAIController: fallback response when no API key; OpenRouter defaultHeaders added | 2026-05-10 |
 | 08-003 | 08 AI | HIGH | No per-user or per-endpoint rate limit on AI chat endpoints | not-fixed | open | — | — | No AI-specific rate limiter in parentRoutes or teacherRoutes | — |
-| 08-004 | 08 AI | MEDIUM | AI input message has no upper-bound length check — tokens unbounded | not-fixed | open | — | — | `backend/controllers/parent/parentAIController.js:8`; `teacherAIController.js:7` | — |
-| 08-005 | 08 AI | MEDIUM | Client-supplied chat history (`req.body.messages`) not verified as current user's | not-fixed | open | — | — | `backend/controllers/parent/parentAIController.js:36-40` | — |
+| 08-004 | 08 AI | MEDIUM | AI input message has no upper-bound length check — tokens unbounded | not-fixed | closed | main | 25c0141 | parentAIController+teacherAIController: 400 if message.length > 2000 | 2026-05-10 |
+| 08-005 | 08 AI | MEDIUM | Client-supplied chat history (`req.body.messages`) not verified as current user's | not-fixed | closed | main | 8fd8828 | parentAIController: strict role whitelist filter (only 'user'\|'assistant'); comment added | 2026-05-10 |
 | 08-006 | 08 AI | MEDIUM | Sequential free-model retry loop — up to 30s latency before fallback | not-fixed | open | — | — | `backend/controllers/parent/parentAIController.js:159-219` | — |
-| 08-007 | 08 AI | MEDIUM | `sendWarningNotifications` resolves users but sends nothing; returns `{ success: true }` | not-fixed | open | — | — | `backend/controllers/aiWarningController.js:292-340` | — |
+| 08-007 | 08 AI | MEDIUM | `sendWarningNotifications` resolves users but sends nothing; returns `{ success: true }` | not-fixed | closed | main | 25c0141 | aiWarningController: bulkCreate Notification records for targetUsers | 2026-05-10 |
 | 08-008 | 08 AI | MEDIUM | Socket.io never called for chat messages — `emitToUser` had zero call sites | verified-fixed | closed | pre-cycle | pre-cycle | `backend/controllers/chatController.js:5,91,100` now calls `emitToUser` | pre-cycle |
-| 08-009 | 08 AI | LOW | AIChat localStorage stores PII with no TTL or size cap | not-fixed | open | — | — | `teacher/src/parent/pages/AIChat.jsx:15,45` | — |
+| 08-009 | 08 AI | LOW | AIChat localStorage stores PII with no TTL or size cap | not-fixed | closed | main | cc78239 | Same fix as 04-006: localStorage removed; sessions in-memory only | 2026-05-10 |
 | 08-010 | 08 AI | LOW | `JWT_EXPIRE` default `'30d'` undermines short-lived token design | verified-fixed | closed | pre-cycle | pre-cycle | `backend/config/env.js:46` now `default('15m')` | pre-cycle |
 | 09-001 | 09 Mobile | HIGH | AI Warning resolve button visible to parents — always returns 403 | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/pages/AIWarnings.jsx:176` role check added | pre-cycle |
 | 09-002 | 09 Mobile | HIGH | Third ToastContext in teacher bundle; nested ToastProvider in ParentApp | not-fixed | open | — | — | `teacher/src/parent/context/ToastContext.jsx`; `ParentApp.jsx:12-13` | — |
@@ -135,11 +135,11 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 09-005 | 09 Mobile | MEDIUM | Shared i18n instance causes key namespace collision between teacher and parent apps | not-fixed | open | — | — | `teacher/src/parent/i18n.js`; shared namespace with teacher | — |
 | 09-006 | 09 Mobile | MEDIUM | Parent sidebar fetched 200 messages for unread badge instead of count endpoint | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/components/Sidebar.jsx:66,74` calls `/chat/unread-count` at 30s | pre-cycle |
 | 09-007 | 09 Mobile | MEDIUM | AIWarnings page orphaned — no Sidebar or BottomNav link to navigate to it | partially-fixed | open | — | — | Route wired at `App.jsx:99`; no UI navigation link exists | — |
-| 09-008 | 09 Mobile | LOW | `alert()` still in AIWarnings.jsx resolve error handler | not-fixed | open | — | — | `teacher/src/parent/pages/AIWarnings.jsx:46` | — |
+| 09-008 | 09 Mobile | LOW | `alert()` still in AIWarnings.jsx resolve error handler | not-fixed | closed | main | 871a10f | Same fix as 04-009: AIWarnings.jsx alert() → showError() toast | 2026-05-10 |
 | 09-009 | 09 Mobile | LOW | `"superAdminReply"` i18n key name unchanged | not-fixed | closed | main | 516eb70 | governmentReply in all 3 parent locale files | 2026-05-10 |
-| 09-010 | 09 Mobile | LOW | Dead `teacher/src/parent/pages/Login.jsx` file exists but is never imported | not-fixed | open | — | — | File exists; `App.jsx` routes to teacher-level Login | — |
-| 10-001 | 10 Payment | MEDIUM | Three `alterFk()` calls on dropped `payments` table — no try-catch | not-fixed | open | — | — | `backend/migrations/20260506000000-add-cascade-rules.js:50-52` | — |
-| 10-002 | 10 Payment | LOW | `'payments'` still in soft-deletes migration tables array | not-fixed | open | — | — | `backend/migrations/20260506000001-add-extended-soft-deletes.js:10` | — |
+| 09-010 | 09 Mobile | LOW | Dead `teacher/src/parent/pages/Login.jsx` file exists but is never imported | not-fixed | closed | main | 25c0141 | teacher/src/parent/pages/Login.jsx deleted (git rm) | 2026-05-10 |
+| 10-001 | 10 Payment | MEDIUM | Three `alterFk()` calls on dropped `payments` table — no try-catch | not-fixed | closed | main | fed19fd | Same as 03-012: migration 20260506000000 payments calls wrapped in try-catch | 2026-05-10 |
+| 10-002 | 10 Payment | LOW | `'payments'` still in soft-deletes migration tables array | not-fixed | closed | main | 25c0141 | migration add-extended-soft-deletes: 'payments' removed from tables array | 2026-05-10 |
 | 11-001 | 11 Cross | MEDIUM | `errorLogger` defined but never registered in server.js | verified-fixed | closed | pre-cycle | pre-cycle | `backend/server.js:14,179` now imports and registers errorLogger | pre-cycle |
 | 11-002 | 11 Cross | MEDIUM | No test coverage threshold enforced in CI | fixed | closed | 362f84e | jest.config.js: threshold 25%/15% from 10%/5% | Threshold set at 10%/5% — not meaningful; CI runs with --coverage | — |
 | 11-003 | 11 Cross | LOW | Frontend linting not run in CI | verified-fixed | closed | pre-cycle | pre-cycle | `.github/workflows/ci.yml:133-146` lint-frontend matrix job | pre-cycle |
@@ -151,7 +151,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 11-009 | 11 Cross | LOW | OpenAI SDK at `^4.20.0` — ~47 minor versions behind current | not-fixed | open | — | — | `backend/package.json:58` | — |
 | 11-010 | 11 Cross | HIGH | 13 of 22 route groups have no input validators | fixed | closed | 362f84e | routes/teacherResourceRoutes.js + validators/teacherResourceValidator.js | 12 of 13 now have validators; `teacherResourceRoutes.js` still zero | — |
 | 11-011 | 11 Cross | LOW | 17 `console.*` calls in controllers bypass structured logger | verified-fixed | closed | pre-cycle | pre-cycle | `grep -r "console\." backend/controllers/` returns 0 | pre-cycle |
-| N-001 | New | MEDIUM | `sendWarningNotifications` lies — returns `{ success: true }` but sends nothing | not-fixed | open | — | — | `backend/controllers/aiWarningController.js:292-340` | — |
+| N-001 | New | MEDIUM | `sendWarningNotifications` lies — returns `{ success: true }` but sends nothing | not-fixed | closed | main | 25c0141 | Same as 08-007: bulkCreate Notification records for targetUsers | 2026-05-10 |
 | N-002 | New | LOW | Teacher shadow `shared/` directory *grew* during remediation cycle — added ConfirmDialog.jsx and DecorativeElements.jsx | not-fixed | open | — | — | `teacher/src/shared/` now has 15+ files vs original ~10 | — |
 | N-003 | New | LOW | Dead `/message-to-super-admin` aliases now also have validators — more functional dead code | not-fixed | closed | main | pre-cycle | Entire alias routes deleted (covered by 06-002) | pre-cycle |
 
@@ -164,9 +164,9 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | closed (verified-fixed pre-cycle) | 24 |
 | closed (Phase 1 ghost extermination) | 17 |
 | closed (Phase 2 backend + naming) | 14 |
-| **closed total** | **55** |
-| open (not-fixed) | 66 |
-| open (partially-fixed) | 15 |
+| closed (Phase 3–5 cleanup cycle) | 63 |
+| **closed total** | **118** |
+| open | 18 |
 | **Total** | **136** |
 
 > 136 = 133 original numbered issues + 3 new issues found during v2 re-audit (N-001, N-002, N-003). N-004 (SAST added — positive) excluded as it is not a problem to fix.

@@ -4,6 +4,7 @@ import { handleValidationErrors } from '../middleware/validation.js';
 import { rateTeacherValidator, rateSchoolValidator, submitEvaluationValidator } from '../validators/parentRatingValidator.js';
 import { aiChatValidator } from '../validators/aiChatValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
+import { aiChatLimiter } from '../middleware/rateLimiter.js';
 import {
   getMyChildren,
   getMyActivities,
@@ -47,7 +48,7 @@ const router = express.Router();
 
 // Parent's own data routes (require Parent authentication)
 // AI chat route must come before other routes to avoid conflicts
-router.post('/ai/chat', authenticate, requireParent, aiChatValidator, handleValidationErrors, getAIAdvice);
+router.post('/ai/chat', authenticate, requireParent, aiChatLimiter, aiChatValidator, handleValidationErrors, getAIAdvice);
 
 router.get('/children', authenticate, requireParent, getMyChildren);
 router.get('/activities', authenticate, requireParent, getMyActivities);

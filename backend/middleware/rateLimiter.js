@@ -52,6 +52,22 @@ export const passwordResetLimiter = rateLimit({
   },
 });
 
+// Per-user rate limiter for AI chat endpoints (20 requests per minute per authenticated user)
+export const aiChatLimiter = rateLimit({
+  windowMs: 60 * 1000, // 1 minute
+  max: process.env.NODE_ENV === 'production' ? 20 : 200,
+  keyGenerator: (req) => req.user?.id || req.ip,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: 'AI rate limit exceeded',
+      message: 'Too many AI requests. Please wait before trying again.',
+      retryAfter: Math.ceil(req.rateLimit.resetTime / 1000),
+    });
+  },
+});
+
 // Rate limiter for file uploads (50 uploads per 15 minutes in production, 200 in development)
 // Can be overridden with UPLOAD_LIMIT_MAX and UPLOAD_LIMIT_WINDOW_MS env vars
 export const uploadLimiter = rateLimit({

@@ -4,6 +4,7 @@ import { handleValidationErrors } from '../middleware/validation.js';
 import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEmotionalMonitoringValidator } from '../validators/teacherTaskValidator.js';
 import { aiChatValidator } from '../validators/aiChatValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
+import { aiChatLimiter } from '../middleware/rateLimiter.js';
 import { getMyProfile, getDashboard, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings } from '../controllers/teacherController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { getAIAdvice } from '../controllers/teacherAIController.js';
@@ -62,7 +63,7 @@ router.get('/groups', getMyGroups);
 router.get('/ratings', getTeacherRatings);
 
 // AI Chat
-router.post('/ai/chat', aiChatValidator, handleValidationErrors, getAIAdvice);
+router.post('/ai/chat', aiChatLimiter, aiChatValidator, handleValidationErrors, getAIAdvice);
 
 // Send message to government (top-level platform owner)
 router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
