@@ -62,7 +62,11 @@ export const updateAvatar = async (req, res) => {
     // Store avatar as a base64 data URI directly in the DB so it survives
     // Railway container restarts (which wipe ephemeral disk and any uploaded
     // files). Using TEXT column on users.avatar.
-    const mimetype = req.file.mimetype || 'image/jpeg';
+    const ALLOWED_MIMETYPES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+    const mimetype = req.file.mimetype || '';
+    if (!ALLOWED_MIMETYPES.has(mimetype)) {
+      return res.status(415).json({ error: 'Unsupported file type. Use JPEG, PNG, WebP, or GIF.' });
+    }
     const MAX_BYTES = 1.5 * 1024 * 1024; // ~1.5 MB raw before base64
     if (req.file.buffer.length > MAX_BYTES) {
       return res.status(413).json({
