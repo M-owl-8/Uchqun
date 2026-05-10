@@ -48,16 +48,31 @@ Please provide helpful, practical advice.`;
     ];
 
     const hasOpenAIKey = process.env.OPENAI_API_KEY && process.env.OPENAI_API_KEY.trim().length > 0;
-    if (!hasOpenAIKey) return res.status(503).json({ error: 'AI service is not configured' });
+    const isOpenRouter = process.env.OPENAI_BASE_URL && process.env.OPENAI_BASE_URL.includes('openrouter.ai');
+
+    if (!hasOpenAIKey) {
+      return res.json({
+        success: true,
+        response: 'AI assistant is currently unavailable. Please consult your school coordinator or relevant professional resources for guidance.',
+        fallback: true,
+      });
+    }
 
     const { default: OpenAI } = await import('openai');
-    const openai = new OpenAI({
-      apiKey: process.env.OPENAI_API_KEY,
-      baseURL: process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1',
-    });
+    const openaiConfig = { apiKey: process.env.OPENAI_API_KEY };
+    if (isOpenRouter) {
+      openaiConfig.baseURL = process.env.OPENAI_BASE_URL;
+      openaiConfig.defaultHeaders = {
+        'HTTP-Referer': process.env.FRONTEND_URL?.split(',')[0] || 'https://uchqun-production-2d8a.up.railway.app',
+        'X-Title': 'Uchqun Teacher Portal',
+      };
+    } else {
+      openaiConfig.baseURL = process.env.OPENAI_BASE_URL || 'https://api.openai.com/v1';
+    }
+    const openai = new OpenAI(openaiConfig);
 
     const chatCompletion = await openai.chat.completions.create({
-      model: process.env.OPENAI_MODEL || 'gpt-3.5-turbo',
+      model: process.env.OPENAI_MODEL || (isOpenRouter ? 'qwen/qwen-2.5-7b-instruct:free' : 'gpt-3.5-turbo'),
       messages: openaiMessages,
       max_tokens: 300,
       temperature: 0.7,

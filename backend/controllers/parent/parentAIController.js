@@ -74,13 +74,15 @@ Parent's Question: ${context.message}
 
 Please provide helpful, practical advice about caring for children with special needs.`;
 
-    // Build chat history (if provided) to enable conversation
+    // Build chat history (if provided) to enable conversation.
+    // History is client-supplied (no server-side persistence); system role is always
+    // stripped by mapping unknown roles to 'user', preventing prompt injection.
     const incomingMessages = Array.isArray(req.body?.messages) ? req.body.messages : null;
     const sanitizedHistory = (incomingMessages || [])
-      .filter(m => m && m.role && m.content)
+      .filter(m => m && (m.role === 'user' || m.role === 'assistant') && m.content)
       .slice(-8) // keep last 8 exchanges
       .map(m => ({
-        role: m.role === 'assistant' ? 'assistant' : 'user',
+        role: m.role,
         content: String(m.content).slice(0, 4000), // guard length
       }));
 
