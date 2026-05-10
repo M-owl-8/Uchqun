@@ -169,7 +169,7 @@ const ChildProfile = () => {
           errorMessage = 'Sessiya muddati tugagan. Iltimos, qayta kirib ko\'ring.';
           // Redirect to login
           setTimeout(() => {
-            window.location.href = '/login';
+            window.location.replace('/login');
           }, 2000);
         } else if (err.response.status === 500) {
           errorMessage = err.response.data?.message || err.response.data?.error || 'Server xatosi. Iltimos, qayta urinib ko\'ring.';
@@ -671,7 +671,7 @@ const ChildProfile = () => {
                           </p>
                           {record.teacher && (
                             <p className="text-sm text-gray-500 mt-1">
-                              Тарбиячи: {record.teacher.firstName} {record.teacher.lastName}
+                              {t('childProfile.teacher', { defaultValue: 'Teacher' })}: {record.teacher.firstName} {record.teacher.lastName}
                             </p>
                           )}
                         </div>

@@ -49,6 +49,7 @@ const MonitoringJournal = () => {
   const [parents, setParents] = useState([]);
   const [children, setChildren] = useState([]);
   const [selectedParentId, setSelectedParentId] = useState('');
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
     loadMonitoringRecords();
@@ -156,9 +157,13 @@ const MonitoringJournal = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm(t('monitoring.confirmDelete'))) {
+    if (pendingDeleteId !== id) {
+      setPendingDeleteId(id);
+      showError(t('common.confirmDeleteClick', { defaultValue: 'Click again to confirm deletion' }));
+      setTimeout(() => setPendingDeleteId(null), 5000);
       return;
     }
+    setPendingDeleteId(null);
 
     try {
       await api.delete(`/teacher/emotional-monitoring/${id}`);

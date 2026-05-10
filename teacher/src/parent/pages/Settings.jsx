@@ -45,7 +45,7 @@ const Settings = () => {
     phone: '',
     notificationPreferences: {
       email: true,
-      push: true,
+      push: false,
     },
   });
   const { success, error: showError } = useToast();
@@ -66,7 +66,7 @@ const Settings = () => {
         phone: userData.phone || '',
         notificationPreferences: userData.notificationPreferences || {
           email: true,
-          push: true,
+          push: false,
         },
       });
       if (setUser) {

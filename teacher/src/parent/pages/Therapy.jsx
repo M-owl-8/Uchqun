@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import Card from '../components/Card';
@@ -19,6 +20,7 @@ const Therapy = () => {
   const { user } = useAuth();
   const { selectedChild } = useChild();
   const { t } = useTranslation();
+  const { error: showError } = useToast();
   const [therapies, setTherapies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedTherapy, setSelectedTherapy] = useState(null);
@@ -56,7 +58,7 @@ const Therapy = () => {
       setActiveSession(response.data.data);
       setSelectedTherapy(therapies.find(t => t.id === therapyId));
     } catch (error) {
-      alert(error.response?.data?.error || 'Failed to start therapy');
+      showError(error.response?.data?.error || t('therapy.startError', { defaultValue: 'Failed to start therapy' }));
     }
   };
 

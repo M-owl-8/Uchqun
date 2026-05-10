@@ -58,6 +58,7 @@ const TherapyManagement = () => {
   });
   const [saving, setSaving] = useState(false);
   const [assigning, setAssigning] = useState(false);
+  const [pendingDeleteId, setPendingDeleteId] = useState(null);
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
@@ -211,9 +212,13 @@ const TherapyManagement = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm(t('therapy.confirmDelete', { defaultValue: 'Terapiyani o\'chirishni tasdiqlaysizmi?' }))) {
+    if (pendingDeleteId !== id) {
+      setPendingDeleteId(id);
+      showError(t('common.confirmDeleteClick', { defaultValue: 'Click again to confirm deletion' }));
+      setTimeout(() => setPendingDeleteId(null), 5000);
       return;
     }
+    setPendingDeleteId(null);
 
     try {
       await api.delete(`/therapy/${id}`);

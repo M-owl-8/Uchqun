@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -14,6 +15,7 @@ import {
 const AIWarnings = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
+  const { error: showError } = useToast();
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('unresolved');
@@ -43,7 +45,7 @@ const AIWarnings = () => {
       await api.put(`/ai-warnings/${warningId}/resolve`);
       loadWarnings();
     } catch (error) {
-      alert(error.response?.data?.error || 'Failed to resolve warning');
+      showError(error.response?.data?.error || t('warnings.resolveError', { defaultValue: 'Failed to resolve warning' }));
     }
   };
 

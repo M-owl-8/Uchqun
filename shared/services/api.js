@@ -11,6 +11,9 @@ export function createApi({
   // eslint-disable-next-line no-unused-vars
   tokenKey = null,
 } = {}) {
+  // #04-007 — mutable ref so apps can wire React Router navigate after init
+  let _onUnauthenticated = onUnauthenticated;
+
   const api = axios.create({
     baseURL: BASE_URL,
     headers: { 'Content-Type': 'application/json' },
@@ -30,12 +33,14 @@ export function createApi({
   const clearAuth = () => {
     // Only user metadata lives in localStorage — tokens are HTTP-only cookies cleared by backend
     localStorage.removeItem('user');
-    if (typeof onUnauthenticated === 'function') {
-      onUnauthenticated();
+    if (typeof _onUnauthenticated === 'function') {
+      _onUnauthenticated();
     } else {
-      window.location.href = '/login';
+      window.location.replace('/login');
     }
   };
+
+  api.setOnUnauthenticated = (fn) => { _onUnauthenticated = fn; };
 
   api.interceptors.request.use((config) => {
     // No Bearer token injection — cookies are sent automatically via withCredentials
