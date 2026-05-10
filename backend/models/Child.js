@@ -46,7 +46,7 @@ const Child = sequelize.define('Child', {
   },
   school: {
     type: DataTypes.STRING(500),
-    allowNull: false,
+    allowNull: true,
   },
   schoolId: {
     type: DataTypes.UUID,
