@@ -14,7 +14,7 @@ const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
 
 const Platform = () => {
   const { t } = useTranslation();
-  const { success, error: showError } = useToast?.() || { success: () => {}, error: () => {} };
+  const { success, error: showError } = useToast();
   useAuth();
 
   const [activeTab, setActiveTab] = useState('admins');

@@ -1,4 +1,5 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
+import api from '../services/api';
 
 const NotificationContext = createContext(null);
 
@@ -11,26 +12,81 @@ export const useNotification = () => {
 };
 
 export const NotificationProvider = ({ children }) => {
-  const [count, setCount] = useState(3); // Default to 3 notifications
+  const [count, setCount] = useState(0);
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const addNotification = () => {
-    setCount((prev) => prev + 1);
+  const loadNotifications = async () => {
+    try {
+      const response = await api.get('/notifications/count');
+      setCount(response.data.count || 0);
+    } catch {
+      setCount(0);
+    }
   };
 
-  const removeNotification = () => {
-    setCount((prev) => Math.max(0, prev - 1));
+  const loadAllNotifications = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/notifications');
+      setNotifications(response.data.data || []);
+      setCount(response.data.unreadCount || 0);
+    } catch {
+      setNotifications([]);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const clearNotifications = () => {
-    setCount(0);
+  useEffect(() => {
+    loadNotifications();
+    const interval = setInterval(loadNotifications, 30000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const markAsRead = async (id) => {
+    try {
+      await api.put(`/notifications/${id}/read`);
+      await loadNotifications();
+      await loadAllNotifications();
+    } catch { /* swallowed */ }
+  };
+
+  const markAllAsRead = async () => {
+    try {
+      await api.put('/notifications/read-all');
+      await loadNotifications();
+      await loadAllNotifications();
+    } catch { /* swallowed */ }
+  };
+
+  const deleteNotification = async (id) => {
+    try {
+      await api.delete(`/notifications/${id}`);
+      await loadNotifications();
+      await loadAllNotifications();
+    } catch { /* swallowed */ }
+  };
+
+  const refreshNotifications = () => {
+    loadNotifications();
+    loadAllNotifications();
   };
 
   return (
     <NotificationContext.Provider
-      value={{ count, addNotification, removeNotification, clearNotifications }}
+      value={{
+        count,
+        notifications,
+        loading,
+        markAsRead,
+        markAllAsRead,
+        deleteNotification,
+        refreshNotifications,
+        loadAllNotifications,
+      }}
     >
       {children}
     </NotificationContext.Provider>
   );
 };
-

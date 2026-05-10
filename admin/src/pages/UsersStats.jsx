@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -16,6 +17,7 @@ import {
 const UsersStats = () => {
   const { user } = useAuth();
   const { error: showError } = useToast();
+  const { t } = useTranslation();
   const [stats, setStats] = useState(null);
   const [loading, setLoading] = useState(true);
   const [dateRange, setDateRange] = useState({
@@ -67,8 +69,8 @@ const UsersStats = () => {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Users Statistics</h1>
-          <p className="text-gray-600 mt-1">Track user growth and demographics</p>
+          <h1 className="text-2xl font-bold text-gray-900">{t('usersStats.title', { defaultValue: 'Users Statistics' })}</h1>
+          <p className="text-gray-600 mt-1">{t('usersStats.subtitle', { defaultValue: 'Track user growth and demographics' })}</p>
         </div>
         <div className="flex gap-2">
           <input
@@ -88,7 +90,7 @@ const UsersStats = () => {
             onChange={(e) => setSelectedRole(e.target.value)}
             className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
           >
-            <option value="">All Roles</option>
+            <option value="">{t('usersStats.allRoles', { defaultValue: 'All Roles' })}</option>
             <option value="parent">Parents</option>
             <option value="teacher">Teachers</option>
             <option value="reception">Receptions</option>
@@ -102,7 +104,7 @@ const UsersStats = () => {
           <TrendingUp className="w-6 h-6" />
         </div>
         <p className="text-3xl font-bold mb-1">{stats?.total || 0}</p>
-        <p className="text-blue-100">Total Users</p>
+        <p className="text-blue-100">{t('usersStats.totalUsers', { defaultValue: 'Total Users' })}</p>
       </Card>
 
       {stats?.byRole && Object.keys(stats.byRole).length > 0 && (
@@ -127,7 +129,7 @@ const UsersStats = () => {
 
       {stats?.users && stats.users.length > 0 && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">Recent Users</h2>
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('usersStats.recentUsers', { defaultValue: 'Recent Users' })}</h2>
           <div className="space-y-3">
             {stats.users.slice(0, 10).map((user) => (
               <div key={user.id} className="p-4 bg-gray-50 rounded-lg flex items-center justify-between">

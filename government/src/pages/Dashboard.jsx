@@ -19,7 +19,7 @@ import { useTranslation } from 'react-i18next';
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [stats, setStats] = useState(null);
   const [schools, setSchools] = useState([]);
   const [admins, setAdmins] = useState([]);
@@ -174,7 +174,7 @@ const Dashboard = () => {
                       <p className="text-xs text-gray-500 mt-1">{admin.phone}</p>
                     )}
                     <p className="text-xs text-gray-500 mt-2">
-                      {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString('uz-UZ') : '—'}
+                      {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '—'}
                     </p>
                   </div>
                 </div>

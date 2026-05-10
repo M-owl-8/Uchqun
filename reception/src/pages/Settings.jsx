@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 
 const Settings = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user, setUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [passwordForm, setPasswordForm] = useState({
@@ -229,7 +229,7 @@ const Settings = () => {
                 value={profileForm.phone}
                 onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
                 className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="+1 (555) 123-4567"
+                placeholder={t('settings.phonePlaceholder', { defaultValue: '+998 90 123 45 67' })}
               />
             </div>
           </div>
@@ -416,7 +416,7 @@ const Settings = () => {
                 <div className="p-3 bg-blue-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">Davlatga xabar yuborish</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{t('settings.sendMessageToGovt', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
@@ -515,7 +515,7 @@ const Settings = () => {
                       <div>
                         <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                          {new Date(msg.createdAt).toLocaleDateString('uz-UZ', { 
+                          {new Date(msg.createdAt).toLocaleDateString(i18n.language, { 
                             year: 'numeric', 
                             month: 'long', 
                             day: 'numeric',
@@ -526,7 +526,7 @@ const Settings = () => {
                       </div>
                       {msg.reply && (
                         <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                          Javob berildi
+                          {t('settings.replied', { defaultValue: 'Javob berildi' })}
                         </span>
                       )}
                     </div>
@@ -542,9 +542,9 @@ const Settings = () => {
                           <div className="p-2 bg-blue-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-blue-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">Davlat javobi</p>
+                          <p className="text-sm font-medium text-blue-700">{t('settings.govtReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
-                            {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
+                            {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 
                               month: 'long', 
                               day: 'numeric',

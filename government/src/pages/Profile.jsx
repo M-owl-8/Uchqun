@@ -9,7 +9,7 @@ import { useTranslation } from 'react-i18next';
 const Profile = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleLogout = () => {
     logout();
@@ -86,7 +86,7 @@ const Profile = () => {
                     {t('profile.createdAt', { defaultValue: 'Yaratilgan sana' })}
                   </p>
                   <p className="font-semibold text-gray-900">
-                    {new Date(user.createdAt).toLocaleDateString('uz-UZ')}
+                    {new Date(user.createdAt).toLocaleDateString(i18n.language)}
                   </p>
                 </div>
               )}

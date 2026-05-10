@@ -35,7 +35,7 @@ const Chat = () => {
     };
 
     load();
-    intervalId = setInterval(load, 5000);
+    intervalId = setInterval(load, 30000);
 
     return () => {
       alive = false;

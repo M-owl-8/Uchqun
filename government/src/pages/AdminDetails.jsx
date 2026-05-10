@@ -20,7 +20,7 @@ const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/
 const AdminDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -147,7 +147,7 @@ const AdminDetails = () => {
                   {t('adminDetails.createdAt', { defaultValue: 'Yaratilgan sana' })}
                 </p>
                 <p className="font-semibold text-gray-900">
-                  {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString('uz-UZ') : '—'}
+                  {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '—'}
                 </p>
               </div>
               <div>
@@ -301,7 +301,7 @@ const AdminDetails = () => {
                 </div>
                 {child.birthDate && (
                   <p className="text-sm text-gray-600">
-                    Tug&apos;ilgan: {new Date(child.birthDate).toLocaleDateString('uz-UZ')}
+                    {t('adminDetails.birthDate', { defaultValue: "Tug'ilgan" })}: {new Date(child.birthDate).toLocaleDateString(i18n.language)}
                   </p>
                 )}
               </div>

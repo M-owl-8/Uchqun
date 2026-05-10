@@ -1,7 +1,9 @@
 import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { I18nextProvider } from 'react-i18next';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
+import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -66,15 +68,17 @@ const AppRoutes = () => {
 function App() {
   return (
     <ErrorBoundary>
-      <BrowserRouter>
-        <AuthProvider>
-          <ToastProvider>
-            <OfflineBanner />
-            <AppRoutes />
-            <ToastContainer />
-          </ToastProvider>
-        </AuthProvider>
-      </BrowserRouter>
+      <I18nextProvider i18n={i18n}>
+        <BrowserRouter>
+          <AuthProvider>
+            <ToastProvider>
+              <OfflineBanner />
+              <AppRoutes />
+              <ToastContainer />
+            </ToastProvider>
+          </AuthProvider>
+        </BrowserRouter>
+      </I18nextProvider>
     </ErrorBoundary>
   );
 }

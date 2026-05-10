@@ -30,8 +30,7 @@ const ParentManagement = () => {
       setLoading(true);
       const response = await api.get('/teacher/parents');
       const list = Array.isArray(response.data.parents) ? response.data.parents : [];
-      const filtered = user?.id ? list.filter((p) => p.teacherId === user.id) : list;
-      setParents(filtered);
+      setParents(list);
     } catch (error) {
       showError(error.response?.data?.error || t('parentsPage.noParentsFound'));
       setParents([]);

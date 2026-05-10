@@ -71,7 +71,8 @@ const DistributionBar = ({ distribution, total }) => {
   );
 };
 
-const SchoolCard = ({ school, t }) => {
+const SchoolCard = ({ school }) => {
+  const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);
@@ -334,7 +335,7 @@ const Ratings = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredSchools.map((school) => (
-            <SchoolCard key={school.id} school={school} t={t} />
+            <SchoolCard key={school.id} school={school} />
           ))}
         </div>
       )}

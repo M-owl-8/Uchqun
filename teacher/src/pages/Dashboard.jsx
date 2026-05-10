@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Activity,
   Camera,
@@ -25,8 +26,7 @@ const Dashboard = () => {
         setLoading(true);
         
         const parentsRes = await api.get('/teacher/parents').catch(() => ({ data: { parents: [] } }));
-        const allParents = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
-        const parents = user?.id ? allParents.filter((p) => p.teacherId === user.id) : allParents;
+        const parents = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
         const childIds = parents.flatMap((p) => Array.isArray(p.children) ? p.children.map(c => c.id) : []).filter(Boolean);
 
         const fetchCount = async (path, key) => {
@@ -111,7 +111,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
           {overviewCards.map((card) => (
             <Card key={card.title} className="p-4 hover:shadow-lg transition">
-              <a href={card.href} className="flex items-center gap-4">
+              <Link to={card.href} className="flex items-center gap-4">
                 <div className="p-3 bg-blue-50 rounded-xl">
                   <card.icon className="w-6 h-6 text-blue-600" />
                 </div>
@@ -119,7 +119,7 @@ const Dashboard = () => {
                   <p className="text-2xl font-bold text-gray-900">{card.value}</p>
                   <p className="text-sm text-gray-600">{card.title}</p>
                 </div>
-              </a>
+              </Link>
             </Card>
           ))}
         </div>
