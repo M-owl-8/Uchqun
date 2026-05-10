@@ -15,6 +15,7 @@ import {
 import { useAuth } from '../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
+import LanguageSwitcher from './LanguageSwitcher';
 
 
 const COLORS = {
@@ -129,7 +130,10 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       <div className="p-4 border-t border-gray-100" style={{ backgroundColor: COLORS.powderBlue + '40' }}>
-        <div className="flex items-center gap-3 mb-4 px-2">
+        <div className="px-2 mb-3">
+          <LanguageSwitcher />
+        </div>
+        <div className="flex items-center gap-3 px-2">
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm"
             style={{ backgroundColor: COLORS.powderBlue, color: COLORS.softNavy }}>
             {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}

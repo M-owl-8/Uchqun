@@ -41,7 +41,6 @@ const AppRoutes = () => {
 
   return (
     <Suspense fallback={<PageLoader />}>
-      <OfflineBanner />
       <Routes>
         <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/government" replace />} />
 
@@ -78,6 +77,7 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <ToastProvider>
+              <OfflineBanner />
               <AppRoutes />
             </ToastProvider>
           </AuthProvider>

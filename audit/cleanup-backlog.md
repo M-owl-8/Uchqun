@@ -105,9 +105,9 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 06-005 | 06 Roles | MEDIUM | `requireTeacher` is a bespoke function; not converted to `requireRole()` factory | not-fixed | closed | main | 68bd33c | Documented as intentional in CLAUDE.md; allows teacher/reception/admin | 2026-05-10 |
 | 06-006 | 06 Roles | LOW | Test asserts `getRoleLabel('super-admin')` — role string doesn't exist in DB ENUM | not-fixed | closed | main | e26c4ad | Dead map entry + test case removed; now tests government role | 2026-05-10 |
 | 06-007 | 06 Roles | LOW | Stale comment in User.js: "every user belongs to a school (except superadmin)" | not-fixed | closed | main | 7d3f5b2 | User.js:95 updated to say 'government users' | 2026-05-10 |
-| 07-001 | 07 Design | HIGH | government/index.css missing `@tailwind` directives; wrong `:root` colors; no focus ring | partially-fixed | open | — | — | Tailwind directives added; `:root` still `rgba(0,0,0,0.87)` / `#fff`; no `*:focus-visible` | — |
+| 07-001 | 07 Design | HIGH | government/index.css missing `@tailwind` directives; wrong `:root` colors; no focus ring | partially-fixed | closed | main | 02bccf7 | :root color overrides removed; *:focus-visible outline: 2px solid #7C3AED added | 2026-05-10 |
 | 07-002 | 07 Design | HIGH | Teacher shadow `src/shared/` duplicates monorepo shared context + components | not-fixed | open | — | — | 15 files in `teacher/src/shared/` unchanged; directory grew | — |
-| 07-003 | 07 Design | HIGH | Government app has no mobile navigation (no BottomNav for viewports < 1024px) | not-fixed | open | — | — | `government/src/components/Layout.jsx` (45 lines); no BottomNav import | — |
+| 07-003 | 07 Design | HIGH | Government app has no mobile navigation (no BottomNav for viewports < 1024px) | not-fixed | closed | main | 02bccf7 | Layout.jsx: mobile header + hamburger button + slide-in sidebar + aria-modal/role=dialog added | 2026-05-10 |
 | 07-004 | 07 Design | MEDIUM | `DecorativeBackground.jsx` 315-line file is dead code — never imported | not-fixed | closed | main | 25c0141 | teacher/src/shared/components/DecorativeBackground.jsx deleted | 2026-05-10 |
 | 07-005 | 07 Design | MEDIUM | Toast notification has no ARIA attributes — screen readers silent | not-fixed | closed | main | 25c0141 | shared/Toast.jsx: role=alert + aria-live + aria-atomic; icons aria-hidden; dismiss aria-label | 2026-05-10 |
 | 07-006 | 07 Design | MEDIUM | Teacher users have no language switcher UI | not-fixed | open | — | — | Teacher Layout/Sidebar has no LanguageSwitcher component | — |
@@ -116,11 +116,11 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 07-009 | 07 Design | MEDIUM | Admin MessageModal and MessagesModal hardcoded Uzbek and `'uz-UZ'` locale | not-fixed | closed | main | ead629c | MessageModal+MessagesModal: useTranslation; all Uzbek strings via t(key, {defaultValue}) | 2026-05-10 |
 | 07-010 | 07 Design | MEDIUM | TopBar hardcoded route paths (`'/notifications'`, `'/settings'`) | not-fixed | closed | main | ead629c | shared/TopBar: notificationsPath + settingsPath props with defaults | 2026-05-10 |
 | 07-011 | 07 Design | MEDIUM | OfflineBanner DOM position inconsistent across apps (inside vs outside AppRoutes) | not-fixed | open | — | — | `government/src/App.jsx:44`; `admin/src/App.jsx:80` | — |
-| 07-012 | 07 Design | LOW | Card component has no keyboard accessibility when `onClick` provided | not-fixed | open | — | — | `shared/components/Card.jsx` | — |
+| 07-012 | 07 Design | LOW | Card component has no keyboard accessibility when `onClick` provided | not-fixed | closed | main | 25c0141 | shared/Card.jsx: role=button + tabIndex=0 + onKeyDown Enter/Space + focus-visible ring | 2026-05-10 |
 | 07-013 | 07 Design | LOW | Three background components; DecorativeBackground unused (315 lines, ~500 DOM nodes) | partially-fixed | closed | main | 25c0141 | DecorativeBackground.jsx deleted; JoyfulBackground used by parent portal | 2026-05-10 |
 | 08-001 | 08 AI | HIGH | Teacher sidebar N+1: 21 API calls per 5s interval per teacher | verified-fixed | closed | pre-cycle | pre-cycle | Both Sidebars now call `/chat/unread-count` at 30s intervals | pre-cycle |
 | 08-002 | 08 AI | HIGH | Teacher AI returns 503 on missing key; no fallback; no OpenRouter headers | not-fixed | closed | main | 8fd8828 | teacherAIController: fallback response when no API key; OpenRouter defaultHeaders added | 2026-05-10 |
-| 08-003 | 08 AI | HIGH | No per-user or per-endpoint rate limit on AI chat endpoints | not-fixed | open | — | — | No AI-specific rate limiter in parentRoutes or teacherRoutes | — |
+| 08-003 | 08 AI | HIGH | No per-user or per-endpoint rate limit on AI chat endpoints | not-fixed | closed | main | 8fd8828 | aiChatLimiter: 20/min per user (keyed by req.user.id); applied to parentRoutes + teacherRoutes | 2026-05-10 |
 | 08-004 | 08 AI | MEDIUM | AI input message has no upper-bound length check — tokens unbounded | not-fixed | closed | main | 25c0141 | parentAIController+teacherAIController: 400 if message.length > 2000 | 2026-05-10 |
 | 08-005 | 08 AI | MEDIUM | Client-supplied chat history (`req.body.messages`) not verified as current user's | not-fixed | closed | main | 8fd8828 | parentAIController: strict role whitelist filter (only 'user'\|'assistant'); comment added | 2026-05-10 |
 | 08-006 | 08 AI | MEDIUM | Sequential free-model retry loop — up to 30s latency before fallback | not-fixed | open | — | — | `backend/controllers/parent/parentAIController.js:159-219` | — |
@@ -134,7 +134,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 09-004 | 09 Mobile | MEDIUM | `parentT()` custom translation function bypasses shared i18n | not-fixed | open | — | — | `teacher/src/parent/components/Sidebar.jsx:43-56,106` | — |
 | 09-005 | 09 Mobile | MEDIUM | Shared i18n instance causes key namespace collision between teacher and parent apps | not-fixed | open | — | — | `teacher/src/parent/i18n.js`; shared namespace with teacher | — |
 | 09-006 | 09 Mobile | MEDIUM | Parent sidebar fetched 200 messages for unread badge instead of count endpoint | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/components/Sidebar.jsx:66,74` calls `/chat/unread-count` at 30s | pre-cycle |
-| 09-007 | 09 Mobile | MEDIUM | AIWarnings page orphaned — no Sidebar or BottomNav link to navigate to it | partially-fixed | open | — | — | Route wired at `App.jsx:99`; no UI navigation link exists | — |
+| 09-007 | 09 Mobile | MEDIUM | AIWarnings page orphaned — no Sidebar or BottomNav link to navigate to it | partially-fixed | closed | main | 25c0141 | parent Sidebar.jsx: AlertTriangle nav item added href=/ai-warnings | 2026-05-10 |
 | 09-008 | 09 Mobile | LOW | `alert()` still in AIWarnings.jsx resolve error handler | not-fixed | closed | main | 871a10f | Same fix as 04-009: AIWarnings.jsx alert() → showError() toast | 2026-05-10 |
 | 09-009 | 09 Mobile | LOW | `"superAdminReply"` i18n key name unchanged | not-fixed | closed | main | 516eb70 | governmentReply in all 3 parent locale files | 2026-05-10 |
 | 09-010 | 09 Mobile | LOW | Dead `teacher/src/parent/pages/Login.jsx` file exists but is never imported | not-fixed | closed | main | 25c0141 | teacher/src/parent/pages/Login.jsx deleted (git rm) | 2026-05-10 |
@@ -164,9 +164,9 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | closed (verified-fixed pre-cycle) | 24 |
 | closed (Phase 1 ghost extermination) | 17 |
 | closed (Phase 2 backend + naming) | 14 |
-| closed (Phase 3–5 cleanup cycle) | 63 |
-| **closed total** | **118** |
-| open | 18 |
+| closed (Phase 3–5 cleanup cycle) | 68 |
+| **closed total** | **123** |
+| open | 13 |
 | **Total** | **136** |
 
 > 136 = 133 original numbered issues + 3 new issues found during v2 re-audit (N-001, N-002, N-003). N-004 (SAST added — positive) excluded as it is not a problem to fix.
