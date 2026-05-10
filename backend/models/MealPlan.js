@@ -6,7 +6,7 @@ const MealPlan = sequelize.define('MealPlan', {
   childId: { type: DataTypes.UUID, allowNull: false, field: 'child_id', references: { model: 'children', key: 'id' }, onDelete: 'CASCADE' },
   date: { type: DataTypes.DATEONLY, allowNull: false },
   mealType: {
-    type: DataTypes.ENUM('breakfast', 'lunch', 'snack', 'dinner'),
+    type: DataTypes.ENUM('Breakfast', 'Lunch', 'Snack', 'Dinner'),
     allowNull: false,
     field: 'meal_type',
   },
