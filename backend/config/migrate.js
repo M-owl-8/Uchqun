@@ -1,67 +1,12 @@
+// #02-013 — reuse the shared Sequelize instance instead of opening a separate pool
 import { Sequelize } from 'sequelize';
-import dotenv from 'dotenv';
+import sequelize from './database.js';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath, pathToFileURL } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-
-dotenv.config();
-
-// Use DATABASE_URL if available (Railway), otherwise use individual env vars
-let sequelize;
-
-// Determine if we should use SSL
-const isProduction = process.env.NODE_ENV === 'production';
-const useSSL = isProduction && (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL);
-
-if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
-  const dbUrl = process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL;
-  
-  // Check if it's a local database (localhost or 127.0.0.1)
-  const isLocalDatabase = dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1');
-  
-  sequelize = new Sequelize(dbUrl, {
-    dialect: 'postgres',
-    logging: false,
-    pool: {
-      max: 5,
-      min: 0,
-      acquire: 60000,
-      idle: 10000,
-    },
-    dialectOptions: {
-      // Only use SSL in production and not for local databases
-      ssl: useSSL && !isLocalDatabase ? {
-        require: true,
-        rejectUnauthorized: false
-      } : false
-    }
-  });
-} else {
-  sequelize = new Sequelize(
-    process.env.DB_NAME || 'uchqun',
-    process.env.DB_USER || 'postgres',
-    process.env.DB_PASSWORD || 'postgres',
-    {
-      host: process.env.DB_HOST || 'localhost',
-      port: process.env.DB_PORT || 5432,
-      dialect: 'postgres',
-      logging: false,
-      pool: {
-        max: 5,
-        min: 0,
-        acquire: 60000,
-        idle: 10000,
-      },
-      dialectOptions: {
-        // No SSL for local development
-        ssl: false
-      }
-    }
-  );
-}
 
 /**
  * Get all migration files and run them in order
