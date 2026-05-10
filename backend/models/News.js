@@ -17,9 +17,9 @@ const News = sequelize.define('News', {
   },
   createdById: {
     type: DataTypes.UUID,
-    allowNull: false,
+    allowNull: true,
     references: { model: 'users', key: 'id' },
-    onDelete: 'RESTRICT',
+    onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   },
 }, {

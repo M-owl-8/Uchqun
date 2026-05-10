@@ -25,7 +25,7 @@ const TherapyUsage = sequelize.define('TherapyUsage', {
     type: DataTypes.UUID,
     allowNull: false,
     references: { model: 'users', key: 'id' },
-    onDelete: 'RESTRICT',
+    onDelete: 'CASCADE',
     onUpdate: 'CASCADE',
   },
   teacherId: {
