@@ -1,4 +1,4 @@
-import SuperAdminMessage from '../models/SuperAdminMessage.js';
+import GovernmentMessage from '../models/GovernmentMessage.js';
 import User from '../models/User.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
@@ -28,7 +28,7 @@ export const sendMessage = async (req, res) => {
       subject: subject.substring(0, 50),
     });
 
-    const superAdminMessage = await SuperAdminMessage.create({
+    const governmentMessage = await GovernmentMessage.create({
       senderId,
       subject: subject.trim(),
       message: message.trim(),
@@ -36,7 +36,7 @@ export const sendMessage = async (req, res) => {
     });
 
     logger.info('Message sent to government', {
-      messageId: superAdminMessage.id,
+      messageId: governmentMessage.id,
       senderId,
       senderRole: req.user.role,
     });
@@ -44,24 +44,22 @@ export const sendMessage = async (req, res) => {
     res.status(201).json({
       success: true,
       message: 'Message sent successfully',
-      data: superAdminMessage.toJSON(),
+      data: governmentMessage.toJSON(),
     });
   } catch (error) {
-    logger.error('Send message error', { 
-      error: error.message, 
+    logger.error('Send message error', {
+      error: error.message,
       stack: error.stack,
       senderId: req.user?.id,
       senderRole: req.user?.role
     });
-    // Check if it's a table not found error
     if (error.message && error.message.includes('does not exist')) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         error: 'Database table not found. Please run migrations.',
         details: process.env.NODE_ENV === 'development' ? error.message : undefined
       });
     }
-    
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to send message',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
@@ -69,7 +67,7 @@ export const sendMessage = async (req, res) => {
 };
 
 /**
- * Get all messages for government
+ * Get all messages (government view)
  * GET /api/government/messages
  */
 export const getMessages = async (req, res) => {
@@ -89,7 +87,7 @@ export const getMessages = async (req, res) => {
       ];
     }
 
-    const { count, rows: messages } = await SuperAdminMessage.findAndCountAll({
+    const { count, rows: messages } = await GovernmentMessage.findAndCountAll({
       where,
       include: [
         {
@@ -129,7 +127,7 @@ export const getMessageById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const message = await SuperAdminMessage.findByPk(id, {
+    const message = await GovernmentMessage.findByPk(id, {
       include: [
         {
           model: User,
@@ -144,7 +142,6 @@ export const getMessageById = async (req, res) => {
       return res.status(404).json({ error: 'Message not found' });
     }
 
-    // Mark as read if not already read
     if (!message.isRead) {
       message.isRead = true;
       message.readAt = new Date();
@@ -174,7 +171,7 @@ export const replyToMessage = async (req, res) => {
       return res.status(400).json({ error: 'Reply is required' });
     }
 
-    const message = await SuperAdminMessage.findByPk(id);
+    const message = await GovernmentMessage.findByPk(id);
     if (!message) {
       return res.status(404).json({ error: 'Message not found' });
     }
@@ -208,7 +205,7 @@ export const markMessageRead = async (req, res) => {
     const { id } = req.params;
     const { isRead } = req.body;
 
-    const message = await SuperAdminMessage.findByPk(id);
+    const message = await GovernmentMessage.findByPk(id);
     if (!message) {
       return res.status(404).json({ error: 'Message not found' });
     }
@@ -240,16 +237,14 @@ export const deleteMessage = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const message = await SuperAdminMessage.findByPk(id);
+    const message = await GovernmentMessage.findByPk(id);
     if (!message) {
       return res.status(404).json({ error: 'Message not found' });
     }
 
     await message.destroy();
 
-    logger.info('Message deleted by government', {
-      messageId: id,
-    });
+    logger.info('Message deleted by government', { messageId: id });
 
     res.json({
       success: true,
@@ -260,4 +255,3 @@ export const deleteMessage = async (req, res) => {
     res.status(500).json({ error: 'Failed to delete message' });
   }
 };
-

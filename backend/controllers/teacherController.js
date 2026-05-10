@@ -4,7 +4,7 @@ import Group from '../models/Group.js';
 import TeacherResponsibility from '../models/TeacherResponsibility.js';
 import TeacherTask from '../models/TeacherTask.js';
 import TeacherWorkHistory from '../models/TeacherWorkHistory.js';
-import SuperAdminMessage from '../models/SuperAdminMessage.js';
+import GovernmentMessage from '../models/GovernmentMessage.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 
@@ -137,7 +137,7 @@ export const getParentById = async (req, res) => {
 
 export const getMyMessages = async (req, res) => {
   try {
-    const messages = await SuperAdminMessage.findAll({
+    const messages = await GovernmentMessage.findAll({
       where: { senderId: req.user.id },
       order: [['createdAt', 'DESC']],
     });

@@ -1,4 +1,4 @@
-import SuperAdminMessage from '../../models/SuperAdminMessage.js';
+import GovernmentMessage from '../../models/GovernmentMessage.js';
 import logger from '../../utils/logger.js';
 
 /**
@@ -11,7 +11,7 @@ import logger from '../../utils/logger.js';
  */
 export const getMyMessages = async (req, res) => {
   try {
-    const messages = await SuperAdminMessage.findAll({
+    const messages = await GovernmentMessage.findAll({
       where: { senderId: req.user.id },
       order: [['createdAt', 'DESC']],
     });

@@ -1,6 +1,6 @@
 import express from 'express';
 import { updateProfile, changePassword, updateAvatar } from '../controllers/userController.js';
-import { sendMessage } from '../controllers/superAdminController.js';
+import { sendMessage } from '../controllers/governmentMessageController.js';
 import { authenticate } from '../middleware/auth.js';
 import { updateProfileValidator, changePasswordValidator } from '../validators/userValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';

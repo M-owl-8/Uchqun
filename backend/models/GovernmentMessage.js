@@ -1,7 +1,7 @@
 import { DataTypes } from 'sequelize';
 import sequelize from '../config/database.js';
 
-const SuperAdminMessage = sequelize.define('SuperAdminMessage', {
+const GovernmentMessage = sequelize.define('GovernmentMessage', {
   id: {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -21,7 +21,7 @@ const SuperAdminMessage = sequelize.define('SuperAdminMessage', {
   reply: { type: DataTypes.TEXT, allowNull: true },
   repliedAt: { type: DataTypes.DATE, allowNull: true },
 }, {
-  tableName: 'super_admin_messages',
+  tableName: 'government_messages',
   timestamps: true,
   indexes: [
     { fields: ['senderId'] },
@@ -30,4 +30,4 @@ const SuperAdminMessage = sequelize.define('SuperAdminMessage', {
   ],
 });
 
-export default SuperAdminMessage;
+export default GovernmentMessage;

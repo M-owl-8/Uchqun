@@ -22,7 +22,7 @@ import {
   rateMyTeacher,
   getMyRating,
 } from '../controllers/parentController.js';
-import { sendMessage } from '../controllers/superAdminController.js';
+import { sendMessage } from '../controllers/governmentMessageController.js';
 import {
   getMonitoringByChild,
   getMonitoringById,

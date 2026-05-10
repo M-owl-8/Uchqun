@@ -20,7 +20,7 @@ import {
   getMyMessages,
 } from '../controllers/adminController.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
-import { sendMessage } from '../controllers/superAdminController.js';
+import { sendMessage } from '../controllers/governmentMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { createReceptionValidator, rejectDocumentValidator, adminIdParamValidator } from '../validators/adminValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';

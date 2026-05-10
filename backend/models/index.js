@@ -19,7 +19,7 @@ import TeacherRating from './TeacherRating.js';
 import ChatMessage from './ChatMessage.js';
 import School from './School.js';
 import SchoolRating from './SchoolRating.js';
-import SuperAdminMessage from './SuperAdminMessage.js';
+import GovernmentMessage from './GovernmentMessage.js';
 import AdminRegistrationRequest from './AdminRegistrationRequest.js';
 import EmotionalMonitoring from './EmotionalMonitoring.js';
 import Therapy from './Therapy.js';
@@ -55,7 +55,7 @@ const models = {
   ChatMessage,
   School,
   SchoolRating,
-  SuperAdminMessage,
+  GovernmentMessage,
   AdminRegistrationRequest,
   EmotionalMonitoring,
   Therapy,
@@ -159,9 +159,9 @@ Child.hasMany(Media, { foreignKey: 'childId', as: 'media' });
 Media.belongsTo(Activity, { foreignKey: 'activityId', as: 'activity' });
 Activity.hasMany(Media, { foreignKey: 'activityId', as: 'media' });
 
-// SuperAdminMessage
-User.hasMany(SuperAdminMessage, { foreignKey: 'senderId', as: 'superAdminMessages' });
-SuperAdminMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
+// GovernmentMessage
+User.hasMany(GovernmentMessage, { foreignKey: 'senderId', as: 'governmentMessages' });
+GovernmentMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
 
 // AdminRegistrationRequest
 User.hasMany(AdminRegistrationRequest, { foreignKey: 'reviewedBy', as: 'reviewedAdminRequests' });
@@ -299,7 +299,7 @@ export {
   ChatMessage,
   School,
   SchoolRating,
-  SuperAdminMessage,
+  GovernmentMessage,
   AdminRegistrationRequest,
   EmotionalMonitoring,
   Therapy,

@@ -18,7 +18,7 @@ jest.unstable_mockModule('../models/User.js', () => ({
   default: { findByPk: mockUserFindByPk, findOne: mockUserFindOne },
 }));
 jest.unstable_mockModule('../models/Group.js', () => ({ default: {} }));
-jest.unstable_mockModule('../models/SuperAdminMessage.js', () => ({
+jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { findAll: mockSAMFindAll },
 }));
 jest.unstable_mockModule('../models/ParentActivity.js', () => ({

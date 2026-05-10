@@ -7,7 +7,7 @@ import { messageToGovValidator } from '../validators/messageValidator.js';
 import { getMyProfile, getDashboard, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings } from '../controllers/teacherController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { getAIAdvice } from '../controllers/teacherAIController.js';
-import { sendMessage } from '../controllers/superAdminController.js';
+import { sendMessage } from '../controllers/governmentMessageController.js';
 import {
   createOrUpdateMonitoring,
   getAllMonitoring,

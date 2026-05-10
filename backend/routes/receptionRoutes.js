@@ -5,7 +5,7 @@ import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages } 
 import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher } from '../controllers/receptionTeacherController.js';
 import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception } from '../controllers/receptionParentController.js';
 import { getGroups } from '../controllers/groupController.js';
-import { sendMessage } from '../controllers/superAdminController.js';
+import { sendMessage } from '../controllers/governmentMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { createStaffValidator, createParentValidator } from '../validators/receptionValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';

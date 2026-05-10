@@ -29,7 +29,7 @@ import {
   replyToMessage,
   markMessageRead,
   deleteMessage,
-} from '../controllers/superAdminController.js';
+} from '../controllers/governmentMessageController.js';
 import {
   getRegistrationRequests,
   getRegistrationRequestById,
@@ -43,7 +43,7 @@ import {
   createGovernmentValidator,
   updateGovernmentValidator,
   deleteGovernmentValidator,
-} from '../validators/superAdminValidator.js';
+} from '../validators/governmentUserValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { authenticate, requireGovernment, requireRole } from '../middleware/auth.js';
 

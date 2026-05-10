@@ -2,7 +2,7 @@ import { jest } from '@jest/globals';
 
 const mockFindAll = jest.fn();
 
-jest.unstable_mockModule('../models/SuperAdminMessage.js', () => ({
+jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { findAll: mockFindAll },
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({

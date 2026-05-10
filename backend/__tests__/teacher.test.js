@@ -26,7 +26,7 @@ jest.unstable_mockModule('../models/TeacherTask.js', () => ({
 jest.unstable_mockModule('../models/TeacherWorkHistory.js', () => ({
   default: { findAll: jest.fn(), findOne: jest.fn(), count: jest.fn() },
 }));
-jest.unstable_mockModule('../models/SuperAdminMessage.js', () => ({
+jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { findAll: jest.fn() },
 }));
 jest.unstable_mockModule('../models/EmotionalMonitoring.js', () => ({
