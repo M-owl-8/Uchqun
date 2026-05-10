@@ -18,7 +18,7 @@ jest.unstable_mockModule('../utils/pagination.js', () => ({
 
 // #06-003 — governmentMessageController
 const {
-  sendMessage, getMessages, getMessageById, replyToMessage, markMessageRead, deleteMessage,
+  sendMessage, getAllMessages, getMessageById, replyToMessage, markMessageRead, deleteMessage,
 } = await import('../controllers/governmentMessageController.js');
 
 const mkRes = () => {
@@ -66,13 +66,13 @@ describe('governmentMessageController', () => {
     });
   });
 
-  describe('getMessages', () => {
+  describe('getAllMessages', () => {
     it('#06-003 returns messages and pagination', async () => {
       const m = { toJSON: () => ({ id: 'm1' }) };
       mockFindAndCountAll.mockResolvedValue({ rows: [m], count: 1 });
       const req = { query: {} };
       const res = mkRes();
-      await getMessages(req, res);
+      await getAllMessages(req, res);
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
         success: true,
         data: [{ id: 'm1' }],
@@ -84,7 +84,7 @@ describe('governmentMessageController', () => {
       mockFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
       const req = { query: { isRead: 'false' } };
       const res = mkRes();
-      await getMessages(req, res);
+      await getAllMessages(req, res);
       const where = mockFindAndCountAll.mock.calls[0][0].where;
       expect(where.isRead).toBe(false);
     });

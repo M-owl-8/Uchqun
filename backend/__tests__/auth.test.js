@@ -136,8 +136,8 @@ describe('Auth Controller', () => {
       expect(res.json).toHaveBeenCalled();
       const response = res.json.mock.calls[0][0];
       expect(response.success).toBe(true);
-      expect(response.accessToken).toBeDefined();
-      expect(response.refreshToken).toBeDefined();
+      expect(response.accessToken).toBeUndefined();
+      expect(response.refreshToken).toBeUndefined();
       expect(response.user).toBeDefined();
       expect(response.user.password).toBeUndefined();
     });
@@ -320,8 +320,8 @@ describe('Auth Controller', () => {
       expect(res.json).toHaveBeenCalled();
       const response = res.json.mock.calls[0][0];
       expect(response.success).toBe(true);
-      expect(response.accessToken).toBeDefined();
-      expect(response.refreshToken).toBeDefined();
+      expect(response.accessToken).toBeUndefined();
+      expect(response.refreshToken).toBeUndefined();
     });
 
     test('sets cookies on successful refresh', async () => {

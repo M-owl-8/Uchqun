@@ -21,6 +21,7 @@ const SOCKET_DEFAULT_ORIGINS = [
   'https://uchqun-admin.netlify.app',
   'https://uchqun-teacher.netlify.app',
   'https://uchqun-government.netlify.app',
+  'https://uchqun-platform.vercel.app',
 ];
 
 export const initializeSocket = (server) => {

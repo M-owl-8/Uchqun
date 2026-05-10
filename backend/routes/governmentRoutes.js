@@ -24,7 +24,7 @@ import {
 } from '../controllers/adminController.js';
 import {
   sendMessage,
-  getMessages,
+  getAllMessages,
   getMessageById,
   replyToMessage,
   markMessageRead,
@@ -82,7 +82,7 @@ router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, upda
 router.delete('/users/:id', deleteGovernmentValidator, handleValidationErrors, deleteGovernmentUser);
 
 // User messages
-router.get('/messages', getMessages);
+router.get("/messages", getAllMessages);
 router.get('/messages/:id', getMessageById);
 router.post('/messages/:id/reply', replyToMessage);
 router.put('/messages/:id/read', markMessageRead);

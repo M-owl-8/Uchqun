@@ -18,7 +18,7 @@ router.post('/run', async (req, res) => {
     const expectedSecret = process.env.MIGRATION_SECRET;
 
     if (!expectedSecret) {
-      return res.status(500).json({ success: false, error: 'MIGRATION_SECRET env var is not configured' });
+      return res.status(404).json({ success: false, error: 'Not found' });
     }
 
     if (!secretMatches(secret, expectedSecret)) {

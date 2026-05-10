@@ -21,7 +21,7 @@
     "menu": "Main menu"
   },
   "profile": {
-    "contactGovernment": "Send message to davlat",
+    "contactGovernment": "Send message to the Government",
     "myMessages": "My messages",
     "messageRequired": "Subject and message are required",
     "messageSent": "Message sent successfully",

@@ -281,7 +281,7 @@ Each web app follows the same structure:
 
 ### Proxy Configuration
 Teacher app (`teacher/vite.config.js`) has a dev proxy:
-- `/api` and `/uploads` → Railway backend (`https://uchqun-production.up.railway.app`)
+- `/api` and `/uploads` → backend (configured via `VITE_API_URL` env var, defaults to `http://localhost:5000` in dev)
 - Returns transparent PNG for failed media requests
 - Returns JSON error for failed API requests
 - Other apps connect directly via `VITE_API_URL`

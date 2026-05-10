@@ -32,7 +32,7 @@ export const createParent = async (req, res) => {
         disabilityType: req.body['child[disabilityType]'] || req.body.child?.disabilityType || '',
         medicalDiagnosis: req.body['child[medicalDiagnosis]'] || req.body.child?.medicalDiagnosis || null,
         specialNeeds: req.body['child[specialNeeds]'] || req.body.child?.specialNeeds || null,
-        school: req.body['child[school]'] || req.body.child?.school || 'Uchqun School',
+        school: req.body['child[school]'] || req.body.child?.school || '',
         photo: null,
       };
     }
@@ -260,7 +260,7 @@ export const createChildForParent = async (req, res) => {
     const disabilityType = req.body['child[disabilityType]'] || req.body['child.disabilityType'] || req.body.disabilityType || req.body.child?.disabilityType;
     const medicalDiagnosis = req.body['child[medicalDiagnosis]'] || req.body['child.medicalDiagnosis'] || req.body.medicalDiagnosis || req.body.child?.medicalDiagnosis || null;
     const specialNeeds = req.body['child[specialNeeds]'] || req.body['child.specialNeeds'] || req.body.specialNeeds || req.body.child?.specialNeeds || null;
-    const school = req.body['child[school]'] || req.body['child.school'] || req.body.school || req.body.child?.school || 'Uchqun School';
+    const school = req.body['child[school]'] || req.body['child.school'] || req.body.school || req.body.child?.school || '';
 
     logger.info('Create child: parsed values', { parentId, firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType, school: !!school });
 

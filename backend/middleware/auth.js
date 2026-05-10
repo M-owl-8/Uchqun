@@ -1,6 +1,18 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
+const _userCache = new Map();
+const USER_CACHE_TTL = 30_000;
+
+const getCachedUser = async (userId) => {
+  if (process.env.NODE_ENV === 'test') return User.findByPk(userId);
+  const cached = _userCache.get(userId);
+  if (cached && Date.now() - cached.at < USER_CACHE_TTL) return cached.user;
+  const user = await User.findByPk(userId);
+  if (user) _userCache.set(userId, { user, at: Date.now() });
+  return user;
+};
+
 export const authenticate = async (req, res, next) => {
   try {
     let token = req.cookies?.accessToken;
@@ -15,7 +27,7 @@ export const authenticate = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    const user = await User.findByPk(decoded.userId);
+    const user = await getCachedUser(decoded.userId);
     if (!user) {
       return res.status(401).json({ error: 'User not found' });
     }

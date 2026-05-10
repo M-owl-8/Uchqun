@@ -70,7 +70,7 @@ export const sendMessage = async (req, res) => {
  * Get all messages (government view)
  * GET /api/government/messages
  */
-export const getMessages = async (req, res) => {
+export const getAllMessages = async (req, res) => {
   try {
     const { isRead, search } = req.query;
     const { limit, offset } = parsePagination(req.query);

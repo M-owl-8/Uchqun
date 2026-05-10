@@ -32,6 +32,17 @@ function extractCookies(res) {
   return (Array.isArray(raw) ? raw : [raw]).map(c => c.split(';')[0]).join('; ');
 }
 
+function extractCookieValue(res, name) {
+  const raw = res.headers['set-cookie'];
+  if (!raw) return null;
+  const cookies = Array.isArray(raw) ? raw : [raw];
+  for (const cookie of cookies) {
+    const match = cookie.match(new RegExp(`${name}=([^;]+)`));
+    if (match) return decodeURIComponent(match[1]);
+  }
+  return null;
+}
+
 describe('Auth Integration', () => {
   describe('POST /api/auth/login', () => {
     it('should login with valid credentials', async () => {
@@ -41,10 +52,13 @@ describe('Auth Integration', () => {
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.accessToken).toBeDefined();
-      expect(res.body.refreshToken).toBeDefined();
+      expect(res.body.accessToken).toBeUndefined();
+      expect(res.body.refreshToken).toBeUndefined();
       expect(res.body.user.email).toBe('test@example.com');
       expect(res.body.user.password).toBeUndefined();
+      // Tokens delivered via HTTP-only cookies
+      expect(extractCookieValue(res, 'accessToken')).toBeTruthy();
+      expect(extractCookieValue(res, 'refreshToken')).toBeTruthy();
     });
 
     it('should reject invalid password', async () => {
@@ -67,13 +81,15 @@ describe('Auth Integration', () => {
         .post('/api/auth/login')
         .send({ email: 'test@example.com', password: 'password123' });
 
+      const refreshToken = extractCookieValue(loginRes, 'refreshToken');
+      expect(refreshToken).toBeTruthy();
+
       const res = await request
         .post('/api/auth/refresh')
-        .send({ refreshToken: loginRes.body.refreshToken });
+        .send({ refreshToken });
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
-      expect(res.body.accessToken).toBeDefined();
     });
 
     it('should refresh token using cookie', async () => {
@@ -96,29 +112,48 @@ describe('Auth Integration', () => {
         .post('/api/auth/login')
         .send({ email: 'test@example.com', password: 'password123' });
 
+      const refreshToken = extractCookieValue(loginRes, 'refreshToken');
+
       // First refresh (revokes old token)
       await request
         .post('/api/auth/refresh')
-        .send({ refreshToken: loginRes.body.refreshToken });
+        .send({ refreshToken });
 
       // Second refresh with same token should fail
       const res = await request
         .post('/api/auth/refresh')
-        .send({ refreshToken: loginRes.body.refreshToken });
+        .send({ refreshToken });
 
       expect(res.status).toBe(401);
     });
   });
 
   describe('GET /api/auth/me', () => {
-    it('should return user profile with valid token', async () => {
+    it('should return user profile with valid token via cookie', async () => {
       const loginRes = await request
         .post('/api/auth/login')
         .send({ email: 'test@example.com', password: 'password123' });
 
+      const cookies = extractCookies(loginRes);
+
       const res = await request
         .get('/api/auth/me')
-        .set('Authorization', `Bearer ${loginRes.body.accessToken}`);
+        .set('Cookie', cookies);
+
+      expect(res.status).toBe(200);
+      expect(res.body.email).toBe('test@example.com');
+    });
+
+    it('should return user profile with valid Bearer token', async () => {
+      const loginRes = await request
+        .post('/api/auth/login')
+        .send({ email: 'test@example.com', password: 'password123' });
+
+      const accessToken = extractCookieValue(loginRes, 'accessToken');
+
+      const res = await request
+        .get('/api/auth/me')
+        .set('Authorization', `Bearer ${accessToken}`);
 
       expect(res.status).toBe(200);
       expect(res.body.email).toBe('test@example.com');
@@ -136,9 +171,12 @@ describe('Auth Integration', () => {
         .post('/api/auth/login')
         .send({ email: 'test@example.com', password: 'password123' });
 
+      const cookies = extractCookies(loginRes);
+      const refreshToken = extractCookieValue(loginRes, 'refreshToken');
+
       const res = await request
         .post('/api/auth/logout')
-        .set('Authorization', `Bearer ${loginRes.body.accessToken}`);
+        .set('Cookie', cookies);
 
       expect(res.status).toBe(200);
       expect(res.body.success).toBe(true);
@@ -146,7 +184,7 @@ describe('Auth Integration', () => {
       // Refresh should fail after logout
       const refreshRes = await request
         .post('/api/auth/refresh')
-        .send({ refreshToken: loginRes.body.refreshToken });
+        .send({ refreshToken });
 
       expect(refreshRes.status).toBe(401);
     });

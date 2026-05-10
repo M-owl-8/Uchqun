@@ -166,8 +166,6 @@ export const login = async (req, res) => {
 
     res.json({
       success: true,
-      accessToken,
-      refreshToken,
       expiresIn: ACCESS_TOKEN_EXPIRY,
       user: user.toJSON(),
     });
@@ -242,8 +240,6 @@ export const refresh = async (req, res) => {
 
     res.json({
       success: true,
-      accessToken: newAccessToken,
-      refreshToken: newRefreshToken,
       expiresIn: ACCESS_TOKEN_EXPIRY,
     });
   } catch (error) {

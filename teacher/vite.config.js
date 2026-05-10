@@ -7,7 +7,7 @@ export default defineConfig(({ mode }) => {
     throw new Error('VITE_API_URL is required for production builds');
   }
 
-  const backendBase = process.env.VITE_API_URL?.replace('/api', '') || 'https://uchqun-production-2d8a.up.railway.app';
+  const backendBase = process.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
   return {
     plugins: [react()],

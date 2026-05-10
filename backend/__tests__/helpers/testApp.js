@@ -185,9 +185,8 @@ Child.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 import jwt from 'jsonwebtoken';
 
 const generateTokens = (userId) => {
-  const jti = crypto.randomUUID();
-  const accessToken = jwt.sign({ userId, jti }, process.env.JWT_SECRET, { expiresIn: '15m' });
-  const refreshToken = jwt.sign({ userId, jti: crypto.randomUUID() }, process.env.JWT_REFRESH_SECRET, { expiresIn: '7d' });
+  const accessToken = jwt.sign({ userId, jti: crypto.randomUUID() }, process.env.JWT_SECRET, { expiresIn: '15m' });
+  const refreshToken = crypto.randomBytes(40).toString('hex');
   return { accessToken, refreshToken };
 };
 
@@ -226,7 +225,7 @@ function createTestApp() {
       res.cookie('accessToken', accessToken, { httpOnly: true, path: '/' });
       res.cookie('refreshToken', refreshToken, { httpOnly: true, path: '/' });
 
-      res.json({ success: true, accessToken, refreshToken, user: user.toJSON() });
+      res.json({ success: true, user: user.toJSON() });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -239,18 +238,17 @@ function createTestApp() {
         return res.status(400).json({ error: 'Refresh token is required' });
       }
 
-      const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-      const user = await User.findByPk(decoded.userId);
-      if (!user) {
-        return res.status(401).json({ error: 'Invalid refresh token' });
-      }
-
-      const storedToken = await RefreshToken.verifyToken(token, user.id);
-      if (!storedToken) {
+      const tokenHash = RefreshToken.hashToken(token);
+      const stored = await RefreshToken.findOne({ where: { tokenHash, revoked: false } });
+      if (!stored || stored.expiresAt < new Date()) {
+        if (stored) await stored.update({ revoked: true, revokedAt: new Date() });
         return res.status(401).json({ error: 'Refresh token revoked or expired' });
       }
 
-      await storedToken.update({ revoked: true, revokedAt: new Date() });
+      const user = await User.findByPk(stored.userId);
+      if (!user) return res.status(401).json({ error: 'User not found' });
+
+      await stored.update({ revoked: true, revokedAt: new Date() });
 
       const { accessToken, refreshToken: newRefreshToken } = generateTokens(user.id);
       await RefreshToken.create({
@@ -262,11 +260,8 @@ function createTestApp() {
       res.cookie('accessToken', accessToken, { httpOnly: true, path: '/' });
       res.cookie('refreshToken', newRefreshToken, { httpOnly: true, path: '/' });
 
-      res.json({ success: true, accessToken });
+      res.json({ success: true });
     } catch (error) {
-      if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
-        return res.status(401).json({ error: 'Invalid or expired refresh token' });
-      }
       res.status(500).json({ error: error.message });
     }
   });
