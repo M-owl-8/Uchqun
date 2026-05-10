@@ -1,6 +1,20 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
+// #02-003 — in-process JTI revocation (single-instance only; see CLAUDE.md scaling note)
+const _revokedJtis = new Map(); // jti → expiresAt (ms)
+
+export const revokeJti = (jti, expiresAtMs) => {
+  if (jti) _revokedJtis.set(jti, expiresAtMs);
+};
+
+const _pruneRevokedJtis = () => {
+  const now = Date.now();
+  for (const [jti, exp] of _revokedJtis) {
+    if (exp < now) _revokedJtis.delete(jti);
+  }
+};
+
 const _userCache = new Map();
 const USER_CACHE_TTL = 30_000;
 
@@ -26,6 +40,14 @@ export const authenticate = async (req, res, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    if (_revokedJtis.has(decoded.jti)) {
+      return res.status(401).json({ error: 'Token has been revoked' });
+    }
+    if (_revokedJtis.size > 0) _pruneRevokedJtis();
+
+    req.jti = decoded.jti;
+    req.tokenExpiry = decoded.exp ? decoded.exp * 1000 : Date.now() + 15 * 60 * 1000;
 
     const user = await getCachedUser(decoded.userId);
     if (!user) {

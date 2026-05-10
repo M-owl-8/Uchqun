@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
 import { recordFailedAttempt, clearAttempts, isLockedOut } from '../utils/loginRateLimitStore.js';
+import { revokeJti } from '../middleware/auth.js';
 
 const ACCESS_TOKEN_EXPIRY = '15m';
 const REFRESH_TOKEN_EXPIRY_DAYS = 7;
@@ -256,6 +257,8 @@ export const logout = async (req, res) => {
         { where: { userId: req.user.id, revoked: false } }
       );
     }
+    // #02-003 — revoke the access token JTI so it can't be replayed until expiry
+    if (req.jti) revokeJti(req.jti, req.tokenExpiry);
 
     const isProduction = process.env.NODE_ENV === 'production';
     const cookieOptions = {
