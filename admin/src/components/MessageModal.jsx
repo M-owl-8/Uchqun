@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { MessageSquare, Send, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 
 const MessageModal = ({ onClose }) => {
+  const { t } = useTranslation();
   const { success, error: showError } = useToast();
   const [messageSubject, setMessageSubject] = useState('');
   const [messageText, setMessageText] = useState('');
@@ -11,7 +13,7 @@ const MessageModal = ({ onClose }) => {
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {
-      showError('Subject va xabar to\'ldirilishi kerak');
+      showError(t('messageModal.validationError', { defaultValue: "Subject va xabar to'ldirilishi kerak" }));
       return;
     }
 
@@ -21,12 +23,12 @@ const MessageModal = ({ onClose }) => {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
-      success('Xabar muvaffaqiyatli yuborildi');
+      success(t('messageModal.sent', { defaultValue: 'Xabar muvaffaqiyatli yuborildi' }));
       setMessageSubject('');
       setMessageText('');
       if (onClose) onClose();
     } catch (error) {
-      showError(error.response?.data?.error || 'Xabar yuborishda xatolik');
+      showError(error.response?.data?.error || t('messageModal.sendError', { defaultValue: 'Xabar yuborishda xatolik' }));
     } finally {
       setSendingMessage(false);
     }
@@ -42,7 +44,7 @@ const MessageModal = ({ onClose }) => {
             <div className="p-3 bg-blue-100 rounded-full">
               <MessageSquare className="w-6 h-6 text-blue-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Davlatga xabar yuborish</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t('messageModal.title', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
           </div>
           <button
             onClick={() => {
@@ -56,22 +58,22 @@ const MessageModal = ({ onClose }) => {
         
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Mavzu</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('messageModal.subject', { defaultValue: 'Mavzu' })}</label>
             <input
               type="text"
               value={messageSubject}
               onChange={(e) => setMessageSubject(e.target.value)}
-              placeholder="Xabar mavzusi..."
+              placeholder={t('messageModal.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">Xabar</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">{t('messageModal.message', { defaultValue: 'Xabar' })}</label>
             <textarea
               value={messageText}
               onChange={(e) => setMessageText(e.target.value)}
               rows={6}
-              placeholder="Xabaringizni yozing..."
+              placeholder={t('messageModal.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -85,7 +87,7 @@ const MessageModal = ({ onClose }) => {
             className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors"
             disabled={sendingMessage}
           >
-            Bekor qilish
+            {t('messageModal.cancel', { defaultValue: 'Bekor qilish' })}
           </button>
           <button
             onClick={handleSendMessage}
@@ -95,12 +97,12 @@ const MessageModal = ({ onClose }) => {
             {sendingMessage ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>Yuborilmoqda...</span>
+                <span>{t('messageModal.sending', { defaultValue: 'Yuborilmoqda...' })}</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>Yuborish</span>
+                <span>{t('messageModal.send', { defaultValue: 'Yuborish' })}</span>
               </>
             )}
           </button>

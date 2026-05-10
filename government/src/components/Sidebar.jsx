@@ -13,7 +13,7 @@ import {
 import { useTranslation } from 'react-i18next';
 
 const COLORS = {
-  softNavy: '#7C3AED',
+  purple: '#7C3AED',
   textTertiary: '#64748b',
   powderBlue: '#EDE9FE',
 };
@@ -35,7 +35,7 @@ const Sidebar = ({ onClose }) => {
 
   return (
     <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-100 shadow-sm">
-      <div className="flex items-center gap-3 px-6 h-20" style={{ backgroundColor: COLORS.softNavy }}>
+      <div className="flex items-center gap-3 px-6 h-20" style={{ backgroundColor: COLORS.purple }}>
         <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
           <Shield className="w-5 h-5 text-white" strokeWidth={1.5} />
         </div>
@@ -59,18 +59,18 @@ const Sidebar = ({ onClose }) => {
               }`}
               style={{
                 backgroundColor: Active ? COLORS.powderBlue : 'transparent',
-                color: Active ? COLORS.softNavy : COLORS.textTertiary,
+                color: Active ? COLORS.purple : COLORS.textTertiary,
               }}
               onClick={onClose}
             >
               <item.icon
                 className="mr-3 h-5 w-5 transition-colors"
                 strokeWidth={Active ? 2 : 1.5}
-                style={{ color: Active ? COLORS.softNavy : COLORS.textTertiary }}
+                style={{ color: Active ? COLORS.purple : COLORS.textTertiary }}
               />
               <span className="text-sm font-medium">{item.name}</span>
               {Active && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ backgroundColor: COLORS.softNavy }} />
+                <div className="ml-auto w-1.5 h-1.5 rounded-full" style={{ backgroundColor: COLORS.purple }} />
               )}
             </Link>
           );
@@ -80,11 +80,11 @@ const Sidebar = ({ onClose }) => {
       <div className="p-4 border-t border-gray-100" style={{ backgroundColor: COLORS.powderBlue + '40' }}>
         <div className="flex items-center gap-3 px-2 mb-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm"
-            style={{ backgroundColor: COLORS.powderBlue, color: COLORS.softNavy }}>
+            style={{ backgroundColor: COLORS.powderBlue, color: COLORS.purple }}>
             {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate" style={{ color: COLORS.softNavy }}>
+            <p className="text-sm font-bold truncate" style={{ color: COLORS.purple }}>
               {user?.firstName} {user?.lastName}
             </p>
             <p className="text-xs truncate" style={{ color: COLORS.textTertiary }}>{user?.email}</p>

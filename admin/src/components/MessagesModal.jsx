@@ -1,7 +1,9 @@
 import { MessageSquare, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import LoadingSpinner from './LoadingSpinner';
 
 const MessagesModal = ({ onClose, messages = [] }) => {
+  const { t, i18n } = useTranslation();
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-white rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -10,7 +12,7 @@ const MessagesModal = ({ onClose, messages = [] }) => {
             <div className="p-3 bg-green-100 rounded-full">
               <MessageSquare className="w-6 h-6 text-green-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">Mening xabarlarim</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{t('messagesModal.title', { defaultValue: 'Mening xabarlarim' })}</h2>
           </div>
           <button
             onClick={onClose}
@@ -23,7 +25,7 @@ const MessagesModal = ({ onClose, messages = [] }) => {
         {messages.length === 0 ? (
           <div className="text-center py-12">
             <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">Hozircha xabarlar yo&apos;q</p>
+            <p className="text-gray-500">{t('messagesModal.empty', { defaultValue: "Hozircha xabarlar yo'q" })}</p>
           </div>
         ) : (
           <div className="space-y-4">
@@ -33,7 +35,7 @@ const MessagesModal = ({ onClose, messages = [] }) => {
                   <div>
                     <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
                     <p className="text-sm text-gray-500 mt-1">
-                      {new Date(msg.createdAt).toLocaleDateString('uz-UZ', { 
+                      {new Date(msg.createdAt).toLocaleDateString(i18n.language, { 
                         year: 'numeric', 
                         month: 'long', 
                         day: 'numeric',
@@ -44,13 +46,13 @@ const MessagesModal = ({ onClose, messages = [] }) => {
                   </div>
                   {msg.reply && (
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
-                      Javob berildi
+                      {t('messagesModal.replied', { defaultValue: 'Javob berildi' })}
                     </span>
                   )}
                 </div>
                 
                 <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Sizning xabaringiz:</p>
+                  <p className="text-sm font-medium text-gray-700 mb-2">{t('messagesModal.yourMessage', { defaultValue: 'Sizning xabaringiz:' })}</p>
                   <p className="text-gray-800 bg-gray-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                 </div>
 
@@ -60,9 +62,9 @@ const MessagesModal = ({ onClose, messages = [] }) => {
                       <div className="p-2 bg-blue-100 rounded-full">
                         <MessageSquare className="w-4 h-4 text-blue-600" />
                       </div>
-                      <p className="text-sm font-medium text-blue-700">Davlat javobi</p>
+                      <p className="text-sm font-medium text-blue-700">{t('messagesModal.govtReply', { defaultValue: 'Davlat javobi' })}</p>
                       <span className="text-xs text-gray-500 ml-auto">
-                        {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
+                        {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                           year: 'numeric', 
                           month: 'long', 
                           day: 'numeric',

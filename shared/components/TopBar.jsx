@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Bell, Menu, Settings } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
 
-const TopBar = ({ onMenuClick, title }) => {
+const TopBar = ({ onMenuClick, title, notificationsPath = '/notifications', settingsPath = '/settings' }) => {
   const { count } = useNotification();
   const navigate = useNavigate();
 
@@ -30,7 +30,7 @@ const TopBar = ({ onMenuClick, title }) => {
       <div className="flex items-center gap-2">
         <button
           type="button"
-          onClick={() => navigate('/notifications')}
+          onClick={() => navigate(notificationsPath)}
           className="relative text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label={count > 0 ? `Notifications, ${count} unread` : 'Notifications'}
         >
@@ -46,7 +46,7 @@ const TopBar = ({ onMenuClick, title }) => {
         </button>
 
         <Link
-          to="/settings"
+          to={settingsPath}
           className="text-white hover:bg-white/20 p-2 rounded-lg transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
           aria-label="Settings"
         >
