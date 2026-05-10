@@ -69,8 +69,6 @@ router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 
 // Send message to government
 router.post('/message-to-government', authenticate, requireParent, messageToGovValidator, handleValidationErrors, sendMessage);
-// Backward-compatible alias (legacy clients)
-router.post('/message-to-super-admin', authenticate, requireParent, messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', authenticate, requireParent, getMyMessages);
 

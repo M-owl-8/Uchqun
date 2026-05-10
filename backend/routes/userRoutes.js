@@ -17,8 +17,6 @@ router.put('/password', passwordResetLimiter, changePasswordValidator, handleVal
 
 // Send message to government (available for all authenticated users)
 router.post('/message-to-government', sendMessage);
-// Backward-compatible alias (legacy clients)
-router.post('/message-to-super-admin', sendMessage);
 
 export default router;
 

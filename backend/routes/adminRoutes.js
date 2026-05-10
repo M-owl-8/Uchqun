@@ -45,8 +45,6 @@ router.use(requireAdmin);
 
 // Send message to government (top-level platform owner)
 router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
-// Backward-compatible alias (legacy clients)
-router.post('/message-to-super-admin', messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
 
