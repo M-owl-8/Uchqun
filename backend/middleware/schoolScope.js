@@ -7,7 +7,7 @@ export const requireSchoolScope = (req, res, next) => {
 
   if (role === 'government' || role === 'business') {
     req.schoolId = schoolId || null;
-    req.isGlobalAccess = !schoolId;
+    req.isGlobalAccess = true;
     return next();
   }
 
@@ -20,7 +20,11 @@ export const requireSchoolScope = (req, res, next) => {
   next();
 };
 
+// schoolWhere reads from req.user directly so it works with or without
+// requireSchoolScope being mounted — controllers can call it safely.
 export const schoolWhere = (req) => {
-  if (req.isGlobalAccess || !req.schoolId) return {};
-  return { schoolId: req.schoolId };
+  if (!req.user) return {};
+  const { role, schoolId } = req.user;
+  if (role === 'government' || role === 'business' || !schoolId) return {};
+  return { schoolId };
 };
