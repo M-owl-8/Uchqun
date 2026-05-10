@@ -10,6 +10,7 @@ const Students = () => {
   const [students, setStudents] = useState([]);
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
     loadStudents();
@@ -18,13 +19,14 @@ const Students = () => {
   const loadStudents = async () => {
     try {
       setLoading(true);
-      const res = await api.get('/government/students?limit=500');
+      const res = await api.get('/government/students?limit=100&page=1');
       const data = res.data?.data || {};
       setStudents(data.students || []);
       setTotal(data.total ?? 0);
     } catch (error) {
       setStudents([]);
       setTotal(0);
+      setLoadError(error.response?.data?.error || t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -34,6 +36,14 @@ const Students = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-red-500">{loadError}</p>
       </div>
     );
   }

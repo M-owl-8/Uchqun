@@ -19,6 +19,7 @@ const Schools = () => {
   const [schools, setSchools] = useState([]);
   const [globalStats, setGlobalStats] = useState({ total: 0, totalReviews: 0, globalAverageRating: 0 });
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
     loadSchools();
@@ -37,6 +38,7 @@ const Schools = () => {
       });
     } catch (error) {
       setSchools([]);
+      setLoadError(error.response?.data?.error || t('common.loadError', { defaultValue: 'Failed to load data' }));
     } finally {
       setLoading(false);
     }
@@ -46,6 +48,14 @@ const Schools = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]" role="status" aria-label={t('schools.loading', { defaultValue: 'Loading schools' })}>
         <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <p className="text-red-500">{loadError}</p>
       </div>
     );
   }
