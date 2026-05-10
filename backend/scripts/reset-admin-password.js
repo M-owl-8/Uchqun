@@ -12,7 +12,7 @@ const resetAdminPassword = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    const email = process.env.ADMIN_EMAIL || 'admin@uchqun.com';
+    const email = process.env.ADMIN_EMAIL || 'admin@school.local';
     const newPassword = process.env.ADMIN_PASSWORD || crypto.randomBytes(16).toString('hex');
 
     // Find admin user

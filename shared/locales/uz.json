@@ -1,0 +1,88 @@
+{
+  "nav": {
+    "dashboard": "Bosh sahifa",
+    "receptions": "Qabul bo'limi",
+    "parents": "Ota-onalar",
+    "teachers": "O'qituvchilar",
+    "groups": "Guruhlar",
+    "reports": "Hisobotlar",
+    "admins": "Adminlar",
+    "logout": "Chiqish"
+  },
+  "government": {
+    "title": "Davlat",
+    "createAdmin": "Admin yaratish",
+    "editAdmin": "Adminni tahrirlash",
+    "existingAdmins": "Mavjud adminlar",
+    "noAdmins": "Hali adminlar yo'q."
+  },
+  "common": {
+    "loading": "Yuklanmoqda...",
+    "save": "Saqlash",
+    "cancel": "Bekor qilish",
+    "delete": "O'chirish",
+    "edit": "Tahrirlash"
+  },
+  "servicePlan": {
+    "title": "Yillik reja",
+    "year": "Yil",
+    "save": "Saqlash",
+    "saved": "Reja saqlandi",
+    "services": {
+      "logoped": "Logoped",
+      "defektolog": "Defektolog",
+      "selfCare": "O'z-o'ziga xizmat ko'rsatish",
+      "ipotherapy": "Gippoterapiya",
+      "music": "Musiqa terapiyasi",
+      "labor": "Mehnat darsi",
+      "tmc": "TMC davolash",
+      "physiotherapy": "Fizioterapiya"
+    },
+    "months": {
+      "jan": "Yan",
+      "feb": "Fev",
+      "mar": "Mar",
+      "apr": "Apr",
+      "may": "May",
+      "jun": "Iyun",
+      "jul": "Iyul",
+      "aug": "Avg",
+      "sep": "Sen",
+      "oct": "Okt",
+      "nov": "Noy",
+      "dec": "Dek"
+    }
+  },
+  "assessment": {
+    "title": "Baholash",
+    "cognitive": "Kognitiv rivojlanish",
+    "motor": "Motor rivojlanish",
+    "speech": "Nutq rivojlanishi",
+    "behavior": "Xulq-atvor",
+    "social": "Ijtimoiy ko'nikmalar",
+    "selfCare": "O'z-o'ziga xizmat",
+    "score": "Ball",
+    "notes": "Izohlar",
+    "save": "Saqlash",
+    "saved": "Baholash saqlandi",
+    "noAssessments": "Hali baholanmagan"
+  },
+  "mealPlan": {
+    "title": "Ovqatlanish rejasi",
+    "date": "Sana",
+    "breakfast": "Nonushta",
+    "lunch": "Tushlik",
+    "snack": "Kichik ovqat",
+    "dinner": "Kechki ovqat",
+    "plannedMenu": "Rejalashtirilgan menyu",
+    "notes": "Izohlar",
+    "save": "Saqlash",
+    "saved": "Reja saqlandi",
+    "noPlans": "Bu kun uchun reja yo'q",
+    "selectChildren": "Bolalarni tanlang",
+    "selectedCount": "{{count}} ta bola tanlandi",
+    "bulkSaved": "{{count}} ta bola uchun reja saqlandi",
+    "addPlan": "Reja qo'shish",
+    "editPlan": "Rejani tahrirlash"
+  }
+}

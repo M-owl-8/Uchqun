@@ -11,7 +11,7 @@ const createAdmin = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    const email = process.env.ADMIN_EMAIL || 'admin@uchqun.com';
+    const email = process.env.ADMIN_EMAIL || 'admin@school.local';
     const password = process.env.ADMIN_PASSWORD || crypto.randomBytes(16).toString('hex');
     const firstName = 'Admin';
     const lastName = 'User';

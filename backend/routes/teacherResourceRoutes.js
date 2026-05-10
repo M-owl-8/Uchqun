@@ -3,6 +3,8 @@ import multer from 'multer';
 import path from 'path';
 import { authenticate, requireRole } from '../middleware/auth.js';
 import { getResources, createResource, deleteResource } from '../controllers/teacherResourceController.js';
+import { createResourceValidator, resourceIdValidator } from '../validators/teacherResourceValidator.js';
+import { handleValidationErrors } from '../middleware/validation.js';
 
 const router = express.Router();
 router.use(authenticate);
@@ -28,7 +30,7 @@ const resourceUpload = multer({
 });
 
 router.get('/', getResources);
-router.post('/', requireRole('teacher', 'admin'), resourceUpload.single('file'), createResource);
-router.delete('/:id', requireRole('teacher', 'admin'), deleteResource);
+router.post('/', requireRole('teacher', 'admin'), resourceUpload.single('file'), createResourceValidator, handleValidationErrors, createResource);
+router.delete('/:id', requireRole('teacher', 'admin'), resourceIdValidator, handleValidationErrors, deleteResource);
 
 export default router;

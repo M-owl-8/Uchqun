@@ -15,10 +15,10 @@ export default {
   coverageDirectory: 'coverage',
   coverageThreshold: {
     global: {
-      lines: 10,
-      statements: 10,
-      branches: 5,
-      functions: 10,
+      lines: 25,
+      statements: 25,
+      branches: 15,
+      functions: 25,
     },
   },
   setupFiles: ['./__tests__/helpers/setup.js'],

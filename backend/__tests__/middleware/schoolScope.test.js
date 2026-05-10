@@ -18,12 +18,13 @@ describe('requireSchoolScope', () => {
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('government with schoolId is scoped', () => {
+  // #03-018: government ALWAYS gets isGlobalAccess=true regardless of schoolId
+  it('government with schoolId still has global access', () => {
     const req = { user: { role: 'government', schoolId: 's1' } };
     const next = jest.fn();
     requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s1');
-    expect(req.isGlobalAccess).toBe(false);
+    expect(req.isGlobalAccess).toBe(true);
     expect(next).toHaveBeenCalled();
   });
 
@@ -36,12 +37,13 @@ describe('requireSchoolScope', () => {
     expect(next).toHaveBeenCalled();
   });
 
-  it('business with schoolId is scoped', () => {
+  // #03-018: business ALWAYS gets isGlobalAccess=true regardless of schoolId
+  it('business with schoolId still has global access', () => {
     const req = { user: { role: 'business', schoolId: 's2' } };
     const next = jest.fn();
     requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s2');
-    expect(req.isGlobalAccess).toBe(false);
+    expect(req.isGlobalAccess).toBe(true);
     expect(next).toHaveBeenCalled();
   });
 
@@ -87,16 +89,28 @@ describe('requireSchoolScope', () => {
   });
 });
 
+// #03-018: schoolWhere reads from req.user directly — no requireSchoolScope dependency
 describe('schoolWhere', () => {
-  it('empty object on global access', () => {
-    expect(schoolWhere({ isGlobalAccess: true })).toEqual({});
+  it('empty object when no req.user', () => {
+    expect(schoolWhere({})).toEqual({});
+    expect(schoolWhere({ user: null })).toEqual({});
   });
 
-  it('empty object when no schoolId', () => {
-    expect(schoolWhere({ isGlobalAccess: false, schoolId: null })).toEqual({});
+  it('empty object for government regardless of schoolId', () => {
+    expect(schoolWhere({ user: { role: 'government', schoolId: null } })).toEqual({});
+    expect(schoolWhere({ user: { role: 'government', schoolId: 's1' } })).toEqual({});
   });
 
-  it('returns schoolId filter for scoped user', () => {
-    expect(schoolWhere({ isGlobalAccess: false, schoolId: 's1' })).toEqual({ schoolId: 's1' });
+  it('empty object for business regardless of schoolId', () => {
+    expect(schoolWhere({ user: { role: 'business', schoolId: null } })).toEqual({});
+  });
+
+  it('empty object when user has no schoolId', () => {
+    expect(schoolWhere({ user: { role: 'admin', schoolId: null } })).toEqual({});
+  });
+
+  it('returns schoolId filter for scoped user without requiring middleware call', () => {
+    // key: req has no .schoolId or .isGlobalAccess — reads from req.user only
+    expect(schoolWhere({ user: { role: 'teacher', schoolId: 's1' } })).toEqual({ schoolId: 's1' });
   });
 });

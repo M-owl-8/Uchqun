@@ -11,7 +11,7 @@ const createGovernment = async () => {
     await sequelize.authenticate();
     console.log('✅ Connected to database');
 
-    const email = process.env.GOVERNMENT_EMAIL || 'government@uchqun.com';
+    const email = process.env.GOVERNMENT_EMAIL || 'government@school.local';
     const password = process.env.GOVERNMENT_PASSWORD || crypto.randomBytes(16).toString('hex');
     const firstName = 'Government';
     const lastName = 'User';
