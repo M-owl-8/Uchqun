@@ -93,8 +93,8 @@ describe('School Isolation', () => {
     });
 
     test('government user bypasses school filter', () => {
-      const reqSuperAdmin = { schoolId: null, isGlobalAccess: true };
-      const where = { role: 'parent', ...schoolWhere(reqSuperAdmin) };
+      const reqGovt = { schoolId: null, isGlobalAccess: true };
+      const where = { role: 'parent', ...schoolWhere(reqGovt) };
 
       // No schoolId in WHERE = sees all parents
       expect(where.schoolId).toBeUndefined();

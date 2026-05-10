@@ -31,7 +31,6 @@ function getRoleLabel(role) {
     parent: 'Ota-ona',
     reception: 'Qabul',
     government: 'Davlat',
-    'super-admin': 'Super Admin',
   };
   return map[role] || role;
 }
@@ -110,7 +109,7 @@ describe('getRoleLabel', () => {
   it('returns Uzbek label for known roles', () => {
     expect(getRoleLabel('teacher')).toBe("O'qituvchi");
     expect(getRoleLabel('parent')).toBe('Ota-ona');
-    expect(getRoleLabel('super-admin')).toBe('Super Admin');
+    expect(getRoleLabel('government')).toBe('Davlat');
   });
 
   it('falls back to the raw role string for unknown roles', () => {

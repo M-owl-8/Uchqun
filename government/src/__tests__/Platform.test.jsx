@@ -79,7 +79,7 @@ describe('Platform page', () => {
     });
   });
 
-  it('does NOT call any /super-admin/* or /payments endpoint', async () => {
+  it('does NOT call any legacy routes or /payments endpoint', async () => {
     render(<Platform />);
     await waitFor(() => expect(mockApi.get).toHaveBeenCalled());
     const calls = mockApi.get.mock.calls.map(c => c[0]);

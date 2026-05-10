@@ -11,7 +11,7 @@ The platform is being transferred to government ownership. As a result:
 - ✅ **Mobile app removed** — web-only going forward (Expo app + Expo push stack deleted)
 - ✅ **Payments removed** — service is state-funded, no in-platform payment processing
 - ✅ **Super-admin app removed** — features merged into the Government dashboard at `/government/platform`
-- ✅ **Role hierarchy now:** Government > Business > Admin > Reception > Teacher > Parent (Government replaces super-admin as top)
+- ✅ **Role hierarchy now:** Government > Business > Admin > Reception > Teacher > Parent (Government is the top role)
 - ⏭ **Phase 6 (Flutter)** — cancelled
 - ⏭ **Phase 7** — narrowed to web-only QA + beta
 
@@ -52,16 +52,16 @@ The platform is being transferred to government ownership. As a result:
 
 ### 2a — Critical Security Fixes
 - [x] `middleware/csrf.js` — deleted (was dead code; server used Bearer token auth, not cookie sessions)
-- [x] `routes/superAdminRoutes.js:28,65,98` — replaced `===` with SHA256+`crypto.timingSafeEqual()`
+- [x] `routes/governmentRoutes.js` — replaced `===` with SHA256+`crypto.timingSafeEqual()`
 - [x] `controllers/adminRegistrationController.js:135` — UUID-based upload filenames, strip original name
 - [x] `controllers/authController.js:68-69` — unified error message for wrong email vs wrong password
-- [x] `validators/superAdminValidator.js`, `validators/teacherValidator.js` — raised password minimum to 8+ chars with complexity
+- [x] `validators/governmentUserValidator.js`, `validators/teacherValidator.js` — raised password minimum to 8+ chars with complexity
 - [x] `utils/email.js` — replaced plaintext password with set-password link (`generateSetPasswordToken` 24h JWT)
 - [x] `config/database.js:23,50` — set `rejectUnauthorized: true` in production SSL
 
 ### 2b — Auth & Session
 - [x] JWT token blacklist/revocation on logout — RefreshToken DB table, rotate on refresh, revoke all on logout
-- [x] `middleware/auth.js` — added `isActive` check for all non-parent, non-super-admin roles
+- [x] `middleware/auth.js` — added `isActive` check for all non-parent, non-government roles
 - [x] `middleware/schoolScope.js:44-46` — enforced strict schoolId, removed null bypass for legacy users
 - [x] Account lockout — in-memory per-account after 5 failures, 15-min window (`authController.js`); comment documents Redis upgrade path for multi-instance
 
@@ -171,7 +171,7 @@ Add `paranoid: true` + `deletedAt` migration to:
 
 ### 4c — App-Specific Fixes
 
-**super-admin:**
+**government dashboard:**
 - [x] Break `SuperAdmin.jsx` (1,724 lines, 78 state vars) into 6 separate page components
 - [x] Add pagination to all admin/school/message list endpoints
 - [x] Password creation: add strength rules + confirmation field

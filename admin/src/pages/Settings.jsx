@@ -477,7 +477,7 @@ const Settings = () => {
                 <div className="p-3 bg-blue-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-blue-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{t('settings.sendToSuperAdmin', { defaultValue: 'Davlatga xabar' })}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">{t('settings.sendToGovernment', { defaultValue: 'Davlatga xabar' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}

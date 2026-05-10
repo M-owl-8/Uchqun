@@ -620,7 +620,7 @@ export const getSchoolRatings = async (req, res) => {
 };
 
 /**
- * Get all schools with average ratings (Super Admin view)
+ * Get all schools with average ratings (Government view)
  * GET /api/government/schools
  */
 export const getAllSchools = async (req, res) => {

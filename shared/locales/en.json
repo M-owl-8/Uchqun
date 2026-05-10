@@ -9,8 +9,8 @@
     "admins": "Admins",
     "logout": "Logout"
   },
-  "superAdmin": {
-    "title": "Super Admin",
+  "government": {
+    "title": "Government",
     "createAdmin": "Create Admin",
     "editAdmin": "Edit Admin",
     "existingAdmins": "Existing admins",

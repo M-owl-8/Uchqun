@@ -1,6 +1,6 @@
 import { body } from 'express-validator';
 
-// Shared validator for message-to-government/super-admin routes used by
+// Shared validator for message-to-government routes used by
 // parent, teacher, admin, and reception role routes.
 export const messageToGovValidator = [
   body('subject')
