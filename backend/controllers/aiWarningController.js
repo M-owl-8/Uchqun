@@ -3,6 +3,7 @@ import SchoolRating from '../models/SchoolRating.js';
 import School from '../models/School.js';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
+import Notification from '../models/Notification.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 
@@ -333,7 +334,20 @@ async function sendWarningNotifications(warning, specificUserIds = null) {
       }
     }
 
-    logger.info('Warning recipients resolved', {
+    if (targetUsers.length > 0) {
+      await Notification.bulkCreate(
+        targetUsers.map((user) => ({
+          userId: user.id,
+          type: 'general',
+          title: `AI Warning: ${warning.severity || 'info'}`,
+          message: warning.message || 'A new AI warning has been issued.',
+          relatedId: warning.id,
+        })),
+        { validate: true, ignoreDuplicates: false }
+      );
+    }
+
+    logger.info('Warning notifications sent', {
       warningId: warning.id,
       usersNotified: targetUsers.length,
     });

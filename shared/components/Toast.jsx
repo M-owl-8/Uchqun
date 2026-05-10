@@ -28,17 +28,21 @@ const Toast = ({ id, message, type, duration = 5000 }) => {
 
   return (
     <div
+      role="alert"
+      aria-live={type === 'error' ? 'assertive' : 'polite'}
+      aria-atomic="true"
       className={`${bgColor} text-white px-6 py-4 rounded-lg shadow-lg mb-4 flex items-center justify-between min-w-[300px] max-w-md animate-slide-in`}
     >
       <div className="flex items-center">
-        <span className="text-xl mr-3">{icons}</span>
+        <span className="text-xl mr-3" aria-hidden="true">{icons}</span>
         <p className="font-medium">{message}</p>
       </div>
       <button
         onClick={() => removeToast(id)}
         className="ml-4 text-white hover:text-gray-200"
+        aria-label="Dismiss notification"
       >
-        ✕
+        <span aria-hidden="true">✕</span>
       </button>
     </div>
   );
@@ -48,7 +52,7 @@ export const ToastContainer = () => {
   const { toasts } = useToast();
 
   return (
-    <div className="fixed top-4 right-4 z-50 flex flex-col items-end">
+    <div className="fixed top-4 right-4 z-50 flex flex-col items-end" aria-label="Notifications">
       {toasts.map((toast) => (
         <Toast key={toast.id} {...toast} />
       ))}

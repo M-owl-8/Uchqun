@@ -7,6 +7,9 @@ export const getAIAdvice = async (req, res) => {
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return res.status(400).json({ error: 'Message is required' });
     }
+    if (message.length > 2000) {
+      return res.status(400).json({ error: 'Message too long. Maximum 2000 characters.' });
+    }
 
     const requestedLang = (req.body?.lang || '').toLowerCase();
     const acceptLanguage = req.headers['accept-language'] || '';

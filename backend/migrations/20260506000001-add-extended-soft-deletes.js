@@ -7,7 +7,6 @@ const tables = [
   'activities',
   'meals',
   'media',
-  'payments',
   'therapies',
   'therapy_usages',
   'service_plans',

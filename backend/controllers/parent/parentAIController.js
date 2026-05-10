@@ -8,6 +8,9 @@ export const getAIAdvice = async (req, res) => {
     if (!message || typeof message !== 'string' || message.trim().length === 0) {
       return res.status(400).json({ error: 'Message is required' });
     }
+    if (message.length > 2000) {
+      return res.status(400).json({ error: 'Message too long. Maximum 2000 characters.' });
+    }
 
     // Get parent's children info for context
     const children = await Child.findAll({
