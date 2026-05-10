@@ -142,7 +142,7 @@ export async function sendAdminApprovalTelegram(username, email, password, first
 
 Salom ${firstName}!
 
-Sizning admin ro'yxatdan o'tish so'rovingiz super-admin tomonidan tasdiqlandi.
+Sizning admin ro'yxatdan o'tish so'rovingiz tasdiqlandi.
 
 <b>Login Ma'lumotlari:</b>
 📧 Email: <code>${email}</code>
@@ -210,7 +210,7 @@ Uchqun Jamoasi`;
       success: false,
       message: 'Telegram xabar yuborilmadi. Foydalanuvchi botni start qilgan bo\'lishi yoki TELEGRAM_CHANNEL_ID sozlanishi kerak.',
       username,
-      credentials: { email, password }, // Return credentials so super-admin can see them
+      credentials: { email, password }, // Return credentials for manual delivery
     };
   } catch (error) {
     logger.error('Failed to send Telegram approval message', {

@@ -91,7 +91,7 @@ Quyidagi havola orqali parolingizni o'rnating (24 soat davomida amal qiladi):
 
 ${setPasswordUrl}
 
-Havola muddati o'tib ketsa, super-admin bilan bog'laning.
+Havola muddati o'tib ketsa, administrator bilan bog'laning.
 
 Hurmat bilan,
 Uchqun Jamoasi
