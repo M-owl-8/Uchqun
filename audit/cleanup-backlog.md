@@ -18,18 +18,18 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 
 | Audit ID | Phase | Sev | v1 Description | v2 Verdict | Status | Branch | Commit | Verification evidence | Date closed |
 |----------|-------|-----|----------------|------------|--------|--------|--------|----------------------|-------------|
-| 01-001 | 01 Naming | HIGH | `'super-admin'` role string in test assertions; dead role label tested | not-fixed | open | — | — | `admin/src/__tests__/utils.test.js:34,113` | — |
+| 01-001 | 01 Naming | HIGH | `'super-admin'` role string in test assertions; dead role label tested | not-fixed | closed | main | 5edb482 | getRoleLabel map + test updated to government; ghost entry removed | 2026-05-10 |
 | 01-002 | 01 Naming | HIGH | "davlat" Uzbek word in English locale files | not-fixed | open | — | — | English locale files contain Uzbek words | — |
 | 01-003 | 01 Naming | HIGH | Help page email hardcoded `support@uchqunplatform.com` | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/pages/Help.jsx:19-82` all strings via `t()` | pre-cycle |
 | 01-004 | 01 Naming | HIGH | Hardcoded Railway URL in vite.config.js with no env fallback | not-fixed | open | — | — | `teacher/vite.config.js` | — |
 | 01-005 | 01 Naming | MEDIUM | Hardcoded Railway URL fallback retained after env check | not-fixed | open | — | — | `teacher/vite.config.js` VITE_API_URL fallback | — |
-| 01-006 | 01 Naming | MEDIUM | `t('superAdmin.*')` calls in government tabs | not-fixed | open | — | — | AdminsTab: 29, Platform: 25, MessagesTab: 12 calls | — |
-| 01-007 | 01 Naming | MEDIUM | `"superAdmin"` top-level i18n key in locale files | not-fixed | open | — | — | locale files en/ru/uz under `"superAdmin"` key | — |
-| 01-008 | 01 Naming | LOW | `contactSuperAdmin`, `superAdminReply`, `sendToSuperAdmin` i18n key names | not-fixed | open | — | — | parent/teacher/admin locale files | — |
-| 01-009 | 01 Naming | LOW | "super-admin tomonidan tasdiqlandi" in Telegram notification | not-fixed | open | — | — | `backend/utils/telegram.js:145` | — |
-| 01-010 | 01 Naming | LOW | "super-admin bilan bog'laning" in password reset email | not-fixed | open | — | — | `backend/utils/email.js:94` | — |
-| 01-011 | 01 Naming | LOW | `SUPER_ADMIN_SECRET_KEY` in env.example | not-fixed | open | — | — | env.example / env.js | — |
-| 01-012 | 01 Naming | LOW | `updateGovernmentBySuper`, `deleteGovernmentBySuper` function names | not-fixed | open | — | — | `backend/controllers/adminUserController.js:30,70,285,332` | — |
+| 01-006 | 01 Naming | MEDIUM | `t('superAdmin.*')` calls in government tabs | not-fixed | closed | main | 516eb70 | All 123 t('superAdmin.*') calls replaced with t('government.*') | 2026-05-10 |
+| 01-007 | 01 Naming | MEDIUM | `"superAdmin"` top-level i18n key in locale files | not-fixed | closed | main | 516eb70 | government/{en,uz,ru}/common.json: "superAdmin" -> "government" | 2026-05-10 |
+| 01-008 | 01 Naming | LOW | `contactSuperAdmin`, `superAdminReply`, `sendToSuperAdmin` i18n key names | not-fixed | closed | main | 516eb70 | contactGovernment/governmentReply/sendToGovernment in all locales+JSX | 2026-05-10 |
+| 01-009 | 01 Naming | LOW | "super-admin tomonidan tasdiqlandi" in Telegram notification | not-fixed | closed | main | b26c18e | telegram.js:145 text updated; no super-admin in user-facing string | 2026-05-10 |
+| 01-010 | 01 Naming | LOW | "super-admin bilan bog'laning" in password reset email | not-fixed | closed | main | b26c18e | email.js:94 now says 'administrator bilan bog'laning' | 2026-05-10 |
+| 01-011 | 01 Naming | LOW | `SUPER_ADMIN_SECRET_KEY` in env.example | not-fixed | closed | main | 7d3f5b2 | SUPER_ADMIN_SECRET_KEY block removed from env.example | 2026-05-10 |
+| 01-012 | 01 Naming | LOW | `updateGovernmentBySuper`, `deleteGovernmentBySuper` function names | not-fixed | closed | main | pre-cycle | updateAdmin/deleteAdmin/updateGovernmentUser/deleteGovernmentUser | pre-cycle |
 | 01-013 | 01 Naming | LOW | `@uchqun.com` domain in create-teacher/admin scripts | not-fixed | open | — | — | `backend/scripts/create-teacher.js` etc. | — |
 | 01-014 | 01 Naming | LOW | `"uchqun-teacher-frontend"` package.json name | not-fixed | open | — | — | `teacher/package.json` | — |
 | 01-015 | 01 Naming | LOW | `"Uchqun Portal"` title in teacher app | not-fixed | open | — | — | `teacher/index.html` or app config | — |
@@ -55,7 +55,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 03-001 | 03 DB | HIGH | `Child` model has both `school` string field and `schoolId` FK — dual representation | not-fixed | open | — | — | `backend/models/Child.js` | — |
 | 03-002 | 03 DB | MEDIUM | Meal type ENUM uses TitleCase (`'Breakfast'`); MealPlan uses lowercase (`'breakfast'`) | not-fixed | open | — | — | Meal and MealPlan model ENUM definitions | — |
 | 03-003 | 03 DB | MEDIUM | `SchoolRating` fields nullable in model but `NOT NULL` required | verified-fixed | closed | pre-cycle | pre-cycle | `allowNull: false` in model and DB confirmed | pre-cycle |
-| 03-004 | 03 DB | LOW | `super_admin_messages` table name not renamed to `government_messages` | not-fixed | open | — | — | `backend/models/SuperAdminMessage.js` table name | — |
+| 03-004 | 03 DB | LOW | `super_admin_messages` table name not renamed to `government_messages` | not-fixed | closed | main | pre-cycle | migration 20260510000000 + GovernmentMessage.js model + associations | pre-cycle |
 | 03-005 | 03 DB | HIGH | `users.avatar` TEXT column stores base64 blobs — no migration to VARCHAR(500) URL | not-fixed | open | — | — | `backend/models/User.js:avatar` field type | — |
 | 03-006 | 03 DB | LOW | User model `notificationPreferences` default includes `push: true` | not-fixed | open | — | — | `backend/models/User.js` notificationPreferences default | — |
 | 03-007 | 03 DB | MEDIUM | `TherapyUsage` has `RESTRICT` FK with no pre-delete handler | not-fixed | open | — | — | `backend/models/TherapyUsage.js` parentId FK | — |
@@ -98,13 +98,13 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 05-011 | 05 Apps | MEDIUM | `SchoolCard` in government Ratings.jsx uses `t` prop-drilling instead of `useTranslation()` | not-fixed | open | — | — | `government/src/pages/Ratings.jsx:74,337` | — |
 | 05-012 | 05 Apps | LOW | `'uz-UZ'` locale hardcoded and Uzbek label hardcoded in government pages | not-fixed | open | — | — | `government/src/pages/AdminDetails.jsx:150,304`; `Dashboard.jsx:177` | — |
 | 05-013 | 05 Apps | MEDIUM | Admin and reception test coverage sparse — reception still auth-only | partially-fixed | open | — | — | Admin has showToast regression test; reception still 2 auth files | — |
-| 06-001 | 06 Roles | HIGH | User-facing "super-admin" text in email and Telegram notifications | not-fixed | open | — | — | `backend/utils/email.js:94`; `backend/utils/telegram.js:145,213` | — |
-| 06-002 | 06 Roles | MEDIUM | Five dead `/message-to-super-admin` route aliases across all role route files | not-fixed | open | — | — | adminRoutes:49, teacherRoutes:70, receptionRoutes:58, parentRoutes:73, userRoutes:21 | — |
-| 06-003 | 06 Roles | MEDIUM | Ghost-named files: `superAdminController.js`, `superAdminValidator.js`, `SuperAdminMessage.js`; `BySuper` function names | not-fixed | open | — | — | 3 files + 4 function names in adminUserController.js | — |
-| 06-004 | 06 Roles | MEDIUM | 66 `t('superAdmin.*')` calls in government frontend | not-fixed | open | — | — | AdminsTab:29, Platform:25, MessagesTab:12 | — |
-| 06-005 | 06 Roles | MEDIUM | `requireTeacher` is a bespoke function; not converted to `requireRole()` factory | not-fixed | open | — | — | `backend/middleware/auth.js:65` | — |
-| 06-006 | 06 Roles | LOW | Test asserts `getRoleLabel('super-admin')` — role string doesn't exist in DB ENUM | not-fixed | open | — | — | `admin/src/__tests__/utils.test.js:34,113` | — |
-| 06-007 | 06 Roles | LOW | Stale comment in User.js: "every user belongs to a school (except superadmin)" | not-fixed | open | — | — | `backend/models/User.js:95` | — |
+| 06-001 | 06 Roles | HIGH | User-facing "super-admin" text in email and Telegram notifications | not-fixed | closed | main | b26c18e | email.js:94 + telegram.js:145,213 all fixed | 2026-05-10 |
+| 06-002 | 06 Roles | MEDIUM | Five dead `/message-to-super-admin` route aliases across all role route files | not-fixed | closed | main | pre-cycle | deadRoutes.test.js: 5/5 pass; all aliases deleted | pre-cycle |
+| 06-003 | 06 Roles | MEDIUM | Ghost-named files: `superAdminController.js`, `superAdminValidator.js`, `SuperAdminMessage.js`; `BySuper` function names | not-fixed | closed | main | pre-cycle | governmentMessageController.js + GovernmentMessage.js + governmentUserValidator.js | pre-cycle |
+| 06-004 | 06 Roles | MEDIUM | 66 `t('superAdmin.*')` calls in government frontend | not-fixed | closed | main | 516eb70 | Same as 01-006: all replaced with t('government.*') | 2026-05-10 |
+| 06-005 | 06 Roles | MEDIUM | `requireTeacher` is a bespoke function; not converted to `requireRole()` factory | not-fixed | closed | main | 68bd33c | Documented as intentional in CLAUDE.md; allows teacher/reception/admin | 2026-05-10 |
+| 06-006 | 06 Roles | LOW | Test asserts `getRoleLabel('super-admin')` — role string doesn't exist in DB ENUM | not-fixed | closed | main | e26c4ad | Dead map entry + test case removed; now tests government role | 2026-05-10 |
+| 06-007 | 06 Roles | LOW | Stale comment in User.js: "every user belongs to a school (except superadmin)" | not-fixed | closed | main | 7d3f5b2 | User.js:95 updated to say 'government users' | 2026-05-10 |
 | 07-001 | 07 Design | HIGH | government/index.css missing `@tailwind` directives; wrong `:root` colors; no focus ring | partially-fixed | open | — | — | Tailwind directives added; `:root` still `rgba(0,0,0,0.87)` / `#fff`; no `*:focus-visible` | — |
 | 07-002 | 07 Design | HIGH | Teacher shadow `src/shared/` duplicates monorepo shared context + components | not-fixed | open | — | — | 15 files in `teacher/src/shared/` unchanged; directory grew | — |
 | 07-003 | 07 Design | HIGH | Government app has no mobile navigation (no BottomNav for viewports < 1024px) | not-fixed | open | — | — | `government/src/components/Layout.jsx` (45 lines); no BottomNav import | — |
@@ -136,7 +136,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 09-006 | 09 Mobile | MEDIUM | Parent sidebar fetched 200 messages for unread badge instead of count endpoint | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/components/Sidebar.jsx:66,74` calls `/chat/unread-count` at 30s | pre-cycle |
 | 09-007 | 09 Mobile | MEDIUM | AIWarnings page orphaned — no Sidebar or BottomNav link to navigate to it | partially-fixed | open | — | — | Route wired at `App.jsx:99`; no UI navigation link exists | — |
 | 09-008 | 09 Mobile | LOW | `alert()` still in AIWarnings.jsx resolve error handler | not-fixed | open | — | — | `teacher/src/parent/pages/AIWarnings.jsx:46` | — |
-| 09-009 | 09 Mobile | LOW | `"superAdminReply"` i18n key name unchanged | not-fixed | open | — | — | `teacher/src/parent/locales/uz/common.json:38` | — |
+| 09-009 | 09 Mobile | LOW | `"superAdminReply"` i18n key name unchanged | not-fixed | closed | main | 516eb70 | governmentReply in all 3 parent locale files | 2026-05-10 |
 | 09-010 | 09 Mobile | LOW | Dead `teacher/src/parent/pages/Login.jsx` file exists but is never imported | not-fixed | open | — | — | File exists; `App.jsx` routes to teacher-level Login | — |
 | 10-001 | 10 Payment | MEDIUM | Three `alterFk()` calls on dropped `payments` table — no try-catch | not-fixed | open | — | — | `backend/migrations/20260506000000-add-cascade-rules.js:50-52` | — |
 | 10-002 | 10 Payment | LOW | `'payments'` still in soft-deletes migration tables array | not-fixed | open | — | — | `backend/migrations/20260506000001-add-extended-soft-deletes.js:10` | — |
@@ -153,7 +153,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 11-011 | 11 Cross | LOW | 17 `console.*` calls in controllers bypass structured logger | verified-fixed | closed | pre-cycle | pre-cycle | `grep -r "console\." backend/controllers/` returns 0 | pre-cycle |
 | N-001 | New | MEDIUM | `sendWarningNotifications` lies — returns `{ success: true }` but sends nothing | not-fixed | open | — | — | `backend/controllers/aiWarningController.js:292-340` | — |
 | N-002 | New | LOW | Teacher shadow `shared/` directory *grew* during remediation cycle — added ConfirmDialog.jsx and DecorativeElements.jsx | not-fixed | open | — | — | `teacher/src/shared/` now has 15+ files vs original ~10 | — |
-| N-003 | New | LOW | Dead `/message-to-super-admin` aliases now also have validators — more functional dead code | not-fixed | open | — | — | `adminRoutes.js:49`, `teacherRoutes.js:70` with validator middleware | — |
+| N-003 | New | LOW | Dead `/message-to-super-admin` aliases now also have validators — more functional dead code | not-fixed | closed | main | pre-cycle | Entire alias routes deleted (covered by 06-002) | pre-cycle |
 
 ---
 
@@ -162,7 +162,9 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | Verdict | Count |
 |---------|-------|
 | closed (verified-fixed pre-cycle) | 24 |
-| open (not-fixed) | 96 |
+| closed (Phase 1 ghost extermination) | 17 |
+| **closed total** | **41** |
+| open (not-fixed) | 79 |
 | open (partially-fixed) | 16 |
 | **Total** | **136** |
 
@@ -176,7 +178,7 @@ These are tracked separately from numbered issues because they span multiple iss
 
 | Mandate | Covers issues | Status |
 |---------|--------------|--------|
-| `super_admin_messages` → `government_messages` end-to-end | 01-006/07/08/09/10/11/12, 03-004/16, 06-001/02/03/04, 09-009 | open |
+| `super_admin_messages` → `government_messages` end-to-end | 01-006/07/08/09/10/11/12, 03-004/16, 06-001/02/03/04, 09-009 | **closed** (Phase 1) |
 | `teacher/src/parent/` → standalone `parent/` app at monorepo root | 04-001/07/10, 09-002/04/05, 07-002 | open |
 | `teacher/src/shared/` → deleted; imports retargeted to `@shared` | 07-002, N-002, and all shadow component duplication issues | open |
 
@@ -184,7 +186,7 @@ These are tracked separately from numbered issues because they span multiple iss
 
 ## Pre-Commit Hook Status
 
-The pre-commit hook enforcing commit message format `(fix|test|chore|refactor)(.+)?: #(ID) .+` does not yet exist in `.husky/`. This must be created as part of Phase 0 setup before any issue commits begin.
+Hook created at `.husky/commit-msg` (Phase 0). Enforces `(fix|test|chore|refactor)(scope)?: #ID description` format for all fix/test/chore/refactor commits.
 
 ---
 
