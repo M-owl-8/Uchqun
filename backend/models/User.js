@@ -63,7 +63,7 @@ const User = sequelize.define('User', {
     type: DataTypes.JSONB,
     defaultValue: {
       email: true,
-      push: true,
+      push: false,
     },
   },
   // For Parents: assigned teacher and group

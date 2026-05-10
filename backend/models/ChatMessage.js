@@ -25,6 +25,7 @@ const ChatMessage = sequelize.define('ChatMessage', {
 }, {
   tableName: 'chat_messages',
   timestamps: true,
+  paranoid: true,
   indexes: [
     { fields: ['conversationId'] },
     { fields: ['senderId'] },

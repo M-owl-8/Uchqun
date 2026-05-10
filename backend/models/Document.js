@@ -69,6 +69,7 @@ const Document = sequelize.define('Document', {
 }, {
   tableName: 'documents',
   timestamps: true,
+  paranoid: true,
 });
 
 export default Document;
