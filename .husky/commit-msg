@@ -1,0 +1,42 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Enforce issue-ID commit message format for fix/test/refactor/chore commits.
+# Pattern: (fix|test|chore|refactor)(scope)?: #ID description
+# IDs: 01-001 through 11-011, N-001..N-003, R-001..R-999
+
+MSG=$(cat "$1")
+TYPE=$(echo "$MSG" | grep -oP '^(fix|test|chore|refactor)')
+
+if [ -z "$TYPE" ]; then
+  exit 0  # build:, ci:, docs:, style:, perf: are free-form
+fi
+
+# Check for the #ID pattern
+if ! echo "$MSG" | grep -qP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})'; then
+  echo ""
+  echo "❌  Commit blocked: $TYPE commits require a backlog issue ID."
+  echo "    Expected format: $TYPE(scope): #01-001 description"
+  echo "    ID must be from audit/cleanup-backlog.md"
+  echo ""
+  exit 1
+fi
+
+# Extract the ID and verify it exists in the backlog
+ID=$(echo "$MSG" | grep -oP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})' | head -1 | tr -d '#')
+BACKLOG="$(git rev-parse --show-toplevel)/audit/cleanup-backlog.md"
+
+if [ ! -f "$BACKLOG" ]; then
+  echo "⚠️   cleanup-backlog.md not found — skipping ID verification"
+  exit 0
+fi
+
+if ! grep -q "| $ID |" "$BACKLOG"; then
+  echo ""
+  echo "❌  Commit blocked: issue ID #$ID not found in audit/cleanup-backlog.md"
+  echo "    Check the ID and re-commit."
+  echo ""
+  exit 1
+fi
+
+exit 0
