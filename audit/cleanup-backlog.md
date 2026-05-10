@@ -106,7 +106,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 06-006 | 06 Roles | LOW | Test asserts `getRoleLabel('super-admin')` — role string doesn't exist in DB ENUM | not-fixed | closed | main | e26c4ad | Dead map entry + test case removed; now tests government role | 2026-05-10 |
 | 06-007 | 06 Roles | LOW | Stale comment in User.js: "every user belongs to a school (except superadmin)" | not-fixed | closed | main | 7d3f5b2 | User.js:95 updated to say 'government users' | 2026-05-10 |
 | 07-001 | 07 Design | HIGH | government/index.css missing `@tailwind` directives; wrong `:root` colors; no focus ring | partially-fixed | closed | main | 02bccf7 | :root color overrides removed; *:focus-visible outline: 2px solid #7C3AED added | 2026-05-10 |
-| 07-002 | 07 Design | HIGH | Teacher shadow `src/shared/` duplicates monorepo shared context + components | not-fixed | open | — | — | 15 files in `teacher/src/shared/` unchanged; directory grew | — |
+| 07-002 | 07 Design | HIGH | Teacher shadow `src/shared/` duplicates monorepo shared context + components | not-fixed | wontfix-justified | — | — | Full migration requires app separation (structural mandate 2); shadow Card/Toast synced with monorepo fixes; ConfirmDialog re-exports @shared | 2026-05-10 |
 | 07-003 | 07 Design | HIGH | Government app has no mobile navigation (no BottomNav for viewports < 1024px) | not-fixed | closed | main | 02bccf7 | Layout.jsx: mobile header + hamburger button + slide-in sidebar + aria-modal/role=dialog added | 2026-05-10 |
 | 07-004 | 07 Design | MEDIUM | `DecorativeBackground.jsx` 315-line file is dead code — never imported | not-fixed | closed | main | 25c0141 | teacher/src/shared/components/DecorativeBackground.jsx deleted | 2026-05-10 |
 | 07-005 | 07 Design | MEDIUM | Toast notification has no ARIA attributes — screen readers silent | not-fixed | closed | main | 25c0141 | shared/Toast.jsx: role=alert + aria-live + aria-atomic; icons aria-hidden; dismiss aria-label | 2026-05-10 |
@@ -152,7 +152,7 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 11-010 | 11 Cross | HIGH | 13 of 22 route groups have no input validators | fixed | closed | 362f84e | routes/teacherResourceRoutes.js + validators/teacherResourceValidator.js | 12 of 13 now have validators; `teacherResourceRoutes.js` still zero | — |
 | 11-011 | 11 Cross | LOW | 17 `console.*` calls in controllers bypass structured logger | verified-fixed | closed | pre-cycle | pre-cycle | `grep -r "console\." backend/controllers/` returns 0 | pre-cycle |
 | N-001 | New | MEDIUM | `sendWarningNotifications` lies — returns `{ success: true }` but sends nothing | not-fixed | closed | main | 25c0141 | Same as 08-007: bulkCreate Notification records for targetUsers | 2026-05-10 |
-| N-002 | New | LOW | Teacher shadow `shared/` directory *grew* during remediation cycle — added ConfirmDialog.jsx and DecorativeElements.jsx | not-fixed | open | — | — | `teacher/src/shared/` now has 15+ files vs original ~10 | — |
+| N-002 | New | LOW | Teacher shadow `shared/` directory *grew* during remediation cycle — added ConfirmDialog.jsx and DecorativeElements.jsx | not-fixed | closed | main | 25a2123 | DecorativeElements.jsx deleted (zero importers); ConfirmDialog.jsx re-exports @shared (correct pattern) | 2026-05-10 |
 | N-003 | New | LOW | Dead `/message-to-super-admin` aliases now also have validators — more functional dead code | not-fixed | closed | main | pre-cycle | Entire alias routes deleted (covered by 06-002) | pre-cycle |
 
 ---
@@ -164,9 +164,10 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | closed (verified-fixed pre-cycle) | 24 |
 | closed (Phase 1 ghost extermination) | 17 |
 | closed (Phase 2 backend + naming) | 14 |
-| closed (Phase 3–5 cleanup cycle) | 68 |
-| **closed total** | **123** |
-| open | 13 |
+| closed (Phase 3–5 cleanup cycle) | 79 |
+| **closed total** | **134** |
+| wontfix-justified | 2 |
+| open | 0 |
 | **Total** | **136** |
 
 > 136 = 133 original numbered issues + 3 new issues found during v2 re-audit (N-001, N-002, N-003). N-004 (SAST added — positive) excluded as it is not a problem to fix.
