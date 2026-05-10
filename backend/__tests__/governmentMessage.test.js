@@ -4,7 +4,7 @@ const mockCreate = jest.fn();
 const mockFindAndCountAll = jest.fn();
 const mockFindByPk = jest.fn();
 
-// #03-004 #06-003 — model must now be GovernmentMessage, not SuperAdminMessage
+// #03-004 #06-003 — GovernmentMessage model (renamed from legacy messages model)
 jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { create: mockCreate, findAndCountAll: mockFindAndCountAll, findByPk: mockFindByPk },
 }));
@@ -16,7 +16,7 @@ jest.unstable_mockModule('../utils/pagination.js', () => ({
   parsePagination: () => ({ limit: 50, offset: 0 }),
 }));
 
-// #06-003 — controller must now be governmentMessageController, not superAdminController
+// #06-003 — governmentMessageController
 const {
   sendMessage, getMessages, getMessageById, replyToMessage, markMessageRead, deleteMessage,
 } = await import('../controllers/governmentMessageController.js');

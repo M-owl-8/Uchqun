@@ -10,7 +10,7 @@ The platform is being transferred to government ownership. As a result:
 
 - ✅ **Mobile app removed** — web-only going forward (Expo app + Expo push stack deleted)
 - ✅ **Payments removed** — service is state-funded, no in-platform payment processing
-- ✅ **Super-admin app removed** — features merged into the Government dashboard at `/government/platform`
+- ✅ **Government dashboard** — features merged from the legacy app at `/government/platform`
 - ✅ **Role hierarchy now:** Government > Business > Admin > Reception > Teacher > Parent (Government is the top role)
 - ⏭ **Phase 6 (Flutter)** — cancelled
 - ⏭ **Phase 7** — narrowed to web-only QA + beta
@@ -120,7 +120,7 @@ Add proper `onDelete`/`onUpdate` to every FK missing them:
 - [x] `Media.childId` → `CASCADE`, `Media.activityId` → `SET NULL` + `paranoid: true`; added missing `activityId` index
 - [x] `Progress.childId` → `CASCADE`
 - [x] `SchoolRating.schoolId` → `CASCADE`, `SchoolRating.parentId` → `CASCADE` + `paranoid: true`
-- [x] `SuperAdminMessage.senderId` → `SET NULL`; `allowNull` changed to `true` (migration alters column + FK)
+- [x] `GovernmentMessage.senderId` → `SET NULL`; `allowNull` changed to `true` (migration alters column + FK)
 - [x] `RefreshToken.userId` → `CASCADE`; replaced `console.error` with `logger.error`
 - [x] `Therapy.createdBy` → `SET NULL` + `paranoid: true`
 - [x] `TherapyUsage.therapyId` → `CASCADE`, `TherapyUsage.childId` → `CASCADE`, `TherapyUsage.parentId` → `RESTRICT`, `TherapyUsage.teacherId` → `SET NULL` + `paranoid: true`
@@ -172,7 +172,7 @@ Add `paranoid: true` + `deletedAt` migration to:
 ### 4c — App-Specific Fixes
 
 **government dashboard:**
-- [x] Break `SuperAdmin.jsx` (1,724 lines, 78 state vars) into 6 separate page components
+- [x] Break the monolithic government dashboard (1,724 lines, 78 state vars) into 6 separate page components
 - [x] Add pagination to all admin/school/message list endpoints
 - [x] Password creation: add strength rules + confirmation field
 - [x] Remove plaintext generated password from UI — email only
