@@ -19,10 +19,10 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | Audit ID | Phase | Sev | v1 Description | v2 Verdict | Status | Branch | Commit | Verification evidence | Date closed |
 |----------|-------|-----|----------------|------------|--------|--------|--------|----------------------|-------------|
 | 01-001 | 01 Naming | HIGH | `'super-admin'` role string in test assertions; dead role label tested | not-fixed | closed | main | 5edb482 | getRoleLabel map + test updated to government; ghost entry removed | 2026-05-10 |
-| 01-002 | 01 Naming | HIGH | "davlat" Uzbek word in English locale files | not-fixed | open | — | — | English locale files contain Uzbek words | — |
+| 01-002 | 01 Naming | HIGH | "davlat" Uzbek word in English locale files | not-fixed | closed | main | cf9171c | 4 en/common.json: "to davlat" -> "to the Government" | 2026-05-10 |
 | 01-003 | 01 Naming | HIGH | Help page email hardcoded `support@uchqunplatform.com` | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/parent/pages/Help.jsx:19-82` all strings via `t()` | pre-cycle |
-| 01-004 | 01 Naming | HIGH | Hardcoded Railway URL in vite.config.js with no env fallback | not-fixed | open | — | — | `teacher/vite.config.js` | — |
-| 01-005 | 01 Naming | MEDIUM | Hardcoded Railway URL fallback retained after env check | not-fixed | open | — | — | `teacher/vite.config.js` VITE_API_URL fallback | — |
+| 01-004 | 01 Naming | HIGH | Hardcoded Railway URL in vite.config.js with no env fallback | not-fixed | closed | main | cf9171c | teacher/vite.config.js fallback changed to http://localhost:5000 | 2026-05-10 |
+| 01-005 | 01 Naming | MEDIUM | Hardcoded Railway URL fallback retained after env check | not-fixed | closed | main | cf9171c | Same as 01-004; fallback now localhost | 2026-05-10 |
 | 01-006 | 01 Naming | MEDIUM | `t('superAdmin.*')` calls in government tabs | not-fixed | closed | main | 516eb70 | All 123 t('superAdmin.*') calls replaced with t('government.*') | 2026-05-10 |
 | 01-007 | 01 Naming | MEDIUM | `"superAdmin"` top-level i18n key in locale files | not-fixed | closed | main | 516eb70 | government/{en,uz,ru}/common.json: "superAdmin" -> "government" | 2026-05-10 |
 | 01-008 | 01 Naming | LOW | `contactSuperAdmin`, `superAdminReply`, `sendToSuperAdmin` i18n key names | not-fixed | closed | main | 516eb70 | contactGovernment/governmentReply/sendToGovernment in all locales+JSX | 2026-05-10 |
@@ -34,24 +34,24 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 01-014 | 01 Naming | LOW | `"uchqun-teacher-frontend"` package.json name | not-fixed | open | — | — | `teacher/package.json` | — |
 | 01-015 | 01 Naming | LOW | `"Uchqun Portal"` title in teacher app | not-fixed | open | — | — | `teacher/index.html` or app config | — |
 | 01-016 | 01 Naming | LOW | `'Uchqun Parent Portal'` hardcoded header in parent app | not-fixed | open | — | — | parent Sidebar title via `parentT()` | — |
-| 01-017 | 01 Naming | MEDIUM | `'Uchqun School'` hardcoded fallback in receptionParentController | not-fixed | open | — | — | `backend/controllers/receptionParentController.js:35` | — |
+| 01-017 | 01 Naming | MEDIUM | `'Uchqun School'` hardcoded fallback in receptionParentController | not-fixed | closed | main | cf9171c | receptionParentController.js:35,263 default changed to empty string | 2026-05-10 |
 | 01-018 | 01 Naming | MEDIUM | `isTeacher` incorrectly included admin role | verified-fixed | closed | pre-cycle | pre-cycle | `shared/context/AuthContext.jsx` now `role === 'teacher'` only | pre-cycle |
-| 01-019 | 01 Naming | MEDIUM | `uchqun-production.up.railway.app` URL in PROJECT_GUIDE.md | not-fixed | open | — | — | `docs/internal/PROJECT_GUIDE.md` | — |
-| 01-020 | 01 Naming | HIGH | AUDIT_REPORT.md stale file at repo root | not-fixed | open | — | — | `AUDIT_REPORT.md` at repo root | — |
-| 02-001 | 02 Backend | HIGH | `User.findByPk()` called on every authenticated request — N+1 DB | not-fixed | open | — | — | `backend/middleware/auth.js:18` | — |
-| 02-002 | 02 Backend | MEDIUM | Tokens returned in JSON response body in addition to HTTP-only cookies | not-fixed | open | — | — | `backend/controllers/authController.js` login response | — |
+| 01-019 | 01 Naming | MEDIUM | `uchqun-production.up.railway.app` URL in PROJECT_GUIDE.md | not-fixed | closed | main | cf9171c | PROJECT_GUIDE.md:284 updated to env var reference | 2026-05-10 |
+| 01-020 | 01 Naming | HIGH | AUDIT_REPORT.md stale file at repo root | not-fixed | closed | main | cf9171c | Moved to audit/AUDIT_REPORT.md; /AUDIT_REPORT.md added to .gitignore | 2026-05-10 |
+| 02-001 | 02 Backend | HIGH | `User.findByPk()` called on every authenticated request — N+1 DB | not-fixed | closed | main | cf9171c | auth.js: 30s in-process cache via getCachedUser() | 2026-05-10 |
+| 02-002 | 02 Backend | MEDIUM | Tokens returned in JSON response body in addition to HTTP-only cookies | not-fixed | closed | main | cf9171c | accessToken/refreshToken removed from login+refresh JSON responses | 2026-05-10 |
 | 02-003 | 02 Backend | LOW | JWT `jti` claim included but no revocation store (Redis or DB table) | not-fixed | open | — | — | auth middleware jti handling | — |
-| 02-004 | 02 Backend | LOW | `getMessages` not renamed to `getAllMessages` | not-fixed | open | — | — | backend controller function name | — |
+| 02-004 | 02 Backend | LOW | `getMessages` not renamed to `getAllMessages` | not-fixed | closed | main | cf9171c | governmentMessageController + governmentRoutes updated | 2026-05-10 |
 | 02-005 | 02 Backend | HIGH | Base64 avatar data URI stored in `users.avatar` TEXT column (~50KB per user) | not-fixed | open | — | — | `backend/models/User.js` avatar field; controller base64 storage | — |
-| 02-006 | 02 Backend | MEDIUM | Socket.io CORS missing `uchqun-platform.vercel.app` production URL | partially-fixed | open | — | — | `backend/config/socket.js:14` — port 5177 added; vercel URL still missing | — |
+| 02-006 | 02 Backend | MEDIUM | Socket.io CORS missing `uchqun-platform.vercel.app` production URL | partially-fixed | closed | main | cf9171c | socket.js SOCKET_DEFAULT_ORIGINS: vercel URL added | 2026-05-10 |
 | 02-007 | 02 Backend | MEDIUM | `console.*` calls in controllers bypass structured logger | verified-fixed | closed | pre-cycle | pre-cycle | `grep -r "console\." backend/controllers/` returns 0 | pre-cycle |
 | 02-008 | 02 Backend | LOW | `errorLogger` defined but never registered in server.js | verified-fixed | closed | pre-cycle | pre-cycle | `backend/server.js:179` registers errorLogger | pre-cycle |
-| 02-009 | 02 Backend | HIGH | `testApp` uses JWT for refresh token; production uses `crypto.randomBytes` — paths diverge | not-fixed | open | — | — | test helper vs production auth divergence | — |
+| 02-009 | 02 Backend | HIGH | `testApp` uses JWT for refresh token; production uses `crypto.randomBytes` — paths diverge | not-fixed | closed | main | cf9171c | testApp.js: refresh now uses crypto.randomBytes + hash lookup | 2026-05-10 |
 | 02-010 | 02 Backend | HIGH | Documents (reception approvals) stored in `os.tmpdir()` — wiped on every Railway deploy | verified-fixed | closed | pre-cycle | pre-cycle | Documents now uploaded to cloud storage with persistent URLs | pre-cycle |
 | 02-011 | 02 Backend | MEDIUM | 80-line inline route handler inside `childRoutes.js` | verified-fixed | closed | pre-cycle | pre-cycle | Inline handlers moved to controller file | pre-cycle |
-| 02-012 | 02 Backend | LOW | Progress route `PUT /api/progress/` has no explicit `requireRole()` guard | not-fixed | open | — | — | `backend/routes/progressRoutes.js` | — |
+| 02-012 | 02 Backend | LOW | Progress route `PUT /api/progress/` has no explicit `requireRole()` guard | not-fixed | closed | main | cf9171c | progressRoutes.js: requireParent added | 2026-05-10 |
 | 02-013 | 02 Backend | LOW | `config/migrate.js` opens separate Sequelize pool (max:5) instead of reusing main pool | not-fixed | open | — | — | `backend/config/migrate.js` | — |
-| 02-014 | 02 Backend | LOW | Migration route returns 500 (not 404) when `MIGRATION_SECRET` is unset | not-fixed | open | — | — | migration auth handler | — |
+| 02-014 | 02 Backend | LOW | Migration route returns 500 (not 404) when `MIGRATION_SECRET` is unset | not-fixed | closed | main | cf9171c | migrationRoutes.js: returns 404 when MIGRATION_SECRET unset | 2026-05-10 |
 | 03-001 | 03 DB | HIGH | `Child` model has both `school` string field and `schoolId` FK — dual representation | not-fixed | open | — | — | `backend/models/Child.js` | — |
 | 03-002 | 03 DB | MEDIUM | Meal type ENUM uses TitleCase (`'Breakfast'`); MealPlan uses lowercase (`'breakfast'`) | not-fixed | open | — | — | Meal and MealPlan model ENUM definitions | — |
 | 03-003 | 03 DB | MEDIUM | `SchoolRating` fields nullable in model but `NOT NULL` required | verified-fixed | closed | pre-cycle | pre-cycle | `allowNull: false` in model and DB confirmed | pre-cycle |
@@ -67,8 +67,8 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 | 03-013 | 03 DB | MEDIUM | FK index corrective migration (removes bad/duplicate indexes) | verified-fixed | closed | pre-cycle | pre-cycle | Corrective migration properly applied | pre-cycle |
 | 03-014 | 03 DB | MEDIUM | `Document`, `ChatMessage`, `ChildAssessment` lack `paranoid: true` — hard deletes | not-fixed | open | — | — | Model files for Document, ChatMessage, ChildAssessment | — |
 | 03-015 | 03 DB | MEDIUM | Mixed naming: 4 newer models use `snake_case` columns while others use `camelCase` | not-fixed | open | — | — | `underscored: true` only on newer models | — |
-| 03-016 | 03 DB | LOW | `super_admin_messages` table rename to `government_messages` never filed as migration | not-fixed | open | — | — | No `ALTER TABLE super_admin_messages RENAME` migration exists | — |
-| 03-017 | 03 DB | MEDIUM | `progressRoutes PUT` has no `requireRole()` guard | not-fixed | open | — | — | `backend/routes/progressRoutes.js` | — |
+| 03-016 | 03 DB | LOW | `super_admin_messages` table rename to `government_messages` never filed as migration | not-fixed | closed | main | pre-cycle | migration 20260510000000-rename-government-messages-table.js created | pre-cycle |
+| 03-017 | 03 DB | MEDIUM | `progressRoutes PUT` has no `requireRole()` guard | not-fixed | closed | main | cf9171c | Same as 02-012; requireParent covers GET and PUT | 2026-05-10 |
 | 03-018 | 03 DB | HIGH | `requireSchoolScope` not globally mounted — applied per-route inconsistently | not-fixed | open | — | — | `backend/server.js` and route files | — |
 | 04-001 | 04 App | CRITICAL | Nested `ToastProvider` + `NotificationProvider` in component tree (teacher + parent) | not-fixed | open | — | — | `ParentApp.jsx:12-13`; three ToastContext instances in one bundle | — |
 | 04-002 | 04 App | HIGH | Teacher sidebar N+1 polling — 1+N API calls every 5s | verified-fixed | closed | pre-cycle | pre-cycle | `teacher/src/components/Sidebar.jsx:43` calls `/chat/unread-count` at 30s | pre-cycle |
@@ -163,9 +163,10 @@ Closure requires: regression test (named with issue ID) + symptom-gone verificat
 |---------|-------|
 | closed (verified-fixed pre-cycle) | 24 |
 | closed (Phase 1 ghost extermination) | 17 |
-| **closed total** | **41** |
-| open (not-fixed) | 79 |
-| open (partially-fixed) | 16 |
+| closed (Phase 2 backend + naming) | 14 |
+| **closed total** | **55** |
+| open (not-fixed) | 66 |
+| open (partially-fixed) | 15 |
 | **Total** | **136** |
 
 > 136 = 133 original numbered issues + 3 new issues found during v2 re-audit (N-001, N-002, N-003). N-004 (SAST added — positive) excluded as it is not a problem to fix.
