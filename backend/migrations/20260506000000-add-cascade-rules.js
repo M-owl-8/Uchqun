@@ -47,9 +47,12 @@ export async function up(queryInterface) {
   await alterFk(queryInterface, 'media',                'childId',    'children', 'id', 'CASCADE');
   await alterFk(queryInterface, 'media',                'activityId', 'activities', 'id', 'SET NULL');
   await alterFk(queryInterface, 'progress',             'childId',    'children', 'id', 'CASCADE');
-  await alterFk(queryInterface, 'payments',             'parentId',   'users',    'id', 'RESTRICT');
-  await alterFk(queryInterface, 'payments',             'childId',    'children', 'id', 'SET NULL');
-  await alterFk(queryInterface, 'payments',             'schoolId',   'schools',  'id', 'SET NULL');
+  // payments table was removed (#C-06); skip gracefully if absent
+  try {
+    await alterFk(queryInterface, 'payments',           'parentId',   'users',    'id', 'RESTRICT');
+    await alterFk(queryInterface, 'payments',           'childId',    'children', 'id', 'SET NULL');
+    await alterFk(queryInterface, 'payments',           'schoolId',   'schools',  'id', 'SET NULL');
+  } catch { /* table does not exist — safe to skip */ }
   await alterFk(queryInterface, 'refresh_tokens',       'user_id',    'users',    'id', 'CASCADE');
   await alterFk(queryInterface, 'therapies',            'createdBy',  'users',    'id', 'SET NULL');
   await alterFk(queryInterface, 'therapy_usages',       'therapyId',  'therapies','id', 'CASCADE');
