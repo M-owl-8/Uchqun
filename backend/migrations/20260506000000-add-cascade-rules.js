@@ -61,7 +61,7 @@ export async function up(queryInterface) {
   await alterFk(queryInterface, 'teacher_ratings',      'teacherId',  'users',    'id', 'CASCADE');
   await alterFk(queryInterface, 'teacher_ratings',      'parentId',   'users',    'id', 'CASCADE');
   await alterFk(queryInterface, 'chat_messages',        'sender_id',  'users',    'id', 'CASCADE');
-  // senderId on super_admin_messages → SET NULL (make column nullable first)
+  // senderId on government_messages (formerly super_admin_messages) → SET NULL (make column nullable first)
   await alterFk(queryInterface, 'super_admin_messages', 'senderId',   'users',    'id', 'SET NULL', true);
   await alterFk(queryInterface, 'teacher_resources',    'teacherId',  'users',    'id', 'CASCADE');
   await alterFk(queryInterface, 'teacher_resources',    'schoolId',   'schools',  'id', 'SET NULL');

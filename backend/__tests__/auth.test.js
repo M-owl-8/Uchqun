@@ -247,7 +247,7 @@ describe('Auth Controller', () => {
       const { req, res } = mockReqRes({
         email: 'no@exist.com',
         password: 'pass',
-        role: 'superAdmin',
+        role: 'government',
       });
       await login(req, res);
       expect(res.status).toHaveBeenCalledWith(401);

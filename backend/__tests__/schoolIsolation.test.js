@@ -30,7 +30,7 @@ describe('School Isolation', () => {
       expect(result).toEqual({ schoolId: 'school-1-uuid' });
     });
 
-    test('returns empty filter for global access (superadmin)', () => {
+    test('returns empty filter for global access (government user)', () => {
       const req = { schoolId: null, isGlobalAccess: true };
       const result = schoolWhere(req);
       expect(result).toEqual({});
@@ -92,7 +92,7 @@ describe('School Isolation', () => {
       expect(schoolBParent.schoolId).not.toBe(where.schoolId);
     });
 
-    test('superadmin bypasses school filter', () => {
+    test('government user bypasses school filter', () => {
       const reqSuperAdmin = { schoolId: null, isGlobalAccess: true };
       const where = { role: 'parent', ...schoolWhere(reqSuperAdmin) };
 

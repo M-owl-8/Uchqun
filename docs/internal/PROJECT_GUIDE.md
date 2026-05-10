@@ -212,7 +212,7 @@ All in `backend/models/`:
 | ChildAssessment | Child diagnostic assessments |
 | ServicePlan | Individual education service plans |
 | AdminRegistrationRequest | Admin registration workflow |
-| SuperAdminMessage | System-wide messages |
+| GovernmentMessage | System-wide messages |
 | RefreshToken | JWT refresh token storage |
 | TeacherResource | Teacher resource management |
 | ParentEvaluation | Parent evaluation records |

@@ -8,7 +8,7 @@ export async function up(queryInterface, Sequelize) {
   try {
     await queryInterface.addColumn('users', 'schoolId', {
       type: Sequelize.UUID,
-      allowNull: true, // Nullable for backward compat (superadmin has no school)
+      allowNull: true, // Nullable for backward compat (government users have no school)
       references: { model: 'schools', key: 'id' },
       onDelete: 'SET NULL',
     });
