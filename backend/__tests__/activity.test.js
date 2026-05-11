@@ -5,6 +5,7 @@ const mockActivityFindAll = jest.fn();
 const mockChildFindByPk = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockUserFindAll = jest.fn();
+const mockValidateChildAccess = jest.fn();
 
 jest.unstable_mockModule('../models/Activity.js', () => ({
   default: { findByPk: mockActivityFindByPk, findAll: mockActivityFindAll, create: jest.fn() },
@@ -16,7 +17,7 @@ jest.unstable_mockModule('../models/Child.js', () => ({
 
 jest.unstable_mockModule('../models/Media.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: mockUserFindAll } }));
-jest.unstable_mockModule('../utils/schoolValidation.js', () => ({ validateChildAccess: jest.fn() }));
+jest.unstable_mockModule('../utils/schoolValidation.js', () => ({ validateChildAccess: mockValidateChildAccess }));
 jest.unstable_mockModule('../controllers/notificationController.js', () => ({ createNotification: jest.fn() }));
 jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: jest.fn() }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
@@ -53,11 +54,11 @@ describe('updateActivity', () => {
   it('rejects cross-school update', async () => {
     const fakeUpdate = jest.fn();
     mockActivityFindByPk.mockResolvedValue({ childId: 'c1', update: fakeUpdate });
-    mockChildFindByPk.mockResolvedValue({ schoolId: 'OTHER' });
+    mockValidateChildAccess.mockResolvedValue(null); // access denied
     const req = { user: { role: 'teacher', schoolId: 's1', id: 't1' }, params: { id: 'a1' }, body: { description: 'x' } };
     const res = mkRes();
     await updateActivity(req, res);
-    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.status).toHaveBeenCalledWith(404);
     expect(fakeUpdate).not.toHaveBeenCalled();
   });
 
@@ -102,7 +103,7 @@ describe('updateActivity', () => {
       toJSON: () => ({ id: 'a1', description: 'updated', tasks: [], services: [] }),
     };
     mockActivityFindByPk.mockResolvedValueOnce({ childId: 'c1', update: fakeUpdate }).mockResolvedValueOnce(updated);
-    mockChildFindByPk.mockResolvedValue({ schoolId: 's1', parentId: 'p1' });
+    mockValidateChildAccess.mockResolvedValue({ id: 'c1', schoolId: 's1', parentId: 'p1' });
     const req = {
       user: { role: 'teacher', schoolId: 's1', id: 't1' },
       params: { id: 'a1' },

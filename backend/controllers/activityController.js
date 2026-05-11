@@ -363,12 +363,9 @@ export const updateActivity = async (req, res) => {
     }
 
     // Get child for ownership check + parent notification
-    const child = await Child.findByPk(activity.childId);
+    const child = await validateChildAccess(activity.childId, req);
     if (!child) {
-      return res.status(404).json({ error: 'Activity child not found' });
-    }
-    if (req.user.schoolId && child.schoolId && child.schoolId !== req.user.schoolId) {
-      return res.status(403).json({ error: 'Forbidden: cross-school update' });
+      return res.status(404).json({ error: 'Activity child not found or access denied' });
     }
 
     const updateData = {};
