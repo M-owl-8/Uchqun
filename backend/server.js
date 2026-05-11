@@ -104,9 +104,14 @@ app.use(cors({
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
     if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) return callback(null, true);
-    // Allow only known Uchqun deploy preview hostnames; not arbitrary subdomains
+    // Production: only base subdomains — deploy previews are excluded because any
+    // contributor (or attacker via a forked-repo PR) can spin up a preview origin.
+    // Non-production: allow deploy-preview-NNN-- prefix for staging/review workflows.
     // eslint-disable-next-line security/detect-unsafe-regex
-    if (process.env.NODE_ENV === 'production' && /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/.test(origin)) {
+    const deployRegex = process.env.NODE_ENV === 'production'
+      ? /^https:\/\/uchqun-[a-z-]+\.(netlify|vercel)\.app$/
+      : /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/;
+    if (deployRegex.test(origin)) {
       return callback(null, true);
     }
     logger.warn('CORS blocked', { origin });
