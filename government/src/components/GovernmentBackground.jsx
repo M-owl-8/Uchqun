@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * GovernmentBackground - Professional theme matching admin panel
  * Features: Light gradient background similar to admin panel

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -14,6 +14,7 @@ const Students = () => {
 
   useEffect(() => {
     loadStudents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadStudents = async () => {

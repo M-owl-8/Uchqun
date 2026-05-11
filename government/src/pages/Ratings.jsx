@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Star, Building2, Award, Search, ChevronDown, ChevronUp, MessageSquare, User } from 'lucide-react';
+import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-const LEVEL_COLORS = {
-  5: 'bg-green-100 text-green-800',
-  4: 'bg-blue-100 text-blue-800',
-  3: 'bg-yellow-100 text-yellow-800',
-  2: 'bg-orange-100 text-orange-800',
-  1: 'bg-red-100 text-red-800',
-  0: 'bg-gray-100 text-gray-500',
-};
 
 const STAR_COLORS = {
   5: 'bg-green-500',
@@ -79,8 +70,6 @@ const SchoolCard = ({ school }) => {
   const [reviewsLoaded, setReviewsLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-
-  const level = school.governmentLevel ?? 0;
 
   const loadReviews = async (pageNum = 1) => {
     try {

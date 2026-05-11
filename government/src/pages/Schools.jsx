@@ -1,18 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Building2, Star, Users, Award } from 'lucide-react';
+import { Building2, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-const LEVEL_COLORS = {
-  5: 'bg-green-100 text-green-800',
-  4: 'bg-blue-100 text-blue-800',
-  3: 'bg-yellow-100 text-yellow-800',
-  2: 'bg-orange-100 text-orange-800',
-  1: 'bg-red-100 text-red-800',
-  0: 'bg-gray-100 text-gray-500',
-};
 
 const Schools = () => {
   const { t } = useTranslation();
@@ -23,6 +14,7 @@ const Schools = () => {
 
   useEffect(() => {
     loadSchools();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadSchools = async () => {

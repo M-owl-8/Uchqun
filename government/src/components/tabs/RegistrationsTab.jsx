@@ -1,4 +1,4 @@
-import { Check, X, Mail, Phone, MessageSquare, FileText, Link } from 'lucide-react';
+import { Check, X, Mail, Phone, MessageSquare, FileText } from 'lucide-react';
 import Card from '../Card';
 import { useTranslation } from 'react-i18next';
 

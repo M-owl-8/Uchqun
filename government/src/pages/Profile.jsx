@@ -1,9 +1,8 @@
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import Card from '../components/Card';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import { Shield, Mail, Phone, LogOut, Globe } from 'lucide-react';
+import { Shield, Mail, Phone, LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const Profile = () => {

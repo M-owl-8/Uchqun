@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Crown, Mail, Lock, Plus, User, Eye, EyeOff, X } from 'lucide-react';
+import { Mail, Lock, Plus, User, Eye, EyeOff, X } from 'lucide-react';
 import Card from '../Card';
 import { useTranslation } from 'react-i18next';
 

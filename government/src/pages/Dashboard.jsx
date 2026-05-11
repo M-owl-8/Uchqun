@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
@@ -12,7 +12,6 @@ import {
   Star,
   BarChart3,
   Shield,
-  Award,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -49,15 +48,6 @@ const Dashboard = () => {
   if (loading) {
     return <SkeletonDashboard stats={4} cards={3} />;
   }
-
-  const LEVEL_COLORS = {
-    5: 'bg-green-100 text-green-800',
-    4: 'bg-blue-100 text-blue-800',
-    3: 'bg-yellow-100 text-yellow-800',
-    2: 'bg-orange-100 text-orange-800',
-    1: 'bg-red-100 text-red-800',
-    0: 'bg-gray-100 text-gray-500',
-  };
 
   const overviewCards = [
     {
@@ -218,7 +208,6 @@ const Dashboard = () => {
                 return (b.ratingsCount || 0) - (a.ratingsCount || 0);
               })
               .map((school, index) => {
-                const level = school.governmentLevel ?? 0;
                 const rank = index + 1;
                 return (
                   <div

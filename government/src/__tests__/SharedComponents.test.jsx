@@ -1,7 +1,6 @@
 import { describe, it, expect, vi, beforeAll, afterAll } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import '@testing-library/jest-dom';
-import React from 'react';
 
 import LoadingSpinner from '../../../shared/components/LoadingSpinner';
 import Card from '../../../shared/components/Card';
