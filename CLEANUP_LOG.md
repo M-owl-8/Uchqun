@@ -5,6 +5,31 @@ Ordered by execution sequence.
 
 ---
 
+## Final Scorecard
+
+| Item | Status | Commit |
+|------|--------|--------|
+| CL-002 — backend/.env.example | Closed | 41c4c65 |
+| CL-001 — Fix pntsPage i18n key | Closed | 6d27052 |
+| CL-010 — Fix "Davlat reply" in EN locale | Closed | 3cb74c1 |
+| CL-003 — Winston logger in storage.js | Closed | 6bab6ad |
+| CL-006 — Winston logger in env.js | Closed | b2d8f49 |
+| CL-011 — Drop Child.school string field | Closed | 2b1b5dc |
+| CL-004 — DB transactions on multi-step ops | Closed | b47f604 |
+| CL-007 — validateChildAccess in updateActivity | Closed | dc3bb75 |
+| CL-008 — Shared components deduplication | Already clean | n/a |
+| CL-009 — Auth context factory migration | Already clean | n/a |
+| CL-005 — i18n in AdminRegister.jsx | Closed | e34230e |
+| DOC-1 — ARCHITECTURE.md | Done | 1e09d3c |
+| DOC-2 — CONTRIBUTING.md | Done | 1e09d3c |
+| DOC-3 — RUNBOOK.md | Done | 1e09d3c |
+
+**Backend tests: 510/510 throughout. All four frontend lints clean.**
+
+---
+
+---
+
 ## CL-002 — Create/update `backend/.env.example`
 
 **Status:** Closed
