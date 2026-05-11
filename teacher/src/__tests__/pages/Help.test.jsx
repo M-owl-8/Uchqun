@@ -1,6 +1,6 @@
 // refs #04-005 #09-003 — Help page was 100% hardcoded English with fake US phone number
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 
 vi.mock('react-router-dom', () => ({

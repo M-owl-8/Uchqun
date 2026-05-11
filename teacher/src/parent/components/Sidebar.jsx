@@ -2,7 +2,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import {
-  Home,
   UserCircle,
   CheckCircle,
   Utensils,
@@ -12,9 +11,7 @@ import {
   Bell,
   Settings,
   Heart,
-  Building2,
   Lightbulb,
-  Bot,
   AlertTriangle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

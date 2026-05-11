@@ -10,7 +10,7 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
   const navigate = useNavigate();
   const { logout } = useAuth();
   const { t } = useTranslation();
-  const unreadChat = getUnreadTotalForPrefix('parent:', 'teacher');
+  const _unreadChat = getUnreadTotalForPrefix('parent:', 'teacher');
 
   const handleLogout = () => {
     logout();

@@ -92,6 +92,7 @@ const TeacherRating = () => {
 
   useEffect(() => {
     loadData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChild?.id]);
 
   const handleSubmit = async () => {

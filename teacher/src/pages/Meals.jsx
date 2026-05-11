@@ -73,6 +73,7 @@ const Meals = () => {
     if (isTeacher) {
       loadChildren();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
   const loadChildren = async () => {

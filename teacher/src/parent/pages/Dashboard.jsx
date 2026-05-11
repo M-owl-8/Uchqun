@@ -32,7 +32,7 @@ const Dashboard = () => {
   const loadData = useCallback(async () => {
     if (!selectedChildId) return;
     try {
-      const [childResponse, activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
+      const [_childResponse, activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
         api.get(`/child/${selectedChildId}`).catch(() => ({ data: null })),
         api.get(`/activities?limit=5&childId=${selectedChildId}`).catch(() => ({ data: { activities: [] } })),
         api.get(`/meals?limit=5&childId=${selectedChildId}`).catch(() => ({ data: { meals: [] } })),
@@ -70,6 +70,7 @@ const Dashboard = () => {
     } catch (error) { showError(error.response?.data?.error || error.message); } finally {
       setLoading(false);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChildId, refreshNotifications]);
 
   useEffect(() => {
@@ -80,7 +81,7 @@ const Dashboard = () => {
   useEffect(() => {
     if (!connected || !selectedChildId) return;
 
-    const handleDataChange = (data) => {
+    const handleDataChange = (_data) => {
       loadData(); // Reload dashboard data
     };
 

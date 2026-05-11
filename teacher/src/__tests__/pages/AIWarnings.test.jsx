@@ -1,6 +1,6 @@
 // refs #09-001 — Parent can see "Mark as Resolved" button that always returns 403
 import { describe, it, expect, vi } from 'vitest';
-import { render, findByText as domFindByText, queryByText as domQueryByText } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import React from 'react';
 
 vi.mock('react-i18next', () => ({
@@ -48,7 +48,7 @@ vi.mock('../../parent/components/LoadingSpinner', () => ({
 describe('#09-001 AIWarnings resolve button visibility', () => {
   it('hides Resolve button when logged-in user is parent role', async () => {
     const { default: AIWarnings } = await import('../../parent/pages/AIWarnings');
-    const { container, findByText, queryByText } = render(
+    const { findByText, queryByText } = render(
       React.createElement(AIWarnings)
     );
 

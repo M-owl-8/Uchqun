@@ -1,17 +1,13 @@
 import { useEffect, useState } from 'react';
-import { 
-  Calendar, 
+import {
   CheckCircle2,
-  ChevronDown,
   Edit2,
   FileX,
   Plus,
   Save,
   Trash2,
-  User,
   X,
   Baby,
-  Heart,
 } from 'lucide-react';
 import Card from '../shared/components/Card';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
@@ -46,14 +42,14 @@ const MonitoringJournal = () => {
     notes: '',
     teacherSignature: '',
   });
-  const [parents, setParents] = useState([]);
+  const [, setParents] = useState([]);
   const [children, setChildren] = useState([]);
-  const [selectedParentId, setSelectedParentId] = useState('');
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
     loadMonitoringRecords();
     loadParents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadParents = async () => {

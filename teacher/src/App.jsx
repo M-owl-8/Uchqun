@@ -1,5 +1,5 @@
 import { Suspense, lazy } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { AuthProvider } from './shared/context/AuthContext';

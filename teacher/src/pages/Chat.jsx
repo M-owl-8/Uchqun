@@ -1,5 +1,5 @@
 ﻿import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, MessageCircle, Pencil, Send, Trash2, X } from 'lucide-react';
+import { ArrowDown, Pencil, Send, Trash2, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../shared/services/chatStore';
 import api from '../shared/services/api';
@@ -38,6 +38,7 @@ const Chat = () => {
       } catch (err) { toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })); }
     };
     fetchParents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
 
   useEffect(() => {

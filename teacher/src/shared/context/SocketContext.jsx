@@ -11,7 +11,7 @@ export function useSocket() {
 }
 
 export function SocketProvider({ children }) {
-  const { user, isAuthenticated } = useAuth();
+  const { isAuthenticated } = useAuth();
   const [connected, setConnected] = useState(false);
   const socketRef = useRef(null);
   const reconnectTimerRef = useRef(null);

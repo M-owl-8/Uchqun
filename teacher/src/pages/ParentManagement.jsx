@@ -19,10 +19,11 @@ const ParentManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { error: showError } = useToast();
   const { t } = useTranslation();
-  const { user } = useAuth();
+  useAuth();
 
   useEffect(() => {
     loadParents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadParents = async () => {

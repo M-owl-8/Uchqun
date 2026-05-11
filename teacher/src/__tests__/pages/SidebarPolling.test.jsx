@@ -1,5 +1,5 @@
 // refs #04-002 #08-001 — sidebar polled N chat APIs every 5 seconds; should call dedicated endpoint
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect } from 'vitest';
 
 // Verify the teacher Sidebar no longer imports getUnreadTotalForPrefix from chatStore
 describe('#04-002 #08-001 teacher Sidebar uses unread-count endpoint', () => {

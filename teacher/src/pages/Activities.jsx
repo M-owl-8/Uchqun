@@ -11,7 +11,7 @@ import {
   User,
   X
 } from 'lucide-react';
-import Card from '../shared/components/Card';
+
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
@@ -59,6 +59,7 @@ const Activities = () => {
     if (isTeacher) {
       loadParents();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
   const loadParents = async () => {

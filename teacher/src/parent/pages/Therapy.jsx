@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 
 const Therapy = () => {
-  const { user } = useAuth();
+  useAuth();
   const { selectedChild } = useChild();
   const { t } = useTranslation();
   const { error: showError } = useToast();
@@ -30,6 +30,7 @@ const Therapy = () => {
 
   useEffect(() => {
     loadTherapies();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filter]);
 
   const loadTherapies = async () => {

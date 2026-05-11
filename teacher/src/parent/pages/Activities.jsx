@@ -10,7 +10,6 @@ import {
   User,
   FileX,
   X,
-  ClipboardList,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

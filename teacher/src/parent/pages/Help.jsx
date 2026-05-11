@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { HelpCircle, Mail, Phone, MessageCircle, BookOpen } from 'lucide-react';
+import { Mail, Phone, MessageCircle, BookOpen } from 'lucide-react';
 import Card from '../components/Card';
 import { Link } from 'react-router-dom';
 

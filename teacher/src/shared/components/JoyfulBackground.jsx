@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * JoyfulBackground - Sky gradient, sun with face, clouds, green hills, sparkles
  */

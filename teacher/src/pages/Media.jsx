@@ -19,7 +19,6 @@ import {
   VolumeX,
   Volume1
 } from 'lucide-react';
-import Card from '../shared/components/Card';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
@@ -100,7 +99,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
     const video = videoRef.current;
     if (video) {
       if (video.paused) {
-        video.play().catch((err) => {
+        video.play().catch((_err) => {
         });
       } else {
         video.pause();
@@ -204,7 +203,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
     
     // Auto-play video when it loads if autoPlay is true
     if (autoPlay && videoRef.current && isDirectVideo) {
-      videoRef.current.play().catch((err) => {
+      videoRef.current.play().catch((_err) => {
       });
     }
 
@@ -287,7 +286,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               setDuration(videoRef.current.duration);
               // Try to play if autoPlay is enabled
               if (autoPlay) {
-                videoRef.current.play().catch((err) => {
+                videoRef.current.play().catch((_err) => {
                 });
               }
             }
@@ -305,7 +304,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               onEnded();
             }
           }}
-          onError={(e) => {
+          onError={(_e) => {
             setIsLoading(false);
             setError(true);
           }}
@@ -499,6 +498,7 @@ const Media = () => {
     if (isTeacher) {
       loadChildren();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
   const loadChildren = async () => {
@@ -703,9 +703,9 @@ const Media = () => {
                         e.target.pause();
                         e.target.currentTime = 0; // Reset to beginning
                       }}
-                      onError={(e) => {
+                      onError={(_e) => {
                         const originalUrl = item.url;
-                        const proxyUrl = getProxyUrl(originalUrl, item.id);
+                        const _proxyUrl = getProxyUrl(originalUrl, item.id);
                       }}
                     />
                     {/* Video Play Icon - Always visible */}
@@ -724,7 +724,7 @@ const Media = () => {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       onError={(e) => {
                         const originalUrl = item.url || item.imageUrl || item.photoUrl;
-                        const proxyUrl = getProxyUrl(originalUrl, item.id);
+                        const _proxyUrl = getProxyUrl(originalUrl, item.id);
                         e.target.style.display = 'none';
                       }}
                     />
@@ -814,7 +814,7 @@ const Media = () => {
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     const originalUrl = selectedMedia.url || selectedMedia.imageUrl || selectedMedia.photoUrl;
-                    const proxyUrl = getProxyUrl(originalUrl, selectedMedia.id);
+                    const _proxyUrl = getProxyUrl(originalUrl, selectedMedia.id);
                     e.target.style.display = 'none';
                   }}
                 />

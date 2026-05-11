@@ -4,12 +4,11 @@ import { useChild } from '../context/ChildContext';
 import { useTranslation } from 'react-i18next';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { 
-  Bell, 
-  Activity, 
-  Utensils, 
-  Image as ImageIcon, 
-  X, 
+import {
+  Bell,
+  Activity,
+  Utensils,
+  Image as ImageIcon,
   CheckCircle2,
   CheckCheck,
   Trash2,
@@ -38,6 +37,7 @@ const Notifications = () => {
 
   useEffect(() => {
     loadAllNotifications();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChildId]);
 
   const filteredNotifications = notifications.filter(notif => {

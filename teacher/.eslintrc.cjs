@@ -18,7 +18,7 @@ module.exports = {
     react: { version: 'detect' },
   },
   rules: {
-    'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+    'no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     'react/prop-types': 'off',
   },
 };

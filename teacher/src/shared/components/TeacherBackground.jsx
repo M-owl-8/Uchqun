@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * TeacherBackground - Professional educational theme
  * Features: Lavender gradient, subtle geometric patterns, academic feel

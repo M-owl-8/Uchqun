@@ -1,4 +1,4 @@
-import { LogOut, MessageSquare, Send, X, Camera, Upload } from 'lucide-react';
+import { LogOut, MessageSquare, Send, X, Camera } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
 import Card from '../shared/components/Card';
 import { useTranslation } from 'react-i18next';

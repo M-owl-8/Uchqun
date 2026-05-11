@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from './LoadingSpinner';
 
 const ProtectedRoute = ({ children, requireRole }) => {
-  const { isAuthenticated, loading, user, isTeacher } = useAuth();
+  const { isAuthenticated, loading, isTeacher } = useAuth();
 
   if (loading) {
     return (
