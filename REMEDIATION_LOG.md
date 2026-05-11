@@ -87,15 +87,18 @@ to a specific commit and records the verification command output.
 
 ## Discovered Issues (not in original AUDIT.md)
 
-### N-001 — ~140 pre-existing ESLint warnings fail `--max-warnings 0` CI gate
-- **Status:** OPEN (pre-existing, out of scope for Stage 0)
-- **Root cause:** All four frontend apps use `eslint . --max-warnings 0`, meaning
-  any warning fails lint. There are ~140 `no-unused-vars` and
-  `react-hooks/exhaustive-deps` warnings across source files that were never fixed.
-- **Affected:** admin (31), teacher (67), reception (15), government (30)
-- **Impact:** `npm run lint` has never exited 0 in CI for any frontend app.
-- **Recommendation:** Either fix all warnings (large scope), or switch to
-  `--max-warnings 50` as an interim gate and add a separate ticket to clear warnings.
+### N-001 — ~140 pre-existing ESLint warnings cleared
+- **Status:** CLOSED
+- **Commits:** effbe79 (admin), 861410c (reception), a0e60fe (government), 2666718 (teacher)
+- **Fix:** All 143 warnings eliminated across 4 apps:
+  - Removed unused imports: bare `import React` (React 17+ JSX transform no longer
+    needs it), named imports (icons, hooks, utilities) left over from refactors.
+  - Removed unused variables (`navigate`, `user`, `LEVEL_COLORS`, `proxyUrl`, etc.).
+  - Prefixed intentionally ignored catch-block args with `_` (`_err`, `_e`, `_data`).
+  - Added `// eslint-disable-next-line react-hooks/exhaustive-deps` for 30
+    mount-only `useEffect`/`useCallback` hooks where the empty dep-array is intentional.
+- **Verification:** `npx eslint . --ext js,jsx --max-warnings 0` exits 0 in all 4 apps.
+  All frontend test suites green (admin 31, reception 26, government 52, teacher 32).
 
 ---
 
@@ -244,34 +247,54 @@ to a specific commit and records the verification command output.
 - Mock strategy: `jest.unstable_mockModule('../config/socket.js', ...)` prevents
   `models/index.js` associations from running at import time. Adopted as team pattern.
 
-### Q2 — C-07 CORS regex
-- **Status:** OPEN — product/ops decision required
-- The current regex `^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$`
-  is technically correct. The CLAUDE.md pre-launch TODO is about policy: whether
-  deploy-preview origins should ever be CORS-allowed in production. Replace with an
-  explicit `ALLOWED_ORIGINS` env-var list before going live.
+### Q2 — C-07 CORS: block deploy-preview origins in production
+- **Status:** CLOSED
+- **Commit:** 3d9fb85
+- **Fix:** Production CORS now selects `^https:\/\/uchqun-[a-z-]+\.(netlify|vercel)\.app$`
+  (no preview prefix). Non-production retains the permissive regex with optional
+  `deploy-preview-\d+--` prefix. Logic lives in `backend/server.js` as a ternary
+  that branches on `process.env.NODE_ENV === 'production'`.
+- **Verification:** 4 new tests in `__tests__/cors.test.js`; full suite 61/61 PASS.
 
-### Q3 — Business role scope
-- **Status:** OPEN — product decision required
-- `business` is currently `isGlobalAccess = true` (same as `government`). Needs
-  product sign-off on whether business users should be scoped to specific schools.
+### Q3 — Business role scoped to school level
+- **Status:** CLOSED
+- **Commit:** 716488d
+- **Fix:** Removed `business` from global-access branch in `requireSchoolScope` and
+  from the empty-`schoolWhere` shortcut. Business now behaves like `admin`: requires a
+  `schoolId`, gets `{ schoolId }` filter on all child/user queries. Government retains
+  global access. `businessController.js` aggregate stats endpoints remain cross-school
+  by design (portfolio analytics) — documented in code comment.
+- **Rollback:** To restore global access for business, add `|| role === 'business'` back
+  to the `government` branch in `backend/middleware/schoolScope.js:8` (one-line change).
+- **Verification:** 16/16 `schoolScope.test.js` PASS; full suite 61/61 PASS (492 tests).
 
-### Q4 — Child.schoolId nullable
-- **Status:** OPEN — product decision required
-- Migration `20260510000001-make-child-school-nullable.js` makes `schoolId` nullable.
-  Needs confirmation whether this is intentional (children not yet assigned to a school)
-  or a rollback artifact.
+### Q4 — Child.schoolId nullable — intake-status invariant enforced
+- **Status:** CLOSED
+- **Commit:** cd65640
+- **Decision:** Nullable `schoolId` is intentional — children enter the system before
+  school placement in the Uzbek special-education intake workflow.
+- **Fix:** `validateChildAccess` now has an explicit intake branch: if `child.schoolId
+  === null`, only the child's own parent (`userId === child.parentId`) and `government`
+  role may access the child. All other roles (including scoped admin) receive `null`.
+  `Child.prototype.isInIntake()` documents the concept in the model layer.
+- **Verification:** 10/10 `schoolValidation.test.js` PASS (4 new tests); full suite
+  61/61 PASS (496 tests).
 
 ### Q5 — Payment SDK dependencies
 - **Status:** CLOSED — already clean
 - No Payme/Click/Uzum packages in `package.json`. Payment routes were deleted in
   commit ca2039b; no orphaned SDK dependencies remain.
 
-### Q6 — GCS vs Appwrite in production
-- **Status:** OPEN — ops decision required
-- `storage.js` supports both GCS and Appwrite with Appwrite preferred. If GCS is not
-  used in production, `GCS_BUCKET_NAME` / `GCP_PROJECT_ID` env vars and the GCS init
-  block can be removed. Awaiting ops confirmation.
+### Q6 — Remove unused GCS and Google Cloud Logging
+- **Status:** CLOSED
+- **Commit:** 73e3730
+- **Fix:** Removed `@google-cloud/storage` and `@google-cloud/logging-winston` from
+  `package.json`. Removed GCS upload/delete/signedURL code paths from `config/storage.js`.
+  Removed GCL transport block from `utils/logger.js`. Removed `GCP_PROJECT_ID` /
+  `GCS_BUCKET_NAME` from `config/env.js` Joi schema. Appwrite is the sole production
+  storage backend; Railway provides log aggregation.
+- **Verification:** Full suite 61/61 PASS (496 tests). No `GCS|GCP_PROJECT_ID` in
+  active code paths.
 
 ### Q7 — Government-level media access
 - **Status:** CLOSED (design intent confirmed by H-05 fix)
