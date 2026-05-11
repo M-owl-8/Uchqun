@@ -10,10 +10,11 @@ jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: jest.
 jest.unstable_mockModule('../models/School.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({ default: { findAll: jest.fn() } }));
+jest.unstable_mockModule('../models/Notification.js', () => ({ default: { create: jest.fn() } }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
-jest.unstable_mockModule('sequelize', () => ({ Op: { in: Symbol('in') } }));
+jest.unstable_mockModule('sequelize', () => ({ Sequelize: class {}, Op: { in: Symbol('in') } }));
 
 const { getWarnings, resolveWarning } = await import('../controllers/aiWarningController.js');
 
