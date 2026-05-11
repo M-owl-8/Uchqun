@@ -1,5 +1,6 @@
 import Joi from 'joi';
 import dotenv from 'dotenv';
+import logger from '../utils/logger.js';
 
 // Load environment variables first
 dotenv.config();
@@ -127,7 +128,7 @@ export function validateEnv() {
     const frontendUrls = value.FRONTEND_URL.split(',').map(url => url.trim());
     const nonHttpsUrls = frontendUrls.filter(url => !url.startsWith('https://'));
     if (nonHttpsUrls.length > 0) {
-      console.warn(`Warning: The following FRONTEND_URL(s) should use HTTPS in production: ${nonHttpsUrls.join(', ')}`);
+      logger.warn('FRONTEND_URL(s) should use HTTPS in production', { urls: nonHttpsUrls });
     }
   }
 
@@ -137,10 +138,9 @@ export function validateEnv() {
 // Validate on import — fail fast if required variables are missing
 try {
   validateEnv();
-  console.log('✓ Environment variables validated successfully');
+  logger.info('Environment variables validated successfully');
 } catch (error) {
-  console.error('✗ Environment variable validation failed:');
-  console.error(error.message);
+  logger.error('Environment variable validation failed', { message: error.message });
   process.exit(1);
 }
 
