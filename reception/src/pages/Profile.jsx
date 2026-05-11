@@ -5,7 +5,6 @@ import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
-  User,
   Mail,
   Phone,
   MessageSquare,

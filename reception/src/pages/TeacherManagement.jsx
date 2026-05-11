@@ -48,6 +48,7 @@ const TeacherManagement = () => {
 
   useEffect(() => {
     loadTeachers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadTeachers = async () => {

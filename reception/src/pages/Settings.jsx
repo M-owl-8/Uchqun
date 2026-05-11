@@ -21,7 +21,7 @@ import {
 
 const Settings = () => {
   const { t, i18n } = useTranslation();
-  const { user, setUser } = useAuth();
+  const { setUser } = useAuth();
   const [loading, setLoading] = useState(true);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
@@ -55,6 +55,7 @@ const Settings = () => {
   useEffect(() => {
     loadUserProfile();
     loadMessages();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadMessages = async () => {

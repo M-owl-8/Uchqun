@@ -4,12 +4,11 @@ import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { 
-  Users, 
-  Plus, 
-  Edit2, 
-  Trash2, 
+  Users,
+  Plus,
+  Edit2,
+  Trash2,
   Search,
-  UserCheck,
   X,
   Save
 } from 'lucide-react';
@@ -36,6 +35,7 @@ const GroupManagement = () => {
 
   useEffect(() => {
     loadData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadData = async () => {

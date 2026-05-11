@@ -1,15 +1,14 @@
 // Reception ParentManagement - Updated with Edit Child functionality
-import { useEffect, useState, useMemo, useCallback } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { 
-  Users, 
-  Plus, 
-  Edit2, 
-  Trash2, 
+  Users,
+  Plus,
+  Edit2,
+  Trash2,
   Search,
   Mail,
   Phone,
@@ -17,7 +16,6 @@ import {
   Save,
   Baby,
   UserCheck,
-  UsersRound,
   Eye,
   EyeOff,
   Camera
@@ -75,6 +73,7 @@ const ParentManagement = () => {
   useEffect(() => {
     loadParents();
     loadTeachersAndGroups();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadTeachersAndGroups = async () => {

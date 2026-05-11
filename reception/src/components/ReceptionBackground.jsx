@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * ReceptionBackground - Warm welcoming theme
  * Features: Coral/peach gradient, flowing waves, hospitality feel
