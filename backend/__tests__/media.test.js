@@ -30,7 +30,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 }));
 jest.unstable_mockModule('axios', () => ({ default: { get: jest.fn() } }));
 
-const { getMedia } = await import('../controllers/mediaController.js');
+const { getMedia, getMediaItem } = await import('../controllers/mediaController.js');
 
 const mkRes = () => {
   const res = {};
@@ -77,9 +77,30 @@ describe('mediaController.getMedia', () => {
     expect(res.json).toHaveBeenCalledWith([]);
   });
 
-  it('admin: returns all media (no scope filter)', async () => {
-    mockMediaFindAll.mockResolvedValue([{ id: 'm1' }]);
-    const req = { user: { id: 'a1', role: 'admin' }, query: {} };
+  it('admin with schoolId: scopes media to own school children', async () => {
+    mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+    mockMediaFindAll.mockResolvedValue([]);
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, query: {} };
+    const res = mkRes();
+    await getMedia(req, res);
+    expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({
+      where: { schoolId: 's1' },
+    }));
+    const where = mockMediaFindAll.mock.calls[0][0].where;
+    expect(where.childId).toBeDefined();
+  });
+
+  it('admin with schoolId: 403 when childId not in school', async () => {
+    mockChildFindAll.mockResolvedValue([{ id: 'c1' }]);
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, query: { childId: 'OTHER' } };
+    const res = mkRes();
+    await getMedia(req, res);
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+
+  it('government: full access with no childId filter', async () => {
+    mockMediaFindAll.mockResolvedValue([]);
+    const req = { user: { id: 'g1', role: 'government' }, query: {} };
     const res = mkRes();
     await getMedia(req, res);
     const where = mockMediaFindAll.mock.calls[0][0].where;
@@ -103,5 +124,40 @@ describe('mediaController.getMedia', () => {
     const res = mkRes();
     await getMedia(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
+  });
+});
+
+describe('mediaController.getMediaItem — school scoping', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('admin with schoolId: scopes query to school children', async () => {
+    mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+    mockMediaFindOne.mockResolvedValue({ id: 'm1', toJSON: () => ({ id: 'm1' }), thumbnail: null });
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, params: { id: 'm1' } };
+    const res = mkRes();
+    await getMediaItem(req, res);
+    expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({
+      where: { schoolId: 's1' },
+    }));
+    const where = mockMediaFindOne.mock.calls[0][0].where;
+    expect(where.childId).toBeDefined();
+  });
+
+  it('admin with schoolId: 404 when school has no children', async () => {
+    mockChildFindAll.mockResolvedValue([]);
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, params: { id: 'm1' } };
+    const res = mkRes();
+    await getMediaItem(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+  });
+
+  it('government: no childId filter — can access any media item', async () => {
+    mockMediaFindOne.mockResolvedValue({ id: 'm1', toJSON: () => ({ id: 'm1' }), thumbnail: null });
+    const req = { user: { id: 'g1', role: 'government' }, params: { id: 'm1' } };
+    const res = mkRes();
+    await getMediaItem(req, res);
+    const where = mockMediaFindOne.mock.calls[0][0].where;
+    expect(where.childId).toBeUndefined();
+    expect(res.json).toHaveBeenCalled();
   });
 });

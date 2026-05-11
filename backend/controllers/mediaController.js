@@ -80,11 +80,27 @@ export const getMedia = async (req, res) => {
         where.childId = { [Op.in]: childIds };
       }
     } else if (req.user.role === 'admin') {
-      // Admin can see all media
+      if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        const schoolChildIds = schoolChildren.map(c => c.id);
+        if (childId) {
+          if (!schoolChildIds.includes(childId)) {
+            return res.status(403).json({ error: 'Access denied to this child' });
+          }
+          where.childId = childId;
+        } else {
+          where.childId = { [Op.in]: schoolChildIds };
+        }
+      } else if (childId) {
+        where.childId = childId;
+      }
+    } else if (req.user.role === 'government') {
       if (childId) {
         where.childId = childId;
       }
-      // If no childId, show all media
     } else {
       // For parents, show media for all their children or filter by childId
       const children = await Child.findAll({
@@ -178,7 +194,18 @@ export const getMediaItem = async (req, res) => {
       const childIds = children.map(c => c.id);
       where.childId = { [Op.in]: childIds };
     } else if (req.user.role === 'admin') {
-      // Admin can see all media - no filter needed
+      if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        if (schoolChildren.length === 0) {
+          return res.status(404).json({ error: 'Media not found' });
+        }
+        where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+      }
+    } else if (req.user.role === 'government') {
+      // Full access — no schoolId filter
     } else {
       const children = await Child.findAll({
         where: { parentId: req.user.id },
