@@ -3,6 +3,7 @@ import Media from '../models/Media.js';
 import Child from '../models/Child.js';
 import Activity from '../models/Activity.js';
 import User from '../models/User.js';
+import { fileTypeFromFile } from 'file-type';
 import { uploadFile, deleteFile } from '../config/storage.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
@@ -367,6 +368,16 @@ export const uploadMedia = async (req, res) => {
         }
       }
       return res.status(400).json({ error: 'Invalid file type. Only images and videos are allowed.' });
+    }
+
+    // Magic-byte validation: verify actual file content matches declared MIME type
+    const ALLOWED_IMAGE_MIMES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+    const ALLOWED_VIDEO_MIMES = ['video/mp4', 'video/webm', 'video/quicktime'];
+    const ALLOWED_MIMES = [...ALLOWED_IMAGE_MIMES, ...ALLOWED_VIDEO_MIMES];
+    const detectedType = await fileTypeFromFile(req.file.path);
+    if (!detectedType || !ALLOWED_MIMES.includes(detectedType.mime)) {
+      safeCleanup(req.file.path);
+      return res.status(400).json({ error: 'File content does not match declared type or is not a supported format' });
     }
 
     // Verify child exists and belongs to same school
