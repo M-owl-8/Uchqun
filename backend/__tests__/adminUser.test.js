@@ -22,7 +22,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 }));
 
 const {
-  getAdmins, updateAdminBySuper, deleteAdminBySuper,
+  getAdmins, updateAdmin, deleteAdmin,
   createAdmin, createGovernment,
 } = await import('../controllers/admin/adminUserController.js');
 
@@ -48,12 +48,12 @@ describe('admin/adminUserController', () => {
     });
   });
 
-  describe('updateAdminBySuper', () => {
+  describe('updateAdmin', () => {
     it('404 when admin not found', async () => {
       mockFindOne.mockResolvedValue(null);
       const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: {} };
       const res = mkRes();
-      await updateAdminBySuper(req, res);
+      await updateAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
     });
 
@@ -63,7 +63,7 @@ describe('admin/adminUserController', () => {
         .mockResolvedValueOnce({ id: 'other' });
       const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { email: 'new@x.com' } };
       const res = mkRes();
-      await updateAdminBySuper(req, res);
+      await updateAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
@@ -73,18 +73,18 @@ describe('admin/adminUserController', () => {
       mockFindOne.mockResolvedValueOnce(admin);
       const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { firstName: 'New' } };
       const res = mkRes();
-      await updateAdminBySuper(req, res);
+      await updateAdmin(req, res);
       expect(admin.firstName).toBe('New');
       expect(save).toHaveBeenCalled();
     });
   });
 
-  describe('deleteAdminBySuper', () => {
+  describe('deleteAdmin', () => {
     it('404 when admin not found', async () => {
       mockFindOne.mockResolvedValue(null);
       const req = { user: { id: 'g1' }, params: { id: 'a1' } };
       const res = mkRes();
-      await deleteAdminBySuper(req, res);
+      await deleteAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
     });
 
@@ -92,7 +92,7 @@ describe('admin/adminUserController', () => {
       mockFindOne.mockResolvedValue({ id: 'g1' });
       const req = { user: { id: 'g1' }, params: { id: 'g1' } };
       const res = mkRes();
-      await deleteAdminBySuper(req, res);
+      await deleteAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
@@ -101,7 +101,7 @@ describe('admin/adminUserController', () => {
       mockCount.mockResolvedValue(5);
       const req = { user: { id: 'g1' }, params: { id: 'a1' } };
       const res = mkRes();
-      await deleteAdminBySuper(req, res);
+      await deleteAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(409);
     });
 
@@ -111,7 +111,7 @@ describe('admin/adminUserController', () => {
       mockCount.mockResolvedValue(0);
       const req = { user: { id: 'g1' }, params: { id: 'a1' } };
       const res = mkRes();
-      await deleteAdminBySuper(req, res);
+      await deleteAdmin(req, res);
       expect(destroy).toHaveBeenCalled();
     });
   });

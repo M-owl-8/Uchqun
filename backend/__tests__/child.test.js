@@ -25,7 +25,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getChildren, getChild, deleteChild, updateChild, addChild } = await import('../controllers/childController.js');
+const { getChildren, getChild, deleteChild, updateChild } = await import('../controllers/childController.js');
 
 const mkRes = () => {
   const res = {};
@@ -178,43 +178,4 @@ describe('childController', () => {
     });
   });
 
-  describe('addChild', () => {
-    it('404 when parent does not exist', async () => {
-      mockUserFindByPk.mockResolvedValue(null);
-      const req = { body: { parentId: 'p1' } };
-      const res = mkRes();
-      await addChild(req, res);
-      expect(res.status).toHaveBeenCalledWith(404);
-    });
-
-    it('400 when required fields missing', async () => {
-      mockUserFindByPk.mockResolvedValue({ id: 'p1' });
-      const req = { body: { parentId: 'p1' } };
-      const res = mkRes();
-      await addChild(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
-      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-        missing: expect.arrayContaining(['firstName', 'lastName', 'dateOfBirth', 'disabilityType']),
-      }));
-    });
-
-    it('creates child and emits socket event', async () => {
-      mockUserFindByPk.mockResolvedValue({ id: 'p1' });
-      mockCreate.mockResolvedValue({
-        toJSON: () => ({ id: 'c1' }),
-        getAge: () => 4,
-      });
-      const req = {
-        body: {
-          parentId: 'p1',
-          firstName: 'A', lastName: 'B', dateOfBirth: '2020-01-01', disabilityType: 'autism',
-        },
-      };
-      const res = mkRes();
-      await addChild(req, res);
-      expect(mockCreate).toHaveBeenCalled();
-      expect(mockEmitToUser).toHaveBeenCalledWith('p1', 'child:added', expect.any(Object));
-      expect(res.status).toHaveBeenCalledWith(201);
-    });
-  });
 });

@@ -36,7 +36,8 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getMyProfile, updateTaskStatus, getParents } = await import('../controllers/teacherController.js');
+const { getMyProfile, getParents } = await import('../controllers/teacherController.js');
+const { updateTaskStatus } = await import('../controllers/teacherTaskController.js');
 
 const mkRes = () => {
   const res = {};

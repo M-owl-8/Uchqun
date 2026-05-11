@@ -23,6 +23,9 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 jest.unstable_mockModule('../utils/pagination.js', () => ({
   parsePagination: () => ({ limit: 50, offset: 0 }),
 }));
+jest.unstable_mockModule('../config/socket.js', () => ({
+  emitToUser: jest.fn(),
+}));
 
 const { listMessages } = await import('../controllers/chatController.js');
 
