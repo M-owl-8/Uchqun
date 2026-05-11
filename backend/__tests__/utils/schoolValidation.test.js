@@ -29,10 +29,10 @@ describe('validateChildAccess', () => {
     expect(result).toEqual({ id: 'c1', schoolId: 's2' });
   });
 
-  it('returns child when child has no schoolId', async () => {
+  it('returns null when scoped user accesses child with no schoolId', async () => {
     mockFindByPk.mockResolvedValue({ id: 'c1', schoolId: null });
     const result = await validateChildAccess('c1', { user: { schoolId: 's1' } });
-    expect(result).toEqual({ id: 'c1', schoolId: null });
+    expect(result).toBeNull();
   });
 
   it('returns child when school IDs match', async () => {

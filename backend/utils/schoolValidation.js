@@ -10,9 +10,9 @@ export async function validateChildAccess(childId, req) {
   const child = await Child.findByPk(childId);
   if (!child) return null;
 
-  // If user has schoolId, verify child belongs to same school
-  if (req.user.schoolId && child.schoolId && child.schoolId !== req.user.schoolId) {
-    return null; // Access denied - different school
+  // Scoped users (with schoolId) must match child's schoolId exactly
+  if (req.user.schoolId && child.schoolId !== req.user.schoolId) {
+    return null; // Access denied — wrong school or child has no school assignment
   }
 
   return child;
