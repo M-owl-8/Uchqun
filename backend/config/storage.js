@@ -1,6 +1,7 @@
 import path from 'path';
 import fs from 'fs';
 import { Client as AppwriteClient, Storage as AppwriteStorage, ID, InputFile } from 'node-appwrite';
+import logger from '../utils/logger.js';
 
 let appwriteClient;
 let appwriteStorage;
@@ -8,6 +9,7 @@ let appwriteBucketId;
 let appwriteProjectId;
 const fileBaseUrl = (process.env.FILE_BASE_URL || process.env.PUBLIC_API_URL || '').replace(/\/+$/, '');
 const localUploadsRoot = process.env.LOCAL_UPLOADS_DIR || path.join(process.cwd(), 'uploads');
+const fallbackEnabled = process.env.LOCAL_STORAGE_FALLBACK === 'true' && process.env.NODE_ENV !== 'production';
 const localMediaDir = path.join(localUploadsRoot, 'media');
 
 function ensureDir(dir) {
@@ -36,17 +38,17 @@ if (appwriteConfigured) {
     appwriteStorage = new AppwriteStorage(appwriteClient);
     appwriteBucketId = process.env.APPWRITE_BUCKET_ID;
     appwriteProjectId = process.env.APPWRITE_PROJECT_ID;
-    console.log('✓ Appwrite Storage initialized', {
+    logger.info('Appwrite Storage initialized', {
       endpoint: process.env.APPWRITE_ENDPOINT,
       projectId: process.env.APPWRITE_PROJECT_ID,
       bucketId: appwriteBucketId,
     });
   } catch (error) {
-    console.warn('⚠ Failed to initialize Appwrite Storage:', error.message);
-    console.warn('⚠ Falling back to other storage options');
+    logger.warn('Failed to initialize Appwrite Storage', { message: error.message });
+    logger.warn('Falling back to other storage options');
   }
 } else {
-  console.warn('⚠ Appwrite Storage not configured. Set APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_API_KEY, and APPWRITE_BUCKET_ID');
+  logger.warn('Appwrite Storage not configured. Set APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_API_KEY, and APPWRITE_BUCKET_ID');
 }
 
 /**
@@ -62,7 +64,7 @@ export async function uploadFile(file, filename, mimetype) {
     try {
       if (!appwriteStorage || !appwriteBucketId) {
         const error = new Error('Appwrite storage not initialized');
-        console.error('❌ Appwrite storage check failed:', {
+        logger.error('Appwrite storage check failed', {
           hasStorage: !!appwriteStorage,
           hasBucketId: !!appwriteBucketId,
           bucketId: appwriteBucketId,
@@ -70,7 +72,7 @@ export async function uploadFile(file, filename, mimetype) {
         throw error;
       }
 
-      console.log('📤 Starting Appwrite upload:', {
+      logger.info('Starting Appwrite upload', {
         filename,
         mimetype,
         bucketId: appwriteBucketId,
@@ -81,7 +83,7 @@ export async function uploadFile(file, filename, mimetype) {
       const buffer = Buffer.isBuffer(file) ? file : await streamToBuffer(file);
       const fileId = ID.unique();
       
-      console.log('📤 Creating file in Appwrite:', {
+      logger.info('Creating file in Appwrite', {
         fileId,
         filename,
         size: buffer.length,
@@ -95,7 +97,7 @@ export async function uploadFile(file, filename, mimetype) {
         InputFile.fromBuffer(buffer, filename)
       );
 
-      console.log('✓ Appwrite file created:', {
+      logger.info('Appwrite file created', {
         fileId: createdFile.$id,
         name: createdFile.name,
         sizeOriginal: createdFile.sizeOriginal,
@@ -107,7 +109,7 @@ export async function uploadFile(file, filename, mimetype) {
       // Store the original Appwrite URL (will be updated to proxy URL after media record is created)
       const appwriteUrl = `${baseEndpoint}/storage/buckets/${appwriteBucketId}/files/${createdFile.$id}/view?project=${appwriteProjectId}`;
       
-      console.log('✓ Generated Appwrite URL:', {
+      logger.info('Generated Appwrite URL', {
         appwriteUrl,
         fileId: createdFile.$id,
         isVideo: mimetype.startsWith('video/'),
@@ -115,7 +117,7 @@ export async function uploadFile(file, filename, mimetype) {
         mimetype,
       });
 
-      console.log('✓ Appwrite file uploaded successfully:', {
+      logger.info('Appwrite file uploaded successfully', {
         fileId: createdFile.$id,
         filename,
         appwriteUrl,
@@ -129,7 +131,7 @@ export async function uploadFile(file, filename, mimetype) {
       };
     } catch (err) {
       // Log detailed error information
-      console.error('❌ Appwrite upload error:', {
+      logger.error('Appwrite upload error', {
         message: err.message,
         code: err.code,
         type: err.type,
@@ -146,11 +148,9 @@ export async function uploadFile(file, filename, mimetype) {
         endpoint: process.env.APPWRITE_ENDPOINT,
       });
 
-      // Allow local fallback unless explicitly disabled. Avatars and child photos
-      // should keep working even when Appwrite is mis-configured; files land in
-      // uploads/ and are served statically by Express. Set
-      // LOCAL_STORAGE_FALLBACK=false to restore strict-production behavior.
-      if (process.env.LOCAL_STORAGE_FALLBACK === 'false') {
+      // Allow local fallback when explicitly enabled (LOCAL_STORAGE_FALLBACK=true, non-production).
+      // In production fallback is always disabled to prevent silent data loss.
+      if (!fallbackEnabled) {
         const errorMessage = err.response?.data?.message || err.message || 'Unknown error';
         const errorCode = err.code || err.response?.status || 'UNKNOWN';
         const detailedError = new Error(`Appwrite upload failed (${errorCode}): ${errorMessage}. Check Appwrite credentials, bucket permissions, and endpoint connectivity.`);
@@ -158,21 +158,20 @@ export async function uploadFile(file, filename, mimetype) {
         detailedError.originalError = err;
         throw detailedError;
       }
-      console.warn('⚠ Appwrite upload failed, falling back to local storage:', err.message);
+      logger.warn('Appwrite upload failed, falling back to local storage', { message: err.message });
     }
   }
 
   // Local disk fallback. Writing to the container filesystem on Railway is
-  // ephemeral (files are lost on restart), but it keeps uploads working while
-  // external storage is being configured. Set LOCAL_STORAGE_FALLBACK=false to
-  // opt out in strict production environments.
+  // ephemeral (files are lost on restart), but it keeps uploads working in
+  // local dev. Set LOCAL_STORAGE_FALLBACK=true (non-production only) to enable.
   if (process.env.NODE_ENV === 'production' && !appwriteConfigured) {
-    if (process.env.LOCAL_STORAGE_FALLBACK === 'false') {
+    if (!fallbackEnabled) {
       throw new Error(
         'Storage not configured for production. Please configure Appwrite (APPWRITE_*) environment variables.'
       );
     }
-    console.warn('⚠ No cloud storage configured; using ephemeral local disk. Files will be lost on container restart. Configure APPWRITE_* env vars.');
+    logger.warn('No cloud storage configured; using ephemeral local disk -- files lost on restart. Configure APPWRITE_* env vars.');
   }
 
   try {
@@ -190,7 +189,7 @@ export async function uploadFile(file, filename, mimetype) {
 
     // Log warning in production if using local storage
     if (process.env.NODE_ENV === 'production') {
-      console.warn('⚠ WARNING: Using local storage in production. Files will be lost on container restart. Configure Appwrite for persistent storage.');
+      logger.warn('Using local storage in production -- files lost on restart. Configure Appwrite for persistent storage.');
     }
 
     return {
@@ -198,7 +197,7 @@ export async function uploadFile(file, filename, mimetype) {
       path: destination,
     };
   } catch (localError) {
-    console.error('❌ Local storage write error:', {
+    logger.error('Local storage write error', {
       error: localError.message,
       stack: localError.stack,
       filename,
@@ -239,8 +238,8 @@ export async function deleteFile(filepath) {
       await appwriteStorage.deleteFile(appwriteBucketId, fileId);
       return;
     } catch (err) {
-      if (process.env.LOCAL_STORAGE_FALLBACK !== 'false') {
-        console.warn('⚠ Appwrite delete failed, falling back to local delete:', err.message);
+      if (fallbackEnabled) {
+        logger.warn('Appwrite delete failed, falling back to local delete', { message: err.message });
       } else {
         throw err;
       }
