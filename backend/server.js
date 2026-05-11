@@ -146,33 +146,33 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 app.use('/api', apiLimiter);
 
 app.use('/health', healthRoutes);
-app.use('/api/auth', authRoutes);
-app.use('/api/admin', adminRoutes);
-app.use('/api/reception', receptionRoutes);
-app.use('/api/parent', parentRoutes);
-app.use('/api/teacher', teacherRoutes);
-app.use('/api/child', childRoutes);
-app.use('/api/user', userRoutes);
-app.use('/api/migrations', migrationRoutes);
-app.use('/api/activities', activityRoutes);
-app.use('/api/media', mediaRoutes);
-app.use('/api/meals', mealRoutes);
-app.use('/api/notifications', notificationRoutes);
-app.use('/api/chat', chatRoutes);
-app.use('/api/progress', progressRoutes);
-app.use('/api/groups', groupRoutes);
-app.use('/api/therapy', therapyRoutes);
-app.use('/api/ai-warnings', aiWarningRoutes);
-app.use('/api/government', governmentRoutes);
-app.use('/api/business', businessRoutes);
-app.use('/api/assessments', childAssessmentRoutes);
-app.use('/api/service-plans', servicePlanRoutes);
-app.use('/api/meal-plans', mealPlanRoutes);
-app.use('/api/resources', teacherResourceRoutes);
-app.use('/api/news', newsRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/admin', adminRoutes);
+app.use('/api/v1/reception', receptionRoutes);
+app.use('/api/v1/parent', parentRoutes);
+app.use('/api/v1/teacher', teacherRoutes);
+app.use('/api/v1/child', childRoutes);
+app.use('/api/v1/user', userRoutes);
+app.use('/api/v1/migrations', migrationRoutes);
+app.use('/api/v1/activities', activityRoutes);
+app.use('/api/v1/media', mediaRoutes);
+app.use('/api/v1/meals', mealRoutes);
+app.use('/api/v1/notifications', notificationRoutes);
+app.use('/api/v1/chat', chatRoutes);
+app.use('/api/v1/progress', progressRoutes);
+app.use('/api/v1/groups', groupRoutes);
+app.use('/api/v1/therapy', therapyRoutes);
+app.use('/api/v1/ai-warnings', aiWarningRoutes);
+app.use('/api/v1/government', governmentRoutes);
+app.use('/api/v1/business', businessRoutes);
+app.use('/api/v1/assessments', childAssessmentRoutes);
+app.use('/api/v1/service-plans', servicePlanRoutes);
+app.use('/api/v1/meal-plans', mealPlanRoutes);
+app.use('/api/v1/resources', teacherResourceRoutes);
+app.use('/api/v1/news', newsRoutes);
 
 if (process.env.NODE_ENV !== 'production') {
-  app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+  app.use('/api/v1/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 }
 
 app.use(notFound);
@@ -221,7 +221,7 @@ httpServer.listen(PORT, '0.0.0.0', () => {
   logger.info('Server started', {
     port: PORT,
     environment: process.env.NODE_ENV || 'development',
-    apiUrl: `http://localhost:${PORT}/api`,
+    apiUrl: `http://localhost:${PORT}/api/v1`,
   });
 
   if (process.env.RUN_MIGRATIONS === 'true') {
