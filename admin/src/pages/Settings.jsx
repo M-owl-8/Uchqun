@@ -24,7 +24,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
-  const { user, setUser, logout } = useAuth();
+  const { setUser, logout } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -62,6 +62,7 @@ const Settings = () => {
   useEffect(() => {
     loadUserProfile();
     loadMessages();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadMessages = async () => {

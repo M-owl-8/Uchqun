@@ -1,5 +1,3 @@
-import React from 'react';
-
 /**
  * AdminBackground - Corporate professional theme
  * Features: Deep teal gradient, geometric patterns, business feel

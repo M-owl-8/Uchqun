@@ -2,9 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Crown, Upload, FileText, User, Mail, Phone, X, CheckCircle, MessageSquare } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
-
+import { Crown, Upload, FileText, Mail, Phone, X, CheckCircle, MessageSquare } from 'lucide-react';
 const AdminRegister = () => {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -19,7 +17,6 @@ const AdminRegister = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
 
   const handleInputChange = (e) => {
     setFormData({

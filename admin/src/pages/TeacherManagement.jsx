@@ -4,14 +4,11 @@ import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
-import { 
-  UserCheck, 
+import {
+  UserCheck,
   Search,
   Mail,
   Phone,
-  Eye,
-  GraduationCap,
-  Briefcase
 } from 'lucide-react';
 
 /**
@@ -30,6 +27,7 @@ const TeacherManagement = () => {
 
   useEffect(() => {
     fetchTeachers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchTeachers = async () => {

@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Menu, Crown } from 'lucide-react';
 
 const TopBar = ({ onMenuClick }) => {

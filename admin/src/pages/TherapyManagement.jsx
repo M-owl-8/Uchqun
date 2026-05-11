@@ -12,7 +12,6 @@ import {
   Edit2,
   Trash2,
   Search,
-  Filter,
   Play,
   Clock,
   Star,
@@ -52,6 +51,7 @@ const TherapyManagement = () => {
 
   useEffect(() => {
     fetchTherapies();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterType]);
 
   const fetchTherapies = async () => {

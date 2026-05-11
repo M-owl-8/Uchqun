@@ -3,14 +3,13 @@ import api from '../services/api';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import { 
-  Shield, 
-  FileText, 
-  CheckCircle, 
-  XCircle, 
+  Shield,
+  FileText,
+  CheckCircle,
+  XCircle,
   Clock,
   Eye,
   EyeOff,
-  Download,
   UserCheck,
   UserX,
   Plus,
@@ -54,6 +53,7 @@ const ReceptionManagement = () => {
 
   useEffect(() => {
     fetchReceptions(true); // Show loading on initial load
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchReceptions = async (showLoading = false) => {

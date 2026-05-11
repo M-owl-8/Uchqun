@@ -1,6 +1,5 @@
 import { MessageSquare, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import LoadingSpinner from './LoadingSpinner';
 
 const MessagesModal = ({ onClose, messages = [] }) => {
   const { t, i18n } = useTranslation();

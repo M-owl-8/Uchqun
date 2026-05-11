@@ -1,15 +1,12 @@
-import { useEffect, useState, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
-import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
-import { 
-  Users, 
+import {
+  Users,
   Search,
-  Mail,
   Phone,
   Eye,
   FileText,
@@ -34,11 +31,11 @@ const ParentManagement = () => {
   const [parentData, setParentData] = useState(null);
   const [loadingParentData, setLoadingParentData] = useState(false);
   const { error: toastError } = useToast();
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
   useEffect(() => {
     fetchParents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchParents = async () => {

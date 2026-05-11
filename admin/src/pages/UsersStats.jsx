@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -11,11 +10,9 @@ import {
   Shield,
   UserCircle,
   TrendingUp,
-  Calendar,
 } from 'lucide-react';
 
 const UsersStats = () => {
-  const { user } = useAuth();
   const { error: showError } = useToast();
   const { t } = useTranslation();
   const [stats, setStats] = useState(null);
@@ -28,6 +25,7 @@ const UsersStats = () => {
 
   useEffect(() => {
     loadStats();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange, selectedRole]);
 
   const loadStats = async () => {

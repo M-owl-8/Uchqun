@@ -6,7 +6,6 @@ import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
-  User,
   Mail,
   MessageSquare,
   Send,
