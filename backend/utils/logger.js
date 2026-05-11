@@ -1,5 +1,4 @@
 import winston from 'winston';
-import { LoggingWinston } from '@google-cloud/logging-winston';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
@@ -105,22 +104,6 @@ if (process.env.NODE_ENV !== 'test' && canWriteLogs) {
   );
 }
 
-// Google Cloud Logging (production only)
-if (process.env.NODE_ENV === 'production' && process.env.GCP_PROJECT_ID) {
-  try {
-    transports.push(
-      new LoggingWinston({
-        projectId: process.env.GCP_PROJECT_ID,
-        logName: 'uchqun-backend',
-        labels: {
-          environment: process.env.NODE_ENV,
-        },
-      })
-    );
-  } catch (error) {
-    console.error('Failed to initialize Google Cloud Logging:', error);
-  }
-}
 
 // Create logger config
 const loggerConfig = {

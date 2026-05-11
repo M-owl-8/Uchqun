@@ -7,7 +7,7 @@ import os from 'os';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Use a temp directory for uploads (Appwrite/GCS will store permanently)
+// Use a temp directory for uploads (Appwrite will store permanently)
 const tempUploadsDir = path.join(os.tmpdir(), 'uchqun-uploads-temp');
 if (!fs.existsSync(tempUploadsDir)) {
   fs.mkdirSync(tempUploadsDir, { recursive: true });

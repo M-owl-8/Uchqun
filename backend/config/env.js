@@ -72,10 +72,6 @@ const envSchema = Joi.object({
   // Optional: Redis Configuration (for caching/rate limiting in production)
   REDIS_URL: Joi.string().uri().optional(),
   
-  // Optional: Google Cloud Configuration
-  GCP_PROJECT_ID: Joi.string().optional(),
-  GCS_BUCKET_NAME: Joi.string().optional(),
-
   // Optional: Sentry Configuration
   SENTRY_DSN: Joi.string().uri().optional(),
 

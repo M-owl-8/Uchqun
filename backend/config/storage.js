@@ -1,10 +1,7 @@
-import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import fs from 'fs';
 import { Client as AppwriteClient, Storage as AppwriteStorage, ID, InputFile } from 'node-appwrite';
 
-let storage;
-let bucket;
 let appwriteClient;
 let appwriteStorage;
 let appwriteBucketId;
@@ -52,24 +49,8 @@ if (appwriteConfigured) {
   console.warn('⚠ Appwrite Storage not configured. Set APPWRITE_ENDPOINT, APPWRITE_PROJECT_ID, APPWRITE_API_KEY, and APPWRITE_BUCKET_ID');
 }
 
-// Initialize Google Cloud Storage if configured
-if (process.env.GCP_PROJECT_ID && process.env.GCS_BUCKET_NAME) {
-  try {
-    storage = new Storage({
-      projectId: process.env.GCP_PROJECT_ID,
-      // Credentials will be loaded from environment variables or service account key file
-      // GOOGLE_APPLICATION_CREDENTIALS or default credentials
-    });
-    bucket = storage.bucket(process.env.GCS_BUCKET_NAME);
-    console.log('✓ Google Cloud Storage initialized');
-  } catch (error) {
-    console.warn('⚠ Failed to initialize Google Cloud Storage:', error.message);
-    console.warn('⚠ Falling back to local file storage');
-  }
-}
-
 /**
- * Upload file to storage (Appwrite preferred, GCS fallback)
+ * Upload file to storage (Appwrite preferred, local fallback)
  * @param {Buffer|Stream} file - File buffer or stream
  * @param {string} filename - Destination filename
  * @param {string} mimetype - File MIME type
@@ -181,51 +162,17 @@ export async function uploadFile(file, filename, mimetype) {
     }
   }
 
-  if (bucket && process.env.NODE_ENV === 'production') {
-    // Upload to Google Cloud Storage
-    const blob = bucket.file(filename);
-    const stream = blob.createWriteStream({
-      metadata: {
-        contentType: mimetype,
-      },
-      public: true, // Make files publicly accessible (adjust based on your needs)
-    });
-
-    return new Promise((resolve, reject) => {
-      stream.on('error', (error) => {
-        reject(error);
-      });
-
-      stream.on('finish', async () => {
-        // Make file public
-        await blob.makePublic();
-        
-        const url = `https://storage.googleapis.com/${bucket.name}/${filename}`;
-        resolve({
-          url,
-          path: filename,
-        });
-      });
-
-      if (Buffer.isBuffer(file)) {
-        stream.end(file);
-      } else {
-        file.pipe(stream);
-      }
-    });
-  }
-
   // Local disk fallback. Writing to the container filesystem on Railway is
   // ephemeral (files are lost on restart), but it keeps uploads working while
   // external storage is being configured. Set LOCAL_STORAGE_FALLBACK=false to
   // opt out in strict production environments.
-  if (process.env.NODE_ENV === 'production' && !appwriteConfigured && !bucket) {
+  if (process.env.NODE_ENV === 'production' && !appwriteConfigured) {
     if (process.env.LOCAL_STORAGE_FALLBACK === 'false') {
       throw new Error(
-        'Storage not configured for production. Please configure Appwrite (APPWRITE_*) or Google Cloud Storage (GCP_*) environment variables.'
+        'Storage not configured for production. Please configure Appwrite (APPWRITE_*) environment variables.'
       );
     }
-    console.warn('⚠ No cloud storage configured; using ephemeral local disk. Files will be lost on container restart. Configure APPWRITE_* or GCP_* env vars.');
+    console.warn('⚠ No cloud storage configured; using ephemeral local disk. Files will be lost on container restart. Configure APPWRITE_* env vars.');
   }
 
   try {
@@ -243,7 +190,7 @@ export async function uploadFile(file, filename, mimetype) {
 
     // Log warning in production if using local storage
     if (process.env.NODE_ENV === 'production') {
-      console.warn('⚠ WARNING: Using local storage in production. Files will be lost on container restart. Configure Appwrite or GCS for persistent storage.');
+      console.warn('⚠ WARNING: Using local storage in production. Files will be lost on container restart. Configure Appwrite for persistent storage.');
     }
 
     return {
@@ -300,14 +247,6 @@ export async function deleteFile(filepath) {
     }
   }
 
-  if (bucket && process.env.NODE_ENV === 'production') {
-    // Delete from Google Cloud Storage
-    const filename = getFilename(filepath);
-    const blob = bucket.file(filename);
-    await blob.delete();
-    return;
-  }
-
   // Local fallback deletion
   try {
     let localPath = filepath;
@@ -343,16 +282,7 @@ export async function getSignedUrl(filename, expiresIn = 3600) {
     return `${baseEndpoint}/storage/buckets/${appwriteBucketId}/files/${filename}/view?project=${appwriteProjectId}`;
   }
 
-  if (bucket && process.env.NODE_ENV === 'production') {
-    const blob = bucket.file(getFilename(filename));
-    const [url] = await blob.getSignedUrl({
-      action: 'read',
-      expires: Date.now() + expiresIn * 1000,
-    });
-    return url;
-  }
-
-  throw new Error('No storage configured. Please set Appwrite or GCS credentials.');
+  throw new Error('No storage configured. Please set Appwrite credentials (APPWRITE_*).');
 }
 
 async function streamToBuffer(stream) {
@@ -364,17 +294,3 @@ async function streamToBuffer(stream) {
   });
 }
 
-function getFilename(filepath) {
-  if (!filepath) return '';
-  // If it's a URL, extract the last path segment
-  try {
-    if (filepath.startsWith('http')) {
-      const url = new URL(filepath);
-      const segments = url.pathname.split('/').filter(Boolean);
-      return segments[segments.length - 1] || '';
-    }
-  } catch {
-    // Fall through to basename handling
-  }
-  return path.basename(filepath);
-}
