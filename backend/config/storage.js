@@ -1,8 +1,7 @@
 import { Storage } from '@google-cloud/storage';
 import path from 'path';
 import fs from 'fs';
-import { Client as AppwriteClient, Storage as AppwriteStorage, ID } from 'node-appwrite';
-import { InputFile } from 'node-appwrite/file';
+import { Client as AppwriteClient, Storage as AppwriteStorage, ID, InputFile } from 'node-appwrite';
 
 let storage;
 let bucket;

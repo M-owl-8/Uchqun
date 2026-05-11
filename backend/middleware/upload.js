@@ -75,8 +75,6 @@ export const uploadDocument = multer({
   limits: {
     fileSize: 10 * 1024 * 1024, // 10MB max file size for documents
   },
-  // Preserve form field names (important for multipart/form-data)
-  preservePath: false,
 });
 
 export const uploadDocuments = uploadDocument.fields([
