@@ -55,23 +55,23 @@
     "systemStats": "System Statistics",
     "totalUsers": "Total users: {{count}} | Active receptions: {{active}} | Groups: {{groups}}"
   },
-  "pntsPage": {
-    "title": "Pnt Management",
-    "subtitle": "View pnt accounts (read-only)",
-    "search": "Search pnts...",
-    "listTitle": "Pnts",
-    "emptySearch": "No pnts found",
-    "empty": "No pnts yet",
-    "children": "Children",
+  "parentsPage": {
+    "title": "Parent Management",
+    "subtitle": "View parent accounts (read-only)",
+    "search": "Search parents...",
+    "listTitle": "Parents",
+    "emptySearch": "No parents found",
+    "empty": "No parents yet",
+    "children": "Children ({{count}})",
     "noChildren": "No children registered",
-    "activities": "Activities",
+    "activities": "Activities ({{count}})",
     "noActivities": "No activities",
-    "meals": "Meals",
+    "meals": "Meals ({{count}})",
     "noMeals": "No meals",
-    "media": "Media",
+    "media": "Media ({{count}})",
     "noMedia": "No media",
-    "loadError": "Failed to fetch pnts",
-    "dataError": "Failed to fetch pnt data"
+    "loadError": "Failed to fetch parents",
+    "dataError": "Failed to fetch parent data"
   },
   "teachersPage": {
     "title": "Teacher Management",
