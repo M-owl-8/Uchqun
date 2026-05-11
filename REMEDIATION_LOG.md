@@ -99,6 +99,100 @@ to a specific commit and records the verification command output.
 
 ---
 
-## Stages 1–8
+## Stage 1 — Critical Security
 
-*(pending — to be filled as each stage completes)*
+### C-01 — `getMediaItem` admin path bypassed school isolation (IDOR)
+- **Status:** CLOSED
+- **Commit:** 670b688
+- **Root cause:** `else if (role === 'admin')` branch had no `schoolId` filter — admin
+  could retrieve any media item by ID regardless of school.
+- **Fix:** Admin now fetches school's children first and filters `where.childId` to
+  that set; admin without schoolId falls back to unscoped.
+- **Also added:** `government` branch (was falling into parent path returning nothing).
+- **Verification:** `npm test -- __tests__/media.test.js` → 12/12 PASS
+
+---
+
+### M-02 — `getMedia` admin path bypassed school isolation (IDOR list)
+- **Status:** CLOSED
+- **Commit:** 670b688 (same commit as C-01)
+- **Root cause:** Same as C-01 but for the list endpoint; admin with a specific
+  `childId` could also access a child from a different school.
+- **Fix:** Admin `getMedia` now scopes through `Child.findAll({ where: { schoolId } })`.
+- **Verification:** See C-01 above.
+
+---
+
+### H-05 — `validateChildAccess` null-schoolId bypass
+- **Status:** CLOSED
+- **Commit:** ad2685a
+- **Root cause:** `req.user.schoolId && child.schoolId && child.schoolId !== req.user.schoolId`
+  — the `child.schoolId &&` condition meant a child with no schoolId was never denied
+  to scoped users.
+- **Fix:** Changed to `req.user.schoolId && child.schoolId !== req.user.schoolId`
+  (exact match required; null child.schoolId fails the check for scoped users).
+- **Verification:** `npm test -- __tests__/utils/schoolValidation.test.js` → 6/6 PASS
+
+---
+
+## Stage 2 — Other Security
+
+### H-01 — `nodemailer@7.x` affected by SMTP command injection CVEs
+- **Status:** CLOSED
+- **Commit:** d600e2a
+- **CVEs:** GHSA-c7w3-x93f-qmm8 (envelope.size injection), GHSA-vvjj-xcjg-gr5g (CRLF in EHLO/HELO)
+- **Fix:** Upgraded `nodemailer` 7.0.12 → 8.0.7. No API changes needed.
+- **Verification:** `npm audit` no longer reports nodemailer. All 61 suites pass.
+
+---
+
+### H-03 — File upload validates MIME type only (no magic-byte check)
+- **Status:** CLOSED
+- **Commit:** 0dc2afa
+- **Root cause:** `fileFilter` in `upload.js` checks `file.mimetype` (client-controlled).
+- **Fix:** Installed `file-type@19.6.0`; added `fileTypeFromFile` check in `uploadMedia`
+  after multer writes the file to disk. Invalid content → `safeCleanup` + 400.
+- **Verification:** All 61 suites pass.
+
+---
+
+### M-03 — In-memory login lockout and JTI revocation store
+- **Status:** DEFERRED (pre-launch blocker, requires Redis infrastructure)
+- **Note:** Both stores documented in `CLAUDE.md` as known limitations.
+
+---
+
+## Stage 3 — Performance
+
+### H-02 — N+1 queries in `getSchoolsStats` fallback branch
+- **Status:** CLOSED
+- **Commit:** 065356e
+- **Root cause:** Fallback branch ran 2 queries per school inside `Promise.all(schools.rows.map(...))`.
+- **Fix:** Pre-load all ratings and child counts in 2 bulk queries before the map;
+  map is now synchronous.
+- **Verification:** `npm test -- __tests__/government.test.js` → 2/2 PASS. Full suite 61/61.
+
+---
+
+## Stage 4 — Infra Hygiene
+
+### M-04 — `nixpacks.toml` used `npm install` (non-deterministic builds)
+- **Status:** CLOSED
+- **Commit:** cf2abae
+- **Fix:** Changed to `npm ci` to enforce lockfile on Railway deploys.
+
+---
+
+## Stage 5 — Code Hygiene
+
+### M-10 — `migrate.js` used `console.log/error` instead of structured logger
+- **Status:** CLOSED
+- **Commit:** 6edca8f
+- **Fix:** Replaced all 17 `console.*` calls with `logger.info/warn/error` with
+  structured key-value fields.
+
+---
+
+## Stages 6–8
+
+*(Stage 6 = API versioning M-07, Stage 7 = dependency upgrades L-02/L-03/L-05, Stage 8 = open questions)*
