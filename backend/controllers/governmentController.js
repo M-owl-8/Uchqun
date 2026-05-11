@@ -152,30 +152,45 @@ export const getSchoolsStats = async (req, res) => {
       });
     }
 
-    const schoolsWithStats = await Promise.all(schools.rows.map(async (school) => {
+    // Batch-load stats for fallback path to avoid N+1 queries
+    const ratingsBySchool = {};
+    const childCountBySchool = {};
+    if (!includesLoaded) {
+      const schoolIds = schools.rows.map(s => s.id);
+      try {
+        const [allRatings, allChildren] = await Promise.all([
+          SchoolRating.findAll({
+            where: { schoolId: { [Op.in]: schoolIds } },
+            attributes: ['schoolId', 'stars', 'evaluation'],
+          }),
+          Child.findAll({
+            where: { schoolId: { [Op.in]: schoolIds } },
+            attributes: ['schoolId'],
+          }),
+        ]);
+        for (const r of allRatings) {
+          if (!ratingsBySchool[r.schoolId]) ratingsBySchool[r.schoolId] = [];
+          ratingsBySchool[r.schoolId].push(r);
+        }
+        for (const c of allChildren) {
+          childCountBySchool[c.schoolId] = (childCountBySchool[c.schoolId] || 0) + 1;
+        }
+      } catch (batchError) {
+        logger.error('Batch stats fallback failed', { error: batchError.message });
+      }
+    }
+
+    const schoolsWithStats = schools.rows.map((school) => {
       let ratings;
       let studentsCount;
 
-      // If includes loaded, use eager-loaded data; otherwise query per school
+      // If includes loaded, use eager-loaded data; otherwise use pre-fetched batch
       if (includesLoaded && school.ratings !== undefined) {
         ratings = school.ratings || [];
         studentsCount = (school.schoolChildren || []).length;
       } else {
-        try {
-          const [ratingRows, childRows] = await Promise.all([
-            SchoolRating.findAll({ where: { schoolId: school.id }, attributes: ['stars', 'evaluation'] }),
-            Child.count({ where: { schoolId: school.id } }),
-          ]);
-          ratings = ratingRows;
-          studentsCount = childRows;
-        } catch (fallbackError) {
-          logger.error('Per-school stats fallback failed', {
-            schoolId: school.id,
-            error: fallbackError.message,
-          });
-          ratings = [];
-          studentsCount = 0;
-        }
+        ratings = ratingsBySchool[school.id] || [];
+        studentsCount = childCountBySchool[school.id] || 0;
       }
 
       const ratingResult = computeAverageRating(ratings);
@@ -191,7 +206,7 @@ export const getSchoolsStats = async (req, res) => {
         studentsCount,
         governmentLevel: getGovernmentLevel(avgRating, ratingsCount),
       };
-    }));
+    });
 
     // Global stats (weighted average by review count)
     let totalReviews = 0;
