@@ -191,17 +191,6 @@ export const getMySchoolRating = async (req, res) => {
     if (child.schoolId) {
       schoolId = child.schoolId;
       school = child.childSchool;
-    } else if (child.school && typeof child.school === 'string' && child.school.trim().length > 0) {
-      school = await School.findOne({ where: { name: { [Op.iLike]: child.school } } });
-      if (!school) school = await School.findOne({ where: { name: { [Op.iLike]: `%${child.school}%` } } });
-      if (school) {
-        schoolId = school.id;
-        try { await child.update({ schoolId: school.id }); } catch (err) { logger.warn('Failed to update child schoolId', { childId: child.id, error: err.message }); }
-      }
-    }
-
-    if (!schoolId && child?.school && typeof child.school === 'string' && child.school.trim().length > 0) {
-      return res.json({ success: true, data: { rating: null, school: { id: null, name: child.school, address: null, phone: null, email: null, type: null }, summary: { average: 0, count: 0 }, allRatings: [] } });
     }
 
     if (!schoolId) {

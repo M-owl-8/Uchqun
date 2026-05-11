@@ -184,7 +184,7 @@ const ParentManagement = () => {
                             <div className="text-xs text-gray-500 mt-1">
                               <p>DOB: {new Date(child.dateOfBirth).toLocaleDateString()}</p>
                               <p>Gender: {child.gender}</p>
-                              <p>School: {child.school}</p>
+                              <p>School: {child.childSchool?.name || ''}</p>
                               <p>Class: {child.class}</p>
                             </div>
                           </div>

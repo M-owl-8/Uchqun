@@ -233,7 +233,7 @@ const MonitoringJournal = () => {
                       {child.firstName} {child.lastName}
                     </h3>
                     <p className="text-sm text-gray-500">{child.parentName}</p>
-                    <p className="text-xs text-gray-400">{child.school}, {child.class}</p>
+                    <p className="text-xs text-gray-400">{child.childSchool?.name || ''}, {child.class}</p>
                   </div>
                 </div>
               </div>

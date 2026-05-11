@@ -427,7 +427,7 @@ const ChildProfile = () => {
                     {c.firstName} {c.lastName}
                   </h3>
                   <div className="space-y-1">
-                    <p className="text-sm text-gray-500">{c.school}</p>
+                    <p className="text-sm text-gray-500">{c.childSchool?.name || ''}</p>
                     {parentGroupName && (
                       <p className="text-sm text-gray-500">{parentGroupName}</p>
                     )}
@@ -487,7 +487,7 @@ const ChildProfile = () => {
               >
                 {children.map((c) => (
                   <option key={c.id} value={c.id}>
-                    {c.firstName} {c.lastName} {c.school ? ` - ${c.school}` : ''}
+                    {c.firstName} {c.lastName} {c.childSchool?.name ? ` - ${c.childSchool.name}` : ''}
                   </option>
                 ))}
               </select>
@@ -594,7 +594,7 @@ const ChildProfile = () => {
             <div className="flex flex-wrap justify-center md:justify-start gap-3">
               <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
                 <School className="w-4 h-4 text-blue-600" />
-                <span className="text-sm font-bold text-gray-800">{child.school}</span>
+                <span className="text-sm font-bold text-gray-800">{child.childSchool?.name || ''}</span>
               </div>
               {parentGroupName && (
                 <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">

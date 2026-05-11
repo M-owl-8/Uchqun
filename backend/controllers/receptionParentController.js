@@ -32,7 +32,6 @@ export const createParent = async (req, res) => {
         disabilityType: req.body['child[disabilityType]'] || req.body.child?.disabilityType || '',
         medicalDiagnosis: req.body['child[medicalDiagnosis]'] || req.body.child?.medicalDiagnosis || null,
         specialNeeds: req.body['child[specialNeeds]'] || req.body.child?.specialNeeds || null,
-        school: req.body['child[school]'] || req.body.child?.school || '',
         photo: null,
       };
     }
@@ -96,28 +95,13 @@ export const createParent = async (req, res) => {
       }
 
       let schoolId = null;
-      if (child.school) {
-        try {
-          let foundSchool = await School.findOne({ where: { name: { [Op.iLike]: child.school } } });
-          if (!foundSchool) foundSchool = await School.findOne({ where: { name: { [Op.iLike]: `%${child.school}%` } } });
-          if (foundSchool) {
-            schoolId = foundSchool.id;
-            logger.info('School found for child', { childSchool: child.school, schoolId: foundSchool.id, schoolName: foundSchool.name });
-          } else {
-            logger.warn('School not found for child', { childSchool: child.school });
-          }
-        } catch (error) {
-          logger.error('Error finding school for child', { error: error.message, childSchool: child.school });
-        }
-      }
-
       if (req.user.schoolId) schoolId = req.user.schoolId;
 
       await Child.create({
         parentId: parent.id, firstName: child.firstName, lastName: child.lastName,
         dateOfBirth: child.dateOfBirth, gender: child.gender, disabilityType: child.disabilityType,
         medicalDiagnosis: child.medicalDiagnosis || null, specialNeeds: child.specialNeeds || null,
-        photo: photoUrl, school: child.school, schoolId,
+        photo: photoUrl, schoolId,
         class: child.class || '', teacher: child.teacher || '',
         groupId: null, emergencyContact: {},
       });
@@ -128,7 +112,7 @@ export const createParent = async (req, res) => {
       include: [
         { model: User, as: 'assignedTeacher', attributes: ['id', 'firstName', 'lastName', 'email'], required: false },
         { model: Group, as: 'group', attributes: ['id', 'name', 'description'], required: false },
-        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'], required: false },
+        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'class', 'teacher', 'photo'], include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }], required: false },
       ],
     });
 
@@ -148,7 +132,7 @@ export const getParents = async (req, res) => {
       include: [
         { model: User, as: 'assignedTeacher', attributes: ['id', 'firstName', 'lastName', 'email'], required: false },
         { model: Group, as: 'group', attributes: ['id', 'name', 'description'], required: false },
-        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'], required: false },
+        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'class', 'teacher', 'photo'], include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }], required: false },
       ],
       order: [['createdAt', 'DESC']],
     });
@@ -203,7 +187,7 @@ export const updateParent = async (req, res) => {
       include: [
         { model: User, as: 'assignedTeacher', attributes: ['id', 'firstName', 'lastName', 'email'], required: false },
         { model: Group, as: 'group', attributes: ['id', 'name', 'description'], required: false },
-        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'school', 'class', 'teacher', 'photo'], required: false },
+        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'medicalDiagnosis', 'specialNeeds', 'class', 'teacher', 'photo'], include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }], required: false },
       ],
     });
 
@@ -260,15 +244,14 @@ export const createChildForParent = async (req, res) => {
     const disabilityType = req.body['child[disabilityType]'] || req.body['child.disabilityType'] || req.body.disabilityType || req.body.child?.disabilityType;
     const medicalDiagnosis = req.body['child[medicalDiagnosis]'] || req.body['child.medicalDiagnosis'] || req.body.medicalDiagnosis || req.body.child?.medicalDiagnosis || null;
     const specialNeeds = req.body['child[specialNeeds]'] || req.body['child.specialNeeds'] || req.body.specialNeeds || req.body.child?.specialNeeds || null;
-    const school = req.body['child[school]'] || req.body['child.school'] || req.body.school || req.body.child?.school || '';
 
-    logger.info('Create child: parsed values', { parentId, firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType, school: !!school });
+    logger.info('Create child: parsed values', { parentId, firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType });
 
-    if (!firstName || !lastName || !dateOfBirth || !gender || !disabilityType || !school) {
-      logger.warn('Create child: validation failed', { firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType, school: !!school });
+    if (!firstName || !lastName || !dateOfBirth || !gender || !disabilityType) {
+      logger.warn('Create child: validation failed', { firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType });
       return res.status(400).json({
-        error: 'First name, last name, date of birth, gender, disability type, and school are required',
-        missing: { firstName: !firstName, lastName: !lastName, dateOfBirth: !dateOfBirth, gender: !gender, disabilityType: !disabilityType, school: !school },
+        error: 'First name, last name, date of birth, gender, and disability type are required',
+        missing: { firstName: !firstName, lastName: !lastName, dateOfBirth: !dateOfBirth, gender: !gender, disabilityType: !disabilityType },
       });
     }
 
@@ -305,7 +288,7 @@ export const createChildForParent = async (req, res) => {
 
     const child = await Child.create({
       parentId: parent.id, firstName, lastName, dateOfBirth, gender, disabilityType,
-      medicalDiagnosis, specialNeeds, photo: photoUrl, school, schoolId,
+      medicalDiagnosis, specialNeeds, photo: photoUrl, schoolId,
       class: '', teacher: '', groupId: null, emergencyContact: {},
     });
 
@@ -336,10 +319,9 @@ export const updateChildForReception = async (req, res) => {
       ? (req.body['child[medicalDiagnosis]'] ?? req.body.child?.medicalDiagnosis ?? null)
       : child.medicalDiagnosis;
     const specialNeeds = req.body['child[specialNeeds]'] !== undefined ? (req.body['child[specialNeeds]'] ?? req.body.child?.specialNeeds ?? null) : child.specialNeeds;
-    const school = req.body['child[school]'] ?? req.body.child?.school ?? child.school;
 
-    if (!firstName || !lastName || !dateOfBirth || !gender || !disabilityType || !school) {
-      return res.status(400).json({ error: 'First name, last name, date of birth, gender, disability type, and school are required' });
+    if (!firstName || !lastName || !dateOfBirth || !gender || !disabilityType) {
+      return res.status(400).json({ error: 'First name, last name, date of birth, gender, and disability type are required' });
     }
 
     let photoUrl = child.photo;
@@ -360,23 +342,14 @@ export const updateChildForReception = async (req, res) => {
       photoUrl = req.body['child[photo]'];
     }
 
-    let schoolId = child.schoolId;
-    if (school) {
-      try {
-        let foundSchool = await School.findOne({ where: { name: { [Op.iLike]: school } } });
-        if (!foundSchool) foundSchool = await School.findOne({ where: { name: { [Op.iLike]: `%${school}%` } } });
-        if (foundSchool) schoolId = foundSchool.id;
-      } catch (e) {
-        logger.warn('School lookup failed for child update', { error: e.message });
-      }
-    }
+    const schoolId = child.schoolId;
 
     await child.update({
       firstName: firstName.trim(), lastName: lastName.trim(), dateOfBirth, gender,
       disabilityType: disabilityType.trim(),
       medicalDiagnosis: medicalDiagnosis === '' ? null : (medicalDiagnosis && String(medicalDiagnosis).trim()) || null,
       specialNeeds: specialNeeds === '' ? null : (specialNeeds && specialNeeds.trim()) || null,
-      school: school.trim(), schoolId: schoolId ?? child.schoolId, photo: photoUrl,
+      schoolId: schoolId ?? child.schoolId, photo: photoUrl,
     });
 
     logger.info('Child updated by Reception', { childId: child.id, parentId: child.parentId, updatedBy: req.user.id });

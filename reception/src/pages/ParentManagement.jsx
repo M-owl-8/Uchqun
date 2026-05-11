@@ -50,7 +50,6 @@ const ParentManagement = () => {
       disabilityType: '',
       medicalDiagnosis: '',
       specialNeeds: '',
-      school: 'Uchqun School',
     },
   });
   const [childFormData, setChildFormData] = useState({
@@ -61,7 +60,6 @@ const ParentManagement = () => {
     disabilityType: '',
     medicalDiagnosis: '',
     specialNeeds: '',
-    school: 'Uchqun School',
     photo: null,
     photoPreview: null,
   });
@@ -170,7 +168,6 @@ const ParentManagement = () => {
       gender: child.gender || 'Male',
       disabilityType: child.disabilityType || '',
       specialNeeds: child.specialNeeds || '',
-      school: child.school || 'Uchqun School',
       photo: null,
       photoPreview: (child.photo || child.photoUrl) || null,
     });
@@ -220,8 +217,8 @@ const ParentManagement = () => {
     }
 
     // Validate required fields
-    if (!childFormData.firstName || !childFormData.lastName || !childFormData.dateOfBirth || 
-        !childFormData.disabilityType || !childFormData.school) {
+    if (!childFormData.firstName || !childFormData.lastName || !childFormData.dateOfBirth ||
+        !childFormData.disabilityType) {
       showError(t('parentsPage.childRequiredFields'));
       return;
     }
@@ -240,7 +237,6 @@ const ParentManagement = () => {
       if (childFormData.specialNeeds) {
         formDataToSend.append('child[specialNeeds]', childFormData.specialNeeds.trim());
       }
-      formDataToSend.append('child[school]', childFormData.school.trim());
       if (childFormData.photo) {
         formDataToSend.append('child[photo]', childFormData.photo);
       }
@@ -266,8 +262,8 @@ const ParentManagement = () => {
     }
 
     // Validate required fields
-    if (!childFormData.firstName || !childFormData.lastName || !childFormData.dateOfBirth || 
-        !childFormData.disabilityType || !childFormData.school) {
+    if (!childFormData.firstName || !childFormData.lastName || !childFormData.dateOfBirth ||
+        !childFormData.disabilityType) {
       showError(t('parentsPage.childRequiredFields'));
       return;
     }
@@ -286,7 +282,6 @@ const ParentManagement = () => {
       if (childFormData.specialNeeds) {
         formDataToSend.append('child[specialNeeds]', childFormData.specialNeeds.trim());
       }
-      formDataToSend.append('child[school]', childFormData.school.trim());
       if (childFormData.photo) {
         formDataToSend.append('child[photo]', childFormData.photo);
       }
@@ -382,7 +377,6 @@ const ParentManagement = () => {
           formDataToSend.append('child[disabilityType]', formData.child.disabilityType);
           if (formData.child.medicalDiagnosis) formDataToSend.append('child[medicalDiagnosis]', formData.child.medicalDiagnosis);
           if (formData.child.specialNeeds) formDataToSend.append('child[specialNeeds]', formData.child.specialNeeds);
-          formDataToSend.append('child[school]', formData.child.school);
           // Add photo file if selected
           if (formData.child.photo) {
             formDataToSend.append('child[photo]', formData.child.photo);
@@ -888,22 +882,6 @@ const ParentManagement = () => {
                         className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                       />
                     </div>
-
-                    <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          {t('parentsPage.form.childSchool')} <span className="text-red-500">*</span>
-                        </label>
-                        <input
-                          type="text"
-                          required
-                          value={formData.child.school}
-                          onChange={(e) => setFormData({ 
-                            ...formData, 
-                            child: { ...formData.child, school: e.target.value }
-                          })}
-                          className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                        />
-                      </div>
 
                   </div>
                 </>

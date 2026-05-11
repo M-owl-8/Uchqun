@@ -136,7 +136,7 @@ const ParentManagement = () => {
                             {child.firstName} {child.lastName}
                           </span>
                           <span className="text-xs text-gray-500">
-                            ({child.school}, {child.class})
+                            ({child.childSchool?.name || ''}, {child.class})
                           </span>
                         </div>
                       </div>

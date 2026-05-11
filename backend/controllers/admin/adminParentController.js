@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import User from '../../models/User.js';
 import Child from '../../models/Child.js';
+import School from '../../models/School.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
@@ -95,6 +96,7 @@ export const getParentById = async (req, res) => {
           model: Child,
           as: 'children',
           required: false,
+          include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }],
         },
       ],
     });

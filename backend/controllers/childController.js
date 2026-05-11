@@ -1,6 +1,7 @@
 import Child from '../models/Child.js';
 import User from '../models/User.js';
 import Group from '../models/Group.js';
+import School from '../models/School.js';
 import { deleteFile } from '../config/storage.js';
 import logger from '../utils/logger.js';
 import { emitToUser } from '../config/socket.js';
@@ -19,6 +20,12 @@ export const getChildren = async (req, res) => {
         {
           model: Group,
           as: 'childGroup',
+          attributes: ['id', 'name'],
+          required: false,
+        },
+        {
+          model: School,
+          as: 'childSchool',
           attributes: ['id', 'name'],
           required: false,
         },
@@ -58,6 +65,12 @@ export const getChild = async (req, res) => {
         {
           model: Group,
           as: 'childGroup',
+          attributes: ['id', 'name'],
+          required: false,
+        },
+        {
+          model: School,
+          as: 'childSchool',
           attributes: ['id', 'name'],
           required: false,
         },

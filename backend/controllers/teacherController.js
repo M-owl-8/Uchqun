@@ -1,6 +1,7 @@
 import User from '../models/User.js';
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
+import School from '../models/School.js';
 import TeacherResponsibility from '../models/TeacherResponsibility.js';
 import TeacherTask from '../models/TeacherTask.js';
 import TeacherWorkHistory from '../models/TeacherWorkHistory.js';
@@ -100,7 +101,7 @@ export const getParents = async (req, res) => {
       where,
       attributes: { exclude: ['password'] },
       include: [
-        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'school', 'class', 'teacher'], required: false },
+        { model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'class', 'teacher'], include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }], required: false },
         { model: Group, as: 'group', attributes: ['id', 'name'], required: false },
       ],
       order: [['createdAt', 'DESC']],
@@ -124,7 +125,7 @@ export const getParentById = async (req, res) => {
     const parent = await User.findOne({
       where,
       attributes: { exclude: ['password'] },
-      include: [{ model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'school', 'class', 'teacher'], required: false }],
+      include: [{ model: Child, as: 'children', attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'disabilityType', 'class', 'teacher'], include: [{ model: School, as: 'childSchool', attributes: ['id', 'name'], required: false }], required: false }],
     });
 
     if (!parent) return res.status(404).json({ error: 'Parent not found' });
