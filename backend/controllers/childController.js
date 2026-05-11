@@ -107,26 +107,26 @@ export const deleteChild = async (req, res) => {
       return res.status(404).json({ error: 'Child not found or you do not have permission' });
     }
 
-    // Delete photo from storage if exists
-    if (child.photo) {
+    // Store values needed after deletion
+    const parentId = child.parentId;
+    const photoUrl = child.photo;
+
+    // Delete from DB first — if this fails, photo is still intact
+    await child.destroy();
+
+    // Delete photo from storage after successful DB delete
+    if (photoUrl) {
       try {
-        await deleteFile(child.photo);
-        logger.info('Child photo deleted', { childId: id, photoUrl: child.photo });
+        await deleteFile(photoUrl);
+        logger.info('Child photo deleted', { childId: id, photoUrl });
       } catch (deleteError) {
         logger.warn('Failed to delete child photo from storage', {
           childId: id,
           error: deleteError.message,
-          photoUrl: child.photo,
+          photoUrl,
         });
-        // Continue deleting child even if photo deletion fails
       }
     }
-
-    // Store parentId for socket emission before deletion
-    const parentId = child.parentId;
-
-    // Delete child from database
-    await child.destroy();
 
     // Emit real-time delete notification to parent
     emitToUser(parentId, 'child:deleted', {

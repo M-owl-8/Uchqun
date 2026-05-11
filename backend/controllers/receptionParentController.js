@@ -69,43 +69,47 @@ export const createParent = async (req, res) => {
       if (!teacherId) req.body.teacherId = group.teacherId;
     }
 
-    const parent = await User.create({
-      email: email.toLowerCase(), password, firstName, lastName, phone,
-      role: 'parent', isActive: true,
-      teacherId: teacherId || (groupId ? (await Group.findByPk(groupId)).teacherId : null),
-      groupId: groupId || null,
-      createdBy: req.user.id, schoolId: req.user.schoolId,
-    });
-
+    // Upload photo before the transaction (external service call must stay outside)
+    let childPhotoUrl = null;
     if (child && child.firstName && child.lastName) {
-      let photoUrl = null;
-
       if (req.files && req.files['child[photo]'] && req.files['child[photo]'][0]) {
         const photoFile = req.files['child[photo]'][0];
         try {
           const fileBuffer = fs.readFileSync(photoFile.path);
           const uploadResult = await uploadFile(fileBuffer, photoFile.filename, photoFile.mimetype);
-          photoUrl = uploadResult.url;
+          childPhotoUrl = uploadResult.url;
           try { fs.unlinkSync(photoFile.path); } catch (e) { logger.warn('Error deleting local photo file after upload', { error: e.message }); }
         } catch (error) {
           logger.error('Error uploading child photo', { error: error.message });
         }
       } else if (child.photo && typeof child.photo === 'string') {
-        photoUrl = child.photo;
+        childPhotoUrl = child.photo;
       }
-
-      let schoolId = null;
-      if (req.user.schoolId) schoolId = req.user.schoolId;
-
-      await Child.create({
-        parentId: parent.id, firstName: child.firstName, lastName: child.lastName,
-        dateOfBirth: child.dateOfBirth, gender: child.gender, disabilityType: child.disabilityType,
-        medicalDiagnosis: child.medicalDiagnosis || null, specialNeeds: child.specialNeeds || null,
-        photo: photoUrl, schoolId,
-        class: child.class || '', teacher: child.teacher || '',
-        groupId: null, emergencyContact: {},
-      });
     }
+
+    // Create parent + child atomically — if child insert fails, parent is rolled back
+    let parent;
+    await sequelize.transaction(async (t) => {
+      parent = await User.create({
+        email: email.toLowerCase(), password, firstName, lastName, phone,
+        role: 'parent', isActive: true,
+        teacherId: teacherId || (groupId ? (await Group.findByPk(groupId)).teacherId : null),
+        groupId: groupId || null,
+        createdBy: req.user.id, schoolId: req.user.schoolId,
+      }, { transaction: t });
+
+      if (child && child.firstName && child.lastName) {
+        const schoolId = req.user.schoolId || null;
+        await Child.create({
+          parentId: parent.id, firstName: child.firstName, lastName: child.lastName,
+          dateOfBirth: child.dateOfBirth, gender: child.gender, disabilityType: child.disabilityType,
+          medicalDiagnosis: child.medicalDiagnosis || null, specialNeeds: child.specialNeeds || null,
+          photo: childPhotoUrl, schoolId,
+          class: child.class || '', teacher: child.teacher || '',
+          groupId: null, emergencyContact: {},
+        }, { transaction: t });
+      }
+    });
 
     const parentWithRelations = await User.findByPk(parent.id, {
       attributes: { exclude: ['password'] },

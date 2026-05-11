@@ -441,19 +441,25 @@ export const uploadMedia = async (req, res) => {
     // Always cleanup temp file after upload regardless of storage target
     safeCleanup(req.file.path);
 
-    // Create media record
-    // Store the Appwrite URL in the database - proxy endpoint will use it to extract file ID
-    // Frontend will convert it to proxy URL using getProxyUrl helper
-    const media = await Media.create({
-      childId,
-      activityId: activityId || null,
-      type: mediaType,
-      url: uploadResult.url,   // Store Appwrite URL (needed for proxy endpoint to extract file ID)
-      thumbnail: null,         // no thumbnails persisted
-      title,
-      description: description || '',
-      date: date || new Date().toISOString().split('T')[0],
-    });
+    // Create media record — if this fails, clean up the uploaded file so it doesn't leak
+    let media;
+    try {
+      media = await Media.create({
+        childId,
+        activityId: activityId || null,
+        type: mediaType,
+        url: uploadResult.url,
+        thumbnail: null,
+        title,
+        description: description || '',
+        date: date || new Date().toISOString().split('T')[0],
+      });
+    } catch (dbError) {
+      try { await deleteFile(uploadResult.url); } catch (e) {
+        logger.warn('Failed to delete orphaned file after DB error', { url: uploadResult.url, error: e.message });
+      }
+      throw dbError;
+    }
 
     logger.info('Media record created', {
       mediaId: media.id,

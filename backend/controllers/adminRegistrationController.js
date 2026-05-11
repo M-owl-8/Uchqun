@@ -3,7 +3,8 @@ import AdminRegistrationRequest from '../models/AdminRegistrationRequest.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
-import { uploadFile } from '../config/storage.js';
+import sequelize from '../config/database.js';
+import { uploadFile, deleteFile } from '../config/storage.js';
 import fs from 'fs';
 import { generateSetPasswordToken } from './authController.js';
 
@@ -142,19 +143,29 @@ export const submitRegistrationRequest = async (req, res) => {
       await fs.promises.unlink(passFile.path).catch(() => {});
     }
 
-    // Create registration request
+    // Create registration request — if DB fails, clean up uploaded files
     const schoolId = req.body?.schoolId || null;
-    const request = await AdminRegistrationRequest.create({
-      firstName: firstName.trim(),
-      lastName: lastName.trim(),
-      email: email.toLowerCase().trim(),
-      phone: phone.trim(),
-      telegramUsername: telegramUsername,
-      certificateFile: certificateFilePath,
-      passportFile: passportFilePath,
-      schoolId: schoolId,
-      status: 'pending',
-    });
+    let request;
+    try {
+      request = await AdminRegistrationRequest.create({
+        firstName: firstName.trim(),
+        lastName: lastName.trim(),
+        email: email.toLowerCase().trim(),
+        phone: phone.trim(),
+        telegramUsername: telegramUsername,
+        certificateFile: certificateFilePath,
+        passportFile: passportFilePath,
+        schoolId: schoolId,
+        status: 'pending',
+      });
+    } catch (dbError) {
+      for (const url of [certificateFilePath, passportFilePath].filter(Boolean)) {
+        try { await deleteFile(url); } catch (e) {
+          logger.warn('Failed to delete orphaned file after DB error', { url, error: e.message });
+        }
+      }
+      throw dbError;
+    }
 
     logger.info('Admin registration request submitted', {
       requestId: request.id,
@@ -327,28 +338,29 @@ export const approveRegistrationRequest = async (req, res) => {
       });
     }
 
-    // Create admin user account with a random placeholder password.
-    // The admin sets their real password via the set-password link below.
+    // Create admin user and update request atomically — both succeed or both roll back
     const placeholderPassword = crypto.randomBytes(32).toString('hex');
-    const adminUser = await User.create({
-      email: request.email,
-      password: placeholderPassword,
-      firstName: request.firstName,
-      lastName: request.lastName,
-      phone: request.phone,
-      role: 'admin',
-      isVerified: true,
-      documentsApproved: true,
-      isActive: true,
-      schoolId: schoolId || request.schoolId,
-    });
+    let adminUser;
+    await sequelize.transaction(async (t) => {
+      adminUser = await User.create({
+        email: request.email,
+        password: placeholderPassword,
+        firstName: request.firstName,
+        lastName: request.lastName,
+        phone: request.phone,
+        role: 'admin',
+        isVerified: true,
+        documentsApproved: true,
+        isActive: true,
+        schoolId: schoolId || request.schoolId,
+      }, { transaction: t });
 
-    // Update request status
-    request.status = 'approved';
-    request.reviewedBy = req.user.id;
-    request.reviewedAt = new Date();
-    request.approvedUserId = adminUser.id;
-    await request.save();
+      request.status = 'approved';
+      request.reviewedBy = req.user.id;
+      request.reviewedAt = new Date();
+      request.approvedUserId = adminUser.id;
+      await request.save({ transaction: t });
+    });
 
     // Generate a 24-hour set-password token so the admin never sees a plaintext password
     const setPasswordToken = generateSetPasswordToken(adminUser.id);

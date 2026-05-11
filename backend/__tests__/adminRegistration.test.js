@@ -10,7 +10,10 @@ jest.unstable_mockModule('../models/AdminRegistrationRequest.js', () => ({
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { create: mockUserCreate, findOne: mockUserFindOne },
 }));
-jest.unstable_mockModule('../config/storage.js', () => ({ uploadFile: jest.fn() }));
+jest.unstable_mockModule('../config/storage.js', () => ({ uploadFile: jest.fn(), deleteFile: jest.fn() }));
+jest.unstable_mockModule('../config/database.js', () => ({
+  default: { transaction: jest.fn(async (cb) => cb({})) },
+}));
 jest.unstable_mockModule('../controllers/authController.js', () => ({
   generateSetPasswordToken: () => 'fake-token',
 }));
@@ -70,9 +73,10 @@ describe('adminRegistrationController', () => {
       const req = { user: { id: 'g1' }, params: { id: 'r1' }, body: {} };
       const res = mkRes();
       await approveRegistrationRequest(req, res);
-      expect(mockUserCreate).toHaveBeenCalledWith(expect.objectContaining({
-        email: 'a@x.com', role: 'admin', isActive: true, documentsApproved: true,
-      }));
+      expect(mockUserCreate).toHaveBeenCalledWith(
+        expect.objectContaining({ email: 'a@x.com', role: 'admin', isActive: true, documentsApproved: true }),
+        expect.objectContaining({ transaction: expect.anything() }),
+      );
       expect(request.status).toBe('approved');
       expect(request.approvedUserId).toBe('admin1');
       expect(save).toHaveBeenCalled();
