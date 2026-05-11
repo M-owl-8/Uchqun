@@ -134,6 +134,11 @@ const Child = sequelize.define('Child', {
 // Note: All associations are defined in models/index.js
 // to avoid circular dependencies and duplicate associations
 
+// True when the child has not yet been assigned to a school (intake workflow)
+Child.prototype.isInIntake = function () {
+  return this.schoolId === null;
+};
+
 // Virtual for age (calculated in application layer)
 Child.prototype.getAge = function() {
   const today = new Date();

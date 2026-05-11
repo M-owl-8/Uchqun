@@ -29,9 +29,36 @@ describe('validateChildAccess', () => {
     expect(result).toEqual({ id: 'c1', schoolId: 's2' });
   });
 
+  // Q4: intake children (schoolId=null) — access rules
+  it('returns null when scoped user (admin) accesses intake child', async () => {
+    mockFindByPk.mockResolvedValue({ id: 'c1', schoolId: null, parentId: 'p99' });
+    const result = await validateChildAccess('c1', { user: { id: 'admin1', role: 'admin', schoolId: 's1' } });
+    expect(result).toBeNull();
+  });
+
+  it("returns child when parent accesses their own intake child", async () => {
+    const child = { id: 'c1', schoolId: null, parentId: 'parent1' };
+    mockFindByPk.mockResolvedValue(child);
+    const result = await validateChildAccess('c1', { user: { id: 'parent1', role: 'parent' } });
+    expect(result).toEqual(child);
+  });
+
+  it('returns null when a different parent accesses an intake child', async () => {
+    mockFindByPk.mockResolvedValue({ id: 'c1', schoolId: null, parentId: 'parent1' });
+    const result = await validateChildAccess('c1', { user: { id: 'parent2', role: 'parent' } });
+    expect(result).toBeNull();
+  });
+
+  it('government can access intake child', async () => {
+    const child = { id: 'c1', schoolId: null, parentId: 'p1' };
+    mockFindByPk.mockResolvedValue(child);
+    const result = await validateChildAccess('c1', { user: { id: 'g1', role: 'government' } });
+    expect(result).toEqual(child);
+  });
+
   it('returns null when scoped user accesses child with no schoolId', async () => {
-    mockFindByPk.mockResolvedValue({ id: 'c1', schoolId: null });
-    const result = await validateChildAccess('c1', { user: { schoolId: 's1' } });
+    mockFindByPk.mockResolvedValue({ id: 'c1', schoolId: null, parentId: 'p99' });
+    const result = await validateChildAccess('c1', { user: { schoolId: 's1', id: 'u1' } });
     expect(result).toBeNull();
   });
 
