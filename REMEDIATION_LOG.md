@@ -161,7 +161,7 @@ to a specific commit and records the verification command output.
 
 ### M-03 — In-memory login lockout and JTI revocation store
 - **Status:** CLOSED
-- **Commit:** (pending)
+- **Commit:** d702baf
 - **Fix:** Installed `ioredis@5`. Created `backend/utils/redisClient.js` — lazy singleton,
   returns `null` when `REDIS_URL` is unset (falls back to in-memory for local dev / test).
   - `loginRateLimitStore.js` rewritten as async Redis-backed:
