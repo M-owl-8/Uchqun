@@ -23,6 +23,7 @@ Ordered by execution sequence.
 | DOC-1 — ARCHITECTURE.md | Done | 1e09d3c |
 | DOC-2 — CONTRIBUTING.md | Done | 1e09d3c |
 | DOC-3 — RUNBOOK.md | Done | 1e09d3c |
+| CL-014a — Decompose admin/Settings.jsx | Closed | a954465, 072e948 |
 
 **Backend tests: 510/510 throughout. All four frontend lints clean.**
 
@@ -349,5 +350,35 @@ This was done in a prior phase. Single source of truth is in `shared/components/
 **Commit:** n/a
 
 All four apps (admin, reception, government, teacher) already use the `createAuthContext` factory from `shared/context/createAuthContext.jsx`. Each passes its own `tokenKey` and `requiredRole`. This was done in a prior phase.
+
+---
+
+## CL-014a — Decompose `admin/src/pages/Settings.jsx`
+
+**Status:** Closed
+**Files changed:**
+- `admin/src/pages/Settings.jsx` — 633 → 302 LOC
+- `admin/src/pages/settings/ProfileForm.jsx` — new (88 LOC)
+- `admin/src/pages/settings/NotificationPreferences.jsx` — new (51 LOC)
+- `admin/src/pages/settings/PasswordForm.jsx` — new (99 LOC)
+- `admin/src/pages/settings/MessageModal.jsx` — new (78 LOC)
+- `admin/src/pages/settings/MessagesModal.jsx` — new (92 LOC)
+- `admin/src/__tests__/pages/Settings.test.jsx` — new (225 LOC, 9 tests)
+**Commits:** a954465 (tests), 072e948 (extraction)
+
+**Verification command:**
+```
+cd admin && npm run lint && npm test -- --run
+```
+
+**Verification output:**
+
+Gate 1 — lint: clean (0 warnings)
+Gate 2 — tests: 40 passed (31 prior + 9 new Settings tests)
+Gate 3 — parent LOC: 302 (target < 400) ✓
+Gate 4 — no behavior change: all 9 integration tests exercise same API calls and UI interactions
+
+**Tests:** 40/40 admin green
+**Notes:** Each child component owns its own `useTranslation` call. State and handlers stay in the parent (Settings.jsx) and are passed as props. No logic moved — pure structural decomposition.
 
 ---
