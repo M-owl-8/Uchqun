@@ -160,8 +160,21 @@ to a specific commit and records the verification command output.
 ---
 
 ### M-03 — In-memory login lockout and JTI revocation store
-- **Status:** DEFERRED (pre-launch blocker, requires Redis infrastructure)
-- **Note:** Both stores documented in `CLAUDE.md` as known limitations.
+- **Status:** CLOSED
+- **Commit:** (pending)
+- **Fix:** Installed `ioredis@5`. Created `backend/utils/redisClient.js` — lazy singleton,
+  returns `null` when `REDIS_URL` is unset (falls back to in-memory for local dev / test).
+  - `loginRateLimitStore.js` rewritten as async Redis-backed:
+    keys `lockout:attempts:<email>` (INCR + EXPIRE) and `lockout:locked:<email>` (SET EX 900).
+  - JTI revocation in `middleware/auth.js` now stores `revoked:jti:<jti>` in Redis (SET EX ttl).
+    `_isJtiRevoked` checks Redis EXISTS; `revokeJti` is now async.
+  - `authController.js` updated: all 5 call sites now `await` the async functions.
+- **Fail-closed:** Redis configured but unreachable → `isLockedOut` returns `true` (block
+  login attempt), `_isJtiRevoked` returns `true` (reject token). Winston error logged.
+- **In-memory fallback:** `REDIS_URL` not set → original Map-based behaviour (single-instance,
+  documented in CLAUDE.md). Tests run entirely in-memory (no Redis required in CI).
+- **Verification:** 14 new tests in `loginRateLimitStore.test.js` + `jtiRevocation.test.js`;
+  full suite 63/63 PASS, 510 tests.
 
 ---
 

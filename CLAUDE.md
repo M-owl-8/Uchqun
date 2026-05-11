@@ -51,8 +51,9 @@ Reception additionally requires `documentsApproved && isActive`.
 - ✅ C-06: Resolved — payment routes/controller deleted entirely (commit ca2039b)
 - ⚠️ C-07: Partial — regex replaces substring CORS check; PRE-LAUNCH TODO: replace with explicit env-driven allowlist (commit c1bd08d)
 
-## Scaling Constraints (single-instance only — TODO confirm)
-- Login lockout is in-memory (5 attempts → 15min). Not Redis-backed.
+## Scaling Constraints
+- Login lockout + JTI revocation: Redis-backed when `REDIS_URL` is set; falls back to
+  in-memory when unset (single-instance only). Set `REDIS_URL` in Railway for multi-instance.
 - Socket.io is in-memory. Multi-instance deploy needs Redis adapter.
 
 ## Conventions

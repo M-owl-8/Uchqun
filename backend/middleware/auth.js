@@ -1,11 +1,42 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import { getRedisClient } from '../utils/redisClient.js';
+import logger from '../utils/logger.js';
 
-// #02-003 — in-process JTI revocation (single-instance only; see CLAUDE.md scaling note)
+// In-memory JTI store — used when REDIS_URL is not configured (single-instance only)
 const _revokedJtis = new Map(); // jti → expiresAt (ms)
 
-export const revokeJti = (jti, expiresAtMs) => {
-  if (jti) _revokedJtis.set(jti, expiresAtMs);
+// Revokes a JTI in Redis (preferred) or in-memory fallback.
+export const revokeJti = async (jti, expiresAtMs) => {
+  if (!jti) return;
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      const ttlSecs = Math.max(1, Math.ceil((expiresAtMs - Date.now()) / 1000));
+      await redis.set(`revoked:jti:${jti}`, '1', 'EX', ttlSecs);
+    } catch (err) {
+      logger.error('Redis revokeJti error — falling back to in-memory', { message: err.message });
+      _revokedJtis.set(jti, expiresAtMs);
+    }
+    return;
+  }
+  _revokedJtis.set(jti, expiresAtMs);
+};
+
+// Returns true (revoked) on Redis error — fail-closed for security.
+const _isJtiRevoked = async (jti) => {
+  if (!jti) return false;
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      const exists = await redis.exists(`revoked:jti:${jti}`);
+      return exists === 1;
+    } catch (err) {
+      logger.error('Redis _isJtiRevoked error — fail closed', { message: err.message });
+      return true;
+    }
+  }
+  return _revokedJtis.has(jti);
 };
 
 const _pruneRevokedJtis = () => {
@@ -41,10 +72,11 @@ export const authenticate = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    if (_revokedJtis.has(decoded.jti)) {
+    if (await _isJtiRevoked(decoded.jti)) {
       return res.status(401).json({ error: 'Token has been revoked' });
     }
-    if (_revokedJtis.size > 0) _pruneRevokedJtis();
+    // Only prune in-memory store (no-op when Redis is active — Redis TTLs handle expiry)
+    if (!getRedisClient() && _revokedJtis.size > 0) _pruneRevokedJtis();
 
     req.jti = decoded.jti;
     req.tokenExpiry = decoded.exp ? decoded.exp * 1000 : Date.now() + 15 * 60 * 1000;

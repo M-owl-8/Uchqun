@@ -59,7 +59,7 @@ export const login = async (req, res) => {
 
     const normalizedEmail = (email || '').toLowerCase().trim();
 
-    if (isLockedOut(normalizedEmail)) {
+    if (await isLockedOut(normalizedEmail)) {
       logger.warn('Login blocked — account locked out', { email: normalizedEmail.substring(0, 3) + '***' });
       return res.status(429).json({
         success: false,
@@ -78,7 +78,7 @@ export const login = async (req, res) => {
     }
 
     if (!user) {
-      recordFailedAttempt(normalizedEmail);
+      await recordFailedAttempt(normalizedEmail);
       logger.warn('Login attempt with non-existent email');
       return res.status(401).json({
         success: false,
@@ -100,7 +100,7 @@ export const login = async (req, res) => {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      recordFailedAttempt(normalizedEmail);
+      await recordFailedAttempt(normalizedEmail);
       logger.warn('Login attempt with invalid password', { userId: user.id });
       return res.status(401).json({
         success: false,
@@ -140,7 +140,7 @@ export const login = async (req, res) => {
       });
     }
 
-    clearAttempts(normalizedEmail);
+    await clearAttempts(normalizedEmail);
 
     const accessToken = generateAccessToken(user.id);
     const refreshToken = await generateRefreshToken(user.id);
@@ -258,7 +258,7 @@ export const logout = async (req, res) => {
       );
     }
     // #02-003 — revoke the access token JTI so it can't be replayed until expiry
-    if (req.jti) revokeJti(req.jti, req.tokenExpiry);
+    if (req.jti) await revokeJti(req.jti, req.tokenExpiry);
 
     const isProduction = process.env.NODE_ENV === 'production';
     const cookieOptions = {

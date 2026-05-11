@@ -1,35 +1,69 @@
-// Per-account login lockout store — in-memory, single-instance.
-// To support multi-instance Railway deploys, replace with a Redis-backed implementation:
-//   import { createClient } from 'redis';
-//   const redis = createClient({ url: process.env.REDIS_URL });
-//   export async function recordFailedAttempt(key) { ... redis.incr / redis.expire ... }
-//
-// Interface contract: all three functions accept a string key (e.g. email) and
-// return void / boolean synchronously (in-memory) or via Promise (Redis path).
+import { getRedisClient } from './redisClient.js';
+import logger from './logger.js';
 
 const MAX_ATTEMPTS = 5;
-const LOCKOUT_MS = 15 * 60 * 1000;
+const LOCKOUT_SECS = 15 * 60; // 15 minutes
 
-const store = new Map();
+// In-memory fallback (used when REDIS_URL is not configured)
+const _store = new Map();
 
-export function recordFailedAttempt(key) {
-  const entry = store.get(key) || { attempts: 0, lockedUntil: null };
+export async function recordFailedAttempt(key) {
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      const attemptsKey = `lockout:attempts:${key}`;
+      const count = await redis.incr(attemptsKey);
+      if (count === 1) {
+        // First attempt — set expiry on the sliding counter window
+        await redis.expire(attemptsKey, LOCKOUT_SECS);
+      }
+      if (count >= MAX_ATTEMPTS) {
+        await redis.set(`lockout:locked:${key}`, '1', 'EX', LOCKOUT_SECS);
+      }
+    } catch (err) {
+      logger.error('Redis recordFailedAttempt error', { message: err.message, key });
+    }
+    return;
+  }
+  // In-memory fallback
+  const entry = _store.get(key) || { attempts: 0, lockedUntil: null };
   entry.attempts += 1;
   if (entry.attempts >= MAX_ATTEMPTS) {
-    entry.lockedUntil = Date.now() + LOCKOUT_MS;
+    entry.lockedUntil = Date.now() + LOCKOUT_SECS * 1000;
   }
-  store.set(key, entry);
+  _store.set(key, entry);
 }
 
-export function clearAttempts(key) {
-  store.delete(key);
+export async function clearAttempts(key) {
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      await redis.del(`lockout:attempts:${key}`, `lockout:locked:${key}`);
+    } catch (err) {
+      logger.error('Redis clearAttempts error', { message: err.message, key });
+    }
+    return;
+  }
+  _store.delete(key);
 }
 
-export function isLockedOut(key) {
-  const entry = store.get(key);
+// Returns true (locked) on Redis error — fail-closed for security.
+export async function isLockedOut(key) {
+  const redis = getRedisClient();
+  if (redis) {
+    try {
+      const locked = await redis.exists(`lockout:locked:${key}`);
+      return locked === 1;
+    } catch (err) {
+      logger.error('Redis isLockedOut error — fail closed', { message: err.message, key });
+      return true;
+    }
+  }
+  // In-memory fallback
+  const entry = _store.get(key);
   if (!entry?.lockedUntil) return false;
   if (Date.now() > entry.lockedUntil) {
-    store.delete(key);
+    _store.delete(key);
     return false;
   }
   return true;
