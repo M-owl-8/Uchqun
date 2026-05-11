@@ -24,6 +24,8 @@ Ordered by execution sequence.
 | DOC-2 — CONTRIBUTING.md | Done | 1e09d3c |
 | DOC-3 — RUNBOOK.md | Done | 1e09d3c |
 | CL-014a — Decompose admin/Settings.jsx | Closed | a954465, 072e948 |
+| CL-014b — Decompose teacher/Settings.jsx | Closed | b07bdab, a4c9085 |
+| CL-014c — Decompose reception/Settings.jsx | Closed | 5531527, ddd65d1 |
 
 **Backend tests: 510/510 throughout. All four frontend lints clean.**
 
@@ -380,5 +382,54 @@ Gate 4 — no behavior change: all 9 integration tests exercise same API calls a
 
 **Tests:** 40/40 admin green
 **Notes:** Each child component owns its own `useTranslation` call. State and handlers stay in the parent (Settings.jsx) and are passed as props. No logic moved — pure structural decomposition.
+
+---
+
+## CL-014b — Decompose `teacher/src/pages/Settings.jsx`
+
+**Status:** Closed
+**Files changed:**
+- `teacher/src/pages/Settings.jsx` — 713 → 237 LOC
+- `teacher/src/pages/settings/AvatarUpload.jsx` — new (self-contained: own state, ref, hooks)
+- `teacher/src/pages/settings/ProfileForm.jsx` — new
+- `teacher/src/pages/settings/NotificationPreferences.jsx` — new
+- `teacher/src/pages/settings/PasswordForm.jsx` — new
+- `teacher/src/pages/settings/MessageModal.jsx` — new
+- `teacher/src/pages/settings/MessagesModal.jsx` — new
+- `teacher/src/__tests__/pages/Settings.test.jsx` — new (9 tests)
+**Commits:** b07bdab (tests), a4c9085 (extraction)
+
+**Verification:**
+
+Gate 1 — lint: clean (0 warnings)
+Gate 2 — tests: green (9 new Settings tests)
+Gate 3 — parent LOC: 237 (target < 400) ✓
+Gate 4 — no behavior change: mechanical extraction only
+
+**Notes:** AvatarUpload extracted as self-contained component managing its own uploadingAvatar state, fileInputRef, and direct hook calls (useAuth, useToast, api). ProfileForm passes `user` prop to AvatarUpload — zero avatar-related props in parent. Imports use `../../shared/` prefix (teacher-specific shared folder).
+
+---
+
+## CL-014c — Decompose `reception/src/pages/Settings.jsx`
+
+**Status:** Closed
+**Files changed:**
+- `reception/src/pages/Settings.jsx` — 571 → 250 LOC
+- `reception/src/pages/settings/ProfileForm.jsx` — new (no saving/disabled — reception has no saving state)
+- `reception/src/pages/settings/NotificationPreferences.jsx` — new
+- `reception/src/pages/settings/PasswordForm.jsx` — new
+- `reception/src/pages/settings/MessageModal.jsx` — new (uses `profile.*` i18n namespace for send/cancel keys)
+- `reception/src/pages/settings/MessagesModal.jsx` — new (calls `useTranslation` internally for `i18n.language` date formatting)
+- `reception/src/__tests__/pages/settings.test.jsx` — augmented 76 → 209 LOC (added 7 tests, total 10)
+**Commits:** 5531527 (tests), ddd65d1 (extraction)
+
+**Verification:**
+
+Gate 1 — lint: clean (0 warnings)
+Gate 2 — tests: 10/10 green
+Gate 3 — parent LOC: 250 (target < 400) ✓
+Gate 4 — no behavior change: mechanical extraction only
+
+**Notes:** Reception Settings has no `saving`/`savingPassword` state (unlike admin/teacher), so child components receive no disabled-state props. MessagesModal uses `i18n.language` for toLocaleDateString — solved by calling `useTranslation()` directly inside MessagesModal rather than passing language as a prop.
 
 ---
