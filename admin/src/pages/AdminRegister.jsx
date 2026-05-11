@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Crown, Upload, FileText, Mail, Phone, X, CheckCircle, MessageSquare } from 'lucide-react';
 const AdminRegister = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
@@ -31,12 +33,12 @@ const AdminRegister = () => {
       // Validate file type
       const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
       if (!allowedTypes.includes(file.type)) {
-        setError('Faqat rasm (JPG, PNG, GIF, WebP) yoki PDF fayllar qabul qilinadi');
+        setError(t('adminRegister.errorFileType'));
         return;
       }
       // Validate file size (10MB max)
       if (file.size > 10 * 1024 * 1024) {
-        setError('Fayl hajmi 10MB dan katta bo\'lmasligi kerak');
+        setError(t('adminRegister.errorFileSize'));
         return;
       }
       if (type === 'certificate') {
@@ -63,13 +65,13 @@ const AdminRegister = () => {
 
     // Validation
     if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone || !formData.telegramUsername) {
-      setError('Ism, familiya, email, telefon raqami va Telegram username to\'ldirilishi shart');
+      setError(t('adminRegister.errorRequired'));
       setLoading(false);
       return;
     }
 
     if (!certificateFile && !passportFile) {
-      setError('Kamida bitta hujjat (guvohnoma yoki passport/ID karta) yuklanishi kerak');
+      setError(t('adminRegister.errorDoc'));
       setLoading(false);
       return;
     }
@@ -106,10 +108,10 @@ const AdminRegister = () => {
         }, 3000);
       }
     } catch (err) {
-      const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || 'Ro\'yxatdan o\'tishda xatolik yuz berdi';
+      const errorMessage = err.response?.data?.error || err.response?.data?.message || err.message || t('adminRegister.errorDefault');
       let fullErrorMessage = errorMessage;
       if (err.response?.data?.details) {
-        fullErrorMessage += `\n\nTafsilotlar: ${JSON.stringify(err.response.data.details, null, 2)}`;
+        fullErrorMessage += `\n\n${t('adminRegister.errorDetails')}${JSON.stringify(err.response.data.details, null, 2)}`;
       }
       setError(fullErrorMessage);
     } finally {
@@ -124,14 +126,9 @@ const AdminRegister = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
             <CheckCircle className="w-8 h-8 text-green-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">Muvaffaqiyatli yuborildi!</h1>
-          <p className="text-gray-600 mb-4">
-            Sizning so&apos;rovingiz davlat ko&apos;rib chiqishi uchun yuborildi.
-            Tasdiqlangandan so&apos;ng login ma&apos;lumotlari sizga yuboriladi.
-          </p>
-          <p className="text-sm text-gray-500">
-            Login sahifasiga yo&apos;naltirilmoqdasiz...
-          </p>
+          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('adminRegister.successTitle')}</h1>
+          <p className="text-gray-600 mb-4">{t('adminRegister.successBody')}</p>
+          <p className="text-sm text-gray-500">{t('adminRegister.successRedirect')}</p>
         </div>
       </div>
     );
@@ -144,8 +141,8 @@ const AdminRegister = () => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
             <Crown className="w-8 h-8 text-primary-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Admin Ro&apos;yxatdan O&apos;tish</h1>
-          <p className="text-gray-600">Ma&apos;lumotlaringizni kiriting va hujjatlarni yuklang</p>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('adminRegister.title')}</h1>
+          <p className="text-gray-600">{t('adminRegister.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -158,7 +155,7 @@ const AdminRegister = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                Ism <span className="text-red-500">*</span>
+                {t('adminRegister.labelFirstName')} <span className="text-red-500">*</span>
               </label>
               <input
                 id="firstName"
@@ -168,13 +165,13 @@ const AdminRegister = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Ismingiz"
+                placeholder={t('adminRegister.placeholderFirstName')}
               />
             </div>
 
             <div>
               <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                Familiya <span className="text-red-500">*</span>
+                {t('adminRegister.labelLastName')} <span className="text-red-500">*</span>
               </label>
               <input
                 id="lastName"
@@ -184,14 +181,14 @@ const AdminRegister = () => {
                 onChange={handleInputChange}
                 required
                 className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="Familiyangiz"
+                placeholder={t('adminRegister.placeholderLastName')}
               />
             </div>
           </div>
 
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              Email <span className="text-red-500">*</span>
+              {t('adminRegister.labelEmail')} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -210,7 +207,7 @@ const AdminRegister = () => {
 
           <div>
             <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              Telefon raqami <span className="text-red-500">*</span>
+              {t('adminRegister.labelPhone')} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -229,7 +226,7 @@ const AdminRegister = () => {
 
           <div>
             <label htmlFor="telegramUsername" className="block text-sm font-medium text-gray-700 mb-2">
-              Telegram username <span className="text-red-500">*</span>
+              {t('adminRegister.labelTelegram')} <span className="text-red-500">*</span>
             </label>
             <div className="relative">
               <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -245,18 +242,18 @@ const AdminRegister = () => {
                 }}
                 required
                 className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                placeholder="username (yoki @username)"
+                placeholder={t('adminRegister.placeholderTelegram')}
               />
             </div>
             <p className="mt-1 text-xs text-gray-500">
-              Login ma&apos;lumotlari Telegram orqali yuboriladi
+              {t('adminRegister.telegramNote')}
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Guvohnoma (Certificate) <span className="text-red-500">*</span>
+                {t('adminRegister.labelCertificate')} <span className="text-red-500">*</span>
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-primary-500 transition-colors">
                 <input
@@ -272,9 +269,9 @@ const AdminRegister = () => {
                 >
                   <Upload className="w-8 h-8 text-gray-400" />
                   <span className="text-sm text-gray-600">
-                    {certificateFile ? certificateFile.name : 'Guvohnoma faylini yuklang'}
+                    {certificateFile ? certificateFile.name : t('adminRegister.uploadCertificate')}
                   </span>
-                  <span className="text-xs text-gray-500">JPG, PNG, PDF (maks. 10MB)</span>
+                  <span className="text-xs text-gray-500">{t('adminRegister.uploadHint')}</span>
                 </label>
               </div>
               {certificateFile && (
@@ -294,7 +291,7 @@ const AdminRegister = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Passport yoki ID karta <span className="text-red-500">*</span>
+                {t('adminRegister.labelPassport')} <span className="text-red-500">*</span>
               </label>
               <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-primary-500 transition-colors">
                 <input
@@ -310,9 +307,9 @@ const AdminRegister = () => {
                 >
                   <Upload className="w-8 h-8 text-gray-400" />
                   <span className="text-sm text-gray-600">
-                    {passportFile ? passportFile.name : 'Passport yoki ID karta faylini yuklang'}
+                    {passportFile ? passportFile.name : t('adminRegister.uploadPassport')}
                   </span>
-                  <span className="text-xs text-gray-500">JPG, PNG, PDF (maks. 10MB)</span>
+                  <span className="text-xs text-gray-500">{t('adminRegister.uploadHint')}</span>
                 </label>
               </div>
               {passportFile && (
@@ -332,10 +329,10 @@ const AdminRegister = () => {
           </div>
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
-            <p className="font-semibold mb-1">Eslatma:</p>
-            <p>So&apos;rovingiz davlat tomonidan ko&apos;rib chiqiladi. Tasdiqlangandan so&apos;ng login ma&apos;lumotlari sizga yuboriladi.</p>
+            <p className="font-semibold mb-1">{t('adminRegister.noticeTitle')}</p>
+            <p>{t('adminRegister.noticeBody')}</p>
             {formData.telegramUsername && (
-              <p className="mt-2">Telegram username kiritilgan: @{formData.telegramUsername}</p>
+              <p className="mt-2">{t('adminRegister.noticeTelegram', { username: formData.telegramUsername })}</p>
             )}
           </div>
 
@@ -344,7 +341,7 @@ const AdminRegister = () => {
               to="/login"
               className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors text-center"
             >
-              Bekor qilish
+              {t('adminRegister.cancel')}
             </Link>
             <button
               type="submit"
@@ -354,10 +351,10 @@ const AdminRegister = () => {
               {loading ? (
                 <>
                   <LoadingSpinner size="sm" />
-                  Yuborilmoqda...
+                  {t('adminRegister.submitting')}
                 </>
               ) : (
-                'Yuborish'
+                t('adminRegister.submit')
               )}
             </button>
           </div>
