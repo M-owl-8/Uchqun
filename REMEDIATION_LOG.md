@@ -193,6 +193,94 @@ to a specific commit and records the verification command output.
 
 ---
 
-## Stages 6–8
+## Stage 6 — API Versioning
 
-*(Stage 6 = API versioning M-07, Stage 7 = dependency upgrades L-02/L-03/L-05, Stage 8 = open questions)*
+### M-07 — All API routes lacked `/v1/` prefix
+- **Status:** CLOSED
+- **Commit:** 29b5732
+- **Fix:** All 25 `app.use('/api/<resource>', ...)` registrations in `server.js` updated to
+  `/api/v1/<resource>`. Rate limiter stays on `/api` (covers all `/api/*`). Swagger docs
+  moved to `/api/v1/docs`. `FALLBACK_API_BASE` in `shared/services/config.js` updated to
+  `'http://localhost:5000/api/v1'`; `API_HOST` regex updated to strip `/api` or `/api/vN`
+  suffixes via `replace(/\/api(?:\/v\d+)?\/?$/, '')`.
+- **Verification:** Full backend suite 61/61 PASS, 486 tests.
+
+---
+
+## Stage 7 — Dependency Upgrades
+
+### L-02 — `bcryptjs@2.4.3` outdated
+- **Status:** CLOSED
+- **Commit:** 63dc790
+- **Fix:** Upgraded `bcryptjs` 2.4.3 → 3.0.3. Identical JS API (3.x is a TypeScript
+  rewrite). Removed `@types/bcryptjs` from devDependencies — bundled in 3.x.
+- **Verification:** All auth tests pass (61/61 suite green).
+
+---
+
+### L-03 — `node-appwrite@13.0.0` outdated
+- **Status:** CLOSED
+- **Commit:** 63dc790
+- **Fix:** Upgraded `node-appwrite` 13.0.0 → 24.1.0. Updated `backend/config/storage.js`:
+  `import { InputFile } from 'node-appwrite/file'` → merged into main package import
+  `import { ..., InputFile } from 'node-appwrite'`.
+- **Verification:** Full suite 61/61 PASS.
+
+---
+
+### L-05 — `multer@1.4.5-lts.1` outdated
+- **Status:** CLOSED
+- **Commit:** 63dc790
+- **Fix:** Upgraded `multer` 1.4.5-lts.1 → 2.1.1. Removed dead `preservePath: false`
+  option from `backend/middleware/upload.js` (was never a documented multer option).
+- **Verification:** Full suite 61/61 PASS.
+
+---
+
+## Stage 8 — Open Questions (Dispositions)
+
+### Q1 — chat.test.js model mock strategy
+- **Status:** CLOSED (resolved in Stage 0, commit b4f2656)
+- Mock strategy: `jest.unstable_mockModule('../config/socket.js', ...)` prevents
+  `models/index.js` associations from running at import time. Adopted as team pattern.
+
+### Q2 — C-07 CORS regex
+- **Status:** OPEN — product/ops decision required
+- The current regex `^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$`
+  is technically correct. The CLAUDE.md pre-launch TODO is about policy: whether
+  deploy-preview origins should ever be CORS-allowed in production. Replace with an
+  explicit `ALLOWED_ORIGINS` env-var list before going live.
+
+### Q3 — Business role scope
+- **Status:** OPEN — product decision required
+- `business` is currently `isGlobalAccess = true` (same as `government`). Needs
+  product sign-off on whether business users should be scoped to specific schools.
+
+### Q4 — Child.schoolId nullable
+- **Status:** OPEN — product decision required
+- Migration `20260510000001-make-child-school-nullable.js` makes `schoolId` nullable.
+  Needs confirmation whether this is intentional (children not yet assigned to a school)
+  or a rollback artifact.
+
+### Q5 — Payment SDK dependencies
+- **Status:** CLOSED — already clean
+- No Payme/Click/Uzum packages in `package.json`. Payment routes were deleted in
+  commit ca2039b; no orphaned SDK dependencies remain.
+
+### Q6 — GCS vs Appwrite in production
+- **Status:** OPEN — ops decision required
+- `storage.js` supports both GCS and Appwrite with Appwrite preferred. If GCS is not
+  used in production, `GCS_BUCKET_NAME` / `GCP_PROJECT_ID` env vars and the GCS init
+  block can be removed. Awaiting ops confirmation.
+
+### Q7 — Government-level media access
+- **Status:** CLOSED (design intent confirmed by H-05 fix)
+- Government users retain full cross-school media access via `validateChildAccess`.
+  The null-schoolId bypass in H-05 was tightened for scoped users only; government
+  bypasses `schoolScope.js` entirely (`isGlobalAccess = true`).
+
+### Q8 — Migration route attack surface
+- **Status:** CLOSED — already self-gated
+- `POST /api/v1/migrations/run` returns 404 when `MIGRATION_SECRET` env var is unset,
+  effectively disabling the endpoint in environments that don't configure it. No code
+  change required.
