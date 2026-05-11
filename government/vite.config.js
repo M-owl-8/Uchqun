@@ -1,3 +1,4 @@
+/* eslint-env node */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -8,7 +9,7 @@ export default defineConfig(({ mode }) => {
   }
   return {
     plugins: [react()],
-    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios') } },
+    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios'), 'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next') } },
     server: {
       port: 5173,
       open: true,

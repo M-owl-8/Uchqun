@@ -1,7 +1,7 @@
 // refs #05-013 — reception test coverage sparse (auth-only)
 // refs #07-008 — hardcoded 'uz-UZ' / Uzbek strings replaced with i18n via t()
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render } from '@testing-library/react';
+import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 
 vi.mock('react-i18next', () => ({
@@ -67,7 +67,9 @@ describe('#05-013 Reception Settings page', () => {
   it('renders page title via t() (i18n wired)', async () => {
     const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
-    // t('settings.title') returns the key when no locale loaded — page renders
-    expect(container.querySelector('h1')).toBeTruthy();
+    // component starts with loading:true (spinner); wait for profile fetch to complete
+    await waitFor(() => {
+      expect(container.querySelector('h1')).toBeTruthy();
+    });
   });
 });
