@@ -37,22 +37,23 @@ describe('requireSchoolScope', () => {
     expect(next).toHaveBeenCalled();
   });
 
-  // #03-018: business ALWAYS gets isGlobalAccess=true regardless of schoolId
-  it('business with schoolId still has global access', () => {
+  // Q3: business is school-scoped (least-privilege default; flip isGlobalAccess in schoolScope.js if product requires otherwise)
+  it('business with schoolId is school-scoped', () => {
     const req = { user: { role: 'business', schoolId: 's2' } };
     const next = jest.fn();
     requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s2');
-    expect(req.isGlobalAccess).toBe(true);
+    expect(req.isGlobalAccess).toBe(false);
     expect(next).toHaveBeenCalled();
   });
 
-  it('business without schoolId has global access', () => {
+  it('business without schoolId is rejected with 403', () => {
     const req = { user: { role: 'business' } };
+    const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, mkRes(), next);
-    expect(req.isGlobalAccess).toBe(true);
-    expect(next).toHaveBeenCalled();
+    requireSchoolScope(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(next).not.toHaveBeenCalled();
   });
 
   it('admin without schoolId is rejected with 403', () => {
@@ -101,8 +102,25 @@ describe('schoolWhere', () => {
     expect(schoolWhere({ user: { role: 'government', schoolId: 's1' } })).toEqual({});
   });
 
-  it('empty object for business regardless of schoolId', () => {
+  // Q3: business is school-scoped — schoolWhere returns { schoolId } for business users
+  it('returns schoolId filter for business with schoolId (Q3)', () => {
+    expect(schoolWhere({ user: { role: 'business', schoolId: 's3' } })).toEqual({ schoolId: 's3' });
+  });
+
+  it('empty object for business without schoolId (no school assigned)', () => {
     expect(schoolWhere({ user: { role: 'business', schoolId: null } })).toEqual({});
+  });
+
+  it('business user from school A cannot read child in school B via schoolWhere', () => {
+    // A business user assigned to school A should never get an empty where clause
+    // (which would expose children from school B) — only gets their own schoolId.
+    const whereA = schoolWhere({ user: { role: 'business', schoolId: 'school-A' } });
+    const whereB = schoolWhere({ user: { role: 'business', schoolId: 'school-B' } });
+    expect(whereA).toEqual({ schoolId: 'school-A' });
+    expect(whereB).toEqual({ schoolId: 'school-B' });
+    expect(whereA).not.toEqual(whereB);
+    // Neither is empty (which would be the cross-school exposure vector)
+    expect(Object.keys(whereA).length).toBeGreaterThan(0);
   });
 
   it('empty object when user has no schoolId', () => {

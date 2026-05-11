@@ -5,6 +5,11 @@ import TherapyUsage from '../models/TherapyUsage.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 
+// NOTE (Q3): businessController aggregate stats are intentionally cross-school — they
+// represent portfolio-level analytics for the sponsoring business. Individual child or
+// user records must NOT be exposed here. If school-level scoping is required for these
+// endpoints, add `req.user.schoolId` filters and update the route to mount requireSchoolScope.
+
 /**
  * Get overview statistics for business
  * GET /api/business/overview

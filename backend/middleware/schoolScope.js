@@ -5,7 +5,7 @@ export const requireSchoolScope = (req, res, next) => {
 
   const { role, schoolId } = req.user;
 
-  if (role === 'government' || role === 'business') {
+  if (role === 'government') {
     req.schoolId = schoolId || null;
     req.isGlobalAccess = true;
     return next();
@@ -25,6 +25,6 @@ export const requireSchoolScope = (req, res, next) => {
 export const schoolWhere = (req) => {
   if (!req.user) return {};
   const { role, schoolId } = req.user;
-  if (role === 'government' || role === 'business' || !schoolId) return {};
+  if (role === 'government' || !schoolId) return {};
   return { schoolId };
 };
