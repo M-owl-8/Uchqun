@@ -1,33 +1,12 @@
-import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import api from '../services/api';
+import { useFetch } from '@shared/hooks/useFetch';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Building2, Star, AlertCircle } from 'lucide-react';
 
 const SchoolRatings = () => {
   const { t } = useTranslation();
-  const [schoolRatings, setSchoolRatings] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadData = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const response = await api.get('/admin/school-ratings');
-      setSchoolRatings(response.data.data || []);
-    } catch (err) {
-      setError(err.response?.data?.error || t('schoolRatings.errorLoad'));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data: schoolRatings, loading, error } = useFetch('/admin/school-ratings', { initialData: [] });
 
   if (loading) {
     return (
@@ -53,7 +32,7 @@ const SchoolRatings = () => {
     );
   }
 
-  if (schoolRatings.length === 0) {
+  if (!schoolRatings || schoolRatings.length === 0) {
     return (
       <div className="max-w-3xl mx-auto space-y-4">
         <Card className="flex items-center justify-center py-12">

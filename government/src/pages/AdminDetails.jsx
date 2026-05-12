@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import { useFetch } from '@shared/hooks/useFetch';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -21,29 +20,8 @@ const AdminDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    if (!id || !UUID_RE.test(id)) {
-      setLoading(false);
-      return;
-    }
-    loadAdminDetails();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const loadAdminDetails = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get(`/government/admins/${id}`);
-      setData(res.data?.data || null);
-    } catch {
-      // handled by empty data state
-    } finally {
-      setLoading(false);
-    }
-  };
+  const isValidId = id && UUID_RE.test(id);
+  const { data, loading } = useFetch(isValidId ? `/government/admins/${id}` : null, { skip: !isValidId });
 
   if (loading) {
     return (
@@ -157,7 +135,7 @@ const AdminDetails = () => {
                 <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                   admin.isActive ? 'bg-green-100 text-green-700' : 'bg-gray-100 text-gray-600'
                 }`}>
-                  {admin.isActive 
+                  {admin.isActive
                     ? t('profile.active', { defaultValue: 'Faol' })
                     : t('profile.inactive', { defaultValue: 'Nofaol' })
                   }
@@ -196,7 +174,6 @@ const AdminDetails = () => {
         </div>
       </div>
 
-      {/* Receptions */}
       {receptions.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -218,7 +195,6 @@ const AdminDetails = () => {
         </Card>
       )}
 
-      {/* Schools */}
       {schools.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -240,7 +216,6 @@ const AdminDetails = () => {
         </Card>
       )}
 
-      {/* Teachers */}
       {teachers.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -262,7 +237,6 @@ const AdminDetails = () => {
         </Card>
       )}
 
-      {/* Parents */}
       {parents.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">
@@ -284,7 +258,6 @@ const AdminDetails = () => {
         </Card>
       )}
 
-      {/* Children */}
       {children.length > 0 && (
         <Card>
           <h2 className="text-xl font-bold text-gray-900 mb-4">

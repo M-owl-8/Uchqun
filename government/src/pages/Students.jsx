@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import api from '../services/api';
+import { useFetch } from '@shared/hooks/useFetch';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Users, Building2, User } from 'lucide-react';
@@ -7,31 +6,9 @@ import { useTranslation } from 'react-i18next';
 
 const Students = () => {
   const { t } = useTranslation();
-  const [students, setStudents] = useState([]);
-  const [total, setTotal] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [loadError, setLoadError] = useState(null);
-
-  useEffect(() => {
-    loadStudents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadStudents = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/government/students?limit=100&page=1');
-      const data = res.data?.data || {};
-      setStudents(data.students || []);
-      setTotal(data.total ?? 0);
-    } catch (error) {
-      setStudents([]);
-      setTotal(0);
-      setLoadError(error.response?.data?.error || t('common.loadError', { defaultValue: 'Failed to load data' }));
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { data, loading, error } = useFetch('/government/students?limit=100&page=1');
+  const students = data?.students || [];
+  const total = data?.total ?? 0;
 
   if (loading) {
     return (
@@ -41,10 +18,10 @@ const Students = () => {
     );
   }
 
-  if (loadError) {
+  if (error) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-red-500">{loadError}</p>
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
