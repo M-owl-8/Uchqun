@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prebuild": "node fetch-shared.cjs",
     "build": "vite build",
     "preview": "vite preview",
     "start": "vite preview",
