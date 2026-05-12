@@ -11,7 +11,7 @@ import LoadingSpinner from '../shared/components/LoadingSpinner';
 
 const Profile = () => {
   const { user, logout, setUser } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { success, error: showError } = useToast();
   const [showMessageModal, setShowMessageModal] = useState(false);
@@ -330,7 +330,7 @@ const Profile = () => {
                       <div>
                         <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                          {new Date(msg.createdAt).toLocaleDateString('uz-UZ', { 
+                          {new Date(msg.createdAt).toLocaleDateString(i18n.language, { 
                             year: 'numeric', 
                             month: 'long', 
                             day: 'numeric',
@@ -359,7 +359,7 @@ const Profile = () => {
                           </div>
                           <p className="text-sm font-medium text-blue-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
-                            {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
+                            {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 
                               month: 'long', 
                               day: 'numeric',

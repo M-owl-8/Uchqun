@@ -220,10 +220,6 @@ describe('CL-012 ParentManagement integration', () => {
     // confirm dialog should appear
     await waitFor(() => expect(screen.getByText('parentsPage.confirmDelete')).toBeTruthy());
 
-    // click confirm button
-    const confirmBtn = screen.getAllByRole('button').find(
-      (b) => b.textContent.toLowerCase().includes('ha') || b.textContent.toLowerCase().includes('yes') || b.textContent === 'parentsPage.confirmDelete'
-    );
     // The inline confirm dialog has two buttons; find the one that is not cancel
     const dialogButtons = screen.getByText('parentsPage.confirmDelete').closest('div').querySelectorAll('button');
     fireEvent.click(dialogButtons[1]); // second button = confirm

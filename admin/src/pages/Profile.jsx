@@ -21,7 +21,7 @@ const Profile = () => {
   const { user, logout } = useAuth();
   const { success, error: showError } = useToast();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(true);
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageSubject, setMessageSubject] = useState('');
@@ -289,7 +289,7 @@ const Profile = () => {
                       <div>
                         <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
                         <p className="text-sm text-gray-500 mt-1">
-                          {new Date(msg.createdAt).toLocaleDateString('uz-UZ', { 
+                          {new Date(msg.createdAt).toLocaleDateString(i18n.language, { 
                             year: 'numeric', 
                             month: 'long', 
                             day: 'numeric',
@@ -318,7 +318,7 @@ const Profile = () => {
                           </div>
                           <p className="text-sm font-medium text-blue-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
-                            {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', { 
+                            {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 
                               month: 'long', 
                               day: 'numeric',

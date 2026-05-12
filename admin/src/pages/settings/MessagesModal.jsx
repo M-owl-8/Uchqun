@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { MessageSquare, X } from 'lucide-react';
 
 const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={onClose}>
       <div className="bg-white rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
@@ -39,7 +39,7 @@ const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
                   <div>
                     <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
                     <p className="text-sm text-gray-500 mt-1">
-                      {new Date(msg.createdAt).toLocaleDateString('uz-UZ', {
+                      {new Date(msg.createdAt).toLocaleDateString(i18n.language, {
                         year: 'numeric',
                         month: 'long',
                         day: 'numeric',
@@ -68,7 +68,7 @@ const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
                       </div>
                       <p className="text-sm font-medium text-blue-700">{t('settings.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                       <span className="text-xs text-gray-500 ml-auto">
-                        {new Date(msg.repliedAt).toLocaleDateString('uz-UZ', {
+                        {new Date(msg.repliedAt).toLocaleDateString(i18n.language, {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric',
