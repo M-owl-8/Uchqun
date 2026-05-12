@@ -272,7 +272,7 @@ export async function deleteFile(filepath) {
  * @param {number} expiresIn - Expiration time in seconds (default: 1 hour)
  * @returns {Promise<string>}
  */
-export async function getSignedUrl(filename, expiresIn = 3600) {
+export async function getSignedUrl(filename, _expiresIn = 3600) {
   if (appwriteConfigured) {
     if (!appwriteStorage || !appwriteBucketId) {
       throw new Error('Appwrite storage not initialized');

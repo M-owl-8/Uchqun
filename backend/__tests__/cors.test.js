@@ -8,10 +8,11 @@ import supertest from 'supertest';
 
 function makeCorsApp(isProduction) {
   const app = express();
-  // eslint-disable-next-line security/detect-unsafe-regex
+  /* eslint-disable security/detect-unsafe-regex */
   const deployRegex = isProduction
     ? /^https:\/\/uchqun-[a-z-]+\.(netlify|vercel)\.app$/
     : /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/;
+  /* eslint-enable security/detect-unsafe-regex */
   app.use(cors({
     origin: (origin, callback) => {
       if (!origin) return callback(null, true);

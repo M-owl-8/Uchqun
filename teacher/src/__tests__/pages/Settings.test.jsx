@@ -32,7 +32,7 @@ vi.mock('../../shared/context/AuthContext', () => ({
 }));
 
 vi.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (k) => k }),
+  useTranslation: () => ({ t: (k) => k, i18n: { language: 'en' } }),
 }));
 
 vi.mock('react-router-dom', () => ({

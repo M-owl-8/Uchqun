@@ -37,6 +37,7 @@ function extractCookieValue(res, name) {
   if (!raw) return null;
   const cookies = Array.isArray(raw) ? raw : [raw];
   for (const cookie of cookies) {
+    // eslint-disable-next-line security/detect-non-literal-regexp
     const match = cookie.match(new RegExp(`${name}=([^;]+)`));
     if (match) return decodeURIComponent(match[1]);
   }
