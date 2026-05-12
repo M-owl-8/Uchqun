@@ -75,11 +75,7 @@ const models = {
 
 // ─── Associations ─────────────────────────────────────────────────────────────
 
-// ParentEvaluation
-User.hasMany(ParentEvaluation, { foreignKey: 'parentId', as: 'parentEvaluations' });
-ParentEvaluation.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
-User.hasMany(ParentEvaluation, { foreignKey: 'teacherId', as: 'receivedEvaluations' });
-ParentEvaluation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+// === User & Auth ===
 
 // User → Document
 User.hasMany(Document, { foreignKey: 'userId', as: 'documents' });
@@ -119,25 +115,15 @@ Notification.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 User.hasMany(Child, { foreignKey: 'parentId', as: 'children' });
 Child.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
 
+// RefreshToken
+User.hasMany(RefreshToken, { foreignKey: 'userId', as: 'refreshTokens' });
+RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
+
+// === Child & Family ===
+
 // Child → Notification
 Child.hasMany(Notification, { foreignKey: 'childId', as: 'notifications' });
 Notification.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
-
-// Teacher ratings
-User.hasMany(TeacherRating, { foreignKey: 'teacherId', as: 'receivedRatings' });
-User.hasMany(TeacherRating, { foreignKey: 'parentId', as: 'givenRatings' });
-TeacherRating.belongsTo(User, { foreignKey: 'teacherId', as: 'ratedTeacher' });
-TeacherRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
-
-// Chat messages
-User.hasMany(ChatMessage, { foreignKey: 'senderId', as: 'sentMessages' });
-ChatMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
-
-// School ratings
-School.hasMany(SchoolRating, { foreignKey: 'schoolId', as: 'ratings' });
-SchoolRating.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
-User.hasMany(SchoolRating, { foreignKey: 'parentId', as: 'schoolRatings' });
-SchoolRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
 
 // Child → School / Group
 Child.belongsTo(School, { foreignKey: 'schoolId', as: 'childSchool' });
@@ -145,9 +131,33 @@ School.hasMany(Child, { foreignKey: 'schoolId', as: 'schoolChildren' });
 Child.belongsTo(Group, { foreignKey: 'groupId', as: 'childGroup' });
 Group.hasMany(Child, { foreignKey: 'groupId', as: 'groupChildren' });
 
+// === School ===
+
 // Group → User (teacher)
 Group.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 User.hasMany(Group, { foreignKey: 'teacherId', as: 'groups' });
+
+// School ratings
+School.hasMany(SchoolRating, { foreignKey: 'schoolId', as: 'ratings' });
+SchoolRating.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(SchoolRating, { foreignKey: 'parentId', as: 'schoolRatings' });
+SchoolRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
+
+// AIWarning
+School.hasMany(AIWarning, { foreignKey: 'schoolId', as: 'warnings' });
+AIWarning.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(AIWarning, { foreignKey: 'parentId', as: 'parentWarnings' });
+AIWarning.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
+User.hasMany(AIWarning, { foreignKey: 'resolvedBy', as: 'resolvedWarnings' });
+AIWarning.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
+
+// GovernmentStats
+School.hasMany(GovernmentStats, { foreignKey: 'schoolId', as: 'governmentStats' });
+GovernmentStats.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(GovernmentStats, { foreignKey: 'generatedBy', as: 'generatedStats' });
+GovernmentStats.belongsTo(User, { foreignKey: 'generatedBy', as: 'generator' });
+
+// === Activities & Media ===
 
 // Activity / Meal / Media → Child / Activity
 Activity.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
@@ -159,6 +169,26 @@ Child.hasMany(Media, { foreignKey: 'childId', as: 'media' });
 Media.belongsTo(Activity, { foreignKey: 'activityId', as: 'activity' });
 Activity.hasMany(Media, { foreignKey: 'activityId', as: 'media' });
 
+// === Ratings & Evaluations ===
+
+// ParentEvaluation
+User.hasMany(ParentEvaluation, { foreignKey: 'parentId', as: 'parentEvaluations' });
+ParentEvaluation.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
+User.hasMany(ParentEvaluation, { foreignKey: 'teacherId', as: 'receivedEvaluations' });
+ParentEvaluation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+
+// Teacher ratings
+User.hasMany(TeacherRating, { foreignKey: 'teacherId', as: 'receivedRatings' });
+User.hasMany(TeacherRating, { foreignKey: 'parentId', as: 'givenRatings' });
+TeacherRating.belongsTo(User, { foreignKey: 'teacherId', as: 'ratedTeacher' });
+TeacherRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
+
+// === Messaging & Government ===
+
+// Chat messages
+User.hasMany(ChatMessage, { foreignKey: 'senderId', as: 'sentMessages' });
+ChatMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
+
 // GovernmentMessage
 User.hasMany(GovernmentMessage, { foreignKey: 'senderId', as: 'governmentMessages' });
 GovernmentMessage.belongsTo(User, { foreignKey: 'senderId', as: 'sender' });
@@ -168,6 +198,16 @@ User.hasMany(AdminRegistrationRequest, { foreignKey: 'reviewedBy', as: 'reviewed
 AdminRegistrationRequest.belongsTo(User, { foreignKey: 'reviewedBy', as: 'reviewer' });
 User.hasOne(AdminRegistrationRequest, { foreignKey: 'approvedUserId', as: 'adminRegistrationRequest' });
 AdminRegistrationRequest.belongsTo(User, { foreignKey: 'approvedUserId', as: 'approvedUser' });
+
+// BusinessStats
+User.hasMany(BusinessStats, { foreignKey: 'businessId', as: 'businessStats' });
+BusinessStats.belongsTo(User, { foreignKey: 'businessId', as: 'business' });
+
+// News
+User.hasMany(News, { foreignKey: 'createdById', as: 'newsCreated' });
+News.belongsTo(User, { foreignKey: 'createdById', as: 'createdBy' });
+
+// === Therapy & Clinical ===
 
 // EmotionalMonitoring
 Child.hasMany(EmotionalMonitoring, { foreignKey: 'childId', as: 'emotionalMonitoring' });
@@ -187,29 +227,6 @@ TherapyUsage.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 Child.hasMany(TherapyUsage, { foreignKey: 'childId', as: 'therapyUsages' });
 TherapyUsage.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 
-// AIWarning
-School.hasMany(AIWarning, { foreignKey: 'schoolId', as: 'warnings' });
-AIWarning.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
-User.hasMany(AIWarning, { foreignKey: 'parentId', as: 'parentWarnings' });
-AIWarning.belongsTo(User, { foreignKey: 'parentId', as: 'parent' });
-User.hasMany(AIWarning, { foreignKey: 'resolvedBy', as: 'resolvedWarnings' });
-AIWarning.belongsTo(User, { foreignKey: 'resolvedBy', as: 'resolver' });
-
-
-// GovernmentStats
-School.hasMany(GovernmentStats, { foreignKey: 'schoolId', as: 'governmentStats' });
-GovernmentStats.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
-User.hasMany(GovernmentStats, { foreignKey: 'generatedBy', as: 'generatedStats' });
-GovernmentStats.belongsTo(User, { foreignKey: 'generatedBy', as: 'generator' });
-
-// BusinessStats
-User.hasMany(BusinessStats, { foreignKey: 'businessId', as: 'businessStats' });
-BusinessStats.belongsTo(User, { foreignKey: 'businessId', as: 'business' });
-
-// RefreshToken
-User.hasMany(RefreshToken, { foreignKey: 'userId', as: 'refreshTokens' });
-RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
-
 // ChildAssessment
 Child.hasMany(ChildAssessment, { foreignKey: 'childId', as: 'assessments' });
 ChildAssessment.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
@@ -228,15 +245,13 @@ MealPlan.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
 User.hasMany(MealPlan, { foreignKey: 'createdBy', as: 'createdMealPlans' });
 MealPlan.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
 
+// === Teacher Tools ===
+
 // TeacherResource
 User.hasMany(TeacherResource, { foreignKey: 'teacherId', as: 'teacherResources' });
 TeacherResource.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 School.hasMany(TeacherResource, { foreignKey: 'schoolId', as: 'teacherResources' });
 TeacherResource.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
-
-// News
-User.hasMany(News, { foreignKey: 'createdById', as: 'newsCreated' });
-News.belongsTo(User, { foreignKey: 'createdById', as: 'createdBy' });
 
 // ─── School-scoped named scopes ───────────────────────────────────────────────
 Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
