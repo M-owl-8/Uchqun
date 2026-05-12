@@ -14,6 +14,8 @@ export default defineConfig(({ mode }) => {
       alias: {
         '@shared': path.resolve(__dirname, '../shared'),
         'axios': path.resolve(__dirname, 'node_modules/axios'),
+        'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'),
+        'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom'),
       },
     },
     build: { outDir: 'dist' },
