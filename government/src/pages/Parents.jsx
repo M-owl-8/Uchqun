@@ -1,34 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { Users, Mail, Phone } from 'lucide-react';
+import { Users, Mail, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+
+const PAGE_SIZE = 20;
 
 const Parents = () => {
   const { t } = useTranslation();
   const [parents, setParents] = useState([]);
   const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadParents();
-  }, []);
-
-  const loadParents = async () => {
+  const loadParents = useCallback(async (pageNum) => {
     try {
       setLoading(true);
-      const res = await api.get('/government/parents?limit=500');
+      const offset = (pageNum - 1) * PAGE_SIZE;
+      const res = await api.get(`/government/parents?limit=${PAGE_SIZE}&offset=${offset}`);
       const data = res.data?.data || {};
       setParents(data.parents || []);
       setTotal(data.total ?? 0);
-    } catch (error) {
+    } catch {
       setParents([]);
       setTotal(0);
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadParents(page);
+  }, [page, loadParents]);
+
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   if (loading) {
     return (
@@ -66,32 +72,56 @@ const Parents = () => {
           </div>
         </Card>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {parents.map((parent) => (
-            <Card key={parent.id} className="p-4">
-              <div className="flex items-start gap-3">
-                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Users className="w-6 h-6 text-orange-600" />
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-gray-900">
-                    {parent.firstName} {parent.lastName}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
-                    <Mail className="w-4 h-4 flex-shrink-0" />
-                    <span className="truncate">{parent.email || '—'}</span>
-                  </p>
-                  {parent.phone && (
-                    <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                      <Phone className="w-3 h-3" />
-                      {parent.phone}
+        <>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {parents.map((parent) => (
+              <Card key={parent.id} className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Users className="w-6 h-6 text-orange-600" />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-gray-900">
+                      {parent.firstName} {parent.lastName}
+                    </h3>
+                    <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
+                      <Mail className="w-4 h-4 flex-shrink-0" />
+                      <span className="truncate">{parent.email || '—'}</span>
                     </p>
-                  )}
+                    {parent.phone && (
+                      <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                        <Phone className="w-3 h-3" />
+                        {parent.phone}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            </Card>
-          ))}
-        </div>
+              </Card>
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="flex items-center justify-center gap-3">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={page === 1}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronLeft className="w-4 h-4" />
+              </button>
+              <span className="text-sm text-gray-600">
+                {page} / {totalPages}
+              </span>
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={page === totalPages}
+                className="p-2 rounded-lg border border-gray-300 hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed"
+              >
+                <ChevronRight className="w-4 h-4" />
+              </button>
+            </div>
+          )}
+        </>
       )}
     </div>
   );

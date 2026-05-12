@@ -8,6 +8,7 @@ import AIWarning from '../models/AIWarning.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAverageRating } from '../utils/governmentLevel.js';
+import { parsePagination } from '../utils/pagination.js';
 
 /**
  * Get overview statistics
@@ -334,15 +335,13 @@ export const getTeachersList = async (req, res) => {
  */
 export const getParentsList = async (req, res) => {
   try {
-    const { limit = 500, offset = 0 } = req.query;
-    const limitNum = Math.min(parseInt(limit, 10) || 500, 1000);
-    const offsetNum = parseInt(offset, 10) || 0;
+    const { limit, offset } = parsePagination(req.query, { limit: 20 });
 
     const { count, rows: parents } = await User.findAndCountAll({
       where: { role: 'parent' },
       attributes: { exclude: ['password'] },
-      limit: limitNum,
-      offset: offsetNum,
+      limit,
+      offset,
       order: [['createdAt', 'DESC']],
     });
 
@@ -350,6 +349,8 @@ export const getParentsList = async (req, res) => {
       success: true,
       data: {
         total: count,
+        limit,
+        offset,
         parents: parents.map(p => p.toJSON()),
       },
     });
