@@ -49,6 +49,10 @@ const _pruneRevokedJtis = () => {
 const _userCache = new Map();
 const USER_CACHE_TTL = 30_000;
 
+export const invalidateUserCache = (userId) => {
+  _userCache.delete(userId);
+};
+
 const getCachedUser = async (userId) => {
   if (process.env.NODE_ENV === 'test') return User.findByPk(userId);
   const cached = _userCache.get(userId);

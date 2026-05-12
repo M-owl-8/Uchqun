@@ -7,7 +7,7 @@ jest.unstable_mockModule('../../models/User.js', () => ({
   default: { findByPk: mockFindByPk },
 }));
 
-const { authenticate, requireRole } = await import('../../middleware/auth.js');
+const { authenticate, requireRole, invalidateUserCache } = await import('../../middleware/auth.js');
 
 describe('authenticate middleware', () => {
   let req, res, next;
@@ -92,5 +92,35 @@ describe('requireRole middleware', () => {
   it('returns 401 when no user', () => {
     requireRole('admin')(req, res, next);
     expect(res.status).toHaveBeenCalledWith(401);
+  });
+});
+
+describe('invalidateUserCache', () => {
+  it('removes the cached entry so the next authenticate hits the DB', async () => {
+    process.env.NODE_ENV = 'production'; // enable cache
+    const user = { id: 'u1', role: 'reception', isActive: true, documentsApproved: true };
+    mockFindByPk.mockResolvedValue(user);
+
+    // Warm the cache by authenticating once
+    const token = jwt.sign({ userId: 'u1', jti: 'j1' }, process.env.JWT_SECRET || 'test-secret-that-is-at-least-32-chars', { expiresIn: '15m' });
+    const req1 = { cookies: { accessToken: token }, headers: {} };
+    const res1 = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    await authenticate(req1, res1, jest.fn());
+    expect(mockFindByPk).toHaveBeenCalledTimes(1);
+
+    // Second auth hits the cache — DB not called again
+    const req2 = { cookies: { accessToken: token }, headers: {} };
+    const res2 = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    await authenticate(req2, res2, jest.fn());
+    expect(mockFindByPk).toHaveBeenCalledTimes(1); // still 1 — from cache
+
+    // Invalidate and authenticate again — DB must be called
+    invalidateUserCache('u1');
+    const req3 = { cookies: { accessToken: token }, headers: {} };
+    const res3 = { status: jest.fn().mockReturnThis(), json: jest.fn() };
+    await authenticate(req3, res3, jest.fn());
+    expect(mockFindByPk).toHaveBeenCalledTimes(2); // cache was cleared
+
+    process.env.NODE_ENV = 'test'; // restore
   });
 });

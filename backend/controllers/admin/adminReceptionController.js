@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import User from '../../models/User.js';
 import Document from '../../models/Document.js';
 import logger from '../../utils/logger.js';
+import { invalidateUserCache } from '../../middleware/auth.js';
 
 /**
  * Get all Reception accounts with their verification status
@@ -179,6 +180,7 @@ export const approveDocument = async (req, res) => {
         reception.documentsApproved = true;
         reception.isActive = true;
         await reception.save();
+        invalidateUserCache(reception.id);
 
         logger.info('Reception account activated', {
           receptionId: reception.id,
@@ -253,6 +255,7 @@ export const rejectDocument = async (req, res) => {
       reception.documentsApproved = false;
       reception.isActive = false;
       await reception.save();
+      invalidateUserCache(reception.id);
     }
 
     // Reload document without reviewer details to avoid exposing other admin information
@@ -297,6 +300,7 @@ export const activateReception = async (req, res) => {
     reception.isActive = true;
     reception.documentsApproved = true;
     await reception.save();
+    invalidateUserCache(reception.id);
 
     logger.info('Reception account manually activated', {
       receptionId: reception.id,
@@ -333,6 +337,7 @@ export const deactivateReception = async (req, res) => {
 
     reception.isActive = false;
     await reception.save();
+    invalidateUserCache(reception.id);
 
     logger.info('Reception account deactivated', {
       receptionId: reception.id,
