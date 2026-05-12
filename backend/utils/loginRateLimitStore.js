@@ -1,8 +1,8 @@
 import { getRedisClient } from './redisClient.js';
 import logger from './logger.js';
 
-const MAX_ATTEMPTS = 5;
-const LOCKOUT_SECS = 15 * 60; // 15 minutes
+const MAX_ATTEMPTS = parseInt(process.env.LOGIN_MAX_ATTEMPTS, 10) || 5;
+const LOCKOUT_SECS = parseInt(process.env.LOGIN_LOCKOUT_SECS, 10) || 15 * 60;
 
 // In-memory fallback (used when REDIS_URL is not configured)
 const _store = new Map();
