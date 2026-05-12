@@ -1,12 +1,14 @@
 import rateLimit from 'express-rate-limit';
 
-// General API rate limiter (100 requests per 15 minutes in production, 1000 in development)
+const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
+
+// General API rate limiter — override with RATE_LIMIT_API_MAX / RATE_LIMIT_WINDOW_MS
 export const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: process.env.NODE_ENV === 'production' ? 100 : 1000, // Higher limit in development
+  windowMs: WINDOW_MS,
+  max: Number(process.env.RATE_LIMIT_API_MAX) || (process.env.NODE_ENV === 'production' ? 100 : 1000),
   message: 'Too many requests from this IP, please try again later.',
-  standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-  legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+  standardHeaders: true,
+  legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
       error: 'Too many requests',
@@ -17,11 +19,10 @@ export const apiLimiter = rateLimit({
 });
 
 // Stricter rate limiter for authentication endpoints
-// Defaults (safer dev): Production 50 req / 15m, Development 5000 req / 15m
-// Override with AUTH_LIMIT_MAX and AUTH_LIMIT_WINDOW_MS env vars if needed
+// Override with RATE_LIMIT_AUTH_MAX / RATE_LIMIT_WINDOW_MS (AUTH_LIMIT_MAX still accepted)
 export const authLimiter = rateLimit({
-  windowMs: Number(process.env.AUTH_LIMIT_WINDOW_MS) || 15 * 60 * 1000,
-  max: Number(process.env.AUTH_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 5000),
+  windowMs: Number(process.env.AUTH_LIMIT_WINDOW_MS) || WINDOW_MS,
+  max: Number(process.env.RATE_LIMIT_AUTH_MAX) || Number(process.env.AUTH_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 5000),
   message: 'Too many login attempts, please try again later.',
   skipSuccessfulRequests: true, // Don't count successful requests
   standardHeaders: true,
@@ -68,11 +69,11 @@ export const aiChatLimiter = rateLimit({
   },
 });
 
-// Rate limiter for file uploads (50 uploads per 15 minutes in production, 200 in development)
-// Can be overridden with UPLOAD_LIMIT_MAX and UPLOAD_LIMIT_WINDOW_MS env vars
+// Rate limiter for file uploads
+// Override with RATE_LIMIT_UPLOAD_MAX / RATE_LIMIT_WINDOW_MS (UPLOAD_LIMIT_MAX still accepted)
 export const uploadLimiter = rateLimit({
-  windowMs: Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || 15 * 60 * 1000, // 15 minutes
-  max: Number(process.env.UPLOAD_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 200), // Higher limit in development
+  windowMs: Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || WINDOW_MS,
+  max: Number(process.env.RATE_LIMIT_UPLOAD_MAX) || Number(process.env.UPLOAD_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 200),
   message: 'Too many file uploads, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
