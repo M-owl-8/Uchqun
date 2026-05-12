@@ -73,28 +73,29 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const defaultOrigins = [
+const localhostOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175',
   'http://localhost:5177',
-  'https://uchqun-platform.vercel.app',
-  'https://uchqunedu.uz',
-  'https://www.uchqunedu.uz',
-  'https://uchqun-reception.netlify.app',
-  'https://uchqun-admin.netlify.app',
-  'https://uchqun-teacher.netlify.app',
-  'https://uchqun-government.netlify.app',
 ];
 
-const allowedOrigins = process.env.FRONTEND_URL
-  ? [...new Set([
-      ...defaultOrigins,
-      ...process.env.FRONTEND_URL.split(',').map((u) => u.trim()).filter(Boolean),
-    ])]
-  : defaultOrigins;
+// Production: FRONTEND_URL (comma-separated) is the explicit allowlist.
+// Dev/staging: fall back to localhost + deploy-preview regex.
+const isProduction = process.env.NODE_ENV === 'production';
+const frontendUrls = process.env.FRONTEND_URL
+  ? process.env.FRONTEND_URL.split(',').map((u) => u.trim()).filter(Boolean)
+  : [];
 
-const allowAllOrigins = process.env.NODE_ENV !== 'production' && process.env.CORS_STRICT !== 'true';
+if (isProduction && frontendUrls.length === 0) {
+  logger.warn('CORS: FRONTEND_URL is not set in production — all cross-origin requests will be blocked');
+}
+
+const allowedOrigins = isProduction
+  ? frontendUrls
+  : [...new Set([...localhostOrigins, ...frontendUrls])];
+
+const allowAllOrigins = !isProduction && process.env.CORS_STRICT !== 'true';
 
 logger.info('CORS configured', { origins: allowedOrigins, environment: process.env.NODE_ENV });
 
@@ -103,16 +104,12 @@ app.use(cors({
     if (allowAllOrigins) return callback(null, true);
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) return callback(null, true);
-    if (process.env.NODE_ENV === 'development' && origin.includes('localhost')) return callback(null, true);
-    // Production: only base subdomains — deploy previews are excluded because any
-    // contributor (or attacker via a forked-repo PR) can spin up a preview origin.
     // Non-production: allow deploy-preview-NNN-- prefix for staging/review workflows.
-    // eslint-disable-next-line security/detect-unsafe-regex
-    const deployRegex = process.env.NODE_ENV === 'production'
-      ? /^https:\/\/uchqun-[a-z-]+\.(netlify|vercel)\.app$/
-      : /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/;
-    if (deployRegex.test(origin)) {
-      return callback(null, true);
+    // Production: regex not used — FRONTEND_URL is the sole explicit allowlist.
+    if (!isProduction) {
+      // eslint-disable-next-line security/detect-unsafe-regex
+      const deployRegex = /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/;
+      if (deployRegex.test(origin)) return callback(null, true);
     }
     logger.warn('CORS blocked', { origin });
     callback(new Error(`CORS: Origin ${origin} is not allowed`));
