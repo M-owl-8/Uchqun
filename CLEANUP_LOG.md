@@ -26,8 +26,15 @@ Ordered by execution sequence.
 | CL-014a — Decompose admin/Settings.jsx | Closed | a954465, 072e948 |
 | CL-014b — Decompose teacher/Settings.jsx | Closed | b07bdab, a4c9085 |
 | CL-014c — Decompose reception/Settings.jsx | Closed | 5531527, ddd65d1 |
+| CL-013c — Decompose teacher/parent/ChildProfile.jsx | Closed | (multi-commit) |
+| CL-017 — Circular-reference guard in sanitize.js | Closed | (see section) |
+| CL-018 — Unify error response shape | Closed | (see section) |
+| CL-016 — Invalidate user cache on profile mutation | Closed | (see section) |
+| CL-023 — Replace req.connection.remoteAddress | Closed | (see section) |
+| CL-027 — Deduplicate pool config | Closed | (see section) |
+| CL-024 — Group model associations by domain | Closed | b310616 |
 
-**Backend tests: 510/510 throughout. All four frontend lints clean.**
+**Backend tests: 512/512 throughout. All four frontend lints clean.**
 
 ---
 
@@ -431,5 +438,148 @@ Gate 3 — parent LOC: 250 (target < 400) ✓
 Gate 4 — no behavior change: mechanical extraction only
 
 **Notes:** Reception Settings has no `saving`/`savingPassword` state (unlike admin/teacher), so child components receive no disabled-state props. MessagesModal uses `i18n.language` for toLocaleDateString — solved by calling `useTranslation()` directly inside MessagesModal rather than passing language as a prop.
+
+---
+
+## CL-013c — Decompose `teacher/src/parent/pages/ChildProfile.jsx`
+
+**Status:** Closed
+**Files changed:**
+- `teacher/src/parent/pages/ChildProfile.jsx` — 1059 → 375 LOC
+- `teacher/src/parent/pages/childProfile/childProfileUtils.jsx` — new (InfoItem, StatRow)
+- `teacher/src/parent/pages/childProfile/ChildProfileHero.jsx` — new (photo/avatar section)
+- `teacher/src/parent/pages/childProfile/AvatarUploadModal.jsx` — new (full upload logic)
+- `teacher/src/parent/pages/childProfile/LogoutModal.jsx` — new (logout confirm + logic)
+- `teacher/src/parent/pages/childProfile/MessageModal.jsx` — new (compose message + send)
+- `teacher/src/parent/pages/childProfile/MessagesModal.jsx` — new (inbox view)
+- `teacher/src/parent/pages/childProfile/EmotionalMonitoringSection.jsx` — new (records list)
+- `teacher/src/__tests__/pages/ChildProfile.test.jsx` — updated (stable t reference, waitFor patterns)
+
+**Verification:**
+
+Gate 1 — lint: clean
+Gate 2 — tests: all passing
+Gate 3 — parent LOC: 375 (target < 400) ✓
+Gate 4 — no behavior change: mechanical extraction only
+
+**Notes:** `vi.mock('react-i18next')` factory must hoist `t` into closure scope to prevent function reference churn in React `useEffect` dependency arrays — new `t` on every render triggers infinite re-render loop.
+
+---
+
+## CL-017 — Circular-reference guard in `sanitize.js`
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/sanitize.js` — added `visited = new WeakSet()` parameter to `sanitize()`
+- `backend/__tests__/middleware/sanitize.test.js` — added circular-reference test
+
+**Verification:**
+```
+grep -n "WeakSet" backend/middleware/sanitize.js
+cd backend && npm test
+```
+
+Gate 1 — WeakSet present: ✓
+Gate 2 — 512/512 tests green
+
+**Notes:** Recursive `sanitize()` previously threw `Maximum call stack size exceeded` on circular JS objects (e.g., Sequelize model instances with self-referential associations). WeakSet tracks visited objects, returns early on revisit.
+
+---
+
+## CL-018 — Unify error response shape
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/validation.js` — added `message: 'Some inputs failed validation'` to 400 response
+- `backend/__tests__/middleware/validation.test.js` — added `message` assertion
+
+**Verification:**
+```
+grep -n '"message"' backend/middleware/validation.js
+cd backend && npm test
+```
+
+Gate 1 — message field present: ✓
+Gate 2 — 512/512 tests green
+
+**Notes:** Canonical error shape across all middleware is `{ error: string, message: string, details?: Array<{field, message}> }`. The `error` field is the short machine-readable code; `message` is the human-readable summary.
+
+---
+
+## CL-016 — Invalidate user cache on profile mutation
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/auth.js` — exported `invalidateUserCache(userId)` function
+- `backend/controllers/admin/adminReceptionController.js` — added cache invalidation after 4 `reception.save()` calls that mutate `isActive`
+- `backend/__tests__/middleware/auth.test.js` — added `invalidateUserCache` test
+
+**Verification:**
+```
+grep -n "invalidateUserCache" backend/controllers/admin/adminReceptionController.js
+cd backend && npm test
+```
+
+Gate 1 — 4 invalidation calls present: ✓ (approveDocument, rejectDocument, activateReception, deactivateReception)
+Gate 2 — 512/512 tests green
+
+**Notes:** The 30s in-memory cache in `auth.js` stores `{ user, expiry }` keyed by `userId`. Without invalidation, activating/deactivating a reception account takes up to 30s to take effect. Cache is only active when `NODE_ENV === 'production'`.
+
+---
+
+## CL-023 — Replace deprecated `req.connection.remoteAddress`
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/requestLogger.js` — `req.ip || req.connection.remoteAddress` → `req.ip`
+- `backend/__tests__/middleware/requestLogger.test.js` — updated fallback test to use `req.ip` directly
+
+**Verification:**
+```
+grep -n "connection.remoteAddress" backend/middleware/requestLogger.js && echo "FAIL" || echo "PASS"
+cd backend && npm test
+```
+
+Gate 1 — no remaining deprecated usage: PASS
+Gate 2 — 512/512 tests green
+
+**Notes:** `req.connection` deprecated since Node.js 18. `req.ip` is the Express-idiomatic way to get client IP; it respects `trust proxy` settings automatically.
+
+---
+
+## CL-027 — Deduplicate pool config in `database.js`
+
+**Status:** Closed
+**Files changed:**
+- `backend/config/database.js` — extracted `POOL_CONFIG` and `RETRY_CONFIG` as module-level constants; both Sequelize constructor branches reference them
+
+**Verification:**
+```
+grep -c "POOL_CONFIG\|RETRY_CONFIG" backend/config/database.js
+cd backend && npm test
+```
+
+Gate 1 — both constants referenced in both branches: ✓
+Gate 2 — 512/512 tests green
+
+---
+
+## CL-024 — Group model associations by domain
+
+**Status:** Closed
+**Files changed:**
+- `backend/models/index.js` — added 8 domain section headers to associations block; reorganized associations under sections
+**Commit:** b310616
+
+**Verification:**
+```
+grep -c "^// ===" backend/models/index.js  # → 8
+cd backend && npm test
+```
+
+Gate 1 — 8 section headers: ✓ (User & Auth, Child & Family, School, Activities & Media, Ratings & Evaluations, Messaging & Government, Therapy & Clinical, Teacher Tools)
+Gate 2 — 512/512 tests green
+
+**Notes:** Pure comment/ordering change — zero association definitions modified.
 
 ---
