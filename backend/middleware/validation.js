@@ -8,6 +8,7 @@ export const handleValidationErrors = (req, res, next) => {
     logger.debug('Validation failed', { path: req.path, method: req.method });
     return res.status(400).json({
       error: 'Validation failed',
+      message: 'Some inputs failed validation',
       details: errors.array().map((err) => ({
         field: err.path || err.param,
         message: err.msg,

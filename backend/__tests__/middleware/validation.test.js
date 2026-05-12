@@ -40,6 +40,7 @@ describe('handleValidationErrors', () => {
     expect(res.status).toHaveBeenCalledWith(400);
     const payload = res.json.mock.calls[0][0];
     expect(payload.error).toBe('Validation failed');
+    expect(payload.message).toBe('Some inputs failed validation');
     expect(payload.details).toEqual([
       { field: 'email', message: 'invalid' },
       { field: 'name', message: 'required' },
