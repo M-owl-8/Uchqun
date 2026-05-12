@@ -11,18 +11,21 @@ function sanitizeString(str) {
 
 /**
  * Recursively sanitize all string values in an object.
+ * visited WeakSet prevents infinite recursion on circular references.
  */
-function sanitize(obj) {
+function sanitize(obj, visited = new WeakSet()) {
   if (typeof obj === 'string') {
     return sanitizeString(obj);
   }
   if (Array.isArray(obj)) {
-    return obj.map(sanitize);
+    return obj.map((item) => sanitize(item, visited));
   }
   if (obj && typeof obj === 'object') {
+    if (visited.has(obj)) return obj;
+    visited.add(obj);
     const cleaned = {};
     for (const [key, value] of Object.entries(obj)) {
-      cleaned[key] = sanitize(value);
+      cleaned[key] = sanitize(value, visited);
     }
     return cleaned;
   }

@@ -68,4 +68,13 @@ describe('sanitizeBody middleware', () => {
     sanitizeBody(req, res, next);
     expect(req.body.items[0].tags[0]).toBe('safe');
   });
+
+  it('does not throw on circular references', () => {
+    const circular = { name: '<script>bad</script>hello' };
+    circular.self = circular;
+    req.body = circular;
+    expect(() => sanitizeBody(req, res, next)).not.toThrow();
+    expect(next).toHaveBeenCalled();
+    expect(req.body.name).toBe('hello');
+  });
 });
