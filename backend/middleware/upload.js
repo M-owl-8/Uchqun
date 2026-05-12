@@ -13,14 +13,15 @@ if (!fs.existsSync(tempUploadsDir)) {
   fs.mkdirSync(tempUploadsDir, { recursive: true });
 }
 
+const RANDOM_SUFFIX_RANGE = 1_000_000_000; // 9-digit random suffix for collision avoidance
+
 // Configure storage
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, tempUploadsDir);
   },
   filename: (req, file, cb) => {
-    // Generate unique filename
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * RANDOM_SUFFIX_RANGE);
     const ext = path.extname(file.originalname);
     const basename = path.basename(file.originalname, ext);
     const sanitizedName = basename.replace(/[^a-zA-Z0-9]/g, '_');
