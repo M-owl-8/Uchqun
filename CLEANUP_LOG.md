@@ -33,6 +33,23 @@ Ordered by execution sequence.
 | CL-023 — Replace req.connection.remoteAddress | Closed | (see section) |
 | CL-027 — Deduplicate pool config | Closed | (see section) |
 | CL-024 — Group model associations by domain | Closed | b310616 |
+| CL-025 — ENV-overridable rate limiter configs | Closed | 4579061 |
+| CL-029 — ENV-overridable login lockout thresholds | Closed | f04b519 |
+| CL-030 — ENV-overridable PAGINATION_MAX_LIMIT | Closed | acf2c5e |
+| CL-040 — ENV-overridable SENTRY_TRACES_SAMPLE_RATE | Closed | 9643003 |
+| CL-034 — Production CORS driven by FRONTEND_URL | Closed | 19df30a |
+| CL-020 — Real pagination for government Parents page | Closed | 5a15108 |
+| CL-021 — Replace hardcoded uz-UZ with i18n.language | Closed | 4823025 |
+| CL-019 — Extract shared useFetch hook | Closed | 8410ebc |
+| CL-022 — Remove orphaned shared/utils/imageUrl.js | Closed | 4190af6 |
+| CL-032 — Remove orphaned shared/components/BottomNav.jsx | Closed | d1fc8ee |
+| CL-033 — Replace nextId counter with crypto.randomUUID() | Closed | b49aebe |
+| CL-026 — Winston logger in config/migrate.js | Already clean | n/a |
+| CL-035 — i18n: TopBar "Uchqun Admin" | Closed | c390e65 |
+| CL-036 — i18n: NotFound "Page not found" in all 4 apps | Closed | b247ee6 |
+| CL-037 — i18n: requiredFieldsError hardcoded Uzbek fallback | Closed | f6e8728 |
+| CL-038 — Sidebar hex colors → Tailwind tokens | Closed | 6f16248 |
+| CL-039 — Document 1E9 magic number in upload.js | Closed | e0a7024 |
 
 **Backend tests: 512/512 throughout. All four frontend lints clean.**
 
@@ -581,5 +598,334 @@ Gate 1 — 8 section headers: ✓ (User & Auth, Child & Family, School, Activiti
 Gate 2 — 512/512 tests green
 
 **Notes:** Pure comment/ordering change — zero association definitions modified.
+
+---
+
+## CL-025 — ENV-overridable rate limiter configs
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/rateLimiter.js` — `WINDOW_MS`, `RATE_LIMIT_API_MAX`, `RATE_LIMIT_AUTH_MAX`, `RATE_LIMIT_UPLOAD_MAX` read from env vars with numeric defaults
+- `backend/__tests__/middleware/rateLimiterEnv.test.js` — new (uses `jest.unstable_mockModule` to capture limiter options)
+**Commit:** 4579061
+
+**Verification:**
+```
+grep -n "process.env.RATE_LIMIT" backend/middleware/rateLimiter.js
+cd backend && npm test
+```
+
+Gate 1 — env overrides present: ✓
+Gate 2 — 512/512 tests green
+
+**Notes:** ESM module caching requires all env vars to be set in `beforeAll()` before the single `await import()` call — setting them inside `it()` blocks is too late.
+
+---
+
+## CL-029 — ENV-overridable login lockout thresholds
+
+**Status:** Closed
+**Files changed:**
+- `backend/utils/loginRateLimitStore.js` — `LOGIN_MAX_ATTEMPTS` and `LOGIN_LOCKOUT_SECS` read from env vars
+**Commit:** f04b519
+
+**Verification:**
+```
+grep "LOGIN_MAX_ATTEMPTS\|LOGIN_LOCKOUT_SECS" backend/utils/loginRateLimitStore.js
+cd backend && npm test
+```
+
+Gate 1 — env overrides present: ✓
+Gate 2 — 512/512 tests green
+
+---
+
+## CL-030 — ENV-overridable PAGINATION_MAX_LIMIT
+
+**Status:** Closed
+**Files changed:**
+- `backend/utils/pagination.js` — `MAX_LIMIT = parseInt(process.env.PAGINATION_MAX_LIMIT, 10) || 100`
+**Commit:** acf2c5e
+
+**Verification:**
+```
+grep "PAGINATION_MAX_LIMIT" backend/utils/pagination.js
+cd backend && npm test
+```
+
+Gate 1 — env override present: ✓
+Gate 2 — 512/512 tests green
+
+---
+
+## CL-040 — ENV-overridable SENTRY_TRACES_SAMPLE_RATE
+
+**Status:** Closed
+**Files changed:**
+- `backend/utils/errorTracker.js` — `tracesSampleRate: parseFloat(process.env.SENTRY_TRACES_SAMPLE_RATE) || (prod ? 0.1 : 1.0)`
+**Commit:** 9643003
+
+**Verification:**
+```
+grep "SENTRY_TRACES_SAMPLE_RATE" backend/utils/errorTracker.js
+cd backend && npm test
+```
+
+Gate 1 — env override present: ✓
+Gate 2 — 512/512 tests green
+
+---
+
+## CL-034 — Production CORS driven by FRONTEND_URL env var
+
+**Status:** Closed
+**Files changed:**
+- `backend/server.js` — removed hardcoded `defaultOrigins` production list; added `FRONTEND_URL` comma-separated allowlist; dev keeps `localhostOrigins`; deploy-preview regex retained for non-production only
+**Commit:** 19df30a
+
+**Verification:**
+```
+grep "FRONTEND_URL" backend/server.js
+cd backend && npm test
+```
+
+Gate 1 — FRONTEND_URL parsing present: ✓
+Gate 2 — 512/512 tests green
+
+**Notes:** Resolves C-07 audit finding. Production no longer uses regex matching. CORS_STRICT=true disables the localhost fallback in dev.
+
+---
+
+## CL-020 — Real pagination for government Parents page
+
+**Status:** Closed
+**Files changed:**
+- `backend/controllers/governmentController.js` — `getParentsList` uses `parsePagination`; response includes `limit`/`offset` metadata
+- `government/src/pages/Parents.jsx` — added `PAGE_SIZE=20`, `page` state, prev/next UI
+**Commit:** 5a15108
+
+**Verification:**
+```
+grep "parsePagination" backend/controllers/governmentController.js
+cd government && npm run lint
+cd backend && npm test
+```
+
+Gate 1 — parsePagination in use: ✓
+Gate 2 — lint: clean
+Gate 3 — 512/512 tests green
+
+---
+
+## CL-021 — Replace hardcoded `uz-UZ` locale with `i18n.language`
+
+**Status:** Closed
+**Files changed:**
+- `admin/src/pages/Profile.jsx`
+- `admin/src/pages/settings/MessagesModal.jsx`
+- `teacher/src/pages/Profile.jsx`
+- `teacher/src/pages/settings/MessagesModal.jsx`
+- `teacher/src/parent/pages/childProfile/MessagesModal.jsx`
+- `teacher/src/parent/pages/childProfile/EmotionalMonitoringSection.jsx`
+- `reception/src/pages/Profile.jsx`
+**Commit:** 4823025
+
+**Verification:**
+```
+grep -rn "uz-UZ\|ru-RU\|en-US" admin/src teacher/src reception/src | grep -v "test\|node_modules" && echo "FAIL" || echo "PASS"
+```
+
+Gate 1 — no more hardcoded locale strings: PASS
+Gate 2 — all frontend lints clean
+
+---
+
+## CL-019 — Extract shared `useFetch` hook
+
+**Status:** Closed
+**Files changed:**
+- `shared/hooks/useFetch.js` — new: wraps `api.get()` with `{ data, loading, error, refresh }` and `skip` option
+- `admin/src/pages/SchoolRatings.jsx` — migrated to useFetch
+- `government/src/pages/Students.jsx`, `Teachers.jsx`, `Schools.jsx`, `AdminDetails.jsx` — all migrated
+**Commit:** 8410ebc
+
+**Verification:**
+```
+grep -rn "useFetch" admin/src government/src
+cd admin && npm run lint
+cd government && npm run lint
+cd backend && npm test
+```
+
+Gate 1 — useFetch used in 5 pages: ✓
+Gate 2/3 — lint: clean
+Gate 4 — 512/512 tests green
+
+**Notes:** `skip: !isValidId` pattern for `AdminDetails` — when UUID invalid, `loading` starts `false` and `data=null`, immediately shows "not found" without API call.
+
+---
+
+## CL-022 — Remove orphaned `shared/utils/imageUrl.js`
+
+**Status:** Closed
+**Files changed:**
+- `shared/utils/imageUrl.js` — deleted (zero imports across codebase)
+**Commit:** 4190af6
+
+**Verification:**
+```
+git show 4190af6 --stat
+grep -rn "imageUrl" --include="*.jsx" --include="*.js" . | grep -v node_modules && echo "FAIL" || echo "PASS"
+```
+
+Gate 1 — file deleted: ✓
+Gate 2 — zero remaining imports: PASS
+
+**Notes:** `shared/components/Skeleton.jsx` was listed as orphaned in spec but is actively used by ParentManagement, TeacherManagement, and Dashboard — kept.
+
+---
+
+## CL-032 — Remove orphaned `shared/components/BottomNav.jsx`
+
+**Status:** Closed
+**Files changed:**
+- `shared/components/BottomNav.jsx` — deleted (zero imports from root shared)
+**Commit:** d1fc8ee
+
+**Verification:**
+```
+git show d1fc8ee --stat
+grep -rn "from.*shared/components/BottomNav" --include="*.jsx" . | grep -v node_modules
+```
+
+Gate 1 — root file deleted: ✓
+Gate 2 — no dangling imports
+
+**Notes:** `teacher/src/components/Layout.jsx` imports from `'../shared/components/BottomNav'` which resolves to `teacher/src/shared/components/BottomNav.jsx` (local, not root shared). `teacher/src/parent/components/BottomNav.jsx` handles the parent use case.
+
+---
+
+## CL-033 — Replace `nextId` counter with `crypto.randomUUID()`
+
+**Status:** Closed
+**Files changed:**
+- `shared/context/NotificationContext.jsx` — removed `let nextId = 1`; `const id = crypto.randomUUID()`
+**Commit:** b49aebe
+
+**Verification:**
+```
+grep -n "nextId" shared/context/NotificationContext.jsx && echo "FAIL" || echo "PASS"
+grep "randomUUID" shared/context/NotificationContext.jsx
+```
+
+Gate 1 — no nextId: PASS
+Gate 2 — randomUUID in use: ✓
+
+**Notes:** `nextId` was module-level mutable state that caused HMR-clash — after a hot reload the counter reset to 1, making new notification IDs collide with ones still in the component's useState.
+
+---
+
+## CL-026 — Winston logger in `config/migrate.js`
+
+**Status:** Already clean — no action needed
+**Commit:** n/a
+
+`migrate.js` already imports `logger` from `'../utils/logger.js'` and uses `logger.info/warn/error` throughout. Zero `console.*` calls present. This was done in a prior phase.
+
+---
+
+## CL-035 — i18n: TopBar "Uchqun Admin"
+
+**Status:** Closed
+**Files changed:**
+- `admin/src/components/TopBar.jsx` — added `useTranslation`, replaced literal with `t('sidebar.title', ...)`
+**Commit:** c390e65
+
+**Verification:**
+```
+grep -n "Uchqun Admin" admin/src/components/TopBar.jsx && echo "FAIL" || echo "PASS"
+cd admin && npm run lint
+```
+
+Gate 1 — no hardcoded string: PASS
+Gate 2 — lint: clean
+
+**Notes:** Reused existing `sidebar.title` key already present in all 3 locales — no new key needed.
+
+---
+
+## CL-036 — i18n: "Page not found" in all 4 NotFound pages
+
+**Status:** Closed
+**Files changed:**
+- `admin/src/pages/NotFound.jsx`, `teacher/src/pages/NotFound.jsx`, `reception/src/pages/NotFound.jsx`, `government/src/pages/NotFound.jsx` — all use `t('page404.*')`
+- All locale files updated: admin (`src/locales/`), teacher (`src/locales/`), reception (`public/locales/`), government (`src/locales/`)
+**Commit:** b247ee6
+
+**Verification:**
+```
+grep -rn "Page not found\|Go Back" admin/src teacher/src reception/src government/src | grep -v ".json\|node_modules" && echo "FAIL" || echo "PASS"
+```
+
+Gate 1 — no hardcoded strings: PASS
+Gate 2 — all 4 frontend lints clean
+
+---
+
+## CL-037 — i18n: hardcoded Uzbek fallback in Activities.jsx
+
+**Status:** Closed
+**Files changed:**
+- `teacher/src/pages/Activities.jsx` — removed `|| 'Ko\'nikma...'` fallback; uses `t('activitiesPage.requiredFieldsError')` directly
+- `teacher/src/locales/en/common.json`, `uz/common.json`, `ru/common.json` — added `requiredFieldsError` key
+**Commit:** f6e8728
+
+**Verification:**
+```
+grep -n "Ko.nikma" teacher/src/pages/Activities.jsx && echo "FAIL" || echo "PASS"
+cd teacher && npm run lint
+```
+
+Gate 1 — no hardcoded Uzbek: PASS
+Gate 2 — lint: clean
+
+---
+
+## CL-038 — Sidebar hex colors to Tailwind tokens
+
+**Status:** Closed
+**Files changed:**
+- `shared/tailwind.base.js` — added `sidebar: { navy, muted, blue, mint, peach }` color tokens
+- `admin/src/components/Sidebar.jsx`, `teacher/src/components/Sidebar.jsx`, `reception/src/components/Sidebar.jsx`, `government/src/components/Sidebar.jsx`, `teacher/src/parent/components/Sidebar.jsx` — replaced `COLORS` object + `style={{}}` with Tailwind class names
+**Commit:** 6f16248
+
+**Verification:**
+```
+grep -n "COLORS\|#2E3A59\|#8F9BB3\|#E8F4FD" admin/src/components/Sidebar.jsx && echo "FAIL" || echo "PASS"
+cd admin && npm run lint
+```
+
+Gate 1 — no COLORS object or hex literals: PASS
+Gate 2 — all 4 frontend lints clean
+
+**Notes:** Government Sidebar maps to existing `primary-*` and `slate-500` tokens (no new tokens needed). Lucide icons inherit color from parent `text-*` class via `currentColor` — icon-level `style={{ color }}` overrides removed.
+
+---
+
+## CL-039 — Document `1E9` magic number in `upload.js`
+
+**Status:** Closed
+**Files changed:**
+- `backend/middleware/upload.js` — extracted `RANDOM_SUFFIX_RANGE = 1_000_000_000` named constant with comment
+**Commit:** e0a7024
+
+**Verification:**
+```
+grep "RANDOM_SUFFIX_RANGE" backend/middleware/upload.js
+```
+
+Gate 1 — named constant present: ✓
+
+**Notes:** Uses ES2021 numeric separator (`1_000_000_000`) for readability. Comment explains the 9-digit range is for collision avoidance in temp filenames.
 
 ---
