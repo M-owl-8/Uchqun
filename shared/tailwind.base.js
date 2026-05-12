@@ -16,6 +16,13 @@ export const baseTheme = {
   extend: {
     colors: {
       primary: primaryColors,
+      sidebar: {
+        navy: '#2E3A59',
+        muted: '#8F9BB3',
+        blue: '#E8F4FD',
+        mint: '#E5F7F0',
+        peach: '#FFF0E5',
+      },
     },
     animation: {
       'slide-in': 'slideIn 0.3s ease-out',
