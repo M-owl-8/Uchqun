@@ -21,7 +21,7 @@ export const requestLogger = (req, res, next) => {
     correlationId,
     method: req.method,
     url: req.url,
-    ip: req.ip || req.connection.remoteAddress,
+    ip: req.ip,
     userAgent: req.get('user-agent'),
     userId: req.user?.id,
     role: req.user?.role,

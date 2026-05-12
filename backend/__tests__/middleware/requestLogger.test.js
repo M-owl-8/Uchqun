@@ -65,10 +65,10 @@ describe('requestLogger', () => {
     }));
   });
 
-  it('falls back to req.connection.remoteAddress when req.ip missing', () => {
+  it('logs req.ip from Express (trust proxy respected)', () => {
     const req = {
       headers: {}, method: 'GET', url: '/x',
-      connection: { remoteAddress: '5.5.5.5' },
+      ip: '5.5.5.5',
       get: jest.fn().mockReturnValue('a'),
     };
     requestLogger(req, mkRes(), jest.fn());
