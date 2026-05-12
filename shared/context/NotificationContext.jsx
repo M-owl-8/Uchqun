@@ -8,13 +8,11 @@ export const useNotification = () => {
   return context;
 };
 
-let nextId = 1;
-
 export const NotificationProvider = ({ children }) => {
   const [notifications, setNotifications] = useState([]);
 
   const addNotification = useCallback((notification) => {
-    const id = nextId++;
+    const id = crypto.randomUUID();
     setNotifications((prev) => [...prev, { id, ...notification, createdAt: new Date().toISOString() }]);
     return id;
   }, []);
