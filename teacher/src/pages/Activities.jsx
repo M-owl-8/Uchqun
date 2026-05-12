@@ -204,7 +204,7 @@ const Activities = () => {
           return;
         }
         if (!formData.skill || !formData.goal || !formData.startDate || !formData.endDate) {
-          showError(t('activitiesPage.requiredFieldsError') || 'Ko\'nikma, maqsad, boshlanish va tugash sanalari to\'ldirilishi shart');
+          showError(t('activitiesPage.requiredFieldsError'));
           return;
         }
         await api.post('/activities', formData);

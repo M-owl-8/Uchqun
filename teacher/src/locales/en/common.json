@@ -91,6 +91,7 @@
     "toastError": "Error saving individual plan",
     "toastLoadError": "Error loading individual plans",
     "selectChildError": "Please select a child",
+    "requiredFieldsError": "Skill, goal, start date and end date are required",
     "weeklySchedule": "Weekly schedule",
     "lastAdded": "Last added slots",
     "scheduleDay": "Week day",

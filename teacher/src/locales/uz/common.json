@@ -91,6 +91,7 @@
     "toastError": "Individual rejani saqlashda xatolik",
     "toastLoadError": "Individual rejalarni yuklashda xatolik",
     "selectChildError": "Iltimos, bolani tanlang",
+    "requiredFieldsError": "Ko'nikma, maqsad, boshlanish va tugash sanalari to'ldirilishi shart",
     "weeklySchedule": "Haftalik dars jadvali",
     "lastAdded": "Oxirgi qo'shilgan darslar",
     "scheduleDay": "Hafta kuni",
