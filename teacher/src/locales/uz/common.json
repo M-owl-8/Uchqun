@@ -305,5 +305,10 @@
       "stableMood": "Kayfiyati kun davomida barqaror turadi",
       "trustingRelationship": "Tarbiyachi bilan munosabati ishonchli va mustahkam"
     }
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Sahifa topilmadi",
+    "goBack": "Orqaga qaytish"
   }
 }

@@ -214,5 +214,10 @@
     "error": "Xatolik yuz berdi",
     "notFound": "Topilmadi",
     "unknown": "Noma'lum"
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Sahifa topilmadi",
+    "goBack": "Orqaga qaytish"
   }
 }

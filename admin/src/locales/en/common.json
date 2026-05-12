@@ -223,5 +223,10 @@
     "errorDoc": "At least one document (certificate or passport/ID card) must be uploaded",
     "errorDefault": "An error occurred during registration",
     "errorDetails": "Details: "
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Page not found",
+    "goBack": "Go Back"
   }
 }

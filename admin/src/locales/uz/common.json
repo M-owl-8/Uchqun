@@ -222,5 +222,10 @@
     "errorDoc": "Kamida bitta hujjat (guvohnoma yoki passport/ID karta) yuklanishi kerak",
     "errorDefault": "Ro'yxatdan o'tishda xatolik yuz berdi",
     "errorDetails": "Tafsilotlar: "
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Sahifa topilmadi",
+    "goBack": "Orqaga qaytish"
   }
 }

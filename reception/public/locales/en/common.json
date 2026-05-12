@@ -242,5 +242,10 @@
     "governmentReply": "Davlat reply",
     "replied": "Replied",
     "logout": "Logout"
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Page not found",
+    "goBack": "Go Back"
   }
 }

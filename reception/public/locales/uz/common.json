@@ -247,5 +247,10 @@
     "governmentReply": "Davlat javobi",
     "replied": "Javob berildi",
     "logout": "Chiqish"
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Sahifa topilmadi",
+    "goBack": "Orqaga qaytish"
   }
 }

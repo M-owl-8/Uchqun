@@ -305,5 +305,10 @@
       "stableMood": "Mood is stable throughout the day",
       "trustingRelationship": "Relationship with teacher is trusting and strong"
     }
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Page not found",
+    "goBack": "Go Back"
   }
 }

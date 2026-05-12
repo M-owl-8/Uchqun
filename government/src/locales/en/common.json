@@ -214,5 +214,10 @@
     "error": "An error occurred",
     "notFound": "Not found",
     "unknown": "Unknown"
+  },
+  "page404": {
+    "heading": "404",
+    "message": "Page not found",
+    "goBack": "Go Back"
   }
 }
