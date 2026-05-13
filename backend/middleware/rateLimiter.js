@@ -1,4 +1,5 @@
 import rateLimit from 'express-rate-limit';
+import { makeRedisStore } from '../utils/redisRateLimitStore.js';
 
 const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
 
@@ -6,6 +7,7 @@ const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
 export const apiLimiter = rateLimit({
   windowMs: WINDOW_MS,
   max: Number(process.env.RATE_LIMIT_API_MAX) || (process.env.NODE_ENV === 'production' ? 100 : 1000),
+  store: makeRedisStore(WINDOW_MS),
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
@@ -20,11 +22,13 @@ export const apiLimiter = rateLimit({
 
 // Stricter rate limiter for authentication endpoints
 // Override with RATE_LIMIT_AUTH_MAX / RATE_LIMIT_WINDOW_MS (AUTH_LIMIT_MAX still accepted)
+const AUTH_WINDOW = Number(process.env.AUTH_LIMIT_WINDOW_MS) || WINDOW_MS;
 export const authLimiter = rateLimit({
-  windowMs: Number(process.env.AUTH_LIMIT_WINDOW_MS) || WINDOW_MS,
+  windowMs: AUTH_WINDOW,
   max: Number(process.env.RATE_LIMIT_AUTH_MAX) || Number(process.env.AUTH_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 5000),
+  store: makeRedisStore(AUTH_WINDOW),
   message: 'Too many login attempts, please try again later.',
-  skipSuccessfulRequests: true, // Don't count successful requests
+  skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
@@ -38,9 +42,11 @@ export const authLimiter = rateLimit({
 });
 
 // Very strict rate limiter for password reset endpoints (3 requests per hour)
+const RESET_WINDOW = 60 * 60 * 1000;
 export const passwordResetLimiter = rateLimit({
-  windowMs: 60 * 60 * 1000, // 1 hour
-  max: 3, // Limit each IP to 3 requests per hour
+  windowMs: RESET_WINDOW,
+  max: 3,
+  store: makeRedisStore(RESET_WINDOW),
   message: 'Too many password reset attempts, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,
@@ -54,10 +60,12 @@ export const passwordResetLimiter = rateLimit({
 });
 
 // Per-user rate limiter for AI chat endpoints (20 requests per minute per authenticated user)
+const AI_WINDOW = 60 * 1000;
 export const aiChatLimiter = rateLimit({
-  windowMs: 60 * 1000, // 1 minute
+  windowMs: AI_WINDOW,
   max: process.env.NODE_ENV === 'production' ? 20 : 200,
   keyGenerator: (req) => req.user?.id || req.ip,
+  store: makeRedisStore(AI_WINDOW),
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
@@ -71,9 +79,11 @@ export const aiChatLimiter = rateLimit({
 
 // Rate limiter for file uploads
 // Override with RATE_LIMIT_UPLOAD_MAX / RATE_LIMIT_WINDOW_MS (UPLOAD_LIMIT_MAX still accepted)
+const UPLOAD_WINDOW = Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || WINDOW_MS;
 export const uploadLimiter = rateLimit({
-  windowMs: Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || WINDOW_MS,
+  windowMs: UPLOAD_WINDOW,
   max: Number(process.env.RATE_LIMIT_UPLOAD_MAX) || Number(process.env.UPLOAD_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 200),
+  store: makeRedisStore(UPLOAD_WINDOW),
   message: 'Too many file uploads, please try again later.',
   standardHeaders: true,
   legacyHeaders: false,

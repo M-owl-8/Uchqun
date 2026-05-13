@@ -1,6 +1,8 @@
 import { Server } from 'socket.io';
+import { createAdapter } from '@socket.io/redis-adapter';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/index.js';
+import { getRedisClient } from '../utils/redisClient.js';
 import logger from '../utils/logger.js';
 
 export { User };
@@ -41,6 +43,16 @@ export const initializeSocket = (server) => {
     pingTimeout: 60000,
     pingInterval: 25000,
   });
+
+  // Use Redis pub/sub adapter when available so events fan out across instances
+  const redisClient = getRedisClient();
+  if (redisClient) {
+    const subClient = redisClient.duplicate();
+    io.adapter(createAdapter(redisClient, subClient));
+    logger.info('[Socket] Redis adapter enabled');
+  } else {
+    logger.warn('[Socket] Redis unavailable — in-memory adapter (single-instance only)');
+  }
 
   // Auth middleware — validate JWT on every connection
   io.use(async (socket, next) => {
