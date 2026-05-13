@@ -23,6 +23,11 @@ export const getAssessments = async (req, res) => {
       return res.status(400).json({ error: 'Invalid childId format' });
     }
 
+    const child = await validateChildAccess(childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Child not found or access denied' });
+    }
+
     const where = { childId };
 
     if (category) {
@@ -65,6 +70,11 @@ export const getLatestAssessments = async (req, res) => {
     }
     if (!isUUID(childId)) {
       return res.status(400).json({ error: 'Invalid childId format' });
+    }
+
+    const child = await validateChildAccess(childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
     // Get the latest assessment for each category

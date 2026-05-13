@@ -3,10 +3,11 @@ import { jest } from '@jest/globals';
 const mockFindOne = jest.fn();
 const mockCreate = jest.fn();
 const mockFindByPk = jest.fn();
+const mockFindAll = jest.fn();
 const mockValidateChildAccess = jest.fn();
 
 jest.unstable_mockModule('../models/ChildAssessment.js', () => ({
-  default: { findOne: mockFindOne, create: mockCreate, findByPk: mockFindByPk, findAll: jest.fn() },
+  default: { findOne: mockFindOne, create: mockCreate, findByPk: mockFindByPk, findAll: mockFindAll },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: {} }));
@@ -140,10 +141,18 @@ describe('childAssessmentController.getAssessments — UUID validation (C2V-02)'
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  it('200 with valid UUID childId', async () => {
-    const { default: ChildAssessment } = await import('../models/ChildAssessment.js');
-    ChildAssessment.findAll.mockResolvedValue([]);
-    const req = { user: { id: 't1' }, query: { childId: VALID_UUID } };
+  it('404 when child access denied', async () => {
+    mockValidateChildAccess.mockResolvedValue(null);
+    const req = { user: { id: 't1', schoolId: 's1' }, query: { childId: VALID_UUID } };
+    const res = mkRes();
+    await getAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+  });
+
+  it('200 with valid UUID childId and access granted', async () => {
+    mockValidateChildAccess.mockResolvedValue({ id: VALID_UUID });
+    mockFindAll.mockResolvedValue([]);
+    const req = { user: { id: 't1', schoolId: 's1' }, query: { childId: VALID_UUID } };
     const res = mkRes();
     await getAssessments(req, res);
     expect(res.json).toHaveBeenCalledWith({ data: [] });
@@ -176,14 +185,21 @@ describe('childAssessmentController.getLatestAssessments — UUID validation (C2
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  it('uses sequelize.escape for childId in literal subquery', async () => {
-    const { default: ChildAssessment } = await import('../models/ChildAssessment.js');
-    const { default: db } = await import('../config/database.js');
-    ChildAssessment.findAll.mockResolvedValue([]);
-    const req = { user: { id: 't1' }, query: { childId: VALID_UUID } };
+  it('404 when child access denied', async () => {
+    mockValidateChildAccess.mockResolvedValue(null);
+    const req = { user: { id: 't1', schoolId: 's1' }, query: { childId: VALID_UUID } };
     const res = mkRes();
     await getLatestAssessments(req, res);
-    // literal should be called with a string containing the escaped UUID, not raw interpolation
+    expect(res.status).toHaveBeenCalledWith(404);
+  });
+
+  it('uses sequelize.escape for childId in literal subquery', async () => {
+    const { default: db } = await import('../config/database.js');
+    mockValidateChildAccess.mockResolvedValue({ id: VALID_UUID });
+    mockFindAll.mockResolvedValue([]);
+    const req = { user: { id: 't1', schoolId: 's1' }, query: { childId: VALID_UUID } };
+    const res = mkRes();
+    await getLatestAssessments(req, res);
     const literalCall = db.literal.mock.calls[0][0];
     expect(literalCall).toContain(`'${VALID_UUID}'`);
     expect(literalCall).not.toContain(`\${`);
