@@ -50,12 +50,36 @@ async function run() {
 
   // ── 1. Delete audit test accounts ──────────────────────────────────────────
   console.log('=== Step 1: Delete audit test accounts ===');
+  // Collect all audit user IDs first
+  const auditUsers = [];
   for (const email of AUDIT_EMAILS) {
     const u = await User.findOne({ where: { email }, paranoid: false });
-    if (!u) { console.log(`  skip (not found): ${email}`); continue; }
+    if (u) auditUsers.push(u);
+    else console.log(`  skip (not found): ${email}`);
+  }
+  const auditIds = auditUsers.map(u => u.id);
+
+  // Clear group memberships (groupId on users) — these users are all in audit groups
+  if (auditIds.length > 0) {
+    await sequelize.query(
+      `UPDATE users SET "groupId" = NULL WHERE id IN (:ids)`,
+      { replacements: { ids: auditIds }, type: sequelize.QueryTypes.UPDATE }
+    );
+  }
+
+  // Delete any groups taught by audit teachers (members already unlinked above)
+  for (const u of auditUsers) {
+    if (u.role === 'teacher' || u.role === 'admin') {
+      const deleted = await Group.destroy({ where: { teacherId: u.id }, force: true });
+      if (deleted) console.log(`  deleted ${deleted} group(s) owned by ${u.email}`);
+    }
+  }
+
+  // Now delete the users themselves
+  for (const u of auditUsers) {
     await Child.destroy({ where: { parentId: u.id }, force: true });
     await u.destroy({ force: true });
-    console.log(`  deleted: ${email}`);
+    console.log(`  deleted: ${u.email}`);
   }
 
   // ── 2. Fix group schoolIds ──────────────────────────────────────────────────
