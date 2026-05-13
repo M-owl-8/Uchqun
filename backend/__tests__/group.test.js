@@ -16,6 +16,7 @@ jest.unstable_mockModule('../models/Group.js', () => ({
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findByPk: mockUserFindByPk, findAll: mockUserFindAll },
 }));
+jest.unstable_mockModule('../models/School.js', () => ({ default: {} }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));

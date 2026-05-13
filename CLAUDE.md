@@ -51,6 +51,13 @@ Reception additionally requires `documentsApproved && isActive`.
 - ✅ C-06: Resolved — payment routes/controller deleted entirely (commit ca2039b)
 - ⚠️ C-07: Partial — regex replaces substring CORS check; PRE-LAUNCH TODO: replace with explicit env-driven allowlist (commit c1bd08d)
 
+## Credential Reset (admin/government accounts)
+If admin or government passwords need resetting, deploy a one-off migration:
+- Pre-compute bcrypt hash locally: `node -e "import('bcryptjs').then(b=>b.default.hash('NewPass@2026',10).then(console.log))"`
+- Add a migration UPDATE (see `backend/migrations/20260514000001-reset-admin-gov-passwords.js` as template)
+- Push to main; Railway will run it on next deploy via `npm run start:migrate`
+- Login lockout keys are `lockout:attempts:<email>` and `lockout:locked:<email>` in Redis (or in-memory). No admin unlock API — wait 15 min or flush Redis.
+
 ## Scaling Constraints
 - Login lockout + JTI revocation: Redis-backed when `REDIS_URL` is set; falls back to
   in-memory when unset (single-instance only). Set `REDIS_URL` in Railway for multi-instance.

@@ -9,8 +9,8 @@ const router = express.Router();
 
 router.use(authenticate);
 
-// GET endpoints
-router.get('/', getChildren);
+// GET endpoints — parent-only: teachers access children via child-scoped endpoints
+router.get('/', requireRole('parent'), getChildren);
 router.get('/:id', childIdValidator, handleValidationErrors, getChild);
 
 // DELETE child endpoint — admin / reception of the same school only

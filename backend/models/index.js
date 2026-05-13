@@ -133,9 +133,11 @@ Group.hasMany(Child, { foreignKey: 'groupId', as: 'groupChildren' });
 
 // === School ===
 
-// Group → User (teacher)
+// Group → User (teacher) + School
 Group.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 User.hasMany(Group, { foreignKey: 'teacherId', as: 'groups' });
+Group.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+School.hasMany(Group, { foreignKey: 'schoolId', as: 'groups' });
 
 // School ratings
 School.hasMany(SchoolRating, { foreignKey: 'schoolId', as: 'ratings' });

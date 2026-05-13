@@ -1,6 +1,7 @@
 import { Op } from 'sequelize';
 import Group from '../models/Group.js';
 import User from '../models/User.js';
+import School from '../models/School.js';
 import logger from '../utils/logger.js';
 
 export const getGroups = async (req, res) => {
@@ -60,7 +61,10 @@ export const getGroups = async (req, res) => {
       limit: limitNum,
       offset: offsetNum,
       order: [['name', 'ASC']],
-      include: [includeTeacher],
+      include: [
+        includeTeacher,
+        { model: School, as: 'school', attributes: ['id', 'name'], required: false },
+      ],
     });
 
     res.json({
@@ -86,6 +90,7 @@ export const getGroup = async (req, res) => {
           as: 'teacher',
           attributes: ['id', 'firstName', 'lastName', 'email'],
         },
+        { model: School, as: 'school', attributes: ['id', 'name'], required: false },
       ],
     });
 
