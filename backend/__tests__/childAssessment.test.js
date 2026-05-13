@@ -11,7 +11,7 @@ jest.unstable_mockModule('../models/ChildAssessment.js', () => ({
 jest.unstable_mockModule('../models/Child.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: {} }));
 jest.unstable_mockModule('../config/database.js', () => ({
-  default: { fn: jest.fn(), col: jest.fn(), literal: jest.fn() },
+  default: { fn: jest.fn(), col: jest.fn(), literal: jest.fn(), escape: (v) => `'${v}'` },
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
   validateChildAccess: mockValidateChildAccess,
@@ -20,7 +20,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { createAssessment } = await import('../controllers/childAssessmentController.js');
+const { createAssessment, getAssessments, getLatestAssessments } = await import('../controllers/childAssessmentController.js');
 
 const mkRes = () => {
   const res = {};
@@ -111,5 +111,81 @@ describe('childAssessmentController.createAssessment', () => {
     const res = mkRes();
     await createAssessment(req, res);
     expect(res.status).toHaveBeenCalledWith(409);
+  });
+});
+
+describe('childAssessmentController.getAssessments — UUID validation (C2V-02)', () => {
+  const VALID_UUID = 'cc69745a-fae0-4555-b2c7-23dc7f479cd4';
+
+  beforeEach(() => jest.clearAllMocks());
+
+  it('400 when childId missing', async () => {
+    const req = { user: { id: 't1' }, query: {} };
+    const res = mkRes();
+    await getAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('400 when childId is not a UUID', async () => {
+    const req = { user: { id: 't1' }, query: { childId: "' OR 1=1 --" } };
+    const res = mkRes();
+    await getAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('400 when childId is numeric string', async () => {
+    const req = { user: { id: 't1' }, query: { childId: '12345' } };
+    const res = mkRes();
+    await getAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('200 with valid UUID childId', async () => {
+    const { default: ChildAssessment } = await import('../models/ChildAssessment.js');
+    ChildAssessment.findAll.mockResolvedValue([]);
+    const req = { user: { id: 't1' }, query: { childId: VALID_UUID } };
+    const res = mkRes();
+    await getAssessments(req, res);
+    expect(res.json).toHaveBeenCalledWith({ data: [] });
+  });
+});
+
+describe('childAssessmentController.getLatestAssessments — UUID validation (C2V-02)', () => {
+  const VALID_UUID = 'cc69745a-fae0-4555-b2c7-23dc7f479cd4';
+
+  beforeEach(() => jest.clearAllMocks());
+
+  it('400 when childId missing', async () => {
+    const req = { user: { id: 't1' }, query: {} };
+    const res = mkRes();
+    await getLatestAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('400 when childId contains SQL injection payload', async () => {
+    const req = { user: { id: 't1' }, query: { childId: "1'; SELECT pg_sleep(5)--" } };
+    const res = mkRes();
+    await getLatestAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('400 when childId is not a UUID', async () => {
+    const req = { user: { id: 't1' }, query: { childId: 'not-a-uuid' } };
+    const res = mkRes();
+    await getLatestAssessments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  it('uses sequelize.escape for childId in literal subquery', async () => {
+    const { default: ChildAssessment } = await import('../models/ChildAssessment.js');
+    const { default: db } = await import('../config/database.js');
+    ChildAssessment.findAll.mockResolvedValue([]);
+    const req = { user: { id: 't1' }, query: { childId: VALID_UUID } };
+    const res = mkRes();
+    await getLatestAssessments(req, res);
+    // literal should be called with a string containing the escaped UUID, not raw interpolation
+    const literalCall = db.literal.mock.calls[0][0];
+    expect(literalCall).toContain(`'${VALID_UUID}'`);
+    expect(literalCall).not.toContain(`\${`);
   });
 });

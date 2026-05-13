@@ -4,6 +4,7 @@ import { Op } from 'sequelize';
 import sequelize from '../config/database.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess } from '../utils/schoolValidation.js';
+import { isUUID } from '../utils/uuidValidator.js';
 
 const VALID_CATEGORIES = ['cognitive', 'motor', 'speech', 'behavior', 'social', 'self_care'];
 
@@ -17,6 +18,9 @@ export const getAssessments = async (req, res) => {
 
     if (!childId) {
       return res.status(400).json({ error: 'childId is required' });
+    }
+    if (!isUUID(childId)) {
+      return res.status(400).json({ error: 'Invalid childId format' });
     }
 
     const where = { childId };
@@ -59,8 +63,12 @@ export const getLatestAssessments = async (req, res) => {
     if (!childId) {
       return res.status(400).json({ error: 'childId is required' });
     }
+    if (!isUUID(childId)) {
+      return res.status(400).json({ error: 'Invalid childId format' });
+    }
 
     // Get the latest assessment for each category
+    const safeChildId = sequelize.escape(childId);
     const assessments = await ChildAssessment.findAll({
       where: {
         childId,
@@ -70,7 +78,7 @@ export const getLatestAssessments = async (req, res) => {
             INNER JOIN (
               SELECT child_id, category, MAX(date) as max_date
               FROM child_assessments
-              WHERE child_id = '${childId}'
+              WHERE child_id = ${safeChildId}
               GROUP BY child_id, category
             ) latest ON ca.child_id = latest.child_id
               AND ca.category = latest.category
