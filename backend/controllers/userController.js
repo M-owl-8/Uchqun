@@ -102,6 +102,10 @@ export const changePassword = async (req, res) => {
       return res.status(400).json({ error: 'Current password and new password are required' });
     }
 
+    if (newPassword.length < 8 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters and contain uppercase, lowercase, and a digit' });
+    }
+
     const user = await User.findByPk(req.user.id);
     if (!user) {
       return res.status(404).json({ error: 'User not found' });

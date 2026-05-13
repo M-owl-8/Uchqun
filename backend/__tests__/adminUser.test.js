@@ -185,7 +185,7 @@ describe('admin/adminUserController', () => {
     it('creates government user (role=government, isActive=true)', async () => {
       mockFindOne.mockResolvedValue(null);
       mockCreate.mockResolvedValue({ id: 'g2', email: 'g@x.com', toJSON: () => ({ id: 'g2' }) });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'g@x.com', password: 'longenough' } };
+      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'g@x.com', password: 'LongEnough1' } };
       const res = mkRes();
       await createGovernment(req, res);
       expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({

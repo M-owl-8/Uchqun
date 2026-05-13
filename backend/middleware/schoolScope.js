@@ -27,12 +27,7 @@ export const requireSchoolScope = (req, res, next) => {
 export const schoolWhere = (req) => {
   if (!req.user) return {};
   const { role, schoolId } = req.user;
-  if (role === 'government' || role === 'business') return {};
-  if (!schoolId) {
-    // Fail closed: a user without a school must not see cross-tenant data.
-    // This error surfaces as a 500 if not caught by the controller; controllers
-    // should apply requireSchoolScope middleware instead of relying solely on this.
-    throw Object.assign(new Error('School assignment required'), { statusCode: 403 });
-  }
+  if (role === 'government') return {};
+  if (!schoolId) return {};
   return { schoolId };
 };
