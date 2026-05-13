@@ -8,4 +8,4 @@ cmds = ["npm ci"]
 cmds = ["echo 'Build phase completed'"]
 
 [start]
-cmd = "npm start"
+cmd = "npm run start:migrate"

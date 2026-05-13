@@ -46,8 +46,9 @@ temp/
 *.keystore
 *.jks
 *.p12
-*.pfx.claude/settings.local.json
+*.pfx
+.claude/settings.local.json
 
 # Audit reports generated at root (canonical location: /audit/)
 /AUDIT_REPORT.md
-.claude/settings.local.json
+/TEST_CREDENTIALS.md
