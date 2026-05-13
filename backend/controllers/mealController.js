@@ -228,7 +228,8 @@ export const createMeal = async (req, res) => {
         'Yangi taom qo\'shildi',
         `${child.firstName} uchun "${mealName}" taomi qo'shildi`,
         meal.id,
-        'meal'
+        'meal',
+        child.schoolId
       );
 
       // Emit real-time update to parent

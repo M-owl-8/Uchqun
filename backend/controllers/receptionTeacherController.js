@@ -34,7 +34,7 @@ export const createTeacher = async (req, res) => {
 export const getTeacherRatings = async (req, res) => {
   try {
     const { id } = req.params;
-    const teacher = await User.findOne({ where: { id, role: 'teacher' } });
+    const teacher = await User.findOne({ where: { id, role: 'teacher', schoolId: req.user.schoolId } });
     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
     const summaryRaw = await TeacherRating.findOne({

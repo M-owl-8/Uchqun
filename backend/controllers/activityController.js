@@ -302,7 +302,8 @@ export const createActivity = async (req, res) => {
         'Yangi individual reja qo\'shildi',
         `${child.firstName} uchun "${skill || 'Individual reja'}" qo'shildi`,
         activity.id,
-        'activity'
+        'activity',
+        child.schoolId
       ).catch(err => logger.error('Error creating notification', { error: err.message }));
 
       // Emit real-time update to parent

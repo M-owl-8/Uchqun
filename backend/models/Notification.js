@@ -53,6 +53,12 @@ const Notification = sequelize.define('Notification', {
     type: DataTypes.DATE,
     allowNull: true,
   },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: { model: 'schools', key: 'id' },
+    onDelete: 'SET NULL',
+  },
 }, {
   tableName: 'notifications',
   timestamps: true,

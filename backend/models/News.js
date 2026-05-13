@@ -22,6 +22,13 @@ const News = sequelize.define('News', {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: { model: 'schools', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  },
 }, {
   tableName: 'news',
   timestamps: true,

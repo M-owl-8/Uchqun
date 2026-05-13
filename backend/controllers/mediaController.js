@@ -493,7 +493,8 @@ export const uploadMedia = async (req, res) => {
         `Yangi ${mediaTypeText} qo'shildi`,
         `${child.firstName} uchun "${title}" ${mediaTypeText} qo'shildi`,
         media.id,
-        'media'
+        'media',
+        child.schoolId
       );
     }
 
@@ -588,7 +589,8 @@ export const createMedia = async (req, res) => {
         `Yangi ${mediaTypeText} qo'shildi`,
         `${child.firstName} uchun "${title}" ${mediaTypeText} qo'shildi`,
         media.id,
-        'media'
+        'media',
+        child.schoolId
       );
 
       // Emit real-time update to parent

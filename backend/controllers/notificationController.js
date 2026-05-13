@@ -168,7 +168,7 @@ export const getUnreadCount = async (req, res) => {
  * Helper function to create notification
  * This will be called when activities, meals, or media are created
  */
-export const createNotification = async (userId, childId, type, title, message, relatedId = null, relatedType = null) => {
+export const createNotification = async (userId, childId, type, title, message, relatedId = null, relatedType = null, schoolId = null) => {
   try {
     const notification = await Notification.create({
       userId,
@@ -179,6 +179,7 @@ export const createNotification = async (userId, childId, type, title, message, 
       relatedId,
       relatedType,
       isRead: false,
+      schoolId,
     });
 
     logger.info('Notification created', {

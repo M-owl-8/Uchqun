@@ -9,21 +9,29 @@ export const getNews = async (req, res) => {
     const limitNum = limit ? parseInt(limit) : undefined;
     const offsetNum = offset ? parseInt(offset) : 0;
 
-    const where = {};
-    
+    const andConditions = [];
+
     // If not admin, only show published news
     if (req.user.role !== 'admin') {
-      where.published = true;
+      andConditions.push({ published: true });
     } else if (published !== undefined) {
-      where.published = published === 'true';
+      andConditions.push({ published: published === 'true' });
+    }
+
+    // School isolation: non-government users see only their school's news (or global)
+    if (req.user.role !== 'government') {
+      andConditions.push({
+        [Op.or]: [{ schoolId: req.user.schoolId }, { schoolId: null }],
+      });
     }
 
     if (targetAudience) {
-      where[Op.or] = [
-        { targetAudience },
-        { targetAudience: 'all' },
-      ];
+      andConditions.push({
+        [Op.or]: [{ targetAudience }, { targetAudience: 'all' }],
+      });
     }
+
+    const where = andConditions.length > 0 ? { [Op.and]: andConditions } : {};
 
     const news = await News.findAndCountAll({
       where,
@@ -56,10 +64,15 @@ export const getNewsItem = async (req, res) => {
     const { id } = req.params;
 
     const where = { id };
-    
+
     // If not admin, only show published news
     if (req.user.role !== 'admin') {
       where.published = true;
+    }
+
+    // School isolation: non-government users can only access their school's news (or global)
+    if (req.user.role !== 'government') {
+      where[Op.or] = [{ schoolId: req.user.schoolId }, { schoolId: null }];
     }
 
     const newsItem = await News.findOne({
@@ -94,6 +107,7 @@ export const createNews = async (req, res) => {
       published: published || false,
       targetAudience: targetAudience || 'all',
       createdById: req.user.id,
+      schoolId: req.user.schoolId || null,
     });
 
     await newsItem.reload({
@@ -121,6 +135,10 @@ export const updateNews = async (req, res) => {
     const newsItem = await News.findByPk(id);
     if (!newsItem) {
       return res.status(404).json({ error: 'News item not found' });
+    }
+
+    if (newsItem.schoolId && req.user.schoolId && newsItem.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Access denied to this news item' });
     }
 
     await newsItem.update({
@@ -154,6 +172,10 @@ export const deleteNews = async (req, res) => {
     const newsItem = await News.findByPk(id);
     if (!newsItem) {
       return res.status(404).json({ error: 'News item not found' });
+    }
+
+    if (newsItem.schoolId && req.user.schoolId && newsItem.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Access denied to this news item' });
     }
 
     await newsItem.destroy();
