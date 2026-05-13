@@ -167,9 +167,8 @@ export const createGovernment = async (req, res) => {
       return res.status(400).json({ error: 'Invalid email format' });
     }
 
-    // Validate password length
-    if (password.length < 6) {
-      return res.status(400).json({ error: 'Password must be at least 6 characters long' });
+    if (password.length < 8 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters and contain uppercase, lowercase, and a digit' });
     }
 
     // Check if user already exists

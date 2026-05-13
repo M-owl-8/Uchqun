@@ -10,7 +10,9 @@ export const createStaffValidator = [
     .isEmail().withMessage('email must be a valid email address')
     .normalizeEmail(),
   body('password')
-    .isLength({ min: 6 }).withMessage('password must be at least 6 characters'),
+    .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('password must contain at least one uppercase letter, one lowercase letter, and one number'),
   body('firstName')
     .trim()
     .notEmpty().withMessage('firstName is required')
@@ -31,7 +33,9 @@ export const createParentValidator = [
     .isEmail().withMessage('email must be a valid email address')
     .normalizeEmail(),
   body('password')
-    .isLength({ min: 6 }).withMessage('password must be at least 6 characters'),
+    .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
+    .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
+    .withMessage('password must contain at least one uppercase letter, one lowercase letter, and one number'),
   body('firstName')
     .trim()
     .notEmpty().withMessage('firstName is required')
