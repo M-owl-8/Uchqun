@@ -5,6 +5,10 @@ import { fn, col } from 'sequelize';
 
 export const createTeacher = async (req, res) => {
   try {
+    if (!req.user.schoolId) {
+      return res.status(403).json({ error: 'School assignment required. Contact your administrator to assign your account to a school before creating staff.' });
+    }
+
     const { email, password, firstName, lastName, phone } = req.body;
 
     if (!email || !password || !firstName || !lastName) {
