@@ -30,7 +30,10 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
     logging: process.env.NODE_ENV === 'development' ? console.log : false,
     pool: POOL_CONFIG,
     dialectOptions: {
-      ssl: useSSL && !isLocalDatabase ? { require: true, rejectUnauthorized: true } : false,
+      // Railway Postgres uses a self-signed cert — rejectUnauthorized must be false.
+      // The private network URL (postgres.railway.internal) is not exposed publicly,
+      // so the risk of MITM is contained to Railway's internal network.
+      ssl: useSSL && !isLocalDatabase ? { require: true, rejectUnauthorized: false } : false,
       connectTimeout: 60000,
     },
     retry: RETRY_CONFIG,
