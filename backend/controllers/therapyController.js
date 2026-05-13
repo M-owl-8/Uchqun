@@ -51,77 +51,20 @@ export const getTherapies = async (req, res) => {
       ];
     }
 
-    let therapies;
-    try {
-      // Try with full query first
-      therapies = await Therapy.findAndCountAll({
-        where,
-        limit,
-        offset,
-        order: [['createdAt', 'DESC']], // Use createdAt instead of usageCount/rating to avoid potential issues
-        include: [
-          {
-            model: User,
-            as: 'creator',
-            attributes: ['id', 'firstName', 'lastName'],
-            required: false,
-          },
-        ],
-      });
-    } catch (queryError) {
-      logger.error('Error querying therapies', {
-        error: queryError.message,
-        stack: queryError.stack,
-      });
-      // Try without isActive filter if it fails
-      try {
-        const whereWithoutActive = { ...where };
-        delete whereWithoutActive.isActive;
-        therapies = await Therapy.findAndCountAll({
-          where: whereWithoutActive,
-          limit,
-          offset,
-          order: [['createdAt', 'DESC']],
-          include: [
-            {
-              model: User,
-              as: 'creator',
-              attributes: ['id', 'firstName', 'lastName'],
-              required: false,
-            },
-          ],
-        });
-      } catch (fallbackError) {
-        logger.error('Error with fallback query', {
-          error: fallbackError.message,
-          stack: fallbackError.stack,
-        });
-        // Try simplest query without include
-        try {
-          const whereSimple = { ...where };
-          delete whereSimple.isActive;
-          therapies = await Therapy.findAndCountAll({
-            where: whereSimple,
-            limit,
-            offset,
-            order: [['createdAt', 'DESC']],
-          });
-        } catch (simpleError) {
-          logger.error('Error with simple query', {
-            error: simpleError.message,
-          });
-          return res.json({
-            success: true,
-            data: {
-              therapies: [],
-              total: 0,
-              limit,
-              offset,
-            },
-          });
-        }
-      }
-    }
+    const therapies = await Therapy.findAndCountAll({
+      where,
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']],
+      include: [
+        {
+          model: User,
+          as: 'creator',
+          attributes: ['id', 'firstName', 'lastName'],
+          required: false,
+        },
+      ],
+    });
 
     res.json({
       success: true,
@@ -137,16 +80,7 @@ export const getTherapies = async (req, res) => {
       error: error.message,
       stack: error.stack,
     });
-    // Always return success with empty array on error
-    res.json({
-      success: true,
-      data: {
-        therapies: [],
-        total: 0,
-        limit: Math.min(Math.max(parseInt(req.query.limit, 10) || 20, 1), 100),
-        offset: Math.max(parseInt(req.query.offset, 10) || 0, 0),
-      },
-    });
+    res.status(500).json({ error: 'Failed to get therapies' });
   }
 };
 

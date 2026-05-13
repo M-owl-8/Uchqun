@@ -112,7 +112,10 @@ app.use(cors({
       if (deployRegex.test(origin)) return callback(null, true);
     }
     logger.warn('CORS blocked', { origin });
-    callback(new Error(`CORS: Origin ${origin} is not allowed`));
+    // callback(null, false) suppresses the response header; the browser
+    // receives a CORS error without triggering the Express error handler.
+    // Using new Error() here causes Express to return 500, which is wrong.
+    callback(null, false);
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
