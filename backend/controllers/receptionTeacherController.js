@@ -73,7 +73,7 @@ export const getTeacherRatings = async (req, res) => {
 export const getTeachers = async (req, res) => {
   try {
     const teachers = await User.findAll({
-      where: { role: 'teacher', createdBy: req.user.id },
+      where: { role: 'teacher', schoolId: req.user.schoolId },
       attributes: { exclude: ['password'] },
       order: [['createdAt', 'DESC']],
     });
@@ -89,7 +89,7 @@ export const updateTeacher = async (req, res) => {
     const { id } = req.params;
     const { email, password, firstName, lastName, phone } = req.body;
 
-    const teacher = await User.findOne({ where: { id, role: 'teacher', createdBy: req.user.id } });
+    const teacher = await User.findOne({ where: { id, role: 'teacher', schoolId: req.user.schoolId } });
     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
     const updateData = {};
@@ -113,7 +113,7 @@ export const updateTeacher = async (req, res) => {
 export const deleteTeacher = async (req, res) => {
   try {
     const { id } = req.params;
-    const teacher = await User.findOne({ where: { id, role: 'teacher', createdBy: req.user.id } });
+    const teacher = await User.findOne({ where: { id, role: 'teacher', schoolId: req.user.schoolId } });
     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
     await teacher.destroy();

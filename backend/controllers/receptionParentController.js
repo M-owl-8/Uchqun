@@ -131,7 +131,7 @@ export const createParent = async (req, res) => {
 export const getParents = async (req, res) => {
   try {
     const parents = await User.findAll({
-      where: { role: 'parent', createdBy: req.user.id },
+      where: { role: 'parent', schoolId: req.user.schoolId },
       attributes: { exclude: ['password'] },
       include: [
         { model: User, as: 'assignedTeacher', attributes: ['id', 'firstName', 'lastName', 'email'], required: false },
@@ -158,7 +158,7 @@ export const updateParent = async (req, res) => {
     groupId = (groupId === '') ? null : groupId;
     phone = (phone === '') ? null : phone;
 
-    const parent = await User.findOne({ where: { id, role: 'parent', createdBy: req.user.id } });
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
     if (!parent) return res.status(404).json({ error: 'Parent not found' });
 
     if (teacherId) {
@@ -206,7 +206,7 @@ export const updateParent = async (req, res) => {
 export const deleteParent = async (req, res) => {
   try {
     const { id } = req.params;
-    const parent = await User.findOne({ where: { id, role: 'parent', createdBy: req.user.id } });
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
     if (!parent) return res.status(404).json({ error: 'Parent not found' });
 
     await sequelize.transaction(async (t) => {
@@ -235,7 +235,7 @@ export const createChildForParent = async (req, res) => {
       return res.status(400).json({ error: 'Parent ID is required' });
     }
 
-    const parent = await User.findOne({ where: { id: parentId, role: 'parent', createdBy: req.user.id } });
+    const parent = await User.findOne({ where: { id: parentId, role: 'parent', schoolId: req.user.schoolId } });
     if (!parent) {
       logger.warn('Create child: parent not found', { parentId, receptionUserId: req.user.id });
       return res.status(404).json({ error: 'Parent not found or you do not have permission to add children to this parent' });
@@ -313,7 +313,7 @@ export const updateChildForReception = async (req, res) => {
       include: [{ model: User, as: 'parent', attributes: ['id', 'createdBy'] }],
     });
     if (!child || !child.parent) return res.status(404).json({ error: 'Child not found' });
-    if (child.parent.createdBy !== req.user.id) return res.status(403).json({ error: 'You can only update children of parents you created' });
+    if (child.schoolId && child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
 
     const firstName = req.body['child[firstName]'] ?? req.body.child?.firstName ?? child.firstName;
     const lastName = req.body['child[lastName]'] ?? req.body.child?.lastName ?? child.lastName;
@@ -373,7 +373,7 @@ export const deleteChildForReception = async (req, res) => {
       include: [{ model: User, as: 'parent', attributes: ['id', 'createdBy'] }],
     });
     if (!child || !child.parent) return res.status(404).json({ error: 'Child not found' });
-    if (child.parent.createdBy !== req.user.id) return res.status(403).json({ error: 'You can only delete children of parents you created' });
+    if (child.schoolId && child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
 
     if (child.photo) {
       try { await deleteFile(child.photo); } catch (e) { logger.warn('Failed to delete child photo from storage', { childId, error: e.message }); }
