@@ -43,7 +43,7 @@ Reception additionally requires `documentsApproved && isActive`.
 - Frontend: Vitest — CI fails if no test files in an app
 - Run full suite before any PR
 
-## Security Audit Status (per AUDIT_REPORT.md)
+## Security Audit Status
 - ✅ C-01: Resolved — emotionalMonitoring consumed inline in parent/teacher routes (commit c1bd08d)
 - ⚠️ C-02: Documented as intentional design ("group-wide media visibility") — REQUIRES product/legal sign-off before launch (commits 9b2994c, 2ef0c4d)
 - ✅ C-03: Resolved — ALLOWED_FIELDS whitelist in progressController (commit 9b2994c)

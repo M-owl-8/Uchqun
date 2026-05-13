@@ -52,3 +52,4 @@ temp/
 # Audit reports generated at root (canonical location: /audit/)
 /AUDIT_REPORT.md
 /TEST_CREDENTIALS.md
+/TEST_CREDENTIALS_V2.md
