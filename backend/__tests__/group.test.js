@@ -20,7 +20,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getGroups, createGroup, updateGroup, deleteGroup } = await import('../controllers/groupController.js');
+const { getGroups, getGroup, createGroup, updateGroup, deleteGroup } = await import('../controllers/groupController.js');
 
 const mkRes = () => {
   const res = {};
@@ -136,6 +136,103 @@ describe('groupController', () => {
       const res = mkRes();
       await deleteGroup(req, res);
       expect(res.status).toHaveBeenCalledWith(403);
+    });
+  });
+
+  describe('getGroup — school isolation (C2V-01)', () => {
+    const groupA = { id: 'g-a', schoolId: 's-a', teacherId: 't1', teacher: { id: 't1', firstName: 'T', lastName: 'A', email: 't@a.com' } };
+    const groupB = { id: 'g-b', schoolId: 's-b', teacherId: 't2', teacher: { id: 't2', firstName: 'T', lastName: 'B', email: 't@b.com' } };
+
+    it('teacher from school-A blocked from school-B group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupB);
+      const req = { user: { id: 'u1', role: 'teacher', schoolId: 's-a' }, params: { id: 'g-b' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('teacher from school-A allowed own school group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupA);
+      const req = { user: { id: 'u1', role: 'teacher', schoolId: 's-a' }, params: { id: 'g-a' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.json).toHaveBeenCalledWith(groupA);
+    });
+
+    it('reception from school-A blocked from school-B group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupB);
+      const req = { user: { id: 'u2', role: 'reception', schoolId: 's-a' }, params: { id: 'g-b' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('reception from school-A allowed own school group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupA);
+      const req = { user: { id: 'u2', role: 'reception', schoolId: 's-a' }, params: { id: 'g-a' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.json).toHaveBeenCalledWith(groupA);
+    });
+
+    it('parent from school-A blocked from school-B group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupB);
+      const req = { user: { id: 'u3', role: 'parent', schoolId: 's-a' }, params: { id: 'g-b' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('parent from school-A allowed own school group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupA);
+      const req = { user: { id: 'u3', role: 'parent', schoolId: 's-a' }, params: { id: 'g-a' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.json).toHaveBeenCalledWith(groupA);
+    });
+
+    it('admin from school-A blocked from school-B group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupB);
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 's-a' }, params: { id: 'g-b' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('admin from school-A blocked when teacher not under their receptions', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupA);
+      mockUserFindByPk.mockResolvedValue({ id: 't1', createdBy: 'r-other' });
+      mockUserFindAll.mockResolvedValue([{ id: 'r-mine' }]);
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 's-a' }, params: { id: 'g-a' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('admin from school-A allowed when teacher IS under their receptions', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupA);
+      mockUserFindByPk.mockResolvedValue({ id: 't1', createdBy: 'r-mine' });
+      mockUserFindAll.mockResolvedValue([{ id: 'r-mine' }]);
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 's-a' }, params: { id: 'g-a' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.json).toHaveBeenCalledWith(groupA);
+    });
+
+    it('government (no schoolId) allowed to access any school group', async () => {
+      mockGroupFindByPk.mockResolvedValue(groupB);
+      const req = { user: { id: 'gov1', role: 'government', schoolId: null }, params: { id: 'g-b' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.json).toHaveBeenCalledWith(groupB);
+    });
+
+    it('404 when group not found', async () => {
+      mockGroupFindByPk.mockResolvedValue(null);
+      const req = { user: { id: 'u1', role: 'teacher', schoolId: 's-a' }, params: { id: 'nonexistent' } };
+      const res = mkRes();
+      await getGroup(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
     });
   });
 });

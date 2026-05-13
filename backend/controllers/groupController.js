@@ -93,18 +93,20 @@ export const getGroup = async (req, res) => {
       return res.status(404).json({ error: 'Group not found' });
     }
 
+    // School isolation: non-government users cannot access groups from other schools
+    if (req.user.schoolId && group.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'Access denied to this group' });
+    }
+
     // Admins can only view groups whose teacher was created by receptions they created
     if (req.user.role === 'admin') {
-      // Get all receptions created by this admin
+      const teacher = await User.findByPk(group.teacherId, { attributes: ['id', 'createdBy'] });
       const receptions = await User.findAll({
         where: { role: 'reception', createdBy: req.user.id },
         attributes: ['id'],
       });
-
       const receptionIds = receptions.map(r => r.id);
-
-      // Check if teacher was created by one of these receptions
-      if (!receptionIds.includes(group.teacher?.createdBy)) {
+      if (!teacher || !receptionIds.includes(teacher.createdBy)) {
         return res.status(403).json({ error: 'Access denied to this group' });
       }
     }
