@@ -28,6 +28,9 @@ Thumbs.db
 
 # Uploads
 uploads/
+
+# Audit credentials — contains real passwords, never commit
+TEST_CREDENTIALS_V*.md
 backend/uploads/
 
 # Database

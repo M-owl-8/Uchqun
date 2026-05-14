@@ -25,7 +25,7 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
       // Validate session via HTTP-only cookie — no localStorage token dependency
       api.get('/auth/me')
         .then((res) => {
-          const userData = res.data;
+          const userData = res.data.data ?? res.data;
           if (requiredRole && userData.role !== requiredRole) {
             localStorage.removeItem(storageKey);
             setUser(null);
