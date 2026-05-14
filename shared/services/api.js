@@ -54,12 +54,13 @@ export function createApi({
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-      // /auth/me is the session-validation probe run by AuthProvider on mount.
-      // If it 401s the user simply isn't logged in — let the .catch() in
-      // AuthProvider handle it (setUser(null) + React Router redirect).
-      // Retrying or calling clearAuth() here would cause a full-page reload
-      // loop when the app is opened without a valid session.
-      if (originalRequest.url?.includes('/auth/me')) {
+      // Auth endpoints must never be retried via the refresh flow:
+      // - /auth/me: session probe on mount — AuthProvider's .catch() handles it
+      // - /auth/login: 401 means wrong credentials, not an expired token
+      // - /auth/refresh: refresh itself failed, nothing to retry
+      // Retrying any of these would cause an infinite loop or confusing error cascades.
+      const url = originalRequest.url || '';
+      if (url.includes('/auth/me') || url.includes('/auth/login') || url.includes('/auth/refresh')) {
         return Promise.reject(error);
       }
       if (error.response?.status === 401 && !originalRequest._retry) {
