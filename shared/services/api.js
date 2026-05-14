@@ -35,7 +35,9 @@ export function createApi({
     localStorage.removeItem('user');
     if (typeof _onUnauthenticated === 'function') {
       _onUnauthenticated();
-    } else {
+    } else if (!window.location.pathname.endsWith('/login')) {
+      // Guard: don't replace(/login) when already on /login — that causes an
+      // infinite full-page reload loop (reload → /auth/me 401 → replace → reload…)
       window.location.replace('/login');
     }
   };
@@ -52,6 +54,14 @@ export function createApi({
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
+      // /auth/me is the session-validation probe run by AuthProvider on mount.
+      // If it 401s the user simply isn't logged in — let the .catch() in
+      // AuthProvider handle it (setUser(null) + React Router redirect).
+      // Retrying or calling clearAuth() here would cause a full-page reload
+      // loop when the app is opened without a valid session.
+      if (originalRequest.url?.includes('/auth/me')) {
+        return Promise.reject(error);
+      }
       if (error.response?.status === 401 && !originalRequest._retry) {
         originalRequest._retry = true;
         try {
