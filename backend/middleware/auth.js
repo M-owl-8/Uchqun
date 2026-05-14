@@ -113,7 +113,7 @@ export const authenticate = async (req, res, next) => {
     if (error.name === 'TokenExpiredError') {
       return res.status(401).json({ error: 'Token expired' });
     }
-    return res.status(500).json({ error: 'Authentication error' });
+    return res.status(401).json({ error: 'Invalid token' });
   }
 };
 
