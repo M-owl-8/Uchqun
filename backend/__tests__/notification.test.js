@@ -16,6 +16,7 @@ jest.unstable_mockModule('../models/Notification.js', () => ({
   },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: {} }));
+jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: jest.fn() }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
