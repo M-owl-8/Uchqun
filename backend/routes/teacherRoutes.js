@@ -5,7 +5,7 @@ import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEm
 import { aiChatValidator } from '../validators/aiChatValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
 import { aiChatLimiter } from '../middleware/rateLimiter.js';
-import { getMyProfile, getDashboard, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings } from '../controllers/teacherController.js';
+import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings } from '../controllers/teacherController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { getAIAdvice } from '../controllers/teacherAIController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
@@ -37,6 +37,7 @@ router.use(requireTeacher);
 // Profile and dashboard
 router.get('/profile', getMyProfile);
 router.get('/dashboard', getDashboard);
+router.get('/dashboard/counts', getDashboardCounts);
 
 // Responsibilities
 router.get('/responsibilities', getMyResponsibilities);

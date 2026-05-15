@@ -24,51 +24,16 @@ const Dashboard = () => {
     const loadData = async () => {
       try {
         setLoading(true);
-        
-        const parentsRes = await api.get('/teacher/parents').catch(() => ({ data: { parents: [] } }));
-        const parents = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
-        const childIds = parents.flatMap((p) => Array.isArray(p.children) ? p.children.map(c => c.id) : []).filter(Boolean);
-
-        const fetchCount = async (path, key) => {
-          const requests = childIds.length
-            ? childIds.map((id) => api.get(`${path}?childId=${id}`).catch(() => ({ data: [] })))
-            : [api.get(path).catch(() => ({ data: [] }))];
-          const responses = await Promise.all(requests);
-          return responses.reduce((acc, res) => {
-            const data = res.data;
-            if (Array.isArray(data)) return acc + data.length;
-            if (Array.isArray(data?.[key])) return acc + data[key].length;
-            return acc;
-          }, 0);
-        };
-
-        const [activitiesCount, mealsCount, mediaCount, ratingsRes, monitoringRes] = await Promise.all([
-          fetchCount('/activities', 'activities'),
-          fetchCount('/meals', 'meals'),
-          fetchCount('/media', 'media'),
-          api.get('/teacher/ratings').catch(() => ({ data: { data: [] } })),
-          api.get('/teacher/emotional-monitoring?limit=100').catch(() => ({ data: { data: [] } })),
-        ]);
-        const ratings = Array.isArray(ratingsRes.data?.data) ? ratingsRes.data.data : [];
-        const myRating = ratings.find((item) => item.id === user?.id);
-        const monitoringRecords = Array.isArray(monitoringRes.data?.data) ? monitoringRes.data.data : [];
-
-        setStats({
-          activities: activitiesCount,
-          meals: mealsCount,
-          media: mediaCount,
-          parents: parents.length,
-          rating: Number(myRating?.rating || 0).toFixed(1),
-          ratingsCount: Number(myRating?.totalRatings || 0),
-          statusEntries: monitoringRecords.length,
-        });
-      } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
+        const res = await api.get('/teacher/dashboard/counts');
+        setStats(res.data.data);
+      } catch {
+        setStats({ parents: 0, activities: 0, meals: 0, media: 0, statusEntries: 0, rating: '0.0', ratingsCount: 0 });
+      } finally {
         setLoading(false);
       }
     };
 
     loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {

@@ -2,6 +2,10 @@ import User from '../models/User.js';
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
 import School from '../models/School.js';
+import Activity from '../models/Activity.js';
+import Meal from '../models/Meal.js';
+import Media from '../models/Media.js';
+import EmotionalMonitoring from '../models/EmotionalMonitoring.js';
 import TeacherResponsibility from '../models/TeacherResponsibility.js';
 import TeacherTask from '../models/TeacherTask.js';
 import TeacherWorkHistory from '../models/TeacherWorkHistory.js';
@@ -58,6 +62,53 @@ export const getDashboard = async (req, res) => {
   } catch (error) {
     logger.error('Get dashboard error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch dashboard data' });
+  }
+};
+
+export const getDashboardCounts = async (req, res) => {
+  try {
+    const teacherGroups = await Group.findAll({ where: { teacherId: req.user.id }, attributes: ['id'] });
+    const groupIds = teacherGroups.map(g => g.id);
+
+    const parentWhere = { role: 'parent' };
+    if (groupIds.length > 0) {
+      parentWhere[Op.or] = [{ groupId: { [Op.in]: groupIds } }, { teacherId: req.user.id }];
+    } else {
+      parentWhere.teacherId = req.user.id;
+    }
+
+    const parents = await User.findAll({
+      where: parentWhere,
+      attributes: ['id'],
+      include: [{ model: Child, as: 'children', attributes: ['id'], required: false }],
+    });
+
+    const childIds = parents.flatMap(p => p.children.map(c => c.id)).filter(Boolean);
+    const childScope = childIds.length ? { childId: { [Op.in]: childIds } } : null;
+
+    const [activitiesCount, mealsCount, mediaCount, monitoringCount, teacher] = await Promise.all([
+      childScope ? Activity.count({ where: childScope }) : Promise.resolve(0),
+      childScope ? Meal.count({ where: childScope }) : Promise.resolve(0),
+      childScope ? Media.count({ where: childScope }) : Promise.resolve(0),
+      EmotionalMonitoring.count({ where: { teacherId: req.user.id } }),
+      User.findByPk(req.user.id, { attributes: ['rating', 'totalRatings'] }),
+    ]);
+
+    res.json({
+      success: true,
+      data: {
+        parents: parents.length,
+        activities: activitiesCount,
+        meals: mealsCount,
+        media: mediaCount,
+        statusEntries: monitoringCount,
+        rating: Number(teacher?.rating || 0).toFixed(1),
+        ratingsCount: Number(teacher?.totalRatings || 0),
+      },
+    });
+  } catch (error) {
+    logger.error('Get dashboard counts error', { error: error.message, stack: error.stack });
+    res.status(500).json({ error: 'Failed to fetch dashboard counts' });
   }
 };
 
