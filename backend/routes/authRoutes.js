@@ -1,6 +1,6 @@
 import express from 'express';
-import { login, getMe, logout, refresh, setPassword } from '../controllers/authController.js';
-import { authenticate } from '../middleware/auth.js';
+import { login, getMe, logout, refresh, setPassword, unlockAccount } from '../controllers/authController.js';
+import { authenticate, requireRole } from '../middleware/auth.js';
 import { loginValidator } from '../validators/authValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { submitRegistrationRequest } from '../controllers/adminRegistrationController.js';
@@ -14,6 +14,7 @@ router.post('/refresh', authLimiter, refresh);
 router.post('/set-password', authLimiter, setPassword);
 router.get('/me', authenticate, getMe);
 router.post('/logout', authenticate, logout);
+router.post('/unlock-account', authenticate, requireRole('government', 'admin'), unlockAccount);
 
 router.post(
   '/admin-register',

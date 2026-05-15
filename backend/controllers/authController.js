@@ -294,6 +294,22 @@ export const getMe = async (req, res) => {
   }
 };
 
+export const unlockAccount = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || typeof email !== 'string') {
+      return res.status(400).json({ success: false, error: 'email is required' });
+    }
+    const normalized = email.toLowerCase().trim();
+    await clearAttempts(normalized);
+    logger.info('Account lockout cleared by admin', { clearedBy: req.user.id, role: req.user.role });
+    res.json({ success: true, message: 'Account lockout cleared' });
+  } catch (error) {
+    logger.error('unlockAccount error', { error: error.message });
+    res.status(500).json({ success: false, error: 'Failed to clear lockout' });
+  }
+};
+
 export const setPassword = async (req, res) => {
   try {
     const { token, password } = req.body;

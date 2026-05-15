@@ -25,7 +25,7 @@ const Login = () => {
     if (result.success) {
       navigate('/government');
     } else {
-      setError(result.error || t('login.invalidCredentials', { defaultValue: 'Invalid email or password' }));
+      setError(result.error || t('login.error'));
     }
 
     setLoading(false);

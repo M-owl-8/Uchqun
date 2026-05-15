@@ -25,7 +25,7 @@ const Login = () => {
     if (result.success) {
       navigate('/admin');
     } else {
-      setError(result.error || 'Invalid email or password');
+      setError(result.error || t('login.errorInvalid'));
     }
 
     setLoading(false);

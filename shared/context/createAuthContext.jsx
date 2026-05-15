@@ -43,14 +43,19 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
     }, []);
 
     const login = async (email, password) => {
-      const res = await api.post('/auth/login', { email, password });
-      const { user: userData } = res.data;
-      if (requiredRole && userData.role !== requiredRole) {
-        throw new Error(`Access denied. Required role: ${requiredRole}`);
+      try {
+        const res = await api.post('/auth/login', { email, password });
+        const { user: userData } = res.data;
+        if (requiredRole && userData.role !== requiredRole) {
+          return { success: false, error: `Access denied. Required role: ${requiredRole}` };
+        }
+        try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
+        setUser(userData);
+        return res.data;
+      } catch (err) {
+        const message = err.response?.data?.error || err.response?.data?.message || err.message;
+        return { success: false, error: message };
       }
-      try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
-      setUser(userData);
-      return res.data;
     };
 
     const logout = async () => {
