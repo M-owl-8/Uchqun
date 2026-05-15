@@ -3,9 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from './LoadingSpinner';
 
 const ProtectedRoute = ({ children, requireRole }) => {
-  const { isAuthenticated, loading, isTeacher } = useAuth();
+  const { isAuthenticated, loading, isTeacher, user } = useAuth();
 
-  if (loading) {
+  if (loading && !user) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner size="lg" />
