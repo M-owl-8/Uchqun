@@ -1,1 +1,1 @@
-export { default } from '../../shared/components/LanguageSwitcher';
+export { default } from '../../../shared/components/LanguageSwitcher';

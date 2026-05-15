@@ -1,4 +1,4 @@
-import SharedLanguageSwitcher from '../../shared/components/LanguageSwitcher';
+import SharedLanguageSwitcher from '../../../shared/components/LanguageSwitcher';
 
 const LanguageSwitcher = () => (
   <SharedLanguageSwitcher

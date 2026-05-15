@@ -1,1 +1,1 @@
-export { default } from '../../shared/components/LoadingSpinner';
+export { default } from '../../../../shared/components/LoadingSpinner';
