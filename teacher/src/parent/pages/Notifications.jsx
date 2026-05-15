@@ -37,8 +37,7 @@ const Notifications = () => {
 
   useEffect(() => {
     loadAllNotifications();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChildId]);
+  }, [selectedChildId, loadAllNotifications]);
 
   const filteredNotifications = notifications.filter(notif => {
     if (filter === 'unread') return !notif.isRead;

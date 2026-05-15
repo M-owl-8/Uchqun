@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -33,19 +33,11 @@ const GroupManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async () => {
     try {
       setLoading(true);
-      // Load teachers from backend
       const teachersRes = await api.get('/reception/teachers').catch(() => ({ data: { data: [] } }));
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
-      
-      // Load groups from backend
       const groupsRes = await api.get('/groups').catch(() => ({ data: { groups: [] } }));
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) {
@@ -54,7 +46,11 @@ const GroupManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   const handleCreate = () => {
     setEditingGroup(null);

@@ -73,8 +73,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChildId, refreshNotifications]);
+  }, [selectedChildId, refreshNotifications, showError]);
 
   useEffect(() => {
     const controller = new AbortController();

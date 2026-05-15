@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -46,12 +46,7 @@ const TeacherManagement = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
-  useEffect(() => {
-    loadTeachers();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadTeachers = async () => {
+  const loadTeachers = useCallback(async () => {
     try {
       setLoading(true);
       const response = await api.get('/reception/teachers');
@@ -62,7 +57,11 @@ const TeacherManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    loadTeachers();
+  }, [loadTeachers]);
 
   const handleCreate = () => {
     setEditingTeacher(null);

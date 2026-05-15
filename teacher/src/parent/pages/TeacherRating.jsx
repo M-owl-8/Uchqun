@@ -41,59 +41,50 @@ const TeacherRating = () => {
     );
   }, [i18n.language]);
 
-  const loadData = async () => {
-    setLoading(true);
-    setError('');
-    setSchoolError('');
-    try {
-      // Get childId from selectedChild if available
-      const childIdParam = selectedChild?.id ? `?childId=${selectedChild.id}` : '';
-      
-      const [profileRes, ratingRes, schoolRatingRes] = await Promise.all([
-        api.get('/parent/profile'),
-        api.get('/parent/ratings').catch((err) => {
-          if (err.response?.status === 400 || err.response?.status === 404) {
-            return { data: { data: { rating: null, summary: { average: 0, count: 0 } } } };
-          }
-          throw err;
-        }),
-        api.get(`/parent/school-rating${childIdParam}`).catch((err) => {
-          // Handle 400, 404, and 500 errors gracefully
-          if (err.response?.status === 400 || err.response?.status === 404 || err.response?.status === 500) {
-            return { data: { data: { rating: null, school: null, summary: { average: 0, count: 0 }, allRatings: [] } } };
-          }
-          throw err;
-        }),
-      ]);
-
-      const teacherData = profileRes.data?.data?.user?.assignedTeacher || null;
-      setTeacher(teacherData);
-
-      const ratingData = ratingRes?.data?.data || { rating: null, summary: { average: 0, count: 0 } };
-      setRating(ratingData.rating);
-      setStars(ratingData.rating?.stars || 0);
-      setComment(ratingData.rating?.comment || '');
-      setSummary(ratingData.summary || { average: 0, count: 0 });
-
-      // School rating data
-      const schoolRatingData = schoolRatingRes?.data?.data || { rating: null, school: null, summary: { average: 0, count: 0 }, allRatings: [] };
-      setSchool(schoolRatingData.school);
-      setSchoolRating(schoolRatingData.rating);
-      setSchoolStars(schoolRatingData.rating?.stars || 0);
-      setSchoolComment(schoolRatingData.rating?.comment || '');
-      setSchoolSummary(schoolRatingData.summary || { average: 0, count: 0 });
-      setSchoolAllRatings(schoolRatingData.allRatings || []); // Set all ratings
-    } catch (err) {
-      setError(t('ratingPage.errorLoad'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      setError('');
+      setSchoolError('');
+      try {
+        const childIdParam = selectedChild?.id ? `?childId=${selectedChild.id}` : '';
+        const [profileRes, ratingRes, schoolRatingRes] = await Promise.all([
+          api.get('/parent/profile'),
+          api.get('/parent/ratings').catch((err) => {
+            if (err.response?.status === 400 || err.response?.status === 404) {
+              return { data: { data: { rating: null, summary: { average: 0, count: 0 } } } };
+            }
+            throw err;
+          }),
+          api.get(`/parent/school-rating${childIdParam}`).catch((err) => {
+            if (err.response?.status === 400 || err.response?.status === 404 || err.response?.status === 500) {
+              return { data: { data: { rating: null, school: null, summary: { average: 0, count: 0 }, allRatings: [] } } };
+            }
+            throw err;
+          }),
+        ]);
+        const teacherData = profileRes.data?.data?.user?.assignedTeacher || null;
+        setTeacher(teacherData);
+        const ratingData = ratingRes?.data?.data || { rating: null, summary: { average: 0, count: 0 } };
+        setRating(ratingData.rating);
+        setStars(ratingData.rating?.stars || 0);
+        setComment(ratingData.rating?.comment || '');
+        setSummary(ratingData.summary || { average: 0, count: 0 });
+        const schoolRatingData = schoolRatingRes?.data?.data || { rating: null, school: null, summary: { average: 0, count: 0 }, allRatings: [] };
+        setSchool(schoolRatingData.school);
+        setSchoolRating(schoolRatingData.rating);
+        setSchoolStars(schoolRatingData.rating?.stars || 0);
+        setSchoolComment(schoolRatingData.rating?.comment || '');
+        setSchoolSummary(schoolRatingData.summary || { average: 0, count: 0 });
+        setSchoolAllRatings(schoolRatingData.allRatings || []);
+      } catch (err) {
+        setError(t('ratingPage.errorLoad'));
+      } finally {
+        setLoading(false);
+      }
+    };
     loadData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChild?.id]);
+  }, [selectedChild?.id, t]);
 
   const handleSubmit = async () => {
     setError('');

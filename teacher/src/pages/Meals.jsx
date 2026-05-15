@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import {
   Apple,
   CalendarDays,
@@ -69,17 +69,7 @@ const Meals = () => {
     return new Intl.DateTimeFormat('en-US', options).format(date);
   };
 
-  useEffect(() => {
-    const controller = new AbortController();
-    loadMeals(false, controller.signal);
-    if (isTeacher) {
-      loadChildren();
-    }
-    return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTeacher]);
-
-  const loadChildren = async () => {
+  const loadChildren = useCallback(async () => {
     try {
       let parentsList = cache.get('teacher:parents');
       if (!parentsList) {
@@ -89,13 +79,13 @@ const Meals = () => {
       }
       const allChildren = parentsList.flatMap(p => Array.isArray(p.children) ? p.children : []);
       setChildren(allChildren);
-      if (allChildren.length > 0 && !formData.childId) {
-        setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
+      if (allChildren.length > 0) {
+        setFormData(prev => prev.childId ? prev : { ...prev, childId: allChildren[0].id });
       }
     } catch (error) { showError(error.response?.data?.error || error.message); }
-  };
+  }, [showError]);
 
-  const loadMeals = async (bust = false, signal) => {
+  const loadMeals = useCallback(async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:meals');
     if (cached) { setMeals(cached); setLoading(false); return; }
     try {
@@ -111,7 +101,16 @@ const Meals = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadMeals(false, controller.signal);
+    if (isTeacher) {
+      loadChildren();
+    }
+    return () => controller.abort();
+  }, [isTeacher, loadMeals, loadChildren]);
 
   const handleCreate = () => {
     setEditingMeal(null);

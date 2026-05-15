@@ -24,22 +24,21 @@ const UsersStats = () => {
   const [selectedRole, setSelectedRole] = useState('');
 
   useEffect(() => {
+    const loadStats = async () => {
+      try {
+        setLoading(true);
+        const params = { ...dateRange };
+        if (selectedRole) params.role = selectedRole;
+        const response = await api.get('/business/users', { params });
+        setStats(response.data.data);
+      } catch (error) {
+        showError(error.response?.data?.error || error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
     loadStats();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dateRange, selectedRole]);
-
-  const loadStats = async () => {
-    try {
-      setLoading(true);
-      const params = { ...dateRange };
-      if (selectedRole) params.role = selectedRole;
-      
-      const response = await api.get('/business/users', { params });
-      setStats(response.data.data);
-    } catch (error) { showError(error.response?.data?.error || error.message); } finally {
-      setLoading(false);
-    }
-  };
+  }, [dateRange, selectedRole, showError]);
 
   if (loading) {
     return (

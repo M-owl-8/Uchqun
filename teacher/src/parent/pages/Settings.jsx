@@ -58,8 +58,7 @@ const Settings = () => {
         notificationPreferences: user.notificationPreferences || { email: true, push: false },
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();

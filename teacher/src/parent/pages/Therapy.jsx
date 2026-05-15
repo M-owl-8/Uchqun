@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
 import { useChild } from '../context/ChildContext';
@@ -28,12 +28,7 @@ const Therapy = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [activeSession, setActiveSession] = useState(null);
 
-  useEffect(() => {
-    loadTherapies();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
-
-  const loadTherapies = async () => {
+  const loadTherapies = useCallback(async () => {
     try {
       setLoading(true);
       const params = { isActive: true };
@@ -41,7 +36,6 @@ const Therapy = () => {
         params.therapyType = filter;
       }
       const response = await api.get('/therapy', { params });
-      // Handle different response structures
       const therapiesData = response.data.data?.therapies || response.data.data || response.data.therapies || [];
       setTherapies(Array.isArray(therapiesData) ? therapiesData : []);
     } catch (error) {
@@ -49,7 +43,11 @@ const Therapy = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    loadTherapies();
+  }, [loadTherapies]);
 
   const startTherapy = async (therapyId) => {
     try {

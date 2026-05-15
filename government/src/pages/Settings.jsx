@@ -41,8 +41,7 @@ const Settings = () => {
         phone: user.phone || '',
       });
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();

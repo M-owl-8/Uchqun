@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,6 +32,8 @@ const ActivityFormModal = ({
   loadChildrenForParent,
 }) => {
   const { t } = useTranslation();
+  const taskIdsRef = useRef(formData.tasks.map((_, i) => `task-init-${i}`));
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
@@ -156,7 +159,7 @@ const ActivityFormModal = ({
                 {t('activitiesPage.formTasks') || 'Vazifalar'}
               </label>
               {formData.tasks.map((task, index) => (
-                <div key={index} className="flex gap-2 mb-2">
+                <div key={taskIdsRef.current[index]} className="flex gap-2 mb-2">
                   <input
                     type="text"
                     value={task}
@@ -172,6 +175,7 @@ const ActivityFormModal = ({
                     <button
                       type="button"
                       onClick={() => {
+                        taskIdsRef.current = taskIdsRef.current.filter((_, i) => i !== index);
                         const newTasks = formData.tasks.filter((_, i) => i !== index);
                         setFormData({ ...formData, tasks: newTasks });
                       }}
@@ -184,7 +188,10 @@ const ActivityFormModal = ({
               ))}
               <button
                 type="button"
-                onClick={() => setFormData({ ...formData, tasks: [...formData.tasks, ''] })}
+                onClick={() => {
+                  taskIdsRef.current = [...taskIdsRef.current, `task-new-${Date.now()}-${Math.random()}`];
+                  setFormData({ ...formData, tasks: [...formData.tasks, ''] });
+                }}
                 className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
               >
                 + {t('activitiesPage.addTask') || 'Vazifa qo\'shish'}

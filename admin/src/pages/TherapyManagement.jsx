@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
@@ -49,12 +49,7 @@ const TherapyManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    fetchTherapies();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterType]);
-
-  const fetchTherapies = async () => {
+  const fetchTherapies = useCallback(async () => {
     try {
       setLoading(true);
       const params = { isActive: true };
@@ -69,7 +64,11 @@ const TherapyManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterType, showError, t]);
+
+  useEffect(() => {
+    fetchTherapies();
+  }, [fetchTherapies]);
 
   const handleCreate = () => {
     setEditingTherapy(null);

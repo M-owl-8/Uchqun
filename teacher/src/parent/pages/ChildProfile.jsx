@@ -130,8 +130,7 @@ const ChildProfile = () => {
       setError(t('child.errorNotFound'));
       setLoading(false);
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedChildId, childrenLoading, childRefreshKey]);
+  }, [selectedChildId, childrenLoading, childRefreshKey, children, t]);
 
   useEffect(() => {
     if (!selectedChildId) return;

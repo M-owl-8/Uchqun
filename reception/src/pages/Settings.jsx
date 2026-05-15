@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import Card from '../components/Card';
@@ -53,11 +53,9 @@ const Settings = () => {
         notificationPreferences: user.notificationPreferences || { email: true, push: true },
       });
     }
-    loadMessages();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     try {
       setLoadingMessages(true);
       const response = await api.get('/reception/messages');
@@ -67,7 +65,11 @@ const Settings = () => {
     } finally {
       setLoadingMessages(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {

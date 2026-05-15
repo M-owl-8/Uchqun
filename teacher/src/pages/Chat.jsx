@@ -38,8 +38,7 @@ const Chat = () => {
       } catch (err) { toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })); }
     };
     fetchParents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user?.id]);
+  }, [user?.id, toastError, t]);
 
   useEffect(() => {
     let alive = true;

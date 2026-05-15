@@ -34,22 +34,20 @@ const ParentManagement = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const fetchParents = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/admin/parents');
+        setParents(response.data.data || []);
+      } catch (error) {
+        toastError(t('parentsPage.loadError') || 'Error');
+        setParents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchParents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchParents = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/admin/parents');
-      setParents(response.data.data || []);
-    } catch (error) {
-      toastError(t('parentsPage.loadError') || 'Error');
-      setParents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [t, toastError]);
 
   const handleViewParent = async (parent) => {
     setSelectedParent(parent);

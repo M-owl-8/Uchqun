@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
@@ -35,13 +35,7 @@ const ParentManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    loadParents();
-    loadTeachersAndGroups();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadTeachersAndGroups = async () => {
+  const loadTeachersAndGroups = useCallback(async () => {
     try {
       const [teachersRes, groupsRes] = await Promise.all([
         api.get('/reception/teachers').catch(() => ({ data: { data: [] } })),
@@ -50,9 +44,9 @@ const ParentManagement = () => {
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) { void error; }
-  };
+  }, []);
 
-  const loadParents = async () => {
+  const loadParents = useCallback(async () => {
     try {
       setLoading(true);
       const response = await api.get('/reception/parents');
@@ -63,7 +57,12 @@ const ParentManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    loadParents();
+    loadTeachersAndGroups();
+  }, [loadParents, loadTeachersAndGroups]);
 
   const handleCreate = () => {
     setEditingParent(null);

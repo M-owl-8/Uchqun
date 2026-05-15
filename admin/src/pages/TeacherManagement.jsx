@@ -26,22 +26,20 @@ const TeacherManagement = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const fetchTeachers = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/admin/teachers');
+        setTeachers(response.data.data || []);
+      } catch (error) {
+        toastError(t('teachersPage.loadError') || 'Error');
+        setTeachers([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchTeachers();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchTeachers = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/admin/teachers');
-      setTeachers(response.data.data || []);
-    } catch (error) {
-      toastError(t('teachersPage.loadError') || 'Error');
-      setTeachers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [t, toastError]);
 
   const filteredTeachers = useMemo(() => teachers.filter((teacher) => {
     const query = searchQuery.toLowerCase();

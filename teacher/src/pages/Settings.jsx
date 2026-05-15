@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../shared/services/api';
 import Card from '../shared/components/Card';
 import { useToast } from '../shared/context/ToastContext';
@@ -58,11 +58,9 @@ const Settings = () => {
         notificationPreferences: user.notificationPreferences || { email: true, push: true },
       });
     }
-    loadMessages();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [user]);
 
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     try {
       setLoadingMessages(true);
       const response = await api.get('/teacher/messages');
@@ -72,7 +70,11 @@ const Settings = () => {
     } finally {
       setLoadingMessages(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadMessages();
+  }, [loadMessages]);
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {

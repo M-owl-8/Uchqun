@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
 import api from '../services/api';
@@ -20,12 +20,7 @@ const AIWarnings = () => {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('unresolved');
 
-  useEffect(() => {
-    loadWarnings();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filter]);
-
-  const loadWarnings = async () => {
+  const loadWarnings = useCallback(async () => {
     try {
       setLoading(true);
       const params = {};
@@ -36,10 +31,14 @@ const AIWarnings = () => {
       }
       const response = await api.get('/ai-warnings', { params });
       setWarnings(response.data.data.warnings || []);
-    } catch (error) { /* swallowed: surface to UI when toast hook is available */ void error; } finally {
+    } catch (error) { void error; } finally {
       setLoading(false);
     }
-  };
+  }, [filter]);
+
+  useEffect(() => {
+    loadWarnings();
+  }, [loadWarnings]);
 
   const resolveWarning = async (warningId) => {
     try {

@@ -26,22 +26,20 @@ const GroupManagement = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const fetchGroups = async () => {
+      try {
+        setLoading(true);
+        const response = await api.get('/admin/groups');
+        setGroups(response.data.groups || response.data.data || []);
+      } catch (error) {
+        toastError(t('groupsPage.loadError') || 'Error');
+        setGroups([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     fetchGroups();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const fetchGroups = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/admin/groups');
-      setGroups(response.data.groups || response.data.data || []);
-    } catch (error) {
-      toastError(t('groupsPage.loadError') || 'Error');
-      setGroups([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [t, toastError]);
 
   const filteredGroups = groups.filter((group) => {
     const query = searchQuery.toLowerCase();

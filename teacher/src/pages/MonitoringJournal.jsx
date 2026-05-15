@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   CheckCircle2,
   Edit2,
@@ -46,15 +46,7 @@ const MonitoringJournal = () => {
   const [children, setChildren] = useState([]);
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    loadMonitoringRecords(controller.signal);
-    loadParents(controller.signal);
-    return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadParents = async (signal) => {
+  const loadParents = useCallback(async (signal) => {
     try {
       const response = await api.get('/teacher/parents', { signal });
       const parentsList = Array.isArray(response.data.parents) ? response.data.parents : [];
@@ -72,9 +64,9 @@ const MonitoringJournal = () => {
       if (error.code === 'ERR_CANCELED') return;
       showError(t('monitoring.toastLoadParentsError'));
     }
-  };
+  }, [showError, t]);
 
-  const loadMonitoringRecords = async (signal) => {
+  const loadMonitoringRecords = useCallback(async (signal) => {
     try {
       setLoading(true);
       const response = await api.get('/teacher/emotional-monitoring', { signal });
@@ -86,7 +78,14 @@ const MonitoringJournal = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadMonitoringRecords(controller.signal);
+    loadParents(controller.signal);
+    return () => controller.abort();
+  }, [loadMonitoringRecords, loadParents]);
 
   const handleOpenModal = (child = null, record = null) => {
     if (record) {

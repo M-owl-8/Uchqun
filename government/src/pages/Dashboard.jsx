@@ -97,11 +97,11 @@ const Dashboard = () => {
 
       {/* Overview Cards - bosilganda tegishli sahifaga o'tadi */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {overviewCards.map((card, index) => {
+        {overviewCards.map((card) => {
           const Icon = card.icon;
           return (
             <Card
-              key={index}
+              key={card.path || card.title}
               className="p-6 hover:shadow-lg transition-shadow cursor-pointer hover:ring-2 hover:ring-primary-500/30"
               onClick={() => card.path && navigate(card.path)}
             >

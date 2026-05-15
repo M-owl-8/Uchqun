@@ -23,25 +23,23 @@ const ParentManagement = () => {
 
   useEffect(() => {
     const controller = new AbortController();
+    const loadParents = async (signal) => {
+      try {
+        setLoading(true);
+        const response = await api.get('/teacher/parents', { signal });
+        const list = Array.isArray(response.data.parents) ? response.data.parents : [];
+        setParents(list);
+      } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
+        showError(error.response?.data?.error || t('parentsPage.noParentsFound'));
+        setParents([]);
+      } finally {
+        setLoading(false);
+      }
+    };
     loadParents(controller.signal);
     return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const loadParents = async (signal) => {
-    try {
-      setLoading(true);
-      const response = await api.get('/teacher/parents', { signal });
-      const list = Array.isArray(response.data.parents) ? response.data.parents : [];
-      setParents(list);
-    } catch (error) {
-      if (error.code === 'ERR_CANCELED') return;
-      showError(error.response?.data?.error || t('parentsPage.noParentsFound'));
-      setParents([]);
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [showError, t]);
 
   const filteredParents = parents.filter((parent) => {
     const query = searchQuery.toLowerCase();

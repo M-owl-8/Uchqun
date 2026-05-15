@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../shared/services/api';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useToast } from '../shared/context/ToastContext';
@@ -44,15 +44,7 @@ const TherapyManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    fetchTherapies(controller.signal);
-    fetchChildren(controller.signal);
-    return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterType, selectedChildId]);
-
-  const fetchTherapies = async (signal) => {
+  const fetchTherapies = useCallback(async (signal) => {
     try {
       setLoading(true);
       const params = { isActive: true };
@@ -68,9 +60,9 @@ const TherapyManagement = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [filterType, showError, t]);
 
-  const fetchChildren = async (signal) => {
+  const fetchChildren = useCallback(async (signal) => {
     try {
       setLoadingChildren(true);
       const response = await api.get('/teacher/parents', { signal });
@@ -79,10 +71,7 @@ const TherapyManagement = () => {
       parents.forEach(parent => {
         if (parent.children && parent.children.length > 0) {
           parent.children.forEach(child => {
-            allChildren.push({
-              ...child,
-              parentName: `${parent.firstName} ${parent.lastName}`,
-            });
+            allChildren.push({ ...child, parentName: `${parent.firstName} ${parent.lastName}` });
           });
         }
       });
@@ -93,7 +82,14 @@ const TherapyManagement = () => {
     } finally {
       setLoadingChildren(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetchTherapies(controller.signal);
+    fetchChildren(controller.signal);
+    return () => controller.abort();
+  }, [fetchTherapies, fetchChildren]);
 
   const handleCreate = () => {
     setEditingTherapy(null);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Film, Image as ImageIcon, LayoutGrid, Plus } from 'lucide-react';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
@@ -46,17 +46,7 @@ const Media = () => {
     }
   }, [showModal]);
 
-  useEffect(() => {
-    const controller = new AbortController();
-    loadMedia(false, controller.signal);
-    if (isTeacher) {
-      loadChildren();
-    }
-    return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTeacher]);
-
-  const loadChildren = async () => {
+  const loadChildren = useCallback(async () => {
     try {
       let parentsList = cache.get('teacher:parents');
       if (!parentsList) {
@@ -66,13 +56,13 @@ const Media = () => {
       }
       const allChildren = parentsList.flatMap(p => Array.isArray(p.children) ? p.children : []);
       setChildList(allChildren);
-      if (allChildren.length > 0 && !formData.childId) {
-        setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
+      if (allChildren.length > 0) {
+        setFormData(prev => prev.childId ? prev : { ...prev, childId: allChildren[0].id });
       }
     } catch (error) { void error; }
-  };
+  }, []);
 
-  const loadMedia = async (bust = false, signal) => {
+  const loadMedia = useCallback(async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:media');
     if (cached) { setMedia(cached); setLoading(false); return; }
     try {
@@ -88,7 +78,16 @@ const Media = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadMedia(false, controller.signal);
+    if (isTeacher) {
+      loadChildren();
+    }
+    return () => controller.abort();
+  }, [isTeacher, loadMedia, loadChildren]);
 
   const handleCreate = () => {
     setEditingMedia(null);

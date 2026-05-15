@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { FileX, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -46,40 +46,16 @@ const Activities = () => {
     return 'en-US';
   })();
 
-  useEffect(() => {
-    const controller = new AbortController();
-    loadActivities(false, controller.signal);
-    if (isTeacher) {
-      loadParents();
-    }
-    return () => controller.abort();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isTeacher]);
-
-  const getParentsList = async () => {
+  const getParentsList = useCallback(async () => {
     const cached = cache.get('teacher:parents');
     if (cached) return cached;
     const parentsRes = await api.get('/teacher/parents');
     const list = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
     cache.set('teacher:parents', list);
     return list;
-  };
+  }, []);
 
-  const loadParents = async () => {
-    try {
-      const parentsList = await getParentsList();
-      setParents(parentsList);
-      if (parentsList.length === 1 && !formData.parentId) {
-        const parentId = parentsList[0].id;
-        setFormData(prev => ({ ...prev, parentId }));
-        await loadChildrenForParent(parentId);
-      }
-    } catch (error) {
-      showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
-    }
-  };
-
-  const loadChildrenForParent = async (parentId) => {
+  const loadChildrenForParent = useCallback(async (parentId) => {
     try {
       const parentsList = await getParentsList();
       const selectedParent = parentsList.find(p => p.id === parentId);
@@ -98,9 +74,23 @@ const Activities = () => {
       setChildren([]);
       setFormData(prev => ({ ...prev, childId: '' }));
     }
-  };
+  }, [getParentsList]);
 
-  const loadActivities = async (bust = false, signal) => {
+  const loadParents = useCallback(async () => {
+    try {
+      const parentsList = await getParentsList();
+      setParents(parentsList);
+      if (parentsList.length === 1) {
+        const parentId = parentsList[0].id;
+        setFormData(prev => prev.parentId ? prev : { ...prev, parentId });
+        await loadChildrenForParent(parentId);
+      }
+    } catch (error) {
+      showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
+    }
+  }, [getParentsList, loadChildrenForParent, showError, t]);
+
+  const loadActivities = useCallback(async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:activities');
     if (cached) { setActivities(cached); setLoading(false); return; }
     try {
@@ -116,7 +106,16 @@ const Activities = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    loadActivities(false, controller.signal);
+    if (isTeacher) {
+      loadParents();
+    }
+    return () => controller.abort();
+  }, [isTeacher, loadActivities, loadParents]);
 
   const handleCreate = async () => {
     setEditingActivity(null);

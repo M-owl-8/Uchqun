@@ -152,10 +152,10 @@ const AdminDetails = () => {
           {t('adminDetails.statistics', { defaultValue: 'Statistika' })}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          {statCards.map((card, index) => {
+          {statCards.map((card) => {
             const Icon = card.icon;
             return (
-              <Card key={index} className="p-6 hover:shadow-lg transition-shadow">
+              <Card key={card.title} className="p-6 hover:shadow-lg transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
                     <p className="text-sm text-gray-600 mb-1">{card.title}</p>

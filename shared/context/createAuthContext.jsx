@@ -39,8 +39,7 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
           setUser(null);
         })
         .finally(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [requiredRole, storageKey]);
 
     const login = async (email, password) => {
       try {
