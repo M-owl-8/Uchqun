@@ -7,14 +7,18 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import { useSocket } from '../shared/context/SocketContext';
 import Card from '../shared/components/Card';
+import * as cache from '../../../shared/utils/cache';
 
 const Chat = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { success: toastSuccess, error: toastError } = useToast();
   const { on, off } = useSocket();
-  const [parents, setParents] = useState([]);
-  const [selectedParent, setSelectedParent] = useState(null);
+  const [parents, setParents] = useState(() => cache.get('teacher:parents') || []);
+  const [selectedParent, setSelectedParent] = useState(() => {
+    const cached = cache.get('teacher:parents');
+    return cached?.length > 0 ? cached[0] : null;
+  });
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
@@ -27,17 +31,30 @@ const Chat = () => {
   const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
   useEffect(() => {
-    const fetchParents = async () => {
-      try {
-        const res = await api.get('/teacher/parents');
-        const list = res.data.parents || [];
-        setParents(list);
-        if (list.length > 0) {
-          setSelectedParent(list[0]);
-        }
-      } catch (err) { toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })); }
+    const cached = cache.get('teacher:parents');
+    const applyList = (list) => {
+      setParents(list);
+      setSelectedParent(prev => prev ?? (list.length > 0 ? list[0] : null));
     };
-    fetchParents();
+    if (cached) {
+      applyList(cached);
+      // Silent background refresh
+      api.get('/teacher/parents')
+        .then(res => {
+          const list = res.data.parents || [];
+          cache.set('teacher:parents', list);
+          applyList(list);
+        })
+        .catch(() => {});
+      return;
+    }
+    api.get('/teacher/parents')
+      .then(res => {
+        const list = res.data.parents || [];
+        cache.set('teacher:parents', list);
+        applyList(list);
+      })
+      .catch(() => toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })));
   }, [user?.id, toastError, t]);
 
   useEffect(() => {

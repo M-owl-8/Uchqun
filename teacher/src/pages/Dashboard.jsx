@@ -13,28 +13,50 @@ import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { useAuth } from '../shared/context/AuthContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
+import * as cache from '../../../shared/utils/cache';
+
+const CACHE_KEY = 'teacher:dashboard';
+const CACHE_TTL = 90_000;
+
+const FALLBACK = { parents: 0, activities: 0, meals: 0, media: 0, statusEntries: 0, rating: '0.0', ratingsCount: 0 };
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(() => cache.get(CACHE_KEY));
+  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const { t } = useTranslation();
 
   useEffect(() => {
     const controller = new AbortController();
-    const loadData = async () => {
+
+    const load = async () => {
+      const cached = cache.get(CACHE_KEY);
+      if (cached) {
+        setStats(cached);
+        setLoading(false);
+        // Silent background refresh
+        try {
+          const res = await api.get('/teacher/dashboard/counts', { signal: controller.signal });
+          const data = res.data.data;
+          cache.set(CACHE_KEY, data, CACHE_TTL);
+          setStats(data);
+        } catch { /* stale data stays visible */ }
+        return;
+      }
       try {
-        setLoading(true);
         const res = await api.get('/teacher/dashboard/counts', { signal: controller.signal });
-        setStats(res.data.data);
+        const data = res.data.data;
+        cache.set(CACHE_KEY, data, CACHE_TTL);
+        setStats(data);
       } catch (error) {
         if (error.code === 'ERR_CANCELED') return;
-        setStats({ parents: 0, activities: 0, meals: 0, media: 0, statusEntries: 0, rating: '0.0', ratingsCount: 0 });
+        setStats(FALLBACK);
       } finally {
         setLoading(false);
       }
     };
-    loadData();
+
+    load();
     return () => controller.abort();
   }, []);
 
@@ -51,13 +73,9 @@ const Dashboard = () => {
     { title: t('dashboard.childStatus', { defaultValue: "Bola holati yozuvlari" }), value: stats?.statusEntries || 0, icon: HeartPulse, href: '/teacher/monitoring' },
   ];
 
-  // Get role display text based on user role
   const getRoleText = () => {
-    if (user?.role === 'admin') {
-      return t('dashboard.roleAdmin') || 'My Role: Admin';
-    } else if (user?.role === 'teacher') {
-      return t('dashboard.roleTeacher') || 'My Role: Teacher';
-    }
+    if (user?.role === 'admin') return t('dashboard.roleAdmin') || 'My Role: Admin';
+    if (user?.role === 'teacher') return t('dashboard.roleTeacher') || 'My Role: Teacher';
     return t('dashboard.role') || 'My Role: Teacher';
   };
 
@@ -97,4 +115,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

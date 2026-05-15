@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '../shared/services/api';
+import * as cache from '../../../shared/utils/cache';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useToast } from '../shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
@@ -43,15 +44,39 @@ const TherapyManagement = () => {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
-  const fetchTherapies = useCallback(async (signal) => {
+  const buildChildList = (parents) => {
+    const all = [];
+    parents.forEach(p => {
+      if (p.children?.length > 0) {
+        p.children.forEach(c => all.push({ ...c, parentName: `${p.firstName} ${p.lastName}` }));
+      }
+    });
+    return all;
+  };
+
+  const fetchTherapies = useCallback(async (bust = false, signal) => {
+    const cacheKey = `teacher:therapy:${filterType}`;
+    const cached = !bust && cache.get(cacheKey);
+    const params = { isActive: true, ...(filterType !== 'all' ? { therapyType: filterType } : {}) };
+
+    if (cached) {
+      setTherapies(cached);
+      setLoading(false);
+      api.get('/therapy', { params, signal })
+        .then(res => {
+          const data = res.data.data?.therapies || res.data.data || [];
+          cache.set(cacheKey, data);
+          setTherapies(data);
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       setLoading(true);
-      const params = { isActive: true };
-      if (filterType !== 'all') {
-        params.therapyType = filterType;
-      }
       const response = await api.get('/therapy', { params, signal });
-      setTherapies(response.data.data?.therapies || response.data.data || []);
+      const data = response.data.data?.therapies || response.data.data || [];
+      cache.set(cacheKey, data);
+      setTherapies(data);
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
       showError(t('therapy.loadError', { defaultValue: 'Terapiyalarni yuklashda xatolik' }));
@@ -62,19 +87,25 @@ const TherapyManagement = () => {
   }, [filterType, showError, t]);
 
   const fetchChildren = useCallback(async (signal) => {
+    const cached = cache.get('teacher:parents');
+    if (cached) {
+      setChildList(buildChildList(cached));
+      setLoadingChildren(false);
+      api.get('/teacher/parents', { signal })
+        .then(res => {
+          const parents = res.data.parents || [];
+          cache.set('teacher:parents', parents);
+          setChildList(buildChildList(parents));
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       setLoadingChildren(true);
       const response = await api.get('/teacher/parents', { signal });
       const parents = response.data.parents || [];
-      const allChildren = [];
-      parents.forEach(parent => {
-        if (parent.children && parent.children.length > 0) {
-          parent.children.forEach(child => {
-            allChildren.push({ ...child, parentName: `${parent.firstName} ${parent.lastName}` });
-          });
-        }
-      });
-      setChildList(allChildren);
+      cache.set('teacher:parents', parents);
+      setChildList(buildChildList(parents));
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
       setChildList([]);
@@ -85,7 +116,7 @@ const TherapyManagement = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    fetchTherapies(controller.signal);
+    fetchTherapies(false, controller.signal);
     fetchChildren(controller.signal);
     return () => controller.abort();
   }, [fetchTherapies, fetchChildren]);
@@ -154,7 +185,8 @@ const TherapyManagement = () => {
       }
 
       setShowModal(false);
-      fetchTherapies();
+      cache.invalidatePrefix('teacher:therapy');
+      fetchTherapies(true);
     } catch (error) {
       showError(error.response?.data?.error || t('therapy.saveError', { defaultValue: 'Saqlashda xatolik' }));
     } finally {
@@ -177,7 +209,8 @@ const TherapyManagement = () => {
       });
       success(t('therapy.assignSuccess', { defaultValue: 'Terapiya bolaga tayinlandi' }));
       setShowAssignModal(false);
-      fetchTherapies();
+      cache.invalidatePrefix('teacher:therapy');
+      fetchTherapies(true);
     } catch (error) {
       showError(error.response?.data?.error || t('therapy.assignError', { defaultValue: 'Tayinlashda xatolik' }));
     } finally {
@@ -197,7 +230,8 @@ const TherapyManagement = () => {
     try {
       await api.delete(`/therapy/${id}`);
       success(t('therapy.deleteSuccess', { defaultValue: 'Terapiya o\'chirildi' }));
-      fetchTherapies();
+      cache.invalidatePrefix('teacher:therapy');
+      fetchTherapies(true);
     } catch (error) {
       showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
     }

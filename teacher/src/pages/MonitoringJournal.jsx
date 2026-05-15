@@ -15,6 +15,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
+import * as cache from '../../../shared/utils/cache';
 
 const MonitoringJournal = () => {
   const { user } = useAuth();
@@ -42,35 +43,65 @@ const MonitoringJournal = () => {
     notes: '',
     teacherSignature: '',
   });
-  const [, setParents] = useState([]);
   const [children, setChildren] = useState([]);
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
+  const buildChildrenFromParents = (parentsList) => {
+    const all = [];
+    parentsList.forEach(parent => {
+      if (parent.children && Array.isArray(parent.children)) {
+        parent.children.forEach(child => {
+          all.push({ ...child, parentName: `${parent.firstName} ${parent.lastName}` });
+        });
+      }
+    });
+    return all;
+  };
+
   const loadParents = useCallback(async (signal) => {
+    const cached = cache.get('teacher:parents');
+    if (cached) {
+      setChildren(buildChildrenFromParents(cached));
+      api.get('/teacher/parents', { signal })
+        .then(res => {
+          const list = Array.isArray(res.data.parents) ? res.data.parents : [];
+          cache.set('teacher:parents', list);
+          setChildren(buildChildrenFromParents(list));
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       const response = await api.get('/teacher/parents', { signal });
       const parentsList = Array.isArray(response.data.parents) ? response.data.parents : [];
-      setParents(parentsList);
-      const allChildren = [];
-      parentsList.forEach(parent => {
-        if (parent.children && Array.isArray(parent.children)) {
-          parent.children.forEach(child => {
-            allChildren.push({ ...child, parentName: `${parent.firstName} ${parent.lastName}` });
-          });
-        }
-      });
-      setChildren(allChildren);
+      cache.set('teacher:parents', parentsList);
+      setChildren(buildChildrenFromParents(parentsList));
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
       showError(t('monitoring.toastLoadParentsError'));
     }
   }, [showError, t]);
 
-  const loadMonitoringRecords = useCallback(async (signal) => {
+  const loadMonitoringRecords = useCallback(async (bust = false, signal) => {
+    const CACHE_KEY = 'teacher:monitoring';
+    const cached = !bust && cache.get(CACHE_KEY);
+    if (cached) {
+      setMonitoringRecords(cached);
+      setLoading(false);
+      api.get('/teacher/emotional-monitoring', { signal })
+        .then(res => {
+          const records = Array.isArray(res.data.data) ? res.data.data : [];
+          cache.set(CACHE_KEY, records);
+          setMonitoringRecords(records);
+        })
+        .catch(() => {});
+      return;
+    }
     try {
       setLoading(true);
       const response = await api.get('/teacher/emotional-monitoring', { signal });
       const records = Array.isArray(response.data.data) ? response.data.data : [];
+      cache.set(CACHE_KEY, records);
       setMonitoringRecords(records);
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
@@ -82,7 +113,7 @@ const MonitoringJournal = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    loadMonitoringRecords(controller.signal);
+    loadMonitoringRecords(false, controller.signal);
     loadParents(controller.signal);
     return () => controller.abort();
   }, [loadMonitoringRecords, loadParents]);
@@ -147,7 +178,8 @@ const MonitoringJournal = () => {
         success(t('monitoring.toastCreate'));
       }
       handleCloseModal();
-      loadMonitoringRecords();
+      cache.invalidate('teacher:monitoring');
+      loadMonitoringRecords(true);
     } catch (error) {
       showError(error.response?.data?.error || t('monitoring.toastError'));
     }
@@ -165,7 +197,8 @@ const MonitoringJournal = () => {
     try {
       await api.delete(`/teacher/emotional-monitoring/${id}`);
       success(t('monitoring.toastDelete'));
-      loadMonitoringRecords();
+      cache.invalidate('teacher:monitoring');
+      loadMonitoringRecords(true);
     } catch (error) {
       showError(t('monitoring.toastError'));
     }

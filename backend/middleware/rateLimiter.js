@@ -6,7 +6,7 @@ const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
 // General API rate limiter — override with RATE_LIMIT_API_MAX / RATE_LIMIT_WINDOW_MS
 export const apiLimiter = rateLimit({
   windowMs: WINDOW_MS,
-  max: Number(process.env.RATE_LIMIT_API_MAX) || (process.env.NODE_ENV === 'production' ? 100 : 1000),
+  max: Number(process.env.RATE_LIMIT_API_MAX) || 500,
   store: makeRedisStore(WINDOW_MS),
   message: 'Too many requests from this IP, please try again later.',
   standardHeaders: true,
@@ -25,7 +25,7 @@ export const apiLimiter = rateLimit({
 const AUTH_WINDOW = Number(process.env.AUTH_LIMIT_WINDOW_MS) || WINDOW_MS;
 export const authLimiter = rateLimit({
   windowMs: AUTH_WINDOW,
-  max: Number(process.env.RATE_LIMIT_AUTH_MAX) || Number(process.env.AUTH_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 5000),
+  max: Number(process.env.RATE_LIMIT_AUTH_MAX) || Number(process.env.AUTH_LIMIT_MAX) || 50,
   store: makeRedisStore(AUTH_WINDOW),
   message: 'Too many login attempts, please try again later.',
   skipSuccessfulRequests: true,
@@ -63,7 +63,7 @@ export const passwordResetLimiter = rateLimit({
 const AI_WINDOW = 60 * 1000;
 export const aiChatLimiter = rateLimit({
   windowMs: AI_WINDOW,
-  max: process.env.NODE_ENV === 'production' ? 20 : 200,
+  max: Number(process.env.RATE_LIMIT_AI_MAX) || 20,
   keyGenerator: (req) => req.user?.id || req.ip,
   store: makeRedisStore(AI_WINDOW),
   standardHeaders: true,
@@ -82,7 +82,7 @@ export const aiChatLimiter = rateLimit({
 const UPLOAD_WINDOW = Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || WINDOW_MS;
 export const uploadLimiter = rateLimit({
   windowMs: UPLOAD_WINDOW,
-  max: Number(process.env.RATE_LIMIT_UPLOAD_MAX) || Number(process.env.UPLOAD_LIMIT_MAX) || (process.env.NODE_ENV === 'production' ? 50 : 200),
+  max: Number(process.env.RATE_LIMIT_UPLOAD_MAX) || Number(process.env.UPLOAD_LIMIT_MAX) || 100,
   store: makeRedisStore(UPLOAD_WINDOW),
   message: 'Too many file uploads, please try again later.',
   standardHeaders: true,

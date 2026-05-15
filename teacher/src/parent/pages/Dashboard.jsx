@@ -7,6 +7,7 @@ import { useChild } from '../context/ChildContext';
 import { useNotification } from '../context/NotificationContext';
 import { useToast } from '../../shared/context/ToastContext';
 import api from '../services/api';
+import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -24,48 +25,71 @@ const Dashboard = () => {
   const { on, off, connected } = useSocket();
   const { selectedChildId } = useChild();
   const { refreshNotifications, count = 0 } = useNotification();
-  const [stats, setStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const cacheKey = selectedChildId ? `parent:dashboard:${selectedChildId}` : null;
+  const [stats, setStats] = useState(() => cacheKey ? cache.get(cacheKey) : null);
+  const [loading, setLoading] = useState(!cacheKey || !cache.get(cacheKey));
   const { t } = useTranslation();
   const { error: showError } = useToast();
 
+  const fetchFresh = useCallback(async (signal) => {
+    if (!selectedChildId) return null;
+    const [activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
+      api.get(`/activities?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { activities: [] } })),
+      api.get(`/meals?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { meals: [] } })),
+      api.get(`/media?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { media: [] } })),
+    ]);
+    const [ratingsResponse, monitoringResponse] = await Promise.all([
+      api.get('/parent/ratings', { signal }).catch(() => ({ data: { data: { summary: { average: 0, count: 0 } } } })),
+      api.get(`/parent/emotional-monitoring/child/${selectedChildId}?limit=1`, { signal }).catch(() => ({ data: { data: [] } })),
+    ]);
+
+    const activities = activitiesResponse.data?.activities || activitiesResponse.data || [];
+    const meals = mealsResponse.data?.meals || mealsResponse.data || [];
+    const media = mediaResponse.data?.media || mediaResponse.data || [];
+    const ratingsSummary = ratingsResponse.data?.data?.summary || { average: 0, count: 0 };
+    const latestMonitoring = Array.isArray(monitoringResponse.data?.data) && monitoringResponse.data.data.length > 0
+      ? monitoringResponse.data.data[0] : null;
+    const emotionalState = latestMonitoring?.emotionalState || {};
+    const emotionalTotal = Object.keys(emotionalState).length;
+    const emotionalChecked = Object.values(emotionalState).filter(Boolean).length;
+    const emotionalScore = emotionalTotal > 0 ? Math.round((emotionalChecked / emotionalTotal) * 100) : 0;
+
+    return {
+      activities: Array.isArray(activities) ? activities.length : 0,
+      meals: Array.isArray(meals) ? meals.length : 0,
+      media: Array.isArray(media) ? media.length : 0,
+      teacherRating: Number(ratingsSummary.average || 0).toFixed(1),
+      teacherRatingCount: Number(ratingsSummary.count || 0),
+      childStatusScore: emotionalScore,
+      recentActivity: Array.isArray(activities) && activities.length > 0 ? activities[0] : null,
+    };
+  }, [selectedChildId]);
+
   const loadData = useCallback(async (signal) => {
     if (!selectedChildId) return;
+    const key = `parent:dashboard:${selectedChildId}`;
+    const cached = cache.get(key);
+
+    if (cached) {
+      setStats(cached);
+      setLoading(false);
+      // Silent background refresh
+      fetchFresh(signal)
+        .then(data => {
+          if (!data) return;
+          cache.set(key, data);
+          setStats(data);
+          refreshNotifications();
+        })
+        .catch(() => {});
+      return;
+    }
+
     try {
-      const [_childResponse, activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
-        api.get(`/child/${selectedChildId}`, { signal }).catch(() => ({ data: null })),
-        api.get(`/activities?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { activities: [] } })),
-        api.get(`/meals?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { meals: [] } })),
-        api.get(`/media?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { media: [] } })),
-      ]);
-      const [ratingsResponse, monitoringResponse] = await Promise.all([
-        api.get('/parent/ratings', { signal }).catch(() => ({ data: { data: { summary: { average: 0, count: 0 } } } })),
-        api.get(`/parent/emotional-monitoring/child/${selectedChildId}?limit=1`, { signal }).catch(() => ({ data: { data: [] } })),
-      ]);
-
-      const activities = activitiesResponse.data?.activities || activitiesResponse.data || [];
-      const meals = mealsResponse.data?.meals || mealsResponse.data || [];
-      const media = mediaResponse.data?.media || mediaResponse.data || [];
-      const ratingsSummary = ratingsResponse.data?.data?.summary || { average: 0, count: 0 };
-      const latestMonitoring = Array.isArray(monitoringResponse.data?.data) && monitoringResponse.data.data.length > 0
-        ? monitoringResponse.data.data[0]
-        : null;
-      const emotionalState = latestMonitoring?.emotionalState || {};
-      const emotionalTotal = Object.keys(emotionalState).length;
-      const emotionalChecked = Object.values(emotionalState).filter(Boolean).length;
-      const emotionalScore = emotionalTotal > 0 ? Math.round((emotionalChecked / emotionalTotal) * 100) : 0;
-
-      setStats({
-        activities: Array.isArray(activities) ? activities.length : 0,
-        meals: Array.isArray(meals) ? meals.length : 0,
-        media: Array.isArray(media) ? media.length : 0,
-        teacherRating: Number(ratingsSummary.average || 0).toFixed(1),
-        teacherRatingCount: Number(ratingsSummary.count || 0),
-        childStatusScore: emotionalScore,
-        recentActivity: Array.isArray(activities) && activities.length > 0 ? activities[0] : null,
-      });
-
-      // Refresh notifications after loading data
+      const data = await fetchFresh(signal);
+      if (!data) return;
+      cache.set(key, data);
+      setStats(data);
       refreshNotifications();
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
@@ -73,7 +97,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedChildId, refreshNotifications, showError]);
+  }, [selectedChildId, fetchFresh, refreshNotifications, showError]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -86,7 +110,8 @@ const Dashboard = () => {
     if (!connected || !selectedChildId) return;
 
     const handleDataChange = (_data) => {
-      loadData(); // Reload dashboard data
+      cache.invalidate(`parent:dashboard:${selectedChildId}`);
+      loadData();
     };
 
     // Subscribe to all relevant events

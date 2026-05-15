@@ -1,14 +1,14 @@
-const TTL = 60_000; // 60 seconds
-const store = new Map(); // key → { data, ts }
+const DEFAULT_TTL = 60_000;
+const store = new Map(); // key → { data, ts, ttl }
 
 export const get = (key) => {
   const entry = store.get(key);
   if (!entry) return null;
-  if (Date.now() - entry.ts > TTL) { store.delete(key); return null; }
+  if (Date.now() - entry.ts > entry.ttl) { store.delete(key); return null; }
   return entry.data;
 };
 
-export const set = (key, data) => store.set(key, { data, ts: Date.now() });
+export const set = (key, data, ttl = DEFAULT_TTL) => store.set(key, { data, ts: Date.now(), ttl });
 
 export const invalidate = (key) => store.delete(key);
 
