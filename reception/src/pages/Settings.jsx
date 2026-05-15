@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { MessageSquare } from 'lucide-react';
@@ -14,8 +13,7 @@ import MessagesModal from './settings/MessagesModal';
 
 const Settings = () => {
   const { t } = useTranslation();
-  const { setUser } = useAuth();
-  const [loading, setLoading] = useState(true);
+  const { user, setUser } = useAuth();
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -46,7 +44,15 @@ const Settings = () => {
   const [showMessagesModal, setShowMessagesModal] = useState(false);
 
   useEffect(() => {
-    loadUserProfile();
+    if (user) {
+      setProfileForm({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        notificationPreferences: user.notificationPreferences || { email: true, push: true },
+      });
+    }
     loadMessages();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -87,31 +93,6 @@ const Settings = () => {
     }
   };
 
-  const loadUserProfile = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/auth/me');
-      const userData = response.data;
-      setProfileForm({
-        firstName: userData.firstName || '',
-        lastName: userData.lastName || '',
-        email: userData.email || '',
-        phone: userData.phone || '',
-        notificationPreferences: userData.notificationPreferences || {
-          email: true,
-          push: true,
-        },
-      });
-      if (setUser) {
-        setUser(userData);
-      }
-    } catch (error) {
-      showError(error.response?.data?.error || t('settings.loadProfileError'));
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
 
@@ -119,7 +100,7 @@ const Settings = () => {
       const response = await api.put('/user/profile', profileForm);
       success(t('settings.profileUpdateSuccess'));
       if (setUser) {
-        setUser(response.data);
+        setUser(response.data.data ?? response.data);
       }
     } catch (error) {
       showError(error.response?.data?.error || t('settings.profileUpdateError'));
@@ -149,14 +130,6 @@ const Settings = () => {
       showError(error.response?.data?.error || t('settings.passwordChangeError'));
     }
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

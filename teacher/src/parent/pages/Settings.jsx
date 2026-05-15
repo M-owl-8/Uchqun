@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../../shared/services/api';
 import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../../shared/context/ToastContext';
 import { useAuth } from '../../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -25,7 +24,6 @@ const Settings = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
-  const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
   const [passwordForm, setPasswordForm] = useState({
@@ -51,34 +49,17 @@ const Settings = () => {
   const { success, error: showError } = useToast();
 
   useEffect(() => {
-    loadUserProfile();
+    if (user) {
+      setProfileForm({
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        phone: user.phone || '',
+        notificationPreferences: user.notificationPreferences || { email: true, push: false },
+      });
+    }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  const loadUserProfile = async () => {
-    try {
-      setLoading(true);
-      const response = await api.get('/auth/me');
-      const userData = response.data;
-      setProfileForm({
-        firstName: userData.firstName || '',
-        lastName: userData.lastName || '',
-        email: userData.email || '',
-        phone: userData.phone || '',
-        notificationPreferences: userData.notificationPreferences || {
-          email: true,
-          push: false,
-        },
-      });
-      if (setUser) {
-        setUser(userData);
-      }
-    } catch (error) {
-      showError(error.response?.data?.error || t('settings.loadError', { defaultValue: 'Profil yuklashda xatolik' }));
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
@@ -93,7 +74,7 @@ const Settings = () => {
       });
       success(t('settings.profileUpdated', { defaultValue: 'Profil muvaffaqiyatli yangilandi' }));
       if (setUser) {
-        setUser(response.data);
+        setUser(response.data.data ?? response.data);
       }
     } catch (error) {
       showError(error.response?.data?.error || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
@@ -138,14 +119,6 @@ const Settings = () => {
     logout();
     navigate('/login');
   };
-
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-96">
-        <LoadingSpinner size="lg" />
-      </div>
-    );
-  }
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-24">

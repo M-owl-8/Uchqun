@@ -20,6 +20,7 @@ const Parents = lazy(() => import('./pages/Parents'));
 const AdminDetails = lazy(() => import('./pages/AdminDetails'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Platform = lazy(() => import('./pages/Platform'));
+const Settings = lazy(() => import('./pages/Settings'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -60,6 +61,7 @@ const AppRoutes = () => {
           <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />
           <Route path="platform" element={<ErrorBoundary><Platform /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+          <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
           <Route path="admin/:id" element={<ErrorBoundary><AdminDetails /></ErrorBoundary>} />
         </Route>
 

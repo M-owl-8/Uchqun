@@ -8,6 +8,7 @@ import {
   LogOut,
   User,
   Settings,
+  LayoutDashboard,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -20,8 +21,9 @@ const Sidebar = ({ onClose }) => {
     { name: t('nav.dashboard', { defaultValue: 'Dashboard' }), href: '/government', icon: Home },
     { name: t('nav.schools', { defaultValue: 'Muassasalar' }), href: '/government/schools', icon: Building2 },
     { name: t('nav.ratings', { defaultValue: 'Reytinglar' }), href: '/government/ratings', icon: Star },
-    { name: t('nav.platform', { defaultValue: 'Platform' }), href: '/government/platform', icon: Settings },
+    { name: t('nav.platform', { defaultValue: 'Platform' }), href: '/government/platform', icon: LayoutDashboard },
     { name: t('nav.profile', { defaultValue: 'Profil' }), href: '/government/profile', icon: User },
+    { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/government/settings', icon: Settings },
   ];
 
   const isActive = (path) => location.pathname === path;
