@@ -47,10 +47,12 @@ const Media = () => {
   }, [showModal]);
 
   useEffect(() => {
-    loadMedia();
+    const controller = new AbortController();
+    loadMedia(false, controller.signal);
     if (isTeacher) {
       loadChildren();
     }
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
@@ -70,16 +72,17 @@ const Media = () => {
     } catch (error) { void error; }
   };
 
-  const loadMedia = async (bust = false) => {
+  const loadMedia = async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:media');
     if (cached) { setMedia(cached); setLoading(false); return; }
     try {
       setLoading(true);
-      const response = await api.get('/media');
+      const response = await api.get('/media', { signal });
       const data = Array.isArray(response.data) ? response.data : [];
       cache.set('teacher:media', data);
       setMedia(data);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('mediaPage.toastLoadError'));
       setMedia([]);
     } finally {

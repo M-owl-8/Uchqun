@@ -29,18 +29,18 @@ const Dashboard = () => {
   const { t } = useTranslation();
   const { error: showError } = useToast();
 
-  const loadData = useCallback(async () => {
+  const loadData = useCallback(async (signal) => {
     if (!selectedChildId) return;
     try {
       const [_childResponse, activitiesResponse, mealsResponse, mediaResponse] = await Promise.all([
-        api.get(`/child/${selectedChildId}`).catch(() => ({ data: null })),
-        api.get(`/activities?limit=5&childId=${selectedChildId}`).catch(() => ({ data: { activities: [] } })),
-        api.get(`/meals?limit=5&childId=${selectedChildId}`).catch(() => ({ data: { meals: [] } })),
-        api.get(`/media?limit=5&childId=${selectedChildId}`).catch(() => ({ data: { media: [] } })),
+        api.get(`/child/${selectedChildId}`, { signal }).catch(() => ({ data: null })),
+        api.get(`/activities?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { activities: [] } })),
+        api.get(`/meals?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { meals: [] } })),
+        api.get(`/media?limit=5&childId=${selectedChildId}`, { signal }).catch(() => ({ data: { media: [] } })),
       ]);
       const [ratingsResponse, monitoringResponse] = await Promise.all([
-        api.get('/parent/ratings').catch(() => ({ data: { data: { summary: { average: 0, count: 0 } } } })),
-        api.get(`/parent/emotional-monitoring/child/${selectedChildId}?limit=1`).catch(() => ({ data: { data: [] } })),
+        api.get('/parent/ratings', { signal }).catch(() => ({ data: { data: { summary: { average: 0, count: 0 } } } })),
+        api.get(`/parent/emotional-monitoring/child/${selectedChildId}?limit=1`, { signal }).catch(() => ({ data: { data: [] } })),
       ]);
 
       const activities = activitiesResponse.data?.activities || activitiesResponse.data || [];
@@ -67,14 +67,19 @@ const Dashboard = () => {
 
       // Refresh notifications after loading data
       refreshNotifications();
-    } catch (error) { showError(error.response?.data?.error || error.message); } finally {
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
+      showError(error.response?.data?.error || error.message);
+    } finally {
       setLoading(false);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedChildId, refreshNotifications]);
 
   useEffect(() => {
-    loadData();
+    const controller = new AbortController();
+    loadData(controller.signal);
+    return () => controller.abort();
   }, [selectedChildId, loadData]);
 
   // Real-time WebSocket listeners

@@ -469,23 +469,26 @@ const Media = () => {
       return;
     }
 
+    const controller = new AbortController();
     const loadMedia = async () => {
       const key = `parent:media:${selectedChildId}`;
       const cached = cache.get(key);
       if (cached) { setMedia(cached); setLoading(false); return; }
       try {
-        const response = await api.get(`/media?childId=${selectedChildId}`);
+        const response = await api.get(`/media?childId=${selectedChildId}`, { signal: controller.signal });
         const mediaData = response.data?.media || response.data || [];
         const data = Array.isArray(mediaData) ? mediaData : [];
         cache.set(key, data);
         setMedia(data);
       } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
         setMedia([]);
       } finally {
         setLoading(false);
       }
     };
     loadMedia();
+    return () => controller.abort();
   }, [selectedChildId]);
 
   const filteredMedia = filter === 'all' ? media : media.filter((item) => item.type === filter);

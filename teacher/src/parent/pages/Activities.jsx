@@ -32,23 +32,26 @@ const Activities = () => {
       return;
     }
 
+    const controller = new AbortController();
     const loadActivities = async () => {
       const key = `parent:activities:${selectedChildId}`;
       const cached = cache.get(key);
       if (cached) { setActivities(cached); setLoading(false); return; }
       try {
-        const response = await api.get(`/activities?childId=${selectedChildId}`);
+        const response = await api.get(`/activities?childId=${selectedChildId}`, { signal: controller.signal });
         const activitiesData = response.data?.activities || response.data || [];
         const data = Array.isArray(activitiesData) ? activitiesData : [];
         cache.set(key, data);
         setActivities(data);
       } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
         setActivities([]);
       } finally {
         setLoading(false);
       }
     };
     loadActivities();
+    return () => controller.abort();
   }, [selectedChildId]);
 
   const [selectedActivity, setSelectedActivity] = useState(null);

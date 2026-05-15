@@ -65,30 +65,34 @@ const ChildProfile = () => {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
     const loadMessages = async () => {
       try {
         setLoadingMessages(true);
-        const response = await api.get('/parent/messages');
+        const response = await api.get('/parent/messages', { signal: controller.signal });
         setMyMessages(response.data.data || []);
-      } catch {
+      } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
         setMyMessages([]);
       } finally {
         setLoadingMessages(false);
       }
     };
     loadMessages();
+    return () => controller.abort();
   }, []);
 
   useEffect(() => {
     if (selectedChildId) {
+      const controller = new AbortController();
       const loadChild = async () => {
         try {
           setLoading(true);
           setError(null);
           const [childResponse, profileResponse, monitoringResponse] = await Promise.all([
-            api.get(`/child/${selectedChildId}`),
-            api.get('/parent/profile').catch(() => null),
-            api.get(`/parent/emotional-monitoring/child/${selectedChildId}`).catch(() => ({ data: { data: [] } })),
+            api.get(`/child/${selectedChildId}`, { signal: controller.signal }),
+            api.get('/parent/profile', { signal: controller.signal }).catch(() => null),
+            api.get(`/parent/emotional-monitoring/child/${selectedChildId}`, { signal: controller.signal }).catch(() => ({ data: { data: [] } })),
           ]);
           setChild(childResponse.data);
           if (childResponse.data?.photo) {
@@ -114,12 +118,14 @@ const ChildProfile = () => {
             Array.isArray(monitoringResponse.data?.data) ? monitoringResponse.data.data : []
           );
         } catch (err) {
+          if (err.code === 'ERR_CANCELED') return;
           setError(err.response?.status === 404 ? t('child.errorNotFound') : t('child.errorLoading'));
         } finally {
           setLoading(false);
         }
       };
       loadChild();
+      return () => controller.abort();
     } else if (!childrenLoading && children.length === 0) {
       setError(t('child.errorNotFound'));
       setLoading(false);
@@ -129,12 +135,13 @@ const ChildProfile = () => {
 
   useEffect(() => {
     if (!selectedChildId) return;
+    const controller = new AbortController();
     const loadStats = async () => {
       try {
         const [activitiesRes, mealsRes, mediaRes] = await Promise.all([
-          api.get(`/activities?childId=${selectedChildId}`).catch(() => ({ data: [] })),
-          api.get(`/meals?childId=${selectedChildId}`).catch(() => ({ data: [] })),
-          api.get(`/media?childId=${selectedChildId}`).catch(() => ({ data: [] })),
+          api.get(`/activities?childId=${selectedChildId}`, { signal: controller.signal }).catch(() => ({ data: [] })),
+          api.get(`/meals?childId=${selectedChildId}`, { signal: controller.signal }).catch(() => ({ data: [] })),
+          api.get(`/media?childId=${selectedChildId}`, { signal: controller.signal }).catch(() => ({ data: [] })),
         ]);
         const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
         const inWeek = (item) => new Date(item.date) >= weekAgo;
@@ -143,9 +150,12 @@ const ChildProfile = () => {
           meals: (Array.isArray(mealsRes.data) ? mealsRes.data : []).filter(inWeek).length,
           media: (Array.isArray(mediaRes.data) ? mediaRes.data : []).filter(inWeek).length,
         });
-      } catch { /* non-critical */ }
+      } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
+      }
     };
     loadStats();
+    return () => controller.abort();
   }, [selectedChildId, statsRefreshKey]);
 
   useEffect(() => {

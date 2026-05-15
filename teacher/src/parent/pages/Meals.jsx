@@ -76,23 +76,26 @@ const Meals = () => {
       return;
     }
 
+    const controller = new AbortController();
     const loadMeals = async () => {
       const key = `parent:meals:${selectedChildId}`;
       const cached = cache.get(key);
       if (cached) { setMeals(cached); setLoading(false); return; }
       try {
-        const response = await api.get(`/meals?childId=${selectedChildId}`);
+        const response = await api.get(`/meals?childId=${selectedChildId}`, { signal: controller.signal });
         const mealsData = response.data?.meals || response.data || [];
         const data = Array.isArray(mealsData) ? mealsData : [];
         cache.set(key, data);
         setMeals(data);
       } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
         setMeals([]);
       } finally {
         setLoading(false);
       }
     };
     loadMeals();
+    return () => controller.abort();
   }, [selectedChildId]);
 
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);

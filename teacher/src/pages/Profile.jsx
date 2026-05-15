@@ -26,15 +26,18 @@ const Profile = () => {
   const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
-    loadMessages();
+    const controller = new AbortController();
+    loadMessages(controller.signal);
+    return () => controller.abort();
   }, []);
 
-  const loadMessages = async () => {
+  const loadMessages = async (signal) => {
     try {
       setLoadingMessages(true);
-      const response = await api.get('/teacher/messages');
+      const response = await api.get('/teacher/messages', { signal });
       setMyMessages(response.data.data || []);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);

@@ -47,10 +47,12 @@ const Activities = () => {
   })();
 
   useEffect(() => {
-    loadActivities();
+    const controller = new AbortController();
+    loadActivities(false, controller.signal);
     if (isTeacher) {
       loadParents();
     }
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
@@ -99,16 +101,17 @@ const Activities = () => {
     }
   };
 
-  const loadActivities = async (bust = false) => {
+  const loadActivities = async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:activities');
     if (cached) { setActivities(cached); setLoading(false); return; }
     try {
       setLoading(true);
-      const response = await api.get('/activities');
+      const response = await api.get('/activities', { signal });
       const data = Array.isArray(response.data) ? response.data : [];
       cache.set('teacher:activities', data);
       setActivities(data);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
       setActivities([]);
     } finally {

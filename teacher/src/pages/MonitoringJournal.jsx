@@ -47,18 +47,18 @@ const MonitoringJournal = () => {
   const [pendingDeleteId, setPendingDeleteId] = useState(null);
 
   useEffect(() => {
-    loadMonitoringRecords();
-    loadParents();
+    const controller = new AbortController();
+    loadMonitoringRecords(controller.signal);
+    loadParents(controller.signal);
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadParents = async () => {
+  const loadParents = async (signal) => {
     try {
-      const response = await api.get('/teacher/parents');
+      const response = await api.get('/teacher/parents', { signal });
       const parentsList = Array.isArray(response.data.parents) ? response.data.parents : [];
       setParents(parentsList);
-
-      // Collect all children
       const allChildren = [];
       parentsList.forEach(parent => {
         if (parent.children && Array.isArray(parent.children)) {
@@ -69,17 +69,19 @@ const MonitoringJournal = () => {
       });
       setChildren(allChildren);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(t('monitoring.toastLoadParentsError'));
     }
   };
 
-  const loadMonitoringRecords = async () => {
+  const loadMonitoringRecords = async (signal) => {
     try {
       setLoading(true);
-      const response = await api.get('/teacher/emotional-monitoring');
+      const response = await api.get('/teacher/emotional-monitoring', { signal });
       const records = Array.isArray(response.data.data) ? response.data.data : [];
       setMonitoringRecords(records);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(t('monitoring.toastLoadError'));
     } finally {
       setLoading(false);

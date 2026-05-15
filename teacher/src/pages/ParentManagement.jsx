@@ -22,17 +22,20 @@ const ParentManagement = () => {
   useAuth();
 
   useEffect(() => {
-    loadParents();
+    const controller = new AbortController();
+    loadParents(controller.signal);
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const loadParents = async () => {
+  const loadParents = async (signal) => {
     try {
       setLoading(true);
-      const response = await api.get('/teacher/parents');
+      const response = await api.get('/teacher/parents', { signal });
       const list = Array.isArray(response.data.parents) ? response.data.parents : [];
       setParents(list);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('parentsPage.noParentsFound'));
       setParents([]);
     } finally {

@@ -45,21 +45,24 @@ const TherapyManagement = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    fetchTherapies();
-    fetchChildren();
+    const controller = new AbortController();
+    fetchTherapies(controller.signal);
+    fetchChildren(controller.signal);
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filterType, selectedChildId]);
 
-  const fetchTherapies = async () => {
+  const fetchTherapies = async (signal) => {
     try {
       setLoading(true);
       const params = { isActive: true };
       if (filterType !== 'all') {
         params.therapyType = filterType;
       }
-      const response = await api.get('/therapy', { params });
+      const response = await api.get('/therapy', { params, signal });
       setTherapies(response.data.data?.therapies || response.data.data || []);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(t('therapy.loadError', { defaultValue: 'Terapiyalarni yuklashda xatolik' }));
       setTherapies([]);
     } finally {
@@ -67,10 +70,10 @@ const TherapyManagement = () => {
     }
   };
 
-  const fetchChildren = async () => {
+  const fetchChildren = async (signal) => {
     try {
       setLoadingChildren(true);
-      const response = await api.get('/teacher/parents');
+      const response = await api.get('/teacher/parents', { signal });
       const parents = response.data.parents || [];
       const allChildren = [];
       parents.forEach(parent => {
@@ -85,6 +88,7 @@ const TherapyManagement = () => {
       });
       setChildList(allChildren);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       setChildList([]);
     } finally {
       setLoadingChildren(false);

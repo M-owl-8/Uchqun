@@ -21,19 +21,21 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
+    const controller = new AbortController();
     const loadData = async () => {
       try {
         setLoading(true);
-        const res = await api.get('/teacher/dashboard/counts');
+        const res = await api.get('/teacher/dashboard/counts', { signal: controller.signal });
         setStats(res.data.data);
-      } catch {
+      } catch (error) {
+        if (error.code === 'ERR_CANCELED') return;
         setStats({ parents: 0, activities: 0, meals: 0, media: 0, statusEntries: 0, rating: '0.0', ratingsCount: 0 });
       } finally {
         setLoading(false);
       }
     };
-
     loadData();
+    return () => controller.abort();
   }, []);
 
   if (loading) {

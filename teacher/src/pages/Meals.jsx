@@ -70,10 +70,12 @@ const Meals = () => {
   };
 
   useEffect(() => {
-    loadMeals();
+    const controller = new AbortController();
+    loadMeals(false, controller.signal);
     if (isTeacher) {
       loadChildren();
     }
+    return () => controller.abort();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
@@ -93,16 +95,17 @@ const Meals = () => {
     } catch (error) { showError(error.response?.data?.error || error.message); }
   };
 
-  const loadMeals = async (bust = false) => {
+  const loadMeals = async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:meals');
     if (cached) { setMeals(cached); setLoading(false); return; }
     try {
       setLoading(true);
-      const response = await api.get('/meals');
+      const response = await api.get('/meals', { signal });
       const data = Array.isArray(response.data) ? response.data : [];
       cache.set('teacher:meals', data);
       setMeals(data);
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('mealsPage.form.toastLoadError'));
       setMeals([]);
     } finally {
