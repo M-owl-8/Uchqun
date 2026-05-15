@@ -9,6 +9,14 @@ const mockLogout = vi.fn();
 const mockSetUser = vi.fn();
 const mockNavigate = vi.fn();
 
+const mockUser = {
+  firstName: 'Ali',
+  lastName: 'Valiyev',
+  email: 'ali@school.uz',
+  phone: '+998901234567',
+  notificationPreferences: { email: true, push: true },
+};
+
 vi.mock('../../context/ToastContext', () => ({
   useToast: () => ({
     success: mockSuccess,
@@ -23,6 +31,7 @@ vi.mock('../../context/ToastContext', () => ({
 
 vi.mock('../../context/AuthContext', () => ({
   useAuth: () => ({
+    user: mockUser,
     setUser: mockSetUser,
     logout: mockLogout,
   }),
