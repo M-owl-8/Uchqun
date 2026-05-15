@@ -1,0 +1,489 @@
+{
+  "results": [
+    {
+      "phase": "P-1",
+      "frontend": "env",
+      "scenario": "playwright",
+      "verdict": "PASS",
+      "notes": "Playwright 1.60.0 + Chromium installed",
+      "evidence": [],
+      "ts": "2026-05-14T03:59:38.047Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "admin",
+      "scenario": "fresh-load",
+      "verdict": "PASS",
+      "notes": "Page loaded, 3 redirects, 1 console errors",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_admin_01_fresh_load.png"
+      ],
+      "ts": "2026-05-14T03:59:44.253Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "admin",
+      "scenario": "login-form-visible",
+      "verdict": "PASS",
+      "notes": "Email input found",
+      "evidence": [],
+      "ts": "2026-05-14T03:59:44.323Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "admin",
+      "scenario": "valid-login",
+      "verdict": "PASS",
+      "notes": "Redirected to dashboard in 5468ms, URL: https://admin-production-536f.up.railway.app/admin",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_admin_02_after_valid_login.png"
+      ],
+      "ts": "2026-05-14T03:59:49.920Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "admin",
+      "scenario": "session-persist-reload",
+      "verdict": "FAIL",
+      "notes": "Kicked to login on reload, URL: https://admin-production-536f.up.railway.app/login",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_admin_03_after_reload.png"
+      ],
+      "ts": "2026-05-14T03:59:54.839Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "admin",
+      "scenario": "wrong-password",
+      "verdict": "PARTIAL",
+      "notes": "Stayed on login=true, error shown=false, 0 refresh calls",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_admin_04_wrong_password.png"
+      ],
+      "ts": "2026-05-14T04:00:05.520Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "teacher",
+      "scenario": "fresh-load",
+      "verdict": "PASS",
+      "notes": "Page loaded, 3 redirects, 3 console errors",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_teacher_01_fresh_load.png"
+      ],
+      "ts": "2026-05-14T04:00:12.776Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "teacher",
+      "scenario": "login-form-visible",
+      "verdict": "PASS",
+      "notes": "Email input found",
+      "evidence": [],
+      "ts": "2026-05-14T04:00:12.890Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "teacher",
+      "scenario": "valid-login",
+      "verdict": "PASS",
+      "notes": "Redirected to dashboard in 5568ms, URL: https://teacher-production-0647.up.railway.app/teacher",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_teacher_02_after_valid_login.png"
+      ],
+      "ts": "2026-05-14T04:00:18.701Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "teacher",
+      "scenario": "session-persist-reload",
+      "verdict": "FAIL",
+      "notes": "Kicked to login on reload, URL: https://teacher-production-0647.up.railway.app/login",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_teacher_03_after_reload.png"
+      ],
+      "ts": "2026-05-14T04:00:24.158Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "teacher",
+      "scenario": "wrong-password",
+      "verdict": "PARTIAL",
+      "notes": "Stayed on login=true, error shown=false, 0 refresh calls",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_teacher_04_wrong_password.png"
+      ],
+      "ts": "2026-05-14T04:00:35.311Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "reception",
+      "scenario": "fresh-load",
+      "verdict": "PASS",
+      "notes": "Page loaded, 3 redirects, 1 console errors",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_reception_01_fresh_load.png"
+      ],
+      "ts": "2026-05-14T04:00:41.654Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "reception",
+      "scenario": "login-form-visible",
+      "verdict": "PASS",
+      "notes": "Email input found",
+      "evidence": [],
+      "ts": "2026-05-14T04:00:41.753Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "reception",
+      "scenario": "valid-login",
+      "verdict": "FAIL",
+      "notes": "Still on login page after submission (URL: https://reception-production-ba41.up.railway.app/login)",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_reception_02_after_valid_login.png"
+      ],
+      "ts": "2026-05-14T04:00:47.414Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "reception",
+      "scenario": "session-persist-reload",
+      "verdict": "FAIL",
+      "notes": "Kicked to login on reload, URL: https://reception-production-ba41.up.railway.app/login",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_reception_03_after_reload.png"
+      ],
+      "ts": "2026-05-14T04:00:52.562Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "reception",
+      "scenario": "wrong-password",
+      "verdict": "PARTIAL",
+      "notes": "Stayed on login=true, error shown=false, 0 refresh calls",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_reception_04_wrong_password.png"
+      ],
+      "ts": "2026-05-14T04:01:07.721Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "government",
+      "scenario": "fresh-load",
+      "verdict": "PASS",
+      "notes": "Page loaded, 3 redirects, 1 console errors",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_government_01_fresh_load.png"
+      ],
+      "ts": "2026-05-14T04:01:14.354Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "government",
+      "scenario": "login-form-visible",
+      "verdict": "PASS",
+      "notes": "Email input found",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:14.505Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "government",
+      "scenario": "valid-login",
+      "verdict": "FAIL",
+      "notes": "Still on login page after submission (URL: https://government-production.up.railway.app/login)",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_government_02_after_valid_login.png"
+      ],
+      "ts": "2026-05-14T04:01:20.089Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "government",
+      "scenario": "session-persist-reload",
+      "verdict": "FAIL",
+      "notes": "Kicked to login on reload, URL: https://government-production.up.railway.app/login",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_government_03_after_reload.png"
+      ],
+      "ts": "2026-05-14T04:01:24.960Z"
+    },
+    {
+      "phase": "P0",
+      "frontend": "government",
+      "scenario": "wrong-password",
+      "verdict": "PARTIAL",
+      "notes": "Stayed on login=true, error shown=false, 0 refresh calls",
+      "evidence": [
+        "C:\\work\\Uchqun\\audit\\evidence\\v4\\screenshots\\p0_government_04_wrong_password.png"
+      ],
+      "ts": "2026-05-14T04:01:35.257Z"
+    },
+    {
+      "phase": "P1",
+      "frontend": "backend",
+      "scenario": "HIGH-01-schoolScope",
+      "verdict": "FAIL",
+      "notes": "schoolScope returns {} for null schoolId — REGRESSION from prior fix. Data-protection only, not code-protection.",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:35.398Z"
+    },
+    {
+      "phase": "P1",
+      "frontend": "services",
+      "scenario": "interceptor-fix",
+      "verdict": "PASS",
+      "notes": "skips-login=true, skips-refresh=true, pathname-check=true (C:\\work\\Uchqun\\shared\\services\\api.js)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:35.399Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/children",
+      "verdict": "PASS",
+      "notes": "gov=404(object items), teacher=404(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:36.979Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/users",
+      "verdict": "PASS",
+      "notes": "gov=404(object items), teacher=404(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:37.317Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/groups",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:37.829Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/teachers",
+      "verdict": "PASS",
+      "notes": "gov=404(object items), teacher=404(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:38.133Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/parents",
+      "verdict": "PASS",
+      "notes": "gov=404(object items), teacher=404(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:38.457Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/news",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:38.778Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/notifications",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:39.105Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/assessments",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:39.391Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/service-plans",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:39.857Z"
+    },
+    {
+      "phase": "P6",
+      "frontend": "backend",
+      "scenario": "isolation-/meal-plans",
+      "verdict": "PASS",
+      "notes": "gov=401(object items), teacher=401(object items)",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:40.259Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "malformed-jwt-401",
+      "verdict": "PASS",
+      "notes": "Status: 401",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:40.417Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "cors-evil-blocked",
+      "verdict": "PASS",
+      "notes": "CORS header: \"\" — evil.com not allowed",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:40.599Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "cors-valid-origin",
+      "verdict": "PASS",
+      "notes": "CORS: https://admin-production-536f.up.railway.app, credentials: true",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:40.903Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "login-lockout",
+      "verdict": "PASS",
+      "notes": "Locked after 1 attempts, status: 429",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:41.135Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "cookie-flags",
+      "verdict": "FAIL",
+      "notes": "httpOnly=false, secure=false, sameSite=false — raw: ",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:41.356Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "xss-login-field",
+      "verdict": "PASS",
+      "notes": "XSS payload not reflected",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:41.573Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "sqli-login",
+      "verdict": "PASS",
+      "notes": "Status 429, no bypass",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:41.776Z"
+    },
+    {
+      "phase": "P7",
+      "frontend": "backend",
+      "scenario": "rate-limit-burst",
+      "verdict": "PASS",
+      "notes": "429 returned on burst",
+      "evidence": [],
+      "ts": "2026-05-14T04:01:42.575Z"
+    }
+  ],
+  "issues": [
+    {
+      "id": "V4-001",
+      "severity": "HIGH",
+      "phase": "Phase 0",
+      "title": "admin: Session lost on page reload",
+      "reproduction": "Log in, reload",
+      "rootCause": "Cookie / refresh token not persisting",
+      "fix": "Fix session persistence"
+    },
+    {
+      "id": "V4-002",
+      "severity": "HIGH",
+      "phase": "Phase 0",
+      "title": "teacher: Session lost on page reload",
+      "reproduction": "Log in, reload",
+      "rootCause": "Cookie / refresh token not persisting",
+      "fix": "Fix session persistence"
+    },
+    {
+      "id": "V4-003",
+      "severity": "CRITICAL",
+      "phase": "Phase 0",
+      "title": "reception: Login does not redirect to dashboard",
+      "reproduction": "Submit valid credentials",
+      "rootCause": "Login flow / router",
+      "fix": "Fix post-login navigation"
+    },
+    {
+      "id": "V4-004",
+      "severity": "HIGH",
+      "phase": "Phase 0",
+      "title": "reception: Session lost on page reload",
+      "reproduction": "Log in, reload",
+      "rootCause": "Cookie / refresh token not persisting",
+      "fix": "Fix session persistence"
+    },
+    {
+      "id": "V4-005",
+      "severity": "CRITICAL",
+      "phase": "Phase 0",
+      "title": "government: Login does not redirect to dashboard",
+      "reproduction": "Submit valid credentials",
+      "rootCause": "Login flow / router",
+      "fix": "Fix post-login navigation"
+    },
+    {
+      "id": "V4-006",
+      "severity": "HIGH",
+      "phase": "Phase 0",
+      "title": "government: Session lost on page reload",
+      "reproduction": "Log in, reload",
+      "rootCause": "Cookie / refresh token not persisting",
+      "fix": "Fix session persistence"
+    },
+    {
+      "id": "V4-007",
+      "severity": "CRITICAL",
+      "phase": "Phase 1",
+      "title": "HIGH-01 REGRESSION: schoolScope null branch returns {} (no filter)",
+      "reproduction": "Examine backend/middleware/schoolScope.js null-schoolId branch",
+      "rootCause": "backend/middleware/schoolScope.js — null schoolId returns {} instead of throwing",
+      "fix": "Restore defensive throw for null schoolId on non-government roles"
+    },
+    {
+      "id": "V4-008",
+      "severity": "CRITICAL",
+      "phase": "Phase 7",
+      "title": "Access token cookie not httpOnly",
+      "reproduction": "POST /auth/login, check Set-Cookie header",
+      "rootCause": "auth controller cookie settings",
+      "fix": "Add httpOnly flag to access token cookie"
+    },
+    {
+      "id": "V4-009",
+      "severity": "HIGH",
+      "phase": "Phase 7",
+      "title": "Access token cookie not Secure",
+      "reproduction": "POST /auth/login, check Set-Cookie header",
+      "rootCause": "auth controller cookie settings",
+      "fix": "Add Secure flag for production"
+    }
+  ],
+  "generatedAt": "2026-05-14T04:01:42.575Z"
+}

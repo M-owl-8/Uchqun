@@ -1,0 +1,94 @@
+[error] Failed to load resource: the server responded with a status of 401 ()
+===NETWORK===
+REQ: GET https://government-production.up.railway.app/
+REQ: GET https://government-production.up.railway.app/assets/index-CC45p5Sa.js
+REQ: GET https://government-production.up.railway.app/assets/index-DDDYAlsh.css
+RES: 200 https://government-production.up.railway.app/ — <!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scal
+RES: 200 https://government-production.up.railway.app/assets/index-DDDYAlsh.css — *,:before,:after{--tw-border-spacing-x: 0;--tw-border-spacing-y: 0;--tw-translate-x: 0;--tw-translate-y: 0;--tw-rotate: 0;--tw-skew-x: 0;--tw-skew-y: 0;--tw-scale-x: 1;--tw-scale-y: 1;--tw-pan-x: ;--t
+RES: 200 https://government-production.up.railway.app/assets/index-CC45p5Sa.js — const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Layout-BYn9zmLq.js","assets/createLucideIcon-dHNk15kh.js","assets/building-2-C16XJMcJ.js","assets/star-DasfGUMq.js","assets/user-BSXsub
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/auth/me
+RES: 401 https://uchqun-production-b484.up.railway.app/api/v1/auth/me — {"error":"No token provided"}
+REQ: GET https://government-production.up.railway.app/assets/Login-Dt1feTo2.js
+REQ: GET https://government-production.up.railway.app/assets/shield-CVFRSJLb.js
+REQ: GET https://government-production.up.railway.app/assets/createLucideIcon-dHNk15kh.js
+REQ: GET https://government-production.up.railway.app/assets/eye-PgAxkVlw.js
+RES: 200 https://government-production.up.railway.app/assets/Login-Dt1feTo2.js — import{r,a as b,c as y,b as j,j as e,d as w}from"./index-CC45p5Sa.js";import{S as v}from"./shield-CVFRSJLb.js";import{E as N,a as S}from"./eye-PgAxkVlw.js";import"./createLucideIcon-dHNk15kh.js";const
+RES: 200 https://government-production.up.railway.app/assets/createLucideIcon-dHNk15kh.js — import{r as s}from"./index-CC45p5Sa.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this sour
+RES: 200 https://government-production.up.railway.app/assets/shield-CVFRSJLb.js — import{c}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://government-production.up.railway.app/assets/eye-PgAxkVlw.js — import{c as e}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+REQ: POST https://uchqun-production-b484.up.railway.app/api/v1/auth/login
+REQ: GET https://government-production.up.railway.app/assets/Layout-BYn9zmLq.js
+REQ: GET https://government-production.up.railway.app/assets/building-2-C16XJMcJ.js
+REQ: GET https://government-production.up.railway.app/assets/star-DasfGUMq.js
+REQ: GET https://government-production.up.railway.app/assets/user-BSXsub1K.js
+REQ: GET https://government-production.up.railway.app/assets/log-out-BAzVzm3q.js
+REQ: GET https://government-production.up.railway.app/assets/x-Det8LHD_.js
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/auth/login — {"success":true,"expiresIn":"15m","user":{"id":"1c9d79f8-d029-459b-b90b-16e77b586ecf","email":"government@uchqun.uz","firstName":"Demo","lastName":"Government","phone":null,"role":"government","isVeri
+RES: 200 https://government-production.up.railway.app/assets/Layout-BYn9zmLq.js — import{u as p,a as f,b as u,j as e,L as g,r as j,O as v}from"./index-CC45p5Sa.js";import{c as i}from"./createLucideIcon-dHNk15kh.js";import{B as b}from"./building-2-C16XJMcJ.js";import{S as y}from"./s
+RES: 200 https://government-production.up.railway.app/assets/log-out-BAzVzm3q.js — import{c as o}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+RES: 200 https://government-production.up.railway.app/assets/x-Det8LHD_.js — import{c as o}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+RES: 200 https://government-production.up.railway.app/assets/user-BSXsub1K.js — import{c}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://government-production.up.railway.app/assets/star-DasfGUMq.js — import{c as a}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+REQ: GET https://government-production.up.railway.app/assets/Dashboard-C5boXIbo.js
+REQ: GET https://government-production.up.railway.app/assets/api-vDUzy2pc.js
+REQ: GET https://government-production.up.railway.app/assets/Card-C_EPWzaD.js
+REQ: GET https://government-production.up.railway.app/assets/users-CaEF4qwV.js
+REQ: GET https://government-production.up.railway.app/assets/graduation-cap-n-AffAjW.js
+RES: 200 https://government-production.up.railway.app/assets/building-2-C16XJMcJ.js — import{c as a}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+RES: 200 https://government-production.up.railway.app/assets/Card-C_EPWzaD.js — import{j as n}from"./index-CC45p5Sa.js";const a=({children:e,className:s="",onClick:r})=>{const t=r?{role:"button",tabIndex:0,onKeyDown:o=>(o.key==="Enter"||o.key===" ")&&r(o)}:{};return n.jsx("div",{
+RES: 200 https://government-production.up.railway.app/assets/api-vDUzy2pc.js — import{i as e}from"./index-CC45p5Sa.js";const a=e({tokenKey:"government_accessToken"});export{a};
+
+RES: 200 https://government-production.up.railway.app/assets/users-CaEF4qwV.js — import{c as e}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+RES: 200 https://government-production.up.railway.app/assets/Dashboard-C5boXIbo.js — import{j as e,a as D,c as L,b as B,r as o,S as _}from"./index-CC45p5Sa.js";import{a as h}from"./api-vDUzy2pc.js";import{C as u}from"./Card-C_EPWzaD.js";import{B as g}from"./building-2-C16XJMcJ.js";imp
+RES: 200 https://government-production.up.railway.app/assets/graduation-cap-n-AffAjW.js — import{c as a}from"./createLucideIcon-dHNk15kh.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/government/overview
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/government/schools?limit=10
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/government/admins
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/government/admins — {"success":true,"data":[{"id":"e4ecbd6f-deb2-4106-af58-bbf80be781eb","email":"v3alpha.admin@uchqun.uz","firstName":"V3Alpha","lastName":"Admin","phone":null,"role":"admin","isVerified":false,"document
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/government/schools?limit=10 — {"success":true,"data":{"schools":[{"id":"4ffc18f4-12a5-4687-9d08-c27d938909f7","name":"Uchqun Demo Maktabi","type":"both","address":"Toshkent, Uzbekistan","phone":null,"email":null,"description":null
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/government/overview — {"success":true,"data":{"schools":2,"students":21,"teachers":6,"parents":21,"averageRating":3.5,"activeWarnings":0}}

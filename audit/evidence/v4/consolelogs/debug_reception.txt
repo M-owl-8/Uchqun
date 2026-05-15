@@ -1,0 +1,91 @@
+[error] Failed to load resource: the server responded with a status of 401 ()
+===NETWORK===
+REQ: GET https://reception-production-ba41.up.railway.app/
+REQ: GET https://reception-production-ba41.up.railway.app/assets/index-DI6tbv44.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/index-D4jzN6Hn.css
+RES: 200 https://reception-production-ba41.up.railway.app/ — <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scal
+RES: 200 https://reception-production-ba41.up.railway.app/assets/index-D4jzN6Hn.css — *,:before,:after{--tw-border-spacing-x: 0;--tw-border-spacing-y: 0;--tw-translate-x: 0;--tw-translate-y: 0;--tw-rotate: 0;--tw-skew-x: 0;--tw-skew-y: 0;--tw-scale-x: 1;--tw-scale-y: 1;--tw-pan-x: ;--t
+RES: 200 https://reception-production-ba41.up.railway.app/assets/index-DI6tbv44.js — const __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=["assets/Layout-BBiQfGu_.js","assets/createLucideIcon-ehZIL3qV.js","assets/users-xKqqTiC9.js","assets/user-check-DRo0Nqwf.js","assets/users-roun
+REQ: GET https://reception-production-ba41.up.railway.app/locales/uz/common.json
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/auth/me
+RES: 200 https://reception-production-ba41.up.railway.app/locales/uz/common.json — {
+  "language": "Til",
+  "nav": {
+    "dashboard": "Bosh sahifa",
+    "parents": "Ota-onalar",
+    "teachers": "O'qituvchilar",
+    "groups": "Guruhlar",
+    "settings": "Sozlamalar",
+    "logout": "C
+RES: 401 https://uchqun-production-b484.up.railway.app/api/v1/auth/me — {"error":"No token provided"}
+REQ: GET https://reception-production-ba41.up.railway.app/assets/Login-7Cdad0eC.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/shield-VZApWZ__.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/createLucideIcon-ehZIL3qV.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/eye-off-C4kSBT04.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/eye-DmkVhrXU.js
+RES: 200 https://reception-production-ba41.up.railway.app/assets/shield-VZApWZ__.js — import{c}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://reception-production-ba41.up.railway.app/assets/Login-7Cdad0eC.js — import{r as t,a as f,d as y,b as w,j as e,e as j}from"./index-DI6tbv44.js";import{S as N}from"./shield-VZApWZ__.js";import{E as v}from"./eye-off-C4kSBT04.js";import{E as S}from"./eye-DmkVhrXU.js";impo
+RES: 200 https://reception-production-ba41.up.railway.app/assets/eye-off-C4kSBT04.js — import{c as e}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+RES: 200 https://reception-production-ba41.up.railway.app/assets/createLucideIcon-ehZIL3qV.js — import{r as s}from"./index-DI6tbv44.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of this sour
+RES: 200 https://reception-production-ba41.up.railway.app/assets/eye-DmkVhrXU.js — import{c}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+REQ: POST https://uchqun-production-b484.up.railway.app/api/v1/auth/login
+REQ: GET https://reception-production-ba41.up.railway.app/assets/Layout-BBiQfGu_.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/users-xKqqTiC9.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/user-check-DRo0Nqwf.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/users-round-BHU3kbhQ.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/user-3l2U2lAp.js
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/auth/login — {"success":true,"expiresIn":"15m","user":{"id":"d4be04bb-84af-4b2d-ae64-7511da4e4c8e","email":"reception@uchqun.uz","firstName":"Demo","lastName":"Reception","phone":null,"role":"reception","isVerifie
+RES: 200 https://reception-production-ba41.up.railway.app/assets/Layout-BBiQfGu_.js — import{u as f,a as b,b as l,j as e,L as m,c as v,r as F,O as N}from"./index-DI6tbv44.js";import{c as x}from"./createLucideIcon-ehZIL3qV.js";import{U as y}from"./users-xKqqTiC9.js";import{U as j}from".
+RES: 200 https://reception-production-ba41.up.railway.app/assets/users-round-BHU3kbhQ.js — import{c}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://reception-production-ba41.up.railway.app/assets/users-xKqqTiC9.js — import{c as e}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory o
+REQ: GET https://reception-production-ba41.up.railway.app/assets/Dashboard-CCPxRzI9.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/Card-y_6NQFw4.js
+REQ: GET https://reception-production-ba41.up.railway.app/assets/Skeleton-DAEzDIS6.js
+RES: 200 https://reception-production-ba41.up.railway.app/assets/user-check-DRo0Nqwf.js — import{c}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://reception-production-ba41.up.railway.app/assets/user-3l2U2lAp.js — import{c}from"./createLucideIcon-ehZIL3qV.js";/**
+ * @license lucide-react v0.562.0 - ISC
+ *
+ * This source code is licensed under the ISC license.
+ * See the LICENSE file in the root directory of thi
+RES: 200 https://reception-production-ba41.up.railway.app/assets/Card-y_6NQFw4.js — import{g as n,j as a}from"./index-DI6tbv44.js";const d=n({tokenKey:"reception_accessToken"}),p=({children:o,className:s="",onClick:e})=>{const t=e?{role:"button",tabIndex:0,onKeyDown:r=>(r.key==="Ente
+RES: 200 https://reception-production-ba41.up.railway.app/assets/Skeleton-DAEzDIS6.js — import{j as s}from"./index-DI6tbv44.js";const d="animate-pulse bg-gray-200 rounded";function a({className:e=""}){return s.jsx("div",{className:`${d} h-4 ${e}`})}function n({size:e="md"}){const l={sm:"
+RES: 200 https://reception-production-ba41.up.railway.app/assets/Dashboard-CCPxRzI9.js — import{a as T,r as m,b as U,j as e,L as c}from"./index-DI6tbv44.js";import{C as i,a as h}from"./Card-y_6NQFw4.js";import{S as k}from"./Skeleton-DAEzDIS6.js";import{S as E}from"./shield-VZApWZ__.js";im
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/reception/parents
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/reception/teachers
+REQ: GET https://uchqun-production-b484.up.railway.app/api/v1/groups
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/groups — {"groups":[{"id":"434b1d31-6c5c-4514-b9d2-c6eb29891f27","name":"1-guruh","description":"","teacherId":"3f10c37e-d153-438b-b437-5d719c982f66","capacity":9,"ageRange":"3-10","schoolId":"661d2411-b1ea-4d
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/reception/parents — {"success":true,"data":[{"id":"bf3cd75b-aaa9-4675-b81a-d9e0d51fca2e","email":"sarvar@uchqun.uz","firstName":"Sarvar","lastName":"Toshmatov","phone":null,"role":"parent","isVerified":false,"documentsAp
+RES: 200 https://uchqun-production-b484.up.railway.app/api/v1/reception/teachers — {"success":true,"data":[{"id":"831af8c1-86d5-45db-a27b-076de9e1e02b","email":"auditv3.teacher@uchqun.uz","firstName":"AuditV3","lastName":"Teacher","phone":"+998901234500","role":"teacher","isVerified
