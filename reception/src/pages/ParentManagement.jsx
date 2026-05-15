@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
+import * as cache from '../../../shared/utils/cache';
 import { useToast } from '../context/ToastContext';
 import { Users, Plus, Search } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -10,10 +11,10 @@ import ParentFormModal from './parents/ParentFormModal';
 import ChildFormModal from './parents/ChildFormModal';
 
 const ParentManagement = () => {
-  const [parents, setParents] = useState([]);
-  const [teachers, setTeachers] = useState([]);
-  const [groups, setGroups] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [parents, setParents] = useState(() => cache.get('reception:parents') || []);
+  const [teachers, setTeachers] = useState(() => cache.get('reception:teachers') || []);
+  const [groups, setGroups] = useState(() => cache.get('reception:groups') || []);
+  const [loading, setLoading] = useState(!cache.get('reception:parents'));
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showChildModal, setShowChildModal] = useState(false);
@@ -36,22 +37,49 @@ const ParentManagement = () => {
   const { t } = useTranslation();
 
   const loadTeachersAndGroups = useCallback(async () => {
-    try {
-      const [teachersRes, groupsRes] = await Promise.all([
-        api.get('/reception/teachers').catch(() => ({ data: { data: [] } })),
-        api.get('/groups').catch(() => ({ data: { groups: [] } })),
-      ]);
-      setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
-      setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
-    } catch (error) { void error; }
+    const cachedT = cache.get('reception:teachers');
+    const cachedG = cache.get('reception:groups');
+    if (cachedT) setTeachers(cachedT);
+    if (cachedG) setGroups(cachedG);
+
+    const [teachersRes, groupsRes] = await Promise.all([
+      api.get('/reception/teachers').catch(() => ({ data: { data: [] } })),
+      api.get('/groups').catch(() => ({ data: { groups: [] } })),
+    ]).catch(() => [{ data: { data: [] } }, { data: { groups: [] } }]);
+
+    const t2 = Array.isArray(teachersRes.data.data) ? teachersRes.data.data : [];
+    const g2 = Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : [];
+    cache.set('reception:teachers', t2);
+    cache.set('reception:groups', g2);
+    setTeachers(t2);
+    setGroups(g2);
   }, []);
 
-  const loadParents = useCallback(async () => {
+  const loadParents = useCallback(async (bust = false) => {
+    const CACHE_KEY = 'reception:parents';
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => api.get('/reception/parents', { signal })
+      .then(res => {
+        const d = Array.isArray(res.data.data) ? res.data.data : [];
+        cache.set(CACHE_KEY, d);
+        setParents(d);
+      });
+
+    const cached = !bust && cache.get(CACHE_KEY);
+    if (cached) {
+      setParents(cached);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return;
+    }
+
     try {
       setLoading(true);
-      const response = await api.get('/reception/parents');
-      setParents(Array.isArray(response.data.data) ? response.data.data : []);
+      await fetchFresh();
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('parentsPage.toastLoadError'));
       setParents([]);
     } finally {
@@ -96,7 +124,7 @@ const ParentManagement = () => {
         try {
           await api.delete(`/reception/parents/${parentId}`);
           success(t('parentsPage.toastDelete'));
-          loadParents();
+          loadParents(true);
         } catch (error) {
           showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
         }
@@ -128,7 +156,7 @@ const ParentManagement = () => {
         try {
           await api.delete(`/reception/children/${childId}`);
           success(t('parentsPage.toastDeleteChild'));
-          loadParents();
+          loadParents(true);
         } catch (error) {
           showError(error.response?.data?.error || t('parentsPage.toastDeleteError'));
         }
@@ -168,7 +196,7 @@ const ParentManagement = () => {
       await api.post('/reception/children', payload);
       success(t('parentsPage.toastChildAdded'));
       setShowChildModal(false);
-      loadParents();
+      loadParents(true);
     } catch (error) {
       const msg = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedAddChild');
       const details = error.response?.data?.missing ? ` - Missing: ${JSON.stringify(error.response.data.missing)}` : '';
@@ -197,7 +225,7 @@ const ParentManagement = () => {
       await api.put(`/reception/children/${selectedChild.id}`, payload);
       success(t('parentsPage.toastChildUpdated'));
       setShowEditChildModal(false);
-      loadParents();
+      loadParents(true);
     } catch (error) {
       const msg = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedUpdateChild');
       const details = error.response?.data?.missing ? ` - Missing: ${JSON.stringify(error.response.data.missing)}` : '';
@@ -244,7 +272,7 @@ const ParentManagement = () => {
         success(t('parentsPage.toastCreate'));
       }
       setShowModal(false);
-      loadParents();
+      loadParents(true);
     } catch (error) {
       showError(error.response?.data?.error || t('parentsPage.toastSaveError'));
     }

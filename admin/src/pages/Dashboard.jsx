@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
+import * as cache from '../../../shared/utils/cache';
 import {
   Users,
   GraduationCap,
@@ -15,149 +16,138 @@ import {
   Shield,
 } from 'lucide-react';
 
+const CACHE_KEY = 'admin:dashboard';
+
+const getGroupsCount = (groups) => {
+  if (typeof groups === 'number') return groups;
+  if (groups && typeof groups === 'object' && 'total' in groups) return groups.total;
+  return 0;
+};
+
+const getReceptionsCount = (receptions) => {
+  if (typeof receptions === 'number') return receptions;
+  if (receptions && typeof receptions === 'object' && 'total' in receptions) return receptions.total;
+  return 0;
+};
+
 const Dashboard = () => {
   const { user } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [receptions, setReceptions] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
+  const [receptions, setReceptions] = useState(() => cache.get(CACHE_KEY)?.receptions ?? []);
+  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const { t } = useTranslation();
 
-  // Helper function to safely get groups count
-  const getGroupsCount = (groups) => {
-    if (typeof groups === 'number') return groups;
-    if (groups && typeof groups === 'object' && 'total' in groups) return groups.total;
-    return 0;
-  };
+  const fetchFresh = useCallback(async (signal) => {
+    const [statsResponse, receptionsResponse] = await Promise.all([
+      api.get('/admin/statistics', { signal }).catch(() => null),
+      api.get('/admin/receptions', { signal }).catch(() => ({ data: { data: [] } })),
+    ]);
 
-  // Helper function to safely get receptions count
-  const getReceptionsCount = (receptions) => {
-    if (typeof receptions === 'number') return receptions;
-    if (receptions && typeof receptions === 'object' && 'total' in receptions) return receptions.total;
-    return 0;
-  };
+    const receptionsData = receptionsResponse?.data?.data || [];
+    let statsData = null;
+
+    if (statsResponse?.data?.data) {
+      const raw = statsResponse.data.data;
+      const teachersCount = typeof raw.teachers === 'number' ? raw.teachers : (raw.users?.teachers ?? 0);
+      const parentsCount = typeof raw.parents === 'number' ? raw.parents : (raw.users?.parents ?? 0);
+      let childrenCount = 0;
+      if (typeof raw.children === 'number') childrenCount = raw.children;
+      else if (typeof raw.users?.children === 'number') childrenCount = raw.users.children;
+      else if (typeof raw.childrenCount === 'number') childrenCount = raw.childrenCount;
+
+      statsData = {
+        receptions: getReceptionsCount(raw.receptions),
+        teachers: teachersCount,
+        parents: parentsCount,
+        children: childrenCount,
+        groups: getGroupsCount(raw.groups),
+      };
+    } else {
+      try {
+        const [receptionsRes, parentsRes, teachersRes, groupsRes] = await Promise.all([
+          api.get('/admin/receptions', { signal }).catch(() => ({ data: { data: [] } })),
+          api.get('/admin/parents', { signal }).catch(() => ({ data: { data: [] } })),
+          api.get('/admin/teachers', { signal }).catch(() => ({ data: { data: [] } })),
+          api.get('/admin/groups', { signal }).catch(() => ({ data: { groups: [] } })),
+        ]);
+        statsData = {
+          receptions: (receptionsRes.data.data || []).length,
+          teachers: (teachersRes.data.data || []).length,
+          parents: (parentsRes.data.data || []).length,
+          children: 0,
+          groups: (groupsRes.data.groups || []).length,
+        };
+      } catch {
+        statsData = { receptions: 0, teachers: 0, parents: 0, children: 0, groups: 0 };
+      }
+    }
+
+    return { stats: statsData, receptions: receptionsData };
+  }, []);
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        const [statsResponse, receptionsResponse] = await Promise.all([
-          api.get('/admin/statistics').catch(() => null),
-          api.get('/admin/receptions').catch(() => ({ data: { data: [] } })),
-        ]);
-        
-        const receptionsData = receptionsResponse?.data?.data || [];
-        
-        if (statsResponse?.data?.data) {
-          const statsData = statsResponse.data.data;
-          // Ensure we get the correct values
-          const teachersCount = typeof statsData.teachers === 'number' 
-            ? statsData.teachers 
-            : (statsData.users?.teachers ?? 0);
-          const parentsCount = typeof statsData.parents === 'number' 
-            ? statsData.parents 
-            : (statsData.users?.parents ?? 0);
-          // Get children count - check multiple possible locations
-          let childrenCount = 0;
-          if (typeof statsData.children === 'number') {
-            childrenCount = statsData.children;
-          } else if (typeof statsData.users?.children === 'number') {
-            childrenCount = statsData.users.children;
-          } else if (typeof statsData.childrenCount === 'number') {
-            childrenCount = statsData.childrenCount;
-          } else {
-            childrenCount = 0;
-          }
-          
-          setStats({
-            receptions: getReceptionsCount(statsData.receptions),
-            teachers: teachersCount,
-            parents: parentsCount,
-            children: childrenCount,
-            groups: getGroupsCount(statsData.groups),
-          });
-        } else {
-          // Fallback to individual API calls if statistics endpoint fails
-          try {
-            const [receptionsRes, parentsRes, teachersRes, groupsRes] = await Promise.all([
-              api.get('/admin/receptions').catch(() => ({ data: { data: [] } })),
-              api.get('/admin/parents').catch(() => ({ data: { data: [] } })),
-              api.get('/admin/teachers').catch(() => ({ data: { data: [] } })),
-              api.get('/admin/groups').catch(() => ({ data: { groups: [] } })),
-            ]);
+    const controller = new AbortController();
+    const signal = controller.signal;
+    const cached = cache.get(CACHE_KEY);
 
-            const receptionsData = receptionsRes.data.data || [];
-            const parents = parentsRes.data.data || [];
-            const teachers = teachersRes.data.data || [];
-            const groups = groupsRes.data.groups || [];
+    if (cached) {
+      setStats(cached.stats);
+      setReceptions(cached.receptions);
+      setLoading(false);
+      fetchFresh(signal)
+        .then(result => {
+          if (!result) return;
+          cache.set(CACHE_KEY, result);
+          setStats(result.stats);
+          setReceptions(result.receptions);
+        })
+        .catch(() => {});
+      return () => controller.abort();
+    }
 
-            // Get children count - we'll calculate from parents data if available
-            // For now, set to 0 as we don't have a direct API endpoint
-            // The main statistics endpoint should provide this
-            let childrenCount = 0;
-
-            setStats({
-              receptions: receptionsData.length,
-              teachers: teachers.length,
-              parents: parents.length,
-              children: childrenCount,
-              groups: groups.length,
-            });
-            setReceptions(receptionsData);
-          } catch {
-            setStats({
-              receptions: 0,
-              teachers: 0,
-              parents: 0,
-              children: 0,
-              groups: 0,
-            });
-            setReceptions([]);
-          }
-        }
-        setReceptions(receptionsData);
-      } catch {
-        setStats({
-          receptions: 0,
-          teachers: 0,
-          parents: 0,
-          children: 0,
-          groups: 0,
-        });
+    fetchFresh(signal)
+      .then(result => {
+        if (!result) return;
+        cache.set(CACHE_KEY, result);
+        setStats(result.stats);
+        setReceptions(result.receptions);
+      })
+      .catch(() => {
+        setStats({ receptions: 0, teachers: 0, parents: 0, children: 0, groups: 0 });
         setReceptions([]);
-      } finally {
-        setLoading(false);
-      }
-    };
+      })
+      .finally(() => setLoading(false));
 
-    loadData();
-  }, []);
+    return () => controller.abort();
+  }, [fetchFresh]);
 
   if (loading) {
     return <SkeletonDashboard stats={5} cards={2} />;
   }
 
   const statisticsCards = [
-    { 
-      title: t('dashboard.receptions', { defaultValue: 'Receptions' }), 
-      value: stats?.receptions || 0, 
-      icon: Users, 
+    {
+      title: t('dashboard.receptions', { defaultValue: 'Receptions' }),
+      value: stats?.receptions || 0,
+      icon: Users,
       color: 'bg-blue-50 text-blue-600'
     },
-    { 
-      title: t('dashboard.teachers', { defaultValue: 'Teachers' }), 
-      value: stats?.teachers || 0, 
-      icon: GraduationCap, 
+    {
+      title: t('dashboard.teachers', { defaultValue: 'Teachers' }),
+      value: stats?.teachers || 0,
+      icon: GraduationCap,
       color: 'bg-indigo-50 text-indigo-600'
     },
-    { 
-      title: t('dashboard.parents', { defaultValue: 'Parents' }), 
-      value: stats?.parents || 0, 
-      icon: UserCheck, 
+    {
+      title: t('dashboard.parents', { defaultValue: 'Parents' }),
+      value: stats?.parents || 0,
+      icon: UserCheck,
       color: 'bg-orange-50 text-orange-600'
     },
-    { 
-      title: t('dashboard.groups', { defaultValue: 'Groups' }), 
-      value: stats?.groups || 0, 
-      icon: UsersRound, 
+    {
+      title: t('dashboard.groups', { defaultValue: 'Groups' }),
+      value: stats?.groups || 0,
+      icon: UsersRound,
       color: 'bg-teal-50 text-teal-600'
     },
   ];

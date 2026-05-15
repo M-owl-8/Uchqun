@@ -2,6 +2,7 @@ import { useEffect, useState, memo, useMemo } from 'react';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
+import * as cache from '../../../shared/utils/cache';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
@@ -19,26 +20,41 @@ import {
  * - Admin cannot create, edit, or delete teachers
  */
 const TeacherManagement = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [teachers, setTeachers] = useState(() => cache.get('admin:teachers') || []);
+  const [loading, setLoading] = useState(!cache.get('admin:teachers'));
   const [searchQuery, setSearchQuery] = useState('');
   const { error: toastError } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
-    const fetchTeachers = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get('/admin/teachers');
-        setTeachers(response.data.data || []);
-      } catch (error) {
+    const CACHE_KEY = 'admin:teachers';
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => api.get('/admin/teachers', { signal })
+      .then(res => {
+        const d = res.data.data || [];
+        cache.set(CACHE_KEY, d);
+        setTeachers(d);
+      });
+
+    const cached = cache.get(CACHE_KEY);
+    if (cached) {
+      setTeachers(cached);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return () => controller.abort();
+    }
+
+    fetchFresh()
+      .catch(err => {
+        if (err.code === 'ERR_CANCELED') return;
         toastError(t('teachersPage.loadError') || 'Error');
         setTeachers([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchTeachers();
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, [t, toastError]);
 
   const filteredTeachers = useMemo(() => teachers.filter((teacher) => {

@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
@@ -19,26 +20,41 @@ import {
  * - Admin cannot create, edit, or delete groups
  */
 const GroupManagement = () => {
-  const [groups, setGroups] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [groups, setGroups] = useState(() => cache.get('admin:groups') || []);
+  const [loading, setLoading] = useState(!cache.get('admin:groups'));
   const [searchQuery, setSearchQuery] = useState('');
   const { error: toastError } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get('/admin/groups');
-        setGroups(response.data.groups || response.data.data || []);
-      } catch (error) {
+    const CACHE_KEY = 'admin:groups';
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => api.get('/admin/groups', { signal })
+      .then(res => {
+        const d = res.data.groups || res.data.data || [];
+        cache.set(CACHE_KEY, d);
+        setGroups(d);
+      });
+
+    const cached = cache.get(CACHE_KEY);
+    if (cached) {
+      setGroups(cached);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return () => controller.abort();
+    }
+
+    fetchFresh()
+      .catch(err => {
+        if (err.code === 'ERR_CANCELED') return;
         toastError(t('groupsPage.loadError') || 'Error');
         setGroups([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchGroups();
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, [t, toastError]);
 
   const filteredGroups = groups.filter((group) => {

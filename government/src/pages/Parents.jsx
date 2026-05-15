@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Users, Mail, Phone, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -9,19 +10,39 @@ const PAGE_SIZE = 20;
 
 const Parents = () => {
   const { t } = useTranslation();
-  const [parents, setParents] = useState([]);
-  const [total, setTotal] = useState(0);
+  const [parents, setParents] = useState(() => cache.get('government:parents:1')?.parents ?? []);
+  const [total, setTotal] = useState(() => cache.get('government:parents:1')?.total ?? 0);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!cache.get('government:parents:1'));
 
   const loadParents = useCallback(async (pageNum) => {
+    const CACHE_KEY = `government:parents:${pageNum}`;
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => {
+      const offset = (pageNum - 1) * PAGE_SIZE;
+      return api.get(`/government/parents?limit=${PAGE_SIZE}&offset=${offset}`, { signal })
+        .then(res => {
+          const d = res.data?.data || {};
+          cache.set(CACHE_KEY, d);
+          setParents(d.parents || []);
+          setTotal(d.total ?? 0);
+        });
+    };
+
+    const cached = cache.get(CACHE_KEY);
+    if (cached) {
+      setParents(cached.parents || []);
+      setTotal(cached.total ?? 0);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return;
+    }
+
     try {
       setLoading(true);
-      const offset = (pageNum - 1) * PAGE_SIZE;
-      const res = await api.get(`/government/parents?limit=${PAGE_SIZE}&offset=${offset}`);
-      const data = res.data?.data || {};
-      setParents(data.parents || []);
-      setTotal(data.total ?? 0);
+      await fetchFresh();
     } catch {
       setParents([]);
       setTotal(0);

@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import Card from '../components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
+import * as cache from '../../../shared/utils/cache';
 import {
   Users,
   Shield,
@@ -13,58 +14,54 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+const CACHE_KEY = 'reception:dashboard';
+
 const Dashboard = () => {
   const { user } = useAuth();
-  const [stats, setStats] = useState(null);
-  const [teachers, setTeachers] = useState([]);
-  const [parents, setParents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
+  const [teachers, setTeachers] = useState(() => cache.get(CACHE_KEY)?.teachers ?? []);
+  const [parents, setParents] = useState(() => cache.get(CACHE_KEY)?.parents ?? []);
+  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const { t } = useTranslation();
 
   useEffect(() => {
-    const loadData = async () => {
-      try {
-        // Reception Dashboard - Updated to use correct endpoints
-        const [
-          parentsRes,
-          teachersRes,
-          groupsRes,
-        ] = await Promise.allSettled([
-          api.get('/reception/parents'),
-          api.get('/reception/teachers'),
-          api.get('/groups'),
-        ]);
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-        const parents = parentsRes.status === 'fulfilled' && parentsRes.value.data?.data && Array.isArray(parentsRes.value.data.data) 
-          ? parentsRes.value.data.data 
-          : [];
-        const teachers = teachersRes.status === 'fulfilled' && teachersRes.value.data?.data && Array.isArray(teachersRes.value.data.data) 
-          ? teachersRes.value.data.data 
-          : [];
-        const groups = groupsRes.status === 'fulfilled' && groupsRes.value.data?.groups && Array.isArray(groupsRes.value.data.groups) 
-          ? groupsRes.value.data.groups 
-          : [];
-
-        setStats({
-          parents: parents.length,
-          teachers: teachers.length,
-          groups: groups.length,
-        });
-        setTeachers(teachers);
-        setParents(parents);
-      } catch (error) {
-        // Set default stats if error occurs
-        setStats({
-          parents: 0,
-          teachers: 0,
-          groups: 0,
-        });
-      } finally {
-        setLoading(false);
-      }
+    const fetchFresh = async () => {
+      const [parentsRes, teachersRes, groupsRes] = await Promise.allSettled([
+        api.get('/reception/parents', { signal }),
+        api.get('/reception/teachers', { signal }),
+        api.get('/groups', { signal }),
+      ]);
+      const p = parentsRes.status === 'fulfilled' && Array.isArray(parentsRes.value.data?.data) ? parentsRes.value.data.data : [];
+      const t = teachersRes.status === 'fulfilled' && Array.isArray(teachersRes.value.data?.data) ? teachersRes.value.data.data : [];
+      const g = groupsRes.status === 'fulfilled' && Array.isArray(groupsRes.value.data?.groups) ? groupsRes.value.data.groups : [];
+      return { stats: { parents: p.length, teachers: t.length, groups: g.length }, teachers: t, parents: p };
     };
 
-    loadData();
+    const apply = (result) => {
+      setStats(result.stats);
+      setTeachers(result.teachers);
+      setParents(result.parents);
+    };
+
+    const cached = cache.get(CACHE_KEY);
+    if (cached) {
+      apply(cached);
+      setLoading(false);
+      fetchFresh()
+        .then(result => { cache.set(CACHE_KEY, result); apply(result); })
+        .catch(() => {});
+      return () => controller.abort();
+    }
+
+    fetchFresh()
+      .then(result => { cache.set(CACHE_KEY, result); apply(result); })
+      .catch(() => { setStats({ parents: 0, teachers: 0, groups: 0 }); })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, []);
 
   if (loading) {

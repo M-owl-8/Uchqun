@@ -1,5 +1,6 @@
 ﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
@@ -22,8 +23,8 @@ import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '../components/ConfirmDialog';
 
 const TeacherManagement = () => {
-  const [teachers, setTeachers] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [teachers, setTeachers] = useState(() => cache.get('reception:teachers') || []);
+  const [loading, setLoading] = useState(!cache.get('reception:teachers'));
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [editingTeacher, setEditingTeacher] = useState(null);
@@ -46,12 +47,31 @@ const TeacherManagement = () => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
-  const loadTeachers = useCallback(async () => {
+  const loadTeachers = useCallback(async (bust = false) => {
+    const CACHE_KEY = 'reception:teachers';
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => api.get('/reception/teachers', { signal })
+      .then(res => {
+        const d = Array.isArray(res.data.data) ? res.data.data : [];
+        cache.set(CACHE_KEY, d);
+        setTeachers(d);
+      });
+
+    const cached = !bust && cache.get(CACHE_KEY);
+    if (cached) {
+      setTeachers(cached);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return;
+    }
+
     try {
       setLoading(true);
-      const response = await api.get('/reception/teachers');
-      setTeachers(Array.isArray(response.data.data) ? response.data.data : []);
+      await fetchFresh();
     } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
       showError(error.response?.data?.error || t('teachersPage.toastLoadError'));
       setTeachers([]);
     } finally {
@@ -125,7 +145,7 @@ const TeacherManagement = () => {
         try {
           await api.delete(`/reception/teachers/${teacherId}`);
           success(t('teachersPage.toastDelete'));
-          loadTeachers();
+          loadTeachers(true);
         } catch (error) {
           showError(error.response?.data?.error || t('teachersPage.toastDeleteError'));
         }
@@ -165,7 +185,7 @@ const TeacherManagement = () => {
       }
       
       setShowModal(false);
-      loadTeachers();
+      loadTeachers(true);
     } catch (error) {
       showError(error.response?.data?.error || t('teachersPage.toastSaveError'));
     }

@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import Card from '../components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { StaleIndicator } from '../../../shared/components/OfflineBanner';
@@ -15,35 +16,58 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+const CACHE_KEY = 'government:dashboard';
+
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
-  const [stats, setStats] = useState(null);
-  const [schools, setSchools] = useState([]);
-  const [admins, setAdmins] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
+  const [schools, setSchools] = useState(() => cache.get(CACHE_KEY)?.schools ?? []);
+  const [admins, setAdmins] = useState(() => cache.get(CACHE_KEY)?.admins ?? []);
+  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const [isStale, setIsStale] = useState(false);
 
-  useEffect(() => {
-    loadData();
-  }, []);
-
-  const loadData = async () => {
+  const loadData = useCallback(async (bust = false) => {
+    const cached = !bust && cache.get(CACHE_KEY);
+    if (cached) {
+      setStats(cached.stats);
+      setSchools(cached.schools);
+      setAdmins(cached.admins);
+      setLoading(false);
+      // background refresh
+      Promise.allSettled([
+        api.get('/government/overview'),
+        api.get('/government/schools?limit=10'),
+        api.get('/government/admins'),
+      ]).then(([overviewRes, schoolsRes, adminsRes]) => {
+        const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
+        const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : cached.stats;
+        const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : cached.schools;
+        const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : cached.admins;
+        cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
+        setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
+      }).catch(() => {});
+      return;
+    }
     setLoading(true);
     const [overviewRes, schoolsRes, adminsRes] = await Promise.allSettled([
       api.get('/government/overview'),
       api.get('/government/schools?limit=10'),
       api.get('/government/admins'),
     ]);
-
     const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
-    if (overviewRes.status === 'fulfilled') setStats(overviewRes.value.data.data);
-    if (schoolsRes.status === 'fulfilled') setSchools(schoolsRes.value.data.data?.schools || []);
-    if (adminsRes.status === 'fulfilled') setAdmins(adminsRes.value.data?.data || []);
-    setIsStale(anyFailed);
+    const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : null;
+    const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : [];
+    const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : [];
+    cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
+    setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
     setLoading(false);
-  };
+  }, []);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   if (loading) {
     return <SkeletonDashboard stats={4} cards={3} />;

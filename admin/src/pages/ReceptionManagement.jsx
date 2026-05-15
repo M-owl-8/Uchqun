@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import { Shield, CheckCircle, Clock, Eye, Plus, Edit2, Trash2 } from 'lucide-react';
@@ -12,11 +13,11 @@ const EMPTY_CREATE_FORM = { email: '', password: '', firstName: '', lastName: ''
 const EMPTY_EDIT_FORM   = { email: '', firstName: '', lastName: '', phone: '', password: '' };
 
 const ReceptionManagement = () => {
-  const [receptions, setReceptions] = useState([]);
+  const [receptions, setReceptions] = useState(() => cache.get('admin:receptions') || []);
   const [confirmDialog, setConfirmDialog] = useState(null);
   const [selectedReception, setSelectedReception] = useState(null);
   const [documents, setDocuments] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!cache.get('admin:receptions'));
   const [actionLoading, setActionLoading] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -29,28 +30,38 @@ const ReceptionManagement = () => {
   const selectedReceptionRef = useRef(selectedReception);
   selectedReceptionRef.current = selectedReception;
 
-  const fetchReceptions = useCallback(async (showLoading = false) => {
+  const applyReceptions = useCallback((receptionsData) => {
+    cache.set('admin:receptions', receptionsData);
+    setReceptions(receptionsData);
+    const current = selectedReceptionRef.current;
+    if (current) {
+      const updated = receptionsData.find(r => r.id === current.id);
+      if (updated) setSelectedReception(updated);
+      else { setSelectedReception(null); setDocuments([]); }
+    }
+  }, []);
+
+  const fetchReceptions = useCallback(async (showLoading = false, bust = false) => {
+    const CACHE_KEY = 'admin:receptions';
+    const cached = !bust && cache.get(CACHE_KEY);
+    if (cached) {
+      applyReceptions(cached);
+      if (showLoading) setLoading(false);
+      api.get('/admin/receptions')
+        .then(res => applyReceptions(res.data.data || []))
+        .catch(() => {});
+      return;
+    }
     try {
       if (showLoading) setLoading(true);
       const response = await api.get('/admin/receptions');
-      const receptionsData = response.data.data || [];
-      setReceptions(receptionsData);
-      const current = selectedReceptionRef.current;
-      if (current) {
-        const updated = receptionsData.find(r => r.id === current.id);
-        if (updated) {
-          setSelectedReception(updated);
-        } else {
-          setSelectedReception(null);
-          setDocuments([]);
-        }
-      }
+      applyReceptions(response.data.data || []);
     } catch {
       showError(t('receptionsPage.loadError'));
     } finally {
       if (showLoading) setLoading(false);
     }
-  }, [showError, t]);
+  }, [applyReceptions, showError, t]);
 
   useEffect(() => {
     fetchReceptions(true);
@@ -160,11 +171,12 @@ const ReceptionManagement = () => {
       setShowCreateModal(false);
       setCreateFormData(EMPTY_CREATE_FORM);
       if (newReception) {
+        cache.invalidate('admin:receptions');
         setReceptions(prev => [newReception, ...prev]);
         setSelectedReception(newReception);
         setDocuments([]);
       } else {
-        await fetchReceptions();
+        await fetchReceptions(false, true);
       }
     } catch (error) {
       showError(error.response?.data?.error || t('receptionsPage.loadError'));
@@ -220,6 +232,7 @@ const ReceptionManagement = () => {
         try {
           setActionLoading(true);
           await api.delete(`/admin/receptions/${receptionId}`);
+          cache.invalidate('admin:receptions');
           setReceptions(prev => prev.filter(r => r.id !== receptionId));
           if (selectedReception?.id === receptionId) {
             setSelectedReception(null);
@@ -228,7 +241,7 @@ const ReceptionManagement = () => {
           success(t('receptionsPage.deleteSuccess'));
         } catch (error) {
           showError(error.response?.data?.error || t('receptionsPage.loadError'));
-          await fetchReceptions();
+          await fetchReceptions(false, true);
         } finally {
           setActionLoading(false);
         }

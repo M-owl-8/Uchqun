@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User } from 'lucide-react';
@@ -226,33 +227,43 @@ const SchoolCard = ({ school }) => {
   );
 };
 
+const RATINGS_CACHE_KEY = 'government:ratings';
+
 const Ratings = () => {
   const { t } = useTranslation();
-  const [schools, setSchools] = useState([]);
-  const [stats, setStats] = useState({ total: 0, average: 0 });
-  const [loading, setLoading] = useState(true);
+  const [schools, setSchools] = useState(() => cache.get(RATINGS_CACHE_KEY)?.schools ?? []);
+  const [stats, setStats] = useState(() => cache.get(RATINGS_CACHE_KEY)?.stats ?? { total: 0, average: 0 });
+  const [loading, setLoading] = useState(!cache.get(RATINGS_CACHE_KEY));
   const [search, setSearch] = useState('');
 
   useEffect(() => {
-    loadRatings();
-  }, []);
+    const controller = new AbortController();
+    const signal = controller.signal;
 
-  const loadRatings = async () => {
-    try {
-      setLoading(true);
-      const res = await api.get('/government/ratings');
-      const data = res.data?.data || {};
-      setSchools(data.schools || []);
-      setStats({
-        total: data.total || 0,
-        average: data.average || 0,
+    const fetchFresh = () => api.get('/government/ratings', { signal })
+      .then(res => {
+        const data = res.data?.data || {};
+        const result = { schools: data.schools || [], stats: { total: data.total || 0, average: data.average || 0 } };
+        cache.set(RATINGS_CACHE_KEY, result);
+        setSchools(result.schools);
+        setStats(result.stats);
       });
-    } catch (error) {
-      setSchools([]);
-    } finally {
+
+    const cached = cache.get(RATINGS_CACHE_KEY);
+    if (cached) {
+      setSchools(cached.schools);
+      setStats(cached.stats);
       setLoading(false);
+      fetchFresh().catch(() => {});
+      return () => controller.abort();
     }
-  };
+
+    fetchFresh()
+      .catch(() => setSchools([]))
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
+  }, []);
 
   // Filter and sort schools by rating (highest first), then add rank
   const filteredSchools = schools

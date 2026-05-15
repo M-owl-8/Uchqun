@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import { SkeletonList } from '../../../shared/components/Skeleton';
+import * as cache from '../../../shared/utils/cache';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useToast } from '../context/ToastContext';
 import { useTranslation } from 'react-i18next';
@@ -24,8 +25,8 @@ import {
  * - Clicking on a parent shows their activities, meals, and media
  */
 const ParentManagement = () => {
-  const [parents, setParents] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [parents, setParents] = useState(() => cache.get('admin:parents') || []);
+  const [loading, setLoading] = useState(!cache.get('admin:parents'));
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedParent, setSelectedParent] = useState(null);
   const [parentData, setParentData] = useState(null);
@@ -34,19 +35,34 @@ const ParentManagement = () => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    const fetchParents = async () => {
-      try {
-        setLoading(true);
-        const response = await api.get('/admin/parents');
-        setParents(response.data.data || []);
-      } catch (error) {
+    const CACHE_KEY = 'admin:parents';
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const fetchFresh = () => api.get('/admin/parents', { signal })
+      .then(res => {
+        const d = res.data.data || [];
+        cache.set(CACHE_KEY, d);
+        setParents(d);
+      });
+
+    const cached = cache.get(CACHE_KEY);
+    if (cached) {
+      setParents(cached);
+      setLoading(false);
+      fetchFresh().catch(() => {});
+      return () => controller.abort();
+    }
+
+    fetchFresh()
+      .catch(err => {
+        if (err.code === 'ERR_CANCELED') return;
         toastError(t('parentsPage.loadError') || 'Error');
         setParents([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchParents();
+      })
+      .finally(() => setLoading(false));
+
+    return () => controller.abort();
   }, [t, toastError]);
 
   const handleViewParent = async (parent) => {
