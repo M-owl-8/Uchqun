@@ -15,11 +15,12 @@ import MessagesModal from './childProfile/MessagesModal';
 import EmotionalMonitoringSection from './childProfile/EmotionalMonitoringSection';
 import { InfoItem, StatRow } from './childProfile/childProfileUtils';
 
+const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
 const ChildProfile = () => {
   const { children, selectedChildId, selectChild, loading: childrenLoading } = useChild();
   const { on, off, connected } = useSocket();
   const { t, i18n } = useTranslation();
-  const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
   const locale = { uz: 'uz-UZ', ru: 'ru-RU', en: 'en-US' }[i18n.language] || 'en-US';
 
   const [child, setChild] = useState(null);

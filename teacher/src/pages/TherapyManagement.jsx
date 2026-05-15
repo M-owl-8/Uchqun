@@ -17,7 +17,6 @@ const TherapyManagement = () => {
   const [loadingChildren, setLoadingChildren] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('all');
-  const [selectedChildId] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [showAssignModal, setShowAssignModal] = useState(false);
   const [editingTherapy, setEditingTherapy] = useState(null);
