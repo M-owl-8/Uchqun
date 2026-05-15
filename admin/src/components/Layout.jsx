@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import AdminBackground from './AdminBackground';
 
 const Layout = () => {
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -37,7 +38,7 @@ const Layout = () => {
 
       {/* Main Content */}
       <div className="lg:pl-64 relative z-10">
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20 lg:pb-6">
+        <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-20 lg:pb-6">
           <Outlet />
         </main>
       </div>

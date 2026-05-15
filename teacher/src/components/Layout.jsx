@@ -15,7 +15,7 @@ const Layout = () => {
 
       {/* Main Content */}
       <div className="lg:pl-64 min-h-screen">
-        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-8">
+        <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 pb-24 lg:pb-8">
           <Outlet />
         </main>
       </div>
