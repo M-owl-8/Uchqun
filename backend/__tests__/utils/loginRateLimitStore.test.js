@@ -67,9 +67,23 @@ describe('loginRateLimitStore — Redis path', () => {
     );
   });
 
-  test('isLockedOut fails closed on Redis error', async () => {
+  test('isLockedOut falls back to in-memory on Redis error (no in-memory entry → false)', async () => {
+    // Fail-open design: Redis error degrades gracefully to in-memory fallback.
+    // Failing closed would lock ALL users during any Redis connectivity blip,
+    // which is worse than briefly losing brute-force protection.
     mockRedis.exists.mockRejectedValue(new Error('ECONNREFUSED'));
-    expect(await isLockedOut('user@test.com')).toBe(true);
+    expect(await isLockedOut('user@test.com')).toBe(false);
+  });
+
+  test('isLockedOut returns true from in-memory when Redis is down but account is locked in-memory', async () => {
+    const key = 'inmem-lock@test.com';
+    mockRedis.incr.mockRejectedValue(new Error('ECONNREFUSED'));
+    // 5 failed attempts fall through to in-memory store
+    for (let i = 0; i < 5; i++) {
+      await recordFailedAttempt(key);
+    }
+    mockRedis.exists.mockRejectedValue(new Error('ECONNREFUSED'));
+    expect(await isLockedOut(key)).toBe(true);
   });
 
   test('recordFailedAttempt swallows Redis errors without throwing', async () => {
