@@ -19,7 +19,9 @@
     "password": "Parol",
     "button": "Kirish",
     "loading": "Kirilmoqda...",
-    "error": "Email yoki parol noto'g'ri"
+    "error": "Email yoki parol noto'g'ri",
+    "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
   },
   "dashboard": {
     "title": "Davlat Nazorat Paneli",

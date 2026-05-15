@@ -19,7 +19,9 @@
     "password": "Password",
     "button": "Sign In",
     "loading": "Signing in...",
-    "error": "Invalid email or password"
+    "error": "Invalid email or password",
+    "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
   },
   "dashboard": {
     "title": "Government Control Panel",

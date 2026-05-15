@@ -32,7 +32,9 @@
     "loading": "Logging in...",
     "blockTitle": "Admin Login",
     "blockSubtitle": "Use your admin credentials to access the system",
-    "errorInvalid": "Invalid email or password"
+    "errorInvalid": "Invalid email or password",
+    "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",

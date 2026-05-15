@@ -47,14 +47,14 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
         const res = await api.post('/auth/login', { email, password });
         const { user: userData } = res.data;
         if (requiredRole && userData.role !== requiredRole) {
-          return { success: false, error: `Access denied. Required role: ${requiredRole}` };
+          return { success: false, error: `Access denied. Required role: ${requiredRole}`, status: 403 };
         }
         try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
         setUser(userData);
         return res.data;
       } catch (err) {
         const message = err.response?.data?.error || err.response?.data?.message || err.message;
-        return { success: false, error: message };
+        return { success: false, error: message, status: err.response?.status };
       }
     };
 

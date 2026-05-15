@@ -26,7 +26,9 @@
     "submit": "Login",
     "loading": "Logging in...",
     "invalid": "Invalid email or password",
-    "invalidRole": "Only teachers and parents can login. Other roles are not allowed."
+    "invalidRole": "Only teachers and parents can login. Other roles are not allowed.",
+    "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
   },
   "dashboard": {
     "role": "My Role: Teacher",

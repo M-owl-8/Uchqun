@@ -26,7 +26,9 @@
     "submit": "Kirish",
     "loading": "Kirish...",
     "invalid": "Email yoki parol noto'g'ri",
-    "invalidRole": "Faqat o'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas."
+    "invalidRole": "Faqat o'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.",
+    "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
   },
   "dashboard": {
     "role": "Mening rolim: O'qituvchi",

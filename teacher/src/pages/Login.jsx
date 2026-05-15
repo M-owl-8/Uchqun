@@ -34,7 +34,9 @@ const Login = () => {
         setError(t('login.invalidRole', { defaultValue: 'Faqat o\'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.' }));
       }
     } else {
-      setError(result.error || t('login.invalid'));
+      if (result.status === 429) setError(t('login.accountLocked'));
+      else if (result.status === 403) setError(t('login.notApproved'));
+      else setError(t('login.invalid'));
     }
 
     setLoading(false);

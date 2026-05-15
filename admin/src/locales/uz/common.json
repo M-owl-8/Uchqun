@@ -31,7 +31,9 @@
     "loading": "Kirilmoqda...",
     "blockTitle": "Admin kirishi",
     "blockSubtitle": "Admin hisobingiz bilan tizimga kiring",
-    "errorInvalid": "Email yoki parol noto‘g‘ri"
+    "errorInvalid": "Email yoki parol noto’g’ri",
+    "accountLocked": "Juda ko’p urinish. 15 daqiqadan so’ng qaytadan urinib ko’ring.",
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig’ini kuting."
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}",

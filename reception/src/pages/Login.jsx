@@ -25,7 +25,9 @@ const Login = () => {
     if (result.success) {
       navigate('/reception');
     } else {
-      setError(result.error || t('login.invalid'));
+      if (result.status === 429) setError(t('login.accountLocked'));
+      else if (result.status === 403) setError(t('login.notApproved'));
+      else setError(t('login.invalid'));
     }
 
     setLoading(false);
