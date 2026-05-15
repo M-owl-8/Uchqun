@@ -97,19 +97,13 @@ describe('CL-014a Settings', () => {
     expect(screen.getByText('settings.contactGovernment')).toBeTruthy();
   });
 
-  it('shows loading state before profile resolves', async () => {
-    let resolveMe;
+  it('renders title immediately since profile comes from auth context', async () => {
     const api = (await import('../../services/api')).default;
-    api.get.mockImplementation((url) => {
-      if (url === '/auth/me') return new Promise((r) => { resolveMe = r; });
-      return Promise.resolve({ data: { data: [] } });
-    });
+    stubLoad(api);
     const { default: Settings } = await import('../../pages/Settings');
     render(React.createElement(Settings));
-    // Page heading not yet rendered
-    expect(screen.queryByText('settings.title')).toBeNull();
-    // Unblock the pending promise
-    resolveMe({ data: profile });
+    // Profile is synchronous from auth context — no loading gate
+    expect(screen.queryByText('settings.title')).toBeTruthy();
   });
 
   it('calls PUT /user/profile on save profile submit', async () => {
@@ -211,11 +205,17 @@ describe('CL-014a Settings', () => {
     });
   });
 
-  it('shows error toast when profile load fails', async () => {
+  it('shows error toast when profile save fails', async () => {
     const api = (await import('../../services/api')).default;
-    api.get.mockRejectedValue(new Error('network error'));
+    stubLoad(api);
+    api.put.mockRejectedValue({ response: { data: { error: 'Server error' } } });
     const { default: Settings } = await import('../../pages/Settings');
-    render(React.createElement(Settings));
+    const { container } = render(React.createElement(Settings));
+    await waitFor(() => expect(screen.getByText('settings.saveProfile')).toBeTruthy());
+
+    const profileForm = container.querySelectorAll('form')[0];
+    fireEvent.submit(profileForm);
+
     await waitFor(() => expect(mockToastError).toHaveBeenCalled());
   });
 
