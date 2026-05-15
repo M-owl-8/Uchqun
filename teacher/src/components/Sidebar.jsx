@@ -13,24 +13,22 @@ import {
   Music,
 } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
+import { useSocket } from '../shared/context/SocketContext';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import LanguageSwitcher from './LanguageSwitcher';
 
-const UNREAD_POLL_MS = 30000; // 30s — lightweight endpoint, no N+1
-
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user } = useAuth();
+  const { on, off } = useSocket();
   const { t } = useTranslation();
   const [unreadChat, setUnreadChat] = useState(0);
 
-  // Fetch unread count from the dedicated endpoint (single query, no N+1)
   useEffect(() => {
     let alive = true;
-    let intervalId;
 
-    const loadUnread = async () => {
+    const fetchCount = async () => {
       if (!alive) return;
       try {
         const res = await api.get('/chat/unread-count', { params: { prefix: 'parent:', role: 'teacher' } });
@@ -40,14 +38,14 @@ const Sidebar = ({ onClose }) => {
       }
     };
 
-    loadUnread();
-    intervalId = setInterval(loadUnread, UNREAD_POLL_MS);
+    fetchCount();
+    on('chat:message', fetchCount);
 
     return () => {
       alive = false;
-      if (intervalId) clearInterval(intervalId);
+      off('chat:message', fetchCount);
     };
-  }, []);
+  }, [on, off]);
 
   const navigation = [
     { name: t('nav.dashboard'), href: '/teacher', icon: Home },

@@ -47,9 +47,9 @@ function App() {
   return (
     <ErrorBoundary>
       <ToastProvider>
-        <NotificationProvider>
-          <AuthProvider>
-            <SocketProvider>
+        <AuthProvider>
+          <SocketProvider>
+            <NotificationProvider>
               <Router>
                 <OfflineBanner />
                 <ToastContainer />
@@ -104,9 +104,9 @@ function App() {
                   </Routes>
                 </Suspense>
               </Router>
-            </SocketProvider>
-          </AuthProvider>
-        </NotificationProvider>
+            </NotificationProvider>
+          </SocketProvider>
+        </AuthProvider>
       </ToastProvider>
     </ErrorBoundary>
   );

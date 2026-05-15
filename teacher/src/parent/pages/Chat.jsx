@@ -4,12 +4,14 @@ import { useTranslation } from 'react-i18next';
 import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../../shared/services/chatStore';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
+import { useSocket } from '../../shared/context/SocketContext';
 import Card from '../components/Card';
 
 const Chat = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
   const { success: toastSuccess, error: toastError } = useToast();
+  const { on, off } = useSocket();
   const conversationId = user?.id ? `parent:${user.id}` : null;
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
@@ -24,7 +26,6 @@ const Chat = () => {
 
   useEffect(() => {
     let alive = true;
-    let intervalId;
 
     const load = async () => {
       if (!conversationId) return;
@@ -34,14 +35,18 @@ const Chat = () => {
       await markRead(conversationId);
     };
 
+    const handleMessage = (msg) => {
+      if (msg?.conversationId === conversationId) load();
+    };
+
     load();
-    intervalId = setInterval(load, 30000);
+    on('chat:message', handleMessage);
 
     return () => {
       alive = false;
-      if (intervalId) clearInterval(intervalId);
+      off('chat:message', handleMessage);
     };
-  }, [conversationId]);
+  }, [conversationId, on, off]);
 
   const sorted = useMemo(
     () =>

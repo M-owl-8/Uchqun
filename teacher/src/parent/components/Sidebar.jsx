@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '../context/NotificationContext';
+import { useSocket } from '../../shared/context/SocketContext';
 import api from '../services/api';
 
 const Sidebar = ({ onClose }) => {
@@ -23,14 +24,13 @@ const Sidebar = ({ onClose }) => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { count, refreshNotifications } = useNotification();
+  const { on, off } = useSocket();
   const [unreadChat, setUnreadChat] = useState(0);
 
-  // Fetch unread count from dedicated endpoint (single query, no N+1)
   useEffect(() => {
     let alive = true;
-    let intervalId;
 
-    const loadUnread = async () => {
+    const fetchCount = async () => {
       if (!user?.id || !alive) return;
       try {
         const res = await api.get('/chat/unread-count', { params: { role: 'parent' } });
@@ -40,14 +40,14 @@ const Sidebar = ({ onClose }) => {
       }
     };
 
-    loadUnread();
-    intervalId = setInterval(loadUnread, 30000); // 30s — lightweight endpoint
+    fetchCount();
+    on('chat:message', fetchCount);
 
     return () => {
       alive = false;
-      if (intervalId) clearInterval(intervalId);
+      off('chat:message', fetchCount);
     };
-  }, [user?.id]);
+  }, [user?.id, on, off]);
 
   const navigation = [
     { name: t('nav.profile'), href: '/child', icon: UserCircle },

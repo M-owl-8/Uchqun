@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import { useSocket } from './SocketContext';
 
 const NotificationContext = createContext(null);
 
@@ -12,6 +13,7 @@ export const useNotification = () => {
 };
 
 export const NotificationProvider = ({ children }) => {
+  const { on, off } = useSocket();
   const [count, setCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -40,9 +42,9 @@ export const NotificationProvider = ({ children }) => {
 
   useEffect(() => {
     loadNotifications();
-    const interval = setInterval(loadNotifications, 30000);
-    return () => clearInterval(interval);
-  }, []);
+    on('notification:new', loadNotifications);
+    return () => off('notification:new', loadNotifications);
+  }, [on, off]);
 
   const markAsRead = async (id) => {
     try {

@@ -1,6 +1,7 @@
 import Notification from '../models/Notification.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
+import { emitToUser } from '../config/socket.js';
 
 /**
  * Get all notifications for the logged-in user
@@ -186,6 +187,13 @@ export const createNotification = async (userId, childId, type, title, message, 
       notificationId: notification.id,
       userId,
       type,
+    });
+
+    emitToUser(userId, 'notification:new', {
+      id: notification.id,
+      type,
+      title,
+      message,
     });
 
     return notification;
