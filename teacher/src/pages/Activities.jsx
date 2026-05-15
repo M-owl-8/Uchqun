@@ -82,7 +82,6 @@ const Activities = () => {
   const loadChildrenForParent = async (parentId) => {
     try {
       const parentsList = await getParentsList();
-      setParents(parentsList);
       const selectedParent = parentsList.find(p => p.id === parentId);
       if (selectedParent && selectedParent.children && Array.isArray(selectedParent.children)) {
         setChildren(selectedParent.children);

@@ -104,17 +104,12 @@ const ReceptionManagement = () => {
       setActionLoading(true);
       await api.put(`/admin/documents/${documentId}/approve`);
       success(t('receptionsPage.approveSuccess'));
-      
-      // Refresh documents and reception in parallel to reduce API calls
-      const [documentsResponse, receptionResponse] = await Promise.all([
-        api.get(`/admin/receptions/${selectedReception.id}/documents`),
-        api.get(`/admin/receptions/${selectedReception.id}`)
-      ]);
-      
-      setDocuments(documentsResponse.data.data || []);
-      
+
+      // Single call — getReceptionById already JOINs documents
+      const receptionResponse = await api.get(`/admin/receptions/${selectedReception.id}`);
       if (receptionResponse.data?.data) {
         const updated = receptionResponse.data.data;
+        setDocuments(updated.documents || []);
         setReceptions(prevReceptions =>
           prevReceptions.map(r => r.id === selectedReception.id ? updated : r)
         );
@@ -137,17 +132,12 @@ const ReceptionManagement = () => {
       setActionLoading(true);
       await api.put(`/admin/documents/${documentId}/reject`, { rejectionReason: reason });
       success(t('receptionsPage.rejectSuccess'));
-      
-      // Refresh documents and reception in parallel to reduce API calls
-      const [documentsResponse, receptionResponse] = await Promise.all([
-        api.get(`/admin/receptions/${selectedReception.id}/documents`),
-        api.get(`/admin/receptions/${selectedReception.id}`)
-      ]);
-      
-      setDocuments(documentsResponse.data.data || []);
-      
+
+      // Single call — getReceptionById already JOINs documents
+      const receptionResponse = await api.get(`/admin/receptions/${selectedReception.id}`);
       if (receptionResponse.data?.data) {
         const updated = receptionResponse.data.data;
+        setDocuments(updated.documents || []);
         setReceptions(prevReceptions =>
           prevReceptions.map(r => r.id === selectedReception.id ? updated : r)
         );
