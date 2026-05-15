@@ -1,4 +1,4 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, Link } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import JoyfulBackground from '../../shared/components/JoyfulBackground';
@@ -32,13 +32,13 @@ const Layout = () => {
       {/* Floating chat button (hide on chat page) */}
       {location.pathname !== '/chat' && (
         <div className="lg:hidden fixed bottom-20 right-4 z-50">
-          <a
-            href="/chat"
-            className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-500 text-white shadow-lg hover:bg-blue-600 transition"
+          <Link
+            to="/chat"
+            className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 text-white shadow-lg hover:bg-primary-600 transition"
             aria-label="Chat"
           >
             <MessageCircle className="w-6 h-6" />
-          </a>
+          </Link>
         </div>
       )}
     </div>

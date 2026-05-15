@@ -1,32 +1,37 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import HttpBackend from 'i18next-http-backend';
+import { mergeLocales } from '../../shared/utils/mergeLocales.js';
+import sharedEn from '../../shared/locales/en.json';
+import sharedUz from '../../shared/locales/uz.json';
+import sharedRu from '../../shared/locales/ru.json';
+import portalEn from './locales/en/common.json';
+import portalUz from './locales/uz/common.json';
+import portalRu from './locales/ru/common.json';
+
+const resources = {
+  en: { translation: mergeLocales(sharedEn, portalEn) },
+  uz: { translation: mergeLocales(sharedUz, portalUz) },
+  ru: { translation: mergeLocales(sharedRu, portalRu) },
+};
+
+const savedLang = localStorage.getItem('lang') || 'uz';
 
 i18n
-  .use(HttpBackend)
   .use(initReactI18next)
   .init({
-    lng: localStorage.getItem('lang') || 'uz',
+    resources,
+    lng: savedLang,
     fallbackLng: 'uz',
-    supportedLngs: ['en', 'uz', 'ru'],
+    supportedLngs: ['uz', 'ru', 'en'],
     interpolation: {
       escapeValue: false,
     },
-    backend: {
-      loadPath: '/locales/{{lng}}/common.json',
-      allowMultiLoading: false,
-      crossDomain: false,
-    },
-    react: {
-      useSuspense: false,
-    },
+    initImmediate: false,
   });
 
 export const changeLanguage = (lng) => {
-  localStorage.setItem('lang', lng);
   i18n.changeLanguage(lng);
+  localStorage.setItem('lang', lng);
 };
 
 export default i18n;
-
-

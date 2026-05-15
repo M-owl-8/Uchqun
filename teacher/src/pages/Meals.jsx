@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import {
   Apple,
   CalendarDays,
@@ -186,6 +186,7 @@ const Meals = () => {
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
   const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();
 
+  // TODO(phase-1): data color palette decision needed — Lunch/Dinner use blue-* as semantic meal-type colors; confirm these should stay blue (not primary-*) or define a dedicated food-color token
   const mealConfigs = {
     Breakfast: { color: 'text-amber-600', bg: 'bg-amber-50', icon: Coffee, border: 'border-amber-100' },
     Lunch: { color: 'text-blue-600', bg: 'bg-blue-50', icon: Sun, border: 'border-blue-100' },
@@ -216,7 +217,7 @@ const Meals = () => {
           {isTeacher && (
             <button
               onClick={handleCreate}
-              className="flex items-center gap-2 px-5 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
             >
               <Plus className="w-5 h-5" />
               <span className="hidden sm:inline">{t('mealsPage.add')}</span>
@@ -230,7 +231,7 @@ const Meals = () => {
             <select
               value={selectedDate}
               onChange={(e) => setSelectedDate(e.target.value)}
-              className="appearance-none bg-white border border-gray-200 text-gray-900 font-bold rounded-xl px-6 py-3 pr-12 focus:ring-2 focus:ring-blue-500 shadow-sm cursor-pointer"
+              className="appearance-none bg-white border border-gray-200 text-gray-900 font-bold rounded-xl px-6 py-3 pr-12 focus:ring-2 focus:ring-primary-500 shadow-sm cursor-pointer"
             >
               {dates.map((date) => (
                 <option key={date} value={date}>
@@ -286,7 +287,7 @@ const Meals = () => {
 
                     {meal.specialNotes && (
                       <div className="flex items-start gap-2 p-4 bg-gray-50 rounded-2xl border border-gray-100 mt-4 group-hover:bg-white transition-colors">
-                        <Info className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+                        <Info className="w-4 h-4 text-primary-500 mt-0.5 shrink-0" />
                         <p className="text-xs text-gray-500 leading-relaxed font-medium">
                           <span className="text-gray-900 font-bold">Eslatma:</span> {meal.specialNotes}
                         </p>
@@ -299,7 +300,7 @@ const Meals = () => {
                     <div className="flex gap-2 pt-4 md:pt-0 md:flex-col md:justify-start">
                       <button
                         onClick={() => handleEdit(meal)}
-                        className="p-2 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors"
+                        className="p-2 bg-primary-50 text-primary-600 rounded-lg hover:bg-primary-100 transition-colors"
                         title="Edit"
                       >
                         <Edit2 className="w-4 h-4" />
@@ -328,12 +329,12 @@ const Meals = () => {
       {/* --- Nutrition Summary Card --- */}
       {filteredMeals.length > 0 && (
         <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
 
           <div className="relative z-10 space-y-8">
             <div className="flex items-center justify-between border-b border-white/10 pb-6">
               <h3 className="text-xl font-bold">{t('mealsPage.dailySummary')}</h3>
-              <span className="text-blue-400 font-black text-sm uppercase tracking-widest">
+              <span className="text-primary-400 font-black text-sm uppercase tracking-widest">
                 {formatDate(selectedDate, { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
             </div>
@@ -353,7 +354,7 @@ const Meals = () => {
               <div className="space-y-1">
                 <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">{t('mealsPage.quality')}</p>
                 <div className="flex justify-center md:justify-start gap-1">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-blue-500" />)}
+                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-primary-500" />)}
                 </div>
                 <p className="text-xs font-bold text-white mt-2">{t('mealsPage.excellent')}</p>
               </div>
@@ -388,7 +389,7 @@ const Meals = () => {
                     required
                     value={formData.childId}
                     onChange={(e) => setFormData({ ...formData, childId: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <option value="">{t('mealsPage.form.selectChild')}</option>
                     {children.map(child => (
@@ -408,7 +409,7 @@ const Meals = () => {
                   <select
                     value={formData.mealType}
                     onChange={(e) => setFormData({ ...formData, mealType: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <option value="Breakfast">{t('mealsPage.types.Breakfast')}</option>
                     <option value="Lunch">{t('mealsPage.types.Lunch')}</option>
@@ -426,7 +427,7 @@ const Meals = () => {
                     required
                     value={formData.date}
                     onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
               </div>
@@ -440,7 +441,7 @@ const Meals = () => {
                   required
                   value={formData.mealName}
                   onChange={(e) => setFormData({ ...formData, mealName: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
 
@@ -453,7 +454,7 @@ const Meals = () => {
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
 
@@ -467,7 +468,7 @@ const Meals = () => {
                     required
                     value={formData.time}
                     onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   />
                 </div>
 
@@ -478,7 +479,7 @@ const Meals = () => {
                   <select
                     value={formData.quantity}
                     onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                   >
                     <option value="Full portion">Full portion</option>
                     <option value="Half portion">Half portion</option>
@@ -495,7 +496,7 @@ const Meals = () => {
                   value={formData.specialNotes}
                   onChange={(e) => setFormData({ ...formData, specialNotes: e.target.value })}
                   rows={2}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
 
@@ -505,7 +506,7 @@ const Meals = () => {
                   id="eaten"
                   checked={formData.eaten}
                   onChange={(e) => setFormData({ ...formData, eaten: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                  className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                 />
                 <label htmlFor="eaten" className="text-sm font-medium text-gray-700">
                   {t('mealsPage.form.eatenLabel')}
@@ -522,7 +523,7 @@ const Meals = () => {
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   {editingMeal ? t('mealsPage.form.update') : t('mealsPage.form.create')}

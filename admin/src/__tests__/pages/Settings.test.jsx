@@ -17,7 +17,7 @@ const mockUser = {
   notificationPreferences: { email: true, push: true },
 };
 
-vi.mock('../../context/ToastContext', () => ({
+vi.mock('@shared/context/ToastContext', () => ({
   useToast: () => ({
     success: mockSuccess,
     error: mockToastError,

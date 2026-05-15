@@ -34,7 +34,7 @@ const ChildProfileHero = ({
 
   return (
     <div className="relative overflow-hidden bg-white rounded-[2rem] shadow-xl border border-gray-100 p-8 md:p-10">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-full -mr-32 -mt-32 opacity-50" />
+      <div className="absolute top-0 right-0 w-64 h-64 bg-primary-50 rounded-full -mr-32 -mt-32 opacity-50" />
 
       <div className="relative flex flex-col md:flex-row items-center gap-8">
         <div className="relative">
@@ -72,24 +72,24 @@ const ChildProfileHero = ({
               <h1 className="text-4xl font-black text-gray-900 leading-tight">
                 {child.firstName} {child.lastName}
               </h1>
-              <span className="px-4 py-1 bg-blue-100 text-blue-700 rounded-full text-xs font-bold uppercase tracking-wider">
+              <span className="px-4 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-bold uppercase tracking-wider">
                 {t(`child.gender.${child.gender?.toLowerCase()}`) || child.gender}
               </span>
             </div>
             <p className="text-lg text-gray-700 font-medium flex items-center justify-center md:justify-start gap-2">
-              <Baby className="w-5 h-5 text-blue-600" />
+              <Baby className="w-5 h-5 text-primary-600" />
               {t('child.ageYears', { count: age })}
             </p>
           </div>
 
           <div className="flex flex-wrap justify-center md:justify-start gap-3">
             <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-              <School className="w-4 h-4 text-blue-600" />
+              <School className="w-4 h-4 text-primary-600" />
               <span className="text-sm font-bold text-gray-800">{child.childSchool?.name || ''}</span>
             </div>
             {parentGroupName && (
               <div className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-                <Users className="w-4 h-4 text-blue-600" />
+                <Users className="w-4 h-4 text-primary-600" />
                 <span className="text-sm font-bold text-gray-800">{parentGroupName}</span>
               </div>
             )}

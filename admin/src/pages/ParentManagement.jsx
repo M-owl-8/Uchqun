@@ -2,8 +2,8 @@ import { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   Users,

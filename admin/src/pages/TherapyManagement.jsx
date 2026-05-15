@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   Music,
@@ -160,12 +160,13 @@ const TherapyManagement = () => {
     }
   };
 
+  // TODO(phase-1): therapy type color palette — video=primary, music=purple, content=green; confirm whether all types should use primary or keep distinct category colors
   const getTherapyColor = (type) => {
     switch (type) {
       case 'music':
         return 'bg-purple-50 text-purple-600';
       case 'video':
-        return 'bg-blue-50 text-blue-600';
+        return 'bg-primary-50 text-primary-600';
       case 'content':
         return 'bg-green-50 text-green-600';
       default:
@@ -325,7 +326,7 @@ const TherapyManagement = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(therapy)}
-                  className="flex-1 px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2 bg-primary-50 text-primary-600 rounded-lg font-medium hover:bg-primary-100 transition-colors flex items-center justify-center gap-2"
                 >
                   <Edit2 className="w-4 h-4" />
                   {t('therapy.edit', { defaultValue: 'Tahrirlash' })}

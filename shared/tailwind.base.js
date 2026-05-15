@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export const primaryColors = {
   50: '#f5f3ff',
   100: '#ede9fe',
@@ -12,32 +13,55 @@ export const primaryColors = {
   900: '#4c1d95',
 };
 
-export const baseTheme = {
-  extend: {
-    colors: {
-      primary: primaryColors,
-      sidebar: {
-        navy: '#2E3A59',
-        muted: '#8F9BB3',
-        blue: '#E8F4FD',
-        mint: '#E5F7F0',
-        peach: '#FFF0E5',
+export const basePreset = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui', '-apple-system', 'sans-serif'],
       },
-    },
-    animation: {
-      'slide-in': 'slideIn 0.3s ease-out',
-      'fade-in': 'fadeIn 0.2s ease-out',
-      'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
-    },
-    keyframes: {
-      slideIn: {
-        '0%': { transform: 'translateX(100%)', opacity: '0' },
-        '100%': { transform: 'translateX(0)', opacity: '1' },
+      colors: {
+        primary: primaryColors,
+        sidebar: {
+          navy: '#2E3A59',
+          muted: '#8F9BB3',
+          blue: '#E8F4FD',
+          mint: '#E5F7F0',
+          peach: '#FFF0E5',
+        },
       },
-      fadeIn: {
-        '0%': { opacity: '0' },
-        '100%': { opacity: '1' },
+      borderRadius: {
+        card: '0.75rem',
+        button: '0.5rem',
+        badge: '9999px',
+        modal: '1rem',
+      },
+      zIndex: {
+        below: '-1',
+        dropdown: '10',
+        sticky: '20',
+        overlay: '30',
+        modal: '40',
+        toast: '50',
+      },
+      animation: {
+        'slide-in': 'slideIn 0.3s ease-out',
+        'fade-in': 'fadeIn 0.2s ease-out',
+        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+      },
+      keyframes: {
+        slideIn: {
+          '0%': { transform: 'translateX(100%)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        fadeIn: {
+          '0%': { opacity: '0' },
+          '100%': { opacity: '1' },
+        },
       },
     },
   },
+  plugins: [],
 };
+
+// Convenience alias kept for any future direct consumers
+export const baseTheme = basePreset.theme;

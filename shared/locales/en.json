@@ -1,27 +1,101 @@
 {
   "nav": {
     "dashboard": "Dashboard",
-    "receptions": "Reception Management",
-    "parents": "Parents",
+    "home": "Home",
+    "menu": "Menu",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "schools": "Schools",
+    "students": "Students",
     "teachers": "Teachers",
+    "parents": "Parents",
     "groups": "Groups",
-    "reports": "Reports",
+    "receptions": "Reception",
     "admins": "Admins",
-    "logout": "Logout"
+    "reports": "Reports",
+    "ratings": "Ratings",
+    "rating": "Rating",
+    "platform": "Platform",
+    "aiChat": "AI Chat",
+    "chat": "Chat",
+    "media": "Media",
+    "activities": "Activities",
+    "therapy": "Therapy",
+    "meals": "Meals",
+    "notifications": "Notifications",
+    "help": "Help"
   },
-  "government": {
-    "title": "Government",
-    "createAdmin": "Create Admin",
-    "editAdmin": "Edit Admin",
-    "existingAdmins": "Existing admins",
-    "noAdmins": "No admins yet."
+  "sidebar": {
+    "menu": "Menu"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign In",
+    "loading": "Signing in...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "invalid": "Invalid email or password",
+    "accountLocked": "Too many attempts. Try again in 15 minutes.",
+    "notApproved": "Your account has not been approved yet. Please wait for admin approval."
   },
   "common": {
     "loading": "Loading...",
     "save": "Save",
     "cancel": "Cancel",
     "delete": "Delete",
-    "edit": "Edit"
+    "edit": "Edit",
+    "confirm": "Confirm",
+    "close": "Close",
+    "search": "Search",
+    "add": "Add",
+    "back": "Back",
+    "next": "Next",
+    "yes": "Yes",
+    "no": "No",
+    "noData": "No data found",
+    "error": "An error occurred",
+    "success": "Saved successfully",
+    "required": "Required field",
+    "reasonPlaceholder": "Enter reason...",
+    "active": "Active",
+    "inactive": "Inactive",
+    "all": "All",
+    "male": "Male",
+    "female": "Female"
+  },
+  "profile": {
+    "title": "Profile",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "phone": "Phone",
+    "save": "Save",
+    "saved": "Profile saved",
+    "changePassword": "Change password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmPassword": "Confirm password",
+    "passwordChanged": "Password changed successfully",
+    "governmentReply": "Government reply"
+  },
+  "page404": {
+    "title": "Page not found",
+    "message": "Sorry, the page you are looking for does not exist.",
+    "back": "Go to home"
+  },
+  "language": {
+    "uz": "O'zbek",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "role": {
+    "government": "Government",
+    "admin": "Administrator",
+    "reception": "Reception",
+    "teacher": "Teacher",
+    "parent": "Parent"
   },
   "servicePlan": {
     "title": "Annual Plan",
@@ -86,4 +160,3 @@
     "editPlan": "Edit Plan"
   }
 }
-

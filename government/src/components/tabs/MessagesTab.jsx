@@ -56,7 +56,7 @@ export default function MessagesTab({
                       </button>
                     )}
                     {!msg.reply && (
-                      <button onClick={() => onSelectMessage(msg)} className="px-3 py-1 text-xs font-medium text-blue-600 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors">
+                      <button onClick={() => onSelectMessage(msg)} className="px-3 py-1 text-xs font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">
                         <Send className="w-3 h-3 inline mr-1" />
                         {t('government.reply', { defaultValue: 'Javob berish' })}
                       </button>

@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
-import Card from '../components/Card';
-import { useToast } from '../context/ToastContext';
+import Card from '@shared/components/Card';
+import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/LanguageSwitcher';
@@ -216,7 +216,7 @@ const Settings = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
             {t('settings.sendMessage', { defaultValue: 'Xabar yuborish' })}

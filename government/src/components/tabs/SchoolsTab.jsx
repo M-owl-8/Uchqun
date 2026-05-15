@@ -23,6 +23,7 @@ export default function SchoolsTab({ schools, loadingSchools }) {
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+              {/* TODO(phase-1): summary stat card color — bg-blue-50/text-blue-600 used as Schools entity color; confirm keep or replace with primary-* */}
               <div className="bg-blue-50 rounded-xl p-4">
                 <p className="text-sm text-blue-600 font-medium mb-1">{t('government.totalSchools', { defaultValue: 'Jami Muassasalar' })}</p>
                 <p className="text-2xl font-bold text-blue-900">{schools.length}</p>

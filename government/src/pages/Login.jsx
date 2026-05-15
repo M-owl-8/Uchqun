@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Shield, Eye, EyeOff } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

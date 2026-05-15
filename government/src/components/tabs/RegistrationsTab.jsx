@@ -49,6 +49,7 @@ export default function RegistrationsTab({
                       </div>
                     )}
                     <div className="flex items-center gap-4 pt-2 border-t border-gray-100">
+                      {/* TODO(phase-1): external document link color — text-blue-600 used as conventional hyperlink color; confirm keep as semantic link color or switch to primary-* */}
                       {request.certificateFile && <a href={request.certificateFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Guvohnoma</a>}
                       {request.passportFile && <a href={request.passportFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Passport/ID</a>}
                     </div>
@@ -146,7 +147,8 @@ export default function RegistrationsTab({
                       <label className="block text-xs font-medium text-gray-600 mb-1">Telegram Username</label>
                       <div className="flex items-center gap-2">
                         <input type="text" readOnly value={`@${approvedCredentials.telegramUsername}`} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" />
-                        <a href={`https://t.me/${approvedCredentials.telegramUsername}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm transition-colors">
+                        {/* TODO(phase-1): Telegram link button color — bg-blue-100 used as external link style; confirm keep as Telegram brand color or switch to primary-* */}
+                      <a href={`https://t.me/${approvedCredentials.telegramUsername}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm transition-colors">
                           {t('government.openTelegram', { defaultValue: 'Telegram' })}
                         </a>
                       </div>

@@ -206,7 +206,7 @@ const Media = () => {
                 onClick={() => setFilter(option.id)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                   filter === option.id
-                    ? 'bg-white text-blue-600 shadow-md scale-105'
+                    ? 'bg-white text-primary-600 shadow-md scale-105'
                     : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
                 }`}
               >
@@ -219,7 +219,7 @@ const Media = () => {
           {isTeacher && (
             <button
               onClick={handleCreate}
-              className="flex items-center gap-2 px-5 py-2.5 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
             >
               <Plus className="w-5 h-5" />
               <span className="hidden sm:inline">{t('mediaPage.add')}</span>

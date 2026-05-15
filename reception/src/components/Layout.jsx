@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
-import LanguageSwitcher from './LanguageSwitcher';
 import ReceptionBackground from './ReceptionBackground';
 
 const Layout = () => {
@@ -13,10 +12,6 @@ const Layout = () => {
     <div className="min-h-screen relative overflow-hidden">
       {/* Reception Background - Warm welcoming theme */}
       <ReceptionBackground />
-      <div className="fixed top-4 right-4 z-50">
-        <LanguageSwitcher />
-      </div>
-
       {/* Desktop Sidebar - Only visible on large screens */}
       <div className="hidden lg:block fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-40">
         <Sidebar />

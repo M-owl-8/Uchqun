@@ -3,36 +3,40 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
+import api from '../../services/api';
+import Settings from '../../pages/Settings';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (k, opts) => opts?.defaultValue ?? k,
-    i18n: { language: 'en' },
-  }),
-}));
+vi.mock('react-i18next', () => {
+  const t = (k, opts) => opts?.defaultValue ?? k;
+  const i18n = { language: 'en' };
+  return { useTranslation: () => ({ t, i18n }) };
+});
 
-vi.mock('react-router-dom', () => ({
-  useNavigate: () => vi.fn(),
-  Link: ({ to, children }) => React.createElement('a', { href: to }, children),
-}));
+vi.mock('react-router-dom', () => {
+  const navigate = vi.fn();
+  return {
+    useNavigate: () => navigate,
+    Link: ({ to, children }) => React.createElement('a', { href: to }, children),
+  };
+});
 
-vi.mock('../../context/AuthContext', () => ({
-  useAuth: () => ({
-    user: {
-      id: '1',
-      firstName: 'Test',
-      lastName: 'User',
-      email: 'reception@school.uz',
-      role: 'reception',
-    },
-    logout: vi.fn(),
-    updateUser: vi.fn(),
-  }),
-}));
+vi.mock('../../context/AuthContext', () => {
+  const logout = vi.fn();
+  const updateUser = vi.fn();
+  return {
+    useAuth: () => ({
+      user: { id: '1', firstName: 'Test', lastName: 'User', email: 'reception@school.uz', role: 'reception' },
+      logout,
+      updateUser,
+    }),
+  };
+});
 
-vi.mock('../../context/ToastContext', () => ({
-  useToast: () => ({ success: vi.fn(), error: vi.fn() }),
-}));
+vi.mock('@shared/context/ToastContext', () => {
+  const success = vi.fn();
+  const error = vi.fn();
+  return { useToast: () => ({ success, error }) };
+});
 
 vi.mock('../../services/api', () => ({
   default: {
@@ -50,7 +54,7 @@ const profile = {
   notificationPreferences: { email: true, push: true },
 };
 
-function stubLoad(api, messages = []) {
+function stubLoad(messages = []) {
   api.get.mockImplementation((url) => {
     if (url === '/auth/me') return Promise.resolve({ data: profile });
     if (url === '/reception/messages') return Promise.resolve({ data: { data: messages } });
@@ -60,16 +64,14 @@ function stubLoad(api, messages = []) {
 
 describe('#05-013 Reception Settings page', () => {
   beforeEach(() => {
-    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it('renders without error', async () => {
-    const { default: Settings } = await import('../../pages/Settings');
     expect(() => render(React.createElement(Settings))).not.toThrow();
   });
 
   it('phone field placeholder uses Uzbek format (not US format)', async () => {
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     const phoneInput = container.querySelector('input[type="tel"], input[placeholder*="+998"]');
     if (phoneInput) {
@@ -81,7 +83,6 @@ describe('#05-013 Reception Settings page', () => {
   });
 
   it('renders page title via t() (i18n wired)', async () => {
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     // component starts with loading:true (spinner); wait for profile fetch to complete
     await waitFor(() => {
@@ -92,13 +93,11 @@ describe('#05-013 Reception Settings page', () => {
 
 describe('CL-014c Settings comprehensive', () => {
   beforeEach(() => {
-    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it('renders all section headings after data loads', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
-    const { default: Settings } = await import('../../pages/Settings');
+    stubLoad();
     render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('settings.profileInfo')).toBeTruthy());
     expect(screen.getByText('settings.notificationPreferences')).toBeTruthy();
@@ -107,10 +106,8 @@ describe('CL-014c Settings comprehensive', () => {
   });
 
   it('calls PUT /user/profile on save profile submit', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
+    stubLoad();
     api.put.mockResolvedValue({ data: profile });
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('settings.saveProfile')).toBeTruthy());
 
@@ -123,10 +120,8 @@ describe('CL-014c Settings comprehensive', () => {
   });
 
   it('calls PUT /user/password on password form submit', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
+    stubLoad();
     api.put.mockResolvedValue({});
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('settings.changePasswordButton')).toBeTruthy());
 
@@ -147,9 +142,7 @@ describe('CL-014c Settings comprehensive', () => {
   });
 
   it('opens compose modal when send message button clicked', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
-    const { default: Settings } = await import('../../pages/Settings');
+    stubLoad();
     render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('profile.sendMessage')).toBeTruthy());
 
@@ -160,9 +153,7 @@ describe('CL-014c Settings comprehensive', () => {
 
   it('shows my messages button when messages exist and opens history modal', async () => {
     const messages = [{ id: 1, subject: 'Maktab xabari', message: 'Body', reply: null, createdAt: new Date().toISOString() }];
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, messages);
-    const { default: Settings } = await import('../../pages/Settings');
+    stubLoad(messages);
     render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('profile.myMessages')).toBeTruthy());
 
@@ -172,10 +163,8 @@ describe('CL-014c Settings comprehensive', () => {
   });
 
   it('calls POST /reception/message-to-government when message is sent', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
+    stubLoad();
     api.post.mockResolvedValue({});
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     await waitFor(() => expect(screen.getByText('profile.sendMessage')).toBeTruthy());
 
@@ -197,9 +186,7 @@ describe('CL-014c Settings comprehensive', () => {
   });
 
   it('renders page (not stuck loading) when profile load fails', async () => {
-    const api = (await import('../../services/api')).default;
     api.get.mockRejectedValue(new Error('network error'));
-    const { default: Settings } = await import('../../pages/Settings');
     const { container } = render(React.createElement(Settings));
     await waitFor(() => {
       expect(container.querySelector('h1')).toBeTruthy();

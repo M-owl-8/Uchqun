@@ -5,9 +5,10 @@ import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { ToastProvider } from './context/ToastContext';
+import { ToastProvider } from '@shared/context/ToastContext';
+import { ToastContainer } from '@shared/components/Toast';
 import ProtectedRoute from './components/ProtectedRoute';
-import LoadingSpinner from './components/LoadingSpinner';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 
 const Layout = lazy(() => import('./components/Layout'));
 const Login = lazy(() => import('./pages/Login'));
@@ -81,6 +82,7 @@ function App() {
             <ToastProvider>
               <OfflineBanner />
               <AppRoutes />
+              <ToastContainer />
             </ToastProvider>
           </AuthProvider>
         </BrowserRouter>

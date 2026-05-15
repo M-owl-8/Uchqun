@@ -6,7 +6,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300">
       <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300">
-        <div className="sticky top-0 bg-gradient-to-r from-blue-500 to-blue-400 p-6 flex items-center justify-between z-10">
+        <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-primary-400 p-6 flex items-center justify-between z-10">
           <h2 className="text-2xl font-bold text-white">
             {activity.skill || t('activitiesPage.formSkill') || 'Ko\'nikma'}
           </h2>
@@ -21,8 +21,8 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
         <div className="p-6 space-y-6">
           {/* Goal */}
           {activity.goal && (
-            <div className="bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-xl p-5 border border-blue-200">
-              <p className="text-sm font-bold text-blue-700 mb-2">{t('activitiesPage.formGoal') || 'Maqsad'}</p>
+            <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl p-5 border border-primary-200">
+              <p className="text-sm font-bold text-primary-700 mb-2">{t('activitiesPage.formGoal') || 'Maqsad'}</p>
               <p className="text-base text-gray-800 leading-relaxed">{activity.goal}</p>
             </div>
           )}
@@ -30,10 +30,10 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {/* Dates and Teacher */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {activity.startDate && (
-              <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl border border-primary-100">
+                <Calendar className="w-5 h-5 text-primary-600 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-blue-600 font-semibold mb-1">{t('activitiesPage.formStartDate') || 'Boshlanish'}</p>
+                  <p className="text-xs text-primary-600 font-semibold mb-1">{t('activitiesPage.formStartDate') || 'Boshlanish'}</p>
                   <p className="text-sm font-bold text-gray-900">
                     {new Date(activity.startDate).toLocaleDateString(locale)}
                   </p>
@@ -41,10 +41,10 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
               </div>
             )}
             {activity.endDate && (
-              <div className="flex items-center gap-3 p-4 bg-blue-50 rounded-xl border border-blue-100">
-                <Calendar className="w-5 h-5 text-blue-600 flex-shrink-0" />
+              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl border border-primary-100">
+                <Calendar className="w-5 h-5 text-primary-600 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-blue-600 font-semibold mb-1">{t('activitiesPage.formEndDate') || 'Tugash'}</p>
+                  <p className="text-xs text-primary-600 font-semibold mb-1">{t('activitiesPage.formEndDate') || 'Tugash'}</p>
                   <p className="text-sm font-bold text-gray-900">
                     {new Date(activity.endDate).toLocaleDateString(locale)}
                   </p>
@@ -53,8 +53,8 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
             )}
             {activity.teacher && (
               <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="p-2 bg-gradient-to-br from-blue-100 to-blue-50 rounded-lg border border-blue-200">
-                  <User className="w-5 h-5 text-blue-600" />
+                <div className="p-2 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg border border-primary-200">
+                  <User className="w-5 h-5 text-primary-600" />
                 </div>
                 <div className="min-w-0 flex-1">
                   <p className="text-xs text-gray-500 font-semibold mb-1">{t('activitiesPage.teacher') || 'O\'qituvchi'}</p>
@@ -68,7 +68,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {activity.tasks && Array.isArray(activity.tasks) && activity.tasks.length > 0 && (
             <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
               <p className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <CheckCircle2 className="w-5 h-5 text-primary-500" />
                 {t('activitiesPage.formTasks') || 'Vazifalar'}
               </p>
               <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
@@ -83,7 +83,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {activity.methods && (
             <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
               <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <CheckCircle2 className="w-5 h-5 text-primary-500" />
                 {t('activitiesPage.formMethods') || 'Usullar'}
               </p>
               <p className="text-sm text-gray-700 leading-relaxed">{activity.methods}</p>
@@ -94,7 +94,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {activity.progress && (
             <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
               <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <CheckCircle2 className="w-5 h-5 text-primary-500" />
                 {t('activitiesPage.formProgress') || 'Jarayon/Taraqqiyot'}
               </p>
               <p className="text-sm text-gray-700 leading-relaxed">{activity.progress}</p>
@@ -105,7 +105,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {activity.observation && (
             <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
               <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <CheckCircle2 className="w-5 h-5 text-primary-500" />
                 {t('activitiesPage.formObservation') || 'Kuzatish'}
               </p>
               <p className="text-sm text-gray-700 leading-relaxed">{activity.observation}</p>
@@ -116,14 +116,14 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           {activity.services && Array.isArray(activity.services) && activity.services.length > 0 && (
             <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
               <p className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-blue-500" />
+                <CheckCircle2 className="w-5 h-5 text-primary-500" />
                 {t('activitiesPage.formServices') || 'Xizmatlar'}
               </p>
               <div className="flex flex-wrap gap-2">
                 {activity.services.map((service, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 bg-gradient-to-r from-blue-100 to-blue-50 text-blue-700 rounded-lg text-xs font-semibold border border-blue-200/50"
+                    className="px-3 py-1.5 bg-gradient-to-r from-primary-100 to-primary-50 text-primary-700 rounded-lg text-xs font-semibold border border-primary-200/50"
                   >
                     {t(`activitiesPage.services.${service.replace(/\s+/g, '')}`) || service}
                   </span>
@@ -136,7 +136,7 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           <div className="flex justify-end pt-4 border-t border-gray-200">
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors shadow-md"
+              className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md"
             >
               {t('activitiesPage.close') || 'Yopish'}
             </button>

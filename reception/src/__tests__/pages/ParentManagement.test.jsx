@@ -1,17 +1,20 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import { render, screen, fireEvent, waitFor, cleanup } from '@testing-library/react';
 import React from 'react';
+import api from '../../services/api';
+import ParentManagement from '../../pages/ParentManagement';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (k, opts) => opts?.defaultValue ?? k,
-    i18n: { language: 'en' },
-  }),
-}));
+vi.mock('react-i18next', () => {
+  const t = (k, opts) => opts?.defaultValue ?? k;
+  const i18n = { language: 'en' };
+  return { useTranslation: () => ({ t, i18n }) };
+});
 
-vi.mock('../../context/ToastContext', () => ({
-  useToast: () => ({ success: vi.fn(), error: vi.fn() }),
-}));
+vi.mock('@shared/context/ToastContext', () => {
+  const success = vi.fn();
+  const error = vi.fn();
+  return { useToast: () => ({ success, error }) };
+});
 
 vi.mock('../../components/Card', () => ({
   default: ({ children, className }) =>
@@ -27,6 +30,13 @@ vi.mock('../../services/api', () => ({
     put: vi.fn().mockResolvedValue({ data: {} }),
     delete: vi.fn().mockResolvedValue({ data: {} }),
   },
+}));
+
+vi.mock('../../../../shared/utils/cache', () => ({
+  get: vi.fn(() => null),
+  set: vi.fn(),
+  invalidate: vi.fn(),
+  invalidatePrefix: vi.fn(),
 }));
 
 const parent1 = {
@@ -67,7 +77,7 @@ const parent2 = {
 const teacher1 = { id: 't1', firstName: 'Sara', lastName: 'Tosheva' };
 const group1 = { id: 'g1', name: 'Guruh A', teacherId: 't1' };
 
-function stubLoad(api, parents = [], teachers = [], groups = []) {
+function stubLoad(parents = [], teachers = [], groups = []) {
   api.get.mockImplementation((url) => {
     if (url === '/reception/parents')
       return Promise.resolve({ data: { data: parents } });
@@ -81,13 +91,15 @@ function stubLoad(api, parents = [], teachers = [], groups = []) {
 
 describe('CL-012 ParentManagement integration', () => {
   beforeEach(() => {
-    vi.resetModules();
+    vi.clearAllMocks();
+  });
+
+  afterEach(() => {
+    cleanup();
   });
 
   it('shows skeleton list while loading', async () => {
-    const api = (await import('../../services/api')).default;
     api.get.mockImplementation(() => new Promise(() => {})); // never resolves
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
     const { container } = render(React.createElement(ParentManagement));
     // loading=true: only SkeletonList renders, no page heading
     expect(container.querySelector('h1')).toBeNull();
@@ -95,9 +107,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('renders parent cards after data loads', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1, parent2], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([parent1, parent2], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
     expect(screen.getByText('Malika Yusupova')).toBeTruthy();
@@ -106,9 +116,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('filters parents by search query', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1, parent2], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([parent1, parent2], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
@@ -120,9 +128,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('opens create parent modal on add button click', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('parentsPage.add')).toBeTruthy());
 
@@ -135,10 +141,8 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('submits create parent form via POST /reception/parents', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [], [teacher1], [group1]);
+    stubLoad([], [teacher1], [group1]);
     api.post.mockResolvedValue({ data: {} });
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('parentsPage.add')).toBeTruthy());
 
@@ -165,9 +169,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('opens edit modal prefilled with parent data', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([parent1], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
@@ -184,10 +186,8 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('submits edit parent form via PUT /reception/parents/:id', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
+    stubLoad([parent1], [teacher1], [group1]);
     api.put.mockResolvedValue({ data: {} });
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
@@ -207,10 +207,8 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('shows confirm dialog and calls DELETE on parent delete confirm', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
+    stubLoad([parent1], [teacher1], [group1]);
     api.delete.mockResolvedValue({ data: {} });
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
@@ -230,9 +228,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('opens add child modal when add child button clicked', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([parent1], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
@@ -243,9 +239,7 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('opens edit child modal when child edit button clicked', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
+    stubLoad([parent1], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Bobur Karimov')).toBeTruthy());
 
@@ -260,10 +254,8 @@ describe('CL-012 ParentManagement integration', () => {
   });
 
   it('shows confirm dialog and calls DELETE on child delete confirm', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, [parent1], [teacher1], [group1]);
+    stubLoad([parent1], [teacher1], [group1]);
     api.delete.mockResolvedValue({ data: {} });
-    const { default: ParentManagement } = await import('../../pages/ParentManagement');
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('Bobur Karimov')).toBeTruthy());
 

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
+import Card from '@shared/components/Card';
 import { Lock, Save, Eye, EyeOff } from 'lucide-react';
 
 const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPasswords, onSubmit }) => {

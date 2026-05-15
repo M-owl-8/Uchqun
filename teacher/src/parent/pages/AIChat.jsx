@@ -83,7 +83,7 @@ const AIChat = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+      <Card className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
         <div className="flex items-center gap-3 mb-2">
           <Bot className="w-6 h-6 text-white" />
           <h1 className="text-2xl md:text-3xl font-bold text-white">
@@ -107,14 +107,14 @@ const AIChat = () => {
               }`}
             >
               {message.role === 'assistant' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-blue-600" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-primary-600" />
                 </div>
               )}
               <div
                 className={`max-w-[80%] md:max-w-[70%] rounded-2xl px-4 py-3 ${
                   message.role === 'user'
-                    ? 'bg-blue-500 text-white'
+                    ? 'bg-primary-500 text-white'
                     : 'bg-white text-gray-900 border border-gray-200'
                 }`}
               >
@@ -124,7 +124,7 @@ const AIChat = () => {
                 <p
                   className={`text-xs mt-2 ${
                     message.role === 'user'
-                      ? 'text-blue-100'
+                      ? 'text-primary-100'
                       : 'text-gray-500'
                   }`}
                 >
@@ -135,7 +135,7 @@ const AIChat = () => {
                 </p>
               </div>
               {message.role === 'user' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
               )}
@@ -143,11 +143,11 @@ const AIChat = () => {
           ))}
           {loading && (
             <div className="flex gap-3 justify-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-blue-600" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-primary-600" />
               </div>
               <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
-                <Loader2 className="w-5 h-5 text-blue-600 animate-spin" />
+                <Loader2 className="w-5 h-5 text-primary-600 animate-spin" />
               </div>
             </div>
           )}
@@ -163,13 +163,13 @@ const AIChat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t('aiChat.inputPlaceholder') || 'Ask a question about caring for your child...'}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               disabled={loading}
             />
             <button
               type="submit"
               disabled={!input.trim() || loading}
-              className="w-12 h-12 inline-flex items-center justify-center bg-blue-500 text-white rounded-xl hover:bg-blue-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="w-12 h-12 inline-flex items-center justify-center bg-primary-500 text-white rounded-xl hover:bg-primary-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
               aria-label={t('aiChat.send') || 'Send'}
               title={t('aiChat.send') || 'Send'}
             >

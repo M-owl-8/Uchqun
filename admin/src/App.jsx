@@ -5,10 +5,10 @@ import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import i18n from './i18n';
 import { AuthProvider, useAuth } from './context/AuthContext';
-import { ToastProvider } from './context/ToastContext';
+import { ToastProvider } from '@shared/context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
-import { ToastContainer } from './components/Toast';
-import LoadingSpinner from './components/LoadingSpinner';
+import { ToastContainer } from '@shared/components/Toast';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 
 const Layout = lazy(() => import('./components/Layout'));
 const Login = lazy(() => import('./pages/Login'));

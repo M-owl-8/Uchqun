@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
+import Card from '@shared/components/Card';
 import { User, Mail, Phone, Save } from 'lucide-react';
 
 const ProfileForm = ({ profileForm, setProfileForm, onSubmit }) => {

@@ -81,7 +81,7 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
       <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
         <h2 className="text-2xl font-bold mb-6 text-center">Rasm yuklash</h2>
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-blue-500 transition-colors">
+          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-500 transition-colors">
             <input
               type="file"
               accept="image/*"
@@ -101,8 +101,8 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
-                    <User className="w-8 h-8 text-blue-600" />
+                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
+                    <User className="w-8 h-8 text-primary-600" />
                   </div>
                   <div>
                     <p className="text-gray-700 font-semibold mb-1">Galeriyadan rasm tanlang</p>

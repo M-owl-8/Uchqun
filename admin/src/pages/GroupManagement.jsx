@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import { 
   UsersRound, 

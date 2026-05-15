@@ -1,7 +1,7 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import {
   Shield,
   Building2,
@@ -75,6 +75,7 @@ const AdminDetails = () => {
       title: t('adminDetails.receptions', { defaultValue: 'Receptionlar' }),
       value: stats.receptions || 0,
       icon: UserCheck,
+      // TODO(phase-1): entity-icon color — Receptions uses blue-500 as a semantic entity color; confirm whether to keep or replace with primary-*
       color: 'bg-blue-500',
       description: t('adminDetails.receptionsDesc', { defaultValue: 'Jami receptionlar soni' }),
     },
@@ -204,6 +205,7 @@ const AdminDetails = () => {
             {schools.map((school) => (
               <div key={school.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
+                  {/* TODO(phase-1): school icon color — text-blue-600 used as entity color for schools; confirm keep or switch to primary-* */}
                   <Building2 className="w-5 h-5 text-blue-600" />
                   <h3 className="font-bold text-gray-900">{school.name}</h3>
                 </div>

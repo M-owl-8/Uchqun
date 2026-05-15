@@ -1,9 +1,9 @@
 import { useEffect, useState, memo, useMemo } from 'react';
 import api from '../services/api';
-import Card from '../components/Card';
+import Card from '@shared/components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   UserCheck,

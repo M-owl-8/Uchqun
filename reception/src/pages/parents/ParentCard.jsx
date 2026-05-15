@@ -1,6 +1,6 @@
 import { Baby, Edit2, Mail, Phone, Trash2, UserCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
+import Card from '@shared/components/Card';
 
 const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDeleteChild }) => {
   const { t } = useTranslation();
@@ -36,12 +36,12 @@ const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDelet
         {(parent.assignedTeacher || parent.group) && (
           <div className="pt-3 border-t border-gray-100">
             <div className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-              <UserCheck className="w-4 h-4 text-blue-600" />
+              <UserCheck className="w-4 h-4 text-primary-600" />
               <span>{t('parentsPage.assignment')}</span>
             </div>
             <div className="space-y-2">
               {parent.assignedTeacher && (
-                <div className="bg-blue-50 rounded-lg p-2 border border-blue-100">
+                <div className="bg-primary-50 rounded-lg p-2 border border-primary-100">
                   <p className="text-xs text-gray-600">
                     <span className="font-medium">{t('parentsPage.teacherLabel')}</span> {parent.assignedTeacher.firstName} {parent.assignedTeacher.lastName}
                   </p>

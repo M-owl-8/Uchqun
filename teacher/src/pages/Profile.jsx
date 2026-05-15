@@ -145,7 +145,7 @@ const Profile = () => {
       <Card className="p-6">
         <div className="flex items-center gap-4">
           <div className="relative">
-            <div className="w-14 h-14 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-xl font-bold overflow-hidden shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={handleAvatarClick}>
+            <div className="w-14 h-14 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-xl font-bold overflow-hidden shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={handleAvatarClick}>
               {user?.avatar ? (
                 <img src={user.avatar.startsWith('http') ? user.avatar : `${API_BASE.replace(/\/api\/?$/, '')}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
               ) : (
@@ -159,7 +159,7 @@ const Profile = () => {
             </div>
             <button
               onClick={handleAvatarClick}
-              className="absolute -bottom-1 -right-1 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md"
+              className="absolute -bottom-1 -right-1 w-6 h-6 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors shadow-md"
               title={t('profile.changeAvatar', { defaultValue: 'Rasmni o\'zgartirish' })}
             >
               <Camera className="w-3 h-3" />
@@ -194,7 +194,7 @@ const Profile = () => {
 
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-4">
-          <MessageSquare className="w-6 h-6 text-blue-600" />
+          <MessageSquare className="w-6 h-6 text-primary-600" />
           <h2 className="text-xl font-bold text-gray-900">{t('profile.contactGovernment', { defaultValue: 'Contact Government' })}</h2>
         </div>
         <p className="text-sm text-gray-600 mb-4">
@@ -203,7 +203,7 @@ const Profile = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
             {t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}
@@ -231,8 +231,8 @@ const Profile = () => {
           <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-blue-100 rounded-full">
-                  <MessageSquare className="w-6 h-6 text-blue-600" />
+                <div className="p-3 bg-primary-100 rounded-full">
+                  <MessageSquare className="w-6 h-6 text-primary-600" />
                 </div>
                 <h2 className="text-2xl font-bold text-gray-900">{t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
               </div>
@@ -252,7 +252,7 @@ const Profile = () => {
                   value={messageSubject}
                   onChange={(e) => setMessageSubject(e.target.value)}
                   placeholder={t('profile.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -262,7 +262,7 @@ const Profile = () => {
                   onChange={(e) => setMessageText(e.target.value)}
                   rows={6}
                   placeholder={t('profile.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -278,7 +278,7 @@ const Profile = () => {
               <button
                 onClick={handleSendMessage}
                 disabled={sendingMessage || !messageSubject.trim() || !messageText.trim()}
-                className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {sendingMessage ? (
                   <>
@@ -357,10 +357,10 @@ const Profile = () => {
                     {msg.reply && (
                       <div className="border-t border-gray-200 pt-4 mt-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="p-2 bg-blue-100 rounded-full">
-                            <MessageSquare className="w-4 h-4 text-blue-600" />
+                          <div className="p-2 bg-primary-100 rounded-full">
+                            <MessageSquare className="w-4 h-4 text-primary-600" />
                           </div>
-                          <p className="text-sm font-medium text-blue-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
+                          <p className="text-sm font-medium text-primary-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                           <span className="text-xs text-gray-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 
@@ -371,7 +371,7 @@ const Profile = () => {
                             })}
                           </span>
                         </div>
-                        <p className="text-gray-800 bg-blue-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                        <p className="text-gray-800 bg-primary-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
                       </div>
                     )}
                   </div>

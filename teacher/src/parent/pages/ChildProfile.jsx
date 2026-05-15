@@ -198,7 +198,7 @@ const ChildProfile = () => {
           {children.map((c) => (
             <Card key={c.id} onClick={() => selectChild(c.id)} className="p-6 cursor-pointer hover:shadow-lg transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold text-xl">
+                <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xl">
                   {c.firstName?.charAt(0)}{c.lastName?.charAt(0)}
                 </div>
                 <div>
@@ -218,8 +218,8 @@ const ChildProfile = () => {
     return (
       <div className="max-w-2xl mx-auto py-20">
         <Card className="text-center p-12">
-          <div className="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <User className="w-12 h-12 text-blue-600" />
+          <div className="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <User className="w-12 h-12 text-primary-600" />
           </div>
           <h2 className="text-2xl font-black text-gray-900 mb-4">{t('child.notFoundTitle')}</h2>
           <p className="text-gray-600 font-medium mb-6">{error || t('child.notFoundDesc')}</p>
@@ -233,7 +233,7 @@ const ChildProfile = () => {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
       {Array.isArray(children) && children.length > 1 && (
-        <Card className="p-4 bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200">
+        <Card className="p-4 bg-gradient-to-r from-primary-50 to-indigo-50 border-primary-200">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex-1">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -249,7 +249,7 @@ const ChildProfile = () => {
                   setImageLoading(true);
                   setPhotoTimestamp(Date.now());
                 }}
-                className="w-full sm:w-auto min-w-[250px] px-4 py-2.5 bg-white border-2 border-blue-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-gray-900 shadow-sm hover:border-blue-400 transition-colors"
+                className="w-full sm:w-auto min-w-[250px] px-4 py-2.5 bg-white border-2 border-primary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-medium text-gray-900 shadow-sm hover:border-primary-400 transition-colors"
               >
                 {children.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -280,17 +280,17 @@ const ChildProfile = () => {
         <div className="lg:col-span-2 space-y-8">
           <section className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100">
             <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <User className="w-6 h-6 text-blue-600" /> {t('child.basicInfo')}
+              <User className="w-6 h-6 text-primary-600" /> {t('child.basicInfo')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <InfoItem label={t('child.fullName')} value={`${child.firstName} ${child.lastName}`} icon={User} />
               <InfoItem label={t('child.birthDate')} value={new Date(child.dateOfBirth).toLocaleDateString(locale)} icon={Calendar} />
               <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-red-500" />
-              <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-blue-500" />
+              <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-primary-500" />
             </div>
           </section>
 
-          <section className="bg-gradient-to-br from-red-50 to-blue-50 rounded-[2rem] p-8 border border-red-100 shadow-inner">
+          <section className="bg-gradient-to-br from-red-50 to-primary-50 rounded-[2rem] p-8 border border-red-100 shadow-inner">
             <h3 className="text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
               <Heart className="w-6 h-6 text-red-600 animate-pulse" /> {t('child.specialNeeds')}
             </h3>
@@ -315,7 +315,7 @@ const ChildProfile = () => {
             </div>
             <button
               onClick={() => setShowMessageModal(true)}
-              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-blue-50 text-blue-600 border border-blue-100 hover:bg-blue-100 transition-colors"
+              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-50 text-primary-600 border border-primary-100 hover:bg-primary-100 transition-colors"
             >
               <MessageSquare className="w-4 h-4" />
               {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
@@ -349,9 +349,9 @@ const ChildProfile = () => {
             </div>
             <h3 className="text-xl font-bold mb-6 text-white">{t('child.weeklyResults')}</h3>
             <div className="space-y-6 relative z-10">
-              <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-blue-500" />
-              <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-blue-500" />
-              <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-blue-500" />
+              <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-primary-500" />
+              <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-primary-500" />
+              <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-primary-500" />
             </div>
           </section>
         </div>

@@ -48,8 +48,8 @@ const MessageModal = ({ show, onClose, onSent }) => {
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <MessageSquare className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-primary-100 rounded-full">
+              <MessageSquare className="w-6 h-6 text-primary-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">
               {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
@@ -70,7 +70,7 @@ const MessageModal = ({ show, onClose, onSent }) => {
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder={t('profile.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
           <div>
@@ -82,7 +82,7 @@ const MessageModal = ({ show, onClose, onSent }) => {
               onChange={(e) => setText(e.target.value)}
               rows={6}
               placeholder={t('profile.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -98,7 +98,7 @@ const MessageModal = ({ show, onClose, onSent }) => {
           <button
             onClick={handleSend}
             disabled={sending || !subject.trim() || !text.trim()}
-            className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {sending ? (
               <>

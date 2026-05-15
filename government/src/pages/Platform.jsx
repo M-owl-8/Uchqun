@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import AdminsTab from '../components/tabs/AdminsTab';
 import SchoolsTab from '../components/tabs/SchoolsTab';
 import MessagesTab from '../components/tabs/MessagesTab';
 import GovernmentTab from '../components/tabs/GovernmentTab';
 import RegistrationsTab from '../components/tabs/RegistrationsTab';
-import ConfirmDialog from '../components/ConfirmDialog';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 
 const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
 

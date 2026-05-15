@@ -1,27 +1,101 @@
 {
   "nav": {
     "dashboard": "Bosh sahifa",
-    "receptions": "Qabul bo'limi",
-    "parents": "Ota-onalar",
+    "home": "Asosiy",
+    "menu": "Asosiy menyu",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "logout": "Chiqish",
+    "schools": "Muassasalar",
+    "students": "O'quvchilar",
     "teachers": "O'qituvchilar",
+    "parents": "Ota-onalar",
     "groups": "Guruhlar",
-    "reports": "Hisobotlar",
+    "receptions": "Qabul bo'limi",
     "admins": "Adminlar",
-    "logout": "Chiqish"
+    "reports": "Hisobotlar",
+    "ratings": "Reytinglar",
+    "rating": "Reyting",
+    "platform": "Platform",
+    "aiChat": "AI Chat",
+    "chat": "Chat",
+    "media": "Media",
+    "activities": "Faoliyatlar",
+    "therapy": "Terapiya",
+    "meals": "Ovqatlanish",
+    "notifications": "Bildirishnomalar",
+    "help": "Yordam"
   },
-  "government": {
-    "title": "Davlat",
-    "createAdmin": "Admin yaratish",
-    "editAdmin": "Adminni tahrirlash",
-    "existingAdmins": "Mavjud adminlar",
-    "noAdmins": "Hali adminlar yo'q."
+  "sidebar": {
+    "menu": "Asosiy menyu"
+  },
+  "login": {
+    "email": "Email",
+    "password": "Parol",
+    "submit": "Kirish",
+    "loading": "Kirilmoqda...",
+    "showPassword": "Parolni ko'rsatish",
+    "hidePassword": "Parolni yashirish",
+    "invalid": "Email yoki parol noto'g'ri",
+    "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
   },
   "common": {
     "loading": "Yuklanmoqda...",
     "save": "Saqlash",
     "cancel": "Bekor qilish",
     "delete": "O'chirish",
-    "edit": "Tahrirlash"
+    "edit": "Tahrirlash",
+    "confirm": "Tasdiqlash",
+    "close": "Yopish",
+    "search": "Qidirish",
+    "add": "Qo'shish",
+    "back": "Orqaga",
+    "next": "Keyingi",
+    "yes": "Ha",
+    "no": "Yo'q",
+    "noData": "Ma'lumot topilmadi",
+    "error": "Xatolik yuz berdi",
+    "success": "Muvaffaqiyatli saqlandi",
+    "required": "Majburiy maydon",
+    "reasonPlaceholder": "Sabab kiriting...",
+    "active": "Faol",
+    "inactive": "Nofaol",
+    "all": "Barchasi",
+    "male": "Erkak",
+    "female": "Ayol"
+  },
+  "profile": {
+    "title": "Profil",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "email": "Email",
+    "phone": "Telefon",
+    "save": "Saqlash",
+    "saved": "Profil saqlandi",
+    "changePassword": "Parolni o'zgartirish",
+    "currentPassword": "Joriy parol",
+    "newPassword": "Yangi parol",
+    "confirmPassword": "Parolni tasdiqlang",
+    "passwordChanged": "Parol muvaffaqiyatli o'zgartirildi",
+    "governmentReply": "Davlat javobi"
+  },
+  "page404": {
+    "title": "Sahifa topilmadi",
+    "message": "Kechirasiz, siz izlayotgan sahifa mavjud emas.",
+    "back": "Bosh sahifaga qaytish"
+  },
+  "language": {
+    "uz": "O'zbek",
+    "ru": "Русский",
+    "en": "English"
+  },
+  "role": {
+    "government": "Davlat",
+    "admin": "Administrator",
+    "reception": "Qabul",
+    "teacher": "O'qituvchi",
+    "parent": "Ota-ona"
   },
   "servicePlan": {
     "title": "Yillik reja",

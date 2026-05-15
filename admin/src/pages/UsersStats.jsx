@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import {
   Users,
   UserCheck,
@@ -55,8 +55,9 @@ const UsersStats = () => {
     admin: Shield,
   };
 
+  // TODO(phase-1): role color palette — parent=blue, teacher=green, reception=purple, admin=yellow; confirm whether these should be semantic role tokens or move to primary-*
   const roleColors = {
-    parent: 'bg-blue-50 text-blue-600',
+    parent: 'bg-primary-50 text-primary-600',
     teacher: 'bg-green-50 text-green-600',
     reception: 'bg-purple-50 text-purple-600',
     admin: 'bg-yellow-50 text-yellow-600',
@@ -95,13 +96,13 @@ const UsersStats = () => {
         </div>
       </div>
 
-      <Card className="p-6 bg-gradient-to-br from-blue-400 to-blue-600 text-white">
+      <Card className="p-6 bg-gradient-to-br from-primary-400 to-primary-600 text-white">
         <div className="flex items-center justify-between mb-4">
           <Users className="w-8 h-8" />
           <TrendingUp className="w-6 h-6" />
         </div>
         <p className="text-3xl font-bold mb-1">{stats?.total || 0}</p>
-        <p className="text-blue-100">{t('usersStats.totalUsers', { defaultValue: 'Total Users' })}</p>
+        <p className="text-primary-100">{t('usersStats.totalUsers', { defaultValue: 'Total Users' })}</p>
       </Card>
 
       {stats?.byRole && Object.keys(stats.byRole).length > 0 && (

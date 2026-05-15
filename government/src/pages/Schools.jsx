@@ -1,6 +1,6 @@
 import { useFetch } from '@shared/hooks/useFetch';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Building2, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 

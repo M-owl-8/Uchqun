@@ -1,4 +1,4 @@
-import Card from '../../components/Card';
+import Card from '@shared/components/Card';
 import { useTranslation } from 'react-i18next';
 import { Lock, Save, Eye, EyeOff } from 'lucide-react';
 

@@ -1,6 +1,6 @@
 import { ChevronRight } from 'lucide-react';
 
-export const InfoItem = ({ label, value, icon: Icon, color = 'text-blue-500' }) => (
+export const InfoItem = ({ label, value, icon: Icon, color = 'text-primary-500' }) => (
   <div className="group">
     <label className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 block">{label}</label>
     <div className="flex items-center gap-3">

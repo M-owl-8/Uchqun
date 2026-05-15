@@ -88,7 +88,7 @@ const Therapy = () => {
       case 'music':
         return 'bg-purple-50 text-purple-600';
       case 'video':
-        return 'bg-blue-50 text-blue-600';
+        return 'bg-primary-50 text-primary-600';
       case 'content':
         return 'bg-green-50 text-green-600';
       default:

@@ -1,8 +1,8 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import { useToast } from '@shared/context/ToastContext';
 import { 
   Users,
   Plus,
@@ -13,7 +13,7 @@ import {
   Save
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import ConfirmDialog from '../components/ConfirmDialog';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 
 const GroupManagement = () => {
   const [groups, setGroups] = useState([]);

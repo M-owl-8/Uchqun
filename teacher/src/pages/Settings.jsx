@@ -199,7 +199,7 @@ const Settings = () => {
       {/* Contact Government */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <MessageSquare className="w-6 h-6 text-blue-600" />
+          <MessageSquare className="w-6 h-6 text-primary-600" />
           <h2 className="text-xl font-bold text-gray-900">{t('settings.contactGovernment', { defaultValue: 'Davlat bilan bog\'lanish' })}</h2>
         </div>
         <p className="text-sm text-gray-600 mb-4">
@@ -208,7 +208,7 @@ const Settings = () => {
         <div className="flex gap-3">
           <button
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
             {t('settings.sendMessage', { defaultValue: 'Xabar yuborish' })}

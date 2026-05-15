@@ -59,7 +59,7 @@ const TherapyCard = ({ therapy, pendingDeleteId, getTherapyIcon, getTherapyColor
         </button>
         <button
           onClick={() => onEdit(therapy)}
-          className="px-4 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition-colors"
+          className="px-4 py-2 bg-primary-50 text-primary-600 rounded-lg font-medium hover:bg-primary-100 transition-colors"
         >
           <Edit2 className="w-4 h-4" />
         </button>

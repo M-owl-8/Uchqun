@@ -1,6 +1,6 @@
 import { Camera, Save, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useToast } from '../../context/ToastContext';
+import { useToast } from '@shared/context/ToastContext';
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
 const MAX_PHOTO_SIZE = 5 * 1024 * 1024;

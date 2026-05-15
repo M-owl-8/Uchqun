@@ -66,7 +66,7 @@ const ActivityFormModal = ({
                       loadChildrenForParent(selectedParentId);
                     }
                   }}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 >
                   <option value="">{t('activitiesPage.selectParent') || 'Ota-onani tanlang'}</option>
                   {parents.map(parent => (
@@ -85,7 +85,7 @@ const ActivityFormModal = ({
                   value={formData.childId}
                   onChange={(e) => setFormData({ ...formData, childId: e.target.value })}
                   disabled={!formData.parentId || childList.length === 0}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
                 >
                   <option value="">{t('activitiesPage.selectChild')}</option>
                   {childList.map(child => (
@@ -111,7 +111,7 @@ const ActivityFormModal = ({
                 type="text"
                 value={formData.skill}
                 onChange={(e) => setFormData({ ...formData, skill: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('activitiesPage.formSkillPlaceholder') || 'Masalan: O\'z-o\'ziga xizmat ko\'rsatish ko\'nikmalari'}
               />
             </div>
@@ -124,7 +124,7 @@ const ActivityFormModal = ({
                 value={formData.goal}
                 onChange={(e) => setFormData({ ...formData, goal: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('activitiesPage.formGoalPlaceholder') || 'Maqsadni batafsil yozing'}
               />
             </div>
@@ -138,7 +138,7 @@ const ActivityFormModal = ({
                   type="date"
                   value={formData.startDate}
                   onChange={(e) => setFormData({ ...formData, startDate: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
               <div>
@@ -149,7 +149,7 @@ const ActivityFormModal = ({
                   type="date"
                   value={formData.endDate}
                   onChange={(e) => setFormData({ ...formData, endDate: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -168,7 +168,7 @@ const ActivityFormModal = ({
                       newTasks[index] = e.target.value;
                       setFormData({ ...formData, tasks: newTasks });
                     }}
-                    className="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                     placeholder={`${t('activitiesPage.formTask') || 'Vazifa'} ${index + 1}`}
                   />
                   {formData.tasks.length > 1 && (
@@ -192,7 +192,7 @@ const ActivityFormModal = ({
                   taskIdsRef.current = [...taskIdsRef.current, `task-new-${Date.now()}-${Math.random()}`];
                   setFormData({ ...formData, tasks: [...formData.tasks, ''] });
                 }}
-                className="mt-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                className="mt-2 text-sm text-primary-600 hover:text-primary-700 font-medium"
               >
                 + {t('activitiesPage.addTask') || 'Vazifa qo\'shish'}
               </button>
@@ -206,7 +206,7 @@ const ActivityFormModal = ({
                 value={formData.methods}
                 onChange={(e) => setFormData({ ...formData, methods: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('activitiesPage.formMethodsPlaceholder') || 'Qo\'llaniladigan usullarni yozing'}
               />
             </div>
@@ -219,7 +219,7 @@ const ActivityFormModal = ({
                 value={formData.progress}
                 onChange={(e) => setFormData({ ...formData, progress: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('activitiesPage.formProgressPlaceholder') || 'Jarayon va taraqqiyotni yozing'}
               />
             </div>
@@ -232,7 +232,7 @@ const ActivityFormModal = ({
                 value={formData.observation}
                 onChange={(e) => setFormData({ ...formData, observation: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 placeholder={t('activitiesPage.formObservationPlaceholder') || 'Kuzatuvlarni yozing'}
               />
             </div>
@@ -254,7 +254,7 @@ const ActivityFormModal = ({
                           setFormData({ ...formData, services: formData.services.filter((s) => s !== service) });
                         }
                       }}
-                      className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                      className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
                     />
                     <span className="text-sm text-gray-700">
                       {t(`activitiesPage.services.${service.replace(/\s+/g, '')}`) || service}
@@ -275,7 +275,7 @@ const ActivityFormModal = ({
             </button>
             <button
               type="submit"
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
             >
               <Save className="w-4 h-4" />
               {editingActivity ? t('activitiesPage.update') : t('activitiesPage.create')}

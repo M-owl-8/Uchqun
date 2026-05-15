@@ -81,7 +81,7 @@ const Dashboard = () => {
 
   return (
     <div className="space-y-6 relative z-10">
-      <div className="bg-blue-500 rounded-2xl p-6 md:p-8 -mx-4 md:mx-0 relative z-10">
+      <div className="bg-primary-500 rounded-2xl p-6 md:p-8 -mx-4 md:mx-0 relative z-10">
         <div className="flex items-center gap-3 mb-2">
           <Users className="w-6 h-6 text-white" />
           <p className="text-white/90 text-sm font-medium">{getRoleText()}</p>
@@ -98,8 +98,8 @@ const Dashboard = () => {
           {overviewCards.map((card) => (
             <Card key={card.title} className="p-4 hover:shadow-lg transition">
               <Link to={card.href} className="flex items-center gap-4">
-                <div className="p-3 bg-blue-50 rounded-xl">
-                  <card.icon className="w-6 h-6 text-blue-600" />
+                <div className="p-3 bg-primary-50 rounded-xl">
+                  <card.icon className="w-6 h-6 text-primary-600" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">{card.value}</p>

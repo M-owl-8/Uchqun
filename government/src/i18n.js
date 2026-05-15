@@ -1,13 +1,17 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import en from './locales/en/common.json';
-import uz from './locales/uz/common.json';
-import ru from './locales/ru/common.json';
+import { mergeLocales } from '../../../shared/utils/mergeLocales.js';
+import sharedEn from '../../../shared/locales/en.json';
+import sharedUz from '../../../shared/locales/uz.json';
+import sharedRu from '../../../shared/locales/ru.json';
+import portalEn from './locales/en/common.json';
+import portalUz from './locales/uz/common.json';
+import portalRu from './locales/ru/common.json';
 
 const resources = {
-  en: { translation: en },
-  uz: { translation: uz },
-  ru: { translation: ru },
+  en: { translation: mergeLocales(sharedEn, portalEn) },
+  uz: { translation: mergeLocales(sharedUz, portalUz) },
+  ru: { translation: mergeLocales(sharedRu, portalRu) },
 };
 
 const savedLang = localStorage.getItem('lang') || 'uz';

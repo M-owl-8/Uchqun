@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import Card from '../components/Card';
+import Card from '@shared/components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
 import {
@@ -102,8 +102,8 @@ const Dashboard = () => {
                 <p className="text-sm font-medium text-gray-600 mb-1">{t('dashboard.totalTeachers')}</p>
                 <p className="text-3xl font-bold text-gray-900">{stats?.teachers || 0}</p>
               </div>
-              <div className="p-3 bg-blue-50 rounded-xl">
-                <UserCheck className="w-8 h-8 text-blue-600" />
+              <div className="p-3 bg-primary-50 rounded-xl">
+                <UserCheck className="w-8 h-8 text-primary-600" />
               </div>
             </div>
           </Card>
@@ -134,9 +134,9 @@ const Dashboard = () => {
           <Card className="overflow-hidden">
             <div className="divide-y divide-gray-100">
               {teachers.slice(0, 5).map((teacher) => (
-                <div key={teacher._id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                <div key={teacher.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
                   <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-semibold">
+                    <div className="w-10 h-10 rounded-full bg-primary-100 flex items-center justify-center text-primary-600 font-semibold">
                       {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
                     </div>
                     <div>
@@ -153,7 +153,7 @@ const Dashboard = () => {
                       {teacher.isActive !== false ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}
                     </span>
                     <Link
-                      to={`/reception/teachers/${teacher._id}`}
+                      to={`/reception/teachers/${teacher.id}`}
                       className="text-primary-600 hover:text-primary-700"
                     >
                       <Eye className="w-5 h-5" />
@@ -189,7 +189,7 @@ const Dashboard = () => {
           <Card className="overflow-hidden">
             <div className="divide-y divide-gray-100">
               {parents.slice(0, 5).map((parent) => (
-                <div key={parent._id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
+                <div key={parent.id} className="p-4 flex items-center justify-between hover:bg-gray-50 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center text-green-600 font-semibold">
                       {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
@@ -213,7 +213,7 @@ const Dashboard = () => {
                       {parent.isActive !== false ? t('common.active', { defaultValue: 'Active' }) : t('common.inactive', { defaultValue: 'Inactive' })}
                     </span>
                     <Link
-                      to={`/reception/parents/${parent._id}`}
+                      to={`/reception/parents/${parent.id}`}
                       className="text-primary-600 hover:text-primary-700"
                     >
                       <Eye className="w-5 h-5" />

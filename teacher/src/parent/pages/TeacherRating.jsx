@@ -252,7 +252,7 @@ const TeacherRating = () => {
       {/* Teacher Rating Section */}
       {!teacher ? (
         <Card className="flex items-start gap-3">
-          <div className="p-2 rounded-full bg-blue-50 text-blue-600">
+          <div className="p-2 rounded-full bg-primary-50 text-primary-600">
             <AlertCircle className="w-5 h-5" />
           </div>
           <div>
@@ -262,7 +262,7 @@ const TeacherRating = () => {
         </Card>
       ) : (
         <>
-          <Card className="bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+          <Card className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('ratingPage.title')}</h1>
             <p className="text-white/90 text-sm md:text-base">{t('ratingPage.subtitle')}</p>
           </Card>
@@ -271,12 +271,12 @@ const TeacherRating = () => {
         <Card className="lg:col-span-2">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-blue-100 text-blue-700 font-black flex items-center justify-center text-xl">
+              <div className="w-12 h-12 rounded-2xl bg-primary-100 text-primary-700 font-black flex items-center justify-center text-xl">
                 {teacher.firstName?.[0]}
                 {teacher.lastName?.[0]}
               </div>
               <div>
-                <p className="text-xs font-semibold text-blue-600 uppercase tracking-wide">
+                <p className="text-xs font-semibold text-primary-600 uppercase tracking-wide">
                   {t('ratingPage.yourTeacher')}
                 </p>
                 <h2 className="text-xl font-bold text-gray-900">
@@ -291,8 +291,8 @@ const TeacherRating = () => {
                 {t('ratingPage.average')}
               </p>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 text-blue-600 font-bold text-xl">
-                  <Star className="w-5 h-5 fill-blue-500 text-blue-500" />
+                <div className="flex items-center gap-1 text-primary-600 font-bold text-xl">
+                  <Star className="w-5 h-5 fill-primary-500 text-primary-500" />
                   {summary.average?.toFixed(1) || '0.0'}
                 </div>
                 <span className="text-xs text-gray-500">
@@ -324,8 +324,8 @@ const TeacherRating = () => {
                     onClick={() => setStars(value)}
                     className={`p-3 rounded-2xl border transition-colors ${
                       stars >= value
-                        ? 'bg-blue-50 border-blue-200 text-blue-600'
-                        : 'bg-white border-gray-200 text-gray-400 hover:border-blue-200 hover:text-blue-500'
+                        ? 'bg-primary-50 border-primary-200 text-primary-600'
+                        : 'bg-white border-gray-200 text-gray-400 hover:border-primary-200 hover:text-primary-500'
                     }`}
                   >
                     <Star
@@ -348,7 +348,7 @@ const TeacherRating = () => {
                 onChange={(e) => setComment(e.target.value)}
                 rows={4}
                 placeholder={t('ratingPage.commentPlaceholder')}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               />
             </div>
 
@@ -374,7 +374,7 @@ const TeacherRating = () => {
                 type="button"
                 onClick={handleSubmit}
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-blue-600 text-white font-semibold hover:bg-blue-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {saving && <LoadingSpinner size="sm" />}
                 {rating ? t('ratingPage.update') : t('ratingPage.submit')}
@@ -386,7 +386,7 @@ const TeacherRating = () => {
         <div className="space-y-4">
           <Card className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-blue-50 text-blue-600">
+              <div className="p-2 rounded-xl bg-primary-50 text-primary-600">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <div>
@@ -414,7 +414,7 @@ const TeacherRating = () => {
             <p className="text-sm font-semibold text-gray-900">{t('ratingPage.summaryTitle')}</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-blue-500 fill-blue-500" />
+                <Star className="w-5 h-5 text-primary-500 fill-primary-500" />
                 <div>
                   <p className="text-xl font-bold text-gray-900">{summary.average?.toFixed(1) || '0.0'}</p>
                   <p className="text-xs text-gray-500">{t('ratingPage.average')}</p>

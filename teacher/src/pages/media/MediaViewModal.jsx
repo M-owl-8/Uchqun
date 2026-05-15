@@ -47,14 +47,14 @@ const MediaViewModal = ({ selectedMedia, onClose }) => {
         <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-white">
           <button
             onClick={onClose}
-            className="hidden lg:flex items-center gap-2 text-gray-400 hover:text-blue-600 font-bold text-sm mb-10 transition-colors"
+            className="hidden lg:flex items-center gap-2 text-gray-400 hover:text-primary-600 font-bold text-sm mb-10 transition-colors"
           >
             <ChevronLeft className="w-5 h-5" /> {t('mediaPage.back')}
           </button>
 
           <div className="space-y-6">
             <div>
-              <span className="px-4 py-1.5 bg-blue-50 text-blue-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+              <span className="px-4 py-1.5 bg-primary-50 text-primary-600 rounded-full text-[10px] font-black uppercase tracking-widest">
                 {selectedMedia.type === 'video' ? t('mediaPage.videoLabel') : t('mediaPage.photoLabel')}
               </span>
               <h3 className="text-3xl font-black text-gray-900 mt-4 leading-tight">

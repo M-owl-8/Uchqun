@@ -101,6 +101,7 @@ const Meals = () => {
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
   const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();
 
+  // TODO(phase-1): data color palette decision needed — Lunch/Dinner use blue-* as semantic meal-type colors; confirm these should stay blue (not primary-*) or define a dedicated food-color token
   const mealConfigs = {
     Breakfast: { color: 'text-amber-600', bg: 'bg-amber-50', icon: Coffee, border: 'border-amber-100' },
     Lunch: { color: 'text-blue-600', bg: 'bg-blue-50', icon: Sun, border: 'border-blue-100' },
@@ -121,7 +122,7 @@ const Meals = () => {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
       
       {/* --- Header & Date Picker --- */}
-      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 md:p-8 bg-gradient-to-r from-blue-500 to-blue-400 rounded-2xl shadow-xl border-0">
+      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 md:p-8 bg-gradient-to-r from-primary-600 to-primary-500 rounded-2xl shadow-xl border-0">
         <div className="space-y-1">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('meals.title')}</h1>
           <p className="text-white/90 text-sm md:text-base">{t('meals.subtitle')}</p>
@@ -134,7 +135,7 @@ const Meals = () => {
           <select
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="appearance-none bg-gray-50 border-none text-gray-900 font-bold rounded-2xl px-6 py-3 pr-12 focus:ring-2 focus:ring-blue-500 shadow-inner cursor-pointer"
+            className="appearance-none bg-gray-50 border-none text-gray-900 font-bold rounded-2xl px-6 py-3 pr-12 focus:ring-2 focus:ring-primary-500 shadow-inner cursor-pointer"
           >
             {dates.map((date) => (
               <option key={date} value={date}>
@@ -189,7 +190,7 @@ const Meals = () => {
 
                     {meal.specialNotes && (
                       <div className="flex items-start gap-2 p-4 bg-gray-50 rounded-2xl border border-gray-100 mt-4 group-hover:bg-white transition-colors">
-                        <Info className="w-4 h-4 text-blue-500 mt-0.5 shrink-0" />
+                        <Info className="w-4 h-4 text-primary-500 mt-0.5 shrink-0" />
                         <p className="text-xs text-gray-500 leading-relaxed font-medium">
                           <span className="text-gray-900 font-bold">{t('meals.note')}:</span> {meal.specialNotes}
                         </p>
@@ -211,12 +212,12 @@ const Meals = () => {
       {/* --- Nutrition Summary Card --- */}
       {filteredMeals.length > 0 && (
         <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-blue-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
-          
+          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+
           <div className="relative z-10 space-y-8">
             <div className="flex items-center justify-between border-b border-white/10 pb-6">
               <h3 className="text-xl font-bold">{t('meals.dailySummary')}</h3>
-              <span className="text-blue-400 font-black text-sm uppercase tracking-widest">
+              <span className="text-primary-400 font-black text-sm uppercase tracking-widest">
                 {formatDate(selectedDate, { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
             </div>
@@ -236,7 +237,7 @@ const Meals = () => {
               <div className="space-y-1">
                 <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">{t('meals.quality')}</p>
                 <div className="flex justify-center md:justify-start gap-1">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-blue-500" />)}
+                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-primary-500" />)}
                 </div>
                 <p className="text-xs font-bold text-white mt-2">{t('meals.excellent')}</p>
               </div>

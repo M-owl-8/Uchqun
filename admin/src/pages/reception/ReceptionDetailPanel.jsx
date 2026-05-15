@@ -59,7 +59,7 @@ const ReceptionDetailPanel = ({
             <button
               onClick={() => onEdit(reception)}
               disabled={actionLoading}
-              className="px-3 py-1.5 text-sm font-medium text-blue-700 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 disabled:opacity-50"
+              className="px-3 py-1.5 text-sm font-medium text-primary-700 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 disabled:opacity-50"
             >
               <Edit2 className="inline w-4 h-4 mr-1" />
               {t('receptionsPage.editBtn')}

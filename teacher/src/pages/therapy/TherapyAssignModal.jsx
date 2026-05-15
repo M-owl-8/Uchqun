@@ -30,7 +30,7 @@ const TherapyAssignModal = ({
             <select
               value={assignFormData.childId}
               onChange={(e) => setAssignFormData({ ...assignFormData, childId: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               disabled={loadingChildren}
             >
               <option value="">
@@ -54,7 +54,7 @@ const TherapyAssignModal = ({
               value={assignFormData.notes}
               onChange={(e) => setAssignFormData({ ...assignFormData, notes: e.target.value })}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder={t('therapy.notesPlaceholder', { defaultValue: 'Qo\'shimcha eslatmalar...' })}
             />
           </div>
@@ -70,7 +70,7 @@ const TherapyAssignModal = ({
             <button
               onClick={onAssignSave}
               disabled={assigning || !assignFormData.childId}
-              className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {assigning ? (
                 <>

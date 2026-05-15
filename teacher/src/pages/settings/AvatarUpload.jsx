@@ -52,7 +52,7 @@ const AvatarUpload = ({ user }) => {
     <div className="mb-6 flex items-center gap-4">
       <div className="relative">
         <div
-          className="w-20 h-20 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center text-2xl font-bold overflow-hidden shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
+          className="w-20 h-20 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-2xl font-bold overflow-hidden shrink-0 cursor-pointer hover:opacity-80 transition-opacity"
           onClick={handleAvatarClick}
         >
           {user?.avatar ? (
@@ -73,7 +73,7 @@ const AvatarUpload = ({ user }) => {
         <button
           type="button"
           onClick={handleAvatarClick}
-          className="absolute -bottom-1 -right-1 w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center hover:bg-blue-700 transition-colors shadow-md"
+          className="absolute -bottom-1 -right-1 w-7 h-7 bg-primary-600 text-white rounded-full flex items-center justify-center hover:bg-primary-700 transition-colors shadow-md"
           title={t('profile.changeAvatar', { defaultValue: 'Rasmni o\'zgartirish' })}
         >
           <Camera className="w-4 h-4" />

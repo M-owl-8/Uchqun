@@ -40,7 +40,7 @@ const EmotionalMonitoringSection = ({ records }) => {
                   )}
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-blue-600">{percentage}%</div>
+                  <div className="text-2xl font-bold text-primary-600">{percentage}%</div>
                   <div className="text-xs text-gray-500">{checkedCount} / {totalCount}</div>
                 </div>
               </div>

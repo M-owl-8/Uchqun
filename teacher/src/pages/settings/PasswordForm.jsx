@@ -8,7 +8,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
     <form onSubmit={onSubmit} className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Lock className="w-6 h-6 text-blue-600" />
+          <Lock className="w-6 h-6 text-primary-600" />
           <h2 className="text-xl font-bold text-gray-900">{t('settings.changePassword', { defaultValue: 'Parolni o\'zgartirish' })}</h2>
         </div>
 
@@ -20,7 +20,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.current ? 'text' : 'password'}
                 value={passwordForm.currentPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
               />
               <button
@@ -40,7 +40,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.new ? 'text' : 'password'}
                 value={passwordForm.newPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
                 minLength={8}
               />
@@ -62,7 +62,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={passwordForm.confirmPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
                 minLength={8}
               />
@@ -81,7 +81,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
           <button
             type="submit"
             disabled={savingPassword}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm disabled:opacity-50"
           >
             {savingPassword ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

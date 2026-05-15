@@ -16,7 +16,7 @@ const Toast = ({ id, message, type, duration = 5000 }) => {
     success: 'bg-green-500',
     error: 'bg-red-500',
     warning: 'bg-yellow-500',
-    info: 'bg-blue-500',
+    info: 'bg-primary-500',
   }[type] || 'bg-gray-500';
 
   const icons = {

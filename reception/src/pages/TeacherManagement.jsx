@@ -1,9 +1,9 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
-import { useToast } from '../context/ToastContext';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import { useToast } from '@shared/context/ToastContext';
 import {
   UserCheck,
   Plus,
@@ -20,7 +20,7 @@ import {
   EyeOff,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import ConfirmDialog from '../components/ConfirmDialog';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 
 const TeacherManagement = () => {
   const [teachers, setTeachers] = useState(() => cache.get('reception:teachers') || []);
@@ -250,7 +250,7 @@ const TeacherManagement = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
                     {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
                   </div>
                   <div>

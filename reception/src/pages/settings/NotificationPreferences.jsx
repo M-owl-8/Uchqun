@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import Card from '../../components/Card';
+import Card from '@shared/components/Card';
 import { Bell, Save } from 'lucide-react';
 
 const NotificationPreferences = ({ profileForm, setProfileForm, onSubmit }) => {

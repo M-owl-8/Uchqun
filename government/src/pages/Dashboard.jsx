@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import Card from '../components/Card';
+import Card from '@shared/components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { StaleIndicator } from '../../../shared/components/OfflineBanner';
 import {
@@ -78,6 +78,7 @@ const Dashboard = () => {
       title: t('dashboard.totalSchools', { defaultValue: 'Jami Muassasalar' }),
       value: stats?.schools || 0,
       icon: Building2,
+      // TODO(phase-1): entity-icon color — Schools uses blue-500 as a semantic entity color distinct from primary; confirm whether to keep or replace with primary-*
       color: 'bg-blue-500',
       path: '/government/schools',
     },
@@ -253,6 +254,7 @@ const Dashboard = () => {
                           }`}>
                             {rank}
                           </div>
+                          {/* TODO(phase-1): school icon color — text-blue-600 used as entity color for schools; confirm keep or switch to primary-* */}
                           <Building2 className="w-5 h-5 text-blue-600" />
                           <h3 className="font-bold text-gray-900">{school.name}</h3>
                         </div>

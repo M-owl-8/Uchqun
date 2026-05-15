@@ -8,8 +8,8 @@ const MessageModal = ({ messageSubject, setMessageSubject, messageText, setMessa
       <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-blue-100 rounded-full">
-              <MessageSquare className="w-6 h-6 text-blue-600" />
+            <div className="p-3 bg-primary-100 rounded-full">
+              <MessageSquare className="w-6 h-6 text-primary-600" />
             </div>
             <h2 className="text-2xl font-bold text-gray-900">{t('settings.sendMessageToGovt', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
           </div>
@@ -29,7 +29,7 @@ const MessageModal = ({ messageSubject, setMessageSubject, messageText, setMessa
               value={messageSubject}
               onChange={(e) => setMessageSubject(e.target.value)}
               placeholder={t('profile.subjectPlaceholder')}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
           <div>
@@ -39,7 +39,7 @@ const MessageModal = ({ messageSubject, setMessageSubject, messageText, setMessa
               onChange={(e) => setMessageText(e.target.value)}
               rows={6}
               placeholder={t('profile.messagePlaceholder')}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -55,7 +55,7 @@ const MessageModal = ({ messageSubject, setMessageSubject, messageText, setMessa
           <button
             onClick={onSend}
             disabled={sendingMessage || !messageSubject.trim() || !messageText.trim()}
-            className="flex-1 px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {sendingMessage ? (
               <>

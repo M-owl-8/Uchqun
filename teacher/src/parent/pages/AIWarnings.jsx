@@ -58,7 +58,7 @@ const AIWarnings = () => {
       case 'medium':
         return 'bg-yellow-100 text-yellow-800 border-yellow-300';
       default:
-        return 'bg-blue-100 text-blue-800 border-blue-300';
+        return 'bg-primary-100 text-primary-800 border-primary-300';
     }
   };
 
@@ -164,8 +164,8 @@ const AIWarnings = () => {
                   </div>
                   <p className="text-gray-700 mb-3">{warning.message}</p>
                   {warning.aiAnalysis && (
-                    <div className="p-3 bg-blue-50 rounded-lg mb-3">
-                      <p className="text-sm text-blue-900">
+                    <div className="p-3 bg-primary-50 rounded-lg mb-3">
+                      <p className="text-sm text-primary-900">
                         <strong>{t('warnings.aiAnalysis', { defaultValue: 'AI Tahlil' })}:</strong>{' '}
                         {warning.aiAnalysis}
                       </p>

@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { 
   Baby,
   Mail,
@@ -75,7 +75,7 @@ const ParentManagement = () => {
               placeholder={t('parentsPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent w-full md:w-64"
+              className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
             />
           </div>
         </div>
@@ -87,7 +87,7 @@ const ParentManagement = () => {
             <Card key={parent.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center text-blue-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
                     {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
                   </div>
                   <div>
@@ -111,7 +111,7 @@ const ParentManagement = () => {
                   </div>
                 )}
                 {parent.children && parent.children.length > 0 && (
-                  <div className="flex items-center gap-2 text-sm text-blue-600 font-medium">
+                  <div className="flex items-center gap-2 text-sm text-primary-600 font-medium">
                     <Baby className="w-4 h-4" />
                     <span>{t('parentsPage.children', { count: parent.children.length })}</span>
                   </div>
@@ -132,7 +132,7 @@ const ParentManagement = () => {
                     {parent.children.map(child => (
                       <div key={child.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
                         <div className="flex items-center gap-2">
-                          <Baby className="w-4 h-4 text-blue-400" />
+                          <Baby className="w-4 h-4 text-primary-400" />
                           <span className="text-sm text-gray-700">
                             {child.firstName} {child.lastName}
                           </span>

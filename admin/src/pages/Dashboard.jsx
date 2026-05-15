@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import Card from '../components/Card';
+import Card from '@shared/components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
 import {
@@ -125,6 +125,7 @@ const Dashboard = () => {
     return <SkeletonDashboard stats={5} cards={2} />;
   }
 
+  // TODO(phase-1): entity-icon color palette — each stat card uses a distinct color per entity type; confirm whether these should stay as semantic colors or all move to primary-*
   const statisticsCards = [
     {
       title: t('dashboard.receptions', { defaultValue: 'Receptions' }),

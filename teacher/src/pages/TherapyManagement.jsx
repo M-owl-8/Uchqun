@@ -249,7 +249,7 @@ const TherapyManagement = () => {
   const getTherapyColor = (type) => {
     switch (type) {
       case 'music': return 'bg-purple-50 text-purple-600';
-      case 'video': return 'bg-blue-50 text-blue-600';
+      case 'video': return 'bg-primary-50 text-primary-600';
       case 'content': return 'bg-green-50 text-green-600';
       default: return 'bg-gray-50 text-gray-600';
     }
@@ -285,7 +285,7 @@ const TherapyManagement = () => {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           {t('therapy.create', { defaultValue: 'Yangi Terapiya' })}

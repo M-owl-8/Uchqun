@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
-import LoadingSpinner from '../components/LoadingSpinner';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Crown, Upload, FileText, Mail, Phone, X, CheckCircle, MessageSquare } from 'lucide-react';
 const AdminRegister = () => {
   const { t } = useTranslation();
@@ -328,7 +328,7 @@ const AdminRegister = () => {
             </div>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-blue-800">
+          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 text-sm text-primary-800">
             <p className="font-semibold mb-1">{t('adminRegister.noticeTitle')}</p>
             <p>{t('adminRegister.noticeBody')}</p>
             {formData.telegramUsername && (

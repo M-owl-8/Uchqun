@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import Card from '../components/Card';
-import LoadingSpinner from '../components/LoadingSpinner';
+import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
+// TODO(phase-1): star rating color palette — 5=green, 4=blue, 3=yellow, 2=orange, 1=red are semantic data-visualization colors for distribution bars; confirm whether blue-500 for 4-star should stay or use a different token
 const STAR_COLORS = {
   5: 'bg-green-500',
   4: 'bg-blue-500',

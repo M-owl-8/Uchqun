@@ -6,7 +6,7 @@ import React from 'react';
 
 // ---- shared mocks ----
 const mockToastError = vi.fn();
-vi.mock('../../context/ToastContext', () => ({
+vi.mock('@shared/context/ToastContext', () => ({
   useToast: () => ({
     error: mockToastError,
     success: vi.fn(),

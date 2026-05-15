@@ -9,7 +9,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
     <form onSubmit={onSubmit} className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <User className="w-6 h-6 text-blue-600" />
+          <User className="w-6 h-6 text-primary-600" />
           <h2 className="text-xl font-bold text-gray-900">{t('settings.profileInfo', { defaultValue: 'Profil ma\'lumotlari' })}</h2>
         </div>
 
@@ -24,7 +24,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
                 type="text"
                 value={profileForm.firstName}
                 onChange={(e) => setProfileForm({ ...profileForm, firstName: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
               />
             </div>
@@ -35,7 +35,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
                 type="text"
                 value={profileForm.lastName}
                 onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
-                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
                 required
               />
             </div>
@@ -64,7 +64,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
               type="tel"
               value={profileForm.phone}
               onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
               placeholder="+998 90 123 45 67"
             />
           </div>
@@ -74,7 +74,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-blue-600 text-white rounded-xl font-bold hover:bg-blue-700 transition-colors shadow-sm disabled:opacity-50"
+            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm disabled:opacity-50"
           >
             {saving ? (
               <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />

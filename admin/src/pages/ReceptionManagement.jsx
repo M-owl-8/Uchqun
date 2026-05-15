@@ -1,11 +1,11 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import { useToast } from '../context/ToastContext';
+import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import { Shield, CheckCircle, Clock, Eye, Plus, Edit2, Trash2 } from 'lucide-react';
-import LoadingSpinner from '../components/LoadingSpinner';
-import ConfirmDialog from '../components/ConfirmDialog';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import ReceptionFormModal from './reception/ReceptionFormModal';
 import ReceptionDetailPanel from './reception/ReceptionDetailPanel';
 

@@ -10,6 +10,7 @@ import {
   Settings
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -69,7 +70,7 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       <div className="p-4 border-t border-gray-100 bg-sidebar-blue/25">
-        <div className="flex items-center gap-3 px-2">
+        <div className="flex items-center gap-3 px-2 mb-3">
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm bg-sidebar-blue text-sidebar-navy">
             {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
           </div>
@@ -81,6 +82,7 @@ const Sidebar = ({ onClose }) => {
             <p className="text-xs font-semibold mt-0.5 text-sidebar-navy">{t('role.reception')}</p>
           </div>
         </div>
+        <LanguageSwitcher />
       </div>
     </div>
   );

@@ -3,6 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import {
   Home,
   Building2,
+  GraduationCap,
+  UserCheck,
+  Users,
   Star,
   Shield,
   LogOut,
@@ -20,6 +23,9 @@ const Sidebar = ({ onClose }) => {
   const navigation = [
     { name: t('nav.dashboard', { defaultValue: 'Dashboard' }), href: '/government', icon: Home },
     { name: t('nav.schools', { defaultValue: 'Muassasalar' }), href: '/government/schools', icon: Building2 },
+    { name: t('nav.students', { defaultValue: 'O\'quvchilar' }), href: '/government/students', icon: GraduationCap },
+    { name: t('nav.teachers', { defaultValue: 'O\'qituvchilar' }), href: '/government/teachers', icon: UserCheck },
+    { name: t('nav.parents', { defaultValue: 'Ota-onalar' }), href: '/government/parents', icon: Users },
     { name: t('nav.ratings', { defaultValue: 'Reytinglar' }), href: '/government/ratings', icon: Star },
     { name: t('nav.platform', { defaultValue: 'Platform' }), href: '/government/platform', icon: LayoutDashboard },
     { name: t('nav.profile', { defaultValue: 'Profil' }), href: '/government/profile', icon: User },
@@ -30,6 +36,7 @@ const Sidebar = ({ onClose }) => {
 
   return (
     <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-100 shadow-sm">
+      {/* TODO(phase-1): decide if bg-primary-600 header is intentional brand differentiation from other portals (bg-sidebar-navy) */}
       <div className="flex items-center gap-3 px-6 h-20 bg-primary-600">
         <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
           <Shield className="w-5 h-5 text-white" strokeWidth={1.5} />

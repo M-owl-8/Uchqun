@@ -1,4 +1,4 @@
-import LoadingSpinner from '../../components/LoadingSpinner';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { MessageSquare, X } from 'lucide-react';
 
@@ -63,10 +63,10 @@ const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
                 {msg.reply && (
                   <div className="border-t border-gray-200 pt-4 mt-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="p-2 bg-blue-100 rounded-full">
-                        <MessageSquare className="w-4 h-4 text-blue-600" />
+                      <div className="p-2 bg-primary-100 rounded-full">
+                        <MessageSquare className="w-4 h-4 text-primary-600" />
                       </div>
-                      <p className="text-sm font-medium text-blue-700">{t('settings.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
+                      <p className="text-sm font-medium text-primary-700">{t('settings.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
                       <span className="text-xs text-gray-500 ml-auto">
                         {new Date(msg.repliedAt).toLocaleDateString(i18n.language, {
                           year: 'numeric',
@@ -77,7 +77,7 @@ const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
                         })}
                       </span>
                     </div>
-                    <p className="text-gray-800 bg-blue-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                    <p className="text-gray-800 bg-primary-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
                   </div>
                 )}
               </div>

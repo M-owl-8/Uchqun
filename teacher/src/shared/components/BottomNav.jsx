@@ -1,4 +1,4 @@
-﻿import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Home, LogOut, UserCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -47,18 +47,18 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
               key={item.name}
               to={item.href}
               className={`flex-1 min-w-[72px] max-w-[96px] flex flex-col items-center justify-center h-full rounded-lg transition-colors ${
-                active ? 'text-blue-600' : 'text-gray-500'
+                active ? 'text-primary-600' : 'text-gray-500'
               }`}
             >
               <div className="relative">
-                <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-blue-600' : 'text-gray-500'}`} />
+                <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-primary-600' : 'text-gray-500'}`} />
                 {item.badge > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] leading-none font-bold rounded-full px-1.5 py-1 border-2 border-white">
                     {item.badge > 9 ? '9+' : item.badge}
                   </span>
                 )}
               </div>
-              <span className={`text-[11px] font-medium text-center leading-tight ${active ? 'text-blue-600' : 'text-gray-500'}`}>
+              <span className={`text-[11px] font-medium text-center leading-tight ${active ? 'text-primary-600' : 'text-gray-500'}`}>
                 {item.name}
               </span>
             </Link>
