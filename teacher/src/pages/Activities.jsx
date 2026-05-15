@@ -6,6 +6,7 @@ import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
+import * as cache from '../../../shared/utils/cache';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 import ActivityCard from './activities/ActivityCard';
 import ActivityDetailsModal from './activities/ActivityDetailsModal';
@@ -53,12 +54,19 @@ const Activities = () => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isTeacher]);
 
+  const getParentsList = async () => {
+    const cached = cache.get('teacher:parents');
+    if (cached) return cached;
+    const parentsRes = await api.get('/teacher/parents');
+    const list = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
+    cache.set('teacher:parents', list);
+    return list;
+  };
+
   const loadParents = async () => {
     try {
-      const parentsRes = await api.get('/teacher/parents');
-      const parentsList = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
+      const parentsList = await getParentsList();
       setParents(parentsList);
-
       if (parentsList.length === 1 && !formData.parentId) {
         const parentId = parentsList[0].id;
         setFormData(prev => ({ ...prev, parentId }));
@@ -71,10 +79,8 @@ const Activities = () => {
 
   const loadChildrenForParent = async (parentId) => {
     try {
-      const parentsRes = await api.get('/teacher/parents');
-      const parentsList = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
+      const parentsList = await getParentsList();
       setParents(parentsList);
-
       const selectedParent = parentsList.find(p => p.id === parentId);
       if (selectedParent && selectedParent.children && Array.isArray(selectedParent.children)) {
         setChildren(selectedParent.children);
@@ -93,11 +99,15 @@ const Activities = () => {
     }
   };
 
-  const loadActivities = async () => {
+  const loadActivities = async (bust = false) => {
+    const cached = !bust && cache.get('teacher:activities');
+    if (cached) { setActivities(cached); setLoading(false); return; }
     try {
       setLoading(true);
       const response = await api.get('/activities');
-      setActivities(Array.isArray(response.data) ? response.data : []);
+      const data = Array.isArray(response.data) ? response.data : [];
+      cache.set('teacher:activities', data);
+      setActivities(data);
     } catch (error) {
       showError(error.response?.data?.error || t('activitiesPage.toastLoadError'));
       setActivities([]);
@@ -183,7 +193,7 @@ const Activities = () => {
         try {
           await api.delete(`/activities/${activityId}`);
           success(t('activitiesPage.toastDelete'));
-          loadActivities();
+          loadActivities(true);
         } catch (error) {
           showError(error.response?.data?.error || t('activitiesPage.toastError'));
         }
@@ -212,7 +222,7 @@ const Activities = () => {
       }
 
       setShowModal(false);
-      loadActivities();
+      loadActivities(true);
     } catch (error) {
       showError(error.response?.data?.error || t('activitiesPage.toastError'));
     }

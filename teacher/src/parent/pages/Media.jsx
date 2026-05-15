@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
+import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -469,10 +470,15 @@ const Media = () => {
     }
 
     const loadMedia = async () => {
+      const key = `parent:media:${selectedChildId}`;
+      const cached = cache.get(key);
+      if (cached) { setMedia(cached); setLoading(false); return; }
       try {
         const response = await api.get(`/media?childId=${selectedChildId}`);
         const mediaData = response.data?.media || response.data || [];
-        setMedia(Array.isArray(mediaData) ? mediaData : []);
+        const data = Array.isArray(mediaData) ? mediaData : [];
+        cache.set(key, data);
+        setMedia(data);
       } catch (error) {
         setMedia([]);
       } finally {

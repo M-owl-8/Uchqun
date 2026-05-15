@@ -4,6 +4,7 @@ import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
+import * as cache from '../../../shared/utils/cache';
 import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 import MediaCard from './media/MediaCard';
@@ -55,13 +56,13 @@ const Media = () => {
 
   const loadChildren = async () => {
     try {
-      const parentsRes = await api.get('/teacher/parents');
-      const allChildren = [];
-      parentsRes.data.parents.forEach(parent => {
-        if (parent.children && Array.isArray(parent.children)) {
-          allChildren.push(...parent.children);
-        }
-      });
+      let parentsList = cache.get('teacher:parents');
+      if (!parentsList) {
+        const parentsRes = await api.get('/teacher/parents');
+        parentsList = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
+        cache.set('teacher:parents', parentsList);
+      }
+      const allChildren = parentsList.flatMap(p => Array.isArray(p.children) ? p.children : []);
       setChildList(allChildren);
       if (allChildren.length > 0 && !formData.childId) {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
@@ -69,11 +70,15 @@ const Media = () => {
     } catch (error) { void error; }
   };
 
-  const loadMedia = async () => {
+  const loadMedia = async (bust = false) => {
+    const cached = !bust && cache.get('teacher:media');
+    if (cached) { setMedia(cached); setLoading(false); return; }
     try {
       setLoading(true);
       const response = await api.get('/media');
-      setMedia(Array.isArray(response.data) ? response.data : []);
+      const data = Array.isArray(response.data) ? response.data : [];
+      cache.set('teacher:media', data);
+      setMedia(data);
     } catch (error) {
       showError(error.response?.data?.error || t('mediaPage.toastLoadError'));
       setMedia([]);
@@ -118,7 +123,7 @@ const Media = () => {
         try {
           await api.delete(`/media/${mediaId}`);
           success(t('mediaPage.toastDelete'));
-          loadMedia();
+          loadMedia(true);
         } catch (error) {
           showError(error.response?.data?.error || t('mediaPage.toastError'));
         }
@@ -167,7 +172,7 @@ const Media = () => {
       }
 
       setShowModal(false);
-      loadMedia();
+      loadMedia(true);
     } catch (error) {
       const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || error.message || t('mediaPage.toastError');
       showError(errorMessage);

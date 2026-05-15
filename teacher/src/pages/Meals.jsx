@@ -21,6 +21,7 @@ import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
+import * as cache from '../../../shared/utils/cache';
 import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 
@@ -78,13 +79,13 @@ const Meals = () => {
 
   const loadChildren = async () => {
     try {
-      const parentsRes = await api.get('/teacher/parents');
-      const allChildren = [];
-      parentsRes.data.parents.forEach(parent => {
-        if (parent.children && Array.isArray(parent.children)) {
-          allChildren.push(...parent.children);
-        }
-      });
+      let parentsList = cache.get('teacher:parents');
+      if (!parentsList) {
+        const parentsRes = await api.get('/teacher/parents');
+        parentsList = Array.isArray(parentsRes.data.parents) ? parentsRes.data.parents : [];
+        cache.set('teacher:parents', parentsList);
+      }
+      const allChildren = parentsList.flatMap(p => Array.isArray(p.children) ? p.children : []);
       setChildren(allChildren);
       if (allChildren.length > 0 && !formData.childId) {
         setFormData(prev => ({ ...prev, childId: allChildren[0].id }));
@@ -92,11 +93,15 @@ const Meals = () => {
     } catch (error) { showError(error.response?.data?.error || error.message); }
   };
 
-  const loadMeals = async () => {
+  const loadMeals = async (bust = false) => {
+    const cached = !bust && cache.get('teacher:meals');
+    if (cached) { setMeals(cached); setLoading(false); return; }
     try {
       setLoading(true);
       const response = await api.get('/meals');
-      setMeals(Array.isArray(response.data) ? response.data : []);
+      const data = Array.isArray(response.data) ? response.data : [];
+      cache.set('teacher:meals', data);
+      setMeals(data);
     } catch (error) {
       showError(error.response?.data?.error || t('mealsPage.form.toastLoadError'));
       setMeals([]);
@@ -145,7 +150,7 @@ const Meals = () => {
         try {
           await api.delete(`/meals/${mealId}`);
           success(t('mealsPage.form.toastDelete'));
-          loadMeals();
+          loadMeals(true);
         } catch (error) {
           showError(error.response?.data?.error || t('mealsPage.form.toastError'));
         }
@@ -170,7 +175,7 @@ const Meals = () => {
       }
 
       setShowModal(false);
-      loadMeals();
+      loadMeals(true);
     } catch (error) {
       showError(error.response?.data?.error || t('mealsPage.form.toastError'));
     }

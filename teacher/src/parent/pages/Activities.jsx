@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
+import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -32,10 +33,15 @@ const Activities = () => {
     }
 
     const loadActivities = async () => {
+      const key = `parent:activities:${selectedChildId}`;
+      const cached = cache.get(key);
+      if (cached) { setActivities(cached); setLoading(false); return; }
       try {
         const response = await api.get(`/activities?childId=${selectedChildId}`);
         const activitiesData = response.data?.activities || response.data || [];
-        setActivities(Array.isArray(activitiesData) ? activitiesData : []);
+        const data = Array.isArray(activitiesData) ? activitiesData : [];
+        cache.set(key, data);
+        setActivities(data);
       } catch (error) {
         setActivities([]);
       } finally {
