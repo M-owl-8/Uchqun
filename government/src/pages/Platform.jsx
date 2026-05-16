@@ -28,7 +28,7 @@ const Platform = () => {
   const [editPhone, setEditPhone] = useState('');
   const [editPassword, setEditPassword] = useState('');
   const [editSaving, setEditSaving] = useState(false);
-  const [showPasswords, setShowPasswords] = useState({ create: false, edit: false });
+  const [showPasswords, setShowPasswords] = useState({ edit: false });
 
   const [schools, setSchools] = useState([]);
   const [loadingSchools, setLoadingSchools] = useState(true);
@@ -159,6 +159,7 @@ const Platform = () => {
     setEditEmail(adm.email || '');
     setEditPhone(adm.phone || '');
     setEditPassword('');
+    setShowPasswords({ edit: false });
   };
 
   const handleUpdateAdmin = async (e) => {
@@ -229,6 +230,7 @@ const Platform = () => {
     setEditGovLastName(gov.lastName || '');
     setEditGovEmail(gov.email || '');
     setEditGovPassword('');
+    setShowPasswords({ edit: false });
   };
 
   const handleUpdateGovernment = async (e) => {

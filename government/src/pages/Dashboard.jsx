@@ -18,19 +18,18 @@ import { useTranslation } from 'react-i18next';
 
 const CACHE_KEY = 'government:dashboard';
 
-// Two-state badge only \u2014 pending / approved
-// TODO(phase-2): backend should support intermediate states (e.g., "under review")
 const StatusBadge = ({ status }) => {
+  const { t } = useTranslation();
   if (status === 'approved') {
     return (
       <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
-        Tasdiqlangan
+        {t('dashboard.statusApproved')}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
-      Kutilmoqda
+      {t('dashboard.statusPending')}
     </span>
   );
 };
@@ -118,7 +117,7 @@ const Dashboard = () => {
           )}
           <button
             onClick={() => loadData(true)}
-            aria-label="Ma'lumotlarni yangilash"
+            aria-label={t('dashboard.refresh')}
             className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-md transition-colors"
           >
             <RefreshCw className="w-3.5 h-3.5" />
@@ -166,10 +165,10 @@ const Dashboard = () => {
               <table className="w-full text-sm">
                 <thead>
                   <tr className="text-xs text-gray-400 border-b border-gray-100">
-                    <th className="text-left px-5 py-2.5 font-medium">Ism</th>
-                    <th className="text-left px-5 py-2.5 font-medium hidden sm:table-cell">Email</th>
-                    <th className="text-left px-5 py-2.5 font-medium hidden md:table-cell">Sana</th>
-                    <th className="text-left px-5 py-2.5 font-medium">Holat</th>
+                    <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colName')}</th>
+                    <th className="text-left px-5 py-2.5 font-medium hidden sm:table-cell">{t('dashboard.colEmail')}</th>
+                    <th className="text-left px-5 py-2.5 font-medium hidden md:table-cell">{t('dashboard.colDate')}</th>
+                    <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colStatus')}</th>
                   </tr>
                 </thead>
                 <tbody>

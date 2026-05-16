@@ -18,11 +18,11 @@ export default function RegistrationsTab({
   const { t } = useTranslation();
   return (
     <>
-      <div className="text-center">
-        <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
+      <div>
+        <h2 className="text-xl font-semibold text-inkGreen-900 mb-1">
           {t('government.registrationsTitle', { defaultValue: "Admin Ro'yxatdan O'tish So'rovlari" })}
         </h2>
-        <p className="text-gray-600 font-medium">{t('government.registrationsSubtitle', { defaultValue: "Yangi admin so'rovlarini ko'rib chiqing va tasdiqlang" })}</p>
+        <p className="text-sm text-gray-500">{t('government.registrationsSubtitle', { defaultValue: "Yangi admin so'rovlarini ko'rib chiqing va tasdiqlang" })}</p>
       </div>
 
       <Card className="p-6 space-y-4">
@@ -41,15 +41,15 @@ export default function RegistrationsTab({
                       <div className="flex items-center gap-4 mt-1 text-sm text-gray-600">
                         <span className="flex items-center gap-1"><Mail className="w-4 h-4" />{request.email}</span>
                         {request.phone && <span className="flex items-center gap-1"><Phone className="w-4 h-4" />{request.phone}</span>}
-                        <span className="flex items-center gap-1"><MessageSquare className="w-4 h-4" />{request.telegramUsername ? `@${request.telegramUsername}` : 'Telegram username kiritilmagan'}</span>
+                        <span className="flex items-center gap-1"><MessageSquare className="w-4 h-4" />{request.telegramUsername ? `@${request.telegramUsername}` : t('government.telegramNotSet')}</span>
                       </div>
                     </div>
                     {(request.passportNumber || request.location) && (
                       <div className="text-sm text-gray-600 space-y-1">
-                        {request.passportNumber && <p>Passport: {request.passportNumber} {request.passportSeries && `(${request.passportSeries})`}</p>}
-                        {request.location && <p>Manzil: {request.location}</p>}
-                        {request.region && <p>Viloyat: {request.region}</p>}
-                        {request.city && <p>Shahar: {request.city}</p>}
+                        {request.passportNumber && <p>{t('government.passport')}: {request.passportNumber} {request.passportSeries && `(${request.passportSeries})`}</p>}
+                        {request.location && <p>{t('government.address')}: {request.location}</p>}
+                        {request.region && <p>{t('schoolDetail.region')}: {request.region}</p>}
+                        {request.city && <p>{t('schoolDetail.city')}: {request.city}</p>}
                       </div>
                     )}
                     <div className="flex items-center gap-4 pt-2 border-t border-gray-100">
@@ -57,7 +57,7 @@ export default function RegistrationsTab({
                       {request.certificateFile && <a href={request.certificateFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Guvohnoma</a>}
                       {request.passportFile && <a href={request.passportFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Passport/ID</a>}
                     </div>
-                    <p className="text-xs text-gray-500">{"So'rov yuborilgan:"} {new Date(request.createdAt).toLocaleString('uz-UZ')}</p>
+                    <p className="text-xs text-gray-500">{t('government.submittedAt')} {new Date(request.createdAt).toLocaleString()}</p>
                   </div>
                   <div className="flex flex-col gap-2">
                     <Button variant="primary" size="sm" onClick={() => onApprove(request.id)} disabled={approvingRequest} loading={approvingRequest}>

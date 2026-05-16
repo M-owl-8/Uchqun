@@ -45,11 +45,11 @@ export default function AdminsTab({
 
   return (
     <>
-      <div className="text-center">
-        <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
+      <div>
+        <h2 className="text-xl font-semibold text-inkGreen-900 mb-1">
           {t('government.createTitle')}
         </h2>
-        <p className="text-gray-600 font-medium">{t('government.createSubtitle')}</p>
+        <p className="text-sm text-gray-500">{t('government.createSubtitle')}</p>
       </div>
 
       <Card className="p-8">

@@ -206,7 +206,7 @@ const SchoolDetail = () => {
                   <Star key={s} className={`w-4 h-4 ${s <= Math.round(school.averageRating || 0) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200'}`} />
                 ))}
               </div>
-              <p className="text-xs text-gray-400">{school.ratingsCount || 0} ta baho</p>
+              <p className="text-xs text-gray-400">{school.ratingsCount || 0} {t('schoolDetail.ratingsCount')}</p>
             </div>
           </div>
         </div>

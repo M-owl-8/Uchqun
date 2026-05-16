@@ -21,11 +21,11 @@ export default function GovernmentTab({
   const [showCreatePassword, setShowCreatePassword] = useState(false);
   return (
     <>
-      <div className="text-center">
-        <h2 className="text-3xl font-black text-gray-900 tracking-tight mb-2">
+      <div>
+        <h2 className="text-xl font-semibold text-inkGreen-900 mb-1">
           {t('government.createGovernmentTitle', { defaultValue: 'Davlat Foydalanuvchisini Yaratish' })}
         </h2>
-        <p className="text-gray-600 font-medium">{t('government.createGovernmentSubtitle', { defaultValue: 'Government panel uchun yangi foydalanuvchi yarating' })}</p>
+        <p className="text-sm text-gray-500">{t('government.createGovernmentSubtitle', { defaultValue: 'Government panel uchun yangi foydalanuvchi yarating' })}</p>
       </div>
 
       <Card className="p-8">

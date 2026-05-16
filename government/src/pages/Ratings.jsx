@@ -218,7 +218,7 @@ const SchoolCard = ({ school, showRank }) => {
                   disabled={reviewsLoading}
                   className="w-full py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 rounded-lg transition-colors disabled:opacity-50"
                 >
-                  {reviewsLoading ? <LoadingSpinner size="sm" /> : t('ratings.showReviews')}
+                  {reviewsLoading ? <LoadingSpinner size="sm" /> : t('ratings.loadMore')}
                 </button>
               )}
             </>

@@ -38,7 +38,14 @@
     "totalParents": "Jami Ota-onalar",
     "lastUpdated": "Oxirgi yangilanish",
     "quickLinks": "Tezkor havolalar",
-    "activity": "Mening faoliyatim"
+    "activity": "Mening faoliyatim",
+    "statusApproved": "Tasdiqlangan",
+    "statusPending": "Kutilmoqda",
+    "colName": "Ism",
+    "colEmail": "Email",
+    "colDate": "Sana",
+    "colStatus": "Holat",
+    "refresh": "Ma'lumotlarni yangilash"
   },
   "schools": {
     "title": "Muassasalar",
@@ -74,6 +81,7 @@
     "students": "O'quvchilar",
     "ratings": "Baholar",
     "rating": "Reyting",
+    "ratingsCount": "ta baho",
     "active": "Faol",
     "inactive": "Nofaol"
   },
@@ -82,6 +90,7 @@
     "subtitle": "Tizimdagi barcha o'quvchilar ro'yxati",
     "total": "Jami o'quvchilar",
     "notFound": "O'quvchilar topilmadi",
+    "searchPlaceholder": "Ism yoki maktab...",
     "parent": "Ota-ona",
     "dob": "Tug'ilgan sana"
   },
@@ -89,7 +98,8 @@
     "title": "Barcha o'qituvchilar",
     "subtitle": "Tizimdagi barcha o'qituvchilar ro'yxati",
     "total": "Jami o'qituvchilar",
-    "notFound": "O'qituvchilar topilmadi"
+    "notFound": "O'qituvchilar topilmadi",
+    "searchPlaceholder": "Ism yoki email..."
   },
   "parentsPage": {
     "title": "Barcha ota-onalar",
@@ -108,6 +118,7 @@
     "distribution": "Taqsimot",
     "showReviews": "Baholarni ko'rsatish",
     "hideReviews": "Baholarni yashirish",
+    "loadMore": "Ko'proq yuklash",
     "noComment": "Izoh yo'q",
     "schoolsCount": "Muassasalar"
   },
@@ -122,7 +133,8 @@
     "active": "Faol",
     "inactive": "Nofaol",
     "createdAt": "Yaratilgan sana",
-    "logout": "Chiqish"
+    "logout": "Chiqish",
+    "logoutDesc": "Tizimdan chiqish uchun quyidagi tugmani bosing"
   },
   "settings": {
     "title": "Sozlamalar",
@@ -273,6 +285,10 @@
     "rejectRequest": "So'rovni rad etish",
     "rejectionReason": "Rad etish sababi (ixtiyoriy)",
     "rejectionReasonPlaceholder": "Rad etish sababini kiriting...",
+    "telegramNotSet": "Telegram username kiritilmagan",
+    "submittedAt": "So'rov yuborilgan:",
+    "passport": "Passport",
+    "address": "Manzil",
     "status": {
       "loadingAdmins": "Adminlar yuklanmoqda...",
       "loadingSchools": "Muassasalar yuklanmoqda..."

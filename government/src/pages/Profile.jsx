@@ -102,7 +102,7 @@ const Profile = () => {
               {t('profile.logout', { defaultValue: 'Chiqish' })}
             </h3>
             <p className="text-sm text-gray-600">
-              Tizimdan chiqish uchun quyidagi tugmani bosing
+              {t('profile.logoutDesc')}
             </p>
           </div>
           <button

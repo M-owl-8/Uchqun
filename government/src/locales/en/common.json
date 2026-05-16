@@ -38,7 +38,14 @@
     "totalParents": "Total Parents",
     "lastUpdated": "Last updated",
     "quickLinks": "Quick links",
-    "activity": "My Activity"
+    "activity": "My Activity",
+    "statusApproved": "Approved",
+    "statusPending": "Pending",
+    "colName": "Name",
+    "colEmail": "Email",
+    "colDate": "Date",
+    "colStatus": "Status",
+    "refresh": "Refresh data"
   },
   "schools": {
     "title": "Schools",
@@ -74,6 +81,7 @@
     "students": "Students",
     "ratings": "Ratings",
     "rating": "Rating",
+    "ratingsCount": "ratings",
     "active": "Active",
     "inactive": "Inactive"
   },
@@ -82,6 +90,7 @@
     "subtitle": "All students registered in the system",
     "total": "Total students",
     "notFound": "No students found",
+    "searchPlaceholder": "Name or school...",
     "parent": "Parent",
     "dob": "Date of birth"
   },
@@ -89,7 +98,8 @@
     "title": "All Teachers",
     "subtitle": "All teachers registered in the system",
     "total": "Total teachers",
-    "notFound": "No teachers found"
+    "notFound": "No teachers found",
+    "searchPlaceholder": "Name or email..."
   },
   "parentsPage": {
     "title": "All Parents",
@@ -108,6 +118,7 @@
     "distribution": "Distribution",
     "showReviews": "Show Reviews",
     "hideReviews": "Hide Reviews",
+    "loadMore": "Load more",
     "noComment": "No comment",
     "schoolsCount": "Schools"
   },
@@ -122,7 +133,8 @@
     "active": "Active",
     "inactive": "Inactive",
     "createdAt": "Created date",
-    "logout": "Logout"
+    "logout": "Logout",
+    "logoutDesc": "Click the button below to log out of the system"
   },
   "settings": {
     "title": "Settings",
@@ -273,6 +285,10 @@
     "rejectRequest": "Reject Request",
     "rejectionReason": "Rejection reason (optional)",
     "rejectionReasonPlaceholder": "Enter rejection reason...",
+    "telegramNotSet": "Telegram username not provided",
+    "submittedAt": "Submitted:",
+    "passport": "Passport",
+    "address": "Address",
     "status": {
       "loadingAdmins": "Loading admins...",
       "loadingSchools": "Loading schools..."
