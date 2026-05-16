@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
@@ -10,6 +10,29 @@ import GovernmentTab from '../components/tabs/GovernmentTab';
 import RegistrationsTab from '../components/tabs/RegistrationsTab';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
 
+const useApiCache = (url, cacheKey) => {
+  const [data, setData] = useState(() => cache.get(cacheKey) || []);
+  const [loading, setLoading] = useState(!cache.get(cacheKey));
+
+  const refresh = useCallback(() =>
+    api.get(url).then(res => {
+      const fresh = res.data?.data || [];
+      cache.set(cacheKey, fresh);
+      setData(fresh);
+      return fresh;
+    }),
+    [url, cacheKey]
+  );
+
+  useEffect(() => {
+    if (cache.get(cacheKey)) { refresh().catch(() => {}); return; }
+    setLoading(true);
+    refresh().catch(() => {}).finally(() => setLoading(false));
+  }, [cacheKey, refresh]);
+
+  return [data, setData, loading, refresh];
+};
+
 const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
 
 const Platform = () => {
@@ -18,10 +41,10 @@ const Platform = () => {
 
   const [activeTab, setActiveTab] = useState('admins');
   const [confirmDialog, setConfirmDialog] = useState(null);
+  const [creatingAdmin, setCreatingAdmin] = useState(false);
 
-  const [loading, setLoading] = useState(false);
-  const [admins, setAdmins] = useState(() => cache.get('platform:admins') || []);
-  const [loadingAdmins, setLoadingAdmins] = useState(!cache.get('platform:admins'));
+  // admins
+  const [admins, setAdmins, loadingAdmins, refreshAdmins] = useApiCache('/government/admins', 'platform:admins');
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [editFirstName, setEditFirstName] = useState('');
   const [editLastName, setEditLastName] = useState('');
@@ -31,22 +54,22 @@ const Platform = () => {
   const [editSaving, setEditSaving] = useState(false);
   const [showPasswords, setShowPasswords] = useState({ edit: false });
 
-  const [schools, setSchools] = useState(() => cache.get('platform:schools') || []);
-  const [loadingSchools, setLoadingSchools] = useState(!cache.get('platform:schools'));
+  // schools
+  const [schools, , loadingSchools] = useApiCache('/government/schools-list', 'platform:schools');
 
-  const [messages, setMessages] = useState(() => cache.get('platform:messages') || []);
-  const [loadingMessages, setLoadingMessages] = useState(!cache.get('platform:messages'));
+  // messages
+  const [messages, , loadingMessages, refreshMessages] = useApiCache('/government/messages', 'platform:messages');
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [replying, setReplying] = useState(false);
 
+  // government users
+  const [governments, setGovernments, loadingGovernments, refreshGovernments] = useApiCache('/government/users', 'platform:governments');
   const [govFirstName, setGovFirstName] = useState('');
   const [govLastName, setGovLastName] = useState('');
   const [govEmail, setGovEmail] = useState('');
   const [govPassword, setGovPassword] = useState('');
   const [govLoading, setGovLoading] = useState(false);
-  const [governments, setGovernments] = useState(() => cache.get('platform:governments') || []);
-  const [loadingGovernments, setLoadingGovernments] = useState(!cache.get('platform:governments'));
   const [editingGovernment, setEditingGovernment] = useState(null);
   const [editGovFirstName, setEditGovFirstName] = useState('');
   const [editGovLastName, setEditGovLastName] = useState('');
@@ -54,6 +77,7 @@ const Platform = () => {
   const [editGovPassword, setEditGovPassword] = useState('');
   const [editGovSaving, setEditGovSaving] = useState(false);
 
+  // registrations (not cached — always fresh, status changes frequently)
   const [registrationRequests, setRegistrationRequests] = useState([]);
   const [loadingRegistrations, setLoadingRegistrations] = useState(true);
   const [selectedRequest, setSelectedRequest] = useState(null);
@@ -61,50 +85,6 @@ const Platform = () => {
   const [rejectingRequest, setRejectingRequest] = useState(false);
   const [rejectionReason, setRejectionReason] = useState('');
   const [approvedCredentials, setApprovedCredentials] = useState(null);
-
-  useEffect(() => {
-    const fresh = () => api.get('/government/admins').then(res => {
-      const data = res.data?.data || [];
-      cache.set('platform:admins', data);
-      setAdmins(data);
-    }).catch(() => {});
-    if (cache.get('platform:admins')) { fresh(); return; }
-    setLoadingAdmins(true);
-    fresh().finally(() => setLoadingAdmins(false));
-  }, []);
-
-  useEffect(() => {
-    const fresh = () => api.get('/government/users').then(res => {
-      const data = res.data?.data || [];
-      cache.set('platform:governments', data);
-      setGovernments(data);
-    }).catch(() => {});
-    if (cache.get('platform:governments')) { fresh(); return; }
-    setLoadingGovernments(true);
-    fresh().finally(() => setLoadingGovernments(false));
-  }, []);
-
-  useEffect(() => {
-    const fresh = () => api.get('/government/schools-list').then(res => {
-      const data = res.data?.data || [];
-      cache.set('platform:schools', data);
-      setSchools(data);
-    }).catch(() => {});
-    if (cache.get('platform:schools')) { fresh(); return; }
-    setLoadingSchools(true);
-    fresh().finally(() => setLoadingSchools(false));
-  }, []);
-
-  useEffect(() => {
-    const fresh = () => api.get('/government/messages').then(res => {
-      const data = res.data?.data || [];
-      cache.set('platform:messages', data);
-      setMessages(data);
-    }).catch(() => {});
-    if (cache.get('platform:messages')) { fresh(); return; }
-    setLoadingMessages(true);
-    fresh().finally(() => setLoadingMessages(false));
-  }, []);
 
   useEffect(() => {
     if (activeTab !== 'registrations') return;
@@ -125,10 +105,7 @@ const Platform = () => {
       success(t('government.replySent', { defaultValue: 'Reply sent' }));
       setReplyText('');
       setSelectedMessage(null);
-      const res = await api.get('/government/messages');
-      const data = res.data?.data || [];
-      cache.set('platform:messages', data);
-      setMessages(data);
+      refreshMessages().catch(() => {});
     } catch (error) {
       showError(error.response?.data?.error || t('government.replyError', { defaultValue: 'Reply failed' }));
     } finally { setReplying(false); }
@@ -137,10 +114,7 @@ const Platform = () => {
   const handleMarkRead = async (messageId, isRead) => {
     try {
       await api.put(`/government/messages/${messageId}/read`, { isRead });
-      const res = await api.get('/government/messages');
-      const data = res.data?.data || [];
-      cache.set('platform:messages', data);
-      setMessages(data);
+      refreshMessages().catch(() => {});
     } catch { /* ignore */ }
   };
 
@@ -150,17 +124,14 @@ const Platform = () => {
       return;
     }
     try {
-      setLoading(true);
+      setCreatingAdmin(true);
       await api.post('/government/admins', { firstName, lastName, email, password });
       success(t('government.toastCreate'));
       reset?.();
-      const res = await api.get('/government/admins');
-      const data = res.data?.data || [];
-      cache.set('platform:admins', data);
-      setAdmins(data);
+      await refreshAdmins();
     } catch (error) {
       showError(error.response?.data?.error || t('government.toastSaveError'));
-    } finally { setLoading(false); }
+    } finally { setCreatingAdmin(false); }
   };
 
   const startEdit = (adm) => {
@@ -183,10 +154,7 @@ const Platform = () => {
         phone: editPhone, password: editPassword || undefined,
       });
       success(t('government.toastUpdate'));
-      const res = await api.get('/government/admins');
-      const data = res.data?.data || [];
-      cache.set('platform:admins', data);
-      setAdmins(data);
+      await refreshAdmins();
       setEditingAdmin(null);
       setEditPassword('');
     } catch (error) {
@@ -234,10 +202,7 @@ const Platform = () => {
       await api.post('/government/users', { firstName: fn, lastName: ln, email: em, password: pw });
       success(t('government.governmentCreated', { defaultValue: 'Government user created' }));
       setGovFirstName(''); setGovLastName(''); setGovEmail(''); setGovPassword('');
-      const res = await api.get('/government/users');
-      const data = res.data?.data || [];
-      cache.set('platform:governments', data);
-      setGovernments(data);
+      await refreshGovernments();
     } catch (error) {
       showError(error.response?.data?.error || error.message || t('government.governmentCreateError', { defaultValue: 'Create failed' }));
     } finally { setGovLoading(false); }
@@ -262,10 +227,7 @@ const Platform = () => {
         email: editGovEmail, password: editGovPassword || undefined,
       });
       success(t('government.governmentUpdated', { defaultValue: 'Government user updated' }));
-      const res = await api.get('/government/users');
-      const data = res.data?.data || [];
-      cache.set('platform:governments', data);
-      setGovernments(data);
+      await refreshGovernments();
       setEditingGovernment(null);
       setEditGovPassword('');
     } catch (error) {
@@ -303,12 +265,11 @@ const Platform = () => {
           const res = await api.post(`/government/admin-registrations/${id}/approve`, {});
           setApprovedCredentials(res.data?.data?.credentials || res.data?.data);
           success(t('government.requestApproved', { defaultValue: 'Request approved' }));
-          const [reqRes, admRes] = await Promise.allSettled([
+          const [reqRes] = await Promise.allSettled([
             api.get('/government/admin-registrations?status=pending'),
-            api.get('/government/admins'),
+            refreshAdmins(),
           ]);
           if (reqRes.status === 'fulfilled') setRegistrationRequests(reqRes.value.data?.data || []);
-          if (admRes.status === 'fulfilled') setAdmins(admRes.value.data?.data || []);
         } catch (error) {
           showError(error.response?.data?.error || t('government.approveError', { defaultValue: 'Approve failed' }));
         } finally { setApprovingRequest(false); }
@@ -360,7 +321,7 @@ const Platform = () => {
       <div className={`${activeTab === 'messages' ? 'max-w-6xl' : 'max-w-2xl'} w-full mx-auto space-y-8`}>
         {activeTab === 'admins' && (
           <AdminsTab
-            admins={admins} loadingAdmins={loadingAdmins} loading={loading}
+            admins={admins} loadingAdmins={loadingAdmins} loading={creatingAdmin}
             onSubmit={handleSubmitAdmin}
             editingAdmin={editingAdmin} editFirstName={editFirstName} editLastName={editLastName}
             editEmail={editEmail} editPhone={editPhone} editPassword={editPassword} editSaving={editSaving}

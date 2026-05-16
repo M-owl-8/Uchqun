@@ -1,4 +1,3 @@
-import { Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
@@ -9,25 +8,18 @@ import { ToastProvider } from '@shared/context/ToastContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import { ToastContainer } from '@shared/components/Toast';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-
-const Layout = lazy(() => import('./components/Layout'));
-const Login = lazy(() => import('./pages/Login'));
-const Dashboard = lazy(() => import('./pages/Dashboard'));
-const ParentManagement = lazy(() => import('./pages/ParentManagement'));
-const TeacherManagement = lazy(() => import('./pages/TeacherManagement'));
-const GroupManagement = lazy(() => import('./pages/GroupManagement'));
-const Settings = lazy(() => import('./pages/Settings'));
-const Profile = lazy(() => import('./pages/Profile'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const Documents = lazy(() => import('./pages/Documents'));
-const ParentWizardPage = lazy(() => import('./pages/ParentWizard/ParentWizardPage'));
-const WizardCompletePage = lazy(() => import('./pages/ParentWizard/WizardCompletePage'));
-
-const PageLoader = () => (
-  <div className="flex items-center justify-center min-h-[200px]">
-    <LoadingSpinner size="md" />
-  </div>
-);
+import Layout from './components/Layout';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
+import ParentManagement from './pages/ParentManagement';
+import TeacherManagement from './pages/TeacherManagement';
+import GroupManagement from './pages/GroupManagement';
+import Settings from './pages/Settings';
+import Profile from './pages/Profile';
+import NotFound from './pages/NotFound';
+import Documents from './pages/Documents';
+import ParentWizardPage from './pages/ParentWizard/ParentWizardPage';
+import WizardCompletePage from './pages/ParentWizard/WizardCompletePage';
 
 const AppRoutes = () => {
   const { isAuthenticated, isReception, loading } = useAuth();
@@ -41,33 +33,31 @@ const AppRoutes = () => {
   }
 
   return (
-    <Suspense fallback={<PageLoader />}>
-      <Routes>
-        <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/reception" replace />} />
+    <Routes>
+      <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/reception" replace />} />
 
-        <Route
-          path="/reception"
-          element={
-            <ProtectedRoute>
-              <Layout />
-            </ProtectedRoute>
-          }
-        >
-          <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
-          <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
-          <Route path="parents/new" element={<ErrorBoundary><ParentWizardPage /></ErrorBoundary>} />
-          <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
-          <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
-          <Route path="documents" element={<ErrorBoundary><Documents /></ErrorBoundary>} />
-          <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
-          <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
-          <Route path="wizard/complete" element={<ErrorBoundary><WizardCompletePage /></ErrorBoundary>} />
-        </Route>
+      <Route
+        path="/reception"
+        element={
+          <ProtectedRoute>
+            <Layout />
+          </ProtectedRoute>
+        }
+      >
+        <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+        <Route path="parents/new" element={<ErrorBoundary><ParentWizardPage /></ErrorBoundary>} />
+        <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
+        <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
+        <Route path="documents" element={<ErrorBoundary><Documents /></ErrorBoundary>} />
+        <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+        <Route path="wizard/complete" element={<ErrorBoundary><WizardCompletePage /></ErrorBoundary>} />
+      </Route>
 
-        <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+      <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   );
 };
 
