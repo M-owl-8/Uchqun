@@ -1,88 +1,184 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
-  Home,
+  LayoutDashboard,
   Users,
-  UserCheck,
+  GraduationCap,
   UsersRound,
-  Shield,
-  User,
-  Settings
+  FolderOpen,
+  Settings,
+  LogOut,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
-  const { user } = useAuth();
-  const { t } = useTranslation();
+  const { user, logout } = useAuth();
+  const { i18n, t } = useTranslation();
 
   const navigation = [
-    { name: t('nav.dashboard'), href: '/reception', icon: Home },
+    { name: t('nav.dashboard'), href: '/reception', icon: LayoutDashboard },
     { name: t('nav.parents'), href: '/reception/parents', icon: Users },
-    { name: t('nav.teachers'), href: '/reception/teachers', icon: UserCheck },
+    { name: t('nav.teachers'), href: '/reception/teachers', icon: GraduationCap },
     { name: t('nav.groups'), href: '/reception/groups', icon: UsersRound },
-    { name: t('nav.profile', { defaultValue: 'Profile' }), href: '/reception/profile', icon: User },
+    { name: t('nav.documents', { defaultValue: 'Mening hujjatlarim' }), href: '/reception/documents', icon: FolderOpen },
+  ];
+
+  const secondaryNav = [
     { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/reception/settings', icon: Settings },
   ];
 
-  const isActive = (path) => location.pathname === path;
+  const isActive = (path) => {
+    if (path === '/reception') return location.pathname === '/reception';
+    return location.pathname.startsWith(path);
+  };
+
+  const initials = `${user?.firstName?.charAt(0) || ''}${user?.lastName?.charAt(0) || ''}`;
+  const langs = ['UZ', 'RU', 'EN'];
+  const currentLang = (i18n.language || 'uz').toUpperCase().slice(0, 2);
+
+  const handleLang = (lang) => {
+    i18n.changeLanguage(lang.toLowerCase());
+    localStorage.setItem('lang', lang.toLowerCase());
+  };
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-100 shadow-sm">
-      <div className="flex items-center gap-3 px-6 h-20 bg-sidebar-navy">
-        <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-          <Shield className="w-5 h-5 text-white" strokeWidth={1.5} />
+    <div className="flex flex-col h-screen w-[240px] bg-teak text-teak-text relative overflow-hidden">
+      {/* Header with rhombus motif */}
+      <div className="relative h-[120px] px-5 pt-6 overflow-hidden shrink-0">
+        <div
+          className="absolute inset-0 motif-rhombus text-brand-300"
+          aria-hidden="true"
+          style={{
+            opacity: 0.04,
+            maskImage: 'linear-gradient(to bottom, #000 30%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, #000 30%, transparent 100%)',
+          }}
+        />
+        <div className="relative flex items-center gap-2.5">
+          <span className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-brand-600 text-white text-[16px] font-semibold tracking-wider">
+            U
+          </span>
+          <div>
+            <div className="text-[15.5px] font-semibold text-teak-text leading-none">Uchqun</div>
+            <div className="text-[11.5px] text-brand-200 mt-1 leading-none">
+              {t('sidebar.subtitle', { defaultValue: 'Qabulxona portali' })}
+            </div>
+          </div>
         </div>
-        <h1 className="text-lg font-bold text-white tracking-tight">
-          {t('sidebar.title', { defaultValue: 'Uchqun Reception' })}
-        </h1>
+        <div className="relative mt-5 text-[10.5px] font-mono uppercase tracking-[0.18em] text-teak-muted">
+          {user?.schoolName || t('sidebar.school', { defaultValue: 'Maktab' })}
+        </div>
       </div>
 
-      <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-        <p className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-muted">
-          {t('nav.menu')}
-        </p>
+      {/* Navigation */}
+      <nav className="flex-1 px-3 pb-4 space-y-0.5 overflow-y-auto">
+        <div className="px-3 mt-1 mb-1.5 text-[10.5px] font-mono uppercase tracking-[0.18em] text-teak-muted">
+          {t('nav.menu', { defaultValue: 'Menyu' })}
+        </div>
+
         {navigation.map((item) => {
-          const Active = isActive(item.href);
+          const active = isActive(item.href);
           return (
             <Link
-              key={item.name}
+              key={item.href}
               to={item.href}
-              className={`group flex items-center px-3 py-2.5 rounded-xl transition-all duration-300 ${
-                Active
-                  ? 'bg-sidebar-blue text-sidebar-navy shadow-sm'
-                  : 'text-sidebar-muted hover:bg-gray-50'
-              }`}
               onClick={onClose}
+              className={`relative flex items-center gap-3 h-10 pl-3 pr-3 rounded-md transition-colors ${
+                active
+                  ? 'text-teak-text'
+                  : 'text-teak-muted hover:text-teak-text hover:bg-teak-hover'
+              }`}
+              style={active ? { background: 'rgba(200,144,48,0.08)' } : undefined}
             >
-              <item.icon
-                className="mr-3 h-5 w-5 transition-colors"
-                strokeWidth={Active ? 2 : 1.5}
-              />
-              <span className="text-sm font-medium">{item.name}</span>
-              {Active && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-navy" />
+              {active && (
+                <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-brand-600" />
               )}
+              <item.icon
+                className={`w-5 h-5 shrink-0 ${active ? 'text-brand-300' : ''}`}
+                strokeWidth={2}
+              />
+              <span className="text-[13.5px] font-medium">{item.name}</span>
+            </Link>
+          );
+        })}
+
+        <div className="px-3 mt-5 mb-1.5 text-[10.5px] font-mono uppercase tracking-[0.18em] text-teak-muted">
+          {t('nav.system', { defaultValue: 'Tizim' })}
+        </div>
+
+        {secondaryNav.map((item) => {
+          const active = isActive(item.href);
+          return (
+            <Link
+              key={item.href}
+              to={item.href}
+              onClick={onClose}
+              className={`relative flex items-center gap-3 h-10 pl-3 pr-3 rounded-md transition-colors ${
+                active
+                  ? 'text-teak-text'
+                  : 'text-teak-muted hover:text-teak-text hover:bg-teak-hover'
+              }`}
+              style={active ? { background: 'rgba(200,144,48,0.08)' } : undefined}
+            >
+              {active && (
+                <span className="absolute left-0 top-2 bottom-2 w-[3px] rounded-r bg-brand-600" />
+              )}
+              <item.icon
+                className={`w-5 h-5 shrink-0 ${active ? 'text-brand-300' : ''}`}
+                strokeWidth={2}
+              />
+              <span className="text-[13.5px]">{item.name}</span>
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-100 bg-sidebar-blue/25">
-        <div className="flex items-center gap-3 px-2 mb-3">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm bg-sidebar-blue text-sidebar-navy">
-            {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
+      {/* User card pinned bottom */}
+      <div
+        className="mx-3 mb-3 rounded-lg border border-teak-divider p-3 shrink-0"
+        style={{ background: 'rgba(56,75,77,0.6)' }}
+      >
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-full bg-brand-600 text-white inline-flex items-center justify-center text-[12px] font-semibold shrink-0">
+            {initials}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate text-sidebar-navy">
+          <div className="min-w-0 flex-1">
+            <div className="text-[12.5px] font-medium text-teak-text truncate">
               {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs truncate text-sidebar-muted">{user?.email}</p>
-            <p className="text-xs font-semibold mt-0.5 text-sidebar-navy">{t('role.reception')}</p>
+            </div>
+            <div className="text-[11px] text-teak-muted truncate">
+              {t('role.reception', { defaultValue: 'Qabulxona xodimi' })}
+            </div>
           </div>
+          <button
+            onClick={logout}
+            className="p-1.5 rounded text-teak-muted hover:text-teak-text hover:bg-teak transition-colors"
+            title={t('nav.logout', { defaultValue: 'Chiqish' })}
+          >
+            <LogOut className="w-4 h-4" strokeWidth={2} />
+          </button>
         </div>
-        <LanguageSwitcher />
+
+        {/* Language switcher */}
+        <div
+          className="mt-2.5 inline-flex items-center p-0.5 rounded-full w-full justify-around text-[11px]"
+          style={{ background: 'rgba(42,59,61,0.8)' }}
+        >
+          {langs.map((lang) => (
+            <button
+              key={lang}
+              onClick={() => handleLang(lang)}
+              className={`px-2 h-5 rounded-full font-medium transition-colors ${
+                currentLang === lang
+                  ? 'bg-brand-600 text-white'
+                  : 'text-teak-muted hover:text-teak-text'
+              }`}
+            >
+              {lang}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );

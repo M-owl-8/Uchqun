@@ -2,9 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Fix F — Inter humanist stylistic sets */
+:root {
+  --inter-features: "cv11", "ss01", "tnum";
+}
+
+html, body {
+  font-family: 'Inter', system-ui, sans-serif;
+  font-feature-settings: var(--inter-features);
+  background: #FBFAF6;
+  color: #1F2528;
+}
+
+.num { font-variant-numeric: tabular-nums; }
+
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-paper text-slate-900;
   }
 }
 
@@ -24,15 +38,99 @@ html {
 
 /* Focus styles for accessibility */
 *:focus-visible {
-  @apply outline-2 outline-offset-2 outline-primary-500;
+  outline: 2px solid #C89030;
+  outline-offset: 2px;
 }
 
+/* Input focus ring */
+.input-ring:focus {
+  box-shadow: 0 0 0 4px rgba(200, 144, 48, 0.30);
+  border-color: #C89030;
+}
+
+/* Folder-tab signatures */
+.h1-tab { position: relative; padding-left: 14px; }
+.h1-tab::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 6%;
+  bottom: 6%;
+  width: 4px;
+  border-radius: 2px;
+  background: #C89030;
+}
+
+.h2-tab { display: flex; align-items: center; gap: 10px; }
+.h2-tab::before {
+  content: "";
+  width: 4px;
+  height: 16px;
+  border-radius: 9999px;
+  background: #C89030;
+  flex: none;
+}
+
+/* Rhombus motif */
+.motif-rhombus {
+  background-image:
+    linear-gradient(45deg, currentColor 1px, transparent 1px),
+    linear-gradient(-45deg, currentColor 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.motif-rhombus-lg { background-size: 60px 60px; }
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0% { background-position: -600px 0; }
+  100% { background-position: 600px 0; }
+}
+.skel {
+  background: linear-gradient(90deg, #ECEAE3 0%, #F6F5F1 50%, #ECEAE3 100%);
+  background-size: 1200px 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+/* Halo animation for Wizard current step */
+@keyframes haloPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(200, 144, 48, 0.35); }
+  50% { box-shadow: 0 0 0 6px rgba(200, 144, 48, 0); }
+}
+.halo { animation: haloPulse 1.8s ease-in-out infinite; }
+
+/* Page fade */
+@keyframes pageFadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-fade { animation: pageFadeIn 0.2s ease-out both; }
+
+/* Legacy page-fade-in kept for backwards compatibility */
 @keyframes page-fade-in {
   from { opacity: 0; transform: translateY(8px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+.page-fade-in { animation: page-fade-in 0.2s ease-out both; }
 
-.page-fade-in {
-  animation: page-fade-in 0.2s ease-out both;
+/* Subtle hover lift for quick-create tiles */
+.lift { transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease; }
+.lift:hover { transform: translateY(-1px); }
+
+/* Kbd chip */
+.kbd {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  border: 1px solid #DAD7CC;
+  background: #FFFEFB;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: #4D4C47;
 }
 
+/* Slim scrollbar */
+.slim::-webkit-scrollbar { width: 6px; height: 6px; }
+.slim::-webkit-scrollbar-thumb { background: #DAD7CC; border-radius: 3px; }

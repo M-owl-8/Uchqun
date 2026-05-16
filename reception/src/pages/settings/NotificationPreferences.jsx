@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+﻿import { useTranslation } from 'react-i18next';
 import Card from '@shared/components/Card';
 import { Bell, Save } from 'lucide-react';
 
@@ -8,8 +8,8 @@ const NotificationPreferences = ({ profileForm, setProfileForm, onSubmit }) => {
     <form onSubmit={onSubmit} className="space-y-6">
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Bell className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('settings.notificationPreferences')}</h2>
+          <Bell className="w-6 h-6 text-brand-600" />
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.notificationPreferences')}</h2>
         </div>
 
         <div className="space-y-4">
@@ -24,11 +24,11 @@ const NotificationPreferences = ({ profileForm, setProfileForm, onSubmit }) => {
                   email: e.target.checked,
                 },
               })}
-              className="w-5 h-5 text-primary-600 border-gray-300 rounded focus:ring-primary-500"
+              className="w-5 h-5 text-brand-600 border-slate-300 rounded focus:ring-brand-500"
             />
             <div>
-              <span className="text-sm font-medium text-gray-700">{t('settings.emailNotifications')}</span>
-              <p className="text-xs text-gray-500">{t('settings.emailNotificationsDesc')}</p>
+              <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications')}</span>
+              <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc')}</p>
             </div>
           </label>
         </div>
@@ -36,7 +36,7 @@ const NotificationPreferences = ({ profileForm, setProfileForm, onSubmit }) => {
         <div className="mt-6 flex justify-end">
           <button
             type="submit"
-            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <Save className="w-5 h-5" />
             {t('settings.savePreferences')}

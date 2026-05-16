@@ -19,6 +19,9 @@ const GroupManagement = lazy(() => import('./pages/GroupManagement'));
 const Settings = lazy(() => import('./pages/Settings'));
 const Profile = lazy(() => import('./pages/Profile'));
 const NotFound = lazy(() => import('./pages/NotFound'));
+const Documents = lazy(() => import('./pages/Documents'));
+const ParentWizardPage = lazy(() => import('./pages/ParentWizard/ParentWizardPage'));
+const WizardCompletePage = lazy(() => import('./pages/ParentWizard/WizardCompletePage'));
 
 const PageLoader = () => (
   <div className="flex items-center justify-center min-h-[200px]">
@@ -31,7 +34,7 @@ const AppRoutes = () => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+      <div className="flex items-center justify-center min-h-screen bg-paper">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -52,10 +55,13 @@ const AppRoutes = () => {
         >
           <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
           <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
+          <Route path="parents/new" element={<ErrorBoundary><ParentWizardPage /></ErrorBoundary>} />
           <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
           <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
+          <Route path="documents" element={<ErrorBoundary><Documents /></ErrorBoundary>} />
           <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+          <Route path="wizard/complete" element={<ErrorBoundary><WizardCompletePage /></ErrorBoundary>} />
         </Route>
 
         <Route path="/" element={<Navigate to={isAuthenticated && isReception ? '/reception' : '/login'} replace />} />

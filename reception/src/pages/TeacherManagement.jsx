@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import Card from '@shared/components/Card';
@@ -213,26 +213,26 @@ const TeacherManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">{t('teachersPage.title')}</h1>
-          <p className="text-gray-500 font-medium mt-1">{t('teachersPage.subtitle')}</p>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">{t('teachersPage.title')}</h1>
+          <p className="text-slate-500 font-medium mt-1">{t('teachersPage.subtitle')}</p>
         </div>
 
         <div className="flex gap-3">
           <form role="search" aria-label={t('teachersPage.search')} className="relative flex-1 md:flex-initial">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" aria-hidden="true" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" aria-hidden="true" />
             <input
               type="text"
               placeholder={t('teachersPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               aria-label={t('teachersPage.search')}
-              className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
+              className="pl-12 pr-4 py-3 bg-surface border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full md:w-64"
             />
           </form>
 
           <button
             onClick={handleCreate}
-            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <Plus className="w-5 h-5" />
             <span className="hidden sm:inline">{t('teachersPage.add')}</span>
@@ -250,38 +250,38 @@ const TeacherManagement = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
                     {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-slate-900">
                       {teacher.firstName} {teacher.lastName}
                     </h3>
-                    <p className="text-sm text-gray-500">{teacher.email}</p>
+                    <p className="text-sm text-slate-500">{teacher.email}</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <Mail className="w-4 h-4 text-slate-400" />
                   <span>{teacher.email}</span>
                 </div>
                 {teacher.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone className="w-4 h-4 text-gray-400" />
+                  <div className="flex items-center gap-2 text-sm text-slate-600">
+                    <Phone className="w-4 h-4 text-slate-400" />
                     <span>{teacher.phone}</span>
                   </div>
                 )}
               </div>
 
-              <div className="flex gap-2 pt-4 border-t border-gray-100">
+              <div className="flex gap-2 pt-4 border-t border-slate-100">
                 <button
                   onClick={(e) => {
                     e.stopPropagation();
                     handleEdit(teacher);
                   }}
-                  className="flex-1 flex items-center justify-center gap-2 px-2 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors text-sm min-w-0"
+                  className="flex-1 flex items-center justify-center gap-2 px-2 py-2 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors text-sm min-w-0"
                 >
                   <Edit2 className="w-4 h-4 flex-shrink-0" />
                   <span className="truncate">{t('teachersPage.buttons.edit')}</span>
@@ -291,7 +291,7 @@ const TeacherManagement = () => {
                     e.stopPropagation();
                     handleDelete(teacher.id);
                   }}
-                  className="flex-1 flex items-center justify-center gap-2 px-2 py-2 bg-red-50 text-red-600 rounded-lg font-medium hover:bg-red-100 transition-colors text-sm min-w-0"
+                  className="flex-1 flex items-center justify-center gap-2 px-2 py-2 bg-error-50 text-error-600 rounded-lg font-medium hover:bg-error-100 transition-colors text-sm min-w-0"
                 >
                   <Trash2 className="w-4 h-4 flex-shrink-0" />
                   <span className="truncate">{t('teachersPage.buttons.delete')}</span>
@@ -302,14 +302,14 @@ const TeacherManagement = () => {
         </div>
       ) : (
         <Card className="p-12 text-center">
-          <UserCheck className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-          <p className="text-gray-400 font-medium text-lg">
+          <UserCheck className="w-16 h-16 text-slate-200 mx-auto mb-4" />
+          <p className="text-slate-400 font-medium text-lg">
             {searchQuery ? t('teachersPage.noTeachersFound') : t('teachersPage.noTeachers')}
           </p>
           {!searchQuery && (
             <button
               onClick={handleCreate}
-              className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors"
+              className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors"
             >
               <Plus className="w-5 h-5" />
               {t('teachersPage.addFirst')}
@@ -324,40 +324,40 @@ const TeacherManagement = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="ratings-modal-title"
-            className="bg-white rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-surface rounded-2xl shadow-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto"
           >
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
+            <div className="sticky top-0 bg-surface border-b border-slate-200 p-6 flex items-center justify-between">
               <div>
-                <p className="text-xs font-semibold text-primary-600 uppercase tracking-wide">
+                <p className="text-xs font-semibold text-brand-600 uppercase tracking-wide">
                   {t('teachersPage.ratings.title')}
                 </p>
-                <h2 id="ratings-modal-title" className="text-2xl font-bold text-gray-900">
+                <h2 id="ratings-modal-title" className="text-2xl font-bold text-slate-900">
                   {selectedTeacher?.firstName} {selectedTeacher?.lastName}
                 </h2>
               </div>
               <button
                 onClick={closeRatings}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                 aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
+                <X className="w-5 h-5 text-slate-500" aria-hidden="true" />
               </button>
             </div>
 
             <div className="p-6 space-y-6">
-              <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl p-4">
+              <div className="flex items-center justify-between bg-slate-50 border border-slate-200 rounded-xl p-4">
                 <div className="flex items-center gap-2">
-                  <Star className="w-6 h-6 text-primary-500 fill-primary-500" aria-hidden="true" />
+                  <Star className="w-6 h-6 text-brand-500 fill-brand-500" aria-hidden="true" />
                   <div>
-                    <p className="text-sm text-gray-500">{t('teachersPage.ratings.average')}</p>
-                    <p className="text-2xl font-bold text-gray-900">
+                    <p className="text-sm text-slate-500">{t('teachersPage.ratings.average')}</p>
+                    <p className="text-2xl font-bold text-slate-900">
                       {Number(ratingData.summary.average || 0).toFixed(1)}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-gray-500">{t('teachersPage.ratings.total')}</p>
-                  <p className="text-lg font-semibold text-gray-900">{ratingData.summary.count || 0}</p>
+                  <p className="text-sm text-slate-500">{t('teachersPage.ratings.total')}</p>
+                  <p className="text-lg font-semibold text-slate-900">{ratingData.summary.count || 0}</p>
                 </div>
               </div>
 
@@ -368,7 +368,7 @@ const TeacherManagement = () => {
               ) : ratingData.ratings.length > 0 ? (
                 <div className="space-y-4">
                   {ratingData.ratings.map((r) => (
-                    <div key={r.id} className="border border-gray-200 rounded-xl p-4 space-y-2">
+                    <div key={r.id} className="border border-slate-200 rounded-xl p-4 space-y-2">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           {[1, 2, 3, 4, 5].map((s) => (
@@ -380,17 +380,17 @@ const TeacherManagement = () => {
                             />
                           ))}
                         </div>
-                        <span className="text-xs text-gray-400">{formatDate(r.updatedAt || r.createdAt)}</span>
+                        <span className="text-xs text-slate-400">{formatDate(r.updatedAt || r.createdAt)}</span>
                       </div>
                       {r.comment ? (
-                        <div className="flex items-start gap-2 text-gray-700">
-                          <MessageSquare className="w-4 h-4 text-gray-400 mt-0.5" />
+                        <div className="flex items-start gap-2 text-slate-700">
+                          <MessageSquare className="w-4 h-4 text-slate-400 mt-0.5" />
                           <p className="text-sm leading-relaxed">{r.comment}</p>
                         </div>
                       ) : (
-                        <p className="text-sm text-gray-400">{t('teachersPage.ratings.noComment')}</p>
+                        <p className="text-sm text-slate-400">{t('teachersPage.ratings.noComment')}</p>
                       )}
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-slate-500">
                         {r.parentName
                           ? t('teachersPage.ratings.byParent', { name: r.parentName })
                           : t('teachersPage.ratings.anonymous')}
@@ -399,8 +399,8 @@ const TeacherManagement = () => {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-12 border border-dashed border-gray-200 rounded-xl">
-                  <p className="text-gray-500">{t('teachersPage.ratings.empty')}</p>
+                <div className="text-center py-12 border border-dashed border-slate-200 rounded-xl">
+                  <p className="text-slate-500">{t('teachersPage.ratings.empty')}</p>
                 </div>
               )}
             </div>
@@ -414,68 +414,68 @@ const TeacherManagement = () => {
             role="dialog"
             aria-modal="true"
             aria-labelledby="teacher-modal-title"
-            className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="bg-surface rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
           >
-            <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-              <h2 id="teacher-modal-title" className="text-2xl font-bold text-gray-900">
+            <div className="sticky top-0 bg-surface border-b border-slate-200 p-6 flex items-center justify-between">
+              <h2 id="teacher-modal-title" className="text-2xl font-bold text-slate-900">
                 {editingTeacher ? t('teachersPage.form.update') : t('teachersPage.form.create')}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
                 aria-label={t('common.close', { defaultValue: 'Close' })}
               >
-                <X className="w-5 h-5 text-gray-500" aria-hidden="true" />
+                <X className="w-5 h-5 text-slate-500" aria-hidden="true" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} aria-label={editingTeacher ? t('teachersPage.form.update') : t('teachersPage.form.create')} className="p-6 space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('teachersPage.form.firstName')}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.firstName')}</label>
                   <input
                     type="text"
                     required
                     value={formData.firstName}
                     onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                 </div>
                 <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('teachersPage.form.lastName')}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.lastName')}</label>
                   <input
                     type="text"
                     required
                     value={formData.lastName}
                     onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('teachersPage.form.email')}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.email')}</label>
                 <input
                   type="email"
                   required
                   value={formData.email}
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('teachersPage.form.phone')}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.phone')}</label>
                 <input
                   type="tel"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   {editingTeacher ? `${t('teachersPage.form.password')} (${t('teachersPage.form.update').toLowerCase()})` : t('teachersPage.form.password')}
                 </label>
                 <div className="relative">
@@ -484,12 +484,12 @@ const TeacherManagement = () => {
                     required={!editingTeacher}
                     value={formData.password}
                     onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-3 pr-12 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   />
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
                     aria-label={showPassword ? t('common.hidePassword', { defaultValue: 'Hide password' }) : t('common.showPassword', { defaultValue: 'Show password' })}
                   >
                     {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
@@ -501,13 +501,13 @@ const TeacherManagement = () => {
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors"
+                  className="flex-1 px-4 py-3 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors"
                 >
                   {t('teachersPage.form.cancel')}
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors"
+                  className="flex-1 flex items-center justify-center gap-2 px-4 py-3 bg-brand-600 text-white rounded-lg font-medium hover:bg-brand-700 transition-colors"
                 >
                   <Save className="w-4 h-4" />
                   {editingTeacher ? t('teachersPage.form.update') : t('teachersPage.form.create')}

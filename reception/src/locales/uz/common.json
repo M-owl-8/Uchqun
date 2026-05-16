@@ -8,22 +8,32 @@
     "settings": "Sozlamalar",
     "logout": "Chiqish",
     "menu": "Tizim menyu",
-    "profile": "Profil"
+    "profile": "Profil",
+    "documents": "Mening hujjatlarim",
+    "system": "Tizim",
+    "logout": "Chiqish"
   },
   "sidebar": {
     "title": "Uchqun Reception",
+    "subtitle": "Qabulxona portali",
+    "school": "Maktab",
     "menu": "Tizim menyu"
   },
   "login": {
     "title": "Reception paneli",
-    "subtitle": "Uchqun Reception boshqaruvi",
+    "subtitle": "Iltimos, hisobingizga kiring.",
+    "welcome": "Xush kelibsiz",
     "email": "Email manzil",
     "password": "Parol",
+    "forgotPassword": "Parolni unutdingizmi?",
     "submit": "Kirish",
     "loading": "Kirish...",
+    "showPassword": "Parolni ko'rsatish",
+    "hidePassword": "Parolni yashirish",
     "invalid": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
+    "documentsNotice": "Hujjatlaringiz hali tasdiqlanmagan bo'lsa, kirish mumkin emas. Maktab rahbari bilan bog'laning."
   },
   "dashboard": {
     "role": "Mening rolim: Reception",
@@ -254,5 +264,34 @@
     "heading": "404",
     "message": "Sahifa topilmadi",
     "goBack": "Orqaga qaytish"
+  },
+  "wizard": {
+    "title": "Yangi ota-ona qo'shish",
+    "step1": "Ota-ona ma'lumotlari",
+    "step2": "Bola ma'lumotlari",
+    "step3": "Guruh tayinlash",
+    "back": "Orqaga",
+    "next": "Davom etish",
+    "saveDraft": "Saqlab chiqish",
+    "complete": "Yakunlash",
+    "draftRestored": "Qoralama yuklandi",
+    "success": "Muvaffaqiyatli qo'shildi"
+  },
+  "palette": {
+    "placeholder": "Ota-ona, o'qituvchi, guruh yoki amal qidiring…",
+    "noResults": "Natija topilmadi",
+    "quickActions": "Tezkor amallar",
+    "parents": "Ota-onalar",
+    "teachers": "O'qituvchilar",
+    "groups": "Guruhlar"
+  },
+  "documents": {
+    "title": "Mening hujjatlarim",
+    "subtitle": "Hujjatlarni yuklang va admin tasdiqlashini kuting.",
+    "upload": "Hujjat yuklash",
+    "progress": "Holat",
+    "help": "Yordam",
+    "allApproved": "Barcha hujjatlar tasdiqlangan",
+    "pendingWarning": "Tasdiq kutayotgan hujjatlar bor"
   }
 }
