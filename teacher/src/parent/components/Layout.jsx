@@ -1,11 +1,13 @@
+import { useState } from 'react';
 import { Outlet, useLocation, Link } from 'react-router-dom';
+import { Menu, MessageCircle } from 'lucide-react';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import JoyfulBackground from '../../shared/components/JoyfulBackground';
-import { MessageCircle } from 'lucide-react';
 
 const Layout = () => {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen relative overflow-hidden">
@@ -17,8 +19,34 @@ const Layout = () => {
         <Sidebar />
       </div>
 
+      {/* Mobile Sidebar Overlay */}
+      {sidebarOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black/50 z-40"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Mobile Sidebar */}
+      <div
+        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
+      >
+        <Sidebar onClose={() => setSidebarOpen(false)} />
+      </div>
+
+      {/* Hamburger button — mobile only */}
+      <button
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-md text-gray-700 hover:bg-gray-50"
+        onClick={() => setSidebarOpen(true)}
+        aria-label="Open menu"
+      >
+        <Menu className="w-5 h-5" />
+      </button>
+
       {/* Main Content */}
-      <div className="lg:pl-64 pb-24 lg:pb-6 pt-8 lg:pt-8 relative z-10">
+      <div className="lg:pl-64 pt-16 lg:pt-8 pb-24 lg:pb-6 relative z-10">
         <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <Outlet />
         </main>

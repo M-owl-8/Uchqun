@@ -1,5 +1,8 @@
 import { Check, X, Mail, Phone, MessageSquare, FileText } from 'lucide-react';
-import Card from '../Card';
+import Card from '@shared/components/Card';
+import Button from '@shared/components/Button';
+import Modal from '@shared/components/Modal';
+import Textarea from '@shared/components/Textarea';
 import { useTranslation } from 'react-i18next';
 
 export default function RegistrationsTab({
@@ -56,12 +59,12 @@ export default function RegistrationsTab({
                     <p className="text-xs text-gray-500">{"So'rov yuborilgan:"} {new Date(request.createdAt).toLocaleString('uz-UZ')}</p>
                   </div>
                   <div className="flex flex-col gap-2">
-                    <button onClick={() => onApprove(request.id)} disabled={approvingRequest} className="px-4 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                      <Check className="w-4 h-4" />{t('government.approve', { defaultValue: 'Tasdiqlash' })}
-                    </button>
-                    <button onClick={() => onSelectRequest(request)} disabled={rejectingRequest} className="px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2">
-                      <X className="w-4 h-4" />{t('government.reject', { defaultValue: 'Rad etish' })}
-                    </button>
+                    <Button variant="primary" size="sm" onClick={() => onApprove(request.id)} disabled={approvingRequest} loading={approvingRequest}>
+                      <Check className="w-4 h-4 mr-1" />{t('government.approve', { defaultValue: 'Tasdiqlash' })}
+                    </Button>
+                    <Button variant="danger" size="sm" onClick={() => onSelectRequest(request)} disabled={rejectingRequest}>
+                      <X className="w-4 h-4 mr-1" />{t('government.reject', { defaultValue: 'Rad etish' })}
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -70,99 +73,109 @@ export default function RegistrationsTab({
         )}
       </Card>
 
-      {selectedRequest && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{t('government.rejectRequest', { defaultValue: "So'rovni rad etish" })}</h3>
-              <button onClick={onCloseRequest} className="p-2 hover:bg-gray-100 rounded-lg transition-colors"><X className="w-5 h-5 text-gray-500" /></button>
-            </div>
-            <div className="p-6 space-y-4">
-              <p className="text-sm text-gray-600">{selectedRequest.firstName} {selectedRequest.lastName} {t('government.confirmReject', { defaultValue: "so'rovini rad etishni tasdiqlaysizmi?" })}</p>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('government.rejectionReason', { defaultValue: 'Rad etish sababi (ixtiyoriy)' })}</label>
-                <textarea value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} rows={4} placeholder={t('government.rejectionReasonPlaceholder', { defaultValue: 'Rad etish sababini kiriting...' })} className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-              </div>
-              <div className="flex gap-3">
-                <button onClick={onCloseRequest} disabled={rejectingRequest} className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors">{t('government.cancel', { defaultValue: 'Bekor qilish' })}</button>
-                <button onClick={() => onReject(selectedRequest.id)} disabled={rejectingRequest} className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                  {rejectingRequest ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><X className="w-4 h-4" /><span>{t('government.reject', { defaultValue: 'Rad etish' })}</span></>}
-                </button>
-              </div>
-            </div>
+      <Modal
+        isOpen={!!selectedRequest}
+        onClose={onCloseRequest}
+        title={t('government.rejectRequest', { defaultValue: "So'rovni rad etish" })}
+        footer={
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={onCloseRequest} disabled={rejectingRequest}>
+              {t('government.cancel', { defaultValue: 'Bekor qilish' })}
+            </Button>
+            <Button
+              variant="danger"
+              className="flex-1"
+              onClick={() => onReject(selectedRequest?.id)}
+              disabled={rejectingRequest}
+              loading={rejectingRequest}
+            >
+              <X className="w-4 h-4 mr-1" />
+              {t('government.reject', { defaultValue: 'Rad etish' })}
+            </Button>
           </div>
-        </div>
-      )}
+        }
+      >
+        {selectedRequest && (
+          <div className="space-y-4">
+            <p className="text-sm text-gray-600">{selectedRequest.firstName} {selectedRequest.lastName} {t('government.confirmReject', { defaultValue: "so'rovini rad etishni tasdiqlaysizmi?" })}</p>
+            <Textarea
+              label={t('government.rejectionReason', { defaultValue: 'Rad etish sababi (ixtiyoriy)' })}
+              value={rejectionReason}
+              onChange={(e) => setRejectionReason(e.target.value)}
+              rows={4}
+              placeholder={t('government.rejectionReasonPlaceholder', { defaultValue: 'Rad etish sababini kiriting...' })}
+            />
+          </div>
+        )}
+      </Modal>
 
-      {approvedCredentials && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{t('government.credentialsTitle', { defaultValue: "Login Ma'lumotlari" })}</h3>
-              <button onClick={onCloseCredentials} className="p-2 hover:bg-gray-100 rounded-lg transition-colors"><X className="w-5 h-5 text-gray-500" /></button>
-            </div>
-            <div className="p-6 space-y-4">
-              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                <p className="text-sm font-semibold text-green-800 mb-3">
-                  {t('government.credentialsNote', { defaultValue: "Quyidagi ma'lumotlarni foydalanuvchiga yuboring:" })}
-                </p>
-                <div className="space-y-3">
-                  <div>
-                    <label className="block text-xs font-medium text-gray-600 mb-1">{t('government.form.email')}</label>
-                    <div className="flex items-center gap-2">
-                      <input type="text" readOnly value={approvedCredentials.email || ''} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
-                      <button onClick={() => { navigator.clipboard.writeText(approvedCredentials.email); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }} className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors">
-                        {t('government.copy', { defaultValue: 'Nusxalash' })}
-                      </button>
-                    </div>
-                  </div>
-                  {approvedCredentials.setPasswordUrl ? (
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">
-                        {t('government.setPasswordLink', { defaultValue: 'Set Password Link (expires in 24h)' })}
-                      </label>
-                      <div className="flex items-center gap-2">
-                        <input type="text" readOnly value={approvedCredentials.setPasswordUrl} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
-                        <button onClick={() => { navigator.clipboard.writeText(approvedCredentials.setPasswordUrl); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }} className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors">
-                          {t('government.copy', { defaultValue: 'Nusxalash' })}
-                        </button>
-                      </div>
-                      <p className="mt-1 text-xs text-amber-600">
-                        {t('government.setPasswordNote', { defaultValue: 'Share this link with the admin. It expires in 24 hours.' })}
-                      </p>
-                    </div>
-                  ) : approvedCredentials.password ? (
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">{t('government.form.password')}</label>
-                      <div className="flex items-center gap-2">
-                        <input type="text" readOnly value={approvedCredentials.password} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
-                        <button onClick={() => { navigator.clipboard.writeText(approvedCredentials.password); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }} className="px-3 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors">
-                          {t('government.copy', { defaultValue: 'Nusxalash' })}
-                        </button>
-                      </div>
-                    </div>
-                  ) : null}
-                  {approvedCredentials.telegramUsername && (
-                    <div>
-                      <label className="block text-xs font-medium text-gray-600 mb-1">Telegram Username</label>
-                      <div className="flex items-center gap-2">
-                        <input type="text" readOnly value={`@${approvedCredentials.telegramUsername}`} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" />
-                        {/* TODO(phase-1): Telegram link button color — bg-blue-100 used as external link style; confirm keep as Telegram brand color or switch to primary-* */}
-                      <a href={`https://t.me/${approvedCredentials.telegramUsername}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm transition-colors">
-                          {t('government.openTelegram', { defaultValue: 'Telegram' })}
-                        </a>
-                      </div>
-                    </div>
-                  )}
+      <Modal
+        isOpen={!!approvedCredentials}
+        onClose={onCloseCredentials}
+        title={t('government.credentialsTitle', { defaultValue: "Login Ma'lumotlari" })}
+        footer={
+          <Button variant="secondary" className="w-full" onClick={onCloseCredentials}>
+            {t('government.close', { defaultValue: 'Yopish' })}
+          </Button>
+        }
+      >
+        {approvedCredentials && (
+          <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+            <p className="text-sm font-semibold text-green-800 mb-3">
+              {t('government.credentialsNote', { defaultValue: "Quyidagi ma'lumotlarni foydalanuvchiga yuboring:" })}
+            </p>
+            <div className="space-y-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">{t('government.form.email')}</label>
+                <div className="flex items-center gap-2">
+                  <input type="text" readOnly value={approvedCredentials.email || ''} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
+                  <Button variant="secondary" size="sm" onClick={() => { navigator.clipboard.writeText(approvedCredentials.email); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }}>
+                    {t('government.copy', { defaultValue: 'Nusxalash' })}
+                  </Button>
                 </div>
               </div>
-              <button onClick={onCloseCredentials} className="w-full px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors">
-                {t('government.close', { defaultValue: 'Yopish' })}
-              </button>
+              {approvedCredentials.setPasswordUrl ? (
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">
+                    {t('government.setPasswordLink', { defaultValue: 'Set Password Link (expires in 24h)' })}
+                  </label>
+                  <div className="flex items-center gap-2">
+                    <input type="text" readOnly value={approvedCredentials.setPasswordUrl} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
+                    <Button variant="secondary" size="sm" onClick={() => { navigator.clipboard.writeText(approvedCredentials.setPasswordUrl); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }}>
+                      {t('government.copy', { defaultValue: 'Nusxalash' })}
+                    </Button>
+                  </div>
+                  <p className="mt-1 text-xs text-amber-600">
+                    {t('government.setPasswordNote', { defaultValue: 'Share this link with the admin. It expires in 24 hours.' })}
+                  </p>
+                </div>
+              ) : approvedCredentials.password ? (
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">{t('government.form.password')}</label>
+                  <div className="flex items-center gap-2">
+                    <input type="text" readOnly value={approvedCredentials.password} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
+                    <Button variant="secondary" size="sm" onClick={() => { navigator.clipboard.writeText(approvedCredentials.password); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }}>
+                      {t('government.copy', { defaultValue: 'Nusxalash' })}
+                    </Button>
+                  </div>
+                </div>
+              ) : null}
+              {approvedCredentials.telegramUsername && (
+                <div>
+                  <label className="block text-xs font-medium text-gray-600 mb-1">Telegram Username</label>
+                  <div className="flex items-center gap-2">
+                    <input type="text" readOnly value={`@${approvedCredentials.telegramUsername}`} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm" />
+                    {/* TODO(phase-1): Telegram link button color — bg-blue-100 used as external link style; confirm keep as Telegram brand color or switch to primary-* */}
+                    <a href={`https://t.me/${approvedCredentials.telegramUsername}`} target="_blank" rel="noopener noreferrer" className="px-3 py-2 bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-lg text-sm transition-colors">
+                      {t('government.openTelegram', { defaultValue: 'Telegram' })}
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </Modal>
     </>
   );
 }

@@ -1,9 +1,9 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { mergeLocales } from '../../../shared/utils/mergeLocales.js';
-import sharedEn from '../../../shared/locales/en.json';
-import sharedUz from '../../../shared/locales/uz.json';
-import sharedRu from '../../../shared/locales/ru.json';
+import { mergeLocales } from '../../shared/utils/mergeLocales.js';
+import sharedEn from '../../shared/locales/en.json';
+import sharedUz from '../../shared/locales/uz.json';
+import sharedRu from '../../shared/locales/ru.json';
 import portalEn from './locales/en/common.json';
 import portalUz from './locales/uz/common.json';
 import portalRu from './locales/ru/common.json';

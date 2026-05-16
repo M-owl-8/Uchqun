@@ -1,5 +1,5 @@
 import { Building2, Star } from 'lucide-react';
-import Card from '../Card';
+import Card from '@shared/components/Card';
 import { useTranslation } from 'react-i18next';
 
 export default function SchoolsTab({ schools, loadingSchools }) {

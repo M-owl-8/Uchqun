@@ -1,6 +1,9 @@
 import { useState } from 'react';
-import { Mail, Lock, Plus, User, Eye, EyeOff, X } from 'lucide-react';
-import Card from '../Card';
+import { Lock, Eye, EyeOff } from 'lucide-react';
+import Card from '@shared/components/Card';
+import Button from '@shared/components/Button';
+import Input from '@shared/components/Input';
+import Modal from '@shared/components/Modal';
 import { useTranslation } from 'react-i18next';
 
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
@@ -51,53 +54,33 @@ export default function AdminsTab({
       <Card className="p-8">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-400" />
-                {t('government.form.firstName')}
-              </label>
-              <input
-                type="text"
-                required
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                placeholder={t('government.form.firstName')}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                disabled={loading}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-400" />
-                {t('government.form.lastName')}
-              </label>
-              <input
-                type="text"
-                required
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                placeholder={t('government.form.lastName')}
-                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                disabled={loading}
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-gray-400" />
-              {t('government.form.email')}
-            </label>
-            <input
-              type="email"
+            <Input
+              label={t('government.form.firstName')}
               required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@example.com"
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              placeholder={t('government.form.firstName')}
+              disabled={loading}
+            />
+            <Input
+              label={t('government.form.lastName')}
+              required
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              placeholder={t('government.form.lastName')}
               disabled={loading}
             />
           </div>
+
+          <Input
+            label={t('government.form.email')}
+            type="email"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="admin@example.com"
+            disabled={loading}
+          />
 
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
@@ -140,20 +123,9 @@ export default function AdminsTab({
             {strengthError && <p className="mt-1 text-xs text-red-600">{strengthError}</p>}
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <>
-                <Plus className="w-5 h-5" />
-                <span>{t('government.form.create')}</span>
-              </>
-            )}
-          </button>
+          <Button type="submit" variant="primary" loading={loading} className="w-full">
+            {t('government.form.create')}
+          </Button>
         </form>
       </Card>
 
@@ -184,12 +156,12 @@ export default function AdminsTab({
                   </div>
                 </div>
                 <div className="flex gap-2 mt-3">
-                  <button onClick={() => onStartEdit(adm)} className="px-3 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">
+                  <Button variant="secondary" size="sm" onClick={() => onStartEdit(adm)}>
                     {t('government.form.update')}
-                  </button>
-                  <button onClick={() => onDeleteAdmin(adm.id)} className="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">
+                  </Button>
+                  <Button variant="danger" size="sm" onClick={() => onDeleteAdmin(adm.id)}>
                     {t('government.delete', { defaultValue: "O'chirish" })}
-                  </button>
+                  </Button>
                 </div>
               </div>
             ))}
@@ -197,62 +169,66 @@ export default function AdminsTab({
         )}
       </Card>
 
-      {editingAdmin && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">{t('government.editTitle')}</h3>
-                <p className="text-sm text-gray-500">{editingAdmin.email}</p>
-              </div>
-              <button onClick={onCloseEdit} className="text-gray-500 hover:text-gray-700"><X className="w-5 h-5" /></button>
-            </div>
-            <form onSubmit={onUpdateAdmin} className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.firstName')}</label>
-                  <input type="text" required value={editFirstName} onChange={(e) => setEditFirstName(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.lastName')}</label>
-                  <input type="text" required value={editLastName} onChange={(e) => setEditLastName(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.email')}</label>
-                <input type="email" required value={editEmail} onChange={(e) => setEditEmail(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.phone')}</label>
-                <input type="tel" value={editPhone} onChange={(e) => setEditPhone(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.password')}</label>
-                <div className="relative">
-                  <input
-                    type={showPasswords.edit ? 'text' : 'password'}
-                    value={editPassword}
-                    onChange={(e) => setEditPassword(e.target.value)}
-                    placeholder={t('government.form.passwordChange', { defaultValue: "Parolni o'zgartirish uchun kiriting" })}
-                    className="w-full px-4 py-2.5 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                  />
-                  <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-                    {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-              <div className="flex gap-3 pt-2">
-                <button type="button" onClick={onCloseEdit} disabled={editSaving} className="flex-1 px-4 py-2.5 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
-                  {t('government.form.cancel')}
-                </button>
-                <button type="submit" disabled={editSaving} className="flex-1 px-4 py-2.5 bg-primary-600 text-white rounded-lg font-medium hover:bg-primary-700 transition-colors disabled:opacity-50">
-                  {editSaving ? t('government.status.loadingAdmins') : t('government.form.save')}
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={!!editingAdmin}
+        onClose={onCloseEdit}
+        title={editingAdmin ? `${t('government.editTitle')} — ${editingAdmin.email}` : ''}
+        footer={
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={onCloseEdit} disabled={editSaving}>
+              {t('government.form.cancel')}
+            </Button>
+            <Button type="submit" form="edit-admin-form" variant="primary" className="flex-1" loading={editSaving}>
+              {t('government.form.save')}
+            </Button>
           </div>
-        </div>
-      )}
+        }
+      >
+        <form id="edit-admin-form" onSubmit={onUpdateAdmin} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label={t('government.form.firstName')}
+              required
+              value={editFirstName}
+              onChange={(e) => setEditFirstName(e.target.value)}
+            />
+            <Input
+              label={t('government.form.lastName')}
+              required
+              value={editLastName}
+              onChange={(e) => setEditLastName(e.target.value)}
+            />
+          </div>
+          <Input
+            label={t('government.form.email')}
+            type="email"
+            required
+            value={editEmail}
+            onChange={(e) => setEditEmail(e.target.value)}
+          />
+          <Input
+            label={t('government.form.phone')}
+            type="tel"
+            value={editPhone}
+            onChange={(e) => setEditPhone(e.target.value)}
+          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.password')}</label>
+            <div className="relative">
+              <input
+                type={showPasswords.edit ? 'text' : 'password'}
+                value={editPassword}
+                onChange={(e) => setEditPassword(e.target.value)}
+                placeholder={t('government.form.passwordChange', { defaultValue: "Parolni o'zgartirish uchun kiriting" })}
+                className="w-full px-4 py-2.5 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              />
+              <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

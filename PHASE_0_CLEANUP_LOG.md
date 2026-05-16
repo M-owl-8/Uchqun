@@ -600,7 +600,7 @@ Three cascading fixes were required to make all 11 tests pass:
 
 ---
 
-## PHASE 0 COMPLETE — 2026-05-16
+## ~~PHASE 0 COMPLETE — 2026-05-16~~ ← RETRACTED (see correction below)
 
 All Phase 0 objectives met:
 
@@ -630,3 +630,23 @@ All Phase 0 objectives met:
 - Admin: therapy session type colors in `getTherapyColor`
 - Admin: role badge colors in `roleColors` (UsersStats.jsx)
 - Teacher/Parent: Lunch/Dinner meal-type colors in `mealConfigs`
+
+---
+
+## PHASE 0 CORRECTION — 2026-05-16 (verification audit)
+
+The "PHASE 0 COMPLETE" claim above was premature. A verification audit identified 5 blockers that were resolved in the same session.
+
+### Blockers found and resolved
+
+| # | Blocker | Files Changed | Resolution |
+|---|---------|--------------|------------|
+| B1 | i18n path depth wrong — `../../../shared/` from `<portal>/src/` resolves above repo root | `admin/src/i18n.js`, `government/src/i18n.js`, `teacher/src/i18n.js` | Changed to `../../shared/` |
+| B2 | Government stale local imports — `'../Card'` and `'./LoadingSpinner'` after wrappers were deleted | `government/src/components/ProtectedRoute.jsx`, all 5 `tabs/*.jsx` | Updated to `@shared/components/*` |
+| B3 | `window.prompt()` still present in ReceptionDetailPanel reject flow | `admin/src/pages/reception/ReceptionDetailPanel.jsx` | Replaced with `<ConfirmDialog requireReason>` |
+| B4 | Government tabs not stripped — inline `<button>`, `<input>`, `<textarea>`, modal overlays | `tabs/AdminsTab.jsx`, `GovernmentTab.jsx`, `MessagesTab.jsx`, `RegistrationsTab.jsx` | Replaced with `Button`, `Input`, `Textarea`, `Modal` from `@shared/components/` |
+| B5 | Mobile route coverage gap — teacher/parent full sidebar unreachable on mobile | `teacher/src/components/Layout.jsx`, `teacher/src/parent/components/Layout.jsx` | Added hamburger drawer (`sidebarOpen` state + overlay + sliding sidebar + `Menu` button) |
+
+Additional fix: `reception/src/locales/{en,uz,ru}/common.json` created (reception i18n referenced `./locales/*/common.json` in `src/` but only `public/locales/` existed).
+
+## PHASE 0 COMPLETE — 2026-05-16 (confirmed after blocker resolution)

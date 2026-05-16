@@ -1,5 +1,8 @@
-import { Mail, Lock, Plus, User, Eye, EyeOff, X } from 'lucide-react';
-import Card from '../Card';
+import { Lock, Eye, EyeOff, Plus } from 'lucide-react';
+import Card from '@shared/components/Card';
+import Button from '@shared/components/Button';
+import Input from '@shared/components/Input';
+import Modal from '@shared/components/Modal';
 import { useTranslation } from 'react-i18next';
 
 export default function GovernmentTab({
@@ -25,39 +28,49 @@ export default function GovernmentTab({
       <Card className="p-8">
         <form onSubmit={onCreateGovernment} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-400" />
-                {t('government.form.firstName')}
-              </label>
-              <input type="text" required value={govFirstName} onChange={(e) => setGovFirstName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder={t('government.form.firstName')} />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-                <User className="w-4 h-4 text-gray-400" />
-                {t('government.form.lastName')}
-              </label>
-              <input type="text" required value={govLastName} onChange={(e) => setGovLastName(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder={t('government.form.lastName')} />
-            </div>
+            <Input
+              label={t('government.form.firstName')}
+              required
+              value={govFirstName}
+              onChange={(e) => setGovFirstName(e.target.value)}
+              placeholder={t('government.form.firstName')}
+            />
+            <Input
+              label={t('government.form.lastName')}
+              required
+              value={govLastName}
+              onChange={(e) => setGovLastName(e.target.value)}
+              placeholder={t('government.form.lastName')}
+            />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
-              <Mail className="w-4 h-4 text-gray-400" />
-              {t('government.form.email')}
-            </label>
-            <input type="email" required value={govEmail} onChange={(e) => setGovEmail(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="email@example.com" />
-          </div>
+          <Input
+            label={t('government.form.email')}
+            type="email"
+            required
+            value={govEmail}
+            onChange={(e) => setGovEmail(e.target.value)}
+            placeholder="email@example.com"
+          />
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
               <Lock className="w-4 h-4 text-gray-400" />
               {t('government.form.password')}
             </label>
-            <input type="password" required value={govPassword} onChange={(e) => setGovPassword(e.target.value)} className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" placeholder="••••••••" minLength={8} />
+            <input
+              type="password"
+              required
+              value={govPassword}
+              onChange={(e) => setGovPassword(e.target.value)}
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              placeholder="••••••••"
+              minLength={8}
+            />
             <p className="mt-1 text-xs text-gray-500">{t('government.form.passwordMinLength', { defaultValue: "Parol kamida 8 belgidan iborat bo'lishi kerak" })}</p>
           </div>
-          <button type="submit" disabled={govLoading} className="w-full py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-            {govLoading ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><Plus className="w-5 h-5" /><span>{t('government.createGovernment', { defaultValue: 'Government Foydalanuvchisini Yaratish' })}</span></>}
-          </button>
+          <Button type="submit" variant="primary" loading={govLoading} className="w-full">
+            <Plus className="w-5 h-5 mr-1" />
+            {t('government.createGovernment', { defaultValue: 'Government Foydalanuvchisini Yaratish' })}
+          </Button>
         </form>
       </Card>
 
@@ -89,8 +102,12 @@ export default function GovernmentTab({
                   </div>
                 </div>
                 <div className="flex gap-2 mt-3">
-                  <button onClick={() => onStartEditGovernment(gov)} className="px-3 py-2 text-sm font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">{t('government.form.update')}</button>
-                  <button onClick={() => onDeleteGovernment(gov.id)} className="px-3 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-lg hover:bg-red-100 transition-colors">{t('government.delete', { defaultValue: "O'chirish" })}</button>
+                  <Button variant="secondary" size="sm" onClick={() => onStartEditGovernment(gov)}>
+                    {t('government.form.update')}
+                  </Button>
+                  <Button variant="danger" size="sm" onClick={() => onDeleteGovernment(gov.id)}>
+                    {t('government.delete', { defaultValue: "O'chirish" })}
+                  </Button>
                 </div>
               </div>
             ))}
@@ -98,50 +115,60 @@ export default function GovernmentTab({
         )}
       </div>
 
-      {editingGovernment && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">{t('government.editTitle')}</h3>
-                <p className="text-sm text-gray-500">{editingGovernment.email}</p>
-              </div>
-              <button onClick={onCloseEditGov} className="text-gray-500 hover:text-gray-700"><X className="w-5 h-5" /></button>
-            </div>
-            <form onSubmit={onUpdateGovernment} className="p-6 space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.firstName')}</label>
-                  <input type="text" required value={editGovFirstName} onChange={(e) => setEditGovFirstName(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.lastName')}</label>
-                  <input type="text" required value={editGovLastName} onChange={(e) => setEditGovLastName(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.email')}</label>
-                <input type="email" required value={editGovEmail} onChange={(e) => setEditGovEmail(e.target.value)} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent" />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.newPassword', { defaultValue: 'Yangi parol (ixtiyoriy)' })}</label>
-                <div className="relative">
-                  <input type={showPasswords.edit ? 'text' : 'password'} value={editGovPassword} onChange={(e) => setEditGovPassword(e.target.value)} placeholder={t('government.form.passwordOptional', { defaultValue: "Parolni o'zgartirmasangiz bo'sh qoldiring" })} className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10" />
-                  <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
-                    {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
-                  </button>
-                </div>
-              </div>
-              <div className="flex gap-3 pt-4">
-                <button type="button" onClick={onCloseEditGov} disabled={editGovSaving} className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-colors">{t('government.form.cancel')}</button>
-                <button type="submit" disabled={editGovSaving} className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-                  {editGovSaving ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <span>{t('government.form.save')}</span>}
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={!!editingGovernment}
+        onClose={onCloseEditGov}
+        title={editingGovernment ? `${t('government.editTitle')} — ${editingGovernment.email}` : ''}
+        footer={
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={onCloseEditGov} disabled={editGovSaving}>
+              {t('government.form.cancel')}
+            </Button>
+            <Button type="submit" form="edit-gov-form" variant="primary" className="flex-1" loading={editGovSaving}>
+              {t('government.form.save')}
+            </Button>
           </div>
-        </div>
-      )}
+        }
+      >
+        <form id="edit-gov-form" onSubmit={onUpdateGovernment} className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label={t('government.form.firstName')}
+              required
+              value={editGovFirstName}
+              onChange={(e) => setEditGovFirstName(e.target.value)}
+            />
+            <Input
+              label={t('government.form.lastName')}
+              required
+              value={editGovLastName}
+              onChange={(e) => setEditGovLastName(e.target.value)}
+            />
+          </div>
+          <Input
+            label={t('government.form.email')}
+            type="email"
+            required
+            value={editGovEmail}
+            onChange={(e) => setEditGovEmail(e.target.value)}
+          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">{t('government.form.newPassword', { defaultValue: 'Yangi parol (ixtiyoriy)' })}</label>
+            <div className="relative">
+              <input
+                type={showPasswords.edit ? 'text' : 'password'}
+                value={editGovPassword}
+                onChange={(e) => setEditGovPassword(e.target.value)}
+                placeholder={t('government.form.passwordOptional', { defaultValue: "Parolni o'zgartirmasangiz bo'sh qoldiring" })}
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
+              />
+              <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
+                {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
+          </div>
+        </form>
+      </Modal>
     </>
   );
 }

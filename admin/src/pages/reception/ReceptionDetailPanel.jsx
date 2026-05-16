@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Shield, FileText, CheckCircle, XCircle, Edit2, Trash2, UserCheck, UserX } from 'lucide-react';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 
 const ReceptionDetailPanel = ({
   reception,
@@ -13,6 +15,7 @@ const ReceptionDetailPanel = ({
   onReject,
 }) => {
   const { t } = useTranslation();
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   const getDocumentStatusBadge = (document) => {
     if (document.status === 'approved') {
@@ -133,10 +136,14 @@ const ReceptionDetailPanel = ({
                       {t('receptionsPage.approve')}
                     </button>
                     <button
-                      onClick={() => {
-                        const reason = prompt(t('receptionsPage.rejectionPrompt'));
-                        if (reason) onReject(document.id, reason);
-                      }}
+                      onClick={() => setConfirmDialog({
+                        message: t('receptionsPage.rejectionPrompt', { defaultValue: 'Enter a reason for rejection' }),
+                        requireReason: true,
+                        onConfirm: (reason) => {
+                          setConfirmDialog(null);
+                          onReject(document.id, reason);
+                        },
+                      })}
                       disabled={actionLoading}
                       className="flex-1 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50"
                     >
@@ -150,6 +157,7 @@ const ReceptionDetailPanel = ({
           </div>
         )}
       </div>
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );
 };

@@ -1,5 +1,8 @@
-import { Check, Send, X } from 'lucide-react';
-import Card from '../Card';
+import { Check, Send } from 'lucide-react';
+import Card from '@shared/components/Card';
+import Button from '@shared/components/Button';
+import Modal from '@shared/components/Modal';
+import Textarea from '@shared/components/Textarea';
 import { useTranslation } from 'react-i18next';
 
 export default function MessagesTab({
@@ -9,6 +12,9 @@ export default function MessagesTab({
   setReplyText,
 }) {
   const { t } = useTranslation();
+
+  const closeReply = () => { onSelectMessage(null); setReplyText(''); };
+
   return (
     <>
       <div className="text-center">
@@ -50,16 +56,16 @@ export default function MessagesTab({
                   </div>
                   <div className="flex flex-col gap-2">
                     {!msg.isRead && (
-                      <button onClick={() => onMarkRead(msg.id, true)} className="px-3 py-1 text-xs font-medium text-green-600 bg-green-50 rounded-lg hover:bg-green-100 transition-colors">
-                        <Check className="w-3 h-3 inline mr-1" />
+                      <Button variant="ghost" size="sm" onClick={() => onMarkRead(msg.id, true)}>
+                        <Check className="w-3 h-3 mr-1" />
                         {t('government.markRead', { defaultValue: "O'qildi" })}
-                      </button>
+                      </Button>
                     )}
                     {!msg.reply && (
-                      <button onClick={() => onSelectMessage(msg)} className="px-3 py-1 text-xs font-medium text-primary-600 bg-primary-50 rounded-lg hover:bg-primary-100 transition-colors">
-                        <Send className="w-3 h-3 inline mr-1" />
+                      <Button variant="ghost" size="sm" onClick={() => onSelectMessage(msg)}>
+                        <Send className="w-3 h-3 mr-1" />
                         {t('government.reply', { defaultValue: 'Javob berish' })}
-                      </button>
+                      </Button>
                     )}
                   </div>
                 </div>
@@ -69,42 +75,36 @@ export default function MessagesTab({
         )}
       </Card>
 
-      {selectedMessage && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h3 className="text-lg font-bold text-gray-900">{t('government.replyTo', { defaultValue: 'Javob berish' })}: {selectedMessage.subject}</h3>
-              <button onClick={() => { onSelectMessage(null); setReplyText(''); }} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-                <X className="w-5 h-5 text-gray-500" />
-              </button>
-            </div>
-            <div className="p-6 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('government.replyText', { defaultValue: 'Javob' })}</label>
-                <textarea
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  rows={6}
-                  placeholder={t('government.replyPlaceholder', { defaultValue: 'Javobingizni yozing...' })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-              </div>
-              <div className="flex gap-3">
-                <button onClick={() => { onSelectMessage(null); setReplyText(''); }} disabled={replying} className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors">
-                  {t('government.cancel', { defaultValue: 'Bekor qilish' })}
-                </button>
-                <button
-                  onClick={() => onReply(selectedMessage.id)}
-                  disabled={replying || !replyText.trim()}
-                  className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
-                >
-                  {replying ? <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" /> : <><Send className="w-4 h-4" /><span>{t('government.send', { defaultValue: 'Yuborish' })}</span></>}
-                </button>
-              </div>
-            </div>
+      <Modal
+        isOpen={!!selectedMessage}
+        onClose={closeReply}
+        title={selectedMessage ? `${t('government.replyTo', { defaultValue: 'Javob berish' })}: ${selectedMessage.subject}` : ''}
+        footer={
+          <div className="flex gap-3">
+            <Button variant="secondary" className="flex-1" onClick={closeReply} disabled={replying}>
+              {t('government.cancel', { defaultValue: 'Bekor qilish' })}
+            </Button>
+            <Button
+              variant="primary"
+              className="flex-1"
+              onClick={() => onReply(selectedMessage?.id)}
+              disabled={replying || !replyText.trim()}
+              loading={replying}
+            >
+              <Send className="w-4 h-4 mr-1" />
+              {t('government.send', { defaultValue: 'Yuborish' })}
+            </Button>
           </div>
-        </div>
-      )}
+        }
+      >
+        <Textarea
+          label={t('government.replyText', { defaultValue: 'Javob' })}
+          value={replyText}
+          onChange={(e) => setReplyText(e.target.value)}
+          rows={6}
+          placeholder={t('government.replyPlaceholder', { defaultValue: 'Javobingizni yozing...' })}
+        />
+      </Modal>
     </>
   );
 }
