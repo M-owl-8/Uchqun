@@ -1,4 +1,4 @@
-const DEFAULT_TTL = 60_000;
+const DEFAULT_TTL = 300_000; // 5 minutes
 const store = new Map(); // key → { data, ts, ttl }
 
 export const get = (key) => {

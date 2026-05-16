@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
+import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import AdminsTab from '../components/tabs/AdminsTab';
 import SchoolsTab from '../components/tabs/SchoolsTab';
@@ -19,8 +20,8 @@ const Platform = () => {
   const [confirmDialog, setConfirmDialog] = useState(null);
 
   const [loading, setLoading] = useState(false);
-  const [admins, setAdmins] = useState([]);
-  const [loadingAdmins, setLoadingAdmins] = useState(true);
+  const [admins, setAdmins] = useState(() => cache.get('platform:admins') || []);
+  const [loadingAdmins, setLoadingAdmins] = useState(!cache.get('platform:admins'));
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [editFirstName, setEditFirstName] = useState('');
   const [editLastName, setEditLastName] = useState('');
@@ -30,11 +31,11 @@ const Platform = () => {
   const [editSaving, setEditSaving] = useState(false);
   const [showPasswords, setShowPasswords] = useState({ edit: false });
 
-  const [schools, setSchools] = useState([]);
-  const [loadingSchools, setLoadingSchools] = useState(true);
+  const [schools, setSchools] = useState(() => cache.get('platform:schools') || []);
+  const [loadingSchools, setLoadingSchools] = useState(!cache.get('platform:schools'));
 
-  const [messages, setMessages] = useState([]);
-  const [loadingMessages, setLoadingMessages] = useState(true);
+  const [messages, setMessages] = useState(() => cache.get('platform:messages') || []);
+  const [loadingMessages, setLoadingMessages] = useState(!cache.get('platform:messages'));
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [replyText, setReplyText] = useState('');
   const [replying, setReplying] = useState(false);
@@ -44,8 +45,8 @@ const Platform = () => {
   const [govEmail, setGovEmail] = useState('');
   const [govPassword, setGovPassword] = useState('');
   const [govLoading, setGovLoading] = useState(false);
-  const [governments, setGovernments] = useState([]);
-  const [loadingGovernments, setLoadingGovernments] = useState(true);
+  const [governments, setGovernments] = useState(() => cache.get('platform:governments') || []);
+  const [loadingGovernments, setLoadingGovernments] = useState(!cache.get('platform:governments'));
   const [editingGovernment, setEditingGovernment] = useState(null);
   const [editGovFirstName, setEditGovFirstName] = useState('');
   const [editGovLastName, setEditGovLastName] = useState('');
@@ -62,43 +63,47 @@ const Platform = () => {
   const [approvedCredentials, setApprovedCredentials] = useState(null);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoadingAdmins(true);
-        const res = await api.get('/government/admins');
-        setAdmins(res.data?.data || []);
-      } catch { setAdmins([]); } finally { setLoadingAdmins(false); }
-    })();
+    const fresh = () => api.get('/government/admins').then(res => {
+      const data = res.data?.data || [];
+      cache.set('platform:admins', data);
+      setAdmins(data);
+    }).catch(() => {});
+    if (cache.get('platform:admins')) { fresh(); return; }
+    setLoadingAdmins(true);
+    fresh().finally(() => setLoadingAdmins(false));
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoadingGovernments(true);
-        const res = await api.get('/government/users');
-        setGovernments(res.data?.data || []);
-      } catch { setGovernments([]); } finally { setLoadingGovernments(false); }
-    })();
+    const fresh = () => api.get('/government/users').then(res => {
+      const data = res.data?.data || [];
+      cache.set('platform:governments', data);
+      setGovernments(data);
+    }).catch(() => {});
+    if (cache.get('platform:governments')) { fresh(); return; }
+    setLoadingGovernments(true);
+    fresh().finally(() => setLoadingGovernments(false));
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoadingSchools(true);
-        const res = await api.get('/government/schools-list');
-        setSchools(res.data?.data || []);
-      } catch { setSchools([]); } finally { setLoadingSchools(false); }
-    })();
+    const fresh = () => api.get('/government/schools-list').then(res => {
+      const data = res.data?.data || [];
+      cache.set('platform:schools', data);
+      setSchools(data);
+    }).catch(() => {});
+    if (cache.get('platform:schools')) { fresh(); return; }
+    setLoadingSchools(true);
+    fresh().finally(() => setLoadingSchools(false));
   }, []);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoadingMessages(true);
-        const res = await api.get('/government/messages');
-        setMessages(res.data?.data || []);
-      } catch { setMessages([]); } finally { setLoadingMessages(false); }
-    })();
+    const fresh = () => api.get('/government/messages').then(res => {
+      const data = res.data?.data || [];
+      cache.set('platform:messages', data);
+      setMessages(data);
+    }).catch(() => {});
+    if (cache.get('platform:messages')) { fresh(); return; }
+    setLoadingMessages(true);
+    fresh().finally(() => setLoadingMessages(false));
   }, []);
 
   useEffect(() => {
@@ -121,7 +126,9 @@ const Platform = () => {
       setReplyText('');
       setSelectedMessage(null);
       const res = await api.get('/government/messages');
-      setMessages(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:messages', data);
+      setMessages(data);
     } catch (error) {
       showError(error.response?.data?.error || t('government.replyError', { defaultValue: 'Reply failed' }));
     } finally { setReplying(false); }
@@ -131,7 +138,9 @@ const Platform = () => {
     try {
       await api.put(`/government/messages/${messageId}/read`, { isRead });
       const res = await api.get('/government/messages');
-      setMessages(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:messages', data);
+      setMessages(data);
     } catch { /* ignore */ }
   };
 
@@ -146,7 +155,9 @@ const Platform = () => {
       success(t('government.toastCreate'));
       reset?.();
       const res = await api.get('/government/admins');
-      setAdmins(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:admins', data);
+      setAdmins(data);
     } catch (error) {
       showError(error.response?.data?.error || t('government.toastSaveError'));
     } finally { setLoading(false); }
@@ -173,7 +184,9 @@ const Platform = () => {
       });
       success(t('government.toastUpdate'));
       const res = await api.get('/government/admins');
-      setAdmins(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:admins', data);
+      setAdmins(data);
       setEditingAdmin(null);
       setEditPassword('');
     } catch (error) {
@@ -189,7 +202,11 @@ const Platform = () => {
         try {
           await api.delete(`/government/admins/${id}`);
           success(t('government.toastDelete'));
-          setAdmins((prev) => prev.filter((a) => a.id !== id));
+          setAdmins((prev) => {
+            const next = prev.filter((a) => a.id !== id);
+            cache.set('platform:admins', next);
+            return next;
+          });
         } catch (error) {
           showError(error.response?.data?.error || t('government.toastDeleteError'));
         }
@@ -218,7 +235,9 @@ const Platform = () => {
       success(t('government.governmentCreated', { defaultValue: 'Government user created' }));
       setGovFirstName(''); setGovLastName(''); setGovEmail(''); setGovPassword('');
       const res = await api.get('/government/users');
-      setGovernments(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:governments', data);
+      setGovernments(data);
     } catch (error) {
       showError(error.response?.data?.error || error.message || t('government.governmentCreateError', { defaultValue: 'Create failed' }));
     } finally { setGovLoading(false); }
@@ -244,7 +263,9 @@ const Platform = () => {
       });
       success(t('government.governmentUpdated', { defaultValue: 'Government user updated' }));
       const res = await api.get('/government/users');
-      setGovernments(res.data?.data || []);
+      const data = res.data?.data || [];
+      cache.set('platform:governments', data);
+      setGovernments(data);
       setEditingGovernment(null);
       setEditGovPassword('');
     } catch (error) {
@@ -260,7 +281,11 @@ const Platform = () => {
         try {
           await api.delete(`/government/users/${id}`);
           success(t('government.governmentDeleted', { defaultValue: 'Government user deleted' }));
-          setGovernments((prev) => prev.filter((g) => g.id !== id));
+          setGovernments((prev) => {
+            const next = prev.filter((g) => g.id !== id);
+            cache.set('platform:governments', next);
+            return next;
+          });
         } catch (error) {
           showError(error.response?.data?.error || t('government.governmentDeleteError', { defaultValue: 'Delete failed' }));
         }
