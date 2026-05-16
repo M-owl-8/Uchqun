@@ -133,7 +133,7 @@ describe('admin/adminUserController', () => {
 
     it('400 when email exists', async () => {
       mockFindOne.mockResolvedValue({ id: 'existing' });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'pass1234' } };
+      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026' } };
       const res = mkRes();
       await createAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -142,7 +142,7 @@ describe('admin/adminUserController', () => {
     it('creates admin (role=admin) when valid', async () => {
       mockFindOne.mockResolvedValue(null);
       mockCreate.mockResolvedValue({ id: 'a1', email: 'a@x.com', toJSON: () => ({ id: 'a1' }) });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'A@X.COM', password: 'pass1234' } };
+      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'A@X.COM', password: 'Pass@2026' } };
       const res = mkRes();
       await createAdmin(req, res);
       expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({

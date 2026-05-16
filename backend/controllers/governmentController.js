@@ -10,6 +10,13 @@ import logger from '../utils/logger.js';
 import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAverageRating } from '../utils/governmentLevel.js';
 import { parsePagination } from '../utils/pagination.js';
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isValidUuid = (s) => UUID_RE.test(s);
+const isValidDate = (s) => !isNaN(new Date(s).getTime());
+
+const STAT_TYPES = new Set(['overview', 'schools', 'students', 'teachers', 'ratings', 'therapies', 'activities', 'complaints']);
+const PERIODS = new Set(['daily', 'weekly', 'monthly', 'quarterly', 'yearly']);
+
 /**
  * Get overview statistics
  * GET /api/government/overview
@@ -28,7 +35,7 @@ export const getOverview = async (req, res) => {
 
     // Build school filter (government can optionally filter by region/school)
     const schoolWhere = { isActive: true, ...where };
-    const schoolIdFilter = req.query.schoolId ? { schoolId: req.query.schoolId } : {};
+    const schoolIdFilter = req.query.schoolId && isValidUuid(req.query.schoolId) ? { schoolId: req.query.schoolId } : {};
 
     // Get schools count
     let schoolsCount = 0;
@@ -114,7 +121,7 @@ export const getOverview = async (req, res) => {
  */
 export const getSchoolsStats = async (req, res) => {
   try {
-    const { limit = 50, offset = 0 } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
     const where = { isActive: true };
 
@@ -123,8 +130,8 @@ export const getSchoolsStats = async (req, res) => {
     try {
       schools = await School.findAndCountAll({
         where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
         distinct: true,
         include: [
           {
@@ -147,8 +154,8 @@ export const getSchoolsStats = async (req, res) => {
       includesLoaded = false;
       schools = await School.findAndCountAll({
         where,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
         order: [['name', 'ASC']],
       });
     }
@@ -227,8 +234,8 @@ export const getSchoolsStats = async (req, res) => {
         total: schools.count,
         totalReviews,
         globalAverageRating,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
       },
     });
   } catch (error) {
@@ -256,6 +263,9 @@ export const getStudentsStats = async (req, res) => {
 
     const where = {};
     if (schoolId) {
+      if (!isValidUuid(schoolId)) {
+        return res.status(400).json({ error: 'Invalid schoolId format' });
+      }
       where.schoolId = schoolId;
     }
 
@@ -368,6 +378,13 @@ export const getRatingsStats = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
 
+    if (startDate && !isValidDate(startDate)) {
+      return res.status(400).json({ error: 'Invalid startDate format' });
+    }
+    if (endDate && !isValidDate(endDate)) {
+      return res.status(400).json({ error: 'Invalid endDate format' });
+    }
+
     const ratingWhere = {};
     if (startDate || endDate) {
       ratingWhere.createdAt = {};
@@ -405,7 +422,7 @@ export const getRatingsStats = async (req, res) => {
     }
 
     // Aggregate and rank schools by average rating (supports both stars and evaluation)
-    const mappedSchools = await Promise.all(schools.map(async (school) => {
+    const mappedSchools = (await Promise.allSettled(schools.map(async (school) => {
       let ratings;
       if (ratingsIncluded && school.ratings !== undefined) {
         ratings = school.ratings || [];
@@ -448,7 +465,7 @@ export const getRatingsStats = async (req, res) => {
         distribution,
         governmentLevel: getGovernmentLevel(ratingResult.average, ratingResult.count),
       };
-    }));
+    }))).filter(r => r.status === 'fulfilled').map(r => r.value);
 
     const rankedSchools = sortSchoolsByRating(mappedSchools);
 
@@ -494,8 +511,23 @@ export const generateStats = async (req, res) => {
       schoolId,
     } = req.body;
 
+    if (!req.user?.id) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
     if (!statType || !period || !periodStart || !periodEnd) {
       return res.status(400).json({ error: 'Stat type, period, and dates are required' });
+    }
+    if (!STAT_TYPES.has(statType)) {
+      return res.status(400).json({ error: `Invalid statType. Must be one of: ${[...STAT_TYPES].join(', ')}` });
+    }
+    if (!PERIODS.has(period)) {
+      return res.status(400).json({ error: `Invalid period. Must be one of: ${[...PERIODS].join(', ')}` });
+    }
+    if (!isValidDate(periodStart) || !isValidDate(periodEnd)) {
+      return res.status(400).json({ error: 'Invalid periodStart or periodEnd date format' });
+    }
+    if (new Date(periodStart) > new Date(periodEnd)) {
+      return res.status(400).json({ error: 'periodStart must be before periodEnd' });
     }
 
     let data = {};
@@ -549,21 +581,20 @@ export const generateStats = async (req, res) => {
  */
 export const getSavedStats = async (req, res) => {
   try {
-    const {
-      statType,
-      period,
-      region,
-      district,
-      schoolId,
-      limit = 20,
-      offset = 0,
-    } = req.query;
+    const { statType, period, region, district, schoolId } = req.query;
+    const { limit, offset } = parsePagination(req.query, { limit: 20 });
 
     const where = {};
     if (statType) {
+      if (!STAT_TYPES.has(statType)) {
+        return res.status(400).json({ error: `Invalid statType. Must be one of: ${[...STAT_TYPES].join(', ')}` });
+      }
       where.statType = statType;
     }
     if (period) {
+      if (!PERIODS.has(period)) {
+        return res.status(400).json({ error: `Invalid period. Must be one of: ${[...PERIODS].join(', ')}` });
+      }
       where.period = period;
     }
     if (region) {
@@ -573,13 +604,16 @@ export const getSavedStats = async (req, res) => {
       where.district = district;
     }
     if (schoolId) {
+      if (!isValidUuid(schoolId)) {
+        return res.status(400).json({ error: 'Invalid schoolId format' });
+      }
       where.schoolId = schoolId;
     }
 
     const stats = await GovernmentStats.findAndCountAll({
       where,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit,
+      offset,
       order: [['generatedAt', 'DESC']],
       include: [
         {
@@ -596,8 +630,8 @@ export const getSavedStats = async (req, res) => {
       data: {
         stats: stats.rows,
         total: stats.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
       },
     });
   } catch (error) {
@@ -613,9 +647,7 @@ export const getSavedStats = async (req, res) => {
 export const getSchoolRatings = async (req, res) => {
   try {
     const { schoolId } = req.params;
-    const { page = 1, limit = 10 } = req.query;
-
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { limit, offset } = parsePagination(req.query, { limit: 10 });
 
     const { count, rows } = await SchoolRating.findAndCountAll({
       where: { schoolId },
@@ -628,7 +660,7 @@ export const getSchoolRatings = async (req, res) => {
         },
       ],
       order: [['createdAt', 'DESC']],
-      limit: parseInt(limit),
+      limit,
       offset,
     });
 
@@ -650,9 +682,9 @@ export const getSchoolRatings = async (req, res) => {
       data: {
         ratings,
         total: count,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        totalPages: Math.ceil(count / parseInt(limit)),
+        limit,
+        offset,
+        totalPages: Math.ceil(count / limit),
       },
     });
   } catch (error) {
@@ -758,88 +790,35 @@ export const getAdminDetails = async (req, res) => {
 
     const receptionIds = receptions.map(r => r.id);
 
-    // Get schools created by these receptions
-    let schools = [];
-    if (receptionIds.length > 0) {
-      try {
-        schools = await School.findAll({
-          where: { createdBy: { [Op.in]: receptionIds } },
-          order: [['createdAt', 'DESC']],
-        });
-      } catch (error) {
-        logger.warn('Failed to fetch schools for admin', { error: error.message, adminId: id });
-        schools = [];
-      }
-    }
+    // Fetch schools, teachers, and parents in parallel — all depend only on receptionIds
+    const [schools, teachers, parents] = receptionIds.length > 0
+      ? await Promise.all([
+          School.findAll({ where: { createdBy: { [Op.in]: receptionIds } }, order: [['createdAt', 'DESC']] })
+            .catch(err => { logger.warn('Failed to fetch schools for admin', { error: err.message, adminId: id }); return []; }),
+          User.findAll({ where: { role: 'teacher', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']] })
+            .catch(err => { logger.warn('Failed to fetch teachers for admin', { error: err.message, adminId: id }); return []; }),
+          User.findAll({ where: { role: 'parent', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']] })
+            .catch(err => { logger.warn('Failed to fetch parents for admin', { error: err.message, adminId: id }); return []; }),
+        ])
+      : [[], [], []];
 
-    // Get teachers created by these receptions
-    let teachers = [];
-    if (receptionIds.length > 0) {
-      try {
-        teachers = await User.findAll({
-          where: { 
-            role: 'teacher',
-            createdBy: { [Op.in]: receptionIds }
-          },
-          attributes: { exclude: ['password'] },
-          order: [['createdAt', 'DESC']],
-        });
-      } catch (error) {
-        logger.warn('Failed to fetch teachers for admin', { error: error.message, adminId: id });
-        teachers = [];
-      }
-    }
-
-    // Get parents created by these receptions
-    let parents = [];
-    if (receptionIds.length > 0) {
-      try {
-        parents = await User.findAll({
-          where: { 
-            role: 'parent',
-            createdBy: { [Op.in]: receptionIds }
-          },
-          attributes: { exclude: ['password'] },
-          order: [['createdAt', 'DESC']],
-        });
-      } catch (error) {
-        logger.warn('Failed to fetch parents for admin', { error: error.message, adminId: id });
-        parents = [];
-      }
-    }
-
-    // Get children of these parents
     const parentIds = parents.map(p => p.id);
-    let children = [];
-    if (parentIds.length > 0) {
-      try {
-        children = await Child.findAll({
-          where: { parentId: { [Op.in]: parentIds } },
-          order: [['createdAt', 'DESC']],
-        });
-      } catch (error) {
-        logger.warn('Failed to fetch children for admin', { error: error.message, adminId: id });
-        children = [];
-      }
-    }
-
-    // Get total students count
-    const studentsCount = children.length;
-
-    // Get school ratings (supports both stars and evaluation formats)
     const schoolIds = schools.map(s => s.id);
-    let ratingsResult = { average: 0, count: 0 };
-    if (schoolIds.length > 0) {
-      try {
-        const ratings = await SchoolRating.findAll({
-          where: { schoolId: { [Op.in]: schoolIds } },
-          attributes: ['stars', 'evaluation'],
-        });
-        ratingsResult = computeAverageRating(ratings);
-      } catch (error) {
-        logger.warn('Failed to fetch ratings for admin', { error: error.message, adminId: id });
-      }
-    }
+
+    // Fetch children and school ratings in parallel — each depends on the previous batch
+    const [children, ratingsResult] = await Promise.all([
+      parentIds.length > 0
+        ? Child.findAll({ where: { parentId: { [Op.in]: parentIds } }, order: [['createdAt', 'DESC']] })
+            .catch(err => { logger.warn('Failed to fetch children for admin', { error: err.message, adminId: id }); return []; })
+        : Promise.resolve([]),
+      schoolIds.length > 0
+        ? SchoolRating.findAll({ where: { schoolId: { [Op.in]: schoolIds } }, attributes: ['stars', 'evaluation'] })
+            .then(ratings => computeAverageRating(ratings))
+            .catch(err => { logger.warn('Failed to fetch ratings for admin', { error: err.message, adminId: id }); return { average: 0, count: 0 }; })
+        : Promise.resolve({ average: 0, count: 0 }),
+    ]);
+
+    const studentsCount = children.length;
 
     logger.info('Government fetched admin details', {
       adminId: id,

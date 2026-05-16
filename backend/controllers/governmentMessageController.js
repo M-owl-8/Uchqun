@@ -22,6 +22,13 @@ export const sendMessage = async (req, res) => {
       return res.status(400).json({ error: 'Subject and message cannot be empty' });
     }
 
+    if (subject.trim().length > 500) {
+      return res.status(400).json({ error: 'Subject must be 500 characters or fewer' });
+    }
+    if (message.trim().length > 5000) {
+      return res.status(400).json({ error: 'Message must be 5000 characters or fewer' });
+    }
+
     logger.info('Attempting to create government message', {
       senderId,
       senderRole: req.user.role,
@@ -53,16 +60,7 @@ export const sendMessage = async (req, res) => {
       senderId: req.user?.id,
       senderRole: req.user?.role
     });
-    if (error.message && error.message.includes('does not exist')) {
-      return res.status(500).json({
-        error: 'Database table not found. Please run migrations.',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined
-      });
-    }
-    res.status(500).json({
-      error: 'Failed to send message',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined
-    });
+    res.status(500).json({ error: 'Failed to send message' });
   }
 };
 
@@ -81,9 +79,10 @@ export const getAllMessages = async (req, res) => {
     }
 
     if (search) {
+      const escaped = search.trim().replace(/[%_\\]/g, '\\$&');
       where[Op.or] = [
-        { subject: { [Op.iLike]: `%${search}%` } },
-        { message: { [Op.iLike]: `%${search}%` } },
+        { subject: { [Op.iLike]: `%${escaped}%` } },
+        { message: { [Op.iLike]: `%${escaped}%` } },
       ];
     }
 

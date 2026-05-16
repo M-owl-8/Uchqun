@@ -117,6 +117,15 @@ export const createAdmin = async (req, res) => {
       return res.status(401).json({ error: 'Authentication required' });
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: 'Invalid email format' });
+    }
+
+    if (password.length < 8 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+      return res.status(400).json({ error: 'Password must be at least 8 characters and contain uppercase, lowercase, and a digit' });
+    }
+
     const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
@@ -219,9 +228,7 @@ export const createGovernment = async (req, res) => {
     }
 
     if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(400).json({
-        error: 'Bu email bilan foydalanuvchi allaqachon mavjud',
-      });
+      return res.status(400).json({ error: 'User with this email already exists' });
     }
 
     if (error.name === 'SequelizeDatabaseError') {
@@ -229,16 +236,10 @@ export const createGovernment = async (req, res) => {
         error: error.message,
         original: error.original?.message,
       });
-      return res.status(400).json({
-        error: 'Ma\'lumotlar bazasi xatosi',
-        details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-      });
+      return res.status(500).json({ error: 'Failed to create government account' });
     }
 
-    res.status(500).json({
-      error: 'Government foydalanuvchisini yaratishda xatolik',
-      details: process.env.NODE_ENV === 'development' ? error.message : undefined,
-    });
+    res.status(500).json({ error: 'Failed to create government account' });
   }
 };
 

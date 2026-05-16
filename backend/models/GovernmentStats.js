@@ -70,6 +70,9 @@ const GovernmentStats = sequelize.define('GovernmentStats', {
     { fields: ['statType'] },
     { fields: ['period'] },
     { fields: ['periodStart', 'periodEnd'] },
+    { fields: ['statType', 'period'] },
+    { fields: ['region', 'statType'] },
+    { fields: ['schoolId', 'statType'] },
   ],
 });
 
