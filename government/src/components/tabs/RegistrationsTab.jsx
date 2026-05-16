@@ -3,6 +3,7 @@ import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import Modal from '@shared/components/Modal';
 import Textarea from '@shared/components/Textarea';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 
 export default function RegistrationsTab({
@@ -26,7 +27,7 @@ export default function RegistrationsTab({
 
       <Card className="p-6 space-y-4">
         {loadingRegistrations ? (
-          <div className="flex items-center justify-center min-h-[120px]"><div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" /></div>
+          <div className="flex items-center justify-center min-h-[120px]"><LoadingSpinner size="sm" /></div>
         ) : registrationRequests.length === 0 ? (
           <p className="text-sm text-gray-600 text-center py-8">{t('government.noRegistrations', { defaultValue: "Hozircha so'rovlar yo'q" })}</p>
         ) : (

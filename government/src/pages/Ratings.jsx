@@ -64,7 +64,7 @@ const DistributionBar = ({ distribution, total }) => {
   );
 };
 
-const SchoolCard = ({ school }) => {
+const SchoolCard = ({ school, showRank }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -104,20 +104,21 @@ const SchoolCard = ({ school }) => {
     <Card className="p-6">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3 flex-1">
-          {/* Rank Badge */}
-          <div className="flex-shrink-0">
-            <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
-              school.rank === 1 
-                ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400' 
-                : school.rank === 2 
-                ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
-                : school.rank === 3
-                ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                : 'bg-brand-100 text-brand-600'
-            }`}>
-              {school.rank || '—'}
+          {showRank && (
+            <div className="flex-shrink-0">
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
+                school.rank === 1
+                  ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400'
+                  : school.rank === 2
+                  ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
+                  : school.rank === 3
+                  ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
+                  : 'bg-brand-100 text-brand-600'
+              }`}>
+                {school.rank}
+              </div>
             </div>
-          </div>
+          )}
           <div className="flex items-center gap-3 flex-1">
             <div className="w-12 h-12 bg-brand-100 rounded-lg flex items-center justify-center">
               <Building2 className="w-6 h-6 text-brand-600" />
@@ -297,19 +298,19 @@ const Ratings = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('ratings.title')}</h1>
-        <p className="text-gray-600">{t('ratings.subtitle')}</p>
+        <h1 className="text-2xl font-semibold text-inkGreen-900">{t('ratings.title')}</h1>
+        <p className="text-sm text-gray-500 mt-0.5">{t('ratings.subtitle')}</p>
       </div>
 
       {/* Summary stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">{t('ratings.totalRatings')}</p>
-          <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+        <Card className="p-5">
+          <p className="text-xs text-gray-500 mb-1">{t('ratings.totalRatings')}</p>
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{stats.total}</p>
         </Card>
-        <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">{t('ratings.schoolsCount')}</p>
-          <p className="text-2xl font-bold text-gray-900">{schools.length}</p>
+        <Card className="p-5">
+          <p className="text-xs text-gray-500 mb-1">{t('ratings.schoolsCount')}</p>
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{schools.length}</p>
         </Card>
       </div>
 
@@ -336,7 +337,7 @@ const Ratings = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredSchools.map((school) => (
-            <SchoolCard key={school.id} school={school} />
+            <SchoolCard key={school.id} school={school} showRank={!search.trim()} />
           ))}
         </div>
       )}

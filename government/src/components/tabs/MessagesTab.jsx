@@ -3,6 +3,7 @@ import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import Modal from '@shared/components/Modal';
 import Textarea from '@shared/components/Textarea';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 
 export default function MessagesTab({
@@ -27,7 +28,7 @@ export default function MessagesTab({
       <Card className="p-6 space-y-4">
         {loadingMessages ? (
           <div className="flex items-center justify-center min-h-[120px]">
-            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner size="sm" />
           </div>
         ) : messages.length === 0 ? (
           <p className="text-sm text-gray-600">{t('government.messagesEmpty', { defaultValue: "Xabarlar yo'q" })}</p>

@@ -1,4 +1,6 @@
+import { useState } from 'react';
 import { Lock, Eye, EyeOff, Plus } from 'lucide-react';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import Input from '@shared/components/Input';
@@ -16,6 +18,7 @@ export default function GovernmentTab({
   showPasswords, setShowPasswords,
 }) {
   const { t } = useTranslation();
+  const [showCreatePassword, setShowCreatePassword] = useState(false);
   return (
     <>
       <div className="text-center">
@@ -56,15 +59,20 @@ export default function GovernmentTab({
               <Lock className="w-4 h-4 text-gray-400" />
               {t('government.form.password')}
             </label>
-            <input
-              type="password"
-              required
-              value={govPassword}
-              onChange={(e) => setGovPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-              placeholder="••••••••"
-              minLength={8}
-            />
+            <div className="relative">
+              <input
+                type={showCreatePassword ? 'text' : 'password'}
+                required
+                value={govPassword}
+                onChange={(e) => setGovPassword(e.target.value)}
+                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                placeholder="••••••••"
+                minLength={8}
+              />
+              <button type="button" onClick={() => setShowCreatePassword(v => !v)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+                {showCreatePassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+              </button>
+            </div>
             <p className="mt-1 text-xs text-gray-500">{t('government.form.passwordMinLength', { defaultValue: "Parol kamida 8 belgidan iborat bo'lishi kerak" })}</p>
           </div>
           <Button type="submit" variant="primary" loading={govLoading} className="w-full">
@@ -79,7 +87,7 @@ export default function GovernmentTab({
           {t('government.governmentList', { defaultValue: "Qo'shilgan Government Foydalanuvchilar" })} ({governments.length})
         </h3>
         {loadingGovernments ? (
-          <Card className="p-8"><div className="flex items-center justify-center min-h-[120px]"><div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" /></div></Card>
+          <Card className="p-8"><div className="flex items-center justify-center min-h-[120px]"><LoadingSpinner size="sm" /></div></Card>
         ) : governments.length === 0 ? (
           <Card className="p-8"><p className="text-sm text-gray-600 text-center py-8">{t('government.noGovernments', { defaultValue: "Hozircha government foydalanuvchilar yo'q" })}</p></Card>
         ) : (

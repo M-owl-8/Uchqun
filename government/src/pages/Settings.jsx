@@ -5,7 +5,7 @@ import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import { Globe, Lock, User, LogOut } from 'lucide-react';
+import { Globe, Lock, User, LogOut, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
@@ -25,7 +25,7 @@ const Settings = () => {
     newPassword: '',
     confirmPassword: '',
   });
-  const [showPasswords] = useState({
+  const [showPasswords, setShowPasswords] = useState({
     current: false,
     new: false,
     confirm: false,
@@ -97,10 +97,10 @@ const Settings = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl font-semibold text-inkGreen-900">
             {t('settings.title', { defaultValue: 'Sozlamalar' })}
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-sm text-gray-500 mt-0.5">
             {t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}
           </p>
         </div>
@@ -125,7 +125,7 @@ const Settings = () => {
                 type="text"
                 value={profileForm.firstName}
                 onChange={(e) => setProfileForm(f => ({ ...f, firstName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
                 required
               />
             </div>
@@ -137,7 +137,7 @@ const Settings = () => {
                 type="text"
                 value={profileForm.lastName}
                 onChange={(e) => setProfileForm(f => ({ ...f, lastName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
                 required
               />
             </div>
@@ -150,7 +150,7 @@ const Settings = () => {
               type="email"
               value={profileForm.email}
               disabled
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl bg-gray-50 text-gray-500 cursor-not-allowed"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
             />
             <p className="text-xs text-gray-400 mt-1">
               {t('settings.emailCannotChange', { defaultValue: 'Email o\'zgartirilmaydi' })}
@@ -164,13 +164,13 @@ const Settings = () => {
               type="tel"
               value={profileForm.phone}
               onChange={(e) => setProfileForm(f => ({ ...f, phone: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 bg-brand-600 text-white rounded-md font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
           >
             {saving
               ? t('settings.saving', { defaultValue: 'Saqlanmoqda...' })
@@ -208,42 +208,57 @@ const Settings = () => {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t('settings.currentPassword', { defaultValue: 'Joriy parol' })}
             </label>
-            <input
-              type={showPasswords.current ? 'text' : 'password'}
-              value={passwordForm.currentPassword}
-              onChange={(e) => setPasswordForm(f => ({ ...f, currentPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPasswords.current ? 'text' : 'password'}
+                value={passwordForm.currentPassword}
+                onChange={(e) => setPasswordForm(f => ({ ...f, currentPassword: e.target.value }))}
+                className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+                required
+              />
+              <button type="button" onClick={() => setShowPasswords(s => ({ ...s, current: !s.current }))} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600">
+                {showPasswords.current ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t('settings.newPassword', { defaultValue: 'Yangi parol' })}
             </label>
-            <input
-              type={showPasswords.new ? 'text' : 'password'}
-              value={passwordForm.newPassword}
-              onChange={(e) => setPasswordForm(f => ({ ...f, newPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPasswords.new ? 'text' : 'password'}
+                value={passwordForm.newPassword}
+                onChange={(e) => setPasswordForm(f => ({ ...f, newPassword: e.target.value }))}
+                className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+                required
+              />
+              <button type="button" onClick={() => setShowPasswords(s => ({ ...s, new: !s.new }))} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600">
+                {showPasswords.new ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-1">
               {t('settings.confirmNewPassword', { defaultValue: 'Yangi parolni tasdiqlang' })}
             </label>
-            <input
-              type={showPasswords.confirm ? 'text' : 'password'}
-              value={passwordForm.confirmPassword}
-              onChange={(e) => setPasswordForm(f => ({ ...f, confirmPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
-              required
-            />
+            <div className="relative">
+              <input
+                type={showPasswords.confirm ? 'text' : 'password'}
+                value={passwordForm.confirmPassword}
+                onChange={(e) => setPasswordForm(f => ({ ...f, confirmPassword: e.target.value }))}
+                className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
+                required
+              />
+              <button type="button" onClick={() => setShowPasswords(s => ({ ...s, confirm: !s.confirm }))} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-400 hover:text-gray-600">
+                {showPasswords.confirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+              </button>
+            </div>
           </div>
           <button
             type="submit"
             disabled={savingPassword}
-            className="px-6 py-2.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 bg-brand-600 text-white rounded-md font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
           >
             {savingPassword
               ? t('settings.saving', { defaultValue: 'Saqlanmoqda...' })
@@ -256,7 +271,7 @@ const Settings = () => {
       <Card className="p-6">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-sm w-full"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-md font-bold hover:bg-red-700 transition-colors w-full"
         >
           <LogOut className="w-5 h-5" />
           {t('nav.logout', { defaultValue: 'Chiqish' })}

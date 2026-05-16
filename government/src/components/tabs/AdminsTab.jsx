@@ -4,6 +4,7 @@ import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import Input from '@shared/components/Input';
 import Modal from '@shared/components/Modal';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 
 const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
@@ -136,10 +137,10 @@ export default function AdminsTab({
         </div>
         {loadingAdmins ? (
           <div className="flex items-center justify-center min-h-[120px]">
-            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner size="sm" />
           </div>
         ) : admins.length === 0 ? (
-          <p className="text-sm text-gray-600">{t('government.noAdmins', { defaultValue: 'Adminlar topilmadi' })}</p>
+          <p className="text-sm text-gray-500 text-center py-4">{t('government.noAdmins', { defaultValue: 'Adminlar topilmadi' })}</p>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             {admins.map((adm) => (

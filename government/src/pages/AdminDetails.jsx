@@ -47,38 +47,13 @@ const AdminDetails = () => {
     );
   }
 
-  const { admin, stats, receptions, schools, teachers, parents, children } = data;
+  const { admin, stats = {}, receptions = [], schools = [], teachers = [], parents = [], children = [] } = data;
 
   const statCards = [
-    {
-      title: t('adminDetails.students', { defaultValue: 'O\'quvchilar' }),
-      value: stats.students || 0,
-      icon: Baby,
-      color: 'bg-pink-500',
-      description: t('adminDetails.studentsDesc', { defaultValue: 'Jami o\'quvchilar soni' }),
-    },
-    {
-      title: t('adminDetails.parents', { defaultValue: 'Ota-onalar' }),
-      value: stats.parents || 0,
-      icon: Users,
-      color: 'bg-orange-500',
-      description: t('adminDetails.parentsDesc', { defaultValue: 'Jami ota-onalar soni' }),
-    },
-    {
-      title: t('adminDetails.teachers', { defaultValue: 'O\'qituvchilar' }),
-      value: stats.teachers || 0,
-      icon: GraduationCap,
-      color: 'bg-purple-500',
-      description: t('adminDetails.teachersDesc', { defaultValue: 'Jami o\'qituvchilar soni' }),
-    },
-    {
-      title: t('adminDetails.receptions', { defaultValue: 'Receptionlar' }),
-      value: stats.receptions || 0,
-      icon: UserCheck,
-      // TODO(phase-1): entity-icon color — Receptions uses blue-500 as a semantic entity color; confirm whether to keep or replace with primary-*
-      color: 'bg-blue-500',
-      description: t('adminDetails.receptionsDesc', { defaultValue: 'Jami receptionlar soni' }),
-    },
+    { title: t('adminDetails.students',   { defaultValue: "O'quvchilar" }),   value: stats.students   || 0, icon: Baby,         description: t('adminDetails.studentsDesc',   { defaultValue: "Jami o'quvchilar soni" }) },
+    { title: t('adminDetails.parents',    { defaultValue: 'Ota-onalar' }),    value: stats.parents    || 0, icon: Users,        description: t('adminDetails.parentsDesc',    { defaultValue: 'Jami ota-onalar soni' }) },
+    { title: t('adminDetails.teachers',   { defaultValue: "O'qituvchilar" }), value: stats.teachers   || 0, icon: GraduationCap, description: t('adminDetails.teachersDesc',  { defaultValue: "Jami o'qituvchilar soni" }) },
+    { title: t('adminDetails.receptions', { defaultValue: 'Receptionlar' }),  value: stats.receptions || 0, icon: UserCheck,    description: t('adminDetails.receptionsDesc', { defaultValue: 'Jami receptionlar soni' }) },
   ];
 
   return (
@@ -92,7 +67,7 @@ const AdminDetails = () => {
           <ArrowLeft className="w-5 h-5 text-gray-600" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-semibold text-inkGreen-900 mb-1">
             {admin.firstName} {admin.lastName}
           </h1>
           <p className="text-gray-600">{admin.email}</p>
@@ -149,24 +124,24 @@ const AdminDetails = () => {
 
       {/* Statistics Cards */}
       <div>
-        <h2 className="text-xl font-bold text-gray-900 mb-6">
+        <h2 className="text-base font-semibold text-gray-900 mb-4">
           {t('adminDetails.statistics', { defaultValue: 'Statistika' })}
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {statCards.map((card) => {
             const Icon = card.icon;
             return (
-              <Card key={card.title} className="p-6 hover:shadow-lg transition-shadow">
+              <Card key={card.title} className="p-5">
                 <div className="flex items-start justify-between mb-3">
                   <div className="flex-1">
-                    <p className="text-sm text-gray-600 mb-1">{card.title}</p>
-                    <p className="text-2xl font-bold text-gray-900 mb-1">{card.value}</p>
+                    <p className="text-xs text-gray-500 mb-1">{card.title}</p>
+                    <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{card.value}</p>
                     {card.description && (
-                      <p className="text-xs text-gray-500">{card.description}</p>
+                      <p className="text-xs text-gray-400 mt-1">{card.description}</p>
                     )}
                   </div>
-                  <div className={`${card.color} p-3 rounded-lg shadow-sm`}>
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className="bg-brand-100 p-2.5 rounded-lg">
+                    <Icon className="w-5 h-5 text-brand-600" />
                   </div>
                 </div>
               </Card>
@@ -177,7 +152,7 @@ const AdminDetails = () => {
 
       {receptions.length > 0 && (
         <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
             {t('adminDetails.receptions', { defaultValue: 'Receptionlar' })} ({receptions.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -198,7 +173,7 @@ const AdminDetails = () => {
 
       {schools.length > 0 && (
         <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
             {t('adminDetails.schools', { defaultValue: 'Muassasalar' })} ({schools.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -206,7 +181,7 @@ const AdminDetails = () => {
               <div key={school.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
                   {/* TODO(phase-1): school icon color — text-blue-600 used as entity color for schools; confirm keep or switch to primary-* */}
-                  <Building2 className="w-5 h-5 text-blue-600" />
+                  <Building2 className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">{school.name}</h3>
                 </div>
                 {school.address && (
@@ -220,14 +195,14 @@ const AdminDetails = () => {
 
       {teachers.length > 0 && (
         <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
             {t('adminDetails.teachers', { defaultValue: 'O\'qituvchilar' })} ({teachers.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {teachers.map((teacher) => (
               <div key={teacher.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <GraduationCap className="w-5 h-5 text-purple-600" />
+                  <GraduationCap className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">
                     {teacher.firstName} {teacher.lastName}
                   </h3>
@@ -241,14 +216,14 @@ const AdminDetails = () => {
 
       {parents.length > 0 && (
         <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
             {t('adminDetails.parents', { defaultValue: 'Ota-onalar' })} ({parents.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {parents.map((parent) => (
               <div key={parent.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <User className="w-5 h-5 text-orange-600" />
+                  <User className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">
                     {parent.firstName} {parent.lastName}
                   </h3>
@@ -262,21 +237,21 @@ const AdminDetails = () => {
 
       {children.length > 0 && (
         <Card>
-          <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <h2 className="text-base font-semibold text-gray-900 mb-3">
             {t('adminDetails.students', { defaultValue: 'O\'quvchilar' })} ({children.length})
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {children.map((child) => (
               <div key={child.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <Baby className="w-5 h-5 text-pink-600" />
+                  <Baby className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">
                     {child.firstName} {child.lastName}
                   </h3>
                 </div>
-                {child.birthDate && (
+                {(child.dateOfBirth || child.birthDate) && (
                   <p className="text-sm text-gray-600">
-                    {t('adminDetails.birthDate', { defaultValue: "Tug'ilgan" })}: {new Date(child.birthDate).toLocaleDateString(i18n.language)}
+                    {t('adminDetails.birthDate', { defaultValue: "Tug'ilgan" })}: {new Date(child.dateOfBirth || child.birthDate).toLocaleDateString(i18n.language)}
                   </p>
                 )}
               </div>

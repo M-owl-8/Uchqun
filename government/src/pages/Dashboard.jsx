@@ -13,9 +13,6 @@ import {
   RefreshCw,
   Shield,
   UserCheck,
-  LogIn,
-  Settings,
-  FileText,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -98,15 +95,6 @@ const Dashboard = () => {
     { title: t('dashboard.totalParents', { defaultValue: 'Ota-onalar' }),      value: stats?.parents  || 0, icon: Users,        path: '/government/parents' },
   ];
 
-  // TODO(phase-2): wire to /api/v1/government/me/activity once backend supports it
-  const activityFeed = [
-    { icon: LogIn,     text: "Tizimga kirdingiz" },
-    { icon: UserCheck, text: "Admin so'rovi ko'rib chiqildi" },
-    { icon: Building2, text: "Muassasa ma'lumotlari yangilandi" },
-    { icon: Shield,    text: "Hujjat tasdiqlandi" },
-    { icon: FileText,  text: "Hisobot yuklandi" },
-    { icon: Settings,  text: "Profil sozlamalari o'zgartirildi" },
-  ];
 
   return (
     <div className="space-y-6">
@@ -249,31 +237,27 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Right rail \u2014 activity feed */}
+        {/* Right rail \u2014 quick links */}
         <div className="space-y-6">
           <div className="bg-paper-card border border-gray-200 rounded-lg">
             <div className="px-5 py-4 border-b border-gray-100">
               <h2 className="text-sm font-semibold text-gray-900">
-                {t('dashboard.activity', { defaultValue: 'Mening faoliyatim' })}
+                {t('dashboard.quickLinks', { defaultValue: 'Tezkor havolalar' })}
               </h2>
             </div>
-            {/* TODO(phase-2): wire to /api/v1/government/me/activity once backend supports it */}
             <div className="divide-y divide-gray-50">
-              {activityFeed.map((item, i) => {
-                const Icon = item.icon;
-                return (
-                  <div key={i} className="flex items-start gap-3 px-5 py-3">
-                    <Icon className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
-                    <p className="text-xs text-gray-600">{item.text}</p>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="px-5 py-3 border-t border-gray-100">
-              {/* TODO(phase-2): link to full audit log page */}
-              <span className="text-xs text-brand-600 cursor-pointer hover:text-brand-700">
-                Barcha faoliyatlar \u2192
-              </span>
+              {[
+                { icon: Shield,    label: t('nav.platform', { defaultValue: 'Platforma' }),   href: '/government/platform' },
+                { icon: Building2, label: t('nav.schools', { defaultValue: 'Muassasalar' }), href: '/government/schools' },
+                { icon: Star,      label: t('nav.ratings', { defaultValue: 'Reytinglar' }),   href: '/government/ratings' },
+                { icon: UserCheck, label: t('nav.teachers', { defaultValue: "O'qituvchilar" }), href: '/government/teachers' },
+                { icon: Users,     label: t('nav.parents', { defaultValue: 'Ota-onalar' }),   href: '/government/parents' },
+              ].map(({ icon: Icon, label, href }) => (
+                <button key={href} onClick={() => navigate(href)} className="w-full flex items-center gap-3 px-5 py-3 hover:bg-brand-50 transition-colors text-left">
+                  <Icon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" strokeWidth={1.5} />
+                  <p className="text-xs text-gray-600">{label}</p>
+                </button>
+              ))}
             </div>
           </div>
         </div>

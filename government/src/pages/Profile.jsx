@@ -19,11 +19,11 @@ const Profile = () => {
     <div className="max-w-4xl mx-auto space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">
+          <h1 className="text-2xl font-semibold text-inkGreen-900">
             {t('profile.title', { defaultValue: 'Profil' })}
           </h1>
-          <p className="text-gray-600">
-            {t('profile.subtitle', { defaultValue: 'Hisobingiz ma\'lumotlari' })}
+          <p className="text-sm text-gray-500 mt-0.5">
+            {t('profile.subtitle', { defaultValue: "Hisobingiz ma'lumotlari" })}
           </p>
         </div>
         <LanguageSwitcher />

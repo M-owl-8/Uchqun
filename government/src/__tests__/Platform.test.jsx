@@ -12,7 +12,7 @@ const mockApi = {
 vi.mock('../services/api', () => ({ default: mockApi }));
 
 // Mock Toast and Auth contexts
-vi.mock('../context/ToastContext', () => ({
+vi.mock('@shared/context/ToastContext', () => ({
   useToast: () => ({ success: vi.fn(), error: vi.fn() }),
 }));
 vi.mock('../context/AuthContext', () => ({

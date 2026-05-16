@@ -1,16 +1,16 @@
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
-import GovernmentBackground from './GovernmentBackground';
 
 const Layout = () => {
   const location = useLocation();
+  const { t } = useTranslation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      <GovernmentBackground />
+    <div className="min-h-screen relative overflow-hidden bg-paper">
       <div className="hidden lg:block fixed inset-y-0 left-0 w-64 z-40">
         <Sidebar />
       </div>
@@ -25,7 +25,7 @@ const Layout = () => {
         >
           <Menu className="w-5 h-5" aria-hidden="true" />
         </button>
-        <span className="font-semibold text-white text-sm">Davlat Nazorat Paneli</span>
+        <span className="font-semibold text-white text-sm">{t('sidebar.title', { defaultValue: 'Davlat Panel' })}</span>
       </div>
 
       {sidebarOpen && (

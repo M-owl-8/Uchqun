@@ -1,5 +1,6 @@
 import { Building2, Star } from 'lucide-react';
 import Card from '@shared/components/Card';
+import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 
 export default function SchoolsTab({ schools, loadingSchools }) {
@@ -16,21 +17,20 @@ export default function SchoolsTab({ schools, loadingSchools }) {
       <Card className="p-6 space-y-4">
         {loadingSchools ? (
           <div className="flex items-center justify-center min-h-[120px]">
-            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
+            <LoadingSpinner size="sm" />
           </div>
         ) : schools.length === 0 ? (
           <p className="text-sm text-gray-600">{t('government.schoolsEmpty')}</p>
         ) : (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {/* TODO(phase-1): summary stat card color — bg-blue-50/text-blue-600 used as Schools entity color; confirm keep or replace with primary-* */}
-              <div className="bg-blue-50 rounded-xl p-4">
-                <p className="text-sm text-blue-600 font-medium mb-1">{t('government.totalSchools', { defaultValue: 'Jami Muassasalar' })}</p>
-                <p className="text-2xl font-bold text-blue-900">{schools.length}</p>
+              <div className="bg-brand-50 rounded-lg p-4">
+                <p className="text-xs text-brand-700 font-medium mb-1">{t('government.totalSchools', { defaultValue: 'Jami Muassasalar' })}</p>
+                <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{schools.length}</p>
               </div>
-              <div className="bg-purple-50 rounded-xl p-4">
-                <p className="text-sm text-purple-600 font-medium mb-1">{t('government.totalRatings', { defaultValue: 'Jami Baholar' })}</p>
-                <p className="text-2xl font-bold text-purple-900">
+              <div className="bg-paper-deep rounded-lg p-4">
+                <p className="text-xs text-gray-500 font-medium mb-1">{t('government.totalRatings', { defaultValue: 'Jami Baholar' })}</p>
+                <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">
                   {schools.reduce((sum, s) => sum + (s.summary?.count || 0), 0)}
                 </p>
               </div>

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
-import { useAuth } from '../context/AuthContext';
 import AdminsTab from '../components/tabs/AdminsTab';
 import SchoolsTab from '../components/tabs/SchoolsTab';
 import MessagesTab from '../components/tabs/MessagesTab';
@@ -15,7 +14,6 @@ const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
 const Platform = () => {
   const { t } = useTranslation();
   const { success, error: showError } = useToast();
-  useAuth();
 
   const [activeTab, setActiveTab] = useState('admins');
   const [confirmDialog, setConfirmDialog] = useState(null);
@@ -314,13 +312,13 @@ const Platform = () => {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div>
       <div className="flex gap-2 border-b border-gray-200 overflow-x-auto mb-6">
         {TABS.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-6 py-3 font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-violet-600 text-violet-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
+            className={`px-6 py-3 font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             {TAB_LABELS[tab]}
             {tab === 'messages' && messages.filter((m) => !m.isRead).length > 0 && (

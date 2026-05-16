@@ -68,19 +68,17 @@ const Parents = () => {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-semibold text-inkGreen-900">
           {t('parentsPage.title', { defaultValue: 'Barcha ota-onalar' })}
         </h1>
-        <p className="text-gray-600">
-          {t('parentsPage.subtitle', { defaultValue: 'Tizimdagi barcha ota-onalar ro\'yxati' })}
+        <p className="text-sm text-gray-500 mt-0.5">
+          {t('parentsPage.subtitle', { defaultValue: "Tizimdagi barcha ota-onalar ro'yxati" })}
         </p>
       </div>
 
-      <Card className="p-6">
-        <p className="text-sm text-gray-600 mb-1">
-          {t('parentsPage.total', { defaultValue: 'Jami ota-onalar' })}
-        </p>
-        <p className="text-2xl font-bold text-gray-900">{total}</p>
+      <Card className="p-5">
+        <p className="text-xs text-gray-500 mb-1">{t('parentsPage.total', { defaultValue: 'Jami ota-onalar' })}</p>
+        <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{total}</p>
       </Card>
 
       {parents.length === 0 ? (
@@ -98,11 +96,11 @@ const Parents = () => {
             {parents.map((parent) => (
               <Card key={parent.id} className="p-4">
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Users className="w-6 h-6 text-orange-600" />
+                  <div className="w-12 h-12 bg-brand-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <Users className="w-6 h-6 text-brand-600" />
                   </div>
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900">
+                    <h3 className="font-medium text-gray-900">
                       {parent.firstName} {parent.lastName}
                     </h3>
                     <p className="text-sm text-gray-600 mt-1 flex items-center gap-1">
