@@ -22,9 +22,17 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-      // Validate session via HTTP-only cookie — no localStorage token dependency
-      api.get('/auth/me')
-        .then((res) => {
+      (async () => {
+        try {
+          let res;
+          try {
+            res = await api.get('/auth/me');
+          } catch (err) {
+            if (err.response?.status !== 401) throw err;
+            // Access token expired — attempt silent refresh then retry
+            await api.post('/auth/refresh', {});
+            res = await api.get('/auth/me');
+          }
           const userData = res.data.data ?? res.data;
           if (requiredRole && userData.role !== requiredRole) {
             localStorage.removeItem(storageKey);
@@ -33,12 +41,13 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
             try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
             setUser(userData);
           }
-        })
-        .catch(() => {
+        } catch {
           localStorage.removeItem(storageKey);
           setUser(null);
-        })
-        .finally(() => setLoading(false));
+        } finally {
+          setLoading(false);
+        }
+      })();
     }, [requiredRole, storageKey]);
 
     const login = async (email, password) => {
