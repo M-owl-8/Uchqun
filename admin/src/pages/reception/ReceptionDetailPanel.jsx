@@ -1,7 +1,29 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Shield, FileText, CheckCircle, XCircle, Edit2, Trash2, UserCheck, UserX } from 'lucide-react';
+import { FileText, CheckCircle, XCircle, Edit2, Trash2, UserCheck, UserX, X } from 'lucide-react';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
+
+const DocStatusBadge = ({ status, t }) => {
+  if (status === 'approved') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">
+        {t('receptionsPage.docStatus.approved')}
+      </span>
+    );
+  }
+  if (status === 'rejected') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">
+        {t('receptionsPage.docStatus.rejected')}
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">
+      {t('receptionsPage.docStatus.pending')}
+    </span>
+  );
+};
 
 const ReceptionDetailPanel = ({
   reception,
@@ -13,141 +35,126 @@ const ReceptionDetailPanel = ({
   onDeactivate,
   onApprove,
   onReject,
+  onClose,
 }) => {
   const { t } = useTranslation();
   const [confirmDialog, setConfirmDialog] = useState(null);
 
-  const getDocumentStatusBadge = (document) => {
-    if (document.status === 'approved') {
-      return (
-        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
-          {t('receptionsPage.docStatus.approved')}
-        </span>
-      );
-    } else if (document.status === 'rejected') {
-      return (
-        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">
-          {t('receptionsPage.docStatus.rejected')}
-        </span>
-      );
-    } else {
-      return (
-        <span className="px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">
-          {t('receptionsPage.docStatus.pending')}
-        </span>
-      );
-    }
-  };
-
-  if (!reception) {
-    return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center text-gray-500">
-        <Shield className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-        <p>{t('receptionsPage.selectPrompt')}</p>
-      </div>
-    );
-  }
+  if (!reception) return null;
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-      <div className="p-4 border-b border-gray-200">
-        <div className="flex items-center justify-between">
+    <div className="bg-surface border border-warm-200 rounded-lg shadow-xs">
+      {/* Header */}
+      <div className="p-4 border-b border-warm-200">
+        <div className="flex items-start justify-between gap-2">
           <div>
-            <h2 className="text-lg font-semibold text-gray-900">
+            <p className="font-semibold text-warm-900">
               {reception.firstName} {reception.lastName}
-            </h2>
-            <p className="text-sm text-gray-600">{reception.email}</p>
+            </p>
+            <p className="text-sm text-warm-600 mt-0.5">{reception.email}</p>
           </div>
-          <div className="flex gap-2">
+          <button
+            onClick={onClose}
+            className="p-1.5 text-warm-500 hover:text-warm-900 hover:bg-warm-100 rounded-md transition-colors shrink-0"
+            aria-label="Yopish"
+          >
+            <X className="w-4 h-4" strokeWidth={1.75} />
+          </button>
+        </div>
+
+        <div className="mt-3 flex flex-wrap gap-1.5">
+          <button
+            onClick={() => onEdit(reception)}
+            disabled={actionLoading}
+            className="inline-flex items-center gap-1 h-8 px-3 text-xs font-medium text-brand-700 bg-brand-50 border border-brand-200 rounded-md hover:bg-brand-100 disabled:opacity-50 transition-colors"
+          >
+            <Edit2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+            {t('receptionsPage.editBtn')}
+          </button>
+          {reception.isActive ? (
             <button
-              onClick={() => onEdit(reception)}
+              onClick={() => onDeactivate(reception.id)}
               disabled={actionLoading}
-              className="px-3 py-1.5 text-sm font-medium text-primary-700 bg-primary-50 border border-primary-200 rounded-lg hover:bg-primary-100 disabled:opacity-50"
+              className="inline-flex items-center gap-1 h-8 px-3 text-xs font-medium text-error-700 bg-error-50 border border-error-100 rounded-md hover:bg-error-100 disabled:opacity-50 transition-colors"
             >
-              <Edit2 className="inline w-4 h-4 mr-1" />
-              {t('receptionsPage.editBtn')}
+              <UserX className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {t('receptionsPage.deactivate')}
             </button>
+          ) : (
             <button
-              onClick={() => onDelete(reception.id)}
+              onClick={() => onActivate(reception.id)}
               disabled={actionLoading}
-              className="px-3 py-1.5 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 disabled:opacity-50"
+              className="inline-flex items-center gap-1 h-8 px-3 text-xs font-medium text-success-700 bg-success-50 border border-success-100 rounded-md hover:bg-success-100 disabled:opacity-50 transition-colors"
             >
-              <Trash2 className="inline w-4 h-4 mr-1" />
-              {t('receptionsPage.deleteBtn')}
+              <UserCheck className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {t('receptionsPage.activate')}
             </button>
-            {reception.isActive ? (
-              <button
-                onClick={() => onDeactivate(reception.id)}
-                disabled={actionLoading}
-                className="px-3 py-1.5 text-sm font-medium text-red-700 bg-red-50 border border-red-200 rounded-lg hover:bg-red-100 disabled:opacity-50"
-              >
-                <UserX className="inline w-4 h-4 mr-1" />
-                {t('receptionsPage.deactivate')}
-              </button>
-            ) : (
-              <button
-                onClick={() => onActivate(reception.id)}
-                disabled={actionLoading}
-                className="px-3 py-1.5 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-lg hover:bg-green-100 disabled:opacity-50"
-              >
-                <UserCheck className="inline w-4 h-4 mr-1" />
-                {t('receptionsPage.activate')}
-              </button>
-            )}
-          </div>
+          )}
+          <button
+            onClick={() => onDelete(reception.id)}
+            disabled={actionLoading}
+            className="inline-flex items-center gap-1 h-8 px-3 text-xs font-medium text-error-700 bg-error-50 border border-error-100 rounded-md hover:bg-error-100 disabled:opacity-50 transition-colors"
+          >
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={1.75} />
+            {t('receptionsPage.deleteBtn')}
+          </button>
         </div>
       </div>
+
+      {/* Documents */}
       <div className="p-4">
-        <h3 className="font-semibold text-gray-900 mb-4">{t('receptionsPage.documents')}</h3>
+        <p className="text-xs font-medium uppercase tracking-wider text-warm-500 mb-3">
+          {t('receptionsPage.documents')}
+        </p>
         {documents.length === 0 ? (
-          <div className="text-center py-8 text-gray-500">
-            <FileText className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-            <p>{t('receptionsPage.noDocuments')}</p>
+          <div className="text-center py-8">
+            <div className="w-10 h-10 mx-auto rounded-full bg-warm-100 flex items-center justify-center mb-2">
+              <FileText className="w-5 h-5 text-warm-400" strokeWidth={1.5} />
+            </div>
+            <p className="text-sm text-warm-500">{t('receptionsPage.noDocuments')}</p>
           </div>
         ) : (
-          <div className="space-y-4">
-            {documents.map((document) => (
-              <div key={document.id} className="p-4 border border-gray-200 rounded-lg">
-                <div className="flex items-start justify-between mb-2">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <FileText className="w-5 h-5 text-gray-400" />
-                      <span className="font-medium text-gray-900">{document.fileName}</span>
-                      {getDocumentStatusBadge(document)}
-                    </div>
-                    <p className="text-sm text-gray-600">
-                      {t('receptionsPage.docType')}: {document.documentType}
-                    </p>
-                    {document.rejectionReason && (
-                      <p className="text-sm text-red-600 mt-1">
-                        {t('receptionsPage.rejectionReason')}: {document.rejectionReason}
-                      </p>
-                    )}
+          <div className="space-y-3">
+            {documents.map((doc) => (
+              <div key={doc.id} className="p-3.5 border border-warm-200 rounded-md bg-cream/60">
+                <div className="flex items-start justify-between gap-2 mb-1.5">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <FileText className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+                    <span className="font-medium text-warm-900 text-sm truncate">{doc.fileName}</span>
                   </div>
+                  <DocStatusBadge status={doc.status} t={t} />
                 </div>
-                {document.status === 'pending' && (
-                  <div className="flex gap-2 mt-3">
+                <p className="text-xs text-warm-500 ml-6">
+                  {t('receptionsPage.docType')}: {doc.documentType}
+                </p>
+                {doc.rejectionReason && (
+                  <p className="text-xs text-error-600 mt-1 ml-6">
+                    {t('receptionsPage.rejectionReason')}: {doc.rejectionReason}
+                  </p>
+                )}
+                {doc.status === 'pending' && (
+                  <div className="flex gap-2 mt-3 ml-6">
                     <button
-                      onClick={() => onApprove(document.id)}
+                      onClick={() => onApprove(doc.id)}
                       disabled={actionLoading}
-                      className="flex-1 px-3 py-2 text-sm font-medium text-white bg-green-600 rounded-lg hover:bg-green-700 disabled:opacity-50"
+                      className="flex-1 inline-flex items-center justify-center gap-1 h-8 text-xs font-medium text-success-700 bg-success-50 border border-success-100 rounded-md hover:bg-success-100 disabled:opacity-50 transition-colors"
                     >
-                      <CheckCircle className="inline w-4 h-4 mr-1" />
+                      <CheckCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
                       {t('receptionsPage.approve')}
                     </button>
                     <button
                       onClick={() => setConfirmDialog({
-                        message: t('receptionsPage.rejectionPrompt', { defaultValue: 'Enter a reason for rejection' }),
+                        message: t('receptionsPage.rejectionPrompt', { defaultValue: 'Rad etish sababini kiriting' }),
                         requireReason: true,
                         onConfirm: (reason) => {
                           setConfirmDialog(null);
-                          onReject(document.id, reason);
+                          onReject(doc.id, reason);
                         },
                       })}
                       disabled={actionLoading}
-                      className="flex-1 px-3 py-2 text-sm font-medium text-white bg-red-600 rounded-lg hover:bg-red-700 disabled:opacity-50"
+                      className="flex-1 inline-flex items-center justify-center gap-1 h-8 text-xs font-medium text-error-700 bg-error-50 border border-error-100 rounded-md hover:bg-error-100 disabled:opacity-50 transition-colors"
                     >
-                      <XCircle className="inline w-4 h-4 mr-1" />
+                      <XCircle className="w-3.5 h-3.5" strokeWidth={1.75} />
                       {t('receptionsPage.reject')}
                     </button>
                   </div>
@@ -157,6 +164,7 @@ const ReceptionDetailPanel = ({
           </div>
         )}
       </div>
+
       <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
     </div>
   );

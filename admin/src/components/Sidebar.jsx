@@ -1,89 +1,173 @@
-import { Link, useLocation } from 'react-router-dom';
+﻿import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import {
-  Home,
+  LayoutDashboard,
   Users,
-  UserCheck,
-  Shield,
-  UsersRound,
-  Crown,
+  GraduationCap,
+  UserRound,
+  FileCheck2,
+  Archive,
+  BellRing,
+  BarChart3,
+  Activity,
   Building2,
-  User,
   Settings,
+  ShieldCheck,
+  LogOut,
 } from 'lucide-react';
+
+const NAV_SECTIONS = [
+  {
+    label: 'Boshqaruv',
+    items: [
+      { key: 'nav.dashboard',   href: '/admin',              icon: LayoutDashboard },
+      { key: 'nav.receptions',  href: '/admin/receptions',   icon: Users },
+      { key: 'nav.teachers',    href: '/admin/teachers',     icon: GraduationCap },
+      { key: 'nav.parents',     href: '/admin/parents',      icon: UserRound },
+    ],
+  },
+  {
+    label: 'Hujjatlar',
+    items: [
+      { key: 'nav.documents',   href: '/admin/documents',    icon: FileCheck2, badgeKey: 'pendingDocs' },
+      { key: 'nav.archive',     href: '/admin/archive',      icon: Archive },
+    ],
+  },
+  {
+    label: 'Hisobotlar',
+    items: [
+      { key: 'nav.aiWarnings',  href: '/admin/ai-warnings',  icon: BellRing, badgeKey: 'aiWarnings' },
+      { key: 'nav.ratings',     href: '/admin/school-ratings', icon: BarChart3 },
+      { key: 'nav.auditLog',    href: '/admin/audit',        icon: Activity },
+    ],
+  },
+  {
+    label: 'Sozlamalar',
+    items: [
+      { key: 'nav.school',      href: '/admin/settings',     icon: Building2 },
+      { key: 'nav.settings',    href: '/admin/profile',      icon: Settings },
+    ],
+  },
+];
+
+const NavItem = ({ item, isActive, onClick }) => {
+  const { t } = useTranslation();
+  return (
+    <Link
+      to={item.href}
+      onClick={onClick}
+      className={`relative flex items-center gap-3 px-3 py-2 rounded-md transition-colors ${
+        isActive
+          ? 'bg-brand-50/10 text-white'
+          : 'text-walnut-muted hover:bg-walnut-hover hover:text-white'
+      }`}
+    >
+      {isActive && (
+        <span className="absolute left-0 top-2 bottom-2 w-[3px] bg-brand-600 rounded-r-sm" />
+      )}
+      <item.icon
+        className={`w-5 h-5 shrink-0 ${isActive ? 'text-brand-300' : ''}`}
+        strokeWidth={1.75}
+      />
+      <span className="text-sm font-medium truncate">{t(item.key, { defaultValue: item.key })}</span>
+    </Link>
+  );
+};
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
-  const { user } = useAuth();
-  const { t } = useTranslation();
+  const { user, logout } = useAuth();
+  const { t, i18n } = useTranslation();
 
-  const navigation = [
-    { name: t('nav.dashboard'), href: '/admin', icon: Home },
-    { name: t('nav.receptions'), href: '/admin/receptions', icon: Shield },
-    { name: t('nav.parents'), href: '/admin/parents', icon: Users },
-    { name: t('nav.teachers'), href: '/admin/teachers', icon: UserCheck },
-    { name: t('nav.groups'), href: '/admin/groups', icon: UsersRound },
-    { name: t('nav.schoolRatings'), href: '/admin/school-ratings', icon: Building2 },
-    { name: t('nav.profile', { defaultValue: 'Profile' }), href: '/admin/profile', icon: User },
-    { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/admin/settings', icon: Settings },
-  ];
+  const isActive = (href) =>
+    href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(href);
 
-  const isActive = (path) => location.pathname === path;
+  const changeLanguage = (lng) => i18n.changeLanguage(lng);
+  const currentLang = i18n.language?.split('-')[0] || 'uz';
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-100 shadow-sm">
-      <div className="flex items-center gap-3 px-6 h-20 bg-sidebar-navy">
-        <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
-          <Crown className="w-5 h-5 text-yellow-300" strokeWidth={1.5} />
+    <div className="flex flex-col h-full bg-walnut text-walnut-text">
+      {/* Header */}
+      <div className="px-5 pt-6 pb-5">
+        <div className="flex items-center gap-2.5">
+          <span
+            className="inline-flex items-center justify-center w-8 h-8 rounded-md bg-surface/15 text-white font-semibold text-base"
+            style={{ letterSpacing: '-0.04em' }}
+          >
+            U
+          </span>
+          <p className="text-base font-semibold tracking-tight">Uchqun</p>
         </div>
-        <h1 className="text-lg font-bold text-white tracking-tight">
-          {t('sidebar.title', { defaultValue: 'Uchqun Admin' })}
-        </h1>
+
+        {/* School logo slot */}
+        <div className="mt-4 flex items-center gap-3 p-2.5 bg-walnut-hover rounded-md border border-walnut-divider">
+          <div className="w-10 h-10 rounded-md bg-walnut text-brand-400 flex items-center justify-center shrink-0 border border-walnut-divider">
+            <ShieldCheck className="w-5 h-5" strokeWidth={1.5} />
+            {/* TODO(phase-2): replace with actual school logo once upload feature exists */}
+          </div>
+          <div className="min-w-0">
+            <p className="text-sm font-semibold truncate">{user?.school?.name ?? t('sidebar.school', { defaultValue: 'Maktab' })}</p>
+            <p className="text-[11px] text-walnut-muted truncate">{user?.school?.city ?? ''}</p>
+          </div>
+        </div>
       </div>
 
-      <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
-        <p className="px-3 mb-2 text-xs font-semibold uppercase tracking-wider text-sidebar-muted">
-          {t('sidebar.menu', { defaultValue: 'System Menu' })}
-        </p>
-        {navigation.map((item) => {
-          const Active = isActive(item.href);
-          return (
-            <Link
-              key={item.name}
-              to={item.href}
-              className={`group flex items-center px-3 py-2.5 rounded-xl transition-all duration-300 ${
-                Active
-                  ? 'bg-sidebar-blue text-sidebar-navy shadow-sm'
-                  : 'text-sidebar-muted hover:bg-gray-50'
-              }`}
-              onClick={onClose}
-            >
-              <item.icon
-                className="mr-3 h-5 w-5 transition-colors"
-                strokeWidth={Active ? 2 : 1.5}
-              />
-              <span className="text-sm font-medium">{item.name}</span>
-              {Active && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-navy" />
-              )}
-            </Link>
-          );
-        })}
+      {/* Nav */}
+      <nav className="px-3 flex-1 overflow-y-auto space-y-5">
+        {NAV_SECTIONS.map((section) => (
+          <div key={section.label}>
+            <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-1.5">
+              {section.label}
+            </p>
+            <div className="space-y-0.5">
+              {section.items.map((item) => (
+                <NavItem
+                  key={item.href}
+                  item={item}
+                  isActive={isActive(item.href)}
+                  onClick={onClose}
+                />
+              ))}
+            </div>
+          </div>
+        ))}
       </nav>
 
-      <div className="p-4 border-t border-gray-100 bg-sidebar-blue/25">
-        <div className="flex items-center gap-3 px-2">
-          <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm bg-sidebar-blue text-sidebar-navy">
+      {/* User card */}
+      <div className="m-3 mt-1 p-3 bg-walnut-hover rounded-md border border-walnut-divider">
+        <div className="flex items-center gap-2.5">
+          <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-sm font-semibold shrink-0">
             {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold truncate text-sidebar-navy">
-              {user?.firstName} {user?.lastName}
-            </p>
-            <p className="text-xs truncate text-sidebar-muted">{user?.email}</p>
-            <p className="text-xs font-semibold mt-0.5 text-sidebar-navy">{t('role.admin')}</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold truncate">{user?.firstName} {user?.lastName}</p>
+            <p className="text-[11px] text-walnut-muted truncate">{t('role.admin', { defaultValue: 'Maktab rahbari' })}</p>
           </div>
+          <button
+            aria-label={t('nav.logout', { defaultValue: 'Chiqish' })}
+            onClick={logout}
+            className="text-walnut-muted hover:text-white p-1.5 rounded hover:bg-walnut transition-colors"
+          >
+            <LogOut className="w-4 h-4" strokeWidth={1.75} />
+          </button>
+        </div>
+
+        {/* Language switcher */}
+        <div className="mt-3 grid grid-cols-3 gap-1 bg-walnut rounded-md p-0.5 text-[11px]">
+          {['uz', 'ru', 'en'].map((lng) => (
+            <button
+              key={lng}
+              onClick={() => changeLanguage(lng)}
+              className={`px-1.5 py-1 rounded-sm font-medium transition-colors ${
+                currentLang === lng
+                  ? 'bg-surface/10 text-white'
+                  : 'text-walnut-muted hover:bg-surface/5'
+              }`}
+            >
+              {lng === 'uz' ? 'UZ' : lng === 'ru' ? 'РУ' : 'EN'}
+            </button>
+          ))}
         </div>
       </div>
     </div>

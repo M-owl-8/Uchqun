@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@shared/context/ToastContext';
 import api from '../services/api';
@@ -89,19 +89,19 @@ const Profile = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8">
       <div>
-        <h1 className="text-4xl font-black text-gray-900 tracking-tight">{t('profile.title', { defaultValue: 'Profile' })}</h1>
-        <p className="text-gray-500 font-medium mt-1">{t('profile.subtitle', { defaultValue: 'Your account information and messages' })}</p>
+        <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('profile.title', { defaultValue: 'Profile' })}</h1>
+        <p className="text-warm-500 font-medium mt-1">{t('profile.subtitle', { defaultValue: 'Your account information and messages' })}</p>
       </div>
 
       {/* Profile Information */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Crown className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('profile.profileInfo', { defaultValue: 'Profile Information' })}</h2>
+          <Crown className="w-6 h-6 text-brand-600" />
+          <h2 className="text-xl font-bold text-warm-900">{t('profile.profileInfo', { defaultValue: 'Profile Information' })}</h2>
         </div>
 
         <div className="flex items-center gap-6 mb-6">
-          <div className="w-20 h-20 rounded-full bg-primary-100 text-primary-700 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg overflow-hidden shrink-0">
+          <div className="w-20 h-20 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg overflow-hidden shrink-0">
             {user?.avatar ? (
               <img src={user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '') || window.location.origin}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -109,27 +109,27 @@ const Profile = () => {
             )}
           </div>
           <div>
-            <h3 className="text-2xl font-bold text-gray-900">
+            <h3 className="text-2xl font-bold text-warm-900">
               {user?.firstName} {user?.lastName}
             </h3>
-            <p className="text-sm text-primary-600 font-semibold mt-1">{t('role.admin')}</p>
+            <p className="text-sm text-brand-600 font-semibold mt-1">{t('role.admin')}</p>
           </div>
         </div>
 
-        <div className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 border border-gray-100">
-          <Mail className="w-5 h-5 text-gray-400" />
+        <div className="flex items-center gap-3 p-4 rounded-xl bg-warm-50 border border-warm-100">
+          <Mail className="w-5 h-5 text-warm-400" />
           <div>
-            <p className="text-xs text-gray-500 uppercase font-semibold mb-1">{t('profile.email', { defaultValue: 'Email' })}</p>
-            <p className="text-gray-900 font-medium">{user?.email}</p>
+            <p className="text-xs text-warm-500 uppercase font-semibold mb-1">{t('profile.email', { defaultValue: 'Email' })}</p>
+            <p className="text-warm-900 font-medium">{user?.email}</p>
           </div>
         </div>
 
         {/* Language Switcher */}
-        <div className="mt-6 pt-6 border-t border-gray-200">
+        <div className="mt-6 pt-6 border-t border-warm-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <Globe className="w-5 h-5 text-gray-400" />
-              <p className="text-sm font-medium text-gray-700">{t('profile.language', { defaultValue: 'Language' })}</p>
+              <Globe className="w-5 h-5 text-warm-400" />
+              <p className="text-sm font-medium text-warm-700">{t('profile.language', { defaultValue: 'Language' })}</p>
             </div>
             <LanguageSwitcher />
           </div>
@@ -139,16 +139,16 @@ const Profile = () => {
       {/* Contact Government */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <MessageSquare className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('profile.contactGovernment', { defaultValue: 'Contact Government' })}</h2>
+          <MessageSquare className="w-6 h-6 text-brand-600" />
+          <h2 className="text-xl font-bold text-warm-900">{t('profile.contactGovernment', { defaultValue: 'Contact Government' })}</h2>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-warm-600 mb-4">
           {t('profile.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
         </p>
         <div className="flex gap-3">
           <button
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
             {t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}
@@ -156,12 +156,12 @@ const Profile = () => {
           {myMessages.length > 0 && (
             <button
               onClick={() => setShowMessagesModal(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors shadow-sm relative"
+              className="flex items-center gap-2 px-6 py-3 bg-success-600 text-white rounded-xl font-bold hover:bg-success-700 transition-colors shadow-sm relative"
             >
               <MessageSquare className="w-5 h-5" />
               {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
               {myMessages.some(m => m.reply) && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center">
                   {myMessages.filter(m => m.reply).length}
                 </span>
               )}
@@ -174,7 +174,7 @@ const Profile = () => {
       <Card className="p-6">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-sm w-full"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-error-600 text-white rounded-xl font-bold hover:bg-error-700 transition-colors shadow-sm w-full"
         >
           <LogOut className="w-5 h-5" />
           {t('logout')}
@@ -184,41 +184,41 @@ const Profile = () => {
       {/* Message Modal */}
       {showMessageModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowMessageModal(false)}>
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-primary-100 rounded-full">
-                  <MessageSquare className="w-6 h-6 text-primary-600" />
+                <div className="p-3 bg-brand-100 rounded-full">
+                  <MessageSquare className="w-6 h-6 text-brand-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
+                <h2 className="text-2xl font-bold text-warm-900">{t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-warm-100 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-warm-500" />
               </button>
             </div>
             
             <div className="space-y-4 mb-6">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('profile.subject', { defaultValue: 'Mavzu' })}</label>
+                <label className="block text-sm font-medium text-warm-700 mb-2">{t('profile.subject', { defaultValue: 'Mavzu' })}</label>
                 <input
                   type="text"
                   value={messageSubject}
                   onChange={(e) => setMessageSubject(e.target.value)}
                   placeholder={t('profile.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">{t('profile.message', { defaultValue: 'Xabar' })}</label>
+                <label className="block text-sm font-medium text-warm-700 mb-2">{t('profile.message', { defaultValue: 'Xabar' })}</label>
                 <textarea
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   rows={6}
                   placeholder={t('profile.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
             </div>
@@ -226,7 +226,7 @@ const Profile = () => {
             <div className="flex gap-3">
               <button
                 onClick={() => setShowMessageModal(false)}
-                className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors"
+                className="flex-1 px-6 py-3 bg-warm-100 hover:bg-warm-200 text-warm-700 rounded-xl font-semibold transition-colors"
                 disabled={sendingMessage}
               >
                 {t('profile.cancel', { defaultValue: 'Bekor qilish' })}
@@ -234,7 +234,7 @@ const Profile = () => {
               <button
                 onClick={handleSendMessage}
                 disabled={sendingMessage || !messageSubject.trim() || !messageText.trim()}
-                className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                className="flex-1 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
                 {sendingMessage ? (
                   <>
@@ -256,19 +256,19 @@ const Profile = () => {
       {/* My Messages Modal */}
       {showMessagesModal && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50" onClick={() => setShowMessagesModal(false)}>
-          <div className="bg-white rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+          <div className="bg-surface rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="p-3 bg-green-100 rounded-full">
-                  <MessageSquare className="w-6 h-6 text-green-600" />
+                <div className="p-3 bg-success-100 rounded-full">
+                  <MessageSquare className="w-6 h-6 text-success-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-gray-900">{t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}</h2>
+                <h2 className="text-2xl font-bold text-warm-900">{t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}</h2>
               </div>
               <button
                 onClick={() => setShowMessagesModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-warm-100 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-warm-500" />
               </button>
             </div>
             
@@ -278,17 +278,17 @@ const Profile = () => {
               </div>
             ) : myMessages.length === 0 ? (
               <div className="text-center py-12">
-                <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-500">{t('profile.noMessages', { defaultValue: 'Hozircha xabarlar yo\'q' })}</p>
+                <MessageSquare className="w-16 h-16 text-warm-300 mx-auto mb-4" />
+                <p className="text-warm-500">{t('profile.noMessages', { defaultValue: 'Hozircha xabarlar yo\'q' })}</p>
               </div>
             ) : (
               <div className="space-y-4">
                 {myMessages.map((msg) => (
-                  <div key={msg.id} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+                  <div key={msg.id} className="border border-warm-200 rounded-xl p-6 hover:shadow-md transition-shadow">
                     <div className="flex items-start justify-between mb-3">
                       <div>
-                        <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
-                        <p className="text-sm text-gray-500 mt-1">
+                        <h3 className="font-bold text-warm-900 text-lg">{msg.subject}</h3>
+                        <p className="text-sm text-warm-500 mt-1">
                           {new Date(msg.createdAt).toLocaleDateString(i18n.language, { 
                             year: 'numeric', 
                             month: 'long', 
@@ -299,25 +299,25 @@ const Profile = () => {
                         </p>
                       </div>
                       {msg.reply && (
-                        <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                        <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
                           {t('profile.replied', { defaultValue: 'Javob berildi' })}
                         </span>
                       )}
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm font-medium text-gray-700 mb-2">{t('profile.yourMessage', { defaultValue: 'Sizning xabaringiz' })}:</p>
-                      <p className="text-gray-800 bg-gray-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
+                      <p className="text-sm font-medium text-warm-700 mb-2">{t('profile.yourMessage', { defaultValue: 'Sizning xabaringiz' })}:</p>
+                      <p className="text-warm-800 bg-warm-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                     </div>
 
                     {msg.reply && (
-                      <div className="border-t border-gray-200 pt-4 mt-4">
+                      <div className="border-t border-warm-200 pt-4 mt-4">
                         <div className="flex items-center gap-2 mb-2">
-                          <div className="p-2 bg-primary-100 rounded-full">
-                            <MessageSquare className="w-4 h-4 text-primary-600" />
+                          <div className="p-2 bg-brand-100 rounded-full">
+                            <MessageSquare className="w-4 h-4 text-brand-600" />
                           </div>
-                          <p className="text-sm font-medium text-primary-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
-                          <span className="text-xs text-gray-500 ml-auto">
+                          <p className="text-sm font-medium text-brand-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
+                          <span className="text-xs text-warm-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 
                               month: 'long', 
@@ -327,7 +327,7 @@ const Profile = () => {
                             })}
                           </span>
                         </div>
-                        <p className="text-gray-800 bg-primary-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                        <p className="text-warm-800 bg-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
                       </div>
                     )}
                   </div>

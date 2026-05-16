@@ -30,7 +30,7 @@ const BottomNav = () => {
   };
 
   return (
-    <div className="bg-white border-t border-gray-200 shadow-lg">
+    <div className="bg-surface border-t border-warm-200 shadow-md">
       <nav className="flex justify-around items-center h-16">
         {navigation.map((item) => {
           const active = isActive(item.href);
@@ -39,11 +39,11 @@ const BottomNav = () => {
               key={item.name}
               to={item.href}
               className={`flex flex-col items-center justify-center flex-1 h-full transition-colors ${
-                active ? 'text-primary-600' : 'text-gray-500'
+                active ? 'text-brand-600' : 'text-warm-500'
               }`}
             >
-              <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-primary-600' : 'text-gray-500'}`} />
-              <span className={`text-xs font-medium ${active ? 'text-primary-600' : 'text-gray-500'}`}>
+              <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-brand-600' : 'text-warm-500'}`} strokeWidth={1.75} />
+              <span className={`text-xs font-medium ${active ? 'text-brand-600' : 'text-warm-500'}`}>
                 {item.name}
               </span>
             </Link>

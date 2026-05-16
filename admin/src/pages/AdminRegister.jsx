@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -121,41 +121,41 @@ const AdminRegister = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4">
-        <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-4">
-            <CheckCircle className="w-8 h-8 text-green-600" />
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-50 to-brand-100 px-4">
+        <div className="max-w-md w-full bg-surface rounded-xl shadow-lg p-8 text-center">
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-success-100 rounded-full mb-4">
+            <CheckCircle className="w-8 h-8 text-success-600" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-900 mb-2">{t('adminRegister.successTitle')}</h1>
-          <p className="text-gray-600 mb-4">{t('adminRegister.successBody')}</p>
-          <p className="text-sm text-gray-500">{t('adminRegister.successRedirect')}</p>
+          <h1 className="text-2xl font-bold text-warm-900 mb-2">{t('adminRegister.successTitle')}</h1>
+          <p className="text-warm-600 mb-4">{t('adminRegister.successBody')}</p>
+          <p className="text-sm text-warm-500">{t('adminRegister.successRedirect')}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary-50 to-primary-100 px-4 py-12">
-      <div className="max-w-2xl w-full bg-white rounded-xl shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-brand-50 to-brand-100 px-4 py-12">
+      <div className="max-w-2xl w-full bg-surface rounded-xl shadow-lg p-8">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-            <Crown className="w-8 h-8 text-primary-600" />
+          <div className="inline-flex items-center justify-center w-16 h-16 bg-brand-100 rounded-full mb-4">
+            <Crown className="w-8 h-8 text-brand-600" />
           </div>
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">{t('adminRegister.title')}</h1>
-          <p className="text-gray-600">{t('adminRegister.subtitle')}</p>
+          <h1 className="text-3xl font-bold text-warm-900 mb-2">{t('adminRegister.title')}</h1>
+          <p className="text-warm-600">{t('adminRegister.subtitle')}</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
+            <div className="bg-error-50 border border-error-200 text-error-700 px-4 py-3 rounded-lg text-sm">
               {error}
             </div>
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('adminRegister.labelFirstName')} <span className="text-red-500">*</span>
+              <label htmlFor="firstName" className="block text-sm font-medium text-warm-700 mb-2">
+                {t('adminRegister.labelFirstName')} <span className="text-error-500">*</span>
               </label>
               <input
                 id="firstName"
@@ -164,14 +164,14 @@ const AdminRegister = () => {
                 value={formData.firstName}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder={t('adminRegister.placeholderFirstName')}
               />
             </div>
 
             <div>
-              <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
-                {t('adminRegister.labelLastName')} <span className="text-red-500">*</span>
+              <label htmlFor="lastName" className="block text-sm font-medium text-warm-700 mb-2">
+                {t('adminRegister.labelLastName')} <span className="text-error-500">*</span>
               </label>
               <input
                 id="lastName"
@@ -180,18 +180,18 @@ const AdminRegister = () => {
                 value={formData.lastName}
                 onChange={handleInputChange}
                 required
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder={t('adminRegister.placeholderLastName')}
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('adminRegister.labelEmail')} <span className="text-red-500">*</span>
+            <label htmlFor="email" className="block text-sm font-medium text-warm-700 mb-2">
+              {t('adminRegister.labelEmail')} <span className="text-error-500">*</span>
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-warm-400" />
               <input
                 id="email"
                 name="email"
@@ -199,18 +199,18 @@ const AdminRegister = () => {
                 value={formData.email}
                 onChange={handleInputChange}
                 required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder="email@example.com"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('adminRegister.labelPhone')} <span className="text-red-500">*</span>
+            <label htmlFor="phone" className="block text-sm font-medium text-warm-700 mb-2">
+              {t('adminRegister.labelPhone')} <span className="text-error-500">*</span>
             </label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-warm-400" />
               <input
                 id="phone"
                 name="phone"
@@ -218,18 +218,18 @@ const AdminRegister = () => {
                 value={formData.phone}
                 onChange={handleInputChange}
                 required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder="+998901234567"
               />
             </div>
           </div>
 
           <div>
-            <label htmlFor="telegramUsername" className="block text-sm font-medium text-gray-700 mb-2">
-              {t('adminRegister.labelTelegram')} <span className="text-red-500">*</span>
+            <label htmlFor="telegramUsername" className="block text-sm font-medium text-warm-700 mb-2">
+              {t('adminRegister.labelTelegram')} <span className="text-error-500">*</span>
             </label>
             <div className="relative">
-              <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+              <MessageSquare className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-warm-400" />
               <input
                 id="telegramUsername"
                 name="telegramUsername"
@@ -241,21 +241,21 @@ const AdminRegister = () => {
                   setFormData({ ...formData, telegramUsername: value });
                 }}
                 required
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder={t('adminRegister.placeholderTelegram')}
               />
             </div>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-warm-500">
               {t('adminRegister.telegramNote')}
             </p>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('adminRegister.labelCertificate')} <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-warm-700 mb-2">
+                {t('adminRegister.labelCertificate')} <span className="text-error-500">*</span>
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-primary-500 transition-colors">
+              <div className="border-2 border-dashed border-warm-300 rounded-lg p-6 hover:border-brand-500 transition-colors">
                 <input
                   type="file"
                   accept="image/*,application/pdf"
@@ -267,21 +267,21 @@ const AdminRegister = () => {
                   htmlFor="certificateFile"
                   className="cursor-pointer flex flex-col items-center gap-2"
                 >
-                  <Upload className="w-8 h-8 text-gray-400" />
-                  <span className="text-sm text-gray-600">
+                  <Upload className="w-8 h-8 text-warm-400" />
+                  <span className="text-sm text-warm-600">
                     {certificateFile ? certificateFile.name : t('adminRegister.uploadCertificate')}
                   </span>
-                  <span className="text-xs text-gray-500">{t('adminRegister.uploadHint')}</span>
+                  <span className="text-xs text-warm-500">{t('adminRegister.uploadHint')}</span>
                 </label>
               </div>
               {certificateFile && (
-                <div className="mt-2 flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded">
+                <div className="mt-2 flex items-center gap-2 text-sm text-warm-600 bg-warm-50 px-3 py-2 rounded">
                   <FileText className="w-4 h-4" />
                   <span className="flex-1">{certificateFile.name}</span>
                   <button
                     type="button"
                     onClick={() => removeFile('certificate')}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-error-500 hover:text-error-700"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -290,10 +290,10 @@ const AdminRegister = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                {t('adminRegister.labelPassport')} <span className="text-red-500">*</span>
+              <label className="block text-sm font-medium text-warm-700 mb-2">
+                {t('adminRegister.labelPassport')} <span className="text-error-500">*</span>
               </label>
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 hover:border-primary-500 transition-colors">
+              <div className="border-2 border-dashed border-warm-300 rounded-lg p-6 hover:border-brand-500 transition-colors">
                 <input
                   type="file"
                   accept="image/*,application/pdf"
@@ -305,21 +305,21 @@ const AdminRegister = () => {
                   htmlFor="passportFile"
                   className="cursor-pointer flex flex-col items-center gap-2"
                 >
-                  <Upload className="w-8 h-8 text-gray-400" />
-                  <span className="text-sm text-gray-600">
+                  <Upload className="w-8 h-8 text-warm-400" />
+                  <span className="text-sm text-warm-600">
                     {passportFile ? passportFile.name : t('adminRegister.uploadPassport')}
                   </span>
-                  <span className="text-xs text-gray-500">{t('adminRegister.uploadHint')}</span>
+                  <span className="text-xs text-warm-500">{t('adminRegister.uploadHint')}</span>
                 </label>
               </div>
               {passportFile && (
-                <div className="mt-2 flex items-center gap-2 text-sm text-gray-600 bg-gray-50 px-3 py-2 rounded">
+                <div className="mt-2 flex items-center gap-2 text-sm text-warm-600 bg-warm-50 px-3 py-2 rounded">
                   <FileText className="w-4 h-4" />
                   <span className="flex-1">{passportFile.name}</span>
                   <button
                     type="button"
                     onClick={() => removeFile('passport')}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-error-500 hover:text-error-700"
                   >
                     <X className="w-4 h-4" />
                   </button>
@@ -328,7 +328,7 @@ const AdminRegister = () => {
             </div>
           </div>
 
-          <div className="bg-primary-50 border border-primary-200 rounded-lg p-4 text-sm text-primary-800">
+          <div className="bg-brand-50 border border-brand-200 rounded-lg p-4 text-sm text-brand-800">
             <p className="font-semibold mb-1">{t('adminRegister.noticeTitle')}</p>
             <p>{t('adminRegister.noticeBody')}</p>
             {formData.telegramUsername && (
@@ -339,14 +339,14 @@ const AdminRegister = () => {
           <div className="flex gap-4">
             <Link
               to="/login"
-              className="flex-1 px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-semibold hover:bg-gray-200 transition-colors text-center"
+              className="flex-1 px-6 py-3 bg-warm-100 text-warm-700 rounded-lg font-semibold hover:bg-warm-200 transition-colors text-center"
             >
               {t('adminRegister.cancel')}
             </Link>
             <button
               type="submit"
               disabled={loading}
-              className="flex-1 bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 bg-brand-600 text-white py-3 rounded-lg font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {loading ? (
                 <>

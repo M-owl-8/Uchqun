@@ -22,6 +22,8 @@ const GroupManagement = lazy(() => import('./pages/GroupManagement'));
 const SchoolRatings = lazy(() => import('./pages/SchoolRatings'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Settings = lazy(() => import('./pages/Settings'));
+const DocumentApprovalQueue = lazy(() => import('./pages/DocumentApprovalQueue'));
+const AIWarnings = lazy(() => import('./pages/AIWarnings'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -64,6 +66,8 @@ const AppRoutes = () => {
           <Route path="users" element={<ErrorBoundary><UsersStats /></ErrorBoundary>} />
           <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
           <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+          <Route path="documents" element={<ErrorBoundary><DocumentApprovalQueue /></ErrorBoundary>} />
+          <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
         </Route>
 
         <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />

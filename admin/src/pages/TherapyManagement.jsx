@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
@@ -166,11 +166,11 @@ const TherapyManagement = () => {
       case 'music':
         return 'bg-purple-50 text-purple-600';
       case 'video':
-        return 'bg-primary-50 text-primary-600';
+        return 'bg-brand-50 text-brand-600';
       case 'content':
-        return 'bg-green-50 text-green-600';
+        return 'bg-success-50 text-success-600';
       default:
-        return 'bg-gray-50 text-gray-600';
+        return 'bg-warm-50 text-warm-600';
     }
   };
 
@@ -195,16 +195,16 @@ const TherapyManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-gray-900 tracking-tight">
+          <h1 className="text-3xl font-black text-warm-900 tracking-tight">
             {t('therapy.management', { defaultValue: 'Terapiya Boshqaruvi' })}
           </h1>
-          <p className="text-gray-600 mt-2">
+          <p className="text-warm-600 mt-2">
             {t('therapy.managementDesc', { defaultValue: 'Musiqa, video va content terapiyalarni boshqaring' })}
           </p>
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           {t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
@@ -215,13 +215,13 @@ const TherapyManagement = () => {
       <Card className="p-6">
         <div className="flex flex-col md:flex-row gap-4">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-warm-400 w-5 h-5" />
             <input
               type="text"
               placeholder={t('therapy.search', { defaultValue: 'Qidirish...' })}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
           <div className="flex gap-2">
@@ -229,8 +229,8 @@ const TherapyManagement = () => {
               onClick={() => setFilterType('all')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterType === 'all'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-brand-600 text-white'
+                  : 'bg-warm-100 text-warm-700 hover:bg-warm-200'
               }`}
             >
               {t('therapy.all', { defaultValue: 'Barchasi' })}
@@ -239,8 +239,8 @@ const TherapyManagement = () => {
               onClick={() => setFilterType('music')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterType === 'music'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-brand-600 text-white'
+                  : 'bg-warm-100 text-warm-700 hover:bg-warm-200'
               }`}
             >
               <Music className="w-4 h-4 inline mr-1" />
@@ -250,8 +250,8 @@ const TherapyManagement = () => {
               onClick={() => setFilterType('video')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterType === 'video'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-brand-600 text-white'
+                  : 'bg-warm-100 text-warm-700 hover:bg-warm-200'
               }`}
             >
               <Video className="w-4 h-4 inline mr-1" />
@@ -261,8 +261,8 @@ const TherapyManagement = () => {
               onClick={() => setFilterType('content')}
               className={`px-4 py-2 rounded-lg font-medium transition-colors ${
                 filterType === 'content'
-                  ? 'bg-primary-600 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-brand-600 text-white'
+                  : 'bg-warm-100 text-warm-700 hover:bg-warm-200'
               }`}
             >
               <FileText className="w-4 h-4 inline mr-1" />
@@ -284,12 +284,12 @@ const TherapyManagement = () => {
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-gray-900 mb-1">{therapy.title}</h3>
-                  <p className="text-sm text-gray-600 line-clamp-2">{therapy.description}</p>
+                  <h3 className="font-bold text-warm-900 mb-1">{therapy.title}</h3>
+                  <p className="text-sm text-warm-600 line-clamp-2">{therapy.description}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
+              <div className="flex items-center gap-4 text-sm text-warm-600 mb-4">
                 {therapy.duration && (
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -298,7 +298,7 @@ const TherapyManagement = () => {
                 )}
                 {therapy.rating && (
                   <div className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-yellow-500 fill-yellow-500" />
+                    <Star className="w-4 h-4 text-warning-500 fill-yellow-500" />
                     <span>{therapy.rating.toFixed(1)}</span>
                   </div>
                 )}
@@ -315,7 +315,7 @@ const TherapyManagement = () => {
                   {therapy.tags.slice(0, 3).map((tag, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded"
+                      className="px-2 py-1 bg-warm-100 text-warm-600 text-xs rounded"
                     >
                       {tag}
                     </span>
@@ -326,14 +326,14 @@ const TherapyManagement = () => {
               <div className="flex gap-2">
                 <button
                   onClick={() => handleEdit(therapy)}
-                  className="flex-1 px-4 py-2 bg-primary-50 text-primary-600 rounded-lg font-medium hover:bg-primary-100 transition-colors flex items-center justify-center gap-2"
+                  className="flex-1 px-4 py-2 bg-brand-50 text-brand-600 rounded-lg font-medium hover:bg-brand-100 transition-colors flex items-center justify-center gap-2"
                 >
                   <Edit2 className="w-4 h-4" />
                   {t('therapy.edit', { defaultValue: 'Tahrirlash' })}
                 </button>
                 <button
                   onClick={() => handleDelete(therapy.id)}
-                  className="px-4 py-2 bg-red-50 text-red-600 rounded-lg font-medium hover:bg-red-100 transition-colors"
+                  className="px-4 py-2 bg-error-50 text-error-600 rounded-lg font-medium hover:bg-error-100 transition-colors"
                 >
                   <Trash2 className="w-4 h-4" />
                 </button>
@@ -345,11 +345,11 @@ const TherapyManagement = () => {
 
       {filteredTherapies.length === 0 && (
         <Card className="p-12 text-center">
-          <Play className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <Play className="w-16 h-16 text-warm-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-warm-900 mb-2">
             {t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-warm-600">
             {t('therapy.noTherapiesDesc', { defaultValue: 'Qidiruv natijalari bo\'sh' })}
           </p>
         </Card>
@@ -358,56 +358,56 @@ const TherapyManagement = () => {
       {/* Create/Edit Modal */}
       {showModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white">
-              <h3 className="text-lg font-bold text-gray-900">
+          <div className="bg-surface rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="px-6 py-4 border-b border-warm-100 flex items-center justify-between sticky top-0 bg-surface">
+              <h3 className="text-lg font-bold text-warm-900">
                 {editingTherapy
                   ? t('therapy.edit', { defaultValue: 'Terapiyani Tahrirlash' })
                   : t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
               </h3>
               <button
                 onClick={() => setShowModal(false)}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-warm-100 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-warm-500" />
               </button>
             </div>
             <div className="p-6 space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-warm-700 mb-2">
                   {t('therapy.title', { defaultValue: 'Sarlavha' })} *
                 </label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder={t('therapy.titlePlaceholder', { defaultValue: 'Terapiya nomi' })}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-warm-700 mb-2">
                   {t('therapy.description', { defaultValue: 'Tavsif' })}
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                   rows={3}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder={t('therapy.descriptionPlaceholder', { defaultValue: 'Terapiya tavsifi' })}
                 />
               </div>
 
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-700 mb-2">
                     {t('therapy.type', { defaultValue: 'Turi' })} *
                   </label>
                   <select
                     value={formData.therapyType}
                     onChange={(e) => setFormData({ ...formData, therapyType: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
                     <option value="music">{t('therapy.music', { defaultValue: 'Musiqa' })}</option>
                     <option value="video">{t('therapy.video', { defaultValue: 'Video' })}</option>
@@ -416,13 +416,13 @@ const TherapyManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-700 mb-2">
                     {t('therapy.contentType', { defaultValue: 'Content Turi' })}
                   </label>
                   <select
                     value={formData.contentType}
                     onChange={(e) => setFormData({ ...formData, contentType: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
                     <option value="audio">{t('therapy.audio', { defaultValue: 'Audio' })}</option>
                     <option value="video">{t('therapy.video', { defaultValue: 'Video' })}</option>
@@ -435,40 +435,40 @@ const TherapyManagement = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-warm-700 mb-2">
                   {t('therapy.contentUrl', { defaultValue: 'Content URL' })}
                 </label>
                 <input
                   type="url"
                   value={formData.contentUrl}
                   onChange={(e) => setFormData({ ...formData, contentUrl: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder="https://example.com/therapy.mp3"
                 />
               </div>
 
               <div className="grid grid-cols-3 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-700 mb-2">
                     {t('therapy.duration', { defaultValue: 'Davomiyligi (min)' })}
                   </label>
                   <input
                     type="number"
                     value={formData.duration}
                     onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                     placeholder="30"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-700 mb-2">
                     {t('therapy.ageGroup', { defaultValue: 'Yosh Guruhi' })}
                   </label>
                   <select
                     value={formData.ageGroup}
                     onChange={(e) => setFormData({ ...formData, ageGroup: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
                     <option value="all">{t('therapy.allAges', { defaultValue: 'Barcha' })}</option>
                     <option value="infant">{t('therapy.infant', { defaultValue: 'Chaqaloq' })}</option>
@@ -480,13 +480,13 @@ const TherapyManagement = () => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-warm-700 mb-2">
                     {t('therapy.difficulty', { defaultValue: 'Qiyinlik' })}
                   </label>
                   <select
                     value={formData.difficultyLevel}
                     onChange={(e) => setFormData({ ...formData, difficultyLevel: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
                     <option value="all">{t('therapy.allLevels', { defaultValue: 'Barcha' })}</option>
                     <option value="beginner">{t('therapy.beginner', { defaultValue: 'Boshlang\'ich' })}</option>
@@ -497,14 +497,14 @@ const TherapyManagement = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-warm-700 mb-2">
                   {t('therapy.tags', { defaultValue: 'Teglar (vergul bilan ajratilgan)' })}
                 </label>
                 <input
                   type="text"
                   value={formData.tags}
                   onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder="tag1, tag2, tag3"
                 />
               </div>
@@ -512,7 +512,7 @@ const TherapyManagement = () => {
               <div className="flex gap-3 pt-4">
                 <button
                   onClick={() => setShowModal(false)}
-                  className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-colors"
+                  className="flex-1 px-6 py-3 bg-warm-100 hover:bg-warm-200 text-warm-700 rounded-lg font-semibold transition-colors"
                   disabled={saving}
                 >
                   {t('therapy.cancel', { defaultValue: 'Bekor qilish' })}
@@ -520,7 +520,7 @@ const TherapyManagement = () => {
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {saving ? (
                     <>

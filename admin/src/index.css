@@ -4,7 +4,8 @@
 
 @layer base {
   body {
-    @apply bg-gray-50 text-gray-900;
+    @apply bg-cream text-warm-900;
+    font-feature-settings: 'cv11', 'ss01', 'ss03';
   }
 }
 
@@ -15,16 +16,58 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  .line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .num {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
-/* Focus styles for accessibility */
 *:focus-visible {
-  @apply outline-2 outline-offset-2 outline-primary-500;
+  outline: 2px solid #A85C40;
+  outline-offset: 2px;
+}
+
+/* Letterhead hairline — 2px terracotta bar above page titles */
+.letterhead {
+  position: relative;
+}
+.letterhead::before {
+  content: '';
+  position: absolute;
+  top: -14px;
+  left: 0;
+  height: 2px;
+  width: 56px;
+  background: #A85C40;
+  border-radius: 1px;
+}
+
+/* Document preview striped background */
+.doc-preview {
+  background:
+    linear-gradient(#FFFCF8, #FFFCF8) padding-box,
+    repeating-linear-gradient(180deg, #DFD6C6 0 1px, transparent 1px 14px);
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position:  400px 0; }
+}
+.skel {
+  background: linear-gradient(90deg, #EFE9DE 0%, #F7F3EC 50%, #EFE9DE 100%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+  border-radius: 4px;
 }
 
 @keyframes page-fade-in {
@@ -34,4 +77,13 @@ html {
 
 .page-fade-in {
   animation: page-fade-in 0.2s ease-out both;
+}
+
+/* Table column headers */
+.colhead {
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 500;
+  color: #756959;
 }

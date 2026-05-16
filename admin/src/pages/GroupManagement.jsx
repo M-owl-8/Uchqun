@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import Card from '@shared/components/Card';
@@ -77,18 +77,18 @@ const GroupManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-gray-900 tracking-tight">{t('groupsPage.title')}</h1>
-          <p className="text-gray-500 font-medium mt-1">{t('groupsPage.subtitle')}</p>
+          <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('groupsPage.title')}</h1>
+          <p className="text-warm-500 font-medium mt-1">{t('groupsPage.subtitle')}</p>
         </div>
 
         <div className="relative flex-1 md:flex-initial md:w-64">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400" />
           <input
             type="text"
             placeholder={t('groupsPage.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full"
+            className="pl-12 pr-4 py-3 bg-surface border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
           />
         </div>
       </div>
@@ -99,15 +99,15 @@ const GroupManagement = () => {
             <Card key={group.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700">
                     <UsersRound className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-warm-900">
                       {group.name}
                     </h3>
                     {group.description && (
-            <p className="text-sm text-gray-500 mt-1">{group.description}</p>
+            <p className="text-sm text-warm-500 mt-1">{group.description}</p>
                     )}
                   </div>
                 </div>
@@ -115,22 +115,22 @@ const GroupManagement = () => {
 
               <div className="space-y-3">
                 {group.teacher && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <UserCheck className="w-4 h-4 text-gray-400" />
+                  <div className="flex items-center gap-2 text-sm text-warm-600">
+                    <UserCheck className="w-4 h-4 text-warm-400" />
                     <span>
                       {group.teacher.firstName} {group.teacher.lastName}
                     </span>
                   </div>
                 )}
                 {group.capacity && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <UsersRound className="w-4 h-4 text-gray-400" />
+                  <div className="flex items-center gap-2 text-sm text-warm-600">
+                    <UsersRound className="w-4 h-4 text-warm-400" />
                     <span>{t('groupsPage.capacity', { count: group.capacity })}</span>
                   </div>
                 )}
                 {group.ageRange && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Calendar className="w-4 h-4 text-gray-400" />
+                  <div className="flex items-center gap-2 text-sm text-warm-600">
+                    <Calendar className="w-4 h-4 text-warm-400" />
                     <span>{t('groupsPage.age', { range: group.ageRange })}</span>
                   </div>
                 )}
@@ -140,8 +140,8 @@ const GroupManagement = () => {
         </div>
       ) : (
         <Card className="p-12 text-center">
-          <UsersRound className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-          <p className="text-gray-400 font-medium text-lg">
+          <UsersRound className="w-16 h-16 text-warm-200 mx-auto mb-4" />
+          <p className="text-warm-400 font-medium text-lg">
             {searchQuery ? t('groupsPage.emptySearch') : t('groupsPage.empty')}
           </p>
         </Card>

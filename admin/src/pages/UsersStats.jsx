@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -55,38 +55,38 @@ const UsersStats = () => {
     admin: Shield,
   };
 
-  // TODO(phase-1): role color palette — parent=blue, teacher=green, reception=purple, admin=yellow; confirm whether these should be semantic role tokens or move to primary-*
+  // TODO(phase-1): role color palette — parent=blue, teacher=green, reception=purple, admin=yellow; confirm whether these should be semantic role tokens or move to brand-*
   const roleColors = {
-    parent: 'bg-primary-50 text-primary-600',
-    teacher: 'bg-green-50 text-green-600',
+    parent: 'bg-brand-50 text-brand-600',
+    teacher: 'bg-success-50 text-success-600',
     reception: 'bg-purple-50 text-purple-600',
-    admin: 'bg-yellow-50 text-yellow-600',
+    admin: 'bg-warning-50 text-warning-600',
   };
 
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">{t('usersStats.title', { defaultValue: 'Users Statistics' })}</h1>
-          <p className="text-gray-600 mt-1">{t('usersStats.subtitle', { defaultValue: 'Track user growth and demographics' })}</p>
+          <h1 className="text-2xl font-bold text-warm-900">{t('usersStats.title', { defaultValue: 'Users Statistics' })}</h1>
+          <p className="text-warm-600 mt-1">{t('usersStats.subtitle', { defaultValue: 'Track user growth and demographics' })}</p>
         </div>
         <div className="flex gap-2">
           <input
             type="date"
             value={dateRange.startDate}
             onChange={(e) => setDateRange({ ...dateRange, startDate: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           <input
             type="date"
             value={dateRange.endDate}
             onChange={(e) => setDateRange({ ...dateRange, endDate: e.target.value })}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           <select
             value={selectedRole}
             onChange={(e) => setSelectedRole(e.target.value)}
-            className="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+            className="px-4 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           >
             <option value="">{t('usersStats.allRoles', { defaultValue: 'All Roles' })}</option>
             <option value="parent">Parents</option>
@@ -96,20 +96,20 @@ const UsersStats = () => {
         </div>
       </div>
 
-      <Card className="p-6 bg-gradient-to-br from-primary-400 to-primary-600 text-white">
+      <Card className="p-6 bg-gradient-to-br from-brand-400 to-brand-600 text-white">
         <div className="flex items-center justify-between mb-4">
           <Users className="w-8 h-8" />
           <TrendingUp className="w-6 h-6" />
         </div>
         <p className="text-3xl font-bold mb-1">{stats?.total || 0}</p>
-        <p className="text-primary-100">{t('usersStats.totalUsers', { defaultValue: 'Total Users' })}</p>
+        <p className="text-brand-100">{t('usersStats.totalUsers', { defaultValue: 'Total Users' })}</p>
       </Card>
 
       {stats?.byRole && Object.keys(stats.byRole).length > 0 && (
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {Object.entries(stats.byRole).map(([role, count]) => {
             const Icon = roleIcons[role] || UserCircle;
-            const colorClass = roleColors[role] || 'bg-gray-50 text-gray-600';
+            const colorClass = roleColors[role] || 'bg-warm-50 text-warm-600';
             return (
               <Card key={role} className="p-6">
                 <div className="flex items-center justify-between mb-4">
@@ -117,8 +117,8 @@ const UsersStats = () => {
                     <Icon className="w-6 h-6" />
                   </div>
                 </div>
-                <p className="text-3xl font-bold text-gray-900 mb-1">{count}</p>
-                <p className="text-sm text-gray-600 capitalize">{role}s</p>
+                <p className="text-3xl font-bold text-warm-900 mb-1">{count}</p>
+                <p className="text-sm text-warm-600 capitalize">{role}s</p>
               </Card>
             );
           })}
@@ -127,17 +127,17 @@ const UsersStats = () => {
 
       {stats?.users && stats.users.length > 0 && (
         <Card className="p-6">
-          <h2 className="text-lg font-semibold text-gray-900 mb-4">{t('usersStats.recentUsers', { defaultValue: 'Recent Users' })}</h2>
+          <h2 className="text-lg font-semibold text-warm-900 mb-4">{t('usersStats.recentUsers', { defaultValue: 'Recent Users' })}</h2>
           <div className="space-y-3">
             {stats.users.slice(0, 10).map((user) => (
-              <div key={user.id} className="p-4 bg-gray-50 rounded-lg flex items-center justify-between">
+              <div key={user.id} className="p-4 bg-warm-50 rounded-lg flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <div className={`p-2 rounded-lg ${roleColors[user.role] || 'bg-gray-100'}`}>
+                  <div className={`p-2 rounded-lg ${roleColors[user.role] || 'bg-warm-100'}`}>
                     {(roleIcons[user.role] || UserCircle)({ className: 'w-5 h-5' })}
                   </div>
                   <div>
-                    <p className="font-semibold text-gray-900 capitalize">{user.role}</p>
-                    <p className="text-sm text-gray-600">
+                    <p className="font-semibold text-warm-900 capitalize">{user.role}</p>
+                    <p className="text-sm text-warm-600">
                       {new Date(user.createdAt).toLocaleDateString()}
                     </p>
                   </div>
@@ -150,9 +150,9 @@ const UsersStats = () => {
 
       {(!stats?.users || stats.users.length === 0) && (
         <Card className="p-12 text-center">
-          <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">No User Data</h3>
-          <p className="text-gray-600">No user data available for the selected period.</p>
+          <Users className="w-16 h-16 text-warm-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-warm-900 mb-2">No User Data</h3>
+          <p className="text-warm-600">No user data available for the selected period.</p>
         </Card>
       )}
     </div>
