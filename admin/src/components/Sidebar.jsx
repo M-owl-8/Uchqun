@@ -7,12 +7,10 @@ import {
   GraduationCap,
   UserRound,
   FileCheck2,
-  Archive,
   BellRing,
   BarChart3,
-  Activity,
-  Building2,
   Settings,
+  User,
   ShieldCheck,
   LogOut,
 } from 'lucide-react';
@@ -21,32 +19,30 @@ const NAV_SECTIONS = [
   {
     label: 'Boshqaruv',
     items: [
-      { key: 'nav.dashboard',   href: '/admin',              icon: LayoutDashboard },
-      { key: 'nav.receptions',  href: '/admin/receptions',   icon: Users },
-      { key: 'nav.teachers',    href: '/admin/teachers',     icon: GraduationCap },
-      { key: 'nav.parents',     href: '/admin/parents',      icon: UserRound },
+      { key: 'nav.dashboard',       href: '/admin',                icon: LayoutDashboard },
+      { key: 'nav.receptions',      href: '/admin/receptions',     icon: Users },
+      { key: 'nav.teachers',        href: '/admin/teachers',       icon: GraduationCap },
+      { key: 'nav.parents',         href: '/admin/parents',        icon: UserRound },
     ],
   },
   {
     label: 'Hujjatlar',
     items: [
-      { key: 'nav.documents',   href: '/admin/documents',    icon: FileCheck2, badgeKey: 'pendingDocs' },
-      { key: 'nav.archive',     href: '/admin/archive',      icon: Archive },
+      { key: 'nav.documents',       href: '/admin/documents',      icon: FileCheck2 },
     ],
   },
   {
     label: 'Hisobotlar',
     items: [
-      { key: 'nav.aiWarnings',  href: '/admin/ai-warnings',  icon: BellRing, badgeKey: 'aiWarnings' },
-      { key: 'nav.ratings',     href: '/admin/school-ratings', icon: BarChart3 },
-      { key: 'nav.auditLog',    href: '/admin/audit',        icon: Activity },
+      { key: 'nav.aiWarnings',      href: '/admin/ai-warnings',    icon: BellRing },
+      { key: 'nav.schoolRatings',   href: '/admin/school-ratings', icon: BarChart3 },
     ],
   },
   {
     label: 'Sozlamalar',
     items: [
-      { key: 'nav.school',      href: '/admin/settings',     icon: Building2 },
-      { key: 'nav.settings',    href: '/admin/profile',      icon: Settings },
+      { key: 'nav.settings',        href: '/admin/settings',       icon: Settings },
+      { key: 'nav.profile',         href: '/admin/profile',        icon: User },
     ],
   },
 ];
