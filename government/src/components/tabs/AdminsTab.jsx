@@ -94,7 +94,7 @@ export default function AdminsTab({
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setStrengthError(''); }}
                 placeholder={t('government.form.password')}
-                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 disabled={loading}
               />
               <button type="button" onClick={() => setShowCreate(!showCreate)} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
@@ -117,7 +117,7 @@ export default function AdminsTab({
               value={confirm}
               onChange={(e) => { setConfirm(e.target.value); setStrengthError(''); }}
               placeholder={t('government.form.confirmPassword', { defaultValue: 'Confirm Password' })}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               disabled={loading}
             />
             {strengthError && <p className="mt-1 text-xs text-red-600">{strengthError}</p>}
@@ -136,7 +136,7 @@ export default function AdminsTab({
         </div>
         {loadingAdmins ? (
           <div className="flex items-center justify-center min-h-[120px]">
-            <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : admins.length === 0 ? (
           <p className="text-sm text-gray-600">{t('government.noAdmins', { defaultValue: 'Adminlar topilmadi' })}</p>
@@ -145,7 +145,7 @@ export default function AdminsTab({
             {admins.map((adm) => (
               <div key={adm.id} className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-700 font-bold flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center">
                     {adm.firstName?.charAt(0)}{adm.lastName?.charAt(0)}
                   </div>
                   <div className="flex-1 space-y-1">
@@ -220,7 +220,7 @@ export default function AdminsTab({
                 value={editPassword}
                 onChange={(e) => setEditPassword(e.target.value)}
                 placeholder={t('government.form.passwordChange', { defaultValue: "Parolni o'zgartirish uchun kiriting" })}
-                className="w-full px-4 py-2.5 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2.5 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
               <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
                 {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}

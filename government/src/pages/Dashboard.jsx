@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
-import Card from '@shared/components/Card';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { StaleIndicator } from '../../../shared/components/OfflineBanner';
 import {
@@ -11,12 +10,33 @@ import {
   Users,
   GraduationCap,
   Star,
-  BarChart3,
+  RefreshCw,
   Shield,
+  UserCheck,
+  LogIn,
+  Settings,
+  FileText,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CACHE_KEY = 'government:dashboard';
+
+// Two-state badge only \u2014 pending / approved
+// TODO(phase-2): backend should support intermediate states (e.g., "under review")
+const StatusBadge = ({ status }) => {
+  if (status === 'approved') {
+    return (
+      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
+        Tasdiqlangan
+      </span>
+    );
+  }
+  return (
+    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
+      Kutilmoqda
+    </span>
+  );
+};
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -27,6 +47,7 @@ const Dashboard = () => {
   const [admins, setAdmins] = useState(() => cache.get(CACHE_KEY)?.admins ?? []);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const [isStale, setIsStale] = useState(false);
+  const [lastUpdated, setLastUpdated] = useState(null);
 
   const loadData = useCallback(async (bust = false) => {
     const cached = !bust && cache.get(CACHE_KEY);
@@ -35,7 +56,6 @@ const Dashboard = () => {
       setSchools(cached.schools);
       setAdmins(cached.admins);
       setLoading(false);
-      // background refresh
       Promise.allSettled([
         api.get('/government/overview'),
         api.get('/government/schools?limit=10'),
@@ -47,6 +67,7 @@ const Dashboard = () => {
         const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : cached.admins;
         cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
         setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
+        setLastUpdated(new Date());
       }).catch(() => {});
       return;
     }
@@ -62,238 +83,201 @@ const Dashboard = () => {
     const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : [];
     cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
     setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
+    setLastUpdated(new Date());
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    loadData();
-  }, [loadData]);
+  useEffect(() => { loadData(); }, [loadData]);
 
-  if (loading) {
-    return <SkeletonDashboard stats={4} cards={3} />;
-  }
+  if (loading) return <SkeletonDashboard stats={4} cards={3} />;
 
   const overviewCards = [
-    {
-      title: t('dashboard.totalSchools', { defaultValue: 'Jami Muassasalar' }),
-      value: stats?.schools || 0,
-      icon: Building2,
-      // TODO(phase-1): entity-icon color — Schools uses blue-500 as a semantic entity color distinct from primary; confirm whether to keep or replace with primary-*
-      color: 'bg-blue-500',
-      path: '/government/schools',
-    },
-    {
-      title: t('dashboard.totalStudents', { defaultValue: 'Jami O\'quvchilar' }),
-      value: stats?.students || 0,
-      icon: Users,
-      color: 'bg-green-500',
-      path: '/government/students',
-    },
-    {
-      title: t('dashboard.totalTeachers', { defaultValue: 'Jami O\'qituvchilar' }),
-      value: stats?.teachers || 0,
-      icon: GraduationCap,
-      color: 'bg-purple-500',
-      path: '/government/teachers',
-    },
-    {
-      title: t('dashboard.totalParents', { defaultValue: 'Jami Ota-onalar' }),
-      value: stats?.parents || 0,
-      icon: Users,
-      color: 'bg-orange-500',
-      path: '/government/parents',
-    },
+    { title: t('dashboard.totalSchools', { defaultValue: 'Muassasalar' }),     value: stats?.schools  || 0, icon: Building2,    path: '/government/schools' },
+    { title: t('dashboard.totalStudents', { defaultValue: "O'quvchilar" }),    value: stats?.students || 0, icon: GraduationCap, path: '/government/students' },
+    { title: t('dashboard.totalTeachers', { defaultValue: "O'qituvchilar" }), value: stats?.teachers || 0, icon: UserCheck,     path: '/government/teachers' },
+    { title: t('dashboard.totalParents', { defaultValue: 'Ota-onalar' }),      value: stats?.parents  || 0, icon: Users,        path: '/government/parents' },
+  ];
+
+  // TODO(phase-2): wire to /api/v1/government/me/activity once backend supports it
+  const activityFeed = [
+    { icon: LogIn,     text: "Tizimga kirdingiz" },
+    { icon: UserCheck, text: "Admin so'rovi ko'rib chiqildi" },
+    { icon: Building2, text: "Muassasa ma'lumotlari yangilandi" },
+    { icon: Shield,    text: "Hujjat tasdiqlandi" },
+    { icon: FileText,  text: "Hisobot yuklandi" },
+    { icon: Settings,  text: "Profil sozlamalari o'zgartirildi" },
   ];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <StaleIndicator isStale={isStale} onRetry={loadData} />
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {t('dashboard.title', { defaultValue: 'Davlat Nazorat Paneli' })}
-        </h1>
-        <p className="text-gray-600">
-          {t('dashboard.welcome', { 
-            defaultValue: 'Xush kelibsiz, {{name}}',
-            name: `${user?.firstName} ${user?.lastName}`
-          })}
-        </p>
+
+      {/* Page header */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-inkGreen-900">
+            {t('dashboard.title', { defaultValue: 'Davlat Nazorat Paneli' })}
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {t('dashboard.subtitle', { defaultValue: "Umumiy ko'rinish" })}
+          </p>
+        </div>
+        <div className="flex items-center gap-2 flex-shrink-0 mt-1">
+          {lastUpdated && (
+            <span className="text-xs text-gray-400">
+              {t('dashboard.lastUpdated', { defaultValue: 'Oxirgi yangilanish' })}: {lastUpdated.toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' })}
+            </span>
+          )}
+          <button
+            onClick={() => loadData(true)}
+            aria-label="Ma'lumotlarni yangilash"
+            className="p-1.5 text-gray-400 hover:text-brand-600 hover:bg-brand-50 rounded-md transition-colors"
+          >
+            <RefreshCw className="w-3.5 h-3.5" />
+          </button>
+        </div>
       </div>
 
-      {/* Overview Cards - bosilganda tegishli sahifaga o'tadi */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {/* Stat cards */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {overviewCards.map((card) => {
           const Icon = card.icon;
           return (
-            <Card
-              key={card.path || card.title}
-              className="p-6 hover:shadow-lg transition-shadow cursor-pointer hover:ring-2 hover:ring-primary-500/30"
-              onClick={() => card.path && navigate(card.path)}
+            <button
+              key={card.path}
+              onClick={() => navigate(card.path)}
+              className="bg-paper-card border border-gray-200 rounded-lg p-5 text-left hover:border-brand-300 hover:shadow-sm transition-all"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-gray-600 mb-1">{card.title}</p>
-                  <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-                </div>
-                <div className={`${card.color} p-3 rounded-lg`}>
-                  <Icon className="w-6 h-6 text-white" />
-                </div>
+              <div className="flex items-center justify-between mb-3">
+                <Icon className="w-4 h-4 text-brand-600" strokeWidth={1.5} />
               </div>
-            </Card>
+              <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{card.value.toLocaleString()}</p>
+              <p className="text-xs text-gray-500 mt-1">{card.title}</p>
+            </button>
           );
         })}
       </div>
 
-      {/* Admins List */}
-      <Card>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">
-              {t('dashboard.adminList', { defaultValue: 'Adminlar' })}
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {t('dashboard.adminListDesc', { 
-                defaultValue: 'Barcha adminlar ro\'yxati ({{count}})',
-                count: admins.length
-              })}
-            </p>
-          </div>
-          <Shield className="w-6 h-6 text-gray-400" />
-        </div>
-
-        {admins.length === 0 ? (
-          <div className="text-center py-12">
-            <Shield className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">
-              {t('dashboard.adminNotFound', { defaultValue: 'Adminlar topilmadi' })}
-            </p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {admins.map((admin) => (
-              <div
-                key={admin.id}
-                onClick={() => navigate(`/government/admin/${admin.id}`)}
-                className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow cursor-pointer"
-              >
-                <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <Shield className="w-6 h-6 text-primary-600" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-gray-900 mb-1">
-                      {admin.firstName} {admin.lastName}
-                    </h3>
-                    <p className="text-sm text-gray-600 truncate">{admin.email}</p>
-                    {admin.phone && (
-                      <p className="text-xs text-gray-500 mt-1">{admin.phone}</p>
-                    )}
-                    <p className="text-xs text-gray-500 mt-2">
-                      {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '—'}
-                    </p>
-                  </div>
-                </div>
+      {/* Two-column layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Left \u2014 main content (2/3) */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* Admin registrations */}
+          <div className="bg-paper-card border border-gray-200 rounded-lg">
+            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-gray-900">
+                {t('dashboard.adminList', { defaultValue: "So'nggi admin so'rovlari" })}
+              </h2>
+              <Shield className="w-4 h-4 text-gray-300" />
+            </div>
+            {admins.length === 0 ? (
+              <div className="py-10 text-center text-sm text-gray-400">
+                {t('dashboard.adminNotFound', { defaultValue: "Admin so'rovlari topilmadi" })}
               </div>
-            ))}
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-xs text-gray-400 border-b border-gray-100">
+                    <th className="text-left px-5 py-2.5 font-medium">Ism</th>
+                    <th className="text-left px-5 py-2.5 font-medium hidden sm:table-cell">Email</th>
+                    <th className="text-left px-5 py-2.5 font-medium hidden md:table-cell">Sana</th>
+                    <th className="text-left px-5 py-2.5 font-medium">Holat</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {admins.slice(0, 8).map((admin) => (
+                    <tr
+                      key={admin.id}
+                      onClick={() => navigate(`/government/admin/${admin.id}`)}
+                      className="border-b border-gray-50 last:border-0 hover:bg-brand-50 cursor-pointer transition-colors"
+                    >
+                      <td className="px-5 py-3 font-medium text-gray-900">
+                        {admin.firstName} {admin.lastName}
+                      </td>
+                      <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">{admin.email}</td>
+                      <td className="px-5 py-3 text-gray-400 hidden md:table-cell tabular-nums">
+                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '\u2014'}
+                      </td>
+                      <td className="px-5 py-3">
+                        <StatusBadge status={admin.isApproved ? 'approved' : 'pending'} />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
           </div>
-        )}
-      </Card>
 
-      {/* Schools with Ratings */}
-      <Card>
-        <div className="flex items-center justify-between mb-6">
-          <div>
-            <h2 className="text-xl font-bold text-gray-900">
-              {t('dashboard.schoolsList', { defaultValue: 'Muassasalar va Baholari' })}
-            </h2>
-            <p className="text-sm text-gray-600 mt-1">
-              {t('dashboard.schoolsListDesc', { defaultValue: 'Muassasalar reytinglari va statistikasi' })}
-            </p>
-          </div>
-          <BarChart3 className="w-6 h-6 text-gray-400" />
-        </div>
-
-        {schools.length === 0 ? (
-          <div className="text-center py-12">
-            <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">
-              {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
-            </p>
-          </div>
-        ) : (
-          <div className="space-y-4">
-            {schools
-              .sort((a, b) => {
-                // Sort by average rating (descending), then by ratings count (descending)
-                const ratingA = a.averageRating || 0;
-                const ratingB = b.averageRating || 0;
-                if (ratingB !== ratingA) {
-                  return ratingB - ratingA;
-                }
-                return (b.ratingsCount || 0) - (a.ratingsCount || 0);
-              })
-              .map((school, index) => {
-                const rank = index + 1;
-                return (
-                  <div
-                    key={school.id}
-                    className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-3 mb-2">
-                          {/* Rank Badge */}
-                          <div className={`w-10 h-10 rounded-lg flex items-center justify-center font-bold text-base flex-shrink-0 ${
-                            rank === 1 
-                              ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400' 
-                              : rank === 2 
-                              ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
-                              : rank === 3
-                              ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                              : 'bg-primary-100 text-primary-600'
-                          }`}>
-                            {rank}
-                          </div>
-                          {/* TODO(phase-1): school icon color — text-blue-600 used as entity color for schools; confirm keep or switch to primary-* */}
-                          <Building2 className="w-5 h-5 text-blue-600" />
-                          <h3 className="font-bold text-gray-900">{school.name}</h3>
-                        </div>
-                        {school.address && (
-                          <p className="text-sm text-gray-600 mb-2">{school.address}</p>
-                        )}
-                        <div className="flex items-center gap-4 text-sm text-gray-600">
-                          <span>
-                            {t('dashboard.students', { defaultValue: 'O\'quvchilar' })}: {school.studentsCount || 0}
-                          </span>
-                          <span>
-                            {t('dashboard.ratings', { defaultValue: 'Baholar' })}: {school.ratingsCount || 0}
-                          </span>
+          {/* Schools ratings */}
+          <div className="bg-paper-card border border-gray-200 rounded-lg">
+            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+              <h2 className="text-sm font-semibold text-gray-900">
+                {t('dashboard.schoolsList', { defaultValue: 'Muassasalar reytingi' })}
+              </h2>
+              <Star className="w-4 h-4 text-gray-300" />
+            </div>
+            {schools.length === 0 ? (
+              <div className="py-10 text-center text-sm text-gray-400">
+                {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
+              </div>
+            ) : (
+              <div className="divide-y divide-gray-50">
+                {schools
+                  .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
+                  .slice(0, 6)
+                  .map((school, index) => (
+                    <div key={school.id} className="flex items-center justify-between px-5 py-3 hover:bg-brand-50 cursor-pointer transition-colors"
+                         onClick={() => navigate(`/government/schools/${school.id}`)}>
+                      <div className="flex items-center gap-3">
+                        <span className="text-xs tabular-nums text-gray-400 w-5">{index + 1}</span>
+                        <div>
+                          <p className="text-sm font-medium text-gray-900">{school.name}</p>
+                          {school.address && <p className="text-xs text-gray-400 truncate max-w-[200px]">{school.address}</p>}
                         </div>
                       </div>
-                      <div className="flex items-center gap-2">
-                        <div className="flex items-center gap-1">
-                          {[1, 2, 3, 4, 5].map((star) => (
-                            <Star
-                              key={star}
-                              className={`w-5 h-5 ${
-                                star <= Math.round(school.averageRating || 0)
-                                  ? 'fill-yellow-400 text-yellow-400'
-                                  : 'fill-gray-200 text-gray-200'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-lg font-bold text-gray-900 ml-2">
+                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-semibold tabular-nums text-gray-900">
                           {(school.averageRating || 0).toFixed(1)}
                         </span>
+                        <span className="text-xs text-gray-400">({school.ratingsCount || 0})</span>
                       </div>
                     </div>
+                  ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right rail \u2014 activity feed */}
+        <div className="space-y-6">
+          <div className="bg-paper-card border border-gray-200 rounded-lg">
+            <div className="px-5 py-4 border-b border-gray-100">
+              <h2 className="text-sm font-semibold text-gray-900">
+                {t('dashboard.activity', { defaultValue: 'Mening faoliyatim' })}
+              </h2>
+            </div>
+            {/* TODO(phase-2): wire to /api/v1/government/me/activity once backend supports it */}
+            <div className="divide-y divide-gray-50">
+              {activityFeed.map((item, i) => {
+                const Icon = item.icon;
+                return (
+                  <div key={i} className="flex items-start gap-3 px-5 py-3">
+                    <Icon className="w-3.5 h-3.5 text-gray-400 mt-0.5 flex-shrink-0" strokeWidth={1.5} />
+                    <p className="text-xs text-gray-600">{item.text}</p>
                   </div>
                 );
               })}
+            </div>
+            <div className="px-5 py-3 border-t border-gray-100">
+              {/* TODO(phase-2): link to full audit log page */}
+              <span className="text-xs text-brand-600 cursor-pointer hover:text-brand-700">
+                Barcha faoliyatlar \u2192
+              </span>
+            </div>
           </div>
-        )}
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

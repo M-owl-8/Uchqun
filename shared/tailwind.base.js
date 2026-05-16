@@ -13,6 +13,19 @@ export const primaryColors = {
   900: '#4c1d95',
 };
 
+export const successColors = {
+  50:  '#F4F6E8',
+  100: '#E6EAC9',
+  200: '#CFD89B',
+  300: '#B5C46D',
+  400: '#9CAE4F',
+  500: '#7C8F3E',
+  600: '#587538',
+  700: '#465E2E',
+  800: '#374A26',
+  900: '#2A381E',
+};
+
 export const basePreset = {
   theme: {
     extend: {
@@ -21,6 +34,7 @@ export const basePreset = {
       },
       colors: {
         primary: primaryColors,
+        success: successColors,
         sidebar: {
           navy: '#2E3A59',
           muted: '#8F9BB3',

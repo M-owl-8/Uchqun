@@ -1,21 +1,35 @@
+import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
-import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { Building2, Star } from 'lucide-react';
+import { Building2, Star, Search, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const Schools = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
   const { data, loading, error } = useFetch('/government/schools');
   const schools = data?.schools || [];
-  const globalStats = {
-    total: data?.total || 0,
-    totalReviews: data?.totalReviews || 0,
-  };
+
+  const [search, setSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
+
+  // TODO(phase-2): move filters to API query params once backend supports them
+  const filtered = useMemo(() => {
+    let result = schools;
+    if (search.trim()) {
+      const q = search.toLowerCase();
+      result = result.filter(s => s.name?.toLowerCase().includes(q) || s.address?.toLowerCase().includes(q));
+    }
+    if (typeFilter) {
+      result = result.filter(s => s.type === typeFilter);
+    }
+    return result.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+  }, [schools, search, typeFilter]);
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]" role="status" aria-label={t('schools.loading', { defaultValue: 'Loading schools' })}>
+      <div className="flex items-center justify-center min-h-[400px]">
         <LoadingSpinner size="lg" />
       </div>
     );
@@ -24,118 +38,117 @@ const Schools = () => {
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 text-sm">{error}</p>
       </div>
     );
   }
 
+  const typeLabel = (type) => {
+    if (type === 'school') return t('schools.typeSchool', { defaultValue: 'Maktab' });
+    if (type === 'kindergarten') return t('schools.typeKindergarten', { defaultValue: "Bog'cha" });
+    if (type === 'both') return t('schools.typeBoth', { defaultValue: 'Aralash' });
+    return type || '\u2014';
+  };
+
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {t('schools.title', { defaultValue: 'Muassasalar' })}
-        </h1>
-        <p className="text-gray-600">
-          {t('schools.subtitle', { defaultValue: 'Barcha muassasalar ro\'yxati' })}
-        </p>
+    <div className="space-y-5">
+      {/* Page header */}
+      <div className="flex items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-semibold text-inkGreen-900">
+            {t('schools.title', { defaultValue: 'Muassasalar' })}
+          </h1>
+          <p className="text-sm text-gray-500 mt-0.5">
+            {t('schools.subtitle', { defaultValue: 'Barcha muassasalar va ularning baholari' })}
+          </p>
+        </div>
+        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-50 text-brand-700 border border-brand-200">
+          {schools.length}
+        </span>
       </div>
 
-      {/* Global stats */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4" aria-label={t('schools.globalStats', { defaultValue: 'Global statistics' })} role="region">
-        <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">
-            {t('schools.totalSchools', { defaultValue: 'Jami muassasalar' })}
-          </p>
-          <p className="text-2xl font-bold text-gray-900">{globalStats.total}</p>
-        </Card>
-        <Card className="p-6">
-          <p className="text-sm text-gray-600 mb-1">
-            {t('schools.totalReviews', { defaultValue: 'Jami baholar' })}
-          </p>
-          <p className="text-2xl font-bold text-gray-900">{globalStats.totalReviews}</p>
-        </Card>
+      {/* Filters */}
+      <div className="flex flex-col sm:flex-row gap-3">
+        <div className="relative flex-1">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+          <input
+            type="search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder={t('schools.searchPlaceholder', { defaultValue: 'Muassasa nomi yoki manzili...' })}
+            className="w-full pl-9 pr-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
+          />
+        </div>
+        <select
+          value={typeFilter}
+          onChange={(e) => setTypeFilter(e.target.value)}
+          className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
+        >
+          <option value="">{t('schools.allTypes', { defaultValue: 'Barcha turlar' })}</option>
+          <option value="school">{t('schools.typeSchool', { defaultValue: 'Maktab' })}</option>
+          <option value="kindergarten">{t('schools.typeKindergarten', { defaultValue: "Bog'cha" })}</option>
+          <option value="both">{t('schools.typeBoth', { defaultValue: 'Aralash' })}</option>
+        </select>
       </div>
 
-      {schools.length === 0 ? (
-        <Card className="p-12">
-          <div className="text-center">
-            <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">
+      {/* Table */}
+      <div className="bg-paper-card border border-gray-200 rounded-lg overflow-hidden">
+        {filtered.length === 0 ? (
+          <div className="py-16 text-center">
+            <Building2 className="w-10 h-10 text-gray-200 mx-auto mb-3" />
+            <p className="text-sm text-gray-400">
               {t('schools.notFound', { defaultValue: 'Muassasalar topilmadi' })}
             </p>
           </div>
-        </Card>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label={t('schools.title', { defaultValue: 'Muassasalar' })}>
-          {schools
-            .sort((a, b) => {
-              const ratingA = a.averageRating || 0;
-              const ratingB = b.averageRating || 0;
-              if (ratingB !== ratingA) return ratingB - ratingA;
-              return (b.ratingsCount || 0) - (a.ratingsCount || 0);
-            })
-            .map((school, index) => {
-              const rank = index + 1;
-              return (
-                <Card key={school.id} className="p-6" role="listitem">
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className="flex-shrink-0">
-                        <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
-                          rank === 1
-                            ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400'
-                            : rank === 2
-                            ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
-                            : rank === 3
-                            ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                            : 'bg-primary-100 text-primary-600'
-                        }`}>
-                          {rank}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-3 flex-1">
-                        <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-                          <Building2 className="w-6 h-6 text-primary-600" />
-                        </div>
-                        <div>
-                          <h3 className="font-bold text-gray-900">{school.name}</h3>
-                          {school.address && (
-                            <p className="text-sm text-gray-600 mt-1">{school.address}</p>
-                          )}
-                        </div>
-                      </div>
+        ) : (
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-xs text-gray-400 border-b border-gray-100 bg-paper-deep">
+                <th className="text-left px-5 py-3 font-medium">#</th>
+                <th className="text-left px-5 py-3 font-medium">{t('schools.colName', { defaultValue: 'Muassasa' })}</th>
+                <th className="text-left px-5 py-3 font-medium hidden md:table-cell">{t('schools.colType', { defaultValue: 'Tur' })}</th>
+                <th className="text-left px-5 py-3 font-medium hidden sm:table-cell">{t('schools.colStudents', { defaultValue: "O'quvchilar" })}</th>
+                <th className="text-left px-5 py-3 font-medium">{t('schools.colRating', { defaultValue: 'Reyting' })}</th>
+                <th className="w-10" />
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map((school, index) => (
+                <tr
+                  key={school.id}
+                  onClick={() => navigate(`/government/schools/${school.id}`)}
+                  className="border-b border-gray-50 last:border-0 hover:bg-brand-50 cursor-pointer transition-colors"
+                >
+                  <td className="px-5 py-3.5 text-gray-400 tabular-nums">{index + 1}</td>
+                  <td className="px-5 py-3.5">
+                    <p className="font-medium text-gray-900">{school.name}</p>
+                    {school.address && <p className="text-xs text-gray-400 mt-0.5">{school.address}</p>}
+                  </td>
+                  <td className="px-5 py-3.5 text-gray-500 hidden md:table-cell">{typeLabel(school.type)}</td>
+                  <td className="px-5 py-3.5 text-gray-500 tabular-nums hidden sm:table-cell">{school.studentsCount || 0}</td>
+                  <td className="px-5 py-3.5">
+                    <div className="flex items-center gap-1">
+                      <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                      <span className="font-semibold tabular-nums text-gray-900">{(school.averageRating || 0).toFixed(1)}</span>
+                      <span className="text-xs text-gray-400">({school.ratingsCount || 0})</span>
                     </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">
-                        {t('schools.students', { defaultValue: 'O\'quvchilar' })}:
-                      </span>
-                      <span className="font-semibold text-gray-900">{school.studentsCount || 0}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">
-                        {t('schools.ratings', { defaultValue: 'Baholar' })}:
-                      </span>
-                      <span className="font-semibold text-gray-900">{school.ratingsCount || 0}</span>
-                    </div>
-                    <div className="flex items-center justify-between text-sm">
-                      <span className="text-gray-600">
-                        {t('schools.averageRating', { defaultValue: 'O\'rtacha reyting' })}:
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" aria-hidden="true" />
-                        <span className="font-semibold text-gray-900" aria-label={`${t('schools.averageRating', { defaultValue: "O'rtacha reyting" })}: ${(school.averageRating || 0).toFixed(1)}`}>
-                          {(school.averageRating || 0).toFixed(1)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </Card>
-              );
-            })}
-        </div>
-      )}
+                  </td>
+                  <td className="px-3">
+                    <ChevronRight className="w-4 h-4 text-gray-300" />
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
+        {filtered.length > 0 && (
+          <div className="px-5 py-3 border-t border-gray-100 bg-paper-deep flex items-center justify-between">
+            <p className="text-xs text-gray-400">
+              {filtered.length} / {schools.length} {t('schools.shown', { defaultValue: "ko'rsatilmoqda" })}
+            </p>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

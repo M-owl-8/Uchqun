@@ -22,6 +22,7 @@ const AdminDetails = lazy(() => import('./pages/AdminDetails'));
 const Profile = lazy(() => import('./pages/Profile'));
 const Platform = lazy(() => import('./pages/Platform'));
 const Settings = lazy(() => import('./pages/Settings'));
+const SchoolDetail = lazy(() => import('./pages/SchoolDetail'));
 const NotFound = lazy(() => import('./pages/NotFound'));
 
 const PageLoader = () => (
@@ -56,6 +57,7 @@ const AppRoutes = () => {
         >
           <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
           <Route path="schools" element={<ErrorBoundary><Schools /></ErrorBoundary>} />
+          <Route path="schools/:id" element={<ErrorBoundary><SchoolDetail /></ErrorBoundary>} />
           <Route path="students" element={<ErrorBoundary><Students /></ErrorBoundary>} />
           <Route path="teachers" element={<ErrorBoundary><Teachers /></ErrorBoundary>} />
           <Route path="parents" element={<ErrorBoundary><Parents /></ErrorBoundary>} />

@@ -27,19 +27,19 @@ export default function MessagesTab({
       <Card className="p-6 space-y-4">
         {loadingMessages ? (
           <div className="flex items-center justify-center min-h-[120px]">
-            <div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" />
+            <div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" />
           </div>
         ) : messages.length === 0 ? (
           <p className="text-sm text-gray-600">{t('government.messagesEmpty', { defaultValue: "Xabarlar yo'q" })}</p>
         ) : (
           <div className="space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className={`border rounded-xl p-4 hover:shadow-sm transition-shadow ${!msg.isRead ? 'border-primary-300 bg-primary-50' : 'border-gray-100'}`}>
+              <div key={msg.id} className={`border rounded-xl p-4 hover:shadow-sm transition-shadow ${!msg.isRead ? 'border-brand-300 bg-brand-50' : 'border-gray-100'}`}>
                 <div className="flex items-start justify-between gap-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-2">
                       <h3 className="font-semibold text-gray-900">{msg.subject}</h3>
-                      {!msg.isRead && <span className="px-2 py-0.5 text-xs font-semibold rounded bg-primary-500 text-white">{t('government.new', { defaultValue: 'Yangi' })}</span>}
+                      {!msg.isRead && <span className="px-2 py-0.5 text-xs font-semibold rounded bg-brand-500 text-white">{t('government.new', { defaultValue: 'Yangi' })}</span>}
                     </div>
                     <p className="text-sm text-gray-600 mb-2">{msg.message}</p>
                     <div className="flex items-center gap-4 text-xs text-gray-500">

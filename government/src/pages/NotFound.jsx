@@ -10,7 +10,7 @@ export default function NotFound() {
       <p className="text-xl text-gray-500">{t('page404.message', { defaultValue: 'Page not found' })}</p>
       <button
         onClick={() => navigate(-1)}
-        className="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+        className="px-4 py-2 bg-brand-600 text-white rounded-lg hover:bg-brand-700"
       >
         {t('page404.goBack', { defaultValue: 'Go Back' })}
       </button>

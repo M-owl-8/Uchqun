@@ -61,7 +61,7 @@ export default function GovernmentTab({
               required
               value={govPassword}
               onChange={(e) => setGovPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               placeholder="••••••••"
               minLength={8}
             />
@@ -79,7 +79,7 @@ export default function GovernmentTab({
           {t('government.governmentList', { defaultValue: "Qo'shilgan Government Foydalanuvchilar" })} ({governments.length})
         </h3>
         {loadingGovernments ? (
-          <Card className="p-8"><div className="flex items-center justify-center min-h-[120px]"><div className="w-6 h-6 border-2 border-primary-500 border-t-transparent rounded-full animate-spin" /></div></Card>
+          <Card className="p-8"><div className="flex items-center justify-center min-h-[120px]"><div className="w-6 h-6 border-2 border-brand-500 border-t-transparent rounded-full animate-spin" /></div></Card>
         ) : governments.length === 0 ? (
           <Card className="p-8"><p className="text-sm text-gray-600 text-center py-8">{t('government.noGovernments', { defaultValue: "Hozircha government foydalanuvchilar yo'q" })}</p></Card>
         ) : (
@@ -87,7 +87,7 @@ export default function GovernmentTab({
             {governments.map((gov) => (
               <div key={gov.id} className="border border-gray-100 rounded-xl p-4 hover:shadow-sm transition-shadow">
                 <div className="flex items-start gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 text-primary-700 font-bold flex items-center justify-center flex-shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 text-brand-700 font-bold flex items-center justify-center flex-shrink-0">
                     {gov.firstName?.charAt(0)}{gov.lastName?.charAt(0)}
                   </div>
                   <div className="flex-1 space-y-1">
@@ -160,7 +160,7 @@ export default function GovernmentTab({
                 value={editGovPassword}
                 onChange={(e) => setEditGovPassword(e.target.value)}
                 placeholder={t('government.form.passwordOptional', { defaultValue: "Parolni o'zgartirmasangiz bo'sh qoldiring" })}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent pr-10"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent pr-10"
               />
               <button type="button" onClick={() => setShowPasswords({ ...showPasswords, edit: !showPasswords.edit })} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500">
                 {showPasswords.edit ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}

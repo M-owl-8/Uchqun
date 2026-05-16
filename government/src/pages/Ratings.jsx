@@ -113,14 +113,14 @@ const SchoolCard = ({ school }) => {
                 ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
                 : school.rank === 3
                 ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                : 'bg-primary-100 text-primary-600'
+                : 'bg-brand-100 text-brand-600'
             }`}>
               {school.rank || '—'}
             </div>
           </div>
           <div className="flex items-center gap-3 flex-1">
-            <div className="w-12 h-12 bg-primary-100 rounded-lg flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-primary-600" />
+            <div className="w-12 h-12 bg-brand-100 rounded-lg flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-brand-600" />
             </div>
             <div>
               <h3 className="font-bold text-gray-900">{school.name}</h3>
@@ -152,7 +152,7 @@ const SchoolCard = ({ school }) => {
       {school.ratingsCount > 0 && (
         <button
           onClick={handleToggle}
-          className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
+          className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
         >
           {expanded ? (
             <>
@@ -182,8 +182,8 @@ const SchoolCard = ({ school }) => {
                 <div key={review.id} className="bg-gray-50 rounded-lg p-3">
                   <div className="flex items-center justify-between mb-2">
                     <div className="flex items-center gap-2">
-                      <div className="w-7 h-7 bg-primary-100 rounded-full flex items-center justify-center">
-                        <User className="w-3.5 h-3.5 text-primary-600" />
+                      <div className="w-7 h-7 bg-brand-100 rounded-full flex items-center justify-center">
+                        <User className="w-3.5 h-3.5 text-brand-600" />
                       </div>
                       <span className="text-sm font-medium text-gray-900">
                         {review.parentName || t('ratings.unknown')}
@@ -215,7 +215,7 @@ const SchoolCard = ({ school }) => {
                 <button
                   onClick={() => loadReviews(page + 1)}
                   disabled={reviewsLoading}
-                  className="w-full py-2 text-sm font-medium text-primary-600 hover:bg-primary-50 rounded-lg transition-colors disabled:opacity-50"
+                  className="w-full py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 rounded-lg transition-colors disabled:opacity-50"
                 >
                   {reviewsLoading ? <LoadingSpinner size="sm" /> : t('ratings.showReviews')}
                 </button>
@@ -321,7 +321,7 @@ const Ratings = () => {
           placeholder={t('ratings.searchPlaceholder')}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+          className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
         />
       </div>
 

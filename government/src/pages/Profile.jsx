@@ -32,11 +32,11 @@ const Profile = () => {
       {/* Profile Information */}
       <Card className="p-6">
         <div className="flex items-start gap-4">
-          <div className="w-20 h-20 bg-primary-100 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+          <div className="w-20 h-20 bg-brand-100 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
             {user?.avatar ? (
               <img src={user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '') || window.location.origin}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
             ) : (
-              <Shield className="w-10 h-10 text-primary-600" />
+              <Shield className="w-10 h-10 text-brand-600" />
             )}
           </div>
           <div className="flex-1">
@@ -62,7 +62,7 @@ const Profile = () => {
               )}
               <div>
                 <p className="text-sm text-gray-600 mb-2">{t('profile.role', { defaultValue: 'Rol' })}</p>
-                <span className="px-3 py-1 bg-primary-100 text-primary-700 rounded-full text-sm font-medium">
+                <span className="px-3 py-1 bg-brand-100 text-brand-700 rounded-full text-sm font-medium">
                   Government
                 </span>
               </div>

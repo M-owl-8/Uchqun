@@ -39,7 +39,7 @@ const AdminDetails = () => {
         </p>
         <button
           onClick={() => navigate('/government')}
-          className="mt-4 text-primary-600 hover:text-primary-700"
+          className="mt-4 text-brand-600 hover:text-brand-700"
         >
           {t('adminDetails.back', { defaultValue: 'Orqaga qaytish' })}
         </button>
@@ -102,8 +102,8 @@ const AdminDetails = () => {
       {/* Admin Info Card */}
       <Card className="p-6">
         <div className="flex items-start gap-4">
-          <div className="w-16 h-16 bg-primary-100 rounded-xl flex items-center justify-center">
-            <Shield className="w-8 h-8 text-primary-600" />
+          <div className="w-16 h-16 bg-brand-100 rounded-xl flex items-center justify-center">
+            <Shield className="w-8 h-8 text-brand-600" />
           </div>
           <div className="flex-1">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -184,7 +184,7 @@ const AdminDetails = () => {
             {receptions.map((reception) => (
               <div key={reception.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  <UserCheck className="w-5 h-5 text-primary-600" />
+                  <UserCheck className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">
                     {reception.firstName} {reception.lastName}
                   </h3>

@@ -110,7 +110,7 @@ const Settings = () => {
       {/* Profile Information */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <User className="w-6 h-6 text-primary-600" />
+          <User className="w-6 h-6 text-brand-600" />
           <h2 className="text-xl font-bold text-gray-900">
             {t('settings.profileInfo', { defaultValue: 'Profil ma\'lumotlari' })}
           </h2>
@@ -125,7 +125,7 @@ const Settings = () => {
                 type="text"
                 value={profileForm.firstName}
                 onChange={(e) => setProfileForm(f => ({ ...f, firstName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
                 required
               />
             </div>
@@ -137,7 +137,7 @@ const Settings = () => {
                 type="text"
                 value={profileForm.lastName}
                 onChange={(e) => setProfileForm(f => ({ ...f, lastName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+                className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
                 required
               />
             </div>
@@ -164,13 +164,13 @@ const Settings = () => {
               type="tel"
               value={profileForm.phone}
               onChange={(e) => setProfileForm(f => ({ ...f, phone: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
             />
           </div>
           <button
             type="submit"
             disabled={saving}
-            className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
           >
             {saving
               ? t('settings.saving', { defaultValue: 'Saqlanmoqda...' })
@@ -182,7 +182,7 @@ const Settings = () => {
       {/* Language */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Globe className="w-6 h-6 text-primary-600" />
+          <Globe className="w-6 h-6 text-brand-600" />
           <h2 className="text-xl font-bold text-gray-900">
             {t('settings.language', { defaultValue: 'Til' })}
           </h2>
@@ -198,7 +198,7 @@ const Settings = () => {
       {/* Change Password */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <Lock className="w-6 h-6 text-primary-600" />
+          <Lock className="w-6 h-6 text-brand-600" />
           <h2 className="text-xl font-bold text-gray-900">
             {t('settings.changePassword', { defaultValue: 'Parolni o\'zgartirish' })}
           </h2>
@@ -212,7 +212,7 @@ const Settings = () => {
               type={showPasswords.current ? 'text' : 'password'}
               value={passwordForm.currentPassword}
               onChange={(e) => setPasswordForm(f => ({ ...f, currentPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
               required
             />
           </div>
@@ -224,7 +224,7 @@ const Settings = () => {
               type={showPasswords.new ? 'text' : 'password'}
               value={passwordForm.newPassword}
               onChange={(e) => setPasswordForm(f => ({ ...f, newPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
               required
             />
           </div>
@@ -236,14 +236,14 @@ const Settings = () => {
               type={showPasswords.confirm ? 'text' : 'password'}
               value={passwordForm.confirmPassword}
               onChange={(e) => setPasswordForm(f => ({ ...f, confirmPassword: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="w-full px-4 py-2.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500"
               required
             />
           </div>
           <button
             type="submit"
             disabled={savingPassword}
-            className="px-6 py-2.5 bg-primary-600 text-white rounded-xl font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50"
+            className="px-6 py-2.5 bg-brand-600 text-white rounded-xl font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
           >
             {savingPassword
               ? t('settings.saving', { defaultValue: 'Saqlanmoqda...' })
