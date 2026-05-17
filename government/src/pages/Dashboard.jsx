@@ -11,7 +11,7 @@ import {
   RefreshCw,
   Shield,
   AlertTriangle,
-  UserCheck,
+  ShieldAlert,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [schools, setSchools] = useState(() => cache.get(CACHE_KEY)?.schools ?? []);
   const [admins, setAdmins] = useState(() => cache.get(CACHE_KEY)?.admins ?? []);
+  const [activeWarnings, setActiveWarnings] = useState(() => cache.get(CACHE_KEY)?.activeWarnings ?? 0);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const [isStale, setIsStale] = useState(false);
   const [lastUpdated, setLastUpdated] = useState(null);
@@ -33,34 +34,39 @@ const Dashboard = () => {
       setStats(cached.stats);
       setSchools(cached.schools);
       setAdmins(cached.admins);
+      setActiveWarnings(cached.activeWarnings ?? 0);
       setLoading(false);
       Promise.allSettled([
         api.get('/government/overview'),
         api.get('/government/schools?limit=10'),
         api.get('/government/admins'),
-      ]).then(([overviewRes, schoolsRes, adminsRes]) => {
+        api.get('/ai-warnings', { params: { resolved: false } }),
+      ]).then(([overviewRes, schoolsRes, adminsRes, warningsRes]) => {
         const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
         const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : cached.stats;
         const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : cached.schools;
         const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : cached.admins;
-        cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
-        setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
+        const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : cached.activeWarnings;
+        cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, activeWarnings: aw });
+        setStats(s); setSchools(sc); setAdmins(ad); setActiveWarnings(aw); setIsStale(anyFailed);
         setLastUpdated(new Date());
       }).catch(() => {});
       return;
     }
     setLoading(true);
-    const [overviewRes, schoolsRes, adminsRes] = await Promise.allSettled([
+    const [overviewRes, schoolsRes, adminsRes, warningsRes] = await Promise.allSettled([
       api.get('/government/overview'),
       api.get('/government/schools?limit=10'),
       api.get('/government/admins'),
+      api.get('/ai-warnings', { params: { resolved: false } }),
     ]);
     const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
     const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : null;
     const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : [];
     const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : [];
-    cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad });
-    setStats(s); setSchools(sc); setAdmins(ad); setIsStale(anyFailed);
+    const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : 0;
+    cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, activeWarnings: aw });
+    setStats(s); setSchools(sc); setAdmins(ad); setActiveWarnings(aw); setIsStale(anyFailed);
     setLastUpdated(new Date());
     setLoading(false);
   }, []);
@@ -70,6 +76,17 @@ const Dashboard = () => {
   if (loading) return <SkeletonDashboard stats={4} cards={3} />;
 
   const pendingAdmins = admins.filter(a => !a.isApproved).length;
+
+  const regionBreakdown = Object.values(
+    schools.reduce((acc, s) => {
+      const r = s.region || t('dashboard.unknownRegion', { defaultValue: "Noma'lum" });
+      if (!acc[r]) acc[r] = { region: r, count: 0, totalRating: 0, rated: 0 };
+      acc[r].count++;
+      if (s.averageRating > 0) { acc[r].totalRating += s.averageRating; acc[r].rated++; }
+      return acc;
+    }, {})
+  ).map(r => ({ ...r, avgRating: r.rated > 0 ? r.totalRating / r.rated : 0 }))
+   .sort((a, b) => b.count - a.count);
 
 
   return (
@@ -125,11 +142,14 @@ const Dashboard = () => {
           <p className="text-xs text-gray-500 mt-1">{t('dashboard.pendingAdmins', { defaultValue: 'Kutilayotgan adminlar' })}</p>
         </div>
 
-        <div className="bg-paper-card border border-gray-200 rounded-lg p-5">
-          <UserCheck className="w-4 h-4 text-brand-600 mb-3" strokeWidth={1.5} />
-          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{(stats?.teachers || 0).toLocaleString()}</p>
-          <p className="text-xs text-gray-500 mt-1">{t('dashboard.totalTeachers', { defaultValue: "O'qituvchilar" })}</p>
-        </div>
+        <button
+          onClick={() => navigate('/government/warnings')}
+          className={`border rounded-lg p-5 text-left transition-all hover:shadow-sm ${activeWarnings > 0 ? 'bg-red-50 border-red-200 hover:border-red-300' : 'bg-paper-card border-gray-200 hover:border-brand-300'}`}
+        >
+          <ShieldAlert className={`w-4 h-4 mb-3 ${activeWarnings > 0 ? 'text-red-500' : 'text-brand-600'}`} strokeWidth={1.5} />
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{activeWarnings}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('dashboard.activeWarnings', { defaultValue: 'Faol ogohlantirishlar' })}</p>
+        </button>
       </div>
 
       {/* Main content */}
@@ -216,6 +236,45 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Regional breakdown */}
+      {regionBreakdown.length > 0 && (
+        <div className="bg-paper-card border border-gray-200 rounded-lg">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-900">
+              {t('dashboard.regionalBreakdown', { defaultValue: 'Viloyatlar bo\'yicha' })}
+            </h2>
+            <Building2 className="w-4 h-4 text-gray-300" />
+          </div>
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="text-xs text-gray-400 border-b border-gray-100 bg-paper-deep">
+                <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colRegion', { defaultValue: 'Viloyat' })}</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colSchools', { defaultValue: 'Muassasalar' })}</th>
+                <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colAvgRating', { defaultValue: "O'rtacha reyting" })}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {regionBreakdown.map((r) => (
+                <tr key={r.region} className="border-b border-gray-50 last:border-0">
+                  <td className="px-5 py-2.5 font-medium text-gray-800">{r.region}</td>
+                  <td className="px-5 py-2.5 tabular-nums text-gray-600">{r.count}</td>
+                  <td className="px-5 py-2.5">
+                    {r.avgRating > 0 ? (
+                      <div className="flex items-center gap-1.5">
+                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                        <span className="tabular-nums font-semibold text-gray-900">{r.avgRating.toFixed(1)}</span>
+                      </div>
+                    ) : (
+                      <span className="text-gray-400 text-xs">{t('dashboard.noRatings', { defaultValue: "Reyting yo'q" })}</span>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 };

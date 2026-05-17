@@ -2,7 +2,7 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { Building2, Star, Search, ChevronRight } from 'lucide-react';
+import { Building2, Star, Search, ChevronRight, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const Schools = () => {
@@ -14,7 +14,25 @@ const Schools = () => {
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
-  // TODO(phase-2): move filters to API query params once backend supports them
+  const exportCSV = () => {
+    const rows = [
+      ['#', 'Name', 'Address', 'Type', 'Region', 'Students', 'Teachers', 'Rating', 'Ratings Count'],
+      ...filtered.map((s, i) => [
+        i + 1, s.name || '', s.address || '', s.type || '', s.region || '',
+        s.studentsCount || 0, s.teachersCount || 0,
+        (s.averageRating || 0).toFixed(2), s.ratingsCount || 0,
+      ]),
+    ];
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `schools-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   const filtered = useMemo(() => {
     let result = schools;
     if (search.trim()) {
@@ -62,9 +80,20 @@ const Schools = () => {
             {t('schools.subtitle', { defaultValue: 'Barcha muassasalar va ularning baholari' })}
           </p>
         </div>
-        <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-50 text-brand-700 border border-brand-200">
-          {schools.length}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-50 text-brand-700 border border-brand-200">
+            {schools.length}
+          </span>
+          {filtered.length > 0 && (
+            <button
+              onClick={exportCSV}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-gray-600 border border-gray-200 rounded-md hover:bg-gray-50 transition-colors"
+            >
+              <Download className="w-3.5 h-3.5" />
+              {t('schools.exportCSV', { defaultValue: 'CSV' })}
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Filters */}

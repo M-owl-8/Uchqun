@@ -4,6 +4,7 @@ import {
   LayoutDashboard,
   Building2,
   Star,
+  ShieldAlert,
   LayoutGrid,
   User,
   Settings,
@@ -20,8 +21,9 @@ const Sidebar = ({ onClose }) => {
   const navigation = [
     { name: t('nav.dashboard', { defaultValue: 'Dashboard' }),    href: '/government',          icon: LayoutDashboard },
     { name: t('nav.schools',   { defaultValue: 'Muassasalar' }),  href: '/government/schools',  icon: Building2 },
-    { name: t('nav.ratings',   { defaultValue: 'Reytinglar' }),   href: '/government/ratings',  icon: Star },
-    { name: t('nav.platform',  { defaultValue: 'Platform' }),     href: '/government/platform', icon: LayoutGrid },
+    { name: t('nav.ratings',   { defaultValue: 'Reytinglar' }),   href: '/government/ratings',   icon: Star },
+    { name: t('nav.warnings',  { defaultValue: 'Ogohlantirishlar' }), href: '/government/warnings', icon: ShieldAlert },
+    { name: t('nav.platform',  { defaultValue: 'Platform' }),     href: '/government/platform',  icon: LayoutGrid },
     { name: t('nav.profile',   { defaultValue: 'Profil' }),       href: '/government/profile',  icon: User },
     { name: t('nav.settings',  { defaultValue: 'Sozlamalar' }),   href: '/government/settings', icon: Settings },
   ];

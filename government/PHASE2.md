@@ -19,18 +19,18 @@
 
 - [x] P1: Dashboard stat cards — remove dead navigation to removed pages; filter admin table to pending only
 - [x] P2: SchoolDetail — remove placeholder occupancy/docApproval metric cards
-- [ ] P3: Settings — add note that email cannot be changed
-- [ ] P4: Language switcher — move to Layout header (system-wide access)
+- [x] P3: Settings — email-cannot-change note already present; confirmed done
+- [x] P4: Language switcher — added to mobile Layout header
 
 ---
 
 ## ADD — Tier 1
 
-- [ ] A1: Dashboard KPI cards — active warnings, pending registrations, avg rating, schools with no ratings
-- [ ] A2: Dashboard regional breakdown table (schools by region with counts + avg rating)
-- [ ] A3: Compliance alerts widget on Dashboard
-- [ ] A4: CSV export on Schools page
-- [ ] A5: AI Warnings section visible to government
+- [x] A1: Dashboard KPI — active warnings card (navigates to /warnings, red highlight when >0)
+- [x] A2: Dashboard regional breakdown table (client-side computed from schools data)
+- [-] A3: Compliance alerts widget — deferred (requires new backend queries)
+- [x] A4: CSV export on Schools page (client-side, exports filtered data)
+- [x] A5: AI Warnings page — new /government/warnings route with KPI strip, filter tabs, resolve action
 
 ---
 

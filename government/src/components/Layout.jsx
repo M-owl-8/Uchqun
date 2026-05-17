@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
+import LanguageSwitcher from './LanguageSwitcher';
 
 const Layout = () => {
   const location = useLocation();
@@ -25,7 +26,8 @@ const Layout = () => {
         >
           <Menu className="w-5 h-5" aria-hidden="true" />
         </button>
-        <span className="font-semibold text-white text-sm">{t('sidebar.title', { defaultValue: 'Davlat Panel' })}</span>
+        <span className="font-semibold text-white text-sm flex-1">{t('sidebar.title', { defaultValue: 'Davlat Panel' })}</span>
+        <LanguageSwitcher />
       </div>
 
       {sidebarOpen && (
