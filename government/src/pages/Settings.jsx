@@ -195,6 +195,7 @@ const Settings = () => {
             <div className="relative">
               <input
                 type={showPasswords.current ? 'text' : 'password'}
+                autoComplete="current-password"
                 value={passwordForm.currentPassword}
                 onChange={(e) => setPasswordForm(f => ({ ...f, currentPassword: e.target.value }))}
                 className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
@@ -212,6 +213,7 @@ const Settings = () => {
             <div className="relative">
               <input
                 type={showPasswords.new ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={passwordForm.newPassword}
                 onChange={(e) => setPasswordForm(f => ({ ...f, newPassword: e.target.value }))}
                 className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
@@ -229,6 +231,7 @@ const Settings = () => {
             <div className="relative">
               <input
                 type={showPasswords.confirm ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={passwordForm.confirmPassword}
                 onChange={(e) => setPasswordForm(f => ({ ...f, confirmPassword: e.target.value }))}
                 className="w-full px-4 py-2.5 pr-10 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"

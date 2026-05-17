@@ -63,6 +63,7 @@ export default function GovernmentTab({
               <input
                 type={showCreatePassword ? 'text' : 'password'}
                 required
+                autoComplete="new-password"
                 value={govPassword}
                 onChange={(e) => setGovPassword(e.target.value)}
                 className="w-full px-4 py-3 pr-12 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
@@ -165,6 +166,7 @@ export default function GovernmentTab({
             <div className="relative">
               <input
                 type={showPasswords.edit ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={editGovPassword}
                 onChange={(e) => setEditGovPassword(e.target.value)}
                 placeholder={t('government.form.passwordOptional', { defaultValue: "Parolni o'zgartirmasangiz bo'sh qoldiring" })}

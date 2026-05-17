@@ -92,6 +92,7 @@ export default function AdminsTab({
               <input
                 type={showCreate ? 'text' : 'password'}
                 required
+                autoComplete="new-password"
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setStrengthError(''); }}
                 placeholder={t('government.form.password')}
@@ -115,6 +116,7 @@ export default function AdminsTab({
             <input
               type={showCreate ? 'text' : 'password'}
               required
+              autoComplete="new-password"
               value={confirm}
               onChange={(e) => { setConfirm(e.target.value); setStrengthError(''); }}
               placeholder={t('government.form.confirmPassword', { defaultValue: 'Confirm Password' })}
@@ -218,6 +220,7 @@ export default function AdminsTab({
             <div className="relative">
               <input
                 type={showPasswords.edit ? 'text' : 'password'}
+                autoComplete="new-password"
                 value={editPassword}
                 onChange={(e) => setEditPassword(e.target.value)}
                 placeholder={t('government.form.passwordChange', { defaultValue: "Parolni o'zgartirish uchun kiriting" })}
