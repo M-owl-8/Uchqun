@@ -1,16 +1,20 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import { createApi } from '../services/api';
 
-export function createAuthContext({ userStorageKey, tokenKey, requiredRole = null } = {}) {
+export function createAuthContext({ userStorageKey, tokenKey, requiredRole = null, api: sharedApi = null } = {}) {
   // tokenKey is accepted as an alias for userStorageKey so each app
   // has its own localStorage namespace (prevents cross-app session
   // collisions when users share a browser).
   const storageKey = userStorageKey || (tokenKey ? `${tokenKey}_user` : 'user');
   const AuthContext = createContext(null);
 
-  // Single Axios instance shared by every AuthProvider rendered for this
-  // factory call — re-created per render would re-attach interceptors.
-  const api = createApi();
+  // Use the caller-provided api instance so the auth context and every page
+  // component share exactly ONE refreshPromise mutex. Without this, the auth
+  // context's private api instance and the portal's service-layer api instance
+  // each try to refresh concurrently when the 15-min access token expires:
+  // the first succeeds and rotates the refresh token; the second sends the now-
+  // revoked token, gets 401, and calls clearAuth() — logging the user out.
+  const api = sharedApi ?? createApi();
 
   function AuthProvider({ children }) {
     const [user, setUser] = useState(() => {
@@ -20,6 +24,22 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
       } catch { return null; }
     });
     const [loading, setLoading] = useState(true);
+
+    // Wire clearAuth → SPA logout instead of window.location.replace.
+    // The hard-reload path has a race: replace() fires before the new cookies
+    // from a concurrent successful refresh are written to the browser jar,
+    // so the page reloads with a revoked refresh token and the user must re-login.
+    // Replacing it with setUser(null) lets ProtectedRoute do a SPA navigate
+    // to /login — no reload, no cookie race.
+    useEffect(() => {
+      api.setOnUnauthenticated(() => {
+        try { localStorage.removeItem(storageKey); } catch { /* quota */ }
+        setUser(null);
+      });
+      return () => api.setOnUnauthenticated(null);
+    // storageKey is a module-level constant — stable across renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
       (async () => {
@@ -42,7 +62,9 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
           setLoading(false);
         }
       })();
-    }, [requiredRole, storageKey]);
+    // requiredRole and storageKey are module-level constants — stable across renders.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const login = async (email, password) => {
       try {
