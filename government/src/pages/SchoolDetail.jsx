@@ -4,15 +4,11 @@ import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Building2, ChevronRight, Star, Users, UserCheck, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-// TODO(phase-2): backend /api/v1/government/schools/:id endpoint needs to return
-// { school, stats: { studentsCount, teachersCount, docsApproved, docsTotal, capacity }, ratings: [] }
-
 const SchoolDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // TODO(phase-2): confirm exact API path once backend implements it
   const { data, loading, error } = useFetch(`/government/schools/${id}`);
 
   if (loading) {
@@ -42,15 +38,6 @@ const SchoolDetail = () => {
 
   const school = data.school || data;
   const stats = data.stats || {};
-
-  // Derived metrics with TODO fallbacks
-  const occupancyPct = stats.capacity
-    ? Math.round(((stats.studentsCount || 0) / stats.capacity) * 100)
-    : null; // TODO(phase-2): capacity field not yet in API
-
-  const docApprovalPct = stats.docsTotal
-    ? Math.round(((stats.docsApproved || 0) / stats.docsTotal) * 100)
-    : null; // TODO(phase-2): docsApproved/docsTotal not yet in API
 
   return (
     <div className="space-y-5">
@@ -108,60 +95,6 @@ const SchoolDetail = () => {
             </div>
           </div>
 
-          {/* Maktab ko'rsatkichlari \u2014 3 metric cells */}
-          <div className="bg-paper-card border border-gray-200 rounded-lg">
-            <div className="px-5 py-4 border-b border-gray-100">
-              <h2 className="text-sm font-semibold text-gray-900">
-                {t('schoolDetail.metrics', { defaultValue: "Maktab ko'rsatkichlari" })}
-              </h2>
-            </div>
-            <div className="grid grid-cols-3 divide-x divide-gray-100">
-              {/* Talabalar bandligi */}
-              <div className="px-5 py-4">
-                <p className="text-xs text-gray-400 mb-1">{t('schoolDetail.occupancy', { defaultValue: 'Talabalar bandligi' })}</p>
-                {occupancyPct !== null ? (
-                  <>
-                    <p className="text-xl font-semibold tabular-nums text-gray-900">{occupancyPct}%</p>
-                    <div className="mt-2 h-1.5 bg-gray-100 rounded-full overflow-hidden">
-                      <div className="h-full bg-brand-500 rounded-full" style={{ width: `${Math.min(occupancyPct, 100)}%` }} />
-                    </div>
-                    <p className="text-xs text-gray-400 mt-1">{stats.studentsCount} / {stats.capacity}</p>
-                  </>
-                ) : (
-                  <p className="text-sm text-gray-400">
-                    {stats.studentsCount || 0}
-                    {/* TODO(phase-2): capacity field needed from API */}
-                  </p>
-                )}
-              </div>
-
-              {/* O'qituvchilar yuklamasi */}
-              <div className="px-5 py-4">
-                <p className="text-xs text-gray-400 mb-1">{t('schoolDetail.teacherLoad', { defaultValue: "O'qituvchilar yuklamasi" })}</p>
-                <p className="text-xl font-semibold tabular-nums text-gray-900">
-                  {stats.teachersCount || school.teachersCount || 0}
-                </p>
-                <p className="text-xs text-gray-400 mt-1">{t('schoolDetail.teachers', { defaultValue: "O'qituvchilar" })}</p>
-                {/* TODO(phase-2): teacher load ratio (students per teacher) needs API support */}
-              </div>
-
-              {/* Hujjat tasdiqlash */}
-              <div className="px-5 py-4">
-                <p className="text-xs text-gray-400 mb-1">{t('schoolDetail.docApproval', { defaultValue: 'Hujjat tasdiqlash' })}</p>
-                {docApprovalPct !== null ? (
-                  <>
-                    <p className="text-xl font-semibold tabular-nums text-gray-900">{docApprovalPct}%</p>
-                    <p className="text-xs text-gray-400 mt-1">{stats.docsApproved} / {stats.docsTotal}</p>
-                  </>
-                ) : (
-                  <p className="text-sm text-gray-400">
-                    \u2014
-                    {/* TODO(phase-2): docs approved/total fields needed from API */}
-                  </p>
-                )}
-              </div>
-            </div>
-          </div>
         </div>
 
         {/* Right rail */}

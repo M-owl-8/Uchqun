@@ -31,10 +31,6 @@ vi.mock('../components/tabs/AdminsTab', () => ({
   default: ({ admins, loadingAdmins }) =>
     loadingAdmins ? <div>loading admins</div> : <div data-testid="admins-tab">admins:{admins.length}</div>,
 }));
-vi.mock('../components/tabs/SchoolsTab', () => ({
-  default: ({ schools, loadingSchools }) =>
-    loadingSchools ? <div>loading schools</div> : <div data-testid="schools-tab">schools:{schools.length}</div>,
-}));
 vi.mock('../components/tabs/MessagesTab', () => ({
   default: ({ messages }) => <div data-testid="messages-tab">messages:{messages.length}</div>,
 }));
@@ -54,19 +50,17 @@ describe('Platform page', () => {
     mockApi.get.mockImplementation(async (url) => {
       if (url === '/government/admins') return { data: { data: [{ id: 'a1' }, { id: 'a2' }] } };
       if (url === '/government/users') return { data: { data: [] } };
-      if (url === '/government/schools-list') return { data: { data: [] } };
       if (url === '/government/messages') return { data: { data: [] } };
       if (url.startsWith('/government/admin-registrations')) return { data: { data: [] } };
       return { data: { data: [] } };
     });
   });
 
-  it('hits /government/admins, /users, /schools-list, /messages on mount', async () => {
+  it('hits /government/admins, /users, /messages on mount', async () => {
     render(<Platform />);
     await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalledWith('/government/admins');
       expect(mockApi.get).toHaveBeenCalledWith('/government/users');
-      expect(mockApi.get).toHaveBeenCalledWith('/government/schools-list');
       expect(mockApi.get).toHaveBeenCalledWith('/government/messages');
     });
   });

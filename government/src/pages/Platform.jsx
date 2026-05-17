@@ -4,7 +4,6 @@ import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import AdminsTab from '../components/tabs/AdminsTab';
-import SchoolsTab from '../components/tabs/SchoolsTab';
 import MessagesTab from '../components/tabs/MessagesTab';
 import GovernmentTab from '../components/tabs/GovernmentTab';
 import RegistrationsTab from '../components/tabs/RegistrationsTab';
@@ -33,7 +32,7 @@ const useApiCache = (url, cacheKey) => {
   return [data, setData, loading, refresh];
 };
 
-const TABS = ['admins', 'schools', 'messages', 'government', 'registrations'];
+const TABS = ['admins', 'messages', 'government', 'registrations'];
 
 const Platform = () => {
   const { t } = useTranslation();
@@ -53,9 +52,6 @@ const Platform = () => {
   const [editPassword, setEditPassword] = useState('');
   const [editSaving, setEditSaving] = useState(false);
   const [showPasswords, setShowPasswords] = useState({ edit: false });
-
-  // schools
-  const [schools, , loadingSchools] = useApiCache('/government/schools-list', 'platform:schools');
 
   // messages
   const [messages, , loadingMessages, refreshMessages] = useApiCache('/government/messages', 'platform:messages');
@@ -293,7 +289,6 @@ const Platform = () => {
 
   const TAB_LABELS = {
     admins: t('platform.tabs.admins', { defaultValue: 'Admins' }),
-    schools: t('platform.tabs.schools', { defaultValue: 'Schools' }),
     messages: t('platform.tabs.messages', { defaultValue: 'Messages' }),
     government: t('platform.tabs.government', { defaultValue: 'Government Users' }),
     registrations: t('platform.tabs.registrations', { defaultValue: 'Registrations' }),
@@ -332,7 +327,6 @@ const Platform = () => {
             showPasswords={showPasswords} setShowPasswords={setShowPasswords}
           />
         )}
-        {activeTab === 'schools' && <SchoolsTab schools={schools} loadingSchools={loadingSchools} />}
         {activeTab === 'messages' && (
           <MessagesTab
             messages={messages} loadingMessages={loadingMessages}

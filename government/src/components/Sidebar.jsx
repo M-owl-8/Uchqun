@@ -3,9 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard,
   Building2,
-  GraduationCap,
-  UserCheck,
-  Users,
   Star,
   LayoutGrid,
   User,
@@ -21,15 +18,12 @@ const Sidebar = ({ onClose }) => {
   const { t } = useTranslation();
 
   const navigation = [
-    { name: t('nav.dashboard', { defaultValue: 'Dashboard' }),     href: '/government',          icon: LayoutDashboard },
-    { name: t('nav.schools',   { defaultValue: 'Muassasalar' }),   href: '/government/schools',  icon: Building2 },
-    { name: t('nav.students',  { defaultValue: "O'quvchilar" }),   href: '/government/students', icon: GraduationCap },
-    { name: t('nav.teachers',  { defaultValue: "O'qituvchilar" }), href: '/government/teachers', icon: UserCheck },
-    { name: t('nav.parents',   { defaultValue: 'Ota-onalar' }),    href: '/government/parents',  icon: Users },
-    { name: t('nav.ratings',   { defaultValue: 'Reytinglar' }),    href: '/government/ratings',  icon: Star },
-    { name: t('nav.platform',  { defaultValue: 'Platform' }),      href: '/government/platform', icon: LayoutGrid },
-    { name: t('nav.profile',   { defaultValue: 'Profil' }),        href: '/government/profile',  icon: User },
-    { name: t('nav.settings',  { defaultValue: 'Sozlamalar' }),    href: '/government/settings', icon: Settings },
+    { name: t('nav.dashboard', { defaultValue: 'Dashboard' }),    href: '/government',          icon: LayoutDashboard },
+    { name: t('nav.schools',   { defaultValue: 'Muassasalar' }),  href: '/government/schools',  icon: Building2 },
+    { name: t('nav.ratings',   { defaultValue: 'Reytinglar' }),   href: '/government/ratings',  icon: Star },
+    { name: t('nav.platform',  { defaultValue: 'Platform' }),     href: '/government/platform', icon: LayoutGrid },
+    { name: t('nav.profile',   { defaultValue: 'Profil' }),       href: '/government/profile',  icon: User },
+    { name: t('nav.settings',  { defaultValue: 'Sozlamalar' }),   href: '/government/settings', icon: Settings },
   ];
 
   const isActive = (href) =>

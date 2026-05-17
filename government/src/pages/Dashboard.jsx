@@ -1,41 +1,23 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
 import { StaleIndicator } from '../../../shared/components/OfflineBanner';
 import {
   Building2,
-  Users,
   GraduationCap,
   Star,
   RefreshCw,
   Shield,
+  AlertTriangle,
   UserCheck,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CACHE_KEY = 'government:dashboard';
 
-const StatusBadge = ({ status }) => {
-  const { t } = useTranslation();
-  if (status === 'approved') {
-    return (
-      <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-success-100 text-success-800">
-        {t('dashboard.statusApproved')}
-      </span>
-    );
-  }
-  return (
-    <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-gray-100 text-gray-600">
-      {t('dashboard.statusPending')}
-    </span>
-  );
-};
-
 const Dashboard = () => {
-  const { user } = useAuth();
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
@@ -87,12 +69,7 @@ const Dashboard = () => {
 
   if (loading) return <SkeletonDashboard stats={4} cards={3} />;
 
-  const overviewCards = [
-    { title: t('dashboard.totalSchools', { defaultValue: 'Muassasalar' }),     value: stats?.schools  || 0, icon: Building2,    path: '/government/schools' },
-    { title: t('dashboard.totalStudents', { defaultValue: "O'quvchilar" }),    value: stats?.students || 0, icon: GraduationCap, path: '/government/students' },
-    { title: t('dashboard.totalTeachers', { defaultValue: "O'qituvchilar" }), value: stats?.teachers || 0, icon: UserCheck,     path: '/government/teachers' },
-    { title: t('dashboard.totalParents', { defaultValue: 'Ota-onalar' }),      value: stats?.parents  || 0, icon: Users,        path: '/government/parents' },
-  ];
+  const pendingAdmins = admins.filter(a => !a.isApproved).length;
 
 
   return (
@@ -127,138 +104,116 @@ const Dashboard = () => {
 
       {/* Stat cards */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        {overviewCards.map((card) => {
-          const Icon = card.icon;
-          return (
-            <button
-              key={card.path}
-              onClick={() => navigate(card.path)}
-              className="bg-paper-card border border-gray-200 rounded-lg p-5 text-left hover:border-brand-300 hover:shadow-sm transition-all"
-            >
-              <div className="flex items-center justify-between mb-3">
-                <Icon className="w-4 h-4 text-brand-600" strokeWidth={1.5} />
-              </div>
-              <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{card.value.toLocaleString()}</p>
-              <p className="text-xs text-gray-500 mt-1">{card.title}</p>
-            </button>
-          );
-        })}
-      </div>
+        <button
+          onClick={() => navigate('/government/schools')}
+          className="bg-paper-card border border-gray-200 rounded-lg p-5 text-left hover:border-brand-300 hover:shadow-sm transition-all"
+        >
+          <Building2 className="w-4 h-4 text-brand-600 mb-3" strokeWidth={1.5} />
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{(stats?.schools || 0).toLocaleString()}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('dashboard.totalSchools', { defaultValue: 'Muassasalar' })}</p>
+        </button>
 
-      {/* Two-column layout */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left \u2014 main content (2/3) */}
-        <div className="lg:col-span-2 space-y-6">
-          {/* Admin registrations */}
-          <div className="bg-paper-card border border-gray-200 rounded-lg">
-            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900">
-                {t('dashboard.adminList', { defaultValue: "So'nggi admin so'rovlari" })}
-              </h2>
-              <Shield className="w-4 h-4 text-gray-300" />
-            </div>
-            {admins.length === 0 ? (
-              <div className="py-10 text-center text-sm text-gray-400">
-                {t('dashboard.adminNotFound', { defaultValue: "Admin so'rovlari topilmadi" })}
-              </div>
-            ) : (
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="text-xs text-gray-400 border-b border-gray-100">
-                    <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colName')}</th>
-                    <th className="text-left px-5 py-2.5 font-medium hidden sm:table-cell">{t('dashboard.colEmail')}</th>
-                    <th className="text-left px-5 py-2.5 font-medium hidden md:table-cell">{t('dashboard.colDate')}</th>
-                    <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colStatus')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {admins.slice(0, 8).map((admin) => (
-                    <tr
-                      key={admin.id}
-                      onClick={() => navigate(`/government/admin/${admin.id}`)}
-                      className="border-b border-gray-50 last:border-0 hover:bg-brand-50 cursor-pointer transition-colors"
-                    >
-                      <td className="px-5 py-3 font-medium text-gray-900">
-                        {admin.firstName} {admin.lastName}
-                      </td>
-                      <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">{admin.email}</td>
-                      <td className="px-5 py-3 text-gray-400 hidden md:table-cell tabular-nums">
-                        {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '\u2014'}
-                      </td>
-                      <td className="px-5 py-3">
-                        <StatusBadge status={admin.isApproved ? 'approved' : 'pending'} />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-
-          {/* Schools ratings */}
-          <div className="bg-paper-card border border-gray-200 rounded-lg">
-            <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-              <h2 className="text-sm font-semibold text-gray-900">
-                {t('dashboard.schoolsList', { defaultValue: 'Muassasalar reytingi' })}
-              </h2>
-              <Star className="w-4 h-4 text-gray-300" />
-            </div>
-            {schools.length === 0 ? (
-              <div className="py-10 text-center text-sm text-gray-400">
-                {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
-              </div>
-            ) : (
-              <div className="divide-y divide-gray-50">
-                {schools
-                  .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
-                  .slice(0, 6)
-                  .map((school, index) => (
-                    <div key={school.id} className="flex items-center justify-between px-5 py-3 hover:bg-brand-50 cursor-pointer transition-colors"
-                         onClick={() => navigate(`/government/schools/${school.id}`)}>
-                      <div className="flex items-center gap-3">
-                        <span className="text-xs tabular-nums text-gray-400 w-5">{index + 1}</span>
-                        <div>
-                          <p className="text-sm font-medium text-gray-900">{school.name}</p>
-                          {school.address && <p className="text-xs text-gray-400 truncate max-w-[200px]">{school.address}</p>}
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-1.5 flex-shrink-0">
-                        <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-semibold tabular-nums text-gray-900">
-                          {(school.averageRating || 0).toFixed(1)}
-                        </span>
-                        <span className="text-xs text-gray-400">({school.ratingsCount || 0})</span>
-                      </div>
-                    </div>
-                  ))}
-              </div>
-            )}
-          </div>
+        <div className="bg-paper-card border border-gray-200 rounded-lg p-5">
+          <GraduationCap className="w-4 h-4 text-brand-600 mb-3" strokeWidth={1.5} />
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{(stats?.students || 0).toLocaleString()}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('dashboard.totalStudents', { defaultValue: "O'quvchilar" })}</p>
         </div>
 
-        {/* Right rail \u2014 quick links */}
-        <div className="space-y-6">
-          <div className="bg-paper-card border border-gray-200 rounded-lg">
-            <div className="px-5 py-4 border-b border-gray-100">
-              <h2 className="text-sm font-semibold text-gray-900">
-                {t('dashboard.quickLinks', { defaultValue: 'Tezkor havolalar' })}
-              </h2>
-            </div>
-            <div className="divide-y divide-gray-50">
-              {[
-                { icon: Shield,    label: t('nav.platform', { defaultValue: 'Platforma' }),   href: '/government/platform' },
-                { icon: Building2, label: t('nav.schools', { defaultValue: 'Muassasalar' }), href: '/government/schools' },
-                { icon: Star,      label: t('nav.ratings', { defaultValue: 'Reytinglar' }),   href: '/government/ratings' },
-                { icon: UserCheck, label: t('nav.teachers', { defaultValue: "O'qituvchilar" }), href: '/government/teachers' },
-                { icon: Users,     label: t('nav.parents', { defaultValue: 'Ota-onalar' }),   href: '/government/parents' },
-              ].map(({ icon: Icon, label, href }) => (
-                <button key={href} onClick={() => navigate(href)} className="w-full flex items-center gap-3 px-5 py-3 hover:bg-brand-50 transition-colors text-left">
-                  <Icon className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" strokeWidth={1.5} />
-                  <p className="text-xs text-gray-600">{label}</p>
-                </button>
-              ))}
-            </div>
+        <div className={`bg-paper-card border rounded-lg p-5 ${pendingAdmins > 0 ? 'border-amber-300 bg-amber-50' : 'border-gray-200'}`}>
+          <AlertTriangle className={`w-4 h-4 mb-3 ${pendingAdmins > 0 ? 'text-amber-500' : 'text-brand-600'}`} strokeWidth={1.5} />
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{pendingAdmins}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('dashboard.pendingAdmins', { defaultValue: 'Kutilayotgan adminlar' })}</p>
+        </div>
+
+        <div className="bg-paper-card border border-gray-200 rounded-lg p-5">
+          <UserCheck className="w-4 h-4 text-brand-600 mb-3" strokeWidth={1.5} />
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{(stats?.teachers || 0).toLocaleString()}</p>
+          <p className="text-xs text-gray-500 mt-1">{t('dashboard.totalTeachers', { defaultValue: "O'qituvchilar" })}</p>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Pending admin registrations */}
+        <div className="bg-paper-card border border-gray-200 rounded-lg">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-900">
+              {t('dashboard.pendingAdminList', { defaultValue: "Kutilayotgan admin so'rovlari" })}
+            </h2>
+            <Shield className="w-4 h-4 text-gray-300" />
           </div>
+          {pendingAdmins === 0 ? (
+            <div className="py-10 text-center text-sm text-gray-400">
+              {t('dashboard.noPendingAdmins', { defaultValue: "Kutilayotgan so'rovlar yo'q" })}
+            </div>
+          ) : (
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="text-xs text-gray-400 border-b border-gray-100">
+                  <th className="text-left px-5 py-2.5 font-medium">{t('dashboard.colName')}</th>
+                  <th className="text-left px-5 py-2.5 font-medium hidden sm:table-cell">{t('dashboard.colEmail')}</th>
+                  <th className="text-left px-5 py-2.5 font-medium hidden md:table-cell">{t('dashboard.colDate')}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {admins.filter(a => !a.isApproved).slice(0, 8).map((admin) => (
+                  <tr
+                    key={admin.id}
+                    onClick={() => navigate(`/government/admin/${admin.id}`)}
+                    className="border-b border-gray-50 last:border-0 hover:bg-brand-50 cursor-pointer transition-colors"
+                  >
+                    <td className="px-5 py-3 font-medium text-gray-900">
+                      {admin.firstName} {admin.lastName}
+                    </td>
+                    <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">{admin.email}</td>
+                    <td className="px-5 py-3 text-gray-400 hidden md:table-cell tabular-nums">
+                      {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '\u2014'}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+
+        {/* Schools ratings */}
+        <div className="bg-paper-card border border-gray-200 rounded-lg">
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-sm font-semibold text-gray-900">
+              {t('dashboard.schoolsList', { defaultValue: 'Muassasalar reytingi' })}
+            </h2>
+            <Star className="w-4 h-4 text-gray-300" />
+          </div>
+          {schools.length === 0 ? (
+            <div className="py-10 text-center text-sm text-gray-400">
+              {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
+            </div>
+          ) : (
+            <div className="divide-y divide-gray-50">
+              {schools
+                .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
+                .slice(0, 6)
+                .map((school, index) => (
+                  <div key={school.id} className="flex items-center justify-between px-5 py-3 hover:bg-brand-50 cursor-pointer transition-colors"
+                       onClick={() => navigate(`/government/schools/${school.id}`)}>
+                    <div className="flex items-center gap-3">
+                      <span className="text-xs tabular-nums text-gray-400 w-5">{index + 1}</span>
+                      <div>
+                        <p className="text-sm font-medium text-gray-900">{school.name}</p>
+                        {school.address && <p className="text-xs text-gray-400 truncate max-w-[200px]">{school.address}</p>}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-1.5 flex-shrink-0">
+                      <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                      <span className="text-sm font-semibold tabular-nums text-gray-900">
+                        {(school.averageRating || 0).toFixed(1)}
+                      </span>
+                      <span className="text-xs text-gray-400">({school.ratingsCount || 0})</span>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
