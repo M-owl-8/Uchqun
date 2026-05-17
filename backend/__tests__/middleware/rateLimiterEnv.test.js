@@ -24,7 +24,7 @@ describe('rateLimiter ENV overrides', () => {
     delete process.env.RATE_LIMIT_WINDOW_MS;
   });
 
-  // order: apiLimiter(0), authLimiter(1), passwordResetLimiter(2), aiChatLimiter(3), uploadLimiter(4)
+  // order: apiLimiter(0), authLimiter(1), changePasswordLimiter(2), passwordResetLimiter(3), aiChatLimiter(4), uploadLimiter(5)
 
   it('uses RATE_LIMIT_WINDOW_MS for apiLimiter windowMs', () => {
     expect(capturedOpts[0].windowMs).toBe(60000);
@@ -39,6 +39,6 @@ describe('rateLimiter ENV overrides', () => {
   });
 
   it('uses RATE_LIMIT_UPLOAD_MAX for uploadLimiter max', () => {
-    expect(capturedOpts[4].max).toBe(99);
+    expect(capturedOpts[5].max).toBe(99);
   });
 });
