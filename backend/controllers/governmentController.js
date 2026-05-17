@@ -739,13 +739,9 @@ async function getRatingsData(schoolId, startDate, endDate) {
 export const getAdmins = async (req, res) => {
   try {
     const { limit, offset } = parsePagination(req.query, { limit: 100 });
-    const where = { role: 'admin' };
-    if (req.query.isApproved !== undefined) {
-      where.isApproved = req.query.isApproved === 'true';
-    }
 
     const { count, rows: admins } = await User.findAndCountAll({
-      where,
+      where: { role: 'admin' },
       attributes: { exclude: ['password'] },
       order: [['createdAt', 'DESC']],
       limit,

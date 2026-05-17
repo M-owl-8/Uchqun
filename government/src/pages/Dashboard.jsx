@@ -23,6 +23,7 @@ const Dashboard = () => {
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [schools, setSchools] = useState(() => cache.get(CACHE_KEY)?.schools ?? []);
   const [admins, setAdmins] = useState(() => cache.get(CACHE_KEY)?.admins ?? []);
+  const [pendingTotal, setPendingTotal] = useState(() => cache.get(CACHE_KEY)?.pendingTotal ?? 0);
   const [activeWarnings, setActiveWarnings] = useState(() => cache.get(CACHE_KEY)?.activeWarnings ?? 0);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const [isStale, setIsStale] = useState(false);
@@ -34,21 +35,23 @@ const Dashboard = () => {
       setStats(cached.stats);
       setSchools(cached.schools);
       setAdmins(cached.admins);
+      setPendingTotal(cached.pendingTotal ?? cached.admins?.length ?? 0);
       setActiveWarnings(cached.activeWarnings ?? 0);
       setLoading(false);
       Promise.allSettled([
         api.get('/government/overview'),
         api.get('/government/schools'),
-        api.get('/government/admins', { params: { isApproved: false } }),
+        api.get('/government/admin-registrations', { params: { status: 'pending' } }),
         api.get('/ai-warnings', { params: { resolved: false } }),
       ]).then(([overviewRes, schoolsRes, adminsRes, warningsRes]) => {
         const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
         const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : cached.stats;
         const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : cached.schools;
         const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : cached.admins;
+        const pt = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.pagination?.total ?? ad.length) : (cached.pendingTotal ?? cached.admins?.length ?? 0);
         const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : cached.activeWarnings;
-        cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, activeWarnings: aw });
-        setStats(s); setSchools(sc); setAdmins(ad); setActiveWarnings(aw); setIsStale(anyFailed);
+        cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, pendingTotal: pt, activeWarnings: aw });
+        setStats(s); setSchools(sc); setAdmins(ad); setPendingTotal(pt); setActiveWarnings(aw); setIsStale(anyFailed);
         setLastUpdated(new Date());
       }).catch(() => {});
       return;
@@ -57,16 +60,17 @@ const Dashboard = () => {
     const [overviewRes, schoolsRes, adminsRes, warningsRes] = await Promise.allSettled([
       api.get('/government/overview'),
       api.get('/government/schools'),
-      api.get('/government/admins', { params: { isApproved: false } }),
+      api.get('/government/admin-registrations', { params: { status: 'pending' } }),
       api.get('/ai-warnings', { params: { resolved: false } }),
     ]);
     const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
     const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : null;
     const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : [];
     const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : [];
+    const pt = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.pagination?.total ?? ad.length) : 0;
     const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : 0;
-    cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, activeWarnings: aw });
-    setStats(s); setSchools(sc); setAdmins(ad); setActiveWarnings(aw); setIsStale(anyFailed);
+    cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, pendingTotal: pt, activeWarnings: aw });
+    setStats(s); setSchools(sc); setAdmins(ad); setPendingTotal(pt); setActiveWarnings(aw); setIsStale(anyFailed);
     setLastUpdated(new Date());
     setLoading(false);
   }, []);
@@ -75,7 +79,7 @@ const Dashboard = () => {
 
   if (loading) return <SkeletonDashboard stats={4} cards={3} />;
 
-  const pendingAdmins = admins.length;
+  const pendingAdmins = pendingTotal;
 
   const regionBreakdown = Object.values(
     schools.reduce((acc, s) => {
@@ -176,27 +180,30 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {admins.slice(0, 8).map((admin) => (
+                {admins.slice(0, 8).map((req) => (
                   <tr
-                    key={admin.id}
-                    onClick={() => navigate(`/government/admin/${admin.id}`)}
+                    key={req.id}
+                    onClick={() => navigate('/government/platform')}
                     className="border-b border-gray-50 last:border-0 hover:bg-brand-50 cursor-pointer transition-colors"
                   >
                     <td className="px-5 py-3 font-medium text-gray-900">
-                      {admin.firstName} {admin.lastName}
+                      {req.firstName} {req.lastName}
                     </td>
-                    <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">{admin.email}</td>
+                    <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">{req.email}</td>
                     <td className="px-5 py-3 text-gray-400 hidden md:table-cell tabular-nums">
-                      {admin.createdAt ? new Date(admin.createdAt).toLocaleDateString(i18n.language) : '\u2014'}
+                      {req.createdAt ? new Date(req.createdAt).toLocaleDateString(i18n.language) : '\u2014'}
                     </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           )}
-          {admins.length > 8 && (
-            <div className="px-5 py-2.5 border-t border-gray-100 text-xs text-gray-400">
-              {t('dashboard.andMore', { count: admins.length - 8, defaultValue: `Va yana ${admins.length - 8} ta...` })}
+          {pendingTotal > 8 && (
+            <div className="px-5 py-2.5 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
+              <span>{t('dashboard.andMore', { count: pendingTotal - 8, defaultValue: `Va yana ${pendingTotal - 8} ta...` })}</span>
+              <button onClick={() => navigate('/government/platform')} className="text-brand-600 hover:text-brand-700 font-medium">
+                {t('dashboard.viewAll', { defaultValue: 'Barchasini ko\'rish' })}
+              </button>
             </div>
           )}
         </div>
