@@ -36,5 +36,5 @@
 
 - [x] Run `npm test` in government — 52/52 pass (5 test files)
 - [x] Run `npm test` in backend — 546/546 pass (64 test suites)
-- [ ] E2E production smoke test against Railway (pending deploy)
+- [x] E2E production smoke test against Railway — 11/11 pass
 - [x] Code quality review — no dead comments, no silent failures
