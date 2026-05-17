@@ -15,7 +15,7 @@ const Layout = () => {
       <JoyfulBackground />
 
       {/* Desktop Sidebar */}
-      <div className="hidden lg:block fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-40">
+      <div className="hidden lg:block fixed inset-y-0 left-0 w-64 bg-surface shadow-lg z-40">
         <Sidebar />
       </div>
 
@@ -29,7 +29,7 @@ const Layout = () => {
 
       {/* Mobile Sidebar */}
       <div
-        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-white shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`lg:hidden fixed inset-y-0 left-0 w-64 bg-surface shadow-lg z-50 transform transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -38,7 +38,7 @@ const Layout = () => {
 
       {/* Hamburger button — mobile only */}
       <button
-        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-white shadow-md text-gray-700 hover:bg-gray-50"
+        className="lg:hidden fixed top-4 left-4 z-50 p-2 rounded-lg bg-surface shadow-md text-slate-700 hover:bg-slate-50"
         onClick={() => setSidebarOpen(true)}
         aria-label="Open menu"
       >
@@ -62,7 +62,7 @@ const Layout = () => {
         <div className="lg:hidden fixed bottom-20 right-4 z-50">
           <Link
             to="/chat"
-            className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary-500 text-white shadow-lg hover:bg-primary-600 transition"
+            className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-brand-500 text-white shadow-lg hover:bg-brand-600 transition"
             aria-label="Chat"
           >
             <MessageCircle className="w-6 h-6" />

@@ -259,27 +259,27 @@ const MonitoringJournal = () => {
             <Card key={child.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
                     <Baby className="w-6 h-6" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-slate-900">
                       {child.firstName} {child.lastName}
                     </h3>
-                    <p className="text-sm text-gray-500">{child.parentName}</p>
-                    <p className="text-xs text-gray-400">{child.childSchool?.name || ''}, {child.class}</p>
+                    <p className="text-sm text-slate-500">{child.parentName}</p>
+                    <p className="text-xs text-slate-400">{child.childSchool?.name || ''}, {child.class}</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3">
                 {todayRecord ? (
-                  <div className="flex items-center gap-2 text-sm text-green-600 font-medium">
+                  <div className="flex items-center gap-2 text-sm text-success-600 font-medium">
                     <CheckCircle2 className="w-4 h-4" />
                     <span>{t('monitoring.assessedToday')}</span>
                   </div>
                 ) : (
-                  <div className="flex items-center gap-2 text-sm text-gray-400">
+                  <div className="flex items-center gap-2 text-sm text-slate-400">
                     <FileX className="w-4 h-4" />
                     <span>{t('monitoring.notAssessedToday')}</span>
                   </div>
@@ -288,7 +288,7 @@ const MonitoringJournal = () => {
                 <div className="flex gap-2">
                   <button
                     onClick={() => handleOpenModal(child, todayRecord)}
-                    className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors text-sm font-bold flex items-center justify-center gap-2"
+                    className="flex-1 px-4 py-2 bg-brand-600 text-white rounded-xl hover:bg-brand-700 transition-colors text-sm font-bold flex items-center justify-center gap-2"
                   >
                     {todayRecord ? (
                       <>
@@ -312,99 +312,99 @@ const MonitoringJournal = () => {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-white border-b border-gray-200 px-6 py-4 flex items-center justify-between">
-              <h2 className="text-2xl font-bold text-gray-900">
+          <div className="bg-surface rounded-2xl shadow-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-surface border-b border-slate-200 px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-slate-900">
                 {editingRecord ? t('monitoring.editModal') : t('monitoring.createModal')}
               </h2>
               <button
                 onClick={handleCloseModal}
-                className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-lg transition-colors"
               >
-                <X className="w-5 h-5 text-gray-500" />
+                <X className="w-5 h-5 text-slate-500" />
               </button>
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-6">
               {selectedChild && (
-                <div className="bg-primary-50 rounded-lg p-4">
+                <div className="bg-brand-50 rounded-lg p-4">
                   <div className="flex items-center gap-3">
-                    <Baby className="w-5 h-5 text-primary-600" />
+                    <Baby className="w-5 h-5 text-brand-600" />
                     <div>
-                      <p className="font-semibold text-gray-900">
+                      <p className="font-semibold text-slate-900">
                         {selectedChild.firstName} {selectedChild.lastName}
                       </p>
-                      <p className="text-sm text-gray-600">{selectedChild.parentName}</p>
+                      <p className="text-sm text-slate-600">{selectedChild.parentName}</p>
                     </div>
                   </div>
                 </div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   {t('monitoring.date')}
                 </label>
                 <input
                   type="date"
                   value={formData.date}
                   onChange={(e) => setFormData(prev => ({ ...prev, date: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-4">
+                <label className="block text-sm font-medium text-slate-700 mb-4">
                   {t('monitoring.emotionalState')}
                 </label>
                 <div className="space-y-3">
                   {emotionalStateKeys.map((key) => (
                     <label
                       key={key}
-                      className="flex items-start gap-3 p-3 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer transition-colors"
+                      className="flex items-start gap-3 p-3 border border-slate-200 rounded-lg hover:bg-slate-50 cursor-pointer transition-colors"
                     >
                       <input
                         type="checkbox"
                         checked={formData.emotionalState[key] || false}
                         onChange={() => toggleEmotionalState(key)}
-                        className="mt-1 w-5 h-5 text-primary-600 border-gray-200 rounded focus:ring-primary-500"
+                        className="mt-1 w-5 h-5 text-brand-600 border-slate-200 rounded focus:ring-brand-500"
                       />
-                      <span className="text-sm text-gray-700 flex-1">{t(`monitoring.emotionalStates.${key}`)}</span>
+                      <span className="text-sm text-slate-700 flex-1">{t(`monitoring.emotionalStates.${key}`)}</span>
                     </label>
                   ))}
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   {t('monitoring.notes')}
                 </label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                   rows={4}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder={t('monitoring.notesPlaceholder')}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   {t('monitoring.teacherSignature')}
                 </label>
                 <input
                   type="text"
                   value={formData.teacherSignature}
                   onChange={(e) => setFormData(prev => ({ ...prev, teacherSignature: e.target.value }))}
-                  className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   placeholder={t('monitoring.teacherSignaturePlaceholder')}
                 />
               </div>
 
-              <div className="flex gap-3 pt-4 border-t border-gray-200">
+              <div className="flex gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="submit"
-                  className="flex-1 px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors font-medium flex items-center justify-center gap-2"
+                  className="flex-1 px-6 py-3 bg-brand-600 text-white rounded-lg hover:bg-brand-700 transition-colors font-medium flex items-center justify-center gap-2"
                 >
                   <Save className="w-5 h-5" />
                   {t('monitoring.save')}
@@ -412,7 +412,7 @@ const MonitoringJournal = () => {
                 <button
                   type="button"
                   onClick={handleCloseModal}
-                  className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors font-medium"
+                  className="px-6 py-3 bg-slate-100 text-slate-700 rounded-lg hover:bg-slate-200 transition-colors font-medium"
                 >
                   {t('monitoring.cancel')}
                 </button>
@@ -420,7 +420,7 @@ const MonitoringJournal = () => {
                   <button
                     type="button"
                     onClick={() => handleDelete(editingRecord.id)}
-                    className="px-6 py-3 bg-red-100 text-red-700 rounded-lg hover:bg-red-200 transition-colors font-medium flex items-center gap-2"
+                    className="px-6 py-3 bg-error-100 text-error-700 rounded-lg hover:bg-error-200 transition-colors font-medium flex items-center gap-2"
                   >
                     <Trash2 className="w-5 h-5" />
                     {t('monitoring.delete')}

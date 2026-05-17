@@ -69,13 +69,13 @@ const ParentManagement = () => {
 
         <div className="flex gap-3">
           <div className="relative flex-1 md:flex-initial">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" />
             <input
               type="text"
               placeholder={t('parentsPage.search')}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-12 pr-4 py-3 bg-white border border-gray-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:border-transparent w-full md:w-64"
+              className="pl-12 pr-4 py-3 bg-surface border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full md:w-64"
             />
           </div>
         </div>
@@ -87,37 +87,37 @@ const ParentManagement = () => {
             <Card key={parent.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
                     {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-gray-900">
+                    <h3 className="text-lg font-bold text-slate-900">
                       {parent.firstName} {parent.lastName}
                     </h3>
-                    <p className="text-sm text-gray-500">{parent.email}</p>
+                    <p className="text-sm text-slate-500">{parent.email}</p>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-3 mb-6">
-                <div className="flex items-center gap-2 text-sm text-gray-600">
-                  <Mail className="w-4 h-4 text-gray-400" />
+                <div className="flex items-center gap-2 text-sm text-slate-600">
+                  <Mail className="w-4 h-4 text-slate-400" />
                   <span>{parent.email}</span>
                 </div>
                 {parent.phone && (
-                  <div className="flex items-center gap-2 text-sm text-gray-600">
-                    <Phone className="w-4 h-4 text-gray-400" />
+                  <div className="flex items-center gap-2 text-sm text-slate-600">
+                    <Phone className="w-4 h-4 text-slate-400" />
                     <span>{parent.phone}</span>
                   </div>
                 )}
                 {parent.children && parent.children.length > 0 && (
-                  <div className="flex items-center gap-2 text-sm text-primary-600 font-medium">
+                  <div className="flex items-center gap-2 text-sm text-brand-600 font-medium">
                     <Baby className="w-4 h-4" />
                     <span>{t('parentsPage.children', { count: parent.children.length })}</span>
                   </div>
                 )}
                 {(!parent.children || parent.children.length === 0) && (
-                  <div className="flex items-center gap-2 text-sm text-gray-400 italic">
+                  <div className="flex items-center gap-2 text-sm text-slate-400 italic">
                     <Baby className="w-4 h-4" />
                     <span>{t('parentsPage.noChildInfo')}</span>
                   </div>
@@ -126,17 +126,17 @@ const ParentManagement = () => {
 
               {/* Children List */}
               {parent.children && parent.children.length > 0 && (
-                <div className="pt-4 border-t border-gray-100">
-                  <p className="text-xs font-bold text-gray-500 uppercase mb-2">Children:</p>
+                <div className="pt-4 border-t border-slate-100">
+                  <p className="text-xs font-bold text-slate-500 uppercase mb-2">Children:</p>
                   <div className="space-y-2">
                     {parent.children.map(child => (
-                      <div key={child.id} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                      <div key={child.id} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">
                         <div className="flex items-center gap-2">
-                          <Baby className="w-4 h-4 text-primary-400" />
-                          <span className="text-sm text-gray-700">
+                          <Baby className="w-4 h-4 text-brand-400" />
+                          <span className="text-sm text-slate-700">
                             {child.firstName} {child.lastName}
                           </span>
-                          <span className="text-xs text-gray-500">
+                          <span className="text-xs text-slate-500">
                             ({child.childSchool?.name || ''}, {child.class})
                           </span>
                         </div>
@@ -150,8 +150,8 @@ const ParentManagement = () => {
         </div>
       ) : (
         <Card className="p-12 text-center">
-          <Users className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-          <p className="text-gray-400 font-medium text-lg">
+          <Users className="w-16 h-16 text-slate-200 mx-auto mb-4" />
+          <p className="text-slate-400 font-medium text-lg">
             {searchQuery ? t('parentsPage.noParentsFound') : t('parentsPage.noParents')}
           </p>
         </Card>

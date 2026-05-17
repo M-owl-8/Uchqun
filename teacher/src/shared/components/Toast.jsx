@@ -13,11 +13,11 @@ const Toast = ({ id, message, type, duration = 5000 }) => {
   }, [id, duration, removeToast]);
 
   const bgColor = {
-    success: 'bg-green-500',
-    error: 'bg-red-500',
-    warning: 'bg-yellow-500',
-    info: 'bg-primary-500',
-  }[type] || 'bg-gray-500';
+    success: 'bg-success-500',
+    error: 'bg-error-500',
+    warning: 'bg-warning-500',
+    info: 'bg-brand-500',
+  }[type] || 'bg-slate-500';
 
   const icons = {
     success: '✓',
@@ -39,7 +39,7 @@ const Toast = ({ id, message, type, duration = 5000 }) => {
       </div>
       <button
         onClick={() => removeToast(id)}
-        className="ml-4 text-white hover:text-gray-200"
+        className="ml-4 text-white hover:text-slate-200"
         aria-label="Dismiss notification"
       >
         <span aria-hidden="true">✕</span>

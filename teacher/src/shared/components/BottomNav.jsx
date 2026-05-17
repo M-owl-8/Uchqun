@@ -35,7 +35,7 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
   const isTop = variant === 'top';
 
   return (
-    <div className={isTop ? 'bg-white border-b border-gray-200 shadow-sm' : 'bg-white border-t border-gray-200 shadow-lg'}>
+    <div className={isTop ? 'bg-surface border-b border-slate-200 shadow-sm' : 'bg-surface border-t border-slate-200 shadow-lg'}>
       <nav
         className={`flex flex-wrap items-center justify-between gap-2 px-2 ${isTop ? 'py-3' : 'py-2'}`}
         style={{ minHeight: isTop ? '68px' : '64px' }}
@@ -47,18 +47,18 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
               key={item.name}
               to={item.href}
               className={`flex-1 min-w-[72px] max-w-[96px] flex flex-col items-center justify-center h-full rounded-lg transition-colors ${
-                active ? 'text-primary-600' : 'text-gray-500'
+                active ? 'text-brand-600' : 'text-slate-500'
               }`}
             >
               <div className="relative">
-                <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-primary-600' : 'text-gray-500'}`} />
+                <item.icon className={`w-5 h-5 mb-1 ${active ? 'text-brand-600' : 'text-slate-500'}`} />
                 {item.badge > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] leading-none font-bold rounded-full px-1.5 py-1 border-2 border-white">
+                  <span className="absolute -top-2 -right-2 bg-error-500 text-white text-[10px] leading-none font-bold rounded-full px-1.5 py-1 border-2 border-white">
                     {item.badge > 9 ? '9+' : item.badge}
                   </span>
                 )}
               </div>
-              <span className={`text-[11px] font-medium text-center leading-tight ${active ? 'text-primary-600' : 'text-gray-500'}`}>
+              <span className={`text-[11px] font-medium text-center leading-tight ${active ? 'text-brand-600' : 'text-slate-500'}`}>
                 {item.name}
               </span>
             </Link>
@@ -67,7 +67,7 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
         {showExit && (
           <button
             onClick={handleLogout}
-            className="flex-1 min-w-[72px] max-w-[96px] flex flex-col items-center justify-center h-full transition-colors text-red-600 hover:text-red-700"
+            className="flex-1 min-w-[72px] max-w-[96px] flex flex-col items-center justify-center h-full transition-colors text-error-600 hover:text-error-700"
             aria-label="Exit"
           >
             <LogOut className="w-5 h-5 mb-1" />

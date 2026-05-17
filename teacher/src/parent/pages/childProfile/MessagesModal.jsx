@@ -13,20 +13,20 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-surface rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-green-100 rounded-full">
-              <MessageSquare className="w-6 h-6 text-green-600" />
+            <div className="p-3 bg-success-100 rounded-full">
+              <MessageSquare className="w-6 h-6 text-success-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-slate-900">
               {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-slate-500" />
           </button>
         </div>
 
@@ -36,17 +36,17 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center py-12">
-            <MessageSquare className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500">{t('profile.noMessages', { defaultValue: 'Hozircha xabarlar yo\'q' })}</p>
+            <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-500">{t('profile.noMessages', { defaultValue: 'Hozircha xabarlar yo\'q' })}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className="border border-gray-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+              <div key={msg.id} className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-3">
                   <div>
-                    <h3 className="font-bold text-gray-900 text-lg">{msg.subject}</h3>
-                    <p className="text-sm text-gray-500 mt-1">
+                    <h3 className="font-bold text-slate-900 text-lg">{msg.subject}</h3>
+                    <p className="text-sm text-slate-500 mt-1">
                       {new Date(msg.createdAt).toLocaleDateString(i18n.language, {
                         year: 'numeric', month: 'long', day: 'numeric',
                         hour: '2-digit', minute: '2-digit',
@@ -54,36 +54,36 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
                     </p>
                   </div>
                   {msg.reply && (
-                    <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-semibold">
+                    <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
                       {t('profile.replied', { defaultValue: 'Javob berildi' })}
                     </span>
                   )}
                 </div>
 
                 <div className="mb-4">
-                  <p className="text-sm font-medium text-gray-700 mb-2">
+                  <p className="text-sm font-medium text-slate-700 mb-2">
                     {t('profile.yourMessage', { defaultValue: 'Sizning xabaringiz' })}:
                   </p>
-                  <p className="text-gray-800 bg-gray-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
+                  <p className="text-slate-800 bg-slate-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                 </div>
 
                 {msg.reply && (
-                  <div className="border-t border-gray-200 pt-4 mt-4">
+                  <div className="border-t border-slate-200 pt-4 mt-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="p-2 bg-primary-100 rounded-full">
-                        <MessageSquare className="w-4 h-4 text-primary-600" />
+                      <div className="p-2 bg-brand-100 rounded-full">
+                        <MessageSquare className="w-4 h-4 text-brand-600" />
                       </div>
-                      <p className="text-sm font-medium text-primary-700">
+                      <p className="text-sm font-medium text-brand-700">
                         {t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}
                       </p>
-                      <span className="text-xs text-gray-500 ml-auto">
+                      <span className="text-xs text-slate-500 ml-auto">
                         {new Date(msg.repliedAt).toLocaleDateString(i18n.language, {
                           year: 'numeric', month: 'long', day: 'numeric',
                           hour: '2-digit', minute: '2-digit',
                         })}
                       </span>
                     </div>
-                    <p className="text-gray-800 bg-primary-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                    <p className="text-slate-800 bg-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
                   </div>
                 )}
               </div>

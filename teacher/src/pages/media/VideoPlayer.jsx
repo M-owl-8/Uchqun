@@ -254,7 +254,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               max={duration || 0}
               value={currentTime}
               onChange={handleProgressChange}
-              className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
               style={{
                 background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(currentTime / duration) * 100}%, #4b5563 ${(currentTime / duration) * 100}%, #4b5563 100%)`
               }}
@@ -262,17 +262,17 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
           </div>
           <div className="flex items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <button onClick={togglePlay} className="text-white hover:text-primary-400 transition-colors p-2" aria-label={isPlaying ? 'Pause' : 'Play'}>
+              <button onClick={togglePlay} className="text-white hover:text-brand-400 transition-colors p-2" aria-label={isPlaying ? 'Pause' : 'Play'}>
                 {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
               </button>
-              <button onClick={skipBackward} className="text-white hover:text-primary-400 transition-colors p-2" aria-label="Skip backward 10 seconds">
+              <button onClick={skipBackward} className="text-white hover:text-brand-400 transition-colors p-2" aria-label="Skip backward 10 seconds">
                 <SkipBack className="w-5 h-5" />
               </button>
-              <button onClick={skipForward} className="text-white hover:text-primary-400 transition-colors p-2" aria-label="Skip forward 10 seconds">
+              <button onClick={skipForward} className="text-white hover:text-brand-400 transition-colors p-2" aria-label="Skip forward 10 seconds">
                 <SkipForward className="w-5 h-5" />
               </button>
               <div className="flex items-center gap-2">
-                <button onClick={toggleMute} className="text-white hover:text-primary-400 transition-colors p-2" aria-label={isMuted ? 'Unmute' : 'Mute'}>
+                <button onClick={toggleMute} className="text-white hover:text-brand-400 transition-colors p-2" aria-label={isMuted ? 'Unmute' : 'Mute'}>
                   {isMuted || volume === 0 ? (
                     <VolumeX className="w-5 h-5" />
                   ) : volume < 0.5 ? (
@@ -288,7 +288,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
                   step="0.01"
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                  className="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer"
                   style={{
                     background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(isMuted ? 0 : volume) * 100}%, #4b5563 ${(isMuted ? 0 : volume) * 100}%, #4b5563 100%)`
                   }}
@@ -329,7 +329,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-bold transition-colors"
+          className="mt-4 inline-block px-6 py-3 bg-brand-600 hover:bg-brand-700 rounded-lg font-bold transition-colors"
         >
           {t('mediaPage.video.openNewTab')}
         </a>

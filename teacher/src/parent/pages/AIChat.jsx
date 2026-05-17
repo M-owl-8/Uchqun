@@ -83,7 +83,7 @@ const AIChat = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+      <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
         <div className="flex items-center gap-3 mb-2">
           <Bot className="w-6 h-6 text-white" />
           <h1 className="text-2xl md:text-3xl font-bold text-white">
@@ -96,9 +96,9 @@ const AIChat = () => {
       </Card>
 
       {/* Chat Container */}
-      <Card className="p-0 overflow-hidden flex flex-col h-[calc(100vh-200px)] min-h-[420px] md:h-auto md:min-h-[500px] -mb-16 lg:mb-0 bg-white/95 backdrop-blur-sm shadow-xl">
+      <Card className="p-0 overflow-hidden flex flex-col h-[calc(100vh-200px)] min-h-[420px] md:h-auto md:min-h-[500px] -mb-16 lg:mb-0 bg-surface/95 backdrop-blur-sm shadow-xl">
         {/* Messages Area */}
-        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-white/50">
+        <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-4 bg-surface/50">
           {messages.map((message, index) => (
             <div
               key={index}
@@ -107,15 +107,15 @@ const AIChat = () => {
               }`}
             >
               {message.role === 'assistant' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-                  <Bot className="w-5 h-5 text-primary-600" />
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
+                  <Bot className="w-5 h-5 text-brand-600" />
                 </div>
               )}
               <div
                 className={`max-w-[80%] md:max-w-[70%] rounded-2xl px-4 py-3 ${
                   message.role === 'user'
-                    ? 'bg-primary-500 text-white'
-                    : 'bg-white text-gray-900 border border-gray-200'
+                    ? 'bg-brand-500 text-white'
+                    : 'bg-surface text-slate-900 border border-slate-200'
                 }`}
               >
                 <p className="text-sm md:text-base whitespace-pre-wrap break-words">
@@ -124,8 +124,8 @@ const AIChat = () => {
                 <p
                   className={`text-xs mt-2 ${
                     message.role === 'user'
-                      ? 'text-primary-100'
-                      : 'text-gray-500'
+                      ? 'text-brand-100'
+                      : 'text-slate-500'
                   }`}
                 >
                   {new Date(message.timestamp).toLocaleTimeString('en-US', {
@@ -135,7 +135,7 @@ const AIChat = () => {
                 </p>
               </div>
               {message.role === 'user' && (
-                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-500 flex items-center justify-center">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-500 flex items-center justify-center">
                   <User className="w-5 h-5 text-white" />
                 </div>
               )}
@@ -143,11 +143,11 @@ const AIChat = () => {
           ))}
           {loading && (
             <div className="flex gap-3 justify-start">
-              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center">
-                <Bot className="w-5 h-5 text-primary-600" />
+              <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-100 flex items-center justify-center">
+                <Bot className="w-5 h-5 text-brand-600" />
               </div>
-              <div className="bg-white border border-gray-200 rounded-2xl px-4 py-3">
-                <Loader2 className="w-5 h-5 text-primary-600 animate-spin" />
+              <div className="bg-surface border border-slate-200 rounded-2xl px-4 py-3">
+                <Loader2 className="w-5 h-5 text-brand-600 animate-spin" />
               </div>
             </div>
           )}
@@ -155,7 +155,7 @@ const AIChat = () => {
         </div>
 
         {/* Input Area */}
-        <div className="border-t border-gray-200 bg-white p-4">
+        <div className="border-t border-slate-200 bg-surface p-4">
           <form onSubmit={handleSend} className="flex gap-2">
             <input
               ref={inputRef}
@@ -163,13 +163,13 @@ const AIChat = () => {
               value={input}
               onChange={(e) => setInput(e.target.value)}
               placeholder={t('aiChat.inputPlaceholder') || 'Ask a question about caring for your child...'}
-              className="flex-1 px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="flex-1 px-4 py-3 border border-slate-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               disabled={loading}
             />
             <button
               type="submit"
               disabled={!input.trim() || loading}
-              className="w-12 h-12 inline-flex items-center justify-center bg-primary-500 text-white rounded-xl hover:bg-primary-600 disabled:bg-gray-300 disabled:cursor-not-allowed transition-colors"
+              className="w-12 h-12 inline-flex items-center justify-center bg-brand-500 text-white rounded-xl hover:bg-brand-600 disabled:bg-slate-300 disabled:cursor-not-allowed transition-colors"
               aria-label={t('aiChat.send') || 'Send'}
               title={t('aiChat.send') || 'Send'}
             >
@@ -180,7 +180,7 @@ const AIChat = () => {
               )}
             </button>
           </form>
-          <p className="text-xs text-gray-500 mt-2 text-center">
+          <p className="text-xs text-slate-500 mt-2 text-center">
             {t('aiChat.footer') || 'AI responses are for informational purposes only.'}
           </p>
         </div>

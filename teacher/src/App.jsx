@@ -20,6 +20,9 @@ import Settings from './pages/Settings';
 import MonitoringJournal from './pages/MonitoringJournal';
 import TherapyManagement from './pages/TherapyManagement';
 import AIWarnings from './parent/pages/AIWarnings';
+import Attendance from './pages/Attendance';
+import ChildDetail from './pages/ChildDetail';
+import DailyReflection from './pages/DailyReflection';
 import ParentApp from './parent/ParentApp';
 import ParentDashboard from './parent/pages/Dashboard';
 import ChildProfile from './parent/pages/ChildProfile';
@@ -89,6 +92,10 @@ function App() {
                     <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
                     <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
                     <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
+                    <Route path="attendance" element={<ErrorBoundary><Attendance /></ErrorBoundary>} />
+                    <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
+                    <Route path="reflection" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
+                    <Route path="journal" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
                   </Route>
 
                   <Route path="*" element={<NotFound />} />

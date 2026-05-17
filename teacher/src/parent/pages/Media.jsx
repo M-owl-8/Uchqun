@@ -323,7 +323,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               max={duration || 0}
               value={currentTime}
               onChange={handleProgressChange}
-              className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
               style={{
                 background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(currentTime / duration) * 100}%, #4b5563 ${(currentTime / duration) * 100}%, #4b5563 100%)`
               }}
@@ -337,7 +337,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Play/Pause */}
               <button
                 onClick={togglePlay}
-                className="text-white hover:text-primary-400 transition-colors p-2"
+                className="text-white hover:text-brand-400 transition-colors p-2"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? (
@@ -350,7 +350,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Skip Backward */}
               <button
                 onClick={skipBackward}
-                className="text-white hover:text-primary-400 transition-colors p-2"
+                className="text-white hover:text-brand-400 transition-colors p-2"
                 aria-label="Skip backward 10 seconds"
               >
                 <SkipBack className="w-5 h-5" />
@@ -359,7 +359,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Skip Forward */}
               <button
                 onClick={skipForward}
-                className="text-white hover:text-primary-400 transition-colors p-2"
+                className="text-white hover:text-brand-400 transition-colors p-2"
                 aria-label="Skip forward 10 seconds"
               >
                 <SkipForward className="w-5 h-5" />
@@ -369,7 +369,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={toggleMute}
-                  className="text-white hover:text-primary-400 transition-colors p-2"
+                  className="text-white hover:text-brand-400 transition-colors p-2"
                   aria-label={isMuted ? 'Unmute' : 'Mute'}
                 >
                   {isMuted || volume === 0 ? (
@@ -387,7 +387,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
                   step="0.01"
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  className="w-20 h-1 bg-gray-700 rounded-lg appearance-none cursor-pointer"
+                  className="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer"
                   style={{
                     background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(isMuted ? 0 : volume) * 100}%, #4b5563 ${(isMuted ? 0 : volume) * 100}%, #4b5563 100%)`
                   }}
@@ -435,7 +435,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-block px-6 py-3 bg-primary-600 hover:bg-primary-700 rounded-lg font-bold transition-colors"
+          className="mt-4 inline-block px-6 py-3 bg-brand-600 hover:bg-brand-700 rounded-lg font-bold transition-colors"
         >
           {t('media.video.openNewTab')}
         </a>
@@ -499,7 +499,7 @@ const Media = () => {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700 pb-24">
       
       {/* --- Dynamic Header --- */}
-      <Card className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
+      <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('media.title')}</h1>
@@ -507,7 +507,7 @@ const Media = () => {
           </div>
 
           {/* --- Glassmorphism Filters --- */}
-          <div className="flex items-center gap-1 bg-white/20 backdrop-blur-sm p-1.5 rounded-2xl border border-white/30">
+          <div className="flex items-center gap-1 bg-surface/20 backdrop-blur-sm p-1.5 rounded-2xl border border-white/30">
           {[
             { id: 'all', label: t('media.filterAll'), icon: LayoutGrid },
             { id: 'photo', label: t('media.filterPhoto'), icon: ImageIcon },
@@ -518,8 +518,8 @@ const Media = () => {
               onClick={() => setFilter(option.id)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                 filter === option.id 
-                ? 'bg-white text-primary-600 shadow-md scale-105' 
-                : 'text-white/80 hover:text-white hover:bg-white/20'
+                ? 'bg-surface text-brand-600 shadow-md scale-105' 
+                : 'text-white/80 hover:text-white hover:bg-surface/20'
               }`}
             >
               <option.icon className="w-4 h-4" />
@@ -537,7 +537,7 @@ const Media = () => {
             <div
               key={item.id}
               onClick={() => setSelectedMedia(item)}
-              className="group relative bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100"
+              className="group relative bg-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-slate-100"
             >
               {/* Image/Video Container */}
               <div className="relative aspect-[4/5] overflow-hidden">
@@ -568,7 +568,7 @@ const Media = () => {
                     />
                     {/* Video Play Icon - Always visible */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
+                      <div className="w-16 h-16 bg-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
                         <Play className="w-8 h-8 text-white fill-current" />
                       </div>
                     </div>
@@ -589,7 +589,7 @@ const Media = () => {
                 
                 {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white">
-                    <p className="text-xs font-bold uppercase tracking-widest text-primary-400 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-brand-400 mb-1">
                         {typeLabels[item.type] || item.type}
                     </p>
                     <h3 className="text-lg font-bold leading-tight">{item.title}</h3>
@@ -598,20 +598,20 @@ const Media = () => {
                 {/* Video Play Icon */}
                 {item.type === 'video' && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
+                    <div className="w-16 h-16 bg-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
                       <Play className="w-8 h-8 text-white fill-current" />
                     </div>
                   </div>
                 )}
 
-                <div className="absolute top-4 right-4 bg-white/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-4 right-4 bg-surface/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
                     <Maximize2 className="w-4 h-4 text-white" />
                 </div>
               </div>
 
               {/* Bottom Info (Always visible or not, depending on preference) */}
               <div className="p-5">
-                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> {new Date(item.date).toLocaleDateString(locale)}
                   </span>
@@ -621,9 +621,9 @@ const Media = () => {
           ))}
         </div>
       ) : (
-        <Card className="text-center py-32 bg-white/95 backdrop-blur-sm">
-          <ImageIcon className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-          <p className="text-gray-500 font-bold text-lg">{t('media.empty')}</p>
+        <Card className="text-center py-32 bg-surface/95 backdrop-blur-sm">
+          <ImageIcon className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+          <p className="text-slate-500 font-bold text-lg">{t('media.empty')}</p>
         </Card>
       )}
 
@@ -632,11 +632,11 @@ const Media = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-300">
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-gray-900/95 backdrop-blur-xl"
+            className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl"
             onClick={() => setSelectedMedia(null)}
           />
           
-          <div className="relative w-full max-w-6xl bg-white rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh] h-[90vh]">
+          <div className="relative w-full max-w-6xl bg-surface rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh] h-[90vh]">
             
             {/* Close Button Mobile */}
             <button 
@@ -669,36 +669,36 @@ const Media = () => {
             </div>
 
             {/* Sidebar Info Area */}
-            <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-white">
+            <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-surface">
               <button 
                 onClick={() => setSelectedMedia(null)}
-                className="hidden lg:flex items-center gap-2 text-gray-400 hover:text-primary-600 font-bold text-sm mb-10 transition-colors"
+                className="hidden lg:flex items-center gap-2 text-slate-400 hover:text-brand-600 font-bold text-sm mb-10 transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" /> {t('media.back')}
               </button>
 
               <div className="space-y-6">
                 <div>
-                  <span className="px-4 py-1.5 bg-primary-50 text-primary-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                  <span className="px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-[10px] font-black uppercase tracking-widest">
                     {selectedMedia.type === 'video' ? t('media.videoLabel') : t('media.photoLabel')}
                   </span>
-                  <h3 className="text-3xl font-black text-gray-900 mt-4 leading-tight">
+                  <h3 className="text-3xl font-black text-slate-900 mt-4 leading-tight">
                     {selectedMedia.title}
                   </h3>
                 </div>
 
-                <p className="text-gray-600 leading-relaxed text-lg">
+                <p className="text-slate-600 leading-relaxed text-lg">
                   {selectedMedia.description}
                 </p>
 
-                <div className="pt-8 border-t border-gray-100">
+                <div className="pt-8 border-t border-slate-100">
                   <div className="flex items-center gap-3">
-                    <div className="bg-gray-100 p-3 rounded-2xl">
-                        <Calendar className="w-6 h-6 text-gray-400" />
+                    <div className="bg-slate-100 p-3 rounded-2xl">
+                        <Calendar className="w-6 h-6 text-slate-400" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">{t('media.date')}</p>
-                        <p className="text-gray-900 font-bold">
+                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('media.date')}</p>
+                        <p className="text-slate-900 font-bold">
                             {new Date(selectedMedia.date).toLocaleDateString(locale, { 
                                 weekday: 'long', 
                                 year: 'numeric', 

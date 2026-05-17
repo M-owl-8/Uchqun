@@ -195,7 +195,7 @@ const Media = () => {
         </div>
 
         <div className="flex items-center gap-3">
-          <div className="flex items-center gap-1 bg-gray-100 p-1.5 rounded-2xl border border-gray-200">
+          <div className="flex items-center gap-1 bg-slate-100 p-1.5 rounded-2xl border border-slate-200">
             {[
               { id: 'all', label: t('mediaPage.filters.all'), icon: LayoutGrid },
               { id: 'photo', label: t('mediaPage.filters.photo'), icon: ImageIcon },
@@ -206,8 +206,8 @@ const Media = () => {
                 onClick={() => setFilter(option.id)}
                 className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                   filter === option.id
-                    ? 'bg-white text-primary-600 shadow-md scale-105'
-                    : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'
+                    ? 'bg-surface text-brand-600 shadow-md scale-105'
+                    : 'text-slate-500 hover:text-slate-700 hover:bg-slate-200/50'
                 }`}
               >
                 <option.icon className="w-4 h-4" />
@@ -219,7 +219,7 @@ const Media = () => {
           {isTeacher && (
             <button
               onClick={handleCreate}
-              className="flex items-center gap-2 px-5 py-2.5 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+              className="flex items-center gap-2 px-5 py-2.5 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
             >
               <Plus className="w-5 h-5" />
               <span className="hidden sm:inline">{t('mediaPage.add')}</span>
@@ -243,9 +243,9 @@ const Media = () => {
           ))}
         </div>
       ) : (
-        <div className="text-center py-32 bg-gray-50 rounded-[3rem] border-2 border-dashed border-gray-200">
-          <ImageIcon className="w-16 h-16 text-gray-200 mx-auto mb-4" />
-          <p className="text-gray-400 font-bold text-lg">{t('mediaPage.empty')}</p>
+        <div className="text-center py-32 bg-slate-50 rounded-[3rem] border-2 border-dashed border-slate-200">
+          <ImageIcon className="w-16 h-16 text-slate-200 mx-auto mb-4" />
+          <p className="text-slate-400 font-bold text-lg">{t('mediaPage.empty')}</p>
         </div>
       )}
 

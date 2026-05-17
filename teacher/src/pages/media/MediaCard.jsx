@@ -19,7 +19,7 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
   return (
     <div
       onClick={() => onSelect(item)}
-      className="group relative bg-white rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-gray-100"
+      className="group relative bg-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-slate-100"
     >
       <div className="relative aspect-[4/5] overflow-hidden">
         {item.type === 'video' ? (
@@ -35,7 +35,7 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
               onError={(_e) => {}}
             />
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="w-16 h-16 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
+              <div className="w-16 h-16 bg-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
                 <Play className="w-8 h-8 text-white fill-current" />
               </div>
             </div>
@@ -50,7 +50,7 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
         )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white pointer-events-none">
-          <p className="text-xs font-bold uppercase tracking-widest text-primary-400 mb-1">
+          <p className="text-xs font-bold uppercase tracking-widest text-brand-400 mb-1">
             {typeLabels[item.type] || item.type}
           </p>
           <h3 className="text-lg font-bold leading-tight">{item.title}</h3>
@@ -60,14 +60,14 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
           <div className="absolute top-4 right-4 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
             <button
               onClick={(e) => onEdit(item, e)}
-              className="bg-primary-500/90 hover:bg-primary-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
+              className="bg-brand-500/90 hover:bg-brand-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
               title="Edit"
             >
               <Edit2 className="w-4 h-4" />
             </button>
             <button
               onClick={(e) => onDelete(item.id, e)}
-              className="bg-red-500/90 hover:bg-red-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
+              className="bg-error-500/90 hover:bg-error-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
               title="Delete"
             >
               <Trash2 className="w-4 h-4" />
@@ -75,13 +75,13 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
           </div>
         )}
 
-        <div className="absolute top-4 left-4 bg-white/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="absolute top-4 left-4 bg-surface/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
           <Maximize2 className="w-4 h-4 text-white" />
         </div>
       </div>
 
       <div className="p-5">
-        <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-gray-400">
+        <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
           <span className="flex items-center gap-1">
             <Calendar className="w-3 h-3" /> {new Date(item.date).toLocaleDateString(locale)}
           </span>

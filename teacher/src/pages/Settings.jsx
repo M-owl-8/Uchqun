@@ -199,16 +199,16 @@ const Settings = () => {
       {/* Contact Government */}
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
-          <MessageSquare className="w-6 h-6 text-primary-600" />
-          <h2 className="text-xl font-bold text-gray-900">{t('settings.contactGovernment', { defaultValue: 'Davlat bilan bog\'lanish' })}</h2>
+          <MessageSquare className="w-6 h-6 text-brand-600" />
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.contactGovernment', { defaultValue: 'Davlat bilan bog\'lanish' })}</h2>
         </div>
-        <p className="text-sm text-gray-600 mb-4">
+        <p className="text-sm text-slate-600 mb-4">
           {t('settings.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
         </p>
         <div className="flex gap-3">
           <button
             onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
             {t('settings.sendMessage', { defaultValue: 'Xabar yuborish' })}
@@ -216,12 +216,12 @@ const Settings = () => {
           {myMessages.length > 0 && (
             <button
               onClick={() => setShowMessagesModal(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-green-600 text-white rounded-xl font-bold hover:bg-green-700 transition-colors shadow-sm relative"
+              className="flex items-center gap-2 px-6 py-3 bg-success-600 text-white rounded-xl font-bold hover:bg-success-700 transition-colors shadow-sm relative"
             >
               <MessageSquare className="w-5 h-5" />
               {t('settings.myMessages', { defaultValue: 'Mening xabarlarim' })}
               {myMessages.some(m => m.reply) && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center">
                   {myMessages.filter(m => m.reply).length}
                 </span>
               )}
@@ -234,7 +234,7 @@ const Settings = () => {
       <Card className="p-6">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-sm w-full"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-error-600 text-white rounded-xl font-bold hover:bg-error-700 transition-colors shadow-sm w-full"
         >
           <LogOut className="w-5 h-5" />
           {t('logout', { defaultValue: 'Chiqish' })}

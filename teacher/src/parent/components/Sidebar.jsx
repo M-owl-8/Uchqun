@@ -66,9 +66,9 @@ const Sidebar = ({ onClose }) => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    <div className="flex flex-col h-screen w-64 bg-white border-r border-gray-100 shadow-sm">
-      <div className="flex items-center gap-3 px-6 h-20 bg-sidebar-navy">
-        <div className="w-8 h-8 bg-white/20 rounded-lg flex items-center justify-center">
+    <div className="flex flex-col h-screen w-64 bg-surface border-r border-slate-100 shadow-sm">
+      <div className="flex items-center gap-3 px-6 h-20 bg-bark">
+        <div className="w-8 h-8 bg-surface/20 rounded-lg flex items-center justify-center">
           <span className="text-white font-bold text-xl">U</span>
         </div>
         <h1 className="text-lg font-bold text-white tracking-tight">
@@ -89,7 +89,7 @@ const Sidebar = ({ onClose }) => {
               className={`group flex items-center px-3 py-2.5 rounded-xl transition-all duration-300 ${
                 Active
                   ? 'bg-sidebar-blue text-sidebar-navy shadow-sm'
-                  : 'text-sidebar-muted hover:bg-gray-50'
+                  : 'text-sidebar-muted hover:bg-slate-50'
               }`}
               onClick={() => {
                 if (item.href === '/notifications') refreshNotifications();
@@ -102,21 +102,21 @@ const Sidebar = ({ onClose }) => {
                   strokeWidth={Active ? 2 : 1.5}
                 />
                 {item.badge > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-sidebar-navy text-white text-[10px] leading-none font-extrabold rounded-full px-1.5 py-1 border-2 border-white shadow-sm">
+                  <span className="absolute -top-2 -right-2 bg-bark text-white text-[10px] leading-none font-extrabold rounded-full px-1.5 py-1 border-2 border-white shadow-sm">
                     {item.badge > 9 ? '9+' : item.badge}
                   </span>
                 )}
               </div>
               <span className="text-sm font-medium">{item.name}</span>
               {Active && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-sidebar-navy" />
+                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-bark" />
               )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="p-4 border-t border-gray-100 bg-sidebar-blue/25">
+      <div className="p-4 border-t border-slate-100 bg-sidebar-blue/25">
         <div className="flex items-center gap-3 px-2">
           <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold border-2 border-white shadow-sm bg-sidebar-blue text-sidebar-navy">
             {user?.firstName?.charAt(0)}{user?.lastName?.charAt(0)}

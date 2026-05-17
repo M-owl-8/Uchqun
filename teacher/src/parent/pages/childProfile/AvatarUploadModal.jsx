@@ -78,10 +78,10 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50" onClick={onClose}>
-      <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+      <div className="bg-surface rounded-2xl p-8 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
         <h2 className="text-2xl font-bold mb-6 text-center">Rasm yuklash</h2>
         <div className="space-y-4">
-          <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-primary-500 transition-colors">
+          <div className="border-2 border-dashed border-slate-300 rounded-xl p-8 text-center hover:border-brand-500 transition-colors">
             <input
               type="file"
               accept="image/*"
@@ -97,16 +97,16 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
               {uploading ? (
                 <>
                   <LoadingSpinner size="md" />
-                  <span className="text-gray-600 font-medium">Yuklanmoqda...</span>
+                  <span className="text-slate-600 font-medium">Yuklanmoqda...</span>
                 </>
               ) : (
                 <>
-                  <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center">
-                    <User className="w-8 h-8 text-primary-600" />
+                  <div className="w-16 h-16 bg-brand-100 rounded-full flex items-center justify-center">
+                    <User className="w-8 h-8 text-brand-600" />
                   </div>
                   <div>
-                    <p className="text-gray-700 font-semibold mb-1">Galeriyadan rasm tanlang</p>
-                    <p className="text-sm text-gray-500">JPG, PNG yoki GIF (maks. 5MB)</p>
+                    <p className="text-slate-700 font-semibold mb-1">Galeriyadan rasm tanlang</p>
+                    <p className="text-sm text-slate-500">JPG, PNG yoki GIF (maks. 5MB)</p>
                   </div>
                 </>
               )}
@@ -116,7 +116,7 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
         <button
           onClick={onClose}
           disabled={uploading}
-          className="mt-6 w-full py-3 bg-gray-100 hover:bg-gray-200 rounded-xl font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="mt-6 w-full py-3 bg-slate-100 hover:bg-slate-200 rounded-xl font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {t('profile.cancel', { defaultValue: 'Bekor qilish' })}
         </button>

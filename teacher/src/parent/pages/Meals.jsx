@@ -101,11 +101,11 @@ const Meals = () => {
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
   const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();
 
-  // TODO(phase-1): data color palette decision needed — Lunch/Dinner use blue-* as semantic meal-type colors; confirm these should stay blue (not primary-*) or define a dedicated food-color token
+  // TODO(phase-1): data color palette decision needed — Lunch/Dinner use blue-* as semantic meal-type colors; confirm these should stay blue (not brand-*) or define a dedicated food-color token
   const mealConfigs = {
     Breakfast: { color: 'text-amber-600', bg: 'bg-amber-50', icon: Coffee, border: 'border-amber-100' },
     Lunch: { color: 'text-blue-600', bg: 'bg-blue-50', icon: Sun, border: 'border-blue-100' },
-    Snack: { color: 'text-green-600', bg: 'bg-green-50', icon: Apple, border: 'border-green-100' },
+    Snack: { color: 'text-success-600', bg: 'bg-success-50', icon: Apple, border: 'border-success-100' },
     Dinner: { color: 'text-blue-600', bg: 'bg-blue-50', icon: Moon, border: 'border-blue-100' },
   };
 
@@ -122,20 +122,20 @@ const Meals = () => {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
       
       {/* --- Header & Date Picker --- */}
-      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 md:p-8 bg-gradient-to-r from-primary-600 to-primary-500 rounded-2xl shadow-xl border-0">
+      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 md:p-8 bg-gradient-to-r from-brand-600 to-brand-500 rounded-2xl shadow-xl border-0">
         <div className="space-y-1">
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('meals.title')}</h1>
           <p className="text-white/90 text-sm md:text-base">{t('meals.subtitle')}</p>
         </div>
         
         <div className="relative">
-          <label className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-2 ml-1">
+          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
             <CalendarDays className="w-3.5 h-3.5" /> {t('meals.selectDay')}
           </label>
           <select
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-            className="appearance-none bg-gray-50 border-none text-gray-900 font-bold rounded-2xl px-6 py-3 pr-12 focus:ring-2 focus:ring-primary-500 shadow-inner cursor-pointer"
+            className="appearance-none bg-slate-50 border-none text-slate-900 font-bold rounded-2xl px-6 py-3 pr-12 focus:ring-2 focus:ring-brand-500 shadow-inner cursor-pointer"
           >
             {dates.map((date) => (
               <option key={date} value={date}>
@@ -143,7 +143,7 @@ const Meals = () => {
               </option>
             ))}
           </select>
-          <div className="absolute bottom-3.5 right-4 pointer-events-none text-gray-400">
+          <div className="absolute bottom-3.5 right-4 pointer-events-none text-slate-400">
             <Utensils className="w-4 h-4" />
           </div>
         </div>
@@ -155,7 +155,7 @@ const Meals = () => {
           filteredMeals.map((meal) => {
             const config = mealConfigs[meal.mealType] || mealConfigs.Lunch;
             return (
-              <Card key={meal.id} className={`group hover:shadow-xl transition-all duration-300 border-2 ${meal.eaten ? 'border-transparent' : 'border-dashed border-gray-200'}`}>
+              <Card key={meal.id} className={`group hover:shadow-xl transition-all duration-300 border-2 ${meal.eaten ? 'border-transparent' : 'border-dashed border-slate-200'}`}>
                 <div className="flex flex-col md:flex-row gap-6">
                   {/* Left Side: Icon & Status */}
                   <div className={`flex items-center justify-center w-20 h-20 rounded-3xl ${config.bg} ${config.color} shrink-0 shadow-sm`}>
@@ -165,34 +165,34 @@ const Meals = () => {
                   {/* Middle: Content */}
                   <div className="flex-1 space-y-3">
                     <div className="flex flex-wrap items-center gap-3">
-                    <h3 className="text-xl font-black text-gray-900">{meal.mealName}</h3>
+                    <h3 className="text-xl font-black text-slate-900">{meal.mealName}</h3>
                       <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${config.bg} ${config.color} ${config.border}`}>
                         {mealTypeLabels[meal.mealType] || meal.mealType}
                       </span>
-                      <div className="flex items-center gap-1.5 text-gray-400 font-bold text-xs ml-auto">
+                      <div className="flex items-center gap-1.5 text-slate-400 font-bold text-xs ml-auto">
                       <Clock className="w-3.5 h-3.5" /> {meal.time}
                       </div>
                     </div>
 
-                    <p className="text-gray-600 leading-relaxed font-medium">
+                    <p className="text-slate-600 leading-relaxed font-medium">
                       {meal.description}
                     </p>
 
                     <div className="flex items-center gap-6 pt-2">
-                       <div className="text-xs font-bold text-gray-400 uppercase tracking-tighter flex items-center gap-1.5">
-                         {t('meals.quantity')}: <span className="text-gray-900">{meal.quantity}</span>
+                       <div className="text-xs font-bold text-slate-400 uppercase tracking-tighter flex items-center gap-1.5">
+                         {t('meals.quantity')}: <span className="text-slate-900">{meal.quantity}</span>
                        </div>
-                       <div className={`flex items-center gap-1.5 text-sm font-bold ${meal.eaten ? 'text-green-600' : 'text-red-500'}`}>
+                       <div className={`flex items-center gap-1.5 text-sm font-bold ${meal.eaten ? 'text-success-600' : 'text-error-500'}`}>
                          {meal.eaten ? <CheckCircle2 className="w-4 h-4" /> : <XCircle className="w-4 h-4" />}
                          {meal.eaten ? t('meals.eaten') : t('meals.notEaten')}
                        </div>
                     </div>
 
                     {meal.specialNotes && (
-                      <div className="flex items-start gap-2 p-4 bg-gray-50 rounded-2xl border border-gray-100 mt-4 group-hover:bg-white transition-colors">
-                        <Info className="w-4 h-4 text-primary-500 mt-0.5 shrink-0" />
-                        <p className="text-xs text-gray-500 leading-relaxed font-medium">
-                          <span className="text-gray-900 font-bold">{t('meals.note')}:</span> {meal.specialNotes}
+                      <div className="flex items-start gap-2 p-4 bg-slate-50 rounded-2xl border border-slate-100 mt-4 group-hover:bg-surface transition-colors">
+                        <Info className="w-4 h-4 text-brand-500 mt-0.5 shrink-0" />
+                        <p className="text-xs text-slate-500 leading-relaxed font-medium">
+                          <span className="text-slate-900 font-bold">{t('meals.note')}:</span> {meal.specialNotes}
                         </p>
                       </div>
                     )}
@@ -202,22 +202,22 @@ const Meals = () => {
             );
           })
         ) : (
-          <Card className="text-center py-24 bg-white/95 backdrop-blur-sm">
-            <Utensils className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-500 font-bold text-lg">{t('meals.empty')}</p>
+          <Card className="text-center py-24 bg-surface/95 backdrop-blur-sm">
+            <Utensils className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+            <p className="text-slate-500 font-bold text-lg">{t('meals.empty')}</p>
           </Card>
         )}
       </div>
 
       {/* --- Nutrition Summary Card --- */}
       {filteredMeals.length > 0 && (
-        <div className="bg-gray-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
+        <div className="bg-slate-900 rounded-[2.5rem] p-10 text-white shadow-2xl relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/10 rounded-full -mr-32 -mt-32 blur-3xl" />
 
           <div className="relative z-10 space-y-8">
             <div className="flex items-center justify-between border-b border-white/10 pb-6">
               <h3 className="text-xl font-bold">{t('meals.dailySummary')}</h3>
-              <span className="text-primary-400 font-black text-sm uppercase tracking-widest">
+              <span className="text-brand-400 font-black text-sm uppercase tracking-widest">
                 {formatDate(selectedDate, { year: 'numeric', month: 'long', day: 'numeric' })}
               </span>
             </div>
@@ -227,17 +227,17 @@ const Meals = () => {
               <SummaryStat 
                 label={t('meals.eaten')} 
                 value={filteredMeals.filter(m => m.eaten).length} 
-                color="text-green-400" 
+                color="text-success-400" 
               />
               <SummaryStat 
                 label={t('meals.skipped')} 
                 value={filteredMeals.filter(m => !m.eaten).length} 
-                color="text-red-400" 
+                color="text-error-400" 
               />
               <div className="space-y-1">
-                <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">{t('meals.quality')}</p>
+                <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{t('meals.quality')}</p>
                 <div className="flex justify-center md:justify-start gap-1">
-                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-primary-500" />)}
+                  {[1, 2, 3, 4, 5].map(i => <div key={i} className="w-4 h-1.5 rounded-full bg-brand-500" />)}
                 </div>
                 <p className="text-xs font-bold text-white mt-2">{t('meals.excellent')}</p>
               </div>
@@ -252,7 +252,7 @@ const Meals = () => {
 // Helper Component for Summary
 const SummaryStat = ({ label, value, color = "text-white" }) => (
   <div className="space-y-1">
-    <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest">{label}</p>
+    <p className="text-slate-400 text-[10px] font-bold uppercase tracking-widest">{label}</p>
     <p className={`text-4xl font-black ${color}`}>{value}</p>
   </div>
 );

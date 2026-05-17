@@ -192,19 +192,19 @@ const ChildProfile = () => {
       <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
         <div className="mb-10">
           <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">{t('child.title')}</h1>
-          <p className="text-gray-500 font-medium">{t('child.selectPrompt')}</p>
+          <p className="text-slate-500 font-medium">{t('child.selectPrompt')}</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {children.map((c) => (
             <Card key={c.id} onClick={() => selectChild(c.id)} className="p-6 cursor-pointer hover:shadow-lg transition-shadow">
               <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-xl">
+                <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl">
                   {c.firstName?.charAt(0)}{c.lastName?.charAt(0)}
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900">{c.firstName} {c.lastName}</h3>
-                  <p className="text-sm text-gray-500">{c.childSchool?.name || ''}</p>
-                  {parentGroupName && <p className="text-sm text-gray-500">{parentGroupName}</p>}
+                  <h3 className="text-lg font-bold text-slate-900">{c.firstName} {c.lastName}</h3>
+                  <p className="text-sm text-slate-500">{c.childSchool?.name || ''}</p>
+                  {parentGroupName && <p className="text-sm text-slate-500">{parentGroupName}</p>}
                 </div>
               </div>
             </Card>
@@ -218,12 +218,12 @@ const ChildProfile = () => {
     return (
       <div className="max-w-2xl mx-auto py-20">
         <Card className="text-center p-12">
-          <div className="w-24 h-24 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <User className="w-12 h-12 text-primary-600" />
+          <div className="w-24 h-24 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-6">
+            <User className="w-12 h-12 text-brand-600" />
           </div>
-          <h2 className="text-2xl font-black text-gray-900 mb-4">{t('child.notFoundTitle')}</h2>
-          <p className="text-gray-600 font-medium mb-6">{error || t('child.notFoundDesc')}</p>
-          <p className="text-sm text-gray-500">{t('child.notFoundHelp')}</p>
+          <h2 className="text-2xl font-black text-slate-900 mb-4">{t('child.notFoundTitle')}</h2>
+          <p className="text-slate-600 font-medium mb-6">{error || t('child.notFoundDesc')}</p>
+          <p className="text-sm text-slate-500">{t('child.notFoundHelp')}</p>
         </Card>
       </div>
     );
@@ -233,10 +233,10 @@ const ChildProfile = () => {
     <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
 
       {Array.isArray(children) && children.length > 1 && (
-        <Card className="p-4 bg-gradient-to-r from-primary-50 to-indigo-50 border-primary-200">
+        <Card className="p-4 bg-gradient-to-r from-brand-50 to-indigo-50 border-brand-200">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div className="flex-1">
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
+              <label className="block text-sm font-semibold text-slate-700 mb-2">
                 <Users className="w-4 h-4 inline mr-2" />
                 {t('child.selectLabel', { defaultValue: 'Farzandni tanlang' })}
               </label>
@@ -249,7 +249,7 @@ const ChildProfile = () => {
                   setImageLoading(true);
                   setPhotoTimestamp(Date.now());
                 }}
-                className="w-full sm:w-auto min-w-[250px] px-4 py-2.5 bg-white border-2 border-primary-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 font-medium text-gray-900 shadow-sm hover:border-primary-400 transition-colors"
+                className="w-full sm:w-auto min-w-[250px] px-4 py-2.5 bg-surface border-2 border-brand-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-medium text-slate-900 shadow-sm hover:border-brand-400 transition-colors"
               >
                 {children.map((c) => (
                   <option key={c.id} value={c.id}>
@@ -258,7 +258,7 @@ const ChildProfile = () => {
                 ))}
               </select>
             </div>
-            <div className="text-sm text-gray-600 font-medium">
+            <div className="text-sm text-slate-600 font-medium">
               {t('child.totalChildren', { count: children.length, defaultValue: `Jami: ${children.length} ta farzand` })}
             </div>
           </div>
@@ -278,23 +278,23 @@ const ChildProfile = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 space-y-8">
-          <section className="bg-white rounded-[2rem] p-8 shadow-sm border border-gray-100">
-            <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-              <User className="w-6 h-6 text-primary-600" /> {t('child.basicInfo')}
+          <section className="bg-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
+            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+              <User className="w-6 h-6 text-brand-600" /> {t('child.basicInfo')}
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <InfoItem label={t('child.fullName')} value={`${child.firstName} ${child.lastName}`} icon={User} />
               <InfoItem label={t('child.birthDate')} value={new Date(child.dateOfBirth).toLocaleDateString(locale)} icon={Calendar} />
-              <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-red-500" />
-              <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-primary-500" />
+              <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-error-500" />
+              <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-brand-500" />
             </div>
           </section>
 
-          <section className="bg-gradient-to-br from-red-50 to-primary-50 rounded-[2rem] p-8 border border-red-100 shadow-inner">
-            <h3 className="text-xl font-bold text-red-900 mb-4 flex items-center gap-2">
-              <Heart className="w-6 h-6 text-red-600 animate-pulse" /> {t('child.specialNeeds')}
+          <section className="bg-gradient-to-br from-red-50 to-brand-50 rounded-[2rem] p-8 border border-error-100 shadow-inner">
+            <h3 className="text-xl font-bold text-error-900 mb-4 flex items-center gap-2">
+              <Heart className="w-6 h-6 text-error-600 animate-pulse" /> {t('child.specialNeeds')}
             </h3>
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 text-red-800 font-medium leading-relaxed border border-white/50">
+            <div className="bg-surface/60 backdrop-blur-sm rounded-2xl p-6 text-error-800 font-medium leading-relaxed border border-white/50">
               {child.specialNeeds}
             </div>
           </section>
@@ -303,19 +303,19 @@ const ChildProfile = () => {
         </div>
 
         <div className="space-y-8">
-          <section className="bg-white/95 backdrop-blur-sm rounded-[2rem] p-6 shadow-xl border border-white/20">
-            <h3 className="text-lg font-bold text-gray-900 mb-4">
+          <section className="bg-surface/95 backdrop-blur-sm rounded-[2rem] p-6 shadow-xl border border-white/20">
+            <h3 className="text-lg font-bold text-slate-900 mb-4">
               {t('profile.account', { defaultValue: 'Account' })}
             </h3>
             <div className="flex items-center justify-between gap-3">
-              <div className="text-sm font-semibold text-gray-700">
+              <div className="text-sm font-semibold text-slate-700">
                 {t('language', { defaultValue: 'Language' })}
               </div>
               <LanguageSwitcher />
             </div>
             <button
               onClick={() => setShowMessageModal(true)}
-              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-primary-50 text-primary-600 border border-primary-100 hover:bg-primary-100 transition-colors"
+              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 hover:bg-brand-100 transition-colors"
             >
               <MessageSquare className="w-4 h-4" />
               {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
@@ -323,12 +323,12 @@ const ChildProfile = () => {
             {myMessages.length > 0 && (
               <button
                 onClick={() => setShowMessagesModal(true)}
-                className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-green-50 text-green-600 border border-green-100 hover:bg-green-100 transition-colors relative"
+                className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-success-50 text-success-600 border border-success-100 hover:bg-success-100 transition-colors relative"
               >
                 <MessageSquare className="w-4 h-4" />
                 {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
                 {myMessages.some((m) => m.reply) && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 text-white text-xs rounded-full flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-success-500 text-white text-xs rounded-full flex items-center justify-center">
                     {myMessages.filter((m) => m.reply).length}
                   </span>
                 )}
@@ -336,22 +336,22 @@ const ChildProfile = () => {
             )}
             <button
               onClick={() => setShowLogoutModal(true)}
-              className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-red-50 text-red-600 border border-red-100 hover:bg-red-100 transition-colors"
+              className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-error-50 text-error-600 border border-error-100 hover:bg-error-100 transition-colors"
             >
               <LogOut className="w-4 h-4" />
               {t('nav.exit', { defaultValue: 'Exit' })}
             </button>
           </section>
 
-          <section className="bg-gray-800 rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
+          <section className="bg-slate-800 rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
             <div className="absolute bottom-0 right-0 opacity-20">
-              <Award className="w-40 h-40 text-gray-700" />
+              <Award className="w-40 h-40 text-slate-700" />
             </div>
             <h3 className="text-xl font-bold mb-6 text-white">{t('child.weeklyResults')}</h3>
             <div className="space-y-6 relative z-10">
-              <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-primary-500" />
-              <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-primary-500" />
-              <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-primary-500" />
+              <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-brand-500" />
+              <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-brand-500" />
+              <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-brand-500" />
             </div>
           </section>
         </div>

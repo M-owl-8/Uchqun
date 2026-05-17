@@ -252,17 +252,17 @@ const TeacherRating = () => {
       {/* Teacher Rating Section */}
       {!teacher ? (
         <Card className="flex items-start gap-3">
-          <div className="p-2 rounded-full bg-primary-50 text-primary-600">
+          <div className="p-2 rounded-full bg-brand-50 text-brand-600">
             <AlertCircle className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">{t('ratingPage.title')}</h2>
-            <p className="text-gray-600">{t('ratingPage.noTeacher')}</p>
+            <h2 className="text-lg font-bold text-slate-900">{t('ratingPage.title')}</h2>
+            <p className="text-slate-600">{t('ratingPage.noTeacher')}</p>
           </div>
         </Card>
       ) : (
         <>
-          <Card className="bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+          <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('ratingPage.title')}</h1>
             <p className="text-white/90 text-sm md:text-base">{t('ratingPage.subtitle')}</p>
           </Card>
@@ -271,31 +271,31 @@ const TeacherRating = () => {
         <Card className="lg:col-span-2">
           <div className="flex items-start justify-between gap-4 mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-2xl bg-primary-100 text-primary-700 font-black flex items-center justify-center text-xl">
+              <div className="w-12 h-12 rounded-2xl bg-brand-100 text-brand-700 font-black flex items-center justify-center text-xl">
                 {teacher.firstName?.[0]}
                 {teacher.lastName?.[0]}
               </div>
               <div>
-                <p className="text-xs font-semibold text-primary-600 uppercase tracking-wide">
+                <p className="text-xs font-semibold text-brand-600 uppercase tracking-wide">
                   {t('ratingPage.yourTeacher')}
                 </p>
-                <h2 className="text-xl font-bold text-gray-900">
+                <h2 className="text-xl font-bold text-slate-900">
                   {teacher.firstName} {teacher.lastName}
                 </h2>
-                <p className="text-sm text-gray-500">{teacher.email}</p>
+                <p className="text-sm text-slate-500">{teacher.email}</p>
               </div>
             </div>
 
             <div className="flex flex-col items-end text-right">
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+              <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                 {t('ratingPage.average')}
               </p>
               <div className="flex items-center gap-2">
-                <div className="flex items-center gap-1 text-primary-600 font-bold text-xl">
-                  <Star className="w-5 h-5 fill-primary-500 text-primary-500" />
+                <div className="flex items-center gap-1 text-brand-600 font-bold text-xl">
+                  <Star className="w-5 h-5 fill-brand-500 text-brand-500" />
                   {summary.average?.toFixed(1) || '0.0'}
                 </div>
-                <span className="text-xs text-gray-500">
+                <span className="text-xs text-slate-500">
                   {t('ratingPage.ratingsCount', { count: summary.count || 0 })}
                 </span>
               </div>
@@ -303,19 +303,19 @@ const TeacherRating = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 border border-gray-200">
-              <Mail className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-700">{teacher.email || '—'}</span>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+              <Mail className="w-4 h-4 text-slate-500" />
+              <span className="text-sm text-slate-700">{teacher.email || '—'}</span>
             </div>
-            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-gray-50 border border-gray-200">
-              <Phone className="w-4 h-4 text-gray-500" />
-              <span className="text-sm text-gray-700">{teacher.phone || t('ratingPage.noPhone')}</span>
+            <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
+              <Phone className="w-4 h-4 text-slate-500" />
+              <span className="text-sm text-slate-700">{teacher.phone || t('ratingPage.noPhone')}</span>
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
-              <p className="text-sm font-semibold text-gray-700 mb-2">{t('ratingPage.starsLabel')}</p>
+              <p className="text-sm font-semibold text-slate-700 mb-2">{t('ratingPage.starsLabel')}</p>
               <div className="flex items-center gap-2">
                 {starButtons.map((value) => (
                   <button
@@ -324,8 +324,8 @@ const TeacherRating = () => {
                     onClick={() => setStars(value)}
                     className={`p-3 rounded-2xl border transition-colors ${
                       stars >= value
-                        ? 'bg-primary-50 border-primary-200 text-primary-600'
-                        : 'bg-white border-gray-200 text-gray-400 hover:border-primary-200 hover:text-primary-500'
+                        ? 'bg-brand-50 border-brand-200 text-brand-600'
+                        : 'bg-surface border-slate-200 text-slate-400 hover:border-brand-200 hover:text-brand-500'
                     }`}
                   >
                     <Star
@@ -340,41 +340,41 @@ const TeacherRating = () => {
 
             <div>
               <div className="flex items-center justify-between mb-2">
-                <p className="text-sm font-semibold text-gray-700">{t('ratingPage.commentLabel')}</p>
-                <span className="text-xs text-gray-400">{t('ratingPage.optional')}</span>
+                <p className="text-sm font-semibold text-slate-700">{t('ratingPage.commentLabel')}</p>
+                <span className="text-xs text-slate-400">{t('ratingPage.optional')}</span>
               </div>
               <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
                 rows={4}
                 placeholder={t('ratingPage.commentPlaceholder')}
-                className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               />
             </div>
 
             {error && (
-              <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+              <div className="flex items-start gap-2 rounded-xl border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
                 <AlertCircle className="w-4 h-4 mt-0.5" />
                 <p>{error}</p>
               </div>
             )}
 
             {success && (
-              <div className="flex items-start gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+              <div className="flex items-start gap-2 rounded-xl border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700">
                 <CheckCircle2 className="w-4 h-4 mt-0.5" />
                 <p>{success}</p>
               </div>
             )}
 
             <div className="flex items-center justify-between">
-              <div className="text-xs text-gray-500">
+              <div className="text-xs text-slate-500">
                 {lastUpdated && t('ratingPage.lastUpdated', { date: lastUpdated })}
               </div>
               <button
                 type="button"
                 onClick={handleSubmit}
                 disabled={saving}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {saving && <LoadingSpinner size="sm" />}
                 {rating ? t('ratingPage.update') : t('ratingPage.submit')}
@@ -386,11 +386,11 @@ const TeacherRating = () => {
         <div className="space-y-4">
           <Card className="space-y-3">
             <div className="flex items-center gap-3">
-              <div className="p-2 rounded-xl bg-primary-50 text-primary-600">
+              <div className="p-2 rounded-xl bg-brand-50 text-brand-600">
                 <MessageSquare className="w-5 h-5" />
               </div>
               <div>
-                <p className="text-sm font-semibold text-gray-900">{t('ratingPage.yourRating')}</p>
+                <p className="text-sm font-semibold text-slate-900">{t('ratingPage.yourRating')}</p>
               </div>
             </div>
 
@@ -405,24 +405,24 @@ const TeacherRating = () => {
               ))}
             </div>
 
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-slate-600">
               {rating?.comment ? `"${rating.comment}"` : t('ratingPage.noComment')}
             </div>
           </Card>
 
           <Card className="space-y-3">
-            <p className="text-sm font-semibold text-gray-900">{t('ratingPage.summaryTitle')}</p>
+            <p className="text-sm font-semibold text-slate-900">{t('ratingPage.summaryTitle')}</p>
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <Star className="w-5 h-5 text-primary-500 fill-primary-500" />
+                <Star className="w-5 h-5 text-brand-500 fill-brand-500" />
                 <div>
-                  <p className="text-xl font-bold text-gray-900">{summary.average?.toFixed(1) || '0.0'}</p>
-                  <p className="text-xs text-gray-500">{t('ratingPage.average')}</p>
+                  <p className="text-xl font-bold text-slate-900">{summary.average?.toFixed(1) || '0.0'}</p>
+                  <p className="text-xs text-slate-500">{t('ratingPage.average')}</p>
                 </div>
               </div>
               <div className="text-right">
-                <p className="text-xl font-bold text-gray-900">{summary.count || 0}</p>
-                <p className="text-xs text-gray-500">{t('ratingPage.ratingsCount', { count: summary.count || 0 })}</p>
+                <p className="text-xl font-bold text-slate-900">{summary.count || 0}</p>
+                <p className="text-xs text-slate-500">{t('ratingPage.ratingsCount', { count: summary.count || 0 })}</p>
               </div>
             </div>
           </Card>
@@ -443,32 +443,32 @@ const TeacherRating = () => {
             <Card className="lg:col-span-2">
               <div className="flex items-start justify-between gap-4 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-green-100 text-green-700 font-black flex items-center justify-center text-xl">
+                  <div className="w-12 h-12 rounded-2xl bg-success-100 text-success-700 font-black flex items-center justify-center text-xl">
                     <Building2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-green-600 uppercase tracking-wide">
+                    <p className="text-xs font-semibold text-success-600 uppercase tracking-wide">
                       {t('schoolRatingPage.yourSchool')}
                     </p>
-                    <h2 className="text-xl font-bold text-gray-900">
+                    <h2 className="text-xl font-bold text-slate-900">
                       {school.name}
                     </h2>
                     {school.address && (
-                      <p className="text-sm text-gray-500">{school.address}</p>
+                      <p className="text-sm text-slate-500">{school.address}</p>
                     )}
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end text-right">
-                  <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                     {t('schoolRatingPage.average')}
                   </p>
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1 text-green-600 font-bold text-xl">
-                      <Star className="w-5 h-5 fill-green-500 text-green-500" />
+                    <div className="flex items-center gap-1 text-success-600 font-bold text-xl">
+                      <Star className="w-5 h-5 fill-green-500 text-success-500" />
                       {schoolSummary.average?.toFixed(1) || '0.0'}
                     </div>
-                    <span className="text-xs text-gray-500">
+                    <span className="text-xs text-slate-500">
                       {t('schoolRatingPage.ratingsCount', { count: schoolSummary.count || 0 })}
                     </span>
                   </div>
@@ -478,8 +478,8 @@ const TeacherRating = () => {
               <div className="space-y-4">
                 {/* Stars Rating (1-5) - REQUIRED */}
                 <div>
-                  <p className="text-sm font-semibold text-gray-700 mb-2">{t('schoolRatingPage.starsLabel', { defaultValue: 'Baholash (yulduzcha)' })}</p>
-                  <p className="text-xs text-gray-500 mb-4">{t('schoolRatingPage.starsSubtitle', { defaultValue: 'Majburiy: 1 dan 5 gacha yulduzcha tanlang' })}</p>
+                  <p className="text-sm font-semibold text-slate-700 mb-2">{t('schoolRatingPage.starsLabel', { defaultValue: 'Baholash (yulduzcha)' })}</p>
+                  <p className="text-xs text-slate-500 mb-4">{t('schoolRatingPage.starsSubtitle', { defaultValue: 'Majburiy: 1 dan 5 gacha yulduzcha tanlang' })}</p>
                   <div className="flex items-center gap-2">
                     {[1, 2, 3, 4, 5].map((value) => (
                       <button
@@ -488,8 +488,8 @@ const TeacherRating = () => {
                         onClick={() => setSchoolStars(value)}
                         className={`p-3 rounded-2xl border transition-colors ${
                           schoolStars >= value
-                            ? 'bg-green-50 border-green-200 text-green-600'
-                            : 'bg-white border-gray-200 text-gray-400 hover:border-green-200 hover:text-green-500'
+                            ? 'bg-success-50 border-success-200 text-success-600'
+                            : 'bg-surface border-slate-200 text-slate-400 hover:border-success-200 hover:text-success-500'
                         }`}
                       >
                         <Star
@@ -504,34 +504,34 @@ const TeacherRating = () => {
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-semibold text-gray-700">{t('schoolRatingPage.commentLabel')}</p>
-                    <span className="text-xs text-gray-400">{t('schoolRatingPage.optional')}</span>
+                    <p className="text-sm font-semibold text-slate-700">{t('schoolRatingPage.commentLabel')}</p>
+                    <span className="text-xs text-slate-400">{t('schoolRatingPage.optional')}</span>
                   </div>
                   <textarea
                     value={schoolComment}
                     onChange={(e) => setSchoolComment(e.target.value)}
                     rows={4}
                     placeholder={t('schoolRatingPage.commentPlaceholder')}
-                    className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
                   />
                 </div>
 
                 {schoolError && (
-                  <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+                  <div className="flex items-start gap-2 rounded-xl border border-error-200 bg-error-50 px-4 py-3 text-sm text-error-700">
                     <AlertCircle className="w-4 h-4 mt-0.5" />
                     <p>{schoolError}</p>
                   </div>
                 )}
 
                 {schoolSuccess && (
-                  <div className="flex items-start gap-2 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-700">
+                  <div className="flex items-start gap-2 rounded-xl border border-success-200 bg-success-50 px-4 py-3 text-sm text-success-700">
                     <CheckCircle2 className="w-4 h-4 mt-0.5" />
                     <p>{schoolSuccess}</p>
                   </div>
                 )}
 
                 <div className="flex items-center justify-between">
-                  <div className="text-xs text-gray-500">
+                  <div className="text-xs text-slate-500">
                     {schoolRating?.updatedAt && t('schoolRatingPage.lastUpdated', { 
                       date: new Date(schoolRating.updatedAt).toLocaleString(locale) 
                     })}
@@ -540,7 +540,7 @@ const TeacherRating = () => {
                     type="button"
                     onClick={handleSchoolSubmit}
                     disabled={savingSchool}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-success-600 text-white font-semibold hover:bg-success-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {savingSchool && <LoadingSpinner size="sm" />}
                     {schoolRating ? t('schoolRatingPage.update') : t('schoolRatingPage.submit')}
@@ -552,12 +552,12 @@ const TeacherRating = () => {
             <div className="space-y-4">
               <Card className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-green-50 text-green-600">
+                  <div className="p-2 rounded-xl bg-success-50 text-success-600">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">{t('schoolRatingPage.yourRating')}</p>
-                    <p className="text-xs text-gray-500">{t('schoolRatingPage.rateCta')}</p>
+                    <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.yourRating')}</p>
+                    <p className="text-xs text-slate-500">{t('schoolRatingPage.rateCta')}</p>
                   </div>
                 </div>
 
@@ -575,17 +575,17 @@ const TeacherRating = () => {
 
                 {/* Display Evaluation Criteria if any */}
                 {schoolRating?.evaluation && Object.keys(schoolRating.evaluation).length > 0 && (
-                  <div className="space-y-2 pt-2 border-t border-gray-200">
+                  <div className="space-y-2 pt-2 border-t border-slate-200">
                     {Object.keys(schoolRating.evaluation).map((key) => {
                       const isChecked = (schoolRating?.evaluation?.[key]) === true;
                       if (!isChecked) return null;
                       return (
                         <div key={key} className="flex items-center gap-2 text-sm">
                           <CheckCircle2 
-                            className="w-4 h-4 text-green-600"
+                            className="w-4 h-4 text-success-600"
                             fill="#22c55e"
                           />
-                          <span className="text-gray-700">
+                          <span className="text-slate-700">
                             {t(`schoolRatingPage.criteria.${key}`)}
                           </span>
                         </div>
@@ -594,24 +594,24 @@ const TeacherRating = () => {
                   </div>
                 )}
 
-                <div className="text-sm text-gray-600 pt-2 border-t border-gray-200">
+                <div className="text-sm text-slate-600 pt-2 border-t border-slate-200">
                   {schoolRating?.comment ? `"${schoolRating.comment}"` : t('schoolRatingPage.noComment')}
                 </div>
               </Card>
 
               <Card className="space-y-3">
-                <p className="text-sm font-semibold text-gray-900">{t('schoolRatingPage.summaryTitle')}</p>
+                <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.summaryTitle')}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-green-500 fill-green-500" />
+                    <Star className="w-5 h-5 text-success-500 fill-green-500" />
                     <div>
-                      <p className="text-xl font-bold text-gray-900">{schoolSummary.average?.toFixed(1) || '0.0'}</p>
-                      <p className="text-xs text-gray-500">{t('schoolRatingPage.average')}</p>
+                      <p className="text-xl font-bold text-slate-900">{schoolSummary.average?.toFixed(1) || '0.0'}</p>
+                      <p className="text-xs text-slate-500">{t('schoolRatingPage.average')}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold text-gray-900">{schoolSummary.count || 0}</p>
-                    <p className="text-xs text-gray-500">{t('schoolRatingPage.ratingsCount', { count: schoolSummary.count || 0 })}</p>
+                    <p className="text-xl font-bold text-slate-900">{schoolSummary.count || 0}</p>
+                    <p className="text-xs text-slate-500">{t('schoolRatingPage.ratingsCount', { count: schoolSummary.count || 0 })}</p>
                   </div>
                 </div>
               </Card>
@@ -619,10 +619,10 @@ const TeacherRating = () => {
               {/* All Ratings from Other Parents */}
               {schoolAllRatings && schoolAllRatings.length > 0 && (
                 <Card className="space-y-4">
-                  <p className="text-sm font-semibold text-gray-900">{t('schoolRatingPage.allRatings', { defaultValue: 'Barcha baholar' })}</p>
+                  <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.allRatings', { defaultValue: 'Barcha baholar' })}</p>
                   <div className="space-y-3 max-h-96 overflow-y-auto">
                     {schoolAllRatings.map((r) => (
-                      <div key={r.id} className="border border-gray-200 rounded-xl p-4 space-y-2">
+                      <div key={r.id} className="border border-slate-200 rounded-xl p-4 space-y-2">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
                             {[1, 2, 3, 4, 5].map((s) => (
@@ -634,20 +634,20 @@ const TeacherRating = () => {
                               />
                             ))}
                           </div>
-                          <span className="text-xs text-gray-400">
+                          <span className="text-xs text-slate-400">
                             {r.updatedAt || r.createdAt 
                               ? new Date(r.updatedAt || r.createdAt).toLocaleDateString(locale)
                               : ''}
                           </span>
                         </div>
                         {r.comment && (
-                          <div className="flex items-start gap-2 text-gray-700">
-                            <MessageSquare className="w-4 h-4 text-gray-400 mt-0.5" />
+                          <div className="flex items-start gap-2 text-slate-700">
+                            <MessageSquare className="w-4 h-4 text-slate-400 mt-0.5" />
                             <p className="text-sm leading-relaxed">{r.comment}</p>
                           </div>
                         )}
                         {r.parentName && (
-                          <p className="text-xs text-gray-500">
+                          <p className="text-xs text-slate-500">
                             {t('schoolRatingPage.byParent', { name: r.parentName, defaultValue: `Baholovchi: ${r.parentName}` })}
                           </p>
                         )}
@@ -661,12 +661,12 @@ const TeacherRating = () => {
         </>
       ) : (
         <Card className="flex items-start gap-3">
-          <div className="p-2 rounded-full bg-green-50 text-green-600">
+          <div className="p-2 rounded-full bg-success-50 text-success-600">
             <Building2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-gray-900">{t('schoolRatingPage.title')}</h2>
-            <p className="text-gray-600">{t('schoolRatingPage.noSchool')}</p>
+            <h2 className="text-lg font-bold text-slate-900">{t('schoolRatingPage.title')}</h2>
+            <p className="text-slate-600">{t('schoolRatingPage.noSchool')}</p>
           </div>
         </Card>
       )}

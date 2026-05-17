@@ -186,13 +186,13 @@ const Dashboard = () => {
     <div className="max-w-7xl mx-auto pb-20 animate-in fade-in duration-500 relative z-10">
       <div className="space-y-6 relative z-10">
           {/* Welcome Header Card */}
-          <Card className="relative bg-gradient-to-r from-primary-500 to-primary-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 z-10">
+          <Card className="relative bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 z-10">
             {/* Notifications Icon in Top Right Corner of Card */}
             <Link to="/notifications" className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
-              <div className="p-2 bg-white/20 hover:bg-white/30 rounded-lg transition-colors backdrop-blur-sm relative">
+              <div className="p-2 bg-surface/20 hover:bg-surface/30 rounded-lg transition-colors backdrop-blur-sm relative">
                 <Bell className="w-5 h-5 text-white" />
                 {count > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] leading-none font-extrabold rounded-full px-1.5 py-1 border-2 border-white shadow-sm">
+                  <span className="absolute -top-1 -right-1 bg-error-500 text-white text-[10px] leading-none font-extrabold rounded-full px-1.5 py-1 border-2 border-white shadow-sm">
                     {count > 9 ? '9+' : count}
                   </span>
                 )}
@@ -214,16 +214,16 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
               {overviewCards.map((card) => (
                 <Link key={card.title} to={card.href}>
-                  <Card className="p-5 hover:shadow-xl transition-all duration-300 bg-white/95 backdrop-blur-sm cursor-pointer group">
+                  <Card className="p-5 hover:shadow-xl transition-all duration-300 bg-surface/95 backdrop-blur-sm cursor-pointer group">
                     <div className="flex items-center gap-4">
-                      <div className="p-3 bg-gradient-to-br from-primary-50 to-primary-100 rounded-xl shadow-sm group-hover:scale-110 transition-transform">
-                        <card.icon className="w-6 h-6 text-primary-600" />
+                      <div className="p-3 bg-gradient-to-br from-brand-50 to-brand-100 rounded-xl shadow-sm group-hover:scale-110 transition-transform">
+                        <card.icon className="w-6 h-6 text-brand-600" />
                       </div>
                       <div className="flex-1">
-                        <p className="text-2xl font-bold text-gray-900">{card.value}</p>
-                        <p className="text-sm text-gray-600 font-medium">{card.title}</p>
+                        <p className="text-2xl font-bold text-slate-900">{card.value}</p>
+                        <p className="text-sm text-slate-600 font-medium">{card.title}</p>
                       </div>
-                      <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary-600 transition-colors" />
+                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-brand-600 transition-colors" />
                     </div>
                   </Card>
                 </Link>

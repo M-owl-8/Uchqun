@@ -27,37 +27,37 @@ const LogoutModal = ({ show, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-red-100 rounded-full">
-              <AlertCircle className="w-6 h-6 text-red-600" />
+            <div className="p-3 bg-error-100 rounded-full">
+              <AlertCircle className="w-6 h-6 text-error-600" />
             </div>
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-slate-900">
               {t('profile.logoutTitle', { defaultValue: 'Chiqish' })}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-slate-500" />
           </button>
         </div>
 
-        <p className="text-gray-600 mb-8 text-lg">
+        <p className="text-slate-600 mb-8 text-lg">
           {t('profile.confirmLogout', { defaultValue: 'Chiqishni xohlaysizmi?' })}
         </p>
 
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl font-semibold transition-colors"
+            className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
           >
             {t('profile.cancel', { defaultValue: 'Yo\'q' })}
           </button>
           <button
             onClick={confirmLogout}
-            className="flex-1 px-6 py-3 bg-red-600 hover:bg-red-700 text-white rounded-xl font-semibold transition-colors shadow-md"
+            className="flex-1 px-6 py-3 bg-error-600 hover:bg-error-700 text-white rounded-xl font-semibold transition-colors shadow-md"
           >
             {t('profile.yes', { defaultValue: 'Ha' })}
           </button>

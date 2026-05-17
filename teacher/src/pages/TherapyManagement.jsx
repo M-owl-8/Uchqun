@@ -249,9 +249,9 @@ const TherapyManagement = () => {
   const getTherapyColor = (type) => {
     switch (type) {
       case 'music': return 'bg-purple-50 text-purple-600';
-      case 'video': return 'bg-primary-50 text-primary-600';
-      case 'content': return 'bg-green-50 text-green-600';
-      default: return 'bg-gray-50 text-gray-600';
+      case 'video': return 'bg-brand-50 text-brand-600';
+      case 'content': return 'bg-success-50 text-success-600';
+      default: return 'bg-slate-50 text-slate-600';
     }
   };
 
@@ -285,7 +285,7 @@ const TherapyManagement = () => {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-6 py-3 bg-primary-600 text-white rounded-xl font-bold hover:bg-primary-700 transition-colors shadow-sm"
+          className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
         >
           <Plus className="w-5 h-5" />
           {t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
@@ -316,11 +316,11 @@ const TherapyManagement = () => {
 
       {filteredTherapies.length === 0 && (
         <Card className="p-12 text-center">
-          <Play className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-gray-900 mb-2">
+          <Play className="w-16 h-16 text-slate-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-slate-900 mb-2">
             {t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}
           </h3>
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             {t('therapy.noTherapiesDesc', { defaultValue: 'Qidiruv natijalari bo\'sh' })}
           </p>
         </Card>

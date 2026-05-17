@@ -5,14 +5,14 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
   const { t } = useTranslation();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm animate-in fade-in duration-300">
-      <div className="bg-white rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300">
-        <div className="sticky top-0 bg-gradient-to-r from-primary-500 to-primary-400 p-6 flex items-center justify-between z-10">
+      <div className="bg-surface rounded-3xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto animate-in zoom-in-95 duration-300">
+        <div className="sticky top-0 bg-gradient-to-r from-brand-500 to-brand-400 p-6 flex items-center justify-between z-10">
           <h2 className="text-2xl font-bold text-white">
             {activity.skill || t('activitiesPage.formSkill') || 'Ko\'nikma'}
           </h2>
           <button
             onClick={onClose}
-            className="p-2 bg-white/20 hover:bg-white/30 rounded-lg text-white transition-colors backdrop-blur-sm"
+            className="p-2 bg-surface/20 hover:bg-surface/30 rounded-lg text-white transition-colors backdrop-blur-sm"
           >
             <X className="w-5 h-5" />
           </button>
@@ -21,44 +21,44 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
         <div className="p-6 space-y-6">
           {/* Goal */}
           {activity.goal && (
-            <div className="bg-gradient-to-br from-primary-50 to-primary-100/50 rounded-xl p-5 border border-primary-200">
-              <p className="text-sm font-bold text-primary-700 mb-2">{t('activitiesPage.formGoal') || 'Maqsad'}</p>
-              <p className="text-base text-gray-800 leading-relaxed">{activity.goal}</p>
+            <div className="bg-gradient-to-br from-brand-50 to-brand-100/50 rounded-xl p-5 border border-brand-200">
+              <p className="text-sm font-bold text-brand-700 mb-2">{t('activitiesPage.formGoal') || 'Maqsad'}</p>
+              <p className="text-base text-slate-800 leading-relaxed">{activity.goal}</p>
             </div>
           )}
 
           {/* Dates and Teacher */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {activity.startDate && (
-              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl border border-primary-100">
-                <Calendar className="w-5 h-5 text-primary-600 flex-shrink-0" />
+              <div className="flex items-center gap-3 p-4 bg-brand-50 rounded-xl border border-brand-100">
+                <Calendar className="w-5 h-5 text-brand-600 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-primary-600 font-semibold mb-1">{t('activitiesPage.formStartDate') || 'Boshlanish'}</p>
-                  <p className="text-sm font-bold text-gray-900">
+                  <p className="text-xs text-brand-600 font-semibold mb-1">{t('activitiesPage.formStartDate') || 'Boshlanish'}</p>
+                  <p className="text-sm font-bold text-slate-900">
                     {new Date(activity.startDate).toLocaleDateString(locale)}
                   </p>
                 </div>
               </div>
             )}
             {activity.endDate && (
-              <div className="flex items-center gap-3 p-4 bg-primary-50 rounded-xl border border-primary-100">
-                <Calendar className="w-5 h-5 text-primary-600 flex-shrink-0" />
+              <div className="flex items-center gap-3 p-4 bg-brand-50 rounded-xl border border-brand-100">
+                <Calendar className="w-5 h-5 text-brand-600 flex-shrink-0" />
                 <div>
-                  <p className="text-xs text-primary-600 font-semibold mb-1">{t('activitiesPage.formEndDate') || 'Tugash'}</p>
-                  <p className="text-sm font-bold text-gray-900">
+                  <p className="text-xs text-brand-600 font-semibold mb-1">{t('activitiesPage.formEndDate') || 'Tugash'}</p>
+                  <p className="text-sm font-bold text-slate-900">
                     {new Date(activity.endDate).toLocaleDateString(locale)}
                   </p>
                 </div>
               </div>
             )}
             {activity.teacher && (
-              <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-xl border border-gray-200">
-                <div className="p-2 bg-gradient-to-br from-primary-100 to-primary-50 rounded-lg border border-primary-200">
-                  <User className="w-5 h-5 text-primary-600" />
+              <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                <div className="p-2 bg-gradient-to-br from-brand-100 to-brand-50 rounded-lg border border-brand-200">
+                  <User className="w-5 h-5 text-brand-600" />
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-xs text-gray-500 font-semibold mb-1">{t('activitiesPage.teacher') || 'O\'qituvchi'}</p>
-                  <p className="text-sm font-bold text-gray-900 truncate">{activity.teacher}</p>
+                  <p className="text-xs text-slate-500 font-semibold mb-1">{t('activitiesPage.teacher') || 'O\'qituvchi'}</p>
+                  <p className="text-sm font-bold text-slate-900 truncate">{activity.teacher}</p>
                 </div>
               </div>
             )}
@@ -66,12 +66,12 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
 
           {/* Tasks */}
           {activity.tasks && Array.isArray(activity.tasks) && activity.tasks.length > 0 && (
-            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
-              <p className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+            <div className="bg-surface rounded-xl p-5 shadow-md border border-slate-200">
+              <p className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-brand-500" />
                 {t('activitiesPage.formTasks') || 'Vazifalar'}
               </p>
-              <ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
+              <ul className="list-disc list-inside space-y-2 text-sm text-slate-700">
                 {activity.tasks.map((task, idx) => task && (
                   <li key={idx} className="leading-relaxed">{task}</li>
                 ))}
@@ -81,49 +81,49 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
 
           {/* Methods */}
           {activity.methods && (
-            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
-              <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+            <div className="bg-surface rounded-xl p-5 shadow-md border border-slate-200">
+              <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-brand-500" />
                 {t('activitiesPage.formMethods') || 'Usullar'}
               </p>
-              <p className="text-sm text-gray-700 leading-relaxed">{activity.methods}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{activity.methods}</p>
             </div>
           )}
 
           {/* Progress */}
           {activity.progress && (
-            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
-              <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+            <div className="bg-surface rounded-xl p-5 shadow-md border border-slate-200">
+              <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-brand-500" />
                 {t('activitiesPage.formProgress') || 'Jarayon/Taraqqiyot'}
               </p>
-              <p className="text-sm text-gray-700 leading-relaxed">{activity.progress}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{activity.progress}</p>
             </div>
           )}
 
           {/* Observation */}
           {activity.observation && (
-            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
-              <p className="text-base font-bold text-gray-800 mb-3 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+            <div className="bg-surface rounded-xl p-5 shadow-md border border-slate-200">
+              <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-brand-500" />
                 {t('activitiesPage.formObservation') || 'Kuzatish'}
               </p>
-              <p className="text-sm text-gray-700 leading-relaxed">{activity.observation}</p>
+              <p className="text-sm text-slate-700 leading-relaxed">{activity.observation}</p>
             </div>
           )}
 
           {/* Services */}
           {activity.services && Array.isArray(activity.services) && activity.services.length > 0 && (
-            <div className="bg-white rounded-xl p-5 shadow-md border border-gray-200">
-              <p className="text-base font-bold text-gray-800 mb-4 flex items-center gap-2">
-                <CheckCircle2 className="w-5 h-5 text-primary-500" />
+            <div className="bg-surface rounded-xl p-5 shadow-md border border-slate-200">
+              <p className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-brand-500" />
                 {t('activitiesPage.formServices') || 'Xizmatlar'}
               </p>
               <div className="flex flex-wrap gap-2">
                 {activity.services.map((service, idx) => (
                   <span
                     key={idx}
-                    className="px-3 py-1.5 bg-gradient-to-r from-primary-100 to-primary-50 text-primary-700 rounded-lg text-xs font-semibold border border-primary-200/50"
+                    className="px-3 py-1.5 bg-gradient-to-r from-brand-100 to-brand-50 text-brand-700 rounded-lg text-xs font-semibold border border-brand-200/50"
                   >
                     {t(`activitiesPage.services.${service.replace(/\s+/g, '')}`) || service}
                   </span>
@@ -133,10 +133,10 @@ const ActivityDetailsModal = ({ activity, locale, onClose }) => {
           )}
 
           {/* Close Button */}
-          <div className="flex justify-end pt-4 border-t border-gray-200">
+          <div className="flex justify-end pt-4 border-t border-slate-200">
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-semibold transition-colors shadow-md"
+              className="px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors shadow-md"
             >
               {t('activitiesPage.close') || 'Yopish'}
             </button>

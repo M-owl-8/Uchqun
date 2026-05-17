@@ -13,53 +13,53 @@ const TherapyFormModal = ({
   const { t } = useTranslation();
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="px-6 py-4 border-b border-gray-100 flex items-center justify-between sticky top-0 bg-white">
-          <h3 className="text-lg font-bold text-gray-900">
+      <div className="bg-surface rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+        <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between sticky top-0 bg-surface">
+          <h3 className="text-lg font-bold text-slate-900">
             {editingTherapy
               ? t('therapy.edit', { defaultValue: 'Terapiyani Tahrirlash' })
               : t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
           </h3>
-          <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-gray-500" />
+          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-slate-500" />
           </button>
         </div>
         <div className="p-6 space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               {t('therapy.title', { defaultValue: 'Sarlavha' })} *
             </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               placeholder={t('therapy.titlePlaceholder', { defaultValue: 'Terapiya nomi' })}
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               {t('therapy.description', { defaultValue: 'Tavsif' })}
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({ ...formData, description: e.target.value })}
               rows={3}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               placeholder={t('therapy.descriptionPlaceholder', { defaultValue: 'Terapiya tavsifi' })}
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 {t('therapy.type', { defaultValue: 'Turi' })} *
               </label>
               <select
                 value={formData.therapyType}
                 onChange={(e) => setFormData({ ...formData, therapyType: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
                 <option value="music">{t('therapy.music', { defaultValue: 'Musiqa' })}</option>
                 <option value="video">{t('therapy.video', { defaultValue: 'Video' })}</option>
@@ -67,13 +67,13 @@ const TherapyFormModal = ({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 {t('therapy.contentType', { defaultValue: 'Content Turi' })}
               </label>
               <select
                 value={formData.contentType}
                 onChange={(e) => setFormData({ ...formData, contentType: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
                 <option value="audio">{t('therapy.audio', { defaultValue: 'Audio' })}</option>
                 <option value="video">{t('therapy.video', { defaultValue: 'Video' })}</option>
@@ -86,39 +86,39 @@ const TherapyFormModal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               {t('therapy.contentUrl', { defaultValue: 'Content URL' })}
             </label>
             <input
               type="url"
               value={formData.contentUrl}
               onChange={(e) => setFormData({ ...formData, contentUrl: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               placeholder="https://example.com/therapy.mp3"
             />
           </div>
 
           <div className="grid grid-cols-3 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 {t('therapy.duration', { defaultValue: 'Davomiyligi (min)' })}
               </label>
               <input
                 type="number"
                 value={formData.duration}
                 onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 placeholder="30"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 {t('therapy.ageGroup', { defaultValue: 'Yosh Guruhi' })}
               </label>
               <select
                 value={formData.ageGroup}
                 onChange={(e) => setFormData({ ...formData, ageGroup: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
                 <option value="all">{t('therapy.allAges', { defaultValue: 'Barcha' })}</option>
                 <option value="infant">{t('therapy.infant', { defaultValue: 'Chaqaloq' })}</option>
@@ -129,13 +129,13 @@ const TherapyFormModal = ({
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-slate-700 mb-2">
                 {t('therapy.difficulty', { defaultValue: 'Qiyinlik' })}
               </label>
               <select
                 value={formData.difficultyLevel}
                 onChange={(e) => setFormData({ ...formData, difficultyLevel: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               >
                 <option value="all">{t('therapy.allLevels', { defaultValue: 'Barcha' })}</option>
                 <option value="beginner">{t('therapy.beginner', { defaultValue: 'Boshlang\'ich' })}</option>
@@ -146,26 +146,26 @@ const TherapyFormModal = ({
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               {t('therapy.tags', { defaultValue: 'Teglar (vergul bilan ajratilgan)' })}
             </label>
             <input
               type="text"
               value={formData.tags}
               onChange={(e) => setFormData({ ...formData, tags: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
               placeholder="tag1, tag2, tag3"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               {t('therapy.assignChild', { defaultValue: 'Bolaga tayinlash (ixtiyoriy)' })}
             </label>
             <select
               value={formData.childId}
               onChange={(e) => setFormData({ ...formData, childId: e.target.value })}
-              className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             >
               <option value="">{t('therapy.noAssignment', { defaultValue: 'Tayinlamaslik' })}</option>
               {childList.map((child) => (
@@ -174,7 +174,7 @@ const TherapyFormModal = ({
                 </option>
               ))}
             </select>
-            <p className="mt-1 text-xs text-gray-500">
+            <p className="mt-1 text-xs text-slate-500">
               {t('therapy.assignChildHint', { defaultValue: 'Agar bolani tanlasangiz, terapiya avtomatik ravishda unga tayinlanadi' })}
             </p>
           </div>
@@ -182,7 +182,7 @@ const TherapyFormModal = ({
           <div className="flex gap-3 pt-4">
             <button
               onClick={onClose}
-              className="flex-1 px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-colors"
+              className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg font-semibold transition-colors"
               disabled={saving}
             >
               {t('therapy.cancel', { defaultValue: 'Bekor qilish' })}
@@ -190,7 +190,7 @@ const TherapyFormModal = ({
             <button
               onClick={onSave}
               disabled={saving}
-              className="flex-1 px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="flex-1 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-lg font-semibold transition-colors shadow-sm disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {saving ? (
                 <>
