@@ -6,14 +6,14 @@ export const updateProfileValidator = [
     .trim()
     .isLength({ min: 1, max: 100 })
     .withMessage('First name must be between 1 and 100 characters')
-    .matches(/^[a-zA-Z\s'-]+$/)
+    .matches(/^[\p{L}\s'-]+$/u)
     .withMessage('First name can only contain letters, spaces, hyphens, and apostrophes'),
   body('lastName')
     .optional()
     .trim()
     .isLength({ min: 1, max: 100 })
     .withMessage('Last name must be between 1 and 100 characters')
-    .matches(/^[a-zA-Z\s'-]+$/)
+    .matches(/^[\p{L}\s'-]+$/u)
     .withMessage('Last name can only contain letters, spaces, hyphens, and apostrophes'),
   body('phone')
     .optional()
