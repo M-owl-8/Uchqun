@@ -2,6 +2,7 @@ import express from 'express';
 import {
   getOverview,
   getSchoolsStats,
+  getSchoolById,
   getStudentsStats,
   getRatingsStats,
   getSchoolRatings,
@@ -59,6 +60,7 @@ router.use(requireGovernment);
 // Statistics
 router.get('/overview', getOverview);
 router.get('/schools', getSchoolsStats);
+router.get('/schools/:id', getSchoolById);
 router.get('/schools-list', getAllSchools);
 router.get('/students', getStudentsStats);
 router.get('/teachers', getTeachersList);

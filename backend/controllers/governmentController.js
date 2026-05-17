@@ -252,6 +252,47 @@ export const getSchoolsStats = async (req, res) => {
 };
 
 /**
+ * Get a single school with stats
+ * GET /api/government/schools/:id
+ */
+export const getSchoolById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!isValidUuid(id)) {
+      return res.status(400).json({ error: 'Invalid school ID' });
+    }
+
+    const school = await School.findOne({ where: { id, isActive: true } });
+    if (!school) {
+      return res.status(404).json({ error: 'School not found' });
+    }
+
+    const [studentsCount, teachersCount, ratings] = await Promise.all([
+      Child.count({ where: { schoolId: id } }).catch(() => 0),
+      User.count({ where: { role: 'teacher', schoolId: id } }).catch(() => 0),
+      SchoolRating.findAll({ where: { schoolId: id }, attributes: ['stars', 'evaluation'] }).catch(() => []),
+    ]);
+
+    const ratingResult = computeAverageRating(ratings);
+
+    res.json({
+      success: true,
+      data: {
+        ...school.toJSON(),
+        studentsCount,
+        teachersCount,
+        ratingsCount: ratingResult.count,
+        averageRating: ratingResult.average,
+        governmentLevel: getGovernmentLevel(ratingResult.average, ratingResult.count),
+      },
+    });
+  } catch (error) {
+    logger.error('Get school by id error', { error: error.message, stack: error.stack, schoolId: req.params.id });
+    res.status(500).json({ error: 'Failed to fetch school details' });
+  }
+};
+
+/**
  * Get students statistics and list (for government panel)
  * GET /api/government/students
  */
