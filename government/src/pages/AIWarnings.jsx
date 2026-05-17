@@ -88,7 +88,7 @@ const AIWarnings = () => {
     try {
       const params = filter === 'resolved' ? { resolved: true } : { resolved: false };
       const res = await api.get('/ai-warnings', { params });
-      setWarnings(res.data?.data || res.data?.warnings || []);
+      setWarnings(res.data?.data?.warnings || res.data?.warnings || []);
     } catch {
       setLoadError(true);
       setWarnings([]);
