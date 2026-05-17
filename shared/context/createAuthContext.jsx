@@ -24,15 +24,9 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
     useEffect(() => {
       (async () => {
         try {
-          let res;
-          try {
-            res = await api.get('/auth/me');
-          } catch (err) {
-            if (err.response?.status !== 401) throw err;
-            // Access token expired — attempt silent refresh then retry
-            await api.post('/auth/refresh', {});
-            res = await api.get('/auth/me');
-          }
+          // The api interceptor transparently refreshes an expired access token
+          // and retries this call — no manual refresh logic needed here.
+          const res = await api.get('/auth/me');
           const userData = res.data.data ?? res.data;
           if (requiredRole && userData.role !== requiredRole) {
             localStorage.removeItem(storageKey);

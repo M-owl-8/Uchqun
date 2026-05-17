@@ -54,13 +54,14 @@ export function createApi({
     (response) => response,
     async (error) => {
       const originalRequest = error.config;
-      // Auth endpoints must never be retried via the refresh flow:
-      // - /auth/me: session probe on mount — AuthProvider's .catch() handles it
+      // Auth endpoints that must never be retried:
       // - /auth/login: 401 means wrong credentials, not an expired token
-      // - /auth/refresh: refresh itself failed, nothing to retry
-      // Retrying any of these would cause an infinite loop or confusing error cascades.
+      // - /auth/refresh: refresh itself failed, retrying would loop
+      // /auth/me is intentionally NOT excluded — the interceptor transparently
+      // refreshes and retries it, and its refreshPromise mutex is shared across
+      // all callers on the same api instance (prevents concurrent refresh races).
       const url = originalRequest.url || '';
-      if (url.includes('/auth/me') || url.includes('/auth/login') || url.includes('/auth/refresh')) {
+      if (url.includes('/auth/login') || url.includes('/auth/refresh')) {
         return Promise.reject(error);
       }
       if (error.response?.status === 401 && !originalRequest._retry) {
