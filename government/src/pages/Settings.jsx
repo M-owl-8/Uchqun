@@ -57,7 +57,11 @@ const Settings = () => {
         setUser(response.data.data ?? response.data);
       }
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
+      const details = error.response?.data?.details;
+      const msg = details?.length
+        ? details.map(d => d.message).join('; ')
+        : error.response?.data?.error;
+      showError(msg || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
     } finally {
       setSaving(false);
     }

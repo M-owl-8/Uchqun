@@ -16,7 +16,7 @@ export const updateProfileValidator = [
     .matches(/^[\p{L}\s'-]+$/u)
     .withMessage('Last name can only contain letters, spaces, hyphens, and apostrophes'),
   body('phone')
-    .optional()
+    .optional({ values: 'falsy' })
     .trim()
     .matches(/^\+?[\d\s-()]+$/)
     .withMessage('Please provide a valid phone number'),
