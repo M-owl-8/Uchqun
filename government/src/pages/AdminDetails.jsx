@@ -49,6 +49,17 @@ const AdminDetails = () => {
 
   const { admin, stats = {}, receptions = [], schools = [], teachers = [], parents = [], children = [] } = data;
 
+  if (!admin) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-600">{t('adminDetails.notFound', { defaultValue: 'Admin topilmadi' })}</p>
+        <button onClick={() => navigate('/government')} className="mt-4 text-brand-600 hover:text-brand-700">
+          {t('adminDetails.back', { defaultValue: 'Orqaga qaytish' })}
+        </button>
+      </div>
+    );
+  }
+
   const statCards = [
     { title: t('adminDetails.students',   { defaultValue: "O'quvchilar" }),   value: stats.students   || 0, icon: Baby,         description: t('adminDetails.studentsDesc',   { defaultValue: "Jami o'quvchilar soni" }) },
     { title: t('adminDetails.parents',    { defaultValue: 'Ota-onalar' }),    value: stats.parents    || 0, icon: Users,        description: t('adminDetails.parentsDesc',    { defaultValue: 'Jami ota-onalar soni' }) },
@@ -180,7 +191,6 @@ const AdminDetails = () => {
             {schools.map((school) => (
               <div key={school.id} className="border border-gray-200 rounded-lg p-4">
                 <div className="flex items-center gap-3 mb-2">
-                  {/* TODO(phase-1): school icon color — text-blue-600 used as entity color for schools; confirm keep or switch to primary-* */}
                   <Building2 className="w-5 h-5 text-brand-600" />
                   <h3 className="font-bold text-gray-900">{school.name}</h3>
                 </div>

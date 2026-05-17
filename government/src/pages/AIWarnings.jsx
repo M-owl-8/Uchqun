@@ -78,16 +78,19 @@ const AIWarnings = () => {
   const { success, error: showError } = useToast();
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [resolving, setResolving] = useState(null);
   const [filter, setFilter] = useState('active');
 
   const load = useCallback(async () => {
     setLoading(true);
+    setLoadError(false);
     try {
       const params = filter === 'resolved' ? { resolved: true } : { resolved: false };
       const res = await api.get('/ai-warnings', { params });
       setWarnings(res.data?.data || res.data?.warnings || []);
     } catch {
+      setLoadError(true);
       setWarnings([]);
     } finally {
       setLoading(false);
@@ -170,11 +173,20 @@ const AIWarnings = () => {
         ))}
       </div>
 
+      {loadError && (
+        <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center justify-between">
+          <span>{t('warnings.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik yuz berdi" })}</span>
+          <button onClick={load} className="text-red-600 hover:text-red-800 font-medium underline ml-4">
+            {t('warnings.retry', { defaultValue: 'Qayta urinish' })}
+          </button>
+        </div>
+      )}
+
       {loading ? (
         <div className="py-16 text-center text-sm text-gray-400">
           {t('warnings.loading', { defaultValue: 'Yuklanmoqda...' })}
         </div>
-      ) : warnings.length === 0 ? (
+      ) : !loadError && warnings.length === 0 ? (
         <div className="py-16 text-center">
           <Shield className="w-10 h-10 text-gray-200 mx-auto mb-3" />
           <p className="text-sm text-gray-400">

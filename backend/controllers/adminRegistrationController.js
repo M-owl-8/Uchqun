@@ -390,6 +390,9 @@ export const approveRegistrationRequest = async (req, res) => {
       error: error.message,
       stack: error.stack,
     });
+    if (error.name === 'SequelizeUniqueConstraintError') {
+      return res.status(409).json({ error: 'Email already registered' });
+    }
     res.status(500).json({
       error: 'Failed to approve registration request',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined,

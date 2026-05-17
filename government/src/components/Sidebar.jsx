@@ -28,10 +28,12 @@ const Sidebar = ({ onClose }) => {
     { name: t('nav.settings',  { defaultValue: 'Sozlamalar' }),   href: '/government/settings', icon: Settings },
   ];
 
-  const isActive = (href) =>
-    href === '/government'
-      ? location.pathname === '/government'
-      : location.pathname.startsWith(href);
+  const isActive = (href) => {
+    if (href === '/government') {
+      return location.pathname === '/government' || location.pathname.startsWith('/government/admin/');
+    }
+    return location.pathname.startsWith(href);
+  };
 
   return (
     <div className="flex flex-col h-screen w-64 bg-sidebar">

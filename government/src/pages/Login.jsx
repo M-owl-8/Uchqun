@@ -25,7 +25,7 @@ const Login = () => {
     if (result.success) {
       navigate('/government');
     } else {
-      if (result.status === 429) setError(t('login.accountLocked'));
+      if (result.status === 429) setError(t('login.rateLimited', { defaultValue: 'Juda ko\'p urinish. Iltimos, bir oz kuting.' }));
       else if (result.status === 403) setError(t('login.notApproved'));
       else setError(t('login.error'));
     }

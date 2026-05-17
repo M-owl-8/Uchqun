@@ -23,7 +23,7 @@ const Schools = () => {
         (s.averageRating || 0).toFixed(2), s.ratingsCount || 0,
       ]),
     ];
-    const csv = rows.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(',')).join('\n');
+    const csv = rows.map(r => r.map(v => `"${String(v).replace(/[\r\n]+/g, ' ').replace(/"/g, '""')}"`).join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');

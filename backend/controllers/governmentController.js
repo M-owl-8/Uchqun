@@ -647,6 +647,9 @@ export const getSavedStats = async (req, res) => {
 export const getSchoolRatings = async (req, res) => {
   try {
     const { schoolId } = req.params;
+    if (!isValidUuid(schoolId)) {
+      return res.status(400).json({ error: 'Invalid school ID' });
+    }
     const { limit, offset } = parsePagination(req.query, { limit: 10 });
 
     const { count, rows } = await SchoolRating.findAndCountAll({
@@ -735,10 +738,18 @@ async function getRatingsData(schoolId, startDate, endDate) {
  */
 export const getAdmins = async (req, res) => {
   try {
-    const admins = await User.findAll({
-      where: { role: 'admin' },
+    const { limit, offset } = parsePagination(req.query, { limit: 100 });
+    const where = { role: 'admin' };
+    if (req.query.isApproved !== undefined) {
+      where.isApproved = req.query.isApproved === 'true';
+    }
+
+    const { count, rows: admins } = await User.findAndCountAll({
+      where,
       attributes: { exclude: ['password'] },
       order: [['createdAt', 'DESC']],
+      limit,
+      offset,
     });
 
     logger.info('Government fetched admins', {
@@ -749,7 +760,9 @@ export const getAdmins = async (req, res) => {
     res.json({
       success: true,
       data: admins.map(a => a.toJSON()),
-      count: admins.length,
+      total: count,
+      limit,
+      offset,
     });
   } catch (error) {
     logger.error('Get admins error (government)', { 

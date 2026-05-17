@@ -38,8 +38,8 @@ const Dashboard = () => {
       setLoading(false);
       Promise.allSettled([
         api.get('/government/overview'),
-        api.get('/government/schools?limit=10'),
-        api.get('/government/admins'),
+        api.get('/government/schools'),
+        api.get('/government/admins', { params: { isApproved: false } }),
         api.get('/ai-warnings', { params: { resolved: false } }),
       ]).then(([overviewRes, schoolsRes, adminsRes, warningsRes]) => {
         const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
@@ -56,8 +56,8 @@ const Dashboard = () => {
     setLoading(true);
     const [overviewRes, schoolsRes, adminsRes, warningsRes] = await Promise.allSettled([
       api.get('/government/overview'),
-      api.get('/government/schools?limit=10'),
-      api.get('/government/admins'),
+      api.get('/government/schools'),
+      api.get('/government/admins', { params: { isApproved: false } }),
       api.get('/ai-warnings', { params: { resolved: false } }),
     ]);
     const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
@@ -75,7 +75,7 @@ const Dashboard = () => {
 
   if (loading) return <SkeletonDashboard stats={4} cards={3} />;
 
-  const pendingAdmins = admins.filter(a => !a.isApproved).length;
+  const pendingAdmins = admins.length;
 
   const regionBreakdown = Object.values(
     schools.reduce((acc, s) => {
@@ -176,7 +176,7 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {admins.filter(a => !a.isApproved).slice(0, 8).map((admin) => (
+                {admins.slice(0, 8).map((admin) => (
                   <tr
                     key={admin.id}
                     onClick={() => navigate(`/government/admin/${admin.id}`)}
@@ -193,6 +193,11 @@ const Dashboard = () => {
                 ))}
               </tbody>
             </table>
+          )}
+          {admins.length > 8 && (
+            <div className="px-5 py-2.5 border-t border-gray-100 text-xs text-gray-400">
+              {t('dashboard.andMore', { count: admins.length - 8, defaultValue: `Va yana ${admins.length - 8} ta...` })}
+            </div>
           )}
         </div>
 
@@ -232,6 +237,14 @@ const Dashboard = () => {
                     </div>
                   </div>
                 ))}
+            </div>
+          )}
+          {schools.length > 6 && (
+            <div className="px-5 py-2.5 border-t border-gray-100 text-xs text-gray-400 flex items-center justify-between">
+              <span>{t('dashboard.schoolsMore', { count: schools.length - 6, defaultValue: `Va yana ${schools.length - 6} ta muassasa` })}</span>
+              <button onClick={() => navigate('/government/schools')} className="text-brand-600 hover:text-brand-700 font-medium">
+                {t('dashboard.viewAll', { defaultValue: 'Barchasini ko\'rish' })}
+              </button>
             </div>
           )}
         </div>
