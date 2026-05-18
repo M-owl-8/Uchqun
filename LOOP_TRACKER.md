@@ -8,7 +8,7 @@
 
 | Portal | S0 Understand | S1 Audit | S2 Cleanup Build | S3 Confirm Clean | S4 Research | S5 Implement Build | S6 Plan Features | S7 Implement Features | S8 Final Verify |
 |---|---|---|---|---|---|---|---|---|---|
-| 1. Backend | 🟡 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 1. Backend | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 2. Government | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 3. Admin | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 4. Reception | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -41,3 +41,7 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 
 ## Log
 (Entries appended chronologically as steps close.)
+
+| # | Portal | Step | SHA | Timestamp | Summary |
+|---|---|---|---|---|---|
+| 1 | Backend | S0 Understand | c29a325 | 2026-05-19 | 637-line first-principles read of all backend/ files; 14 open questions identified; `audits/backend/00-understanding.md` |
