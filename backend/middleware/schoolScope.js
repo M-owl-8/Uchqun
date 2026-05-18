@@ -28,6 +28,6 @@ export const schoolWhere = (req) => {
   if (!req.user) return {};
   const { role, schoolId } = req.user;
   if (role === 'government') return {};
-  if (!schoolId) return {};
+  if (!schoolId) throw new Error('schoolId not assigned — use requireSchoolScope as a route guard');
   return { schoolId };
 };

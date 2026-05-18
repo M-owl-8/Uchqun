@@ -107,8 +107,8 @@ describe('schoolWhere', () => {
     expect(schoolWhere({ user: { role: 'business', schoolId: 's3' } })).toEqual({ schoolId: 's3' });
   });
 
-  it('empty object for business without schoolId (no school assigned)', () => {
-    expect(schoolWhere({ user: { role: 'business', schoolId: null } })).toEqual({});
+  it('throws for business without schoolId (V5-CRIT-03 fix — was incorrectly returning {})', () => {
+    expect(() => schoolWhere({ user: { role: 'business', schoolId: null } })).toThrow();
   });
 
   // V5-CRIT-03: schoolWhere must throw — not return {} — for non-government users
@@ -134,8 +134,8 @@ describe('schoolWhere', () => {
     expect(Object.keys(whereA).length).toBeGreaterThan(0);
   });
 
-  it('empty object when user has no schoolId', () => {
-    expect(schoolWhere({ user: { role: 'admin', schoolId: null } })).toEqual({});
+  it('throws when user has no schoolId (V5-CRIT-03 fix — was incorrectly returning {})', () => {
+    expect(() => schoolWhere({ user: { role: 'admin', schoolId: null } })).toThrow();
   });
 
   it('returns schoolId filter for scoped user without requiring middleware call', () => {
