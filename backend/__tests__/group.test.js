@@ -61,6 +61,47 @@ describe('groupController', () => {
       const include = mockGroupFindAndCount.mock.calls[0][0].include[0];
       expect(include.where).toEqual({ id: 't1' });
     });
+
+    // V5-CRIT-02: getGroups had no schoolId constraint on the Group WHERE clause —
+    // only the teacher include was filtered, allowing cross-school group leakage.
+    describe('school isolation in group list (V5-CRIT-02)', () => {
+      it('reception with schoolId scopes Group WHERE by schoolId (V5-CRIT-02)', async () => {
+        mockGroupFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+        const req = { user: { id: 'r1', role: 'reception', schoolId: 's-a' }, query: {} };
+        const res = mkRes();
+        await getGroups(req, res);
+        const { where } = mockGroupFindAndCount.mock.calls[0][0];
+        expect(where).toMatchObject({ schoolId: 's-a' });
+      });
+
+      it('teacher with schoolId scopes Group WHERE by schoolId (V5-CRIT-02)', async () => {
+        mockGroupFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+        const req = { user: { id: 't1', role: 'teacher', schoolId: 's-a' }, query: {} };
+        const res = mkRes();
+        await getGroups(req, res);
+        const { where } = mockGroupFindAndCount.mock.calls[0][0];
+        expect(where).toMatchObject({ schoolId: 's-a' });
+      });
+
+      it('admin with schoolId scopes Group WHERE by schoolId (V5-CRIT-02)', async () => {
+        mockUserFindAll.mockResolvedValue([{ id: 'r1' }]);
+        mockGroupFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+        const req = { user: { id: 'a1', role: 'admin', schoolId: 's-a' }, query: {} };
+        const res = mkRes();
+        await getGroups(req, res);
+        const { where } = mockGroupFindAndCount.mock.calls[0][0];
+        expect(where).toMatchObject({ schoolId: 's-a' });
+      });
+
+      it('government (no schoolId) does not add schoolId to Group WHERE (V5-CRIT-02)', async () => {
+        mockGroupFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+        const req = { user: { id: 'g1', role: 'government', schoolId: null }, query: {} };
+        const res = mkRes();
+        await getGroups(req, res);
+        const { where } = mockGroupFindAndCount.mock.calls[0][0];
+        expect(where).not.toHaveProperty('schoolId');
+      });
+    });
   });
 
   describe('createGroup', () => {
