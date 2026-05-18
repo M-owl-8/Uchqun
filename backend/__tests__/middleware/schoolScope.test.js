@@ -111,6 +111,17 @@ describe('schoolWhere', () => {
     expect(schoolWhere({ user: { role: 'business', schoolId: null } })).toEqual({});
   });
 
+  // V5-CRIT-03: schoolWhere must throw — not return {} — for non-government users
+  // with no schoolId. The comment on the function already documents "throws", but
+  // the implementation returned {} (global access), breaking the contract.
+  it('throws for non-government user with null schoolId (V5-CRIT-03)', () => {
+    expect(() => schoolWhere({ user: { role: 'admin', schoolId: null } })).toThrow();
+    expect(() => schoolWhere({ user: { role: 'teacher', schoolId: null } })).toThrow();
+    expect(() => schoolWhere({ user: { role: 'reception', schoolId: null } })).toThrow();
+    expect(() => schoolWhere({ user: { role: 'parent', schoolId: null } })).toThrow();
+    expect(() => schoolWhere({ user: { role: 'business', schoolId: null } })).toThrow();
+  });
+
   it('business user from school A cannot read child in school B via schoolWhere', () => {
     // A business user assigned to school A should never get an empty where clause
     // (which would expose children from school B) — only gets their own schoolId.
