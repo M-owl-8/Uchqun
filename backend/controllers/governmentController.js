@@ -840,17 +840,25 @@ export const getAdminDetails = async (req, res) => {
 
     const receptionIds = receptions.map(r => r.id);
 
-    // Fetch schools, teachers, and parents in parallel — all depend only on receptionIds
-    const [schools, teachers, parents] = receptionIds.length > 0
-      ? await Promise.all([
-          School.findAll({ where: { createdBy: { [Op.in]: receptionIds } }, order: [['createdAt', 'DESC']] })
-            .catch(err => { logger.warn('Failed to fetch schools for admin', { error: err.message, adminId: id }); return []; }),
-          User.findAll({ where: { role: 'teacher', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']] })
-            .catch(err => { logger.warn('Failed to fetch teachers for admin', { error: err.message, adminId: id }); return []; }),
-          User.findAll({ where: { role: 'parent', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']] })
-            .catch(err => { logger.warn('Failed to fetch parents for admin', { error: err.message, adminId: id }); return []; }),
-        ])
-      : [[], [], []];
+    // Collect all school IDs this admin is associated with: their own schoolId + reception schoolIds
+    const receptionSchoolIds = receptions.map(r => r.schoolId).filter(Boolean);
+    const allSchoolIds = [...new Set([admin.schoolId, ...receptionSchoolIds].filter(Boolean))];
+
+    // Fetch schools, teachers, and parents in parallel — capped at 200 rows each
+    const [schools, teachers, parents] = await Promise.all([
+      allSchoolIds.length > 0
+        ? School.findAll({ where: { id: { [Op.in]: allSchoolIds } }, order: [['name', 'ASC']], limit: 50 })
+            .catch(err => { logger.warn('Failed to fetch schools for admin', { error: err.message, adminId: id }); return []; })
+        : Promise.resolve([]),
+      receptionIds.length > 0
+        ? User.findAll({ where: { role: 'teacher', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']], limit: 200 })
+            .catch(err => { logger.warn('Failed to fetch teachers for admin', { error: err.message, adminId: id }); return []; })
+        : Promise.resolve([]),
+      receptionIds.length > 0
+        ? User.findAll({ where: { role: 'parent', createdBy: { [Op.in]: receptionIds } }, attributes: { exclude: ['password'] }, order: [['createdAt', 'DESC']], limit: 200 })
+            .catch(err => { logger.warn('Failed to fetch parents for admin', { error: err.message, adminId: id }); return []; })
+        : Promise.resolve([]),
+    ]);
 
     const parentIds = parents.map(p => p.id);
     const schoolIds = schools.map(s => s.id);
@@ -858,7 +866,7 @@ export const getAdminDetails = async (req, res) => {
     // Fetch children and school ratings in parallel — each depends on the previous batch
     const [children, ratingsResult] = await Promise.all([
       parentIds.length > 0
-        ? Child.findAll({ where: { parentId: { [Op.in]: parentIds } }, order: [['createdAt', 'DESC']] })
+        ? Child.findAll({ where: { parentId: { [Op.in]: parentIds } }, order: [['createdAt', 'DESC']], limit: 200 })
             .catch(err => { logger.warn('Failed to fetch children for admin', { error: err.message, adminId: id }); return []; })
         : Promise.resolve([]),
       schoolIds.length > 0

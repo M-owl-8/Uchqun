@@ -53,8 +53,8 @@ export default function RegistrationsTab({
                       </div>
                     )}
                     <div className="flex items-center gap-4 pt-2 border-t border-gray-100">
-                      {request.certificateFile && <a href={request.certificateFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Guvohnoma</a>}
-                      {request.passportFile && <a href={request.passportFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />Passport/ID</a>}
+                      {request.certificateFile && <a href={request.certificateFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />{t('registrations.certificate', { defaultValue: 'Guvohnoma' })}</a>}
+                      {request.passportFile && <a href={request.passportFile} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700"><FileText className="w-4 h-4" />{t('registrations.passport', { defaultValue: 'Passport/ID' })}</a>}
                     </div>
                     <p className="text-xs text-gray-500">{t('government.submittedAt')} {new Date(request.createdAt).toLocaleString()}</p>
                   </div>

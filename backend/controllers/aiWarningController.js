@@ -6,6 +6,7 @@ import Child from '../models/Child.js';
 import Notification from '../models/Notification.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
+import { parsePagination } from '../utils/pagination.js';
 
 // #03-009 — targetId is a polymorphic FK; validate the target exists before insert
 const TARGET_MODEL = { school: School, parent: User, teacher: User, child: Child };
@@ -159,9 +160,8 @@ export const getWarnings = async (req, res) => {
       targetId,
       isResolved,
       schoolId,
-      limit = 20,
-      offset = 0,
     } = req.query;
+    const { limit, offset } = parsePagination(req.query);
 
     const where = {};
 
@@ -196,8 +196,8 @@ export const getWarnings = async (req, res) => {
 
     const warnings = await AIWarning.findAndCountAll({
       where,
-      limit: parseInt(limit),
-      offset: parseInt(offset),
+      limit,
+      offset,
       order: [['severity', 'DESC'], ['createdAt', 'DESC']],
       include: [
         {
@@ -212,6 +212,12 @@ export const getWarnings = async (req, res) => {
           required: false,
           attributes: ['id', 'firstName', 'lastName'],
         },
+        {
+          model: User,
+          as: 'resolver',
+          required: false,
+          attributes: ['id', 'firstName', 'lastName'],
+        },
       ],
     });
 
@@ -220,8 +226,8 @@ export const getWarnings = async (req, res) => {
       data: {
         warnings: warnings.rows,
         total: warnings.count,
-        limit: parseInt(limit),
-        offset: parseInt(offset),
+        limit,
+        offset,
       },
     });
   } catch (error) {

@@ -1,0 +1,2181 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Uchqun Admin — Design System & Reference Implementation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          mono: ['JetBrains Mono', 'ui-monospace', 'monospace'],
+        },
+        fontSize: {
+          // Admin scale (base 16)
+          xs:   ['12px', { lineHeight: '1.5' }],
+          sm:   ['13px', { lineHeight: '1.55' }],
+          base: ['14px', { lineHeight: '1.6' }],   // utility size
+          md:   ['16px', { lineHeight: '1.65' }],  // BODY default
+          lg:   ['18px', { lineHeight: '1.55' }],
+          xl:   ['20px', { lineHeight: '1.4' }],
+          '2xl':['24px', { lineHeight: '1.3' }],
+          '3xl':['30px', { lineHeight: '1.25' }],
+          '4xl':['36px', { lineHeight: '1.2' }],
+        },
+        colors: {
+          // Brand — terracotta / clay
+          brand: {
+            50:  '#FBF3EE',
+            100: '#F4E1D4',
+            200: '#E9C4AE',
+            300: '#DCA487',
+            400: '#CC8364',
+            500: '#BA6E4F',
+            600: '#A85C40',  // primary action
+            700: '#8D4A33',  // hover / pressed
+            800: '#6E3A2A',  // headings, seal
+            900: '#4A2820',
+          },
+          // Page surfaces
+          cream:   '#FAF7F2',  // page background (warmer than Government's paper)
+          surface: '#FFFCF8',  // card surface
+          // Warm-neutrals (beige-leaning, never blue)
+          warm: {
+            50:  '#F7F3EC',
+            100: '#EFE9DE',
+            200: '#DFD6C6',
+            300: '#C9BCA9',
+            400: '#9E907C',
+            500: '#756959',
+            600: '#574F43',
+            700: '#3E382F',
+            800: '#2D2823',
+            900: '#1E1A16',
+          },
+          // Sidebar chrome — walnut
+          walnut: {
+            DEFAULT: '#3D2F2B',
+            hover:   '#4E3D38',
+            divider: '#52423D',
+            muted:   '#9F8C84',
+            text:    '#F2E9DF',
+          },
+          // Semantic (olive success shared with Government)
+          success: { 50: '#EEF2E2', 100: '#DDE5C6', 500: '#6F8E47', 600: '#587538', 700: '#465E2C' },
+          warning: { 50: '#F8EFD7', 100: '#F1DFAF', 500: '#C99732', 600: '#B4811F', 700: '#8D6418' },
+          error:   { 50: '#F4DEDB', 100: '#EAC4BF', 500: '#B1554F', 600: '#9A3E3A', 700: '#7B302D' },
+          info:    { 50: '#E1E7EE', 100: '#C5D0DC', 500: '#5F7892', 600: '#4D6584', 700: '#3D506C' },
+        },
+        borderRadius: {
+          sm: '6px', md: '8px', lg: '10px',
+        },
+        boxShadow: {
+          xs: '0 1px 2px rgba(45, 40, 35, 0.04), 0 1px 1px rgba(45, 40, 35, 0.03)',
+          sm: '0 2px 4px rgba(45, 40, 35, 0.06), 0 1px 2px rgba(45, 40, 35, 0.04)',
+          md: '0 6px 16px rgba(45, 40, 35, 0.08), 0 2px 4px rgba(45, 40, 35, 0.04)',
+          lg: '0 16px 40px rgba(45, 40, 35, 0.14), 0 6px 12px rgba(45, 40, 35, 0.06)',
+        },
+        spacing: {
+          '4.5': '18px',
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html, body { background: #FAF7F2; color: #1E1A16; font-family: 'Inter', system-ui, sans-serif; font-size: 16px; }
+  body { font-feature-settings: 'cv11', 'ss01', 'ss03'; }
+  .num { font-variant-numeric: tabular-nums; }
+  /* Letterhead hairline */
+  .letterhead {
+    position: relative;
+  }
+  .letterhead::before {
+    content: '';
+    position: absolute;
+    top: -14px; left: 0;
+    height: 2px; width: 56px;
+    background: #A85C40;
+    border-radius: 1px;
+  }
+  /* Smooth scroll */
+  html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+  /* SVG striped placeholders */
+  .placeholder-stripes {
+    background-image: repeating-linear-gradient(45deg, #EFE9DE 0 8px, #F7F3EC 8px 16px);
+  }
+  /* focus ring */
+  .focus-ring:focus-visible { outline: 2px solid #A85C40; outline-offset: 2px; }
+  /* topnav underline */
+  .nav-link { position: relative; }
+  .nav-link.is-active::after {
+    content: ''; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 2px; background: #A85C40; border-radius: 1px;
+  }
+  /* small caps table header */
+  .colhead { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; color: #756959; }
+  /* details summary cursor */
+  details > summary { cursor: pointer; list-style: none; }
+  details > summary::-webkit-details-marker { display: none; }
+  /* keyboard kbd */
+  kbd {
+    font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 2px 6px;
+    background: #FFFCF8; border: 1px solid #DFD6C6; border-bottom-width: 2px; border-radius: 4px; color: #574F43;
+  }
+  /* dotted divider between sections */
+  .section-rule {
+    height: 1px;
+    background: repeating-linear-gradient(90deg, #DFD6C6 0 4px, transparent 4px 8px);
+  }
+  /* sidebar active accent bar */
+  .nav-active-bar {
+    position: absolute; left: 0; top: 8px; bottom: 8px; width: 3px; background: #A85C40; border-radius: 0 2px 2px 0;
+  }
+  /* tiny rotating loader */
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .spin { animation: spin 0.9s linear infinite; }
+  /* skeleton shimmer */
+  @keyframes shimmer { 0% { background-position: -400px 0; } 100% { background-position: 400px 0; } }
+  .skel {
+    background: linear-gradient(90deg, #EFE9DE 0%, #F7F3EC 50%, #EFE9DE 100%);
+    background-size: 800px 100%;
+    animation: shimmer 1.4s ease-in-out infinite;
+    border-radius: 4px;
+  }
+  /* document preview */
+  .doc-preview {
+    background:
+      linear-gradient(#FFFCF8, #FFFCF8) padding-box,
+      repeating-linear-gradient(180deg, #DFD6C6 0 1px, transparent 1px 14px);
+  }
+</style>
+</head>
+<body class="bg-cream text-warm-900 antialiased">
+
+<!-- ============================================================ TOP NAV ============================================================ -->
+<header class="sticky top-0 z-30 bg-cream/85 backdrop-blur border-b border-warm-200">
+  <div class="max-w-[1280px] mx-auto px-6 h-14 flex items-center gap-6">
+    <a href="#top" class="flex items-center gap-2.5">
+      <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-walnut text-cream font-semibold text-sm tracking-tight" style="letter-spacing:-0.04em">U</span>
+      <span class="text-md font-semibold tracking-tight text-warm-900">Uchqun Admin</span>
+      <span class="text-xs text-warm-500 ml-1 hidden md:inline">— Design System</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-sm text-warm-600 ml-2">
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#handoff">Handoff</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#tokens">Tokens</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#components">Components</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#page-login">Login</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#page-dashboard">Dashboard</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#page-docs">Documents</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#page-reception">Reception</a>
+      <a class="nav-link px-3 py-1.5 rounded-md hover:text-warm-900" href="#page-ai">AI Warnings</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-3">
+      <span class="hidden lg:inline text-xs text-warm-500 num">v1.0 · admin-portal</span>
+      <span class="inline-flex items-center gap-1.5 text-xs font-medium text-brand-800 bg-brand-50 border border-brand-100 px-2 py-1 rounded-md">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>
+        Terracotta
+      </span>
+    </div>
+  </div>
+</header>
+
+<a id="top"></a>
+
+<!-- ============================================================ HERO / INTRO ============================================================ -->
+<section class="max-w-[1280px] mx-auto px-6 pt-14 pb-10">
+  <p class="text-sm text-brand-700 font-medium mb-3 tracking-wide uppercase" style="letter-spacing:0.08em">Uchqun · School Steward Portal</p>
+  <h1 class="text-4xl font-semibold tracking-tight text-warm-900 max-w-3xl" style="line-height:1.15">
+    A warm-professional design language for the school director's office.
+  </h1>
+  <p class="mt-5 text-md text-warm-600 max-w-2xl" style="line-height:1.65">
+    The Admin portal is operated by school stewards in Uzbekistan — directors of special-education institutions who are
+    part operator, part caretaker, part civic actor. This document defines the visual system that distinguishes Admin
+    from the Government portal: terracotta over institutional green, cream over cool paper, papers-on-a-desk over flat
+    inspector forms.
+  </p>
+  <div class="mt-7 flex flex-wrap items-center gap-2">
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">Inter · base 16px</span>
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">Terracotta brand</span>
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">Cream + warm-neutrals</span>
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">Subtle shadows on cards</span>
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">8/10 px radii</span>
+    <span class="text-xs px-2.5 py-1 rounded-sm border border-warm-200 bg-surface text-warm-700">lucide @ 1.75 stroke</span>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ HANDOFF ============================================================ -->
+<section id="handoff" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="grid md:grid-cols-[280px_1fr] gap-10">
+    <div>
+      <p class="text-xs font-medium uppercase tracking-wider text-brand-700">For Implementation</p>
+      <h2 class="mt-2 text-2xl font-semibold tracking-tight text-warm-900">Handoff to Claude Code</h2>
+      <p class="mt-3 text-sm text-warm-500" style="line-height:1.65">
+        Scoped to the <code class="text-xs bg-warm-100 px-1.5 py-0.5 rounded-sm">admin/</code> portal only.
+        Other portals keep their own brand scales.
+      </p>
+    </div>
+
+    <div class="space-y-6">
+      <!-- 1 -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <h3 class="text-md font-semibold text-warm-900">1 — Add tokens to <code class="text-sm bg-warm-100 px-1.5 py-0.5 rounded-sm">admin/tailwind.config.js</code></h3>
+        <p class="mt-1 text-sm text-warm-500">Local <code class="text-xs bg-warm-100 px-1 rounded">theme.extend</code> only. Do <strong>not</strong> push these into the shared preset — other portals (Reception, Teacher, Parent, Government) have their own brand scales.</p>
+        <pre class="mt-4 text-xs bg-warm-900 text-warm-100 rounded-md p-4 overflow-x-auto font-mono" style="line-height:1.6">// admin/tailwind.config.js  →  theme.extend
+colors: {
+  brand: {
+    50:'#FBF3EE', 100:'#F4E1D4', 200:'#E9C4AE', 300:'#DCA487',
+    400:'#CC8364', 500:'#BA6E4F', 600:'#A85C40', 700:'#8D4A33',
+    800:'#6E3A2A', 900:'#4A2820',
+  },
+  cream:   '#FAF7F2',
+  surface: '#FFFCF8',
+  warm: { 50:'#F7F3EC', 100:'#EFE9DE', 200:'#DFD6C6', 300:'#C9BCA9',
+          400:'#9E907C', 500:'#756959', 600:'#574F43', 700:'#3E382F',
+          800:'#2D2823', 900:'#1E1A16' },
+  walnut: { DEFAULT:'#3D2F2B', hover:'#4E3D38', divider:'#52423D',
+            muted:'#9F8C84', text:'#F2E9DF' },
+  // success.* (olive) is already in the shared preset from Government —
+  // do NOT redefine. Reuse:  className="bg-success-50 text-success-700"
+  warning: { 50:'#F8EFD7', 500:'#C99732', 600:'#B4811F' },
+  error:   { 50:'#F4DEDB', 500:'#B1554F', 600:'#9A3E3A' },
+  info:    { 50:'#E1E7EE', 500:'#5F7892', 600:'#4D6584' },
+},
+borderRadius: { sm:'6px', md:'8px', lg:'10px' },
+boxShadow: {
+  xs:'0 1px 2px rgba(45,40,35,.04), 0 1px 1px rgba(45,40,35,.03)',
+  sm:'0 2px 4px rgba(45,40,35,.06), 0 1px 2px rgba(45,40,35,.04)',
+  md:'0 6px 16px rgba(45,40,35,.08), 0 2px 4px rgba(45,40,35,.04)',
+  lg:'0 16px 40px rgba(45,40,35,.14), 0 6px 12px rgba(45,40,35,.06)',
+},</pre>
+      </div>
+
+      <!-- 2 -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <h3 class="text-md font-semibold text-warm-900">2 — Replace legacy classNames across <code class="text-sm bg-warm-100 px-1.5 py-0.5 rounded-sm">admin/src/**/*.jsx</code></h3>
+        <ul class="mt-3 space-y-2 text-sm text-warm-700">
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div><code class="text-xs bg-warm-100 px-1 rounded">primary-*</code> &nbsp;⇒&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">brand-*</code></div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div><code class="text-xs bg-warm-100 px-1 rounded">bg-gray-50</code> page background &nbsp;⇒&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">bg-cream</code></div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div><code class="text-xs bg-warm-100 px-1 rounded">bg-white</code> card surface &nbsp;⇒&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">bg-surface</code></div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div><code class="text-xs bg-warm-100 px-1 rounded">text-gray-*</code> &nbsp;⇒&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">text-warm-*</code></div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div><code class="text-xs bg-warm-100 px-1 rounded">bg-sidebar-navy</code> &nbsp;⇒&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">bg-walnut</code> (and remove <code class="text-xs bg-warm-100 px-1 rounded">sidebar-blue</code> tints — replace with <code class="text-xs bg-warm-100 px-1 rounded">brand-50</code> indicator + <code class="text-xs bg-warm-100 px-1 rounded">brand-600</code> left-bar)</div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div>Remove <code class="text-xs bg-warm-100 px-1 rounded">bg-gradient-to-r from-primary-600 to-primary-500</code> dashboard hero — replace with the action-row layout (see Dashboard reference)</div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div>Replace ad-hoc colored stat-card pills (<code class="text-xs bg-warm-100 px-1 rounded">bg-blue-50</code>, <code class="text-xs bg-warm-100 px-1 rounded">bg-indigo-50</code>, etc) with the neutral stat-card spec — color enters only via semantic trend indicator</div></li>
+          <li class="flex gap-3"><span class="text-warm-400">→</span><div>Lucide stroke: bump to <code class="text-xs bg-warm-100 px-1 rounded">strokeWidth={1.75}</code> globally (currently 1.5 in <code class="text-xs bg-warm-100 px-1 rounded">Sidebar.jsx</code>)</div></li>
+        </ul>
+      </div>
+
+      <!-- 3 -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <h3 class="text-md font-semibold text-warm-900">3 — Migration order</h3>
+        <ol class="mt-3 space-y-2 text-sm text-warm-700">
+          <li class="flex gap-3"><span class="num text-brand-600 font-semibold">①</span><div><strong>Tokens first.</strong> Land the config above. Build green. No screens change yet.</div></li>
+          <li class="flex gap-3"><span class="num text-brand-600 font-semibold">②</span><div><strong>Shared components second.</strong> Update <code class="text-xs bg-warm-100 px-1 rounded">@shared/components/</code> Button, Card, Badge, Input, Modal, Toast, Tabs, PageHeader, ConfirmDialog, EmptyState, Table to consume the new tokens.</div></li>
+          <li class="flex gap-3"><span class="num text-brand-600 font-semibold">③</span><div><strong>Page-by-page third.</strong> Sidebar &amp; Layout → Login → Dashboard → ReceptionManagement → (new) Documents queue → (new) AI Warnings → remaining pages.</div></li>
+        </ol>
+      </div>
+
+      <!-- 4 -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <h3 class="text-md font-semibold text-warm-900">4 — New asset files needed</h3>
+        <ul class="mt-3 space-y-1.5 text-sm text-warm-700">
+          <li>•&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">public/uchqun-wordmark.svg</code> — cream-on-walnut wordmark for sidebar header &amp; login card</li>
+          <li>•&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">public/school-shield-placeholder.svg</code> — generic shield-style icon for the 40px institution-mark slot when no school logo uploaded</li>
+          <li>•&nbsp; <code class="text-xs bg-warm-100 px-1 rounded">public/ihma-attribution.svg</code> — small monochrome IHMA attribution mark for login footer</li>
+        </ul>
+      </div>
+
+      <!-- 5 -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <h3 class="text-md font-semibold text-warm-900">5 — Notes for the implementer</h3>
+        <ul class="mt-3 space-y-2 text-sm text-warm-700">
+          <li>•&nbsp; All Uzbek copy on these reference screens is plausible production copy — feel free to lift verbatim into <code class="text-xs bg-warm-100 px-1 rounded">locales/uz/common.json</code>.</li>
+          <li>•&nbsp; Russian / English keys still need translation; reuse existing key names, just add new ones for the new pages (<code class="text-xs bg-warm-100 px-1 rounded">documentsQueue.*</code>, <code class="text-xs bg-warm-100 px-1 rounded">aiWarnings.*</code>, <code class="text-xs bg-warm-100 px-1 rounded">dashboard.attention.*</code>).</li>
+          <li>•&nbsp; Semantic <code class="text-xs bg-warm-100 px-1 rounded">success.*</code> scale comes from the shared preset (Government already shipped it). <strong>Do not redefine.</strong></li>
+          <li>•&nbsp; The <code class="text-xs bg-warm-100 px-1 rounded">.letterhead</code> rule (2px terracotta hairline above page titles) is the Admin signature — equivalent to Government's 4px full-bleed top rule, but inline and restrained.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ TOKENS ============================================================ -->
+<section id="tokens" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-10 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Section 01</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Tokens</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">The base materials. Every color, size, shadow, and radius the Admin portal is allowed to use.</p>
+  </div>
+
+  <!-- ─── COLORS ────────────────────────────────────────────── -->
+  <div class="mb-14">
+    <h3 class="text-xl font-semibold text-warm-900 mb-1">Color</h3>
+    <p class="text-sm text-warm-500 mb-6 max-w-2xl">Brand scale is scoped to Admin. Warm-neutrals replace cool grays throughout. Walnut anchors the sidebar.</p>
+
+    <!-- Brand scale -->
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6 mb-6">
+      <div class="flex items-baseline justify-between mb-4">
+        <div>
+          <p class="text-md font-semibold text-warm-900">Brand · Terracotta</p>
+          <p class="text-sm text-warm-500 mt-0.5">Samarkand brick, Bukhara clay. The 600 stop is the locked primary action color.</p>
+        </div>
+        <code class="text-xs text-warm-500">--color-brand-*</code>
+      </div>
+      <div class="grid grid-cols-5 md:grid-cols-10 gap-2">
+        <!-- swatches generated inline -->
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#FBF3EE"></div><p class="text-[11px] mt-1.5 text-warm-700">50</p><p class="text-[10px] num text-warm-500">#FBF3EE</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#F4E1D4"></div><p class="text-[11px] mt-1.5 text-warm-700">100</p><p class="text-[10px] num text-warm-500">#F4E1D4</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#E9C4AE"></div><p class="text-[11px] mt-1.5 text-warm-700">200</p><p class="text-[10px] num text-warm-500">#E9C4AE</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#DCA487"></div><p class="text-[11px] mt-1.5 text-warm-700">300</p><p class="text-[10px] num text-warm-500">#DCA487</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#CC8364"></div><p class="text-[11px] mt-1.5 text-warm-700">400</p><p class="text-[10px] num text-warm-500">#CC8364</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#BA6E4F"></div><p class="text-[11px] mt-1.5 text-warm-700">500</p><p class="text-[10px] num text-warm-500">#BA6E4F</p></div>
+        <div class="relative"><div class="h-16 rounded-md ring-2 ring-brand-600/30" style="background:#A85C40"></div><p class="text-[11px] mt-1.5 text-brand-700 font-semibold">600 · primary</p><p class="text-[10px] num text-warm-500">#A85C40</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#8D4A33"></div><p class="text-[11px] mt-1.5 text-warm-700">700</p><p class="text-[10px] num text-warm-500">#8D4A33</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#6E3A2A"></div><p class="text-[11px] mt-1.5 text-warm-700">800</p><p class="text-[10px] num text-warm-500">#6E3A2A</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/60" style="background:#4A2820"></div><p class="text-[11px] mt-1.5 text-warm-700">900</p><p class="text-[10px] num text-warm-500">#4A2820</p></div>
+      </div>
+      <div class="mt-5 grid md:grid-cols-3 gap-x-6 gap-y-3 text-sm pt-5 border-t border-warm-100">
+        <div><span class="text-warm-500 text-xs">600 · primary</span><p class="text-warm-700">Filled primary buttons, active sidebar bar, focus rings, accent icons, letterhead rule.</p></div>
+        <div><span class="text-warm-500 text-xs">100 · tint</span><p class="text-warm-700">Active sidebar item background, hover backgrounds, document-status pending tint.</p></div>
+        <div><span class="text-warm-500 text-xs">800 · seal</span><p class="text-warm-700">Page H1 in document-letterhead style, brand badge on dark surfaces.</p></div>
+      </div>
+    </div>
+
+    <!-- Surfaces -->
+    <div class="grid md:grid-cols-2 gap-6 mb-6">
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <div class="flex items-baseline justify-between mb-4">
+          <p class="text-md font-semibold text-warm-900">Page surfaces</p>
+          <code class="text-xs text-warm-500">--color-cream / --color-surface</code>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <div class="h-24 rounded-md border border-warm-200" style="background:#FAF7F2"></div>
+            <p class="text-sm font-medium text-warm-900 mt-2">cream <span class="text-warm-500 text-xs num">#FAF7F2</span></p>
+            <p class="text-xs text-warm-500 mt-0.5">Page background. Aged paper.</p>
+          </div>
+          <div>
+            <div class="h-24 rounded-md border border-warm-200" style="background:#FFFCF8"></div>
+            <p class="text-sm font-medium text-warm-900 mt-2">surface <span class="text-warm-500 text-xs num">#FFFCF8</span></p>
+            <p class="text-xs text-warm-500 mt-0.5">Card body. Cleaner sheet on the desk.</p>
+          </div>
+        </div>
+      </div>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+        <div class="flex items-baseline justify-between mb-4">
+          <p class="text-md font-semibold text-warm-900">Sidebar chrome · Walnut</p>
+          <code class="text-xs text-warm-500">--color-walnut-*</code>
+        </div>
+        <div class="grid grid-cols-4 gap-2 text-cream">
+          <div><div class="h-16 rounded-md flex items-center justify-center text-[11px]" style="background:#3D2F2B">3D2F2B</div><p class="text-[11px] mt-1.5 text-warm-700">DEFAULT</p></div>
+          <div><div class="h-16 rounded-md flex items-center justify-center text-[11px]" style="background:#4E3D38">4E3D38</div><p class="text-[11px] mt-1.5 text-warm-700">hover</p></div>
+          <div><div class="h-16 rounded-md flex items-center justify-center text-[11px]" style="background:#52423D">52423D</div><p class="text-[11px] mt-1.5 text-warm-700">divider</p></div>
+          <div><div class="h-16 rounded-md flex items-center justify-center text-[11px] text-warm-800" style="background:#9F8C84">9F8C84</div><p class="text-[11px] mt-1.5 text-warm-700">muted-text</p></div>
+        </div>
+        <p class="text-xs text-warm-500 mt-3">Dark walnut wood — not slate stone. Flatters terracotta.</p>
+      </div>
+    </div>
+
+    <!-- Warm neutrals -->
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6 mb-6">
+      <div class="flex items-baseline justify-between mb-4">
+        <div>
+          <p class="text-md font-semibold text-warm-900">Warm neutrals</p>
+          <p class="text-sm text-warm-500 mt-0.5">Beige-leaning, never blue. Replaces every <code class="text-xs bg-warm-100 px-1 rounded">gray-*</code> in the legacy codebase.</p>
+        </div>
+        <code class="text-xs text-warm-500">--color-warm-*</code>
+      </div>
+      <div class="grid grid-cols-5 md:grid-cols-10 gap-2">
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#F7F3EC"></div><p class="text-[11px] mt-1.5 text-warm-700">50</p><p class="text-[10px] num text-warm-500">#F7F3EC</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#EFE9DE"></div><p class="text-[11px] mt-1.5 text-warm-700">100</p><p class="text-[10px] num text-warm-500">#EFE9DE</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#DFD6C6"></div><p class="text-[11px] mt-1.5 text-warm-700">200</p><p class="text-[10px] num text-warm-500">#DFD6C6</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#C9BCA9"></div><p class="text-[11px] mt-1.5 text-warm-700">300</p><p class="text-[10px] num text-warm-500">#C9BCA9</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#9E907C"></div><p class="text-[11px] mt-1.5 text-warm-700">400</p><p class="text-[10px] num text-warm-500">#9E907C</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#756959"></div><p class="text-[11px] mt-1.5 text-warm-700">500</p><p class="text-[10px] num text-warm-500">#756959</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#574F43"></div><p class="text-[11px] mt-1.5 text-warm-700">600</p><p class="text-[10px] num text-warm-500">#574F43</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#3E382F"></div><p class="text-[11px] mt-1.5 text-warm-700">700</p><p class="text-[10px] num text-warm-500">#3E382F</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#2D2823"></div><p class="text-[11px] mt-1.5 text-warm-700">800</p><p class="text-[10px] num text-warm-500">#2D2823</p></div>
+        <div><div class="h-16 rounded-md ring-1 ring-warm-200/80" style="background:#1E1A16"></div><p class="text-[11px] mt-1.5 text-warm-700">900</p><p class="text-[10px] num text-warm-500">#1E1A16</p></div>
+      </div>
+      <div class="mt-5 grid md:grid-cols-4 gap-x-6 gap-y-3 text-sm pt-5 border-t border-warm-100">
+        <div><span class="text-warm-500 text-xs">900</span><p class="text-warm-700">Body text, table values, H1/H2 ink.</p></div>
+        <div><span class="text-warm-500 text-xs">700</span><p class="text-warm-700">Sub-headings, button label on secondary.</p></div>
+        <div><span class="text-warm-500 text-xs">500</span><p class="text-warm-700">Helper text, timestamps, table colheads.</p></div>
+        <div><span class="text-warm-500 text-xs">200 / 100</span><p class="text-warm-700">Borders &amp; dividers, hover row tint.</p></div>
+      </div>
+    </div>
+
+    <!-- Semantic -->
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+      <div class="flex items-baseline justify-between mb-4">
+        <div>
+          <p class="text-md font-semibold text-warm-900">Semantic colors</p>
+          <p class="text-sm text-warm-500 mt-0.5">Shared cross-portal. Muted by design — calibrated to harmonize with terracotta, never compete with it.</p>
+        </div>
+        <code class="text-xs text-warm-500">--color-{success|warning|error|info}-*</code>
+      </div>
+      <div class="grid md:grid-cols-4 gap-4">
+        <!-- success -->
+        <div class="border border-warm-100 rounded-md p-4 bg-cream">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full" style="background:#587538"></span><p class="text-sm font-semibold text-warm-900">Success · Olive</p></div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-8 rounded-sm" style="background:#EEF2E2"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#DDE5C6"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#6F8E47"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#587538"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#465E2C"></div>
+          </div>
+          <p class="text-xs text-warm-500 mt-2">Approved status, positive trend, "Tasdiqlangan".</p>
+          <p class="num text-[11px] text-warm-500 mt-1">50 · 100 · 500 · <strong>600</strong> · 700</p>
+        </div>
+        <!-- warning -->
+        <div class="border border-warm-100 rounded-md p-4 bg-cream">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full" style="background:#B4811F"></span><p class="text-sm font-semibold text-warm-900">Warning · Amber</p></div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-8 rounded-sm" style="background:#F8EFD7"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#F1DFAF"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#C99732"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#B4811F"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#8D6418"></div>
+          </div>
+          <p class="text-xs text-warm-500 mt-2">"Ko'rib chiqilmoqda", medium severity AI warnings.</p>
+          <p class="num text-[11px] text-warm-500 mt-1">50 · 100 · 500 · <strong>600</strong> · 700</p>
+        </div>
+        <!-- error -->
+        <div class="border border-warm-100 rounded-md p-4 bg-cream">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full" style="background:#9A3E3A"></span><p class="text-sm font-semibold text-warm-900">Error · Bordeaux</p></div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-8 rounded-sm" style="background:#F4DEDB"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#EAC4BF"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#B1554F"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#9A3E3A"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#7B302D"></div>
+          </div>
+          <p class="text-xs text-warm-500 mt-2">"Rad etish", danger buttons, critical AI warnings.</p>
+          <p class="num text-[11px] text-warm-500 mt-1">50 · 100 · 500 · <strong>600</strong> · 700</p>
+        </div>
+        <!-- info -->
+        <div class="border border-warm-100 rounded-md p-4 bg-cream">
+          <div class="flex items-center gap-2 mb-3"><span class="w-2.5 h-2.5 rounded-full" style="background:#4D6584"></span><p class="text-sm font-semibold text-warm-900">Info · Slate-blue</p></div>
+          <div class="flex gap-1">
+            <div class="flex-1 h-8 rounded-sm" style="background:#E1E7EE"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#C5D0DC"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#5F7892"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#4D6584"></div>
+            <div class="flex-1 h-8 rounded-sm" style="background:#3D506C"></div>
+          </div>
+          <p class="text-xs text-warm-500 mt-2">Informational toasts, low-severity AI warnings.</p>
+          <p class="num text-[11px] text-warm-500 mt-1">50 · 100 · 500 · <strong>600</strong> · 700</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── TYPOGRAPHY ────────────────────────────────────────────── -->
+  <div class="mb-14">
+    <h3 class="text-xl font-semibold text-warm-900 mb-1">Typography</h3>
+    <p class="text-sm text-warm-500 mb-6 max-w-2xl">Inter. Base 16 (vs Government's 15 — Admin users sustain longer reading sessions). Three weights only: 400 / 500 / 600.</p>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs overflow-hidden">
+      <div class="divide-y divide-warm-100">
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">H1 · text-4xl</p><p class="num text-[11px] text-warm-400">36 / 600 / 1.2</p></div>
+          <p class="text-4xl font-semibold tracking-tight text-warm-900" style="line-height:1.2">Maktab boshqaruvi</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">H2 · text-3xl</p><p class="num text-[11px] text-warm-400">30 / 600 / 1.25</p></div>
+          <p class="text-3xl font-semibold tracking-tight text-warm-900" style="line-height:1.25">Hujjatlarni tasdiqlash</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">H3 · text-2xl</p><p class="num text-[11px] text-warm-400">24 / 600 / 1.3</p></div>
+          <p class="text-2xl font-semibold text-warm-900">Tasdiq kutayotgan hujjatlar</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">H4 · text-xl</p><p class="num text-[11px] text-warm-400">20 / 600 / 1.4</p></div>
+          <p class="text-xl font-semibold text-warm-900">So'nggi faoliyat</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">Subtitle · text-lg</p><p class="num text-[11px] text-warm-400">18 / 500 / 1.55</p></div>
+          <p class="text-lg font-medium text-warm-700">Bu sahifa orqali siz qabulxona xodimlarini boshqarasiz</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">Body · text-md</p><p class="num text-[11px] text-warm-400">16 / 400 / 1.65</p></div>
+          <p class="text-md text-warm-700 max-w-xl">Maktab rahbari sifatida siz bolalar, o'qituvchilar va qabulxona xodimlarining faoliyatini kuzatib borasiz. Har bir hujjat va ogohlantirish sizning e'tiboringizni talab qiladi.</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">Body sm · text-sm</p><p class="num text-[11px] text-warm-400">13 / 400 / 1.55</p></div>
+          <p class="text-sm text-warm-700">Helper text, table cells, dropdown labels. Used when 16 would be too loud.</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">Caption · text-xs</p><p class="num text-[11px] text-warm-400">12 / 500 / 1.5</p></div>
+          <p class="text-xs text-warm-500 uppercase tracking-wider">Timestamps · column headers · meta</p>
+        </div>
+        <div class="p-5 flex items-end gap-6">
+          <div class="w-40 shrink-0"><p class="text-xs text-warm-500">Tabular num · text-3xl</p><p class="num text-[11px] text-warm-400">30 / 600 · num</p></div>
+          <p class="num text-3xl font-semibold text-warm-900">124 · 87% · 1,238</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── SPACING ────────────────────────────────────────────── -->
+  <div class="mb-14">
+    <h3 class="text-xl font-semibold text-warm-900 mb-1">Spacing</h3>
+    <p class="text-sm text-warm-500 mb-6 max-w-2xl">8px grid. Medium-high density — closer to Mercury than Stripe. More breathing room than Government, less than a consumer product.</p>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+      <div class="space-y-2.5">
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">4</span><div class="h-3 bg-brand-300 rounded-sm" style="width:4px"></div><span class="text-xs text-warm-500">inline icon gap</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">8</span><div class="h-3 bg-brand-400 rounded-sm" style="width:8px"></div><span class="text-xs text-warm-500">tight stack, badge padding</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">12</span><div class="h-3 bg-brand-400 rounded-sm" style="width:12px"></div><span class="text-xs text-warm-500">form-field internal padding-y</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">16</span><div class="h-3 bg-brand-500 rounded-sm" style="width:16px"></div><span class="text-xs text-warm-500">card padding mobile, tight gap</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">20</span><div class="h-3 bg-brand-500 rounded-sm" style="width:20px"></div><span class="text-xs text-warm-500">section gap inside a card</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">24</span><div class="h-3 bg-brand-600 rounded-sm" style="width:24px"></div><span class="text-xs text-warm-500">card padding desktop, grid gap</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">32</span><div class="h-3 bg-brand-600 rounded-sm" style="width:32px"></div><span class="text-xs text-warm-500">stack between major page sections</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">40</span><div class="h-3 bg-brand-700 rounded-sm" style="width:40px"></div><span class="text-xs text-warm-500">page top padding</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">48</span><div class="h-3 bg-brand-700 rounded-sm" style="width:48px"></div><span class="text-xs text-warm-500">page section vertical rhythm</span></div>
+        <div class="flex items-center gap-4"><span class="num text-xs w-12 text-warm-500">64</span><div class="h-3 bg-brand-800 rounded-sm" style="width:64px"></div><span class="text-xs text-warm-500">hero header bottom margin</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── RADIUS ────────────────────────────────────────────── -->
+  <div class="mb-14 grid md:grid-cols-2 gap-6">
+    <div>
+      <h3 class="text-xl font-semibold text-warm-900 mb-1">Border radius</h3>
+      <p class="text-sm text-warm-500 mb-6 max-w-md">Slightly softer than Government. The 2px shift on inputs/buttons is the warmth signal.</p>
+      <div class="bg-surface border border-warm-200 shadow-xs rounded-lg p-6 grid grid-cols-2 gap-5">
+        <div class="text-center"><div class="h-16 w-16 mx-auto bg-brand-100 border border-brand-200" style="border-radius:6px"></div><p class="mt-2 text-sm font-medium text-warm-900">sm · 6px</p><p class="text-xs text-warm-500">chips, badges</p></div>
+        <div class="text-center"><div class="h-16 w-16 mx-auto bg-brand-100 border border-brand-200" style="border-radius:8px"></div><p class="mt-2 text-sm font-medium text-warm-900">md · 8px</p><p class="text-xs text-warm-500">buttons, inputs</p></div>
+        <div class="text-center"><div class="h-16 w-16 mx-auto bg-brand-100 border border-brand-200" style="border-radius:10px"></div><p class="mt-2 text-sm font-medium text-warm-900">lg · 10px</p><p class="text-xs text-warm-500">cards, modals</p></div>
+        <div class="text-center"><div class="h-16 w-16 mx-auto bg-brand-100 border border-brand-200 rounded-full"></div><p class="mt-2 text-sm font-medium text-warm-900">full</p><p class="text-xs text-warm-500">avatars, dot indicators</p></div>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-xl font-semibold text-warm-900 mb-1">Shadows</h3>
+      <p class="text-sm text-warm-500 mb-6 max-w-md">Papers on a wooden desk. <code class="text-xs bg-warm-100 px-1 rounded">xs</code> at rest is the Admin signature.</p>
+      <div class="bg-surface border border-warm-200 shadow-xs rounded-lg p-6 grid grid-cols-2 gap-5">
+        <div class="text-center"><div class="h-16 mx-auto bg-surface border border-warm-100 rounded-md flex items-center justify-center text-xs text-warm-500">none</div><p class="mt-2 text-sm font-medium text-warm-900">none</p><p class="text-xs text-warm-500">page chrome</p></div>
+        <div class="text-center"><div class="h-16 mx-auto bg-surface border border-warm-100 rounded-md shadow-xs flex items-center justify-center text-xs text-warm-500">xs</div><p class="mt-2 text-sm font-medium text-warm-900">xs · default cards</p><p class="text-xs text-warm-500">0 1px 2px rgba(45,40,35,.04)</p></div>
+        <div class="text-center"><div class="h-16 mx-auto bg-surface border border-warm-100 rounded-md shadow-sm flex items-center justify-center text-xs text-warm-500">sm</div><p class="mt-2 text-sm font-medium text-warm-900">sm · hover, raised</p><p class="text-xs text-warm-500">0 2px 4px / 1px 2px</p></div>
+        <div class="text-center"><div class="h-16 mx-auto bg-surface border border-warm-100 rounded-md shadow-md flex items-center justify-center text-xs text-warm-500">md</div><p class="mt-2 text-sm font-medium text-warm-900">md · dropdowns</p><p class="text-xs text-warm-500">0 6px 16px / 2px 4px</p></div>
+        <div class="text-center col-span-2"><div class="h-16 mx-auto w-1/2 bg-surface border border-warm-100 rounded-md shadow-lg flex items-center justify-center text-xs text-warm-500">lg</div><p class="mt-2 text-sm font-medium text-warm-900">lg · modals</p><p class="text-xs text-warm-500">0 16px 40px / 6px 12px</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── ICONS + Z ────────────────────────────────────────────── -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <div>
+      <h3 class="text-xl font-semibold text-warm-900 mb-1">Iconography</h3>
+      <p class="text-sm text-warm-500 mb-6 max-w-md">lucide-react, stroke 1.75 (Government uses 1.5) — slightly more substantial for the institutional register.</p>
+      <div class="bg-surface border border-warm-200 shadow-xs rounded-lg p-6">
+        <div class="grid grid-cols-3 gap-4 text-warm-700">
+          <div class="border border-warm-100 rounded-md p-4 text-center">
+            <i data-lucide="file-check-2" stroke-width="1.75" class="w-4 h-4 mx-auto"></i>
+            <p class="text-xs text-warm-500 mt-2">16px · inline</p>
+          </div>
+          <div class="border border-warm-100 rounded-md p-4 text-center">
+            <i data-lucide="file-check-2" stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+            <p class="text-xs text-warm-500 mt-2">20px · default</p>
+          </div>
+          <div class="border border-warm-100 rounded-md p-4 text-center">
+            <i data-lucide="file-check-2" stroke-width="1.75" class="w-6 h-6 mx-auto"></i>
+            <p class="text-xs text-warm-500 mt-2">24px · hero / empty</p>
+          </div>
+        </div>
+        <div class="mt-5 pt-5 border-t border-warm-100 grid grid-cols-6 gap-3 text-warm-600">
+          <i data-lucide="home"          stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="users"         stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="file-text"     stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="bell-ring"     stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="shield-check"  stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="settings"      stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+        </div>
+        <div class="mt-3 grid grid-cols-6 gap-3 text-brand-600">
+          <i data-lucide="check-circle-2" stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="x-circle"        stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="alert-triangle"  stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="info"            stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="search"          stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+          <i data-lucide="plus"            stroke-width="1.75" class="w-5 h-5 mx-auto"></i>
+        </div>
+        <p class="text-xs text-warm-500 mt-4">Default: <span class="text-warm-700">warm-500</span>. Active / accent: <span class="text-brand-600">brand-600</span>.</p>
+      </div>
+    </div>
+    <div>
+      <h3 class="text-xl font-semibold text-warm-900 mb-1">Z-index ladder</h3>
+      <p class="text-sm text-warm-500 mb-6 max-w-md">Same scale as Government — written down so future layers slot in deterministically.</p>
+      <div class="bg-surface border border-warm-200 shadow-xs rounded-lg overflow-hidden">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-warm-50"><th class="colhead text-left px-5 py-3">Layer</th><th class="colhead text-left px-5 py-3">z</th><th class="colhead text-left px-5 py-3">Token</th></tr></thead>
+          <tbody class="divide-y divide-warm-100 text-warm-700">
+            <tr><td class="px-5 py-2.5">base content</td><td class="px-5 py-2.5 num">0</td><td class="px-5 py-2.5 text-warm-500">—</td></tr>
+            <tr><td class="px-5 py-2.5">sticky header</td><td class="px-5 py-2.5 num">30</td><td class="px-5 py-2.5 text-warm-500">z-header</td></tr>
+            <tr><td class="px-5 py-2.5">dropdown / popover</td><td class="px-5 py-2.5 num">40</td><td class="px-5 py-2.5 text-warm-500">z-dropdown</td></tr>
+            <tr><td class="px-5 py-2.5">sidebar mobile overlay</td><td class="px-5 py-2.5 num">50</td><td class="px-5 py-2.5 text-warm-500">z-sidebar</td></tr>
+            <tr><td class="px-5 py-2.5">modal backdrop</td><td class="px-5 py-2.5 num">60</td><td class="px-5 py-2.5 text-warm-500">z-modal-backdrop</td></tr>
+            <tr><td class="px-5 py-2.5">modal</td><td class="px-5 py-2.5 num">70</td><td class="px-5 py-2.5 text-warm-500">z-modal</td></tr>
+            <tr><td class="px-5 py-2.5">tooltip</td><td class="px-5 py-2.5 num">80</td><td class="px-5 py-2.5 text-warm-500">z-tooltip</td></tr>
+            <tr><td class="px-5 py-2.5">toast</td><td class="px-5 py-2.5 num">90</td><td class="px-5 py-2.5 text-warm-500">z-toast</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ COMPONENTS ============================================================ -->
+<section id="components" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-10 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Section 02</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Components</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">Every component in every variant and state. The dogfooded examples on this page consume these specs verbatim.</p>
+  </div>
+
+  <!-- BUTTONS -->
+  <article class="mb-12">
+    <header class="flex items-baseline justify-between mb-4">
+      <h3 class="text-xl font-semibold text-warm-900">Button</h3>
+      <code class="text-xs text-warm-500">@shared/components/Button</code>
+    </header>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="text-left">
+            <th class="colhead pb-3 pr-4 w-32">Variant</th>
+            <th class="colhead pb-3 px-4">sm · 32</th>
+            <th class="colhead pb-3 px-4">md · 40 <span class="text-brand-700 normal-case tracking-normal font-normal">(default)</span></th>
+            <th class="colhead pb-3 px-4">lg · 48</th>
+            <th class="colhead pb-3 px-4">States</th>
+          </tr>
+        </thead>
+        <tbody class="align-middle">
+          <!-- Primary -->
+          <tr class="border-t border-warm-100">
+            <td class="py-4 pr-4 font-medium text-warm-900">Primary</td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-1.5 h-8 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs focus-ring">Tasdiqlash</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs focus-ring"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Hujjatni tasdiqlash</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-2 h-12 px-5 text-md font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs focus-ring">Kirish</button></td>
+            <td class="py-4 px-4">
+              <div class="flex flex-wrap gap-2">
+                <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-brand-700 text-cream rounded-md shadow-xs">pressed</button>
+                <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-brand-300 text-cream/70 rounded-md cursor-not-allowed" disabled>disabled</button>
+                <button class="inline-flex items-center gap-1.5 h-9 px-3 text-sm font-medium bg-brand-600 text-cream rounded-md"><i data-lucide="loader-2" stroke-width="2" class="w-3.5 h-3.5 spin"></i>loading</button>
+              </div>
+            </td>
+          </tr>
+          <!-- Secondary -->
+          <tr class="border-t border-warm-100">
+            <td class="py-4 pr-4 font-medium text-warm-900">Secondary</td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-8 px-3 text-sm font-medium bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md focus-ring">Bekor qilish</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md focus-ring"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i>Ko'rish</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-12 px-5 text-md font-medium bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md focus-ring">Tafsilotlar</button></td>
+            <td class="py-4 px-4">
+              <div class="flex flex-wrap gap-2">
+                <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-warm-50 border border-warm-400 text-warm-800 rounded-md">pressed</button>
+                <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-warm-50 border border-warm-200 text-warm-300 rounded-md cursor-not-allowed">disabled</button>
+              </div>
+            </td>
+          </tr>
+          <!-- Ghost -->
+          <tr class="border-t border-warm-100">
+            <td class="py-4 pr-4 font-medium text-warm-900">Ghost</td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-8 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md focus-ring">Yopish</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md focus-ring"><i data-lucide="filter" stroke-width="1.75" class="w-4 h-4"></i>Filter</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-12 px-5 text-md font-medium text-warm-700 hover:bg-warm-100 rounded-md focus-ring">Ortga</button></td>
+            <td class="py-4 px-4">
+              <button class="inline-flex items-center h-9 px-3 text-sm font-medium text-warm-700 bg-warm-100 rounded-md">hover</button>
+            </td>
+          </tr>
+          <!-- Danger -->
+          <tr class="border-t border-warm-100">
+            <td class="py-4 pr-4 font-medium text-warm-900">Danger</td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-8 px-3 text-sm font-medium bg-error-600 hover:bg-error-700 text-cream rounded-md shadow-xs">Rad etish</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium bg-error-600 hover:bg-error-700 text-cream rounded-md shadow-xs"><i data-lucide="trash-2" stroke-width="1.75" class="w-4 h-4"></i>O'chirish</button></td>
+            <td class="py-4 px-4"><button class="inline-flex items-center h-12 px-5 text-md font-medium bg-error-600 hover:bg-error-700 text-cream rounded-md shadow-xs">Akkauntni o'chirish</button></td>
+            <td class="py-4 px-4 text-warm-500 text-xs">Used sparingly · destructive only</td>
+          </tr>
+          <!-- Icon-only -->
+          <tr class="border-t border-warm-100">
+            <td class="py-4 pr-4 font-medium text-warm-900">Icon-only</td>
+            <td class="py-4 px-4"><button aria-label="More" class="inline-flex items-center justify-center w-8 h-8 text-warm-600 hover:bg-warm-100 rounded-md"><i data-lucide="more-horizontal" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+            <td class="py-4 px-4"><button aria-label="Refresh" class="inline-flex items-center justify-center w-10 h-10 text-warm-600 hover:bg-warm-100 rounded-md"><i data-lucide="rotate-cw" stroke-width="1.75" class="w-5 h-5"></i></button></td>
+            <td class="py-4 px-4"><button aria-label="New" class="inline-flex items-center justify-center w-12 h-12 bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="plus" stroke-width="2" class="w-5 h-5"></i></button></td>
+            <td class="py-4 px-4 text-warm-500 text-xs">Always <code class="text-[10px] bg-warm-100 px-1 rounded">aria-label</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+
+  <!-- FORMS -->
+  <article class="mb-12">
+    <header class="flex items-baseline justify-between mb-4">
+      <h3 class="text-xl font-semibold text-warm-900">Form controls</h3>
+      <code class="text-xs text-warm-500">@shared/components/Input · Select · Checkbox · Radio</code>
+    </header>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6 grid md:grid-cols-3 gap-x-8 gap-y-6">
+      <!-- Default input -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Email manzil</label>
+        <input type="email" placeholder="rahbar@maktab.uz" class="w-full h-10 px-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" />
+        <p class="text-xs text-warm-500 mt-1.5">Default state</p>
+      </div>
+      <!-- With value -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Maktab nomi</label>
+        <input type="text" value="Toshkent ixtisoslashtirilgan maktabi №14" class="w-full h-10 px-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900" />
+        <p class="text-xs text-warm-500 mt-1.5">With value</p>
+      </div>
+      <!-- Focused -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Parol</label>
+        <div class="relative">
+          <input type="password" value="••••••••" class="w-full h-10 pl-3.5 pr-10 text-sm bg-surface border border-brand-600 rounded-md text-warm-900 outline-none ring-2 ring-brand-600/30" />
+          <button class="absolute right-2 top-1/2 -translate-y-1/2 text-warm-500 hover:text-warm-800 p-1.5"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+        </div>
+        <p class="text-xs text-warm-500 mt-1.5">Focused (terracotta ring)</p>
+      </div>
+      <!-- With leading icon -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Qidirish</label>
+        <div class="relative">
+          <i data-lucide="search" stroke-width="1.75" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400"></i>
+          <input type="search" placeholder="Xodim, hujjat yoki email..." class="w-full h-10 pl-9 pr-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400" />
+        </div>
+        <p class="text-xs text-warm-500 mt-1.5">With leading icon</p>
+      </div>
+      <!-- Error -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Telefon raqami</label>
+        <input type="tel" value="+998 71" class="w-full h-10 px-3.5 text-sm bg-surface border border-error-600 rounded-md text-warm-900 outline-none ring-2 ring-error-600/20" />
+        <p class="text-xs text-error-700 mt-1.5 flex items-center gap-1"><i data-lucide="alert-circle" stroke-width="2" class="w-3.5 h-3.5"></i>Telefon raqami to'liq emas.</p>
+      </div>
+      <!-- Disabled -->
+      <div>
+        <label class="block text-sm font-medium text-warm-400 mb-1.5">IHMA akkredidatsiyasi raqami</label>
+        <input type="text" value="UZ-EDU-2019-0148" disabled class="w-full h-10 px-3.5 text-sm bg-warm-100 border border-warm-200 rounded-md text-warm-400 cursor-not-allowed" />
+        <p class="text-xs text-warm-500 mt-1.5">Disabled · system-managed value</p>
+      </div>
+
+      <!-- Select -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Hujjat turi</label>
+        <div class="relative">
+          <select class="w-full h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600">
+            <option>Shaxsiy guvohnoma</option><option>Tibbiy ma'lumot</option><option>Diplom</option>
+          </select>
+          <i data-lucide="chevron-down" stroke-width="1.75" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none"></i>
+        </div>
+        <p class="text-xs text-warm-500 mt-1.5">Select</p>
+      </div>
+
+      <!-- Textarea -->
+      <div>
+        <label class="block text-sm font-medium text-warm-800 mb-1.5">Rad etish sababi</label>
+        <textarea rows="3" class="w-full px-3.5 py-2.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" placeholder="Misol: hujjat sifati past, qaytadan yuklang..."></textarea>
+        <p class="text-xs text-warm-500 mt-1.5">Textarea · required on document rejection</p>
+      </div>
+
+      <!-- Checkboxes / Radios -->
+      <div class="space-y-3">
+        <p class="text-sm font-medium text-warm-800 mb-1">Tanlash</p>
+        <label class="flex items-start gap-2.5 text-sm text-warm-800">
+          <input type="checkbox" checked class="mt-0.5 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+          <span>Faollashtirildi <span class="text-warm-500 text-xs">— akkaunt tizimga kira oladi</span></span>
+        </label>
+        <label class="flex items-start gap-2.5 text-sm text-warm-800">
+          <input type="checkbox" class="mt-0.5 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+          <span>Email tasdiqlangan</span>
+        </label>
+        <div class="pt-2 border-t border-warm-100 space-y-2">
+          <label class="flex items-start gap-2.5 text-sm text-warm-800">
+            <input type="radio" name="r" checked class="mt-0.5 w-4 h-4 border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+            <span>Hammasini ko'rsatish</span>
+          </label>
+          <label class="flex items-start gap-2.5 text-sm text-warm-800">
+            <input type="radio" name="r" class="mt-0.5 w-4 h-4 border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+            <span>Faqat tasdiq kutayotgan</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- BADGES -->
+  <article class="mb-12">
+    <header class="flex items-baseline justify-between mb-4">
+      <h3 class="text-xl font-semibold text-warm-900">Badge / Pill</h3>
+      <code class="text-xs text-warm-500">@shared/components/Badge</code>
+    </header>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-6">
+      <p class="colhead mb-3">Document &amp; reception status</p>
+      <div class="flex flex-wrap gap-2 mb-6">
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-warm-100 text-warm-700 border border-warm-200"><span class="w-1.5 h-1.5 rounded-full bg-warm-500"></span>Yangi</span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100"><span class="w-1.5 h-1.5 rounded-full bg-warning-600"></span>Ko'rib chiqilmoqda</span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600"></span>Tasdiqlangan</span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100"><span class="w-1.5 h-1.5 rounded-full bg-error-600"></span>Rad etilgan</span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-info-50 text-info-700 border border-info-100"><span class="w-1.5 h-1.5 rounded-full bg-info-600"></span>Faolsizlantirilgan</span>
+        <span class="inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-medium rounded-sm bg-brand-50 text-brand-800 border border-brand-100"><span class="w-1.5 h-1.5 rounded-full bg-brand-600"></span>Maktab rahbari</span>
+      </div>
+      <p class="colhead mb-3">Size · sm (xs text) vs md (sm text)</p>
+      <div class="flex flex-wrap items-center gap-3">
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">sm · Tasdiqlangan</span>
+        <span class="inline-flex items-center px-2.5 py-1 text-sm font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">md · Tasdiqlangan</span>
+      </div>
+      <p class="colhead mt-6 mb-3">AI warning severity</p>
+      <div class="flex flex-wrap gap-2">
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-info-50 text-info-700 border border-info-100">Past · Low</span>
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">O'rta · Medium</span>
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">Yuqori · High</span>
+        <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-error-600 text-cream border border-error-700">Kritik · Critical</span>
+      </div>
+    </div>
+  </article>
+
+  <!-- CARDS -->
+  <article class="mb-12">
+    <header class="flex items-baseline justify-between mb-4">
+      <h3 class="text-xl font-semibold text-warm-900">Card / Panel · Stat card</h3>
+      <code class="text-xs text-warm-500">@shared/components/Card</code>
+    </header>
+    <div class="grid md:grid-cols-3 gap-4">
+      <!-- Plain card -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+        <div class="flex items-center justify-between mb-3">
+          <p class="text-md font-semibold text-warm-900">Panel sarlavhasi</p>
+          <button aria-label="More" class="text-warm-500 hover:text-warm-800 p-1 rounded-md hover:bg-warm-100"><i data-lucide="more-horizontal" stroke-width="1.75" class="w-4 h-4"></i></button>
+        </div>
+        <p class="text-sm text-warm-600">Default card: cream surface, 1px warm-neutral-200 border, subtle xs shadow at rest.</p>
+        <div class="mt-4 pt-3 border-t border-warm-100 flex justify-between text-xs text-warm-500"><span>Yangilangan: 14:32</span><a class="text-brand-700 hover:underline" href="#">Tafsilotlar →</a></div>
+      </div>
+      <!-- Stat card · positive trend -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+        <p class="text-sm text-warm-500">Bolalar</p>
+        <p class="num text-3xl font-semibold text-warm-900 mt-1">124</p>
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-success-700">
+          <i data-lucide="trending-up" stroke-width="2" class="w-3.5 h-3.5"></i>
+          <span class="num">+4</span><span class="text-warm-500">o'tgan oyga nisbatan</span>
+        </div>
+      </div>
+      <!-- Stat card · attention -->
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+        <p class="text-sm text-warm-500">Bandlik</p>
+        <p class="num text-3xl font-semibold text-warm-900 mt-1">87%</p>
+        <div class="mt-3 flex items-center gap-1.5 text-xs text-error-700">
+          <i data-lucide="trending-up" stroke-width="2" class="w-3.5 h-3.5"></i>
+          <span class="num">+6%</span><span class="text-warm-500">to'ldirilgan o'rinlar</span>
+        </div>
+        <div class="mt-3 h-1.5 bg-warm-100 rounded-full overflow-hidden">
+          <div class="h-full bg-brand-600 rounded-full" style="width:87%"></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- DOC APPROVAL + AI WARNING CARDS (component level) -->
+  <article class="mb-12 grid md:grid-cols-2 gap-6">
+    <div>
+      <header class="flex items-baseline justify-between mb-4">
+        <h3 class="text-xl font-semibold text-warm-900">Document approval card</h3>
+        <code class="text-xs text-warm-500">admin/DocumentApprovalCard</code>
+      </header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+        <div class="flex items-center gap-3 mb-4">
+          <div class="w-10 h-10 rounded-full bg-warm-100 border border-warm-200 flex items-center justify-center text-warm-700 font-semibold text-sm">AK</div>
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-warm-900">Aziza Karimova</p>
+            <p class="text-xs text-warm-500">Qabulxona xodimi · yukladi 2 soat oldin</p>
+          </div>
+          <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+        </div>
+        <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+          <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700">
+            <i data-lucide="file-text" stroke-width="1.75" class="w-3 h-3"></i>Shaxsiy guvohnoma
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+          <button class="inline-flex items-center justify-center h-10 px-3 text-sm font-medium bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+          <button class="inline-flex items-center justify-center h-10 px-3 text-sm font-medium text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <header class="flex items-baseline justify-between mb-4">
+        <h3 class="text-xl font-semibold text-warm-900">AI warning card</h3>
+        <code class="text-xs text-warm-500">admin/AIWarningCard</code>
+      </header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+        <div class="flex items-start gap-3 mb-3">
+          <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">Yuqori · High</span>
+          <span class="text-xs text-warm-500">Davomat naqsh</span>
+          <span class="text-xs text-warm-400 ml-auto">35 daqiqa oldin</span>
+        </div>
+        <p class="text-md font-semibold text-warm-900 mb-1">Yusuf Toshmatov · 5 kun davomida darsda yo'q</p>
+        <p class="text-sm text-warm-700">Bola so'nggi 5 ish kunida darsga kelmagan. AI: oilaga aloqa o'rnatishni va sababini aniqlashni tavsiya qiladi. Iltimos, ota-onaning kontaktini ko'rib chiqing... <a href="#" class="text-brand-700 font-medium">Ko'proq</a></p>
+        <div class="flex items-center gap-2 mt-4">
+          <button class="inline-flex items-center justify-center gap-1.5 h-9 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Ko'rib chiqish</button>
+          <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Hal qilingan deb belgilash</button>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- TABLE -->
+  <article class="mb-12">
+    <header class="flex items-baseline justify-between mb-4">
+      <h3 class="text-xl font-semibold text-warm-900">Table</h3>
+      <code class="text-xs text-warm-500">@shared/components/Table</code>
+    </header>
+    <div class="bg-surface border border-warm-200 rounded-lg shadow-xs overflow-hidden">
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead class="bg-warm-50 border-b border-warm-200">
+            <tr>
+              <th class="colhead text-left px-5 py-3"><button class="inline-flex items-center gap-1.5 text-warm-600 hover:text-warm-900">Ism &amp; familiya <i data-lucide="arrow-down" stroke-width="1.75" class="w-3 h-3"></i></button></th>
+              <th class="colhead text-left px-5 py-3">Email</th>
+              <th class="colhead text-left px-5 py-3">Hujjatlar</th>
+              <th class="colhead text-left px-5 py-3">Holat</th>
+              <th class="colhead text-right px-5 py-3 num">Ro'yxatga olingan</th>
+              <th class="colhead text-right px-5 py-3 w-12"></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-warm-100 text-warm-800">
+            <tr class="hover:bg-warm-50/60 transition-colors h-12">
+              <td class="px-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-xs font-semibold">AK</div>
+                  <span class="font-medium">Aziza Karimova</span>
+                </div>
+              </td>
+              <td class="px-5 text-warm-600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="e081ce8b8192898d8f9681a08d818b948182d1d4ce959a">[email&#160;protected]</a></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+              <td class="px-5 text-right text-warm-600 num">12 mart 2026</td>
+              <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+            </tr>
+            <tr class="hover:bg-warm-50/60 transition-colors h-12">
+              <td class="px-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">BS</div>
+                  <span class="font-medium">Bobur Saidov</span>
+                </div>
+              </td>
+              <td class="px-5 text-warm-600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="086a267b69616c677e486569637c696a393c267d72">[email&#160;protected]</a></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">2 / 3 ko'rib chiqilmoqda</span></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100"><span class="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5"></span>Tasdiq kutmoqda</span></td>
+              <td class="px-5 text-right text-warm-600 num">2 may 2026</td>
+              <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+            </tr>
+            <tr class="hover:bg-warm-50/60 transition-colors h-12">
+              <td class="px-5">
+                <div class="flex items-center gap-3">
+                  <div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">MR</div>
+                  <span class="font-medium">Madina Rahmatova</span>
+                </div>
+              </td>
+              <td class="px-5 text-warm-600"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="d5b8fba7b4bdb8b4a1baa3b495b8b4bea1b4b7e4e1fba0af">[email&#160;protected]</a></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">1 / 3 rad etilgan</span></td>
+              <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-info-50 text-info-700 border border-info-100"><span class="w-1.5 h-1.5 rounded-full bg-info-600 mr-1.5"></span>Faolsizlantirilgan</span></td>
+              <td class="px-5 text-right text-warm-600 num">28 fevr 2026</td>
+              <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+            </tr>
+            <!-- skeleton row -->
+            <tr class="h-12">
+              <td class="px-5"><div class="flex items-center gap-3"><div class="w-8 h-8 rounded-full skel"></div><div class="skel h-3.5 w-32"></div></div></td>
+              <td class="px-5"><div class="skel h-3.5 w-48"></div></td>
+              <td class="px-5"><div class="skel h-5 w-28 rounded-sm"></div></td>
+              <td class="px-5"><div class="skel h-5 w-20 rounded-sm"></div></td>
+              <td class="px-5 text-right"><div class="skel h-3.5 w-24 ml-auto"></div></td>
+              <td class="px-5"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- Pagination -->
+      <div class="flex items-center justify-between px-5 py-3 border-t border-warm-200 bg-cream/50">
+        <p class="text-xs text-warm-500 num">Ko'rsatilmoqda <span class="text-warm-800">1–8</span> / jami <span class="text-warm-800">24</span> xodim</p>
+        <div class="flex items-center gap-1">
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md disabled:opacity-40" disabled><i data-lucide="chevron-left" stroke-width="1.75" class="w-4 h-4"></i></button>
+          <button class="inline-flex items-center justify-center w-8 h-8 bg-brand-600 text-cream rounded-md text-sm font-medium num">1</button>
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-700 hover:bg-warm-100 rounded-md text-sm num">2</button>
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-700 hover:bg-warm-100 rounded-md text-sm num">3</button>
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- MODAL + TOAST + EMPTY -->
+  <article class="mb-12 grid lg:grid-cols-3 gap-6">
+    <!-- Modal: confirm with reason -->
+    <div>
+      <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Modal · confirm</h3></header>
+      <div class="bg-warm-900/30 rounded-lg p-6">
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-md overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-warm-100">
+            <h4 class="text-md font-semibold text-warm-900">Hujjatni rad etish</h4>
+            <button aria-label="Yopish" class="text-warm-500 hover:text-warm-900 p-1 rounded-md hover:bg-warm-100"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+          <div class="px-5 py-4 space-y-3">
+            <p class="text-sm text-warm-700">Quyidagi sababni qisqacha yozing. Xabar qabulxona xodimiga ko'rinadi.</p>
+            <textarea rows="3" class="w-full px-3 py-2 text-sm bg-surface border border-warm-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" placeholder="Misol: hujjat sifati past..."></textarea>
+          </div>
+          <div class="px-5 py-3 bg-cream/60 border-t border-warm-100 flex items-center justify-end gap-2">
+            <button class="inline-flex items-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Bekor qilish</button>
+            <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-error-600 hover:bg-error-700 text-cream rounded-md shadow-xs">Rad etish</button>
+          </div>
+        </div>
+      </div>
+      <p class="text-xs text-warm-500 mt-3">Replaces the <code class="bg-warm-100 px-1 rounded">window.prompt</code> reject flow from Phase 0.</p>
+    </div>
+
+    <!-- Toasts -->
+    <div>
+      <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Toast</h3></header>
+      <div class="bg-cream border border-warm-200 rounded-lg p-4 space-y-2.5">
+        <div class="bg-surface border border-warm-200 rounded-md shadow-md flex overflow-hidden">
+          <div class="w-1 bg-success-600"></div>
+          <div class="flex-1 p-3">
+            <p class="text-sm font-medium text-warm-900 flex items-center gap-2"><i data-lucide="check-circle-2" stroke-width="1.75" class="w-4 h-4 text-success-600"></i>Hujjat tasdiqlandi</p>
+            <p class="text-xs text-warm-500 mt-0.5">Aziza Karimova xabardor qilindi.</p>
+          </div>
+          <button aria-label="Yopish" class="p-3 text-warm-400 hover:text-warm-700"><i data-lucide="x" stroke-width="1.75" class="w-3.5 h-3.5"></i></button>
+        </div>
+        <div class="bg-surface border border-warm-200 rounded-md shadow-md flex overflow-hidden">
+          <div class="w-1 bg-error-600"></div>
+          <div class="flex-1 p-3">
+            <p class="text-sm font-medium text-warm-900 flex items-center gap-2"><i data-lucide="x-circle" stroke-width="1.75" class="w-4 h-4 text-error-600"></i>Saqlab bo'lmadi</p>
+            <p class="text-xs text-warm-500 mt-0.5">Internet ulanishini tekshiring.</p>
+          </div>
+          <button aria-label="Yopish" class="p-3 text-warm-400 hover:text-warm-700"><i data-lucide="x" stroke-width="1.75" class="w-3.5 h-3.5"></i></button>
+        </div>
+        <div class="bg-surface border border-warm-200 rounded-md shadow-md flex overflow-hidden">
+          <div class="w-1 bg-warning-600"></div>
+          <div class="flex-1 p-3">
+            <p class="text-sm font-medium text-warm-900 flex items-center gap-2"><i data-lucide="alert-triangle" stroke-width="1.75" class="w-4 h-4 text-warning-600"></i>Sessiya tugamoqda</p>
+            <p class="text-xs text-warm-500 mt-0.5">5 daqiqadan so'ng chiqish bo'ladi.</p>
+          </div>
+          <button aria-label="Yopish" class="p-3 text-warm-400 hover:text-warm-700"><i data-lucide="x" stroke-width="1.75" class="w-3.5 h-3.5"></i></button>
+        </div>
+        <div class="bg-surface border border-warm-200 rounded-md shadow-md flex overflow-hidden">
+          <div class="w-1 bg-info-600"></div>
+          <div class="flex-1 p-3">
+            <p class="text-sm font-medium text-warm-900 flex items-center gap-2"><i data-lucide="info" stroke-width="1.75" class="w-4 h-4 text-info-600"></i>Yangi versiya mavjud</p>
+            <p class="text-xs text-warm-500 mt-0.5">Sahifani yangilang.</p>
+          </div>
+          <button aria-label="Yopish" class="p-3 text-warm-400 hover:text-warm-700"><i data-lucide="x" stroke-width="1.75" class="w-3.5 h-3.5"></i></button>
+        </div>
+      </div>
+      <p class="text-xs text-warm-500 mt-3">Top-right stack · 320px wide · semantic left bar.</p>
+    </div>
+
+    <!-- Empty state + tabs + dropdown -->
+    <div class="space-y-6">
+      <div>
+        <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Empty state</h3></header>
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-8 text-center">
+          <div class="w-12 h-12 mx-auto rounded-full bg-warm-100 flex items-center justify-center mb-3">
+            <i data-lucide="check-circle-2" stroke-width="1.5" class="w-6 h-6 text-warm-400"></i>
+          </div>
+          <p class="text-md font-semibold text-warm-900">Tasdiq kutayotgan hujjat yo'q</p>
+          <p class="text-sm text-warm-500 mt-1">Hammasi ko'rib chiqilgan. Yangi yuklamalar paydo bo'lganda bu yerda ko'rinadi.</p>
+        </div>
+      </div>
+      <div>
+        <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Tabs</h3></header>
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-4">
+          <div class="flex items-center gap-6 border-b border-warm-200 -mt-1 -mx-2 px-2">
+            <button class="relative pb-2.5 pt-1 text-sm font-medium text-warm-900">Tafsilotlar<span class="absolute left-0 right-0 bottom-0 h-0.5 bg-brand-600 rounded-full"></span></button>
+            <button class="pb-2.5 pt-1 text-sm font-medium text-warm-500 hover:text-warm-900">Hujjatlar <span class="num text-xs ml-1 bg-warm-100 text-warm-700 rounded-sm px-1.5">3</span></button>
+            <button class="pb-2.5 pt-1 text-sm font-medium text-warm-500 hover:text-warm-900">Faoliyat</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Dropdown · menu</h3></header>
+        <div class="bg-cream border border-warm-200 rounded-lg p-6">
+          <div class="bg-surface border border-warm-200 rounded-md shadow-md w-56 py-1.5">
+            <button class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-warm-800 hover:bg-warm-50"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4 text-warm-500"></i>Ko'rish</button>
+            <button class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-warm-800 hover:bg-warm-50"><i data-lucide="edit-3" stroke-width="1.75" class="w-4 h-4 text-warm-500"></i>Tahrirlash</button>
+            <button class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-warm-800 hover:bg-warm-50"><i data-lucide="power" stroke-width="1.75" class="w-4 h-4 text-warm-500"></i>Faollashtirish</button>
+            <div class="h-px bg-warm-100 my-1.5"></div>
+            <button class="w-full flex items-center gap-2.5 px-3 py-2 text-sm text-error-700 hover:bg-error-50"><i data-lucide="trash-2" stroke-width="1.75" class="w-4 h-4"></i>O'chirish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- LOADING SKELETONS + LANGUAGE -->
+  <article class="mb-2 grid md:grid-cols-3 gap-6">
+    <div>
+      <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Loading · stat skeleton</h3></header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 space-y-3">
+        <div class="skel h-3 w-20"></div>
+        <div class="skel h-8 w-24"></div>
+        <div class="skel h-3 w-32"></div>
+      </div>
+    </div>
+    <div>
+      <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Loading · doc card skeleton</h3></header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 space-y-3">
+        <div class="flex items-center gap-3"><div class="skel h-10 w-10 rounded-full"></div><div class="flex-1 space-y-2"><div class="skel h-3.5 w-32"></div><div class="skel h-3 w-48"></div></div></div>
+        <div class="skel h-32 w-full rounded-md"></div>
+        <div class="flex gap-2"><div class="skel h-9 flex-1 rounded-md"></div><div class="skel h-9 w-10 rounded-md"></div><div class="skel h-9 w-10 rounded-md"></div></div>
+      </div>
+    </div>
+    <div>
+      <header class="flex items-baseline justify-between mb-4"><h3 class="text-xl font-semibold text-warm-900">Language switcher</h3></header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-2">
+        <div class="grid grid-cols-3 gap-1 bg-warm-100 rounded-md p-1">
+          <button class="px-2.5 py-1.5 text-sm font-medium rounded-sm bg-surface text-warm-900 shadow-xs">O'zbek</button>
+          <button class="px-2.5 py-1.5 text-sm font-medium rounded-sm text-warm-500 hover:text-warm-900">Русский</button>
+          <button class="px-2.5 py-1.5 text-sm font-medium rounded-sm text-warm-500 hover:text-warm-900">English</button>
+        </div>
+      </div>
+      <header class="flex items-baseline justify-between mb-4 mt-6"><h3 class="text-xl font-semibold text-warm-900">Activity row</h3></header>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs">
+        <div class="flex items-start gap-3 px-4 py-3 border-b border-warm-100">
+          <div class="w-7 h-7 rounded-md bg-success-50 text-success-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="check" stroke-width="2" class="w-3.5 h-3.5"></i></div>
+          <div class="flex-1 text-sm">
+            <p class="text-warm-700"><span class="text-warm-900 font-medium">Aziza Karimova</span> yangi ota-onani qo'shdi <span class="text-warm-900 font-medium">Yusuf Toshmatov</span></p>
+            <p class="text-xs text-warm-500 num mt-0.5">12 daqiqa oldin</p>
+          </div>
+        </div>
+        <div class="flex items-start gap-3 px-4 py-3">
+          <div class="w-7 h-7 rounded-md bg-brand-50 text-brand-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="file-text" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+          <div class="flex-1 text-sm">
+            <p class="text-warm-700"><span class="text-warm-900 font-medium">Bobur Saidov</span> hujjat yukladi · <span class="text-warm-900 font-medium">Tibbiy ma'lumot</span></p>
+            <p class="text-xs text-warm-500 num mt-0.5">28 daqiqa oldin</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ PAGE: LOGIN ============================================================ -->
+<section id="page-login" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-8 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Page 01 of 05</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Login</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">Cream page · centred 420px card with the terracotta hairline as letterhead motif.</p>
+  </div>
+
+  <div class="rounded-lg border border-warm-200 overflow-hidden bg-cream">
+    <div class="min-h-[640px] flex items-center justify-center px-6 py-12 relative">
+      <!-- subtle texture in corners -->
+      <div class="absolute inset-x-0 top-0 h-32 pointer-events-none" style="background:radial-gradient(ellipse at top, rgba(168,92,64,0.06), transparent 60%)"></div>
+
+      <div class="w-full max-w-[420px] relative">
+        <!-- 2px terracotta hairline -->
+        <div class="absolute -top-0 left-6 right-6 h-0.5 bg-brand-600 rounded-full"></div>
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-sm pt-8 px-8 pb-7">
+          <!-- Wordmark -->
+          <div class="flex items-center gap-2.5 mb-1">
+            <span class="inline-flex items-center justify-center w-9 h-9 rounded-md bg-walnut text-cream font-semibold text-lg" style="letter-spacing:-0.06em">U</span>
+            <div>
+              <p class="text-lg font-semibold tracking-tight text-warm-900" style="line-height:1.1">Uchqun</p>
+              <p class="text-xs text-warm-500">Maktab boshqaruv tizimi</p>
+            </div>
+          </div>
+          <div class="h-px bg-warm-100 my-5"></div>
+
+          <h3 class="text-xl font-semibold text-warm-900">Kirish</h3>
+          <p class="text-sm text-warm-500 mt-1">Maktab rahbari sifatida tizimga kiring.</p>
+
+          <form class="mt-5 space-y-4">
+            <div>
+              <label class="block text-sm font-medium text-warm-800 mb-1.5">Email manzil</label>
+              <input type="email" placeholder="rahbar@maktab14.uz" class="w-full h-10 px-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" />
+            </div>
+            <div>
+              <div class="flex items-baseline justify-between mb-1.5">
+                <label class="block text-sm font-medium text-warm-800">Parol</label>
+                <a href="#" class="text-xs text-brand-700 hover:underline">Parolni unutdingizmi?</a>
+              </div>
+              <div class="relative">
+                <input type="password" value="••••••••" class="w-full h-10 pl-3.5 pr-10 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" />
+                <button type="button" class="absolute right-2 top-1/2 -translate-y-1/2 text-warm-500 hover:text-warm-800 p-1.5"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+              </div>
+            </div>
+            <button type="button" class="w-full inline-flex items-center justify-center h-11 px-4 text-md font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Kirish</button>
+          </form>
+
+          <div class="mt-6 pt-4 border-t border-warm-100 flex items-end justify-between gap-3">
+            <div class="text-[11px] text-warm-500 leading-tight">
+              <p>Davlat tomonidan vakolatlangan tizim</p>
+              <p class="mt-0.5">IHMA · O'zbekiston Respublikasi</p>
+            </div>
+            <div class="grid grid-cols-3 gap-1 bg-warm-100 rounded-md p-0.5 text-xs">
+              <button class="px-2 py-1 rounded-sm bg-surface text-warm-900 font-medium shadow-xs">UZ</button>
+              <button class="px-2 py-1 rounded-sm text-warm-500">РУ</button>
+              <button class="px-2 py-1 rounded-sm text-warm-500">EN</button>
+            </div>
+          </div>
+        </div>
+
+        <p class="text-center text-[11px] text-warm-500 mt-5 num">© 2026 Uchqun · v1.0 · admin-portal</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ PAGE: DASHBOARD ============================================================ -->
+<section id="page-dashboard" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-8 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Page 02 of 05</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Dashboard · action-first</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">The hero is "What needs your attention?" — not statistics. Government's data-first hero becomes Admin's action row.</p>
+  </div>
+
+  <div class="rounded-lg border border-warm-200 overflow-hidden bg-cream shadow-xs">
+    <div class="flex min-h-[1100px]">
+      <!-- ────── Sidebar ────── -->
+      <aside class="w-[260px] shrink-0 bg-walnut text-cream flex flex-col">
+        <!-- Header w/ school slot -->
+        <div class="px-5 pt-6 pb-5">
+          <div class="flex items-center gap-2.5">
+            <span class="inline-flex items-center justify-center w-8 h-8 rounded-md bg-cream/15 text-cream font-semibold text-md" style="letter-spacing:-0.04em">U</span>
+            <p class="text-md font-semibold tracking-tight">Uchqun</p>
+          </div>
+          <div class="mt-4 flex items-center gap-3 p-2.5 bg-walnut-hover rounded-md border border-walnut-divider">
+            <!-- school logo slot -->
+            <div class="w-10 h-10 rounded-md bg-walnut text-brand-400 flex items-center justify-center shrink-0 border border-walnut-divider">
+              <i data-lucide="shield" stroke-width="1.5" class="w-5 h-5"></i>
+            </div>
+            <div class="min-w-0">
+              <p class="text-sm font-semibold truncate">Ixtisoslashtirilgan maktab №14</p>
+              <p class="text-[11px] text-walnut-muted truncate">Toshkent · Yashnobod</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nav -->
+        <nav class="px-3 flex-1 overflow-y-auto">
+          <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-2">Boshqaruv</p>
+          <div class="space-y-0.5 mb-5">
+            <a class="relative flex items-center gap-3 px-3 py-2 rounded-md bg-brand-50/10 text-cream" href="#"><span class="nav-active-bar"></span><i data-lucide="layout-dashboard" stroke-width="1.75" class="w-5 h-5 text-brand-300"></i><span class="text-sm font-medium">Boshqaruv paneli</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="users" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Qabulxona xodimlari</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="graduation-cap" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">O'qituvchilar</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="user-round" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Ota-onalar</span></a>
+          </div>
+
+          <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-2">Hujjatlar</p>
+          <div class="space-y-0.5 mb-5">
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="file-check-2" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Tasdiqlash navbati</span><span class="ml-auto inline-flex items-center justify-center min-w-5 h-5 px-1.5 text-[10px] font-semibold bg-brand-600 text-cream rounded-full num">7</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="archive" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Arxiv</span></a>
+          </div>
+
+          <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-2">Hisobotlar</p>
+          <div class="space-y-0.5 mb-5">
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="bell-ring" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">AI ogohlantirishlar</span><span class="ml-auto inline-flex items-center justify-center min-w-5 h-5 px-1.5 text-[10px] font-semibold bg-warning-600 text-cream rounded-full num">2</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="bar-chart-3" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Reytinglar</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="activity" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Audit jurnali</span></a>
+          </div>
+
+          <p class="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-2">Sozlamalar</p>
+          <div class="space-y-0.5 mb-3">
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="building-2" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Maktab ma'lumotlari</span></a>
+            <a class="flex items-center gap-3 px-3 py-2 rounded-md text-walnut-muted hover:bg-walnut-hover hover:text-cream" href="#"><i data-lucide="settings" stroke-width="1.75" class="w-5 h-5"></i><span class="text-sm font-medium">Sozlamalar</span></a>
+          </div>
+        </nav>
+
+        <!-- User card -->
+        <div class="m-3 mt-1 p-3 bg-walnut-hover rounded-md border border-walnut-divider">
+          <div class="flex items-center gap-2.5">
+            <div class="w-9 h-9 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-sm font-semibold">DK</div>
+            <div class="min-w-0 flex-1">
+              <p class="text-sm font-semibold truncate">Dilshod Karimov</p>
+              <p class="text-[11px] text-walnut-muted truncate">Maktab rahbari</p>
+            </div>
+            <button aria-label="Chiqish" class="text-walnut-muted hover:text-cream p-1.5 rounded hover:bg-walnut"><i data-lucide="log-out" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+          <div class="mt-3 grid grid-cols-3 gap-1 bg-walnut rounded-md p-0.5 text-[11px]">
+            <button class="px-1.5 py-1 rounded-sm bg-cream/10 text-cream font-medium">UZ</button>
+            <button class="px-1.5 py-1 rounded-sm text-walnut-muted hover:bg-cream/5">РУ</button>
+            <button class="px-1.5 py-1 rounded-sm text-walnut-muted hover:bg-cream/5">EN</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- ────── Main content ────── -->
+      <main class="flex-1 min-w-0 px-10 py-9">
+        <!-- Page header -->
+        <div class="letterhead pt-4 flex items-end justify-between flex-wrap gap-4">
+          <div>
+            <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Bugun · 16 may 2026, juma</p>
+            <h1 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Boshqaruv paneli</h1>
+            <p class="text-md text-warm-600 mt-1">Xush kelibsiz, Dilshod Karimov. Bugun e'tiboringizni talab qiladigan ishlar:</p>
+          </div>
+          <div class="flex items-center gap-3 pb-1">
+            <div class="text-right">
+              <p class="text-[11px] text-warm-500 num">Oxirgi yangilanish</p>
+              <p class="text-sm text-warm-800 num">14:32 · 2 daqiqa oldin</p>
+            </div>
+            <button aria-label="Yangilash" class="inline-flex items-center justify-center w-10 h-10 text-warm-700 bg-surface border border-warm-200 hover:bg-warm-50 rounded-md shadow-xs"><i data-lucide="rotate-cw" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+
+        <!-- ATTENTION ROW -->
+        <h2 class="text-lg font-semibold text-warm-900 mt-9 mb-3 flex items-center gap-2"><span class="w-1 h-4 bg-brand-600 rounded-full"></span>Sizning e'tiboringizni talab qiladi</h2>
+        <div class="grid md:grid-cols-3 gap-4">
+          <!-- Card 1: pending docs -->
+          <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
+            <div class="flex items-start justify-between mb-2">
+              <p class="text-sm font-medium text-warm-700">Tasdiq kutayotgan hujjatlar</p>
+              <i data-lucide="file-check-2" stroke-width="1.75" class="w-5 h-5 text-brand-600"></i>
+            </div>
+            <p class="num text-4xl font-semibold text-warm-900 mt-1">7</p>
+            <p class="text-sm text-warm-500 mt-1">hujjat ko'rib chiqilishi kerak</p>
+            <div class="mt-4 pt-4 border-t border-warm-100 flex items-center justify-between">
+              <div class="flex -space-x-1.5">
+                <div class="w-6 h-6 rounded-full bg-brand-100 text-brand-800 border-2 border-surface flex items-center justify-center text-[10px] font-semibold">AK</div>
+                <div class="w-6 h-6 rounded-full bg-warm-100 text-warm-700 border-2 border-surface flex items-center justify-center text-[10px] font-semibold">BS</div>
+                <div class="w-6 h-6 rounded-full bg-warm-100 text-warm-700 border-2 border-surface flex items-center justify-center text-[10px] font-semibold">MR</div>
+                <div class="w-6 h-6 rounded-full bg-warm-100 text-warm-500 border-2 border-surface flex items-center justify-center text-[10px] font-semibold num">+4</div>
+              </div>
+              <a href="#page-docs" class="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">Ko'rib chiqish <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i></a>
+            </div>
+          </article>
+          <!-- Card 2: AI warnings -->
+          <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
+            <div class="flex items-start justify-between mb-2">
+              <p class="text-sm font-medium text-warm-700">Yangi AI ogohlantirishlar</p>
+              <i data-lucide="bell-ring" stroke-width="1.75" class="w-5 h-5 text-warning-600"></i>
+            </div>
+            <p class="num text-4xl font-semibold text-warm-900 mt-1">2</p>
+            <p class="text-sm text-warm-500 mt-1">shulardan 1 ta yuqori darajada</p>
+            <div class="mt-4 pt-4 border-t border-warm-100">
+              <div class="flex items-start gap-2 mb-3">
+                <span class="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-sm bg-error-50 text-error-700 border border-error-100 shrink-0 mt-0.5">High</span>
+                <p class="text-xs text-warm-700 line-clamp-2">Yusuf Toshmatov · 5 kun davomida darsda yo'q. Oilaga aloqa qilish tavsiya etiladi.</p>
+              </div>
+              <a href="#page-ai" class="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">Hammasini ko'rish <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i></a>
+            </div>
+          </article>
+          <!-- Card 3: new reception staff -->
+          <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
+            <div class="flex items-start justify-between mb-2">
+              <p class="text-sm font-medium text-warm-700">Yangi qabulxona xodimlari</p>
+              <i data-lucide="user-plus" stroke-width="1.75" class="w-5 h-5 text-info-600"></i>
+            </div>
+            <p class="num text-4xl font-semibold text-warm-900 mt-1">3</p>
+            <p class="text-sm text-warm-500 mt-1">faollashtirish kutmoqda</p>
+            <div class="mt-4 pt-4 border-t border-warm-100">
+              <ul class="text-xs text-warm-700 space-y-1.5 mb-3">
+                <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-warm-400"></span>Nilufar Yusupova <span class="text-warm-500 num">· 1 kun</span></li>
+                <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-warm-400"></span>Sherzod Olimov <span class="text-warm-500 num">· 3 kun</span></li>
+                <li class="flex items-center gap-1.5"><span class="w-1 h-1 rounded-full bg-warm-400"></span>Gulnoza Hamidova <span class="text-warm-500 num">· 5 kun</span></li>
+              </ul>
+              <a href="#page-reception" class="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">Faollashtirish <i data-lucide="arrow-right" stroke-width="2" class="w-4 h-4"></i></a>
+            </div>
+          </article>
+        </div>
+
+        <!-- STATS ROW -->
+        <h2 class="text-lg font-semibold text-warm-900 mt-10 mb-3 flex items-center gap-2"><span class="w-1 h-4 bg-warm-300 rounded-full"></span>Maktab — bir qarashda</h2>
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+            <p class="text-sm text-warm-500">Bolalar</p>
+            <p class="num text-3xl font-semibold text-warm-900 mt-1">124</p>
+            <p class="mt-2.5 flex items-center gap-1.5 text-xs text-success-700"><i data-lucide="trending-up" stroke-width="2" class="w-3.5 h-3.5"></i><span class="num">+4</span><span class="text-warm-500">o'tgan oyga</span></p>
+          </div>
+          <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+            <p class="text-sm text-warm-500">O'qituvchilar</p>
+            <p class="num text-3xl font-semibold text-warm-900 mt-1">15</p>
+            <p class="mt-2.5 flex items-center gap-1.5 text-xs text-warm-500"><i data-lucide="minus" stroke-width="2" class="w-3.5 h-3.5"></i><span>o'zgarish yo'q</span></p>
+          </div>
+          <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+            <p class="text-sm text-warm-500">Ota-onalar</p>
+            <p class="num text-3xl font-semibold text-warm-900 mt-1">118</p>
+            <p class="mt-2.5 flex items-center gap-1.5 text-xs text-success-700"><i data-lucide="trending-up" stroke-width="2" class="w-3.5 h-3.5"></i><span class="num">+6</span><span class="text-warm-500">faol akkaunt</span></p>
+          </div>
+          <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+            <p class="text-sm text-warm-500">Bandlik</p>
+            <p class="num text-3xl font-semibold text-warm-900 mt-1">87%</p>
+            <div class="mt-2.5 h-1.5 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-brand-600 rounded-full" style="width:87%"></div></div>
+            <p class="mt-1.5 text-xs text-warm-500 num">108 / 124 ta o'rin</p>
+          </div>
+        </div>
+
+        <!-- TWO COL -->
+        <div class="mt-10 grid lg:grid-cols-[1fr_360px] gap-6">
+          <!-- Left: activity + ratings -->
+          <div class="space-y-6">
+            <!-- Activity panel -->
+            <article class="bg-surface border border-warm-200 rounded-lg shadow-xs">
+              <header class="flex items-center justify-between px-5 py-4 border-b border-warm-100">
+                <div>
+                  <p class="text-md font-semibold text-warm-900">So'nggi faoliyat</p>
+                  <p class="text-xs text-warm-500 mt-0.5">Qabulxona xodimlari bugun bajargan ishlar</p>
+                </div>
+                <a class="text-sm text-brand-700 hover:text-brand-800 font-medium" href="#">Audit jurnali →</a>
+              </header>
+              <div class="divide-y divide-warm-100">
+                <!-- row template -->
+                <div class="flex items-start gap-3 px-5 py-3.5">
+                  <div class="w-7 h-7 rounded-md bg-success-50 text-success-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="user-plus" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+                  <div class="flex-1 text-sm">
+                    <p class="text-warm-700"><span class="text-warm-900 font-medium">Aziza Karimova</span> yangi ota-onani qo'shdi · <span class="text-warm-900 font-medium">Yusuf Toshmatov</span></p>
+                    <p class="text-xs text-warm-500 num mt-0.5">12 daqiqa oldin · IP 192.168.1.42</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 px-5 py-3.5">
+                  <div class="w-7 h-7 rounded-md bg-brand-50 text-brand-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="file-text" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+                  <div class="flex-1 text-sm">
+                    <p class="text-warm-700"><span class="text-warm-900 font-medium">Bobur Saidov</span> hujjat yukladi · <span class="text-warm-900 font-medium">Tibbiy ma'lumot</span></p>
+                    <p class="text-xs text-warm-500 num mt-0.5">28 daqiqa oldin</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 px-5 py-3.5">
+                  <div class="w-7 h-7 rounded-md bg-info-50 text-info-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="edit-3" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+                  <div class="flex-1 text-sm">
+                    <p class="text-warm-700"><span class="text-warm-900 font-medium">Madina Rahmatova</span> o'qituvchi profilini tahrirladi · <span class="text-warm-900 font-medium">Sevara Tursunova</span></p>
+                    <p class="text-xs text-warm-500 num mt-0.5">1 soat 14 daqiqa oldin</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 px-5 py-3.5">
+                  <div class="w-7 h-7 rounded-md bg-success-50 text-success-700 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="check-circle-2" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+                  <div class="flex-1 text-sm">
+                    <p class="text-warm-700"><span class="text-warm-900 font-medium">Aziza Karimova</span> guruh ro'yxatini yangiladi · <span class="text-warm-900 font-medium">5-A "Quyosh"</span></p>
+                    <p class="text-xs text-warm-500 num mt-0.5">2 soat 03 daqiqa oldin</p>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 px-5 py-3.5">
+                  <div class="w-7 h-7 rounded-md bg-warm-100 text-warm-600 flex items-center justify-center shrink-0 mt-0.5"><i data-lucide="log-in" stroke-width="1.75" class="w-3.5 h-3.5"></i></div>
+                  <div class="flex-1 text-sm">
+                    <p class="text-warm-700"><span class="text-warm-900 font-medium">Bobur Saidov</span> tizimga kirdi</p>
+                    <p class="text-xs text-warm-500 num mt-0.5">3 soat 41 daqiqa oldin</p>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <!-- Ratings panel -->
+            <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+              <header class="flex items-baseline justify-between mb-4">
+                <div>
+                  <p class="text-md font-semibold text-warm-900">Maktab reytingi</p>
+                  <p class="text-xs text-warm-500 mt-0.5">Ota-onalar tomonidan berilgan baholar · oxirgi 30 kun</p>
+                </div>
+                <a class="text-sm text-brand-700 hover:text-brand-800 font-medium" href="#">Batafsil →</a>
+              </header>
+              <div class="grid md:grid-cols-[200px_1fr] gap-6 items-center">
+                <div class="text-center">
+                  <p class="num text-5xl font-semibold text-warm-900" style="line-height:1">4.6</p>
+                  <div class="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
+                    <i data-lucide="star" stroke-width="1.75" fill="currentColor" class="w-4 h-4"></i>
+                    <i data-lucide="star" stroke-width="1.75" fill="currentColor" class="w-4 h-4"></i>
+                    <i data-lucide="star" stroke-width="1.75" fill="currentColor" class="w-4 h-4"></i>
+                    <i data-lucide="star" stroke-width="1.75" fill="currentColor" class="w-4 h-4"></i>
+                    <i data-lucide="star" stroke-width="1.75" fill="currentColor" class="w-4 h-4 opacity-50"></i>
+                  </div>
+                  <p class="text-xs text-warm-500 mt-2 num">87 ta baho · ↑ 0.2 o'tgan oyga</p>
+                </div>
+                <div class="space-y-2">
+                  <div class="flex items-center gap-3 text-xs"><span class="num w-4 text-warm-600">5</span><div class="flex-1 h-2 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-brand-600 rounded-full" style="width:68%"></div></div><span class="num w-10 text-right text-warm-500">59</span></div>
+                  <div class="flex items-center gap-3 text-xs"><span class="num w-4 text-warm-600">4</span><div class="flex-1 h-2 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-brand-500 rounded-full" style="width:21%"></div></div><span class="num w-10 text-right text-warm-500">18</span></div>
+                  <div class="flex items-center gap-3 text-xs"><span class="num w-4 text-warm-600">3</span><div class="flex-1 h-2 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-brand-400 rounded-full" style="width:8%"></div></div><span class="num w-10 text-right text-warm-500">7</span></div>
+                  <div class="flex items-center gap-3 text-xs"><span class="num w-4 text-warm-600">2</span><div class="flex-1 h-2 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-warm-300 rounded-full" style="width:2%"></div></div><span class="num w-10 text-right text-warm-500">2</span></div>
+                  <div class="flex items-center gap-3 text-xs"><span class="num w-4 text-warm-600">1</span><div class="flex-1 h-2 bg-warm-100 rounded-full overflow-hidden"><div class="h-full bg-warm-300 rounded-full" style="width:1%"></div></div><span class="num w-10 text-right text-warm-500">1</span></div>
+                </div>
+              </div>
+              <!-- mini trend -->
+              <div class="mt-5 pt-4 border-t border-warm-100">
+                <div class="flex items-baseline justify-between mb-2">
+                  <p class="text-xs uppercase tracking-wider text-warm-500 font-medium">Oylik trend</p>
+                  <p class="text-xs text-warm-500 num">Sentyabr — May</p>
+                </div>
+                <svg viewBox="0 0 600 80" class="w-full h-16" preserveAspectRatio="none">
+                  <defs>
+                    <linearGradient id="rateGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stop-color="#A85C40" stop-opacity="0.18"/>
+                      <stop offset="100%" stop-color="#A85C40" stop-opacity="0"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M0,60 L75,55 L150,52 L225,48 L300,40 L375,35 L450,32 L525,28 L600,20 L600,80 L0,80 Z" fill="url(#rateGrad)"/>
+                  <path d="M0,60 L75,55 L150,52 L225,48 L300,40 L375,35 L450,32 L525,28 L600,20" stroke="#A85C40" stroke-width="1.75" fill="none"/>
+                </svg>
+              </div>
+            </article>
+          </div>
+
+          <!-- Right rail -->
+          <aside class="space-y-6">
+            <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+              <p class="text-md font-semibold text-warm-900 mb-1">Mening vazifalarim</p>
+              <p class="text-xs text-warm-500 mb-4">Bugun bajarilishi lozim · 3</p>
+              <ul class="space-y-3">
+                <li class="flex items-start gap-3">
+                  <input type="checkbox" class="mt-1 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+                  <div class="flex-1">
+                    <p class="text-sm text-warm-900">7 ta hujjatni tasdiqlash</p>
+                    <p class="text-xs text-warm-500 mt-0.5">Eng eskisi 4 kun oldin yuklangan</p>
+                    <a href="#page-docs" class="text-xs text-brand-700 hover:underline mt-1 inline-block">Hujjatlarga o'tish →</a>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3 pt-3 border-t border-warm-100">
+                  <input type="checkbox" class="mt-1 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+                  <div class="flex-1">
+                    <p class="text-sm text-warm-900">AI ogohlantirishni ko'rib chiqish</p>
+                    <p class="text-xs text-warm-500 mt-0.5">Yusuf Toshmatov · 5 kun davomida darsda yo'q</p>
+                    <a href="#page-ai" class="text-xs text-brand-700 hover:underline mt-1 inline-block">Ogohlantirishga o'tish →</a>
+                  </div>
+                </li>
+                <li class="flex items-start gap-3 pt-3 border-t border-warm-100">
+                  <input type="checkbox" checked class="mt-1 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" />
+                  <div class="flex-1">
+                    <p class="text-sm text-warm-500 line-through">IHMA xabariga javob berish</p>
+                    <p class="text-xs text-warm-400 mt-0.5">Bajarildi · 09:14</p>
+                  </div>
+                </li>
+              </ul>
+            </article>
+
+            <!-- School info card -->
+            <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+              <p class="text-md font-semibold text-warm-900">Tezkor ma'lumot</p>
+              <p class="text-xs text-warm-500 mt-0.5">Maktab haqida</p>
+              <dl class="mt-4 space-y-3 text-sm">
+                <div class="flex items-start gap-3">
+                  <i data-lucide="map-pin" stroke-width="1.75" class="w-4 h-4 text-warm-500 mt-0.5 shrink-0"></i>
+                  <div>
+                    <dt class="text-xs text-warm-500">Manzil</dt>
+                    <dd class="text-warm-800">Yashnobod tumani, Olmazor MFY, Bog' ko'chasi 14-uy</dd>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 pt-3 border-t border-warm-100">
+                  <i data-lucide="users-round" stroke-width="1.75" class="w-4 h-4 text-warm-500 mt-0.5 shrink-0"></i>
+                  <div>
+                    <dt class="text-xs text-warm-500">Sig'im</dt>
+                    <dd class="text-warm-800 num">124 / 140 bola · 12 guruh</dd>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 pt-3 border-t border-warm-100">
+                  <i data-lucide="shield-check" stroke-width="1.75" class="w-4 h-4 text-warm-500 mt-0.5 shrink-0"></i>
+                  <div>
+                    <dt class="text-xs text-warm-500">Akkredidatsiya</dt>
+                    <dd class="text-warm-800 num">UZ-EDU-2019-0148 · 14 mart 2024 da yangilangan</dd>
+                  </div>
+                </div>
+                <div class="flex items-start gap-3 pt-3 border-t border-warm-100">
+                  <i data-lucide="phone" stroke-width="1.75" class="w-4 h-4 text-warm-500 mt-0.5 shrink-0"></i>
+                  <div>
+                    <dt class="text-xs text-warm-500">Aloqa</dt>
+                    <dd class="text-warm-800 num">+998 71 245 18 33</dd>
+                  </div>
+                </div>
+              </dl>
+            </article>
+          </aside>
+        </div>
+      </main>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ PAGE: DOC QUEUE ============================================================ -->
+<section id="page-docs" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-8 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Page 03 of 05</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Document approval queue</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">3-column grid on desktop. Each card surfaces the uploading reception staffer, document type, preview, and the three actions: Tasdiqlash · Ko'rish · Rad etish.</p>
+  </div>
+
+  <div class="rounded-lg border border-warm-200 overflow-hidden bg-cream">
+    <div class="px-10 py-9">
+      <!-- Page header -->
+      <div class="letterhead pt-4 flex items-end justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Hujjatlar</p>
+          <h1 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Tasdiqlash navbati</h1>
+          <p class="text-md text-warm-600 mt-1">7 ta hujjat sizning e'tiboringizni kutmoqda. Eng eskisi 4 kun oldin yuklangan.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <i data-lucide="search" stroke-width="1.75" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400"></i>
+            <input type="search" placeholder="Xodim yoki hujjat turi..." class="h-10 pl-9 pr-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 w-64" />
+          </div>
+          <div class="relative">
+            <select class="h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none">
+              <option>Hammasi</option><option>Kutilmoqda</option><option>Tasdiqlangan</option><option>Rad etilgan</option>
+            </select>
+            <i data-lucide="chevron-down" stroke-width="1.75" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tabs / counts -->
+      <div class="mt-8 flex items-center gap-6 border-b border-warm-200">
+        <button class="relative pb-3 pt-1 text-sm font-medium text-warm-900">Kutilmoqda <span class="num text-xs ml-1 bg-brand-50 text-brand-700 rounded-sm px-1.5">7</span><span class="absolute left-0 right-0 bottom-0 h-0.5 bg-brand-600 rounded-full"></span></button>
+        <button class="pb-3 pt-1 text-sm font-medium text-warm-500 hover:text-warm-900">Tasdiqlangan <span class="num text-xs ml-1 text-warm-500">142</span></button>
+        <button class="pb-3 pt-1 text-sm font-medium text-warm-500 hover:text-warm-900">Rad etilgan <span class="num text-xs ml-1 text-warm-500">11</span></button>
+      </div>
+
+      <!-- Grid -->
+      <div class="mt-6 grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- doc 1 -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-sm font-semibold">AK</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Aziza Karimova</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 2 soat oldin</p>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+          </div>
+          <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+            <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700"><i data-lucide="file-text" stroke-width="1.75" class="w-3 h-3"></i>Shaxsiy guvohnoma · 2 sahifa</div>
+            <p class="absolute bottom-2 right-2 text-[10px] text-warm-500 num bg-surface/80 px-1.5 py-0.5 rounded-sm">PDF · 1.4 MB</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+
+        <!-- doc 2 -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold">BS</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Bobur Saidov</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 4 soat oldin</p>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+          </div>
+          <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+            <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700"><i data-lucide="stethoscope" stroke-width="1.75" class="w-3 h-3"></i>Tibbiy ma'lumot</div>
+            <p class="absolute bottom-2 right-2 text-[10px] text-warm-500 num bg-surface/80 px-1.5 py-0.5 rounded-sm">PDF · 980 KB</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+
+        <!-- doc 3 — no preview -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold">MR</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Madina Rahmatova</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 1 kun oldin</p>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+          </div>
+          <div class="h-32 rounded-md border border-warm-200 mb-4 bg-warm-50 flex flex-col items-center justify-center text-warm-400">
+            <i data-lucide="file-question" stroke-width="1.5" class="w-8 h-8"></i>
+            <p class="text-xs mt-2">Oldindan ko'rish mavjud emas</p>
+            <p class="text-[10px] num">DOCX · 320 KB</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="download" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+
+        <!-- doc 4 -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold">NY</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Nilufar Yusupova</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 2 kun oldin</p>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+          </div>
+          <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+            <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700"><i data-lucide="graduation-cap" stroke-width="1.75" class="w-3 h-3"></i>Diplom</div>
+            <p class="absolute bottom-2 right-2 text-[10px] text-warm-500 num bg-surface/80 px-1.5 py-0.5 rounded-sm">PDF · 2.1 MB</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+
+        <!-- doc 5 -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold">SO</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Sherzod Olimov</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 3 kun oldin</p>
+            </div>
+            <span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">Kutilmoqda</span>
+          </div>
+          <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+            <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700"><i data-lucide="id-card" stroke-width="1.75" class="w-3 h-3"></i>Pasport · 1 sahifa</div>
+            <p class="absolute bottom-2 right-2 text-[10px] text-warm-500 num bg-surface/80 px-1.5 py-0.5 rounded-sm">JPG · 2.8 MB</p>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+
+        <!-- doc 6 — stale, flag -->
+        <article class="bg-surface border border-warning-100 rounded-lg shadow-xs p-5 relative">
+          <div class="absolute top-3 right-3 inline-flex items-center gap-1 px-1.5 py-0.5 text-[10px] font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100"><i data-lucide="clock" stroke-width="2" class="w-3 h-3"></i>4 kun</div>
+          <div class="flex items-center gap-3 mb-4 pr-16">
+            <div class="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold">GH</div>
+            <div class="flex-1 min-w-0">
+              <p class="text-sm font-semibold text-warm-900">Gulnoza Hamidova</p>
+              <p class="text-xs text-warm-500 num">Qabulxona · 4 kun oldin</p>
+            </div>
+          </div>
+          <div class="doc-preview h-32 rounded-md border border-warm-200 mb-4 relative">
+            <div class="absolute top-2 left-2 inline-flex items-center gap-1.5 px-2 py-0.5 text-[11px] font-medium rounded-sm bg-surface/90 backdrop-blur border border-warm-200 text-warm-700"><i data-lucide="file-text" stroke-width="1.75" class="w-3 h-3"></i>Mehnat daftarchasi</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="flex-1 inline-flex items-center justify-center gap-1.5 h-10 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="check" stroke-width="2" class="w-4 h-4"></i>Tasdiqlash</button>
+            <button aria-label="Ko'rish" class="inline-flex items-center justify-center h-10 px-3 text-sm bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md"><i data-lucide="eye" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button aria-label="Rad etish" class="inline-flex items-center justify-center h-10 px-3 text-sm text-error-700 hover:bg-error-50 rounded-md"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </article>
+      </div>
+
+      <!-- Pagination -->
+      <div class="mt-6 flex items-center justify-between">
+        <p class="text-xs text-warm-500 num">Ko'rsatilmoqda <span class="text-warm-800">1–6</span> / jami <span class="text-warm-800">7</span></p>
+        <div class="flex items-center gap-1">
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md disabled:opacity-40" disabled><i data-lucide="chevron-left" stroke-width="1.75" class="w-4 h-4"></i></button>
+          <button class="inline-flex items-center justify-center w-8 h-8 bg-brand-600 text-cream rounded-md text-sm font-medium num">1</button>
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-700 hover:bg-warm-100 rounded-md text-sm num">2</button>
+          <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state preview -->
+  <div class="mt-6 grid md:grid-cols-2 gap-6">
+    <div>
+      <p class="text-sm font-semibold text-warm-900 mb-2">Empty state · "approved" tab</p>
+      <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-10 text-center">
+        <div class="w-14 h-14 mx-auto rounded-full bg-success-50 flex items-center justify-center mb-3">
+          <i data-lucide="check-circle-2" stroke-width="1.5" class="w-7 h-7 text-success-600"></i>
+        </div>
+        <p class="text-md font-semibold text-warm-900">Tasdiq kutayotgan hujjat yo'q</p>
+        <p class="text-sm text-warm-500 mt-1 max-w-xs mx-auto">Hammasi ko'rib chiqilgan. Qabulxona yangi hujjat yuklaganda bu yerda paydo bo'ladi.</p>
+      </div>
+    </div>
+    <div>
+      <p class="text-sm font-semibold text-warm-900 mb-2">Reject confirmation (with reason)</p>
+      <div class="bg-warm-900/15 rounded-lg p-6">
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-md overflow-hidden">
+          <div class="flex items-center justify-between px-5 py-4 border-b border-warm-100">
+            <div>
+              <h4 class="text-md font-semibold text-warm-900">Hujjatni rad etish</h4>
+              <p class="text-xs text-warm-500 mt-0.5">Bobur Saidov · Tibbiy ma'lumot</p>
+            </div>
+            <button aria-label="Yopish" class="text-warm-500 hover:text-warm-900 p-1 rounded-md hover:bg-warm-100"><i data-lucide="x" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+          <div class="px-5 py-4 space-y-3">
+            <label class="block text-sm font-medium text-warm-800">Rad etish sababi <span class="text-error-600">*</span></label>
+            <textarea rows="3" class="w-full px-3 py-2 text-sm bg-surface border border-warm-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600" placeholder="Misol: hujjat sifati past, qaytadan yuklang. Iltimos, aniq va to'liq variantni yuboring."></textarea>
+            <p class="text-xs text-warm-500">Xabar Bobur Saidovga email orqali yuboriladi.</p>
+          </div>
+          <div class="px-5 py-3 bg-cream/60 border-t border-warm-100 flex items-center justify-end gap-2">
+            <button class="inline-flex items-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Bekor qilish</button>
+            <button class="inline-flex items-center h-9 px-3 text-sm font-medium bg-error-600 hover:bg-error-700 text-cream rounded-md shadow-xs">Rad etish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ PAGE: RECEPTION ============================================================ -->
+<section id="page-reception" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-8 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Page 04 of 05</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Reception management list</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">Reception staff CRUD page — institutional data table with status badges, search/filter, and per-row actions.</p>
+  </div>
+
+  <div class="rounded-lg border border-warm-200 overflow-hidden bg-cream">
+    <div class="px-10 py-9">
+      <!-- Page header -->
+      <div class="letterhead pt-4 flex items-end justify-between flex-wrap gap-4">
+        <div class="flex items-baseline gap-3">
+          <div>
+            <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Xodimlar</p>
+            <h1 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">Qabulxona xodimlari <span class="text-xl font-medium text-warm-500 num">· 8</span></h1>
+            <p class="text-md text-warm-600 mt-1">Qabulxona xodimlarini yarating, faollashtiring va boshqaring.</p>
+          </div>
+        </div>
+        <button class="inline-flex items-center gap-2 h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs"><i data-lucide="plus" stroke-width="2" class="w-4 h-4"></i>Yangi xodim qo'shish</button>
+      </div>
+
+      <!-- Filter bar -->
+      <div class="mt-8 flex items-center gap-3 flex-wrap">
+        <div class="relative flex-1 min-w-[280px] max-w-md">
+          <i data-lucide="search" stroke-width="1.75" class="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400"></i>
+          <input type="search" placeholder="Ism, email yoki telefon..." class="w-full h-10 pl-9 pr-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900" />
+        </div>
+        <div class="relative">
+          <select class="h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none">
+            <option>Hammasi · 8</option><option>Faol · 5</option><option>Tasdiq kutmoqda · 2</option><option>Faolsizlantirilgan · 1</option>
+          </select>
+          <i data-lucide="chevron-down" stroke-width="1.75" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none"></i>
+        </div>
+        <button class="inline-flex items-center gap-1.5 h-10 px-3 text-sm font-medium text-warm-700 bg-surface border border-warm-300 hover:bg-warm-50 rounded-md"><i data-lucide="sliders-horizontal" stroke-width="1.75" class="w-4 h-4"></i>Filtr</button>
+        <button class="inline-flex items-center gap-1.5 h-10 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md"><i data-lucide="download" stroke-width="1.75" class="w-4 h-4"></i>Eksport</button>
+      </div>
+
+      <!-- Table -->
+      <div class="mt-6 bg-surface border border-warm-200 rounded-lg shadow-xs overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead class="bg-warm-50 border-b border-warm-200 sticky top-0 z-10">
+              <tr>
+                <th class="colhead text-left px-5 py-3"><label class="inline-flex items-center gap-2"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><button class="inline-flex items-center gap-1.5 text-warm-600 hover:text-warm-900">Ism &amp; familiya <i data-lucide="arrow-down" stroke-width="1.75" class="w-3 h-3"></i></button></label></th>
+                <th class="colhead text-left px-5 py-3">Email</th>
+                <th class="colhead text-left px-5 py-3">Telefon</th>
+                <th class="colhead text-left px-5 py-3">Hujjatlar</th>
+                <th class="colhead text-left px-5 py-3">Holat</th>
+                <th class="colhead text-right px-5 py-3 num">Ro'yxatga olingan</th>
+                <th class="colhead text-right px-5 py-3 w-12"></th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-warm-100 text-warm-800">
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-xs font-semibold">AK</div><span class="font-medium">Aziza Karimova</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1677387d77647f7b796077567b777d627774272238636c">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 91 234 56 78</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+                <td class="px-5 text-right text-warm-600 num">12 mart 2026</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">BS</div><span class="font-medium">Bobur Saidov</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="593b772a38303d362f193438322d383b686d772c23">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 90 145 22 09</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">2 / 3 ko'rib chiqilmoqda</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100"><span class="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5"></span>Tasdiq kutmoqda</span></td>
+                <td class="px-5 text-right text-warm-600 num">2 may 2026</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">NY</div><span class="font-medium">Nilufar Yusupova</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9af4b4e3efe9efeaf5ecfbdaf7fbf1eefbf8abaeb4efe0">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 93 312 04 56</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">1 / 3 yuklandi</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100"><span class="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5"></span>Tasdiq kutmoqda</span></td>
+                <td class="px-5 text-right text-warm-600 num">14 may 2026</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-info-50 text-info-700 flex items-center justify-center text-xs font-semibold">SO</div><span class="font-medium">Sherzod Olimov</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="03702d6c6f6a6e6c75436e626877626132372d7679">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 97 884 51 17</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+                <td class="px-5 text-right text-warm-600 num">8 yanv 2026</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">GH</div><span class="font-medium">Gulnoza Hamidova</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="096e27616864606d667f68496468627d686b383d277c73">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 99 401 88 22</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+                <td class="px-5 text-right text-warm-600 num">22 noyab 2025</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">MR</div><span class="font-medium">Madina Rahmatova</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ef82c19d8e87828e9b80998eaf828e849b8e8ddedbc19a95">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 71 245 09 14</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">1 / 3 rad etilgan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-info-50 text-info-700 border border-info-100"><span class="w-1.5 h-1.5 rounded-full bg-info-600 mr-1.5"></span>Faolsizlantirilgan</span></td>
+                <td class="px-5 text-right text-warm-600 num">28 fevr 2026</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">DI</div><span class="font-medium">Doniyor Islomov</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197d37706a757674766f597478726d787b282d376c63">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 91 117 33 04</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+                <td class="px-5 text-right text-warm-600 num">15 sent 2025</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+              <tr class="hover:bg-warm-50/60 h-12">
+                <td class="px-5"><label class="flex items-center gap-3"><input type="checkbox" class="w-3.5 h-3.5 rounded-sm border-warm-300 text-brand-600" /><div class="w-8 h-8 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-xs font-semibold">FT</div><span class="font-medium">Feruza Tashpulatova</span></label></td>
+                <td class="px-5 text-warm-600 num"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="197f376d786a71696c75786d766f78597478726d787b282d376c63">[email&#160;protected]</a></td>
+                <td class="px-5 text-warm-600 num">+998 90 776 12 88</td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">3 / 3 tasdiqlangan</span></td>
+                <td class="px-5"><span class="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100"><span class="w-1.5 h-1.5 rounded-full bg-success-600 mr-1.5"></span>Faol</span></td>
+                <td class="px-5 text-right text-warm-600 num">4 iyun 2025</td>
+                <td class="px-5 text-right"><button aria-label="Tafsilotlar" class="text-warm-500 hover:text-warm-900 p-1.5 rounded-md hover:bg-warm-100"><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="flex items-center justify-between px-5 py-3 border-t border-warm-200 bg-cream/50">
+          <p class="text-xs text-warm-500 num">Ko'rsatilmoqda <span class="text-warm-800">1–8</span> / jami <span class="text-warm-800">8</span> xodim</p>
+          <div class="flex items-center gap-1">
+            <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md disabled:opacity-40" disabled><i data-lucide="chevron-left" stroke-width="1.75" class="w-4 h-4"></i></button>
+            <button class="inline-flex items-center justify-center w-8 h-8 bg-brand-600 text-cream rounded-md text-sm font-medium num">1</button>
+            <button class="inline-flex items-center justify-center w-8 h-8 text-warm-500 hover:bg-warm-100 rounded-md disabled:opacity-40" disabled><i data-lucide="chevron-right" stroke-width="1.75" class="w-4 h-4"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Empty state (no results variant) -->
+      <div class="mt-6">
+        <p class="text-sm font-semibold text-warm-900 mb-2">Empty state · no filter matches</p>
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-10 text-center">
+          <div class="w-14 h-14 mx-auto rounded-full bg-warm-100 flex items-center justify-center mb-3">
+            <i data-lucide="search-x" stroke-width="1.5" class="w-7 h-7 text-warm-400"></i>
+          </div>
+          <p class="text-md font-semibold text-warm-900">"feruza" so'roviga mos xodim topilmadi</p>
+          <p class="text-sm text-warm-500 mt-1 max-w-sm mx-auto">Filtrlarni o'zgartiring yoki yangi xodim qo'shing.</p>
+          <button class="mt-4 inline-flex items-center gap-1.5 h-9 px-3 text-sm font-medium bg-surface border border-warm-300 hover:bg-warm-50 text-warm-800 rounded-md">Filtrlarni tozalash</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-rule max-w-[1280px] mx-auto"></div>
+
+<!-- ============================================================ PAGE: AI WARNINGS ============================================================ -->
+<section id="page-ai" class="max-w-[1280px] mx-auto px-6 py-14">
+  <div class="mb-8 letterhead pt-4">
+    <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Page 05 of 05</p>
+    <h2 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">AI warnings review</h2>
+    <p class="mt-2 text-md text-warm-600 max-w-2xl">Single-column list of AI warning cards with severity, target, message excerpt, and resolution actions. Resolved warnings dim in place.</p>
+  </div>
+
+  <div class="rounded-lg border border-warm-200 overflow-hidden bg-cream">
+    <div class="px-10 py-9">
+      <!-- Page header -->
+      <div class="letterhead pt-4 flex items-end justify-between flex-wrap gap-4">
+        <div>
+          <p class="text-xs font-medium uppercase tracking-wider text-brand-700">Hisobotlar</p>
+          <h1 class="mt-1 text-3xl font-semibold tracking-tight text-warm-900">AI ogohlantirishlar <span class="text-xl font-medium text-warm-500 num">· 5</span></h1>
+          <p class="text-md text-warm-600 mt-1">Tizim aniqlagan e'tibor talab qiluvchi naqshlar va voqealar.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <div class="relative">
+            <select class="h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none">
+              <option>Hammasi · 5</option><option>Hal qilinmagan · 3</option><option>Hal qilingan · 2</option>
+            </select>
+            <i data-lucide="chevron-down" stroke-width="1.75" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none"></i>
+          </div>
+          <div class="relative">
+            <select class="h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none">
+              <option>Hamma darajalar</option><option>Past · Low</option><option>O'rta · Medium</option><option>Yuqori · High</option><option>Kritik · Critical</option>
+            </select>
+            <i data-lucide="chevron-down" stroke-width="1.75" class="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none"></i>
+          </div>
+        </div>
+      </div>
+
+      <!-- Warning cards -->
+      <div class="mt-8 space-y-4">
+        <!-- High -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-error-50 text-error-700 flex items-center justify-center shrink-0"><i data-lucide="alert-triangle" stroke-width="1.75" class="w-5 h-5"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">Yuqori · High</span>
+                <span class="text-xs text-warm-500">Davomat naqsh</span>
+                <span class="text-xs text-warm-400">·</span>
+                <span class="text-xs text-warm-500 num">5-A "Quyosh" guruhi</span>
+              </div>
+              <p class="text-md font-semibold text-warm-900">Yusuf Toshmatov · 5 kun davomida darsda yo'q</p>
+              <p class="text-sm text-warm-700 mt-1">Bola so'nggi 5 ish kunida darsga kelmagan va ushbu davr uchun hech qanday ma'lumot tushmagan. AI: oilaga aloqa o'rnatishni va sababini aniqlashni tavsiya qiladi. Ota-onaning so'nggi aloqa raqami ishlamayotgan ko'rinadi... <a href="#" class="text-brand-700 font-medium">Ko'proq</a></p>
+              <div class="mt-3 flex items-center gap-3 text-xs text-warm-500">
+                <span class="flex items-center gap-1.5"><i data-lucide="clock" stroke-width="1.75" class="w-3 h-3"></i><span class="num">35 daqiqa oldin</span></span>
+                <span>·</span>
+                <span>Manba: <span class="text-warm-700">davomat tizimi</span></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Ko'rib chiqish</button>
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Hal qilingan deb belgilash</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Medium -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-warning-50 text-warning-700 flex items-center justify-center shrink-0"><i data-lucide="alert-circle" stroke-width="1.75" class="w-5 h-5"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-warning-50 text-warning-700 border border-warning-100">O'rta · Medium</span>
+                <span class="text-xs text-warm-500">Reyting pasayishi</span>
+              </div>
+              <p class="text-md font-semibold text-warm-900">3-A "Bahor" guruhi reytingi 4.8 → 4.2 ga tushdi</p>
+              <p class="text-sm text-warm-700 mt-1">So'nggi 2 hafta davomida ota-onalar 3-A "Bahor" guruhi haqida 4 ta past baho qoldirishdi. Asosiy sabab — ovqatlanish sifati va dars jadvalining o'zgarishi. Mos o'qituvchi bilan suhbatlashishni tavsiya qilamiz... <a href="#" class="text-brand-700 font-medium">Ko'proq</a></p>
+              <div class="mt-3 flex items-center gap-3 text-xs text-warm-500">
+                <span class="flex items-center gap-1.5"><i data-lucide="clock" stroke-width="1.75" class="w-3 h-3"></i><span class="num">3 soat oldin</span></span>
+                <span>·</span>
+                <span>Manba: <span class="text-warm-700">ota-ona baholari</span></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Ko'rib chiqish</button>
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Hal qilingan</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Low -->
+        <article class="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-info-50 text-info-700 flex items-center justify-center shrink-0"><i data-lucide="info" stroke-width="1.75" class="w-5 h-5"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-info-50 text-info-700 border border-info-100">Past · Low</span>
+                <span class="text-xs text-warm-500">Tizim foydalanish</span>
+              </div>
+              <p class="text-md font-semibold text-warm-900">Madina Rahmatova oxirgi 14 kun davomida tizimga kirmagan</p>
+              <p class="text-sm text-warm-700 mt-1">Qabulxona xodimi Madina Rahmatova faolsizlantirilgan, ammo akkaunt hali tizimda. Akkauntni o'chirish yoki sababini so'rash mumkin... <a href="#" class="text-brand-700 font-medium">Ko'proq</a></p>
+              <div class="mt-3 flex items-center gap-3 text-xs text-warm-500">
+                <span class="flex items-center gap-1.5"><i data-lucide="clock" stroke-width="1.75" class="w-3 h-3"></i><span class="num">Kecha, 16:42</span></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Ko'rib chiqish</button>
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md">Hal qilingan</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Critical (filled severity badge) -->
+        <article class="bg-surface border border-error-200 rounded-lg shadow-xs p-5" style="border-color:#EAC4BF">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-error-600 text-cream flex items-center justify-center shrink-0"><i data-lucide="shield-alert" stroke-width="1.75" class="w-5 h-5"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-error-600 text-cream border border-error-700">Kritik · Critical</span>
+                <span class="text-xs text-warm-500">Hujjat eskirgan</span>
+              </div>
+              <p class="text-md font-semibold text-warm-900">Tibbiy litsenziyani yangilash muddati 18 kun ichida tugaydi</p>
+              <p class="text-sm text-warm-700 mt-1">Maktab tibbiyot xizmati ko'rsatish uchun talab qilingan litsenziya 2 iyun 2026 da tugaydi. IHMA inspeksiyasi 28 iyun da rejalashtirilgan — litsenziyani yangilash zarur. Tegishli hujjatlar va ariza turlari quyidagi havola orqali mavjud... <a href="#" class="text-brand-700 font-medium">Ko'proq</a></p>
+              <div class="mt-3 flex items-center gap-3 text-xs text-warm-500">
+                <span class="flex items-center gap-1.5"><i data-lucide="clock" stroke-width="1.75" class="w-3 h-3"></i><span class="num">2 kun oldin</span></span>
+                <span>·</span>
+                <span>Manba: <span class="text-warm-700">akkredidatsiya jurnali</span></span>
+              </div>
+            </div>
+            <div class="flex items-center gap-2 shrink-0">
+              <button class="inline-flex items-center justify-center h-9 px-3 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-cream rounded-md shadow-xs">Ko'rib chiqish</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Resolved · dimmed -->
+        <article class="bg-surface border border-warm-100 rounded-lg p-5 opacity-60">
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-md bg-warm-100 text-warm-500 flex items-center justify-center shrink-0"><i data-lucide="check-circle-2" stroke-width="1.75" class="w-5 h-5"></i></div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 flex-wrap mb-1">
+                <span class="inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm bg-warm-100 text-warm-600 border border-warm-200">Hal qilingan</span>
+                <span class="text-xs text-warm-500">7 may 2026</span>
+              </div>
+              <p class="text-md font-semibold text-warm-800 line-through">Bandlik 95% dan oshdi — yangi guruhga ehtiyoj</p>
+              <p class="text-sm text-warm-600 mt-1">Hal qildi: <span class="text-warm-800 font-medium">Dilshod Karimov</span> · "Yangi guruh 5-B ochildi, IHMA ga xabar berildi."</p>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <!-- Empty state -->
+      <div class="mt-10">
+        <p class="text-sm font-semibold text-warm-900 mb-2">Empty state · "no warnings"</p>
+        <div class="bg-surface border border-warm-200 rounded-lg shadow-xs p-10 text-center">
+          <div class="w-14 h-14 mx-auto rounded-full bg-success-50 flex items-center justify-center mb-3">
+            <i data-lucide="shield-check" stroke-width="1.5" class="w-7 h-7 text-success-600"></i>
+          </div>
+          <p class="text-md font-semibold text-warm-900">Ogohlantirish yo'q</p>
+          <p class="text-sm text-warm-500 mt-1 max-w-md mx-auto">Hozircha hech narsa sizning e'tiboringizni talab qilmaydi. AI tizim doimiy ravishda ma'lumotlarni kuzatadi va biror muhim narsa paydo bo'lganda sizni xabardor qiladi.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ FOOTER ============================================================ -->
+<footer class="max-w-[1280px] mx-auto px-6 py-10 mt-6 border-t border-warm-200">
+  <div class="flex items-start justify-between gap-6 flex-wrap">
+    <div>
+      <div class="flex items-center gap-2.5">
+        <span class="inline-flex items-center justify-center w-7 h-7 rounded-md bg-walnut text-cream font-semibold text-sm" style="letter-spacing:-0.04em">U</span>
+        <p class="text-md font-semibold tracking-tight text-warm-900">Uchqun Admin · Design System</p>
+      </div>
+      <p class="text-sm text-warm-500 mt-2 max-w-md">A warm-professional design language for the school director's office. Defined at Phase 1, ready to land in <code class="text-xs bg-warm-100 px-1 rounded">admin/</code>.</p>
+    </div>
+    <div class="text-xs text-warm-500 num space-y-1 text-right">
+      <p>v1.0 · 16 may 2026</p>
+      <p>Brand: terracotta · Sidebar: walnut · Paper: cream</p>
+      <p>Inter · lucide @1.75 · Tailwind 3.3</p>
+    </div>
+  </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // initialise lucide icons after content is in DOM
+  document.addEventListener('DOMContentLoaded', () => { if (window.lucide) lucide.createIcons(); });
+  // re-init when new HTML is injected (helper)
+  window.refreshIcons = () => { if (window.lucide) lucide.createIcons(); };
+
+  // top-nav active marker
+  const sections = ['handoff','tokens','components','page-login','page-dashboard','page-docs','page-reception','page-ai'];
+  const links = sections.map(id => document.querySelector(`a[href="#${id}"]`));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l && l.classList.remove('is-active'));
+        const id = e.target.id;
+        const link = document.querySelector(`a[href="#${id}"]`);
+        if (link) link.classList.add('is-active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  // we will observe once all sections are present
+  window.observeSections = () => {
+    sections.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+  };
+  window.observeSections();
+</script>
+</body>
+</html>

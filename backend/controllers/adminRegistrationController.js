@@ -1,6 +1,11 @@
 import crypto from 'crypto';
 import AdminRegistrationRequest from '../models/AdminRegistrationRequest.js';
 import User from '../models/User.js';
+import School from '../models/School.js';
+import { parsePagination } from '../utils/pagination.js';
+
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isValidUuid = (s) => UUID_RE.test(s);
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 import sequelize from '../config/database.js';
@@ -217,8 +222,9 @@ export const submitRegistrationRequest = async (req, res) => {
  */
 export const getRegistrationRequests = async (req, res) => {
   try {
-    const { status, page = 1, limit = 20 } = req.query;
-    const offset = (parseInt(page) - 1) * parseInt(limit);
+    const { status } = req.query;
+    const { limit, offset } = parsePagination(req.query);
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
 
     const where = {};
     if (status) {
@@ -228,7 +234,7 @@ export const getRegistrationRequests = async (req, res) => {
     const { count, rows: requests } = await AdminRegistrationRequest.findAndCountAll({
       where,
       order: [['createdAt', 'DESC']],
-      limit: parseInt(limit),
+      limit,
       offset,
     });
 
@@ -237,9 +243,9 @@ export const getRegistrationRequests = async (req, res) => {
       data: requests.map(r => r.toJSON()),
       pagination: {
         total: count,
-        page: parseInt(page),
-        limit: parseInt(limit),
-        totalPages: Math.ceil(count / parseInt(limit)),
+        page,
+        limit,
+        totalPages: Math.ceil(count / limit),
       },
     });
   } catch (error) {
@@ -258,6 +264,7 @@ export const getRegistrationRequests = async (req, res) => {
 export const getRegistrationRequestById = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
     const request = await AdminRegistrationRequest.findByPk(id, {
       include: [
@@ -303,6 +310,7 @@ export const getRegistrationRequestById = async (req, res) => {
 export const approveRegistrationRequest = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
     const { password, schoolId } = req.body;
 
     // Generate cryptographically secure password if not provided
@@ -354,6 +362,19 @@ export const approveRegistrationRequest = async (req, res) => {
         isActive: true,
         schoolId: schoolId || request.schoolId,
       }, { transaction: t });
+
+      // Populate region/city/director on the school from registration data
+      const targetSchoolId = schoolId || request.schoolId;
+      if (targetSchoolId && (request.region || request.city)) {
+        await School.update(
+          {
+            ...(request.region && { region: request.region }),
+            ...(request.city && { city: request.city }),
+            director: `${request.firstName} ${request.lastName}`,
+          },
+          { where: { id: targetSchoolId }, transaction: t }
+        );
+      }
 
       request.status = 'approved';
       request.reviewedBy = req.user.id;
@@ -408,6 +429,7 @@ export const approveRegistrationRequest = async (req, res) => {
 export const rejectRegistrationRequest = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
     const { reason } = req.body;
 
     const request = await AdminRegistrationRequest.findByPk(id);

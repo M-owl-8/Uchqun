@@ -53,7 +53,7 @@ const Dashboard = () => {
         cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, pendingTotal: pt, activeWarnings: aw });
         setStats(s); setSchools(sc); setAdmins(ad); setPendingTotal(pt); setActiveWarnings(aw); setIsStale(anyFailed);
         setLastUpdated(new Date());
-      }).catch(() => {});
+      }).catch(err => console.error('[Dashboard] revalidation error:', err));
       return;
     }
     setLoading(true);

@@ -12,13 +12,18 @@ import ConfirmDialog from '@shared/components/ConfirmDialog';
 const useApiCache = (url, cacheKey) => {
   const [data, setData] = useState(() => cache.get(cacheKey) || []);
   const [loading, setLoading] = useState(!cache.get(cacheKey));
+  const [error, setError] = useState(null);
 
   const refresh = useCallback(() =>
     api.get(url).then(res => {
       const fresh = res.data?.data || [];
       cache.set(cacheKey, fresh);
       setData(fresh);
+      setError(null);
       return fresh;
+    }).catch(err => {
+      setError(err);
+      throw err;
     }),
     [url, cacheKey]
   );
@@ -29,7 +34,7 @@ const useApiCache = (url, cacheKey) => {
     refresh().catch(() => {}).finally(() => setLoading(false));
   }, [cacheKey, refresh]);
 
-  return [data, setData, loading, refresh];
+  return [data, setData, loading, refresh, error];
 };
 
 const TABS = ['admins', 'messages', 'government', 'registrations'];
@@ -43,7 +48,7 @@ const Platform = () => {
   const [creatingAdmin, setCreatingAdmin] = useState(false);
 
   // admins
-  const [admins, setAdmins, loadingAdmins, refreshAdmins] = useApiCache('/government/admins', 'platform:admins');
+  const [admins, setAdmins, loadingAdmins, refreshAdmins, adminsError] = useApiCache('/government/admins', 'platform:admins');
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [editFirstName, setEditFirstName] = useState('');
   const [editLastName, setEditLastName] = useState('');
@@ -53,14 +58,11 @@ const Platform = () => {
   const [editSaving, setEditSaving] = useState(false);
   const [showPasswords, setShowPasswords] = useState({ edit: false });
 
-  // messages
-  const [messages, , loadingMessages, refreshMessages] = useApiCache('/government/messages', 'platform:messages');
-  const [selectedMessage, setSelectedMessage] = useState(null);
-  const [replyText, setReplyText] = useState('');
-  const [replying, setReplying] = useState(false);
+  // messages — unread count only (for tab badge); full state is managed inside MessagesTab
+  const [unreadCount, setUnreadCount] = useState(0);
 
   // government users
-  const [governments, setGovernments, loadingGovernments, refreshGovernments] = useApiCache('/government/users', 'platform:governments');
+  const [governments, setGovernments, loadingGovernments, refreshGovernments, governmentsError] = useApiCache('/government/users', 'platform:governments');
   const [govFirstName, setGovFirstName] = useState('');
   const [govLastName, setGovLastName] = useState('');
   const [govEmail, setGovEmail] = useState('');
@@ -92,27 +94,6 @@ const Platform = () => {
       } catch { setRegistrationRequests([]); } finally { setLoadingRegistrations(false); }
     })();
   }, [activeTab]);
-
-  const handleReply = async (messageId) => {
-    if (!replyText.trim()) return;
-    setReplying(true);
-    try {
-      await api.post(`/government/messages/${messageId}/reply`, { reply: replyText.trim() });
-      success(t('government.replySent', { defaultValue: 'Reply sent' }));
-      setReplyText('');
-      setSelectedMessage(null);
-      refreshMessages().catch(() => {});
-    } catch (error) {
-      showError(error.response?.data?.error || t('government.replyError', { defaultValue: 'Reply failed' }));
-    } finally { setReplying(false); }
-  };
-
-  const handleMarkRead = async (messageId, isRead) => {
-    try {
-      await api.put(`/government/messages/${messageId}/read`, { isRead });
-      refreshMessages().catch(() => {});
-    } catch { /* ignore */ }
-  };
 
   const handleSubmitAdmin = async ({ firstName, lastName, email, password }, reset) => {
     if (!firstName || !lastName || !email || !password) {
@@ -189,8 +170,11 @@ const Platform = () => {
       showError(t('government.validation.invalidEmail', { defaultValue: 'Invalid email format' }));
       return;
     }
-    if (pw.length < 8) {
-      showError(t('government.validation.passwordMinLength', { defaultValue: 'Password must be at least 8 characters' }));
+    const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
+    if (!PASSWORD_RE.test(pw)) {
+      showError(t('platform.passwordComplexity', {
+        defaultValue: 'Parol kamida 8 belgi, katta va kichik harf, raqam kerak',
+      }));
       return;
     }
     try {
@@ -304,9 +288,9 @@ const Platform = () => {
             className={`px-6 py-3 font-medium transition-colors border-b-2 whitespace-nowrap ${activeTab === tab ? 'border-brand-600 text-brand-600' : 'border-transparent text-gray-500 hover:text-gray-700'}`}
           >
             {TAB_LABELS[tab]}
-            {tab === 'messages' && messages.filter((m) => !m.isRead).length > 0 && (
+            {tab === 'messages' && unreadCount > 0 && (
               <span className="ml-2 px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">
-                {messages.filter((m) => !m.isRead).length}
+                {unreadCount}
               </span>
             )}
           </button>
@@ -314,6 +298,14 @@ const Platform = () => {
       </div>
 
       <div className={`${activeTab === 'messages' ? 'max-w-6xl' : 'max-w-2xl'} w-full mx-auto space-y-8`}>
+        {activeTab === 'admins' && adminsError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-4">
+            {t('platform.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik" })}
+            <button onClick={() => refreshAdmins().catch(() => {})} className="ml-3 underline font-medium">
+              {t('warnings.retry', { defaultValue: 'Qayta urinish' })}
+            </button>
+          </div>
+        )}
         {activeTab === 'admins' && (
           <AdminsTab
             admins={admins} loadingAdmins={loadingAdmins} loading={creatingAdmin}
@@ -328,12 +320,15 @@ const Platform = () => {
           />
         )}
         {activeTab === 'messages' && (
-          <MessagesTab
-            messages={messages} loadingMessages={loadingMessages}
-            selectedMessage={selectedMessage} replyText={replyText} replying={replying}
-            onMarkRead={handleMarkRead} onSelectMessage={setSelectedMessage}
-            onReply={handleReply} setReplyText={setReplyText}
-          />
+          <MessagesTab onUnreadCountChange={setUnreadCount} />
+        )}
+        {activeTab === 'government' && governmentsError && (
+          <div className="bg-red-50 border border-red-200 text-red-700 text-sm px-4 py-3 rounded-lg mb-4">
+            {t('platform.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik" })}
+            <button onClick={() => refreshGovernments().catch(() => {})} className="ml-3 underline font-medium">
+              {t('warnings.retry', { defaultValue: 'Qayta urinish' })}
+            </button>
+          </div>
         )}
         {activeTab === 'government' && (
           <GovernmentTab

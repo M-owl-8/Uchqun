@@ -21,19 +21,16 @@ import {
   getGovernments,
   updateGovernmentUser,
   deleteGovernmentUser,
-  getAllSchools,
 } from '../controllers/adminController.js';
 import {
   sendMessage,
   getAllMessages,
-  getMessageById,
   replyToMessage,
   markMessageRead,
   deleteMessage,
 } from '../controllers/governmentMessageController.js';
 import {
   getRegistrationRequests,
-  getRegistrationRequestById,
   approveRegistrationRequest,
   rejectRegistrationRequest,
 } from '../controllers/adminRegistrationController.js';
@@ -61,14 +58,13 @@ router.use(requireGovernment);
 router.get('/overview', getOverview);
 router.get('/schools', getSchoolsStats);
 router.get('/schools/:id', getSchoolById);
-router.get('/schools-list', getAllSchools);
-router.get('/students', getStudentsStats);
-router.get('/teachers', getTeachersList);
-router.get('/parents', getParentsList);
+router.get('/students', getStudentsStats);    // Available for future students directory page
+router.get('/teachers', getTeachersList);     // Available for future teachers directory page
+router.get('/parents', getParentsList);       // Available for future parents directory page
 router.get('/ratings', getRatingsStats);
 router.get('/ratings/:schoolId', getSchoolRatings);
-router.post('/stats/generate', generateStats);
-router.get('/stats', getSavedStats);
+router.post('/stats/generate', generateStats);  // Available for future stats snapshot feature
+router.get('/stats', getSavedStats);             // Available for future stats snapshot feature
 
 // Admin management
 router.get('/admins', getAdmins);
@@ -84,15 +80,13 @@ router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, upda
 router.delete('/users/:id', deleteGovernmentValidator, handleValidationErrors, deleteGovernmentUser);
 
 // User messages
-router.get("/messages", getAllMessages);
-router.get('/messages/:id', getMessageById);
+router.get('/messages', getAllMessages);
 router.post('/messages/:id/reply', replyToMessage);
 router.put('/messages/:id/read', markMessageRead);
 router.delete('/messages/:id', deleteMessage);
 
 // Admin registration requests
 router.get('/admin-registrations', getRegistrationRequests);
-router.get('/admin-registrations/:id', getRegistrationRequestById);
 router.post('/admin-registrations/:id/approve', approveRegistrationRequest);
 router.post('/admin-registrations/:id/reject', rejectRegistrationRequest);
 

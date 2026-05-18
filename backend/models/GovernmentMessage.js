@@ -20,6 +20,13 @@ const GovernmentMessage = sequelize.define('GovernmentMessage', {
   readAt: { type: DataTypes.DATE, allowNull: true },
   reply: { type: DataTypes.TEXT, allowNull: true },
   repliedAt: { type: DataTypes.DATE, allowNull: true },
+  // Threading: top-level messages have parentMessageId = null; replies point to their parent.
+  parentMessageId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: { model: 'government_messages', key: 'id' },
+    onDelete: 'SET NULL',
+  },
 }, {
   tableName: 'government_messages',
   timestamps: true,
@@ -27,7 +34,11 @@ const GovernmentMessage = sequelize.define('GovernmentMessage', {
     { fields: ['senderId'] },
     { fields: ['isRead'] },
     { fields: ['createdAt'] },
+    { fields: ['parentMessageId'] },
   ],
 });
+
+GovernmentMessage.hasMany(GovernmentMessage, { as: 'replies', foreignKey: 'parentMessageId' });
+GovernmentMessage.belongsTo(GovernmentMessage, { as: 'parent', foreignKey: 'parentMessageId' });
 
 export default GovernmentMessage;

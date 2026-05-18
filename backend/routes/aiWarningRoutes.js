@@ -20,8 +20,8 @@ router.use(authenticate);
 // Analyze ratings and generate warnings (Admin, Government)
 router.post('/analyze', requireRole('admin', 'government'), analyzeWarningsValidator, handleValidationErrors, analyzeRatings);
 
-// Get warnings
-router.get('/', getWarnings);
+// Get warnings (admin and government only)
+router.get('/', requireRole('admin', 'government'), getWarnings);
 
 // Resolve warning (Admin, Government)
 router.put('/:id/resolve', requireRole('admin', 'government'), resolveWarningValidator, handleValidationErrors, resolveWarning);

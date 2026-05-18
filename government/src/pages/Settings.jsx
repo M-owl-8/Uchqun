@@ -1,25 +1,18 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import { Lock, User, LogOut, Eye, EyeOff } from 'lucide-react';
+import { Lock, LogOut, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
-  const { user, setUser, logout } = useAuth();
+  const { logout } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [saving, setSaving] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
-  const [profileForm, setProfileForm] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    phone: '',
-  });
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -31,41 +24,6 @@ const Settings = () => {
     confirm: false,
   });
   const { success, error: showError } = useToast();
-
-  useEffect(() => {
-    if (user) {
-      setProfileForm({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        phone: user.phone || '',
-      });
-    }
-  }, [user]);
-
-  const handleProfileSubmit = async (e) => {
-    e.preventDefault();
-    setSaving(true);
-    try {
-      const response = await api.put('/user/profile', {
-        firstName: profileForm.firstName,
-        lastName: profileForm.lastName,
-        phone: profileForm.phone,
-      });
-      success(t('settings.profileUpdated', { defaultValue: 'Profil muvaffaqiyatli yangilandi' }));
-      if (setUser) {
-        setUser(response.data.data ?? response.data);
-      }
-    } catch (error) {
-      const details = error.response?.data?.details;
-      const msg = details?.length
-        ? details.map(d => d.message).join('; ')
-        : error.response?.data?.error;
-      showError(msg || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
-    } finally {
-      setSaving(false);
-    }
-  };
 
   const handlePasswordSubmit = async (e) => {
     e.preventDefault();
@@ -105,83 +63,11 @@ const Settings = () => {
             {t('settings.title', { defaultValue: 'Sozlamalar' })}
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            {t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}
+            {t('settings.subtitle', { defaultValue: 'Hisob sozlamalarini boshqarish' })}
           </p>
         </div>
         <LanguageSwitcher />
       </div>
-
-      {/* Profile Information */}
-      <Card className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <User className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-gray-900">
-            {t('settings.profileInfo', { defaultValue: 'Profil ma\'lumotlari' })}
-          </h2>
-        </div>
-        <form onSubmit={handleProfileSubmit} className="space-y-4">
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('settings.firstName', { defaultValue: 'Ism' })}
-              </label>
-              <input
-                type="text"
-                value={profileForm.firstName}
-                onChange={(e) => setProfileForm(f => ({ ...f, firstName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                {t('settings.lastName', { defaultValue: 'Familiya' })}
-              </label>
-              <input
-                type="text"
-                value={profileForm.lastName}
-                onChange={(e) => setProfileForm(f => ({ ...f, lastName: e.target.value }))}
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('settings.email', { defaultValue: 'Email' })}
-            </label>
-            <input
-              type="email"
-              value={profileForm.email}
-              disabled
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-md bg-gray-50 text-gray-500 cursor-not-allowed"
-            />
-            <p className="text-xs text-gray-400 mt-1">
-              {t('settings.emailCannotChange', { defaultValue: 'Email o\'zgartirilmaydi' })}
-            </p>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              {t('settings.phone', { defaultValue: 'Telefon' })}
-            </label>
-            <input
-              type="tel"
-              value={profileForm.phone}
-              onChange={(e) => setProfileForm(f => ({ ...f, phone: e.target.value }))}
-              className="w-full px-4 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500"
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={saving}
-            className="px-6 py-2.5 bg-brand-600 text-white rounded-md font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50"
-          >
-            {saving
-              ? t('settings.saving', { defaultValue: 'Saqlanmoqda...' })
-              : t('settings.saveProfile', { defaultValue: 'Profilni saqlash' })}
-          </button>
-        </form>
-      </Card>
 
       {/* Change Password */}
       <Card className="p-6">

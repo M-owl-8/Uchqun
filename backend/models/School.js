@@ -32,6 +32,18 @@ const School = sequelize.define('School', {
     type: DataTypes.TEXT,
     allowNull: true,
   },
+  region: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  city: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  director: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
   isActive: {
     type: DataTypes.BOOLEAN,
     defaultValue: true,

@@ -243,32 +243,34 @@ const Ratings = () => {
   const [schools, setSchools] = useState(() => cache.get(RATINGS_CACHE_KEY)?.schools ?? []);
   const [stats, setStats] = useState(() => cache.get(RATINGS_CACHE_KEY)?.stats ?? { total: 0, average: 0 });
   const [loading, setLoading] = useState(!cache.get(RATINGS_CACHE_KEY));
+  const [loadError, setLoadError] = useState(false);
   const [search, setSearch] = useState('');
+
+  const doFetch = (signal) => api.get('/government/ratings', { signal })
+    .then(res => {
+      const data = res.data?.data || {};
+      const result = { schools: data.schools || [], stats: { total: data.total || 0, average: data.average || 0 } };
+      cache.set(RATINGS_CACHE_KEY, result);
+      setSchools(result.schools);
+      setStats(result.stats);
+      setLoadError(false);
+    });
 
   useEffect(() => {
     const controller = new AbortController();
-    const signal = controller.signal;
-
-    const fetchFresh = () => api.get('/government/ratings', { signal })
-      .then(res => {
-        const data = res.data?.data || {};
-        const result = { schools: data.schools || [], stats: { total: data.total || 0, average: data.average || 0 } };
-        cache.set(RATINGS_CACHE_KEY, result);
-        setSchools(result.schools);
-        setStats(result.stats);
-      });
 
     const cached = cache.get(RATINGS_CACHE_KEY);
     if (cached) {
       setSchools(cached.schools);
       setStats(cached.stats);
       setLoading(false);
-      fetchFresh().catch(() => {});
+      doFetch(controller.signal).catch(() => {});
       return () => controller.abort();
     }
 
-    fetchFresh()
-      .catch(() => setSchools([]))
+    setLoading(true);
+    doFetch(controller.signal)
+      .catch(() => setLoadError(true))
       .finally(() => setLoading(false));
 
     return () => controller.abort();
@@ -298,6 +300,20 @@ const Ratings = () => {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <LoadingSpinner size="lg" />
+      </div>
+    );
+  }
+
+  if (loadError && schools.length === 0) {
+    return (
+      <div className="py-16 text-center">
+        <p className="text-sm text-red-600 mb-3">{t('ratings.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik" })}</p>
+        <button
+          onClick={() => { setLoadError(false); setLoading(true); doFetch(new AbortController().signal).finally(() => setLoading(false)); }}
+          className="px-4 py-2 text-sm font-medium text-brand-600 border border-brand-200 rounded-md hover:bg-brand-50"
+        >
+          {t('warnings.retry', { defaultValue: 'Qayta urinish' })}
+        </button>
       </div>
     );
   }

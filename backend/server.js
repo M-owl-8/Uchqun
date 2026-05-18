@@ -95,7 +95,8 @@ const allowedOrigins = isProduction
   ? frontendUrls
   : [...new Set([...localhostOrigins, ...frontendUrls])];
 
-const allowAllOrigins = !isProduction && process.env.CORS_STRICT !== 'true';
+// Require explicit opt-in to open CORS in dev; production always uses FRONTEND_URL allowlist.
+const allowAllOrigins = !isProduction && process.env.CORS_DEV_OPEN === 'true';
 
 logger.info('CORS configured', { origins: allowedOrigins, environment: process.env.NODE_ENV });
 

@@ -4,6 +4,9 @@ import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const isValidUuid = (s) => UUID_RE.test(s);
+
 /**
  * Send message to government
  * POST /api/government/messages
@@ -73,7 +76,8 @@ export const getAllMessages = async (req, res) => {
     const { isRead, search } = req.query;
     const { limit, offset } = parsePagination(req.query);
 
-    const where = {};
+    // Return only top-level messages; replies are eager-loaded as children
+    const where = { parentMessageId: null };
     if (isRead !== undefined) {
       where.isRead = isRead === 'true';
     }
@@ -93,6 +97,20 @@ export const getAllMessages = async (req, res) => {
           model: User,
           as: 'sender',
           attributes: ['id', 'firstName', 'lastName', 'email', 'role'],
+          required: false,
+        },
+        {
+          model: GovernmentMessage,
+          as: 'replies',
+          include: [
+            {
+              model: User,
+              as: 'sender',
+              attributes: ['id', 'firstName', 'lastName', 'role'],
+              required: false,
+            },
+          ],
+          order: [['createdAt', 'ASC']],
           required: false,
         },
       ],
@@ -125,6 +143,7 @@ export const getAllMessages = async (req, res) => {
 export const getMessageById = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
     const message = await GovernmentMessage.findByPk(id, {
       include: [
@@ -164,30 +183,47 @@ export const getMessageById = async (req, res) => {
 export const replyToMessage = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
     const { reply } = req.body;
 
     if (!reply || reply.trim().length === 0) {
       return res.status(400).json({ error: 'Reply is required' });
     }
+    if (reply.trim().length > 5000) {
+      return res.status(400).json({ error: 'Reply exceeds 5000 characters' });
+    }
 
-    const message = await GovernmentMessage.findByPk(id);
-    if (!message) {
+    const parent = await GovernmentMessage.findByPk(id);
+    if (!parent) {
       return res.status(404).json({ error: 'Message not found' });
     }
 
-    message.reply = reply.trim();
-    message.repliedAt = new Date();
-    await message.save();
+    // Create reply as a child message record (thread model)
+    const replyMsg = await GovernmentMessage.create({
+      senderId: req.user.id,
+      parentMessageId: id,
+      subject: `Re: ${parent.subject}`.slice(0, 500),
+      message: reply.trim(),
+      isRead: true,
+    });
+
+    // Also mark the parent as read
+    if (!parent.isRead) {
+      parent.isRead = true;
+      parent.readAt = new Date();
+      await parent.save();
+    }
 
     logger.info('Government replied to message', {
       messageId: id,
-      senderId: message.senderId,
+      replyId: replyMsg.id,
+      senderId: req.user.id,
     });
 
     res.json({
       success: true,
       message: 'Reply sent successfully',
-      data: message.toJSON(),
+      data: replyMsg.toJSON(),
     });
   } catch (error) {
     logger.error('Reply to message error', { error: error.message, stack: error.stack });
@@ -202,6 +238,7 @@ export const replyToMessage = async (req, res) => {
 export const markMessageRead = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
     const { isRead } = req.body;
 
     const message = await GovernmentMessage.findByPk(id);
@@ -235,6 +272,7 @@ export const markMessageRead = async (req, res) => {
 export const deleteMessage = async (req, res) => {
   try {
     const { id } = req.params;
+    if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
 
     const message = await GovernmentMessage.findByPk(id);
     if (!message) {
