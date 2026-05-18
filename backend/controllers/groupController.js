@@ -11,7 +11,12 @@ export const getGroups = async (req, res) => {
     const offsetNum = offset ? parseInt(offset) : 0;
 
     const where = {};
-    
+
+    // Scope to the user's school. Government (schoolId=null) sees all schools.
+    if (req.user.schoolId) {
+      where.schoolId = req.user.schoolId;
+    }
+
     if (search) {
       where[Op.or] = [
         { name: { [Op.iLike]: `%${search}%` } },
