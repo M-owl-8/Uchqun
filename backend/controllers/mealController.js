@@ -264,8 +264,11 @@ export const updateMeal = async (req, res) => {
       return res.status(404).json({ error: 'Meal not found' });
     }
 
-    // Get child for parent notification
-    const child = await Child.findByPk(meal.childId);
+    // School scope check (BACKEND-043); also fetches child for socket notification
+    const child = await validateChildAccess(meal.childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
 
     await meal.update(req.body);
 
@@ -308,8 +311,11 @@ export const deleteMeal = async (req, res) => {
       return res.status(404).json({ error: 'Meal not found' });
     }
 
-    // Get child for parent notification before destroying
-    const child = await Child.findByPk(meal.childId);
+    // School scope check (BACKEND-043); also fetches child for socket notification
+    const child = await validateChildAccess(meal.childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
     const mealId = meal.id;
 
     await meal.destroy();

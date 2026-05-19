@@ -33,7 +33,7 @@ jest.unstable_mockModule('../controllers/notificationController.js', () => ({
 }));
 jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: mockEmitToUser }));
 
-const { getMeals, getMeal, createMeal } = await import('../controllers/mealController.js');
+const { getMeals, getMeal, createMeal, updateMeal, deleteMeal } = await import('../controllers/mealController.js');
 
 const mkRes = () => {
   const res = {};
@@ -178,6 +178,39 @@ describe('mealController', () => {
       expect(mockMealCreate).toHaveBeenCalled();
       expect(mockCreateNotification).toHaveBeenCalled();
       expect(mockEmitToUser).toHaveBeenCalledWith('p1', 'meal:created', expect.any(Object));
+    });
+  });
+
+  describe('updateMeal — BACKEND-043', () => {
+    it('404 when child belongs to different school', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockMealFindByPk.mockResolvedValue({ id: 'm1', childId: 'c_school_b', update });
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = {
+        user: { id: 't1', role: 'teacher', schoolId: 'SCHOOL_A' },
+        params: { id: 'm1' },
+        body: {},
+      };
+      const res = mkRes();
+      await updateMeal(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteMeal — BACKEND-043', () => {
+    it('404 when child belongs to different school', async () => {
+      const destroy = jest.fn().mockResolvedValue();
+      mockMealFindByPk.mockResolvedValue({ id: 'm1', childId: 'c_school_b', destroy });
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = {
+        user: { id: 't1', role: 'teacher', schoolId: 'SCHOOL_A' },
+        params: { id: 'm1' },
+      };
+      const res = mkRes();
+      await deleteMeal(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(destroy).not.toHaveBeenCalled();
     });
   });
 });
