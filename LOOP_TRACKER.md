@@ -8,7 +8,7 @@
 
 | Portal | S0 Understand | S1 Audit | S2 Cleanup Build | S3 Confirm Clean | S4 Research | S5 Implement Build | S6 Plan Features | S7 Implement Features | S8 Final Verify |
 |---|---|---|---|---|---|---|---|---|---|
-| 1. Backend | ✅ | ✅ | ✅ | ✅ | 🟡 (loops back to S2 — Batch 15 weak tests) | ⬜ | ⬜ | ⬜ | ⬜ |
+| 1. Backend | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 2. Government | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 3. Admin | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 4. Reception | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -52,3 +52,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 6 | Backend | S2 Extension (recovery) | 6a7be14 | 2026-05-19 | 7 new findings catalogued (BACKEND-007b, 039–044); Batch 10 IDOR sweep found 2 new High IDORs (mealController, aiWarningController); 4 new batches planned (11–14); `audits/backend/02-cleanup-plan-extension.md`, `audits/backend/10-idor-sweep.md`; CLAUDE.md test discipline updated |
 | 7 | Backend | S3 Recovery Pass | 3274cca | 2026-05-19 | 7 findings resolved (BACKEND-007b, 039–044); 9 IDOR sites closed; lint script added; 641 tests pass; 45.93% stmts / 46.96% lines; `audits/backend/05-cleanup-execution.md` (S3 Recovery Pass section appended) |
 | 8 | Backend | S4 Re-verification | e35f8fa | 2026-05-19 | Verdict 🔴 — 4/5 weak-fix samples (Batch 3 pre-discipline gap); BACKEND-007c added; loops back to S2 (Batch 15 proof tests); all 9 recovery IDOR sites re-verified Closed; coverage 45.93%/46.96% confirmed; `audits/backend/03-cleanup-verification.md` (S4 Re-verification Pass appended) |
+| 9 | Backend | S2 Batch 15 (test debt) | c64af19 | 2026-05-19 | 4 proof tests added with full revert-test workflow: deleteMedia IDOR guard (BACKEND-003), deleteTherapy hard delete (BACKEND-013), getActivity parent scope (BACKEND-037), getStatistics legacy+modern sum (BACKEND-018); BACKEND-007c ✅ Closed; 645 tests / 70 suites / 46.66% stmt / lint 0; `audits/backend/05-cleanup-execution.md` (Batch 15 section appended) |
