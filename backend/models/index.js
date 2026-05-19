@@ -34,6 +34,8 @@ import MealPlan from './MealPlan.js';
 import TeacherResource from './TeacherResource.js';
 import ParentEvaluation from './ParentEvaluation.js';
 import News from './News.js';
+import AuditLog from './AuditLog.js';
+import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
   User,
@@ -70,6 +72,7 @@ const models = {
   TeacherResource,
   ParentEvaluation,
   News,
+  AuditLog,
   sequelize,
 };
 
@@ -255,6 +258,27 @@ TeacherResource.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 School.hasMany(TeacherResource, { foreignKey: 'schoolId', as: 'teacherResources' });
 TeacherResource.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
+// ─── Audit hooks ──────────────────────────────────────────────────────────────
+
+// Child afterDestroy: records who deleted the child in audit_log.
+// Callers pass actorId/actorRole via destroy options:
+//   child.destroy({ actorId: req.user.id, actorRole: req.user.role })
+// Hook failure must never block the delete — errors are swallowed here.
+Child.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'children',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
 // ─── School-scoped named scopes ───────────────────────────────────────────────
 Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
 Activity.addScope('byChild', (childId) => ({ where: { childId } }));
@@ -331,5 +355,6 @@ export {
   TeacherResource,
   ParentEvaluation,
   News,
+  AuditLog,
   sequelize,
 };
