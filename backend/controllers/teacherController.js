@@ -1,5 +1,6 @@
 import User from '../models/User.js';
 import Child from '../models/Child.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 import Group from '../models/Group.js';
 import School from '../models/School.js';
 import Activity from '../models/Activity.js';
@@ -238,5 +239,37 @@ export const getTeacherRatings = async (req, res) => {
   } catch (error) {
     logger.error('Get teacher ratings error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch teacher ratings' });
+  }
+};
+
+export const getChildren = async (req, res) => {
+  try {
+    const where = {};
+    if (req.user.schoolId) where.schoolId = req.user.schoolId;
+
+    const children = await Child.findAll({
+      where,
+      attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'schoolId', 'groupId', 'class'],
+      order: [['lastName', 'ASC'], ['firstName', 'ASC']],
+    });
+
+    return res.json({ success: true, data: children });
+  } catch (error) {
+    logger.error('getChildren error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: 'Failed to fetch children' });
+  }
+};
+
+export const getChildById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const child = await validateChildAccess(id, req);
+    if (!child) return res.status(404).json({ success: false, error: 'Child not found' });
+
+    return res.json({ success: true, data: child });
+  } catch (error) {
+    logger.error('getChildById error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: 'Failed to fetch child' });
   }
 };

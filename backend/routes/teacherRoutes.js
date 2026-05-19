@@ -5,7 +5,7 @@ import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEm
 import { aiChatValidator } from '../validators/aiChatValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
 import { aiChatLimiter } from '../middleware/rateLimiter.js';
-import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings } from '../controllers/teacherController.js';
+import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings, getChildren, getChildById } from '../controllers/teacherController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { getAIAdvice } from '../controllers/teacherAIController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
@@ -70,6 +70,10 @@ router.post('/ai/chat', aiChatLimiter, aiChatValidator, handleValidationErrors, 
 router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
+
+// Children (school-scoped read-only access for teacher, reception, admin)
+router.get('/children', getChildren);
+router.get('/children/:id', getChildById);
 
 // Emotional Monitoring
 // Specific routes must come before general routes
