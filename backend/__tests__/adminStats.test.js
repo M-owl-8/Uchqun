@@ -1,12 +1,16 @@
 import { jest } from '@jest/globals';
 
 const mockSchoolFindAll = jest.fn();
+const mockUserFindAll = jest.fn();
+const mockChildFindAll = jest.fn();
+const mockParentActivityCount = jest.fn();
+const mockActivityCount = jest.fn();
 
 jest.unstable_mockModule('../models/User.js', () => ({
-  default: { count: jest.fn().mockResolvedValue(0), findAll: jest.fn().mockResolvedValue([]) },
+  default: { count: jest.fn().mockResolvedValue(0), findAll: mockUserFindAll },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({
-  default: { count: jest.fn().mockResolvedValue(0) },
+  default: { count: jest.fn().mockResolvedValue(0), findAll: mockChildFindAll },
 }));
 jest.unstable_mockModule('../models/Group.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
@@ -21,7 +25,7 @@ jest.unstable_mockModule('../models/Document.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/ParentActivity.js', () => ({
-  default: { count: jest.fn().mockResolvedValue(0) },
+  default: { count: mockParentActivityCount },
 }));
 jest.unstable_mockModule('../models/ParentMeal.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
@@ -30,7 +34,7 @@ jest.unstable_mockModule('../models/ParentMedia.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/Activity.js', () => ({
-  default: { count: jest.fn().mockResolvedValue(0) },
+  default: { count: mockActivityCount },
 }));
 jest.unstable_mockModule('../models/Meal.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
@@ -94,6 +98,11 @@ describe('admin/adminStatsController.getStatistics', () => {
     jest.clearAllMocks();
     // Ensure School.findAll returns an array (not the paginated shape used by getAllSchools)
     mockSchoolFindAll.mockResolvedValue([]);
+    // Default: empty receptions → all counts gate to 0
+    mockUserFindAll.mockResolvedValue([]);
+    mockChildFindAll.mockResolvedValue([]);
+    mockParentActivityCount.mockResolvedValue(0);
+    mockActivityCount.mockResolvedValue(0);
   });
 
   it('returns 401 when no user on request', async () => {
@@ -120,6 +129,23 @@ describe('admin/adminStatsController.getStatistics', () => {
     expect(payload.data).toHaveProperty('receptions');
     expect(payload.data).toHaveProperty('teachers');
     expect(payload.data).toHaveProperty('children');
+  });
+
+  it('totalActivities sums legacy (ParentActivity) + modern (Activity) counts (BACKEND-018)', async () => {
+    // reception → teacher → parent chain enables both count gates
+    mockUserFindAll
+      .mockResolvedValueOnce([{ id: 'r1' }])  // receptions
+      .mockResolvedValueOnce([{ id: 't1' }])  // teachers
+      .mockResolvedValueOnce([{ id: 'p1' }]); // parents
+    mockChildFindAll.mockResolvedValue([{ id: 'c1' }]);
+    mockParentActivityCount.mockResolvedValue(3); // legacy
+    mockActivityCount.mockResolvedValue(2);       // modern
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' } };
+    const res = mkRes();
+    await getStatistics(req, res);
+    const payload = res.json.mock.calls[0][0];
+    expect(payload.success).toBe(true);
+    expect(payload.data.content.activities).toBe(5);
   });
 });
 
