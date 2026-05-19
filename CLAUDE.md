@@ -44,6 +44,8 @@ Reception additionally requires `documentsApproved && isActive`.
 - Backend: Jest, PostgreSQL 15 required
 - Frontend: Vitest — CI fails if no test files in an app
 - Run full suite before any PR
+- Error-path fixes MUST include a test that triggers the failure (mock the DB method to throw) and asserts the HTTP status is non-200. A catch-block fix is unverified without a test that exercises that path.
+- When a controller has nested try/catch blocks, ALL catch branches must return error-appropriate HTTP status codes. Fixing only the outermost catch does not protect inner-catch silent-failure paths — read the full function before closing an error-handling finding.
 
 ## Security Audit Status
 - ✅ C-01: Resolved — emotionalMonitoring consumed inline in parent/teacher routes (commit c1bd08d)
