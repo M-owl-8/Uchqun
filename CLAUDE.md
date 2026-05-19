@@ -82,6 +82,22 @@ Use plan mode (Shift+Tab twice) before any changes to:
 - `routes/` index or CORS config
 - Payment, media upload, or scope-checking logic
 
+### Child-scoped resource access pattern (mandatory)
+Any endpoint that reads, writes, or deletes a child-scoped resource (Activity, Meal, Media, TherapyUsage) MUST call `validateChildAccess(childId, req)` (or `findChildScopedResource(Model, id, req)` from `utils/schoolValidation.js`) for authorization AFTER the initial PK lookup. A role check alone is not sufficient — tenant isolation requires the school-scope check.
+
+```js
+// Correct pattern for mutations:
+const result = await findChildScopedResource(Model, id, req);
+if (!result) return res.status(404).json({ error: 'Not found' });
+const { resource, child } = result;
+
+// Correct pattern for list endpoints (admin/reception path):
+if (req.user.schoolId) {
+  const schoolChildren = await Child.findAll({ where: { schoolId: req.user.schoolId }, attributes: ['id'] });
+  where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+}
+```
+
 ## MCP Servers Available
 This project has three MCP servers configured (see ~/.claude.json):
 - **context7** — live library docs. Workflow: call `resolve-library-id` first, then `query-docs` (NOT `get-library-docs` — that name is outdated).

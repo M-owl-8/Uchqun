@@ -28,3 +28,19 @@ export async function validateChildAccess(childId, req) {
 
   return child;
 }
+
+/**
+ * Combines findByPk + validateChildAccess into one safe call for child-scoped resources.
+ * Use this in any endpoint that reads/writes/deletes a child-scoped resource
+ * (Activity, Meal, Media, TherapyUsage) after an initial PK lookup.
+ *
+ * Returns { resource, child } on success, or null if either the resource is
+ * missing or the caller lacks access to the child's school.
+ */
+export async function findChildScopedResource(Model, resourceId, req) {
+  const resource = await Model.findByPk(resourceId);
+  if (!resource) return null;
+  const child = await validateChildAccess(resource.childId, req);
+  if (!child) return null;
+  return { resource, child };
+}
