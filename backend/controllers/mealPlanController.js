@@ -163,6 +163,11 @@ export const updateMealPlan = async (req, res) => {
       return res.status(404).json({ error: 'Meal plan not found' });
     }
 
+    const childOk = await validateChildAccess(plan.childId, req);
+    if (!childOk) {
+      return res.status(404).json({ error: 'Meal plan not found' });
+    }
+
     if (plannedMenu !== undefined) plan.plannedMenu = plannedMenu;
     if (notes !== undefined) plan.notes = notes;
     if (date !== undefined) plan.date = date;
@@ -192,6 +197,11 @@ export const deleteMealPlan = async (req, res) => {
 
     const plan = await MealPlan.findByPk(id);
     if (!plan) {
+      return res.status(404).json({ error: 'Meal plan not found' });
+    }
+
+    const childOk = await validateChildAccess(plan.childId, req);
+    if (!childOk) {
       return res.status(404).json({ error: 'Meal plan not found' });
     }
 

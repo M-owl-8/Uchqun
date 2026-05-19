@@ -2,10 +2,11 @@ import { jest } from '@jest/globals';
 
 const mockFindAll = jest.fn();
 const mockFindOrCreate = jest.fn();
+const mockFindByPk = jest.fn();
 const mockValidateChildAccess = jest.fn();
 
 jest.unstable_mockModule('../models/MealPlan.js', () => ({
-  default: { findAll: mockFindAll, findOrCreate: mockFindOrCreate, findByPk: jest.fn() },
+  default: { findAll: mockFindAll, findOrCreate: mockFindOrCreate, findByPk: mockFindByPk },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: {} }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
@@ -15,7 +16,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getMealPlans, createMealPlan } = await import('../controllers/mealPlanController.js');
+const { getMealPlans, createMealPlan, updateMealPlan, deleteMealPlan } = await import('../controllers/mealPlanController.js');
 
 const mkRes = () => {
   const res = {};
@@ -98,6 +99,39 @@ describe('mealPlanController', () => {
       await createMealPlan(req, res);
       expect(save).toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(200);
+    });
+  });
+
+  describe('updateMealPlan — BACKEND-041', () => {
+    it('404 when child belongs to different school', async () => {
+      const save = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'mp1', childId: 'c_school_b', save });
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = {
+        user: { id: 't1', role: 'teacher', schoolId: 'SCHOOL_A' },
+        params: { id: 'mp1' },
+        body: {},
+      };
+      const res = mkRes();
+      await updateMealPlan(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(save).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('deleteMealPlan — BACKEND-041', () => {
+    it('404 when child belongs to different school', async () => {
+      const destroy = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'mp1', childId: 'c_school_b', destroy });
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = {
+        user: { id: 't1', role: 'teacher', schoolId: 'SCHOOL_A' },
+        params: { id: 'mp1' },
+      };
+      const res = mkRes();
+      await deleteMealPlan(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(destroy).not.toHaveBeenCalled();
     });
   });
 });
