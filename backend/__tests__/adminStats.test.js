@@ -45,7 +45,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getAllSchools, getSchoolRatings } = await import('../controllers/admin/adminStatsController.js');
+const { getAllSchools, getSchoolRatings, getStatistics } = await import('../controllers/admin/adminStatsController.js');
 
 const mkRes = () => {
   const res = {};
@@ -86,6 +86,40 @@ describe('admin/adminStatsController.getAllSchools', () => {
     const res = mkRes();
     await getAllSchools(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
+  });
+});
+
+describe('admin/adminStatsController.getStatistics', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Ensure School.findAll returns an array (not the paginated shape used by getAllSchools)
+    mockSchoolFindAll.mockResolvedValue([]);
+  });
+
+  it('returns 401 when no user on request', async () => {
+    const req = { user: null };
+    const res = mkRes();
+    await getStatistics(req, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it('returns 401 when user has no id', async () => {
+    const req = { user: {} };
+    const res = mkRes();
+    await getStatistics(req, res);
+    expect(res.status).toHaveBeenCalledWith(401);
+  });
+
+  it('returns success with zeroed stats when admin has no receptions', async () => {
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' } };
+    const res = mkRes();
+    await getStatistics(req, res);
+    expect(res.json).toHaveBeenCalled();
+    const payload = res.json.mock.calls[0][0];
+    expect(payload.success).toBe(true);
+    expect(payload.data).toHaveProperty('receptions');
+    expect(payload.data).toHaveProperty('teachers');
+    expect(payload.data).toHaveProperty('children');
   });
 });
 
