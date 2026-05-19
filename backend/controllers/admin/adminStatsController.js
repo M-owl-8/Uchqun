@@ -395,11 +395,7 @@ export const getSchoolRatings = async (req, res) => {
         stack: queryError.stack,
         adminId: req.user?.id,
       });
-      // Return empty array if query fails
-      return res.json({
-        success: true,
-        data: [],
-      });
+      return res.status(500).json({ success: false, error: 'Failed to fetch school ratings' });
     }
 
     // Ensure ratings is an array

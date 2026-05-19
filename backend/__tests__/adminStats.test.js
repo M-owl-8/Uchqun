@@ -123,19 +123,19 @@ describe('admin/adminStatsController.getStatistics', () => {
   });
 });
 
-describe('admin/adminStatsController.getSchoolRatings — BACKEND-007', () => {
+describe('admin/adminStatsController.getSchoolRatings — BACKEND-007b', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('returns success with empty data when no ratings exist (happy path)', async () => {
-    // SchoolRating mock has no sequelize property → inner query throws TypeError → caught
-    // by inner try/catch → ratings=[]; then "no ratings" path → schools query also fails
-    // → caught → returns success with empty array. This is intentional inner-catch behavior.
+  it('500 when primary SQL query fails (inner catch — BACKEND-007b)', async () => {
+    // SchoolRating.sequelize is undefined in the mock → TypeError when inner try calls
+    // SchoolRating.sequelize.query() → inner catch fires.
+    // Pre-fix:  inner catch returned res.json({ success:true, data:[] }) → HTTP 200 (WRONG)
+    // Post-fix: inner catch returns res.status(500).json({ success:false, error:... })
     const req = { user: { id: 'a1', schoolId: 's1' } };
     const res = mkRes();
     await getSchoolRatings(req, res);
-    // Outer catch NOT triggered (inner catches swallow errors); function returns success.
-    // BACKEND-007 fix (outer catch → 500) verified by code review: the catch block at
-    // adminStatsController.js:607 now returns status(500) instead of json({success:true}).
-    expect(res.json).toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(500);
+    const payload = res.json.mock.calls[0][0];
+    expect(payload.success).toBe(false);
   });
 });
