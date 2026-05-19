@@ -67,6 +67,42 @@ export const getReceptionById = async (req, res) => {
   }
 };
 
+const VALID_DOCUMENT_STATUSES = ['pending', 'approved', 'rejected'];
+
+/**
+ * Get documents with optional status filter
+ * GET /api/admin/documents?status=pending|approved|rejected
+ */
+export const getDocuments = async (req, res) => {
+  try {
+    const { status } = req.query;
+    if (status && !VALID_DOCUMENT_STATUSES.includes(status)) {
+      return res.status(400).json({ success: false, error: `status must be one of: ${VALID_DOCUMENT_STATUSES.join(', ')}` });
+    }
+
+    const documentWhere = {};
+    if (status) documentWhere.status = status;
+
+    const documents = await Document.findAll({
+      where: documentWhere,
+      include: [
+        {
+          model: User,
+          as: 'user',
+          attributes: ['id', 'firstName', 'lastName', 'email', 'role'],
+          where: { createdBy: req.user.id },
+        },
+      ],
+      order: [['createdAt', 'DESC']],
+    });
+
+    return res.json({ success: true, data: documents });
+  } catch (error) {
+    logger.error('Get documents error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: 'Failed to fetch documents' });
+  }
+};
+
 /**
  * Get all documents pending review
  * GET /api/admin/documents/pending

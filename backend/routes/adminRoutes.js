@@ -18,6 +18,7 @@ import {
   getStatistics,
   getSchoolRatings,
   getMyMessages,
+  getDocuments,
 } from '../controllers/adminController.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
@@ -58,6 +59,7 @@ router.put('/receptions/:id/activate', activateReception);
 router.put('/receptions/:id/deactivate', deactivateReception);
 
 // Document management
+router.get('/documents', getDocuments);
 router.get('/documents/pending', getPendingDocuments);
 router.get('/receptions/:id/documents', getReceptionDocuments);
 router.put('/documents/:id/approve', adminIdParamValidator, handleValidationErrors, approveDocument);

@@ -24,6 +24,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 
 const {
   approveDocument, rejectDocument, activateReception, deactivateReception, updateReception,
+  getDocuments,
 } = await import('../controllers/admin/adminReceptionController.js');
 
 const mkRes = () => {
@@ -141,6 +142,67 @@ describe('admin/adminReceptionController', () => {
       const res = mkRes();
       await deactivateReception(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
+    });
+  });
+
+  describe('getDocuments', () => {
+    it('200 returns all documents when no status filter', async () => {
+      mockDocFindAll.mockResolvedValue([{ id: 'd1', status: 'pending' }, { id: 'd2', status: 'approved' }]);
+      const req = { user: { id: 'a1' }, query: {} };
+      const res = mkRes();
+      await getDocuments(req, res);
+      expect(res.json).toHaveBeenCalledWith({ success: true, data: expect.any(Array) });
+      const call = mockDocFindAll.mock.calls[0][0];
+      expect(call.where).not.toHaveProperty('status');
+    });
+
+    it('200 returns only approved docs when ?status=approved', async () => {
+      mockDocFindAll.mockResolvedValue([{ id: 'd2', status: 'approved' }]);
+      const req = { user: { id: 'a1' }, query: { status: 'approved' } };
+      const res = mkRes();
+      await getDocuments(req, res);
+      expect(res.json).toHaveBeenCalledWith({ success: true, data: expect.any(Array) });
+      const call = mockDocFindAll.mock.calls[0][0];
+      expect(call.where.status).toBe('approved');
+    });
+
+    it('200 returns only rejected docs when ?status=rejected', async () => {
+      mockDocFindAll.mockResolvedValue([{ id: 'd3', status: 'rejected' }]);
+      const req = { user: { id: 'a1' }, query: { status: 'rejected' } };
+      const res = mkRes();
+      await getDocuments(req, res);
+      expect(res.json).toHaveBeenCalledWith({ success: true, data: expect.any(Array) });
+      const call = mockDocFindAll.mock.calls[0][0];
+      expect(call.where.status).toBe('rejected');
+    });
+
+    it('400 when status value is invalid', async () => {
+      const req = { user: { id: 'a1' }, query: { status: 'unknown' } };
+      const res = mkRes();
+      await getDocuments(req, res);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(mockDocFindAll).not.toHaveBeenCalled();
+    });
+
+    it('admin isolation — include where scopes by createdBy', async () => {
+      // Revert-test baseline: without the include.where.createdBy filter, documents
+      // belonging to other admins' receptions would be returned.
+      // Post-fix: include join on User enforces createdBy = req.user.id tenant boundary.
+      mockDocFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'admin-X' }, query: {} };
+      const res = mkRes();
+      await getDocuments(req, res);
+      const call = mockDocFindAll.mock.calls[0][0];
+      const userInclude = call.include.find(i => i.as === 'user');
+      expect(userInclude.where).toEqual({ createdBy: 'admin-X' });
+    });
+
+    it('500 when DB throws', async () => {
+      mockDocFindAll.mockRejectedValue(new Error('DB down'));
+      const req = { user: { id: 'a1' }, query: {} };
+      const res = mkRes();
+      await getDocuments(req, res);
+      expect(res.status).toHaveBeenCalledWith(500);
     });
   });
 
