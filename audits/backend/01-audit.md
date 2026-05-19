@@ -176,7 +176,7 @@ The five controllers that were large, complex, or partially read in S0 — `gove
 
 | ID | Severity | Title | Source | Status |
 |---|---|---|---|---|
-| BACKEND-007c | Medium | Batch 3 fixes lack proof tests (4 functions untested) | S4 Re-verification Pass 4 — weak-fix sample audit | ⬜ Open — Batch 15 |
+| BACKEND-007c | Medium | Batch 3 fixes lack proof tests (4 functions untested) | S4 Re-verification Pass 4 — weak-fix sample audit | ✅ Closed — Batch 15 (commits 1441f10, 7edb259, bc120e5, 8d1e161) |
 
 **BACKEND-007c detail:** Pass 4 audited 5 randomly sampled S3 original fixes using the revert-test workflow. 4 of 5 failed — the test suite would not detect a regression in those fixes. Affected:
 - `mediaController.js: deleteMedia, updateMedia, proxyMediaFile` (BACKEND-003/004) — `media.test.js` only imports `getMedia`/`getMediaItem`

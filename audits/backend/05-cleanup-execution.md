@@ -343,3 +343,60 @@ No new cross-portal handoffs created in this recovery pass. Existing entries in 
 | CP-003 | All | Response shape migration `{success,data}` needs frontend coordination (BACKEND-012) | Deferred — grandfather-claused |
 
 **Recovery pass verdict:** ✅ All 7 new findings (BACKEND-007b, 039–044) from S4 Confirm Clean are resolved or documented. All 9 IDOR sites from Batch 10 sweep are Closed. Lint = 0 warnings. 641 tests pass.
+
+---
+
+## S3 Batch 15 — Test Debt Remediation
+
+**Date:** 2026-05-19  
+**Commits:** 1441f10 · 7edb259 · bc120e5 · 8d1e161  
+**Scope:** 4 proof tests for Batch 3 fixes that predated the test-discipline rule (BACKEND-007c)
+
+### 1. Test 1 — deleteMedia IDOR guard (BACKEND-003)
+
+- **File:** `backend/__tests__/media.test.js`
+- **Fix proven:** `validateChildAccess` called before `media.destroy()` — null return → 404
+- **Revert:** removed `validateChildAccess` call entirely
+- **Pre-fix failure:** `Expected: 404 / Number of calls: 0` — destroy was reached without school check
+- **Post-fix pass:** 13 tests passing
+- **Commit:** 1441f10
+
+### 2. Test 2 — deleteTherapy hard delete (BACKEND-013)
+
+- **File:** `backend/__tests__/therapy.test.js`
+- **Fix proven:** `therapy.destroy()` called (hard delete), not `therapy.update({ isActive: false })`
+- **Revert:** changed `therapy.destroy()` to `therapy.update({ isActive: false })`
+- **Pre-fix failure:** `destroy expected >= 1 calls, received 0`
+- **Post-fix pass:** 12 tests passing
+- **Commit:** 7edb259
+
+### 3. Test 3 — getActivity parent multi-child scope (BACKEND-037)
+
+- **File:** `backend/__tests__/activity.test.js`
+- **Fix proven:** `Child.findAll({ where: { parentId: req.user.id } })` called to scope activity lookup
+- **Revert:** replaced `Child.findAll` block with `where.childId = req.user.id` (direct wrong assignment)
+- **Pre-fix failure:** `mockChildFindAll expected ObjectContaining{where:{parentId:'p1'}}, Number of calls: 0`
+- **Post-fix pass:** 14 tests passing
+- **Commit:** bc120e5
+
+### 4. Test 4 — getStatistics legacy+modern activity sum (BACKEND-018)
+
+- **File:** `backend/__tests__/adminStats.test.js`
+- **Fix proven:** `totalActivities = legacyActivities + modernActivities`; with legacy=3 and modern=2 → total=5
+- **Revert:** changed sum to `totalActivities = legacyActivities` (dropped modern term)
+- **Pre-fix failure:** `Expected: 5 / Received: 3`
+- **Post-fix pass:** 7 tests passing
+- **Commit:** 8d1e161
+
+### 5. Close-out
+
+| Metric | Value |
+|---|---|
+| Test suites | 70 |
+| Tests | 645 |
+| Coverage (statements) | 46.66% |
+| Coverage (lines) | 47.64% |
+| Lint warnings | 0 |
+
+**BACKEND-007c:** ✅ Closed — all 4 proof tests committed with revert-test workflow verified.  
+**Batch 15 verdict:** ✅ Test debt cleared. S3 complete.
