@@ -16,6 +16,9 @@
 | 6. Parent | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 7. Database | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
+**Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.
+> **Backend S6.1 (plan amendment pass):** 🟡 In progress
+
 ## Rules (read before every step)
 
 1. Before starting ANY step, read this entire tracker. If the previous portal has any step that is not ✅, stop and report which one is incomplete. Never jump ahead.

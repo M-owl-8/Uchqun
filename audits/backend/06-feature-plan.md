@@ -1532,3 +1532,142 @@ Recommended sprint groupings for S7:
 ---
 
 *Deliverable complete. 25 gaps + DEC-1 through DEC-8 covered across 26 planning items in 3 tiers. Estimated S7 effort: ~41 days.*
+
+---
+
+## Section 9 — Plan Amendments (S6.1)
+
+**Amendment pass date:** 2026-05-19
+**Scope:** Effort revision, T2-2 rollout safety, T1-7 structural split. Sections 1–8 are NOT edited — they are the historical record. This section is authoritative wherever it conflicts with Sections 1–8.
+
+Three amendments address operational risks identified during plan review:
+
+---
+
+### Amendment 9.1 — Effort Estimate Revision
+
+**Context:** Steps S1–S4 of this loop each exceeded their initial scope by approximately 20–30% due to mid-execution discoveries: the Batch 0 audit gap (S2 extension), the BACKEND-007 weak-fix rework cycle (S3 recovery pass, S4 re-verification), and the 9-controller IDOR sweep that grew from a single finding. S7 is the longest and most structurally concrete step in the entire loop. It will encounter the same multiplier — late-discovered edge cases in CSV parsing, tests that expose unhandled paths, and schema migration surprises on existing tables.
+
+**Original plan position (Section 1):**
+- Tier 1: ~13 days
+- Tier 2: ~16 days
+- Tier 3: ~12 days
+- Total S7 effort: ~41 days
+
+**Revised plan position:**
+- Tier 1: ~17 days (×1.3 applied to 13)
+- Tier 2: ~21 days (×1.3 applied to 16)
+- Tier 3: ~16 days (×1.3 applied to 12)
+- **Total S7 effort: ~54 days**
+
+**Reasoning:** The 1.3× multiplier reflects this project's empirical overrun rate, not a pessimistic assumption. It is applied at the tier level only — per-item estimates in Sections 2–4 are not edited individually, as the overrun is distributed unpredictably across items. Sprint groupings in Section 8 retain their grouping integrity; each sprint's day-count extends proportionally (e.g. Sprint A "Days 1–3" becomes approximately "Days 1–4").
+
+**Note:** These are working-day totals at single-developer full-time pace. Calendar duration depends on team size, parallelization, and review cycle length.
+
+**Where this applies:** Section 1 tier table, Section 8 sprint day ranges.
+
+---
+
+### Amendment 9.2 — T2-2 Parent Suspension: Two-PR Rollout Safety
+
+**Context:** T2-2 modifies `middleware/auth.js` to remove the parent `isActive` bypass and replace it with a `status !== 'active'` check. This change executes on every authenticated API call for every parent user. A bug in this single file would lock out every parent in production simultaneously. The original acceptance criteria say "test coverage must be complete before merge" but specify no rollout strategy. Given the blast radius, a standard single-PR deploy is insufficient.
+
+**Original plan position (Section 3, T2-2, Point 3):**
+> Modify `middleware/auth.js:95`. Deploy with T2-2. Acceptance criteria: all listed tests passing before merge.
+
+**Revised plan position — required two-PR phased deployment:**
+
+**PR 1 (Schema + backfill — low risk):**
+- Migration adds `status` column to `users` with `DEFAULT 'active'`
+- All existing rows backfilled to `'active'` via column default
+- Sequelize `User` model exposes the `status` field
+- `middleware/auth.js` is NOT modified in this PR
+- Deploy, monitor for 24 hours, confirm zero auth-related error spike in Sentry, confirm zero user complaints
+- Safe to revert: `npm run migrate:undo` reverts the column; no auth behavior change was deployed
+
+**PR 2 (Auth behavior change — high risk):**
+- Modifies `middleware/auth.js` to replace the `isActive` bypass with the `status !== 'active'` check
+- Adds `PUT /api/admin/parents/:id/suspend` and `PUT /api/admin/parents/:id/activate` endpoints
+- Pre-deployment checklist (must be completed and checked off in the PR description before merge):
+  - [ ] All 8 T2-2 tests passing locally and in CI
+  - [ ] Manual smoke test: active parent → 200; suspended parent → 401; admin → 200; government → 200
+  - [ ] Rollback plan documented: revert auth.js change only; `status` column remains; no migration rollback needed
+- Deploy during low-traffic window (off-peak hours; not Friday afternoon)
+- First 60 minutes post-deploy: developer on call, watching application logs for 401 error rate
+
+**Feature flag alternative:** If feature flags are available before T2-2 executes, wrap the new `status` check in a flag defaulting to OFF. Flip ON in staging first, then production. This collapses the two-PR pattern into one PR with equivalent safety.
+
+**CLAUDE.md addition required (merge with PR 1):**
+```
+## Auth Middleware Change Protocol
+Auth middleware changes (middleware/auth.js, middleware/security.js) that alter
+session-validation behavior for any role follow the schema-first / behavior-second
+two-PR pattern. Reference: T2-2 amendment in audits/backend/06-feature-plan.md.
+PR 1: schema / model changes only. PR 2: behavior change + rollback plan in PR body.
+```
+
+**Reasoning:** The `isActive` bypass affects every parent API call. The cost of a 24-hour schema-only PR is negligible; the cost of a production lockout affecting all parents is significant. The two-PR pattern is a direct application of the "reversibility" principle from CLAUDE.md section "Executing actions with care."
+
+**Where this applies:** Section 3 T2-2, points 3 (endpoints/hooks), 7 (risk/rollback), 8 (acceptance criteria); Section 8 Sprint D Day 13–14.
+
+---
+
+### Amendment 9.3 — T1-7 Bulk Import: Split into Validator and Committer
+
+**Context:** T1-7 at 4 days assumes clean, spec-compliant CSVs. Real school CSVs from Uzbek educational institutions will include: DD.MM.YYYY date formatting (Uzbekistan standard) rather than YYYY-MM-DD; Cyrillic and Latin mixed-script names; apostrophes and hyphens in names (O'Brien, Yusup-Ali); duplicate parent rows across siblings; missing parent emails. Discovering these during a single 4-day implementation guaranteed scope overrun. Splitting the item exposes the edge cases at the validator stage, before any records are persisted, with an empirical real-CSV test gate.
+
+**Original plan position (Section 2, T1-7):**
+- Single item: 4 days
+- Implements all four endpoints: validate, start, status, errors
+- Requires T2-1 audit log (for commit-time entries)
+
+**Revised plan position — two sub-items:**
+
+**T1-7a — Validator + Dry-run + Preview (3 days, Tier 1)**
+
+- Implements only: `POST /api/admin/import/validate`
+- Multipart CSV parser, field validation, row-level error reporting, preview of first 5 valid rows
+- Does NOT persist any records. Read-only operation.
+- Does NOT require T2-1 audit log (no writes)
+- Can ship independently before T1-7b — schools can submit real CSVs to test
+
+Extended acceptance criteria for T1-7a:
+  - [ ] Accepts DD.MM.YYYY and YYYY-MM-DD date formats (auto-detected, both valid)
+  - [ ] Handles Cyrillic, Latin, and mixed-script names without garbling
+  - [ ] Handles names containing apostrophes (O'Brien) and hyphens (Yusup-Ali)
+  - [ ] Detects duplicate rows within the file: same `firstName + lastName + dateOfBirth` combination reports as a duplicate error on the second occurrence
+  - [ ] Reports missing required fields per row (not just "row 3 has errors" — names the field)
+  - [ ] Oversized file (>500 rows or >5 MB) returns 400 before parsing
+
+**Operational pre-condition:** Before T1-7a development starts, acquire at least one real CSV from a real school (even a 20–30 row sample). The validator's edge case handling must be tested against real data, not solely synthetic data. If no real CSV is available at start time, note this explicitly in the PR description and accept that additional edge cases will surface post-deploy.
+
+**T1-7b — Commit + Audit Log + Error Recovery (3 days, Tier 1)**
+
+- Implements: `POST /api/admin/import/start`, `GET /api/admin/import/:jobId/status`, `GET /api/admin/import/:jobId/errors`
+- Persists records, writes `audit_log` entries per created record
+- Requires T2-1 audit log complete (existing build-order dependency preserved)
+- Partial-success behavior (record in CLAUDE.md): if 5 of 87 rows fail mid-import, the 82 successful rows commit and the 5 are listed in the error report; the job does NOT roll back the entire batch. Rationale: full rollback of 80+ rows for 5 failures creates more data confusion than a documented partial import.
+
+Extended acceptance criteria for T1-7b:
+  - [ ] Partial import (some rows fail) reports successful count + failed count in job status
+  - [ ] Error report lists each failed row with its error message
+  - [ ] Audit log entry created per successfully created record with `action='bulk_import'`
+  - [ ] Job `status='completed'` even when some rows failed (use `status='completed_with_errors'` to distinguish)
+
+**Revised total effort for bulk import:** 6 days (3 + 3), not 4. This replaces the 4-day estimate in Section 2 T1-7.
+
+**Revised sequencing in Section 8:**
+
+- Build step 8 (original: T1-7 after T1-5): becomes **T1-7a** — no T2-1 dependency, runs in the same Sprint C window
+- Build step 8.5 (new): **T1-7b** — runs after T2-1 is confirmed complete (T2-1 is build step 1; it is complete before Sprint C begins per the original sequence)
+- T1-7a and later Tier 2 items can run in parallel if team size allows, since T1-7a requires no shared infrastructure
+
+**Reasoning:** Splitting at the validator/committer boundary turns a 4-day high-risk single ticket into two 3-day bounded tickets, each independently deployable and independently testable. The validator can be exercised against real data before any production record is created, providing empirical evidence of edge case coverage before the write-path is built.
+
+**Where this applies:** Section 2 T1-7 (effort and scope), Section 5 build step 8, Section 8 Sprint C (Days 7–10 becomes Days 7–13 under the revised effort, split as T1-7a first half / T1-7b second half).
+
+---
+
+### Amendment 9 — Precedence Note
+
+When S7 executes, Section 9 takes precedence over Sections 1–8 wherever they conflict. Section 9 is the operational truth; Sections 1–8 are the historical record of the original plan.
