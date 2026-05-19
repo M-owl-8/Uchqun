@@ -52,11 +52,15 @@ export const getMeals = async (req, res) => {
         where.childId = { [Op.in]: childIds };
       }
     } else if (req.user.role === 'admin') {
-      // Admin can see all meals
       if (childId) {
         where.childId = childId;
+      } else if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
       }
-      // If no childId, show all meals
     } else {
       // For parents, show meals for all their children or filter by childId
       const children = await Child.findAll({

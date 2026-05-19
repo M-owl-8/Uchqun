@@ -79,13 +79,24 @@ describe('mealController', () => {
       expect(res.status).toHaveBeenCalledWith(403);
     });
 
-    it('admin: returns all meals (no scope filter)', async () => {
+    it('admin: returns all meals when no schoolId (global access)', async () => {
       mockMealFindAll.mockResolvedValue([{ id: 'm1' }]);
       const req = { user: { id: 'a1', role: 'admin' }, query: {} };
       const res = mkRes();
       await getMeals(req, res);
       const where = mockMealFindAll.mock.calls[0][0].where;
       expect(where.childId).toBeUndefined();
+    });
+
+    it('admin: scopes to school children when schoolId set (BACKEND-005)', async () => {
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+      mockMealFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, query: {} };
+      const res = mkRes();
+      await getMeals(req, res);
+      expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({ where: { schoolId: 's1' } }));
+      const where = mockMealFindAll.mock.calls[0][0].where;
+      expect(where.childId).toBeDefined();
     });
 
     it('parent: applies date and mealType filters', async () => {

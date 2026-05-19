@@ -23,7 +23,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 }));
 
 const {
-  approveDocument, rejectDocument, activateReception, deactivateReception,
+  approveDocument, rejectDocument, activateReception, deactivateReception, updateReception,
 } = await import('../controllers/admin/adminReceptionController.js');
 
 const mkRes = () => {
@@ -141,6 +141,34 @@ describe('admin/adminReceptionController', () => {
       const res = mkRes();
       await deactivateReception(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
+    });
+  });
+
+  describe('updateReception — BACKEND-002 createdBy scope', () => {
+    it('404 when reception not found (another admin owns it)', async () => {
+      mockUserFindOne.mockResolvedValue(null);
+      const req = { user: { id: 'admin1' }, params: { id: 'r1' }, body: { firstName: 'X' } };
+      const res = mkRes();
+      await updateReception(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      // Verify query includes createdBy
+      expect(mockUserFindOne).toHaveBeenCalledWith(expect.objectContaining({
+        where: expect.objectContaining({ createdBy: 'admin1' }),
+      }));
+    });
+
+    it('updates reception when createdBy matches (BACKEND-002 positive)', async () => {
+      const save = jest.fn().mockResolvedValue();
+      mockUserFindOne.mockResolvedValue({
+        id: 'r1', email: 'r@x.com', firstName: 'Old', lastName: 'Name',
+        save, toJSON: () => ({ id: 'r1' }),
+      });
+      mockUserFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'admin1' }, params: { id: 'r1' }, body: { firstName: 'New' } };
+      const res = mkRes();
+      await updateReception(req, res);
+      expect(save).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
     });
   });
 });

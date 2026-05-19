@@ -499,6 +499,12 @@ export const getTherapyUsage = async (req, res) => {
       where.parentId = userId;
     } else if (req.user.role === 'teacher') {
       where.teacherId = userId;
+    } else if (req.user.role === 'admin' && req.user.schoolId) {
+      const schoolChildren = await Child.findAll({
+        where: { schoolId: req.user.schoolId },
+        attributes: ['id'],
+      });
+      where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
     }
 
     if (childId) {

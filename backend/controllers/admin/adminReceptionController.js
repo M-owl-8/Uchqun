@@ -416,8 +416,7 @@ export const updateReception = async (req, res) => {
     const { id } = req.params;
     const { email, firstName, lastName, phone, password } = req.body;
 
-    const receptionWhere = { id, role: 'reception' };
-    if (req.user.schoolId) receptionWhere.schoolId = req.user.schoolId;
+    const receptionWhere = { id, role: 'reception', createdBy: req.user.id };
 
     const reception = await User.findOne({
       where: receptionWhere,

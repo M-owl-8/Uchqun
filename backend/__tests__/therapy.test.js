@@ -2,15 +2,17 @@ import { jest } from '@jest/globals';
 
 const mockTherapyFindByPk = jest.fn();
 const mockChildFindByPk = jest.fn();
+const mockChildFindAll = jest.fn();
 const mockGroupFindAll = jest.fn();
 const mockUserFindOne = jest.fn();
 const mockTherapyUsageCreate = jest.fn();
+const mockTherapyUsageFindAndCountAll = jest.fn();
 
 jest.unstable_mockModule('../models/Therapy.js', () => ({
   default: { findByPk: mockTherapyFindByPk, findAll: jest.fn(), create: jest.fn() },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({
-  default: { findByPk: mockChildFindByPk },
+  default: { findByPk: mockChildFindByPk, findAll: mockChildFindAll },
 }));
 jest.unstable_mockModule('../models/Group.js', () => ({
   default: { findAll: mockGroupFindAll },
@@ -19,13 +21,18 @@ jest.unstable_mockModule('../models/User.js', () => ({
   default: { findOne: mockUserFindOne },
 }));
 jest.unstable_mockModule('../models/TherapyUsage.js', () => ({
-  default: { create: mockTherapyUsageCreate, findAll: jest.fn(), findByPk: jest.fn() },
+  default: {
+    create: mockTherapyUsageCreate,
+    findAll: jest.fn(),
+    findByPk: jest.fn(),
+    findAndCountAll: mockTherapyUsageFindAndCountAll,
+  },
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { startTherapy } = await import('../controllers/therapyController.js');
+const { startTherapy, getTherapyUsage } = await import('../controllers/therapyController.js');
 
 const mkRes = () => {
   const res = {};
@@ -122,5 +129,39 @@ describe('therapyController.startTherapy', () => {
     const res = mkRes();
     await startTherapy(req, res);
     expect(res.status).toHaveBeenCalledWith(403);
+  });
+});
+
+describe('therapyController.getTherapyUsage', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('parent: scopes by parentId', async () => {
+    mockTherapyUsageFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
+    const req = { user: { id: 'p1', role: 'parent' }, query: {} };
+    const res = mkRes();
+    await getTherapyUsage(req, res);
+    const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
+    expect(where.parentId).toBe('p1');
+  });
+
+  it('admin with schoolId scopes to school children (BACKEND-025)', async () => {
+    mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+    mockTherapyUsageFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, query: {} };
+    const res = mkRes();
+    await getTherapyUsage(req, res);
+    expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({ where: { schoolId: 's1' } }));
+    const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
+    expect(where.childId).toBeDefined();
+  });
+
+  it('admin without schoolId sees all (no scope applied)', async () => {
+    mockTherapyUsageFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
+    const req = { user: { id: 'a1', role: 'admin' }, query: {} };
+    const res = mkRes();
+    await getTherapyUsage(req, res);
+    expect(mockChildFindAll).not.toHaveBeenCalled();
+    const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
+    expect(where.childId).toBeUndefined();
   });
 });

@@ -24,7 +24,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { updateActivity, getActivities } = await import('../controllers/activityController.js');
+const { updateActivity, getActivities, deleteActivity } = await import('../controllers/activityController.js');
 
 const mkRes = () => {
   const res = {};
@@ -87,13 +87,61 @@ describe('updateActivity', () => {
       expect(res.json).toHaveBeenCalledWith([]);
     });
 
-    it('admin: returns all activities (no scope filter)', async () => {
+    it('admin: returns all activities when no schoolId (global access)', async () => {
       mockActivityFindAll.mockResolvedValue([]);
       const req = { user: { id: 'a1', role: 'admin' }, query: {} };
       const res = mkRes();
       await getActivities(req, res);
       const where = mockActivityFindAll.mock.calls[0][0].where;
       expect(where.childId).toBeUndefined();
+    });
+
+    it('admin: scopes to school children when schoolId set (BACKEND-035)', async () => {
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+      mockActivityFindAll.mockResolvedValue([]);
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 's1' }, query: {} };
+      const res = mkRes();
+      await getActivities(req, res);
+      expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({ where: { schoolId: 's1' } }));
+      const where = mockActivityFindAll.mock.calls[0][0].where;
+      expect(where.childId).toBeDefined();
+    });
+  });
+
+  describe('deleteActivity', () => {
+    it('403 when role not teacher/admin/reception', async () => {
+      const req = { user: { role: 'parent' }, params: { id: 'a1' } };
+      const res = mkRes();
+      await deleteActivity(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('404 when activity not found', async () => {
+      mockActivityFindByPk.mockResolvedValue(null);
+      const req = { user: { role: 'teacher' }, params: { id: 'a1' } };
+      const res = mkRes();
+      await deleteActivity(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+    });
+
+    it('404 on cross-school delete — validateChildAccess returns null (BACKEND-036)', async () => {
+      mockActivityFindByPk.mockResolvedValue({ id: 'a1', childId: 'c1', destroy: jest.fn() });
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = { user: { role: 'teacher', schoolId: 's1', id: 't1' }, params: { id: 'a1' } };
+      const res = mkRes();
+      await deleteActivity(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+    });
+
+    it('succeeds when validateChildAccess passes (BACKEND-036 positive case)', async () => {
+      const destroy = jest.fn().mockResolvedValue();
+      mockActivityFindByPk.mockResolvedValue({ id: 'a1', childId: 'c1', destroy });
+      mockValidateChildAccess.mockResolvedValue({ id: 'c1', parentId: 'p1' });
+      const req = { user: { role: 'teacher', schoolId: 's1', id: 't1' }, params: { id: 'a1' } };
+      const res = mkRes();
+      await deleteActivity(req, res);
+      expect(destroy).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
     });
   });
 

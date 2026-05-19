@@ -52,11 +52,15 @@ export const getActivities = async (req, res) => {
         where.childId = { [Op.in]: childIds };
       }
     } else if (req.user.role === 'admin' || req.user.role === 'reception') {
-      // Admin and reception can see all activities
       if (childId) {
         where.childId = childId;
+      } else if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
       }
-      // If no childId, show all activities
     } else {
       // For parents, show activities for all their children or filter by childId
       const children = await Child.findAll({
@@ -173,7 +177,13 @@ export const getActivity = async (req, res) => {
       const childIds = children.map(c => c.id);
       where.childId = { [Op.in]: childIds };
     } else if (req.user.role === 'admin' || req.user.role === 'reception') {
-      // Admin and reception can see all activities - no filter needed
+      if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+      }
     } else {
       const child = await Child.findOne({
         where: { parentId: req.user.id },
@@ -437,14 +447,17 @@ export const deleteActivity = async (req, res) => {
       return res.status(404).json({ error: 'Activity not found' });
     }
 
-    // Get child for parent notification before destroying
-    const child = await Child.findByPk(activity.childId);
+    // Ownership + school-scope check (BACKEND-036: was Child.findByPk, no auth)
+    const child = await validateChildAccess(activity.childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Activity not found or access denied' });
+    }
     const activityId = activity.id;
 
     await activity.destroy();
 
     // Emit real-time update to parent
-    if (child && child.parentId) {
+    if (child.parentId) {
       emitToUser(child.parentId, 'activity:deleted', {
         activityId,
         childId: child.id,

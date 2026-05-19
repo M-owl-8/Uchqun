@@ -637,8 +637,11 @@ export const updateMedia = async (req, res) => {
       return res.status(404).json({ error: 'Media not found' });
     }
 
-    // Get child for parent notification
-    const child = await Child.findByPk(media.childId);
+    // School/ownership check (BACKEND-003)
+    const child = await validateChildAccess(media.childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Media not found or access denied' });
+    }
 
     const allowedFields = ['title', 'description', 'caption', 'tags'];
     const payload = {};
@@ -697,12 +700,16 @@ export const proxyMediaFile = async (req, res) => {
 
     // Get media record by ID (database UUID)
     const media = await Media.findByPk(fileId);
-    
+
     if (!media) {
-      logger.error('Media not found for proxy', {
-        fileId,
-      });
+      logger.error('Media not found for proxy', { fileId });
       return returnTransparentPng(res, 404);
+    }
+
+    // School/ownership check (BACKEND-004)
+    const mediaChild = await validateChildAccess(media.childId, req);
+    if (!mediaChild) {
+      return returnTransparentPng(res, 403);
     }
 
     // Check if URL is from Appwrite
@@ -851,9 +858,7 @@ export const proxyMediaFile = async (req, res) => {
     const contentType = response.headers['content-type'] || 
                        (media.type === 'video' ? 'video/mp4' : 'image/jpeg');
     res.setHeader('Content-Type', contentType);
-    res.setHeader('Cache-Control', 'public, max-age=31536000'); // Cache for 1 year
-    res.setHeader('Access-Control-Allow-Origin', '*'); // Allow CORS
-    res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin'); // Allow cross-origin usage
+    res.setHeader('Cache-Control', 'public, max-age=31536000');
     if (response.headers['content-length']) {
       res.setHeader('Content-Length', response.headers['content-length']);
     }
@@ -922,8 +927,11 @@ export const deleteMedia = async (req, res) => {
       return res.status(404).json({ error: 'Media not found' });
     }
 
-    // Get child for parent notification before destroying
-    const child = await Child.findByPk(media.childId);
+    // School/ownership check (BACKEND-003)
+    const child = await validateChildAccess(media.childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Media not found or access denied' });
+    }
     const mediaId = media.id;
 
     // Delete file from storage
