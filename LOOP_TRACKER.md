@@ -8,7 +8,7 @@
 
 | Portal | S0 Understand | S1 Audit | S2 Cleanup Build | S3 Confirm Clean | S4 Research | S5 Implement Build | S6 Plan Features | S7 Implement Features | S8 Final Verify |
 |---|---|---|---|---|---|---|---|---|---|
-| 1. Backend | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 1. Backend | ✅ | ✅ | ✅ | ✅ | ✅ | 🟡 | ✅ | ⬜ | ⬜ |
 | 2. Government | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 3. Admin | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 4. Reception | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -55,3 +55,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 9 | Backend | S2 Batch 15 (test debt) | c64af19 | 2026-05-19 | 4 proof tests added with full revert-test workflow: deleteMedia IDOR guard (BACKEND-003), deleteTherapy hard delete (BACKEND-013), getActivity parent scope (BACKEND-037), getStatistics legacy+modern sum (BACKEND-018); BACKEND-007c ✅ Closed; 645 tests / 70 suites / 46.66% stmt / lint 0; `audits/backend/05-cleanup-execution.md` (Batch 15 section appended) |
 | 10 | Backend | S4 Final Re-verification | 8fe5936 | 2026-05-19 | Verdict 🟡 — 4/4 Batch 15 tests independently re-verified (revert-test reproduced); 5/5 Pass 4 samples now pass discipline; BACKEND-007c confirmed closed; one commit body discrepancy (BACKEND-003 failure mode described imprecisely, test sound); 645 tests / 70 suites / 46.66% stmt; `audits/backend/03-cleanup-verification.md` (S4 Final Re-verification appended) |
 | 11 | Backend | S5 Gap Research | 2337f71 | 2026-05-19 | 25 gaps: 7 Blocker (teacher portal broken screens, admin doc filter), 7 High (incl. 3 safeguarding), 8 Medium, 2 Low; 6 safeguarding gaps (S01-S06); 8 new LQ entries (LQ-002 to LQ-009); `audits/backend/04-gap-research.md` |
+| 12 | Backend | S6 Feature Plan | c76c372 | 2026-05-19 | 26 planning items across 3 tiers (~41d): 7 Tier 1 (teacher portal launch), 10 Tier 2 (govt acceptance), 9 Tier 3 (polish); DEC-1 through DEC-8 encoded; build-order inversion (T2-1 before T1-7) documented; CP-004–CP-015 added; `audits/backend/06-feature-plan.md` |
