@@ -250,6 +250,11 @@ export const resolveWarning = async (req, res) => {
       return res.status(404).json({ error: 'Warning not found' });
     }
 
+    // Admin is school-scoped; government has intentional platform-wide access
+    if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
+      return res.status(404).json({ error: 'Warning not found' });
+    }
+
     await warning.update({
       isResolved: true,
       resolvedAt: new Date(),
@@ -278,6 +283,11 @@ export const notifyUsers = async (req, res) => {
 
     const warning = await AIWarning.findByPk(id);
     if (!warning) {
+      return res.status(404).json({ error: 'Warning not found' });
+    }
+
+    // Admin is school-scoped; government has intentional platform-wide access
+    if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
       return res.status(404).json({ error: 'Warning not found' });
     }
 

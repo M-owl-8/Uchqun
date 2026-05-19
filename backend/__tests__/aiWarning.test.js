@@ -14,9 +14,10 @@ jest.unstable_mockModule('../models/Notification.js', () => ({ default: { create
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/schoolValidation.js', () => ({}));
 jest.unstable_mockModule('sequelize', () => ({ Sequelize: class {}, Op: { in: Symbol('in') } }));
 
-const { getWarnings, resolveWarning } = await import('../controllers/aiWarningController.js');
+const { getWarnings, resolveWarning, notifyUsers } = await import('../controllers/aiWarningController.js');
 
 const mkRes = () => {
   const res = {};
@@ -69,13 +70,56 @@ describe('aiWarningController', () => {
 
     it('marks warning resolved with notes', async () => {
       const update = jest.fn().mockResolvedValue();
-      mockFindByPk.mockResolvedValue({ id: 'w1', update });
-      const req = { user: { id: 'u1' }, params: { id: 'w1' }, body: { resolutionNotes: 'fixed' } };
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 's1', update });
+      const req = { user: { id: 'u1', role: 'admin', schoolId: 's1' }, params: { id: 'w1' }, body: { resolutionNotes: 'fixed' } };
       const res = mkRes();
       await resolveWarning(req, res);
       expect(update).toHaveBeenCalledWith(expect.objectContaining({
         isResolved: true, resolvedBy: 'u1', resolutionNotes: 'fixed',
       }));
+    });
+
+    it('admin: 404 when warning belongs to different school (BACKEND-044)', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
+      const req = {
+        user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' },
+        params: { id: 'w1' },
+        body: {},
+      };
+      const res = mkRes();
+      await resolveWarning(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
+    });
+
+    it('government: resolves warning from any school (platform-wide)', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
+      const req = {
+        user: { id: 'g1', role: 'government', schoolId: 'SCHOOL_A' },
+        params: { id: 'w1' },
+        body: {},
+      };
+      const res = mkRes();
+      await resolveWarning(req, res);
+      expect(update).toHaveBeenCalled();
+    });
+  });
+
+  describe('notifyUsers — BACKEND-044', () => {
+    it('admin: 404 when warning belongs to different school', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', notifiedUsers: [], update });
+      const req = {
+        user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' },
+        params: { id: 'w1' },
+        body: { userIds: ['u1'] },
+      };
+      const res = mkRes();
+      await notifyUsers(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
     });
   });
 });
