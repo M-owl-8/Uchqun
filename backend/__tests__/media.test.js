@@ -2,11 +2,13 @@ import { jest } from '@jest/globals';
 
 const mockMediaFindAll = jest.fn();
 const mockMediaFindOne = jest.fn();
+const mockMediaFindByPk = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockUserFindAll = jest.fn();
+const mockValidateChildAccess = jest.fn();
 
 jest.unstable_mockModule('../models/Media.js', () => ({
-  default: { findAll: mockMediaFindAll, findOne: mockMediaFindOne, create: jest.fn(), findByPk: jest.fn() },
+  default: { findAll: mockMediaFindAll, findOne: mockMediaFindOne, create: jest.fn(), findByPk: mockMediaFindByPk },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({
   default: { findAll: mockChildFindAll, findOne: jest.fn() },
@@ -23,14 +25,14 @@ jest.unstable_mockModule('../controllers/notificationController.js', () => ({
 }));
 jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: jest.fn() }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
-  validateChildAccess: jest.fn(),
+  validateChildAccess: mockValidateChildAccess,
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 jest.unstable_mockModule('axios', () => ({ default: { get: jest.fn() } }));
 
-const { getMedia, getMediaItem } = await import('../controllers/mediaController.js');
+const { getMedia, getMediaItem, deleteMedia } = await import('../controllers/mediaController.js');
 
 const mkRes = () => {
   const res = {};
@@ -159,5 +161,20 @@ describe('mediaController.getMediaItem — school scoping', () => {
     const where = mockMediaFindOne.mock.calls[0][0].where;
     expect(where.childId).toBeUndefined();
     expect(res.json).toHaveBeenCalled();
+  });
+});
+
+describe('mediaController.deleteMedia — IDOR guard (BACKEND-003)', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('404 when child belongs to different school (cross-school IDOR)', async () => {
+    const destroy = jest.fn();
+    mockMediaFindByPk.mockResolvedValue({ id: 'm1', childId: 'c1', url: 'http://x', destroy });
+    mockValidateChildAccess.mockResolvedValue(null); // different school → access denied
+    const req = { user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' }, params: { id: 'm1' } };
+    const res = mkRes();
+    await deleteMedia(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(destroy).not.toHaveBeenCalled();
   });
 });
