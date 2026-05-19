@@ -17,7 +17,7 @@
 | 7. Database | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.
-> **Backend S6.1 (plan amendment pass):** 🟡 In progress
+> **Backend S6.1 (plan amendment pass):** ✅ Closed (81e5b84)
 
 ## Rules (read before every step)
 
@@ -59,3 +59,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 10 | Backend | S4 Final Re-verification | 8fe5936 | 2026-05-19 | Verdict 🟡 — 4/4 Batch 15 tests independently re-verified (revert-test reproduced); 5/5 Pass 4 samples now pass discipline; BACKEND-007c confirmed closed; one commit body discrepancy (BACKEND-003 failure mode described imprecisely, test sound); 645 tests / 70 suites / 46.66% stmt; `audits/backend/03-cleanup-verification.md` (S4 Final Re-verification appended) |
 | 11 | Backend | S5 Gap Research | 2337f71 | 2026-05-19 | 25 gaps: 7 Blocker (teacher portal broken screens, admin doc filter), 7 High (incl. 3 safeguarding), 8 Medium, 2 Low; 6 safeguarding gaps (S01-S06); 8 new LQ entries (LQ-002 to LQ-009); `audits/backend/04-gap-research.md` |
 | 12 | Backend | S6 Feature Plan | c76c372 | 2026-05-19 | 26 planning items across 3 tiers (~41d): 7 Tier 1 (teacher portal launch), 10 Tier 2 (govt acceptance), 9 Tier 3 (polish); DEC-1 through DEC-8 encoded; build-order inversion (T2-1 before T1-7) documented; CP-004–CP-015 added; `audits/backend/06-feature-plan.md` |
+| 13 | Backend | S6.1 Plan Amendments | 81e5b84 | 2026-05-19 | Amendments: 41d→54d effort, T2-2 two-PR rollout, T1-7 split into validator + committer; Section 9 appended; Sections 1–8 unchanged; `audits/backend/06-feature-plan.md` |
