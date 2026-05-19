@@ -2,13 +2,14 @@ import { jest } from '@jest/globals';
 
 const mockActivityFindByPk = jest.fn();
 const mockActivityFindAll = jest.fn();
+const mockActivityFindOne = jest.fn();
 const mockChildFindByPk = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockUserFindAll = jest.fn();
 const mockValidateChildAccess = jest.fn();
 
 jest.unstable_mockModule('../models/Activity.js', () => ({
-  default: { findByPk: mockActivityFindByPk, findAll: mockActivityFindAll, create: jest.fn() },
+  default: { findByPk: mockActivityFindByPk, findAll: mockActivityFindAll, findOne: mockActivityFindOne, create: jest.fn() },
 }));
 
 jest.unstable_mockModule('../models/Child.js', () => ({
@@ -24,7 +25,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { updateActivity, getActivities, deleteActivity } = await import('../controllers/activityController.js');
+const { updateActivity, getActivities, deleteActivity, getActivity } = await import('../controllers/activityController.js');
 
 const mkRes = () => {
   const res = {};
@@ -142,6 +143,23 @@ describe('updateActivity', () => {
       await deleteActivity(req, res);
       expect(destroy).toHaveBeenCalled();
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    });
+  });
+
+  describe('getActivity — parent multi-child scope (BACKEND-037)', () => {
+    it('parent: fetches all children via findAll and scopes lookup', async () => {
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }, { id: 'c2' }]);
+      mockActivityFindOne.mockResolvedValue({
+        id: 'ac1',
+        toJSON: () => ({ id: 'ac1', childId: 'c1' }),
+      });
+      const req = { user: { id: 'p1', role: 'parent' }, params: { id: 'ac1' } };
+      const res = mkRes();
+      await getActivity(req, res);
+      expect(mockChildFindAll).toHaveBeenCalledWith(expect.objectContaining({
+        where: { parentId: 'p1' },
+      }));
+      expect(res.json).toHaveBeenCalled();
     });
   });
 
