@@ -35,6 +35,7 @@ import TeacherResource from './TeacherResource.js';
 import ParentEvaluation from './ParentEvaluation.js';
 import News from './News.js';
 import AuditLog from './AuditLog.js';
+import ChildAttendance from './ChildAttendance.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -73,6 +74,7 @@ const models = {
   ParentEvaluation,
   News,
   AuditLog,
+  ChildAttendance,
   sequelize,
 };
 
@@ -127,6 +129,12 @@ RefreshToken.belongsTo(User, { foreignKey: 'userId', as: 'user' });
 // Child → Notification
 Child.hasMany(Notification, { foreignKey: 'childId', as: 'notifications' });
 Notification.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+
+// ChildAttendance
+Child.hasMany(ChildAttendance, { foreignKey: 'childId', as: 'attendance' });
+ChildAttendance.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(ChildAttendance, { foreignKey: 'teacherId', as: 'markedAttendance' });
+ChildAttendance.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 
 // Child → School / Group
 Child.belongsTo(School, { foreignKey: 'schoolId', as: 'childSchool' });
@@ -356,5 +364,6 @@ export {
   ParentEvaluation,
   News,
   AuditLog,
+  ChildAttendance,
   sequelize,
 };
