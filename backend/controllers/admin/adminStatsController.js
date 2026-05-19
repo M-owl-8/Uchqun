@@ -611,11 +611,7 @@ export const getSchoolRatings = async (req, res) => {
       adminId: req.user?.id,
     });
 
-    // Always return success with empty array on error to prevent 500
-    res.json({
-      success: true,
-      data: [],
-    });
+    res.status(500).json({ success: false, error: 'Failed to fetch school ratings' });
   }
 };
 
