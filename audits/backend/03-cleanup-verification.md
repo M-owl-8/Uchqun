@@ -239,3 +239,155 @@ BACKEND-039 (npm High vulnerabilities in socket.io chain) is a second High findi
 - BACKEND-040 (Medium): Add school-scope checks to 4 admin-bypass paths across 3 controllers — estimated S effort
 - BACKEND-039 (High): `npm audit fix --force` with socket.io breaking-change review — estimated M effort
 - BACKEND-042 (Info): Add `lint` script to `package.json` — S effort (5 min)
+
+---
+
+# S4 Re-verification Pass
+
+**Generated:** 2026-05-19  
+**Status:** 🔴 Incomplete — systemic test-discipline gap (4/5 weak-fix samples in Batch 3)  
+**Verifier:** Independent re-read of every cited fix; revert-test workflow on 4 spot-check sites + 5 Pass 4 samples  
+**Coverage re-run:** 45.93% statements / 46.96% lines / 641 tests / 70 suites ✅
+
+---
+
+## Pass 1 — Recovery Findings Verification Matrix
+
+Spot-check sites (3 of 9 batch-mechanical IDOR sites): BACKEND-041 deleteMealPlan, BACKEND-043 updateMeal, BACKEND-040 deleteResource.
+
+| Finding | Fix location (verified) | Revert-test result | Status |
+|---|---|---|---|
+| BACKEND-007b | `adminStatsController.js:398` — `return res.status(500).json({success:false,...})` confirmed | Revert to 200 → test fails (Expected: 500, Number of calls: 0); re-apply → pass | ✅ Re-verified Closed |
+| BACKEND-039 | file-type `^19.6.0` at `package.json:50` ✅; npm audit still shows 5 high in ws/engine.io chain (expected — documented accepted risk) | N/A | ✅ Re-verified Documented |
+| BACKEND-040a (childAssessment) | `childAssessmentController.js:202-205` — `validateChildAccess(assessment.childId, req)` before save | Not spot-checked (code confirmed) | ✅ Re-verified Closed |
+| BACKEND-040b (emotionalMonitoring) | `emotionalMonitoringController.js:88-90` — admin schoolId check on POST path; `deleteMonitoring` calls `validateChildAccess` | Not spot-checked (code confirmed) | ✅ Re-verified Closed |
+| BACKEND-040c (teacherResource) | `teacherResourceController.js:125-128` — admin schoolId guard before destroy | **Spot-checked**: Revert admin guard → test fails (Expected: 404, calls: 0); re-apply → pass | ✅ Re-verified Closed |
+| BACKEND-041 (mealPlan) | `mealPlanController.js:166-169` (update) and `:203-206` (delete) — `validateChildAccess(plan.childId, req)` confirmed | **Spot-checked**: Revert deleteMealPlan guard → test fails (Expected: 404, calls: 0); re-apply → pass | ✅ Re-verified Closed |
+| BACKEND-042 (lint script) | `package.json:25` — `"lint": "eslint controllers/ middleware/ utils/ routes/ config/ models/"` confirmed | `npm run lint` exits 0 | ✅ Re-verified Closed |
+| BACKEND-043 (meal) | `mealController.js:267-271` (update) and `:314-318` (delete) — `validateChildAccess(meal.childId, req)` confirmed | **Spot-checked**: Revert updateMeal guard → test fails (Expected: 404, Received: 500); re-apply → pass | ✅ Re-verified Closed |
+| BACKEND-044 (aiWarning) | `aiWarningController.js:254-256` (resolveWarning) and `:290-292` (notifyUsers) — schoolId guard; government explicitly preserved | Not spot-checked (code confirmed) | ✅ Re-verified Closed |
+
+**Summary:** 9/9 recovery findings re-verified Closed or Documented. All 4 revert-tests fail pre-fix, pass post-fix. ✅
+
+---
+
+## Pass 2 — Hygiene Re-scan
+
+| Check | Command / Method | Result |
+|---|---|---|
+| TODO/FIXME/HACK/XXX | `grep -rn "TODO\|FIXME\|HACK\|XXX" controllers/ middleware/ utils/ config/ models/ routes/` | **0 results** ✅ |
+| console.log / debugger | `grep -rn "console\.log\|debugger" controllers/ middleware/ utils/ config/ models/ routes/` | **0 results** ✅ |
+| npm audit (high+critical) | `npm audit --audit-level=high` | **13 total: 2 low, 6 moderate, 5 high** — all in socket.io/engine.io/ws chain; file-type = 19.6.0 (patched); ws/engine.io = documented accepted risk (BACKEND-039) ⚠️ Non-zero but expected |
+| npm run lint | `npm run lint` (script confirmed in package.json:25) | **0 warnings, 0 errors** ✅ (BACKEND-042 re-verified) |
+| Syntax / build | All 641 tests pass (requires all modules to load correctly) | **0 errors** ✅ |
+| Dead files | tsconfig.json deleted; telegram.js 36 lines; Payme/Click removed from .env.example | **All confirmed** ✅ |
+| Coverage | `npm test -- --coverage` | **45.93% statements / 46.96% lines / 641 tests** ✅ — matches S3 Recovery Pass claim exactly |
+
+---
+
+## Pass 3 — Spot-Check of 10-idor-sweep.md Sites
+
+**3 SAFE sites re-verified:**
+1. `governmentMessageController.js:deleteMessage` — `deleteMessage` route is mounted AFTER `router.use(requireGovernment)` at `governmentRoutes.js:55`. Government access is intentionally platform-wide. ✅ SAFE confirmed.
+2. `therapyController.js:259` (startTherapy) — per-role child access check at lines 268+ (parent: parentId check; teacher: Group.findAll + User.findOne). ✅ SAFE confirmed.
+3. `userController.js:109` (changePassword) — `User.findByPk(req.user.id)` — authenticated user's own id. Cross-tenant impossible. ✅ SAFE confirmed.
+
+**3 FIXED sites still present:**
+1. `mediaController.js:931` — `validateChildAccess(media.childId, req)` confirmed present in `deleteMedia`. ✅ Still fixed.
+2. `activityController.js:452` — `validateChildAccess(activity.childId, req)` confirmed present in `deleteActivity`. ✅ Still fixed.
+3. `adminReceptionController.js:420` — `receptionWhere = { id, role: 'reception', createdBy: req.user.id }` confirmed. ✅ Still fixed.
+
+**Socket.js integrity check:**
+- Redis adapter: `getRedisClient()` → `createAdapter(redisClient, subClient)` → `io.adapter(...)` at lines 47-54 ✅
+- JWT auth middleware: extracts token from cookie (regex match), verifies via `jwt.verify`, lookups `User.findByPk` at lines 56-78 ✅
+- `emitToUser` at lines 110-121: `io.to(\`user:${userId}\`).emit(event, data)` ✅
+- No socket.io upgrade was performed in recovery pass — no regression possible ✅
+
+**findByPk grep in recovery commits:** All new `findByPk` calls in recovery commits are paired with `validateChildAccess` (mealPlan, meal) or direct schoolId comparison (aiWarning) or the pre-existing pattern (childAssessment). No unchecked findByPk-then-mutate pattern added. ✅
+
+---
+
+## Pass 4 — Original S3 Weak-Fix Sample Audit
+
+**Bias toward Batch 3 fixes (the batch that deliberately added 0 tests).**
+
+| Sample | Test file | Test for this function? | Revert-test result | Verdict |
+|---|---|---|---|---|
+| BACKEND-001 (`approveDocument` ownership) | `adminReception.test.js` | ✅ Yes — `403 when document user not created by this admin` | Remove `createdBy` check → test fails (Expected: 403, Received: 400 from status check) | ✅ Solid |
+| BACKEND-003 (`deleteMedia` school scope) | `media.test.js` | ❌ No — `deleteMedia` never imported in test file (only `getMedia`, `getMediaItem`) | N/A (no test to revert) | ❌ Weak — no proof test |
+| BACKEND-013 (`deleteTherapy` uses destroy()) | `therapy.test.js` | ❌ No — `deleteTherapy` never imported in test file (only `startTherapy`, `getTherapyUsage`) | N/A | ❌ Weak — no proof test |
+| BACKEND-037 (`getActivity` parent multi-child path) | `activity.test.js` | ❌ No — `getActivity` never imported in test file (`updateActivity`, `getActivities`, `deleteActivity` only) | N/A | ❌ Weak — no proof test |
+| BACKEND-018 (`getStatistics` legacy+modern sum) | `adminStats.test.js` | ⚠️ Partial — `getStatistics` IS imported, but test uses all-zero mocks; summing 0+0 = 0 | Remove legacy queries → all 6 tests PASS (0 failures) | ❌ Weak — legacy removal invisible to test suite |
+| BACKEND-036 (`deleteActivity` validateChildAccess) | `activity.test.js` | ✅ Yes — `404 on cross-school delete — validateChildAccess returns null (BACKEND-036)` | Remove validateChildAccess call → 1 test fails (cross-school test); re-apply → pass | ✅ Solid |
+
+**Result: 4 of 5 samples are weakly tested (or entirely untested).**
+
+**Root cause:** Batch 3 (SHA ee9cc6f) added 0 new tests by design — the test discipline rule in CLAUDE.md was not added until after the S4 first pass. BACKEND-018 is a separate case where all mocks return 0, making the fix invisible.
+
+**New finding — BACKEND-007c (Medium):**
+
+Batch 3 S3 fixes that lack proof tests. These are not security regressions (fixes are confirmed present in code by direct read), but future regressions in these functions cannot be detected by the current test suite.
+
+Affected functions:
+- `mediaController.js: deleteMedia, updateMedia, proxyMediaFile` (BACKEND-003/004) — validateChildAccess calls are present but unverified by any test
+- `therapyController.js: deleteTherapy` (BACKEND-013) — `destroy()` vs `update({isActive:false})` distinction is not tested
+- `activityController.js: getActivity` (BACKEND-037) — parent multi-child path rewritten to `findAll + Op.in`; function not imported in test file
+- `adminStatsController.js: getStatistics` (BACKEND-018) — legacy + modern count summing; all mock models return 0 so sum is always 0 regardless of whether legacy queried
+
+**Required new work (Batch 15):** Add proof tests for the 4 above functions/findings:
+- `media.test.js`: import `deleteMedia` and `updateMedia`; add cross-school rejection tests (validateChildAccess mock returns null → 404)
+- `therapy.test.js`: import `deleteTherapy`; verify `therapy.destroy()` is called (not `update`)
+- `activity.test.js`: import `getActivity`; add parent path test (multi-child scenario via Op.in)
+- `adminStats.test.js`: extend `getStatistics` test to mock ParentActivity returning non-zero count; verify it appears in the sum
+
+---
+
+## Pass 5 — Coverage Verification
+
+Re-run performed independently:
+
+```
+All files: 45.93% statements / 39.42% branches / 46.19% functions / 46.96% lines
+Test Suites: 70 passed, 70 total
+Tests:       641 passed, 641 total
+```
+
+S3 Recovery Pass claimed: 45.93% / 46.96% lines / 641 tests. **Confirmed. ✅**
+
+---
+
+## Pass 6 — Cross-Portal Accuracy
+
+`LOOP_CROSS_PORTAL.md` reviewed. Three entries unchanged and accurate:
+- CP-001: Government pagination UI needed — ✅ accurately described
+- CP-002: Avatar migration blocked — ✅ accurately described  
+- CP-003: Response shape migration — ✅ accurately described ✅
+
+---
+
+## New Finding (BACKEND-007c)
+
+| ID | Severity | Category | Title | Description |
+|---|---|---|---|---|
+| BACKEND-007c | Medium | Test Discipline | Batch 3 fixes lack proof tests (4 functions) | `deleteMedia`/`updateMedia`/`proxyMediaFile` (BACKEND-003/004), `deleteTherapy` (BACKEND-013), `getActivity` parent path (BACKEND-037), and `getStatistics` legacy sum (BACKEND-018) all have no test that would fail if the fix were reverted. Code reads confirm fixes ARE present. Gap is test coverage, not implementation. Fix: add proof tests to `media.test.js`, `therapy.test.js`, `activity.test.js`, `adminStats.test.js`. |
+
+---
+
+## Verdict: 🔴 Cleanup Incomplete
+
+**Trigger:** 4 of 5 Pass 4 weak-fix samples are untested or weakly tested. Per verdict criteria: "2+ weak-fix samples = systemic problem = 🔴."
+
+**Not triggered by:**
+- New High IDOR findings: 0 new High security findings discovered in Pass 3
+- Socket.io regression: confirmed intact
+- npm audit non-zero: BACKEND-039 is documented accepted risk (ws/engine.io, no socket.io downgrade path); this is expected residual not incomplete cleanup
+
+**Required action:** Return to S2. Append BACKEND-007c to `audits/backend/01-audit.md`. Plan Batch 15 (proof tests for 4 weak-fix functions). Execute and re-verify.
+
+**Scope of new work (Batch 15 only):**
+- `media.test.js`: import `deleteMedia`/`updateMedia`; add cross-school rejection tests → expected S effort
+- `therapy.test.js`: import `deleteTherapy`; add destroy() proof test → S effort  
+- `activity.test.js`: import `getActivity`; add parent multi-child test → S effort
+- `adminStats.test.js`: mock ParentActivity returning non-zero; verify sum appears in stats → S effort
+
+**Note on systemic root cause:** Batch 3 was executed before the test discipline rule was added to CLAUDE.md. All subsequent batches (Batch 4+) have proof tests. Adding Batch 15 will close the test-discipline gap created by Batch 3. Once Batch 15 tests are added and verified, S4 re-verification should return 🟢 with high confidence.

@@ -172,6 +172,22 @@ The five controllers that were large, complex, or partially read in S0 — `gove
 
 ---
 
+## Section G — S4 Re-verification Findings (appended 2026-05-19)
+
+| ID | Severity | Title | Source | Status |
+|---|---|---|---|---|
+| BACKEND-007c | Medium | Batch 3 fixes lack proof tests (4 functions untested) | S4 Re-verification Pass 4 — weak-fix sample audit | ⬜ Open — Batch 15 |
+
+**BACKEND-007c detail:** Pass 4 audited 5 randomly sampled S3 original fixes using the revert-test workflow. 4 of 5 failed — the test suite would not detect a regression in those fixes. Affected:
+- `mediaController.js: deleteMedia, updateMedia, proxyMediaFile` (BACKEND-003/004) — `media.test.js` only imports `getMedia`/`getMediaItem`
+- `therapyController.js: deleteTherapy` (BACKEND-013) — `therapy.test.js` only imports `startTherapy`/`getTherapyUsage`
+- `activityController.js: getActivity` parent path (BACKEND-037) — never imported in `activity.test.js`
+- `adminStatsController.js: getStatistics` legacy count (BACKEND-018) — mocks return 0 so sum is zero regardless
+
+Root cause: Batch 3 (SHA ee9cc6f) was executed before the test discipline rule was added to CLAUDE.md. Fixes ARE present in code (manually verified). Gap is test coverage only. Fix: add proof tests in Batch 15.
+
+---
+
 ## Section F — Out of Scope
 
 The following were noticed but belong to frontend or database portal audits:
