@@ -141,7 +141,7 @@ export const approveDocument = async (req, res) => {
         {
           model: User,
           as: 'user',
-          attributes: ['id', 'firstName', 'lastName', 'email', 'role'],
+          attributes: ['id', 'firstName', 'lastName', 'email', 'role', 'createdBy'],
         },
       ],
     });

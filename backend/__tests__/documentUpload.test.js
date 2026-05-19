@@ -6,10 +6,15 @@ const mockDocumentCreate = jest.fn();
 const mockUserUpdate = jest.fn();
 const mockReadFile = jest.fn();
 const mockUnlink = jest.fn().mockResolvedValue(undefined);
+const mockFileTypeFromBuffer = jest.fn();
 
 jest.unstable_mockModule('../config/storage.js', () => ({
   uploadFile: mockUploadFile,
   deleteFile: jest.fn(),
+}));
+
+jest.unstable_mockModule('file-type', () => ({
+  fileTypeFromBuffer: mockFileTypeFromBuffer,
 }));
 
 jest.unstable_mockModule('../models/Document.js', () => ({
@@ -62,6 +67,7 @@ describe('#02-010 reception uploadDocument persists to cloud storage', () => {
 
   test('calls uploadFile() instead of saving temp disk path', async () => {
     mockReadFile.mockResolvedValue(Buffer.from('pdf-content'));
+    mockFileTypeFromBuffer.mockResolvedValue({ mime: 'application/pdf', ext: 'pdf' });
     mockUploadFile.mockResolvedValue({ url: 'https://appwrite.example/file-id', path: 'file-id' });
     mockDocumentCreate.mockResolvedValue({ id: 'doc-1', filePath: 'https://appwrite.example/file-id' });
 
@@ -92,5 +98,39 @@ describe('#02-010 reception uploadDocument persists to cloud storage', () => {
     // Temp file must be cleaned up
     expect(mockUnlink).toHaveBeenCalledWith('/tmp/uchqun-uploads-temp/test.pdf');
     expect(res.status).toHaveBeenCalledWith(201);
+  });
+
+  test('rejects file with mismatched magic bytes (BACKEND-006)', async () => {
+    mockReadFile.mockResolvedValue(Buffer.from('not-really-a-pdf'));
+    mockFileTypeFromBuffer.mockResolvedValue({ mime: 'application/zip', ext: 'zip' });
+
+    const req = {
+      body: { documentType: 'license' },
+      file: { path: '/tmp/uchqun-uploads-temp/evil.pdf', filename: 'evil.pdf', originalname: 'evil.pdf', size: 512, mimetype: 'application/pdf' },
+      user: { id: 'user-1', update: mockUserUpdate },
+    };
+    const res = mkRes();
+
+    await uploadDocument(req, res);
+
+    expect(mockUploadFile).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
+  });
+
+  test('rejects file when fileType detection returns null (BACKEND-006)', async () => {
+    mockReadFile.mockResolvedValue(Buffer.from('\x00\x00\x00\x00'));
+    mockFileTypeFromBuffer.mockResolvedValue(null);
+
+    const req = {
+      body: { documentType: 'passport' },
+      file: { path: '/tmp/uchqun-uploads-temp/unknown.bin', filename: 'unknown.bin', originalname: 'unknown.bin', size: 4, mimetype: 'image/jpeg' },
+      user: { id: 'user-1', update: mockUserUpdate },
+    };
+    const res = mkRes();
+
+    await uploadDocument(req, res);
+
+    expect(mockUploadFile).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(400);
   });
 });

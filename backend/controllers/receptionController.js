@@ -2,7 +2,10 @@ import Document from '../models/Document.js';
 import GovernmentMessage from '../models/GovernmentMessage.js';
 import logger from '../utils/logger.js';
 import { uploadFile } from '../config/storage.js';
+import { fileTypeFromBuffer } from 'file-type';
 import fs from 'fs';
+
+const DOCUMENT_ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
 
 export const uploadDocument = async (req, res) => {
   let tempPath = null;
@@ -15,6 +18,12 @@ export const uploadDocument = async (req, res) => {
 
     tempPath = file.path;
     const buffer = await fs.promises.readFile(tempPath);
+
+    const detected = await fileTypeFromBuffer(buffer);
+    if (!detected || !DOCUMENT_ALLOWED_MIMES.includes(detected.mime)) {
+      return res.status(400).json({ error: 'File content does not match a supported document format' });
+    }
+
     const { url: persistentUrl } = await uploadFile(buffer, file.filename, file.mimetype);
 
     const document = await Document.create({
