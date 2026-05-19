@@ -21,7 +21,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { createAssessment, getAssessments, getLatestAssessments } = await import('../controllers/childAssessmentController.js');
+const { createAssessment, getAssessments, getLatestAssessments, updateAssessment } = await import('../controllers/childAssessmentController.js');
 
 const mkRes = () => {
   const res = {};
@@ -112,6 +112,25 @@ describe('childAssessmentController.createAssessment', () => {
     const res = mkRes();
     await createAssessment(req, res);
     expect(res.status).toHaveBeenCalledWith(409);
+  });
+});
+
+describe('childAssessmentController.updateAssessment — BACKEND-040', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('admin: 404 when assessment child belongs to different school', async () => {
+    const save = jest.fn().mockResolvedValue();
+    mockFindByPk.mockResolvedValue({ id: 'a1', childId: 'c_school_b', teacherId: 'OTHER', save });
+    mockValidateChildAccess.mockResolvedValue(null);
+    const req = {
+      user: { id: 'admin1', role: 'admin', schoolId: 'SCHOOL_A' },
+      params: { id: 'a1' },
+      body: {},
+    };
+    const res = mkRes();
+    await updateAssessment(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(save).not.toHaveBeenCalled();
   });
 });
 

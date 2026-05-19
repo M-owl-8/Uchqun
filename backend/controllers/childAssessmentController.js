@@ -198,6 +198,12 @@ export const updateAssessment = async (req, res) => {
       return res.status(404).json({ error: 'Assessment not found' });
     }
 
+    // School scope check — admin is school-scoped, not platform-wide
+    const childOk = await validateChildAccess(assessment.childId, req);
+    if (!childOk) {
+      return res.status(404).json({ error: 'Assessment not found' });
+    }
+
     // Only the teacher who created it or an admin can update
     if (assessment.teacherId !== req.user.id && req.user.role !== 'admin') {
       return res.status(403).json({ error: 'You can only update your own assessments' });
