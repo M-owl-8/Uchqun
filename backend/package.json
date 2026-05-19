@@ -22,7 +22,8 @@
     "fix:varchar": "node scripts/fix-varchar-limits.js",
     "migrate": "node config/migrate.js",
     "migrate:undo": "echo 'Manual rollback required - check migrations directory'",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --forceExit --detectOpenHandles"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --forceExit --detectOpenHandles",
+    "lint": "eslint controllers/ middleware/ utils/ routes/ config/ models/"
   },
   "engines": {
     "node": ">=20.0.0",
