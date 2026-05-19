@@ -8,7 +8,7 @@
 
 | Portal | S0 Understand | S1 Audit | S2 Cleanup Build | S3 Confirm Clean | S4 Research | S5 Implement Build | S6 Plan Features | S7 Implement Features | S8 Final Verify |
 |---|---|---|---|---|---|---|---|---|---|
-| 1. Backend | ✅ | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 1. Backend | ✅ | ✅ | ✅ | ✅ | 🟡 (loops back to S2) | ⬜ | ⬜ | ⬜ | ⬜ |
 | 2. Government | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 3. Admin | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 4. Reception | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -48,3 +48,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 2 | Backend | S1 Deep Audit | fdab974 | 2026-05-19 | 34 findings: 0 Critical, 6 High, 12 Medium, 10 Low, 6 Info; all 14 OQs resolved; `audits/backend/01-audit.md` |
 | 3 | Backend | S2 Cleanup Plan | 3a6633d | 2026-05-19 | 10 batches across 38 findings (34 S1 + 4 Batch 0 from activityController.js); `audits/backend/02-cleanup-plan.md` |
 | 4 | Backend | S3 Execute Cleanup | 5c9ccdb | 2026-05-19 | 32 findings fixed, 3 deferred; 9 code batches (4b87f17→4b870e2); coverage 38.68%→45.02% (2380/5286); 70 suites 630 tests passing; `audits/backend/05-cleanup-execution.md` |
+| 5 | Backend | S4 Confirm Clean | _pending_ | 2026-05-19 | Verdict 🔴 — 4 new findings (BACKEND-039 High npm, BACKEND-040 Medium admin IDOR ×3, BACKEND-041 High mealPlan IDOR, BACKEND-042 Info lint script); BACKEND-007 ⚠️ weakly tested; loops back to S2; `audits/backend/03-cleanup-verification.md` |
