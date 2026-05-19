@@ -1,6 +1,5 @@
 import { Op } from 'sequelize';
 import ChildAttendance from '../models/ChildAttendance.js';
-import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess } from '../utils/schoolValidation.js';
 

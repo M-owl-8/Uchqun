@@ -35,6 +35,7 @@ jest.unstable_mockModule('../models/TeacherResource.js', () => ({ default: { bel
 jest.unstable_mockModule('../models/ParentEvaluation.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../models/News.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: { update: jest.fn(), destroy: jest.fn(), create: jest.fn() } }));
+jest.unstable_mockModule('../models/ChildAttendance.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
