@@ -32,7 +32,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { startTherapy, getTherapyUsage } = await import('../controllers/therapyController.js');
+const { startTherapy, getTherapyUsage, deleteTherapy } = await import('../controllers/therapyController.js');
 
 const mkRes = () => {
   const res = {};
@@ -163,5 +163,21 @@ describe('therapyController.getTherapyUsage', () => {
     expect(mockChildFindAll).not.toHaveBeenCalled();
     const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
     expect(where.childId).toBeUndefined();
+  });
+});
+
+describe('therapyController.deleteTherapy — paranoid hard delete (BACKEND-013)', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('calls destroy (hard delete), not update({ isActive: false })', async () => {
+    const destroy = jest.fn().mockResolvedValue();
+    const update = jest.fn().mockResolvedValue();
+    mockTherapyFindByPk.mockResolvedValue({ id: 't1', createdBy: 'a1', destroy, update });
+    const req = { user: { id: 'a1', role: 'admin' }, params: { id: 't1' } };
+    const res = mkRes();
+    await deleteTherapy(req, res);
+    expect(destroy).toHaveBeenCalled();
+    expect(update).not.toHaveBeenCalled();
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
   });
 });
