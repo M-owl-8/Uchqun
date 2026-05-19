@@ -179,6 +179,7 @@ export const approveDocument = async (req, res) => {
       if (reception) {
         reception.documentsApproved = true;
         reception.isActive = true;
+        reception.isVerified = true;
         await reception.save();
         invalidateUserCache(reception.id);
 

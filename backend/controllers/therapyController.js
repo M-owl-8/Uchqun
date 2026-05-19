@@ -470,8 +470,7 @@ export const deleteTherapy = async (req, res) => {
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    // Soft delete by setting isActive to false
-    await therapy.update({ isActive: false });
+    await therapy.destroy();
 
     res.json({
       success: true,

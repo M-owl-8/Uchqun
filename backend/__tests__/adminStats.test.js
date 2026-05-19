@@ -12,7 +12,7 @@ jest.unstable_mockModule('../models/Group.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/School.js', () => ({
-  default: { findAll: mockSchoolFindAll, count: jest.fn().mockResolvedValue(0) },
+  default: { findAll: mockSchoolFindAll, findAndCountAll: mockSchoolFindAll, count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({
   default: { findAll: jest.fn().mockResolvedValue([]) },
@@ -27,6 +27,15 @@ jest.unstable_mockModule('../models/ParentMeal.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/ParentMedia.js', () => ({
+  default: { count: jest.fn().mockResolvedValue(0) },
+}));
+jest.unstable_mockModule('../models/Activity.js', () => ({
+  default: { count: jest.fn().mockResolvedValue(0) },
+}));
+jest.unstable_mockModule('../models/Meal.js', () => ({
+  default: { count: jest.fn().mockResolvedValue(0) },
+}));
+jest.unstable_mockModule('../models/Media.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../models/TherapyUsage.js', () => ({
@@ -49,22 +58,26 @@ describe('admin/adminStatsController.getAllSchools', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('returns schools with computed average + count', async () => {
-    mockSchoolFindAll.mockResolvedValue([
-      {
-        toJSON: () => ({ id: 's1', name: 'A' }),
-        ratings: [{ stars: 5 }, { stars: 3 }],
-      },
-      {
-        toJSON: () => ({ id: 's2', name: 'B' }),
-        ratings: [],
-      },
-    ]);
-    const req = {};
+    mockSchoolFindAll.mockResolvedValue({
+      rows: [
+        {
+          toJSON: () => ({ id: 's1', name: 'A' }),
+          ratings: [{ stars: 5 }, { stars: 3 }],
+        },
+        {
+          toJSON: () => ({ id: 's2', name: 'B' }),
+          ratings: [],
+        },
+      ],
+      count: 2,
+    });
+    const req = { query: {} };
     const res = mkRes();
     await getAllSchools(req, res);
-    const data = res.json.mock.calls[0][0].data;
-    expect(data[0].summary).toEqual({ average: 4.0, count: 2 });
-    expect(data[1].summary).toEqual({ average: 0, count: 0 });
+    const result = res.json.mock.calls[0][0];
+    expect(result.total).toBe(2);
+    expect(result.data[0].summary).toEqual({ average: 4.0, count: 2 });
+    expect(result.data[1].summary).toEqual({ average: 0, count: 0 });
   });
 
   it('500 on DB error', async () => {

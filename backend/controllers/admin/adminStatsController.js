@@ -8,8 +8,12 @@ import Document from '../../models/Document.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
+import Activity from '../../models/Activity.js';
+import Meal from '../../models/Meal.js';
+import Media from '../../models/Media.js';
 import TherapyUsage from '../../models/TherapyUsage.js';
 import logger from '../../utils/logger.js';
+import { parsePagination } from '../../utils/pagination.js';
 
 /**
  * Get dashboard statistics for Admin
@@ -167,7 +171,14 @@ export const getStatistics = async (req, res) => {
       childrenCount = 0;
     }
 
-    const [totalActivities, totalMeals, totalMedia] = await Promise.all([
+    // Transition window: sum legacy (ParentActivity/Meal/Media) + modern (Activity/Meal/Media)
+    // Modern models are scoped by childId; legacy by parentId. Both are counted.
+    const childrenForStats = parentIds.length > 0
+      ? await Child.findAll({ where: { parentId: { [Op.in]: parentIds } }, attributes: ['id'] }).catch(() => [])
+      : [];
+    const childIdsForStats = childrenForStats.map(c => c.id);
+
+    const [legacyActivities, legacyMeals, legacyMedia, modernActivities, modernMeals, modernMedia] = await Promise.all([
       parentIds.length > 0
         ? ParentActivity.count({ where: { parentId: { [Op.in]: parentIds } } }).catch(() => 0)
         : Promise.resolve(0),
@@ -177,7 +188,19 @@ export const getStatistics = async (req, res) => {
       parentIds.length > 0
         ? ParentMedia.count({ where: { parentId: { [Op.in]: parentIds } } }).catch(() => 0)
         : Promise.resolve(0),
+      childIdsForStats.length > 0
+        ? Activity.count({ where: { childId: { [Op.in]: childIdsForStats } } }).catch(() => 0)
+        : Promise.resolve(0),
+      childIdsForStats.length > 0
+        ? Meal.count({ where: { childId: { [Op.in]: childIdsForStats } } }).catch(() => 0)
+        : Promise.resolve(0),
+      childIdsForStats.length > 0
+        ? Media.count({ where: { childId: { [Op.in]: childIdsForStats } } }).catch(() => 0)
+        : Promise.resolve(0),
     ]);
+    const totalActivities = legacyActivities + modernActivities;
+    const totalMeals = legacyMeals + modernMeals;
+    const totalMedia = legacyMedia + modernMedia;
 
     // Get recent activity (last 30 days)
     const thirtyDaysAgo = new Date();
@@ -621,7 +644,8 @@ export const getSchoolRatings = async (req, res) => {
  */
 export const getAllSchools = async (req, res) => {
   try {
-    const schools = await School.findAll({
+    const { limit, offset } = parsePagination(req.query, { limit: 50 });
+    const schools = await School.findAndCountAll({
       where: { isActive: true },
       include: [
         {
@@ -632,10 +656,12 @@ export const getAllSchools = async (req, res) => {
         },
       ],
       order: [['name', 'ASC']],
+      limit,
+      offset,
     });
 
     // Calculate average ratings for each school
-    const schoolsWithRatings = schools.map((school) => {
+    const schoolsWithRatings = schools.rows.map((school) => {
       const ratings = school.ratings || [];
       const stars = ratings.map(r => r.stars);
       const average = stars.length > 0
@@ -655,6 +681,9 @@ export const getAllSchools = async (req, res) => {
     res.json({
       success: true,
       data: schoolsWithRatings,
+      total: schools.count,
+      limit,
+      offset,
     });
   } catch (error) {
     logger.error('Get all schools error', { error: error.message, stack: error.stack });

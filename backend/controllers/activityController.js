@@ -185,14 +185,15 @@ export const getActivity = async (req, res) => {
         where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
       }
     } else {
-      const child = await Child.findOne({
+      const children = await Child.findAll({
         where: { parentId: req.user.id },
+        attributes: ['id'],
       });
 
-      if (!child) {
+      if (children.length === 0) {
         return res.status(404).json({ error: 'Child not found' });
       }
-      where.childId = child.id;
+      where.childId = { [Op.in]: children.map(c => c.id) };
     }
 
     const activity = await Activity.findOne({

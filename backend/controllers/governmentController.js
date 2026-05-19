@@ -298,9 +298,9 @@ export const getSchoolById = async (req, res) => {
  */
 export const getStudentsStats = async (req, res) => {
   try {
-    const { schoolId, limit = 500, offset = 0 } = req.query;
-    const limitNum = Math.min(parseInt(limit, 10) || 500, 1000);
-    const offsetNum = parseInt(offset, 10) || 0;
+    const { schoolId } = req.query;
+    const limitNum = Math.min(parseInt(req.query.limit, 10) || 50, 200);
+    const offsetNum = Math.max(parseInt(req.query.offset, 10) || 0, 0);
 
     const where = {};
     if (schoolId) {
@@ -355,9 +355,8 @@ export const getStudentsStats = async (req, res) => {
  */
 export const getTeachersList = async (req, res) => {
   try {
-    const { limit = 500, offset = 0 } = req.query;
-    const limitNum = Math.min(parseInt(limit, 10) || 500, 1000);
-    const offsetNum = parseInt(offset, 10) || 0;
+    const limitNum = Math.min(parseInt(req.query.limit, 10) || 50, 200);
+    const offsetNum = Math.max(parseInt(req.query.offset, 10) || 0, 0);
 
     const { count, rows: teachers } = await User.findAndCountAll({
       where: { role: 'teacher' },

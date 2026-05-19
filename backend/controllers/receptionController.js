@@ -36,7 +36,7 @@ export const uploadDocument = async (req, res) => {
       status: 'pending',
     });
 
-    await req.user.update({ isVerified: true });
+    // isVerified is set to true by approveDocument once all documents are approved
 
     logger.info('Document uploaded by Reception', { documentId: document.id, userId: req.user.id, documentType, storageUrl: persistentUrl });
     res.status(201).json({ success: true, message: 'Document uploaded successfully', data: document });

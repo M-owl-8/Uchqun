@@ -30,7 +30,7 @@ const options = {
     },
     security: [{ bearerAuth: [] }, { cookieAuth: [] }],
   },
-  apis: ['./routes/*.js'],
+  apis: ['./routes/**/*.js', './controllers/**/*.js'],
 };
 
 export const swaggerSpec = swaggerJSDoc(options);
