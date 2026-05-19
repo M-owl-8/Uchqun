@@ -131,13 +131,23 @@ describe('teacherResourceController', () => {
       expect(res.status).toHaveBeenCalledWith(403);
     });
 
-    it('admin can delete any resource', async () => {
+    it('admin can delete any resource (no schoolId set)', async () => {
       const destroy = jest.fn().mockResolvedValue();
-      mockFindByPk.mockResolvedValue({ id: 'r1', teacherId: 'OTHER', destroy });
+      mockFindByPk.mockResolvedValue({ id: 'r1', teacherId: 'OTHER', schoolId: 'SCHOOL_B', destroy });
       const req = { user: { id: 'a1', role: 'admin' }, params: { id: 'r1' } };
       const res = mkRes();
       await deleteResource(req, res);
       expect(destroy).toHaveBeenCalled();
+    });
+
+    it('admin: 404 when deleting resource from different school (BACKEND-040)', async () => {
+      const destroy = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'r1', teacherId: 'OTHER', schoolId: 'SCHOOL_B', destroy });
+      const req = { user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' }, params: { id: 'r1' } };
+      const res = mkRes();
+      await deleteResource(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(destroy).not.toHaveBeenCalled();
     });
   });
 });

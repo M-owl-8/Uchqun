@@ -121,7 +121,12 @@ export const deleteResource = async (req, res) => {
       return res.status(404).json({ error: 'Resource not found' });
     }
 
-    // Teacher can only delete their own resources; admin can delete any
+    // Admin is school-scoped — cannot delete resources from other schools
+    if (req.user.role === 'admin' && req.user.schoolId && resource.schoolId !== req.user.schoolId) {
+      return res.status(404).json({ error: 'Resource not found' });
+    }
+
+    // Teacher can only delete their own resources; admin can delete any within school
     if (req.user.role !== 'admin' && resource.teacherId !== req.user.id) {
       return res.status(403).json({ error: 'You can only delete your own resources' });
     }
