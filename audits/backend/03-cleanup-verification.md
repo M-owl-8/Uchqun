@@ -391,3 +391,177 @@ S3 Recovery Pass claimed: 45.93% / 46.96% lines / 641 tests. **Confirmed. ✅**
 - `adminStats.test.js`: mock ParentActivity returning non-zero; verify sum appears in stats → S effort
 
 **Note on systemic root cause:** Batch 3 was executed before the test discipline rule was added to CLAUDE.md. All subsequent batches (Batch 4+) have proof tests. Adding Batch 15 will close the test-discipline gap created by Batch 3. Once Batch 15 tests are added and verified, S4 re-verification should return 🟢 with high confidence.
+
+---
+
+# S4 Final Re-verification (post-Batch 15)
+
+**Generated:** 2026-05-19  
+**Status:** 🟡 Closed with documented residuals — 4/4 Batch 15 tests verify, 5/5 sample audit passes; one commit body description slightly imprecise but test is sound  
+**Verifier:** Independent re-run of all 4 Batch 15 revert-tests + 5-sample audit re-run  
+**Coverage re-run:** 46.66% statements / 47.64% lines / 645 tests / 70 suites ✅
+
+---
+
+## Pass 1 — Batch 15 Test Verification
+
+Independent revert-test performed for each of the 4 Batch 15 proof tests. For each: (1) fix located in current code, (2) test run against current code (must pass), (3) fix reverted locally (no commit), (4) test run against reverted code (must fail), (5) fix re-applied, (6) git status confirmed clean.
+
+### 1. deleteMedia IDOR guard (BACKEND-003) — commit 1441f10
+
+**Fix location:** `mediaController.js:931-934` — `validateChildAccess(media.childId, req)` + null→404 guard  
+**Current pass output:**
+```
+Tests: 13 passed, 13 total
+```
+**Revert applied:** removed lines 930-934 (validateChildAccess call and null-check)  
+**Pre-fix failure output:**
+```
+Expected: 404
+Received: 500
+
+Number of calls: 1
+
+at Object.<anonymous> (__tests__/media.test.js:177:24)
+
+Tests: 1 failed, 12 passed, 13 total
+```
+**Match check vs Batch 15 commit body claim (`Expected: 404 / Number of calls: 0`):** ❌ Minor discrepancy — commit body claimed status was never called (0 calls); actual failure was status called once with 500 (deleteFile throws without the guard intercepting first). The test correctly detected the absent guard either way — 500 ≠ 404 — so test discipline is sound.  
+**Fix re-applied:** `git status` clean ✅  
+
+### 2. deleteTherapy hard delete (BACKEND-013) — commit 7edb259
+
+**Fix location:** `therapyController.js:473` — `await therapy.destroy()`  
+**Current pass output:**
+```
+Tests: 12 passed, 12 total
+```
+**Revert applied:** `therapy.destroy()` → `therapy.update({ isActive: false })`  
+**Pre-fix failure output:**
+```
+expect(jest.fn()).toHaveBeenCalled()
+
+Expected number of calls: >= 1
+Received number of calls:    0
+
+at Object.<anonymous> (__tests__/therapy.test.js:179:21)
+
+Tests: 1 failed, 11 passed, 12 total
+```
+**Match check vs Batch 15 claim (`destroy expected >= 1 calls, received 0`):** ✅ Exact match  
+**Fix re-applied:** `git status` clean ✅  
+
+### 3. getActivity parent multi-child scope (BACKEND-037) — commit bc120e5
+
+**Fix location:** `activityController.js:188-196` — `Child.findAll({ where: { parentId: req.user.id } })` + `Op.in` scope  
+**Current pass output:**
+```
+Tests: 14 passed, 14 total
+```
+**Revert applied:** replaced `Child.findAll` block with `where.childId = req.user.id`  
+**Pre-fix failure output:**
+```
+Expected: ObjectContaining {"where": {"parentId": "p1"}}
+
+Number of calls: 0
+
+at Object.<anonymous> (__tests__/activity.test.js:159:32)
+
+Tests: 1 failed, 13 passed, 14 total
+```
+**Match check vs Batch 15 claim (`mockChildFindAll expected ObjectContaining{where:{parentId:'p1'}}, Number of calls: 0`):** ✅ Exact match  
+**Fix re-applied:** `git status` clean ✅  
+
+### 4. getStatistics legacy+modern activity sum (BACKEND-018) — commit 8d1e161
+
+**Fix location:** `adminStatsController.js:201` — `const totalActivities = legacyActivities + modernActivities`  
+**Current pass output:**
+```
+Tests: 7 passed, 7 total
+```
+**Revert applied:** `legacyActivities + modernActivities` → `legacyActivities`  
+**Pre-fix failure output:**
+```
+expect(received).toBe(expected) // Object.is equality
+
+Expected: 5
+Received: 3
+
+at Object.<anonymous> (__tests__/adminStats.test.js:148:45)
+
+Tests: 1 failed, 6 passed, 7 total
+```
+**Match check vs Batch 15 claim (`Expected: 5 / Received: 3`):** ✅ Exact match  
+**Fix re-applied:** `git status` clean ✅  
+
+### Pass 1 Summary
+
+| Test | File | Pre-fix failure | Post-fix pass | Commit body match |
+|---|---|---|---|---|
+| deleteMedia IDOR guard (BACKEND-003) | `media.test.js` | `Expected: 404 / Received: 500` ✅ fails | 13/13 ✅ | ❌ Commit said "calls: 0" but actual was 500 from deleteFile — test is still sound |
+| deleteTherapy hard delete (BACKEND-013) | `therapy.test.js` | `destroy expected >= 1 / received 0` ✅ fails | 12/12 ✅ | ✅ Exact match |
+| getActivity parent scope (BACKEND-037) | `activity.test.js` | `mockChildFindAll expected, calls: 0` ✅ fails | 14/14 ✅ | ✅ Exact match |
+| getStatistics legacy+modern sum (BACKEND-018) | `adminStats.test.js` | `Expected: 5 / Received: 3` ✅ fails | 7/7 ✅ | ✅ Exact match |
+
+**Result: 4/4 tests correctly fail pre-fix and pass post-fix.** The BACKEND-003 commit body described the failure mode as "destroy was reached without school check" (status never set), but the actual failure was a 500 from `deleteFile` throwing (the fix correctly prevents reaching that code). The commit body was imprecise, not wrong in substance.
+
+---
+
+## Pass 2 — 5-Sample Audit Re-run (original Pass 4 samples)
+
+Applying full revert-test workflow to the same 5 samples from the S4 Re-verification Pass 4.
+
+| Finding | Test file | Test name | Revert action | Pre-fix failure | Post-fix pass | Result |
+|---|---|---|---|---|---|---|
+| BACKEND-001 (approveDocument ownership) | `adminReception.test.js` | `403 when document user not created by this admin` | Removed `if (!document.user \|\| document.user.createdBy !== req.user.id)` check | `Expected: 403 / Received: 400 (document not pending check fires first)` | 12/12 pass | ✅ Passes discipline |
+| BACKEND-003 (deleteMedia school scope) | `media.test.js` | `404 when child belongs to different school (cross-school IDOR)` | Removed validateChildAccess block (Batch 15 test) | `Expected: 404 / Received: 500` | 13/13 pass | ✅ Passes discipline (Batch 15 fix) |
+| BACKEND-013 (deleteTherapy hard delete) | `therapy.test.js` | `calls destroy (hard delete), not update({ isActive: false })` | Replaced `destroy()` with `update({ isActive: false })` (Batch 15 test) | `Expected: >= 1 destroy calls / Received: 0` | 12/12 pass | ✅ Passes discipline (Batch 15 fix) |
+| BACKEND-037 (getActivity parent multi-child) | `activity.test.js` | `parent: fetches all children via findAll and scopes lookup` | Replaced Child.findAll block with `where.childId = req.user.id` (Batch 15 test) | `Expected: mockChildFindAll called with parentId / calls: 0` | 14/14 pass | ✅ Passes discipline (Batch 15 fix) |
+| BACKEND-018 (getStatistics legacy+modern sum) | `adminStats.test.js` | `totalActivities sums legacy (ParentActivity) + modern (Activity) counts (BACKEND-018)` | Changed `legacyActivities + modernActivities` → `legacyActivities` (Batch 15 test) | `Expected: 5 / Received: 3` | 7/7 pass | ✅ Passes discipline (Batch 15 fix) |
+
+**Result: 5/5 samples pass revert-test discipline.** In Pass 4, 4 of these 5 were Weak (BACKEND-003, 013, 037, 018 had no proof tests). Batch 15 remediated all 4. BACKEND-001 was already Solid and remains Solid.
+
+---
+
+## BACKEND-007c Closure Confirmation
+
+BACKEND-007c was opened in Pass 4: "4 functions have no test that would fail if the fix were reverted." Status per this pass:
+
+| Function | Was | Now | Evidence |
+|---|---|---|---|
+| `deleteMedia` (BACKEND-003) | ❌ No proof test | ✅ Proof test at `media.test.js:169-180` | Revert-test confirms failure pre-fix, pass post-fix |
+| `deleteTherapy` (BACKEND-013) | ❌ No proof test | ✅ Proof test at `therapy.test.js:170-183` | Revert-test confirms failure pre-fix, pass post-fix |
+| `getActivity` parent path (BACKEND-037) | ❌ No proof test | ✅ Proof test at `activity.test.js:151-163` | Revert-test confirms failure pre-fix, pass post-fix |
+| `getStatistics` sum (BACKEND-018) | ❌ All-zero mocks hid fix | ✅ Proof test at `adminStats.test.js:134-149` | Revert-test confirms Expected:5/Received:3 failure pre-fix |
+
+**BACKEND-007c: ✅ Genuinely Closed.** All 4 previously untested functions now have proof tests that independently reproduce their pre-fix failure modes.
+
+---
+
+## Full Suite Confirmation
+
+```
+Test Suites: 70 passed, 70 total
+Tests:       645 passed, 645 total
+Statements   : 46.66% ( 2478/5310 )
+Branches     : 40.32% ( 1436/3561 )
+Functions    : 47.75% ( 245/513 )
+Lines        : 47.64% ( 2375/4985 )
+```
+
+Matches Batch 15 close-out numbers exactly. No regressions introduced by S4 verification workflow.
+
+---
+
+## Verdict: 🟡 Closed with documented residuals
+
+**Basis for 🟡 instead of 🟢:** The Batch 15 commit body for BACKEND-003 (commit 1441f10) described the pre-fix failure as "Expected: 404 / Number of calls: 0" (implying `res.status` was never called). The independently reproduced failure was "Expected: 404 / Received: 500" (1 call with 500, from `deleteFile` throwing). The commit body was imprecise about the failure mode — the IDOR bypass still happened, the test correctly detected it, and the fix correctly prevents it. This is a documentation inaccuracy in one commit message, not a test soundness issue.
+
+**All other criteria met:**
+- 4/4 Batch 15 tests correctly fail pre-fix and pass post-fix ✅
+- 5/5 Pass 4 samples now pass revert-test discipline ✅  
+- BACKEND-007c genuinely closed ✅
+- No new findings discovered during this pass ✅
+- Full suite: 645 tests, 70 suites, 0 failures, 46.66% stmts ✅
+
+**Action:** Advance. Backend S4 = ✅ (final). S5 (Research Gaps) may begin on explicit user request.
