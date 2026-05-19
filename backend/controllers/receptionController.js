@@ -6,6 +6,7 @@ import { fileTypeFromBuffer } from 'file-type';
 import fs from 'fs';
 
 const DOCUMENT_ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
+const DOCUMENT_ALLOWED_TYPES = ['license', 'certificate', 'identification', 'other'];
 
 export const uploadDocument = async (req, res) => {
   let tempPath = null;
@@ -15,6 +16,9 @@ export const uploadDocument = async (req, res) => {
 
     if (!file) return res.status(400).json({ error: 'File is required' });
     if (!documentType) return res.status(400).json({ error: 'Document type is required' });
+    if (!DOCUMENT_ALLOWED_TYPES.includes(documentType)) {
+      return res.status(400).json({ error: `documentType must be one of: ${DOCUMENT_ALLOWED_TYPES.join(', ')}` });
+    }
 
     tempPath = file.path;
     const buffer = await fs.promises.readFile(tempPath);

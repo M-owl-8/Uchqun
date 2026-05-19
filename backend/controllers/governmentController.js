@@ -3,7 +3,6 @@ import School from '../models/School.js';
 import SchoolRating from '../models/SchoolRating.js';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
-import _TherapyUsage from '../models/TherapyUsage.js';
 import AIWarning from '../models/AIWarning.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';

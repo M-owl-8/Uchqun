@@ -1,9 +1,16 @@
 import dotenv from 'dotenv';
 import { Sequelize } from 'sequelize';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
-// Connect to default maintenance DB to manage databases
+if (process.env.ALLOW_DB_RESET !== 'true') {
+  logger.error('reset-database: ALLOW_DB_RESET is not set to "true". Aborting.');
+  process.exit(1);
+}
+
+const isDryRun = process.argv.includes('--dry-run');
+
 const sequelize = new Sequelize(
   'postgres',
   process.env.DB_USER || 'postgres',
@@ -19,13 +26,17 @@ const sequelize = new Sequelize(
 async function resetDatabase() {
   const dbName = process.env.DB_NAME || 'uchqun';
   try {
-    console.log('🔍 Connecting to PostgreSQL...');
+    logger.info('reset-database: connecting to PostgreSQL...');
     await sequelize.authenticate();
-    console.log('✅ Connected successfully');
+    logger.info('reset-database: connected');
 
-    console.log(`\n🧹 Resetting database: ${dbName}...`);
+    if (isDryRun) {
+      logger.info(`reset-database: DRY RUN — would drop and recreate database "${dbName}"`);
+      process.exit(0);
+    }
 
-    // Terminate active connections
+    logger.info(`reset-database: resetting database "${dbName}"...`);
+
     await sequelize.query(
       `
       SELECT pg_terminate_backend(pid)
@@ -36,19 +47,13 @@ async function resetDatabase() {
       { replacements: { dbName } }
     );
 
-    // Drop and recreate
     await sequelize.query(`DROP DATABASE IF EXISTS "${dbName}";`);
     await sequelize.query(`CREATE DATABASE "${dbName}";`);
 
-    console.log(`✅ Database "${dbName}" reset successfully!`);
+    logger.info(`reset-database: database "${dbName}" reset successfully`);
     process.exit(0);
   } catch (error) {
-    if (error.original) {
-      console.error('❌ Error:', error.original.message);
-      console.error('   Code:', error.original.code);
-    } else {
-      console.error('❌ Error:', error.message);
-    }
+    logger.error('reset-database: error', { error: error.original?.message || error.message });
     process.exit(1);
   } finally {
     await sequelize.close();
@@ -56,4 +61,3 @@ async function resetDatabase() {
 }
 
 resetDatabase();
-

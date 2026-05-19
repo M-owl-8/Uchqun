@@ -71,6 +71,9 @@ If admin or government passwords need resetting, deploy a one-off migration:
 - Pre-commit: Husky → lint-staged → ESLint auto-fix
 - No Prettier configured — match surrounding style
 
+### Response shape standard (BACKEND-012)
+**New endpoints** MUST use `{ success: true, data: <payload> }` for success and `{ success: false, error: '<message>' }` for errors. **Existing endpoints** that return bare objects are grandfather-claused until a dedicated migration sprint coordinates changes across all frontends. Do NOT silently change an existing endpoint's shape — it will break the consuming UI.
+
 ## Deployment
 - Backend → Railway (auto-deploy on `main` push via `.github/workflows/railway-deploy.yml`)
 - Frontends → Netlify / Vercel

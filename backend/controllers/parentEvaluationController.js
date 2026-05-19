@@ -1,5 +1,6 @@
 import { ParentEvaluation } from '../models/index.js';
 import logger from '../utils/logger.js';
+import { parsePagination } from '../utils/pagination.js';
 
 const VALID_PERIODS = ['daily', 'weekly', 'monthly'];
 
@@ -56,10 +57,12 @@ export const getMyEvaluations = async (req, res) => {
       where.period = req.query.period;
     }
 
+    const { limit, offset } = parsePagination(req.query, { limit: 20 });
     const records = await ParentEvaluation.findAll({
       where,
       order: [['submittedAt', 'DESC']],
-      limit: 50,
+      limit,
+      offset,
     });
 
     return res.json({ success: true, data: records });

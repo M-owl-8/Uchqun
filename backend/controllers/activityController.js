@@ -226,7 +226,7 @@ export const createActivity = async (req, res) => {
     }
 
     const {
-      childId, teacher,
+      childId,
       skill, goal, startDate, endDate, tasks, methods, progress, observation, services
     } = req.body;
 
@@ -255,7 +255,7 @@ export const createActivity = async (req, res) => {
       type: 'Learning',
       duration: 30,
       date: startDate || new Date().toISOString().split('T')[0],
-      teacher: teacher || `${req.user.firstName} ${req.user.lastName}`,
+      teacher: `${req.user.firstName} ${req.user.lastName}`,
       studentEngagement: 'Medium',
       notes: '',
       // Individual Plan fields

@@ -1,5 +1,6 @@
 import { Sequelize } from 'sequelize';
 import dotenv from 'dotenv';
+import logger from '../utils/logger.js';
 
 dotenv.config();
 
@@ -27,7 +28,7 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
 
   sequelize = new Sequelize(dbUrl, {
     dialect: 'postgres',
-    logging: process.env.NODE_ENV === 'development' ? console.log : false,
+    logging: process.env.NODE_ENV === 'development' ? (msg) => logger.debug(msg) : false,
     pool: POOL_CONFIG,
     dialectOptions: {
       // Railway Postgres uses a self-signed cert — rejectUnauthorized must be false.
@@ -47,7 +48,7 @@ if (process.env.DATABASE_URL || process.env.DATABASE_PUBLIC_URL) {
       host: process.env.DB_HOST || 'localhost',
       port: process.env.DB_PORT || 5432,
       dialect: 'postgres',
-      logging: process.env.NODE_ENV === 'development' ? console.log : false,
+      logging: process.env.NODE_ENV === 'development' ? (msg) => logger.debug(msg) : false,
       pool: POOL_CONFIG,
       dialectOptions: {
         ssl: false,

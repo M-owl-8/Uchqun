@@ -2,6 +2,7 @@ import express from 'express';
 import crypto from 'crypto';
 import { runMigrations } from '../config/migrate.js';
 import logger from '../utils/logger.js';
+import { authLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ const secretMatches = (provided, expected) => {
   return crypto.timingSafeEqual(a, b);
 };
 
-router.post('/run', async (req, res) => {
+router.post('/run', authLimiter, async (req, res) => {
   try {
     const secret = req.body.secret || req.headers['x-migration-secret'];
     const expectedSecret = process.env.MIGRATION_SECRET;
