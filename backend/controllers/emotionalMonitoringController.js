@@ -4,6 +4,7 @@ import Group from '../models/Group.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 /**
  * Emotional Monitoring Controller
@@ -81,6 +82,11 @@ export const createOrUpdateMonitoring = async (req, res) => {
     const child = await Child.findByPk(childId);
     if (!child) {
       return res.status(404).json({ error: 'Child not found' });
+    }
+
+    // School scope check for admin (admin is school-scoped, not platform-wide)
+    if (req.user.role === 'admin' && req.user.schoolId && child.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ error: 'You do not have access to this child' });
     }
 
     // Check if teacher has access to this child:
@@ -382,6 +388,12 @@ export const deleteMonitoring = async (req, res) => {
     });
 
     if (!record) {
+      return res.status(404).json({ error: 'Monitoring record not found' });
+    }
+
+    // School scope check for admin (BACKEND-040)
+    const childOk = await validateChildAccess(record.childId, req);
+    if (!childOk) {
       return res.status(404).json({ error: 'Monitoring record not found' });
     }
 

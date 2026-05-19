@@ -28,7 +28,7 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { createOrUpdateMonitoring } = await import('../controllers/emotionalMonitoringController.js');
+const { createOrUpdateMonitoring, deleteMonitoring } = await import('../controllers/emotionalMonitoringController.js');
 
 const mkRes = () => {
   const res = {};
@@ -142,5 +142,39 @@ describe('emotionalMonitoringController.createOrUpdateMonitoring', () => {
     await createOrUpdateMonitoring(req, res);
     expect(mockUserFindOne).not.toHaveBeenCalled();
     expect(res.status).not.toHaveBeenCalledWith(403);
+  });
+
+  it('admin: 403 when child belongs to different school (BACKEND-040)', async () => {
+    mockChildFindByPk.mockResolvedValue({ id: 'c1', parentId: 'p1', schoolId: 'SCHOOL_B' });
+    const req = {
+      method: 'POST',
+      user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' },
+      params: {},
+      body: { childId: 'c1', date: '2026-05-06' },
+    };
+    const res = mkRes();
+    await createOrUpdateMonitoring(req, res);
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+});
+
+describe('emotionalMonitoringController.deleteMonitoring — BACKEND-040', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('admin: 404 when record child belongs to different school', async () => {
+    const destroy = jest.fn().mockResolvedValue();
+    mockEmFindByPk.mockResolvedValue({
+      id: 'em1', childId: 'c_school_b', teacherId: 'OTHER', destroy,
+      child: { parentId: 'p1' },
+    });
+    mockChildFindByPk.mockResolvedValue(null); // validateChildAccess returns null → 404
+    const req = {
+      user: { id: 'a1', role: 'admin', schoolId: 'SCHOOL_A' },
+      params: { id: 'em1' },
+    };
+    const res = mkRes();
+    await deleteMonitoring(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(destroy).not.toHaveBeenCalled();
   });
 });
