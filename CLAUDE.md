@@ -37,6 +37,8 @@ JWT: 15m access (HTTP-only cookie) + 7d refresh. Middleware order:
 Reception additionally requires `documentsApproved && isActive`.
 `requireTeacher` allows roles `['teacher', 'reception', 'admin']` — intentional: reception and admin can view teacher-scoped resources.
 
+**Parent `isActive` bypass (intentional):** `middleware/auth.js:95` skips the `isActive: false` check for `role === 'parent'`. This is safe because no endpoint exists to set `isActive = false` for a parent — only paranoid-delete is available. If a future feature adds parent suspension, the bypass MUST be removed at the same time. See `LOOP_QUESTIONS.md` LQ-001.
+
 ## Testing Requirements
 - New controllers MUST ship with tests in `backend/__tests__/controllers/`
 - Backend: Jest, PostgreSQL 15 required
