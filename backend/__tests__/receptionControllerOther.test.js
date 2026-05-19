@@ -36,20 +36,53 @@ const mkRes = () => {
 describe('receptionController.getMyDocuments', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('returns list of documents', async () => {
+  it('returns list of documents (no filter)', async () => {
     mockDocumentFindAll.mockResolvedValue([{ id: 'd1' }, { id: 'd2' }]);
-    const req = { user: { id: 'u1' } };
+    const req = { user: { id: 'u1' }, query: {} };
     const res = mkRes();
     await getMyDocuments(req, res);
     expect(res.json).toHaveBeenCalled();
     const payload = res.json.mock.calls[0][0];
     expect(payload.success).toBe(true);
     expect(payload.data).toHaveLength(2);
+    const where = mockDocumentFindAll.mock.calls[0][0].where;
+    expect(where).not.toHaveProperty('status');
+  });
+
+  it('filters by ?status=pending', async () => {
+    mockDocumentFindAll.mockResolvedValue([{ id: 'd1', status: 'pending' }]);
+    const req = { user: { id: 'u1' }, query: { status: 'pending' } };
+    const res = mkRes();
+    await getMyDocuments(req, res);
+    expect(res.json).toHaveBeenCalledWith({ success: true, data: expect.any(Array) });
+    const where = mockDocumentFindAll.mock.calls[0][0].where;
+    expect(where.status).toBe('pending');
+    expect(where.userId).toBe('u1');
+  });
+
+  it('filters by ?status=approved', async () => {
+    mockDocumentFindAll.mockResolvedValue([]);
+    const req = { user: { id: 'u1' }, query: { status: 'approved' } };
+    const res = mkRes();
+    await getMyDocuments(req, res);
+    const where = mockDocumentFindAll.mock.calls[0][0].where;
+    expect(where.status).toBe('approved');
+  });
+
+  it('400 when status is invalid', async () => {
+    // Revert-test baseline: without validation, an invalid status would pass through
+    // to findAll and return 200 with unfiltered or empty results.
+    // Post-fix: 400 before any DB call.
+    const req = { user: { id: 'u1' }, query: { status: 'garbage' } };
+    const res = mkRes();
+    await getMyDocuments(req, res);
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(mockDocumentFindAll).not.toHaveBeenCalled();
   });
 
   it('500 on DB error', async () => {
     mockDocumentFindAll.mockRejectedValue(new Error('db fail'));
-    const req = { user: { id: 'u1' } };
+    const req = { user: { id: 'u1' }, query: {} };
     const res = mkRes();
     await getMyDocuments(req, res);
     expect(res.status).toHaveBeenCalledWith(500);

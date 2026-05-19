@@ -7,6 +7,7 @@ import fs from 'fs';
 
 const DOCUMENT_ALLOWED_MIMES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
 const DOCUMENT_ALLOWED_TYPES = ['license', 'certificate', 'identification', 'other'];
+const VALID_DOCUMENT_STATUSES = ['pending', 'approved', 'rejected'];
 
 export const uploadDocument = async (req, res) => {
   let tempPath = null;
@@ -54,11 +55,17 @@ export const uploadDocument = async (req, res) => {
 
 export const getMyDocuments = async (req, res) => {
   try {
-    const documents = await Document.findAll({ where: { userId: req.user.id }, order: [['createdAt', 'DESC']] });
-    res.json({ success: true, data: documents });
+    const { status } = req.query;
+    if (status && !VALID_DOCUMENT_STATUSES.includes(status)) {
+      return res.status(400).json({ success: false, error: `status must be one of: ${VALID_DOCUMENT_STATUSES.join(', ')}` });
+    }
+    const where = { userId: req.user.id };
+    if (status) where.status = status;
+    const documents = await Document.findAll({ where, order: [['createdAt', 'DESC']] });
+    return res.json({ success: true, data: documents });
   } catch (error) {
     logger.error('Get my documents error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to fetch documents' });
+    return res.status(500).json({ error: 'Failed to fetch documents' });
   }
 };
 
