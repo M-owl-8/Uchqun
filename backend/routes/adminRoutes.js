@@ -1,5 +1,6 @@
 import express from 'express';
 import { authenticate, requireAdmin } from '../middleware/auth.js';
+import { requireSchoolScope } from '../middleware/schoolScope.js';
 import {
   getReceptions,
   getReceptionById,
@@ -49,6 +50,7 @@ const router = express.Router();
 // All routes require Admin authentication
 router.use(authenticate);
 router.use(requireAdmin);
+router.use(requireSchoolScope);
 
 // Send message to government (top-level platform owner)
 router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);

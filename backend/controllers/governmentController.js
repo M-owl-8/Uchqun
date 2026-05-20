@@ -6,6 +6,7 @@ import Child from '../models/Child.js';
 import AIWarning from '../models/AIWarning.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
+import { logAudit } from '../utils/auditLogger.js';
 import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAverageRating } from '../utils/governmentLevel.js';
 import { parsePagination } from '../utils/pagination.js';
 
@@ -913,9 +914,71 @@ export const getAdminDetails = async (req, res) => {
       adminId: req.params.id,
       userId: req.user?.id,
     });
-    res.status(500).json({ 
+    res.status(500).json({
       error: 'Failed to fetch admin details',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined,
     });
+  }
+};
+
+/**
+ * Archive a school (set isActive=false).
+ * PUT /api/government/schools/:id/archive
+ * Government only. Writes audit log before update.
+ */
+export const archiveSchool = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const school = await School.findByPk(id);
+    if (!school) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
+    }
+    if (!school.isActive) {
+      return res.status(409).json({ success: false, error: { code: 'SCHOOL_ALREADY_ARCHIVED' } });
+    }
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'archive', entity: 'schools', entityId: id,
+      meta: { name: school.name },
+    });
+
+    await school.update({ isActive: false });
+
+    return res.json({ success: true, data: { id: school.id, isActive: false } });
+  } catch (error) {
+    logger.error('archiveSchool error', { error: error.message, schoolId: id });
+    return res.status(500).json({ success: false, error: { code: 'SCHOOL_ARCHIVE_FAILED' } });
+  }
+};
+
+/**
+ * Reactivate an archived school (set isActive=true).
+ * PUT /api/government/schools/:id/reactivate
+ * Government only. Writes audit log before update.
+ */
+export const reactivateSchool = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const school = await School.findByPk(id);
+    if (!school) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
+    }
+    if (school.isActive) {
+      return res.status(409).json({ success: false, error: { code: 'SCHOOL_ALREADY_ACTIVE' } });
+    }
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'reactivate', entity: 'schools', entityId: id,
+      meta: { name: school.name },
+    });
+
+    await school.update({ isActive: true });
+
+    return res.json({ success: true, data: { id: school.id, isActive: true } });
+  } catch (error) {
+    logger.error('reactivateSchool error', { error: error.message, schoolId: id });
+    return res.status(500).json({ success: false, error: { code: 'SCHOOL_REACTIVATE_FAILED' } });
   }
 };

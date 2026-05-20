@@ -12,6 +12,8 @@ import {
   getAdminDetails,
   getTeachersList,
   getParentsList,
+  archiveSchool,
+  reactivateSchool,
 } from '../controllers/governmentController.js';
 import {
   createAdmin,
@@ -58,6 +60,8 @@ router.use(requireGovernment);
 router.get('/overview', getOverview);
 router.get('/schools', getSchoolsStats);
 router.get('/schools/:id', getSchoolById);
+router.put('/schools/:id/archive', archiveSchool);
+router.put('/schools/:id/reactivate', reactivateSchool);
 router.get('/students', getStudentsStats);    // Available for future students directory page
 router.get('/teachers', getTeachersList);     // Available for future teachers directory page
 router.get('/parents', getParentsList);       // Available for future parents directory page

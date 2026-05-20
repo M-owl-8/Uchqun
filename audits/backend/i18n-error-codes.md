@@ -137,6 +137,21 @@ Introduced: Sprint D T2-2 PR2 (2026-05-20)
 
 ---
 
+## School Archival (`governmentController.js`, `middleware/schoolScope.js`)
+
+Introduced: Sprint D T2-7 (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `SCHOOL_NOT_FOUND` | 404 | No school record found with the given `:id` | "School not found." |
+| `SCHOOL_ALREADY_ARCHIVED` | 409 | School `isActive` is already `false` — archive is a no-op | "This school is already archived." |
+| `SCHOOL_ALREADY_ACTIVE` | 409 | School `isActive` is already `true` — reactivate is a no-op | "This school is already active." |
+| `SCHOOL_ARCHIVE_FAILED` | 500 | Unexpected server error while setting `isActive=false` | "Failed to archive school. Please try again." |
+| `SCHOOL_REACTIVATE_FAILED` | 500 | Unexpected server error while setting `isActive=true` | "Failed to reactivate school. Please try again." |
+| `SCHOOL_ARCHIVED` | 403 | Emitted by `requireSchoolScope` middleware when a non-government user's school has `isActive=false` | "Your school has been archived. Contact the platform administrator." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

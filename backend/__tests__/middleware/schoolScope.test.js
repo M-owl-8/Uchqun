@@ -1,5 +1,15 @@
 import { jest } from '@jest/globals';
-import { requireSchoolScope, schoolWhere } from '../../middleware/schoolScope.js';
+
+const mockSchoolFindByPk = jest.fn().mockResolvedValue(null);
+
+jest.unstable_mockModule('../../models/School.js', () => ({
+  default: { findByPk: mockSchoolFindByPk },
+}));
+jest.unstable_mockModule('../../utils/logger.js', () => ({
+  default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
+}));
+
+const { requireSchoolScope, schoolWhere } = await import('../../middleware/schoolScope.js');
 
 const mkRes = () => {
   const res = {};
@@ -9,84 +19,120 @@ const mkRes = () => {
 };
 
 describe('requireSchoolScope', () => {
-  it('401 when no req.user', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSchoolFindByPk.mockResolvedValue(null);
+  });
+
+  it('401 when no req.user', async () => {
     const req = {};
     const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, res, next);
+    await requireSchoolScope(req, res, next);
     expect(res.status).toHaveBeenCalledWith(401);
     expect(next).not.toHaveBeenCalled();
   });
 
   // #03-018: government ALWAYS gets isGlobalAccess=true regardless of schoolId
-  it('government with schoolId still has global access', () => {
+  it('government with schoolId still has global access', async () => {
     const req = { user: { role: 'government', schoolId: 's1' } };
     const next = jest.fn();
-    requireSchoolScope(req, mkRes(), next);
+    await requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s1');
     expect(req.isGlobalAccess).toBe(true);
     expect(next).toHaveBeenCalled();
   });
 
-  it('government without schoolId has global access', () => {
+  it('government without schoolId has global access', async () => {
     const req = { user: { role: 'government' } };
     const next = jest.fn();
-    requireSchoolScope(req, mkRes(), next);
+    await requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBeNull();
     expect(req.isGlobalAccess).toBe(true);
     expect(next).toHaveBeenCalled();
   });
 
   // Q3: business is school-scoped (least-privilege default; flip isGlobalAccess in schoolScope.js if product requires otherwise)
-  it('business with schoolId is school-scoped', () => {
+  it('business with schoolId is school-scoped', async () => {
     const req = { user: { role: 'business', schoolId: 's2' } };
     const next = jest.fn();
-    requireSchoolScope(req, mkRes(), next);
+    await requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s2');
     expect(req.isGlobalAccess).toBe(false);
     expect(next).toHaveBeenCalled();
   });
 
-  it('business without schoolId is rejected with 403', () => {
+  it('business without schoolId is rejected with 403', async () => {
     const req = { user: { role: 'business' } };
     const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, res, next);
+    await requireSchoolScope(req, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('admin without schoolId is rejected with 403', () => {
+  it('admin without schoolId is rejected with 403', async () => {
     const req = { user: { role: 'admin' } };
     const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, res, next);
+    await requireSchoolScope(req, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
     expect(next).not.toHaveBeenCalled();
   });
 
-  it('admin with schoolId is scoped', () => {
+  it('admin with schoolId is scoped', async () => {
     const req = { user: { role: 'admin', schoolId: 's1' } };
     const next = jest.fn();
-    requireSchoolScope(req, mkRes(), next);
+    await requireSchoolScope(req, mkRes(), next);
     expect(req.schoolId).toBe('s1');
     expect(req.isGlobalAccess).toBe(false);
   });
 
-  it('teacher without schoolId is rejected', () => {
+  it('teacher without schoolId is rejected', async () => {
     const req = { user: { role: 'teacher' } };
     const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, res, next);
+    await requireSchoolScope(req, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it('parent without schoolId is rejected', () => {
+  it('parent without schoolId is rejected', async () => {
     const req = { user: { role: 'parent' } };
     const res = mkRes();
     const next = jest.fn();
-    requireSchoolScope(req, res, next);
+    await requireSchoolScope(req, res, next);
     expect(res.status).toHaveBeenCalledWith(403);
+  });
+
+  // T2-7: archived school checks
+  it('403 SCHOOL_ARCHIVED when admin schoolId resolves to an inactive school', async () => {
+    mockSchoolFindByPk.mockResolvedValue({ id: 's1', isActive: false });
+    const req = { user: { role: 'admin', schoolId: 's1' } };
+    const res = mkRes();
+    const next = jest.fn();
+    await requireSchoolScope(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'SCHOOL_ARCHIVED' }),
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('government with archived schoolId still gets global access (government bypasses archive check)', async () => {
+    mockSchoolFindByPk.mockResolvedValue({ id: 's1', isActive: false });
+    const req = { user: { role: 'government', schoolId: 's1' } };
+    const next = jest.fn();
+    await requireSchoolScope(req, mkRes(), next);
+    expect(req.isGlobalAccess).toBe(true);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('fails open (calls next) when School DB lookup throws', async () => {
+    mockSchoolFindByPk.mockRejectedValue(new Error('db error'));
+    const req = { user: { role: 'admin', schoolId: 's1' } };
+    const next = jest.fn();
+    await requireSchoolScope(req, mkRes(), next);
+    expect(next).toHaveBeenCalled();
   });
 });
 
