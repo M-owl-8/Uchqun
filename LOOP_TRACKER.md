@@ -18,7 +18,7 @@
 
 **Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.
 > **Backend S6.1 (plan amendment pass):** ✅ Closed (81e5b84)
-> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: 🟡 in progress (Item 1 T1-2 ✅ 5bd03ae · Item 2 T1-3 ⬜)
+> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: ✅ Closed (93a22a2) — 78 suites / 739 tests / lint 0 / CP-006,007,008 ✅
 
 ## Rules (read before every step)
 
@@ -64,3 +64,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 14 | Backend | S7 Sprint A | a1149fb | 2026-05-19 | O-1 (no feature flags found), T2-1 audit log (9 tests), T1-1+T1-6 children+attendance (23 tests), T1-4 admin doc filter (6 tests), T1-5 reception doc filter (4 tests); 74 suites / 686 tests / 47.65% stmts / lint 0; `audits/backend/07-sprint-A-execution.md` |
 | 15 | Backend | S7 Sprint A remediation | 8615a32 | 2026-05-20 | T2-1 immutability: added Layer 2 (instance overrides: update/destroy/save) + Layer 3 (DB REVOKE migration); 4 new instance-method tests; CLAUDE.md "Audit Log Conventions" added; 75 suites / 690 tests / lint 0 |
 | 16 | Backend | S7 Sprint B Item 1 T1-2 | 5bd03ae | 2026-05-20 | ChildObservation model (paranoid, JSONB childSnapshot), migration (4 indexes incl. partial urgent), 3 endpoints (create/listRecent/listByChild) with validateChildAccess IDOR guards, afterDestroy audit hook; 18 controller tests + 4 hook tests; revert-test: 3 IDOR tests confirmed fail without guard; 76 suites / 712 tests / lint 0 |
+| 17 | Backend | S7 Sprint B Item 2 T1-3 | 93a22a2 | 2026-05-20 | TeacherReflection + ChildJournalEntry models (both paranoid); teacher reflections (strict requireRole, 409 on duplicate date); parent journal (isVisibleToParent, teacherId UUID never exposed to parents); afterDestroy hooks with meta; 9+14+4 tests; 4 revert-tests (teacherId filter, validateChildAccess, parentId check, isVisibleToParent filter); CP-006/007/008 ✅; 78 suites / 739 tests / lint 0; deliverable: 07-sprint-B-execution.md |
