@@ -96,6 +96,23 @@ export const aiChatLimiter = rateLimit({
   },
 });
 
+// Per-user rate limiter for data export endpoint (1 request per 24 hours)
+const EXPORT_WINDOW = 24 * 60 * 60 * 1000;
+export const dataExportLimiter = rateLimit({
+  windowMs: EXPORT_WINDOW,
+  max: 1,
+  keyGenerator: (req) => `data-export:${req.user?.id || req.ip}`,
+  store: makeRedisStore(EXPORT_WINDOW, 'dataexport'),
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      error: { code: 'DATA_EXPORT_RATE_LIMITED' },
+    });
+  },
+});
+
 // Rate limiter for file uploads
 // Override with RATE_LIMIT_UPLOAD_MAX / RATE_LIMIT_WINDOW_MS (UPLOAD_LIMIT_MAX still accepted)
 const UPLOAD_WINDOW = Number(process.env.UPLOAD_LIMIT_WINDOW_MS) || WINDOW_MS;

@@ -4,7 +4,7 @@ import { handleValidationErrors } from '../middleware/validation.js';
 import { rateTeacherValidator, rateSchoolValidator, submitEvaluationValidator } from '../validators/parentRatingValidator.js';
 import { aiChatValidator } from '../validators/aiChatValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
-import { aiChatLimiter } from '../middleware/rateLimiter.js';
+import { aiChatLimiter, dataExportLimiter } from '../middleware/rateLimiter.js';
 import {
   getMyChildren,
   getMyActivities,
@@ -33,6 +33,7 @@ import {
   submitParentEvaluation,
   getMyEvaluations,
 } from '../controllers/parentEvaluationController.js';
+import { exportMyData } from '../controllers/parent/parentDataExportController.js';
 
 const router = express.Router();
 
@@ -73,6 +74,9 @@ router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 router.post('/message-to-government', authenticate, requireParent, messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', authenticate, requireParent, getMyMessages);
+
+// Personal data export (rate-limited to 1 per 24h)
+router.get('/me/export', authenticate, requireParent, dataExportLimiter, exportMyData);
 
 // Child journal (parent read — visible entries only)
 router.get('/children/:id/journal', authenticate, requireParent, getChildJournal);

@@ -5,7 +5,7 @@
 **Rule:** Any PR that introduces a new error code MUST add a row to this file in the same commit. See `CLAUDE.md` Response Shape Standard (BACKEND-012) for the full error shape spec.
 
 **Introduced:** Sprint B (2026-05-20)  
-**Last updated:** Sprint B (2026-05-20)
+**Last updated:** Sprint E (2026-05-20)
 
 ---
 
@@ -200,6 +200,18 @@ Introduced: Sprint D T2-7 (2026-05-20)
 | `SCHOOL_ARCHIVE_FAILED` | 500 | Unexpected server error while setting `isActive=false` | "Failed to archive school. Please try again." |
 | `SCHOOL_REACTIVATE_FAILED` | 500 | Unexpected server error while setting `isActive=true` | "Failed to reactivate school. Please try again." |
 | `SCHOOL_ARCHIVED` | 403 | Emitted by `requireSchoolScope` middleware when a non-government user's school has `isActive=false` | "Your school has been archived. Contact the platform administrator." |
+
+---
+
+## Parent Data Export (`controllers/parent/parentDataExportController.js`)
+
+Introduced: Sprint E T2-10 (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `DATA_EXPORT_FORBIDDEN` | 403 | Caller is not `role=parent` (defense-in-depth controller check) | "You don't have permission to export data." |
+| `DATA_EXPORT_RATE_LIMITED` | 429 | Parent has already exported data within the last 24 hours | "You can only export your data once per day. Please try again tomorrow." |
+| `DATA_EXPORT_FAILED` | 500 | Unexpected server error during export assembly | "Failed to generate export. Please try again." |
 
 ---
 

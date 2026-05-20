@@ -73,6 +73,8 @@ jest.unstable_mockModule('../models/ChildObservation.js', () => ({ default: { be
 jest.unstable_mockModule('../models/TeacherReflection.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: mockReflectionAfterDestroy } }));
 jest.unstable_mockModule('../models/ChildJournalEntry.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../models/ImportJob.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../models/ChildGoal.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../models/ChildGoalReview.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
