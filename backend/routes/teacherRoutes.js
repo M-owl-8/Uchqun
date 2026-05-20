@@ -19,6 +19,15 @@ import {
   getMonitoringById,
   deleteMonitoring,
 } from '../controllers/emotionalMonitoringController.js';
+import {
+  listByChild as listGoalsByChild,
+  getById as getGoalById,
+  create as createGoal,
+  update as updateGoal,
+  deleteGoal,
+  createReview as createGoalReview,
+  listReviews as listGoalReviews,
+} from '../controllers/goalController.js';
 
 const router = express.Router();
 
@@ -78,6 +87,14 @@ router.get('/messages', getMyMessages);
 router.get('/children', getChildren);
 router.get('/children/:id', getChildById);
 router.get('/children/:id/observations', listObservationsByChild);
+// Child goals
+router.get('/children/:childId/goals', listGoalsByChild);
+router.post('/children/:childId/goals', requireRole('teacher'), createGoal);
+router.get('/goals/:id', getGoalById);
+router.patch('/goals/:id', requireRole('teacher'), updateGoal);
+router.delete('/goals/:id', requireRole('teacher'), deleteGoal);
+router.post('/goals/:id/reviews', requireRole('teacher'), createGoalReview);
+router.get('/goals/:id/reviews', listGoalReviews);
 
 // Observations — specific routes before general
 router.get('/observations/recent', listRecentObservations);

@@ -137,6 +137,42 @@ Introduced: Sprint D T2-2 PR2 (2026-05-20)
 
 ---
 
+## Child Goals / IEP (`goalController.js`, `admin/adminGoalController.js`)
+
+Introduced: Sprint E T2-3 (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `GOAL_CHILD_NOT_ACCESSIBLE` | 404 | Child does not exist, belongs to a different school, or caller lacks access | "This child is not accessible." |
+| `GOAL_NOT_FOUND` | 404 | No goal found with the given `:id` in the caller's school | "Goal not found." |
+| `GOAL_INVALID_CATEGORY` | 400 | `category` is missing or not one of the 8 enum values | "Please select a valid goal category." |
+| `GOAL_TITLE_REQUIRED` | 400 | `title` is missing or empty | "Goal title is required." |
+| `GOAL_TITLE_TOO_SHORT` | 400 | `title` is fewer than 5 characters after trimming | "Title must be at least 5 characters." |
+| `GOAL_TITLE_TOO_LONG` | 400 | `title` exceeds 200 characters | "Title must be 200 characters or fewer." |
+| `GOAL_DESCRIPTION_TOO_LONG` | 400 | `description` exceeds 2000 characters | "Description must be 2000 characters or fewer." |
+| `GOAL_MEASUREMENT_TOO_LONG` | 400 | `measurement` exceeds 1000 characters | "Measurement must be 1000 characters or fewer." |
+| `GOAL_BASELINE_TOO_LONG` | 400 | `baseline` exceeds 1000 characters | "Baseline must be 1000 characters or fewer." |
+| `GOAL_PROGRESS_NOTES_TOO_LONG` | 400 | `progressNotes` exceeds 2000 characters | "Progress notes must be 2000 characters or fewer." |
+| `GOAL_INVALID_TARGET_DATE` | 400 | `targetDate` is not a valid YYYY-MM-DD date | "Please enter a valid target date." |
+| `GOAL_TARGET_DATE_IN_PAST` | 400 | `targetDate` is before today (on create only) | "Target date must be in the future." |
+| `GOAL_INVALID_PROGRESS_STATUS` | 400 | `currentProgress` is not one of the 5 enum values | "Please select a valid progress status." |
+| `GOAL_IMMUTABLE_FIELD` | 400 | Attempted to change `childId`, `category`, `createdBy`, or `schoolId` on update | "This field cannot be changed after creation." |
+| `GOAL_REVIEW_INVALID_STATUS` | 400 | `status` is not one of the 5 review status enum values | "Please select a valid review status." |
+| `GOAL_REVIEW_DATE_REQUIRED` | 400 | `reviewDate` is missing or not a valid YYYY-MM-DD | "Review date is required." |
+| `GOAL_REVIEW_DATE_IN_FUTURE` | 400 | `reviewDate` is after today | "Review date cannot be in the future." |
+| `GOAL_REVIEW_EVIDENCE_TOO_LONG` | 400 | `evidence` exceeds 2000 characters | "Evidence must be 2000 characters or fewer." |
+| `GOAL_REVIEW_NEXT_STEPS_TOO_LONG` | 400 | `nextSteps` exceeds 2000 characters | "Next steps must be 2000 characters or fewer." |
+| `GOAL_FORBIDDEN` | 403 | Caller role is not `admin` (admin goal controller defense-in-depth) | "Access denied." |
+| `GOAL_LIST_FAILED` | 500 | Unexpected server error while fetching goals | "Failed to load goals. Please try again." |
+| `GOAL_FETCH_FAILED` | 500 | Unexpected server error while fetching a single goal | "Failed to load goal. Please try again." |
+| `GOAL_CREATE_FAILED` | 500 | Unexpected server error while creating goal | "Failed to save goal. Please try again." |
+| `GOAL_UPDATE_FAILED` | 500 | Unexpected server error while updating goal | "Failed to update goal. Please try again." |
+| `GOAL_DELETE_FAILED` | 500 | Unexpected server error while deleting goal | "Failed to delete goal. Please try again." |
+| `GOAL_REVIEW_CREATE_FAILED` | 500 | Unexpected server error while creating review | "Failed to save review. Please try again." |
+| `GOAL_REVIEW_LIST_FAILED` | 500 | Unexpected server error while fetching reviews | "Failed to load reviews. Please try again." |
+
+---
+
 ## School Archival (`governmentController.js`, `middleware/schoolScope.js`)
 
 Introduced: Sprint D T2-7 (2026-05-20)

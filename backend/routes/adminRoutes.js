@@ -24,6 +24,7 @@ import {
   activateParent,
 } from '../controllers/adminController.js';
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
+import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js';
 import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
@@ -73,8 +74,9 @@ router.get('/receptions/:id/documents', getReceptionDocuments);
 router.put('/documents/:id/approve', adminIdParamValidator, handleValidationErrors, approveDocument);
 router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErrors, rejectDocument);
 
-// Children observations (admin read)
+// Children observations and goals (admin read)
 router.get('/children/:id/observations', listObservationsByChild);
+router.get('/children/:id/goals', listByChildAsAdmin);
 router.put('/children/:id/transfer', transferChild);
 
 // Bulk import

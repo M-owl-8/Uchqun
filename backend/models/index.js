@@ -40,6 +40,8 @@ import ChildObservation from './ChildObservation.js';
 import TeacherReflection from './TeacherReflection.js';
 import ChildJournalEntry from './ChildJournalEntry.js';
 import ImportJob from './ImportJob.js';
+import ChildGoal from './ChildGoal.js';
+import ChildGoalReview from './ChildGoalReview.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -83,6 +85,8 @@ const models = {
   TeacherReflection,
   ChildJournalEntry,
   ImportJob,
+  ChildGoal,
+  ChildGoalReview,
   sequelize,
 };
 
@@ -301,6 +305,20 @@ School.hasMany(ImportJob, { foreignKey: 'schoolId', as: 'importJobs' });
 ImportJob.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(ImportJob, { foreignKey: 'createdBy', as: 'createdImportJobs' });
 ImportJob.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
+// ChildGoal
+Child.hasMany(ChildGoal, { foreignKey: 'childId', as: 'goals' });
+ChildGoal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(ChildGoal, { foreignKey: 'schoolId', as: 'goals' });
+ChildGoal.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(ChildGoal, { foreignKey: 'createdBy', as: 'createdGoals' });
+ChildGoal.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
+// ChildGoalReview
+ChildGoal.hasMany(ChildGoalReview, { foreignKey: 'goalId', as: 'reviews', onDelete: 'CASCADE' });
+ChildGoalReview.belongsTo(ChildGoal, { foreignKey: 'goalId', as: 'goal' });
+User.hasMany(ChildGoalReview, { foreignKey: 'reviewerId', as: 'authoredGoalReviews' });
+ChildGoalReview.belongsTo(User, { foreignKey: 'reviewerId', as: 'reviewer' });
 
 // ─── Audit hooks ──────────────────────────────────────────────────────────────
 
@@ -660,6 +678,30 @@ TeacherRating.afterDestroy(async (instance, options) => {
       entityId: instance.id,
       schoolId: null,
       meta: { reason: options?.reason ?? null, teacherId: instance.teacherId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// ChildGoal afterDestroy: currentProgress captured in meta because deleting an achieved
+// goal has different safeguarding implications than deleting a not_started goal.
+ChildGoal.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'child_goals',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: {
+        reason: options?.reason ?? null,
+        childId: instance.childId,
+        category: instance.category,
+        title: instance.title,
+        currentProgress: instance.currentProgress,
+      },
     });
   } catch {
     // intentionally swallowed
