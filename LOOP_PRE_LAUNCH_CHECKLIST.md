@@ -4,7 +4,7 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-20 (Pre-Launch Sprint close-out)
+**Last updated:** 2026-05-20 (Ops infrastructure verification — PL-006/007/008 ✅)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
 
 ---
@@ -24,10 +24,10 @@ Items without an owner or ETA are blocking unless explicitly deprioritised by th
 
 | ID | Item | Status | Notes |
 |---|---|---|---|
-| PL-005 | **Production monitoring** — Sentry error tracking code complete: `utils/errorTracker.js` initializes Sentry when `SENTRY_DSN` is set; `Sentry.setupExpressErrorHandler(app)` registered in `server.js`; `captureException` called for all 5xx in errorHandler; 4 tests cover init/no-op/captureException paths. | ⚠️ Needs sign-off | **Max must:** (1) set `SENTRY_DSN` in Railway env (see `env.example`); (2) configure Sentry → Slack alert rule in Sentry dashboard for first-seen errors. On-call runbook in `docs/OPERATIONS.md`. |
-| PL-006 | **Database backup strategy** — `docs/OPERATIONS.md` contains full backup and recovery runbook. | ⚠️ Needs sign-off | **Max must verify:** open Railway dashboard → Postgres → Backups tab → confirm automated backups enabled and note retention period. If on Hobby plan (7d retention), consider upgrading to Pro before launch. |
-| PL-007 | **Redis URL for multi-instance** — `REDIS_URL` must be set in Railway for production. Without it, login lockout and JTI revocation fall back to in-memory (single-instance only). | ⚠️ Needs sign-off | `env.example` updated with `REDIS_URL` docs. `docs/RAILWAY_SETUP.md` created. **Max must add Railway Redis plugin and copy `REDIS_URL` before scaling beyond 1 instance.** |
-| PL-008 | **FRONTEND_URL env var** — must be set to production domain(s) in Railway before go-live (not `CORS_ORIGIN` — the actual var name is `FRONTEND_URL`). | ⚠️ Needs sign-off | `env.example` updated with format docs and examples. `docs/RAILWAY_SETUP.md` created. **Max must set `FRONTEND_URL` in Railway before first production deploy.** |
+| PL-005 | **Production monitoring** — Sentry error tracking code complete: `utils/errorTracker.js` initializes Sentry when `SENTRY_DSN` is set; `Sentry.setupExpressErrorHandler(app)` registered in `server.js`; `captureException` called for all 5xx in errorHandler; 4 tests cover init/no-op/captureException paths. | ⚠️ Needs sign-off | **Max must:** (1) create Sentry project at sentry.io (requires browser — email verification); (2) copy DSN and `railway variables --set "SENTRY_DSN=https://..."` in Uchqun service; (3) configure Sentry → Slack alert rule for first-seen errors. On-call runbook in `docs/OPERATIONS.md`. `SENTRY_DSN` not yet set in production — backend degrades gracefully (no-op). |
+| PL-006 | **Database backup strategy** — Daily automated backups enabled on Railway Postgres volume instance (`fa4a3b7f-e165-43b3-9353-33d8fed15190`). Schedule: `41 9 * * *` UTC, retention 6 days (518400 s). Verified via Railway GraphQL `volumeInstanceBackupScheduleList`. Ops runbook at `docs/OPERATIONS.md`. | ✅ Verified | Backup schedule confirmed active 2026-05-20. Volume instance `fa4a3b7f`. Retention = 6 days; upgrade to Pro plan if longer retention needed before launch. |
+| PL-007 | **Redis URL for multi-instance** — `REDIS_URL` confirmed set in Railway Uchqun backend service production environment. Login lockout and JTI revocation are Redis-backed in production. | ✅ Verified | `REDIS_URL` confirmed present in Railway env 2026-05-20. No action needed. |
+| PL-008 | **FRONTEND_URL env var** — `FRONTEND_URL` confirmed set in Railway Uchqun backend service production environment: all 5 portal domains (admin, teacher, reception, super-admin, government). | ✅ Verified | `FRONTEND_URL` confirmed present in Railway env 2026-05-20. CORS allowlist is live and correct. No action needed. |
 
 ---
 
