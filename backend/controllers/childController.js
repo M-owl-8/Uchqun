@@ -5,6 +5,7 @@ import School from '../models/School.js';
 import { deleteFile } from '../config/storage.js';
 import logger from '../utils/logger.js';
 import { emitToUser } from '../config/socket.js';
+import { logAudit } from '../utils/auditLogger.js';
 
 // Get all children for the logged-in parent
 export const getChildren = async (req, res) => {
@@ -388,6 +389,62 @@ export const updateChild = async (req, res) => {
       error: 'Failed to update child',
       message: error.message || 'Unknown error occurred',
     });
+  }
+};
+
+/**
+ * Transfer a child to another school.
+ * PUT /api/admin/children/:id/transfer
+ * Body: { toSchoolId: uuid, reason?: string }
+ *
+ * Security: source admin only — cannot pull children from other schools.
+ * Audit entry is written BEFORE the update so there is always a trace.
+ */
+export const transferChild = async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: { code: 'CHILD_TRANSFER_FORBIDDEN' } });
+  }
+
+  const { id } = req.params;
+  const { toSchoolId, reason } = req.body;
+
+  if (!toSchoolId) {
+    return res.status(400).json({ success: false, error: { code: 'CHILD_TRANSFER_TARGET_REQUIRED' } });
+  }
+
+  try {
+    const child = await Child.findOne({ where: { id, schoolId: req.user.schoolId } });
+    if (!child) {
+      return res.status(403).json({ success: false, error: { code: 'CHILD_TRANSFER_NOT_IN_SCHOOL' } });
+    }
+
+    if (child.schoolId === toSchoolId) {
+      return res.status(400).json({ success: false, error: { code: 'CHILD_TRANSFER_SAME_SCHOOL' } });
+    }
+
+    const targetSchool = await School.findByPk(toSchoolId);
+    if (!targetSchool) {
+      return res.status(404).json({ success: false, error: { code: 'CHILD_TRANSFER_SCHOOL_NOT_FOUND' } });
+    }
+
+    const fromSchoolId = child.schoolId;
+
+    // Write audit BEFORE update — if update fails, the audit entry is the evidence trail.
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'transfer',
+      entity: 'children', entityId: child.id, schoolId: fromSchoolId,
+      meta: { fromSchoolId, toSchoolId, reason: reason ?? null },
+    });
+
+    await child.update({ schoolId: toSchoolId });
+
+    return res.json({
+      success: true,
+      data: { id: child.id, schoolId: child.schoolId, fromSchoolId, toSchoolId },
+    });
+  } catch (error) {
+    logger.error('transferChild error', { error: error.message, childId: id });
+    return res.status(500).json({ success: false, error: { code: 'CHILD_TRANSFER_FAILED' } });
   }
 };
 

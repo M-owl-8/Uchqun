@@ -105,6 +105,21 @@ Introduced: Sprint C T1-7b (2026-05-20)
 | `IMPORT_ERRORS_FAILED` | 500 | Unexpected error fetching job errors list | "Failed to retrieve import errors." |
 | `IMPORT_ROW_CREATE_FAILED` | n/a | A valid row failed at `Child.create()` during T1-7b (stored in `errors` JSONB, not returned as HTTP status) | "Row {n} could not be saved. Check for data conflicts." |
 
+## Child School Transfer (`childController.js`)
+
+Introduced: Sprint D T2-4 (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `CHILD_TRANSFER_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth) | "Only admins can transfer children between schools." |
+| `CHILD_TRANSFER_TARGET_REQUIRED` | 400 | `toSchoolId` field is missing from request body | "Please specify the destination school." |
+| `CHILD_TRANSFER_NOT_IN_SCHOOL` | 403 | Child does not belong to the admin's school — cross-school pull attempt blocked | "This child is not in your school." |
+| `CHILD_TRANSFER_SAME_SCHOOL` | 400 | `toSchoolId` equals the child's current `schoolId` | "The child is already in this school." |
+| `CHILD_TRANSFER_SCHOOL_NOT_FOUND` | 404 | No school record with `toSchoolId` exists | "Destination school not found." |
+| `CHILD_TRANSFER_FAILED` | 500 | Unexpected server error during transfer | "Transfer failed. Please try again." |
+
+---
+
 ## Account Lifecycle (`middleware/auth.js`, `adminParentController.js`)
 
 Introduced: Sprint D T2-2 PR2 (2026-05-20)

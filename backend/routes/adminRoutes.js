@@ -23,6 +23,7 @@ import {
   activateParent,
 } from '../controllers/adminController.js';
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
+import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
@@ -72,6 +73,7 @@ router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErr
 
 // Children observations (admin read)
 router.get('/children/:id/observations', listObservationsByChild);
+router.put('/children/:id/transfer', transferChild);
 
 // Bulk import
 router.post('/import/children/validate', uploadImportCsv.single('file'), handleImportUploadError, validateImport);

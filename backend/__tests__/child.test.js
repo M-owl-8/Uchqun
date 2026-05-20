@@ -24,6 +24,11 @@ jest.unstable_mockModule('../config/socket.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
+jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/School.js', () => ({ default: { findByPk: jest.fn() } }));
 
 const { getChildren, getChild, deleteChild, updateChild } = await import('../controllers/childController.js');
 
