@@ -137,6 +137,21 @@ Introduced: Sprint D T2-2 PR2 (2026-05-20)
 
 ---
 
+## Restore Endpoints (`admin/adminRestoreController.js`)
+
+Introduced: Sprint E T2-9 (2026-05-20)
+
+Applies to: `PUT /admin/children/:id/restore`, `/admin/users/:id/restore`, `/admin/observations/:id/restore`, `/admin/attendance/:id/restore`
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `RESTORE_NOT_FOUND` | 404 | No record found with the given `:id` (even including soft-deleted rows) | "Record not found." |
+| `RESTORE_NOT_DELETED` | 400 | Record exists but `deletedAt` is null — it has not been soft-deleted | "This record has not been deleted and cannot be restored." |
+| `RESTORE_FORBIDDEN` | 403 | Caller role is not `admin` or `government`, or admin is attempting to restore a record from a different school | "You do not have permission to restore this record." |
+| `RESTORE_FAILED` | 500 | Unexpected server error during restore | "Failed to restore record. Please try again." |
+
+---
+
 ## Child Goals / IEP (`goalController.js`, `admin/adminGoalController.js`)
 
 Introduced: Sprint E T2-3 (2026-05-20)

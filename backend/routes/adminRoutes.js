@@ -25,6 +25,7 @@ import {
 } from '../controllers/adminController.js';
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js';
+import { restoreChild, restoreUser, restoreObservation, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
 import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
@@ -78,6 +79,12 @@ router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErr
 router.get('/children/:id/observations', listObservationsByChild);
 router.get('/children/:id/goals', listByChildAsAdmin);
 router.put('/children/:id/transfer', transferChild);
+
+// Restore endpoints (soft-delete recovery)
+router.put('/children/:id/restore', restoreChild);
+router.put('/users/:id/restore', restoreUser);
+router.put('/observations/:id/restore', restoreObservation);
+router.put('/attendance/:id/restore', restoreAttendance);
 
 // Bulk import
 router.post('/import/children/validate', uploadImportCsv.single('file'), handleImportUploadError, validateImport);
