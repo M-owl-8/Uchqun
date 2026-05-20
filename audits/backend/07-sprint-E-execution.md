@@ -281,7 +281,9 @@ All codes follow `FEATURE_CONDITION` pattern and are documented in `audits/backe
 | `DATA_EXPORT_FAILED` | 500 |
 
 **Sprint E total: 34 new i18n codes**  
-**Backend S7 cumulative total: 27 (Sprint B) + 17 (Sprint C T1-7a) + 8 (Sprint C T1-7b) + 26 (Sprint D) + 6 (Sprint D T2-7) + 34 (Sprint E) = 118 codes**
+**Backend S7 cumulative total: 27 (Sprint B) + 17 (Sprint C T1-7a) + 8 (Sprint C T1-7b) + 14 (Sprint D T2-2/T2-4) + 6 (Sprint D T2-7) + 34 (Sprint E) = 106 codes**
+
+> **Correction (S8 audit):** Sprint E execution doc originally stated Sprint D added 26 codes; actual count is 14 (6 Child Transfer + 8 Account Lifecycle). Corrected total: 106. Verified by section-by-section count of `audits/backend/i18n-error-codes.md`.
 
 ---
 

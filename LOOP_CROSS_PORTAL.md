@@ -27,6 +27,8 @@ Items identified during Backend S3 (Execute Cleanup) that cannot be fully resolv
 | CP-016 | Restore endpoints (GAP-017) | ✅ PUT /admin/children/:id/restore, /admin/users/:id/restore, /admin/observations/:id/restore, /admin/attendance/:id/restore — Sprint E T2-9 (87b7174) | admin portal, government portal | Admin-only (+ government cross-school). Returns 400 RESTORE_NOT_DELETED if record not soft-deleted. Admin portal needs "Restore" action on soft-deleted record views. Government portal can restore across schools. |
 | CP-017 | Parent data export UI | ✅ GET /parent/me/export — Sprint E T2-10 (8aeea41) | parent portal account settings page | Add "Download my data" button. On success: browser downloads `uchqun-data-export-{id}-{date}.json`. On 429 DATA_EXPORT_RATE_LIMITED: show "You can only export once per day. Try again tomorrow." |
 
+| CP-018 | BACKEND-017: Mixed Sequelize `underscored` convention across models | Deferred from Backend S3 — 4 models use `underscored: true`, majority use `underscored: false` | Database portal (Loop 7) | `ChildAssessment.js`, `ServicePlan.js`, `MealPlan.js`, `ParentEvaluation.js` use `underscored: true`; all others use camelCase columns. Verify live schema column names match model declarations before any JOIN-heavy query is added. Fix convention drift in Database portal S2. |
+
 ---
 
 ## Usage

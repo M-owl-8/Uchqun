@@ -37,7 +37,11 @@ JWT: 15m access (HTTP-only cookie) + 7d refresh. Middleware order:
 Reception additionally requires `documentsApproved && isActive`.
 `requireTeacher` allows roles `['teacher', 'reception', 'admin']` — intentional: reception and admin can view teacher-scoped resources.
 
-**Parent `isActive` bypass (intentional):** `middleware/auth.js:95` skips the `isActive: false` check for `role === 'parent'`. This is safe because no endpoint exists to set `isActive = false` for a parent — only paranoid-delete is available. If a future feature adds parent suspension, the bypass MUST be removed at the same time. See `LOOP_QUESTIONS.md` LQ-001.
+**Parent `isActive` bypass (intentional):** `middleware/auth.js:102` skips the `isActive: false` check for `role === 'parent'`. Parent suspension is handled via the `users.status` field (T2-2, Sprint D) not `isActive`. The T2-2 status gate at `middleware/auth.js:96` covers all roles including parents. LQ-001 resolved — no further action needed on `isActive` bypass.
+
+**User status enum** (`users.status` column, added T2-2): `active` (default) · `suspended` (admin action via `PUT /admin/parents/:id/suspend`) · `archived` (reserved for school archival cascade — not yet implemented). Government role is exempt from the status gate. The canonical suspension gate is in `authenticate` at line 96: `if (!isGovernment && (user.status === 'suspended' || user.status === 'archived'))`.
+
+**School archival and `requireSchoolScope` (T2-7):** `requireSchoolScope` now async — queries `schools` table for non-government users and returns 403 `SCHOOL_ARCHIVED` if `school.isActive === false`. Fails open (continues to next middleware) on DB error — school scope is never a hard blocker in degraded mode. Government role bypasses the check entirely. Applied to all `adminRoutes.js` routes.
 
 ## Testing Requirements
 - New controllers MUST ship with tests in `backend/__tests__/controllers/`
