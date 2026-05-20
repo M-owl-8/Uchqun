@@ -55,6 +55,14 @@ const User = sequelize.define('User', {
     defaultValue: false,
     allowNull: false,
   },
+  // Account lifecycle status — canonical suspension/archival flag (T2-2).
+  // Coexists with isActive during migration period; isActive will be retired in a future sprint.
+  status: {
+    type: DataTypes.STRING(20),
+    allowNull: false,
+    defaultValue: 'active',
+    validate: { isIn: [['active', 'suspended', 'archived']] },
+  },
   avatar: {
     type: DataTypes.TEXT,
     allowNull: true,
