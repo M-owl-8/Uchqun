@@ -1,5 +1,6 @@
 // refs #02-006 — Socket.io CORS origin missing port 5177 and production domains
 // refs Q2 — deploy-preview origins blocked in production
+// refs PL-002 — FRONTEND_URL explicit allowlist (replaces old substring CORS_ORIGIN check)
 import { readFileSync } from 'fs';
 import { join } from 'path';
 import express from 'express';
@@ -57,6 +58,90 @@ describe('Q2 — deploy-preview CORS policy', () => {
     expect(content).toMatch(/production'[\s\S]*?uchqun-\[a-z-\]\+/);
     // Non-production regex must contain the deploy-preview prefix
     expect(content).toContain('deploy-preview');
+  });
+});
+
+// Replicates the origin callback logic from server.js for isolated unit testing.
+function makeFrontendUrlCorsApp({ isProduction = true, frontendUrl = '' } = {}) {
+  const app = express();
+  const localhostOrigins = [
+    'http://localhost:5173',
+    'http://localhost:5174',
+    'http://localhost:5175',
+    'http://localhost:5177',
+  ];
+  const frontendUrls = frontendUrl
+    ? frontendUrl.split(',').map((u) => u.trim()).filter(Boolean)
+    : [];
+  const allowedOrigins = isProduction
+    ? frontendUrls
+    : [...new Set([...localhostOrigins, ...frontendUrls])];
+
+  app.use(cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) return callback(null, true);
+      if (!isProduction) {
+        // eslint-disable-next-line security/detect-unsafe-regex
+        const deployRegex = /^https:\/\/(deploy-preview-\d+--)?uchqun-[a-z-]+\.(netlify|vercel)\.app$/;
+        if (deployRegex.test(origin)) return callback(null, true);
+      }
+      callback(null, false);
+    },
+    credentials: true,
+  }));
+  app.get('/ping', (req, res) => res.json({ ok: true }));
+  return app;
+}
+
+describe('PL-002 — FRONTEND_URL explicit allowlist', () => {
+  const PROD_URL = 'https://uchqun-admin.netlify.app';
+
+  it('allows an origin that exactly matches FRONTEND_URL', async () => {
+    const res = await supertest(makeFrontendUrlCorsApp({ frontendUrl: PROD_URL }))
+      .get('/ping')
+      .set('Origin', PROD_URL);
+    expect(res.headers['access-control-allow-origin']).toBe(PROD_URL);
+  });
+
+  it('blocks an evil subdomain that shares the host substring (revert-test: no substring matching)', async () => {
+    const evilOrigin = 'https://evil.uchqun-admin.netlify.app';
+    const res = await supertest(makeFrontendUrlCorsApp({ frontendUrl: PROD_URL }))
+      .get('/ping')
+      .set('Origin', evilOrigin);
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  it('allows requests with no Origin header (non-browser / server-to-server)', async () => {
+    const res = await supertest(makeFrontendUrlCorsApp({ frontendUrl: PROD_URL }))
+      .get('/ping');
+    expect(res.status).toBe(200);
+  });
+
+  it('fails closed when FRONTEND_URL is empty in production — all cross-origin requests blocked', async () => {
+    const res = await supertest(makeFrontendUrlCorsApp({ isProduction: true, frontendUrl: '' }))
+      .get('/ping')
+      .set('Origin', PROD_URL);
+    expect(res.headers['access-control-allow-origin']).toBeUndefined();
+  });
+
+  it('allows multiple origins from comma-separated FRONTEND_URL', async () => {
+    const url1 = 'https://uchqun-admin.netlify.app';
+    const url2 = 'https://uchqun-teacher.netlify.app';
+    const app = makeFrontendUrlCorsApp({ frontendUrl: `${url1}, ${url2}` });
+
+    const res1 = await supertest(app).get('/ping').set('Origin', url1);
+    const res2 = await supertest(app).get('/ping').set('Origin', url2);
+
+    expect(res1.headers['access-control-allow-origin']).toBe(url1);
+    expect(res2.headers['access-control-allow-origin']).toBe(url2);
+  });
+
+  it('server.js uses exact allowedOrigins.includes() not legacy substring match', () => {
+    const content = readFileSync(join(process.cwd(), 'server.js'), 'utf8');
+    expect(content).toContain('allowedOrigins.includes(origin)');
+    expect(content).not.toMatch(/url\.includes\(process\.env\.CORS_ORIGIN\)/);
+    expect(content).toContain('FRONTEND_URL');
   });
 });
 

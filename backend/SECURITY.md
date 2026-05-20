@@ -13,10 +13,14 @@ The following `npm audit` findings are acknowledged as **dev-dependency-only** w
 | `tar` CVEs (multiple) | High | `sqlite3` → `node-gyp` → `tar` | None — `sqlite3` is a dev transitive dependency; the app uses Postgres in production | Accepted until `sqlite3@6.0.1` (breaking change) is validated |
 | `@tootallnate/once` | Moderate | `sqlite3` → `node-gyp` → `http-proxy-agent` | None — dev dependency chain | Accepted alongside `tar` fix |
 | `cacache` | Moderate | `sqlite3` → `node-gyp` → `make-fetch-happen` → `cacache` | None — dev dependency chain | Accepted alongside `tar` fix |
-| `file-type` | Moderate | Direct dev dependency | None — not used in production request handling | Will fix when next minor update is available |
-| `ws` | Moderate | `socket.io` → `engine.io` → `ws` | Low — WebSocket upgrade header parsing; application uses Socket.io internally; no untrusted upgrade headers accepted | Will fix when `socket.io` releases a compatible patch |
+| `file-type` | Moderate | Direct dependency | Low — used in `mediaController.js` (`fileTypeFromFile`) and `receptionController.js` (`fileTypeFromBuffer`) for MIME validation. Vulnerability is an infinite loop in ASF parser on malformed input; only triggers on .asf files, which are not in the allowed MIME list. **Resolved in Pre-Launch Sprint: upgraded to file-type@22.0.1.** | Resolved (PL-003) |
+| `ws` | Moderate | `socket.io` → `engine.io` → `ws` | Low — WebSocket upgrade header parsing; application uses Socket.io internally; no untrusted upgrade headers accepted | **Resolved in Pre-Launch Sprint: `npm audit fix` upgraded ws to a patched version.** |
 
-**Remediation plan:** Run `npm audit fix --force` after `sqlite3@6.0.1` is validated in a staging environment. Tracked as `LOOP_PRE_LAUNCH_CHECKLIST.md` PL-003.
+**Remediation status (Pre-Launch Sprint):** All vulnerabilities resolved. `npm audit` now reports 0 findings.
+- `tar` chain (sqlite3→node-gyp): resolved by `sqlite3@6.0.1` upgrade; all tests pass.
+- `ws`: resolved by `npm audit fix` (non-breaking upgrade).
+- `file-type`: resolved by `file-type@22.0.1` upgrade; all tests pass. **Correction:** file-type was a production dependency (not dev-only as previously documented).
+- `@tootallnate/once`, `cacache`: resolved as part of sqlite3 chain upgrade.
 
 ## Acknowledged Design Decisions
 

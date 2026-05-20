@@ -20,6 +20,7 @@
 > **Backend S6.1 (plan amendment pass):** ✅ Closed (81e5b84)
 > **Backend S7 (implement features):** ✅ Complete — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: ✅ Closed (93a22a2) — 78 suites / 739 tests / lint 0 / CP-006,007,008 ✅ · Sprint C: ✅ Closed — T1-7a: ✅ Closed (bbd1396) — 79 suites / 764 tests / lint 0 / 17 i18n codes · T1-7b: ✅ Closed (56f8d90) — 80 suites / 784 tests / lint 0 / 25 i18n codes / CP-011 ✅ · Sprint D: ✅ Closed — T2-6 ✅ · T2-8 ✅ · T2-5 ✅ · T2-2 (PR1+PR2) ✅ · T2-4 ✅ · T2-7 ✅ (00a1402) — 84 suites / 837 tests / lint 0 / CP-012 ✅ / CP-014 ✅ — `audits/backend/07-sprint-D-execution.md` · Sprint E: ✅ Closed — T2-3 ✅ (ab7c424) · T2-9 ✅ (87b7174) · T2-10 ✅ (8aeea41) — 87 suites / 886 tests / lint 0 / 34 i18n codes / CP-013,015,016,017 ✅ — `audits/backend/07-sprint-E-execution.md` — Tier 1 + Tier 2 complete. Tier 3 deferred.
 > **Backend S8 (final verification):** ✅ Closed (🟡) — 88 suites / 892 tests / lint 0 / 51.4% coverage / 6 new integration tests / LOOP_PRE_LAUNCH_CHECKLIST.md created / LQ-001–LQ-009 closed / CP-018 added / CLAUDE.md gaps fixed — `audits/backend/08-final-verification.md` — **Backend portal closed. Loop 2 (Government portal) ready to begin.**
+> **Pre-Launch Sprint (Step 7.5):** 🟡 In progress — Phase 1 (code-only: PL-002, PL-003, PL-007/008) · Phase 2 (Sentry) · Phase 3–6 pending manual gates — `LOOP_PRE_LAUNCH_CHECKLIST.md`
 
 ## Rules (read before every step)
 

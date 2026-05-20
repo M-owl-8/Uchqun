@@ -13,8 +13,8 @@ Items without an owner or ETA are blocking unless explicitly deprioritised by th
 | ID | Item | Status | Notes |
 |---|---|---|---|
 | PL-001 | **C-02: Group-wide media visibility** — parents of different children within the same group can see each other's uploaded media | ⚠️ Needs sign-off | Documented as intentional design in CLAUDE.md. Requires product + legal sign-off before launch. Source: Backend S3 commit 9b2994c. |
-| PL-002 | **C-07: CORS explicit allowlist** — current regex-based origin check is a substring match (`url.includes(process.env.CORS_ORIGIN)`). Replace with explicit env-driven allowlist before production. | ⬜ Not started | Source: Backend S3 commit c1bd08d. CORS_ORIGIN env var must be set in Railway. |
-| PL-003 | **npm audit dev-chain remediation** — 5 high-severity findings in `sqlite3` → `node-gyp` → `tar` chain. Dev-dependency only; no production exposure. Run `npm audit fix --force` to upgrade to breaking versions once tests confirm compatibility. | ⬜ Not started | Not a production blocker but should be resolved before any CI security scan is required. |
+| PL-002 | **C-07: CORS explicit allowlist** — CORS already uses exact `allowedOrigins.includes(origin)` (fixed in commit c1bd08d). Added 6 regression tests (`__tests__/cors.test.js` PL-002 suite) including revert-test for substring vulnerability. `env.example` updated with `FRONTEND_URL` format docs. | ✅ Resolved | Code was already correct. Tests added to prevent regression. `FRONTEND_URL` must still be set in Railway (PL-008). |
+| PL-003 | **npm audit remediation** — `npm audit fix` fixed `ws` vulnerability; `npm audit fix --force` upgraded `sqlite3` 5→6 and `file-type` 19→22. All 898 tests pass. **Note:** `file-type` is a production dependency (mediaController, receptionController) — not dev-only as SECURITY.md stated. SECURITY.md updated. | ✅ Resolved | `npm audit` now shows 0 vulnerabilities. sqlite3@6.0.1 and file-type@22.0.1 validated by full test suite. |
 | PL-004 | **Parent account deactivation documentation** — `isActive` bypass for parents is intentional and documented in CLAUDE.md. Confirm product decision: "Parent accounts are only suspendable (via status field, T2-2) and deletable (soft-delete) — not deactivatable via isActive." | ✅ Resolved | T2-2 implemented; CLAUDE.md updated at Backend S8 to document status field as canonical gate. LQ-001 closed. |
 
 ---
@@ -25,8 +25,8 @@ Items without an owner or ETA are blocking unless explicitly deprioritised by th
 |---|---|---|---|
 | PL-005 | **Production monitoring** — Sentry DSN must be set in Railway env; error alerts to a Slack channel; on-call runbook written | ⬜ Not started | Without Sentry, production errors are invisible. Minimum: set `SENTRY_DSN` env var. |
 | PL-006 | **Database backup strategy** — Railway Postgres automated backup configured; recovery tested at least once | ⬜ Not started | Railway Pro plan enables automated backups. Confirm schedule and retention. |
-| PL-007 | **Redis URL for multi-instance** — `REDIS_URL` must be set in Railway for production. Without it, login lockout and JTI revocation fall back to in-memory (single-instance only). | ⬜ Not started | CLAUDE.md Scaling Constraints already documents this. Confirm it's set before scaling beyond 1 instance. |
-| PL-008 | **CORS_ORIGIN env var** — must be set to production domain(s) in Railway before go-live | ⬜ Not started | Also required for PL-002. |
+| PL-007 | **Redis URL for multi-instance** — `REDIS_URL` must be set in Railway for production. Without it, login lockout and JTI revocation fall back to in-memory (single-instance only). | ⚠️ Needs sign-off | `env.example` updated with `REDIS_URL` docs. `docs/RAILWAY_SETUP.md` created. **Max must add Railway Redis plugin and copy `REDIS_URL` before scaling beyond 1 instance.** |
+| PL-008 | **FRONTEND_URL env var** — must be set to production domain(s) in Railway before go-live (not `CORS_ORIGIN` — the actual var name is `FRONTEND_URL`). | ⚠️ Needs sign-off | `env.example` updated with format docs and examples. `docs/RAILWAY_SETUP.md` created. **Max must set `FRONTEND_URL` in Railway before first production deploy.** |
 
 ---
 
