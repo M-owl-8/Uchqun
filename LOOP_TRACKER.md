@@ -18,7 +18,7 @@
 
 **Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.
 > **Backend S6.1 (plan amendment pass):** ✅ Closed (81e5b84)
-> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint B: ⬜ not started
+> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: ⬜ not started
 
 ## Rules (read before every step)
 
@@ -62,3 +62,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 12 | Backend | S6 Feature Plan | c76c372 | 2026-05-19 | 26 planning items across 3 tiers (~41d): 7 Tier 1 (teacher portal launch), 10 Tier 2 (govt acceptance), 9 Tier 3 (polish); DEC-1 through DEC-8 encoded; build-order inversion (T2-1 before T1-7) documented; CP-004–CP-015 added; `audits/backend/06-feature-plan.md` |
 | 13 | Backend | S6.1 Plan Amendments | 81e5b84 | 2026-05-19 | Amendments: 41d→54d effort, T2-2 two-PR rollout, T1-7 split into validator + committer; Section 9 appended; Sections 1–8 unchanged; `audits/backend/06-feature-plan.md` |
 | 14 | Backend | S7 Sprint A | a1149fb | 2026-05-19 | O-1 (no feature flags found), T2-1 audit log (9 tests), T1-1+T1-6 children+attendance (23 tests), T1-4 admin doc filter (6 tests), T1-5 reception doc filter (4 tests); 74 suites / 686 tests / 47.65% stmts / lint 0; `audits/backend/07-sprint-A-execution.md` |
+| 15 | Backend | S7 Sprint A remediation | 8615a32 | 2026-05-20 | T2-1 immutability: added Layer 2 (instance overrides: update/destroy/save) + Layer 3 (DB REVOKE migration); 4 new instance-method tests; CLAUDE.md "Audit Log Conventions" added; 75 suites / 690 tests / lint 0 |
