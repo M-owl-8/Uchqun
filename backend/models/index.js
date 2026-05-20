@@ -36,6 +36,7 @@ import ParentEvaluation from './ParentEvaluation.js';
 import News from './News.js';
 import AuditLog from './AuditLog.js';
 import ChildAttendance from './ChildAttendance.js';
+import ChildObservation from './ChildObservation.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -75,6 +76,7 @@ const models = {
   News,
   AuditLog,
   ChildAttendance,
+  ChildObservation,
   sequelize,
 };
 
@@ -266,6 +268,14 @@ TeacherResource.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 School.hasMany(TeacherResource, { foreignKey: 'schoolId', as: 'teacherResources' });
 TeacherResource.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
+// ChildObservation
+Child.hasMany(ChildObservation, { foreignKey: 'childId', as: 'observations' });
+ChildObservation.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(ChildObservation, { foreignKey: 'teacherId', as: 'observations' });
+ChildObservation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+School.hasMany(ChildObservation, { foreignKey: 'schoolId', as: 'observations' });
+ChildObservation.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
 // ─── Audit hooks ──────────────────────────────────────────────────────────────
 
 // Child afterDestroy: records who deleted the child in audit_log.
@@ -281,6 +291,24 @@ Child.afterDestroy(async (instance, options) => {
       entity: 'children',
       entityId: instance.id,
       schoolId: instance.schoolId,
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
+// ChildObservation afterDestroy: records safeguarding-relevant deletes.
+// meta includes severity because urgent observation deletion has heightened implications.
+ChildObservation.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'child_observations',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, severity: instance.severity },
     });
   } catch {
     // intentionally swallowed — audit failure does not block delete
@@ -365,5 +393,6 @@ export {
   News,
   AuditLog,
   ChildAttendance,
+  ChildObservation,
   sequelize,
 };

@@ -36,6 +36,7 @@ jest.unstable_mockModule('../models/ParentEvaluation.js', () => ({ default: { be
 jest.unstable_mockModule('../models/News.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: { update: jest.fn(), destroy: jest.fn(), create: jest.fn() } }));
 jest.unstable_mockModule('../models/ChildAttendance.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
+jest.unstable_mockModule('../models/ChildObservation.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: mockObservationAfterDestroy } }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
@@ -53,6 +54,10 @@ jest.unstable_mockModule('../models/AuditLog.js', () => ({
 // Capture the afterDestroy hook registered on Child
 let capturedHook = null;
 const mockChildAfterDestroy = jest.fn((hookFn) => { capturedHook = hookFn; });
+
+// Capture the afterDestroy hook registered on ChildObservation
+let capturedObservationHook = null;
+const mockObservationAfterDestroy = jest.fn((hookFn) => { capturedObservationHook = hookFn; });
 
 jest.unstable_mockModule('../models/Child.js', () => ({
   default: {
@@ -106,5 +111,43 @@ describe('Child.afterDestroy audit hook', () => {
     mockAuditCreate.mockRejectedValue(new Error('DB down'));
     // Should not throw — the hook swallows audit failures
     await expect(capturedHook({ id: 'x', schoolId: null }, {})).resolves.toBeUndefined();
+  });
+});
+
+describe('ChildObservation.afterDestroy audit hook', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('registers an afterDestroy hook on ChildObservation', () => {
+    expect(capturedObservationHook).not.toBeNull();
+    expect(typeof capturedObservationHook).toBe('function');
+  });
+
+  it('writes audit_log with correct entity, meta.childId, and meta.severity', async () => {
+    mockAuditCreate.mockResolvedValue({ id: 10 });
+    const fakeInstance = { id: 'obs-uuid', schoolId: 'school-uuid', childId: 'child-uuid', severity: 'urgent' };
+    const fakeOptions = { actorId: 'teacher-uuid', actorRole: 'teacher', reason: 'duplicate entry' };
+    await capturedObservationHook(fakeInstance, fakeOptions);
+    expect(mockAuditCreate).toHaveBeenCalledTimes(1);
+    const entry = mockAuditCreate.mock.calls[0][0];
+    expect(entry.action).toBe('delete');
+    expect(entry.entity).toBe('child_observations');
+    expect(entry.entityId).toBe('obs-uuid');
+    expect(entry.actorId).toBe('teacher-uuid');
+    expect(entry.actorRole).toBe('teacher');
+    expect(entry.meta).toMatchObject({ childId: 'child-uuid', severity: 'urgent', reason: 'duplicate entry' });
+  });
+
+  it('defaults actorRole to "unknown" when options omits it', async () => {
+    mockAuditCreate.mockResolvedValue({ id: 11 });
+    await capturedObservationHook({ id: 'obs-uuid', schoolId: 'school-uuid', childId: 'child-uuid', severity: 'routine' }, {});
+    expect(mockAuditCreate.mock.calls[0][0].actorRole).toBe('unknown');
+    expect(mockAuditCreate.mock.calls[0][0].actorId).toBeNull();
+  });
+
+  it('does NOT throw when AuditLog.create fails (hook failure must not block delete)', async () => {
+    mockAuditCreate.mockRejectedValue(new Error('DB down'));
+    await expect(
+      capturedObservationHook({ id: 'obs-uuid', schoolId: 'school-uuid', childId: 'child-uuid', severity: 'concern' }, {}),
+    ).resolves.toBeUndefined();
   });
 });

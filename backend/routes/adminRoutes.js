@@ -20,6 +20,7 @@ import {
   getMyMessages,
   getDocuments,
 } from '../controllers/adminController.js';
+import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
@@ -64,6 +65,9 @@ router.get('/documents/pending', getPendingDocuments);
 router.get('/receptions/:id/documents', getReceptionDocuments);
 router.put('/documents/:id/approve', adminIdParamValidator, handleValidationErrors, approveDocument);
 router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErrors, rejectDocument);
+
+// Children observations (admin read)
+router.get('/children/:id/observations', listObservationsByChild);
 
 // Read-only access to Teachers, Parents, and Groups
 router.get('/teachers', getTeachers); // View only
