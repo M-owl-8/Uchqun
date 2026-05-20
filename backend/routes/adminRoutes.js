@@ -19,6 +19,8 @@ import {
   getSchoolRatings,
   getMyMessages,
   getDocuments,
+  suspendParent,
+  activateParent,
 } from '../controllers/adminController.js';
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
@@ -81,6 +83,8 @@ router.get('/import/:id/errors', getImportErrors);
 router.get('/teachers', getTeachers); // View only
 router.get('/parents', getParents); // View only
 router.get('/parents/:id', getParentById); // View parent with their data
+router.put('/parents/:id/suspend', suspendParent);
+router.put('/parents/:id/activate', activateParent);
 router.get('/groups', getGroups); // View only
 router.get('/groups/:id', getGroup); // View only
 

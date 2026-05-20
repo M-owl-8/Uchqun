@@ -63,6 +63,60 @@ describe('authenticate middleware', () => {
     await authenticate(req, res, next);
     expect(res.status).toHaveBeenCalledWith(401);
   });
+
+  // T2-2: status-based suspension gate
+  it('returns 401 with ACCOUNT_NOT_ACTIVE when parent status is suspended', async () => {
+    const token = jwt.sign({ userId: 'p1' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'p1', role: 'parent', isActive: true, status: 'suspended' });
+
+    await authenticate(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      success: false,
+      error: expect.objectContaining({ code: 'ACCOUNT_NOT_ACTIVE' }),
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('returns 401 with ACCOUNT_NOT_ACTIVE when admin status is archived', async () => {
+    const token = jwt.sign({ userId: 'a1' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'a1', role: 'admin', isActive: true, status: 'archived' });
+
+    await authenticate(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'ACCOUNT_NOT_ACTIVE' }),
+    }));
+  });
+
+  it('allows government user even when status is suspended', async () => {
+    const token = jwt.sign({ userId: 'g1' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'g1', role: 'government', isActive: true, status: 'suspended' });
+
+    await authenticate(req, res, next);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('passes through when status is active', async () => {
+    const token = jwt.sign({ userId: 't1' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 't1', role: 'teacher', isActive: true, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('passes through when status is undefined (legacy records without status)', async () => {
+    const token = jwt.sign({ userId: 'old1' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'old1', role: 'admin', isActive: true, status: undefined });
+
+    await authenticate(req, res, next);
+    expect(next).toHaveBeenCalled();
+  });
 });
 
 describe('requireRole middleware', () => {

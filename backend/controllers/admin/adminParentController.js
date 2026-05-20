@@ -6,6 +6,7 @@ import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
 import logger from '../../utils/logger.js';
+import { logAudit } from '../../utils/auditLogger.js';
 
 /**
  * Get all Parents (read-only for Admin)
@@ -137,5 +138,65 @@ export const getParentById = async (req, res) => {
   } catch (error) {
     logger.error('Get parent by id error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch parent' });
+  }
+};
+
+/**
+ * Suspend a parent account (set status = 'suspended')
+ * PUT /api/admin/parents/:id/suspend
+ */
+export const suspendParent = async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: { code: 'PARENT_SUSPEND_FORBIDDEN' } });
+  }
+  const { id } = req.params;
+  try {
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
+    if (!parent) {
+      return res.status(404).json({ success: false, error: { code: 'PARENT_NOT_FOUND' } });
+    }
+    if (parent.status === 'suspended') {
+      return res.status(409).json({ success: false, error: { code: 'PARENT_ALREADY_SUSPENDED' } });
+    }
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'suspend',
+      entity: 'users', entityId: parent.id, schoolId: req.user.schoolId,
+      meta: { previousStatus: parent.status },
+    });
+    await parent.update({ status: 'suspended' });
+    return res.json({ success: true, data: { id: parent.id, status: parent.status } });
+  } catch (error) {
+    logger.error('suspendParent error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'PARENT_SUSPEND_FAILED' } });
+  }
+};
+
+/**
+ * Reactivate a suspended/archived parent account (set status = 'active')
+ * PUT /api/admin/parents/:id/activate
+ */
+export const activateParent = async (req, res) => {
+  if (req.user.role !== 'admin') {
+    return res.status(403).json({ success: false, error: { code: 'PARENT_ACTIVATE_FORBIDDEN' } });
+  }
+  const { id } = req.params;
+  try {
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
+    if (!parent) {
+      return res.status(404).json({ success: false, error: { code: 'PARENT_NOT_FOUND' } });
+    }
+    if (parent.status === 'active') {
+      return res.status(409).json({ success: false, error: { code: 'PARENT_ALREADY_ACTIVE' } });
+    }
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'activate',
+      entity: 'users', entityId: parent.id, schoolId: req.user.schoolId,
+      meta: { previousStatus: parent.status },
+    });
+    await parent.update({ status: 'active' });
+    return res.json({ success: true, data: { id: parent.id, status: parent.status } });
+  } catch (error) {
+    logger.error('activateParent error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'PARENT_ACTIVATE_FAILED' } });
   }
 };

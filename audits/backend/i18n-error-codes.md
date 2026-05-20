@@ -105,6 +105,23 @@ Introduced: Sprint C T1-7b (2026-05-20)
 | `IMPORT_ERRORS_FAILED` | 500 | Unexpected error fetching job errors list | "Failed to retrieve import errors." |
 | `IMPORT_ROW_CREATE_FAILED` | n/a | A valid row failed at `Child.create()` during T1-7b (stored in `errors` JSONB, not returned as HTTP status) | "Row {n} could not be saved. Check for data conflicts." |
 
+## Account Lifecycle (`middleware/auth.js`, `adminParentController.js`)
+
+Introduced: Sprint D T2-2 PR2 (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `ACCOUNT_NOT_ACTIVE` | 401 | User's `status` field is `suspended` or `archived` — emitted by `authenticate` middleware for all non-government users | "Your account has been suspended. Contact your administrator." |
+| `PARENT_SUSPEND_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth check) | "Only admins can suspend parent accounts." |
+| `PARENT_ACTIVATE_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth check) | "Only admins can reactivate parent accounts." |
+| `PARENT_NOT_FOUND` | 404 | No parent user with that ID exists in this school, or the account was deleted | "Parent account not found." |
+| `PARENT_ALREADY_SUSPENDED` | 409 | Parent `status` is already `suspended` — suspend is a no-op | "This account is already suspended." |
+| `PARENT_ALREADY_ACTIVE` | 409 | Parent `status` is already `active` — activate is a no-op | "This account is already active." |
+| `PARENT_SUSPEND_FAILED` | 500 | Unexpected server error while setting `status='suspended'` | "Failed to suspend account. Please try again." |
+| `PARENT_ACTIVATE_FAILED` | 500 | Unexpected server error while setting `status='active'` | "Failed to reactivate account. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

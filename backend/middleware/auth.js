@@ -90,9 +90,15 @@ export const authenticate = async (req, res, next) => {
       return res.status(401).json({ error: 'User not found' });
     }
 
-    const isParent = user.role === 'parent';
     const isGovernment = user.role === 'government';
 
+    // T2-2: status is the canonical suspension gate; government users are exempt.
+    if (!isGovernment && (user.status === 'suspended' || user.status === 'archived')) {
+      return res.status(401).json({ success: false, error: { code: 'ACCOUNT_NOT_ACTIVE' } });
+    }
+
+    // Legacy isActive gate — applies to reception, teacher, admin (not parent, not government).
+    const isParent = user.role === 'parent';
     if (!isParent && !isGovernment && !user.isActive) {
       return res.status(403).json({ error: 'Account is not active' });
     }

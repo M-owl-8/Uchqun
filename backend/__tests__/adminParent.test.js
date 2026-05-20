@@ -2,9 +2,11 @@ import { jest } from '@jest/globals';
 
 const mockUserFindAll = jest.fn();
 const mockUserFindOne = jest.fn();
+const mockUserUpdate = jest.fn();
 const mockPAFindAll = jest.fn();
 const mockPMFindAll = jest.fn();
 const mockPMedFindAll = jest.fn();
+const mockLogAudit = jest.fn();
 
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findAll: mockUserFindAll, findOne: mockUserFindOne },
@@ -22,8 +24,12 @@ jest.unstable_mockModule('../models/ParentMedia.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: mockLogAudit,
+}));
+jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: {} }));
 
-const { getParents, getParentById } = await import('../controllers/admin/adminParentController.js');
+const { getParents, getParentById, suspendParent, activateParent } = await import('../controllers/admin/adminParentController.js');
 
 const mkRes = () => {
   const res = {};
@@ -98,6 +104,120 @@ describe('admin/adminParentController', () => {
       expect(payload.data.activities).toHaveLength(1);
       expect(payload.data.meals).toHaveLength(1);
       expect(payload.data.media).toHaveLength(1);
+    });
+  });
+
+  describe('suspendParent', () => {
+    const adminReq = (id) => ({
+      user: { id: 'a1', role: 'admin', schoolId: 's1' },
+      params: { id },
+    });
+
+    it('suspends an active parent and returns 200 with new status', async () => {
+      const mockParent = { id: 'p1', status: 'active', update: mockUserUpdate };
+      mockUserFindOne.mockResolvedValue(mockParent);
+      mockUserUpdate.mockResolvedValue({ ...mockParent, status: 'suspended' });
+      const res = mkRes();
+      await suspendParent(adminReq('p1'), res);
+      expect(mockUserUpdate).toHaveBeenCalledWith({ status: 'suspended' });
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    });
+
+    it('403 when caller role is not admin (defense-in-depth)', async () => {
+      const req = { user: { id: 'r1', role: 'reception', schoolId: 's1' }, params: { id: 'p1' } };
+      const res = mkRes();
+      await suspendParent(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_SUSPEND_FORBIDDEN' }),
+      }));
+    });
+
+    it('404 when parent not found in school', async () => {
+      mockUserFindOne.mockResolvedValue(null);
+      const res = mkRes();
+      await suspendParent(adminReq('p-missing'), res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_NOT_FOUND' }),
+      }));
+    });
+
+    it('409 when parent is already suspended', async () => {
+      mockUserFindOne.mockResolvedValue({ id: 'p1', status: 'suspended' });
+      const res = mkRes();
+      await suspendParent(adminReq('p1'), res);
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_ALREADY_SUSPENDED' }),
+      }));
+    });
+
+    it('500 when DB throws', async () => {
+      mockUserFindOne.mockRejectedValue(new Error('db down'));
+      const res = mkRes();
+      await suspendParent(adminReq('p1'), res);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_SUSPEND_FAILED' }),
+      }));
+    });
+  });
+
+  describe('activateParent', () => {
+    const adminReq = (id) => ({
+      user: { id: 'a1', role: 'admin', schoolId: 's1' },
+      params: { id },
+    });
+
+    it('activates a suspended parent and returns 200 with new status', async () => {
+      const mockParent = { id: 'p1', status: 'suspended', update: mockUserUpdate };
+      mockUserFindOne.mockResolvedValue(mockParent);
+      mockUserUpdate.mockResolvedValue({ ...mockParent, status: 'active' });
+      const res = mkRes();
+      await activateParent(adminReq('p1'), res);
+      expect(mockUserUpdate).toHaveBeenCalledWith({ status: 'active' });
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    });
+
+    it('403 when caller role is not admin (defense-in-depth)', async () => {
+      const req = { user: { id: 'r1', role: 'reception', schoolId: 's1' }, params: { id: 'p1' } };
+      const res = mkRes();
+      await activateParent(req, res);
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_ACTIVATE_FORBIDDEN' }),
+      }));
+    });
+
+    it('404 when parent not found in school', async () => {
+      mockUserFindOne.mockResolvedValue(null);
+      const res = mkRes();
+      await activateParent(adminReq('p-missing'), res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_NOT_FOUND' }),
+      }));
+    });
+
+    it('409 when parent is already active', async () => {
+      mockUserFindOne.mockResolvedValue({ id: 'p1', status: 'active' });
+      const res = mkRes();
+      await activateParent(adminReq('p1'), res);
+      expect(res.status).toHaveBeenCalledWith(409);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_ALREADY_ACTIVE' }),
+      }));
+    });
+
+    it('500 when DB throws', async () => {
+      mockUserFindOne.mockRejectedValue(new Error('db down'));
+      const res = mkRes();
+      await activateParent(adminReq('p1'), res);
+      expect(res.status).toHaveBeenCalledWith(500);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        error: expect.objectContaining({ code: 'PARENT_ACTIVATE_FAILED' }),
+      }));
     });
   });
 });
