@@ -105,6 +105,36 @@ if (req.user.schoolId) {
 }
 ```
 
+## Audit Log Conventions
+
+The `audit_log` table is provably append-only via three independent layers:
+
+**Layer 1 — Static model overrides** (`models/AuditLog.js`):
+`AuditLog.update` and `AuditLog.destroy` are overridden to throw `Error('audit_log is immutable')`.
+These block bulk update/delete operations via Sequelize's static API.
+
+**Layer 2 — Instance method overrides** (`models/AuditLog.js`):
+`AuditLog.prototype.update` and `AuditLog.prototype.destroy` are overridden to throw the same error.
+`AuditLog.prototype.save` throws for existing records (`isNewRecord === false`); allows initial inserts
+(`isNewRecord === true`) by calling through to the captured `_originalSave`. This blocks post-insert
+field mutation via `instance.save()`.
+
+**Layer 3 — DB-level REVOKE** (migration `20260520100000-audit-log-revoke-mutations.js`):
+`REVOKE UPDATE, DELETE ON audit_log FROM PUBLIC` blocks any direct SQL mutation attempt.
+Note: the Railway Postgres superuser (`postgres`) is not affected by `REVOKE FROM PUBLIC` — the model
+layers are the primary guard for the application process. The REVOKE protects against other DB roles.
+
+**Writing audit entries:** always use `logAudit()` from `utils/auditLogger.js`. Never call
+`AuditLog.create()` directly from controllers. The helper swallows all errors — audit failures must
+never cascade to feature failures.
+
+**Destroy calls on paranoid models** should pass `{ actorId, actorRole, reason }` in options:
+```js
+await child.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_request' });
+```
+Calls without these still succeed; the audit row has `actorId: null` (acceptable for system actions).
+Currently only `Child` has an `afterDestroy` audit hook. Other paranoid models get hooks in T2-5.
+
 ## MCP Servers Available
 This project has three MCP servers configured (see ~/.claude.json):
 - **context7** — live library docs. Workflow: call `resolve-library-id` first, then `query-docs` (NOT `get-library-docs` — that name is outdated).

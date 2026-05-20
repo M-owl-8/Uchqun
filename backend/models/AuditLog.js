@@ -46,8 +46,31 @@ const AuditLog = sequelize.define('AuditLog', {
 });
 
 // Immutability guards — audit_log entries are write-once; no updates or deletes permitted.
+// Layer 1 (static): blocks AuditLog.update({...}) and AuditLog.destroy({...}) bulk operations.
 const immutableError = () => { throw new Error('audit_log is immutable'); };
 AuditLog.update = immutableError;
 AuditLog.destroy = immutableError;
+
+// Layer 2 (instance): blocks instance.update(), instance.destroy(), and instance.save() on
+// existing records. The _originalSave capture preserves the initial-insert path used by
+// Model.create() / logAudit (isNewRecord=true) while blocking post-insert saves.
+const _originalSave = AuditLog.prototype.save;
+
+AuditLog.prototype.update = function () {
+  throw new Error('audit_log is immutable: instance.update() forbidden');
+};
+
+AuditLog.prototype.destroy = function () {
+  throw new Error('audit_log is immutable: instance.destroy() forbidden');
+};
+
+AuditLog.prototype.save = function (...args) {
+  if (this.isNewRecord) {
+    return typeof _originalSave === 'function'
+      ? _originalSave.apply(this, args)
+      : Promise.resolve(this);
+  }
+  throw new Error('audit_log is immutable: instance.save() on existing record forbidden');
+};
 
 export default AuditLog;
