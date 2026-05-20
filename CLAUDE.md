@@ -73,8 +73,29 @@ If admin or government passwords need resetting, deploy a one-off migration:
 - Pre-commit: Husky → lint-staged → ESLint auto-fix
 - No Prettier configured — match surrounding style
 
-### Response shape standard (BACKEND-012)
-**New endpoints** MUST use `{ success: true, data: <payload> }` for success and `{ success: false, error: '<message>' }` for errors. **Existing endpoints** that return bare objects are grandfather-claused until a dedicated migration sprint coordinates changes across all frontends. Do NOT silently change an existing endpoint's shape — it will break the consuming UI.
+### Response shape standard (BACKEND-012, amended Sprint B)
+
+**Success** — all new endpoints:
+```json
+{ "success": true, "data": <payload> }
+```
+
+**Error** — all new endpoints:
+```json
+{
+  "success": false,
+  "error": {
+    "code": "<UPPER_SNAKE_CASE_I18N_KEY>",
+    "detail": "<optional English string for debugging only — never shown to users>"
+  }
+}
+```
+
+The `code` field is the canonical machine identifier. The frontend switches on it using the i18n catalog — never parses the `detail` string. `detail` is optional; omit it unless it aids Sentry triage.
+
+Error codes follow the pattern `<FEATURE>_<CONDITION>`, e.g. `OBSERVATION_CHILD_NOT_ACCESSIBLE`, `REFLECTION_ALREADY_EXISTS_FOR_DATE`. The complete catalog is `audits/backend/i18n-error-codes.md`. **Any PR that introduces a new error code MUST add a row to that catalog in the same commit.**
+
+**Grandfather clause:** existing endpoints that return `{ error: '<string>' }` are NOT required to migrate immediately. They migrate opportunistically when next touched for any reason. New endpoints and refactors MUST use the new shape. Do NOT silently change an existing endpoint's shape — it will break the consuming UI.
 
 ## Deployment
 - Backend → Railway (auto-deploy on `main` push via `.github/workflows/railway-deploy.yml`)
@@ -88,6 +109,22 @@ Use plan mode (Shift+Tab twice) before any changes to:
 - Migrations
 - `routes/` index or CORS config
 - Payment, media upload, or scope-checking logic
+
+### Defense-in-depth role checks (mandatory for safeguarding-sensitive endpoints)
+
+For endpoints that affect parent communication, audit logs, child safeguarding records, account state changes, or bulk operations, apply role checks at **both** layers:
+
+1. **Route middleware:** `requireRole('teacher')` / `requireAdmin` / etc.
+2. **Controller body:** `if (req.user.role !== 'teacher') return res.status(403).json(...)`
+
+Rationale: a future route reorganization could accidentally mount the handler under a more permissive middleware chain. The controller-level check ensures safeguarding never depends on a single point of failure.
+
+Apply to:
+- Reflections (teacher-only) — established T1-3
+- Audit log read endpoints (government-only) — future
+- Account suspension (admin-only) — T2-2
+- Bulk import (admin-only) — T1-7a/b
+- School archival (government-only) — T2-7
 
 ### Child-scoped resource access pattern (mandatory)
 Any endpoint that reads, writes, or deletes a child-scoped resource (Activity, Meal, Media, TherapyUsage) MUST call `validateChildAccess(childId, req)` (or `findChildScopedResource(Model, id, req)` from `utils/schoolValidation.js`) for authorization AFTER the initial PK lookup. A role check alone is not sufficient — tenant isolation requires the school-scope check.
