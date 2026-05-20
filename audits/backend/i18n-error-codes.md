@@ -90,6 +90,21 @@ Row-level errors are embedded in the ImportJob `errors` JSONB array as `{ row, f
 | `IMPORT_ROW_PARENT_NOT_FOUND` | `parentEmail` | Email passes format check but no parent User with that email exists in the system | "No parent account found with this email. Create the parent account first." |
 | `IMPORT_ROW_DUPLICATE` | `null` | Row has the same firstName + lastName + dateOfBirth (case-insensitive) as an earlier row in the same file | "This child appears more than once in the file. Remove duplicate rows." |
 
+## Bulk Import — job-level (`adminImportController.js` T1-7b)
+
+Introduced: Sprint C T1-7b (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `IMPORT_JOB_NOT_FOUND` | 404 | No ImportJob found with the given `:id`, or it has been soft-deleted | "Import job not found." |
+| `IMPORT_JOB_FORBIDDEN` | 403 | The ImportJob belongs to a different school than the requesting admin | "Access denied." |
+| `IMPORT_JOB_NOT_READY` | 409 | Job status is not `ready` (already importing, completed, or failed) | "This import cannot be started. Check its current status." |
+| `IMPORT_NO_VALID_ROWS` | 422 | Job has `validRows=0` — nothing to import | "No valid rows to import. Fix the validation errors and re-upload." |
+| `IMPORT_START_FAILED` | 500 | Unexpected error in `start()` before background processing begins | "Failed to start import. Please try again." |
+| `IMPORT_STATUS_FAILED` | 500 | Unexpected error fetching job status | "Failed to retrieve import status." |
+| `IMPORT_ERRORS_FAILED` | 500 | Unexpected error fetching job errors list | "Failed to retrieve import errors." |
+| `IMPORT_ROW_CREATE_FAILED` | n/a | A valid row failed at `Child.create()` during T1-7b (stored in `errors` JSONB, not returned as HTTP status) | "Row {n} could not be saved. Check for data conflicts." |
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

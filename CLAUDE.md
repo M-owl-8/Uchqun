@@ -172,6 +172,32 @@ await child.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'a
 Calls without these still succeed; the audit row has `actorId: null` (acceptable for system actions).
 Currently only `Child` has an `afterDestroy` audit hook. Other paranoid models get hooks in T2-5.
 
+### Bulk import semantics (T1-7a + T1-7b)
+
+T1-7 is split into two mandatory phases. The split is **non-negotiable**: T1-7a is read-only, T1-7b mutates state. Combining them destroys the safety guarantee.
+
+**Phase 1 — validate** (`POST /admin/import/children/validate`):
+- Accepts a multipart CSV (≤ 5 MB, `.csv` extension, all required headers present)
+- Validates every row: required fields, date format, gender enum, parent email lookup (batch)
+- Detects within-file duplicates (firstName + lastName + dateOfBirth, case-insensitive)
+- Creates an `ImportJob` with `status='ready'`, stores `rawCsv` as UTF-8 text (Railway ephemeral FS — see LQ-010)
+- Returns 201 with `{ importJobId, totalRows, validRows, invalidRows, errors }` — even if all rows are invalid
+- Returns 400 only for file-level failures (no file, wrong type, parse error, missing headers, empty)
+
+**Phase 2 — start** (`POST /admin/import/:id/start`):
+- School IDOR check: `importJob.schoolId` MUST equal `req.user.schoolId`
+- Guards: status must be `ready`, `validRows > 0`
+- Sets `status='importing'`, responds 202 immediately
+- Calls `setImmediate(() => processImport(importJob, req.user))` — no external queue
+- **Per-row atomicity**: each valid row commits independently. A failure at row N does not roll back rows 1…N-1 or block rows N+1…end
+- Skips rows already in `importJob.errors` (identified by row number from T1-7a)
+- Re-looks up parent emails at start time (parent may have been deleted between validate and start)
+- Calls `logAudit` (action='bulk_import') for each successfully created child
+- Row-level create failures appended to `importJob.errors` as `IMPORT_ROW_CREATE_FAILED`
+- Sets `status='completed'` after all rows processed; `status='failed'` on fatal error
+
+**Status polling**: frontend polls `GET /admin/import/:id/status` every ~3 s until `status` ∈ `{completed, failed}`.
+
 ## MCP Servers Available
 This project has three MCP servers configured (see ~/.claude.json):
 - **context7** — live library docs. Workflow: call `resolve-library-id` first, then `query-docs` (NOT `get-library-docs` — that name is outdated).

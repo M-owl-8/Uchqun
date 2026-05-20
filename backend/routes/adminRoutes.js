@@ -21,7 +21,7 @@ import {
   getDocuments,
 } from '../controllers/adminController.js';
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
-import { validate as validateImport } from '../controllers/admin/adminImportController.js';
+import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
@@ -73,6 +73,9 @@ router.get('/children/:id/observations', listObservationsByChild);
 
 // Bulk import
 router.post('/import/children/validate', uploadImportCsv.single('file'), handleImportUploadError, validateImport);
+router.post('/import/:id/start', startImport);
+router.get('/import/:id/status', getImportStatus);
+router.get('/import/:id/errors', getImportErrors);
 
 // Read-only access to Teachers, Parents, and Groups
 router.get('/teachers', getTeachers); // View only

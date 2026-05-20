@@ -1,6 +1,8 @@
 import { parse } from 'csv-parse/sync';
 import ImportJob from '../../models/ImportJob.js';
 import User from '../../models/User.js';
+import Child from '../../models/Child.js';
+import { logAudit } from '../../utils/auditLogger.js';
 import logger from '../../utils/logger.js';
 
 const REQUIRED_HEADERS = [
@@ -164,5 +166,166 @@ export const validate = async (req, res) => {
   } catch (error) {
     logger.error('Import validate error', { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, error: { code: 'IMPORT_CREATE_FAILED' } });
+  }
+};
+
+// ─── T1-7b — processImport ────────────────────────────────────────────────────
+
+// Exported for direct testing. Called via setImmediate from start().
+export async function processImport(importJob, actor) {
+  try {
+    const records = parse(importJob.rawCsv, {
+      columns: true,
+      skip_empty_lines: true,
+      trim: true,
+      relax_column_count: true,
+    });
+
+    // Fresh parent lookup — state may have changed since T1-7a validation
+    const uniqueEmails = [
+      ...new Set(
+        records
+          .map((r) => r.parentEmail?.trim().toLowerCase())
+          .filter((e) => e && EMAIL_RE.test(e))
+      ),
+    ];
+    const foundParents = uniqueEmails.length
+      ? await User.findAll({
+          where: { email: uniqueEmails, role: 'parent' },
+          attributes: ['id', 'email'],
+        })
+      : [];
+    const parentMap = Object.fromEntries(foundParents.map((p) => [p.email, p.id]));
+
+    // Skip rows that T1-7a already marked invalid (stored in importJob.errors by row number)
+    const invalidRowNums = new Set(importJob.errors.map((e) => e.row));
+    const newErrors = [];
+
+    for (let i = 0; i < records.length; i++) {
+      const rowNum = i + 2;
+      if (invalidRowNums.has(rowNum)) continue;
+
+      const row = records[i];
+      const parentEmail = row.parentEmail?.trim().toLowerCase();
+      const parentId = parentMap[parentEmail];
+
+      // Parent may have been deleted between T1-7a and T1-7b
+      if (!parentId) {
+        newErrors.push({ row: rowNum, field: 'parentEmail', code: 'IMPORT_ROW_PARENT_NOT_FOUND' });
+        continue;
+      }
+
+      try {
+        const child = await Child.create({
+          firstName: row.firstName.trim(),
+          lastName: row.lastName.trim(),
+          dateOfBirth: row.dateOfBirth.trim(),
+          gender: row.gender.trim(),
+          disabilityType: row.disabilityType.trim(),
+          class: row.class.trim(),
+          teacher: row.teacher.trim(),
+          parentId,
+          schoolId: importJob.schoolId,
+          specialNeeds: row.specialNeeds?.trim() || null,
+          medicalDiagnosis: row.medicalDiagnosis?.trim() || null,
+          institutionStartDate: row.institutionStartDate?.trim() || null,
+          fatherFullName: row.fatherFullName?.trim() || null,
+          motherFullName: row.motherFullName?.trim() || null,
+          address: row.address?.trim() || null,
+          contactPhone: row.contactPhone?.trim() || null,
+          emergencyContact: {},
+        });
+
+        await logAudit({
+          actorId: actor.id,
+          actorRole: actor.role,
+          action: 'bulk_import',
+          entity: 'children',
+          entityId: child.id,
+          schoolId: importJob.schoolId,
+          meta: { importJobId: importJob.id, row: rowNum },
+        });
+      } catch (rowErr) {
+        logger.error('Import row create failed', { row: rowNum, error: rowErr.message });
+        newErrors.push({ row: rowNum, field: null, code: 'IMPORT_ROW_CREATE_FAILED' });
+      }
+    }
+
+    await importJob.update({
+      status: 'completed',
+      errors: [...importJob.errors, ...newErrors],
+    });
+  } catch (fatalErr) {
+    logger.error('processImport fatal error', { error: fatalErr.message, importJobId: importJob.id });
+    try {
+      await importJob.update({ status: 'failed' });
+    } catch { /* swallow — cannot report failure if this update also fails */ }
+  }
+}
+
+// ─── T1-7b — HTTP handlers ───────────────────────────────────────────────────
+
+export const start = async (req, res) => {
+  try {
+    const importJob = await ImportJob.findOne({ where: { id: req.params.id } });
+    if (!importJob) {
+      return res.status(404).json({ success: false, error: { code: 'IMPORT_JOB_NOT_FOUND' } });
+    }
+    if (importJob.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ success: false, error: { code: 'IMPORT_JOB_FORBIDDEN' } });
+    }
+    if (importJob.status !== 'ready') {
+      return res.status(409).json({ success: false, error: { code: 'IMPORT_JOB_NOT_READY' } });
+    }
+    if (importJob.validRows === 0) {
+      return res.status(422).json({ success: false, error: { code: 'IMPORT_NO_VALID_ROWS' } });
+    }
+
+    await importJob.update({ status: 'importing' });
+
+    res.status(202).json({ success: true, data: { importJobId: importJob.id, status: 'importing' } });
+
+    setImmediate(() => processImport(importJob, req.user));
+  } catch (error) {
+    logger.error('Import start error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'IMPORT_START_FAILED' } });
+  }
+};
+
+export const getStatus = async (req, res) => {
+  try {
+    const importJob = await ImportJob.findOne({
+      where: { id: req.params.id },
+      attributes: ['id', 'schoolId', 'filename', 'status', 'totalRows', 'validRows', 'invalidRows', 'createdAt', 'updatedAt'],
+    });
+    if (!importJob) {
+      return res.status(404).json({ success: false, error: { code: 'IMPORT_JOB_NOT_FOUND' } });
+    }
+    if (importJob.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ success: false, error: { code: 'IMPORT_JOB_FORBIDDEN' } });
+    }
+    return res.json({ success: true, data: importJob });
+  } catch (error) {
+    logger.error('Import status error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'IMPORT_STATUS_FAILED' } });
+  }
+};
+
+export const getErrors = async (req, res) => {
+  try {
+    const importJob = await ImportJob.findOne({
+      where: { id: req.params.id },
+      attributes: ['id', 'schoolId', 'errors'],
+    });
+    if (!importJob) {
+      return res.status(404).json({ success: false, error: { code: 'IMPORT_JOB_NOT_FOUND' } });
+    }
+    if (importJob.schoolId !== req.user.schoolId) {
+      return res.status(403).json({ success: false, error: { code: 'IMPORT_JOB_FORBIDDEN' } });
+    }
+    return res.json({ success: true, data: { importJobId: importJob.id, errors: importJob.errors } });
+  } catch (error) {
+    logger.error('Import errors error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'IMPORT_ERRORS_FAILED' } });
   }
 };
