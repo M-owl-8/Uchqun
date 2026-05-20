@@ -39,6 +39,7 @@ import ChildAttendance from './ChildAttendance.js';
 import ChildObservation from './ChildObservation.js';
 import TeacherReflection from './TeacherReflection.js';
 import ChildJournalEntry from './ChildJournalEntry.js';
+import ImportJob from './ImportJob.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -81,6 +82,7 @@ const models = {
   ChildObservation,
   TeacherReflection,
   ChildJournalEntry,
+  ImportJob,
   sequelize,
 };
 
@@ -294,6 +296,12 @@ ChildJournalEntry.belongsTo(User, { foreignKey: 'teacherId', as: 'author' });
 School.hasMany(ChildJournalEntry, { foreignKey: 'schoolId', as: 'journalEntries' });
 ChildJournalEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
+// ImportJob
+School.hasMany(ImportJob, { foreignKey: 'schoolId', as: 'importJobs' });
+ImportJob.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(ImportJob, { foreignKey: 'createdBy', as: 'createdImportJobs' });
+ImportJob.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+
 // ─── Audit hooks ──────────────────────────────────────────────────────────────
 
 // Child afterDestroy: records who deleted the child in audit_log.
@@ -449,5 +457,6 @@ export {
   ChildObservation,
   TeacherReflection,
   ChildJournalEntry,
+  ImportJob,
   sequelize,
 };

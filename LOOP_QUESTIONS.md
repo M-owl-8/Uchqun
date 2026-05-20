@@ -143,4 +143,18 @@ Carry to S5 Gap Research for the Parent portal. Track as potential feature: "Par
 
 ## Closed Questions
 
-_(None yet)_
+### LQ-010: CSV import raw content storage — Railway ephemeral filesystem (Sprint C engineering decision)
+
+**Portal:** Backend  
+**Step raised:** S7 Sprint C pre-flight  
+**Priority:** Architecture (closed)  
+**Tag:** Infrastructure constraint  
+**Status:** CLOSED — decision implemented  
+
+**Context:** Sprint C spec said: "If during implementation it turns out temp files don't survive the multer/storage pipeline beyond the request lifecycle, escalate and decide whether T1-7b needs to re-upload or whether ImportJob needs to persist the raw CSV content."
+
+**Finding:** Railway's filesystem is ephemeral — multer `diskStorage` temp files do not survive between requests. The validate endpoint (T1-7a) and the start endpoint (T1-7b) are separate HTTP requests, so a file saved to disk during validate would be gone by the time start runs.
+
+**Decision:** Add `rawCsv TEXT NOT NULL` column to `import_jobs`. The validate endpoint stores `req.file.buffer.toString('utf8')` in `rawCsv`. The start endpoint re-parses `importJob.rawCsv` without requiring re-upload. Multer remains `memoryStorage()` throughout.
+
+**Trade-off:** A 1 MB CSV file stored as TEXT in Postgres adds ~1 MB per import job row. At 100-row imports, rawCsv is typically < 15 KB — negligible. If imports scale beyond 5,000 rows, migrate to Appwrite or Railway Volume. No change to the import API shape; clients are unaffected.

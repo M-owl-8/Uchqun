@@ -57,6 +57,39 @@
 
 ---
 
+---
+
+## Bulk Import — file-level (`adminImportController.js`)
+
+Introduced: Sprint C T1-7a (2026-05-20)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `IMPORT_FILE_REQUIRED` | 400 | No file was attached to the multipart request | "Please select a CSV file to upload." |
+| `IMPORT_FILE_TOO_LARGE` | 400 | File exceeds the 5 MB limit (emitted by multer, caught by `handleImportUploadError`) | "File is too large. Maximum size is 5 MB." |
+| `IMPORT_FILE_INVALID_TYPE` | 400 | File extension is not `.csv`, or multer filter rejected the MIME type | "Only CSV files are supported." |
+| `IMPORT_FILE_EMPTY` | 400 | File has 0 bytes, or the CSV has no data rows (only a header row) | "The file is empty. Please add at least one row of data." |
+| `IMPORT_PARSE_FAILED` | 400 | csv-parse threw while parsing the buffer (malformed CSV — unclosed quotes, invalid encoding, etc.) | "Could not read the file. Please check it is a valid CSV." |
+| `IMPORT_MISSING_HEADERS` | 400 | One or more required column headers are absent. `detail` lists the missing names. | "Required columns are missing: {detail}. Check the template." |
+
+## Bulk Import — row-level (`adminImportController.js`)
+
+Row-level errors are embedded in the ImportJob `errors` JSONB array as `{ row, field, code }` objects. The endpoint still returns HTTP 201 when row-level errors exist (the ImportJob is created regardless).
+
+| Code | Field | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `IMPORT_ROW_FIRST_NAME_REQUIRED` | `firstName` | Cell is empty after trimming | "First name is required." |
+| `IMPORT_ROW_LAST_NAME_REQUIRED` | `lastName` | Cell is empty after trimming | "Last name is required." |
+| `IMPORT_ROW_DOB_INVALID` | `dateOfBirth` | Missing, not in YYYY-MM-DD format, or not a valid calendar date | "Date of birth must be YYYY-MM-DD." |
+| `IMPORT_ROW_DOB_IN_FUTURE` | `dateOfBirth` | Date is after today | "Date of birth cannot be in the future." |
+| `IMPORT_ROW_GENDER_INVALID` | `gender` | Value is not `Male`, `Female`, or `Other` (case-sensitive) | "Gender must be Male, Female, or Other." |
+| `IMPORT_ROW_DISABILITY_TYPE_REQUIRED` | `disabilityType` | Cell is empty after trimming | "Disability type is required." |
+| `IMPORT_ROW_CLASS_REQUIRED` | `class` | Cell is empty after trimming | "Class is required." |
+| `IMPORT_ROW_TEACHER_REQUIRED` | `teacher` | Cell is empty after trimming | "Teacher name is required." |
+| `IMPORT_ROW_PARENT_EMAIL_INVALID` | `parentEmail` | Missing, or fails basic email-format check | "A valid parent email address is required." |
+| `IMPORT_ROW_PARENT_NOT_FOUND` | `parentEmail` | Email passes format check but no parent User with that email exists in the system | "No parent account found with this email. Create the parent account first." |
+| `IMPORT_ROW_DUPLICATE` | `null` | Row has the same firstName + lastName + dateOfBirth (case-insensitive) as an earlier row in the same file | "This child appears more than once in the file. Remove duplicate rows." |
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

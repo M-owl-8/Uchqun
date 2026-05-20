@@ -1,0 +1,4 @@
+firstName,lastName,dateOfBirth,gender,disabilityType,class,teacher,parentEmail,specialNeeds,medicalDiagnosis,institutionStartDate,fatherFullName,motherFullName,address,contactPhone
+Алишер,Мусаев,2018-03-15,Male,Аутизм спектри,2А,Нодира Камалова,parent1@example.com,Нутқий терапия зарур,F84.0 (Аутизм),,Мусаев Темур Акбарович,Мусаева Зулайхо Нуриллоевна,Тошкент ш. Юнусобод тумани 103-уй,+998901234567
+O'g'iloy,Karimova,2019-07-22,Female,Eshitish qobiliyatining pasayishi,1B,Malika Toshmatova,parent2@example.com,,H90.3 (Sensorineural eshitish yo'qolishi),2023-09-01,Karimov Jasur Abdullayevich,,,+998901234568
+Ivan,Petrov,2017-11-10,Male,Down syndrome,3A,Sarvar Rahimov,parent3@example.com,Logoped bilan ishlash kerak,Q90.0 (Down syndrome),2022-01-15,Petrov Alexei Nikolayevich,Petrova Natalia Ivanovna,,
