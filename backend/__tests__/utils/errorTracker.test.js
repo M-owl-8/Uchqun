@@ -26,4 +26,22 @@ describe('errorTracker', () => {
     captureException(new Error('boom'), { url: '/x' });
     expect(mockCaptureException).not.toHaveBeenCalled();
   });
+
+  it('initializes Sentry when SENTRY_DSN is set', async () => {
+    process.env.SENTRY_DSN = 'https://fake@o0.ingest.sentry.io/0';
+    await import('../../utils/errorTracker.js');
+    expect(mockInit).toHaveBeenCalledWith(expect.objectContaining({
+      dsn: 'https://fake@o0.ingest.sentry.io/0',
+    }));
+    delete process.env.SENTRY_DSN;
+  });
+
+  it('captureException calls Sentry when SENTRY_DSN is set', async () => {
+    process.env.SENTRY_DSN = 'https://fake@o0.ingest.sentry.io/0';
+    const { captureException } = await import('../../utils/errorTracker.js');
+    const err = new Error('production error');
+    captureException(err, { url: '/api/v1/child' });
+    expect(mockCaptureException).toHaveBeenCalledWith(err, { extra: { url: '/api/v1/child' } });
+    delete process.env.SENTRY_DSN;
+  });
 });

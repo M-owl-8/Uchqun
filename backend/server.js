@@ -18,7 +18,7 @@ import swaggerUi from 'swagger-ui-express';
 import { swaggerSpec } from './config/swagger.js';
 
 import './config/env.js';
-import './utils/errorTracker.js';
+import Sentry from './utils/errorTracker.js';
 
 import healthRoutes from './routes/health.js';
 import authRoutes from './routes/authRoutes.js';
@@ -184,6 +184,11 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.use(notFound);
+// Sentry error handler must come after routes and notFound, before the user error handler.
+// Only registered when SENTRY_DSN is configured (no-op in dev without DSN).
+if (process.env.SENTRY_DSN) {
+  Sentry.setupExpressErrorHandler(app);
+}
 app.use(errorLogger);
 app.use(errorHandler);
 
