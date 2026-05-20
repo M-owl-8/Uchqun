@@ -50,7 +50,7 @@ const Sidebar = ({ onClose }) => {
             {t('sidebar.title', { defaultValue: 'Davlat Panel' })}
           </p>
           <p className="text-[10px] text-sidebar-muted leading-tight truncate">
-            IHMA · O'zbekiston
+            IHMA · O&apos;zbekiston
           </p>
         </div>
       </div>

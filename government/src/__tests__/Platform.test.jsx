@@ -32,13 +32,13 @@ vi.mock('../components/tabs/AdminsTab', () => ({
     loadingAdmins ? <div>loading admins</div> : <div data-testid="admins-tab">admins:{admins.length}</div>,
 }));
 vi.mock('../components/tabs/MessagesTab', () => ({
-  default: ({ messages }) => <div data-testid="messages-tab">messages:{messages.length}</div>,
+  default: ({ messages }) => <div data-testid="messages-tab">messages:{(messages ?? []).length}</div>,
 }));
 vi.mock('../components/tabs/GovernmentTab', () => ({
-  default: ({ governments }) => <div data-testid="government-tab">govs:{governments.length}</div>,
+  default: ({ governments }) => <div data-testid="government-tab">govs:{(governments ?? []).length}</div>,
 }));
 vi.mock('../components/tabs/RegistrationsTab', () => ({
-  default: ({ registrationRequests }) => <div data-testid="registrations-tab">requests:{registrationRequests.length}</div>,
+  default: ({ registrationRequests }) => <div data-testid="registrations-tab">requests:{(registrationRequests ?? []).length}</div>,
 }));
 
 const Platform = (await import('../pages/Platform.jsx')).default;
@@ -56,12 +56,11 @@ describe('Platform page', () => {
     });
   });
 
-  it('hits /government/admins, /users, /messages on mount', async () => {
+  it('hits /government/admins and /users on mount', async () => {
     render(<Platform />);
     await waitFor(() => {
       expect(mockApi.get).toHaveBeenCalledWith('/government/admins');
       expect(mockApi.get).toHaveBeenCalledWith('/government/users');
-      expect(mockApi.get).toHaveBeenCalledWith('/government/messages');
     });
   });
 

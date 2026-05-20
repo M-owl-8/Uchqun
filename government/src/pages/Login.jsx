@@ -130,7 +130,7 @@ const Login = () => {
           {/* Footer */}
           <div className="mt-6 flex items-center justify-between">
             <p className="text-xs text-gray-400">
-              © 2026 IHMA · O'zbekiston Respublikasi
+              © 2026 IHMA · O&apos;zbekiston Respublikasi
             </p>
             <LanguageSwitcher />
           </div>
