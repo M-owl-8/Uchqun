@@ -183,7 +183,7 @@ export const deleteMessage = async (req, res) => {
       return res.status(403).json({ error: 'Only the sender can delete this message' });
     }
 
-    await msg.destroy();
+    await msg.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'sender_delete' });
     res.json({ success: true });
   } catch (err) {
     logger.error('deleteMessage error', err);

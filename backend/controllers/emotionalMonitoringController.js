@@ -402,7 +402,7 @@ export const deleteMonitoring = async (req, res) => {
       return res.status(403).json({ error: 'You do not have permission to delete this record' });
     }
 
-    await record.destroy();
+    await record.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'teacher_delete' });
 
     logger.info('Emotional monitoring record deleted', {
       recordId: id,

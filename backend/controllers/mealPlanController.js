@@ -205,7 +205,7 @@ export const deleteMealPlan = async (req, res) => {
       return res.status(404).json({ error: 'Meal plan not found' });
     }
 
-    await plan.destroy();
+    await plan.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
     res.json({ message: 'Meal plan deleted' });
   } catch (error) {

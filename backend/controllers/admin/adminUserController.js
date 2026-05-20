@@ -87,7 +87,7 @@ export const deleteAdmin = async (req, res) => {
       return res.status(409).json({ error: 'Cannot delete admin with dependent users. Please reassign or delete dependent accounts first.' });
     }
 
-    await admin.destroy();
+    await admin.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
     res.json({
       success: true,
@@ -343,7 +343,7 @@ export const deleteGovernmentUser = async (req, res) => {
       return res.status(400).json({ error: 'You cannot delete your own account' });
     }
 
-    await government.destroy();
+    await government.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
     logger.info('Government account deleted', {
       governmentId: id,

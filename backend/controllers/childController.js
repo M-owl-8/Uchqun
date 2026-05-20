@@ -112,7 +112,7 @@ export const deleteChild = async (req, res) => {
     const photoUrl = child.photo;
 
     // Delete from DB first — if this fails, photo is still intact
-    await child.destroy();
+    await child.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'parent_delete' });
 
     // Delete photo from storage after successful DB delete
     if (photoUrl) {

@@ -119,7 +119,7 @@ export const deleteAttendance = async (req, res) => {
       return res.status(403).json({ success: false, error: 'Access denied' });
     }
 
-    await record.destroy();
+    await record.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
     return res.json({ success: true, message: 'Attendance record deleted' });
   } catch (error) {
     logger.error('deleteAttendance error', { error: error.message, stack: error.stack });

@@ -517,7 +517,7 @@ export const deleteReception = async (req, res) => {
       return res.status(404).json({ error: 'Reception account not found' });
     }
 
-    await reception.destroy();
+    await reception.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
     logger.info('Reception account deleted by Admin', {
       receptionId: id,

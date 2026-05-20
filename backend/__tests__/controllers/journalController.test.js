@@ -36,6 +36,7 @@ jest.unstable_mockModule('../../models/User.js', () => ({
     hasMany: jest.fn(),
     belongsTo: jest.fn(),
     hasOne: jest.fn(),
+    afterDestroy: jest.fn(),
   },
 }));
 jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
@@ -46,35 +47,35 @@ jest.unstable_mockModule('../../utils/logger.js', () => ({
 }));
 
 // Additional model mocks needed by models/index.js for hook registration
-jest.unstable_mockModule('../../models/Document.js', () => ({ default: { belongsTo: jest.fn(), findAll: jest.fn() } }));
+jest.unstable_mockModule('../../models/Document.js', () => ({ default: { belongsTo: jest.fn(), findAll: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/ParentActivity.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/ParentMeal.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/ParentMedia.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/TeacherResponsibility.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/TeacherTask.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/TeacherWorkHistory.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/Progress.js', () => ({ default: { belongsTo: jest.fn() } }));
+jest.unstable_mockModule('../../models/Progress.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/Group.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
-jest.unstable_mockModule('../../models/Activity.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn() } }));
-jest.unstable_mockModule('../../models/Media.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn() } }));
-jest.unstable_mockModule('../../models/Meal.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn() } }));
+jest.unstable_mockModule('../../models/Activity.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/Media.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/Meal.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), addScope: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/Notification.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/TeacherRating.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/ChatMessage.js', () => ({ default: { belongsTo: jest.fn() } }));
+jest.unstable_mockModule('../../models/TeacherRating.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/ChatMessage.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/School.js', () => ({ default: { hasMany: jest.fn(), belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/SchoolRating.js', () => ({ default: { belongsTo: jest.fn() } }));
+jest.unstable_mockModule('../../models/SchoolRating.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/GovernmentMessage.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/AdminRegistrationRequest.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/EmotionalMonitoring.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/Therapy.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
-jest.unstable_mockModule('../../models/TherapyUsage.js', () => ({ default: { belongsTo: jest.fn() } }));
+jest.unstable_mockModule('../../models/EmotionalMonitoring.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/Therapy.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/TherapyUsage.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/AIWarning.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/GovernmentStats.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/BusinessStats.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/RefreshToken.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/ChildAssessment.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
-jest.unstable_mockModule('../../models/ServicePlan.js', () => ({ default: { belongsTo: jest.fn() } }));
-jest.unstable_mockModule('../../models/MealPlan.js', () => ({ default: { belongsTo: jest.fn() } }));
+jest.unstable_mockModule('../../models/ChildAssessment.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/ServicePlan.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
+jest.unstable_mockModule('../../models/MealPlan.js', () => ({ default: { belongsTo: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/TeacherResource.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/ParentEvaluation.js', () => ({ default: { belongsTo: jest.fn() } }));
 jest.unstable_mockModule('../../models/News.js', () => ({ default: { belongsTo: jest.fn() } }));
@@ -85,10 +86,10 @@ jest.unstable_mockModule('../../models/AuditLog.js', () => ({
     create: mockAuditCreate,
   },
 }));
-jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
+jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/ChildObservation.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/TeacherReflection.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
-jest.unstable_mockModule('../../models/ImportJob.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn() } }));
+jest.unstable_mockModule('../../models/ImportJob.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../config/database.js', () => ({
   default: { authenticate: jest.fn(), sync: jest.fn() },
 }));

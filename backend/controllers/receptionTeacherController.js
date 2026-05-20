@@ -116,7 +116,7 @@ export const deleteTeacher = async (req, res) => {
     const teacher = await User.findOne({ where: { id, role: 'teacher', schoolId: req.user.schoolId } });
     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
-    await teacher.destroy();
+    await teacher.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
     logger.info('Teacher deleted by Reception', { teacherId: id, deletedBy: req.user.id });
     res.json({ success: true, message: 'Teacher deleted successfully' });
   } catch (error) {

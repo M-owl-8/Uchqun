@@ -470,7 +470,7 @@ export const deleteTherapy = async (req, res) => {
       return res.status(403).json({ error: 'Access denied' });
     }
 
-    await therapy.destroy();
+    await therapy.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
     res.json({
       success: true,

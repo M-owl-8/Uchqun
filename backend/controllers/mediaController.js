@@ -947,7 +947,7 @@ export const deleteMedia = async (req, res) => {
       // Continue with database deletion even if file deletion fails
     }
 
-    await media.destroy();
+    await media.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'teacher_delete' });
 
     // Emit real-time update to parent
     if (child && child.parentId) {

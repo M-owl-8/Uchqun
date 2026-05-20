@@ -318,7 +318,7 @@ export const deleteMeal = async (req, res) => {
     }
     const mealId = meal.id;
 
-    await meal.destroy();
+    await meal.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'teacher_delete' });
 
     // Emit real-time update to parent
     if (child && child.parentId) {

@@ -376,6 +376,296 @@ ChildJournalEntry.afterDestroy(async (instance, options) => {
   }
 });
 
+// User afterDestroy: records account deletions. role captured in meta to
+// distinguish parent/teacher/admin removal (each has different safeguarding implications).
+User.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'users',
+      entityId: instance.id,
+      schoolId: instance.schoolId ?? null,
+      meta: { reason: options?.reason ?? null, role: instance.role },
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
+// ChildAttendance afterDestroy: attendance gaps are welfare-relevant.
+ChildAttendance.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'child_attendance',
+      entityId: instance.id,
+      schoolId: instance.schoolId ?? null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, date: instance.date },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// EmotionalMonitoring afterDestroy: emotional state records are safeguarding-relevant.
+EmotionalMonitoring.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'emotional_monitoring',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, date: instance.date },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Progress afterDestroy
+Progress.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'progress',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// ImportJob afterDestroy
+ImportJob.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'import_jobs',
+      entityId: instance.id,
+      schoolId: instance.schoolId ?? null,
+      meta: { reason: options?.reason ?? null, filename: instance.filename, status: instance.status },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Activity afterDestroy
+Activity.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'activities',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Meal afterDestroy
+Meal.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'meals',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// MealPlan afterDestroy
+MealPlan.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'meal_plans',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Media afterDestroy
+Media.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'media',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Document afterDestroy
+Document.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'documents',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, userId: instance.userId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// ChatMessage afterDestroy
+ChatMessage.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'chat_messages',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, senderId: instance.senderId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// ChildAssessment afterDestroy
+ChildAssessment.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'child_assessments',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// ServicePlan afterDestroy
+ServicePlan.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'service_plans',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// TherapyUsage afterDestroy
+TherapyUsage.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'therapy_usages',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// Therapy afterDestroy
+Therapy.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'therapies',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// SchoolRating afterDestroy
+SchoolRating.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'school_ratings',
+      entityId: instance.id,
+      schoolId: instance.schoolId ?? null,
+      meta: { reason: options?.reason ?? null, parentId: instance.parentId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+// TeacherRating afterDestroy
+TeacherRating.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'teacher_ratings',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, teacherId: instance.teacherId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
 // ─── School-scoped named scopes ───────────────────────────────────────────────
 Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
 Activity.addScope('byChild', (childId) => ({ where: { childId } }));
