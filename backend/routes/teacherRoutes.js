@@ -1,5 +1,5 @@
 import express from 'express';
-import { authenticate, requireTeacher } from '../middleware/auth.js';
+import { authenticate, requireTeacher, requireRole } from '../middleware/auth.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEmotionalMonitoringValidator } from '../validators/teacherTaskValidator.js';
 import { aiChatValidator } from '../validators/aiChatValidator.js';
@@ -7,6 +7,8 @@ import { messageToGovValidator } from '../validators/messageValidator.js';
 import { aiChatLimiter } from '../middleware/rateLimiter.js';
 import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings, getChildren, getChildById } from '../controllers/teacherController.js';
 import { create as createObservation, listRecent as listRecentObservations, listByChild as listObservationsByChild } from '../controllers/observationController.js';
+import { create as createReflection, list as listReflections } from '../controllers/reflectionController.js';
+import { create as createJournalEntry, listByChild as listJournalByChild } from '../controllers/journalController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { getAIAdvice } from '../controllers/teacherAIController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
@@ -80,6 +82,14 @@ router.get('/children/:id/observations', listObservationsByChild);
 // Observations — specific routes before general
 router.get('/observations/recent', listRecentObservations);
 router.post('/observations', createObservation);
+
+// Reflections — teacher-only (requireRole('teacher') strictly, NOT requireTeacher)
+router.post('/reflections', requireRole('teacher'), createReflection);
+router.get('/reflections', requireRole('teacher'), listReflections);
+
+// Journal (teacher: create + read; reception/admin allowed via requireTeacher)
+router.post('/journal', createJournalEntry);
+router.get('/journal/:childId', listJournalByChild);
 
 // Emotional Monitoring
 // Specific routes must come before general routes

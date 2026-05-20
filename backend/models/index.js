@@ -37,6 +37,8 @@ import News from './News.js';
 import AuditLog from './AuditLog.js';
 import ChildAttendance from './ChildAttendance.js';
 import ChildObservation from './ChildObservation.js';
+import TeacherReflection from './TeacherReflection.js';
+import ChildJournalEntry from './ChildJournalEntry.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -77,6 +79,8 @@ const models = {
   AuditLog,
   ChildAttendance,
   ChildObservation,
+  TeacherReflection,
+  ChildJournalEntry,
   sequelize,
 };
 
@@ -276,6 +280,20 @@ ChildObservation.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
 School.hasMany(ChildObservation, { foreignKey: 'schoolId', as: 'observations' });
 ChildObservation.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 
+// TeacherReflection
+User.hasMany(TeacherReflection, { foreignKey: 'teacherId', as: 'reflections' });
+TeacherReflection.belongsTo(User, { foreignKey: 'teacherId', as: 'teacher' });
+School.hasMany(TeacherReflection, { foreignKey: 'schoolId', as: 'reflections' });
+TeacherReflection.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
+// ChildJournalEntry
+Child.hasMany(ChildJournalEntry, { foreignKey: 'childId', as: 'journalEntries' });
+ChildJournalEntry.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(ChildJournalEntry, { foreignKey: 'teacherId', as: 'authoredJournalEntries' });
+ChildJournalEntry.belongsTo(User, { foreignKey: 'teacherId', as: 'author' });
+School.hasMany(ChildJournalEntry, { foreignKey: 'schoolId', as: 'journalEntries' });
+ChildJournalEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
 // ─── Audit hooks ──────────────────────────────────────────────────────────────
 
 // Child afterDestroy: records who deleted the child in audit_log.
@@ -309,6 +327,41 @@ ChildObservation.afterDestroy(async (instance, options) => {
       entityId: instance.id,
       schoolId: instance.schoolId,
       meta: { reason: options?.reason ?? null, childId: instance.childId, severity: instance.severity },
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
+// TeacherReflection afterDestroy: records teacher diary deletions.
+TeacherReflection.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'teacher_reflections',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, teacherId: instance.teacherId },
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
+// ChildJournalEntry afterDestroy: isVisibleToParent captured in meta because deleting
+// a parent-visible entry has safeguarding implications distinct from deleting a draft.
+ChildJournalEntry.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'child_journal_entries',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, isVisibleToParent: instance.isVisibleToParent },
     });
   } catch {
     // intentionally swallowed — audit failure does not block delete
@@ -394,5 +447,7 @@ export {
   AuditLog,
   ChildAttendance,
   ChildObservation,
+  TeacherReflection,
+  ChildJournalEntry,
   sequelize,
 };

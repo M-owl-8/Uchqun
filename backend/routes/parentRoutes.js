@@ -28,6 +28,7 @@ import {
   getMonitoringByChild,
   getMonitoringById,
 } from '../controllers/emotionalMonitoringController.js';
+import { getChildJournal } from '../controllers/journalController.js';
 import {
   submitParentEvaluation,
   getMyEvaluations,
@@ -72,6 +73,9 @@ router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 router.post('/message-to-government', authenticate, requireParent, messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', authenticate, requireParent, getMyMessages);
+
+// Child journal (parent read — visible entries only)
+router.get('/children/:id/journal', authenticate, requireParent, getChildJournal);
 
 // Emotional Monitoring (read-only for parents)
 router.get('/emotional-monitoring/child/:childId', authenticate, requireParent, getMonitoringByChild);
