@@ -202,6 +202,22 @@ T1-7 is split into two mandatory phases. The split is **non-negotiable**: T1-7a 
 
 **Status polling**: frontend polls `GET /admin/import/:id/status` every ~3 s until `status` ∈ `{completed, failed}`.
 
+### i18n translation status
+
+Translations at `backend/i18n/ru.json`, `uz-latn.json`, `uz-cyrl.json` are
+AI-generated and unverified. See `backend/i18n/README.md` for details. Before
+real-user launch, professional review is required (tracked as PL-009-VERIFY in
+`LOOP_PRE_LAUNCH_CHECKLIST.md`).
+
+The platform's UI surface should display a notice during initial parent
+registration that the platform's localization is currently auto-translated and
+may contain errors. This UI notice is tracked as cross-portal item CP-019 in
+`LOOP_CROSS_PORTAL.md` and must be implemented by every portal with end-user-facing
+text (Government, Admin, Reception, Teacher, Parent).
+
+Run `node backend/scripts/verify-i18n.js` from the project root to verify that
+all 106 catalog codes have entries in every language file.
+
 ## MCP Servers Available
 This project has three MCP servers configured (see ~/.claude.json):
 - **context7** — live library docs. Workflow: call `resolve-library-id` first, then `query-docs` (NOT `get-library-docs` — that name is outdated).
