@@ -22,6 +22,7 @@ const Progress = sequelize.define('Progress', {
 }, {
   tableName: 'progress',
   timestamps: true,
+  paranoid: true,
 });
 
 Progress.belongsTo(Child, { foreignKey: 'childId', as: 'child' });

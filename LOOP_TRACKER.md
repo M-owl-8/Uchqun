@@ -18,7 +18,7 @@
 
 **Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.
 > **Backend S6.1 (plan amendment pass):** ✅ Closed (81e5b84)
-> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: ✅ Closed (93a22a2) — 78 suites / 739 tests / lint 0 / CP-006,007,008 ✅ · Sprint C: ✅ Closed — T1-7a: ✅ Closed (bbd1396) — 79 suites / 764 tests / lint 0 / 17 i18n codes · T1-7b: ✅ Closed (56f8d90) — 80 suites / 784 tests / lint 0 / 25 i18n codes / CP-011 ✅
+> **Backend S7 (implement features):** 🟡 In progress — Sprint A: ✅ Closed (a1149fb) · Sprint A remediation: ✅ Closed (8615a32) · Sprint B: ✅ Closed (93a22a2) — 78 suites / 739 tests / lint 0 / CP-006,007,008 ✅ · Sprint C: ✅ Closed — T1-7a: ✅ Closed (bbd1396) — 79 suites / 764 tests / lint 0 / 17 i18n codes · T1-7b: ✅ Closed (56f8d90) — 80 suites / 784 tests / lint 0 / 25 i18n codes / CP-011 ✅ · Sprint D: 🟡 In progress — Phase 1: T2-6 🟡 · T2-8 🟡
 
 ## Rules (read before every step)
 

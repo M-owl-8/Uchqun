@@ -56,6 +56,7 @@ const EmotionalMonitoring = sequelize.define('EmotionalMonitoring', {
 }, {
   tableName: 'emotional_monitoring',
   timestamps: true,
+  paranoid: true,
   indexes: [
     {
       fields: ['childId', 'date'],
