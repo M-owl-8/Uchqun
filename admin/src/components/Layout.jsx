@@ -3,6 +3,7 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Menu } from 'lucide-react';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
+import TranslationNotice from './TranslationNotice';
 
 const Layout = () => {
   const location = useLocation();
@@ -43,6 +44,7 @@ const Layout = () => {
 
       {/* Main content */}
       <div className="lg:pl-[260px] flex-1 min-w-0">
+        <TranslationNotice />
         <main key={location.pathname} className="px-6 lg:px-10 py-9 pt-16 lg:pt-9 max-w-screen-xl">
           <Outlet />
         </main>
