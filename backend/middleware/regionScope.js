@@ -1,5 +1,7 @@
 // CP-021 Region authorization middleware.
 // Chain: authenticate → requireGovernment → requireRegionScope → [requireGovAccess(key)] → controller
+import { GOV_CAPABILITIES } from '../config/govCapabilities.js';
+const CAPABILITY_SET = new Set(GOV_CAPABILITIES);
 
 /**
  * Sets req.isGlobalAccess and req.regionScope from the authenticated government user's
@@ -60,14 +62,19 @@ export const regionWhere = (req) => {
  * only fires for actual main accounts. The || {} fallback ensures a misconfigured secondary
  * (null grants) gets 403 rather than crashing or escalating.
  */
-export const requireGovAccess = (grantKey) => (req, res, next) => {
-  if (req.govType === 'main') return next();
-  const grants = req.govAccessGrants || {};
-  if (!grants[grantKey]) {
-    return res.status(403).json({
-      success: false,
-      error: { code: 'GOV_ACCESS_DENIED' },
-    });
+export const requireGovAccess = (grantKey) => {
+  if (!CAPABILITY_SET.has(grantKey)) {
+    throw new Error(`requireGovAccess: unknown capability key '${grantKey}' — add it to config/govCapabilities.js`);
   }
-  next();
+  return (req, res, next) => {
+    if (req.govType === 'main') return next();
+    const grants = req.govAccessGrants || {};
+    if (!grants[grantKey]) {
+      return res.status(403).json({
+        success: false,
+        error: { code: 'GOV_ACCESS_DENIED' },
+      });
+    }
+    next();
+  };
 };
