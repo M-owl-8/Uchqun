@@ -1,14 +1,20 @@
 # Region/Hierarchy Authorization Model — Design Document (CP-021)
-## DESIGN ONLY — No implementation. Pending Max approval.
+## APPROVED — Implementation may begin. Sprint A is next.
 
 **Date:** 2026-05-21  
-**Status:** AWAITING APPROVAL — implementation blocked pending remaining §7 answers (Q3/Q5/Q6/Q7/Q8) and PL-015 partner data  
+**Status:** APPROVED (2026-05-21) — all §7 questions resolved or defaulted; PL-015 reclassified as pre-demo data-swap. Sprint A may begin.  
 **Captures:** The full authorization model for region-scoped government accounts  
 **Precedes:** All CP-021-dependent work (CP-020 aggregation, CP-022 routing, government directories)
 
 **Resolved decisions (2026-05-21):**
 - ✅ Q1 — Isolation boundary: **region-level** (12 viloyats + Karakalpakstan = 13 regions). District = metadata only.
 - ✅ Q2 — Republic-main: **exactly one** super-admin root account. No second republic-main can be created.
+- ✅ Q3 — Credential suffix: **`regions.code` lowercased** (e.g. `ali@tas`, `sarvar@fer`). Republic accounts use `@respublika`. Full slug rule in §3.2.
+- ✅ Q4 — Secondary grants: **deny-by-default.** New secondary accounts start with `{}` (zero access). Creator explicitly selects each grant. `null` is reserved for main accounts.
+- ✅ Q5 — Deletion cascade: **orphan secondaries** (they remain active; republic-main manages them). No cascade delete.
+- ✅ Q6 — Tashkent city/region count: **implementation non-blocker.** Table is data-driven; final count comes from PL-015. Code is count-agnostic.
+- ✅ Q7 — Republic-main password reset: **migration approach** (CLAUDE.md pattern). No in-app mechanism needed.
+- ✅ Q8 — Grant granularity: **per-feature boolean** is sufficient. No row-level granularity.
 - ✅ Q9 — Archive/reactivate: **republic-main** unrestricted (any school) + **region-main** own region only. Secondary requires `canArchiveSchools` grant.
 - ✅ Q10 — Audit log for region accounts: **all governance events for schools in their region** (not only self-initiated).
 
@@ -62,9 +68,9 @@ Table: regions
   updatedAt   TIMESTAMP
 ```
 
-**No regions are hardcoded.** The table is seeded by a migration once the partner delivers the authoritative list (PL-015). Until then, the table is empty and no region-scoping enforcement is possible for region accounts.
+**No regions are hardcoded.** For development and testing, Sprint A seeds **13 placeholder rows** — `{ name_en: 'Region 01', name_uz: 'Region 01', name_ru: 'Region 01', code: 'R01' }` through `R13`. Region accounts can be provisioned against placeholder regions immediately. Real region names and codes replace the placeholders when the partner delivers PL-015 — this is a pre-demo data-swap, not an implementation gate.
 
-**Expected rows:** 13 (Q1 confirmed: 12 viloyats + Karakalpakstan). Q6 is still open: if Tashkent city is treated as administratively separate from Tashkent region, the count becomes 14 — partner's PL-015 list resolves this. The `code` field is the stable machine identifier; `name_*` fields are the display labels.
+**Expected rows:** 13 placeholder rows in development. Final count (13 or 14, depending on Tashkent city/region treatment — Q6, resolved as non-blocker) is determined by PL-015 data. The schema is count-agnostic. The `code` field is the stable machine identifier; `name_*` fields are the display labels.
 
 ### 1.2 District table (optional finer grain)
 
@@ -136,7 +142,12 @@ mustChangePassword BOOLEAN NOT NULL DEFAULT false
 }
 ```
 
-`null` value means the account has full access within its region scope (i.e., it's a main account or a secondary account that was given blanket access). A `false` value for a specific key means that feature is explicitly denied.
+**Value semantics (Q4 resolved — deny-by-default):**
+- `null` — full access within scope. Used only for main accounts and backfilled legacy accounts. The `requireGovAccess` middleware short-circuits via the `govType === 'main'` check before ever reading this field. Never set `null` on a secondary account.
+- `{}` (empty object) — zero access. This is the starting state for every newly-created secondary account. The provisioning flow requires the creator to explicitly enable each grant needed; nothing is on by default.
+- `{ "canViewSchools": true, ... }` — explicit grants. A missing key and a `false` value are both treated as denied.
+
+The `|| {}` fallback in `requireGovAccess` (`const grants = req.govAccessGrants || {}`) ensures that a secondary account with `null` grants (a provisioning bug) gets zero access rather than escalating to full access.
 
 **mustChangePassword:**
 - Set to `true` when a creating account provisions a new account (they set the password on behalf of the new user).
@@ -406,13 +417,28 @@ if (req.user.govLevel === 'region') {
 }
 ```
 
-### 3.2 Credential format
+### 3.2 Credential format (Q3 resolved)
 
-`name@regionname` — where `regionname` is the `regions.code` (lowercase) of the account's region. For republic accounts: `name@respublika` (placeholder — confirm with Max, see Q3).
+**Slug rule:** `name@{regions.code.toLowerCase()}`
 
-The `@regionname` suffix is a convention, not a technical constraint. The actual `email` field stores the full string (e.g. `ali@toshkent`). This mirrors the teacher/parent pattern (`name@schoolname`).
+The `regions.code` field (e.g. `TAS`, `SAM`, `FER`, `KAR`) is already the stable machine identifier and is UNIQUE by DB constraint. Lowercased, it gives a short, unambiguous, collision-free suffix with no transliteration logic needed:
 
-Password: set manually by the creating account at provisioning time. No auto-generation. The new account receives the password out-of-band (e.g., face-to-face or secure channel).
+| Account | Email format |
+|---|---|
+| Region account, Tashkent (code `TAS`) | `ali@tas` |
+| Region account, Samarqand (code `SAM`) | `sarvar@sam` |
+| Region account, Farg'ona (code `FER`) | `nilufar@fer` |
+| Region account, Qoraqalpog'iston (code `KAR`) | `jasur@kar` |
+| Republic-level account | `name@respublika` |
+| Placeholder accounts (Sprint A) | `name@r01`, `name@r02`, … `name@r13` |
+
+The `@regionname` suffix is a convention, not a technical constraint. The actual `email` field stores the full string (e.g. `ali@tas`). This mirrors the teacher/parent pattern (`name@schoolname`).
+
+**Republic suffix `@respublika`** — fixed literal string, not derived from a code. There is exactly one republic-main super-admin (Q2), so no collision risk.
+
+**On PL-015 data-swap:** when real region codes arrive, existing placeholder accounts (if any) have their emails updated by the data-swap migration. The slug changes from `@r01` to the real code (e.g. `@tas`). This is an expected side-effect of using placeholder codes during development. Document it in the Sprint D migration.
+
+Password: set manually by the creating account at provisioning time. No auto-generation. The new account receives the password out-of-band (e.g., face-to-face or secure channel). `mustChangePassword = true` is set on creation.
 
 ### 3.3 Forced-password-change gate
 
@@ -463,7 +489,7 @@ if (req.user.govLevel === 'region' && target.govRegionId !== req.user.govRegionI
 }
 ```
 
-**What happens to accounts created by the deleted account:** open question for Max (Section 7, Q5).
+**What happens to accounts created by the deleted account (Q5 resolved — orphan):** Secondary accounts created by the deleted main remain active and accessible. They are not cascade-deleted. A republic-main (who can manage all government accounts) is responsible for reassigning or deleting orphaned secondaries. This is the least-destructive default — accidental main-account deletion cannot silently wipe secondary accounts. No `createdById` FK is needed; republic-main has visibility into all accounts regardless of creator.
 
 ### 3.5 Password-reset delegation chain
 
@@ -561,8 +587,8 @@ The directories are already blocked on PL-014 (PII sign-off) anyway, giving time
 3. **Add `schools.regionId` and `schools.districtId`** — nullable FKs; existing schools are not broken (they get `regionId = null`).
 4. **Add user government columns** — `govLevel`, `govType`, `govRegionId`, `govAccessGrants` nullable; `mustChangePassword` defaults to `false`. No existing row breaks.
 5. **Backfill existing government accounts** — UPDATE sets republic+main on all current `role='government'` users. Since step 4 already set defaults, this is a no-op for new columns that were null — but makes the intent explicit in the migration log.
-6. **Seed region data** — runs only after partner delivers PL-015 authoritative list. Until then, `regions` table is empty and region-level account provisioning is impossible (FK constraint prevents creating accounts with invalid `govRegionId`).
-7. **Backfill `schools.regionId`** — after region data is seeded. Strategy: match existing `schools.region` free-text field against `regions.name_uz` or `regions.name_en` (fuzzy match algorithm or manual assignment). Any school that doesn't match keeps `regionId = null` (treated as unassigned). A separate admin script or UI handles the assignment.
+6. **Seed placeholder region data (Sprint A)** — 13 placeholder rows (`R01`…`R13`, `name_* = 'Region 01'`…`'Region 13'`) inserted in the same Sprint A migration batch. Region accounts can be provisioned immediately against placeholder regions. No PL-015 dependency. Tests run against placeholder data throughout Sprints A–C.
+7. **Pre-demo data-swap (Sprint D — after PL-015)** — when partner delivers the authoritative region list, a replacement migration: (a) UPDATE placeholder rows with real names and codes; (b) backfill `schools.regionId` by matching existing `schools.region` free-text field against `regions.name_uz` / `regions.name_en`; (c) update placeholder account email suffixes from `@r01` etc. to real codes. Any school without a match keeps `regionId = null` (treated as unassigned). An admin script or UI handles residual assignments.
 
 ### Rollout safety analysis
 
@@ -570,7 +596,7 @@ Steps 1–5 are **purely additive**: no existing column is modified, no behavior
 
 `requireRegionScope` middleware is only added to routes in a SEPARATE COMMIT after steps 1–5 are complete AND all existing government accounts are confirmed backfilled. This prevents a window where a government account with `govLevel = null` hits the new middleware and gets 403.
 
-Steps 6–7 can run weeks after steps 1–5. No user-visible behavior changes until region data is seeded.
+Step 6 (placeholder seed) runs in Sprint A alongside steps 1–5 — it is part of the initial migration batch, not a later gate. Step 7 (real data swap) runs in Sprint D, independently of code sprints.
 
 **No real users are affected** — Railway production has no real users yet. The migration is safe to run anytime.
 
@@ -580,9 +606,9 @@ Keep it. Do not drop it. It serves as the display label until `regionId` FK is v
 
 ---
 
-## Section 7 — Open Questions for Max/Partner
+## Section 7 — Questions (all resolved)
 
-These must be answered before implementation begins. No code is written until Section 8's Sprint A is approved, and Sprint A cannot fully complete until Q1 and Q2 are resolved.
+All questions are now resolved or defaulted. Implementation of Sprint A may begin.
 
 **Q1 — Isolation boundary: region or district?** ✅ RESOLVED (2026-05-21)  
 **Answer:** Region-level. 13 regions (12 viloyats + Karakalpakstan). Districts are metadata only — no auth enforcement at district level. `requireRegionScope` uses `govRegionId → regions.id` exclusively.
@@ -590,23 +616,23 @@ These must be answered before implementation begins. No code is written until Se
 **Q2 — Multiple republic-main accounts?** ✅ RESOLVED (2026-05-21)  
 **Answer:** Exactly one republic-main super-admin. No second republic-main can be created. The super-admin account cannot be deleted. Password reset for this account uses the CLAUDE.md migration approach (see §3.5). Q7 is implicitly answered by this decision.
 
-**Q3 — Credential format: which region identifier?**  
-`name@regionname` — which field is `regionname`? The `regions.code` (e.g. `TAS`), the `regions.name_uz` (e.g. `toshkent`), or something else? Also: what is the equivalent suffix for republic-level accounts? `@respublika`? `@republic`?
+**Q3 — Credential format: which region identifier?** ✅ RESOLVED (2026-05-21)  
+**Answer:** `regions.code` lowercased (e.g. `ali@tas`, `sarvar@sam`). Code is already UNIQUE by DB constraint — no transliteration logic needed. Republic accounts: `name@respublika`. Full slug table and PL-015 data-swap note in §3.2.
 
-**Q4 — Secondary account default grants:**  
-When creating a secondary account, is any access defaulted to `true`? Or must the creator explicitly grant everything (empty grants = zero access)? **Recommended:** empty grants = zero access, creator explicitly enables what the secondary account needs. Safest default.
+**Q4 — Secondary account default grants:** ✅ RESOLVED (2026-05-21)  
+**Answer:** Deny-by-default. New secondary accounts start with `govAccessGrants = {}` (empty object = zero access). Creator must explicitly enable each grant. `null` is reserved for main accounts (full access). See §1.4 for the null/`{}`/explicit distinction.
 
-**Q5 — Deleting a main account that has created secondaries:**  
-When a main account is deleted, what happens to the secondary accounts it created? Options: (a) cascade delete all dependents, (b) orphan them (they remain active), (c) transfer to another main account in the same scope. Option (b) is the safest for data continuity; option (a) is safer for security. Need Max's decision.
+**Q5 — Deleting a main account that has created secondaries:** ✅ RESOLVED (2026-05-21, defaulted)  
+**Answer:** Orphan — secondaries remain active. No cascade delete. Republic-main manages orphaned accounts. Least-destructive default; overridable by Max if cascade is later preferred. See §3.4.
 
-**Q6 — Tashkent city vs Tashkent region:**  
-In Uzbekistan's administrative structure, Tashkent city (`Toshkent shahar`) is administratively separate from Tashkent region (`Toshkent viloyati`). Does the platform treat these as two separate regions (14 total) or merge them (13 total)? The partner's region list (PL-015) resolves this, but flag it explicitly.
+**Q6 — Tashkent city vs Tashkent region:** ✅ RESOLVED (2026-05-21, non-blocker)  
+**Answer:** Implementation non-blocker. The regions table accommodates 13 or 14 rows equally. Sprint A seeds 13 placeholder rows. Final count is determined by PL-015 data (Sprint D). Code is count-agnostic.
 
-**Q7 — Republic-main password reset:**  
-Who resets a republic-main account's password if it's forgotten? Options: (a) another republic-main account (requires at least 2 republic-main accounts — see Q2), (b) a special "owner" mechanism outside the app (e.g., a one-off migration as documented in CLAUDE.md's "Credential Reset" section). **Recommended:** document the migration approach from CLAUDE.md as the fallback; encourage having at least 2 republic-main accounts.
+**Q7 — Republic-main password reset:** ✅ RESOLVED (2026-05-21, by Q2 decision)  
+**Answer:** Migration approach from CLAUDE.md is the canonical fallback. No in-app mechanism needed. Since Q2 established exactly one republic-main with no peer account, the migration approach is the only viable path anyway. See §3.5.
 
-**Q8 — Access grant granularity:**  
-Is per-feature boolean sufficient, or do grants need row-level granularity? (e.g., a secondary account that can view schools but only their names, not ratings or student counts.) Per-feature boolean is simpler to implement and sufficient for most cases. Row-level granularity would require field-level filtering in every response serializer — significantly more complex.
+**Q8 — Access grant granularity:** ✅ RESOLVED (2026-05-21, recommended default confirmed)  
+**Answer:** Per-feature boolean is sufficient. No row-level field filtering. The 11-key `govAccessGrants` JSONB structure in §1.4 is the full grant schema.
 
 **Q9 — Archive/reactivate authorization level:** ✅ RESOLVED (2026-05-21)  
 **Answer:** Republic-main can archive/reactivate any school (unrestricted). Region-main can archive/reactivate schools in their own region only. Secondary accounts require the `canArchiveSchools` grant. See §5 and §2.1 for implementation path.
@@ -616,19 +642,20 @@ Is per-feature boolean sufficient, or do grants need row-level granularity? (e.g
 
 ---
 
-## Section 8 — Implementation Sequencing Proposal
+## Section 8 — Implementation Sequencing
 
-This is a proposal, not a plan. Max confirms or adjusts before implementation prompts are written.
+Confirmed. All §7 questions resolved; sequencing is valid and approved. Sprint A may begin immediately.
 
 **Sprint A — Data model + auth core (Backend reopens)**
-- `Region`, `District` models + migrations (empty tables)
+- `Region`, `District` models + migrations
+- **13 placeholder rows seeded** (`R01`…`R13`) in the same migration batch — tests run against these immediately
 - Add 5 government columns to User + migration
 - Add `regionId`, `districtId` to School + migration
-- Backfill existing government accounts
+- Backfill existing government accounts (republic + main)
 - `requireRegionScope` + `regionWhere` + `requireGovAccess` middleware
 - `mustChangePassword` gate in auth.js
 - Full isolation test suite (§2.3) with revert-tests
-- Routes wired up with `requireRegionScope` (but no region data yet → all region accounts fail with `GOV_ACCOUNT_NOT_CONFIGURED` until data is seeded)
+- Routes wired up with `requireRegionScope` — region accounts provisioned against placeholder regions are fully operational
 
 **Sprint B — Endpoint scoping retrofit**
 - Retrofit all 10 government endpoints with `regionWhere(req)` 
@@ -643,10 +670,11 @@ This is a proposal, not a plan. Max confirms or adjusts before implementation pr
 - New `PUT /government/users/:id/reset-password` endpoint
 - Provisioning tests (3 creation cases + deletion + password-reset)
 
-**Sprint D — Region data + school backfill (after PL-015)**
-- After partner delivers region list: seed migration
-- School `regionId` backfill (matching algorithm or admin script)
-- Smoke test: region accounts can now be provisioned and their scoping works against real data
+**Sprint D — Real region data swap (pre-demo, after PL-015)**
+- UPDATE placeholder rows (`R01`…`R13`) with real names and codes from PL-015
+- Backfill `schools.regionId` by matching free-text `schools.region` against `regions.name_uz`/`name_en`
+- Update email suffixes on any placeholder-era government accounts (`@r01` → `@tas` etc.)
+- Smoke test: region accounts now operate against real geographic data
 
 **Sprint E — Government portal UI updates**
 - Government portal shows region badge in header for region accounts
@@ -654,23 +682,25 @@ This is a proposal, not a plan. Max confirms or adjusts before implementation pr
 - Region accounts see their region pre-selected, cannot switch to other regions
 - `mustChangePassword` flow: on login 403 `GOV_MUST_CHANGE_PASSWORD`, redirect to change-password screen
 
-Shape of work: ~5 sprints, sequentially dependent. Sprint A is the prerequisite for all others. Sprint D cannot start until PL-015 is resolved. Sprint E can start in parallel with Sprint C once Sprint B is merged.
+Shape of work: ~5 sprints, sequentially dependent. Sprint A is the prerequisite for all others. **PL-015 does not gate any code sprint** — Sprint D is a data-swap that runs independently once partner data arrives. Sprint E can start in parallel with Sprint C once Sprint B is merged.
 
 ---
 
-## AWAITING APPROVAL — no implementation until Max confirms.
+## APPROVED — Implementation may begin.
 
-The above is a design document only. No migration files, no model changes, no middleware have been written. Implementation of Sprint A begins only after Max reviews this document and approves (or amends) the following decisions:
+All design decisions are resolved. No migration files, model changes, or middleware have been written yet. Sprint A is the next prompt.
 
-- [x] Section 7 Q1: Isolation boundary → **region-level confirmed** (13 regions, districts dormant)
-- [x] Section 7 Q2: Republic-main → **single super-admin confirmed** (no second republic-main, no deletion path)
-- [ ] Section 7 Q3: Credential suffix format — **STILL OPEN**
-- [ ] Section 7 Q4: Secondary account default grants (zero access default) — **STILL OPEN**
-- [ ] Section 7 Q5: Deletion cascade vs orphan for secondaries — **STILL OPEN**
-- [ ] Section 7 Q6: Tashkent city vs Tashkent region (final count: 13 or 14?) — **STILL OPEN** (resolved by PL-015)
-- [x] Section 7 Q9: Archive/reactivate → **region-main own region confirmed**; secondary needs `canArchiveSchools`
-- [x] Section 7 Q10: Audit log scope → **option (a) confirmed** (all events for schools in region)
+**Full decision checklist:**
 
-Questions Q7 (republic-main password reset) and Q8 (grant granularity) have recommended answers confirmed by the Q2 decision:
-- Q7: Migration approach is the canonical fallback — no objection needed to proceed.
-- Q8: Per-feature boolean is sufficient — no objection needed to proceed.
+- [x] Q1: Isolation boundary → **region-level** (13 regions, districts dormant)
+- [x] Q2: Republic-main → **single super-admin** (no second republic-main, no deletion path)
+- [x] Q3: Credential suffix → **`regions.code` lowercased** (`ali@tas`). Republic: `@respublika`. See §3.2.
+- [x] Q4: Secondary grants → **deny-by-default** (`{}` = zero access; `null` reserved for main accounts). See §1.4.
+- [x] Q5: Deletion of main → **orphan secondaries** (remain active; republic-main manages). See §3.4.
+- [x] Q6: Tashkent city/region count → **implementation non-blocker** (data-driven; Sprint A uses 13 placeholders; PL-015 determines final count).
+- [x] Q7: Republic-main password reset → **migration approach** (CLAUDE.md pattern). No in-app mechanism.
+- [x] Q8: Grant granularity → **per-feature boolean** (11 keys in `govAccessGrants`). No row-level filtering.
+- [x] Q9: Archive/reactivate → **region-main own region**; secondary needs `canArchiveSchools` grant.
+- [x] Q10: Audit log scope → **option (a)** (all events for schools in region, regardless of actor).
+
+**PL-015 status:** reclassified as pre-demo data-swap (Sprint D). Does NOT block Sprints A, B, C, or E. Development and testing use 13 placeholder regions seeded in Sprint A.
