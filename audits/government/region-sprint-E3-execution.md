@@ -140,22 +140,22 @@ if (req.user.role === 'government' && req.user.govRegionId) {
 
 ## Manual Gate
 
-**Status:** PENDING — requires Max to log in as region account on Railway and walk every nav item.
+**Status:** COMPLETED by Max on 2026-05-21 — all 11 nav items verified; data (not just labels) confirmed region-scoped throughout.
 
 **Manual gate checklist:**
-- [ ] Log in as region account (govRegionId set)
-- [ ] Dashboard — scope badge shows region name; KPI counts are regional; region breakdown hidden
-- [ ] Schools — scope badge shows region name; only region's schools listed
-- [ ] School Detail — loads correctly for region school; 404 for out-of-region (test via URL)
-- [ ] Students — scope badge shows region name; only region's students; load-more works
-- [ ] Teachers — scope badge shows region name; only region's teachers; load-more works
-- [ ] Parents — scope badge shows region name; only region's parents; load-more works
-- [ ] Ratings — scope badge shows region name; only region's school ratings
-- [ ] AI Warnings — scope badge shows region name; only region's school warnings
-- [ ] Audit Log — scope badge shows region name; entries scoped to region (server handles)
-- [ ] Log in as republic account — all pages show "All regions" Globe label; full data visible
+- [x] Log in as region account (govRegionId set)
+- [x] Dashboard — scope badge shows region name; KPI counts are regional; region breakdown hidden
+- [x] Schools — scope badge shows region name; only region's schools listed
+- [x] School Detail — loads correctly for region school; 404 for out-of-region (test via URL)
+- [x] Students — scope badge shows region name; only region's students; load-more works
+- [x] Teachers — scope badge shows region name; only region's teachers; load-more works
+- [x] Parents — scope badge shows region name; only region's parents; load-more works
+- [x] Ratings — scope badge shows region name; only region's school ratings
+- [x] AI Warnings — scope badge shows region name; only region's school warnings
+- [x] Audit Log — scope badge shows region name; entries scoped to region (server handles)
+- [x] Log in as republic account — all pages show "All regions" Globe label; full data visible
 
-**Expected outcome:** Every screen clearly identifies its scope. Region account sees only their region's data throughout. Republic account sees all-region data throughout.
+**Outcome:** Every screen clearly identifies its scope. Region account sees only their region's data throughout. Republic account sees all-region data throughout.
 
 ---
 
@@ -181,4 +181,4 @@ if (req.user.role === 'government' && req.user.govRegionId) {
 | C-07 | CORS substring check — replace with explicit allowlist | PRE-LAUNCH |
 | CP-019 | i18n unverified notice for end users (all portals) | PRE-LAUNCH |
 | PL-009-VERIFY | Professional review of AI-generated uz/ru translations | PRE-LAUNCH |
-| Manual gate | Max walks every nav item as region account on Railway | NEXT STEP |
+| Manual gate | Max walks every nav item as region account on Railway | ✅ COMPLETED 2026-05-21 |

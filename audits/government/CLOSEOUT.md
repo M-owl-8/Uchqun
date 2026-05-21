@@ -164,7 +164,7 @@ These items cannot be unblocked by code. They require a conversation with Max / 
 
 5. **PL-009-VERIFY — Translation review.** Arrange professional native-speaker review of `ru.json`, `uz-latn.json`, `uz-cyrl.json`. Prioritize `_review_priority` codes (safeguarding). Update `_metadata.verification_status` to VERIFIED.
 
-6. **Manual gate — Region account walk-through.** Max must log in as a region account on Railway and verify every nav item shows region-scoped data. This gate was flagged PENDING at Sprint E3 close and remains unblocked.
+6. **Manual gate — Region account walk-through.** ✅ COMPLETED by Max on 2026-05-21 — all 11 nav items walked as a region account on Railway; data (not just labels) confirmed region-scoped throughout. Republic account also verified (all-regions Globe label, full data visible). No action required.
 
 ---
 
