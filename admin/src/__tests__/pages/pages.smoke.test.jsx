@@ -3,7 +3,7 @@
  * Covers pages not otherwise tested: Login, NotFound, DocumentApprovalQueue,
  * ReceptionManagement, SchoolRatings.
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { describe, it, expect, vi, beforeEach, beforeAll } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -85,8 +85,11 @@ describe('Login page smoke', () => {
 
 // ---- NotFound ----
 describe('NotFound page smoke', () => {
-  it('renders 404 heading', async () => {
-    const { default: NotFound } = await import('../../pages/NotFound');
+  let NotFound;
+  beforeAll(async () => {
+    ({ default: NotFound } = await import('../../pages/NotFound'));
+  });
+  it('renders 404 heading', () => {
     wrap(NotFound);
     expect(screen.getByText('404')).toBeTruthy();
   });
