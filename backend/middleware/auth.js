@@ -111,6 +111,21 @@ export const authenticate = async (req, res, next) => {
     }
 
     req.user = user;
+
+    // Forced-password-change gate (CP-021): provisioned accounts must change
+    // password before accessing any endpoint other than change-password and logout.
+    if (user.mustChangePassword) {
+      const url = (req.originalUrl || req.path || '').split('?')[0];
+      const ALLOWED_PATHS = ['/api/v1/user/password', '/api/v1/auth/logout'];
+      if (!ALLOWED_PATHS.includes(url)) {
+        return res.status(403).json({
+          success: false,
+          error: { code: 'PASSWORD_CHANGE_REQUIRED' },
+          mustChangePassword: true,
+        });
+      }
+    }
+
     next();
   } catch (error) {
     if (error.name === 'JsonWebTokenError') {

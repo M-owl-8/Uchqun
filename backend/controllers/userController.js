@@ -117,6 +117,7 @@ export const changePassword = async (req, res) => {
     }
 
     user.password = newPassword;
+    user.mustChangePassword = false;
     await user.save();
 
     res.json({ success: true, message: 'Password changed successfully' });
