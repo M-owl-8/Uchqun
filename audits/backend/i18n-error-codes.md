@@ -203,6 +203,17 @@ Introduced: Sprint D T2-7 (2026-05-20)
 
 ---
 
+## Government Region Authorization (`middleware/regionScope.js`)
+
+Introduced: CP-021 Region Sprint A (2026-05-21)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `GOV_ACCOUNT_NOT_CONFIGURED` | 403 | Government user has `govLevel = null` — account was not backfilled by the migration or was created before CP-021 landed. Requires admin action to assign govLevel. | "Your government account is not fully configured. Please contact the platform administrator." |
+| `GOV_ACCESS_DENIED` | 403 | Secondary government account attempted to access a feature not in their `govAccessGrants`. | "You don't have permission to access this feature." |
+
+---
+
 ## Parent Data Export (`controllers/parent/parentDataExportController.js`)
 
 Introduced: Sprint E T2-10 (2026-05-20)

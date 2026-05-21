@@ -126,5 +126,7 @@
   "DATA_EXPORT_RATE_LIMITED": "Siz ma'lumotlaringizni kuniga faqat bir marta eksport qilishingiz mumkin. Iltimos, ertaga urinib ko'ring.",
   "DATA_EXPORT_FAILED": "Eksportni yaratish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
   "AUDIT_LOG_INVALID_FILTER": "Noto'g'ri filtr qiymati.",
-  "AUDIT_LOG_FETCH_FAILED": "Audit jurnalini yuklab bo'lmadi."
+  "AUDIT_LOG_FETCH_FAILED": "Audit jurnalini yuklab bo'lmadi.",
+  "GOV_ACCOUNT_NOT_CONFIGURED": "Sizning hukumat hisobingiz to'liq sozlanmagan. Platforma administratoriga murojaat qiling.",
+  "GOV_ACCESS_DENIED": "Siz bu funksiyaga kirish huquqiga ega emassiz."
 }
