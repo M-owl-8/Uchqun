@@ -16,9 +16,10 @@ vi.mock('@shared/context/ToastContext', () => ({
   }),
 }));
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (_k, opts) => opts?.defaultValue ?? _k }),
-}));
+vi.mock('react-i18next', () => {
+  const t = (_k, opts) => opts?.defaultValue ?? _k;
+  return { useTranslation: () => ({ t }) };
+});
 
 vi.mock('../../services/api', () => ({
   default: {
@@ -105,6 +106,13 @@ describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
     await waitFor(() => expect(mockToastError).toHaveBeenCalledWith('Server error'));
     // must NOT show empty-state as success
     expect(screen.queryByText('Ogohlantirish yo\'q')).toBeNull();
+  });
+
+  it('fetches exactly once on mount — stable showError ref prevents refetch loop', async () => {
+    stubLoad([UNRESOLVED]);
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+    expect(api.get.mock.calls.length).toBe(1);
   });
 
   it('calls PUT /ai-warnings/:id/resolve — not POST /admin (AD-013)', async () => {

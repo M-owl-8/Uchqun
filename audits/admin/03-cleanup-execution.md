@@ -131,6 +131,50 @@
 
 ---
 
+---
+
+## S3 Closeout — Three loose ends resolved
+
+**Commit:** (this session)
+
+### 1. Dashboard.jsx lint → 0
+
+Pre-closeout lint:
+```
+54:9  warning  'navigate' is assigned a value but never used  no-unused-vars
+```
+
+`useNavigate` was imported and `navigate` declared but never called — leftover from before U-2 removed the MOCK_ACTIVITY navigation. Fix: removed `useNavigate` from import and removed `const navigate = useNavigate()`. Lint result: **0 errors, 0 warnings**.
+
+Classification: line 54 is on an untouched line (U-1/U-2 edits were at 81, 183/186/199/292/294). Formally pre-existing, but the project standard is lint 0 — fixed unconditionally.
+
+### 2. AIWarnings useCallback stability — refetch loop risk confirmed and fixed
+
+`showError` (= `error` from `useToast()`) was NOT a stable reference. `ToastContext.jsx` defined `success`/`error`/`warning`/`info` as inline arrow functions recreated on every `ToastProvider` render. Because `ToastProvider` re-renders whenever any toast is added/removed (its `toasts` state changes), and because `AIWarnings` is a context consumer (re-renders with it), the `useCallback([showError, t])` dep would change → `fetchWarnings` recreated → `useEffect([fetchWarnings])` fires → new API call. Any toast shown anywhere in the app while AIWarnings was mounted would trigger a spurious re-fetch.
+
+Fix applied to `shared/context/ToastContext.jsx`:
+- `addToast` and `removeToast` wrapped with `useCallback(fn, [])` — stable since they only use the `setToasts` callback form
+- `success`/`error`/`warning`/`info` wrapped with `useCallback(fn, [addToast])` — stable because `addToast` is stable
+- Context value memoized with `useMemo([toasts, ...all stable fns])` — context consumers only re-render when `toasts` actually changes
+
+`t` from `react-i18next`: stable in production (i18next only changes `t` on language change). The test mock was updated to the stable pattern (`const t = ...` defined once in factory, not per-call) matching the pattern established in U-5. A new test was added:
+
+**Test 7 (new):** "fetches exactly once on mount — stable showError ref prevents refetch loop" — renders, waits for data, asserts `api.get.mock.calls.length === 1`. Confirms no secondary fetch fires.
+
+### 3. U-10 coverage gap — honest record
+
+ReceptionManagement and DocumentApprovalQueue have **smoke tests only** (mounts-without-crash). They do NOT have behavioral tests asserting endpoint URL, HTTP method, request params, or response rendering for CRUD operations (create/approve/reject/delete).
+
+This is a known gap, not an error. Behavioral tests for these pages are a candidate for S7 when those pages are next touched for feature work. Recorded here so S4 (confirm clean) and S8 (final verify) have an accurate picture.
+
+**Final state after closeout:**
+- lint: 0 (was 1 warning)
+- tests: 95 / 18 suites (was 94; +1 stability test)
+- ToastContext stability: confirmed fixed
+- U-10 coverage gap: recorded
+
+---
+
 ## Deferred items (NOT in S3 — feature phase)
 
 - **AD-018 / CP-011**: Bulk import UI for admin (no backend route consumed by admin yet)

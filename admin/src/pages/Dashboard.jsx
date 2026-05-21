@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -51,7 +51,6 @@ const RatingBar = ({ star, width, count }) => {
 const Dashboard = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
   const [stats, setStats]               = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [receptions, setReceptions]     = useState(() => cache.get(CACHE_KEY)?.receptions ?? []);
