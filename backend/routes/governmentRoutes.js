@@ -46,7 +46,7 @@ import {
 } from '../validators/governmentUserValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { authenticate, requireGovernment, requireRole } from '../middleware/auth.js';
-import { requireRegionScope } from '../middleware/regionScope.js';
+import { requireRegionScope, requireGovAccess } from '../middleware/regionScope.js';
 
 const router = express.Router();
 
@@ -60,10 +60,10 @@ router.use(requireRegionScope);
 
 // Statistics
 router.get('/overview', getOverview);
-router.get('/schools', getSchoolsStats);
-router.get('/schools/:id', getSchoolById);
-router.put('/schools/:id/archive', archiveSchool);
-router.put('/schools/:id/reactivate', reactivateSchool);
+router.get('/schools', requireGovAccess('canViewSchools'), getSchoolsStats);
+router.get('/schools/:id', requireGovAccess('canViewSchools'), getSchoolById);
+router.put('/schools/:id/archive', requireGovAccess('canArchiveSchools'), archiveSchool);
+router.put('/schools/:id/reactivate', requireGovAccess('canArchiveSchools'), reactivateSchool);
 router.get('/students', getStudentsStats);    // Available for future students directory page
 router.get('/teachers', getTeachersList);     // Available for future teachers directory page
 router.get('/parents', getParentsList);       // Available for future parents directory page

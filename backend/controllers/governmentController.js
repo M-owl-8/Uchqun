@@ -10,6 +10,7 @@ import logger from '../utils/logger.js';
 import { logAudit } from '../utils/auditLogger.js';
 import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAverageRating } from '../utils/governmentLevel.js';
 import { parsePagination } from '../utils/pagination.js';
+import { regionWhere } from '../middleware/regionScope.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const isValidUuid = (s) => UUID_RE.test(s);
@@ -124,7 +125,7 @@ export const getSchoolsStats = async (req, res) => {
   try {
     const { limit, offset } = parsePagination(req.query, { limit: 50 });
 
-    const where = { isActive: true };
+    const where = { isActive: true, ...regionWhere(req) };
 
     let schools;
     let includesLoaded = true;
@@ -263,7 +264,7 @@ export const getSchoolById = async (req, res) => {
       return res.status(400).json({ error: 'Invalid school ID' });
     }
 
-    const school = await School.findOne({ where: { id } });
+    const school = await School.findOne({ where: { id, ...regionWhere(req) } });
     if (!school) {
       return res.status(404).json({ error: 'School not found' });
     }
@@ -930,7 +931,7 @@ export const getAdminDetails = async (req, res) => {
 export const archiveSchool = async (req, res) => {
   const { id } = req.params;
   try {
-    const school = await School.findByPk(id);
+    const school = await School.findOne({ where: { id, ...regionWhere(req) } });
     if (!school) {
       return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
     }
@@ -961,7 +962,7 @@ export const archiveSchool = async (req, res) => {
 export const reactivateSchool = async (req, res) => {
   const { id } = req.params;
   try {
-    const school = await School.findByPk(id);
+    const school = await School.findOne({ where: { id, ...regionWhere(req) } });
     if (!school) {
       return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
     }

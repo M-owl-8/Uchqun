@@ -50,6 +50,8 @@ const govReq = (id) => ({
   user: { id: 'g1', role: 'government' },
   params: { id },
   query: {},
+  isGlobalAccess: true,
+  govType: 'main',
 });
 
 const SCHOOL_ID = '00000000-0000-0000-0000-000000000001';

@@ -1,11 +1,11 @@
 import { jest } from '@jest/globals';
 
-const mockSchoolFindByPk = jest.fn();
+const mockSchoolFindOne = jest.fn();
 const mockSchoolUpdate = jest.fn();
 const mockLogAudit = jest.fn();
 
 jest.unstable_mockModule('../models/School.js', () => ({
-  default: { findByPk: mockSchoolFindByPk },
+  default: { findOne: mockSchoolFindOne },
 }));
 jest.unstable_mockModule('../models/GovernmentStats.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({ default: {} }));
@@ -41,6 +41,8 @@ const govReq = (id) => ({
   user: { id: 'g1', role: 'government' },
   params: { id },
   body: {},
+  isGlobalAccess: true,
+  govType: 'main',
 });
 
 const SCHOOL_ID = '00000000-0000-0000-0000-000000000001';
@@ -50,7 +52,7 @@ describe('archiveSchool', () => {
 
   it('archives an active school and returns 200', async () => {
     const school = { id: SCHOOL_ID, name: 'Test School', isActive: true, update: mockSchoolUpdate };
-    mockSchoolFindByPk.mockResolvedValue(school);
+    mockSchoolFindOne.mockResolvedValue(school);
     mockSchoolUpdate.mockResolvedValue({ ...school, isActive: false });
 
     const res = mkRes();
@@ -64,7 +66,7 @@ describe('archiveSchool', () => {
   });
 
   it('404 when school not found', async () => {
-    mockSchoolFindByPk.mockResolvedValue(null);
+    mockSchoolFindOne.mockResolvedValue(null);
     const res = mkRes();
     await archiveSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(404);
@@ -74,7 +76,7 @@ describe('archiveSchool', () => {
   });
 
   it('409 when school is already archived', async () => {
-    mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_ID, isActive: false, update: mockSchoolUpdate });
+    mockSchoolFindOne.mockResolvedValue({ id: SCHOOL_ID, isActive: false, update: mockSchoolUpdate });
     const res = mkRes();
     await archiveSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(409);
@@ -85,7 +87,7 @@ describe('archiveSchool', () => {
 
   it('writes audit log before update so archive is always traceable', async () => {
     const school = { id: SCHOOL_ID, name: 'Test', isActive: true, update: mockSchoolUpdate };
-    mockSchoolFindByPk.mockResolvedValue(school);
+    mockSchoolFindOne.mockResolvedValue(school);
     mockSchoolUpdate.mockRejectedValue(new Error('db down'));
 
     const res = mkRes();
@@ -96,7 +98,7 @@ describe('archiveSchool', () => {
   });
 
   it('500 on unexpected DB error', async () => {
-    mockSchoolFindByPk.mockRejectedValue(new Error('db down'));
+    mockSchoolFindOne.mockRejectedValue(new Error('db down'));
     const res = mkRes();
     await archiveSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(500);
@@ -111,7 +113,7 @@ describe('reactivateSchool', () => {
 
   it('reactivates an archived school and returns 200', async () => {
     const school = { id: SCHOOL_ID, name: 'Test School', isActive: false, update: mockSchoolUpdate };
-    mockSchoolFindByPk.mockResolvedValue(school);
+    mockSchoolFindOne.mockResolvedValue(school);
     mockSchoolUpdate.mockResolvedValue({ ...school, isActive: true });
 
     const res = mkRes();
@@ -125,7 +127,7 @@ describe('reactivateSchool', () => {
   });
 
   it('404 when school not found', async () => {
-    mockSchoolFindByPk.mockResolvedValue(null);
+    mockSchoolFindOne.mockResolvedValue(null);
     const res = mkRes();
     await reactivateSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(404);
@@ -135,7 +137,7 @@ describe('reactivateSchool', () => {
   });
 
   it('409 when school is already active', async () => {
-    mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_ID, isActive: true, update: mockSchoolUpdate });
+    mockSchoolFindOne.mockResolvedValue({ id: SCHOOL_ID, isActive: true, update: mockSchoolUpdate });
     const res = mkRes();
     await reactivateSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(409);
@@ -146,7 +148,7 @@ describe('reactivateSchool', () => {
 
   it('writes audit log before update so reactivation is always traceable', async () => {
     const school = { id: SCHOOL_ID, name: 'Test', isActive: false, update: mockSchoolUpdate };
-    mockSchoolFindByPk.mockResolvedValue(school);
+    mockSchoolFindOne.mockResolvedValue(school);
     mockSchoolUpdate.mockRejectedValue(new Error('db down'));
 
     const res = mkRes();
@@ -157,7 +159,7 @@ describe('reactivateSchool', () => {
   });
 
   it('500 on unexpected DB error', async () => {
-    mockSchoolFindByPk.mockRejectedValue(new Error('db down'));
+    mockSchoolFindOne.mockRejectedValue(new Error('db down'));
     const res = mkRes();
     await reactivateSchool(govReq(SCHOOL_ID), res);
     expect(res.status).toHaveBeenCalledWith(500);
