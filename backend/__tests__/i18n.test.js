@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const I18N_DIR = join(process.cwd(), 'i18n');
 const LANG_FILES = ['ru.json', 'uz-latn.json', 'uz-cyrl.json'];
-const EXPECTED_CODE_COUNT = 108;
+const EXPECTED_CODE_COUNT = 110;
 
 function loadFile(filename) {
   return JSON.parse(readFileSync(join(I18N_DIR, filename), 'utf-8'));
@@ -70,7 +70,7 @@ describe('i18n translation files', () => {
     });
   }
 
-  it('all three files cover the same 108 keys', () => {
+  it('all three files cover the same 110 keys', () => {
     const allKeys = LANG_FILES.map((f) => {
       const data = loadFile(f);
       return new Set(Object.keys(data).filter((k) => k !== '_metadata'));

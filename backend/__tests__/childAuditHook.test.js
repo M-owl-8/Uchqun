@@ -90,8 +90,9 @@ jest.unstable_mockModule('../models/Child.js', () => ({
   },
 }));
 
+const mockModel = () => ({ hasMany: jest.fn(), belongsTo: jest.fn(), hasOne: jest.fn(), addScope: jest.fn(), afterDestroy: jest.fn() });
 jest.unstable_mockModule('../config/database.js', () => ({
-  default: { authenticate: jest.fn(), sync: jest.fn() },
+  default: { authenticate: jest.fn(), sync: jest.fn(), define: jest.fn().mockReturnValue(mockModel()) },
 }));
 
 // Loading index.js registers the hook

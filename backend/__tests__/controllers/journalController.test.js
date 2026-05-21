@@ -94,8 +94,9 @@ jest.unstable_mockModule('../../models/TeacherReflection.js', () => ({ default: 
 jest.unstable_mockModule('../../models/ImportJob.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/ChildGoal.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));
 jest.unstable_mockModule('../../models/ChildGoalReview.js', () => ({ default: { belongsTo: jest.fn() } }));
+const mockModel = () => ({ hasMany: jest.fn(), belongsTo: jest.fn(), hasOne: jest.fn(), addScope: jest.fn(), afterDestroy: jest.fn() });
 jest.unstable_mockModule('../../config/database.js', () => ({
-  default: { authenticate: jest.fn(), sync: jest.fn() },
+  default: { authenticate: jest.fn(), sync: jest.fn(), define: jest.fn().mockReturnValue(mockModel()) },
 }));
 jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
   logAudit: jest.fn(async (entry) => { await mockAuditCreate(entry); }),
