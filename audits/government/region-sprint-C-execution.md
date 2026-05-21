@@ -13,6 +13,7 @@
 | 2 | `148138c` | feat(backend): region-scope student/teacher/parent directories via school join (CP-021 retrofit) |
 | 3 | `be8f8ce` | feat(backend): region-scope audit log via school subquery join (CP-021 retrofit) |
 | 4 | `893f612` | feat(backend): region-scope remaining government endpoints + capability gates (CP-021 retrofit) |
+| 5 | `8d4ff0c` | fix(backend): close region-scoping holes on admin/registration/message mutations (CP-021) |
 
 ---
 
@@ -32,36 +33,34 @@
 | `GET /ratings/:schoolId` | ✅ `School.findOne(regionWhere)` IDOR | `canViewRatings` | ✅ | |
 | `GET /admins` | ✅ school-join | `canManageAdmins` | ✅ | design §2.3 #9 |
 | `GET /admins/:id` | ✅ `School.findOne` IDOR check | `canManageAdmins` | ✅ | |
-| `POST /admins` | 🟡 gate only | `canManageAdmins` | 🟡 | mutation not region-checked; region accounts need grant |
-| `PUT /admins/:id` | 🟡 gate only | `canManageAdmins` | 🟡 | same as above |
-| `DELETE /admins/:id` | 🟡 gate only | `canManageAdmins` | 🟡 | same as above |
+| `POST /admins` | ✅ schoolId validated against region | `canManageAdmins` | ✅ | Commit 5 |
+| `PUT /admins/:id` | ✅ School.findOne(regionWhere) IDOR | `canManageAdmins` | ✅ | Commit 5 |
+| `DELETE /admins/:id` | ✅ School.findOne(regionWhere) IDOR | `canManageAdmins` | ✅ | Commit 5 |
 | `GET /audit-log` | ✅ school subquery join | `canViewAuditLog` | ✅ | design §2.3 #8 — hardest case |
 | `GET /users` | ✅ Sprint B (getGovernments) | `canManageGovernmentUsers` | ✅ | |
 | `POST /users` | ✅ Sprint B (createGovernment) | `canManageGovernmentUsers` | ✅ | |
 | `PUT /users/:id` | ✅ Sprint B (updateGovernmentUser) | `canManageGovernmentUsers` | ✅ | |
 | `DELETE /users/:id` | ✅ Sprint B (deleteGovernmentUser) | `canManageGovernmentUsers` | ✅ | |
 | `PUT /users/:id/reset-password` | ✅ Sprint B (resetGovernmentPassword) | `canManageGovernmentUsers` | ✅ | |
-| `GET /messages` | 🟡 gate only | `canViewMessages` | 🟡 | 3-hop join (message→sender→school→region) not implemented |
-| `POST /messages/:id/reply` | 🟡 gate only | `canViewMessages` | 🟡 | same |
-| `PUT /messages/:id/read` | 🟡 gate only | `canViewMessages` | 🟡 | same |
-| `DELETE /messages/:id` | 🟡 gate only | `canViewMessages` | 🟡 | same |
+| `GET /messages` | ✅ 3-step school-join (school→user→message) | `canViewMessages` | ✅ | Commit 5 |
+| `POST /messages/:id/reply` | ✅ isMessageInScope() root-sender check | `canViewMessages` | ✅ | Commit 5 |
+| `PUT /messages/:id/read` | ✅ isMessageInScope() root-sender check | `canViewMessages` | ✅ | Commit 5 |
+| `DELETE /messages/:id` | ✅ isMessageInScope() root-sender check | `canViewMessages` | ✅ | Commit 5 |
 | `GET /admin-registrations` | ✅ school-join | `canManageRegistrations` | ✅ | |
-| `POST /admin-registrations/:id/approve` | 🟡 gate only | `canManageRegistrations` | 🟡 | mutation validates specific request, region check deferred |
-| `POST /admin-registrations/:id/reject` | 🟡 gate only | `canManageRegistrations` | 🟡 | same |
+| `POST /admin-registrations/:id/approve` | ✅ School.findOne(regionWhere) on request's schoolId | `canManageRegistrations` | ✅ | Commit 5 |
+| `POST /admin-registrations/:id/reject` | ✅ School.findOne(regionWhere) on request's schoolId | `canManageRegistrations` | ✅ | Commit 5 |
 | `POST /stats/generate` | 🟡 no gate, no scope | — | 🟡 | future feature endpoint, noted in route comment |
 | `GET /stats` | 🟡 no gate, no scope | — | 🟡 | GovernmentStats has no regionId — deferred to Sprint D |
 
-**Legend:** ✅ fully scoped · 🟡 partial (gate present but region filter deferred)
+**Legend:** ✅ fully scoped · 🟡 partial (gate present but region filter deferred or N/A)
 
-### Yellow gate summary
+### Yellow entries (remaining, by design)
 
-- **Admin mutations (POST/PUT/DELETE /admins)**: Read paths fully scoped; mutations carry capability gate (`canManageAdmins`) which is deny-by-default for secondary accounts. A region account with the grant could theoretically update an out-of-scope admin if they know the UUID. Low risk: all government accounts have `mustChangePassword=true` on provisioning, and the grant is not auto-assigned. Sprint D recommendation: add `School.findOne(regionWhere)` check before the mutation.
+- **Stats (generate/saved)**: Future feature endpoints with no real-user usage. `GovernmentStats` model has no `regionId`. Deferred to Sprint D.
 
-- **Messages (GET/reply/read/delete /messages)**: `GovernmentMessage` has `senderId` but no `schoolId` or `regionId`. Region scoping would require a 3-hop join (message → sender → users.schoolId → schools.regionId). Capability gate is in place. Deferred to Sprint D.
+### Design decision: messages — join vs. denormalization
 
-- **Registration mutations (approve/reject)**: The `getRegistrationRequests` list endpoint IS scoped by school join. Approve/reject operate on a specific `requestId` — a region account could approve a request from another region if they have the requestId. Gate is in place. Sprint D: add school-region IDOR check before approve/reject.
-
-- **Stats (generate/saved)**: Future feature endpoints with no real-user usage. `GovernmentStats` model has no `regionId`. Deferred.
+The message scoping (Hole 3) was implemented as a 3-step in-app query rather than denormalizing a `regionId` onto `government_messages`. Rationale: a migration would be required, and the join adds only 2 extra queries on a low-frequency endpoint (region accounts rarely browse message volumes large enough to matter). If profiling later shows this is slow, denormalizing `regionId` at write time is the correct fix.
 
 ---
 
@@ -164,16 +163,27 @@ if (!req.isGlobalAccess) {
 
 ## Verification
 
+### After Commits 1–4
+
 | Check | Result |
 |-------|--------|
 | Test suites | 101 passed / 0 failed |
 | Total tests | 1079 passed / 0 failed |
 | Lint | 0 errors, 0 warnings |
 | verify-i18n | 123 codes · ru ✅ · uz-latn ✅ · uz-cyrl ✅ |
-| Design §2.3 endpoints (10) | All 10 scoped ✅ |
-| Revert-tests (all 10 + audit subquery) | All present ✅ |
 
-**Test growth:** 1025 (Sprint B baseline) → 1079 (+54 tests across 4 commits)
+### After Commit 5 (holes closed)
+
+| Check | Result |
+|-------|--------|
+| Test suites | 102 passed / 0 failed |
+| Total tests | 1104 passed / 0 failed |
+| Lint | 0 errors, 0 warnings |
+| verify-i18n | 123 codes · ru ✅ · uz-latn ✅ · uz-cyrl ✅ |
+| All government data endpoints region-scoped | ✅ confirmed |
+| Revert-test pairs (all 3 holes) | Present in governmentScopingHoles.test.js ✅ |
+
+**Test growth:** 1025 (Sprint B baseline) → 1079 (Commits 1–4, +54) → 1104 (Commit 5, +25)
 
 ---
 
@@ -183,17 +193,15 @@ if (!req.isGlobalAccess) {
 |----------|-----------|
 | 404 (not 403) for out-of-scope resources | Correct security posture — don't confirm existence of out-of-scope resources |
 | Non-school audit events excluded for region accounts | Only republic-level governance manages admins and gov users across regions |
-| Admin mutations left as yellow gates | Capability gate (deny-by-default) + read-path scoping provides sufficient isolation for current risk level |
-| Messages left as yellow gates | 3-hop join (message→sender→school→region) deferred; gate in place |
+| Messages scoped via 3-step join (not denormalization) | No migration required; join adds 2 queries on low-frequency endpoint; denormalize later if slow |
+| Reply/read/delete scope via resolveRootSenderId | Reply messages have gov sender (no schoolId); root sender's school determines region ownership |
 | `getOverview` not gated by capability | Overview stats are the dashboard landing page; restricting it would lock out accounts with no grants |
+| Stats endpoints remain yellow | Future feature, no real-user usage, `GovernmentStats` has no `regionId` |
 
 ---
 
 ## Open items (carry to Sprint D+)
 
-- **Sprint D**: Admin mutation region check (POST/PUT/DELETE /admins)
-- **Sprint D**: Messages region scope (3-hop join)
-- **Sprint D**: Registration approve/reject IDOR check
 - **Sprint D**: GovernmentStats regionId — deferred from stats endpoints
 - **FRONTEND**: Government portal sprint C UI — region-aware school/people/audit views
 - **CP-019**: UI notice for AI-generated translations (all portals)
