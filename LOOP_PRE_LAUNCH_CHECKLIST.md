@@ -4,7 +4,7 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-20 (Ops infrastructure verification — PL-006/007/008 ✅)
+**Last updated:** 2026-05-21 (Government S6 — PL-014 directory PII sign-off added)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
 
 ---
@@ -17,6 +17,7 @@ Items without an owner or ETA are blocking unless explicitly deprioritised by th
 | PL-002 | **C-07: CORS explicit allowlist** — CORS already uses exact `allowedOrigins.includes(origin)` (fixed in commit c1bd08d). Added 6 regression tests (`__tests__/cors.test.js` PL-002 suite) including revert-test for substring vulnerability. `env.example` updated with `FRONTEND_URL` format docs. | ✅ Resolved | Code was already correct. Tests added to prevent regression. `FRONTEND_URL` must still be set in Railway (PL-008). |
 | PL-003 | **npm audit remediation** — `npm audit fix` fixed `ws` vulnerability; `npm audit fix --force` upgraded `sqlite3` 5→6 and `file-type` 19→22. All 919 tests pass. **Note:** `file-type` is a production dependency (mediaController, receptionController) — not dev-only as SECURITY.md stated. SECURITY.md corrected. | ✅ Resolved | `npm audit` now shows 0 vulnerabilities. sqlite3@6.0.1 and file-type@22.0.1 validated by full test suite. |
 | PL-004 | **Parent account deactivation documentation** — `isActive` bypass for parents is intentional and documented in CLAUDE.md. Confirm product decision: "Parent accounts are only suspendable (via status field, T2-2) and deletable (soft-delete) — not deactivatable via isActive." | ✅ Resolved | T2-2 implemented; CLAUDE.md updated at Backend S8 to document status field as canonical gate. LQ-001 closed. |
+| PL-014 | **Directory PII sign-off** — The Students, Teachers, and Parents directory pages expose personal data (names, emails, phones, dates of birth) of students, teachers, and parents to central government users. Before these directories are used with real users, product and legal sign-off is required under ZRU-547 (same framework as PL-001). Directories may be built and demonstrated; real-user launch with real PII requires sign-off. | ⬜ Not started | Required before real users are exposed to the Students, Teachers, and Parents directory pages. See Government S6 feature plan S2-F04/F05/F06. |
 
 ---
 
