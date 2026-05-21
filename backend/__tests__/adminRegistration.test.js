@@ -23,6 +23,9 @@ jest.unstable_mockModule('../controllers/authController.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
 
 const { approveRegistrationRequest, rejectRegistrationRequest } = await import('../controllers/adminRegistrationController.js');
 

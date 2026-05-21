@@ -12,6 +12,7 @@ import sequelize from '../config/database.js';
 import { uploadFile, deleteFile } from '../config/storage.js';
 import fs from 'fs';
 import { generateSetPasswordToken } from './authController.js';
+import { logAudit } from '../utils/auditLogger.js';
 
 const TELEGRAM_USERNAME_RE = /^[a-zA-Z0-9_]{5,32}$/;
 
@@ -388,6 +389,12 @@ export const approveRegistrationRequest = async (req, res) => {
     const adminPanelUrl = process.env.ADMIN_PANEL_URL || 'http://localhost:5175';
     const setPasswordUrl = `${adminPanelUrl}/set-password?token=${setPasswordToken}`;
 
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'approve_registration', entity: 'admin_registrations', entityId: id,
+      meta: { adminUserId: adminUser.id, email: request.email },
+    });
+
     logger.info('Admin registration request approved', {
       requestId: id,
       adminUserId: adminUser.id,
@@ -450,6 +457,12 @@ export const rejectRegistrationRequest = async (req, res) => {
     request.reviewedAt = new Date();
     request.rejectionReason = reason?.trim() || null;
     await request.save();
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'reject_registration', entity: 'admin_registrations', entityId: id,
+      meta: { reason: reason?.trim() || null },
+    });
 
     logger.info('Admin registration request rejected', {
       requestId: id,

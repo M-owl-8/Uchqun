@@ -1,5 +1,6 @@
 import User from '../../models/User.js';
 import logger from '../../utils/logger.js';
+import { logAudit } from '../../utils/auditLogger.js';
 
 /**
  * Get all Admin accounts (Government view)
@@ -52,6 +53,12 @@ export const updateAdmin = async (req, res) => {
 
     await admin.save();
 
+    logAudit({
+      actorId: req.user?.id, actorRole: req.user?.role,
+      action: 'update', entity: 'admins', entityId: admin.id,
+      meta: { email: admin.email },
+    });
+
     res.json({
       success: true,
       message: 'Admin updated successfully',
@@ -86,6 +93,12 @@ export const deleteAdmin = async (req, res) => {
     if (dependentUsers > 0) {
       return res.status(409).json({ error: 'Cannot delete admin with dependent users. Please reassign or delete dependent accounts first.' });
     }
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'delete', entity: 'admins', entityId: admin.id,
+      meta: { email: admin.email },
+    });
 
     await admin.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 
@@ -137,6 +150,12 @@ export const createAdmin = async (req, res) => {
       firstName,
       lastName,
       role: 'admin',
+    });
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'create', entity: 'admins', entityId: admin.id,
+      meta: { email: admin.email },
     });
 
     logger.info('Admin account created', {
@@ -199,6 +218,12 @@ export const createGovernment = async (req, res) => {
     // Remove password from response
     const governmentData = government.toJSON();
     delete governmentData.password;
+
+    logAudit({
+      actorId: req.user?.id, actorRole: req.user?.role,
+      action: 'create', entity: 'government_users', entityId: government.id,
+      meta: { email: government.email },
+    });
 
     logger.info('Government account created', {
       governmentId: government.id,
@@ -309,6 +334,12 @@ export const updateGovernmentUser = async (req, res) => {
     const governmentData = government.toJSON();
     delete governmentData.password;
 
+    logAudit({
+      actorId: req.user?.id, actorRole: req.user?.role,
+      action: 'update', entity: 'government_users', entityId: government.id,
+      meta: { email: government.email },
+    });
+
     logger.info('Government account updated', {
       governmentId: government.id,
       updatedBy: req.user?.id,
@@ -342,6 +373,12 @@ export const deleteGovernmentUser = async (req, res) => {
     if (req.user?.id === government.id) {
       return res.status(400).json({ error: 'You cannot delete your own account' });
     }
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'delete', entity: 'government_users', entityId: government.id,
+      meta: { email: government.email },
+    });
 
     await government.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 

@@ -20,6 +20,9 @@ jest.unstable_mockModule('../models/User.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
 
 const {
   getAdmins, updateAdmin, deleteAdmin,
