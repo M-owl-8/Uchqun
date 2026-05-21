@@ -12,7 +12,6 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import AdminRegister from './pages/AdminRegister';
 import Dashboard from './pages/Dashboard';
-import UsersStats from './pages/UsersStats';
 import ReceptionManagement from './pages/ReceptionManagement';
 import ParentManagement from './pages/ParentManagement';
 import TeacherManagement from './pages/TeacherManagement';
@@ -62,8 +61,7 @@ const AppRoutes = () => {
         <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
         <Route path="groups" element={<ErrorBoundary><GroupManagement /></ErrorBoundary>} />
         <Route path="school-ratings" element={<ErrorBoundary><SchoolRatings /></ErrorBoundary>} />
-        <Route path="users" element={<ErrorBoundary><UsersStats /></ErrorBoundary>} />
-        <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
+<Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
         <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
         <Route path="documents" element={<ErrorBoundary><DocumentApprovalQueue /></ErrorBoundary>} />
         <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
