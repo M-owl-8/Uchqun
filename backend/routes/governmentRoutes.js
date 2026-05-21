@@ -67,35 +67,35 @@ router.put('/schools/:id/reactivate', requireGovAccess('canArchiveSchools'), rea
 router.get('/students', requireGovAccess('canViewStudents'), getStudentsStats);
 router.get('/teachers', requireGovAccess('canViewTeachers'), getTeachersList);
 router.get('/parents', requireGovAccess('canViewParents'), getParentsList);
-router.get('/ratings', getRatingsStats);
-router.get('/ratings/:schoolId', getSchoolRatings);
+router.get('/ratings', requireGovAccess('canViewRatings'), getRatingsStats);
+router.get('/ratings/:schoolId', requireGovAccess('canViewRatings'), getSchoolRatings);
 router.post('/stats/generate', generateStats);  // Available for future stats snapshot feature
 router.get('/stats', getSavedStats);             // Available for future stats snapshot feature
 
 // Admin management
-router.get('/admins', getAdmins);
-router.get('/admins/:id', getAdminDetails);
-router.post('/admins', createAdminValidator, handleValidationErrors, createAdmin);
-router.put('/admins/:id', updateAdminValidator, handleValidationErrors, updateAdmin);
-router.delete('/admins/:id', deleteAdminValidator, handleValidationErrors, deleteAdmin);
+router.get('/admins', requireGovAccess('canManageAdmins'), getAdmins);
+router.get('/admins/:id', requireGovAccess('canManageAdmins'), getAdminDetails);
+router.post('/admins', requireGovAccess('canManageAdmins'), createAdminValidator, handleValidationErrors, createAdmin);
+router.put('/admins/:id', requireGovAccess('canManageAdmins'), updateAdminValidator, handleValidationErrors, updateAdmin);
+router.delete('/admins/:id', requireGovAccess('canManageAdmins'), deleteAdminValidator, handleValidationErrors, deleteAdmin);
 
 // Government user management (additional government accounts)
-router.get('/users', getGovernments);
-router.post('/users', createGovernment);
-router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, updateGovernmentUser);
-router.delete('/users/:id', deleteGovernmentUser);
-router.put('/users/:id/reset-password', resetGovernmentPassword);
+router.get('/users', requireGovAccess('canManageGovernmentUsers'), getGovernments);
+router.post('/users', requireGovAccess('canManageGovernmentUsers'), createGovernment);
+router.put('/users/:id', requireGovAccess('canManageGovernmentUsers'), updateGovernmentValidator, handleValidationErrors, updateGovernmentUser);
+router.delete('/users/:id', requireGovAccess('canManageGovernmentUsers'), deleteGovernmentUser);
+router.put('/users/:id/reset-password', requireGovAccess('canManageGovernmentUsers'), resetGovernmentPassword);
 
 // User messages
-router.get('/messages', getAllMessages);
-router.post('/messages/:id/reply', replyToMessage);
-router.put('/messages/:id/read', markMessageRead);
-router.delete('/messages/:id', deleteMessage);
+router.get('/messages', requireGovAccess('canViewMessages'), getAllMessages);
+router.post('/messages/:id/reply', requireGovAccess('canViewMessages'), replyToMessage);
+router.put('/messages/:id/read', requireGovAccess('canViewMessages'), markMessageRead);
+router.delete('/messages/:id', requireGovAccess('canViewMessages'), deleteMessage);
 
 // Admin registration requests
-router.get('/admin-registrations', getRegistrationRequests);
-router.post('/admin-registrations/:id/approve', approveRegistrationRequest);
-router.post('/admin-registrations/:id/reject', rejectRegistrationRequest);
+router.get('/admin-registrations', requireGovAccess('canManageRegistrations'), getRegistrationRequests);
+router.post('/admin-registrations/:id/approve', requireGovAccess('canManageRegistrations'), approveRegistrationRequest);
+router.post('/admin-registrations/:id/reject', requireGovAccess('canManageRegistrations'), rejectRegistrationRequest);
 
 // Governance audit log (scoped to governance/school-lifecycle events only)
 router.get('/audit-log', requireGovAccess('canViewAuditLog'), getAuditLog);

@@ -232,6 +232,15 @@ export const getRegistrationRequests = async (req, res) => {
       where.status = status;
     }
 
+    // Region accounts see only registration requests for schools in their region.
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({
+        where: { regionId: req.regionScope },
+        attributes: ['id'],
+      });
+      where.schoolId = { [Op.in]: schoolsInRegion.map(s => s.id) };
+    }
+
     const { count, rows: requests } = await AdminRegistrationRequest.findAndCountAll({
       where,
       order: [['createdAt', 'DESC']],

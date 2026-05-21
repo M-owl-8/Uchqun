@@ -52,7 +52,7 @@ describe('governmentController.getOverview', () => {
     mockSchoolRatingFindAll.mockResolvedValue([{ stars: 5 }, { stars: 3 }]);
     mockAIWarningCount.mockResolvedValue(2);
 
-    const req = { query: {}, user: { role: 'government' } };
+    const req = { query: {}, user: { role: 'government' }, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getOverview(req, res);
 
@@ -78,7 +78,7 @@ describe('governmentController.getOverview', () => {
     mockSchoolRatingFindAll.mockResolvedValue([]);
     mockAIWarningCount.mockResolvedValue(0);
 
-    const req = { query: {}, user: { role: 'government' } };
+    const req = { query: {}, user: { role: 'government' }, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getOverview(req, res);
 

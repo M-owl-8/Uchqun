@@ -35,9 +35,18 @@ export const getOverview = async (req, res) => {
       where.district = district;
     }
 
-    // Build school filter (government can optionally filter by region/school)
-    const schoolWhere = { isActive: true, ...where };
+    // Build school filter: always start with isActive + optional legacy text filters.
+    // For region accounts, additionally restrict to their region via regionWhere.
+    const schoolWhere = { isActive: true, ...where, ...regionWhere(req) };
     const schoolIdFilter = req.query.schoolId && isValidUuid(req.query.schoolId) ? { schoolId: req.query.schoolId } : {};
+
+    // For region accounts resolve school IDs once so all people counts use the same boundary.
+    let regionSchoolIds = null;
+    if (!req.isGlobalAccess) {
+      const regionSchools = await School.findAll({ where: { regionId: req.regionScope }, attributes: ['id'] });
+      regionSchoolIds = regionSchools.map(s => s.id);
+    }
+    const schoolIdInFilter = regionSchoolIds ? { [Op.in]: regionSchoolIds } : undefined;
 
     // Get schools count
     let schoolsCount = 0;
@@ -50,7 +59,9 @@ export const getOverview = async (req, res) => {
     // Get total students (filtered by school if specified)
     let studentsCount = 0;
     try {
-      studentsCount = await Child.count({ where: schoolIdFilter });
+      const childWhere = { ...schoolIdFilter };
+      if (schoolIdInFilter) childWhere.schoolId = schoolIdInFilter;
+      studentsCount = await Child.count({ where: childWhere });
     } catch (error) {
       logger.warn('Failed to count students', { error: error.message });
     }
@@ -58,7 +69,9 @@ export const getOverview = async (req, res) => {
     // Get total teachers (filtered by school if specified)
     let teachersCount = 0;
     try {
-      teachersCount = await User.count({ where: { role: 'teacher', ...schoolIdFilter } });
+      const teacherWhere = { role: 'teacher', ...schoolIdFilter };
+      if (schoolIdInFilter) teacherWhere.schoolId = schoolIdInFilter;
+      teachersCount = await User.count({ where: teacherWhere });
     } catch (error) {
       logger.warn('Failed to count teachers', { error: error.message });
     }
@@ -66,7 +79,9 @@ export const getOverview = async (req, res) => {
     // Get total parents (filtered by school if specified)
     let parentsCount = 0;
     try {
-      parentsCount = await User.count({ where: { role: 'parent', ...schoolIdFilter } });
+      const parentWhere = { role: 'parent', ...schoolIdFilter };
+      if (schoolIdInFilter) parentWhere.schoolId = schoolIdInFilter;
+      parentsCount = await User.count({ where: parentWhere });
     } catch (error) {
       logger.warn('Failed to count parents', { error: error.message });
     }
@@ -74,7 +89,9 @@ export const getOverview = async (req, res) => {
     // Get average school rating (supports both stars and evaluation formats)
     let avgRating = 0;
     try {
+      const ratingWhere = schoolIdInFilter ? { schoolId: schoolIdInFilter } : {};
       const ratings = await SchoolRating.findAll({
+        where: ratingWhere,
         attributes: ['stars', 'evaluation'],
       });
       const result = computeAverageRating(ratings);
@@ -86,9 +103,9 @@ export const getOverview = async (req, res) => {
     // Get active warnings
     let warningsCount = 0;
     try {
-      warningsCount = await AIWarning.count({
-        where: { isResolved: false },
-      });
+      const warningWhere = { isResolved: false };
+      if (schoolIdInFilter) warningWhere.schoolId = schoolIdInFilter;
+      warningsCount = await AIWarning.count({ where: warningWhere });
     } catch (error) {
       logger.warn('Failed to count warnings', { error: error.message });
     }
@@ -476,14 +493,14 @@ export const getRatingsStats = async (req, res) => {
         includeOptions.where = ratingWhere;
       }
       schools = await School.findAll({
-        where: { isActive: true },
+        where: { isActive: true, ...regionWhere(req) },
         include: [includeOptions],
       });
     } catch (includeError) {
       logger.warn('Ratings include failed, using fallback', { error: includeError.message });
       ratingsIncluded = false;
       schools = await School.findAll({
-        where: { isActive: true },
+        where: { isActive: true, ...regionWhere(req) },
       });
     }
 
@@ -716,6 +733,13 @@ export const getSchoolRatings = async (req, res) => {
     if (!isValidUuid(schoolId)) {
       return res.status(400).json({ error: 'Invalid school ID' });
     }
+
+    // Region accounts may only query ratings for schools in their own region.
+    const schoolCheck = await School.findOne({ where: { id: schoolId, ...regionWhere(req) } });
+    if (!schoolCheck) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
+    }
+
     const { limit, offset } = parsePagination(req.query, { limit: 10 });
 
     const { count, rows } = await SchoolRating.findAndCountAll({
@@ -806,8 +830,17 @@ export const getAdmins = async (req, res) => {
   try {
     const { limit, offset } = parsePagination(req.query, { limit: 100 });
 
+    const where = { role: 'admin' };
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({
+        where: { regionId: req.regionScope },
+        attributes: ['id'],
+      });
+      where.schoolId = { [Op.in]: schoolsInRegion.map(s => s.id) };
+    }
+
     const { count, rows: admins } = await User.findAndCountAll({
-      where: { role: 'admin' },
+      where,
       attributes: { exclude: ['password'] },
       order: [['createdAt', 'DESC']],
       limit,
@@ -853,6 +886,15 @@ export const getAdminDetails = async (req, res) => {
     });
 
     if (!admin) {
+      return res.status(404).json({ error: 'Admin not found' });
+    }
+
+    // Region accounts may only view admins whose school belongs to their region.
+    if (!req.isGlobalAccess && admin.schoolId) {
+      const school = await School.findOne({ where: { id: admin.schoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'Admin not found' });
+    } else if (!req.isGlobalAccess && !admin.schoolId) {
+      // Admin with no school assigned is not visible to region accounts.
       return res.status(404).json({ error: 'Admin not found' });
     }
 
