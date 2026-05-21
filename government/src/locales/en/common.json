@@ -12,7 +12,10 @@
     "logout": "Logout"
   },
   "sidebar": {
-    "title": "Government Panel"
+    "title": "Government Panel",
+    "republic": "Republic",
+    "regionAccount": "Region",
+    "secondary": "secondary"
   },
   "login": {
     "title": "Government Control Panel",
@@ -345,6 +348,19 @@
     "resolve": "Resolve",
     "resolved": "Resolved",
     "school": "School"
+  },
+  "changePasswordForced": {
+    "title": "Change Password",
+    "subtitle": "You must set a new password before continuing.",
+    "current": "Current Password",
+    "new": "New Password",
+    "confirm": "Confirm New Password",
+    "button": "Change Password",
+    "mismatch": "New passwords do not match",
+    "tooShort": "Password must be at least 8 characters",
+    "weakPassword": "Password must contain uppercase, lowercase, and a number",
+    "error": "Failed to change password",
+    "incorrect": "Current password is incorrect"
   },
   "common": {
     "loading": "Loading...",

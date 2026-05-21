@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { I18nextProvider } from 'react-i18next';
@@ -21,9 +21,11 @@ import SchoolDetail from './pages/SchoolDetail';
 import AuditLog from './pages/AuditLog';
 import AIWarnings from './pages/AIWarnings';
 import NotFound from './pages/NotFound';
+import ChangePassword from './pages/ChangePassword';
 
 const AppRoutes = () => {
-  const { isAuthenticated, isGovernment, loading } = useAuth();
+  const { isAuthenticated, isGovernment, loading, mustChangePassword } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -31,6 +33,12 @@ const AppRoutes = () => {
         <LoadingSpinner size="lg" />
       </div>
     );
+  }
+
+  // Block all navigation when mustChangePassword is true, except the change-password page itself.
+  const isChangePasswordPage = location.pathname === '/government/change-password';
+  if (isAuthenticated && mustChangePassword && !isChangePasswordPage) {
+    return <Navigate to="/government/change-password" replace />;
   }
 
   return (
@@ -46,6 +54,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="change-password" element={<ErrorBoundary><ChangePassword /></ErrorBoundary>} />
         <Route path="schools" element={<ErrorBoundary><Schools /></ErrorBoundary>} />
         <Route path="schools/:id" element={<ErrorBoundary><SchoolDetail /></ErrorBoundary>} />
         <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />

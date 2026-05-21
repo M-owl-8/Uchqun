@@ -14,7 +14,10 @@
     "warnings": "Ogohlantirishlar"
   },
   "sidebar": {
-    "title": "Davlat Panel"
+    "title": "Davlat Panel",
+    "republic": "Respublika",
+    "regionAccount": "Viloyat",
+    "secondary": "ikkilamchi"
   },
   "login": {
     "title": "Davlat Nazorat Paneli",
@@ -386,5 +389,19 @@
     "total": "Jami",
     "prev": "Oldingi",
     "next": "Keyingi"
+  },
+  "changePasswordForced": {
+    "_note": "UNVERIFIED — AI-generated translation",
+    "title": "Parolni o'zgartirish",
+    "subtitle": "Davom etishdan oldin yangi parol o'rnatishingiz kerak.",
+    "current": "Joriy parol",
+    "new": "Yangi parol",
+    "confirm": "Yangi parolni tasdiqlang",
+    "button": "Parolni o'zgartirish",
+    "mismatch": "Yangi parollar mos kelmadi",
+    "tooShort": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+    "weakPassword": "Parol katta va kichik harflar hamda raqamdan iborat bo'lishi kerak",
+    "error": "Parolni o'zgartirishda xatolik yuz berdi",
+    "incorrect": "Joriy parol noto'g'ri"
   }
 }
