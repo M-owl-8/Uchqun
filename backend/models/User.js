@@ -109,6 +109,30 @@ const User = sequelize.define('User', {
       key: 'id',
     },
   },
+  // Government role fields — null for all non-government roles.
+  govLevel: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+    validate: { isIn: [['republic', 'region']] },
+  },
+  govType: {
+    type: DataTypes.STRING(20),
+    allowNull: true,
+    validate: { isIn: [['main', 'secondary']] },
+  },
+  govRegionId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
+  govAccessGrants: {
+    type: DataTypes.JSONB,
+    allowNull: true,
+  },
+  mustChangePassword: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: false,
+  },
   // Teacher rating system
   rating: {
     type: DataTypes.FLOAT,

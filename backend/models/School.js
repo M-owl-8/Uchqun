@@ -49,6 +49,17 @@ const School = sequelize.define('School', {
     defaultValue: true,
     allowNull: false,
   },
+  // CP-021: region FK. Null until PL-015 data-swap (Sprint D).
+  // requireRegionScope uses this for isolation; region string field is display-only.
+  regionId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
+  // CP-021: district FK. Metadata-only; not used for auth enforcement.
+  districtId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
 }, {
   tableName: 'schools',
   timestamps: true,

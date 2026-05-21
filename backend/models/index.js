@@ -1,5 +1,7 @@
 import sequelize from '../config/database.js';
 import logger from '../utils/logger.js';
+import Region from './Region.js';
+import District from './District.js';
 import User from './User.js';
 import Document from './Document.js';
 import ParentActivity from './ParentActivity.js';
@@ -45,6 +47,8 @@ import ChildGoalReview from './ChildGoalReview.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
+  Region,
+  District,
   User,
   Document,
   ParentActivity,
@@ -91,6 +95,24 @@ const models = {
 };
 
 // ─── Associations ─────────────────────────────────────────────────────────────
+
+// === CP-021 Region model ===
+
+// Region ↔ District
+Region.hasMany(District, { foreignKey: 'regionId', as: 'districts' });
+District.belongsTo(Region, { foreignKey: 'regionId', as: 'region' });
+
+// Region ↔ School (constraints: false — regionId is nullable during backfill period)
+Region.hasMany(School, { foreignKey: 'regionId', as: 'schools', constraints: false });
+School.belongsTo(Region, { foreignKey: 'regionId', as: 'region', constraints: false });
+
+// District ↔ School (metadata-only, not used for auth)
+District.hasMany(School, { foreignKey: 'districtId', as: 'schools', constraints: false });
+School.belongsTo(District, { foreignKey: 'districtId', as: 'district', constraints: false });
+
+// Region ↔ User (govRegionId; constraints: false — null for republic accounts)
+Region.hasMany(User, { foreignKey: 'govRegionId', as: 'govUsers', constraints: false });
+User.belongsTo(Region, { foreignKey: 'govRegionId', as: 'govRegion', constraints: false });
 
 // === User & Auth ===
 
@@ -754,6 +776,8 @@ export const syncDatabase = async (force = false) => {
 export default models;
 
 export {
+  Region,
+  District,
   User,
   Document,
   ParentActivity,
