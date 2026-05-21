@@ -1,5 +1,11 @@
 {
   "nav": {
+    "section": {
+      "management": "Management",
+      "documents": "Documents",
+      "reports": "Reports",
+      "settings": "Settings"
+    },
     "dashboard": "Dashboard",
     "receptions": "Reception Management",
     "pnts": "Pnts",

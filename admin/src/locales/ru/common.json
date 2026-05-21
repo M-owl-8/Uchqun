@@ -1,5 +1,11 @@
 {
   "nav": {
+    "section": {
+      "management": "Управление",
+      "documents": "Документы",
+      "reports": "Отчёты",
+      "settings": "Настройки"
+    },
     "dashboard": "Главная",
     "receptions": "Приемы",
     "parents": "Родители",

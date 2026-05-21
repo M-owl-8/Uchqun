@@ -18,7 +18,7 @@ import {
 
 const NAV_SECTIONS = [
   {
-    label: 'Boshqaruv',
+    labelKey: 'nav.section.management',
     items: [
       { key: 'nav.dashboard',       href: '/admin',                icon: LayoutDashboard },
       { key: 'nav.receptions',      href: '/admin/receptions',     icon: Users },
@@ -27,13 +27,13 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: 'Hujjatlar',
+    labelKey: 'nav.section.documents',
     items: [
       { key: 'nav.documents',       href: '/admin/documents',      icon: FileCheck2 },
     ],
   },
   {
-    label: 'Hisobotlar',
+    labelKey: 'nav.section.reports',
     items: [
       { key: 'nav.aiWarnings',      href: '/admin/ai-warnings',    icon: BellRing },
       { key: 'nav.schoolRatings',   href: '/admin/school-ratings', icon: BarChart3 },
@@ -41,7 +41,7 @@ const NAV_SECTIONS = [
     ],
   },
   {
-    label: 'Sozlamalar',
+    labelKey: 'nav.section.settings',
     items: [
       { key: 'nav.settings',        href: '/admin/settings',       icon: Settings },
       { key: 'nav.profile',         href: '/admin/profile',        icon: User },
@@ -114,9 +114,9 @@ const Sidebar = ({ onClose }) => {
       {/* Nav */}
       <nav className="px-3 flex-1 overflow-y-auto space-y-5">
         {NAV_SECTIONS.map((section) => (
-          <div key={section.label}>
+          <div key={section.labelKey}>
             <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-1.5">
-              {section.label}
+              {t(section.labelKey, { defaultValue: section.labelKey })}
             </p>
             <div className="space-y-0.5">
               {section.items.map((item) => (

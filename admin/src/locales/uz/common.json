@@ -1,5 +1,11 @@
 {
   "nav": {
+    "section": {
+      "management": "Boshqaruv",
+      "documents": "Hujjatlar",
+      "reports": "Hisobotlar",
+      "settings": "Sozlamalar"
+    },
     "dashboard": "Bosh sahifa",
     "receptions": "Qabul boshqaruvi",
     "parents": "Ota-onalar",
