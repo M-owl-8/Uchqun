@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
@@ -22,10 +22,12 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import DocumentApprovalQueue from './pages/DocumentApprovalQueue';
 import AIWarnings from './pages/AIWarnings';
+import ChangePassword from './pages/ChangePassword';
 import NotFound from './pages/NotFound';
 
 const AppRoutes = () => {
-  const { isAuthenticated, isAdmin, loading } = useAuth();
+  const { isAuthenticated, isAdmin, loading, mustChangePassword } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -33,6 +35,11 @@ const AppRoutes = () => {
         <LoadingSpinner size="lg" />
       </div>
     );
+  }
+
+  const isChangePasswordPage = location.pathname === '/admin/change-password';
+  if (isAuthenticated && isAdmin && mustChangePassword && !isChangePasswordPage) {
+    return <Navigate to="/admin/change-password" replace />;
   }
 
   return (
@@ -49,6 +56,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="change-password" element={<ErrorBoundary><ChangePassword /></ErrorBoundary>} />
         <Route path="receptions" element={<ErrorBoundary><ReceptionManagement /></ErrorBoundary>} />
         <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
         <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />

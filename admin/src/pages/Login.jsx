@@ -22,7 +22,7 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      navigate('/admin');
+      navigate(result.mustChangePassword ? '/admin/change-password' : '/admin');
     } else {
       if (result.status === 429) setError(t('login.accountLocked'));
       else if (result.status === 403) setError(t('login.notApproved'));

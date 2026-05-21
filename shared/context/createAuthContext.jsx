@@ -102,6 +102,7 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
         isParent: role === 'parent',
         isGovernment: role === 'government',
         isBusiness: role === 'business',
+        mustChangePassword: user?.mustChangePassword === true,
       }}>
         {children}
       </AuthContext.Provider>
