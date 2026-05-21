@@ -339,6 +339,16 @@ export const approveRegistrationRequest = async (req, res) => {
       return res.status(404).json({ error: 'Registration request not found' });
     }
 
+    // Region accounts may only approve requests for schools in their region.
+    if (!req.isGlobalAccess) {
+      const targetSchoolId = schoolId || request.schoolId;
+      if (!targetSchoolId) {
+        return res.status(404).json({ error: 'Registration request not found' });
+      }
+      const school = await School.findOne({ where: { id: targetSchoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'Registration request not found' });
+    }
+
     if (request.status !== 'pending') {
       return res.status(400).json({
         error: `Request is already ${request.status}`,
@@ -452,6 +462,15 @@ export const rejectRegistrationRequest = async (req, res) => {
 
     if (!request) {
       return res.status(404).json({ error: 'Registration request not found' });
+    }
+
+    // Region accounts may only reject requests for schools in their region.
+    if (!req.isGlobalAccess) {
+      if (!request.schoolId) {
+        return res.status(404).json({ error: 'Registration request not found' });
+      }
+      const school = await School.findOne({ where: { id: request.schoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'Registration request not found' });
     }
 
     if (request.status !== 'pending') {

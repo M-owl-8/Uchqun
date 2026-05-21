@@ -24,6 +24,21 @@ jest.unstable_mockModule('../../utils/logger.js', () => ({
 jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
   logAudit: mockLogAudit,
 }));
+jest.unstable_mockModule('../../models/School.js', () => ({
+  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+}));
+jest.unstable_mockModule('../../models/Region.js', () => ({
+  default: { findByPk: jest.fn() },
+}));
+jest.unstable_mockModule('../../middleware/auth.js', () => ({
+  revokeJti: jest.fn(),
+  invalidateUserCache: jest.fn(),
+}));
+jest.unstable_mockModule('../../config/govCapabilities.js', () => ({
+  isValidGrantSet: jest.fn().mockReturnValue(true),
+  unknownGrantKeys: jest.fn().mockReturnValue([]),
+  GOV_CAPABILITIES: [],
+}));
 
 const {
   createAdmin, updateAdmin, deleteAdmin,
@@ -38,7 +53,9 @@ const mkRes = () => {
 };
 
 const govReq = (body = {}, params = {}) => ({
-  user: { id: 'g1', role: 'government' },
+  user: { id: 'g1', role: 'government', govType: 'main', govLevel: 'republic' },
+  isGlobalAccess: true,
+  govType: 'main',
   params,
   body,
 });

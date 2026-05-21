@@ -22,6 +22,9 @@ jest.unstable_mockModule('../models/User.js', () => ({
 jest.unstable_mockModule('../models/Region.js', () => ({
   default: { findByPk: mockRegionFindByPk },
 }));
+jest.unstable_mockModule('../models/School.js', () => ({
+  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+}));
 jest.unstable_mockModule('../middleware/auth.js', () => ({
   revokeJti: mockRevokeJti,
   invalidateUserCache: jest.fn(),
@@ -73,7 +76,7 @@ describe('admin/adminUserController', () => {
       mockFindOne
         .mockResolvedValueOnce({ id: 'a1', email: 'old@x.com', save: jest.fn() })
         .mockResolvedValueOnce({ id: 'other' });
-      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { email: 'new@x.com' } };
+      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { email: 'new@x.com' }, isGlobalAccess: true };
       const res = mkRes();
       await updateAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -83,7 +86,7 @@ describe('admin/adminUserController', () => {
       const save = jest.fn().mockResolvedValue();
       const admin = { id: 'a1', email: 'old@x.com', save, toJSON: () => ({}) };
       mockFindOne.mockResolvedValueOnce(admin);
-      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { firstName: 'New' } };
+      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { firstName: 'New' }, isGlobalAccess: true };
       const res = mkRes();
       await updateAdmin(req, res);
       expect(admin.firstName).toBe('New');
@@ -102,7 +105,7 @@ describe('admin/adminUserController', () => {
 
     it('400 when trying to delete self', async () => {
       mockFindOne.mockResolvedValue({ id: 'g1' });
-      const req = { user: { id: 'g1' }, params: { id: 'g1' } };
+      const req = { user: { id: 'g1' }, params: { id: 'g1' }, isGlobalAccess: true };
       const res = mkRes();
       await deleteAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -111,7 +114,7 @@ describe('admin/adminUserController', () => {
     it('409 when admin has dependents', async () => {
       mockFindOne.mockResolvedValue({ id: 'a1' });
       mockCount.mockResolvedValue(5);
-      const req = { user: { id: 'g1' }, params: { id: 'a1' } };
+      const req = { user: { id: 'g1' }, params: { id: 'a1' }, isGlobalAccess: true };
       const res = mkRes();
       await deleteAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(409);
@@ -121,7 +124,7 @@ describe('admin/adminUserController', () => {
       const destroy = jest.fn().mockResolvedValue();
       mockFindOne.mockResolvedValue({ id: 'a1', destroy });
       mockCount.mockResolvedValue(0);
-      const req = { user: { id: 'g1' }, params: { id: 'a1' } };
+      const req = { user: { id: 'g1' }, params: { id: 'a1' }, isGlobalAccess: true };
       const res = mkRes();
       await deleteAdmin(req, res);
       expect(destroy).toHaveBeenCalled();
@@ -145,7 +148,7 @@ describe('admin/adminUserController', () => {
 
     it('400 when email exists', async () => {
       mockFindOne.mockResolvedValue({ id: 'existing' });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026' } };
+      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026' }, isGlobalAccess: true };
       const res = mkRes();
       await createAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -154,7 +157,7 @@ describe('admin/adminUserController', () => {
     it('creates admin (role=admin) when valid', async () => {
       mockFindOne.mockResolvedValue(null);
       mockCreate.mockResolvedValue({ id: 'a1', email: 'a@x.com', toJSON: () => ({ id: 'a1' }) });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'A@X.COM', password: 'Pass@2026' } };
+      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'A@X.COM', password: 'Pass@2026' }, isGlobalAccess: true };
       const res = mkRes();
       await createAdmin(req, res);
       expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({

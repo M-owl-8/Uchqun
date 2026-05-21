@@ -8,7 +8,12 @@ const mockFindByPk = jest.fn();
 jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { create: mockCreate, findAndCountAll: mockFindAndCountAll, findByPk: mockFindByPk },
 }));
-jest.unstable_mockModule('../models/User.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/School.js', () => ({
+  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+}));
+jest.unstable_mockModule('../models/User.js', () => ({
+  default: { findByPk: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+}));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
@@ -73,7 +78,7 @@ describe('governmentMessageController', () => {
     it('#06-003 returns messages and pagination', async () => {
       const m = { toJSON: () => ({ id: 'm1' }) };
       mockFindAndCountAll.mockResolvedValue({ rows: [m], count: 1 });
-      const req = { query: {} };
+      const req = { query: {}, isGlobalAccess: true };
       const res = mkRes();
       await getAllMessages(req, res);
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
@@ -85,7 +90,7 @@ describe('governmentMessageController', () => {
 
     it('#06-003 filters by isRead query', async () => {
       mockFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
-      const req = { query: { isRead: 'false' } };
+      const req = { query: { isRead: 'false' }, isGlobalAccess: true };
       const res = mkRes();
       await getAllMessages(req, res);
       const where = mockFindAndCountAll.mock.calls[0][0].where;
@@ -125,7 +130,7 @@ describe('governmentMessageController', () => {
 
   describe('replyToMessage', () => {
     it('#06-003 400 when reply empty', async () => {
-      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: '   ' } };
+      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: '   ' }, isGlobalAccess: true };
       const res = mkRes();
       await replyToMessage(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -136,7 +141,7 @@ describe('governmentMessageController', () => {
       const parent = { id: VALID_ID, subject: 'Hello', isRead: true, save, toJSON: () => ({}) };
       mockFindByPk.mockResolvedValue(parent);
       mockCreate.mockResolvedValue({ id: 'reply-1', toJSON: () => ({ id: 'reply-1' }) });
-      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: 'thanks' } };
+      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: 'thanks' }, isGlobalAccess: true };
       const res = mkRes();
       await replyToMessage(req, res);
       expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({
@@ -153,7 +158,7 @@ describe('governmentMessageController', () => {
       const parent = { id: VALID_ID, subject: 'Q', isRead: false, save, toJSON: () => ({}) };
       mockFindByPk.mockResolvedValue(parent);
       mockCreate.mockResolvedValue({ id: 'r2', toJSON: () => ({}) });
-      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: 'noted' } };
+      const req = { params: { id: VALID_ID }, user: { id: 'gov1' }, body: { reply: 'noted' }, isGlobalAccess: true };
       const res = mkRes();
       await replyToMessage(req, res);
       expect(parent.isRead).toBe(true);
@@ -166,7 +171,7 @@ describe('governmentMessageController', () => {
       const save = jest.fn().mockResolvedValue();
       const m = { id: VALID_ID, save, toJSON: () => ({}) };
       mockFindByPk.mockResolvedValue(m);
-      const req = { params: { id: VALID_ID }, body: { isRead: false } };
+      const req = { params: { id: VALID_ID }, body: { isRead: false }, isGlobalAccess: true };
       const res = mkRes();
       await markMessageRead(req, res);
       expect(m.isRead).toBe(false);
@@ -177,7 +182,7 @@ describe('governmentMessageController', () => {
   describe('deleteMessage', () => {
     it('#06-003 404 when not found', async () => {
       mockFindByPk.mockResolvedValue(null);
-      const req = { params: { id: VALID_ID } };
+      const req = { params: { id: VALID_ID }, isGlobalAccess: true };
       const res = mkRes();
       await deleteMessage(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
@@ -186,7 +191,7 @@ describe('governmentMessageController', () => {
     it('#06-003 destroys when found', async () => {
       const destroy = jest.fn().mockResolvedValue();
       mockFindByPk.mockResolvedValue({ id: VALID_ID, destroy });
-      const req = { params: { id: VALID_ID } };
+      const req = { params: { id: VALID_ID }, isGlobalAccess: true };
       const res = mkRes();
       await deleteMessage(req, res);
       expect(destroy).toHaveBeenCalled();

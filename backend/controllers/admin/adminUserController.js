@@ -1,4 +1,5 @@
 import User from '../../models/User.js';
+import School from '../../models/School.js';
 import Region from '../../models/Region.js';
 import logger from '../../utils/logger.js';
 import { logAudit } from '../../utils/auditLogger.js';
@@ -39,6 +40,13 @@ export const updateAdmin = async (req, res) => {
     const admin = await User.findOne({ where: { id, role: 'admin' } });
     if (!admin) {
       return res.status(404).json({ error: 'Admin not found' });
+    }
+
+    // Region accounts may only update admins whose school belongs to their region.
+    if (!req.isGlobalAccess) {
+      if (!admin.schoolId) return res.status(404).json({ error: 'Admin not found' });
+      const school = await School.findOne({ where: { id: admin.schoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'Admin not found' });
     }
 
     if (email && email.toLowerCase() !== admin.email) {
@@ -86,6 +94,13 @@ export const deleteAdmin = async (req, res) => {
       return res.status(404).json({ error: 'Admin not found' });
     }
 
+    // Region accounts may only delete admins whose school belongs to their region.
+    if (!req.isGlobalAccess) {
+      if (!admin.schoolId) return res.status(404).json({ error: 'Admin not found' });
+      const school = await School.findOne({ where: { id: admin.schoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'Admin not found' });
+    }
+
     // Prevent deleting self
     if (req.user?.id === admin.id) {
       return res.status(400).json({ error: 'You cannot delete your own account' });
@@ -121,7 +136,7 @@ export const deleteAdmin = async (req, res) => {
  */
 export const createAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, role: _role } = req.body;
+    const { firstName, lastName, email, password, schoolId, role: _role } = req.body;
 
     if (!firstName || !lastName || !email || !password) {
       return res.status(400).json({
@@ -142,6 +157,12 @@ export const createAdmin = async (req, res) => {
       return res.status(400).json({ error: 'Password must be at least 8 characters and contain uppercase, lowercase, and a digit' });
     }
 
+    // Region accounts may only assign admins to schools within their region.
+    if (!req.isGlobalAccess && schoolId) {
+      const school = await School.findOne({ where: { id: schoolId, regionId: req.regionScope } });
+      if (!school) return res.status(404).json({ error: 'School not found in your region' });
+    }
+
     const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
@@ -153,6 +174,7 @@ export const createAdmin = async (req, res) => {
       firstName,
       lastName,
       role: 'admin',
+      ...(schoolId && { schoolId }),
     });
 
     logAudit({

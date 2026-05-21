@@ -1,8 +1,31 @@
 import GovernmentMessage from '../models/GovernmentMessage.js';
 import User from '../models/User.js';
+import School from '../models/School.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
+
+// Resolves the root (top-level) sender for a message.
+// Returns null if the message is a reply with no resolvable root, or if the
+// sender has no schoolId (government senders — republic-only visibility).
+const resolveRootSenderId = async (message) => {
+  if (message.parentMessageId) {
+    const parent = await GovernmentMessage.findByPk(message.parentMessageId, { attributes: ['senderId'] });
+    return parent?.senderId ?? null;
+  }
+  return message.senderId ?? null;
+};
+
+// Returns true if the message's root sender belongs to a school in regionScope.
+// Senders with no schoolId (government senders) return false → republic-only.
+const isMessageInScope = async (message, regionScope) => {
+  const rootSenderId = await resolveRootSenderId(message);
+  if (!rootSenderId) return false;
+  const sender = await User.findByPk(rootSenderId, { attributes: ['schoolId'] });
+  if (!sender || !sender.schoolId) return false;
+  const school = await School.findOne({ where: { id: sender.schoolId, regionId: regionScope } });
+  return !!school;
+};
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const isValidUuid = (s) => UUID_RE.test(s);
@@ -88,6 +111,21 @@ export const getAllMessages = async (req, res) => {
         { subject: { [Op.iLike]: `%${escaped}%` } },
         { message: { [Op.iLike]: `%${escaped}%` } },
       ];
+    }
+
+    // Region scoping: resolve school IDs → sender IDs → filter messages.
+    // Senders with no schoolId (government accounts) are excluded for region accounts.
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({
+        where: { regionId: req.regionScope },
+        attributes: ['id'],
+      });
+      const schoolIds = schoolsInRegion.map(s => s.id);
+      const sendersInRegion = await User.findAll({
+        where: { schoolId: { [Op.in]: schoolIds } },
+        attributes: ['id'],
+      });
+      where.senderId = { [Op.in]: sendersInRegion.map(u => u.id) };
     }
 
     const { count, rows: messages } = await GovernmentMessage.findAndCountAll({
@@ -198,6 +236,10 @@ export const replyToMessage = async (req, res) => {
       return res.status(404).json({ error: 'Message not found' });
     }
 
+    if (!req.isGlobalAccess && !await isMessageInScope(parent, req.regionScope)) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+
     // Create reply as a child message record (thread model)
     const replyMsg = await GovernmentMessage.create({
       senderId: req.user.id,
@@ -246,6 +288,10 @@ export const markMessageRead = async (req, res) => {
       return res.status(404).json({ error: 'Message not found' });
     }
 
+    if (!req.isGlobalAccess && !await isMessageInScope(message, req.regionScope)) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+
     message.isRead = isRead !== false;
     if (message.isRead) {
       message.readAt = new Date();
@@ -276,6 +322,10 @@ export const deleteMessage = async (req, res) => {
 
     const message = await GovernmentMessage.findByPk(id);
     if (!message) {
+      return res.status(404).json({ error: 'Message not found' });
+    }
+
+    if (!req.isGlobalAccess && !await isMessageInScope(message, req.regionScope)) {
       return res.status(404).json({ error: 'Message not found' });
     }
 

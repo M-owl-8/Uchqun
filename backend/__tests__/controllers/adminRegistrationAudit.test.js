@@ -22,7 +22,7 @@ jest.unstable_mockModule('../../config/database.js', () => ({
   default: { transaction: jest.fn(async (cb) => cb({})) },
 }));
 jest.unstable_mockModule('../../models/School.js', () => ({
-  default: { findAll: jest.fn().mockResolvedValue([]), update: jest.fn().mockResolvedValue([0]) },
+  default: { findOne: jest.fn().mockResolvedValue(null), findAll: jest.fn().mockResolvedValue([]), update: jest.fn().mockResolvedValue([0]) },
 }));
 jest.unstable_mockModule('../../controllers/authController.js', () => ({
   generateSetPasswordToken: () => 'fake-token',
@@ -71,6 +71,7 @@ describe('BC-02a: registration audit logging', () => {
         user: { id: 'g1', role: 'government' },
         params: { id: VALID_ID },
         body: {},
+        isGlobalAccess: true,
       };
       await approveRegistrationRequest(req, mkRes());
 
@@ -88,7 +89,7 @@ describe('BC-02a: registration audit logging', () => {
       mockUserFindOne.mockResolvedValue(null);
       mockUserCreate.mockResolvedValue(adminUser);
 
-      const req = { user: { id: 'g1', role: 'government' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1', role: 'government' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       await approveRegistrationRequest(req, mkRes());
       expect(mockUserCreate).toHaveBeenCalled();
     });
@@ -103,6 +104,7 @@ describe('BC-02a: registration audit logging', () => {
         user: { id: 'g1', role: 'government' },
         params: { id: VALID_ID },
         body: { reason: 'Incomplete docs' },
+        isGlobalAccess: true,
       };
       await rejectRegistrationRequest(req, mkRes());
 
@@ -118,7 +120,7 @@ describe('BC-02a: registration audit logging', () => {
       const request = makeRequest();
       mockReqFindByPk.mockResolvedValue(request);
 
-      const req = { user: { id: 'g1', role: 'government' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1', role: 'government' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       await rejectRegistrationRequest(req, mkRes());
       expect(request.save).toHaveBeenCalled();
     });

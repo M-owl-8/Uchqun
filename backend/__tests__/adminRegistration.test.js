@@ -15,7 +15,7 @@ jest.unstable_mockModule('../config/database.js', () => ({
   default: { transaction: jest.fn(async (cb) => cb({})) },
 }));
 jest.unstable_mockModule('../models/School.js', () => ({
-  default: { findAll: jest.fn().mockResolvedValue([]), update: jest.fn().mockResolvedValue([0]) },
+  default: { findOne: jest.fn().mockResolvedValue(null), findAll: jest.fn().mockResolvedValue([]), update: jest.fn().mockResolvedValue([0]) },
 }));
 jest.unstable_mockModule('../controllers/authController.js', () => ({
   generateSetPasswordToken: () => 'fake-token',
@@ -44,7 +44,7 @@ describe('adminRegistrationController', () => {
   describe('approveRegistrationRequest', () => {
     it('404 when request not found', async () => {
       mockReqFindByPk.mockResolvedValue(null);
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await approveRegistrationRequest(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
@@ -52,7 +52,7 @@ describe('adminRegistrationController', () => {
 
     it('400 when already approved', async () => {
       mockReqFindByPk.mockResolvedValue({ id: VALID_ID, status: 'approved' });
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await approveRegistrationRequest(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -61,7 +61,7 @@ describe('adminRegistrationController', () => {
     it('400 when email already registered', async () => {
       mockReqFindByPk.mockResolvedValue({ id: VALID_ID, status: 'pending', email: 'a@x.com' });
       mockUserFindOne.mockResolvedValue({ id: 'existing' });
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await approveRegistrationRequest(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -78,7 +78,7 @@ describe('adminRegistrationController', () => {
       mockReqFindByPk.mockResolvedValue(request);
       mockUserFindOne.mockResolvedValue(null);
       mockUserCreate.mockResolvedValue({ id: 'admin1', toJSON: () => ({ id: 'admin1' }) });
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await approveRegistrationRequest(req, res);
       expect(mockUserCreate).toHaveBeenCalledWith(
@@ -95,7 +95,7 @@ describe('adminRegistrationController', () => {
   describe('rejectRegistrationRequest', () => {
     it('404 when request not found', async () => {
       mockReqFindByPk.mockResolvedValue(null);
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await rejectRegistrationRequest(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
@@ -103,7 +103,7 @@ describe('adminRegistrationController', () => {
 
     it('400 when already rejected', async () => {
       mockReqFindByPk.mockResolvedValue({ id: VALID_ID, status: 'rejected' });
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await rejectRegistrationRequest(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
@@ -113,7 +113,7 @@ describe('adminRegistrationController', () => {
       const save = jest.fn().mockResolvedValue();
       const request = { id: VALID_ID, status: 'pending', save, toJSON: () => ({}) };
       mockReqFindByPk.mockResolvedValue(request);
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: { reason: '  bad docs  ' } };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: { reason: '  bad docs  ' }, isGlobalAccess: true };
       const res = mkRes();
       await rejectRegistrationRequest(req, res);
       expect(request.status).toBe('rejected');
@@ -125,7 +125,7 @@ describe('adminRegistrationController', () => {
       const save = jest.fn().mockResolvedValue();
       const request = { id: VALID_ID, status: 'pending', save, toJSON: () => ({}) };
       mockReqFindByPk.mockResolvedValue(request);
-      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {} };
+      const req = { user: { id: 'g1' }, params: { id: VALID_ID }, body: {}, isGlobalAccess: true };
       const res = mkRes();
       await rejectRegistrationRequest(req, res);
       expect(request.rejectionReason).toBeNull();
