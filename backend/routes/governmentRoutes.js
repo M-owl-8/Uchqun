@@ -14,6 +14,7 @@ import {
   getParentsList,
   archiveSchool,
   reactivateSchool,
+  changeSchoolCategory,
   getAuditLog,
 } from '../controllers/governmentController.js';
 import {
@@ -64,6 +65,7 @@ router.get('/schools', requireGovAccess('canViewSchools'), getSchoolsStats);
 router.get('/schools/:id', requireGovAccess('canViewSchools'), getSchoolById);
 router.put('/schools/:id/archive', requireGovAccess('canArchiveSchools'), archiveSchool);
 router.put('/schools/:id/reactivate', requireGovAccess('canArchiveSchools'), reactivateSchool);
+router.put('/schools/:id/category', changeSchoolCategory);
 router.get('/students', requireGovAccess('canViewStudents'), getStudentsStats);
 router.get('/teachers', requireGovAccess('canViewTeachers'), getTeachersList);
 router.get('/parents', requireGovAccess('canViewParents'), getParentsList);

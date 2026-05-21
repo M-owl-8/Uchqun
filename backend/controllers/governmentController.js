@@ -1,5 +1,6 @@
 import GovernmentStats from '../models/GovernmentStats.js';
 import School from '../models/School.js';
+import SchoolCategory from '../models/SchoolCategory.js';
 import SchoolRating from '../models/SchoolRating.js';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
@@ -1051,6 +1052,59 @@ export const reactivateSchool = async (req, res) => {
   }
 };
 
+/**
+ * Change a school's care-type category.
+ * PUT /api/government/schools/:id/category
+ * Government only. Restricted to main accounts (republic-main = any school; region-main = own region).
+ * Secondary accounts (govType='secondary') cannot change categories regardless of grants.
+ */
+export const changeSchoolCategory = async (req, res) => {
+  const { id } = req.params;
+  try {
+    if (!isValidUuid(id)) {
+      return res.status(400).json({ success: false, error: { code: 'SCHOOL_INVALID_ID' } });
+    }
+
+    if (req.govType !== 'main') {
+      return res.status(403).json({ success: false, error: { code: 'CATEGORY_CHANGE_FORBIDDEN', detail: 'Only main government accounts can change school categories' } });
+    }
+
+    const { categoryId } = req.body;
+    if (!categoryId) {
+      return res.status(400).json({ success: false, error: { code: 'CATEGORY_REQUIRED' } });
+    }
+    if (!isValidUuid(categoryId)) {
+      return res.status(400).json({ success: false, error: { code: 'CATEGORY_INVALID_ID' } });
+    }
+
+    const school = await School.findOne({ where: { id, ...regionWhere(req) } });
+    if (!school) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
+    }
+
+    const category = await SchoolCategory.findByPk(categoryId);
+    if (!category || !category.isActive) {
+      return res.status(400).json({ success: false, error: { code: 'CATEGORY_NOT_FOUND' } });
+    }
+
+    const previousCategoryId = school.categoryId;
+    school.categoryId = categoryId;
+
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role,
+      action: 'change_category', entity: 'schools', entityId: id,
+      meta: { previousCategoryId, newCategoryId: categoryId, categoryCode: category.code },
+    });
+
+    await school.save();
+
+    return res.json({ success: true, data: { id: school.id, categoryId: school.categoryId, categoryCode: category.code } });
+  } catch (error) {
+    logger.error('changeSchoolCategory error', { error: error.message, schoolId: id });
+    return res.status(500).json({ success: false, error: { code: 'CATEGORY_CHANGE_FAILED' } });
+  }
+};
+
 // Server-side allowlist for the government audit-log viewer.
 // Only governance/school-lifecycle events are visible to government.
 // Restore events (restore/children etc.) are EXCLUDED — they carry child-level data
@@ -1058,6 +1112,7 @@ export const reactivateSchool = async (req, res) => {
 const AUDIT_LOG_ALLOWLIST = new Set([
   'archive:schools',
   'reactivate:schools',
+  'change_category:schools',
   'approve_registration:admin_registrations',
   'reject_registration:admin_registrations',
   'create:admins',
