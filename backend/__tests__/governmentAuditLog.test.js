@@ -20,7 +20,7 @@ jest.unstable_mockModule('../models/AuditLog.js', () => ({
   },
 }));
 jest.unstable_mockModule('../models/School.js', () => ({
-  default: { findOne: jest.fn(), findByPk: jest.fn() },
+  default: { findOne: jest.fn(), findByPk: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({
   default: { count: jest.fn().mockResolvedValue(0), findAll: jest.fn(), findAndCountAll: jest.fn() },
@@ -65,6 +65,8 @@ const mkRes = () => {
 
 const govReq = (query = {}) => ({
   user: { id: 'g1', role: 'government' },
+  isGlobalAccess: true,
+  govType: 'main',
   query,
 });
 

@@ -98,6 +98,6 @@ router.post('/admin-registrations/:id/approve', approveRegistrationRequest);
 router.post('/admin-registrations/:id/reject', rejectRegistrationRequest);
 
 // Governance audit log (scoped to governance/school-lifecycle events only)
-router.get('/audit-log', getAuditLog);
+router.get('/audit-log', requireGovAccess('canViewAuditLog'), getAuditLog);
 
 export default router;

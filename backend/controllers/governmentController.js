@@ -1086,6 +1086,19 @@ export const getAuditLog = async (req, res) => {
       if (endDate) where.occurredAt[Op.lte] = new Date(endDate);
     }
 
+    // Region scoping: region accounts see only school lifecycle events for schools
+    // in their region. Non-school events (admin registrations, account management)
+    // are republic-level governance and are excluded for region accounts.
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({
+        where: { regionId: req.regionScope },
+        attributes: ['id'],
+      });
+      const regionSchoolIds = schoolsInRegion.map(s => s.id);
+      where.entity = 'schools';
+      where.entityId = { [Op.in]: regionSchoolIds };
+    }
+
     const { count, rows } = await AuditLog.findAndCountAll({
       where,
       include: [{
