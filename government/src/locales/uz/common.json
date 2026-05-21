@@ -23,7 +23,11 @@
     "error": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
     "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
-    "auditTrail": "Tizimga kirish urinishlari qayd etiladi"
+    "auditTrail": "Tizimga kirish urinishlari qayd etiladi",
+    "rateLimited": "Juda ko'p urinish. Iltimos, bir oz kuting.",
+    "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning.",
+    "showPassword": "Parolni ko'rsatish",
+    "hidePassword": "Parolni yashirish"
   },
   "dashboard": {
     "title": "Davlat Nazorat Paneli",
@@ -45,7 +49,20 @@
     "colEmail": "Email",
     "colDate": "Sana",
     "colStatus": "Holat",
-    "refresh": "Ma'lumotlarni yangilash"
+    "refresh": "Ma'lumotlarni yangilash",
+    "pendingAdmins": "Kutilayotgan admin ro'yxatdan o'tishlari",
+    "activeWarnings": "Faol AI ogohlantirishlari",
+    "andMore": "va yana {{count}} ta",
+    "viewAll": "Barchasini ko'rish",
+    "schoolsMore": "+{{count}} ta maktab ko'proq",
+    "regionalBreakdown": "Mintaqalar bo'yicha",
+    "colRegion": "Mintaqa",
+    "colSchools": "Maktablar",
+    "colAvgRating": "O'rtacha reyting",
+    "noRatings": "Mintaqaviy reyting ma'lumotlari yo'q",
+    "unknownRegion": "Noma'lum mintaqa",
+    "pendingAdminList": "Kutilayotgan ro'yxatdan o'tishlar",
+    "noPendingAdmins": "Kutilayotgan ro'yxatdan o'tishlar yo'q"
   },
   "schools": {
     "title": "Muassasalar",
@@ -60,7 +77,8 @@
     "colType": "Tur",
     "colStudents": "O'quvchilar",
     "colRating": "Reyting",
-    "shown": "ko'rsatilmoqda"
+    "shown": "ko'rsatilmoqda",
+    "exportCSV": "CSV yuklab olish"
   },
   "schoolDetail": {
     "notFound": "Muassasa topilmadi",
@@ -134,7 +152,10 @@
     "inactive": "Nofaol",
     "createdAt": "Yaratilgan sana",
     "logout": "Chiqish",
-    "logoutDesc": "Tizimdan chiqish uchun quyidagi tugmani bosing"
+    "logoutDesc": "Tizimdan chiqish uchun quyidagi tugmani bosing",
+    "governmentRole": "Hukumat amaldori",
+    "save": "Saqlash",
+    "edit": "Tahrirlash"
   },
   "settings": {
     "title": "Sozlamalar",
@@ -293,6 +314,34 @@
       "loadingAdmins": "Adminlar yuklanmoqda...",
       "loadingSchools": "Muassasalar yuklanmoqda..."
     }
+  },
+  "warnings": {
+    "title": "AI Ogohlantirishlari",
+    "subtitle": "Muassasalar bo'yicha avtomatik tahlil natijalari",
+    "refresh": "Yangilash",
+    "kpiActive": "Faol",
+    "severity": {
+      "critical": "Kritik",
+      "high": "Yuqori",
+      "medium": "O'rtacha",
+      "low": "Past"
+    },
+    "filterActive": "Faol",
+    "filterResolved": "Hal qilingan",
+    "loadError": "Ma'lumotlarni yuklashda xatolik yuz berdi",
+    "retry": "Qayta urinish",
+    "loading": "Yuklanmoqda...",
+    "noActive": "Faol ogohlantirishlar yo'q",
+    "noResolved": "Hal qilingan ogohlantirishlar yo'q",
+    "resolveSuccess": "Ogohlantirish hal qilindi",
+    "resolveError": "Hal qilishda xatolik",
+    "resolveTitle": "Hal qilingan deb belgilash",
+    "resolutionNote": "Hal qilish izohi",
+    "resolutionPlaceholder": "Qanday hal qilinganini qisqacha yozing...",
+    "resolving": "Hal qilinmoqda...",
+    "resolve": "Hal qilish",
+    "resolved": "Hal qilindi",
+    "school": "Muassasa"
   },
   "common": {
     "loading": "Yuklanmoqda...",

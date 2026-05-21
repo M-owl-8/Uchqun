@@ -1,4 +1,9 @@
 {
+  "_metadata": {
+    "verification_status": "UNVERIFIED",
+    "generated_by": "AI (Claude)",
+    "review_note": "All Russian translations require native-speaker review before production. See PL-009-VERIFY in LOOP_PRE_LAUNCH_CHECKLIST.md."
+  },
   "nav": {
     "dashboard": "Панель управления",
     "schools": "Школы",
@@ -23,7 +28,11 @@
     "error": "Неверный email или пароль",
     "accountLocked": "Слишком много попыток. Повторите через 15 минут.",
     "notApproved": "Ваш аккаунт ещё не одобрен. Дождитесь подтверждения администратора.",
-    "auditTrail": "Попытки входа записываются"
+    "auditTrail": "Попытки входа записываются",
+    "rateLimited": "Слишком много попыток. Подождите немного.",
+    "accountSuspended": "Ваш аккаунт приостановлен. Обратитесь к администратору.",
+    "showPassword": "Показать пароль",
+    "hidePassword": "Скрыть пароль"
   },
   "dashboard": {
     "title": "Панель государственного контроля",
@@ -45,7 +54,20 @@
     "colEmail": "Email",
     "colDate": "Дата",
     "colStatus": "Статус",
-    "refresh": "Обновить данные"
+    "refresh": "Обновить данные",
+    "pendingAdmins": "Ожидающие регистрации администраторов",
+    "activeWarnings": "Активные ИИ-предупреждения",
+    "andMore": "и ещё {{count}}",
+    "viewAll": "Посмотреть все",
+    "schoolsMore": "ещё {{count}} школ",
+    "regionalBreakdown": "По регионам",
+    "colRegion": "Регион",
+    "colSchools": "Школы",
+    "colAvgRating": "Средний рейтинг",
+    "noRatings": "Нет данных о региональных рейтингах",
+    "unknownRegion": "Неизвестный регион",
+    "pendingAdminList": "Ожидающие регистрации",
+    "noPendingAdmins": "Нет ожидающих регистраций"
   },
   "schools": {
     "title": "Школы",
@@ -60,7 +82,8 @@
     "colType": "Тип",
     "colStudents": "Ученики",
     "colRating": "Рейтинг",
-    "shown": "показано"
+    "shown": "показано",
+    "exportCSV": "Экспортировать CSV"
   },
   "schoolDetail": {
     "notFound": "Школа не найдена",
@@ -134,7 +157,10 @@
     "inactive": "Неактивен",
     "createdAt": "Дата создания",
     "logout": "Выйти",
-    "logoutDesc": "Нажмите кнопку ниже, чтобы выйти из системы"
+    "logoutDesc": "Нажмите кнопку ниже, чтобы выйти из системы",
+    "governmentRole": "Государственный чиновник",
+    "save": "Сохранить",
+    "edit": "Редактировать"
   },
   "settings": {
     "title": "Настройки",
@@ -293,6 +319,34 @@
       "loadingAdmins": "Загрузка администраторов...",
       "loadingSchools": "Загрузка школ..."
     }
+  },
+  "warnings": {
+    "title": "ИИ-предупреждения",
+    "subtitle": "Результаты автоматического анализа по учреждениям",
+    "refresh": "Обновить",
+    "kpiActive": "Активные",
+    "severity": {
+      "critical": "Критический",
+      "high": "Высокий",
+      "medium": "Средний",
+      "low": "Низкий"
+    },
+    "filterActive": "Активные",
+    "filterResolved": "Решённые",
+    "loadError": "Не удалось загрузить данные",
+    "retry": "Повторить",
+    "loading": "Загрузка...",
+    "noActive": "Нет активных предупреждений",
+    "noResolved": "Нет решённых предупреждений",
+    "resolveSuccess": "Предупреждение решено",
+    "resolveError": "Не удалось решить",
+    "resolveTitle": "Пометить как решённое",
+    "resolutionNote": "Примечание к решению",
+    "resolutionPlaceholder": "Кратко опишите, как это было решено...",
+    "resolving": "Решение...",
+    "resolve": "Решить",
+    "resolved": "Решено",
+    "school": "Учреждение"
   },
   "common": {
     "loading": "Загрузка...",

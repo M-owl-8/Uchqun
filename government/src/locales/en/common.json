@@ -23,7 +23,11 @@
     "error": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
     "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
-    "auditTrail": "Login attempts are recorded"
+    "auditTrail": "Login attempts are recorded",
+    "rateLimited": "Too many attempts. Please wait a moment.",
+    "accountSuspended": "Your account has been suspended. Please contact your administrator.",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password"
   },
   "dashboard": {
     "title": "Government Control Panel",
@@ -45,7 +49,20 @@
     "colEmail": "Email",
     "colDate": "Date",
     "colStatus": "Status",
-    "refresh": "Refresh data"
+    "refresh": "Refresh data",
+    "pendingAdmins": "Pending admin registrations",
+    "activeWarnings": "Active AI warnings",
+    "andMore": "and {{count}} more",
+    "viewAll": "View all",
+    "schoolsMore": "+{{count}} more schools",
+    "regionalBreakdown": "Regional breakdown",
+    "colRegion": "Region",
+    "colSchools": "Schools",
+    "colAvgRating": "Average rating",
+    "noRatings": "No regional rating data",
+    "unknownRegion": "Unknown region",
+    "pendingAdminList": "Pending registrations",
+    "noPendingAdmins": "No pending registrations"
   },
   "schools": {
     "title": "Schools",
@@ -60,7 +77,8 @@
     "colType": "Type",
     "colStudents": "Students",
     "colRating": "Rating",
-    "shown": "shown"
+    "shown": "shown",
+    "exportCSV": "Export CSV"
   },
   "schoolDetail": {
     "notFound": "School not found",
@@ -134,7 +152,10 @@
     "inactive": "Inactive",
     "createdAt": "Created date",
     "logout": "Logout",
-    "logoutDesc": "Click the button below to log out of the system"
+    "logoutDesc": "Click the button below to log out of the system",
+    "governmentRole": "Government official",
+    "save": "Save",
+    "edit": "Edit"
   },
   "settings": {
     "title": "Settings",
@@ -289,10 +310,39 @@
     "submittedAt": "Submitted:",
     "passport": "Passport",
     "address": "Address",
+    "confirmReject": "Reject this request?",
     "status": {
       "loadingAdmins": "Loading admins...",
       "loadingSchools": "Loading schools..."
     }
+  },
+  "warnings": {
+    "title": "AI Warnings",
+    "subtitle": "Automated analysis results across schools",
+    "refresh": "Refresh",
+    "kpiActive": "Active",
+    "severity": {
+      "critical": "Critical",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "filterActive": "Active",
+    "filterResolved": "Resolved",
+    "loadError": "Failed to load data",
+    "retry": "Retry",
+    "loading": "Loading...",
+    "noActive": "No active warnings",
+    "noResolved": "No resolved warnings",
+    "resolveSuccess": "Warning resolved",
+    "resolveError": "Failed to resolve",
+    "resolveTitle": "Mark as resolved",
+    "resolutionNote": "Resolution note",
+    "resolutionPlaceholder": "Briefly describe how it was resolved...",
+    "resolving": "Resolving...",
+    "resolve": "Resolve",
+    "resolved": "Resolved",
+    "school": "School"
   },
   "common": {
     "loading": "Loading...",
