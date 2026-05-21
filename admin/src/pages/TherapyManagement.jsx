@@ -2,6 +2,7 @@
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
@@ -46,6 +47,7 @@ const TherapyManagement = () => {
     tags: '',
   });
   const [saving, setSaving] = useState(false);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
@@ -133,18 +135,20 @@ const TherapyManagement = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!confirm(t('therapy.confirmDelete', { defaultValue: 'Terapiyani o\'chirishni tasdiqlaysizmi?' }))) {
-      return;
-    }
-
-    try {
-      await api.delete(`/therapy/${id}`);
-      success(t('therapy.deleteSuccess', { defaultValue: 'Terapiya o\'chirildi' }));
-      fetchTherapies();
-    } catch (error) {
-      showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
-    }
+  const handleDelete = (id) => {
+    setConfirmDialog({
+      message: t('therapy.confirmDelete', { defaultValue: "Terapiyani o'chirishni tasdiqlaysizmi?" }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/therapy/${id}`);
+          success(t('therapy.deleteSuccess', { defaultValue: "Terapiya o'chirildi" }));
+          fetchTherapies();
+        } catch (error) {
+          showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: "O'chirishda xatolik" }));
+        }
+      },
+    });
   };
 
   const getTherapyIcon = (type) => {
@@ -539,6 +543,11 @@ const TherapyManagement = () => {
           </div>
         </div>
       )}
+
+      <ConfirmDialog
+        dialog={confirmDialog}
+        onCancel={() => setConfirmDialog(null)}
+      />
     </div>
   );
 };

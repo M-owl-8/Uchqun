@@ -13,6 +13,7 @@ import {
   User,
   ShieldCheck,
   LogOut,
+  Brain,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -36,6 +37,7 @@ const NAV_SECTIONS = [
     items: [
       { key: 'nav.aiWarnings',      href: '/admin/ai-warnings',    icon: BellRing },
       { key: 'nav.schoolRatings',   href: '/admin/school-ratings', icon: BarChart3 },
+      { key: 'nav.therapy',         href: '/admin/therapy',        icon: Brain },
     ],
   },
   {

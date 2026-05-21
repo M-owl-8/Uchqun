@@ -21,6 +21,7 @@ import Profile from './pages/Profile';
 import Settings from './pages/Settings';
 import DocumentApprovalQueue from './pages/DocumentApprovalQueue';
 import AIWarnings from './pages/AIWarnings';
+import TherapyManagement from './pages/TherapyManagement';
 import ChangePassword from './pages/ChangePassword';
 import NotFound from './pages/NotFound';
 
@@ -65,6 +66,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
         <Route path="documents" element={<ErrorBoundary><DocumentApprovalQueue /></ErrorBoundary>} />
         <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
+        <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
       </Route>
 
       <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />
