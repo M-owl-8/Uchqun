@@ -3,12 +3,15 @@ import { jest } from '@jest/globals';
 const mockFindAndCount = jest.fn();
 const mockFindByPk = jest.fn();
 const mockSchoolFindAll = jest.fn();
+const mockSchoolFindOne = jest.fn();
 
 jest.unstable_mockModule('../models/AIWarning.js', () => ({
   default: { findAndCountAll: mockFindAndCount, findByPk: mockFindByPk, create: jest.fn() },
 }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: jest.fn() } }));
-jest.unstable_mockModule('../models/School.js', () => ({ default: { findAll: mockSchoolFindAll } }));
+jest.unstable_mockModule('../models/School.js', () => ({
+  default: { findAll: mockSchoolFindAll, findOne: mockSchoolFindOne },
+}));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/Notification.js', () => ({ default: { create: jest.fn() } }));
@@ -122,17 +125,77 @@ describe('aiWarningController', () => {
       expect(update).not.toHaveBeenCalled();
     });
 
-    it('government: resolves warning from any school (platform-wide)', async () => {
+    it('government republic (govRegionId=null): resolves warning from any school (platform-wide)', async () => {
       const update = jest.fn().mockResolvedValue();
       mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
       const req = {
-        user: { id: 'g1', role: 'government', schoolId: 'SCHOOL_A' },
+        user: { id: 'g1', role: 'government', govRegionId: null },
         params: { id: 'w1' },
         body: {},
       };
       const res = mkRes();
       await resolveWarning(req, res);
       expect(update).toHaveBeenCalled();
+      expect(mockSchoolFindOne).not.toHaveBeenCalled();
+    });
+
+    it('government region account: 404 when warning belongs to different region school (CLOSEOUT)', async () => {
+      const update = jest.fn();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
+      mockSchoolFindOne.mockResolvedValue(null); // SCHOOL_B not in REGION_A
+      const req = {
+        user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' },
+        params: { id: 'w1' },
+        body: {},
+      };
+      const res = mkRes();
+      await resolveWarning(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
+    });
+
+    it('government region account: resolves own-region warning (200)', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_A', update });
+      mockSchoolFindOne.mockResolvedValue({ id: 'SCHOOL_A' }); // SCHOOL_A in REGION_A
+      const req = {
+        user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' },
+        params: { id: 'w1' },
+        body: { resolutionNotes: 'fixed' },
+      };
+      const res = mkRes();
+      await resolveWarning(req, res);
+      expect(update).toHaveBeenCalledWith(expect.objectContaining({ isResolved: true }));
+    });
+
+    it('[REVERT-TEST: BUG] without govRegionId check, region gov can resolve cross-region warning', async () => {
+      const update = jest.fn().mockResolvedValue();
+      const buggyResolveWarning = async (req, res) => {
+        const warning = await mockFindByPk(req.params.id);
+        if (!warning) return res.status(404).json({ error: 'Warning not found' });
+        // BUG: government treated as platform-wide regardless of govRegionId
+        if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
+          return res.status(404).json({ error: 'Warning not found' });
+        }
+        await warning.update({ isResolved: true });
+        res.json({ success: true, data: warning });
+      };
+      mockFindByPk.mockReturnValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
+      const req = { user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' }, params: { id: 'w1' }, body: {} };
+      const res = mkRes();
+      await buggyResolveWarning(req, res);
+      expect(update).toHaveBeenCalled(); // BUG: resolved cross-region
+    });
+
+    it('[REVERT-TEST: FIXED] with govRegionId check, region gov cannot resolve cross-region warning', async () => {
+      const update = jest.fn();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
+      mockSchoolFindOne.mockResolvedValue(null);
+      const req = { user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' }, params: { id: 'w1' }, body: {} };
+      const res = mkRes();
+      await resolveWarning(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
     });
   });
 
@@ -149,6 +212,35 @@ describe('aiWarningController', () => {
       await notifyUsers(req, res);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(update).not.toHaveBeenCalled();
+    });
+
+    it('government region account: 404 when notifying on cross-region warning (CLOSEOUT)', async () => {
+      const update = jest.fn();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', notifiedUsers: [], update });
+      mockSchoolFindOne.mockResolvedValue(null);
+      const req = {
+        user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' },
+        params: { id: 'w1' },
+        body: { userIds: ['u1'] },
+      };
+      const res = mkRes();
+      await notifyUsers(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(update).not.toHaveBeenCalled();
+    });
+
+    it('government republic (govRegionId=null): can notify on any warning', async () => {
+      const update = jest.fn().mockResolvedValue();
+      mockFindByPk.mockResolvedValue({ id: 'w1', schoolId: 'SCHOOL_B', notifiedUsers: [], update });
+      const req = {
+        user: { id: 'g1', role: 'government', govRegionId: null },
+        params: { id: 'w1' },
+        body: { userIds: ['u1'] },
+      };
+      const res = mkRes();
+      await notifyUsers(req, res);
+      expect(update).toHaveBeenCalled();
+      expect(mockSchoolFindOne).not.toHaveBeenCalled();
     });
   });
 });

@@ -415,6 +415,17 @@ export const updateGovernmentUser = async (req, res) => {
       return res.status(404).json({ error: 'Government user not found' });
     }
 
+    // Region scope enforcement: mirrors deleteGovernmentUser — region accounts can only
+    // update accounts within their own region.
+    if (req.user.govLevel === 'region') {
+      if (government.govLevel === 'republic') {
+        return res.status(403).json({ success: false, error: { code: 'UPDATE_FORBIDDEN', detail: 'region accounts cannot update republic accounts' } });
+      }
+      if (government.govRegionId !== req.user.govRegionId) {
+        return res.status(403).json({ success: false, error: { code: 'UPDATE_FORBIDDEN', detail: 'region accounts can only update accounts in their own region' } });
+      }
+    }
+
     if (email && email.toLowerCase() !== government.email) {
       const existing = await User.findOne({ where: { email: email.toLowerCase() } });
       if (existing) {

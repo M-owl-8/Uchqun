@@ -1,8 +1,10 @@
 /**
- * Region scoping — closing the 3 yellow holes (CP-021 Sprint C fix)
+ * Region scoping — closing the 3 yellow holes (CP-021 Sprint C fix) + 1 closeout hole
  *
  * Hole 1: Admin mutations (POST/PUT/DELETE /admins) — no region check before mutation
  * Hole 2: Registration approve/reject — no region check on target request
+ * Hole 3: Messages — no region filter on list or per-message actions
+ * Hole 4 (CLOSEOUT): updateGovernmentUser — no region check; region-main could update any gov user
  * Hole 3: Messages — no region filter on list or per-message actions
  *
  * Each hole has a revert-test pair:
@@ -79,7 +81,7 @@ jest.unstable_mockModule('../../utils/pagination.js', () => ({
   parsePagination: jest.fn().mockReturnValue({ limit: 50, offset: 0 }),
 }));
 
-const { updateAdmin, deleteAdmin, createAdmin } = await import('../../controllers/admin/adminUserController.js');
+const { updateAdmin, deleteAdmin, createAdmin, updateGovernmentUser } = await import('../../controllers/admin/adminUserController.js');
 const { approveRegistrationRequest, rejectRegistrationRequest } = await import('../../controllers/adminRegistrationController.js');
 const { getAllMessages, replyToMessage, markMessageRead, deleteMessage } = await import('../../controllers/governmentMessageController.js');
 
@@ -506,5 +508,134 @@ describe('Hole 3 — Message region scoping (3-hop join)', () => {
 
     expect(res.status).toHaveBeenCalledWith(404); // blocked
     expect(destroy).not.toHaveBeenCalled();
+  });
+});
+
+// ═══════════════════════════════════════════════════════════════════════════
+// HOLE 4 — updateGovernmentUser missing region scope (CLOSEOUT)
+// ═══════════════════════════════════════════════════════════════════════════
+
+const GOV_REPUBLIC = 'rep00001-0000-0000-0000-000000000001';
+const GOV_REGION_B = 'gov-b001-0000-0000-0000-000000000001';
+
+describe('Hole 4 — updateGovernmentUser region scoping (CLOSEOUT)', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  it('region-A account cannot update a republic government user (403)', async () => {
+    mockUserFindOne.mockResolvedValue({
+      id: GOV_REPUBLIC,
+      role: 'government',
+      govLevel: 'republic',
+      govRegionId: null,
+      email: 'republic@respublika',
+    });
+
+    const res = mkRes();
+    await updateGovernmentUser(
+      regionAReq({ params: { id: GOV_REPUBLIC }, body: { firstName: 'Hack' } }),
+      res,
+    );
+
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json.mock.calls[0][0]).toMatchObject({ success: false, error: { code: 'UPDATE_FORBIDDEN' } });
+  });
+
+  it('region-A account cannot update region-B government user (403)', async () => {
+    mockUserFindOne.mockResolvedValue({
+      id: GOV_REGION_B,
+      role: 'government',
+      govLevel: 'region',
+      govRegionId: REGION_B,
+      email: 'b@region-b',
+    });
+
+    const res = mkRes();
+    await updateGovernmentUser(
+      regionAReq({ params: { id: GOV_REGION_B }, body: { firstName: 'Hack' } }),
+      res,
+    );
+
+    expect(res.status).toHaveBeenCalledWith(403);
+  });
+
+  it('region-A account CAN update region-A government user (200)', async () => {
+    const save = jest.fn().mockResolvedValue();
+    mockUserFindOne.mockResolvedValue({
+      id: 'gov-a-001',
+      role: 'government',
+      govLevel: 'region',
+      govRegionId: REGION_A,
+      email: 'a@region-a',
+      save,
+      toJSON: () => ({}),
+    });
+
+    const res = mkRes();
+    await updateGovernmentUser(
+      regionAReq({ user: { id: 'reg-a', govLevel: 'region', govRegionId: REGION_A }, params: { id: 'gov-a-001' }, body: { firstName: 'Valid' } }),
+      res,
+    );
+
+    expect(res.status).not.toHaveBeenCalled();
+    expect(save).toHaveBeenCalled();
+  });
+
+  it('republic account can update any government user (no region check)', async () => {
+    const save = jest.fn().mockResolvedValue();
+    mockUserFindOne.mockResolvedValue({
+      id: GOV_REGION_B,
+      role: 'government',
+      govLevel: 'region',
+      govRegionId: REGION_B,
+      email: 'b@region-b',
+      save,
+      toJSON: () => ({}),
+    });
+
+    const res = mkRes();
+    await updateGovernmentUser(
+      republicReq({ user: { id: 'rep1', govLevel: 'republic' }, params: { id: GOV_REGION_B }, body: { firstName: 'Valid' } }),
+      res,
+    );
+
+    expect(res.status).not.toHaveBeenCalled();
+    expect(save).toHaveBeenCalled();
+  });
+
+  it('[REVERT-TEST: BUG] without region check, region-A can update republic gov user', async () => {
+    const save = jest.fn().mockResolvedValue();
+    const buggyUpdateGov = async (req, res) => {
+      const government = await mockUserFindOne({ where: { id: req.params.id, role: 'government' } });
+      if (!government) return res.status(404).json({ error: 'not found' });
+      // BUG: no region scope check
+      government.firstName = req.body.firstName;
+      await government.save();
+      res.json({ success: true, data: {} });
+    };
+
+    mockUserFindOne.mockReturnValue({ id: GOV_REPUBLIC, govLevel: 'republic', govRegionId: null, email: 'r@r', firstName: 'Old', save });
+    const res = mkRes();
+    await buggyUpdateGov(regionAReq({ params: { id: GOV_REPUBLIC }, body: { firstName: 'Hacked' } }), res);
+
+    expect(save).toHaveBeenCalled(); // BUG: mutation succeeded cross-region
+    expect(res.json.mock.calls[0][0].success).toBe(true);
+  });
+
+  it('[REVERT-TEST: FIXED] with region check, region-A cannot update republic gov user', async () => {
+    mockUserFindOne.mockResolvedValue({
+      id: GOV_REPUBLIC,
+      role: 'government',
+      govLevel: 'republic',
+      govRegionId: null,
+      email: 'republic@respublika',
+    });
+
+    const res = mkRes();
+    await updateGovernmentUser(
+      regionAReq({ params: { id: GOV_REPUBLIC }, body: { firstName: 'Blocked' } }),
+      res,
+    );
+
+    expect(res.status).toHaveBeenCalledWith(403); // blocked
   });
 });

@@ -259,8 +259,15 @@ export const resolveWarning = async (req, res) => {
       return res.status(404).json({ error: 'Warning not found' });
     }
 
-    // Admin is school-scoped; government has intentional platform-wide access
-    if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
+    // Admin is school-scoped.
+    // Government: republic accounts (govRegionId=null) have platform-wide access;
+    // region accounts are scoped to their own region's schools.
+    if (req.user.role === 'government') {
+      if (req.user.govRegionId && warning.schoolId) {
+        const school = await School.findOne({ where: { id: warning.schoolId, regionId: req.user.govRegionId } });
+        if (!school) return res.status(404).json({ error: 'Warning not found' });
+      }
+    } else if (req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
       return res.status(404).json({ error: 'Warning not found' });
     }
 
@@ -295,8 +302,15 @@ export const notifyUsers = async (req, res) => {
       return res.status(404).json({ error: 'Warning not found' });
     }
 
-    // Admin is school-scoped; government has intentional platform-wide access
-    if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
+    // Admin is school-scoped.
+    // Government: republic accounts (govRegionId=null) have platform-wide access;
+    // region accounts are scoped to their own region's schools.
+    if (req.user.role === 'government') {
+      if (req.user.govRegionId && warning.schoolId) {
+        const school = await School.findOne({ where: { id: warning.schoolId, regionId: req.user.govRegionId } });
+        if (!school) return res.status(404).json({ error: 'Warning not found' });
+      }
+    } else if (req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
       return res.status(404).json({ error: 'Warning not found' });
     }
 

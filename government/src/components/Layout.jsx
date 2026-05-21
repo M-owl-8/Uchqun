@@ -4,6 +4,7 @@ import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
 import LanguageSwitcher from './LanguageSwitcher';
+import TranslationNotice from './TranslationNotice';
 
 const Layout = () => {
   const location = useLocation();
@@ -57,6 +58,7 @@ const Layout = () => {
       </div>
 
       <div className="lg:pl-64 relative z-10 pt-14 lg:pt-0">
+        <TranslationNotice />
         <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Outlet />
         </main>
