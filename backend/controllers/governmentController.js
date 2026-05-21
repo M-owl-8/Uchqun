@@ -312,6 +312,18 @@ export const getStudentsStats = async (req, res) => {
       where.schoolId = schoolId;
     }
 
+    // Region scoping: scope to students in this region's schools
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({ where: { regionId: req.regionScope }, attributes: ['id'] });
+      const regionSchoolIds = schoolsInRegion.map(s => s.id);
+      if (where.schoolId) {
+        // Further constrain the optional schoolId filter to be within the region
+        where.schoolId = { [Op.and]: [where.schoolId, { [Op.in]: regionSchoolIds }] };
+      } else {
+        where.schoolId = { [Op.in]: regionSchoolIds };
+      }
+    }
+
     const { count, rows: students } = await Child.findAndCountAll({
       where,
       limit: limitNum,
@@ -360,8 +372,14 @@ export const getTeachersList = async (req, res) => {
     const limitNum = Math.min(parseInt(req.query.limit, 10) || 50, 200);
     const offsetNum = Math.max(parseInt(req.query.offset, 10) || 0, 0);
 
+    const where = { role: 'teacher' };
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({ where: { regionId: req.regionScope }, attributes: ['id'] });
+      where.schoolId = { [Op.in]: schoolsInRegion.map(s => s.id) };
+    }
+
     const { count, rows: teachers } = await User.findAndCountAll({
-      where: { role: 'teacher' },
+      where,
       attributes: { exclude: ['password'] },
       limit: limitNum,
       offset: offsetNum,
@@ -389,8 +407,14 @@ export const getParentsList = async (req, res) => {
   try {
     const { limit, offset } = parsePagination(req.query, { limit: 20 });
 
+    const where = { role: 'parent' };
+    if (!req.isGlobalAccess) {
+      const schoolsInRegion = await School.findAll({ where: { regionId: req.regionScope }, attributes: ['id'] });
+      where.schoolId = { [Op.in]: schoolsInRegion.map(s => s.id) };
+    }
+
     const { count, rows: parents } = await User.findAndCountAll({
-      where: { role: 'parent' },
+      where,
       attributes: { exclude: ['password'] },
       limit,
       offset,

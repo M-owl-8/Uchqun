@@ -64,9 +64,9 @@ router.get('/schools', requireGovAccess('canViewSchools'), getSchoolsStats);
 router.get('/schools/:id', requireGovAccess('canViewSchools'), getSchoolById);
 router.put('/schools/:id/archive', requireGovAccess('canArchiveSchools'), archiveSchool);
 router.put('/schools/:id/reactivate', requireGovAccess('canArchiveSchools'), reactivateSchool);
-router.get('/students', getStudentsStats);    // Available for future students directory page
-router.get('/teachers', getTeachersList);     // Available for future teachers directory page
-router.get('/parents', getParentsList);       // Available for future parents directory page
+router.get('/students', requireGovAccess('canViewStudents'), getStudentsStats);
+router.get('/teachers', requireGovAccess('canViewTeachers'), getTeachersList);
+router.get('/parents', requireGovAccess('canViewParents'), getParentsList);
 router.get('/ratings', getRatingsStats);
 router.get('/ratings/:schoolId', getSchoolRatings);
 router.post('/stats/generate', generateStats);  // Available for future stats snapshot feature

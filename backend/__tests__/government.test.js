@@ -96,7 +96,7 @@ describe('governmentController.getStudentsStats', () => {
       { toJSON: () => ({ id: 'c1', firstName: 'Ali' }), childSchool: { name: 'School A' }, parent: { firstName: 'B', lastName: 'C' } },
     ];
     mockChildFindAndCountAll.mockResolvedValue({ count: 1, rows: fakeStudents });
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getStudentsStats(req, res);
     expect(res.json).toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe('governmentController.getStudentsStats', () => {
   });
 
   it('400 for invalid schoolId UUID', async () => {
-    const req = { query: { schoolId: 'not-a-uuid' } };
+    const req = { query: { schoolId: 'not-a-uuid' }, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getStudentsStats(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
@@ -114,7 +114,7 @@ describe('governmentController.getStudentsStats', () => {
 
   it('500 on DB error', async () => {
     mockChildFindAndCountAll.mockRejectedValue(new Error('db fail'));
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getStudentsStats(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
@@ -127,7 +127,7 @@ describe('governmentController.getTeachersList', () => {
   it('returns paginated teacher list', async () => {
     const fakeTeachers = [{ toJSON: () => ({ id: 't1', firstName: 'T' }) }];
     mockUserFindAndCountAll.mockResolvedValue({ count: 1, rows: fakeTeachers });
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getTeachersList(req, res);
     expect(res.json).toHaveBeenCalled();
@@ -138,7 +138,7 @@ describe('governmentController.getTeachersList', () => {
 
   it('500 on DB error', async () => {
     mockUserFindAndCountAll.mockRejectedValue(new Error('db fail'));
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getTeachersList(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
@@ -151,7 +151,7 @@ describe('governmentController.getParentsList', () => {
   it('returns paginated parent list', async () => {
     const fakeParents = [{ toJSON: () => ({ id: 'p1', firstName: 'P' }) }];
     mockUserFindAndCountAll.mockResolvedValue({ count: 1, rows: fakeParents });
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getParentsList(req, res);
     expect(res.json).toHaveBeenCalled();
@@ -162,7 +162,7 @@ describe('governmentController.getParentsList', () => {
 
   it('500 on DB error', async () => {
     mockUserFindAndCountAll.mockRejectedValue(new Error('db fail'));
-    const req = { query: {} };
+    const req = { query: {}, isGlobalAccess: true, govType: 'main' };
     const res = mkRes();
     await getParentsList(req, res);
     expect(res.status).toHaveBeenCalledWith(500);
