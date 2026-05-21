@@ -102,7 +102,16 @@
     "rating": "Reyting",
     "ratingsCount": "ta baho",
     "active": "Faol",
-    "inactive": "Nofaol"
+    "inactive": "Nofaol",
+    "archiveSchool": "Arxivlash",
+    "reactivateSchool": "Qayta faollashtirish",
+    "confirmArchive": "Ushbu maktabni arxivlashni tasdiqlaysizmi?",
+    "confirmReactivate": "Ushbu maktabni qayta faollashtirishni tasdiqlaysizmi?",
+    "archiveSuccess": "Maktab arxivlandi",
+    "reactivateSuccess": "Maktab qayta faollashtirildi",
+    "archiveError": "Xato yuz berdi",
+    "alreadyArchived": "Maktab allaqachon arxivlangan",
+    "alreadyActive": "Maktab allaqachon faol"
   },
   "studentsPage": {
     "title": "Barcha o'quvchilar",

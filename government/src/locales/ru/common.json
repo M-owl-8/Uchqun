@@ -107,7 +107,16 @@
     "rating": "Рейтинг",
     "ratingsCount": "оценок",
     "active": "Активна",
-    "inactive": "Неактивна"
+    "inactive": "Неактивна",
+    "archiveSchool": "Архивировать",
+    "reactivateSchool": "Восстановить",
+    "confirmArchive": "Вы уверены, что хотите архивировать эту школу?",
+    "confirmReactivate": "Вы уверены, что хотите восстановить эту школу?",
+    "archiveSuccess": "Школа архивирована",
+    "reactivateSuccess": "Школа восстановлена",
+    "archiveError": "Произошла ошибка",
+    "alreadyArchived": "Школа уже архивирована",
+    "alreadyActive": "Школа уже активна"
   },
   "studentsPage": {
     "title": "Все ученики",
