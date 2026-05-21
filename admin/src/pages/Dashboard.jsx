@@ -11,17 +11,13 @@ import {
   TrendingUp,
   Minus,
   RotateCw,
-  UserPlus2,
-  FileText,
-  CheckCircle2,
-  LogIn,
-  Pencil,
   ArrowRight,
   MapPin,
   UsersRound,
   ShieldCheck,
   Phone,
   Star,
+  Clock,
 } from 'lucide-react';
 
 const CACHE_KEY = 'admin:dashboard';
@@ -38,13 +34,6 @@ const getGroupsCount = (v) => {
   return 0;
 };
 
-const MOCK_ACTIVITY = [
-  { icon: UserPlus2, color: 'bg-success-50 text-success-700', text: ['Aziza Karimova', ' yangi ota-onani qo\'shdi · ', 'Yusuf Toshmatov'], time: '12 daqiqa oldin' },
-  { icon: FileText, color: 'bg-brand-50 text-brand-700', text: ['Bobur Saidov', ' hujjat yukladi · ', 'Tibbiy ma\'lumot'], time: '28 daqiqa oldin' },
-  { icon: Pencil, color: 'bg-info-50 text-info-700', text: ['Madina Rahmatova', ' o\'qituvchi profilini tahrirladi · ', 'Sevara Tursunova'], time: '1 soat 14 daqiqa oldin' },
-  { icon: CheckCircle2, color: 'bg-success-50 text-success-700', text: ['Aziza Karimova', ' guruh ro\'yxatini yangiladi · ', '5-A "Quyosh"'], time: '2 soat 03 daqiqa oldin' },
-  { icon: LogIn, color: 'bg-warm-100 text-warm-600', text: ['Bobur Saidov', ' tizimga kirdi', ''], time: '3 soat 41 daqiqa oldin' },
-];
 
 const RatingBar = ({ star, width, count }) => {
   const barColor = star === 5 ? 'bg-brand-600' : star === 4 ? 'bg-brand-500' : 'bg-warm-300';
@@ -166,9 +155,9 @@ const Dashboard = () => {
     ? lastUpdated.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
     : null;
 
-  const capacity  = stats?.capacity || 140;
+  const capacity  = stats?.capacity ?? null;
   const enrolled  = stats?.children || stats?.enrolled || 0;
-  const occupancy = capacity > 0 ? Math.round((enrolled / capacity) * 100) : 0;
+  const occupancy = capacity != null && capacity > 0 ? Math.round((enrolled / capacity) * 100) : null;
 
   // Derived tasks from real data
   const tasks = [
@@ -191,9 +180,9 @@ const Dashboard = () => {
   ].filter(Boolean);
   // TODO(phase-2): wire to a real /admin/me/tasks endpoint
 
-  const ratingAvg  = ratings?.average ?? 4.6;
-  const ratingDist = ratings?.distribution || [59, 18, 7, 2, 1];
-  const ratingTotal = ratingDist.reduce((a, b) => a + b, 0) || 87;
+  const ratingAvg  = ratings?.average ?? null;
+  const ratingDist = ratings?.distribution ?? null;
+  const ratingTotal = ratingDist ? ratingDist.reduce((a, b) => a + b, 0) : 0;
   const ratingPct  = (n) => ratingTotal > 0 ? Math.round((n / ratingTotal) * 100) : 0;
 
   const highestAi = aiWarningsArray.find((w) => !w.resolvedAt && ['critical', 'high'].includes(w.severity?.toLowerCase()));
@@ -364,11 +353,13 @@ const Dashboard = () => {
         </div>
         <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
           <p className="text-sm text-warm-500">{t('dashboard.occupancy', { defaultValue: 'Bandlik' })}</p>
-          <p className="num text-3xl font-semibold text-warm-900 mt-1">{occupancy}%</p>
+          <p className="num text-3xl font-semibold text-warm-900 mt-1">{occupancy != null ? `${occupancy}%` : '—'}</p>
           <div className="mt-2.5 h-1.5 bg-warm-100 rounded-full overflow-hidden">
-            <div className="h-full bg-brand-600 rounded-full" style={{ width: `${occupancy}%` }} />
+            <div className="h-full bg-brand-600 rounded-full" style={{ width: occupancy != null ? `${occupancy}%` : '0%' }} />
           </div>
-          <p className="mt-1.5 text-xs text-warm-500 num">{enrolled} / {capacity} ta o'rin</p>
+          <p className="mt-1.5 text-xs text-warm-500 num">
+            {capacity != null ? `${enrolled} / ${capacity} ta o'rin` : `${enrolled} ta o'rin`}
+          </p>
         </div>
       </div>
 
@@ -385,24 +376,15 @@ const Dashboard = () => {
               </div>
               <span className="text-sm text-brand-700 font-medium">{t('dashboard.auditLog', { defaultValue: 'Audit jurnali →' })}</span>
             </header>
-            <div className="divide-y divide-warm-100">
-              {MOCK_ACTIVITY.map((item, i) => (
-                <div key={i} className="flex items-start gap-3 px-5 py-3.5">
-                  <div className={`w-7 h-7 rounded-md ${item.color} flex items-center justify-center shrink-0 mt-0.5`}>
-                    <item.icon className="w-3.5 h-3.5" strokeWidth={1.75} />
-                  </div>
-                  <div className="flex-1 text-sm">
-                    <p className="text-warm-700">
-                      <span className="text-warm-900 font-medium">{item.text[0]}</span>
-                      {item.text[1]}
-                      {item.text[2] && <span className="text-warm-900 font-medium">{item.text[2]}</span>}
-                    </p>
-                    <p className="text-xs text-warm-500 num mt-0.5">{item.time}</p>
-                  </div>
-                </div>
-              ))}
+            <div className="flex flex-col items-center justify-center gap-2 px-5 py-10 text-center">
+              <Clock className="w-7 h-7 text-warm-300" strokeWidth={1.5} />
+              <p className="text-sm font-medium text-warm-500">
+                {t('dashboard.activityComingSoon', { defaultValue: 'Faoliyat tarixi tez kunda' })}
+              </p>
+              <p className="text-xs text-warm-400 max-w-xs">
+                {t('dashboard.activityComingSoonSub', { defaultValue: "Audit jurnali backend'ga ulangandan so'ng bu yerda ko'rinadi." })}
+              </p>
             </div>
-            {/* TODO(phase-2): wire to /api/v1/admin/me/activity once backend supports it */}
           </article>
 
           {/* Ratings panel */}
@@ -416,24 +398,30 @@ const Dashboard = () => {
                 {t('dashboard.viewDetails', { defaultValue: 'Batafsil →' })}
               </Link>
             </header>
-            <div className="grid md:grid-cols-[200px_1fr] gap-6 items-center">
-              <div className="text-center">
-                <p className="num text-5xl font-semibold text-warm-900" style={{ lineHeight: 1 }}>
-                  {typeof ratingAvg === 'number' ? ratingAvg.toFixed(1) : ratingAvg}
-                </p>
-                <div className="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
-                  {[1,2,3,4,5].map((s) => (
-                    <Star key={s} className={`w-4 h-4 ${s <= Math.round(ratingAvg) ? '' : 'opacity-30'}`} strokeWidth={1.75} fill="currentColor" />
+            {ratings != null ? (
+              <div className="grid md:grid-cols-[200px_1fr] gap-6 items-center">
+                <div className="text-center">
+                  <p className="num text-5xl font-semibold text-warm-900" style={{ lineHeight: 1 }}>
+                    {typeof ratingAvg === 'number' ? ratingAvg.toFixed(1) : '—'}
+                  </p>
+                  <div className="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
+                    {[1,2,3,4,5].map((s) => (
+                      <Star key={s} className={`w-4 h-4 ${ratingAvg != null && s <= Math.round(ratingAvg) ? '' : 'opacity-30'}`} strokeWidth={1.75} fill="currentColor" />
+                    ))}
+                  </div>
+                  <p className="text-xs text-warm-500 mt-2 num">{ratingTotal} ta baho</p>
+                </div>
+                <div className="space-y-2">
+                  {[5,4,3,2,1].map((star, idx) => (
+                    <RatingBar key={star} star={star} width={ratingPct(ratingDist?.[idx] ?? 0)} count={ratingDist?.[idx] ?? 0} />
                   ))}
                 </div>
-                <p className="text-xs text-warm-500 mt-2 num">{ratingTotal} ta baho</p>
               </div>
-              <div className="space-y-2">
-                {[5,4,3,2,1].map((star, idx) => (
-                  <RatingBar key={star} star={star} width={ratingPct(ratingDist[idx] ?? 0)} count={ratingDist[idx] ?? 0} />
-                ))}
-              </div>
-            </div>
+            ) : (
+              <p className="text-sm text-warm-400 py-4 text-center">
+                {t('dashboard.noRatings', { defaultValue: "Hozircha reytinglar mavjud emas." })}
+              </p>
+            )}
           </article>
         </div>
 
@@ -480,7 +468,9 @@ const Dashboard = () => {
                 <UsersRound className="w-4 h-4 text-warm-500 mt-0.5 shrink-0" strokeWidth={1.75} />
                 <div>
                   <dt className="text-xs text-warm-500">{t('dashboard.capacity', { defaultValue: 'Sig\'im' })}</dt>
-                  <dd className="text-warm-800 num">{enrolled} / {capacity} {t('dashboard.capacityUnit', { defaultValue: 'bola' })}</dd>
+                  <dd className="text-warm-800 num">
+                    {capacity != null ? `${enrolled} / ${capacity}` : enrolled} {t('dashboard.capacityUnit', { defaultValue: 'bola' })}
+                  </dd>
                 </div>
               </div>
               {user?.school?.accreditation && (
