@@ -42,7 +42,8 @@ const Profile = () => {
       setEditing(false);
     } catch (err) {
       const details = err.response?.data?.details;
-      const msg = details?.length ? details.map(d => d.message).join('; ') : err.response?.data?.error;
+      const apiError = err.response?.data?.error;
+      const msg = details?.length ? details.map(d => d.message).join('; ') : (apiError?.detail ?? apiError);
       showError(msg || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
     } finally {
       setSaving(false);

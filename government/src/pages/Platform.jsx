@@ -107,7 +107,7 @@ const Platform = () => {
       reset?.();
       await refreshAdmins();
     } catch (error) {
-      showError(error.response?.data?.error || t('government.toastSaveError'));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.toastSaveError'));
     } finally { setCreatingAdmin(false); }
   };
 
@@ -135,7 +135,7 @@ const Platform = () => {
       setEditingAdmin(null);
       setEditPassword('');
     } catch (error) {
-      showError(error.response?.data?.error || t('government.toastSaveError'));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.toastSaveError'));
     } finally { setEditSaving(false); }
   };
 
@@ -153,7 +153,7 @@ const Platform = () => {
             return next;
           });
         } catch (error) {
-          showError(error.response?.data?.error || t('government.toastDeleteError'));
+          showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.toastDeleteError'));
         }
       },
     });
@@ -184,7 +184,7 @@ const Platform = () => {
       setGovFirstName(''); setGovLastName(''); setGovEmail(''); setGovPassword('');
       await refreshGovernments();
     } catch (error) {
-      showError(error.response?.data?.error || error.message || t('government.governmentCreateError', { defaultValue: 'Create failed' }));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? error.message ?? t('government.governmentCreateError', { defaultValue: 'Create failed' }));
     } finally { setGovLoading(false); }
   };
 
@@ -211,7 +211,7 @@ const Platform = () => {
       setEditingGovernment(null);
       setEditGovPassword('');
     } catch (error) {
-      showError(error.response?.data?.error || t('government.governmentUpdateError', { defaultValue: 'Update failed' }));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.governmentUpdateError', { defaultValue: 'Update failed' }));
     } finally { setEditGovSaving(false); }
   };
 
@@ -229,7 +229,7 @@ const Platform = () => {
             return next;
           });
         } catch (error) {
-          showError(error.response?.data?.error || t('government.governmentDeleteError', { defaultValue: 'Delete failed' }));
+          showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.governmentDeleteError', { defaultValue: 'Delete failed' }));
         }
       },
     });
@@ -251,7 +251,7 @@ const Platform = () => {
           ]);
           if (reqRes.status === 'fulfilled') setRegistrationRequests(reqRes.value.data?.data || []);
         } catch (error) {
-          showError(error.response?.data?.error || t('government.approveError', { defaultValue: 'Approve failed' }));
+          showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.approveError', { defaultValue: 'Approve failed' }));
         } finally { setApprovingRequest(false); }
       },
     });
@@ -267,7 +267,7 @@ const Platform = () => {
       const res = await api.get('/government/admin-registrations?status=pending');
       setRegistrationRequests(res.data?.data || []);
     } catch (error) {
-      showError(error.response?.data?.error || t('government.rejectError', { defaultValue: 'Reject failed' }));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.rejectError', { defaultValue: 'Reject failed' }));
     } finally { setRejectingRequest(false); }
   };
 

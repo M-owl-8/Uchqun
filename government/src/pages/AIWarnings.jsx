@@ -118,7 +118,7 @@ const AIWarnings = () => {
       setResolveModal(null);
       await load();
     } catch (err) {
-      showError(err.response?.data?.error || t('warnings.resolveError', { defaultValue: 'Hal qilishda xatolik' }));
+      showError(err.response?.data?.error?.detail ?? err.response?.data?.error ?? t('warnings.resolveError', { defaultValue: 'Hal qilishda xatolik' }));
     } finally {
       setSubmittingResolve(false);
     }

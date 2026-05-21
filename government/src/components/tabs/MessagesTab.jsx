@@ -87,7 +87,7 @@ export default function MessagesTab({ onUnreadCountChange }) {
       setReplyTexts(prev => ({ ...prev, [msgId]: '' }));
       await fetchMessages(1, false);
     } catch (err) {
-      showError(err.response?.data?.error || t('government.replyError', { defaultValue: 'Javob yuborishda xatolik' }));
+      showError(err.response?.data?.error?.detail ?? err.response?.data?.error ?? t('government.replyError', { defaultValue: 'Javob yuborishda xatolik' }));
     } finally {
       setReplying(null);
     }
@@ -101,7 +101,7 @@ export default function MessagesTab({ onUnreadCountChange }) {
       success(t('government.messageDeleted', { defaultValue: 'Xabar o\'chirildi' }));
       setMessages(prev => prev.filter(m => m.id !== msgId));
     } catch (err) {
-      showError(err.response?.data?.error || t('government.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
+      showError(err.response?.data?.error?.detail ?? err.response?.data?.error ?? t('government.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
     } finally {
       setDeleting(null);
     }

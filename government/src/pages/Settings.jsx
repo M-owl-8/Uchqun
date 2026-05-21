@@ -44,7 +44,7 @@ const Settings = () => {
       success(t('settings.passwordChanged', { defaultValue: 'Parol muvaffaqiyatli o\'zgartirildi' }));
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
     } finally {
       setSavingPassword(false);
     }
