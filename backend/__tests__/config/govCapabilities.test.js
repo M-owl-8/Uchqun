@@ -1,6 +1,7 @@
 import { jest } from '@jest/globals';
 import { GOV_CAPABILITIES, isValidGrantSet, unknownGrantKeys } from '../../config/govCapabilities.js';
 import { requireGovAccess } from '../../middleware/regionScope.js';
+import { CAPABILITY_KEYS } from '../../../government/src/config/govCapabilities.js';
 
 // ─── GOV_CAPABILITIES ────────────────────────────────────────────────────────
 
@@ -108,5 +109,39 @@ describe('requireGovAccess — capability guard', () => {
       expect.objectContaining({ error: { code: 'GOV_ACCESS_DENIED' } })
     );
     expect(next).not.toHaveBeenCalled();
+  });
+});
+
+// ─── Capability-set drift guard ───────────────────────────────────────────────
+//
+// backend/config/govCapabilities.js (GOV_CAPABILITIES) and
+// government/src/config/govCapabilities.js (CAPABILITY_KEYS) MUST stay in sync.
+//
+// This test is the enforcement: it fails the moment one file gains or loses a key
+// that the other doesn't have, making drift a build failure rather than a silent bug.
+//
+// To add a new capability:
+//   1. Add the key to BOTH files.
+//   2. Add requireGovAccess(key) on the relevant government route.
+//   3. Add an i18n label under provision.grants.<key> in all three locale files.
+//   This test will catch step 1 being half-done.
+
+describe('capability key sets match between backend and frontend (drift guard)', () => {
+  it('GOV_CAPABILITIES (backend) and CAPABILITY_KEYS (frontend) contain identical keys', () => {
+    const backendSet = new Set(GOV_CAPABILITIES);
+    const frontendSet = new Set(CAPABILITY_KEYS);
+
+    const onlyInBackend = [...backendSet].filter((k) => !frontendSet.has(k));
+    const onlyInFrontend = [...frontendSet].filter((k) => !backendSet.has(k));
+
+    expect(onlyInBackend).toEqual(
+      [],
+      `Keys in backend GOV_CAPABILITIES but missing from frontend CAPABILITY_KEYS: ${onlyInBackend.join(', ')}`
+    );
+    expect(onlyInFrontend).toEqual(
+      [],
+      `Keys in frontend CAPABILITY_KEYS but missing from backend GOV_CAPABILITIES: ${onlyInFrontend.join(', ')}`
+    );
+    expect(GOV_CAPABILITIES.length).toBe(CAPABILITY_KEYS.length);
   });
 });

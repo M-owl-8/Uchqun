@@ -225,7 +225,8 @@ The frontend config is a mirror, not an import of backend code. A new backend ca
 | CAPABILITY_KEYS — frontend single source of truth | ✅ `government/src/config/govCapabilities.js` |
 | i18n: provision.* section | ✅ en canonical · uz/ru UNVERIFIED |
 | Government test suite | ✅ 15 suites / 98 tests / lint 0 (unchanged) |
-| Backend test suite | ✅ 106 suites / 1133 tests / lint 0 (+3 getRegions) |
+| Backend test suite | ✅ 106 suites / 1134 tests / lint 0 (+3 getRegions, +1 drift guard) |
+| Capability drift guard | ✅ Fails on drift, passes when clean (proven) |
 
 **Yellow gates:**
 - No React component tests for GovernmentTab provisioning form (same yellow as E1 binding — integration test would require jsdom + many mocks). The authorization mirroring is logic in JSX conditionals; the `hasCapability` / `govType` logic is tested in `GovAuthContext.test.js` and `SidebarCapability.test.jsx`.
@@ -242,6 +243,89 @@ Max must walk the full path:
 7. Attempt delete of republic-main → error toast (cannot delete last super-admin)
 
 This gate is NOT complete yet — Sprint E2 is 🟡 until Max confirms.
+
+---
+
+---
+
+## Capability Drift Guard
+
+### Problem
+
+Two files define the capability key set:
+- `backend/config/govCapabilities.js` — `GOV_CAPABILITIES` (array, 11 keys)
+- `government/src/config/govCapabilities.js` — `CAPABILITY_KEYS` (array, 11 keys)
+
+Without a guard, a future capability added to one and not the other drifts silently:
+- Backend adds `canExportReports` → grant is validated server-side but UI never offers a toggle → silent hole.
+- Frontend adds `canExportReports` → toggle appears in UI → backend rejects with `PROVISION_INVALID_GRANTS` 400 → confusing error, hard to diagnose.
+
+### Approach: Cross-boundary import in backend Jest test
+
+The backend test environment (`--experimental-vm-modules`) can import any ES module file, including frontend config at any relative path. No mocking, no filesystem tricks needed — both files are plain `export const FOO = [...]`.
+
+Test added to **`backend/__tests__/config/govCapabilities.test.js`** (new `describe` block):
+
+```js
+import { CAPABILITY_KEYS } from '../../../government/src/config/govCapabilities.js';
+
+describe('capability key sets match between backend and frontend (drift guard)', () => {
+  it('GOV_CAPABILITIES (backend) and CAPABILITY_KEYS (frontend) contain identical keys', () => {
+    const backendSet = new Set(GOV_CAPABILITIES);
+    const frontendSet = new Set(CAPABILITY_KEYS);
+
+    const onlyInBackend  = [...backendSet].filter(k => !frontendSet.has(k));
+    const onlyInFrontend = [...frontendSet].filter(k => !backendSet.has(k));
+
+    expect(onlyInBackend).toEqual(
+      [],
+      `Keys in backend GOV_CAPABILITIES but missing from frontend CAPABILITY_KEYS: ${onlyInBackend.join(', ')}`
+    );
+    expect(onlyInFrontend).toEqual(
+      [],
+      `Keys in frontend CAPABILITY_KEYS but missing from backend GOV_CAPABILITIES: ${onlyInFrontend.join(', ')}`
+    );
+    expect(GOV_CAPABILITIES.length).toBe(CAPABILITY_KEYS.length);
+  });
+});
+```
+
+The test file imports the frontend config at the top level (static import, same as any backend import). Jest resolves it via the relative path across the monorepo boundary.
+
+### Fake-key proof (revert-test for the guard)
+
+**With fake key added to backend** (`'canExportReports'` appended to `GOV_CAPABILITIES`):
+
+```
+× GOV_CAPABILITIES (backend) and CAPABILITY_KEYS (frontend) contain identical keys
+
+  expect(received).toEqual(expected)
+  - Expected  - 1
+  + Received  + 3
+  - Array []
+  + Array [
+  +   "canExportReports",
+  + ]
+```
+
+Error message names the drifted key explicitly. Guard FAILS — drift is caught.
+
+**After fake key removed:**
+
+```
+✓ GOV_CAPABILITIES (backend) and CAPABILITY_KEYS (frontend) contain identical keys (1 ms)
+Tests: 17 passed, 17 total
+```
+
+Guard PASSES — files are in sync.
+
+### Consequence for future capability additions
+
+To add a new capability:
+1. Add the key to **both** `backend/config/govCapabilities.js` AND `government/src/config/govCapabilities.js`.
+2. If step 1 is half-done, this test fails the backend suite → CI red → merge blocked.
+3. Add `requireGovAccess(key)` on the relevant government route.
+4. Add `provision.grants.<key>` to all three locale files.
 
 ---
 
