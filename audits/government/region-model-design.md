@@ -2,9 +2,15 @@
 ## DESIGN ONLY — No implementation. Pending Max approval.
 
 **Date:** 2026-05-21  
-**Status:** AWAITING APPROVAL — no implementation until Max confirms  
+**Status:** AWAITING APPROVAL — implementation blocked pending remaining §7 answers (Q3/Q5/Q6/Q7/Q8) and PL-015 partner data  
 **Captures:** The full authorization model for region-scoped government accounts  
 **Precedes:** All CP-021-dependent work (CP-020 aggregation, CP-022 routing, government directories)
+
+**Resolved decisions (2026-05-21):**
+- ✅ Q1 — Isolation boundary: **region-level** (12 viloyats + Karakalpakstan = 13 regions). District = metadata only.
+- ✅ Q2 — Republic-main: **exactly one** super-admin root account. No second republic-main can be created.
+- ✅ Q9 — Archive/reactivate: **republic-main** unrestricted (any school) + **region-main** own region only. Secondary requires `canArchiveSchools` grant.
+- ✅ Q10 — Audit log for region accounts: **all governance events for schools in their region** (not only self-initiated).
 
 ---
 
@@ -58,7 +64,7 @@ Table: regions
 
 **No regions are hardcoded.** The table is seeded by a migration once the partner delivers the authoritative list (PL-015). Until then, the table is empty and no region-scoping enforcement is possible for region accounts.
 
-**Expected rows:** ~14 (12 viloyats + Karakalpakstan + Tashkent city — confirmed by partner). The `code` field is the stable machine identifier; `name_*` fields are the display labels.
+**Expected rows:** 13 (Q1 confirmed: 12 viloyats + Karakalpakstan). Q6 is still open: if Tashkent city is treated as administratively separate from Tashkent region, the count becomes 14 — partner's PL-015 list resolves this. The `code` field is the stable machine identifier; `name_*` fields are the display labels.
 
 ### 1.2 District table (optional finer grain)
 
@@ -74,7 +80,7 @@ Table: districts
   updatedAt   TIMESTAMP
 ```
 
-Districts are designed in from the start so the schema can support district-level isolation if the product later requires it. Whether the isolation boundary is region or district is an open question (Section 7, Q1). The model accommodates both — if district isolation is never needed, these rows simply sit unused.
+Districts are designed in from the start so the schema can support district-level isolation if the product later requires it. The isolation boundary is **region-level** (Q1 confirmed). `requireRegionScope` reads `govRegionId → regions.id` exclusively — there is no `govDistrictId` field and districts play no role in auth enforcement. If district isolation is ever required it is a future scope expansion; these rows sit unused until then.
 
 ### 1.3 School model changes
 
@@ -283,6 +289,8 @@ AND (
 
 For region accounts, non-school events (admin registrations, account CRUD) are excluded from the audit log — those are republic-level governance events. This is the correct design because region accounts don't manage admin registrations or government users of other regions.
 
+**Q10 confirmed (2026-05-21):** Region accounts see ALL governance events for schools in their region, regardless of which government actor performed them. The subquery approach above is the implementation path.
+
 ### 2.3 Test strategy for isolation guarantee
 
 Every government endpoint that queries data needs an IDOR-style revert-test:
@@ -335,9 +343,11 @@ The attack surface is: could a region account forge `govLevel`? No — `govLevel
 
 ### 3.1 Create-account flow
 
-**Case 1: Republic-main creates another republic account**
+**Case 1: Republic-main creates a republic-secondary account**
 
 Authorization: `req.user.govLevel === 'republic' && req.user.govType === 'main'`
+
+**Q2 constraint:** A republic-main CANNOT create another republic-main. There is exactly one republic-main super-admin. The controller enforces: if `body.govType === 'main'` and `body.govLevel === 'republic'`, return 403 `GOV_CANNOT_CREATE_SECOND_SUPER_ADMIN`.
 
 Request body:
 ```json
@@ -346,7 +356,7 @@ Request body:
   "email": "ali@respublika",
   "password": "...",
   "govLevel": "republic",
-  "govType": "main | secondary",
+  "govType": "secondary",
   "govAccessGrants": { ... } | null
 }
 ```
@@ -430,15 +440,22 @@ New endpoint: `PUT /api/auth/change-password` (already exists? — check; if not
 
 | Actor | Can delete |
 |---|---|
-| Republic-main | Any `role='government'` account except themselves |
+| Republic-main | Any `role='government'` account except themselves — and the republic-main account itself cannot be deleted by anyone (single super-admin, Q2 resolved) |
 | Region-main | Any `role='government'` account with `govRegionId = req.user.govRegionId` except themselves |
 | Secondary accounts | Cannot delete anyone |
+
+**Q2 implication:** The republic-main account has no deletion path. The controller blocks it:
 
 Controller-level check (defense in depth, not just middleware):
 ```js
 const target = await User.findByPk(id);
 if (!target || target.role !== 'government') return res.status(404)...;
 if (target.id === req.user.id) return res.status(400)... // CANNOT_DELETE_SELF
+
+// Block deletion of the single super-admin
+if (target.govLevel === 'republic' && target.govType === 'main') {
+  return res.status(400).json({ success: false, error: { code: 'CANNOT_DELETE_SUPER_ADMIN' } });
+}
 
 // Region-main can only delete accounts in their region
 if (req.user.govLevel === 'region' && target.govRegionId !== req.user.govRegionId) {
@@ -460,7 +477,7 @@ Authorization chain:
 
 On success: hash new password, set `mustChangePassword = true` on target account, invalidate target's JTI (force re-login with new password), return 200.
 
-The chain is: region-account's password is reset by region-main. Region-main's password is reset by republic-main. Republic-main's password is reset by... another republic-main (open question Q7 if there's only one).
+The chain is: region-account's password is reset by region-main. Region-main's password is reset by republic-main. Republic-main's own password is reset via the CLAUDE.md migration approach (pre-compute bcrypt hash locally, deploy one-off UPDATE migration via Railway) — there is no in-app mechanism, since Q2 established there is exactly one republic-main and no peer account exists to reset it. Q7 (formally asks about this) can be closed: the migration approach is the canonical answer; no new mechanism needed.
 
 ---
 
@@ -517,6 +534,7 @@ Every item in §2.3 (10 endpoints) + provisioning (3 cases) + deletion + passwor
 - Current: `School.findByPk(id)` — no region check. A region account could archive any school globally.
 - After retrofit: `School.findOne({ where: { id, ...regionWhere(req) } })` or equivalent — region accounts get 404 for out-of-scope schools, which prevents the mutation.
 - The audit log calls remain correct (they record the actor's ID, which is already the region account's ID).
+- **Q9 confirmed (2026-05-21):** Republic-main can archive/reactivate any school. Region-main can archive/reactivate schools in their own region only. Secondary accounts require the `canArchiveSchools` grant. The `requireGovAccess('canArchiveSchools')` middleware gate + controller check together enforce this.
 
 **`getAuditLog`** (`governmentController.js:1012`):
 - Current: returns all governance events regardless of what region's schools are involved.
@@ -566,11 +584,11 @@ Keep it. Do not drop it. It serves as the display label until `regionId` FK is v
 
 These must be answered before implementation begins. No code is written until Section 8's Sprint A is approved, and Sprint A cannot fully complete until Q1 and Q2 are resolved.
 
-**Q1 — Isolation boundary: region or district?**  
-Is the hard isolation boundary at region level, district level, or both? (i.e., can an account be scoped to a district rather than a whole region?) The design supports district as a column on School and on User (`govRegionId` could be replaced with `govScopeId` pointing to either a region or district) but this changes the middleware significantly. **Recommended default:** region-level only, district is classification only. But need confirmation.
+**Q1 — Isolation boundary: region or district?** ✅ RESOLVED (2026-05-21)  
+**Answer:** Region-level. 13 regions (12 viloyats + Karakalpakstan). Districts are metadata only — no auth enforcement at district level. `requireRegionScope` uses `govRegionId → regions.id` exclusively.
 
-**Q2 — Multiple republic-main accounts?**  
-Can there be multiple republic-main accounts, or is it a single super-account? If there's only one, what happens if it's deleted (no one can create new republic accounts)? **Recommended:** allow multiple republic-main accounts; protect against deletion of the last one with a guard (`CANNOT_DELETE_LAST_REPUBLIC_MAIN`).
+**Q2 — Multiple republic-main accounts?** ✅ RESOLVED (2026-05-21)  
+**Answer:** Exactly one republic-main super-admin. No second republic-main can be created. The super-admin account cannot be deleted. Password reset for this account uses the CLAUDE.md migration approach (see §3.5). Q7 is implicitly answered by this decision.
 
 **Q3 — Credential format: which region identifier?**  
 `name@regionname` — which field is `regionname`? The `regions.code` (e.g. `TAS`), the `regions.name_uz` (e.g. `toshkent`), or something else? Also: what is the equivalent suffix for republic-level accounts? `@respublika`? `@republic`?
@@ -590,11 +608,11 @@ Who resets a republic-main account's password if it's forgotten? Options: (a) an
 **Q8 — Access grant granularity:**  
 Is per-feature boolean sufficient, or do grants need row-level granularity? (e.g., a secondary account that can view schools but only their names, not ratings or student counts.) Per-feature boolean is simpler to implement and sufficient for most cases. Row-level granularity would require field-level filtering in every response serializer — significantly more complex.
 
-**Q9 — Archive/reactivate authorization level:**  
-Currently `archiveSchool` / `reactivateSchool` are available to any `government` account. In the new model: should region-main accounts be able to archive schools in their region, or is archival republic-main-only? (High-impact action — may warrant restriction to republic scope only.)
+**Q9 — Archive/reactivate authorization level:** ✅ RESOLVED (2026-05-21)  
+**Answer:** Republic-main can archive/reactivate any school (unrestricted). Region-main can archive/reactivate schools in their own region only. Secondary accounts require the `canArchiveSchools` grant. See §5 and §2.1 for implementation path.
 
-**Q10 — Audit log scope for region accounts:**  
-When a region account views the audit log, do they see: (a) all governance events for schools in their region regardless of which government actor performed the action, or (b) only events they themselves performed? Option (a) gives region accounts visibility into republic-level actors operating in their region (useful for oversight). Option (b) is more restrictive. **Recommended:** option (a) — regional oversight should see all events in their scope.
+**Q10 — Audit log scope for region accounts:** ✅ RESOLVED (2026-05-21)  
+**Answer:** Option (a) — region accounts see ALL governance events for schools in their region, regardless of which government actor performed them. The subquery join (`entityId IN (SELECT id FROM schools WHERE regionId = req.regionScope)`) is the implementation path. See §2.2.
 
 ---
 
@@ -644,13 +662,15 @@ Shape of work: ~5 sprints, sequentially dependent. Sprint A is the prerequisite 
 
 The above is a design document only. No migration files, no model changes, no middleware have been written. Implementation of Sprint A begins only after Max reviews this document and approves (or amends) the following decisions:
 
-- [ ] Section 7 Q1: Isolation boundary (region only, or district too?)
-- [ ] Section 7 Q2: Multiple republic-main accounts allowed?
-- [ ] Section 7 Q3: Credential suffix format
-- [ ] Section 7 Q4: Secondary account default grants (zero access default)
-- [ ] Section 7 Q5: Deletion cascade vs orphan
-- [ ] Section 7 Q6: Tashkent city vs region (resolved by PL-015 list)
-- [ ] Section 7 Q9: Archive/reactivate — region-main or republic-only?
-- [ ] Section 7 Q10: Audit log scope for region accounts
+- [x] Section 7 Q1: Isolation boundary → **region-level confirmed** (13 regions, districts dormant)
+- [x] Section 7 Q2: Republic-main → **single super-admin confirmed** (no second republic-main, no deletion path)
+- [ ] Section 7 Q3: Credential suffix format — **STILL OPEN**
+- [ ] Section 7 Q4: Secondary account default grants (zero access default) — **STILL OPEN**
+- [ ] Section 7 Q5: Deletion cascade vs orphan for secondaries — **STILL OPEN**
+- [ ] Section 7 Q6: Tashkent city vs Tashkent region (final count: 13 or 14?) — **STILL OPEN** (resolved by PL-015)
+- [x] Section 7 Q9: Archive/reactivate → **region-main own region confirmed**; secondary needs `canArchiveSchools`
+- [x] Section 7 Q10: Audit log scope → **option (a) confirmed** (all events for schools in region)
 
-Questions Q7 (republic-main password reset) and Q8 (grant granularity) have recommended answers that can proceed with the recommendation if Max has no objection.
+Questions Q7 (republic-main password reset) and Q8 (grant granularity) have recommended answers confirmed by the Q2 decision:
+- Q7: Migration approach is the canonical fallback — no objection needed to proceed.
+- Q8: Per-feature boolean is sufficient — no objection needed to proceed.
