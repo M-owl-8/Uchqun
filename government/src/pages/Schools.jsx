@@ -9,7 +9,7 @@ const Schools = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { data, loading, error } = useFetch('/government/schools');
-  const schools = data?.schools || [];
+  const schools = useMemo(() => data?.schools ?? [], [data]);
 
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');

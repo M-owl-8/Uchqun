@@ -42,14 +42,14 @@ const Dashboard = () => {
         api.get('/government/overview'),
         api.get('/government/schools'),
         api.get('/government/admin-registrations', { params: { status: 'pending' } }),
-        api.get('/ai-warnings', { params: { resolved: false } }),
+        api.get('/ai-warnings', { params: { isResolved: false } }),
       ]).then(([overviewRes, schoolsRes, adminsRes, warningsRes]) => {
         const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
         const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : cached.stats;
         const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : cached.schools;
         const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : cached.admins;
         const pt = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.pagination?.total ?? ad.length) : (cached.pendingTotal ?? cached.admins?.length ?? 0);
-        const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : cached.activeWarnings;
+        const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.total ?? 0) : cached.activeWarnings;
         cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, pendingTotal: pt, activeWarnings: aw });
         setStats(s); setSchools(sc); setAdmins(ad); setPendingTotal(pt); setActiveWarnings(aw); setIsStale(anyFailed);
         setLastUpdated(new Date());
@@ -61,14 +61,14 @@ const Dashboard = () => {
       api.get('/government/overview'),
       api.get('/government/schools'),
       api.get('/government/admin-registrations', { params: { status: 'pending' } }),
-      api.get('/ai-warnings', { params: { resolved: false } }),
+      api.get('/ai-warnings', { params: { isResolved: false } }),
     ]);
     const anyFailed = [overviewRes, schoolsRes, adminsRes].some(r => r.status === 'rejected');
     const s = overviewRes.status === 'fulfilled' ? overviewRes.value.data.data : null;
     const sc = schoolsRes.status === 'fulfilled' ? (schoolsRes.value.data.data?.schools || []) : [];
     const ad = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.data || []) : [];
     const pt = adminsRes.status === 'fulfilled' ? (adminsRes.value.data?.pagination?.total ?? ad.length) : 0;
-    const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.length ?? warningsRes.value.data?.warnings?.length ?? 0) : 0;
+    const aw = warningsRes.status === 'fulfilled' ? (warningsRes.value.data?.data?.total ?? 0) : 0;
     cache.set(CACHE_KEY, { stats: s, schools: sc, admins: ad, pendingTotal: pt, activeWarnings: aw });
     setStats(s); setSchools(sc); setAdmins(ad); setPendingTotal(pt); setActiveWarnings(aw); setIsStale(anyFailed);
     setLastUpdated(new Date());

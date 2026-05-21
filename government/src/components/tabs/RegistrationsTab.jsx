@@ -128,8 +128,8 @@ export default function RegistrationsTab({
               <div>
                 <label className="block text-xs font-medium text-gray-600 mb-1">{t('government.form.email')}</label>
                 <div className="flex items-center gap-2">
-                  <input type="text" readOnly value={approvedCredentials.email || ''} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
-                  <Button variant="secondary" size="sm" onClick={() => { navigator.clipboard.writeText(approvedCredentials.email); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }}>
+                  <input type="text" readOnly value={approvedCredentials.admin?.email || ''} className="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-mono" />
+                  <Button variant="secondary" size="sm" onClick={() => { navigator.clipboard.writeText(approvedCredentials.admin?.email || ''); success(t('government.copied', { defaultValue: 'Nusxalandi' })); }}>
                     {t('government.copy', { defaultValue: 'Nusxalash' })}
                   </Button>
                 </div>
