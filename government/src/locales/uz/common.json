@@ -9,7 +9,9 @@
     "platform": "Platforma",
     "profile": "Profil",
     "settings": "Sozlamalar",
-    "logout": "Chiqish"
+    "logout": "Chiqish",
+    "auditLog": "Audit jurnali",
+    "warnings": "Ogohlantirishlar"
   },
   "sidebar": {
     "title": "Davlat Panel"
@@ -364,5 +366,25 @@
     "heading": "404",
     "message": "Sahifa topilmadi",
     "goBack": "Bosh sahifaga qaytish"
+  },
+  "auditLog": {
+    "title": "Audit jurnali",
+    "action": "Harakat",
+    "entity": "Ob'ekt",
+    "entityId": "ID",
+    "actor": "Foydalanuvchi",
+    "date": "Sana",
+    "actionCol": "Harakat",
+    "entityCol": "Ob'ekt",
+    "noEntries": "Yozuvlar topilmadi",
+    "filter": "Filtrlash",
+    "allActions": "Barcha harakatlar",
+    "allEntities": "Barcha ob'ektlar",
+    "startDate": "Boshlanish sanasi",
+    "endDate": "Tugash sanasi",
+    "fetchError": "Audit jurnalini yuklab bo'lmadi",
+    "total": "Jami",
+    "prev": "Oldingi",
+    "next": "Keyingi"
   }
 }

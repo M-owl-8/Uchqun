@@ -18,6 +18,7 @@ import Profile from './pages/Profile';
 import Platform from './pages/Platform';
 import Settings from './pages/Settings';
 import SchoolDetail from './pages/SchoolDetail';
+import AuditLog from './pages/AuditLog';
 import AIWarnings from './pages/AIWarnings';
 import NotFound from './pages/NotFound';
 
@@ -53,6 +54,7 @@ const AppRoutes = () => {
         <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
         <Route path="admin/:id" element={<ErrorBoundary><AdminDetails /></ErrorBoundary>} />
         <Route path="warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
+        <Route path="audit-log" element={<ErrorBoundary><AuditLog /></ErrorBoundary>} />
       </Route>
 
       <Route path="/" element={<Navigate to={isAuthenticated && isGovernment ? '/government' : '/login'} replace />} />
