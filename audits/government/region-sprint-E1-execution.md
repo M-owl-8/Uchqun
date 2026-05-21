@@ -165,19 +165,56 @@ The redirect and sidebar filtering are React component behaviors. The underlying
 | CP-023 registered | ✅ `LOOP_CROSS_PORTAL.md` |
 | i18n: `changePasswordForced.*` and `sidebar.republic/regionAccount/secondary` | ✅ en canonical · uz/ru UNVERIFIED |
 
-**Yellow gate:** No React component tests for the redirect or sidebar filtering. The logic is tested; the wiring is not. A component test sprint (E4 or final verify) should add integration tests.
+**Yellow gate (original):** No React component tests for the redirect or sidebar filtering. See "Binding Tests Closed" section below — this yellow is now resolved.
 
 ---
 
-## Verification
+## Binding Tests Closed (`7b45bf6`)
+
+Sprint E1's original yellow gate was: logic tested, JSX bindings not. The following component tests close it.
+
+### `SidebarCapability.test.jsx` — 5 tests
+
+Renders `<Sidebar>` with mocked `useAuth` returning controlled `hasCapability` functions. Asserts `<a href>` link presence/absence in the rendered DOM.
+
+| Test | Account shape | Expected hrefs present | Expected hrefs absent |
+|------|---------------|------------------------|----------------------|
+| republic-main | hasCapability:()→true | all 8 | — |
+| region-main | hasCapability:()→true | all 8 | — |
+| secondary {canViewSchools} | hasCapability:(k)→grants[k] | dashboard, schools, profile, settings | ratings, warnings, audit-log, platform |
+| secondary {canViewSchools, canViewAuditLog} | same | +warnings, +audit-log | ratings, platform |
+| secondary {canManageAdmins} | same | +platform (OR-gate) | schools, ratings, warnings, audit-log |
+
+**Binding bug found:** None. All 5 pass — the `NAV_ITEMS.filter → canSee → hasCapability` chain is correctly wired.
+
+### `PasswordChangeRedirect.test.jsx` — 5 tests
+
+Renders `<AppRoutes>` (exported) inside `<MemoryRouter initialEntries={[path]}>` with mocked `useAuth` and mocked page components (`data-testid`). Uses `waitFor` to assert after the `Navigate` effect fires.
+
+| Test | mustChangePassword | Initial path | Expected result |
+|------|-------------------|--------------|-----------------|
+| redirect to change-password | true | /government/schools | change-password renders, schools absent |
+| redirect from index | true | /government | change-password renders, dashboard absent |
+| no redirect loop | true | /government/change-password | change-password renders (no loop) |
+| normal route (dashboard) | false | /government | dashboard renders, change-password absent |
+| normal route (schools) | false | /government/schools | schools renders, change-password absent |
+
+**Binding bug found:** None. All 5 pass — `isAuthenticated && mustChangePassword && !isChangePasswordPage → <Navigate>` is correctly wired.
+
+**Note:** `AppRoutes` is now exported from `App.jsx` (`export const AppRoutes`) to enable this test. This is an additive, non-breaking change.
+
+---
+
+## Verification (final)
 
 | Check | Result |
 |-------|--------|
-| Government Vitest suite | 13 suites / 88 tests passed / 0 failed |
+| Government Vitest suite | 15 suites / 98 tests passed / 0 failed |
 | Frontend lint | 0 errors, 0 warnings |
-| New test file | `GovAuthContext.test.js` — 10 tests |
-| Test growth | 78 (Sprint 1) → 88 (Sprint E1, +10) |
+| New test files | `GovAuthContext.test.js` (10), `SidebarCapability.test.jsx` (5), `PasswordChangeRedirect.test.jsx` (5) |
+| Test growth | 78 (Sprint 1) → 88 (Sprint E1) → 98 (E1 binding close, +10) |
 | CP-023 registered | ✅ `LOOP_CROSS_PORTAL.md` |
+| E1 binding yellow | ✅ Closed — no binding bugs found |
 
 ---
 
