@@ -262,7 +262,7 @@ export const getSchoolById = async (req, res) => {
       return res.status(400).json({ error: 'Invalid school ID' });
     }
 
-    const school = await School.findOne({ where: { id, isActive: true } });
+    const school = await School.findOne({ where: { id } });
     if (!school) {
       return res.status(404).json({ error: 'School not found' });
     }
