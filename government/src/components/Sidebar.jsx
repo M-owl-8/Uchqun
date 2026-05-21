@@ -10,25 +10,43 @@ import {
   User,
   Settings,
   LogOut,
+  Globe,
+  MapPin,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ihmaLogo from '@shared/assets/ihma-logo.png';
 
+// Capability required to show a nav item. null = always visible.
+// Arrays mean ANY of the listed grants suffices (secondary only needs one to see the tab).
+const NAV_ITEMS = [
+  { href: '/government',          labelKey: 'nav.dashboard', icon: LayoutDashboard, capability: null },
+  { href: '/government/schools',  labelKey: 'nav.schools',   icon: Building2,       capability: 'canViewSchools' },
+  { href: '/government/ratings',  labelKey: 'nav.ratings',   icon: Star,            capability: 'canViewRatings' },
+  { href: '/government/warnings', labelKey: 'nav.warnings',  icon: ShieldAlert,     capability: 'canViewAuditLog' },
+  { href: '/government/audit-log',labelKey: 'nav.auditLog',  icon: ClipboardList,   capability: 'canViewAuditLog' },
+  {
+    href: '/government/platform',
+    labelKey: 'nav.platform',
+    icon: LayoutGrid,
+    // Platform tab contains multiple sub-sections; show it if the account has any platform grant.
+    capability: ['canManageAdmins', 'canManageGovernmentUsers', 'canViewMessages', 'canManageRegistrations'],
+  },
+  { href: '/government/profile',  labelKey: 'nav.profile',   icon: User,     capability: null },
+  { href: '/government/settings', labelKey: 'nav.settings',  icon: Settings, capability: null },
+];
+
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
-  const { user, logout } = useAuth();
+  const { user, logout, hasCapability, govType, isRepublic, isRegionAccount } = useAuth();
   const { t } = useTranslation();
 
-  const navigation = [
-    { name: t('nav.dashboard', { defaultValue: 'Dashboard' }),    href: '/government',          icon: LayoutDashboard },
-    { name: t('nav.schools',   { defaultValue: 'Muassasalar' }),  href: '/government/schools',  icon: Building2 },
-    { name: t('nav.ratings',   { defaultValue: 'Reytinglar' }),   href: '/government/ratings',   icon: Star },
-    { name: t('nav.warnings',  { defaultValue: 'Ogohlantirishlar' }), href: '/government/warnings',   icon: ShieldAlert },
-    { name: t('nav.auditLog', { defaultValue: 'Audit jurnali' }),   href: '/government/audit-log',  icon: ClipboardList },
-    { name: t('nav.platform',  { defaultValue: 'Platform' }),     href: '/government/platform',  icon: LayoutGrid },
-    { name: t('nav.profile',   { defaultValue: 'Profil' }),       href: '/government/profile',  icon: User },
-    { name: t('nav.settings',  { defaultValue: 'Sozlamalar' }),   href: '/government/settings', icon: Settings },
-  ];
+  const canSee = (capability) => {
+    if (!capability) return true;
+    if (Array.isArray(capability)) return capability.some((c) => hasCapability(c));
+    return hasCapability(capability);
+  };
+
+  const visibleNav = NAV_ITEMS.filter(({ capability }) => canSee(capability));
 
   const isActive = (href) => {
     if (href === '/government') {
@@ -36,6 +54,14 @@ const Sidebar = ({ onClose }) => {
     }
     return location.pathname.startsWith(href);
   };
+
+  const accessLabel = isRepublic
+    ? t('sidebar.republic', { defaultValue: 'Republic' })
+    : isRegionAccount
+      ? t('sidebar.regionAccount', { defaultValue: 'Region' })
+      : null;
+
+  const AccessIcon = isRepublic ? Globe : MapPin;
 
   return (
     <div className="flex flex-col h-screen w-64 bg-sidebar">
@@ -57,9 +83,24 @@ const Sidebar = ({ onClose }) => {
         </div>
       </div>
 
+      {/* Region/republic indicator */}
+      {accessLabel && (
+        <div className="mx-3 mt-3 px-3 py-1.5 rounded-md bg-sidebar-hover flex items-center gap-2">
+          <AccessIcon className="w-3.5 h-3.5 text-brand-400 flex-shrink-0" />
+          <span className="text-[11px] text-sidebar-muted truncate">
+            {accessLabel}
+            {govType === 'secondary' && (
+              <span className="ml-1 opacity-60">
+                · {t('sidebar.secondary', { defaultValue: 'secondary' })}
+              </span>
+            )}
+          </span>
+        </div>
+      )}
+
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-0.5 overflow-y-auto">
-        {navigation.map((item) => {
+        {visibleNav.map((item) => {
           const active = isActive(item.href);
           return (
             <Link
@@ -73,7 +114,9 @@ const Sidebar = ({ onClose }) => {
               }`}
             >
               <item.icon className="w-4 h-4 flex-shrink-0" strokeWidth={active ? 2 : 1.5} />
-              <span className={active ? 'font-medium' : ''}>{item.name}</span>
+              <span className={active ? 'font-medium' : ''}>
+                {t(item.labelKey, { defaultValue: item.labelKey })}
+              </span>
             </Link>
           );
         })}
