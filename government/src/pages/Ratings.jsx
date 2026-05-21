@@ -3,8 +3,10 @@ import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User } from 'lucide-react';
+import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User, Globe, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { useRegionName } from '../hooks/useRegionName';
 
 const STAR_COLORS = {
   5: 'bg-green-500',
@@ -240,6 +242,8 @@ const RATINGS_CACHE_KEY = 'government:ratings';
 
 const Ratings = () => {
   const { t } = useTranslation();
+  const { isRepublic, isRegionAccount } = useAuth();
+  const regionName = useRegionName();
   const [schools, setSchools] = useState(() => cache.get(RATINGS_CACHE_KEY)?.schools ?? []);
   const [stats, setStats] = useState(() => cache.get(RATINGS_CACHE_KEY)?.stats ?? { total: 0, average: 0 });
   const [loading, setLoading] = useState(!cache.get(RATINGS_CACHE_KEY));
@@ -322,7 +326,24 @@ const Ratings = () => {
     <div className="space-y-8">
       <div>
         <h1 className="text-2xl font-semibold text-inkGreen-900">{t('ratings.title')}</h1>
-        <p className="text-sm text-gray-500 mt-0.5">{t('ratings.subtitle')}</p>
+        <p className="text-sm text-gray-500 mt-0.5">
+          {isRegionAccount && regionName
+            ? t('ratings.subtitleRegion', { name: regionName, defaultValue: 'School ratings in {{name}}' })
+            : t('ratings.subtitle')}
+        </p>
+        <div className="flex items-center gap-1.5 mt-1" data-testid="scope-label">
+          {isRepublic ? (
+            <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+              <Globe className="w-3 h-3" />
+              {t('scope.national', { defaultValue: 'All regions' })}
+            </span>
+          ) : isRegionAccount && regionName ? (
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+              <MapPin className="w-3 h-3" />
+              {regionName}
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* Summary stats */}
@@ -354,7 +375,11 @@ const Ratings = () => {
         <Card className="p-12">
           <div className="text-center">
             <Star className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-            <p className="text-gray-600">{t('ratings.notFound')}</p>
+            <p className="text-gray-600">
+              {isRegionAccount && regionName && !search.trim()
+                ? t('ratings.notFoundRegion', { name: regionName, defaultValue: 'No ratings in {{name}} yet' })
+                : t('ratings.notFound')}
+            </p>
           </div>
         </Card>
       ) : (

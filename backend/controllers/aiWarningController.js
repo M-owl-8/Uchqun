@@ -194,6 +194,15 @@ export const getWarnings = async (req, res) => {
       where.parentId = req.user.id;
     }
 
+    // Government region scoping: region accounts only see warnings for their region's schools
+    if (req.user.role === 'government' && req.user.govRegionId) {
+      const regionSchools = await School.findAll({
+        where: { regionId: req.user.govRegionId },
+        attributes: ['id'],
+      });
+      where.schoolId = { [Op.in]: regionSchools.map((s) => s.id) };
+    }
+
     const warnings = await AIWarning.findAndCountAll({
       where,
       limit,

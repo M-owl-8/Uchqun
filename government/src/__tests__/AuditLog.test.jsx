@@ -11,13 +11,21 @@ vi.mock('react-router-dom', () => ({
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (_key, opts) => opts?.defaultValue ?? _key,
+    t: (_key, opts) => {
+      let val = opts?.defaultValue ?? _key;
+      if (opts?.name) val = val.replace('{{name}}', opts.name);
+      return val;
+    },
   }),
 }));
 
 vi.mock('@shared/components/LoadingSpinner', () => ({
   default: ({ size }) => <div data-testid="spinner" data-size={size} />,
 }));
+
+const mockUseAuth = vi.fn();
+vi.mock('../context/AuthContext', () => ({ useAuth: mockUseAuth }));
+vi.mock('../hooks/useRegionName', () => ({ useRegionName: vi.fn() }));
 
 const makeResponse = (entries, { total = entries.length, page = 1, totalPages = 1 } = {}) => ({
   data: { data: { entries, total, page, limit: 20, totalPages } },
@@ -42,11 +50,38 @@ const sampleEntries = [
   },
 ];
 
+import { useRegionName } from '../hooks/useRegionName';
 const AuditLog = (await import('../pages/AuditLog.jsx')).default;
+
+describe('AuditLog — scope labeling (E3)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    mockApi.get.mockResolvedValue(makeResponse([]));
+  });
+
+  it('republic: shows "All regions" scope label', async () => {
+    mockUseAuth.mockReturnValue({ isRepublic: true, isRegionAccount: false });
+    useRegionName.mockReturnValue(null);
+    render(<AuditLog />);
+    await waitFor(() => expect(screen.queryByTestId('spinner')).not.toBeInTheDocument());
+    expect(screen.getByTestId('scope-label')).toHaveTextContent('All regions');
+  });
+
+  it('region: shows region name in scope label and region-specific empty state', async () => {
+    mockUseAuth.mockReturnValue({ isRepublic: false, isRegionAccount: true });
+    useRegionName.mockReturnValue('Tashkent');
+    render(<AuditLog />);
+    await waitFor(() => expect(screen.getByTestId('empty-state')).toBeInTheDocument());
+    expect(screen.getByTestId('scope-label')).toHaveTextContent('Tashkent');
+    expect(screen.getByText('No audit entries for Tashkent yet')).toBeInTheDocument();
+  });
+});
 
 describe('AuditLog — S1-F02 audit viewer', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUseAuth.mockReturnValue({ isRepublic: true, isRegionAccount: false });
+    useRegionName.mockReturnValue(null);
     mockApi.get.mockResolvedValue(makeResponse(sampleEntries));
   });
 

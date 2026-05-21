@@ -2,12 +2,13 @@ import { jest } from '@jest/globals';
 
 const mockFindAndCount = jest.fn();
 const mockFindByPk = jest.fn();
+const mockSchoolFindAll = jest.fn();
 
 jest.unstable_mockModule('../models/AIWarning.js', () => ({
   default: { findAndCountAll: mockFindAndCount, findByPk: mockFindByPk, create: jest.fn() },
 }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: jest.fn() } }));
-jest.unstable_mockModule('../models/School.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/School.js', () => ({ default: { findAll: mockSchoolFindAll } }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/Notification.js', () => ({ default: { create: jest.fn() } }));
@@ -56,6 +57,34 @@ describe('aiWarningController', () => {
       await getWarnings(req, res);
       const where = mockFindAndCount.mock.calls[0][0].where;
       expect(where.isResolved).toBe(false);
+    });
+
+    it('government region account: scopes to schools in govRegionId', async () => {
+      mockSchoolFindAll.mockResolvedValue([{ id: 'school-1' }, { id: 'school-2' }]);
+      mockFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+      const req = { user: { role: 'government', govRegionId: 'region-uuid-1' }, query: {} };
+      const res = mkRes();
+      await getWarnings(req, res);
+
+      expect(mockSchoolFindAll).toHaveBeenCalledWith(
+        expect.objectContaining({ where: { regionId: 'region-uuid-1' } })
+      );
+      const where = mockFindAndCount.mock.calls[0][0].where;
+      // schoolId should be an Op.in clause with the 2 school IDs
+      expect(where.schoolId).toBeDefined();
+      expect(where.parentId).toBeUndefined();
+    });
+
+    it('government republic account (no govRegionId): no region scoping applied', async () => {
+      mockSchoolFindAll.mockResolvedValue([]);
+      mockFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+      const req = { user: { role: 'government', govRegionId: null }, query: {} };
+      const res = mkRes();
+      await getWarnings(req, res);
+
+      expect(mockSchoolFindAll).not.toHaveBeenCalled();
+      const where = mockFindAndCount.mock.calls[0][0].where;
+      expect(where.schoolId).toBeUndefined();
     });
   });
 

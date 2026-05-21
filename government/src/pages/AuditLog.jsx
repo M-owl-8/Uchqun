@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ClipboardList, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ClipboardList, ChevronLeft, ChevronRight, Globe, MapPin } from 'lucide-react';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import api from '../services/api';
+import { useAuth } from '../context/AuthContext';
+import { useRegionName } from '../hooks/useRegionName';
 
 const ACTIONS = ['archive', 'reactivate', 'approve_registration', 'reject_registration', 'create', 'update', 'delete'];
 const ENTITIES = ['schools', 'admin_registrations', 'admins', 'government_users'];
@@ -26,6 +28,8 @@ const ENTITY_LABELS = {
 
 const AuditLog = () => {
   const { t } = useTranslation();
+  const { isRepublic, isRegionAccount } = useAuth();
+  const regionName = useRegionName();
 
   const [entries, setEntries] = useState([]);
   const [total, setTotal] = useState(0);
@@ -85,11 +89,26 @@ const AuditLog = () => {
   return (
     <div className="space-y-5">
       {/* Page header */}
-      <div className="flex items-center gap-3">
-        <ClipboardList className="w-6 h-6 text-brand-600" />
-        <h1 className="text-2xl font-semibold text-inkGreen-900">
-          {t('auditLog.title', { defaultValue: 'Audit jurnali' })}
-        </h1>
+      <div>
+        <div className="flex items-center gap-3">
+          <ClipboardList className="w-6 h-6 text-brand-600" />
+          <h1 className="text-2xl font-semibold text-inkGreen-900">
+            {t('auditLog.title', { defaultValue: 'Audit jurnali' })}
+          </h1>
+        </div>
+        <div className="flex items-center gap-1.5 mt-1 ml-9" data-testid="scope-label">
+          {isRepublic ? (
+            <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+              <Globe className="w-3 h-3" />
+              {t('scope.national', { defaultValue: 'All regions' })}
+            </span>
+          ) : isRegionAccount && regionName ? (
+            <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+              <MapPin className="w-3 h-3" />
+              {regionName}
+            </span>
+          ) : null}
+        </div>
       </div>
 
       {/* Filters */}
@@ -180,7 +199,9 @@ const AuditLog = () => {
           <div className="py-16 text-center" data-testid="empty-state">
             <ClipboardList className="w-10 h-10 text-gray-200 mx-auto mb-3" />
             <p className="text-sm text-gray-500">
-              {t('auditLog.noEntries', { defaultValue: 'Yozuvlar topilmadi' })}
+              {isRegionAccount && regionName
+                ? t('auditLog.noEntriesRegion', { name: regionName, defaultValue: 'No audit entries for {{name}} yet' })
+                : t('auditLog.noEntries', { defaultValue: 'Yozuvlar topilmadi' })}
             </p>
           </div>
         ) : (

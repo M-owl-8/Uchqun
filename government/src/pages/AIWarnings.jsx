@@ -4,8 +4,10 @@ import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   ShieldAlert, AlertTriangle, AlertCircle, Info,
-  CheckCircle2, RefreshCw, Shield,
+  CheckCircle2, RefreshCw, Shield, Globe, MapPin,
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import { useRegionName } from '../hooks/useRegionName';
 
 const SEVERITY_META = {
   critical: { badge: 'bg-red-100 text-red-700 border-red-200', Icon: ShieldAlert },
@@ -79,6 +81,8 @@ const WarningCard = ({ warning, onRequestResolve }) => {
 const AIWarnings = () => {
   const { t } = useTranslation();
   const { success, error: showError } = useToast();
+  const { isRepublic, isRegionAccount } = useAuth();
+  const regionName = useRegionName();
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
@@ -138,6 +142,19 @@ const AIWarnings = () => {
           <p className="text-sm text-gray-500 mt-0.5">
             {t('warnings.subtitle', { defaultValue: 'Muassasalar bo\'yicha avtomatik tahlil natijalari' })}
           </p>
+          <div className="flex items-center gap-1.5 mt-1" data-testid="scope-label">
+            {isRepublic ? (
+              <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+                <Globe className="w-3 h-3" />
+                {t('scope.national', { defaultValue: 'All regions' })}
+              </span>
+            ) : isRegionAccount && regionName ? (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+                <MapPin className="w-3 h-3" />
+                {regionName}
+              </span>
+            ) : null}
+          </div>
         </div>
         <button
           onClick={load}
@@ -205,8 +222,12 @@ const AIWarnings = () => {
           <Shield className="w-10 h-10 text-gray-200 mx-auto mb-3" />
           <p className="text-sm text-gray-400">
             {filter === 'active'
-              ? t('warnings.noActive', { defaultValue: 'Faol ogohlantirishlar yo\'q' })
-              : t('warnings.noResolved', { defaultValue: 'Hal qilingan ogohlantirishlar yo\'q' })}
+              ? (isRegionAccount && regionName
+                  ? t('warnings.noActiveRegion', { name: regionName, defaultValue: 'No active warnings for {{name}}' })
+                  : t('warnings.noActive', { defaultValue: 'Faol ogohlantirishlar yo\'q' }))
+              : (isRegionAccount && regionName
+                  ? t('warnings.noResolvedRegion', { name: regionName, defaultValue: 'No resolved warnings for {{name}}' })
+                  : t('warnings.noResolved', { defaultValue: 'Hal qilingan ogohlantirishlar yo\'q' }))}
           </p>
         </div>
       ) : (
