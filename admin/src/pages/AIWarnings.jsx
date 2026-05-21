@@ -178,32 +178,34 @@ const AIWarnings = () => {
     if (cached) {
       setWarnings(cached);
       setLoading(false);
-      api.get('/admin/ai-warnings').then(res => {
+      api.get('/ai-warnings').then(res => {
         const data = res.data.data || [];
         cache.set(CACHE_KEY, data);
         setWarnings(data);
-      }).catch(() => {});
+      }).catch(err => {
+        showError(err.response?.data?.error || t('aiWarnings.loadError', { defaultValue: 'Ogohlantirishlarni yuklashda xatolik' }));
+      });
       return;
     }
     try {
       setLoading(true);
-      const res = await api.get('/admin/ai-warnings');
+      const res = await api.get('/ai-warnings');
       const data = res.data.data || [];
       cache.set(CACHE_KEY, data);
       setWarnings(data);
-    } catch {
-      // endpoint may not exist yet — silently show empty state
+    } catch (err) {
+      showError(err.response?.data?.error || t('aiWarnings.loadError', { defaultValue: 'Ogohlantirishlarni yuklashda xatolik' }));
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [showError, t]);
 
   useEffect(() => { fetchWarnings(); }, [fetchWarnings]);
 
   const handleResolve = async (id) => {
     try {
       setResolving(id);
-      await api.post(`/admin/ai-warnings/${id}/resolve`);
+      await api.put(`/ai-warnings/${id}/resolve`);
       success(t('aiWarnings.resolveSuccess', { defaultValue: 'Ogohlantirish hal qilindi' }));
       cache.invalidate('admin:ai-warnings');
       await fetchWarnings(true);
@@ -225,7 +227,7 @@ const AIWarnings = () => {
   });
 
   const unresolvedCount = warnings.filter(w => !w.resolvedAt).length;
-  const resolvedCount = warnings.filter(w => w.resolvedAt).length;
+  const resolvedCount   = warnings.filter(w =>  w.resolvedAt).length;
 
   if (loading) {
     return (

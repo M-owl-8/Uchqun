@@ -78,7 +78,7 @@ const Dashboard = () => {
       api.get('/admin/statistics', { signal }),
       api.get('/admin/receptions', { signal }),
       api.get('/admin/documents/pending', { signal }),
-      api.get('/admin/ai-warnings', { signal }),
+      api.get('/ai-warnings', { signal }),
       api.get('/admin/school-ratings', { signal }),
     ]);
 
@@ -180,10 +180,10 @@ const Dashboard = () => {
       linkLabel: 'Hujjatlarga o\'tish →',
       done: false,
     },
-    aiWarningsArray.filter((w) => !w.isResolved).length > 0 && {
+    aiWarningsArray.filter((w) => !w.resolvedAt).length > 0 && {
       id: 'ai',
       text: 'AI ogohlantirishni ko\'rib chiqish',
-      sub: aiWarningsArray.find((w) => !w.isResolved)?.title || '',
+      sub: aiWarningsArray.find((w) => !w.resolvedAt)?.title || '',
       link: '/admin/ai-warnings',
       linkLabel: 'Ogohlantirishga o\'tish →',
       done: false,
@@ -196,7 +196,7 @@ const Dashboard = () => {
   const ratingTotal = ratingDist.reduce((a, b) => a + b, 0) || 87;
   const ratingPct  = (n) => ratingTotal > 0 ? Math.round((n / ratingTotal) * 100) : 0;
 
-  const highestAi = aiWarningsArray.find((w) => !w.isResolved && ['critical', 'high'].includes(w.severity?.toLowerCase()));
+  const highestAi = aiWarningsArray.find((w) => !w.resolvedAt && ['critical', 'high'].includes(w.severity?.toLowerCase()));
 
   if (loading) {
     return (
@@ -289,10 +289,10 @@ const Dashboard = () => {
             <p className="text-sm font-medium text-warm-700">{t('dashboard.aiWarnings', { defaultValue: 'Yangi AI ogohlantirishlar' })}</p>
             <BellRing className="w-5 h-5 text-warning-600" strokeWidth={1.75} />
           </div>
-          <p className="num text-4xl font-semibold text-warm-900 mt-1">{aiWarningsArray.filter((w) => !w.isResolved).length}</p>
+          <p className="num text-4xl font-semibold text-warm-900 mt-1">{aiWarningsArray.filter((w) => !w.resolvedAt).length}</p>
           <p className="text-sm text-warm-500 mt-1">
             {aiWarningsArray.filter((w) => w.severity === 'high' || w.severity === 'critical').length > 0
-              ? `shulardan ${aiWarningsArray.filter((w) => (w.severity === 'high' || w.severity === 'critical') && !w.isResolved).length} ta yuqori darajada`
+              ? `shulardan ${aiWarningsArray.filter((w) => (w.severity === 'high' || w.severity === 'critical') && !w.resolvedAt).length} ta yuqori darajada`
               : t('dashboard.noHighSeverity', { defaultValue: 'hech qanday yuqori darajali yo\'q' })}
           </p>
           <div className="mt-4 pt-4 border-t border-warm-100">
