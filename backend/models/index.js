@@ -44,6 +44,7 @@ import ChildJournalEntry from './ChildJournalEntry.js';
 import ImportJob from './ImportJob.js';
 import ChildGoal from './ChildGoal.js';
 import ChildGoalReview from './ChildGoalReview.js';
+import SchoolCategory from './SchoolCategory.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -91,6 +92,7 @@ const models = {
   ImportJob,
   ChildGoal,
   ChildGoalReview,
+  SchoolCategory,
   sequelize,
 };
 
@@ -105,6 +107,10 @@ District.belongsTo(Region, { foreignKey: 'regionId', as: 'region' });
 // Region ↔ School (constraints: false — regionId is nullable during backfill period)
 Region.hasMany(School, { foreignKey: 'regionId', as: 'schools', constraints: false });
 School.belongsTo(Region, { foreignKey: 'regionId', as: 'region', constraints: false });
+
+// SchoolCategory ↔ School (constraints: false — categoryId is nullable; set by government)
+SchoolCategory.hasMany(School, { foreignKey: 'categoryId', as: 'schools', constraints: false });
+School.belongsTo(SchoolCategory, { foreignKey: 'categoryId', as: 'category', constraints: false });
 
 // District ↔ School (metadata-only, not used for auth)
 District.hasMany(School, { foreignKey: 'districtId', as: 'schools', constraints: false });
@@ -818,5 +824,6 @@ export {
   TeacherReflection,
   ChildJournalEntry,
   ImportJob,
+  SchoolCategory,
   sequelize,
 };

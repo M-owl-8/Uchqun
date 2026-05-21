@@ -60,6 +60,12 @@ const School = sequelize.define('School', {
     type: DataTypes.UUID,
     allowNull: true,
   },
+  // CP-021 Sprint D: care-type category FK. Null until assigned by government.
+  // Only republic-main or region-main (own region) may set this via PUT /government/schools/:id/category.
+  categoryId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
 }, {
   tableName: 'schools',
   timestamps: true,
