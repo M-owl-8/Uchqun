@@ -77,7 +77,9 @@
   "schools": {
     "title": "Школы",
     "subtitle": "Все школы и их рейтинги",
+    "subtitleRegion": "Школы в {{name}}",
     "notFound": "Школы не найдены",
+    "notFoundRegion": "В {{name}} пока нет школ",
     "searchPlaceholder": "Название или адрес школы...",
     "allTypes": "Все типы",
     "typeSchool": "Школа",
@@ -126,29 +128,43 @@
   "studentsPage": {
     "title": "Все ученики",
     "subtitle": "Все ученики, зарегистрированные в системе",
+    "subtitleRegion": "Ученики в {{name}}",
     "total": "Всего учеников",
     "notFound": "Ученики не найдены",
+    "notFoundRegion": "В {{name}} пока нет учеников",
     "searchPlaceholder": "Имя или школа...",
     "parent": "Родитель",
-    "dob": "Дата рождения"
+    "dob": "Дата рождения",
+    "school": "Школа",
+    "gender": "Пол",
+    "loadMore": "Загрузить ещё"
   },
   "teachersPage": {
     "title": "Все учителя",
     "subtitle": "Все учителя, зарегистрированные в системе",
+    "subtitleRegion": "Учителя в {{name}}",
     "total": "Всего учителей",
     "notFound": "Учителя не найдены",
-    "searchPlaceholder": "Имя или email..."
+    "notFoundRegion": "В {{name}} пока нет учителей",
+    "searchPlaceholder": "Имя или email...",
+    "school": "Школа",
+    "loadMore": "Загрузить ещё"
   },
   "parentsPage": {
     "title": "Все родители",
     "subtitle": "Все родители, зарегистрированные в системе",
+    "subtitleRegion": "Родители в {{name}}",
     "total": "Всего родителей",
-    "notFound": "Родители не найдены"
+    "notFound": "Родители не найдены",
+    "notFoundRegion": "В {{name}} пока нет родителей",
+    "loadMore": "Загрузить ещё"
   },
   "ratings": {
     "title": "Рейтинги",
     "subtitle": "Рейтинги и отзывы школ",
+    "subtitleRegion": "Рейтинги школ в {{name}}",
     "notFound": "Рейтинги не найдены",
+    "notFoundRegion": "В {{name}} пока нет рейтингов",
     "totalRatings": "Всего оценок",
     "ratingsCount": "оценок",
     "unknown": "Неизвестно",
@@ -421,6 +437,8 @@
     "retry": "Повторить",
     "loading": "Загрузка...",
     "noActive": "Нет активных предупреждений",
+    "noActiveRegion": "В {{name}} нет активных предупреждений",
+    "noResolvedRegion": "В {{name}} нет решённых предупреждений",
     "noResolved": "Нет решённых предупреждений",
     "resolveSuccess": "Предупреждение решено",
     "resolveError": "Не удалось решить",
@@ -453,6 +471,7 @@
     "actionCol": "Действие",
     "entityCol": "Сущность",
     "noEntries": "Записи не найдены",
+    "noEntriesRegion": "В {{name}} пока нет записей",
     "filter": "Фильтровать",
     "allActions": "Все действия",
     "allEntities": "Все сущности",
@@ -462,6 +481,12 @@
     "total": "Итого",
     "prev": "Предыдущая",
     "next": "Следующая"
+  },
+  "scope": {
+    "_note": "UNVERIFIED — AI-generated translation",
+    "national": "Все регионы",
+    "yourRegion": "Ваш регион",
+    "inRegion": "в {{name}}"
   },
   "changePasswordForced": {
     "_note": "UNVERIFIED — AI-generated translation",

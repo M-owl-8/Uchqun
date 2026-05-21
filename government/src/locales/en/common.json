@@ -6,6 +6,8 @@
     "teachers": "Teachers",
     "parents": "Parents",
     "ratings": "Ratings",
+    "warnings": "AI Warnings",
+    "auditLog": "Audit Log",
     "platform": "Platform",
     "profile": "Profile",
     "settings": "Settings",
@@ -70,7 +72,9 @@
   "schools": {
     "title": "Schools",
     "subtitle": "All schools and their ratings",
+    "subtitleRegion": "Schools in {{name}}",
     "notFound": "No schools found",
+    "notFoundRegion": "No schools in {{name}} yet",
     "searchPlaceholder": "School name or address...",
     "allTypes": "All types",
     "typeSchool": "School",
@@ -110,29 +114,43 @@
   "studentsPage": {
     "title": "All Students",
     "subtitle": "All students registered in the system",
+    "subtitleRegion": "Students in {{name}}",
     "total": "Total students",
     "notFound": "No students found",
+    "notFoundRegion": "No students in {{name}} yet",
     "searchPlaceholder": "Name or school...",
     "parent": "Parent",
-    "dob": "Date of birth"
+    "dob": "Date of birth",
+    "school": "School",
+    "gender": "Gender",
+    "loadMore": "Load more"
   },
   "teachersPage": {
     "title": "All Teachers",
     "subtitle": "All teachers registered in the system",
+    "subtitleRegion": "Teachers in {{name}}",
     "total": "Total teachers",
     "notFound": "No teachers found",
-    "searchPlaceholder": "Name or email..."
+    "notFoundRegion": "No teachers in {{name}} yet",
+    "searchPlaceholder": "Name or email...",
+    "school": "School",
+    "loadMore": "Load more"
   },
   "parentsPage": {
     "title": "All Parents",
     "subtitle": "All parents registered in the system",
+    "subtitleRegion": "Parents in {{name}}",
     "total": "Total parents",
-    "notFound": "No parents found"
+    "notFound": "No parents found",
+    "notFoundRegion": "No parents in {{name}} yet",
+    "loadMore": "Load more"
   },
   "ratings": {
     "title": "Ratings",
     "subtitle": "School ratings and reviews",
+    "subtitleRegion": "School ratings in {{name}}",
     "notFound": "No ratings found",
+    "notFoundRegion": "No ratings in {{name}} yet",
     "totalRatings": "Total Ratings",
     "ratingsCount": "ratings",
     "unknown": "Unknown",
@@ -405,7 +423,9 @@
     "retry": "Retry",
     "loading": "Loading...",
     "noActive": "No active warnings",
+    "noActiveRegion": "No active warnings for {{name}}",
     "noResolved": "No resolved warnings",
+    "noResolvedRegion": "No resolved warnings for {{name}}",
     "resolveSuccess": "Warning resolved",
     "resolveError": "Failed to resolve",
     "resolveTitle": "Mark as resolved",
@@ -434,6 +454,32 @@
     "error": "An error occurred",
     "notFound": "Not found",
     "unknown": "Unknown"
+  },
+  "scope": {
+    "national": "All regions",
+    "yourRegion": "Your region",
+    "inRegion": "in {{name}}"
+  },
+  "auditLog": {
+    "title": "Audit Log",
+    "action": "Action",
+    "entity": "Entity",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "filter": "Filter",
+    "allActions": "All actions",
+    "allEntities": "All entities",
+    "date": "Date",
+    "actor": "User",
+    "actionCol": "Action",
+    "entityCol": "Entity",
+    "entityId": "ID",
+    "noEntries": "No entries found",
+    "noEntriesRegion": "No audit entries for {{name}} yet",
+    "fetchError": "Failed to load",
+    "total": "Total",
+    "prev": "Previous",
+    "next": "Next"
   },
   "page404": {
     "heading": "404",

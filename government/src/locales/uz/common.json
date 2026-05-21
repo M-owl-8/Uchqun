@@ -72,7 +72,9 @@
   "schools": {
     "title": "Muassasalar",
     "subtitle": "Barcha muassasalar va ularning baholari",
+    "subtitleRegion": "{{name}} dagi muassasalar",
     "notFound": "Muassasalar topilmadi",
+    "notFoundRegion": "{{name}} da hali muassasalar yo'q",
     "searchPlaceholder": "Muassasa nomi yoki manzili...",
     "allTypes": "Barcha turlar",
     "typeSchool": "Maktab",
@@ -121,29 +123,43 @@
   "studentsPage": {
     "title": "Barcha o'quvchilar",
     "subtitle": "Tizimdagi barcha o'quvchilar ro'yxati",
+    "subtitleRegion": "{{name}} dagi o'quvchilar",
     "total": "Jami o'quvchilar",
     "notFound": "O'quvchilar topilmadi",
+    "notFoundRegion": "{{name}} da hali o'quvchilar yo'q",
     "searchPlaceholder": "Ism yoki maktab...",
     "parent": "Ota-ona",
-    "dob": "Tug'ilgan sana"
+    "dob": "Tug'ilgan sana",
+    "school": "Maktab",
+    "gender": "Jinsi",
+    "loadMore": "Ko'proq yuklash"
   },
   "teachersPage": {
     "title": "Barcha o'qituvchilar",
     "subtitle": "Tizimdagi barcha o'qituvchilar ro'yxati",
+    "subtitleRegion": "{{name}} dagi o'qituvchilar",
     "total": "Jami o'qituvchilar",
     "notFound": "O'qituvchilar topilmadi",
-    "searchPlaceholder": "Ism yoki email..."
+    "notFoundRegion": "{{name}} da hali o'qituvchilar yo'q",
+    "searchPlaceholder": "Ism yoki email...",
+    "school": "Maktab",
+    "loadMore": "Ko'proq yuklash"
   },
   "parentsPage": {
     "title": "Barcha ota-onalar",
     "subtitle": "Tizimdagi barcha ota-onalar ro'yxati",
+    "subtitleRegion": "{{name}} dagi ota-onalar",
     "total": "Jami ota-onalar",
-    "notFound": "Ota-onalar topilmadi"
+    "notFound": "Ota-onalar topilmadi",
+    "notFoundRegion": "{{name}} da hali ota-onalar yo'q",
+    "loadMore": "Ko'proq yuklash"
   },
   "ratings": {
     "title": "Reytinglar",
     "subtitle": "Muassasalar reytinglari",
+    "subtitleRegion": "{{name}} da muassasalar reytingi",
     "notFound": "Reytinglar topilmadi",
+    "notFoundRegion": "{{name}} da hali reytinglar yo'q",
     "totalRatings": "Jami baholar",
     "ratingsCount": "baholar",
     "unknown": "Noma'lum",
@@ -416,7 +432,9 @@
     "retry": "Qayta urinish",
     "loading": "Yuklanmoqda...",
     "noActive": "Faol ogohlantirishlar yo'q",
+    "noActiveRegion": "{{name}} da faol ogohlantirishlar yo'q",
     "noResolved": "Hal qilingan ogohlantirishlar yo'q",
+    "noResolvedRegion": "{{name}} da hal qilingan ogohlantirishlar yo'q",
     "resolveSuccess": "Ogohlantirish hal qilindi",
     "resolveError": "Hal qilishda xatolik",
     "resolveTitle": "Hal qilingan deb belgilash",
@@ -448,6 +466,7 @@
     "actionCol": "Harakat",
     "entityCol": "Ob'ekt",
     "noEntries": "Yozuvlar topilmadi",
+    "noEntriesRegion": "{{name}} da hali yozuvlar yo'q",
     "filter": "Filtrlash",
     "allActions": "Barcha harakatlar",
     "allEntities": "Barcha ob'ektlar",
@@ -457,6 +476,12 @@
     "total": "Jami",
     "prev": "Oldingi",
     "next": "Keyingi"
+  },
+  "scope": {
+    "_note": "UNVERIFIED — AI-generated translation",
+    "national": "Barcha viloyatlar",
+    "yourRegion": "Sizning viloyatingiz",
+    "inRegion": "{{name}} da"
   },
   "changePasswordForced": {
     "_note": "UNVERIFIED — AI-generated translation",

@@ -12,14 +12,20 @@ import {
   Shield,
   AlertTriangle,
   ShieldAlert,
+  Globe,
+  MapPin,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import { useRegionName } from '../hooks/useRegionName';
 
 const CACHE_KEY = 'government:dashboard';
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
+  const { isRepublic, isRegionAccount } = useAuth();
+  const regionName = useRegionName();
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [schools, setSchools] = useState(() => cache.get(CACHE_KEY)?.schools ?? []);
   const [admins, setAdmins] = useState(() => cache.get(CACHE_KEY)?.admins ?? []);
@@ -106,6 +112,19 @@ const Dashboard = () => {
           <p className="text-sm text-gray-500 mt-0.5">
             {t('dashboard.subtitle', { defaultValue: "Umumiy ko'rinish" })}
           </p>
+          <div className="flex items-center gap-1.5 mt-1" data-testid="scope-label">
+            {isRepublic ? (
+              <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+                <Globe className="w-3 h-3" />
+                {t('scope.national', { defaultValue: 'All regions' })}
+              </span>
+            ) : isRegionAccount && regionName ? (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+                <MapPin className="w-3 h-3" />
+                {regionName}
+              </span>
+            ) : null}
+          </div>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0 mt-1">
           {lastUpdated && (
@@ -218,7 +237,9 @@ const Dashboard = () => {
           </div>
           {schools.length === 0 ? (
             <div className="py-10 text-center text-sm text-gray-400">
-              {t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
+              {isRegionAccount && regionName
+                ? t('schools.notFoundRegion', { name: regionName, defaultValue: 'No schools in {{name}} yet' })
+                : t('dashboard.schoolsNotFound', { defaultValue: 'Muassasalar topilmadi' })}
             </div>
           ) : (
             <div className="divide-y divide-gray-50">
@@ -257,8 +278,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* Regional breakdown */}
-      {regionBreakdown.length > 0 && (
+      {/* Regional breakdown — republic accounts only; region accounts see 1 region (their own) so breakdown is redundant */}
+      {isRepublic && regionBreakdown.length > 0 && (
         <div className="bg-paper-card border border-gray-200 rounded-lg">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
             <h2 className="text-sm font-semibold text-gray-900">
