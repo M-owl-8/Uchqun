@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 import AdminsTab from '../components/tabs/AdminsTab';
 import MessagesTab from '../components/tabs/MessagesTab';
 import GovernmentTab from '../components/tabs/GovernmentTab';
@@ -42,6 +43,7 @@ const TABS = ['admins', 'messages', 'government', 'registrations'];
 const Platform = () => {
   const { t } = useTranslation();
   const { success, error: showError } = useToast();
+  const { govType, isRepublic, govRegionId } = useAuth();
 
   const [activeTab, setActiveTab] = useState('admins');
   const [confirmDialog, setConfirmDialog] = useState(null);
@@ -63,17 +65,9 @@ const Platform = () => {
 
   // government users
   const [governments, setGovernments, loadingGovernments, refreshGovernments, governmentsError] = useApiCache('/government/users', 'platform:governments');
-  const [govFirstName, setGovFirstName] = useState('');
-  const [govLastName, setGovLastName] = useState('');
-  const [govEmail, setGovEmail] = useState('');
-  const [govPassword, setGovPassword] = useState('');
-  const [govLoading, setGovLoading] = useState(false);
-  const [editingGovernment, setEditingGovernment] = useState(null);
-  const [editGovFirstName, setEditGovFirstName] = useState('');
-  const [editGovLastName, setEditGovLastName] = useState('');
-  const [editGovEmail, setEditGovEmail] = useState('');
-  const [editGovPassword, setEditGovPassword] = useState('');
-  const [editGovSaving, setEditGovSaving] = useState(false);
+
+  // regions (for provisioning dropdowns)
+  const [regions, , loadingRegions] = useApiCache('/government/regions', 'platform:regions');
 
   // registrations (not cached — always fresh, status changes frequently)
   const [registrationRequests, setRegistrationRequests] = useState([]);
@@ -159,81 +153,50 @@ const Platform = () => {
     });
   };
 
-  const handleCreateGovernment = async (e) => {
-    e.preventDefault();
-    const fn = govFirstName.trim(), ln = govLastName.trim(), em = govEmail.trim(), pw = govPassword.trim();
-    if (!fn || !ln || !em || !pw) {
-      showError(t('government.validation.allFieldsRequired', { defaultValue: 'All fields are required' }));
-      return;
-    }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)) {
-      showError(t('government.validation.invalidEmail', { defaultValue: 'Invalid email format' }));
-      return;
-    }
-    const PASSWORD_RE = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/;
-    if (!PASSWORD_RE.test(pw)) {
-      showError(t('platform.passwordComplexity', {
-        defaultValue: 'Parol kamida 8 belgi, katta va kichik harf, raqam kerak',
-      }));
-      return;
-    }
-    try {
-      setGovLoading(true);
-      await api.post('/government/users', { firstName: fn, lastName: ln, email: em, password: pw });
-      success(t('government.governmentCreated', { defaultValue: 'Government user created' }));
-      setGovFirstName(''); setGovLastName(''); setGovEmail(''); setGovPassword('');
-      await refreshGovernments();
-    } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? error.message ?? t('government.governmentCreateError', { defaultValue: 'Create failed' }));
-    } finally { setGovLoading(false); }
-  };
+  // ── Government account handlers ───────────────────────────────────────────
 
-  const startEditGovernment = (gov) => {
-    setEditingGovernment(gov);
-    setEditGovFirstName(gov.firstName || '');
-    setEditGovLastName(gov.lastName || '');
-    setEditGovEmail(gov.email || '');
-    setEditGovPassword('');
-    setShowPasswords({ edit: false });
-  };
-
-  const handleUpdateGovernment = async (e) => {
-    e.preventDefault();
-    if (!editingGovernment) return;
-    try {
-      setEditGovSaving(true);
-      await api.put(`/government/users/${editingGovernment.id}`, {
-        firstName: editGovFirstName, lastName: editGovLastName,
-        email: editGovEmail, password: editGovPassword || undefined,
-      });
-      success(t('government.governmentUpdated', { defaultValue: 'Government user updated' }));
-      await refreshGovernments();
-      setEditingGovernment(null);
-      setEditGovPassword('');
-    } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.governmentUpdateError', { defaultValue: 'Update failed' }));
-    } finally { setEditGovSaving(false); }
+  const handleCreateGovernment = async (formData) => {
+    await api.post('/government/users', formData);
+    success(t('provision.success.created'));
+    await refreshGovernments();
   };
 
   const handleDeleteGovernment = (id) => {
     setConfirmDialog({
-      message: t('government.confirmDeleteGovernment', { defaultValue: 'Delete this government user?' }),
+      message: t('provision.actions.confirmDelete'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
           await api.delete(`/government/users/${id}`);
-          success(t('government.governmentDeleted', { defaultValue: 'Government user deleted' }));
+          success(t('provision.success.deleted'));
           setGovernments((prev) => {
             const next = prev.filter((g) => g.id !== id);
             cache.set('platform:governments', next);
             return next;
           });
         } catch (error) {
-          showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.governmentDeleteError', { defaultValue: 'Delete failed' }));
+          const code = error.response?.data?.error?.code;
+          if (code === 'DELETE_LAST_REPUBLIC_MAIN') {
+            showError(t('provision.errors.deleteLastRepublicMain'));
+          } else {
+            showError(
+              error.response?.data?.error?.detail ??
+              error.response?.data?.error ??
+              t('government.governmentDeleteError')
+            );
+          }
         }
       },
     });
   };
+
+  const handleResetPassword = async (id, newPassword) => {
+    await api.put(`/government/users/${id}/reset-password`, { newPassword });
+    success(t('provision.success.passwordReset'));
+    await refreshGovernments();
+  };
+
+  // ── Registration handlers ─────────────────────────────────────────────────
 
   const handleApproveRequest = (id) => {
     setConfirmDialog({
@@ -332,19 +295,16 @@ const Platform = () => {
         )}
         {activeTab === 'government' && (
           <GovernmentTab
-            governments={governments} loadingGovernments={loadingGovernments} govLoading={govLoading}
-            govFirstName={govFirstName} govLastName={govLastName} govEmail={govEmail} govPassword={govPassword}
-            setGovFirstName={setGovFirstName} setGovLastName={setGovLastName}
-            setGovEmail={setGovEmail} setGovPassword={setGovPassword}
+            governments={governments}
+            loadingGovernments={loadingGovernments}
+            regions={regions}
+            loadingRegions={loadingRegions}
+            govType={govType}
+            isRepublic={isRepublic}
+            govRegionId={govRegionId}
             onCreateGovernment={handleCreateGovernment}
-            editingGovernment={editingGovernment}
-            editGovFirstName={editGovFirstName} editGovLastName={editGovLastName}
-            editGovEmail={editGovEmail} editGovPassword={editGovPassword} editGovSaving={editGovSaving}
-            setEditGovFirstName={setEditGovFirstName} setEditGovLastName={setEditGovLastName}
-            setEditGovEmail={setEditGovEmail} setEditGovPassword={setEditGovPassword}
-            onStartEditGovernment={startEditGovernment} onUpdateGovernment={handleUpdateGovernment}
-            onDeleteGovernment={handleDeleteGovernment} onCloseEditGov={() => setEditingGovernment(null)}
-            showPasswords={showPasswords} setShowPasswords={setShowPasswords}
+            onDeleteGovernment={handleDeleteGovernment}
+            onResetPassword={handleResetPassword}
           />
         )}
         {activeTab === 'registrations' && (

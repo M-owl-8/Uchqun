@@ -331,6 +331,74 @@
       "loadingSchools": "Muassasalar yuklanmoqda..."
     }
   },
+  "provision": {
+    "_note": "UNVERIFIED — AI-generated translation",
+    "title": "Davlat Hisoblar",
+    "subtitle": "Ushbu portal uchun davlat foydalanuvchi hisoblarini boshqaring",
+    "createTitle": "Davlat Hisobi Yaratish",
+    "form": {
+      "level": "Hisob Darajasi",
+      "levelRepublic": "Respublika",
+      "levelRegion": "Viloyat",
+      "type": "Hisob Turi",
+      "typeMain": "Asosiy (to'liq kirish)",
+      "typeSecondary": "Ikkinchi darajali (ruxsat asosida)",
+      "region": "Viloyat",
+      "selectRegion": "Viloyatni tanlang",
+      "loadingRegions": "Viloyatlar yuklanmoqda…",
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "credentialPreview": "Login (avtomatik yaratiladi)",
+      "password": "Boshlang'ich Parol",
+      "grants": "Kirish Ruxsatlari",
+      "grantsHint": "Ushbu ikkinchi darajali hisob uchun imkoniyatlarni tanlang.",
+      "create": "Hisob Yaratish"
+    },
+    "errors": {
+      "allRequired": "Iltimos, barcha majburiy maydonlarni to'ldiring",
+      "selectRegion": "Iltimos, viloyatni tanlang",
+      "passwordStrength": "Parol katta harf, kichik harf va raqam o'z ichiga olishi kerak (min 8 belgi)",
+      "credentialTaken": "Bu login band. Boshqa ism sinab ko'ring.",
+      "republicMainExists": "Respublika super-admin allaqachon mavjud. Faqat bittasiga ruxsat beriladi.",
+      "deleteLastRepublicMain": "O'chirib bo'lmaydi — bu yagona super-admin hisobi.",
+      "createFailed": "Hisob yaratib bo'lmadi"
+    },
+    "success": {
+      "created": "Davlat hisobi yaratildi",
+      "deleted": "Davlat hisobi o'chirildi",
+      "passwordReset": "Parol tiklandi. Foydalanuvchi keyingi kirishda uni o'zgartirishi talab qilinadi."
+    },
+    "list": {
+      "empty": "Davlat hisoblar topilmadi",
+      "mustChangePassword": "Parol o'zgartirilishi kerak",
+      "republic": "Respublika",
+      "region": "Viloyat",
+      "main": "Asosiy",
+      "secondary": "Ikkinchi darajali",
+      "noGrants": "Ruxsatlar yo'q"
+    },
+    "actions": {
+      "resetPassword": "Parolni Tiklash",
+      "delete": "O'chirish",
+      "confirmDelete": "Ushbu davlat hisobini o'chirasizmi? Bu amalni ortga qaytarib bo'lmaydi.",
+      "resetPasswordTitle": "Parolni Tiklash",
+      "newPassword": "Yangi Parol",
+      "resetSubmit": "Parolni Tiklash"
+    },
+    "grants": {
+      "canViewSchools": "Maktablarni Ko'rish",
+      "canArchiveSchools": "Maktablarni Arxivlash",
+      "canViewRatings": "Reytinglarni Ko'rish",
+      "canViewAuditLog": "Audit Jurnalini Ko'rish",
+      "canViewStudents": "O'quvchilarni Ko'rish",
+      "canViewTeachers": "O'qituvchilarni Ko'rish",
+      "canViewParents": "Ota-onalarni Ko'rish",
+      "canManageAdmins": "Adminlarni Boshqarish",
+      "canManageGovernmentUsers": "Davlat Foydalanuvchilarini Boshqarish",
+      "canViewMessages": "Xabarlarni Ko'rish",
+      "canManageRegistrations": "Ro'yxatga Olishlarni Boshqarish"
+    }
+  },
   "warnings": {
     "title": "AI Ogohlantirishlari",
     "subtitle": "Muassasalar bo'yicha avtomatik tahlil natijalari",

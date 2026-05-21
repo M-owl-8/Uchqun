@@ -321,6 +321,73 @@
       "loadingSchools": "Loading schools..."
     }
   },
+  "provision": {
+    "title": "Government Accounts",
+    "subtitle": "Manage government user accounts for this portal",
+    "createTitle": "Create Government Account",
+    "form": {
+      "level": "Account Level",
+      "levelRepublic": "Republic",
+      "levelRegion": "Region",
+      "type": "Account Type",
+      "typeMain": "Main (full access)",
+      "typeSecondary": "Secondary (grant-based)",
+      "region": "Region",
+      "selectRegion": "Select a region",
+      "loadingRegions": "Loading regions…",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "credentialPreview": "Login credential (auto-generated)",
+      "password": "Initial Password",
+      "grants": "Access Grants",
+      "grantsHint": "Select the capabilities this secondary account will have.",
+      "create": "Create Account"
+    },
+    "errors": {
+      "allRequired": "Please fill in all required fields",
+      "selectRegion": "Please select a region",
+      "passwordStrength": "Password must contain uppercase, lowercase, and a number (min 8 characters)",
+      "credentialTaken": "This credential is already taken. Try a different first name.",
+      "republicMainExists": "A republic super-admin already exists. Only one is allowed.",
+      "deleteLastRepublicMain": "Cannot delete — this is the only super-admin account.",
+      "createFailed": "Failed to create account"
+    },
+    "success": {
+      "created": "Government account created",
+      "deleted": "Government account deleted",
+      "passwordReset": "Password reset. User will be required to change it on next login."
+    },
+    "list": {
+      "empty": "No government accounts found",
+      "mustChangePassword": "Password change required",
+      "republic": "Republic",
+      "region": "Region",
+      "main": "Main",
+      "secondary": "Secondary",
+      "noGrants": "No grants"
+    },
+    "actions": {
+      "resetPassword": "Reset Password",
+      "delete": "Delete",
+      "confirmDelete": "Delete this government account? This cannot be undone.",
+      "resetPasswordTitle": "Reset Password",
+      "newPassword": "New Password",
+      "resetSubmit": "Reset Password"
+    },
+    "grants": {
+      "canViewSchools": "View Schools",
+      "canArchiveSchools": "Archive Schools",
+      "canViewRatings": "View Ratings",
+      "canViewAuditLog": "View Audit Log",
+      "canViewStudents": "View Students",
+      "canViewTeachers": "View Teachers",
+      "canViewParents": "View Parents",
+      "canManageAdmins": "Manage Admins",
+      "canManageGovernmentUsers": "Manage Government Users",
+      "canViewMessages": "View Messages",
+      "canManageRegistrations": "Manage Registrations"
+    }
+  },
   "warnings": {
     "title": "AI Warnings",
     "subtitle": "Automated analysis results across schools",
