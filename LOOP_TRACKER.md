@@ -9,7 +9,7 @@
 | Portal | S0 Understand | S1 Audit | S2 Cleanup Build | S3 Confirm Clean | S4 Research | S5 Implement Build | S6 Plan Features | S7 Implement Features | S8 Final Verify |
 |---|---|---|---|---|---|---|---|---|---|
 | 1. Backend | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Sprint E complete | ✅ |
-| 2. Government | ✅ | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 2. Government | ✅ | ✅ | ✅ | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 3. Admin | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 4. Reception | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 5. Teacher | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -79,3 +79,4 @@ Where `{portal}` ∈ { backend, government, admin, reception, teacher, parent, d
 | 27 | Government | S1 Deep Audit | 570a537 | 2026-05-21 | 14 findings: 1 Critical (GOV-001 Dashboard wrong param for AI warnings count), 4 High (GOV-002 credentials email undefined, GOV-003 schools silently truncated, GOV-004 warnings.* missing all locales, GOV-005 wrong status code for suspended login), 5 Medium, 4 Low; 4 CP gaps (D-1 thru D-4); i18n verdict: NOT READY for Russian users; `audits/government/01-audit.md` |
 | 28 | Government | S2 Cleanup Plan | 8572342 | 2026-05-21 | 6 batches across 14 findings; Batch 1 critical+high correctness (GOV-001/002/005); Batch 2 i18n completeness + verify-i18n script (GOV-004/013/014); Batch 3 interim mitigation only for schools truncation (GOV-003/010, full fix deferred CP-001); Batch 4 error format normalization (GOV-007); Batch 5 state+UX consistency (GOV-006/008/009); Batch 6 hygiene (GOV-011/012); all revert-testable bugs have verification method; `audits/government/02-cleanup-plan.md` |
 | 29 | Government | S3 Execute Cleanup | 1617f8f · 67f6b2e · ed75cd2 · eb03280 · 9e0db97 · bf73086 | 2026-05-21 | 12 findings fully closed, 2 interim mitigated (GOV-003/010 → CP-001 deferred); 65 tests / 10 suites / lint 0 / 311 i18n keys; revert-tests: GOV-001/002/005 (prior session), GOV-006 FAIL received[1] expected[2], GOV-008 FAIL window.confirm called 1 time — both PASS post-fix; `audits/government/03-cleanup-execution.md` |
+| 30 | Government | S4 Confirm Clean | 874d0ab | 2026-05-21 | Verdict 🟢 — all 14 findings confirmed resolved in current code; Batch 1 revert-tests re-run with durable quoted output (GOV-001 param+count, GOV-002 email display+clipboard, GOV-005 suspended message); 24 warnings keys all mapped to real call sites; 65 tests / lint 0 / 1825 modules built; 0 S4 findings; `audits/government/04-cleanup-verification.md` |
