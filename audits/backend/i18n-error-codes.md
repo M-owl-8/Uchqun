@@ -212,6 +212,26 @@ Introduced: CP-021 Region Sprint A (2026-05-21)
 | `GOV_ACCOUNT_NOT_CONFIGURED` | 403 | Government user has `govLevel = null` — account was not backfilled by the migration or was created before CP-021 landed. Requires admin action to assign govLevel. | "Your government account is not fully configured. Please contact the platform administrator." |
 | `GOV_ACCESS_DENIED` | 403 | Secondary government account attempted to access a feature not in their `govAccessGrants`. | "You don't have permission to access this feature." |
 
+## Government Account Provisioning (`controllers/admin/adminUserController.js`)
+
+Introduced: CP-021 Region Sprint B (2026-05-21)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `PROVISION_FORBIDDEN` | 403 | Caller is a secondary account (cannot provision) or a region-main trying to create a republic-level account. | "You don't have permission to create government accounts." |
+| `PROVISION_INVALID_LEVEL_TYPE` | 400 | Missing required fields or invalid govLevel/govType value. | "Please provide all required fields." |
+| `PROVISION_REGION_REQUIRED` | 400 | `govRegionId` missing for a region-level account, or `govRegionId` does not match a known region. | "Please specify a valid region." |
+| `PROVISION_REGION_OUT_OF_SCOPE` | 403 | Region-main tried to create an account for a different region. | "You can only create accounts in your own region." |
+| `PROVISION_GRANTS_REQUIRED` | 400 | Secondary account creation did not include `govAccessGrants`. | "Please specify access grants for this account." |
+| `PROVISION_INVALID_GRANTS` | 400 | `govAccessGrants` contains unknown capability keys or non-boolean values. | "One or more grant keys are invalid." |
+| `REPUBLIC_MAIN_EXISTS` | 409 | Attempt to create a second republic-main account (single super-admin invariant). | "A super-admin account already exists." |
+| `PROVISION_CREDENTIAL_TAKEN` | 409 | The auto-generated email (`name@regioncode`) is already in use. | "This credential is already taken. Choose a different name or contact the super-admin." |
+| `DELETE_FORBIDDEN` | 403 | Secondary account tried to delete, or region-main tried to delete an out-of-scope account. | "You don't have permission to delete this account." |
+| `DELETE_LAST_REPUBLIC_MAIN` | 403 | Attempt to delete the last republic-main account. | "The super-admin account cannot be deleted." |
+| `RESET_FORBIDDEN` | 403 | Secondary account tried to reset a password, or actor tried to reset an out-of-scope or stronger account. | "You don't have permission to reset this password." |
+| `RESET_OUT_OF_SCOPE` | 403 | Region-main tried to reset a password for a republic-level or other-region account. | "You can only reset passwords for accounts in your region." |
+| `PASSWORD_CHANGE_REQUIRED` | 403 | Account has `mustChangePassword=true`; blocked until password is changed at `PUT /api/user/password`. | "You must change your password before continuing." |
+
 ---
 
 ## Parent Data Export (`controllers/parent/parentDataExportController.js`)

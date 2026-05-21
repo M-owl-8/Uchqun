@@ -136,7 +136,15 @@ describe('BC-02a: logAudit calls in governance functions', () => {
       mockUserFindOne.mockResolvedValue(null);
       mockUserCreate.mockResolvedValue(gov);
 
-      const req = govReq({ firstName: 'G', lastName: 'H', email: 'gov@test.uz', password: 'Abc12345' });
+      // New provisioning API requires govLevel/govType in body and actor govType=main
+      const req = {
+        user: { id: 'g1', role: 'government', govType: 'main', govLevel: 'republic' },
+        params: {},
+        body: {
+          firstName: 'G', lastName: 'H', password: 'Abc12345',
+          govLevel: 'republic', govType: 'secondary', govAccessGrants: {},
+        },
+      };
       await createGovernment(req, mkRes());
 
       expect(mockLogAudit).toHaveBeenCalledWith(expect.objectContaining({

@@ -98,7 +98,7 @@ describe('governmentController.getAuditLog — BC-02', () => {
     expect(callArg.where).toBeTruthy();
     const orClause = callArg.where[Op.or];
     expect(Array.isArray(orClause)).toBe(true);
-    expect(orClause.length).toBe(10); // 10 allowlisted (action, entity) pairs
+    expect(orClause.length).toBe(11); // 11 allowlisted (action, entity) pairs
     // restore events are NOT in the allowlist
     const hasRestoreEntry = orClause.some(pair =>
       pair.entity === 'children' || pair.entity === 'users' ||

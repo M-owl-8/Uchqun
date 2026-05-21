@@ -24,6 +24,7 @@ import {
   getGovernments,
   updateGovernmentUser,
   deleteGovernmentUser,
+  resetGovernmentPassword,
 } from '../controllers/adminController.js';
 import {
   sendMessage,
@@ -41,12 +42,11 @@ import {
   createAdminValidator,
   updateAdminValidator,
   deleteAdminValidator,
-  createGovernmentValidator,
   updateGovernmentValidator,
-  deleteGovernmentValidator,
 } from '../validators/governmentUserValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { authenticate, requireGovernment, requireRole } from '../middleware/auth.js';
+import { requireRegionScope } from '../middleware/regionScope.js';
 
 const router = express.Router();
 
@@ -56,6 +56,7 @@ router.post('/messages', authenticate, requireRole('parent', 'teacher', 'recepti
 
 router.use(authenticate);
 router.use(requireGovernment);
+router.use(requireRegionScope);
 
 // Statistics
 router.get('/overview', getOverview);
@@ -80,9 +81,10 @@ router.delete('/admins/:id', deleteAdminValidator, handleValidationErrors, delet
 
 // Government user management (additional government accounts)
 router.get('/users', getGovernments);
-router.post('/users', createGovernmentValidator, handleValidationErrors, createGovernment);
+router.post('/users', createGovernment);
 router.put('/users/:id', updateGovernmentValidator, handleValidationErrors, updateGovernmentUser);
-router.delete('/users/:id', deleteGovernmentValidator, handleValidationErrors, deleteGovernmentUser);
+router.delete('/users/:id', deleteGovernmentUser);
+router.put('/users/:id/reset-password', resetGovernmentPassword);
 
 // User messages
 router.get('/messages', getAllMessages);

@@ -999,6 +999,7 @@ const AUDIT_LOG_ALLOWLIST = new Set([
   'create:government_users',
   'update:government_users',
   'delete:government_users',
+  'reset_password:government_users',
 ]);
 
 const AUDIT_ALLOWED_ACTIONS = new Set([...AUDIT_LOG_ALLOWLIST].map(k => k.split(':')[0]));
