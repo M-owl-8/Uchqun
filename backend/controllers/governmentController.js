@@ -4,6 +4,7 @@ import SchoolRating from '../models/SchoolRating.js';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
 import AIWarning from '../models/AIWarning.js';
+import AuditLog from '../models/AuditLog.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { logAudit } from '../utils/auditLogger.js';
@@ -980,5 +981,110 @@ export const reactivateSchool = async (req, res) => {
   } catch (error) {
     logger.error('reactivateSchool error', { error: error.message, schoolId: id });
     return res.status(500).json({ success: false, error: { code: 'SCHOOL_REACTIVATE_FAILED' } });
+  }
+};
+
+// Server-side allowlist for the government audit-log viewer.
+// Only governance/school-lifecycle events are visible to government.
+// Restore events (restore/children etc.) are EXCLUDED — they carry child-level data
+// which is outside the PQ-1 governance scope.
+const AUDIT_LOG_ALLOWLIST = new Set([
+  'archive:schools',
+  'reactivate:schools',
+  'approve_registration:admin_registrations',
+  'reject_registration:admin_registrations',
+  'create:admins',
+  'update:admins',
+  'delete:admins',
+  'create:government_users',
+  'update:government_users',
+  'delete:government_users',
+]);
+
+const AUDIT_ALLOWED_ACTIONS = new Set([...AUDIT_LOG_ALLOWLIST].map(k => k.split(':')[0]));
+const AUDIT_ALLOWED_ENTITIES = new Set([...AUDIT_LOG_ALLOWLIST].map(k => k.split(':')[1]));
+
+/**
+ * Get government-scoped audit log entries.
+ * GET /api/government/audit-log
+ * Government only. Returns governance/school-lifecycle events only (server-side allowlist).
+ */
+export const getAuditLog = async (req, res) => {
+  try {
+    const { action, entity, startDate, endDate } = req.query;
+    const page = Math.max(parseInt(req.query.page, 10) || 1, 1);
+    const limit = Math.min(parseInt(req.query.limit, 10) || 20, 100);
+    const offset = (page - 1) * limit;
+
+    // Validate filters against allowlist to prevent scope-creep queries
+    if (action && !AUDIT_ALLOWED_ACTIONS.has(action)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'AUDIT_LOG_INVALID_FILTER', detail: `action '${action}' is not in the government audit scope` },
+      });
+    }
+    if (entity && !AUDIT_ALLOWED_ENTITIES.has(entity)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'AUDIT_LOG_INVALID_FILTER', detail: `entity '${entity}' is not in the government audit scope` },
+      });
+    }
+    if (startDate && !isValidDate(startDate)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'AUDIT_LOG_INVALID_FILTER', detail: 'startDate is not a valid date' },
+      });
+    }
+    if (endDate && !isValidDate(endDate)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'AUDIT_LOG_INVALID_FILTER', detail: 'endDate is not a valid date' },
+      });
+    }
+
+    // Build where clause — always constrained to the allowlist
+    const allowlistPairs = [...AUDIT_LOG_ALLOWLIST].map(k => {
+      const [a, e] = k.split(':');
+      return { action: a, entity: e };
+    });
+
+    const where = {
+      [Op.or]: allowlistPairs,
+    };
+
+    if (action) where.action = action;
+    if (entity) where.entity = entity;
+    if (startDate || endDate) {
+      where.occurredAt = {};
+      if (startDate) where.occurredAt[Op.gte] = new Date(startDate);
+      if (endDate) where.occurredAt[Op.lte] = new Date(endDate);
+    }
+
+    const { count, rows } = await AuditLog.findAndCountAll({
+      where,
+      include: [{
+        model: User,
+        as: 'actor',
+        attributes: ['id', 'firstName', 'lastName', 'role'],
+        required: false,
+      }],
+      order: [['occurredAt', 'DESC']],
+      limit,
+      offset,
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        entries: rows.map(r => r.toJSON()),
+        total: count,
+        page,
+        limit,
+        totalPages: Math.ceil(count / limit),
+      },
+    });
+  } catch (error) {
+    logger.error('getAuditLog error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: { code: 'AUDIT_LOG_FETCH_FAILED' } });
   }
 };

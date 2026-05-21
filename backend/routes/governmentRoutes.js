@@ -14,6 +14,7 @@ import {
   getParentsList,
   archiveSchool,
   reactivateSchool,
+  getAuditLog,
 } from '../controllers/governmentController.js';
 import {
   createAdmin,
@@ -93,5 +94,8 @@ router.delete('/messages/:id', deleteMessage);
 router.get('/admin-registrations', getRegistrationRequests);
 router.post('/admin-registrations/:id/approve', approveRegistrationRequest);
 router.post('/admin-registrations/:id/reject', rejectRegistrationRequest);
+
+// Governance audit log (scoped to governance/school-lifecycle events only)
+router.get('/audit-log', getAuditLog);
 
 export default router;

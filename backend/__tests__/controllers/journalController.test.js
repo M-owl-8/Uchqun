@@ -84,6 +84,8 @@ jest.unstable_mockModule('../../models/AuditLog.js', () => ({
     update: () => { throw new Error('audit_log is immutable'); },
     destroy: () => { throw new Error('audit_log is immutable'); },
     create: mockAuditCreate,
+    belongsTo: jest.fn(),
+    hasMany: jest.fn(),
   },
 }));
 jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({ default: { belongsTo: jest.fn(), hasMany: jest.fn(), afterDestroy: jest.fn() } }));

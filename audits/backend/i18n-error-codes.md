@@ -212,6 +212,8 @@ Introduced: Sprint E T2-10 (2026-05-20)
 | `DATA_EXPORT_FORBIDDEN` | 403 | Caller is not `role=parent` (defense-in-depth controller check) | "You don't have permission to export data." |
 | `DATA_EXPORT_RATE_LIMITED` | 429 | Parent has already exported data within the last 24 hours | "You can only export your data once per day. Please try again tomorrow." |
 | `DATA_EXPORT_FAILED` | 500 | Unexpected server error during export assembly | "Failed to generate export. Please try again." |
+| `AUDIT_LOG_INVALID_FILTER` | 400 | action or entity query param is outside the government audit scope allowlist | "Invalid filter value." |
+| `AUDIT_LOG_FETCH_FAILED` | 500 | Unexpected server error fetching audit entries | "Failed to load audit log." |
 
 ---
 

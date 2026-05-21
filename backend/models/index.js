@@ -320,6 +320,10 @@ ChildGoalReview.belongsTo(ChildGoal, { foreignKey: 'goalId', as: 'goal' });
 User.hasMany(ChildGoalReview, { foreignKey: 'reviewerId', as: 'authoredGoalReviews' });
 ChildGoalReview.belongsTo(User, { foreignKey: 'reviewerId', as: 'reviewer' });
 
+// ─── AuditLog associations ────────────────────────────────────────────────────
+AuditLog.belongsTo(User, { foreignKey: 'actorId', as: 'actor', constraints: false });
+User.hasMany(AuditLog, { foreignKey: 'actorId', as: 'auditEntries', constraints: false });
+
 // ─── Audit hooks ──────────────────────────────────────────────────────────────
 
 // Child afterDestroy: records who deleted the child in audit_log.

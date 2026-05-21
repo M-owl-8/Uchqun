@@ -124,5 +124,7 @@
   "SCHOOL_ARCHIVED": "Sizning maktabingiz arxivlandi. Platforma administratoriga murojaat qiling.",
   "DATA_EXPORT_FORBIDDEN": "Sizda ma'lumotlarni eksport qilish huquqi yo'q.",
   "DATA_EXPORT_RATE_LIMITED": "Siz ma'lumotlaringizni kuniga faqat bir marta eksport qilishingiz mumkin. Iltimos, ertaga urinib ko'ring.",
-  "DATA_EXPORT_FAILED": "Eksportni yaratish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring."
+  "DATA_EXPORT_FAILED": "Eksportni yaratish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "AUDIT_LOG_INVALID_FILTER": "Noto'g'ri filtr qiymati.",
+  "AUDIT_LOG_FETCH_FAILED": "Audit jurnalini yuklab bo'lmadi."
 }
