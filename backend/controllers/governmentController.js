@@ -641,6 +641,8 @@ export const generateStats = async (req, res) => {
       region: region || null,
       district: district || null,
       schoolId: schoolId || null,
+      // Region accounts auto-stamp their regionId so stats are scoped to their region.
+      regionId: req.isGlobalAccess ? null : (req.regionScope || null),
       statType,
       period,
       periodStart: new Date(periodStart),
@@ -692,6 +694,12 @@ export const getSavedStats = async (req, res) => {
         return res.status(400).json({ error: 'Invalid schoolId format' });
       }
       where.schoolId = schoolId;
+    }
+
+    // Region accounts see only stats stamped with their regionId.
+    // Republic accounts (isGlobalAccess=true) see all stats.
+    if (!req.isGlobalAccess) {
+      where.regionId = req.regionScope;
     }
 
     const stats = await GovernmentStats.findAndCountAll({

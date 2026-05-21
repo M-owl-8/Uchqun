@@ -209,6 +209,8 @@ School.hasMany(GovernmentStats, { foreignKey: 'schoolId', as: 'governmentStats' 
 GovernmentStats.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(GovernmentStats, { foreignKey: 'generatedBy', as: 'generatedStats' });
 GovernmentStats.belongsTo(User, { foreignKey: 'generatedBy', as: 'generator' });
+Region.hasMany(GovernmentStats, { foreignKey: 'regionId', as: 'regionStats', constraints: false });
+GovernmentStats.belongsTo(Region, { foreignKey: 'regionId', as: 'region', constraints: false });
 
 // === Activities & Media ===
 

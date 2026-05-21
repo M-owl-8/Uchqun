@@ -15,6 +15,11 @@ const GovernmentStats = sequelize.define('GovernmentStats', {
     type: DataTypes.STRING(255),
     allowNull: true,
   },
+  // CP-021 Sprint D: region FK for isolation. Null = republic-level stat (visible to all).
+  regionId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+  },
   schoolId: {
     type: DataTypes.UUID,
     allowNull: true,
