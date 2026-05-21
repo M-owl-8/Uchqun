@@ -23,7 +23,7 @@ import AIWarnings from './pages/AIWarnings';
 import NotFound from './pages/NotFound';
 import ChangePassword from './pages/ChangePassword';
 
-const AppRoutes = () => {
+export const AppRoutes = () => {
   const { isAuthenticated, isGovernment, loading, mustChangePassword } = useAuth();
   const location = useLocation();
 
