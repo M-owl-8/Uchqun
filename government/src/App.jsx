@@ -12,6 +12,9 @@ import Layout from './components/Layout';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Schools from './pages/Schools';
+import Students from './pages/Students';
+import Teachers from './pages/Teachers';
+import Parents from './pages/Parents';
 import Ratings from './pages/Ratings';
 import AdminDetails from './pages/AdminDetails';
 import Profile from './pages/Profile';
@@ -57,6 +60,9 @@ export const AppRoutes = () => {
         <Route path="change-password" element={<ErrorBoundary><ChangePassword /></ErrorBoundary>} />
         <Route path="schools" element={<ErrorBoundary><Schools /></ErrorBoundary>} />
         <Route path="schools/:id" element={<ErrorBoundary><SchoolDetail /></ErrorBoundary>} />
+        <Route path="students" element={<ErrorBoundary><Students /></ErrorBoundary>} />
+        <Route path="teachers" element={<ErrorBoundary><Teachers /></ErrorBoundary>} />
+        <Route path="parents" element={<ErrorBoundary><Parents /></ErrorBoundary>} />
         <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />
         <Route path="platform" element={<ErrorBoundary><Platform /></ErrorBoundary>} />
         <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
