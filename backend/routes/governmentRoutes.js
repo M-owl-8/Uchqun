@@ -16,6 +16,7 @@ import {
   reactivateSchool,
   changeSchoolCategory,
   getAuditLog,
+  getRegions,
 } from '../controllers/governmentController.js';
 import {
   createAdmin,
@@ -101,5 +102,8 @@ router.post('/admin-registrations/:id/reject', requireGovAccess('canManageRegist
 
 // Governance audit log (scoped to governance/school-lifecycle events only)
 router.get('/audit-log', requireGovAccess('canViewAuditLog'), getAuditLog);
+
+// Regions list (for provisioning UI dropdowns — no extra capability gate, all gov users need this)
+router.get('/regions', getRegions);
 
 export default router;

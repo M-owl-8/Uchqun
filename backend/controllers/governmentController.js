@@ -1,4 +1,5 @@
 import GovernmentStats from '../models/GovernmentStats.js';
+import Region from '../models/Region.js';
 import School from '../models/School.js';
 import SchoolCategory from '../models/SchoolCategory.js';
 import SchoolRating from '../models/SchoolRating.js';
@@ -1230,5 +1231,34 @@ export const getAuditLog = async (req, res) => {
   } catch (error) {
     logger.error('getAuditLog error', { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, error: { code: 'AUDIT_LOG_FETCH_FAILED' } });
+  }
+};
+
+/**
+ * Get regions list (for provisioning UI dropdowns)
+ * GET /api/government/regions
+ *
+ * republic accounts → all regions
+ * region accounts   → only their own region (they can only provision within it)
+ */
+export const getRegions = async (req, res) => {
+  try {
+    const where = {};
+    if (req.user.govLevel === 'region') {
+      where.id = req.user.govRegionId;
+    }
+    const regions = await Region.findAll({
+      where,
+      attributes: ['id', 'code', 'name', 'isRepublic'],
+      order: [['name', 'ASC']],
+    });
+    return res.json({
+      success: true,
+      data: regions.map(r => r.toJSON()),
+      count: regions.length,
+    });
+  } catch (error) {
+    logger.error('Get regions error', { error: error.message, stack: error.stack, userId: req.user?.id });
+    return res.status(500).json({ success: false, error: { code: 'REGIONS_FETCH_ERROR' } });
   }
 };
