@@ -78,7 +78,8 @@
     "colStudents": "Students",
     "colRating": "Rating",
     "shown": "shown",
-    "exportCSV": "Export CSV"
+    "exportCSV": "Export CSV",
+    "exportTruncated": "Warning: only {{count}} of {{total}} schools exported. For the full list, pagination is coming soon."
   },
   "schoolDetail": {
     "notFound": "School not found",

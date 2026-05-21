@@ -78,7 +78,8 @@
     "colStudents": "O'quvchilar",
     "colRating": "Reyting",
     "shown": "ko'rsatilmoqda",
-    "exportCSV": "CSV yuklab olish"
+    "exportCSV": "CSV yuklab olish",
+    "exportTruncated": "Diqqat: faqat {{count}} ta maktab yuklab olindi (jami {{total}} ta). To'liq ro'yxat uchun keyingi versiyani kuting."
   },
   "schoolDetail": {
     "notFound": "Muassasa topilmadi",

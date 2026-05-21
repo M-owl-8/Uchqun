@@ -4,17 +4,28 @@ import { useFetch } from '@shared/hooks/useFetch';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Building2, Star, Search, ChevronRight, Download } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useToast } from '@shared/context/ToastContext';
 
 const Schools = () => {
   const { t } = useTranslation();
+  const { warning: showWarning } = useToast();
   const navigate = useNavigate();
-  const { data, loading, error } = useFetch('/government/schools');
+  // TODO: CP-001 — replace with pagination controls when pagination UI is built
+  const { data, loading, error } = useFetch('/government/schools?limit=999');
   const schools = useMemo(() => data?.schools ?? [], [data]);
+  const total = data?.total ?? schools.length;
 
   const [search, setSearch] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
 
   const exportCSV = () => {
+    if (schools.length < total) {
+      showWarning(t('schools.exportTruncated', {
+        defaultValue: `Diqqat: faqat ${schools.length} ta maktab yuklab olindi (jami ${total} ta). To'liq ro'yxat uchun keyingi versiyani kuting.`,
+        count: schools.length,
+        total,
+      }));
+    }
     const rows = [
       ['#', 'Name', 'Address', 'Type', 'Region', 'Students', 'Teachers', 'Rating', 'Ratings Count'],
       ...filtered.map((s, i) => [
@@ -65,7 +76,7 @@ const Schools = () => {
     if (type === 'school') return t('schools.typeSchool', { defaultValue: 'Maktab' });
     if (type === 'kindergarten') return t('schools.typeKindergarten', { defaultValue: "Bog'cha" });
     if (type === 'both') return t('schools.typeBoth', { defaultValue: 'Aralash' });
-    return type || '\u2014';
+    return type || '—';
   };
 
   return (
@@ -82,7 +93,7 @@ const Schools = () => {
         </div>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-50 text-brand-700 border border-brand-200">
-            {schools.length}
+            {schools.length < total ? `${schools.length}/${total}` : total}
           </span>
           {filtered.length > 0 && (
             <button
