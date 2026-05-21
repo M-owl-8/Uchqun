@@ -2,14 +2,18 @@ import { useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { Building2, Star, Search, ChevronRight, Download } from 'lucide-react';
+import { Building2, Star, Search, ChevronRight, Download, Globe, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@shared/context/ToastContext';
+import { useAuth } from '../context/AuthContext';
+import { useRegionName } from '../hooks/useRegionName';
 
 const Schools = () => {
   const { t } = useTranslation();
   const { warning: showWarning } = useToast();
   const navigate = useNavigate();
+  const { isRepublic, isRegionAccount } = useAuth();
+  const regionName = useRegionName();
   // TODO: CP-001 — replace with pagination controls when pagination UI is built
   const { data, loading, error } = useFetch('/government/schools?limit=999');
   const schools = useMemo(() => data?.schools ?? [], [data]);
@@ -88,8 +92,23 @@ const Schools = () => {
             {t('schools.title', { defaultValue: 'Muassasalar' })}
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
-            {t('schools.subtitle', { defaultValue: 'Barcha muassasalar va ularning baholari' })}
+            {isRegionAccount && regionName
+              ? t('schools.subtitleRegion', { name: regionName, defaultValue: 'Schools in {{name}}' })
+              : t('schools.subtitle', { defaultValue: 'Barcha muassasalar va ularning baholari' })}
           </p>
+          <div className="flex items-center gap-1.5 mt-1" data-testid="scope-label">
+            {isRepublic ? (
+              <span className="inline-flex items-center gap-1 text-xs text-gray-400">
+                <Globe className="w-3 h-3" />
+                {t('scope.national', { defaultValue: 'All regions' })}
+              </span>
+            ) : isRegionAccount && regionName ? (
+              <span className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-blue-50 text-blue-700 text-xs font-medium border border-blue-200">
+                <MapPin className="w-3 h-3" />
+                {regionName}
+              </span>
+            ) : null}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-brand-50 text-brand-700 border border-brand-200">
@@ -137,7 +156,9 @@ const Schools = () => {
           <div className="py-16 text-center">
             <Building2 className="w-10 h-10 text-gray-200 mx-auto mb-3" />
             <p className="text-sm text-gray-400">
-              {t('schools.notFound', { defaultValue: 'Muassasalar topilmadi' })}
+              {isRegionAccount && regionName && !search.trim()
+                ? t('schools.notFoundRegion', { name: regionName, defaultValue: 'No schools in {{name}} yet' })
+                : t('schools.notFound', { defaultValue: 'Muassasalar topilmadi' })}
             </p>
           </div>
         ) : (
