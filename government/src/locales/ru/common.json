@@ -316,6 +316,7 @@
     "submittedAt": "Заявка отправлена:",
     "passport": "Паспорт",
     "address": "Адрес",
+    "confirmDeleteMessage": "Удалить это сообщение?",
     "status": {
       "loadingAdmins": "Загрузка администраторов...",
       "loadingSchools": "Загрузка школ..."

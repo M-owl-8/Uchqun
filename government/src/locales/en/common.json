@@ -312,6 +312,7 @@
     "passport": "Passport",
     "address": "Address",
     "confirmReject": "Reject this request?",
+    "confirmDeleteMessage": "Delete this message?",
     "status": {
       "loadingAdmins": "Loading admins...",
       "loadingSchools": "Loading schools..."

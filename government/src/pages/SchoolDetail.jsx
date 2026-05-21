@@ -36,8 +36,8 @@ const SchoolDetail = () => {
     );
   }
 
-  const school = data.school || data;
-  const stats = data.stats || {};
+  const school = data;
+  // TODO: CP-014 — add archived banner when school.isActive === false
 
   return (
     <div className="space-y-5">
@@ -108,8 +108,8 @@ const SchoolDetail = () => {
             </div>
             <div className="divide-y divide-gray-50">
               {[
-                { icon: Users,     label: t('schoolDetail.students', { defaultValue: "O'quvchilar" }), value: school.studentsCount || stats.studentsCount || 0 },
-                { icon: UserCheck, label: t('schoolDetail.teachers', { defaultValue: "O'qituvchilar" }), value: school.teachersCount || stats.teachersCount || 0 },
+                { icon: Users,     label: t('schoolDetail.students', { defaultValue: "O'quvchilar" }), value: school.studentsCount || 0 },
+                { icon: UserCheck, label: t('schoolDetail.teachers', { defaultValue: "O'qituvchilar" }), value: school.teachersCount || 0 },
                 { icon: FileText,  label: t('schoolDetail.ratings', { defaultValue: 'Baholar' }),       value: school.ratingsCount || 0 },
               ].map(({ icon: Icon, label, value }) => (
                 <div key={label} className="flex items-center justify-between px-5 py-3">

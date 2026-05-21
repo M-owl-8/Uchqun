@@ -311,6 +311,7 @@
     "submittedAt": "So'rov yuborilgan:",
     "passport": "Passport",
     "address": "Manzil",
+    "confirmDeleteMessage": "Xabarni o'chirishni tasdiqlaysizmi?",
     "status": {
       "loadingAdmins": "Adminlar yuklanmoqda...",
       "loadingSchools": "Muassasalar yuklanmoqda..."

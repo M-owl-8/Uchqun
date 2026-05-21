@@ -3,6 +3,7 @@ import { Check, Send, Trash2, Search, ChevronDown, ChevronUp } from 'lucide-reac
 import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useTranslation } from 'react-i18next';
 import { useToast } from '@shared/context/ToastContext';
 import api from '../../services/api';
@@ -33,6 +34,7 @@ export default function MessagesTab({ onUnreadCountChange }) {
   const [replyTexts, setReplyTexts] = useState({});
   const [replying, setReplying] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [deleteTarget, setDeleteTarget] = useState(null);
 
   const fetchMessages = useCallback(async (page = 1, append = false) => {
     try {
@@ -47,21 +49,19 @@ export default function MessagesTab({ onUnreadCountChange }) {
       const incoming = res.data?.data || [];
       const pg = res.data?.pagination || { total: 0, page: 1, limit: 20, totalPages: 1 };
 
-      setMessages(prev => append ? [...prev, ...incoming] : incoming);
+      setMessages(prev => {
+        const merged = append ? [...prev, ...incoming] : incoming;
+        onUnreadCountChange?.(merged.filter(m => !m.isRead).length);
+        return merged;
+      });
       setPagination(pg);
-
-      const unread = (append
-        ? [...(append ? messages : []), ...incoming]
-        : incoming
-      ).filter(m => !m.isRead).length;
-      onUnreadCountChange?.(unread);
     } catch {
       setLoadError(true);
     } finally {
       setLoading(false);
       setLoadingMore(false);
     }
-  }, [debouncedSearch]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [debouncedSearch, onUnreadCountChange]);
 
   useEffect(() => {
     fetchMessages(1, false);
@@ -93,8 +93,13 @@ export default function MessagesTab({ onUnreadCountChange }) {
     }
   };
 
-  const handleDelete = async (msgId) => {
-    if (!window.confirm(t('government.confirmDeleteMessage', { defaultValue: 'Xabarni o\'chirishni tasdiqlaysizmi?' }))) return;
+  const handleDelete = (msgId) => {
+    setDeleteTarget(msgId);
+  };
+
+  const handleConfirmedDelete = async () => {
+    const msgId = deleteTarget;
+    setDeleteTarget(null);
     setDeleting(msgId);
     try {
       await api.delete(`/government/messages/${msgId}`);
@@ -289,6 +294,13 @@ export default function MessagesTab({ onUnreadCountChange }) {
           </div>
         )}
       </Card>
+      <ConfirmDialog
+        dialog={deleteTarget ? {
+          message: t('government.confirmDeleteMessage', { defaultValue: 'Xabarni o\'chirishni tasdiqlaysizmi?' }),
+          onConfirm: handleConfirmedDelete,
+        } : null}
+        onCancel={() => setDeleteTarget(null)}
+      />
     </>
   );
 }
