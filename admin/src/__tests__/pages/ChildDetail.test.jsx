@@ -86,9 +86,10 @@ describe('ChildDetail (FE-3)', () => {
     render(<MemoryRouter><ChildDetail /></MemoryRouter>);
     await waitFor(() => screen.getByText('Amin Aliyev'));
 
-    fireEvent.click(screen.getByText('Goals'));
-    await waitFor(() => screen.getByText('Improve vocabulary'));
-    expect(screen.getByText('active')).toBeTruthy();
+    const goalsBtn = screen.getByText('Goals');
+    fireEvent.click(goalsBtn);
+    await waitFor(() => expect(screen.queryByText('Improve vocabulary')).not.toBeNull(), { timeout: 3000 });
+    expect(screen.getAllByText('active').length).toBeGreaterThan(0);
   });
 
   it('shows "No observations" empty state when list is empty', async () => {

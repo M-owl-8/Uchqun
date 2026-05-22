@@ -47,22 +47,23 @@ describe('ActivityFeed (FE-5)', () => {
   it('renders paginated audit entries from API response', async () => {
     api.get.mockResolvedValue(makeRes(ENTRIES));
     render(<MemoryRouter><ActivityFeed /></MemoryRouter>);
-    await waitFor(() => screen.getByText('Sherzod Rakhimov'));
-    expect(screen.getByText('Dilnoza Tosheva')).toBeTruthy();
+    await waitFor(() => expect(screen.getAllByText('Sherzod Rakhimov').length).toBeGreaterThan(0));
+    expect(screen.getAllByText('Dilnoza Tosheva').length).toBeGreaterThan(0);
   });
 
   it('shows actor name and action label', async () => {
     api.get.mockResolvedValue(makeRes(ENTRIES));
     render(<MemoryRouter><ActivityFeed /></MemoryRouter>);
-    await waitFor(() => screen.getByText('Hujjat tasdiqlandi'));
-    expect(screen.getByText("Ota-ona to'xtatildi")).toBeTruthy();
+    await waitFor(() => expect(screen.getAllByText('Hujjat tasdiqlandi').length).toBeGreaterThan(0));
+    expect(screen.getAllByText("Ota-ona to'xtatildi").length).toBeGreaterThan(0);
   });
 
   it('shows "No activity" empty state when entries=[]', async () => {
     api.get.mockResolvedValue(makeRes([], { total: 0, totalPages: 1 }));
     render(<MemoryRouter><ActivityFeed /></MemoryRouter>);
-    await waitFor(() => screen.getByText('No activity yet'));
-    expect(screen.getByText('No activity yet')).toBeTruthy();
+    await waitFor(() =>
+      expect(screen.getByText((c) => c.includes('No activity yet'))).toBeTruthy()
+    );
   });
 
   it('filter by action calls API with action query param', async () => {

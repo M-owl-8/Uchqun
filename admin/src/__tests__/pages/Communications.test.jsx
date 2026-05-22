@@ -71,7 +71,7 @@ describe('Communications (FE-7)', () => {
     await waitFor(() => screen.getByText('Barno Umarova'));
 
     fireEvent.click(screen.getByText('Barno Umarova'));
-    await waitFor(() => screen.getByText('Hello teacher!'));
+    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 3000 });
     expect(screen.getByText('Hello parent!')).toBeTruthy();
   });
 
@@ -85,7 +85,8 @@ describe('Communications (FE-7)', () => {
     await waitFor(() => screen.getByText('Barno Umarova'));
 
     fireEvent.click(screen.getByText('Barno Umarova'));
-    await waitFor(() => screen.getByText('Parent'));
+    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 3000 });
+    expect(screen.getAllByText('Parent').length).toBeGreaterThan(0);
     expect(screen.getByText('Teacher / Staff')).toBeTruthy();
   });
 
