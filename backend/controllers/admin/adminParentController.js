@@ -18,7 +18,7 @@ import { logAudit } from '../../utils/auditLogger.js';
  */
 export const getParents = async (req, res) => {
   try {
-    const includeDeleted = req.query.include_deleted === 'true';
+    const includeDeleted = req.query?.include_deleted === 'true';
 
     // First, get all receptions created by this admin
     const receptions = await User.findAll({

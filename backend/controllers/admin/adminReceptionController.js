@@ -11,7 +11,7 @@ import { logAudit } from '../../utils/auditLogger.js';
  */
 export const getReceptions = async (req, res) => {
   try {
-    const includeDeleted = req.query.include_deleted === 'true';
+    const includeDeleted = req.query?.include_deleted === 'true';
 
     const findOptions = {
       where: { role: 'reception', createdBy: req.user.id },
