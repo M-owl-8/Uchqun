@@ -84,25 +84,20 @@ describe('SchoolProfile (FE-6)', () => {
     expect(body).not.toHaveProperty('regionId');
   });
 
-  it('save button disabled while saving and shows success after', async () => {
-    const mockSuccess = vi.fn();
-    vi.mocked(await import('@shared/context/ToastContext')).useToast = () => ({
-      success: mockSuccess,
-      error: vi.fn(),
-    });
-
+  it('save button disabled while saving and re-enables after', async () => {
     let resolvePatch;
     api.get.mockResolvedValue({ data: { data: SCHOOL } });
-    api.patch.mockReturnValue(new Promise((res) => { resolvePatch = res; }));
+    api.patch.mockReturnValue(new Promise((res) => { resolvePatch = () => res({ data: { data: SCHOOL } }); }));
 
     render(<SchoolProfile />);
     await waitFor(() => screen.getByText('Save Changes'));
 
     fireEvent.click(screen.getByText('Save Changes'));
     await waitFor(() => screen.getByText('Saving…'));
-    expect(screen.getByText('Saving…').closest('button')).toHaveProperty('disabled', true);
+    expect(screen.getByText('Saving…').closest('button').disabled).toBe(true);
 
-    resolvePatch({ data: { data: SCHOOL } });
+    resolvePatch();
     await waitFor(() => screen.getByText('Save Changes'));
+    expect(screen.getByText('Save Changes').closest('button').disabled).toBe(false);
   });
 });
