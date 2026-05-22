@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -30,6 +30,8 @@ const ChildDetail = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const { error: toastError } = useToast();
+  const toastErrorRef = useRef(toastError);
+  toastErrorRef.current = toastError;
 
   const child = location.state?.child ?? null;
 
@@ -46,12 +48,12 @@ const ChildDetail = () => {
       .then((res) => setObservations(Array.isArray(res.data) ? res.data : []))
       .catch((err) => {
         if (err.code === 'ERR_CANCELED') return;
-        toastError(t('childDetail.loadError', { defaultValue: 'Failed to load data' }));
+        toastErrorRef.current(t('childDetail.loadError', { defaultValue: 'Failed to load data' }));
       })
       .finally(() => setLoadingObs(false));
 
     return () => controller.abort();
-  }, [id, t, toastError]);
+  }, [id, t]);
 
   const handleGoalsTab = () => {
     setActiveTab('goals');
@@ -59,7 +61,7 @@ const ChildDetail = () => {
     setLoadingGoals(true);
     api.get(`/admin/children/${id}/goals`)
       .then((res) => setGoals(Array.isArray(res.data) ? res.data : []))
-      .catch(() => toastError(t('childDetail.loadError', { defaultValue: 'Failed to load data' })))
+      .catch(() => toastErrorRef.current(t('childDetail.loadError', { defaultValue: 'Failed to load data' })))
       .finally(() => setLoadingGoals(false));
   };
 

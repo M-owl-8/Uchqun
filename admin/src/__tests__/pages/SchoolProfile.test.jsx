@@ -43,14 +43,14 @@ describe('SchoolProfile (FE-6)', () => {
     expect(screen.getByDisplayValue('school@test.com')).toBeTruthy();
   });
 
-  it('shows Active badge when isActive=true and Archived when isActive=false', async () => {
+  it('shows Active badge when isActive=true', async () => {
     api.get.mockResolvedValue({ data: { data: { ...SCHOOL, isActive: true } } });
-    const { unmount } = render(<SchoolProfile />);
+    render(<SchoolProfile />);
     await waitFor(() => screen.getByText('Active'));
     expect(screen.getByText('Active')).toBeTruthy();
-    unmount();
+  });
 
-    vi.clearAllMocks();
+  it('shows Archived badge when isActive=false', async () => {
     api.get.mockResolvedValue({ data: { data: { ...SCHOOL, isActive: false } } });
     render(<SchoolProfile />);
     await waitFor(() => screen.getByText('Archived'));

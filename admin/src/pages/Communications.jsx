@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
@@ -7,6 +7,8 @@ import { MessageSquare } from 'lucide-react';
 const Communications = () => {
   const { t } = useTranslation();
   const { error: toastError } = useToast();
+  const toastErrorRef = useRef(toastError);
+  toastErrorRef.current = toastError;
 
   const [conversations, setConversations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +38,7 @@ const Communications = () => {
         setConversations(enriched);
       } catch (err) {
         if (err.code === 'ERR_CANCELED') return;
-        toastError(t('communications.loadError', { defaultValue: 'Failed to load conversations' }));
+        toastErrorRef.current(t('communications.loadError', { defaultValue: 'Failed to load conversations' }));
       } finally {
         setLoading(false);
       }
@@ -44,7 +46,7 @@ const Communications = () => {
 
     fetchData();
     return () => controller.abort();
-  }, [t, toastError]);
+  }, [t]);
 
   const handleSelect = async (conv) => {
     setSelected(conv);
@@ -55,7 +57,7 @@ const Communications = () => {
       });
       setMessages(res.data || []);
     } catch {
-      toastError(t('communications.messagesLoadError', { defaultValue: 'Failed to load messages' }));
+      toastErrorRef.current(t('communications.messagesLoadError', { defaultValue: 'Failed to load messages' }));
       setMessages([]);
     } finally {
       setLoadingMessages(false);

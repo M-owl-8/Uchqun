@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
@@ -9,6 +9,10 @@ const CACHE_KEY = 'admin:school-profile';
 const SchoolProfile = () => {
   const { t } = useTranslation();
   const { success: toastSuccess, error: toastError } = useToast();
+  const toastErrorRef = useRef(toastError);
+  toastErrorRef.current = toastError;
+  const toastSuccessRef = useRef(toastSuccess);
+  toastSuccessRef.current = toastSuccess;
 
   const [school, setSchool] = useState(() => cache.get(CACHE_KEY) ?? null);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
@@ -33,7 +37,7 @@ const SchoolProfile = () => {
         });
       } catch (err) {
         if (err.code === 'ERR_CANCELED') return;
-        toastError(t('schoolProfile.loadError', { defaultValue: 'Failed to load school profile' }));
+        toastErrorRef.current(t('schoolProfile.loadError', { defaultValue: 'Failed to load school profile' }));
       } finally {
         setLoading(false);
       }
@@ -55,7 +59,7 @@ const SchoolProfile = () => {
     }
 
     return () => controller.abort();
-  }, [t, toastError]);
+  }, [t]);
 
   const handleSave = async () => {
     setSaving(true);
@@ -70,9 +74,9 @@ const SchoolProfile = () => {
       const data = res.data.data;
       cache.set(CACHE_KEY, data);
       setSchool(data);
-      toastSuccess(t('schoolProfile.saveSuccess', { defaultValue: 'School profile updated' }));
+      toastSuccessRef.current(t('schoolProfile.saveSuccess', { defaultValue: 'School profile updated' }));
     } catch {
-      toastError(t('schoolProfile.saveError', { defaultValue: 'Failed to save changes' }));
+      toastErrorRef.current(t('schoolProfile.saveError', { defaultValue: 'Failed to save changes' }));
     } finally {
       setSaving(false);
     }

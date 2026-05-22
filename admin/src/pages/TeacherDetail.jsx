@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -11,6 +11,8 @@ const TeacherDetail = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { error: toastError } = useToast();
+  const toastErrorRef = useRef(toastError);
+  toastErrorRef.current = toastError;
 
   const cacheKey = `admin:teacher:${id}`;
   const [teacher, setTeacher] = useState(() => cache.get(cacheKey) ?? null);
@@ -27,7 +29,7 @@ const TeacherDetail = () => {
         setTeacher(data);
       } catch (err) {
         if (err.code === 'ERR_CANCELED') return;
-        toastError(t('teacherDetail.loadError', { defaultValue: 'Failed to load teacher' }));
+        toastErrorRef.current(t('teacherDetail.loadError', { defaultValue: 'Failed to load teacher' }));
       } finally {
         setLoading(false);
       }
@@ -41,7 +43,7 @@ const TeacherDetail = () => {
     }
 
     return () => controller.abort();
-  }, [id, cacheKey, t, toastError]);
+  }, [id, cacheKey, t]);
 
   if (loading) {
     return (
