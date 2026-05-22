@@ -14,6 +14,7 @@ import {
   ShieldCheck,
   LogOut,
   Brain,
+  UsersRound,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -23,6 +24,7 @@ const NAV_SECTIONS = [
       { key: 'nav.dashboard',       href: '/admin',                icon: LayoutDashboard },
       { key: 'nav.receptions',      href: '/admin/receptions',     icon: Users },
       { key: 'nav.teachers',        href: '/admin/teachers',       icon: GraduationCap },
+      { key: 'nav.groups',          href: '/admin/groups',         icon: UsersRound },
       { key: 'nav.parents',         href: '/admin/parents',        icon: UserRound },
     ],
   },
