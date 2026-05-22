@@ -11,7 +11,9 @@ import { logAudit } from '../../utils/auditLogger.js';
  */
 export const getReceptions = async (req, res) => {
   try {
-    const receptions = await User.findAll({
+    const includeDeleted = req.query.include_deleted === 'true';
+
+    const findOptions = {
       where: { role: 'reception', createdBy: req.user.id },
       attributes: { exclude: ['password'] },
       include: [
@@ -22,7 +24,15 @@ export const getReceptions = async (req, res) => {
         },
       ],
       order: [['createdAt', 'DESC']],
-    });
+    };
+
+    if (includeDeleted) {
+      // Return ONLY soft-deleted records for trash/restore UI
+      findOptions.paranoid = false;
+      findOptions.where.deletedAt = { [Op.ne]: null };
+    }
+
+    const receptions = await User.findAll(findOptions);
 
     res.json({
       success: true,

@@ -18,6 +18,8 @@ import { logAudit } from '../../utils/auditLogger.js';
  */
 export const getParents = async (req, res) => {
   try {
+    const includeDeleted = req.query.include_deleted === 'true';
+
     // First, get all receptions created by this admin
     const receptions = await User.findAll({
       where: { role: 'reception', createdBy: req.user.id },
@@ -30,6 +32,7 @@ export const getParents = async (req, res) => {
       adminId: req.user.id,
       receptionsFound: receptions.length,
       receptionIds: receptionIds,
+      includeDeleted,
     });
 
     // If admin has no receptions, return empty array
@@ -41,19 +44,27 @@ export const getParents = async (req, res) => {
       });
     }
 
-    // Get parents created by these receptions
-    const parents = await User.findAll({
+    const findOptions = {
       where: {
         role: 'parent',
-        createdBy: { [Op.in]: receptionIds }
+        createdBy: { [Op.in]: receptionIds },
       },
       attributes: { exclude: ['password'] },
       order: [['createdAt', 'DESC']],
-    });
+    };
+
+    if (includeDeleted) {
+      // Return ONLY soft-deleted records for trash/restore UI
+      findOptions.paranoid = false;
+      findOptions.where.deletedAt = { [Op.ne]: null };
+    }
+
+    // Get parents created by these receptions
+    const parents = await User.findAll(findOptions);
 
     logger.info('Parents found', {
       count: parents.length,
-      parentRoles: parents.map(p => ({ id: p.id, role: p.role, email: p.email })),
+      includeDeleted,
     });
 
     // Double-check: filter out any non-parent roles (safety check)
