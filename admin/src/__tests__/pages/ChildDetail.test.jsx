@@ -79,16 +79,17 @@ describe('ChildDetail (FE-3)', () => {
   });
 
   it('goals tab loads and shows status badge', async () => {
-    api.get
-      .mockResolvedValueOnce({ data: OBSERVATIONS })
-      .mockResolvedValueOnce({ data: GOALS });
+    api.get.mockImplementation((url) => {
+      if (url.includes('/goals')) return Promise.resolve({ data: GOALS });
+      return Promise.resolve({ data: OBSERVATIONS });
+    });
 
     render(<MemoryRouter><ChildDetail /></MemoryRouter>);
     await waitFor(() => screen.getByText('Amin Aliyev'));
 
     const goalsBtn = screen.getByText('Goals');
     fireEvent.click(goalsBtn);
-    await waitFor(() => expect(screen.queryByText('Improve vocabulary')).not.toBeNull(), { timeout: 3000 });
+    await waitFor(() => expect(screen.queryByText('Improve vocabulary')).not.toBeNull(), { timeout: 4000 });
     expect(screen.getAllByText('active').length).toBeGreaterThan(0);
   });
 

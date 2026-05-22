@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
@@ -27,6 +27,8 @@ const PAGE_SIZE = 20;
 const ActivityFeed = () => {
   const { t } = useTranslation();
   const { error: toastError } = useToast();
+  const toastErrorRef = useRef(toastError);
+  toastErrorRef.current = toastError;
 
   const [entries, setEntries] = useState([]);
   const [total, setTotal] = useState(0);
@@ -52,12 +54,12 @@ const ActivityFeed = () => {
       setTotal(d?.total ?? 0);
       setTotalPages(d?.totalPages ?? 1);
     } catch {
-      toastError(t('activityFeed.loadError', { defaultValue: 'Failed to load activity' }));
+      toastErrorRef.current(t('activityFeed.loadError', { defaultValue: 'Failed to load activity' }));
       setEntries([]);
     } finally {
       setLoading(false);
     }
-  }, [t, toastError]);
+  }, [t]);
 
   useEffect(() => {
     fetchEntries(page, filterAction, startDate, endDate);

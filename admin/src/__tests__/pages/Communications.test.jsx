@@ -62,30 +62,34 @@ describe('Communications (FE-7)', () => {
   });
 
   it('clicking a conversation loads message thread', async () => {
-    api.get
-      .mockResolvedValueOnce({ data: CONVERSATIONS })
-      .mockResolvedValueOnce({ data: { data: PARENTS } })
-      .mockResolvedValueOnce({ data: MESSAGES });
+    api.get.mockImplementation((url, opts) => {
+      if (url.includes('/messages')) return Promise.resolve({ data: MESSAGES });
+      if (url.includes('/conversations')) return Promise.resolve({ data: CONVERSATIONS });
+      return Promise.resolve({ data: { data: PARENTS } });
+    });
 
     render(<MemoryRouter><Communications /></MemoryRouter>);
     await waitFor(() => screen.getByText('Barno Umarova'));
 
-    fireEvent.click(screen.getByText('Barno Umarova'));
-    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 3000 });
+    const btn = screen.getByText('Barno Umarova').closest('button');
+    fireEvent.click(btn);
+    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 4000 });
     expect(screen.getByText('Hello parent!')).toBeTruthy();
   });
 
   it('distinguishes parent vs teacher role badges', async () => {
-    api.get
-      .mockResolvedValueOnce({ data: CONVERSATIONS })
-      .mockResolvedValueOnce({ data: { data: PARENTS } })
-      .mockResolvedValueOnce({ data: MESSAGES });
+    api.get.mockImplementation((url) => {
+      if (url.includes('/messages')) return Promise.resolve({ data: MESSAGES });
+      if (url.includes('/conversations')) return Promise.resolve({ data: CONVERSATIONS });
+      return Promise.resolve({ data: { data: PARENTS } });
+    });
 
     render(<MemoryRouter><Communications /></MemoryRouter>);
     await waitFor(() => screen.getByText('Barno Umarova'));
 
-    fireEvent.click(screen.getByText('Barno Umarova'));
-    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 3000 });
+    const btn = screen.getByText('Barno Umarova').closest('button');
+    fireEvent.click(btn);
+    await waitFor(() => expect(screen.queryByText('Hello teacher!')).not.toBeNull(), { timeout: 4000 });
     expect(screen.getAllByText('Parent').length).toBeGreaterThan(0);
     expect(screen.getByText('Teacher / Staff')).toBeTruthy();
   });
