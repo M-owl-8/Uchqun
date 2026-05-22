@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import ChatMessage from '../models/ChatMessage.js';
+import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { parsePagination } from '../utils/pagination.js';
 import { emitToUser } from '../config/socket.js';
@@ -10,14 +11,21 @@ const canAccessConversation = async (req, conversationId) => {
   if (req.user.role === 'parent') {
     return conversationId === buildConversationId(req.user.id);
   }
-  // Admin can access all conversations
-  if (req.user.role === 'admin') return true;
+  // Admin: scope to own-school parents only (fixes cross-school chat leak)
+  if (req.user.role === 'admin') {
+    const parentId = conversationId.replace('parent:', '');
+    if (!parentId) return false;
+    const child = await Child.findOne({
+      where: { parentId, schoolId: req.user.schoolId },
+      attributes: ['id'],
+    });
+    return !!child;
+  }
   if (req.user.role === 'government') return true;
   if (['teacher', 'reception'].includes(req.user.role)) {
     const parentId = conversationId.replace('parent:', '');
     if (!parentId) return false;
     if (req.user.role === 'teacher') {
-      const { default: Child } = await import('../models/Child.js');
       const { default: Group } = await import('../models/Group.js');
       const groups = await Group.findAll({
         attributes: ['id'],
@@ -198,18 +206,19 @@ const getAccessibleConversationIds = async (req, prefix) => {
   }
 
   if (req.user.role === 'admin') {
-    const rows = await ChatMessage.findAll({
-      attributes: ['conversationId'],
-      group: ['conversationId'],
+    // Scope to own-school parents only (fixes cross-school chat leak)
+    const children = await Child.findAll({
+      where: { schoolId: req.user.schoolId },
+      attributes: ['parentId'],
       raw: true,
-      ...(prefix && { where: { conversationId: { [Op.like]: `${prefix}%` } } }),
     });
-    return rows.map((r) => r.conversationId);
+    const parentIds = [...new Set(children.map(c => c.parentId).filter(Boolean))];
+    const ids = parentIds.map(id => `parent:${id}`);
+    return prefix ? ids.filter(id => id.startsWith(prefix)) : ids;
   }
 
   // teacher: derive from children in groups they own (Child has no teacherId
   // column — link goes Group.teacherId -> Group -> Child.groupId)
-  const { default: Child } = await import('../models/Child.js');
   let where;
   if (req.user.role === 'teacher') {
     const { default: Group } = await import('../models/Group.js');
