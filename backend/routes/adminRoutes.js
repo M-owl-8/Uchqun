@@ -28,6 +28,7 @@ import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js'
 import { restoreChild, restoreUser, restoreObservation, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
 import { getAdminAuditLog } from '../controllers/admin/adminAuditController.js';
 import { getAdminSchool, patchAdminSchool } from '../controllers/admin/adminSchoolController.js';
+import { getTeacherById } from '../controllers/admin/adminTeacherController.js';
 import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
@@ -96,6 +97,7 @@ router.get('/import/:id/errors', getImportErrors);
 
 // Read-only access to Teachers, Parents, and Groups
 router.get('/teachers', getTeachers); // View only
+router.get('/teachers/:id', getTeacherById); // View teacher detail + groups
 router.get('/parents', getParents); // View only
 router.get('/parents/:id', getParentById); // View parent with their data
 router.put('/parents/:id/suspend', suspendParent);
