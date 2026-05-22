@@ -21,7 +21,9 @@
     "import": "Массовый импорт",
     "school": "Профиль школы",
     "activity": "Лента активности",
-    "communications": "Коммуникации"
+    "communications": "Коммуникации",
+    "govMessages": "Сообщения",
+    "trash": "Корзина"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -303,6 +305,51 @@
     "category": "Категория",
     "latestReview": "Последний пересмотр",
     "loadError": "Не удалось загрузить данные"
+  },
+  "trash": {
+    "title": "Корзина",
+    "tab": {
+      "parents": "Родители",
+      "receptions": "Регистратуры"
+    },
+    "loading": "Загрузка…",
+    "empty": "Удалённых записей нет",
+    "loadError": "Не удалось загрузить удалённые записи",
+    "restore": "Восстановить",
+    "restoring": "Восстановление…",
+    "restoreSuccess": "Запись успешно восстановлена",
+    "restoreError": "Не удалось восстановить запись",
+    "notDeleted": "Эта запись не удалена",
+    "col": {
+      "name": "Имя",
+      "email": "Email",
+      "deletedAt": "Удалено"
+    }
+  },
+  "govMessages": {
+    "title": "Сообщения правительству",
+    "sent": "Отправленные",
+    "loading": "Загрузка…",
+    "empty": "Сообщений ещё нет",
+    "loadError": "Не удалось загрузить сообщения",
+    "selectPrompt": "Выберите сообщение для просмотра",
+    "compose": "Новое сообщение",
+    "composeTitle": "Новое сообщение правительству",
+    "subjectLabel": "Тема",
+    "subjectPlaceholder": "Введите тему",
+    "bodyLabel": "Сообщение",
+    "bodyPlaceholder": "Введите сообщение",
+    "cancel": "Отмена",
+    "send": "Отправить",
+    "sending": "Отправка…",
+    "sendSuccess": "Сообщение успешно отправлено",
+    "sendError": "Не удалось отправить сообщение",
+    "yourMessage": "Ваше сообщение",
+    "govReply": "Ответ правительства",
+    "badge": {
+      "replied": "Ответили",
+      "pending": "Ожидание"
+    }
   },
   "communications": {
     "title": "Коммуникации",

@@ -30,6 +30,8 @@ import TeacherDetail from './pages/TeacherDetail';
 import ActivityFeed from './pages/ActivityFeed';
 import ChildDetail from './pages/ChildDetail';
 import Communications from './pages/Communications';
+import Trash from './pages/Trash';
+import GovMessages from './pages/GovMessages';
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin, loading, mustChangePassword } = useAuth();
@@ -79,6 +81,8 @@ const AppRoutes = () => {
         <Route path="activity" element={<ErrorBoundary><ActivityFeed /></ErrorBoundary>} />
         <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
         <Route path="communications" element={<ErrorBoundary><Communications /></ErrorBoundary>} />
+        <Route path="trash" element={<ErrorBoundary><Trash /></ErrorBoundary>} />
+        <Route path="messages" element={<ErrorBoundary><GovMessages /></ErrorBoundary>} />
       </Route>
 
       <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />

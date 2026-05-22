@@ -21,7 +21,9 @@
     "import": "Ommaviy import",
     "school": "Maktab profili",
     "activity": "Faoliyat tarixchasi",
-    "communications": "Muloqotlar"
+    "communications": "Muloqotlar",
+    "govMessages": "Xabarlar",
+    "trash": "Savatcha"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -303,6 +305,51 @@
     "category": "Kategoriya",
     "latestReview": "So'nggi ko'rib chiqish",
     "loadError": "Ma'lumotlarni yuklab bo'lmadi"
+  },
+  "trash": {
+    "title": "Savatcha",
+    "tab": {
+      "parents": "Ota-onalar",
+      "receptions": "Qabulxonalar"
+    },
+    "loading": "Yuklanmoqda…",
+    "empty": "O'chirilgan yozuvlar yo'q",
+    "loadError": "O'chirilgan yozuvlarni yuklab bo'lmadi",
+    "restore": "Tiklash",
+    "restoring": "Tiklanmoqda…",
+    "restoreSuccess": "Yozuv muvaffaqiyatli tiklandi",
+    "restoreError": "Yozuvni tiklab bo'lmadi",
+    "notDeleted": "Bu yozuv o'chirilmagan",
+    "col": {
+      "name": "Ism",
+      "email": "Email",
+      "deletedAt": "O'chirilgan"
+    }
+  },
+  "govMessages": {
+    "title": "Hukumatga xabarlar",
+    "sent": "Yuborilgan",
+    "loading": "Yuklanmoqda…",
+    "empty": "Hali xabar yuborilmagan",
+    "loadError": "Xabarlarni yuklab bo'lmadi",
+    "selectPrompt": "Ko'rish uchun xabar tanlang",
+    "compose": "Yangi xabar",
+    "composeTitle": "Hukumatga yangi xabar",
+    "subjectLabel": "Mavzu",
+    "subjectPlaceholder": "Mavzuni kiriting",
+    "bodyLabel": "Xabar",
+    "bodyPlaceholder": "Xabaringizni kiriting",
+    "cancel": "Bekor qilish",
+    "send": "Yuborish",
+    "sending": "Yuborilmoqda…",
+    "sendSuccess": "Xabar muvaffaqiyatli yuborildi",
+    "sendError": "Xabarni yuborib bo'lmadi",
+    "yourMessage": "Sizning xabaringiz",
+    "govReply": "Hukumat javobi",
+    "badge": {
+      "replied": "Javob berildi",
+      "pending": "Kutilmoqda"
+    }
   },
   "communications": {
     "title": "Muloqotlar",

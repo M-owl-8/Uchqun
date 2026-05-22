@@ -19,6 +19,8 @@ import {
   Building2,
   History,
   MessageSquare,
+  Trash2,
+  Mail,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -31,6 +33,7 @@ const NAV_SECTIONS = [
       { key: 'nav.groups',          href: '/admin/groups',         icon: UsersRound },
       { key: 'nav.parents',         href: '/admin/parents',        icon: UserRound },
       { key: 'nav.communications',  href: '/admin/communications', icon: MessageSquare },
+      { key: 'nav.govMessages',     href: '/admin/messages',       icon: Mail },
       { key: 'nav.import',          href: '/admin/import',         icon: Upload },
     ],
   },
@@ -55,6 +58,7 @@ const NAV_SECTIONS = [
       { key: 'nav.settings',        href: '/admin/settings',       icon: Settings },
       { key: 'nav.profile',         href: '/admin/profile',        icon: User },
       { key: 'nav.school',          href: '/admin/school',         icon: Building2 },
+      { key: 'nav.trash',           href: '/admin/trash',          icon: Trash2 },
     ],
   },
 ];

@@ -22,7 +22,9 @@
     "import": "Bulk Import",
     "school": "School Profile",
     "activity": "Activity Feed",
-    "communications": "Communications"
+    "communications": "Communications",
+    "govMessages": "Messages",
+    "trash": "Trash"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -304,6 +306,51 @@
     "category": "Category",
     "latestReview": "Latest review",
     "loadError": "Failed to load data"
+  },
+  "trash": {
+    "title": "Trash",
+    "tab": {
+      "parents": "Parents",
+      "receptions": "Receptions"
+    },
+    "loading": "Loading…",
+    "empty": "No deleted records",
+    "loadError": "Failed to load deleted records",
+    "restore": "Restore",
+    "restoring": "Restoring…",
+    "restoreSuccess": "Record restored successfully",
+    "restoreError": "Failed to restore record",
+    "notDeleted": "This record is not deleted",
+    "col": {
+      "name": "Name",
+      "email": "Email",
+      "deletedAt": "Deleted"
+    }
+  },
+  "govMessages": {
+    "title": "Messages to Government",
+    "sent": "Sent",
+    "loading": "Loading…",
+    "empty": "No messages sent yet",
+    "loadError": "Failed to load messages",
+    "selectPrompt": "Select a message to view",
+    "compose": "New Message",
+    "composeTitle": "New Message to Government",
+    "subjectLabel": "Subject",
+    "subjectPlaceholder": "Enter subject",
+    "bodyLabel": "Message",
+    "bodyPlaceholder": "Enter your message",
+    "cancel": "Cancel",
+    "send": "Send",
+    "sending": "Sending…",
+    "sendSuccess": "Message sent successfully",
+    "sendError": "Failed to send message",
+    "yourMessage": "Your message",
+    "govReply": "Government's reply",
+    "badge": {
+      "replied": "Replied",
+      "pending": "Pending"
+    }
   },
   "communications": {
     "title": "Communications",
