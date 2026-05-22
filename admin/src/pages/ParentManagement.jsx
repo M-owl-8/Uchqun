@@ -1,8 +1,9 @@
-﻿import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import api from '../services/api';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
@@ -13,16 +14,15 @@ import {
   FileText,
   Utensils,
   Image as ImageIcon,
-  Baby
+  Baby,
+  UserX,
+  UserCheck,
 } from 'lucide-react';
 
 /**
- * Parent Management Page (Read-Only for Admin)
- * 
- * Business Logic:
- * - Admin can only VIEW parents (read-only)
- * - Admin cannot create, edit, or delete parents
- * - Clicking on a parent shows their activities, meals, and media
+ * Parent Management Page
+ *
+ * Admin can VIEW parents and suspend/activate them.
  */
 const ParentManagement = () => {
   const [parents, setParents] = useState(() => cache.get('admin:parents') || []);
@@ -31,7 +31,8 @@ const ParentManagement = () => {
   const [selectedParent, setSelectedParent] = useState(null);
   const [parentData, setParentData] = useState(null);
   const [loadingParentData, setLoadingParentData] = useState(false);
-  const { error: toastError } = useToast();
+  const [dialog, setDialog] = useState(null);
+  const { error: toastError, success: toastSuccess } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -78,7 +79,44 @@ const ParentManagement = () => {
     }
   };
 
-  const filteredParents = useMemo(() => parents.filter((parent) => {
+  const updateParentStatus = (parentId, newStatus) => {
+    setParents(prev => prev.map(p => p.id === parentId ? { ...p, status: newStatus } : p));
+    setSelectedParent(prev => prev?.id === parentId ? { ...prev, status: newStatus } : prev);
+  };
+
+  const handleSuspend = (parent) => {
+    setDialog({
+      message: t('parentsPage.suspendConfirm', { defaultValue: 'Bu ota-onani to\'xtatib qo\'yish?' }),
+      onConfirm: async () => {
+        setDialog(null);
+        try {
+          const res = await api.put(`/admin/parents/${parent.id}/suspend`);
+          updateParentStatus(parent.id, res.data?.data?.status ?? 'suspended');
+          toastSuccess(t('parentsPage.suspendSuccess', { defaultValue: 'Ota-ona to\'xtatildi' }));
+        } catch (err) {
+          toastError(err.response?.data?.error?.detail || t('parentsPage.suspendError', { defaultValue: 'To\'xtatishda xatolik' }));
+        }
+      },
+    });
+  };
+
+  const handleActivate = (parent) => {
+    setDialog({
+      message: t('parentsPage.activateConfirm', { defaultValue: 'Bu ota-onani faollashtirish?' }),
+      onConfirm: async () => {
+        setDialog(null);
+        try {
+          const res = await api.put(`/admin/parents/${parent.id}/activate`);
+          updateParentStatus(parent.id, res.data?.data?.status ?? 'active');
+          toastSuccess(t('parentsPage.activateSuccess', { defaultValue: 'Ota-ona faollashtirildi' }));
+        } catch (err) {
+          toastError(err.response?.data?.error?.detail || t('parentsPage.activateError', { defaultValue: 'Faollashtirishda xatolik' }));
+        }
+      },
+    });
+  };
+
+  const filteredParents = useMemo(() => (Array.isArray(parents) ? parents : []).filter((parent) => {
     const query = searchQuery.toLowerCase();
     return (
       parent.firstName?.toLowerCase().includes(query) ||
@@ -152,6 +190,15 @@ const ParentManagement = () => {
                           </h3>
                           <p className="text-sm text-warm-600">{parent.email}</p>
                         </div>
+                        {parent.status === 'suspended' ? (
+                          <span className="ml-auto inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
+                            {t('parentsPage.statusSuspended', { defaultValue: 'Suspended' })}
+                          </span>
+                        ) : (
+                          <span className="ml-auto inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700">
+                            {t('parentsPage.statusActive', { defaultValue: 'Active' })}
+                          </span>
+                        )}
                       </div>
                       {parent.phone && (
                         <div className="flex items-center gap-2 text-sm text-warm-500 mt-2">
@@ -160,7 +207,7 @@ const ParentManagement = () => {
                         </div>
                       )}
                     </div>
-                    <Eye className="w-5 h-5 text-warm-400" aria-hidden="true" />
+                    <Eye className="w-5 h-5 text-warm-400 shrink-0 ml-2" aria-hidden="true" />
                   </div>
                 </div>
               ))
@@ -172,11 +219,32 @@ const ParentManagement = () => {
         <div className="bg-surface rounded-lg shadow-sm border border-warm-200">
           {selectedParent ? (
             <>
-              <div className="p-4 border-b border-warm-200">
-                <h2 className="text-lg font-semibold text-warm-900">
-                  {selectedParent.firstName} {selectedParent.lastName}
-                </h2>
-                <p className="text-sm text-warm-600">{selectedParent.email}</p>
+              <div className="p-4 border-b border-warm-200 flex items-start justify-between gap-3">
+                <div>
+                  <h2 className="text-lg font-semibold text-warm-900">
+                    {selectedParent.firstName} {selectedParent.lastName}
+                  </h2>
+                  <p className="text-sm text-warm-600">{selectedParent.email}</p>
+                </div>
+                <div className="shrink-0">
+                  {selectedParent.status === 'suspended' ? (
+                    <button
+                      onClick={() => handleActivate(selectedParent)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-green-50 hover:bg-green-100 text-green-700 rounded-md border border-green-200 transition-colors"
+                    >
+                      <UserCheck className="w-4 h-4" />
+                      {t('parentsPage.activate', { defaultValue: 'Activate' })}
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleSuspend(selectedParent)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-red-50 hover:bg-red-100 text-red-700 rounded-md border border-red-200 transition-colors"
+                    >
+                      <UserX className="w-4 h-4" />
+                      {t('parentsPage.suspend', { defaultValue: 'Suspend' })}
+                    </button>
+                  )}
+                </div>
               </div>
               {loadingParentData ? (
                 <div className="p-8 text-center" role="status" aria-label="Loading parent data">
@@ -283,6 +351,8 @@ const ParentManagement = () => {
           )}
         </div>
       </div>
+
+      <ConfirmDialog dialog={dialog} onCancel={() => setDialog(null)} />
     </div>
   );
 };
