@@ -1,0 +1,113 @@
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
+
+vi.mock('../../services/api', () => ({ default: { get: vi.fn() } }));
+vi.mock('react-i18next', () => {
+  const t = (k, o) => o?.defaultValue ?? k;
+  return { useTranslation: () => ({ t }) };
+});
+vi.mock('@shared/context/ToastContext', () => ({
+  useToast: () => ({ error: vi.fn() }),
+}));
+
+import api from '../../services/api';
+import Communications from '../../pages/Communications';
+
+const PARENTS = [
+  { id: 'p-1', firstName: 'Barno', lastName: 'Umarova', email: 'barno@test.com', status: 'active' },
+];
+
+const CONVERSATIONS = [
+  {
+    conversationId: 'parent:p-1',
+    lastMessage: { content: 'Hello', senderRole: 'parent', createdAt: new Date().toISOString() },
+    unreadCount: 2,
+    updatedAt: new Date().toISOString(),
+  },
+];
+
+const MESSAGES = [
+  {
+    id: 'm-1',
+    conversationId: 'parent:p-1',
+    senderId: 'p-1',
+    senderRole: 'parent',
+    content: 'Hello teacher!',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'm-2',
+    conversationId: 'parent:p-1',
+    senderId: 't-1',
+    senderRole: 'teacher',
+    content: 'Hello parent!',
+    createdAt: new Date().toISOString(),
+  },
+];
+
+describe('Communications (FE-7)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('conversation list renders from API with enriched parent name', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: CONVERSATIONS })
+      .mockResolvedValueOnce({ data: { data: PARENTS } });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+    expect(screen.getByText('Barno Umarova')).toBeTruthy();
+  });
+
+  it('clicking a conversation loads message thread', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: CONVERSATIONS })
+      .mockResolvedValueOnce({ data: { data: PARENTS } })
+      .mockResolvedValueOnce({ data: MESSAGES });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+
+    fireEvent.click(screen.getByText('Barno Umarova'));
+    await waitFor(() => screen.getByText('Hello teacher!'));
+    expect(screen.getByText('Hello parent!')).toBeTruthy();
+  });
+
+  it('distinguishes parent vs teacher role badges', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: CONVERSATIONS })
+      .mockResolvedValueOnce({ data: { data: PARENTS } })
+      .mockResolvedValueOnce({ data: MESSAGES });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+
+    fireEvent.click(screen.getByText('Barno Umarova'));
+    await waitFor(() => screen.getByText('Parent'));
+    expect(screen.getByText('Teacher / Staff')).toBeTruthy();
+  });
+
+  it('shows empty state when conversations=[]', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: [] })
+      .mockResolvedValueOnce({ data: { data: [] } });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('No active conversations'));
+    expect(screen.getByText('No active conversations')).toBeTruthy();
+  });
+
+  it('has no message input textbox — read-only', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: CONVERSATIONS })
+      .mockResolvedValueOnce({ data: { data: PARENTS } });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+
+    expect(screen.queryByPlaceholderText(/message|xabar/i)).toBeNull();
+    expect(screen.queryByRole('textbox')).toBeNull();
+  });
+});
