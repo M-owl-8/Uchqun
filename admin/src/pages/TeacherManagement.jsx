@@ -1,4 +1,5 @@
 ﻿import { useEffect, useState, memo, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import { SkeletonList } from '../../../shared/components/Skeleton';
@@ -10,6 +11,7 @@ import {
   Search,
   Mail,
   Phone,
+  ChevronRight,
 } from 'lucide-react';
 
 /**
@@ -25,6 +27,7 @@ const TeacherManagement = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const { error: toastError } = useToast();
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const CACHE_KEY = 'admin:teachers';
@@ -95,7 +98,9 @@ const TeacherManagement = () => {
       {filteredTeachers.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTeachers.map((teacher) => (
-            <TeacherCard key={teacher.id} teacher={teacher} t={t} />
+            <div key={teacher.id} className="cursor-pointer" onClick={() => navigate('/admin/teachers/' + teacher.id)}>
+              <TeacherCard teacher={teacher} t={t} />
+            </div>
           ))}
         </div>
       ) : (
@@ -123,6 +128,7 @@ const TeacherCard = memo(function TeacherCard({ teacher, t }) {
           <p className="text-sm text-warm-500">{teacher.email}</p>
         </div>
       </div>
+      <ChevronRight className="w-5 h-5 text-warm-400 shrink-0" strokeWidth={1.75} />
     </div>
     <div className="space-y-3">
       <div className="flex items-center gap-2 text-sm text-warm-600">
