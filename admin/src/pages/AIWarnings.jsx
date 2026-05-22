@@ -3,6 +3,8 @@ import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import {
   ShieldCheck, ShieldAlert, AlertTriangle, AlertCircle, Info,
   CheckCircle2, Clock, ChevronDown, RotateCw,
@@ -39,7 +41,7 @@ const SEVERITY_META = {
   },
 };
 
-const WarningCard = ({ warning, onResolve, resolving }) => {
+const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
 
@@ -146,6 +148,14 @@ const WarningCard = ({ warning, onResolve, resolving }) => {
               {t('aiWarnings.review', { defaultValue: "Ko'rib chiqish" })}
             </a>
           )}
+          {!warning.resolvedAt && (
+            <button
+              onClick={() => onNotify(warning.id)}
+              className="inline-flex items-center justify-center h-9 px-3 text-sm font-medium bg-brand-50 hover:bg-brand-100 text-brand-700 rounded-md border border-brand-200 transition-colors"
+            >
+              {t('aiWarnings.notify', { defaultValue: 'Xabar berish' })}
+            </button>
+          )}
           {warning.severity !== 'critical' && (
             <button
               onClick={() => onResolve(warning.id)}
@@ -167,10 +177,13 @@ const AIWarnings = () => {
   const [warnings, setWarnings] = useState(() => cache.get('admin:ai-warnings') || []);
   const [loading, setLoading] = useState(!cache.get('admin:ai-warnings'));
   const [resolving, setResolving] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [dialog, setDialog] = useState(null);
   const [statusFilter, setStatusFilter] = useState('all');
   const [severityFilter, setSeverityFilter] = useState('all');
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+  const { user } = useAuth();
 
   const fetchWarnings = useCallback(async (bust = false) => {
     const CACHE_KEY = 'admin:ai-warnings';
@@ -214,6 +227,35 @@ const AIWarnings = () => {
     } finally {
       setResolving(null);
     }
+  };
+
+  const handleAnalyze = async () => {
+    try {
+      setAnalyzing(true);
+      await api.post('/ai-warnings/analyze', { schoolId: user.schoolId });
+      success(t('aiWarnings.analyzeSuccess', { defaultValue: 'Tahlil tugadi' }));
+      cache.invalidate('admin:ai-warnings');
+      await fetchWarnings(true);
+    } catch (err) {
+      showError(err.response?.data?.error || t('aiWarnings.analyzeError', { defaultValue: 'Tahlil xatosi' }));
+    } finally {
+      setAnalyzing(false);
+    }
+  };
+
+  const handleNotify = (warningId) => {
+    setDialog({
+      message: t('aiWarnings.notifyConfirm', { defaultValue: 'Barcha manfaatdor tomonlarga xabar berish?' }),
+      onConfirm: async () => {
+        setDialog(null);
+        try {
+          await api.post(`/ai-warnings/${warningId}/notify`, { includeParents: true, includeTeachers: true });
+          success(t('aiWarnings.notifySuccess', { defaultValue: 'Xabar yuborildi' }));
+        } catch (err) {
+          showError(err.response?.data?.error || t('aiWarnings.notifyError', { defaultValue: 'Xabar yuborishda xatolik' }));
+        }
+      },
+    });
   };
 
   const filtered = warnings.filter(w => {
@@ -287,6 +329,14 @@ const AIWarnings = () => {
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none" strokeWidth={1.75} />
           </div>
           <button
+            onClick={handleAnalyze}
+            disabled={analyzing}
+            className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-50"
+            aria-label={t('aiWarnings.analyze', { defaultValue: 'Tahlil qilish' })}
+          >
+            {analyzing ? t('aiWarnings.analyzing', { defaultValue: 'Tahlil...' }) : t('aiWarnings.analyze', { defaultValue: 'Tahlil qilish' })}
+          </button>
+          <button
             onClick={() => fetchWarnings(true)}
             className="inline-flex items-center justify-center w-10 h-10 text-warm-600 bg-surface border border-warm-300 hover:bg-warm-50 rounded-md transition-colors"
             aria-label={t('aiWarnings.refresh', { defaultValue: 'Yangilash' })}
@@ -315,10 +365,18 @@ const AIWarnings = () => {
       ) : (
         <div className="space-y-4">
           {filtered.map(w => (
-            <WarningCard key={w.id} warning={w} onResolve={handleResolve} resolving={resolving} />
+            <WarningCard
+              key={w.id}
+              warning={w}
+              onResolve={handleResolve}
+              resolving={resolving}
+              onNotify={handleNotify}
+            />
           ))}
         </div>
       )}
+
+      <ConfirmDialog dialog={dialog} onCancel={() => setDialog(null)} />
     </div>
   );
 };

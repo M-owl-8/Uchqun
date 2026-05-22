@@ -34,6 +34,19 @@ vi.mock('../../../shared/utils/cache', () => ({
   invalidate: vi.fn(),
 }));
 
+vi.mock('../../context/AuthContext', () => ({
+  useAuth: () => ({ user: { schoolId: 'school-uuid-1' } }),
+}));
+
+vi.mock('@shared/components/ConfirmDialog', () => ({
+  default: ({ dialog, onCancel }) => dialog ? (
+    <div data-testid="confirm-dialog">
+      <button data-testid="confirm-ok" onClick={() => dialog.onConfirm()}>OK</button>
+      <button data-testid="confirm-cancel" onClick={onCancel}>Cancel</button>
+    </div>
+  ) : null,
+}));
+
 import api from '../../services/api';
 import AIWarnings from '../../pages/AIWarnings';
 
@@ -130,5 +143,68 @@ describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
     expect(url).toBe('/ai-warnings/w-1/resolve');
     expect(url).not.toContain('post');
     expect(url).not.toContain('/admin/');
+  });
+});
+
+describe('AIWarnings analyze + notify (FE-4)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    api.get.mockResolvedValue({ data: { data: [UNRESOLVED] } });
+    api.post = vi.fn().mockResolvedValue({ data: { success: true } });
+  });
+
+  it('analyze button triggers POST /ai-warnings/analyze with schoolId', async () => {
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+
+    const analyzeBtn = screen.getByRole('button', { name: /Tahlil qilish/ });
+    fireEvent.click(analyzeBtn);
+
+    await waitFor(() => expect(api.post).toHaveBeenCalledWith(
+      '/ai-warnings/analyze',
+      { schoolId: 'school-uuid-1' }
+    ));
+  });
+
+  it('warning list refreshes after analyze', async () => {
+    api.get
+      .mockResolvedValueOnce({ data: { data: [UNRESOLVED] } })
+      .mockResolvedValue({ data: { data: [] } });
+
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+
+    fireEvent.click(screen.getByRole('button', { name: /Tahlil qilish/ }));
+
+    await waitFor(() => expect(api.get).toHaveBeenCalledTimes(2));
+  });
+
+  it('notify button shown on unresolved card', async () => {
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+    expect(screen.getByRole('button', { name: /Xabar berish/ })).toBeTruthy();
+  });
+
+  it('notify confirm dialog shown before POST', async () => {
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+
+    fireEvent.click(screen.getByRole('button', { name: /Xabar berish/ }));
+    expect(screen.getByTestId('confirm-dialog')).toBeTruthy();
+    expect(api.post).not.toHaveBeenCalled();
+  });
+
+  it('POST /ai-warnings/:id/notify called on confirm', async () => {
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+
+    fireEvent.click(screen.getByRole('button', { name: /Xabar berish/ }));
+    await waitFor(() => screen.getByTestId('confirm-dialog'));
+
+    fireEvent.click(screen.getByTestId('confirm-ok'));
+    await waitFor(() => expect(api.post).toHaveBeenCalledWith(
+      '/ai-warnings/w-1/notify',
+      { includeParents: true, includeTeachers: true }
+    ));
   });
 });
