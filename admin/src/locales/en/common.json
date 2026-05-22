@@ -18,7 +18,8 @@
     "parents": "Parents",
     "profile": "Profile",
     "settings": "Settings",
-    "menu": "Main menu"
+    "menu": "Main menu",
+    "import": "Bulk Import"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -239,5 +240,36 @@
     "heading": "404",
     "message": "Page not found",
     "goBack": "Go Back"
+  },
+  "import": {
+    "title": "Bulk Import",
+    "subtitle": "Import children from a CSV file",
+    "step1Title": "Upload CSV",
+    "step2Title": "Validation Results",
+    "step3Title": "Confirm Import",
+    "step4Title": "Importing…",
+    "step5Title": "Import Complete",
+    "requiredHeaders": "Required columns: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail",
+    "chooseFile": "Choose CSV file",
+    "noFile": "No file selected",
+    "validate": "Validate",
+    "validating": "Validating…",
+    "totalRows": "Total rows: {{count}}",
+    "validRows": "Valid rows: {{count}}",
+    "invalidRows": "Invalid rows: {{count}}",
+    "continueBtn": "Continue with valid rows",
+    "backBtn": "Back",
+    "confirmTitle": "Import {{count}} children?",
+    "skipWarning": "{{count}} rows will be skipped due to validation errors.",
+    "startBtn": "Start Import",
+    "cancel": "Cancel",
+    "polling": "Import in progress…",
+    "completed": "Import complete",
+    "failed": "Import failed",
+    "resultSuccess": "{{count}} children imported successfully.",
+    "resultErrors": "{{count}} rows failed to create.",
+    "newImport": "New Import",
+    "uploadError": "Upload failed",
+    "startError": "Could not start import"
   }
 }

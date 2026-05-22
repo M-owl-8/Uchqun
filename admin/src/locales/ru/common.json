@@ -17,7 +17,8 @@
     "therapy": "Управление терапиями",
     "profile": "Профиль",
     "settings": "Настройки",
-    "menu": "Главное меню"
+    "menu": "Главное меню",
+    "import": "Массовый импорт"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -238,5 +239,36 @@
     "heading": "404",
     "message": "Страница не найдена",
     "goBack": "Назад"
+  },
+  "import": {
+    "title": "Массовый импорт",
+    "subtitle": "Импорт детей из CSV-файла",
+    "step1Title": "Загрузить CSV",
+    "step2Title": "Результаты проверки",
+    "step3Title": "Подтвердить импорт",
+    "step4Title": "Импорт…",
+    "step5Title": "Импорт завершён",
+    "requiredHeaders": "Обязательные столбцы: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail",
+    "chooseFile": "Выбрать CSV-файл",
+    "noFile": "Файл не выбран",
+    "validate": "Проверить",
+    "validating": "Проверяется…",
+    "totalRows": "Всего строк: {{count}}",
+    "validRows": "Корректных строк: {{count}}",
+    "invalidRows": "Некорректных строк: {{count}}",
+    "continueBtn": "Продолжить с корректными строками",
+    "backBtn": "Назад",
+    "confirmTitle": "Импортировать {{count}} детей?",
+    "skipWarning": "{{count}} строк будет пропущено из-за ошибок проверки.",
+    "startBtn": "Начать импорт",
+    "cancel": "Отмена",
+    "polling": "Импорт выполняется…",
+    "completed": "Импорт завершён",
+    "failed": "Импорт завершился с ошибкой",
+    "resultSuccess": "{{count}} детей успешно импортировано.",
+    "resultErrors": "{{count}} строк не удалось создать.",
+    "newImport": "Новый импорт",
+    "uploadError": "Ошибка загрузки",
+    "startError": "Не удалось начать импорт"
   }
 }

@@ -15,6 +15,7 @@ import {
   LogOut,
   Brain,
   UsersRound,
+  Upload,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -26,6 +27,7 @@ const NAV_SECTIONS = [
       { key: 'nav.teachers',        href: '/admin/teachers',       icon: GraduationCap },
       { key: 'nav.groups',          href: '/admin/groups',         icon: UsersRound },
       { key: 'nav.parents',         href: '/admin/parents',        icon: UserRound },
+      { key: 'nav.import',          href: '/admin/import',         icon: Upload },
     ],
   },
   {

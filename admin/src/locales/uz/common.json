@@ -17,7 +17,8 @@
     "therapy": "Terapiya boshqaruvi",
     "profile": "Profil",
     "settings": "Sozlamalar",
-    "menu": "Asosiy menyu"
+    "menu": "Asosiy menyu",
+    "import": "Ommaviy import"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -238,5 +239,36 @@
     "heading": "404",
     "message": "Sahifa topilmadi",
     "goBack": "Orqaga qaytish"
+  },
+  "import": {
+    "title": "Ommaviy import",
+    "subtitle": "CSV fayl orqali bolalarni import qilish",
+    "step1Title": "CSV yuklash",
+    "step2Title": "Tekshirish natijalari",
+    "step3Title": "Importni tasdiqlash",
+    "step4Title": "Import jarayonida…",
+    "step5Title": "Import tugadi",
+    "requiredHeaders": "Majburiy ustunlar: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail",
+    "chooseFile": "CSV faylni tanlang",
+    "noFile": "Fayl tanlanmagan",
+    "validate": "Tekshirish",
+    "validating": "Tekshirilmoqda…",
+    "totalRows": "Jami qatorlar: {{count}}",
+    "validRows": "To'g'ri qatorlar: {{count}}",
+    "invalidRows": "Noto'g'ri qatorlar: {{count}}",
+    "continueBtn": "To'g'ri qatorlar bilan davom etish",
+    "backBtn": "Orqaga",
+    "confirmTitle": "{{count}} ta bolani import qilish?",
+    "skipWarning": "{{count}} ta qator tekshirish xatolari sababli o'tkazib yuboriladi.",
+    "startBtn": "Boshlash",
+    "cancel": "Bekor qilish",
+    "polling": "Import jarayonida…",
+    "completed": "Import tugadi",
+    "failed": "Import muvaffaqiyatsiz",
+    "resultSuccess": "{{count}} ta bola muvaffaqiyatli import qilindi.",
+    "resultErrors": "{{count}} ta qator yaratilmadi.",
+    "newImport": "Yangi import",
+    "uploadError": "Yuklash muvaffaqiyatsiz",
+    "startError": "Importni boshlash muvaffaqiyatsiz"
   }
 }
