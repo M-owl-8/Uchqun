@@ -1,4 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../services/api';
 import { SkeletonList } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
@@ -261,7 +262,12 @@ const ParentManagement = () => {
                     <div className="space-y-2 max-h-32 overflow-y-auto">
                       {parentData.children && parentData.children.length > 0 ? (
                         parentData.children.map((child) => (
-                          <div key={child.id} className="p-3 bg-warm-50 rounded-lg">
+                          <Link
+                            key={child.id}
+                            to={`/admin/children/${child.id}`}
+                            state={{ child }}
+                            className="block p-3 bg-warm-50 rounded-lg hover:bg-warm-100 transition-colors"
+                          >
                             <p className="font-medium text-warm-900">{child.firstName} {child.lastName}</p>
                             <div className="text-xs text-warm-500 mt-1">
                               <p>DOB: {new Date(child.dateOfBirth).toLocaleDateString()}</p>
@@ -269,7 +275,7 @@ const ParentManagement = () => {
                               <p>School: {child.childSchool?.name || ''}</p>
                               <p>Class: {child.class}</p>
                             </div>
-                          </div>
+                          </Link>
                         ))
                       ) : (
                         <p className="text-sm text-warm-500">No children registered</p>
