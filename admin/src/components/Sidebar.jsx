@@ -16,6 +16,9 @@ import {
   Brain,
   UsersRound,
   Upload,
+  Building2,
+  History,
+  MessageSquare,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -27,6 +30,7 @@ const NAV_SECTIONS = [
       { key: 'nav.teachers',        href: '/admin/teachers',       icon: GraduationCap },
       { key: 'nav.groups',          href: '/admin/groups',         icon: UsersRound },
       { key: 'nav.parents',         href: '/admin/parents',        icon: UserRound },
+      { key: 'nav.communications',  href: '/admin/communications', icon: MessageSquare },
       { key: 'nav.import',          href: '/admin/import',         icon: Upload },
     ],
   },
@@ -42,6 +46,7 @@ const NAV_SECTIONS = [
       { key: 'nav.aiWarnings',      href: '/admin/ai-warnings',    icon: BellRing },
       { key: 'nav.schoolRatings',   href: '/admin/school-ratings', icon: BarChart3 },
       { key: 'nav.therapy',         href: '/admin/therapy',        icon: Brain },
+      { key: 'nav.activity',        href: '/admin/activity',       icon: History },
     ],
   },
   {
@@ -49,6 +54,7 @@ const NAV_SECTIONS = [
     items: [
       { key: 'nav.settings',        href: '/admin/settings',       icon: Settings },
       { key: 'nav.profile',         href: '/admin/profile',        icon: User },
+      { key: 'nav.school',          href: '/admin/school',         icon: Building2 },
     ],
   },
 ];

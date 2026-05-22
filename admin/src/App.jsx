@@ -25,6 +25,11 @@ import TherapyManagement from './pages/TherapyManagement';
 import BulkImport from './pages/BulkImport';
 import ChangePassword from './pages/ChangePassword';
 import NotFound from './pages/NotFound';
+import SchoolProfile from './pages/SchoolProfile';
+import TeacherDetail from './pages/TeacherDetail';
+import ActivityFeed from './pages/ActivityFeed';
+import ChildDetail from './pages/ChildDetail';
+import Communications from './pages/Communications';
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin, loading, mustChangePassword } = useAuth();
@@ -69,6 +74,11 @@ const AppRoutes = () => {
         <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
         <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
         <Route path="import" element={<ErrorBoundary><BulkImport /></ErrorBoundary>} />
+        <Route path="school" element={<ErrorBoundary><SchoolProfile /></ErrorBoundary>} />
+        <Route path="teachers/:id" element={<ErrorBoundary><TeacherDetail /></ErrorBoundary>} />
+        <Route path="activity" element={<ErrorBoundary><ActivityFeed /></ErrorBoundary>} />
+        <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
+        <Route path="communications" element={<ErrorBoundary><Communications /></ErrorBoundary>} />
       </Route>
 
       <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />
