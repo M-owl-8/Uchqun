@@ -17,8 +17,40 @@ import {
   ShieldCheck,
   Phone,
   Star,
-  Clock,
 } from 'lucide-react';
+
+const ACTION_META = {
+  'approve:documents':      { label: 'Hujjat tasdiqlandi',           color: 'text-success-600' },
+  'reject:documents':       { label: 'Hujjat rad etildi',            color: 'text-error-600' },
+  'create:receptions':      { label: 'Qabulxona yaratildi',          color: 'text-info-600' },
+  'delete:receptions':      { label: "Qabulxona o'chirildi",         color: 'text-error-600' },
+  'activate:receptions':    { label: 'Qabulxona faollashtirildi',    color: 'text-success-600' },
+  'deactivate:receptions':  { label: "Qabulxona o'chirildi",         color: 'text-warning-600' },
+  'suspend:users':          { label: "Ota-ona to'xtatildi",          color: 'text-error-600' },
+  'activate:users':         { label: 'Ota-ona faollashtirildi',      color: 'text-success-600' },
+  'restore:children':       { label: 'Bola tiklandi',                color: 'text-info-600' },
+  'restore:users':          { label: 'Foydalanuvchi tiklandi',       color: 'text-info-600' },
+  'bulk_import:children':   { label: 'Bolalar import qilindi',       color: 'text-brand-600' },
+  'transfer:children':      { label: "Bola ko'chirildi",             color: 'text-warning-600' },
+  'update:schools':         { label: 'Maktab yangilandi',            color: 'text-brand-600' },
+};
+
+const getActionLabel = (action, entity) =>
+  ACTION_META[`${action}:${entity}`]?.label ?? `${action} ${entity}`;
+
+const getActionColor = (action, entity) =>
+  ACTION_META[`${action}:${entity}`]?.color ?? 'text-warm-600';
+
+const formatRelativeTime = (iso) => {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const min = Math.floor(diff / 60000);
+  if (min < 1) return 'Hozirgina';
+  if (min < 60) return `${min} daqiqa oldin`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr} soat oldin`;
+  return new Date(iso).toLocaleDateString('uz-UZ');
+};
 
 const CACHE_KEY = 'admin:dashboard';
 
@@ -57,17 +89,19 @@ const Dashboard = () => {
   const [pendingDocs, setPendingDocs]   = useState(() => cache.get(CACHE_KEY)?.pendingDocs ?? []);
   const [aiWarnings, setAiWarnings]     = useState(() => cache.get(CACHE_KEY)?.aiWarnings ?? []);
   const [ratings, setRatings]           = useState(() => cache.get(CACHE_KEY)?.ratings ?? null);
+  const [auditEntries, setAuditEntries] = useState(() => cache.get(CACHE_KEY)?.auditEntries ?? []);
   const [loading, setLoading]           = useState(!cache.get(CACHE_KEY));
   const [lastUpdated, setLastUpdated]   = useState(null);
   const [refreshing, setRefreshing]     = useState(false);
 
   const fetchFresh = useCallback(async (signal) => {
-    const [statsRes, receptionsRes, docsRes, aiRes, ratingsRes] = await Promise.allSettled([
+    const [statsRes, receptionsRes, docsRes, aiRes, ratingsRes, auditRes] = await Promise.allSettled([
       api.get('/admin/statistics', { signal }),
       api.get('/admin/receptions', { signal }),
       api.get('/admin/documents/pending', { signal }),
       api.get('/ai-warnings', { signal }),
       api.get('/admin/school-ratings', { signal }),
+      api.get('/admin/audit-log', { params: { limit: 8 }, signal }),
     ]);
 
     const receptionsData = receptionsRes.status === 'fulfilled'
@@ -105,7 +139,10 @@ const Dashboard = () => {
       statsData = { receptions: 0, teachers: 0, parents: 0, children: 0, groups: 0 };
     }
 
-    return { stats: statsData, receptions: receptionsData, pendingDocs: pendingDocsData, aiWarnings: aiData, ratings: ratingsData };
+    const auditData = auditRes.status === 'fulfilled'
+      ? (auditRes.value?.data?.data?.entries || []) : [];
+
+    return { stats: statsData, receptions: receptionsData, pendingDocs: pendingDocsData, aiWarnings: aiData, ratings: ratingsData, auditEntries: auditData };
   }, []);
 
   const loadData = useCallback(async (signal, showRefresh = false) => {
@@ -119,6 +156,7 @@ const Dashboard = () => {
       setPendingDocs(result.pendingDocs);
       setAiWarnings(result.aiWarnings);
       setRatings(result.ratings);
+      setAuditEntries(result.auditEntries ?? []);
       setLastUpdated(new Date());
     } catch {
       // ignore abort
@@ -373,16 +411,33 @@ const Dashboard = () => {
                 <p className="text-base font-semibold text-warm-900">{t('dashboard.recentActivity', { defaultValue: 'So\'nggi faoliyat' })}</p>
                 <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.recentActivitySub', { defaultValue: 'Qabulxona xodimlari bugun bajargan ishlar' })}</p>
               </div>
-              <span className="text-sm text-brand-700 font-medium">{t('dashboard.auditLog', { defaultValue: 'Audit jurnali →' })}</span>
+              <Link to="/admin/activity" className="text-sm text-brand-700 font-medium hover:text-brand-800">
+                {t('dashboard.auditLog', { defaultValue: 'Audit jurnali →' })}
+              </Link>
             </header>
-            <div className="flex flex-col items-center justify-center gap-2 px-5 py-10 text-center">
-              <Clock className="w-7 h-7 text-warm-300" strokeWidth={1.5} />
-              <p className="text-sm font-medium text-warm-500">
-                {t('dashboard.activityComingSoon', { defaultValue: 'Faoliyat tarixi tez kunda' })}
-              </p>
-              <p className="text-xs text-warm-400 max-w-xs">
-                {t('dashboard.activityComingSoonSub', { defaultValue: "Audit jurnali backend'ga ulangandan so'ng bu yerda ko'rinadi." })}
-              </p>
+            <div className="px-5 py-2">
+              {auditEntries.length === 0 ? (
+                <p className="text-sm text-warm-400 text-center py-6">
+                  {t('activityFeed.noActivity', { defaultValue: 'No activity yet' })}
+                </p>
+              ) : (
+                auditEntries.map((entry) => (
+                  <div key={entry.id} className="flex items-start gap-3 py-2.5 border-b border-warm-100 last:border-0">
+                    <div
+                      className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${getActionColor(entry.action, entry.entity).replace('text-', 'bg-')}`}
+                    />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm text-warm-900 truncate">
+                        {getActionLabel(entry.action, entry.entity)}
+                        {entry.actor && (
+                          <span className="text-warm-500"> — {entry.actor.firstName} {entry.actor.lastName}</span>
+                        )}
+                      </p>
+                      <p className="text-xs text-warm-400">{formatRelativeTime(entry.occurredAt)}</p>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </article>
 
