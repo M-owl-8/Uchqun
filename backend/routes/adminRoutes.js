@@ -27,6 +27,7 @@ import { listByChild as listObservationsByChild } from '../controllers/observati
 import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js';
 import { restoreChild, restoreUser, restoreObservation, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
 import { getAdminAuditLog } from '../controllers/admin/adminAuditController.js';
+import { getAdminSchool, patchAdminSchool } from '../controllers/admin/adminSchoolController.js';
 import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
@@ -104,6 +105,10 @@ router.get('/groups/:id', getGroup); // View only
 
 // Audit log (admin-scoped)
 router.get('/audit-log', getAdminAuditLog);
+
+// School profile (read + whitelisted edit)
+router.get('/school', getAdminSchool);
+router.patch('/school', patchAdminSchool);
 
 // Statistics
 router.get('/statistics', getStatistics); // Admin can view all statistics
