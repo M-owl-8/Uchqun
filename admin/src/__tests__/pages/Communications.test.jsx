@@ -62,7 +62,7 @@ describe('Communications (FE-7)', () => {
   });
 
   it('clicking a conversation loads message thread', async () => {
-    api.get.mockImplementation((url, opts) => {
+    api.get.mockImplementation((url) => {
       if (url.includes('/messages')) return Promise.resolve({ data: MESSAGES });
       if (url.includes('/conversations')) return Promise.resolve({ data: CONVERSATIONS });
       return Promise.resolve({ data: { data: PARENTS } });
