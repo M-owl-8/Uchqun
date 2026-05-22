@@ -141,5 +141,14 @@
   "DELETE_LAST_REPUBLIC_MAIN": "Superadministrator hisobini o'chirib bo'lmaydi.",
   "RESET_FORBIDDEN": "Sizda bu parolni tiklash huquqi yo'q.",
   "RESET_OUT_OF_SCOPE": "Siz faqat o'z viloyatingizdagi hisoblar uchun parolni tiklashingiz mumkin.",
-  "PASSWORD_CHANGE_REQUIRED": "Davom etishdan oldin parolingizni o'zgartirishingiz kerak."
+  "PASSWORD_CHANGE_REQUIRED": "Davom etishdan oldin parolingizni o'zgartirishingiz kerak.",
+  "AUDIT_LOG_FORBIDDEN": "Siz audit jurnalini ko'rish huquqiga ega emassiz.",
+  "ADMIN_AUDIT_LOG_INVALID_FILTER": "Noto'g'ri filtr qiymati.",
+  "ADMIN_AUDIT_LOG_FETCH_FAILED": "Audit jurnalini yuklab bo'lmadi.",
+  "SCHOOL_FORBIDDEN": "Siz maktab sozlamalariga kirish huquqiga ega emassiz.",
+  "SCHOOL_FETCH_FAILED": "Maktab profilini yuklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "SCHOOL_UPDATE_FAILED": "Maktab profilini yangilash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "TEACHER_FORBIDDEN": "Siz o'qituvchi ma'lumotlarini ko'rish huquqiga ega emassiz.",
+  "TEACHER_NOT_FOUND": "O'qituvchi topilmadi.",
+  "TEACHER_FETCH_FAILED": "O'qituvchini yuklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring."
 }

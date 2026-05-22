@@ -26,6 +26,7 @@ import {
 import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js';
 import { restoreChild, restoreUser, restoreObservation, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
+import { getAdminAuditLog } from '../controllers/admin/adminAuditController.js';
 import { transferChild } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
@@ -100,6 +101,9 @@ router.put('/parents/:id/suspend', suspendParent);
 router.put('/parents/:id/activate', activateParent);
 router.get('/groups', getGroups); // View only
 router.get('/groups/:id', getGroup); // View only
+
+// Audit log (admin-scoped)
+router.get('/audit-log', getAdminAuditLog);
 
 // Statistics
 router.get('/statistics', getStatistics); // Admin can view all statistics

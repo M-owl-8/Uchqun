@@ -3,6 +3,7 @@ import User from '../../models/User.js';
 import Document from '../../models/Document.js';
 import logger from '../../utils/logger.js';
 import { invalidateUserCache } from '../../middleware/auth.js';
+import { logAudit } from '../../utils/auditLogger.js';
 
 /**
  * Get all Reception accounts with their verification status
@@ -195,6 +196,17 @@ export const approveDocument = async (req, res) => {
       return res.status(400).json({ error: 'Document is not pending approval' });
     }
 
+    // Audit before mutation
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'approve',
+      entity: 'documents',
+      entityId: document.id,
+      schoolId: req.user.schoolId,
+      meta: { userId: document.userId },
+    });
+
     // Update document status
     document.status = 'approved';
     document.reviewedBy = req.user.id;
@@ -279,6 +291,17 @@ export const rejectDocument = async (req, res) => {
       return res.status(400).json({ error: 'Document is not pending approval' });
     }
 
+    // Audit before mutation
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'reject',
+      entity: 'documents',
+      entityId: document.id,
+      schoolId: req.user.schoolId,
+      meta: { userId: document.userId, rejectionReason },
+    });
+
     // Update document status
     document.status = 'rejected';
     document.reviewedBy = req.user.id;
@@ -334,6 +357,16 @@ export const activateReception = async (req, res) => {
       return res.status(404).json({ error: 'Reception account not found' });
     }
 
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'activate',
+      entity: 'receptions',
+      entityId: reception.id,
+      schoolId: req.user.schoolId,
+      meta: { receptionEmail: reception.email },
+    });
+
     reception.isActive = true;
     reception.documentsApproved = true;
     await reception.save();
@@ -371,6 +404,16 @@ export const deactivateReception = async (req, res) => {
     if (!reception) {
       return res.status(404).json({ error: 'Reception account not found' });
     }
+
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'deactivate',
+      entity: 'receptions',
+      entityId: reception.id,
+      schoolId: req.user.schoolId,
+      meta: { receptionEmail: reception.email },
+    });
 
     reception.isActive = false;
     await reception.save();
@@ -412,6 +455,16 @@ export const createReception = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({ error: 'User with this email already exists' });
     }
+
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'create',
+      entity: 'receptions',
+      entityId: null,
+      schoolId: req.user.schoolId,
+      meta: { email: email.toLowerCase(), firstName, lastName },
+    });
 
     const reception = await User.create({
       email: email.toLowerCase(),
@@ -516,6 +569,16 @@ export const deleteReception = async (req, res) => {
     if (!reception) {
       return res.status(404).json({ error: 'Reception account not found' });
     }
+
+    logAudit({
+      actorId: req.user.id,
+      actorRole: req.user.role,
+      action: 'delete',
+      entity: 'receptions',
+      entityId: reception.id,
+      schoolId: req.user.schoolId,
+      meta: { receptionEmail: reception.email },
+    });
 
     await reception.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'admin_delete' });
 

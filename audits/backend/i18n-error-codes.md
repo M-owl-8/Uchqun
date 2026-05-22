@@ -234,6 +234,42 @@ Introduced: CP-021 Region Sprint B (2026-05-21)
 
 ---
 
+## Admin Audit Log (`controllers/admin/adminAuditController.js`)
+
+Introduced: Admin S7 Phase 1 (2026-05-22)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `AUDIT_LOG_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth) | "You do not have permission to view the audit log." |
+| `ADMIN_AUDIT_LOG_INVALID_FILTER` | 400 | `action` or `entity` query param is outside the admin audit scope allowlist, or `startDate`/`endDate` is not a valid date | "Invalid filter value." |
+| `ADMIN_AUDIT_LOG_FETCH_FAILED` | 500 | Unexpected server error fetching audit entries | "Failed to load audit log." |
+
+---
+
+## Admin School Profile (`controllers/admin/adminSchoolController.js`)
+
+Introduced: Admin S7 Phase 1 (2026-05-22)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `SCHOOL_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth) | "You do not have permission to access school settings." |
+| `SCHOOL_FETCH_FAILED` | 500 | Unexpected server error fetching school record | "Failed to load school profile. Please try again." |
+| `SCHOOL_UPDATE_FAILED` | 500 | Unexpected server error updating school contact fields | "Failed to update school profile. Please try again." |
+
+---
+
+## Admin Teacher Detail (`controllers/admin/adminTeacherController.js`)
+
+Introduced: Admin S7 Phase 1 (2026-05-22)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `TEACHER_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth) | "You do not have permission to view teacher details." |
+| `TEACHER_NOT_FOUND` | 404 | No teacher with that ID exists in this admin's school scope (via reception chain) | "Teacher not found." |
+| `TEACHER_FETCH_FAILED` | 500 | Unexpected server error fetching teacher record | "Failed to load teacher. Please try again." |
+
+---
+
 ## Parent Data Export (`controllers/parent/parentDataExportController.js`)
 
 Introduced: Sprint E T2-10 (2026-05-20)
