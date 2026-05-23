@@ -5,18 +5,16 @@ import api from '../../services/api';
 import ParentManagement from '../../pages/ParentManagement';
 
 vi.mock('react-i18next', () => {
-  const t = (k, opts) => opts?.defaultValue ?? k;
+  const t = (k) => k;
   const i18n = { language: 'en' };
   return { useTranslation: () => ({ t, i18n }) };
 });
 
-vi.mock('react-router-dom', () => {
-  const navigate = vi.fn();
-  return {
-    useNavigate: () => navigate,
-    Link: ({ to, children }) => React.createElement('a', { href: to }, children),
-  };
-});
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', () => ({
+  useNavigate: () => mockNavigate,
+  Link: ({ to, children }) => React.createElement('a', { href: to }, children),
+}));
 
 vi.mock('@shared/context/ToastContext', () => {
   const success = vi.fn();
@@ -100,6 +98,7 @@ function stubLoad(parents = [], teachers = [], groups = []) {
 describe('CL-012 ParentManagement integration', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockNavigate.mockReset();
   });
 
   afterEach(() => {
@@ -135,44 +134,35 @@ describe('CL-012 ParentManagement integration', () => {
     expect(screen.getByText('Malika Yusupova')).toBeTruthy();
   });
 
-  it('opens create parent modal on add button click', async () => {
+  it('clicking add button navigates to new parent wizard', async () => {
     stubLoad([], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
     await waitFor(() => expect(screen.getByText('parentsPage.add')).toBeTruthy());
 
     fireEvent.click(screen.getByText('parentsPage.add').closest('button'));
 
-    await waitFor(() => {
-      expect(screen.getByRole('dialog')).toBeTruthy();
-    });
-    expect(screen.getByText('parentsPage.form.firstName')).toBeTruthy();
+    expect(mockNavigate).toHaveBeenCalledWith('/reception/parents/new');
   });
 
-  it('submits create parent form via POST /reception/parents', async () => {
-    stubLoad([], [teacher1], [group1]);
-    api.post.mockResolvedValue({ data: {} });
+  it('edit modal shows all form fields and submits via PUT', async () => {
+    stubLoad([parent1], [teacher1], [group1]);
+    api.put.mockResolvedValue({ data: {} });
     render(React.createElement(ParentManagement));
-    await waitFor(() => expect(screen.getByText('parentsPage.add')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
 
-    fireEvent.click(screen.getByText('parentsPage.add').closest('button'));
+    const editButtons = screen.getAllByText('parentsPage.buttons.edit');
+    fireEvent.click(editButtons[0].closest('button'));
     await waitFor(() => expect(screen.getByRole('dialog')).toBeTruthy());
 
+    expect(screen.getByText('parentsPage.form.firstName')).toBeTruthy();
     const form = screen.getByRole('dialog').querySelector('form');
-    // Use type-specific selectors — labels are not linked to inputs via htmlFor
-    const textInputs = form.querySelectorAll('input[type="text"]');
-    fireEvent.change(textInputs[0], { target: { value: 'Yangi' } });   // firstName
-    fireEvent.change(textInputs[1], { target: { value: 'Ota' } });     // lastName
-    fireEvent.change(form.querySelector('input[type="email"]'), { target: { value: 'yangi@test.uz' } });
-    fireEvent.change(form.querySelector('input[type="password"]'), { target: { value: 'Pass1234!' } });
-
-    // Group select is the second <select> (index 1); teacher is index 0
-    const selects = form.querySelectorAll('select');
-    fireEvent.change(selects[1], { target: { value: 'g1' } });
-
     fireEvent.submit(form);
 
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/reception/parents', expect.any(FormData));
+      expect(api.put).toHaveBeenCalledWith(
+        `/reception/parents/${parent1.id}`,
+        expect.objectContaining({ firstName: 'Aziz' })
+      );
     });
   });
 

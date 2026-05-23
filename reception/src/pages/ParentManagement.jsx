@@ -6,7 +6,7 @@ import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import {
   Plus, Search, ChevronLeft, ChevronRight,
-  MoreHorizontal, CheckCircle, Download, Trash2,
+  MoreHorizontal, CheckCircle, Download, Trash2, Pencil,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ParentFormModal from './parents/ParentFormModal';
@@ -157,7 +157,7 @@ const ParentManagement = () => {
     });
   };
 
-  const _handleEditChild = (parentId, child) => {
+  const handleEditChild = (parentId, child) => {
     setSelectedParentId(parentId);
     setSelectedChild(child);
     setChildFormData({
@@ -170,7 +170,7 @@ const ParentManagement = () => {
     setShowEditChildModal(true);
   };
 
-  const _handleDeleteChild = (parentId, childId) => {
+  const handleDeleteChild = (parentId, childId) => {
     setConfirmDialog({
       message: t('parentsPage.confirmDeleteChild'),
       onConfirm: async () => {
@@ -351,7 +351,7 @@ const ParentManagement = () => {
           className="inline-flex items-center gap-2 h-[38px] px-4 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[13.5px] font-medium transition-colors shadow-xs"
         >
           <Plus className="w-4 h-4" strokeWidth={2} />
-          {t('parentsPage.add', { defaultValue: "Yangi ota-ona" })}
+          {t('parentsPage.add')}
         </button>
       </header>
 
@@ -361,7 +361,7 @@ const ParentManagement = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" strokeWidth={2} />
           <input
             type="text"
-            placeholder={t('parentsPage.search', { defaultValue: 'Qidirish…' })}
+            placeholder={t('parentsPage.search')}
             value={searchQuery}
             onChange={(e) => { setSearchQuery(e.target.value); setPage(1); }}
             className="input-ring w-full h-10 pl-10 pr-3 rounded-md border border-slate-300 bg-surface text-[13.5px] text-slate-900 focus:outline-none"
@@ -452,7 +452,7 @@ const ParentManagement = () => {
                 const initials = `${parent.firstName?.charAt(0) || ''}${parent.lastName?.charAt(0) || ''}`;
                 const colClass = avatarColor(initials);
                 const joined = parent.createdAt ? new Date(parent.createdAt).toLocaleDateString('uz-Latn-UZ') : '—';
-                const childName = parent.children?.[0] ? `${parent.children[0].firstName}` : '—';
+                const firstChild = parent.children?.[0] ?? null;
                 return (
                   <tr key={parent.id} className="hover:bg-slate-50/60 transition-colors">
                     <td className="px-4 py-3">
@@ -480,7 +480,27 @@ const ParentManagement = () => {
                         </a>
                       ) : '—'}
                     </td>
-                    <td className="px-4 py-3 text-slate-700 hidden lg:table-cell">{childName}</td>
+                    <td className="px-4 py-3 text-slate-700 hidden lg:table-cell">
+                      {firstChild ? (
+                        <div className="flex items-center gap-1.5">
+                          <span>{firstChild.firstName} {firstChild.lastName}</span>
+                          <button
+                            onClick={() => handleEditChild(parent.id, firstChild)}
+                            title={t('parentsPage.editChildTitle')}
+                            className="p-0.5 text-slate-400 hover:text-brand-600 transition-colors"
+                          >
+                            <Pencil className="w-3 h-3" strokeWidth={2} />
+                          </button>
+                          <button
+                            onClick={() => handleDeleteChild(parent.id, firstChild.id)}
+                            title={t('parentsPage.buttons.delete')}
+                            className="p-0.5 text-slate-400 hover:text-error-600 transition-colors"
+                          >
+                            <Trash2 className="w-3 h-3" strokeWidth={2} />
+                          </button>
+                        </div>
+                      ) : '—'}
+                    </td>
                     <td className="px-4 py-3">
                       <StatusBadge isActive={parent.isActive} />
                     </td>
@@ -496,20 +516,20 @@ const ParentManagement = () => {
                             onClick={() => handleEdit(parent)}
                             className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"
                           >
-                            Tahrirlash
+                            {t('parentsPage.buttons.edit')}
                           </button>
                           <button
                             onClick={() => handleAddChild(parent.id)}
                             className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"
                           >
-                            {"Bola qo'shish"}
+                            {t('parentsPage.buttons.addChild')}
                           </button>
                           <div className="my-1 h-px bg-slate-100" />
                           <button
                             onClick={() => handleDelete(parent.id)}
                             className="w-full px-3 py-1.5 text-left hover:bg-error-50 text-error-700"
                           >
-                            {"O'chirish"}
+                            {t('parentsPage.buttons.delete')}
                           </button>
                         </div>
                       </div>
