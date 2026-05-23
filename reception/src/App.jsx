@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { I18nextProvider } from 'react-i18next';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
@@ -18,11 +18,13 @@ import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import NotFound from './pages/NotFound';
 import Documents from './pages/Documents';
+import ChangePassword from './pages/ChangePassword';
 import ParentWizardPage from './pages/ParentWizard/ParentWizardPage';
 import WizardCompletePage from './pages/ParentWizard/WizardCompletePage';
 
 const AppRoutes = () => {
-  const { isAuthenticated, isReception, loading } = useAuth();
+  const { isAuthenticated, isReception, loading, mustChangePassword } = useAuth();
+  const location = useLocation();
 
   if (loading) {
     return (
@@ -30,6 +32,11 @@ const AppRoutes = () => {
         <LoadingSpinner size="lg" />
       </div>
     );
+  }
+
+  const isChangePasswordPage = location.pathname === '/reception/change-password';
+  if (isAuthenticated && isReception && mustChangePassword && !isChangePasswordPage) {
+    return <Navigate to="/reception/change-password" replace />;
   }
 
   return (
@@ -45,6 +52,7 @@ const AppRoutes = () => {
         }
       >
         <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
+        <Route path="change-password" element={<ErrorBoundary><ChangePassword /></ErrorBoundary>} />
         <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
         <Route path="parents/new" element={<ErrorBoundary><ParentWizardPage /></ErrorBoundary>} />
         <Route path="teachers" element={<ErrorBoundary><TeacherManagement /></ErrorBoundary>} />
