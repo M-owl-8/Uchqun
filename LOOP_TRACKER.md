@@ -11,7 +11,7 @@
 | 1. Backend | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Sprint E complete | ✅ |
 | 2. Government | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Sprint E3 complete | ✅ CLOSED 🟡 residuals |
 | 3. Admin | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ All 4 phases complete | ✅ CLOSED |
-| 4. Reception | ✅ | ✅ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
+| 4. Reception | ✅ | ✅ | 🟡 | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 5. Teacher | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 6. Parent | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 | 7. Database | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
