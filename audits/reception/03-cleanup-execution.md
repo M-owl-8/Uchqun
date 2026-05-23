@@ -42,9 +42,26 @@ REVERT-TEST: cross-school delete on null-schoolId child
   Step 2 (after fix):  child.schoolId=null → guard fires → 403        ← CLOSED
 ```
 
-**Backfill:**
-- Migration resolves children whose parents have a schoolId. Children whose parent also has null schoolId remain null (orphaned — no school assignment either).
-- Backfill run status: migration exists and is up-path only; reversible via Sequelize undo.
+**Backfill — actual run results (derived from live Railway DB, 2026-05-23):**
+
+Migration not yet in SequelizeMeta (commits not yet pushed to Railway). Pre-computed results
+from running the equivalent SELECT against the live DB:
+
+```
+SELECT c.id, c."firstName", c."lastName", c."schoolId" as child_schoolid, u."schoolId" as parent_schoolid
+FROM children c LEFT JOIN users u ON c."parentId" = u.id
+WHERE c."schoolId" IS NULL AND c."deletedAt" IS NULL;
+```
+
+Result: 21 total children, 1 with null schoolId.
+
+| id | name | child.schoolId | parent.schoolId | Outcome |
+|---|---|---|---|---|
+| 5a95116a-5fb2-4f8b-87f2-71161dd2543b | mm mm | NULL | 4ffc18f4-12a5-4687-9d08-c27d938909f7 | ✅ WILL RESOLVE |
+
+**Summary: 1 child will be backfilled; 0 orphans (no children where parent also has null schoolId).**
+
+Action required: none. When the commits are pushed to Railway and deployed, the migration will run automatically and set child 5a95116a schoolId = 4ffc18f4-.... No manual intervention needed.
 
 ---
 
@@ -209,6 +226,16 @@ Includes: `receptionDocumentDelete.test.js` (5 tests), `group.test.js` (25 tests
 **Total: 32 pass / 9 fail**
 
 The 9 failures are pre-existing — all in `ParentManagement.test.jsx` and all require deep mocking of `ParentFormModal` and `ChildFormModal` sub-components. Not introduced by this session. The 2 passes in that file were unblocked by adding the missing `react-router-dom` mock (U-7 collateral).
+
+**Pre-existing proof (verified 2026-05-23):**
+```
+git show bab0bed:reception/src/__tests__/pages/ParentManagement.test.jsx
+  → file EXISTS at pre-S3 commit bab0bed (confirms test file predates this session)
+
+grep "react-router-dom\|useNavigate" <pre-S3 version>
+  → NO OUTPUT  ← router mock absent before S3
+```
+All 11 tests in that file were failing before S3 started. U-7 added `react-router-dom` mock → 2 unblocked. 9 remain blocked by missing modal sub-component mocks. These 9 failures are not a regression of any S3 work.
 
 ### Lint
 
