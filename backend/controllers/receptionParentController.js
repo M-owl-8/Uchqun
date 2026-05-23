@@ -248,7 +248,6 @@ export const createChildForParent = async (req, res) => {
     const disabilityType = req.body['child[disabilityType]'] || req.body['child.disabilityType'] || req.body.disabilityType || req.body.child?.disabilityType;
     const medicalDiagnosis = req.body['child[medicalDiagnosis]'] || req.body['child.medicalDiagnosis'] || req.body.medicalDiagnosis || req.body.child?.medicalDiagnosis || null;
     const specialNeeds = req.body['child[specialNeeds]'] || req.body['child.specialNeeds'] || req.body.specialNeeds || req.body.child?.specialNeeds || null;
-    const school = req.body['child[school]'] || req.body['child.school'] || req.body.school || req.body.child?.school || null;
 
     logger.info('Create child: parsed values', { parentId, firstName: !!firstName, lastName: !!lastName, dateOfBirth: !!dateOfBirth, gender, disabilityType: !!disabilityType });
 
@@ -275,21 +274,8 @@ export const createChildForParent = async (req, res) => {
       photoUrl = req.body['child[photo]'];
     }
 
-    let schoolId = null;
-    if (school) {
-      try {
-        let foundSchool = await School.findOne({ where: { name: { [Op.iLike]: school } } });
-        if (!foundSchool) foundSchool = await School.findOne({ where: { name: { [Op.iLike]: `%${school}%` } } });
-        if (foundSchool) {
-          schoolId = foundSchool.id;
-          logger.info('School found for child', { childSchool: school, schoolId: foundSchool.id, schoolName: foundSchool.name });
-        } else {
-          logger.warn('School not found for child', { childSchool: school });
-        }
-      } catch (error) {
-        logger.error('Error finding school for child', { error: error.message, childSchool: school });
-      }
-    }
+    // RE-11 fix: reception's own schoolId is authoritative — no free-text school-name lookup
+    const schoolId = req.user.schoolId;
 
     const child = await Child.create({
       parentId: parent.id, firstName, lastName, dateOfBirth, gender, disabilityType,
@@ -313,7 +299,8 @@ export const updateChildForReception = async (req, res) => {
       include: [{ model: User, as: 'parent', attributes: ['id', 'createdBy'] }],
     });
     if (!child || !child.parent) return res.status(404).json({ error: 'Child not found' });
-    if (child.schoolId && child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
+    // RE-10 fix: null schoolId must also be blocked (old guard: `schoolId && schoolId !== x` skipped when null)
+    if (!child.schoolId || child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
 
     const firstName = req.body['child[firstName]'] ?? req.body.child?.firstName ?? child.firstName;
     const lastName = req.body['child[lastName]'] ?? req.body.child?.lastName ?? child.lastName;
@@ -373,7 +360,8 @@ export const deleteChildForReception = async (req, res) => {
       include: [{ model: User, as: 'parent', attributes: ['id', 'createdBy'] }],
     });
     if (!child || !child.parent) return res.status(404).json({ error: 'Child not found' });
-    if (child.schoolId && child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
+    // RE-10 fix: null schoolId must also be blocked (old guard: `schoolId && schoolId !== x` skipped when null)
+    if (!child.schoolId || child.schoolId !== req.user.schoolId) return res.status(403).json({ error: 'Access denied to this child' });
 
     if (child.photo) {
       try { await deleteFile(child.photo); } catch (e) { logger.warn('Failed to delete child photo from storage', { childId, error: e.message }); }
