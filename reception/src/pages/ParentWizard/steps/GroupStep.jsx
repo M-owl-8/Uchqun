@@ -5,6 +5,7 @@ import * as cache from '../../../../../shared/utils/cache';
 export default function GroupStep({ data, onChange, parentData, childData }) {
   const [groups, setGroups] = useState(() => cache.get('reception:groups') || []);
   const [loading, setLoading] = useState(!cache.get('reception:groups'));
+  const [fetchError, setFetchError] = useState(null);
 
   useEffect(() => {
     const cached = cache.get('reception:groups');
@@ -14,8 +15,9 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
         const g = Array.isArray(res.data.groups) ? res.data.groups : [];
         cache.set('reception:groups', g);
         setGroups(g);
+        setFetchError(null);
       })
-      .catch(() => {})
+      .catch(() => setFetchError('groupStep.loadError'))
       .finally(() => setLoading(false));
   }, []);
 
@@ -32,7 +34,11 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
         </p>
       )}
 
-      {loading ? (
+      {fetchError ? (
+        <div className="flex items-center gap-2 p-3 rounded-md bg-error-50 border border-error-100 text-[13px] text-error-700">
+          Guruhlarni yuklashda xatolik yuz berdi. Iltimos, sahifani yangilang.
+        </div>
+      ) : loading ? (
         <div className="grid md:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
             <div key={i} className="skel h-36 rounded-lg" />

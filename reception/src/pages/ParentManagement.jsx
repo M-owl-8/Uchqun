@@ -405,8 +405,12 @@ const ParentManagement = () => {
                 message: `${selectedRows.size} ta ota-onani o'chirishni tasdiqlaysizmi?`,
                 onConfirm: async () => {
                   setConfirmDialog(null);
+                  let failed = 0;
                   for (const id of selectedRows) {
-                    try { await api.delete(`/reception/parents/${id}`); } catch {}
+                    try { await api.delete(`/reception/parents/${id}`); } catch { failed++; }
+                  }
+                  if (failed > 0) {
+                    showErrorRef.current(t('parentsPage.bulkDeletePartialFailure', { count: failed, defaultValue: `${failed} ta yozuv o'chirilmadi` }));
                   }
                   setSelectedRows(new Set());
                   loadParents(true);

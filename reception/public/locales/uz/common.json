@@ -64,6 +64,7 @@
     "diagnosis": "Tashxis:",
     "noParents": "Hozircha ota-onalar yo'q",
     "noParentsFound": "Ota-onalar topilmadi",
+    "bulkDeletePartialFailure": "{{count}} ta yozuv o'chirilmadi",
     "confirmDelete": "Ushbu ota-ona akkauntini o'chirmoqchimisiz?",
     "toastCreate": "Ota-ona akkaunti yaratildi",
     "toastUpdate": "Ota-ona akkaunti yangilandi",
@@ -249,6 +250,9 @@
     "governmentReply": "Davlat javobi",
     "replied": "Javob berildi",
     "logout": "Chiqish"
+  },
+  "groupStep": {
+    "loadError": "Guruhlarni yuklashda xatolik. Iltimos, sahifani yangilang."
   },
   "documents": {
     "title": "Mening hujjatlarim",

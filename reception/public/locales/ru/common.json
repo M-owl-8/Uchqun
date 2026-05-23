@@ -64,6 +64,7 @@
     "diagnosis": "Диагноз:",
     "noParents": "Пока нет родителей",
     "noParentsFound": "Родители не найдены",
+    "bulkDeletePartialFailure": "{{count}} запись(ей) не удалось удалить",
     "confirmDelete": "Удалить аккаунт родителя?",
     "toastCreate": "Аккаунт родителя создан",
     "toastUpdate": "Аккаунт родителя обновлен",
@@ -226,6 +227,9 @@
     "governmentReply": "Ответ государствоа",
     "replied": "Получен ответ",
     "logout": "Выход"
+  },
+  "groupStep": {
+    "loadError": "Не удалось загрузить группы. Пожалуйста, обновите страницу."
   },
   "documents": {
     "title": "Мои документы",

@@ -64,6 +64,7 @@
     "diagnosis": "Diagnosis:",
     "noParents": "No parents yet",
     "noParentsFound": "No parents found",
+    "bulkDeletePartialFailure": "{{count}} record(s) could not be deleted",
     "confirmDelete": "Are you sure you want to delete this parent account?",
     "toastCreate": "Parent account created successfully",
     "toastUpdate": "Parent account updated successfully",
@@ -244,6 +245,9 @@
     "governmentReply": "Davlat reply",
     "replied": "Replied",
     "logout": "Logout"
+  },
+  "groupStep": {
+    "loadError": "Failed to load groups. Please refresh the page."
   },
   "documents": {
     "title": "My Documents",

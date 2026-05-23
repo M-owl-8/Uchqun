@@ -10,6 +10,14 @@ vi.mock('react-i18next', () => {
   return { useTranslation: () => ({ t, i18n }) };
 });
 
+vi.mock('react-router-dom', () => {
+  const navigate = vi.fn();
+  return {
+    useNavigate: () => navigate,
+    Link: ({ to, children }) => React.createElement('a', { href: to }, children),
+  };
+});
+
 vi.mock('@shared/context/ToastContext', () => {
   const success = vi.fn();
   const error = vi.fn();
