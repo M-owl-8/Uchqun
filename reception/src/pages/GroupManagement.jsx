@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState, useRef } from 'react';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
@@ -32,6 +32,8 @@ const GroupManagement = () => {
   });
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+  const showErrorRef = useRef(showError);
+  useEffect(() => { showErrorRef.current = showError; }, [showError]);
 
   const loadData = useCallback(async () => {
     try {
@@ -41,12 +43,12 @@ const GroupManagement = () => {
       const groupsRes = await api.get('/groups').catch(() => ({ data: { groups: [] } }));
       setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
     } catch (error) {
-      showError(error.response?.data?.error || t('groupsPage.toastLoadError'));
+      showErrorRef.current(error.response?.data?.error || t('groupsPage.toastLoadError'));
       setGroups([]);
     } finally {
       setLoading(false);
     }
-  }, [showError, t]);
+  }, [t]);
 
   useEffect(() => {
     loadData();

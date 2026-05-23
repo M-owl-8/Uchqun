@@ -3,11 +3,10 @@ import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import DocumentUpload from '../components/DocumentUpload';
 import { useToast } from '@shared/context/ToastContext';
-import { AlertTriangle, CheckCircle2, HelpCircle, FileText } from 'lucide-react';
+import { AlertTriangle, CheckCircle2, HelpCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const CACHE_KEY = 'reception:documents';
-const DOCUMENT_TYPES = ['license', 'certificate', 'identification', 'other'];
 
 export default function Documents() {
   const { t } = useTranslation();
@@ -112,7 +111,7 @@ export default function Documents() {
           <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ fill: '#DFE4BE', stroke: '#5C7329' }} strokeWidth={2.4} />
           <div>
             <div className="font-medium">Barcha hujjatlar tasdiqlangan</div>
-            <div className="text-success-700/80 mt-0.5">Siz to'liq vakolatga egasiz.</div>
+            <div className="text-success-700/80 mt-0.5">{"Siz to'liq vakolatga egasiz."}</div>
           </div>
         </div>
       ) : !fetchError && (pendingCount > 0 || rejectedCount > 0) ? (
@@ -124,7 +123,7 @@ export default function Documents() {
               {pendingCount > 0 && rejectedCount > 0 && ' · '}
               {rejectedCount > 0 && `${rejectedCount} ta rad etilgan`}
             </div>
-            <div className="mt-0.5">Maktab rahbari bilan bog'laning yoki yangisini yuklang.</div>
+            <div className="mt-0.5">{"Maktab rahbari bilan bog'laning yoki yangisini yuklang."}</div>
           </div>
         </div>
       ) : null}
@@ -181,7 +180,7 @@ export default function Documents() {
                   <dd className="num font-semibold text-success-700">{approvedCount}</dd>
                 </div>
                 <div className="py-2 flex justify-between">
-                  <dt className="text-slate-500">Ko'rib chiqilmoqda</dt>
+                  <dt className="text-slate-500">{"Ko'rib chiqilmoqda"}</dt>
                   <dd className="num font-semibold text-warning-700">{pendingCount}</dd>
                 </div>
                 <div className="py-2 flex justify-between">
@@ -205,7 +204,7 @@ export default function Documents() {
             <ul className="text-[13px] text-slate-600 space-y-1.5">
               <li>· PDF, JPG, PNG formatlar qabul qilinadi</li>
               <li>· Maksimal fayl hajmi 10 MB</li>
-              <li>· Admin 1-3 ish kuni ichida ko'rib chiqadi</li>
+              <li>{"· Admin 1-3 ish kuni ichida ko'rib chiqadi"}</li>
             </ul>
             <div className="mt-4 pt-3 border-t border-slate-100 text-[12.5px] text-slate-500">
               Savollar uchun:{' '}

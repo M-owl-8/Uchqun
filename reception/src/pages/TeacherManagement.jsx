@@ -1,4 +1,4 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState, useRef } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import Card from '@shared/components/Card';
@@ -45,6 +45,8 @@ const TeacherManagement = () => {
   });
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+  const showErrorRef = useRef(showError);
+  useEffect(() => { showErrorRef.current = showError; }, [showError]);
   const [showPassword, setShowPassword] = useState(false);
 
   const loadTeachers = useCallback(async (bust = false) => {
@@ -72,12 +74,12 @@ const TeacherManagement = () => {
       await fetchFresh();
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
-      showError(error.response?.data?.error || t('teachersPage.toastLoadError'));
+      showErrorRef.current(error.response?.data?.error || t('teachersPage.toastLoadError'));
       setTeachers([]);
     } finally {
       setLoading(false);
     }
-  }, [showError, t]);
+  }, [t]);
 
   useEffect(() => {
     loadTeachers();

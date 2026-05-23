@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useState, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { SkeletonList } from '../../../shared/components/Skeleton';
@@ -74,6 +74,8 @@ const ParentManagement = () => {
   });
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+  const showErrorRef = useRef(showError);
+  useEffect(() => { showErrorRef.current = showError; }, [showError]);
 
   const loadTeachersAndGroups = useCallback(async () => {
     const cachedT = cache.get('reception:teachers');
@@ -113,12 +115,12 @@ const ParentManagement = () => {
       await fetchFresh();
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
-      showError(error.response?.data?.error || t('parentsPage.toastLoadError'));
+      showErrorRef.current(error.response?.data?.error || t('parentsPage.toastLoadError'));
       setParents([]);
     } finally {
       setLoading(false);
     }
-  }, [showError, t]);
+  }, [t]);
 
   useEffect(() => {
     loadParents();
