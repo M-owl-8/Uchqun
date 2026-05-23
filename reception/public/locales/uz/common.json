@@ -65,6 +65,11 @@
     "noParents": "Hozircha ota-onalar yo'q",
     "noParentsFound": "Ota-onalar topilmadi",
     "bulkDeletePartialFailure": "{{count}} ta yozuv o'chirilmadi",
+    "wizard": {
+      "draftRestorePrompt": "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?",
+      "draftResume": "Davom etish",
+      "draftDiscard": "Bekor qilish"
+    },
     "confirmDelete": "Ushbu ota-ona akkauntini o'chirmoqchimisiz?",
     "toastCreate": "Ota-ona akkaunti yaratildi",
     "toastUpdate": "Ota-ona akkaunti yangilandi",

@@ -65,6 +65,11 @@
     "noParents": "Пока нет родителей",
     "noParentsFound": "Родители не найдены",
     "bulkDeletePartialFailure": "{{count}} запись(ей) не удалось удалить",
+    "wizard": {
+      "draftRestorePrompt": "Найден сохранённый черновик. Хотите продолжить с того места, где остановились?",
+      "draftResume": "Продолжить",
+      "draftDiscard": "Отменить"
+    },
     "confirmDelete": "Удалить аккаунт родителя?",
     "toastCreate": "Аккаунт родителя создан",
     "toastUpdate": "Аккаунт родителя обновлен",

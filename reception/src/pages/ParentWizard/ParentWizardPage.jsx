@@ -6,6 +6,7 @@ import ChildStep from './steps/ChildStep';
 import GroupStep from './steps/GroupStep';
 import api from '../../services/api';
 import { useToast } from '@shared/context/ToastContext';
+import { useTranslation } from 'react-i18next';
 import * as cache from '../../../../shared/utils/cache';
 
 const DRAFT_KEY = 'reception:wizard:parent-draft';
@@ -24,30 +25,34 @@ const defaultGroup = { groupId: '' };
 export default function ParentWizardPage() {
   const navigate = useNavigate();
   const { success, error: showError } = useToast();
+  const { t } = useTranslation();
 
   const [step, setStep] = useState(0);
   const [parentData, setParentData] = useState(defaultParent);
   const [childData, setChildData] = useState(defaultChild);
   const [groupData, setGroupData] = useState(defaultGroup);
   const [loading, setLoading] = useState(false);
-  const [draftRestored, setDraftRestored] = useState(false);
+  const [draftBanner, setDraftBanner] = useState(null);
 
-  // On mount: check for draft
+  // On mount: check for draft — show inline banner instead of window.confirm
   useEffect(() => {
     const draft = cache.get(DRAFT_KEY);
-    if (draft && !draftRestored) {
-      const resume = window.confirm("Saqlangan qoralama topildi. Davom etishni xohlaysizmi?");
-      if (resume) {
-        if (draft.parentData) setParentData(draft.parentData);
-        if (draft.childData) setChildData(draft.childData);
-        if (draft.groupData) setGroupData(draft.groupData);
-        if (draft.step !== undefined) setStep(draft.step);
-      } else {
-        cache.set(DRAFT_KEY, null);
-      }
-      setDraftRestored(true);
-    }
+    if (draft) setDraftBanner(draft);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleResumeDraft = () => {
+    if (!draftBanner) return;
+    if (draftBanner.parentData) setParentData(draftBanner.parentData);
+    if (draftBanner.childData) setChildData(draftBanner.childData);
+    if (draftBanner.groupData) setGroupData(draftBanner.groupData);
+    if (draftBanner.step !== undefined) setStep(draftBanner.step);
+    setDraftBanner(null);
+  };
+
+  const handleDiscardDraft = () => {
+    cache.set(DRAFT_KEY, null);
+    setDraftBanner(null);
+  };
 
   const saveDraft = () => {
     cache.set(DRAFT_KEY, { parentData, childData, groupData, step });
@@ -94,12 +99,37 @@ export default function ParentWizardPage() {
 
   return (
     <div className="max-w-3xl mx-auto">
+      {/* Draft restore banner — replaces window.confirm (RE-8) */}
+      {draftBanner && (
+        <div className="mb-4 p-4 rounded-lg border border-amber-200 bg-amber-50 flex items-start gap-4 text-[13.5px] text-amber-900">
+          <div className="flex-1">
+            {t('parentsPage.wizard.draftRestorePrompt', { defaultValue: "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?" })}
+          </div>
+          <div className="flex gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={handleResumeDraft}
+              className="h-8 px-3 rounded-md text-[12.5px] font-medium bg-amber-700 text-white hover:bg-amber-800 transition-colors"
+            >
+              {t('parentsPage.wizard.draftResume', { defaultValue: "Davom etish" })}
+            </button>
+            <button
+              type="button"
+              onClick={handleDiscardDraft}
+              className="h-8 px-3 rounded-md text-[12.5px] font-medium border border-amber-300 text-amber-800 hover:bg-amber-100 transition-colors"
+            >
+              {t('parentsPage.wizard.draftDiscard', { defaultValue: "Bekor qilish" })}
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="mb-6">
         <h1 className="h1-tab text-[26px] font-semibold tracking-tight text-slate-900">
-          Yangi ota-ona qo'shish
+          {"Yangi ota-ona qo'shish"}
         </h1>
         <p className="text-[13.5px] text-slate-500 mt-1.5">
-          3 qadamli sehrgar orqali ota-ona, bola va guruhni birga ro'yxatdan o'tkazing.
+          {"3 qadamli sehrgar orqali ota-ona, bola va guruhni birga ro'yxatdan o'tkazing."}
         </p>
       </div>
 
