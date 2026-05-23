@@ -199,7 +199,7 @@ export const checkChildAccess = async (req, res, next) => {
       }
       if (req.user.schoolId) {
         const parent = await User.findByPk(child.parentId);
-        if (parent?.schoolId && parent.schoolId !== req.user.schoolId) {
+        if (!parent?.schoolId || parent.schoolId !== req.user.schoolId) {
           return res.status(403).json({ error: 'You can only edit children in your institution' });
         }
       }

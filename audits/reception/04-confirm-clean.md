@@ -263,6 +263,76 @@ would hit this unguarded path. Tracked as **S4-NEW-01** — fix in S5 cleanup.
 
 | ID | Description | Severity |
 |---|---|---|
-| S4-NEW-01 | `checkChildAccess` middleware (`PUT /children/:id`): `parent?.schoolId && parent.schoolId !== req.user.schoolId` null-bypass — reception-reachable via general child routes | Medium |
+| S4-NEW-01 | `checkChildAccess` middleware (`PUT /children/:id`): `parent?.schoolId && parent.schoolId !== req.user.schoolId` null-bypass — reception-reachable via general child routes | Medium → **CLOSED (S4-NEW-01b)** |
 | Backfill deploy | 1 child (5a95116a) with null schoolId will resolve automatically when commits push to Railway | Operational |
 | PL-009-VERIFY | All new locale strings AI-generated (unverified) | Pre-launch |
+
+---
+
+## 6. S4-NEW-01 Closure (post-clean-verdict fix)
+
+**Date:** 2026-05-23  
+**Finding:** S4-NEW-01 — `checkChildAccess` in `backend/controllers/childController.js:202` had the old null-bypass pattern. `PUT /children/:id` in `childRoutes.js` uses `checkChildAccess` as middleware with no `requireRole` guard — the middleware itself allows `['teacher', 'admin', 'reception', 'government', 'business']` at line 196. So a reception token can reach it directly. The bypass: if `parent.schoolId` is null, `parent?.schoolId && ...` = `false` → guard skipped → reception can write any child whose parent has null schoolId.
+
+### Fix
+
+**File:** `backend/controllers/childController.js:202`
+
+```js
+// BEFORE (null-bypass):
+if (parent?.schoolId && parent.schoolId !== req.user.schoolId) {
+  return res.status(403).json({ error: 'You can only edit children in your institution' });
+}
+
+// AFTER (null blocked — same two-part guard as RE-10/RE-12):
+if (!parent?.schoolId || parent.schoolId !== req.user.schoolId) {
+  return res.status(403).json({ error: 'You can only edit children in your institution' });
+}
+```
+
+**Outer `if (req.user.schoolId)` wrapper** (line 200) confirmed safe: reception always has a schoolId (enforced at account creation). Government users have no schoolId and skip the wrapper entirely — intentional cross-school access.
+
+### Revert-Test Evidence
+
+Three tests added to `backend/__tests__/child.test.js`, describe `checkChildAccess`:
+
+**Pre-fix behavior** (documented in `[REVERT-TEST]` comment): reception from SCHOOL_A + child whose parent has `schoolId: null` → `parent?.schoolId && ...` = `false` → guard bypassed → `next()` called.
+
+**Post-fix run — all 3 pass:**
+
+```
+checkChildAccess
+  ✓ [REVERT-TEST] null-parent-schoolId returns 403 for cross-school reception (S4-NEW-01) (3 ms)
+  ✓ blocks reception when parent has a different (non-null) schoolId (2 ms)
+  ✓ allows reception when parent schoolId matches (3 ms)
+```
+
+Full backend suite post-fix: **115 suites / 1202 tests** (+3) / 0 fail.
+
+### Sweep Instance Re-Confirmation
+
+The S4 sweep flagged 5 instances with the old schoolId pattern. After closing S4-NEW-01, all are confirmed resolved or confirmed non-reachable by reception:
+
+| Instance | Reception-reachable? | Guard direction | Verdict |
+|---|---|---|---|
+| `checkChildAccess` (`childController.js:202`) | ✅ YES — `PUT /children/:id`, no `requireRole`, middleware allows reception | `parent?.schoolId &&` (resource null-bypass) | **FIXED** — `!parent?.schoolId \|\|` |
+| `emotionalMonitoringController.js:88` | Route: `teacherRoutes.js` + `requireTeacher` (allows reception) BUT the check is `req.user.role === 'admin' && ...` — reception never enters this branch | Admin-only condition; reception is gated by teacher-assignment check instead | **Not a reception bypass** |
+| `groupController.js:108` (getGroup) | ✅ YES — `GET /api/v1/groups/:id`, no `requireRole`, just `authenticate` | `req.user.schoolId && group.schoolId !== req.user.schoolId` — check is on `req.user`, NOT `group`: if `group.schoolId` is null then `null !== req.user.schoolId` = true → 403 fires | **Not a bypass** — null group.schoolId is correctly BLOCKED |
+| `newsController.js:140,177` (updateNews, deleteNews) | ❌ NO — `requireRole('admin')` before both handlers | N/A | **Not reception-reachable** |
+| `teacherResourceController.js:125` | ❌ NO — `requireRole('teacher', 'admin')` | N/A | **Not reception-reachable** |
+
+**Key correction from S4 sweep:** `groupController.js:108 getGroup` was labelled "not in receptionRoutes.js" but the route IS reachable via general `groupRoutes.js GET /:id`. However, the guard direction (`req.user.schoolId` as the leading condition, not `group.schoolId`) means null-schoolId groups are correctly blocked — no bypass exists. The sweep's "not reception-reachable" label was wrong on route accessibility, but the "safe" conclusion holds.
+
+### Updated Null-schoolId Defect Class Status
+
+All reception-reachable child/group mutation endpoints now have the correct two-part guard:
+
+| Endpoint | Guard | Status |
+|---|---|---|
+| `receptionParentController.js updateChildForReception` | `!child.schoolId \|\| child.schoolId !== req.user.schoolId` | ✅ Closed S3 (RE-10) |
+| `receptionParentController.js deleteChildForReception` | `!child.schoolId \|\| child.schoolId !== req.user.schoolId` | ✅ Closed S3 (RE-10) |
+| `groupController.js updateGroup` | `!group.schoolId \|\| group.schoolId !== req.user.schoolId` | ✅ Closed S3 (RE-12) |
+| `groupController.js deleteGroup` | `!group.schoolId \|\| group.schoolId !== req.user.schoolId` | ✅ Closed S3 (RE-12) |
+| `childController.js checkChildAccess` | `!parent?.schoolId \|\| parent.schoolId !== req.user.schoolId` | ✅ Closed S4-NEW-01 |
+
+**Null-schoolId defect class is now FULLY CLOSED for all reception-reachable routes.**

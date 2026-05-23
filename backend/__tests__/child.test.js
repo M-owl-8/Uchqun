@@ -30,7 +30,7 @@ jest.unstable_mockModule('../utils/auditLogger.js', () => ({
 jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/School.js', () => ({ default: { findByPk: jest.fn() } }));
 
-const { getChildren, getChild, deleteChild, updateChild } = await import('../controllers/childController.js');
+const { getChildren, getChild, deleteChild, updateChild, checkChildAccess } = await import('../controllers/childController.js');
 
 const mkRes = () => {
   const res = {};
@@ -180,6 +180,51 @@ describe('childController', () => {
       const res = mkRes();
       await updateChild(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
+    });
+  });
+
+  // S4-NEW-01: checkChildAccess null-schoolId bypass (PUT /children/:id)
+  // Pre-fix: `parent?.schoolId && parent.schoolId !== req.user.schoolId`
+  //   null parent.schoolId → false && ... = false → guard skipped → next() (IDOR)
+  // Post-fix: `!parent?.schoolId || parent.schoolId !== req.user.schoolId`
+  //   null parent.schoolId → !null = true → 403 (closed)
+  describe('checkChildAccess', () => {
+    const mkNext = () => jest.fn();
+    const SCHOOL_A = 'aaaa-0000-school-a';
+    const SCHOOL_B = 'bbbb-0000-school-b';
+
+    it('[REVERT-TEST] null-parent-schoolId returns 403 for cross-school reception (S4-NEW-01)', async () => {
+      mockFindOne.mockResolvedValue({ id: 'c1', parentId: 'p1' });
+      mockUserFindByPk.mockResolvedValue({ id: 'p1', schoolId: null });
+      const req = { params: { id: 'c1' }, user: { id: 'r1', role: 'reception', schoolId: SCHOOL_A } };
+      const res = mkRes();
+      const next = mkNext();
+      await checkChildAccess(req, res, next);
+      // Pre-fix: next() was called (bypass). Post-fix: 403 closes the IDOR.
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('blocks reception when parent has a different (non-null) schoolId', async () => {
+      mockFindOne.mockResolvedValue({ id: 'c1', parentId: 'p1' });
+      mockUserFindByPk.mockResolvedValue({ id: 'p1', schoolId: SCHOOL_B });
+      const req = { params: { id: 'c1' }, user: { id: 'r1', role: 'reception', schoolId: SCHOOL_A } };
+      const res = mkRes();
+      const next = mkNext();
+      await checkChildAccess(req, res, next);
+      expect(res.status).toHaveBeenCalledWith(403);
+      expect(next).not.toHaveBeenCalled();
+    });
+
+    it('allows reception when parent schoolId matches', async () => {
+      mockFindOne.mockResolvedValue({ id: 'c1', parentId: 'p1' });
+      mockUserFindByPk.mockResolvedValue({ id: 'p1', schoolId: SCHOOL_A });
+      const req = { params: { id: 'c1' }, user: { id: 'r1', role: 'reception', schoolId: SCHOOL_A } };
+      const res = mkRes();
+      const next = mkNext();
+      await checkChildAccess(req, res, next);
+      expect(next).toHaveBeenCalled();
+      expect(res.status).not.toHaveBeenCalledWith(403);
     });
   });
 
