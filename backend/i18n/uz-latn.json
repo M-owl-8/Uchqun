@@ -150,5 +150,8 @@
   "SCHOOL_UPDATE_FAILED": "Maktab profilini yangilash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
   "TEACHER_FORBIDDEN": "Siz o'qituvchi ma'lumotlarini ko'rish huquqiga ega emassiz.",
   "TEACHER_NOT_FOUND": "O'qituvchi topilmadi.",
-  "TEACHER_FETCH_FAILED": "O'qituvchini yuklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring."
+  "TEACHER_FETCH_FAILED": "O'qituvchini yuklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "DOCUMENT_NOT_FOUND": "Hujjat topilmadi.",
+  "DOCUMENT_ACCESS_DENIED": "Siz bu hujjatni o'chirish huquqiga ega emassiz.",
+  "DOCUMENT_CANNOT_DELETE_NON_PENDING": "Faqat kutilayotgan hujjatlarni o'chirish mumkin."
 }

@@ -9,11 +9,6 @@ import {
   UploadCloud,
   ArrowUpRight,
   FileText,
-  UserCheck,
-  UsersRound,
-  Edit3,
-  CheckCircle,
-  MessageSquare,
   ChevronRight,
   ArrowRight,
 } from 'lucide-react';
@@ -27,10 +22,10 @@ const Dashboard = () => {
   const { t } = useTranslation();
 
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
-  const [teachers, setTeachers] = useState(() => cache.get(CACHE_KEY)?.teachers ?? []);
+  const [, setTeachers] = useState(() => cache.get(CACHE_KEY)?.teachers ?? []);
   const [parents, setParents] = useState(() => cache.get(CACHE_KEY)?.parents ?? []);
   const [pendingDocs, setPendingDocs] = useState(() => cache.get(CACHE_KEY)?.pendingDocs ?? []);
-  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
+  const [, setLoading] = useState(!cache.get(CACHE_KEY));
 
   useEffect(() => {
     const controller = new AbortController();

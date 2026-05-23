@@ -16,7 +16,7 @@ export default function WizardCompletePage() {
 
       <h1 className="text-[28px] font-semibold text-slate-900 mb-2">Tayyor!</h1>
       <p className="text-[14px] text-slate-500 max-w-[40ch] mx-auto mb-8">
-        Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi. Hujjatlarni yuklashni unutmang.
+        {"Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi. Hujjatlarni yuklashni unutmang."}
       </p>
 
       <div className="flex items-center gap-3">
@@ -24,7 +24,7 @@ export default function WizardCompletePage() {
           onClick={() => navigate('/reception/parents/new')}
           className="h-10 px-5 rounded-md border border-slate-300 bg-surface hover:bg-slate-50 text-slate-800 text-[13.5px] font-medium transition-colors"
         >
-          Yana qo'shish
+          {"Yana qo'shish"}
         </button>
         <button
           onClick={() => navigate('/reception')}

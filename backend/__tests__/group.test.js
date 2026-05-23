@@ -4,6 +4,7 @@ const mockGroupFindAndCount = jest.fn();
 const mockGroupFindByPk = jest.fn();
 const mockGroupCreate = jest.fn();
 const mockUserFindByPk = jest.fn();
+const mockUserFindOne = jest.fn();
 const mockUserFindAll = jest.fn();
 
 jest.unstable_mockModule('../models/Group.js', () => ({
@@ -14,7 +15,7 @@ jest.unstable_mockModule('../models/Group.js', () => ({
   },
 }));
 jest.unstable_mockModule('../models/User.js', () => ({
-  default: { findByPk: mockUserFindByPk, findAll: mockUserFindAll },
+  default: { findByPk: mockUserFindByPk, findOne: mockUserFindOne, findAll: mockUserFindAll },
 }));
 jest.unstable_mockModule('../models/School.js', () => ({ default: {} }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
@@ -44,13 +45,14 @@ describe('groupController', () => {
       }));
     });
 
-    it('reception scopes by createdBy on teacher include', async () => {
+    // RE-14 fix: reception now scopes by schoolId on teacher include (not createdBy)
+    it('reception scopes by schoolId on teacher include (RE-14)', async () => {
       mockGroupFindAndCount.mockResolvedValue({ rows: [], count: 0 });
-      const req = { user: { id: 'r1', role: 'reception' }, query: {} };
+      const req = { user: { id: 'r1', role: 'reception', schoolId: 's1' }, query: {} };
       const res = mkRes();
       await getGroups(req, res);
       const include = mockGroupFindAndCount.mock.calls[0][0].include[0];
-      expect(include.where).toEqual({ createdBy: 'r1' });
+      expect(include.where).toEqual({ schoolId: 's1' });
     });
 
     it('teacher scopes to their own groups', async () => {
@@ -105,19 +107,20 @@ describe('groupController', () => {
   });
 
   describe('createGroup', () => {
-    it('400 when teacherId not a teacher', async () => {
-      mockUserFindByPk.mockResolvedValue({ role: 'admin' });
+    // RE-13 fix: teacher lookup scoped to school via findOne; not-found → 404
+    it('404 when teacherId not found at school (RE-13)', async () => {
+      mockUserFindOne.mockResolvedValue(null);
       const req = {
-        user: { id: 'a1', role: 'admin' },
+        user: { id: 'a1', role: 'admin', schoolId: 's1' },
         body: { name: 'G1', teacherId: 'a1' },
       };
       const res = mkRes();
       await createGroup(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.status).toHaveBeenCalledWith(404);
     });
 
     it('uses req.user.schoolId when creating', async () => {
-      mockUserFindByPk.mockResolvedValue({ id: 't1', role: 'teacher' });
+      mockUserFindOne.mockResolvedValue({ id: 't1', role: 'teacher', schoolId: 's1' });
       const reload = jest.fn().mockResolvedValue();
       mockGroupCreate.mockResolvedValue({ id: 'g1', reload });
       const req = {
@@ -149,17 +152,18 @@ describe('groupController', () => {
       expect(res.status).toHaveBeenCalledWith(403);
     });
 
-    it('400 when new teacherId is not a teacher', async () => {
+    // RE-13 fix: teacher lookup scoped to school via findOne; not-found → 404
+    it('404 when new teacherId not found at school (RE-13)', async () => {
       mockGroupFindByPk.mockResolvedValue({ id: 'g1', schoolId: 's1', teacherId: 't1', update: jest.fn(), reload: jest.fn() });
-      mockUserFindByPk.mockResolvedValue({ role: 'admin' });
+      mockUserFindOne.mockResolvedValue(null);
       const req = {
         user: { id: 'a1', schoolId: 's1' },
         params: { id: 'g1' },
-        body: { teacherId: 'a1' },
+        body: { teacherId: 'a-other' },
       };
       const res = mkRes();
       await updateGroup(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.status).toHaveBeenCalledWith(404);
     });
   });
 

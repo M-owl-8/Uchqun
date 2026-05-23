@@ -9,7 +9,7 @@ export default function ParentStep({ data, onChange }) {
   return (
     <div className="p-6">
       <h3 className="h2-tab text-[16px] font-semibold text-slate-900 mb-5">
-        Ota-ona ma'lumotlari
+        {"Ota-ona ma'lumotlari"}
       </h3>
       <div className="grid md:grid-cols-2 gap-x-6 gap-y-5">
         {/* Ism */}
@@ -114,7 +114,7 @@ export default function ParentStep({ data, onChange }) {
               className="input-ring w-full h-10 px-3 pr-10 rounded-md border border-slate-300 bg-surface text-[14px] text-slate-900 appearance-none focus:outline-none"
             >
               <option value="">Tanlang</option>
-              <option value="uzbek">O'zbek</option>
+              <option value="uzbek">{"O'zbek"}</option>
               <option value="russian">Rus</option>
               <option value="tajik">Tojik</option>
             </select>

@@ -43,7 +43,7 @@ function FileRow({ file, onRemove }) {
         </div>
         <span className="inline-flex items-center h-6 px-2 rounded-sm bg-warning-50 text-warning-700 text-[12px] border border-warning-100 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5" />
-          Ko'rib chiqilmoqda
+          {"Ko'rib chiqilmoqda"}
         </span>
         <button className="text-slate-500 hover:text-slate-800 p-1">
           <MoreHorizontal className="w-4 h-4" strokeWidth={2} />
@@ -68,7 +68,7 @@ function FileRow({ file, onRemove }) {
         </span>
         {file.url && (
           <a href={file.url} target="_blank" rel="noreferrer" className="text-[12.5px] text-brand-700 hover:text-brand-800 font-medium px-2 shrink-0">
-            Ko'rish
+            {"Ko'rish"}
           </a>
         )}
       </div>

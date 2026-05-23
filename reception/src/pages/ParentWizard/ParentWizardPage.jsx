@@ -38,7 +38,7 @@ export default function ParentWizardPage() {
   useEffect(() => {
     const draft = cache.get(DRAFT_KEY);
     if (draft) setDraftBanner(draft);
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleResumeDraft = () => {
     if (!draftBanner) return;

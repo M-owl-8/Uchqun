@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Search, UserPlus, UploadCloud, UsersRound, X } from 'lucide-react';
+import { Search, UserPlus, UploadCloud, UsersRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const quickActions = [

@@ -30,7 +30,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
       </h3>
       {childData?.firstName && (
         <p className="text-[13px] text-slate-500 mb-5">
-          {childData.firstName} uchun mos guruhni tanlang. Yosh oralig'iga e'tibor bering.
+          {childData.firstName}{" uchun mos guruhni tanlang. Yosh oralig'iga e'tibor bering."}
         </p>
       )}
 
@@ -83,12 +83,12 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
                 </div>
                 {group.teacher && (
                   <div className="mt-3 text-[12.5px] text-slate-700">
-                    O'qituvchi · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
+                    {"O'qituvchi"} · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
                   </div>
                 )}
                 <div className="mt-3">
                   <div className="flex items-baseline justify-between text-[11.5px] font-mono text-slate-500">
-                    <span>To'liqlik</span>
+                    <span>{"To'liqlik"}</span>
                     <span className="num text-slate-900">{enrolled} / {capacity}</span>
                   </div>
                   <div className="mt-1 h-1.5 rounded-full bg-slate-200 overflow-hidden">

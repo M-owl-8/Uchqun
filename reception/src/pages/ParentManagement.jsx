@@ -5,7 +5,7 @@ import { SkeletonList } from '../../../shared/components/Skeleton';
 import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import {
-  Users, Plus, Search, ChevronLeft, ChevronRight,
+  Plus, Search, ChevronLeft, ChevronRight,
   MoreHorizontal, CheckCircle, Download, Trash2,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -157,7 +157,7 @@ const ParentManagement = () => {
     });
   };
 
-  const handleEditChild = (parentId, child) => {
+  const _handleEditChild = (parentId, child) => {
     setSelectedParentId(parentId);
     setSelectedChild(child);
     setChildFormData({
@@ -170,7 +170,7 @@ const ParentManagement = () => {
     setShowEditChildModal(true);
   };
 
-  const handleDeleteChild = (parentId, childId) => {
+  const _handleDeleteChild = (parentId, childId) => {
     setConfirmDialog({
       message: t('parentsPage.confirmDeleteChild'),
       onConfirm: async () => {
@@ -419,7 +419,7 @@ const ParentManagement = () => {
             }}
             className="h-7 px-2.5 rounded text-[12.5px] text-error-50 hover:bg-error-700/60 inline-flex items-center gap-1.5 transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> O'chirish
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> {"O'chirish"}
           </button>
         </div>
       )}
@@ -443,7 +443,7 @@ const ParentManagement = () => {
                 <th className="px-4 py-2.5 text-left font-medium hidden md:table-cell">Email</th>
                 <th className="px-4 py-2.5 text-left font-medium hidden lg:table-cell">Bola</th>
                 <th className="px-4 py-2.5 text-left font-medium">Holat</th>
-                <th className="px-4 py-2.5 text-right font-medium hidden md:table-cell">Qo'shilgan</th>
+                <th className="px-4 py-2.5 text-right font-medium hidden md:table-cell">{"Qo'shilgan"}</th>
                 <th className="w-12" />
               </tr>
             </thead>
@@ -502,14 +502,14 @@ const ParentManagement = () => {
                             onClick={() => handleAddChild(parent.id)}
                             className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"
                           >
-                            Bola qo'shish
+                            {"Bola qo'shish"}
                           </button>
                           <div className="my-1 h-px bg-slate-100" />
                           <button
                             onClick={() => handleDelete(parent.id)}
                             className="w-full px-3 py-1.5 text-left hover:bg-error-50 text-error-700"
                           >
-                            O'chirish
+                            {"O'chirish"}
                           </button>
                         </div>
                       </div>
@@ -524,7 +524,7 @@ const ParentManagement = () => {
         /* Empty state */
         <div className="bg-surface border border-slate-200 rounded-lg shadow-xs p-12 text-center">
           <EmptyDesk size={120} className="mx-auto" />
-          <h3 className="text-[18px] font-semibold text-slate-900 mt-4">Hozircha ish yo'q</h3>
+          <h3 className="text-[18px] font-semibold text-slate-900 mt-4">{"Hozircha ish yo'q"}</h3>
           <p className="text-[13.5px] text-slate-500 mt-1 max-w-[40ch] mx-auto">
             {searchQuery
               ? `"${searchQuery}" bo'yicha natija topilmadi`
@@ -536,7 +536,7 @@ const ParentManagement = () => {
               className="mt-5 inline-flex items-center gap-2 h-9 px-4 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[13.5px] font-medium transition-colors"
             >
               <Plus className="w-4 h-4" strokeWidth={2} />
-              Yangi ota-ona qo'shish
+              {"Yangi ota-ona qo'shish"}
             </button>
           )}
         </div>

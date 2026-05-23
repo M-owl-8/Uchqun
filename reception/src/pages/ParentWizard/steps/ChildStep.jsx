@@ -47,7 +47,7 @@ export default function ChildStep({ data, onChange }) {
   return (
     <div className="p-6">
       <h3 className="h2-tab text-[16px] font-semibold text-slate-900 mb-5">
-        Bola ma'lumotlari
+        {"Bola ma'lumotlari"}
       </h3>
       <div className="grid md:grid-cols-2 gap-x-6 gap-y-5">
         {/* Ism */}
@@ -79,7 +79,7 @@ export default function ChildStep({ data, onChange }) {
         {/* Tug'ilgan sana */}
         <div>
           <label className="block text-[13px] font-medium text-slate-800 mb-1.5">
-            Tug'ilgan sana <span className="text-error-500">*</span>
+            {"Tug'ilgan sana"} <span className="text-error-500">*</span>
           </label>
           <div className="relative">
             <input
@@ -123,7 +123,7 @@ export default function ChildStep({ data, onChange }) {
               <option value="">Tanlang</option>
               <option value="autism">Autizm spektri</option>
               <option value="hearing">Eshitish nuqsoni</option>
-              <option value="vision">Ko'rish nuqsoni</option>
+              <option value="vision">{"Ko'rish nuqsoni"}</option>
               <option value="speech">Nutq nuqsoni</option>
               <option value="mixed">Aralash buzilishlar</option>
             </select>
@@ -144,8 +144,8 @@ export default function ChildStep({ data, onChange }) {
             >
               <option value="">Tanlang</option>
               <option value="light">Yengil</option>
-              <option value="medium">O'rta</option>
-              <option value="heavy">Og'ir</option>
+              <option value="medium">{"O'rta"}</option>
+              <option value="heavy">{"Og'ir"}</option>
             </select>
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 pointer-events-none w-4 h-4" strokeWidth={2} />
           </div>
