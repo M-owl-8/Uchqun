@@ -250,6 +250,24 @@
     "replied": "Javob berildi",
     "logout": "Chiqish"
   },
+  "documents": {
+    "title": "Mening hujjatlarim",
+    "subtitle": "Hujjatlarni yuklang va admin tasdiqlashini kuting.",
+    "upload": "Hujjat yuklash",
+    "documentType": "Hujjat turi",
+    "type": {
+      "license": "Litsenziya",
+      "certificate": "Sertifikat",
+      "identification": "Shaxsni tasdiqlovchi hujjat",
+      "other": "Boshqa"
+    },
+    "progress": "Holat",
+    "loading": "Yuklanmoqda...",
+    "help": "Yordam",
+    "loadError": "Hujjatlarni yuklashda xatolik.",
+    "deleteError": "Hujjatni o'chirib bo'lmadi.",
+    "deleteNonPendingError": "Faqat kutilayotgan hujjatlarni o'chirish mumkin."
+  },
   "page404": {
     "heading": "404",
     "message": "Sahifa topilmadi",

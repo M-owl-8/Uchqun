@@ -90,6 +90,28 @@ export const getVerificationStatus = async (req, res) => {
   }
 };
 
+export const deleteDocument = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const document = await Document.findByPk(id);
+    if (!document) {
+      return res.status(404).json({ success: false, error: { code: 'DOCUMENT_NOT_FOUND' } });
+    }
+    if (document.userId !== req.user.id) {
+      return res.status(403).json({ success: false, error: { code: 'DOCUMENT_ACCESS_DENIED' } });
+    }
+    if (document.status !== 'pending') {
+      return res.status(400).json({ success: false, error: { code: 'DOCUMENT_CANNOT_DELETE_NON_PENDING' } });
+    }
+    await document.destroy();
+    logger.info('Document deleted by Reception', { documentId: id, userId: req.user.id });
+    return res.json({ success: true });
+  } catch (error) {
+    logger.error('Delete document error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: { code: 'INTERNAL_ERROR' } });
+  }
+};
+
 export const getMyMessages = async (req, res) => {
   try {
     const messages = await GovernmentMessage.findAll({ where: { senderId: req.user.id }, order: [['createdAt', 'DESC']] });

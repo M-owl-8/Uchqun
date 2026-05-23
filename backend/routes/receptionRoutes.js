@@ -1,7 +1,7 @@
 import express from 'express';
 import { authenticate, requireReception } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
-import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages } from '../controllers/receptionController.js';
+import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages, deleteDocument } from '../controllers/receptionController.js';
 import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher } from '../controllers/receptionTeacherController.js';
 import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception } from '../controllers/receptionParentController.js';
 import { getGroups } from '../controllers/groupController.js';
@@ -29,6 +29,7 @@ router.use(requireReception);
 // Document management (for Reception's own documents)
 router.post('/documents', upload.single('file'), uploadDocument);
 router.get('/documents', getMyDocuments);
+router.delete('/documents/:id', deleteDocument);
 router.get('/verification-status', getVerificationStatus);
 
 // Teacher management

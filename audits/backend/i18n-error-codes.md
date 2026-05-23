@@ -284,6 +284,18 @@ Introduced: Sprint E T2-10 (2026-05-20)
 
 ---
 
+## Reception Documents (`controllers/receptionController.js`)
+
+Introduced: Reception S3 U-4 (2026-05-23)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `DOCUMENT_NOT_FOUND` | 404 | No document found with the given `:id` | "Document not found." |
+| `DOCUMENT_ACCESS_DENIED` | 403 | Document belongs to a different user — caller is not the owner | "You do not have permission to delete this document." |
+| `DOCUMENT_CANNOT_DELETE_NON_PENDING` | 400 | Document status is `approved` or `rejected` — only pending documents may be deleted | "Only pending documents can be deleted." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

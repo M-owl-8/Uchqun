@@ -6,30 +6,34 @@ import { useToast } from '@shared/context/ToastContext';
 import { AlertTriangle, CheckCircle2, HelpCircle, FileText } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const CACHE_KEY = 'reception:my-documents';
+const CACHE_KEY = 'reception:documents';
+const DOCUMENT_TYPES = ['license', 'certificate', 'identification', 'other'];
 
 export default function Documents() {
   const { t } = useTranslation();
   const { success, error: showError } = useToast();
   const [docs, setDocs] = useState(() => cache.get(CACHE_KEY) || []);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
+  const [fetchError, setFetchError] = useState(null);
+  const [documentType, setDocumentType] = useState('license');
 
   const loadDocs = useCallback(async (bust = false) => {
     const cached = !bust && cache.get(CACHE_KEY);
     if (cached) { setDocs(cached); setLoading(false); return; }
     setLoading(true);
+    setFetchError(null);
     try {
-      const res = await api.get('/reception/my-documents');
-      const d = Array.isArray(res.data.documents) ? res.data.documents : [];
+      const res = await api.get('/reception/documents');
+      const d = Array.isArray(res.data.data) ? res.data.data : [];
       cache.set(CACHE_KEY, d);
       setDocs(d);
-    } catch {
-      // endpoint may not exist yet
+    } catch (err) {
+      setFetchError(err.response?.data?.error || t('documents.loadError', { defaultValue: 'Hujjatlarni yuklashda xatolik.' }));
       setDocs([]);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [t]);
 
   useEffect(() => { loadDocs(); }, [loadDocs]);
 
@@ -43,8 +47,9 @@ export default function Documents() {
     setDocs((prev) => [...prev, { id: tempId, name: file.name, size: file.size, status: 'uploading', progress: 0 }]);
     try {
       const formData = new FormData();
-      formData.append('document', file);
-      await api.post('/reception/my-documents', formData, {
+      formData.append('file', file);
+      formData.append('documentType', documentType);
+      await api.post('/reception/documents', formData, {
         onUploadProgress: (e) => {
           const pct = Math.round((e.loaded / e.total) * 100);
           setDocs((prev) => prev.map((d) => d.id === tempId ? { ...d, progress: pct } : d));
@@ -64,10 +69,15 @@ export default function Documents() {
       return;
     }
     try {
-      await api.delete(`/reception/my-documents/${id}`);
+      await api.delete(`/reception/documents/${id}`);
       loadDocs(true);
-    } catch {
-      showError('Hujjatni o\'chirib bo\'lmadi.');
+    } catch (err) {
+      const code = err.response?.data?.error?.code;
+      if (code === 'DOCUMENT_CANNOT_DELETE_NON_PENDING') {
+        showError(t('documents.deleteNonPendingError', { defaultValue: 'Faqat kutilayotgan hujjatlarni o\'chirish mumkin.' }));
+      } else {
+        showError(t('documents.deleteError', { defaultValue: 'Hujjatni o\'chirib bo\'lmadi.' }));
+      }
     }
   };
 
@@ -88,8 +98,16 @@ export default function Documents() {
         </p>
       </header>
 
+      {/* Fetch error banner */}
+      {fetchError && (
+        <div className="flex items-start gap-3 p-4 rounded-lg bg-error-50 border border-error-100 text-[13px] text-error-700">
+          <AlertTriangle className="w-5 h-5 mt-0.5 shrink-0" strokeWidth={2} />
+          <div>{fetchError}</div>
+        </div>
+      )}
+
       {/* Status banner */}
-      {allApproved ? (
+      {!fetchError && allApproved ? (
         <div className="flex items-start gap-3 p-4 rounded-lg bg-success-50 border border-success-100 text-[13px] text-success-700">
           <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ fill: '#DFE4BE', stroke: '#5C7329' }} strokeWidth={2.4} />
           <div>
@@ -97,7 +115,7 @@ export default function Documents() {
             <div className="text-success-700/80 mt-0.5">Siz to'liq vakolatga egasiz.</div>
           </div>
         </div>
-      ) : pendingCount > 0 || rejectedCount > 0 ? (
+      ) : !fetchError && (pendingCount > 0 || rejectedCount > 0) ? (
         <div className="flex items-start gap-3 p-4 rounded-lg bg-warning-50 border border-warning-100 text-[13px] text-warning-700">
           <AlertTriangle className="w-5 h-5 mt-0.5 shrink-0" strokeWidth={2} />
           <div>
@@ -119,6 +137,24 @@ export default function Documents() {
             <h2 className="h2-tab text-[15px] font-semibold text-slate-900 mb-4">
               {t('documents.upload', { defaultValue: 'Hujjat yuklash' })}
             </h2>
+
+            {/* Document type selector */}
+            <div className="mb-4">
+              <label className="block text-[13px] font-medium text-slate-700 mb-1.5">
+                {t('documents.documentType', { defaultValue: 'Hujjat turi' })}
+              </label>
+              <select
+                value={documentType}
+                onChange={(e) => setDocumentType(e.target.value)}
+                className="w-full text-[13.5px] border border-slate-200 rounded-md px-3 py-2 bg-paper text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-500"
+              >
+                <option value="license">{t('documents.type.license', { defaultValue: 'Litsenziya' })}</option>
+                <option value="certificate">{t('documents.type.certificate', { defaultValue: 'Sertifikat' })}</option>
+                <option value="identification">{t('documents.type.identification', { defaultValue: 'Shaxsni tasdiqlovchi hujjat' })}</option>
+                <option value="other">{t('documents.type.other', { defaultValue: 'Boshqa' })}</option>
+              </select>
+            </div>
+
             <DocumentUpload
               files={docs}
               onUpload={handleUpload}
@@ -134,24 +170,30 @@ export default function Documents() {
             <h3 className="text-[14px] font-semibold text-slate-900 mb-4">
               {t('documents.progress', { defaultValue: 'Holat' })}
             </h3>
-            <dl className="divide-y divide-slate-100 text-[13.5px]">
-              <div className="py-2 flex justify-between">
-                <dt className="text-slate-500">Tasdiqlangan</dt>
-                <dd className="num font-semibold text-success-700">{approvedCount}</dd>
+            {loading ? (
+              <div className="text-[13px] text-slate-400">
+                {t('documents.loading', { defaultValue: 'Yuklanmoqda...' })}
               </div>
-              <div className="py-2 flex justify-between">
-                <dt className="text-slate-500">Ko'rib chiqilmoqda</dt>
-                <dd className="num font-semibold text-warning-700">{pendingCount}</dd>
-              </div>
-              <div className="py-2 flex justify-between">
-                <dt className="text-slate-500">Rad etilgan</dt>
-                <dd className="num font-semibold text-error-700">{rejectedCount}</dd>
-              </div>
-              <div className="py-2 flex justify-between">
-                <dt className="text-slate-500">Jami</dt>
-                <dd className="num font-semibold text-slate-900">{docs.length}</dd>
-              </div>
-            </dl>
+            ) : (
+              <dl className="divide-y divide-slate-100 text-[13.5px]">
+                <div className="py-2 flex justify-between">
+                  <dt className="text-slate-500">Tasdiqlangan</dt>
+                  <dd className="num font-semibold text-success-700">{approvedCount}</dd>
+                </div>
+                <div className="py-2 flex justify-between">
+                  <dt className="text-slate-500">Ko'rib chiqilmoqda</dt>
+                  <dd className="num font-semibold text-warning-700">{pendingCount}</dd>
+                </div>
+                <div className="py-2 flex justify-between">
+                  <dt className="text-slate-500">Rad etilgan</dt>
+                  <dd className="num font-semibold text-error-700">{rejectedCount}</dd>
+                </div>
+                <div className="py-2 flex justify-between">
+                  <dt className="text-slate-500">Jami</dt>
+                  <dd className="num font-semibold text-slate-900">{docs.length}</dd>
+                </div>
+              </dl>
+            )}
           </div>
 
           {/* Help card */}
@@ -166,7 +208,6 @@ export default function Documents() {
               <li>· Admin 1-3 ish kuni ichida ko'rib chiqadi</li>
             </ul>
             <div className="mt-4 pt-3 border-t border-slate-100 text-[12.5px] text-slate-500">
-              {/* Fix A: plain mailto link, no Cloudflare artifacts */}
               Savollar uchun:{' '}
               <a href="mailto:support@ihma.uz" className="text-brand-700 hover:text-brand-800">
                 support@ihma.uz

@@ -245,6 +245,24 @@
     "replied": "Replied",
     "logout": "Logout"
   },
+  "documents": {
+    "title": "My Documents",
+    "subtitle": "Upload documents and wait for admin approval.",
+    "upload": "Upload Document",
+    "documentType": "Document type",
+    "type": {
+      "license": "License",
+      "certificate": "Certificate",
+      "identification": "Identification document",
+      "other": "Other"
+    },
+    "progress": "Status",
+    "loading": "Loading...",
+    "help": "Help",
+    "loadError": "Failed to load documents.",
+    "deleteError": "Could not delete document.",
+    "deleteNonPendingError": "Only pending documents can be deleted."
+  },
   "page404": {
     "heading": "404",
     "message": "Page not found",
