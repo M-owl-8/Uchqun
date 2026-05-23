@@ -49,7 +49,7 @@ const BulkImport = () => {
   const [showErrors, setShowErrors] = useState(false);
   const intervalRef = useRef(null);
 
-  const { error: toastError, success: toastSuccess } = useToast();
+  const { error: toastError } = useToast();
   const { t } = useTranslation();
 
   useEffect(() => {

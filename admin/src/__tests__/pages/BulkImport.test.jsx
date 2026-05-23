@@ -145,12 +145,11 @@ describe('BulkImport wizard (FE-1)', () => {
 
   it('shows success result in step 5', async () => {
     let intervalCallback = null;
-    const originalSetInterval = global.setInterval;
-    vi.spyOn(global, 'setInterval').mockImplementation((cb) => {
+    vi.spyOn(globalThis, 'setInterval').mockImplementation((cb) => {
       intervalCallback = cb;
       return 999;
     });
-    vi.spyOn(global, 'clearInterval').mockImplementation(() => {});
+    vi.spyOn(globalThis, 'clearInterval').mockImplementation(() => {});
 
     api.post
       .mockResolvedValueOnce({ data: { data: JOB_RESULT_VALID } })
