@@ -132,10 +132,10 @@ export const createGroup = async (req, res) => {
   try {
     const { name, description, teacherId, capacity, ageRange } = req.body;
 
-    // Verify teacher exists
-    const teacher = await User.findByPk(teacherId);
-    if (!teacher || teacher.role !== 'teacher') {
-      return res.status(400).json({ error: 'Invalid teacher ID' });
+    // RE-13 fix: scope teacher lookup to the reception's own school
+    const teacher = await User.findOne({ where: { id: teacherId, role: 'teacher', schoolId: req.user.schoolId } });
+    if (!teacher) {
+      return res.status(404).json({ success: false, error: { code: 'TEACHER_NOT_FOUND' } });
     }
 
     const group = await Group.create({
@@ -174,15 +174,16 @@ export const updateGroup = async (req, res) => {
       return res.status(404).json({ error: 'Group not found' });
     }
 
-    if (req.user.schoolId && group.schoolId && group.schoolId !== req.user.schoolId) {
+    // RE-12 fix: two-part condition (matches getGroup pattern) — null group.schoolId is now also blocked
+    if (!group.schoolId || group.schoolId !== req.user.schoolId) {
       return res.status(403).json({ error: 'Access denied to this group' });
     }
 
-    // If teacherId is being updated, verify teacher exists
+    // RE-13 fix: scope teacher lookup to own school
     if (teacherId && teacherId !== group.teacherId) {
-      const teacher = await User.findByPk(teacherId);
-      if (!teacher || teacher.role !== 'teacher') {
-        return res.status(400).json({ error: 'Invalid teacher ID' });
+      const teacher = await User.findOne({ where: { id: teacherId, role: 'teacher', schoolId: req.user.schoolId } });
+      if (!teacher) {
+        return res.status(404).json({ success: false, error: { code: 'TEACHER_NOT_FOUND' } });
       }
     }
 
@@ -220,7 +221,8 @@ export const deleteGroup = async (req, res) => {
       return res.status(404).json({ error: 'Group not found' });
     }
 
-    if (req.user.schoolId && group.schoolId && group.schoolId !== req.user.schoolId) {
+    // RE-12 fix: two-part condition — null group.schoolId is also blocked
+    if (!group.schoolId || group.schoolId !== req.user.schoolId) {
       return res.status(403).json({ error: 'Access denied to this group' });
     }
 
