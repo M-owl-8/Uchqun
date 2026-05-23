@@ -34,7 +34,8 @@ export const getGroups = async (req, res) => {
     };
 
     if (req.user.role === 'reception') {
-      includeTeacher.where = { createdBy: req.user.id };
+      // RE-14 fix: school-scope (any reception can see all school teachers' groups)
+      includeTeacher.where = { schoolId: req.user.schoolId };
     } else if (req.user.role === 'admin') {
       // Get all receptions created by this admin
       const receptions = await User.findAll({

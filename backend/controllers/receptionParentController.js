@@ -56,9 +56,8 @@ export const createParent = async (req, res) => {
     if (existingUser) return res.status(400).json({ error: 'User with this email already exists' });
 
     if (teacherId) {
-      const teacherWhere = { id: teacherId, role: 'teacher', createdBy: req.user.id };
-      if (req.user.schoolId) teacherWhere.schoolId = req.user.schoolId;
-      const teacher = await User.findOne({ where: teacherWhere });
+      // RE-14 fix: per-school scope (any reception at school can assign any school teacher)
+      const teacher = await User.findOne({ where: { id: teacherId, role: 'teacher', schoolId: req.user.schoolId } });
       if (!teacher) return res.status(400).json({ error: 'Invalid teacher selected or you do not have permission to assign this teacher' });
     }
 
@@ -162,9 +161,8 @@ export const updateParent = async (req, res) => {
     if (!parent) return res.status(404).json({ error: 'Parent not found' });
 
     if (teacherId) {
-      const teacherWhere = { id: teacherId, role: 'teacher', createdBy: req.user.id };
-      if (req.user.schoolId) teacherWhere.schoolId = req.user.schoolId;
-      const teacher = await User.findOne({ where: teacherWhere });
+      // RE-14 fix: per-school scope
+      const teacher = await User.findOne({ where: { id: teacherId, role: 'teacher', schoolId: req.user.schoolId } });
       if (!teacher) return res.status(400).json({ error: 'Invalid teacher selected or you do not have permission to assign this teacher' });
     }
 
