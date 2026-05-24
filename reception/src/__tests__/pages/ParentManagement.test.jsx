@@ -51,6 +51,8 @@ const parent1 = {
   lastName: 'Karimov',
   email: 'aziz@test.uz',
   phone: '+998901234567',
+  status: 'active',
+  isActive: true,
   teacherId: 't1',
   groupId: 'g1',
   assignedTeacher: { firstName: 'Sara', lastName: 'Tosheva' },
@@ -73,10 +75,25 @@ const parent2 = {
   lastName: 'Yusupova',
   email: 'malika@test.uz',
   phone: null,
+  status: 'active',
+  isActive: true,
   teacherId: null,
   groupId: null,
   assignedTeacher: null,
   group: null,
+  children: [],
+};
+
+const parentSuspended = {
+  id: 'p3',
+  firstName: 'Sarvar',
+  lastName: 'Umarov',
+  email: 'sarvar@test.uz',
+  phone: null,
+  status: 'suspended',
+  isActive: true,
+  teacherId: null,
+  groupId: null,
   children: [],
 };
 
@@ -90,7 +107,7 @@ function stubLoad(parents = [], teachers = [], groups = []) {
     if (url === '/reception/teachers')
       return Promise.resolve({ data: { data: teachers } });
     if (url === '/groups')
-      return Promise.resolve({ data: { groups } });
+      return Promise.resolve({ data: { success: true, data: groups } });
     return Promise.reject(new Error('Unexpected URL: ' + url));
   });
 }
@@ -268,5 +285,54 @@ describe('CL-012 ParentManagement integration', () => {
     await waitFor(() => {
       expect(api.delete).toHaveBeenCalledWith(`/reception/children/${parent1.children[0].id}`);
     });
+  });
+
+  it('calls PUT /reception/parents/:id/activate for a suspended parent', async () => {
+    stubLoad([parentSuspended], [teacher1], [group1]);
+    api.put.mockResolvedValue({ data: {} });
+    render(React.createElement(ParentManagement));
+    await waitFor(() => expect(screen.getByText('Sarvar Umarov')).toBeTruthy());
+
+    // suspended parent shows Faollashtirish in the dropdown menu
+    fireEvent.click(screen.getByText('parentsPage.buttons.activate').closest('button'));
+
+    await waitFor(() =>
+      expect(api.put).toHaveBeenCalledWith(`/reception/parents/${parentSuspended.id}/activate`)
+    );
+  });
+
+  it('opens confirm dialog then calls PUT /reception/parents/:id/suspend', async () => {
+    stubLoad([parent1], [teacher1], [group1]);
+    api.put.mockResolvedValue({ data: {} });
+    render(React.createElement(ParentManagement));
+    await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
+
+    fireEvent.click(screen.getByText('parentsPage.buttons.suspend').closest('button'));
+    await waitFor(() => expect(screen.getByText('parentsPage.confirmSuspend')).toBeTruthy());
+
+    const dialogButtons = screen.getByText('parentsPage.confirmSuspend').closest('div').querySelectorAll('button');
+    fireEvent.click(dialogButtons[1]);
+
+    await waitFor(() =>
+      expect(api.put).toHaveBeenCalledWith(`/reception/parents/${parent1.id}/suspend`)
+    );
+  });
+
+  it('shows temp password modal after credential reset', async () => {
+    stubLoad([parent1], [teacher1], [group1]);
+    api.post.mockResolvedValue({ data: { data: { tempPassword: 'Abc123XyZ9', mustChangePassword: true } } });
+    render(React.createElement(ParentManagement));
+    await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeTruthy());
+
+    fireEvent.click(screen.getByText('parentsPage.buttons.resetCredentials').closest('button'));
+    await waitFor(() => expect(screen.getByText('parentsPage.confirmResetCredentials')).toBeTruthy());
+
+    const dialogButtons = screen.getByText('parentsPage.confirmResetCredentials').closest('div').querySelectorAll('button');
+    fireEvent.click(dialogButtons[1]);
+
+    await waitFor(() =>
+      expect(api.post).toHaveBeenCalledWith(`/reception/parents/${parent1.id}/reset-credentials`)
+    );
+    await waitFor(() => expect(screen.getByText('Abc123XyZ9')).toBeTruthy());
   });
 });

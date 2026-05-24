@@ -6,7 +6,7 @@ import * as cache from '../../../shared/utils/cache';
 import { useToast } from '@shared/context/ToastContext';
 import {
   Plus, Search, ChevronLeft, ChevronRight,
-  MoreHorizontal, CheckCircle, Download, Trash2, Pencil,
+  MoreHorizontal, CheckCircle, Download, Trash2, Pencil, Copy,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ParentFormModal from './parents/ParentFormModal';
@@ -15,7 +15,15 @@ import { EmptyDesk } from '../components/motifs/EmptyDesk';
 
 const PAGE_SIZE = 25;
 
-const StatusBadge = ({ isActive }) => {
+const StatusBadge = ({ status, isActive }) => {
+  if (status === 'suspended') {
+    return (
+      <span className="inline-flex items-center h-6 px-2 rounded-sm bg-error-50 text-error-700 text-[12px] border border-error-100">
+        <span className="w-1.5 h-1.5 rounded-full bg-error-500 mr-1.5" />
+        {"To'xtatilgan"}
+      </span>
+    );
+  }
   if (isActive !== false) {
     return (
       <span className="inline-flex items-center h-6 px-2 rounded-sm bg-success-50 text-success-700 text-[12px] border border-success-100">
@@ -62,6 +70,7 @@ const ParentManagement = () => {
   const [selectedRows, setSelectedRows] = useState(new Set());
   const [page, setPage] = useState(1);
   const [confirmDialog, setConfirmDialog] = useState(null);
+  const [tempPassword, setTempPassword] = useState(null);
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', phone: '', password: '',
     teacherId: '', groupId: '',
@@ -191,6 +200,47 @@ const ParentManagement = () => {
     setSelectedChild(null);
     setChildFormData({ firstName: '', lastName: '', dateOfBirth: '', gender: 'Male', disabilityType: '', specialNeeds: '', school: 'Uchqun School', photo: null, photoPreview: null });
     setShowChildModal(true);
+  };
+
+  const handleActivate = async (parentId) => {
+    try {
+      await api.put(`/reception/parents/${parentId}/activate`);
+      success(t('parentsPage.toastActivated', { defaultValue: 'Ota-ona faollashtirildi' }));
+      loadParents(true);
+    } catch (error) {
+      showError(error.response?.data?.error?.detail || t('parentsPage.toastActivateError', { defaultValue: "Faollashtirib bo'lmadi" }));
+    }
+  };
+
+  const handleSuspend = (parentId) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmSuspend', { defaultValue: "Ushbu ota-onani to'xtatmoqchimisiz? Kirish bloklanadi." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.put(`/reception/parents/${parentId}/suspend`);
+          success(t('parentsPage.toastSuspended', { defaultValue: "Ota-ona to'xtatildi" }));
+          loadParents(true);
+        } catch (error) {
+          showError(error.response?.data?.error?.detail || t('parentsPage.toastSuspendError', { defaultValue: "To'xtatib bo'lmadi" }));
+        }
+      },
+    });
+  };
+
+  const handleResetCredentials = (parentId, name) => {
+    setConfirmDialog({
+      message: t('parentsPage.confirmResetCredentials', { name, defaultValue: `${name} uchun parolni tiklashni tasdiqlaysizmi?` }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          const res = await api.post(`/reception/parents/${parentId}/reset-credentials`);
+          setTempPassword({ password: res.data.data?.tempPassword, name });
+        } catch (error) {
+          showError(error.response?.data?.error?.detail || t('parentsPage.toastResetError', { defaultValue: 'Parolni tiklash muvaffaqiyatsiz' }));
+        }
+      },
+    });
   };
 
   const handleSubmitChild = async (e) => {
@@ -502,7 +552,7 @@ const ParentManagement = () => {
                       ) : '—'}
                     </td>
                     <td className="px-4 py-3">
-                      <StatusBadge isActive={parent.isActive} />
+                      <StatusBadge status={parent.status} isActive={parent.isActive} />
                     </td>
                     <td className="px-4 py-3 num text-slate-500 text-right hidden md:table-cell">{joined}</td>
                     <td className="px-4 py-3">
@@ -523,6 +573,28 @@ const ParentManagement = () => {
                             className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"
                           >
                             {t('parentsPage.buttons.addChild')}
+                          </button>
+                          <div className="my-1 h-px bg-slate-100" />
+                          {parent.status === 'suspended' ? (
+                            <button
+                              onClick={() => handleActivate(parent.id)}
+                              className="w-full px-3 py-1.5 text-left hover:bg-success-50 text-success-700"
+                            >
+                              {t('parentsPage.buttons.activate', { defaultValue: 'Faollashtirish' })}
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleSuspend(parent.id)}
+                              className="w-full px-3 py-1.5 text-left hover:bg-warning-50 text-warning-700"
+                            >
+                              {t('parentsPage.buttons.suspend', { defaultValue: "To'xtatish" })}
+                            </button>
+                          )}
+                          <button
+                            onClick={() => handleResetCredentials(parent.id, `${parent.firstName} ${parent.lastName}`)}
+                            className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"
+                          >
+                            {t('parentsPage.buttons.resetCredentials', { defaultValue: 'Parolni tiklash' })}
                           </button>
                           <div className="my-1 h-px bg-slate-100" />
                           <button
@@ -649,6 +721,36 @@ const ParentManagement = () => {
                 {t('common.confirm', { defaultValue: 'Tasdiqlash' })}
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {tempPassword && (
+        <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-surface rounded-lg p-6 max-w-sm w-full shadow-xl border border-slate-200">
+            <h3 className="text-[15px] font-semibold text-slate-900 mb-1">
+              {t('parentsPage.tempPasswordTitle', { defaultValue: 'Vaqtinchalik parol' })}
+            </h3>
+            <p className="text-[12.5px] text-slate-500 mb-4">{tempPassword.name}</p>
+            <div className="flex items-center gap-2 p-3 rounded-md bg-slate-50 border border-slate-200 font-mono text-[14px] text-slate-900 mb-2">
+              <span className="flex-1 select-all">{tempPassword.password}</span>
+              <button
+                onClick={() => navigator.clipboard?.writeText(tempPassword.password)}
+                className="p-1 text-slate-400 hover:text-brand-600 transition-colors"
+                title={t('common.copy', { defaultValue: 'Nusxalash' })}
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-[12px] text-warning-700 mb-5">
+              {t('parentsPage.tempPasswordNote', { defaultValue: "Foydalanuvchi birinchi kirishda parolni o'zgartirishi kerak." })}
+            </p>
+            <button
+              onClick={() => setTempPassword(null)}
+              className="w-full h-9 px-4 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-medium transition-colors"
+            >
+              {t('common.close', { defaultValue: 'Yopish' })}
+            </button>
           </div>
         </div>
       )}

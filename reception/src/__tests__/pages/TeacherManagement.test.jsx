@@ -55,6 +55,15 @@ const teacher2 = {
   status: 'active',
 };
 
+const teacherSuspended = {
+  id: 't3',
+  firstName: 'Kamola',
+  lastName: 'Nazarova',
+  email: 'kamola@test.uz',
+  phone: null,
+  status: 'suspended',
+};
+
 function stubTeachers(teachers = []) {
   api.get.mockImplementation((url) => {
     if (url === '/reception/teachers') return Promise.resolve({ data: { data: teachers } });
@@ -201,5 +210,52 @@ describe('TeacherManagement', () => {
     api.get.mockRejectedValue(new Error('Network error'));
     render(React.createElement(TeacherManagement));
     await waitFor(() => expect(showError).toHaveBeenCalled());
+  });
+
+  it('calls PUT /reception/teachers/:id/activate for a suspended teacher', async () => {
+    stubTeachers([teacherSuspended]);
+    api.put.mockResolvedValue({ data: {} });
+    render(React.createElement(TeacherManagement));
+    await waitFor(() => expect(screen.getByText('Kamola Nazarova')).toBeTruthy());
+
+    // suspended teacher shows Faollashtirish button
+    fireEvent.click(screen.getByText('teachersPage.buttons.activate').closest('button'));
+
+    await waitFor(() =>
+      expect(api.put).toHaveBeenCalledWith(`/reception/teachers/${teacherSuspended.id}/activate`)
+    );
+  });
+
+  it('opens confirm dialog then calls PUT /reception/teachers/:id/suspend', async () => {
+    stubTeachers([teacher1]);
+    api.put.mockResolvedValue({ data: {} });
+    render(React.createElement(TeacherManagement));
+    await waitFor(() => expect(screen.getByText('Zulfiya Rahimova')).toBeTruthy());
+
+    fireEvent.click(screen.getByText('teachersPage.buttons.suspend').closest('button'));
+    await waitFor(() => expect(screen.getByRole('dialog')).toBeTruthy());
+    expect(screen.getByText('teachersPage.confirmSuspend')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('common.confirm'));
+    await waitFor(() =>
+      expect(api.put).toHaveBeenCalledWith(`/reception/teachers/${teacher1.id}/suspend`)
+    );
+  });
+
+  it('shows temp password modal after teacher credential reset', async () => {
+    stubTeachers([teacher1]);
+    api.post.mockResolvedValue({ data: { data: { tempPassword: 'Xyz789AbC2', mustChangePassword: true } } });
+    render(React.createElement(TeacherManagement));
+    await waitFor(() => expect(screen.getByText('Zulfiya Rahimova')).toBeTruthy());
+
+    fireEvent.click(screen.getByText('teachersPage.buttons.resetCredentials').closest('button'));
+    await waitFor(() => expect(screen.getByRole('dialog')).toBeTruthy());
+    expect(screen.getByText('teachersPage.confirmResetCredentials')).toBeTruthy();
+
+    fireEvent.click(screen.getByText('common.confirm'));
+    await waitFor(() =>
+      expect(api.post).toHaveBeenCalledWith(`/reception/teachers/${teacher1.id}/reset-credentials`)
+    );
+    await waitFor(() => expect(screen.getByText('Xyz789AbC2')).toBeTruthy());
   });
 });

@@ -18,6 +18,10 @@ import {
   MessageSquare,
   Eye,
   EyeOff,
+  Copy,
+  ShieldOff,
+  ShieldCheck,
+  KeyRound,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
@@ -48,6 +52,7 @@ const TeacherManagement = () => {
   const showErrorRef = useRef(showError);
   useEffect(() => { showErrorRef.current = showError; }, [showError]);
   const [showPassword, setShowPassword] = useState(false);
+  const [tempPassword, setTempPassword] = useState(null);
 
   const loadTeachers = useCallback(async (bust = false) => {
     const CACHE_KEY = 'reception:teachers';
@@ -155,6 +160,47 @@ const TeacherManagement = () => {
     });
   };
 
+  const handleActivateTeacher = async (teacherId) => {
+    try {
+      await api.put(`/reception/teachers/${teacherId}/activate`);
+      success(t('teachersPage.toastActivated', { defaultValue: "O'qituvchi faollashtirildi" }));
+      loadTeachers(true);
+    } catch (error) {
+      showError(error.response?.data?.error?.detail || t('teachersPage.toastActivateError', { defaultValue: "Faollashtirib bo'lmadi" }));
+    }
+  };
+
+  const handleSuspendTeacher = (teacherId) => {
+    setConfirmDialog({
+      message: t('teachersPage.confirmSuspend', { defaultValue: "Ushbu o'qituvchini to'xtatmoqchimisiz? Kirish bloklanadi." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.put(`/reception/teachers/${teacherId}/suspend`);
+          success(t('teachersPage.toastSuspended', { defaultValue: "O'qituvchi to'xtatildi" }));
+          loadTeachers(true);
+        } catch (error) {
+          showError(error.response?.data?.error?.detail || t('teachersPage.toastSuspendError', { defaultValue: "To'xtatib bo'lmadi" }));
+        }
+      },
+    });
+  };
+
+  const handleResetTeacherCredentials = (teacherId, name) => {
+    setConfirmDialog({
+      message: t('teachersPage.confirmResetCredentials', { name, defaultValue: `${name} uchun parolni tiklashni tasdiqlaysizmi?` }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          const res = await api.post(`/reception/teachers/${teacherId}/reset-credentials`);
+          setTempPassword({ password: res.data.data?.tempPassword, name });
+        } catch (error) {
+          showError(error.response?.data?.error?.detail || t('teachersPage.toastResetError', { defaultValue: 'Parolni tiklash muvaffaqiyatsiz' }));
+        }
+      },
+    });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     
@@ -256,9 +302,16 @@ const TeacherManagement = () => {
                     {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900">
-                      {teacher.firstName} {teacher.lastName}
-                    </h3>
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-bold text-slate-900">
+                        {teacher.firstName} {teacher.lastName}
+                      </h3>
+                      {teacher.status === 'suspended' && (
+                        <span className="inline-flex items-center h-5 px-1.5 rounded-sm bg-error-50 text-error-700 text-[11px] border border-error-100">
+                          {"To'xtatilgan"}
+                        </span>
+                      )}
+                    </div>
                     <p className="text-sm text-slate-500">{teacher.email}</p>
                   </div>
                 </div>
@@ -297,6 +350,32 @@ const TeacherManagement = () => {
                 >
                   <Trash2 className="w-4 h-4 flex-shrink-0" />
                   <span className="truncate">{t('teachersPage.buttons.delete')}</span>
+                </button>
+              </div>
+              <div className="flex gap-2 pt-2">
+                {teacher.status === 'suspended' ? (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleActivateTeacher(teacher.id); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 bg-success-50 text-success-700 rounded-lg font-medium hover:bg-success-100 transition-colors text-xs min-w-0"
+                  >
+                    <ShieldCheck className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="truncate">{t('teachersPage.buttons.activate', { defaultValue: 'Faollashtirish' })}</span>
+                  </button>
+                ) : (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); handleSuspendTeacher(teacher.id); }}
+                    className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 bg-warning-50 text-warning-700 rounded-lg font-medium hover:bg-warning-100 transition-colors text-xs min-w-0"
+                  >
+                    <ShieldOff className="w-3.5 h-3.5 flex-shrink-0" />
+                    <span className="truncate">{t('teachersPage.buttons.suspend', { defaultValue: "To'xtatish" })}</span>
+                  </button>
+                )}
+                <button
+                  onClick={(e) => { e.stopPropagation(); handleResetTeacherCredentials(teacher.id, `${teacher.firstName} ${teacher.lastName}`); }}
+                  className="flex-1 flex items-center justify-center gap-1.5 px-2 py-1.5 bg-slate-100 text-slate-700 rounded-lg font-medium hover:bg-slate-200 transition-colors text-xs min-w-0"
+                >
+                  <KeyRound className="w-3.5 h-3.5 flex-shrink-0" />
+                  <span className="truncate">{t('teachersPage.buttons.resetCredentials', { defaultValue: 'Parolni tiklash' })}</span>
                 </button>
               </div>
             </Card>
@@ -520,6 +599,36 @@ const TeacherManagement = () => {
         </div>
       )}
       <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
+
+      {tempPassword && (
+        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
+          <div className="bg-surface rounded-2xl shadow-2xl max-w-sm w-full p-6">
+            <h3 className="text-[16px] font-bold text-slate-900 mb-1">
+              {t('teachersPage.tempPasswordTitle', { defaultValue: 'Vaqtinchalik parol' })}
+            </h3>
+            <p className="text-[12.5px] text-slate-500 mb-4">{tempPassword.name}</p>
+            <div className="flex items-center gap-2 p-3 rounded-lg bg-slate-50 border border-slate-200 font-mono text-[14px] text-slate-900 mb-2">
+              <span className="flex-1 select-all">{tempPassword.password}</span>
+              <button
+                onClick={() => navigator.clipboard?.writeText(tempPassword.password)}
+                className="p-1 text-slate-400 hover:text-brand-600 transition-colors"
+                title={t('common.copy', { defaultValue: 'Nusxalash' })}
+              >
+                <Copy className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-[12px] text-warning-700 mb-5">
+              {t('teachersPage.tempPasswordNote', { defaultValue: "Foydalanuvchi birinchi kirishda parolni o'zgartirishi kerak." })}
+            </p>
+            <button
+              onClick={() => setTempPassword(null)}
+              className="w-full h-10 px-4 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-[13px] font-medium transition-colors"
+            >
+              {t('common.close', { defaultValue: 'Yopish' })}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
