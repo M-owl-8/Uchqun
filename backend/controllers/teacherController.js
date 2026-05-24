@@ -119,7 +119,7 @@ export const getParents = async (req, res) => {
     const where = { role: 'parent' };
 
     if (req.user.role === 'admin' || req.user.role === 'reception') {
-      if (req.user.schoolId) where.schoolId = req.user.schoolId;
+      where.schoolId = req.user.schoolId;
     }
 
     if (req.user.role === 'teacher') {
@@ -172,7 +172,7 @@ export const getParentById = async (req, res) => {
   try {
     const { id } = req.params;
     const where = { id, role: 'parent' };
-    if (req.user.schoolId) where.schoolId = req.user.schoolId;
+    where.schoolId = req.user.schoolId;
 
     const parent = await User.findOne({
       where,
@@ -226,7 +226,7 @@ export const getMyGroups = async (req, res) => {
 export const getTeacherRatings = async (req, res) => {
   try {
     const where = { role: 'teacher' };
-    if (req.user.schoolId) where.schoolId = req.user.schoolId;
+    where.schoolId = req.user.schoolId;
 
     const teachers = await User.findAll({
       where,
@@ -244,8 +244,7 @@ export const getTeacherRatings = async (req, res) => {
 
 export const getChildren = async (req, res) => {
   try {
-    const where = {};
-    if (req.user.schoolId) where.schoolId = req.user.schoolId;
+    const where = { schoolId: req.user.schoolId };
 
     const children = await Child.findAll({
       where,

@@ -55,7 +55,7 @@ export const getMyMedia = async (req, res) => {
       include: [{
         model: Child,
         as: 'child',
-        where: { groupId },
+        where: { groupId, parentId: req.user.id },
         attributes: ['id', 'firstName', 'lastName', 'photo'],
         required: true,
       }],
@@ -92,7 +92,7 @@ export const getMediaById = async (req, res) => {
         include: [{
           model: Child,
           as: 'child',
-          where: { groupId },
+          where: { groupId, parentId: req.user.id },
           attributes: ['id', 'firstName', 'lastName', 'photo'],
           required: true,
         }],

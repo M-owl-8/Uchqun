@@ -54,7 +54,7 @@ describe('parentMediaController', () => {
       const res = mkRes();
       await getMyMedia(req, res);
       const opts = mockMediaFindAndCount.mock.calls[0][0];
-      expect(opts.include[0].where).toEqual({ groupId: 'g1' });
+      expect(opts.include[0].where).toEqual({ groupId: 'g1', parentId: 'p1' });
     });
   });
 
@@ -75,7 +75,7 @@ describe('parentMediaController', () => {
       const res = mkRes();
       await getMediaById(req, res);
       const opts = mockMediaFindOne.mock.calls[0][0];
-      expect(opts.include[0].where).toEqual({ groupId: 'g1' });
+      expect(opts.include[0].where).toEqual({ groupId: 'g1', parentId: 'p1' });
     });
 
     it('legacy parent (no group): queries ParentMedia by id+parentId', async () => {

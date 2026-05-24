@@ -204,7 +204,7 @@ describe('create', () => {
 });
 
 describe('update', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => { jest.clearAllMocks(); mockChildFindByPk.mockResolvedValue(fakeChild); });
 
   it('200 updates allowed fields and writes audit with diff', async () => {
     mockGoalFindOne.mockResolvedValue({ ...fakeGoal });
@@ -218,6 +218,19 @@ describe('update', () => {
       meta: expect.objectContaining({ before: expect.any(Object), after: expect.any(Object) }),
     }));
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+  });
+
+  // TP-01 revert-test: goal.schoolId matches teacher's school but child was transferred.
+  // Without validateChildAccess after findOne: update proceeds (200). FAILS pre-fix, PASSES post-fix.
+  it('404 (TP-01) goal.schoolId matches but child transferred to another school', async () => {
+    const movedGoal = { ...fakeGoal, childId: 'c-moved', schoolId: SCHOOL_ID, update: mockGoalUpdate };
+    mockGoalFindOne.mockResolvedValue(movedGoal);
+    mockChildFindByPk.mockResolvedValue({ id: 'c-moved', schoolId: 's-other' });
+    const req = { user: { id: 'u1', role: 'teacher', schoolId: SCHOOL_ID }, params: { id: GOAL_ID }, body: { currentProgress: 'developing' } };
+    const res = mkRes();
+    await update(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(mockGoalUpdate).not.toHaveBeenCalled();
   });
 
   it('400 GOAL_IMMUTABLE_FIELD when attempting to change childId', async () => {
@@ -255,7 +268,7 @@ describe('update', () => {
 });
 
 describe('deleteGoal', () => {
-  beforeEach(() => jest.clearAllMocks());
+  beforeEach(() => { jest.clearAllMocks(); mockChildFindByPk.mockResolvedValue(fakeChild); });
 
   it('204 on valid delete, afterDestroy hook writes audit', async () => {
     mockGoalFindOne.mockResolvedValue({ ...fakeGoal, destroy: mockGoalDestroy });
@@ -274,6 +287,19 @@ describe('deleteGoal', () => {
     await deleteGoal(req, res);
     expect(res.status).toHaveBeenCalledWith(404);
   });
+
+  // TP-01 revert-test: goal.schoolId matches but child transferred. Without validateChildAccess:
+  // destroy proceeds (204). FAILS pre-fix, PASSES post-fix.
+  it('404 (TP-01) goal.schoolId matches but child transferred to another school', async () => {
+    const movedGoal = { ...fakeGoal, childId: 'c-moved', schoolId: SCHOOL_ID, destroy: mockGoalDestroy };
+    mockGoalFindOne.mockResolvedValue(movedGoal);
+    mockChildFindByPk.mockResolvedValue({ id: 'c-moved', schoolId: 's-other' });
+    const req = { user: { id: 'u1', role: 'teacher', schoolId: SCHOOL_ID }, params: { id: GOAL_ID }, body: {} };
+    const res = mkRes();
+    await deleteGoal(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(mockGoalDestroy).not.toHaveBeenCalled();
+  });
 });
 
 describe('createReview', () => {
@@ -283,7 +309,7 @@ describe('createReview', () => {
     body,
   });
 
-  beforeEach(() => { jest.clearAllMocks(); mockGoalFindOne.mockResolvedValue(fakeGoal); });
+  beforeEach(() => { jest.clearAllMocks(); mockGoalFindOne.mockResolvedValue(fakeGoal); mockChildFindByPk.mockResolvedValue(fakeChild); });
 
   it('201 creates review and writes audit', async () => {
     mockReviewCreate.mockResolvedValue({ id: 'r1', goalId: GOAL_ID, status: 'on_track', reviewDate: '2026-01-01' });
@@ -311,6 +337,18 @@ describe('createReview', () => {
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       error: expect.objectContaining({ code: 'GOAL_REVIEW_INVALID_STATUS' }),
     }));
+  });
+
+  // TP-01 revert-test: goal.schoolId matches but child transferred. Without validateChildAccess:
+  // review is created (201). FAILS pre-fix, PASSES post-fix.
+  it('404 (TP-01) goal.schoolId matches but child transferred to another school', async () => {
+    const movedGoal = { ...fakeGoal, childId: 'c-moved', schoolId: SCHOOL_ID };
+    mockGoalFindOne.mockResolvedValue(movedGoal);
+    mockChildFindByPk.mockResolvedValue({ id: 'c-moved', schoolId: 's-other' });
+    const res = mkRes();
+    await createReview(reqWithGoal({ reviewDate: '2026-01-01', status: 'on_track' }), res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(mockReviewCreate).not.toHaveBeenCalled();
   });
 });
 
@@ -340,6 +378,7 @@ describe('afterDestroy hook (ChildGoal)', () => {
   it('destroy is called with actorId/actorRole/reason so hook can log audit', async () => {
     const destroy = jest.fn().mockResolvedValue();
     mockGoalFindOne.mockResolvedValue({ ...fakeGoal, destroy });
+    mockChildFindByPk.mockResolvedValue(fakeChild);
     const req = { user: { id: 'u1', role: 'teacher', schoolId: SCHOOL_ID }, params: { id: GOAL_ID }, body: { reason: 'test' } };
     const res = mkRes();
     await deleteGoal(req, res);

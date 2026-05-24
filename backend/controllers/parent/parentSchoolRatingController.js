@@ -3,7 +3,6 @@ import Child from '../../models/Child.js';
 import School from '../../models/School.js';
 import SchoolRating from '../../models/SchoolRating.js';
 import logger from '../../utils/logger.js';
-import { Op } from 'sequelize';
 import { computeAverageRating } from '../../utils/governmentLevel.js';
 
 export const rateSchool = async (req, res) => {
@@ -50,51 +49,28 @@ export const rateSchool = async (req, res) => {
       commentValue = comment.trim() || null;
     }
 
-    if (!schoolId && (!schoolName || typeof schoolName !== 'string' || schoolName.trim().length === 0)) {
-      return res.status(400).json({ error: 'School identifier required', message: 'Either schoolId or schoolName must be provided' });
+    if (!schoolId) {
+      return res.status(400).json({ error: 'School ID required', message: 'Please provide schoolId to rate your school.' });
     }
 
     const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
-    if (schoolId && !uuidRegex.test(schoolId)) {
+    if (!uuidRegex.test(schoolId)) {
       return res.status(400).json({ error: 'Invalid school ID format', message: 'School ID must be a valid UUID' });
     }
 
     let school = null;
     let finalSchoolId = schoolId;
 
-    if (schoolId) {
-      try {
-        school = await School.findByPk(schoolId);
-        if (!school) return res.status(404).json({ error: 'School not found', message: `No school found with ID: ${schoolId}` });
-        finalSchoolId = school.id;
-        if (req.user.schoolId && req.user.schoolId !== finalSchoolId) {
-          return res.status(403).json({ error: 'You can only rate your own school' });
-        }
-      } catch (schoolError) {
-        logger.error('Database error finding school by ID', { error: schoolError.message, stack: schoolError.stack, schoolId, parentId });
-        return res.status(500).json({ error: 'Database error', message: 'Failed to find school. Please try again.' });
+    try {
+      school = await School.findByPk(schoolId);
+      if (!school) return res.status(404).json({ error: 'School not found', message: `No school found with ID: ${schoolId}` });
+      finalSchoolId = school.id;
+      if (req.user.schoolId !== finalSchoolId) {
+        return res.status(403).json({ error: 'You can only rate your own school' });
       }
-    } else {
-      const trimmedName = schoolName.trim();
-      try {
-        school = await School.findOne({ where: { name: { [Op.iLike]: trimmedName } } });
-        if (!school) school = await School.findOne({ where: { name: { [Op.iLike]: `%${trimmedName}%` } } });
-
-        if (school) {
-          finalSchoolId = school.id;
-        } else {
-          try {
-            school = await School.create({ name: trimmedName, type: 'both' });
-            finalSchoolId = school.id;
-          } catch (createError) {
-            logger.error('Database error creating school', { error: createError.message, stack: createError.stack, schoolName: trimmedName, parentId });
-            return res.status(500).json({ error: 'Database error', message: 'Failed to create school. Please try again.' });
-          }
-        }
-      } catch (findError) {
-        logger.error('Database error finding school by name', { error: findError.message, stack: findError.stack, schoolName: trimmedName, parentId });
-        return res.status(500).json({ error: 'Database error', message: 'Failed to find or create school. Please try again.' });
-      }
+    } catch (schoolError) {
+      logger.error('Database error finding school by ID', { error: schoolError.message, stack: schoolError.stack, schoolId, parentId });
+      return res.status(500).json({ error: 'Database error', message: 'Failed to find school. Please try again.' });
     }
 
     if (!finalSchoolId || !uuidRegex.test(finalSchoolId)) {

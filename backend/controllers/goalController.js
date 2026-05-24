@@ -139,6 +139,10 @@ export const update = async (req, res) => {
     if (!goal) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND' } });
     }
+    const child = await validateChildAccess(goal.childId, req);
+    if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
 
     // Block attempts to change immutable fields
     const attemptedImmutable = IMMUTABLE_FIELDS.filter(f => Object.prototype.hasOwnProperty.call(req.body, f));
@@ -220,6 +224,10 @@ export const deleteGoal = async (req, res) => {
     if (!goal) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND' } });
     }
+    const child = await validateChildAccess(goal.childId, req);
+    if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
 
     await goal.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: req.body?.reason ?? null });
 
@@ -237,6 +245,10 @@ export const createReview = async (req, res) => {
     });
     if (!goal) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_NOT_FOUND' } });
+    }
+    const child = await validateChildAccess(goal.childId, req);
+    if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
 
     const { reviewDate, status, evidence, nextSteps } = req.body;
