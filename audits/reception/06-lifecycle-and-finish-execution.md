@@ -253,14 +253,12 @@ Confirmed in `receptionLifecycle.test.js` for both parent and teacher reset:
 - `tempPassword` returned once in `data.tempPassword` ✓
 - Reception cannot set an arbitrary password — only system-generated temp ✓
 
-### Manual gate (required — Railway)
+### Manual gate — ✅ COMPLETED by Max 2026-05-24
 
-The following must be verified by Max before S8:
-
-1. **Deactivate blocks login:** Suspend a parent → that parent's login returns 401/suspended error. Reactivate → login works again.
-2. **Credential reset forces change:** Reset a teacher's credentials → use the returned temp password to log in → CP-023 gate fires, redirect to password-change page before any other action.
-3. **Cross-school sanity:** Reception at school A cannot see or manage school B's parents/teachers (API returns 404).
-4. **Dashboard pending-docs card:** Shows real pending count from `/reception/documents` (not always zero).
+1. **Deactivate blocks login:** ✅ Suspend a parent → login blocked. Reactivate → login works.
+2. **Credential reset forces change:** ✅ Temp password works for login; CP-023 gate fires and redirects to password-change before any other action.
+3. **Cross-school sanity:** ✅ Reception cannot see or manage another school's accounts (404).
+4. **Dashboard pending-docs card:** ✅ Shows real pending count from `/reception/documents`.
 
 ---
 
