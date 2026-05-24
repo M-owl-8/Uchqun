@@ -296,6 +296,28 @@ Introduced: Reception S3 U-4 (2026-05-23)
 
 ---
 
+## Reception Parent & Teacher Lifecycle (`controllers/receptionParentController.js`, `controllers/receptionTeacherController.js`)
+
+Introduced: Reception S6 (2026-05-24)
+
+Shared codes (already in locale from Admin section): `PARENT_NOT_FOUND`, `PARENT_ALREADY_ACTIVE`, `PARENT_ACTIVATE_FAILED`, `PARENT_ALREADY_SUSPENDED`, `PARENT_SUSPEND_FAILED`, `TEACHER_NOT_FOUND`.
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `RECEPTION_PARENT_ACTIVATE_FORBIDDEN` | 403 | Defense-in-depth: caller role is not `reception` | "You do not have permission to activate parents." |
+| `RECEPTION_PARENT_SUSPEND_FORBIDDEN` | 403 | Defense-in-depth: caller role is not `reception` | "You do not have permission to suspend parents." |
+| `RECEPTION_CREDENTIAL_RESET_FORBIDDEN` | 403 | Defense-in-depth: caller role is not `reception` (shared by parent and teacher reset endpoints) | "You do not have permission to reset credentials." |
+| `PARENT_CREDENTIAL_RESET_FAILED` | 500 | Unexpected server error during parent temp-password generation or save | "Failed to reset credentials. Please try again." |
+| `RECEPTION_TEACHER_ACTIVATE_FORBIDDEN` | 403 | Defense-in-depth: caller role is not `reception` | "You do not have permission to activate teachers." |
+| `TEACHER_ALREADY_ACTIVE` | 409 | Teacher's `status` is already `active` | "This teacher account is already active." |
+| `TEACHER_ACTIVATE_FAILED` | 500 | Unexpected server error during teacher status update | "Failed to activate teacher. Please try again." |
+| `RECEPTION_TEACHER_SUSPEND_FORBIDDEN` | 403 | Defense-in-depth: caller role is not `reception` | "You do not have permission to suspend teachers." |
+| `TEACHER_ALREADY_SUSPENDED` | 409 | Teacher's `status` is already `suspended` | "This teacher account is already suspended." |
+| `TEACHER_SUSPEND_FAILED` | 500 | Unexpected server error during teacher status update | "Failed to suspend teacher. Please try again." |
+| `TEACHER_CREDENTIAL_RESET_FAILED` | 500 | Unexpected server error during teacher temp-password generation or save | "Failed to reset credentials. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

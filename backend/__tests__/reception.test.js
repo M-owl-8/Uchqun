@@ -33,6 +33,9 @@ jest.unstable_mockModule('../config/storage.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
 
 const { createTeacher, getTeachers, updateTeacher, deleteTeacher } = await import('../controllers/receptionTeacherController.js');
 const { getParents, deleteParent } = await import('../controllers/receptionParentController.js');

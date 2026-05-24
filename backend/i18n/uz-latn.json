@@ -153,5 +153,16 @@
   "TEACHER_FETCH_FAILED": "O'qituvchini yuklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
   "DOCUMENT_NOT_FOUND": "Hujjat topilmadi.",
   "DOCUMENT_ACCESS_DENIED": "Siz bu hujjatni o'chirish huquqiga ega emassiz.",
-  "DOCUMENT_CANNOT_DELETE_NON_PENDING": "Faqat kutilayotgan hujjatlarni o'chirish mumkin."
+  "DOCUMENT_CANNOT_DELETE_NON_PENDING": "Faqat kutilayotgan hujjatlarni o'chirish mumkin.",
+  "RECEPTION_PARENT_ACTIVATE_FORBIDDEN": "Siz ota-onalar hisobini faollashtirish huquqiga ega emassiz.",
+  "RECEPTION_PARENT_SUSPEND_FORBIDDEN": "Siz ota-onalar hisobini to'xtatish huquqiga ega emassiz.",
+  "RECEPTION_CREDENTIAL_RESET_FORBIDDEN": "Siz kirish ma'lumotlarini tiklash huquqiga ega emassiz.",
+  "PARENT_CREDENTIAL_RESET_FAILED": "Kirish ma'lumotlarini tiklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "RECEPTION_TEACHER_ACTIVATE_FORBIDDEN": "Siz o'qituvchilar hisobini faollashtirish huquqiga ega emassiz.",
+  "TEACHER_ALREADY_ACTIVE": "Bu o'qituvchi hisobi allaqachon faol.",
+  "TEACHER_ACTIVATE_FAILED": "O'qituvchini faollashtirish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "RECEPTION_TEACHER_SUSPEND_FORBIDDEN": "Siz o'qituvchilar hisobini to'xtatish huquqiga ega emassiz.",
+  "TEACHER_ALREADY_SUSPENDED": "Bu o'qituvchi hisobi allaqachon to'xtatilgan.",
+  "TEACHER_SUSPEND_FAILED": "O'qituvchini to'xtatish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "TEACHER_CREDENTIAL_RESET_FAILED": "O'qituvchining kirish ma'lumotlarini tiklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring."
 }

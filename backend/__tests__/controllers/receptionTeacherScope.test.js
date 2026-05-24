@@ -52,6 +52,10 @@ jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn() },
 }));
 
+jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
+
 jest.unstable_mockModule('../../config/storage.js', () => ({
   uploadFile: jest.fn(),
   deleteFile: jest.fn(),

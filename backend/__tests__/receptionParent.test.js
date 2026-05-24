@@ -40,6 +40,9 @@ jest.unstable_mockModule('../models/Progress.js', () => ({
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../utils/auditLogger.js', () => ({
+  logAudit: jest.fn(),
+}));
 jest.unstable_mockModule('../config/database.js', () => ({
   default: { transaction: mockSequelizeTransaction },
 }));

@@ -2,8 +2,8 @@ import express from 'express';
 import { authenticate, requireReception } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
 import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages, deleteDocument } from '../controllers/receptionController.js';
-import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher } from '../controllers/receptionTeacherController.js';
-import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception } from '../controllers/receptionParentController.js';
+import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher, activateTeacher, suspendTeacher, resetTeacherCredentials } from '../controllers/receptionTeacherController.js';
+import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception, activateParent, suspendParent, resetParentCredentials } from '../controllers/receptionParentController.js';
 import { getGroups } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
@@ -36,6 +36,9 @@ router.get('/verification-status', getVerificationStatus);
 router.post('/teachers', createStaffValidator, handleValidationErrors, createTeacher);
 router.get('/teachers', getTeachers);
 router.get('/teachers/:id/ratings', getTeacherRatings);
+router.put('/teachers/:id/activate', activateTeacher);
+router.put('/teachers/:id/suspend', suspendTeacher);
+router.post('/teachers/:id/reset-credentials', resetTeacherCredentials);
 router.put('/teachers/:id', updateTeacher);
 router.delete('/teachers/:id', deleteTeacher);
 
@@ -43,6 +46,9 @@ router.delete('/teachers/:id', deleteTeacher);
 // Validators run after multer so req.body is populated from multipart form
 router.post('/parents', upload.fields([{ name: 'child[photo]', maxCount: 1 }]), createParentValidator, handleValidationErrors, createParent);
 router.get('/parents', getParents);
+router.put('/parents/:id/activate', activateParent);
+router.put('/parents/:id/suspend', suspendParent);
+router.post('/parents/:id/reset-credentials', resetParentCredentials);
 router.put('/parents/:id', updateParent);
 router.delete('/parents/:id', deleteParent);
 // Add child to existing parent (separate endpoint to avoid route conflicts)

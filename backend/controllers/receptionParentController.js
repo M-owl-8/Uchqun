@@ -1,3 +1,4 @@
+import crypto from 'crypto';
 import User from '../models/User.js';
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
@@ -11,7 +12,28 @@ import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 import sequelize from '../config/database.js';
 import { uploadFile, deleteFile } from '../config/storage.js';
+import { logAudit } from '../utils/auditLogger.js';
 import fs from 'fs';
+
+// Fisher-Yates shuffle using crypto bytes; 8+ chars; upper+lower+digit guaranteed
+function generateTempPassword() {
+  const upper = 'ABCDEFGHJKLMNPQRSTUVWXYZ';
+  const lower = 'abcdefghjkmnpqrstuvwxyz';
+  const digits = '23456789';
+  const all = upper + lower + digits;
+  const bytes = crypto.randomBytes(12);
+  let pwd = upper[bytes[0] % upper.length]
+    + lower[bytes[1] % lower.length]
+    + digits[bytes[2] % digits.length];
+  for (let i = 3; i < 12; i++) pwd += all[bytes[i] % all.length];
+  const shuf = crypto.randomBytes(11);
+  const arr = pwd.split('');
+  for (let i = 11; i > 0; i--) {
+    const j = shuf[i - 1] % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr.join('');
+}
 
 export const createParent = async (req, res) => {
   try {
@@ -379,5 +401,75 @@ export const deleteChildForReception = async (req, res) => {
   } catch (error) {
     logger.error('Delete child (reception) error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to delete child' });
+  }
+};
+
+// PUT /reception/parents/:id/activate
+export const activateParent = async (req, res) => {
+  if (req.user.role !== 'reception') {
+    return res.status(403).json({ success: false, error: { code: 'RECEPTION_PARENT_ACTIVATE_FORBIDDEN' } });
+  }
+  const { id } = req.params;
+  try {
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
+    if (!parent) return res.status(404).json({ success: false, error: { code: 'PARENT_NOT_FOUND' } });
+    if (parent.status === 'active') return res.status(409).json({ success: false, error: { code: 'PARENT_ALREADY_ACTIVE' } });
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'activate',
+      entity: 'parents', entityId: parent.id, schoolId: req.user.schoolId,
+      meta: { previousStatus: parent.status },
+    });
+    await parent.update({ status: 'active' });
+    return res.json({ success: true, data: { id: parent.id, status: parent.status } });
+  } catch (error) {
+    logger.error('activateParent (reception) error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'PARENT_ACTIVATE_FAILED' } });
+  }
+};
+
+// PUT /reception/parents/:id/suspend
+export const suspendParent = async (req, res) => {
+  if (req.user.role !== 'reception') {
+    return res.status(403).json({ success: false, error: { code: 'RECEPTION_PARENT_SUSPEND_FORBIDDEN' } });
+  }
+  const { id } = req.params;
+  try {
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
+    if (!parent) return res.status(404).json({ success: false, error: { code: 'PARENT_NOT_FOUND' } });
+    if (parent.status === 'suspended') return res.status(409).json({ success: false, error: { code: 'PARENT_ALREADY_SUSPENDED' } });
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'suspend',
+      entity: 'parents', entityId: parent.id, schoolId: req.user.schoolId,
+      meta: { previousStatus: parent.status },
+    });
+    await parent.update({ status: 'suspended' });
+    return res.json({ success: true, data: { id: parent.id, status: parent.status } });
+  } catch (error) {
+    logger.error('suspendParent (reception) error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'PARENT_SUSPEND_FAILED' } });
+  }
+};
+
+// POST /reception/parents/:id/reset-credentials
+export const resetParentCredentials = async (req, res) => {
+  if (req.user.role !== 'reception') {
+    return res.status(403).json({ success: false, error: { code: 'RECEPTION_CREDENTIAL_RESET_FORBIDDEN' } });
+  }
+  const { id } = req.params;
+  try {
+    const parent = await User.findOne({ where: { id, role: 'parent', schoolId: req.user.schoolId } });
+    if (!parent) return res.status(404).json({ success: false, error: { code: 'PARENT_NOT_FOUND' } });
+    const tempPassword = generateTempPassword();
+    logAudit({
+      actorId: req.user.id, actorRole: req.user.role, action: 'reset_credentials',
+      entity: 'parents', entityId: parent.id, schoolId: req.user.schoolId,
+    });
+    parent.password = tempPassword;
+    parent.mustChangePassword = true;
+    await parent.save();
+    return res.json({ success: true, data: { tempPassword } });
+  } catch (error) {
+    logger.error('resetParentCredentials (reception) error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'PARENT_CREDENTIAL_RESET_FAILED' } });
   }
 };
