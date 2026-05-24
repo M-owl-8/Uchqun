@@ -133,7 +133,7 @@ JSONB fields:
 | Route `/teacher/ai-warnings` (teacher subtree, App.jsx:93) | ✅ Yes | Teacher-mounted dead page (403 always). |
 | Parent sidebar link to `/ai-warnings` (Sidebar.jsx:60) | ✅ Yes | Dead link → hits NotFound. |
 | `backend/routes/aiWarningRoutes.js` + `aiWarningController.js` | ❌ Keep | Serves admin/government legitimately (analyze, view, resolve, notify). Not a parent-access concern. |
-| `POST /teacher/ai/chat` (teacherRoutes.js:79) | ⚠️ Pending Max decision | Government flagged **parent-portal** AI specifically. Teacher AI chat (`getAIAdvice`) is a separate surface. Current decision: keep for now, flag for S6 feature plan review. |
+| `POST /teacher/ai/chat` (teacherRoutes.js:79) | ✅ Yes — remove in S5/S6 | Confirmed by Max 2026-05-24. Same concern as parent AI: AI misleading caregivers of disabled children extends to teachers. Unmount alongside parent AI teardown. |
 
 **Data disposition:** No stored data — no AI chat model or table exists. The parent AI chat is stateless (request → Claude API → response). No migration needed for removal.
 
@@ -147,4 +147,4 @@ JSONB fields:
 
 **When executed:** S5 or S6 build phase — as part of the teacher+parent portal feature build, not in S3 cleanup. S3 cleanup does NOT touch AI surfaces.
 
-**Open question for Max (non-blocking):** Should `POST /teacher/ai/chat` (teacher AI endpoint) also be removed? Government said "parent-portal AI" but the concern (AI misleading caregivers of disabled children) could extend to teachers too. Record decision before S6.
+**Teacher AI chat:** Also removed. Confirmed by Max 2026-05-24. Scope is ALL AI chat in the teacher+parent portal (both roles).

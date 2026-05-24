@@ -21,6 +21,7 @@
 | `teacher/src/parent/components/Sidebar.jsx` (ai-chat + ai-warnings links) | Frozen — remove in S5/S6 | Nav links for both AI pages |
 | `teacher/src/parent/components/BottomNav.jsx` (ai-chat link) | Frozen — remove in S5/S6 | Nav link |
 | `backend/routes/parentRoutes.js:53` (`POST /parent/ai/chat`) | Frozen — unmount in S5/S6 | Backend endpoint removed with teardown |
+| `backend/routes/teacherRoutes.js:79` (`POST /teacher/ai/chat`) | Frozen — unmount in S5/S6 | Teacher AI chat also removed (confirmed Max 2026-05-24) |
 | `teacher/src/App.jsx:67` (ai-chat route) | Frozen — remove in S5/S6 | Route definition removed with teardown |
 | `teacher/src/App.jsx:93` (ai-warnings teacher route) | Frozen — remove in S5/S6 | Dead teacher route removed with teardown |
 
