@@ -2,7 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from './LoadingSpinner';
 
-const ProtectedRoute = ({ children, requireRole }) => {
+const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   const { isAuthenticated, loading, isTeacher, isParent, user } = useAuth();
 
   if (loading && !user) {
@@ -15,6 +15,11 @@ const ProtectedRoute = ({ children, requireRole }) => {
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
+  }
+
+  if (user?.mustChangePassword && !allowMustChange) {
+    const changePath = requireRole === 'parent' ? '/change-password' : '/teacher/change-password';
+    return <Navigate to={changePath} replace />;
   }
 
   // Enforce role-specific access and avoid redirect loops by falling back to login

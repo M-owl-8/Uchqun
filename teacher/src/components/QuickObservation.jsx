@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { X, Camera, ChevronDown } from 'lucide-react';
-import { ChildAvatar } from './ChildAvatar';
 import { useChildRibbon } from '../hooks/useChildRibbon';
 import api from '../shared/services/api';
 
@@ -50,14 +49,17 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
   const [note, setNote]               = useState('');
   const [saving, setSaving]           = useState(false);
   const [goalOpen, setGoalOpen]       = useState(false);
+  const [childLoadError, setChildLoadError] = useState(null);
 
   useEffect(() => {
     api.get('/teacher/children').then(res => {
       const list = res.data?.data || res.data || [];
       setChildren(Array.isArray(list) ? list : []);
       if (!selectedChild && list.length > 0) setSelectedChild(list[0]);
-    }).catch(() => {});
-  }, []);
+    }).catch(() => {
+      setChildLoadError("Bolalar ro'yxatini yuklashda xatolik");
+    });
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     if (!selectedChild?.id) return;
@@ -117,6 +119,12 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
             </button>
           </div>
 
+          {childLoadError && (
+            <div className="mt-3 px-3 py-2 rounded-md bg-error-50 border border-error-100 text-[12px] text-error-700">
+              {"Bolalar ro'yxatini yuklashda xatolik"}
+            </div>
+          )}
+
           {/* Child strip */}
           {children.length > 0 && (
             <div className="mt-4">
@@ -162,7 +170,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
               )}
             </div>
             <div className="mt-1 text-[11px] text-slate-500">
-              Eng so'nggi yozilgan maqsad — smart default
+              {"Eng so'nggi yozilgan maqsad — smart default"}
             </div>
           </div>
 

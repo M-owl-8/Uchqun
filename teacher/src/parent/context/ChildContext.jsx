@@ -19,6 +19,7 @@ export const ChildProvider = ({ children: childrenProp }) => {
   const [childrenList, setChildrenList] = useState(() => cache.get(CACHE_KEY) || []);
   const [selectedChildId, setSelectedChildId] = useState(null);
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
+  const [loadError, setLoadError] = useState(null);
 
   useEffect(() => {
     loadChildren();
@@ -55,8 +56,10 @@ export const ChildProvider = ({ children: childrenProp }) => {
       const childrenData = Array.isArray(response.data) ? response.data : [];
       cache.set(CACHE_KEY, childrenData, CACHE_TTL);
       setChildrenList(childrenData);
+      setLoadError(null);
     } catch {
       setChildrenList([]);
+      setLoadError('Failed to load children. Please refresh.');
     } finally {
       setLoading(false);
     }
@@ -76,6 +79,7 @@ export const ChildProvider = ({ children: childrenProp }) => {
     selectChild,
     loadChildren,
     loading,
+    loadError,
   };
 
   return <ChildContext.Provider value={value}>{childrenProp}</ChildContext.Provider>;

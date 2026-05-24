@@ -41,12 +41,13 @@ const Attendance = () => {
         setStates(initial);
       } catch {
         setChildren([]);
+        showError("Bolalar ro'yxatini yuklashda xatolik");
       } finally {
         setLoading(false);
       }
     };
     load();
-  }, []);
+  }, [showError]);
 
   const handleStateChange = (childId, newState) => {
     setStates(prev => ({ ...prev, [childId]: newState }));

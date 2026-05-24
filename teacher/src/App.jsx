@@ -36,6 +36,8 @@ import AIChat from './parent/pages/AIChat';
 import TeacherRating from './parent/pages/TeacherRating';
 import ParentSettings from './parent/pages/Settings';
 import Therapy from './parent/pages/Therapy';
+import TeacherChangePassword from './pages/ChangePassword';
+import ParentChangePassword from './parent/pages/ChangePassword';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -50,6 +52,24 @@ function App() {
                 <ToastContainer />
                 <Routes>
                   <Route path="/login" element={<Login />} />
+
+                  <Route
+                    path="/teacher/change-password"
+                    element={
+                      <ProtectedRoute requireRole="teacher" allowMustChange>
+                        <TeacherChangePassword />
+                      </ProtectedRoute>
+                    }
+                  />
+
+                  <Route
+                    path="/change-password"
+                    element={
+                      <ProtectedRoute requireRole="parent" allowMustChange>
+                        <ParentChangePassword />
+                      </ProtectedRoute>
+                    }
+                  />
 
                   <Route
                     path="/"
