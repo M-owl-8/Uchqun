@@ -34,6 +34,8 @@ jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
     if (child.schoolId !== req.user.schoolId) return null;
     return child;
   }),
+  // Assignment check: assume assigned for existing mock-based (cross-school) tests.
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },

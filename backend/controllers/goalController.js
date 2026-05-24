@@ -1,7 +1,7 @@
 import ChildGoal from '../models/ChildGoal.js';
 import ChildGoalReview from '../models/ChildGoalReview.js';
 import logger from '../utils/logger.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const VALID_CATEGORIES = [
@@ -19,6 +19,9 @@ export const listByChild = async (req, res) => {
     const childId = req.params.childId ?? req.params.id;
     const child = await validateChildAccess(childId, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
 
@@ -96,6 +99,9 @@ export const create = async (req, res) => {
     if (!child) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
+    if (!await isTeacherAssignedToChild(child, req)) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
 
     const goal = await ChildGoal.create({
       childId,
@@ -141,6 +147,9 @@ export const update = async (req, res) => {
     }
     const child = await validateChildAccess(goal.childId, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
 
@@ -228,6 +237,9 @@ export const deleteGoal = async (req, res) => {
     if (!child) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
+    if (!await isTeacherAssignedToChild(child, req)) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
 
     await goal.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: req.body?.reason ?? null });
 
@@ -248,6 +260,9 @@ export const createReview = async (req, res) => {
     }
     const child = await validateChildAccess(goal.childId, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'GOAL_CHILD_NOT_ACCESSIBLE' } });
     }
 

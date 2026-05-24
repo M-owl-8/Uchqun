@@ -105,9 +105,30 @@ JSONB fields:
 - [ ] S1 audit complete (`audits/teacher-parent/01-audit.md`)
 - [ ] S2 cleanup plan approved (`audits/teacher-parent/02-cleanup-plan.md`)
 - [ ] S3 cleanup executed + S4 confirmed clean
+- [ ] **V1 Remediation scope decision: wider class (observations, journals, attendance) — fix all before S5 or fix alongside ИРР build?** (see `audits/teacher-parent/04b-v1-remediation.md`)
 - [ ] S6 feature plan approved (including ИРР build plan referencing this decisions file)
 - [ ] OQ-2, OQ-10, F-1, F-2, F-3 sign-offs from partner/ministry (before shipping to real users)
 - [ ] PL-009-VERIFY extended to cover all new ИРР terminology
+
+---
+
+## Security Primitive Mandate: isTeacherAssignedToChild
+
+**Decision (V1 Remediation 2026-05-25):** All ИРР build endpoints that read, write, or delete teacher-facing data on a per-child basis MUST call BOTH primitives in sequence:
+
+```js
+const child = await validateChildAccess(childId, req);      // axis 1: school scope
+if (!child) return res.status(404).json(...);
+if (!await isTeacherAssignedToChild(child, req)) {          // axis 2: teacher assignment
+  return res.status(404).json({ success: false, error: { code: '..._CHILD_NOT_ACCESSIBLE' } });
+}
+```
+
+Both primitives are in `utils/schoolValidation.js`.
+
+`validateChildAccess` alone is NOT sufficient for teacher-facing endpoints. Using `validateChildAccess` alone repeats the TP-01 class of error. This applies to all new ИРР models: IRR, AssessmentSession, AssessmentScore, LongTermGoal, GoalPeriod, ShortTermGoal, DailyMonitoringEntry, WeeklyMonitoringEntry.
+
+`QuarterlyMonitoringEntry` is manager/admin-only (OQ-3) — `isTeacherAssignedToChild` does not apply (non-teacher roles bypass the primitive with `return true`).
 
 ---
 

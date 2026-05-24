@@ -39,6 +39,8 @@ Note: `createReview` (line 235) also uses `findOne({ where: { id, schoolId } })`
 
 **S2 disposition:** Fix — add `validateChildAccess` or scope by `createdBy: req.user.id` (teacher's own goals) before allowing mutation.
 
+> **CORRECTION (V1 Remediation 2026-05-25):** The description above contains an error. `validateChildAccess` does NOT check the teacher-child assignment relationship — it checks **school membership only** (`child.schoolId === req.user.schoolId`). Therefore CREATE was also unprotected (not just PATCH/DELETE), and `listByChild` was also unprotected. The full scope: all 5 goal endpoints lacked the assignment axis. The S3 fix (U3a) correctly closed the cross-school IDOR but did not close the within-school cross-teacher IDOR — that was closed in V1 Remediation via the new `isTeacherAssignedToChild` primitive. The same class of gap exists in observationController, journalController, attendanceController, and findChildScopedResource callers — see `audits/teacher-parent/04b-v1-remediation.md`.
+
 ---
 
 ### TP-05-CONFIRMED (S0 carry) — parentSchoolRatingController: two-part null-bypass + schoolName path has no tenant check
