@@ -1,6 +1,5 @@
 import { Check, X, Clock, Thermometer } from 'lucide-react';
 import { ChildAvatar } from './ChildAvatar';
-import { useChildRibbon } from '../hooks/useChildRibbon';
 
 // Attendance states cycle: unset → present → absent → late → sick → unset
 const STATES = ['unset', 'present', 'absent', 'late', 'sick'];
@@ -95,10 +94,10 @@ function ChildCard({ child, state, onStateChange }) {
  * states: { [childId]: 'unset' | 'present' | 'absent' | 'late' | 'sick' }
  * onStateChange(childId, newState)
  */
-export function AttendanceGrid({ children, states, onStateChange }) {
+export function AttendanceGrid({ childList, states, onStateChange }) {
   return (
     <div className="grid grid-cols-2 gap-2.5">
-      {children.map((child) => (
+      {childList.map((child) => (
         <ChildCard
           key={child.id}
           child={child}

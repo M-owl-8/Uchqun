@@ -20,7 +20,7 @@ const formatDate = () => {
 
 const Attendance = () => {
   const navigate    = useNavigate();
-  const { toast }   = useToast() || {};
+  const { success, error: showError } = useToast();
   const [children, setChildren] = useState([]);
   const [states, setStates]     = useState({});
   const [filter, setFilter]     = useState('all');
@@ -68,10 +68,10 @@ const Attendance = () => {
         status:  states[c.id] || 'unset',
       }));
       await api.post('/attendance', { records });
-      toast?.({ type: 'success', message: 'Davomat saqlandi' });
+      success('Davomat saqlandi');
       navigate('/teacher');
     } catch {
-      toast?.({ type: 'error', message: 'Saqlashda xatolik yuz berdi' });
+      showError('Saqlashda xatolik yuz berdi');
     } finally {
       setSaving(false);
     }
@@ -149,10 +149,10 @@ const Attendance = () => {
       {/* Grid */}
       <div className="mt-1">
         {filtered.length === 0 ? (
-          <div className="text-center py-12 text-[13px] text-slate-500">Bu filtr bo'yicha bola yo'q</div>
+          <div className="text-center py-12 text-[13px] text-slate-500">{"Bu filtr bo'yicha bola yo'q"}</div>
         ) : (
           <AttendanceGrid
-            children={filtered}
+            childList={filtered}
             states={states}
             onStateChange={handleStateChange}
           />
