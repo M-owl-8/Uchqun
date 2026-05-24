@@ -36,13 +36,12 @@ const Dashboard = () => {
         api.get('/reception/parents', { signal }),
         api.get('/reception/teachers', { signal }),
         api.get('/groups', { signal }),
-        // TODO(phase-2): wire to /reception/my-documents?status=pending
-        api.get('/reception/my-documents', { signal }).catch(() => ({ data: { documents: [] } })),
+        api.get('/reception/documents', { signal }).catch(() => ({ data: { data: [] } })),
       ]);
       const p = parentsRes.status === 'fulfilled' && Array.isArray(parentsRes.value.data?.data) ? parentsRes.value.data.data : [];
       const tc = teachersRes.status === 'fulfilled' && Array.isArray(teachersRes.value.data?.data) ? teachersRes.value.data.data : [];
-      const g = groupsRes.status === 'fulfilled' && Array.isArray(groupsRes.value.data?.groups) ? groupsRes.value.data.groups : [];
-      const docs = docsRes.status === 'fulfilled' && Array.isArray(docsRes.value.data?.documents) ? docsRes.value.data.documents : [];
+      const g = groupsRes.status === 'fulfilled' && Array.isArray(groupsRes.value.data?.data) ? groupsRes.value.data.data : [];
+      const docs = docsRes.status === 'fulfilled' && Array.isArray(docsRes.value.data?.data) ? docsRes.value.data.data : [];
       const pending = docs.filter((d) => d.status === 'pending');
       return { stats: { parents: p.length, teachers: tc.length, groups: g.length }, teachers: tc, parents: p, pendingDocs: pending };
     };
@@ -76,8 +75,8 @@ const Dashboard = () => {
   const dateStr = now.toLocaleDateString('uz-Latn-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
   const timeStr = now.toLocaleTimeString('uz-Latn-UZ', { hour: '2-digit', minute: '2-digit' });
 
-  // Derive pending-activation parents (isActive === false)
-  const pendingParents = parents.filter((p) => p.isActive === false).slice(0, 3);
+  // Suspended parents (status !== 'active'); isActive is legacy/bypassed for parents
+  const pendingParents = parents.filter((p) => p.status === 'suspended').slice(0, 3);
 
   // Recent activity (derive from parents list — newest first)
   const recentActivity = [...parents]
@@ -245,9 +244,6 @@ const Dashboard = () => {
                       </div>
                       <div className="text-[12px] text-slate-500 num truncate">{parent.phone}</div>
                     </div>
-                    <button className="h-7 px-2.5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[12px] font-medium transition-colors">
-                      {t('dashboard.activate', { defaultValue: 'Faollashtirish' })}
-                    </button>
                   </li>
                 ))}
               </ul>

@@ -48,7 +48,8 @@ export const getGroups = async (req, res) => {
       // If admin has no receptions, return empty array
       if (receptionIds.length === 0) {
         return res.json({
-          groups: [],
+          success: true,
+          data: [],
           total: 0,
           limit: limitNum,
           offset: offsetNum,
@@ -74,7 +75,8 @@ export const getGroups = async (req, res) => {
     });
 
     res.json({
-      groups: groups.rows,
+      success: true,
+      data: groups.rows,
       total: groups.count,
       limit: limitNum,
       offset: offsetNum,

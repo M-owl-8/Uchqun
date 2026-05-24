@@ -84,10 +84,10 @@ const ParentManagement = () => {
     if (cachedG) setGroups(cachedG);
     const [teachersRes, groupsRes] = await Promise.all([
       api.get('/reception/teachers').catch(() => ({ data: { data: [] } })),
-      api.get('/groups').catch(() => ({ data: { groups: [] } })),
-    ]).catch(() => [{ data: { data: [] } }, { data: { groups: [] } }]);
+      api.get('/groups').catch(() => ({ data: { data: [] } })),
+    ]).catch(() => [{ data: { data: [] } }, { data: { data: [] } }]);
     const t2 = Array.isArray(teachersRes.data.data) ? teachersRes.data.data : [];
-    const g2 = Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : [];
+    const g2 = Array.isArray(groupsRes.data.data) ? groupsRes.data.data : [];
     cache.set('reception:teachers', t2);
     cache.set('reception:groups', g2);
     setTeachers(t2);

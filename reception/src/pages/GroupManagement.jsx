@@ -40,8 +40,8 @@ const GroupManagement = () => {
       setLoading(true);
       const teachersRes = await api.get('/reception/teachers').catch(() => ({ data: { data: [] } }));
       setTeachers(Array.isArray(teachersRes.data.data) ? teachersRes.data.data : []);
-      const groupsRes = await api.get('/groups').catch(() => ({ data: { groups: [] } }));
-      setGroups(Array.isArray(groupsRes.data.groups) ? groupsRes.data.groups : []);
+      const groupsRes = await api.get('/groups').catch(() => ({ data: { data: [] } }));
+      setGroups(Array.isArray(groupsRes.data.data) ? groupsRes.data.data : []);
     } catch (error) {
       showErrorRef.current(error.response?.data?.error || t('groupsPage.toastLoadError'));
       setGroups([]);

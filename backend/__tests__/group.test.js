@@ -41,7 +41,7 @@ describe('groupController', () => {
       const res = mkRes();
       await getGroups(req, res);
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-        groups: [], total: 0,
+        success: true, data: [], total: 0,
       }));
     });
 

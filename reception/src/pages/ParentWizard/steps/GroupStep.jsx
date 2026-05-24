@@ -12,7 +12,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
     if (cached) { setGroups(cached); setLoading(false); return; }
     api.get('/groups')
       .then((res) => {
-        const g = Array.isArray(res.data.groups) ? res.data.groups : [];
+        const g = Array.isArray(res.data.data) ? res.data.data : [];
         cache.set('reception:groups', g);
         setGroups(g);
         setFetchError(null);

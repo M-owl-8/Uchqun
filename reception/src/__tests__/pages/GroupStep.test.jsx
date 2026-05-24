@@ -27,7 +27,7 @@ beforeEach(() => vi.clearAllMocks());
 
 describe('GroupStep (U-7 RE-7 sweep)', () => {
   it('shows groups when API succeeds', async () => {
-    api.get.mockResolvedValue({ data: { groups: [{ id: 'g1', name: 'Guruh A', capacity: 10 }] } });
+    api.get.mockResolvedValue({ data: { data:[{ id: 'g1', name: 'Guruh A', capacity: 10 }] } });
     render(<GroupStep {...defaultProps} />);
     await waitFor(() => expect(screen.getByText(/"Guruh A"/)).toBeDefined());
   });
@@ -41,7 +41,7 @@ describe('GroupStep (U-7 RE-7 sweep)', () => {
   });
 
   it('shows "no groups" when API returns empty array', async () => {
-    api.get.mockResolvedValue({ data: { groups: [] } });
+    api.get.mockResolvedValue({ data: { data:[] } });
     render(<GroupStep {...defaultProps} />);
     await waitFor(() => {
       expect(screen.getByText('Guruhlar topilmadi')).toBeDefined();
