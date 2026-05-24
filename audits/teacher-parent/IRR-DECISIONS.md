@@ -112,3 +112,39 @@ JSONB fields:
 ---
 
 *Generated from IRR-SPECIFICATION.md Part G resolutions and Max's decisions 2026-05-24.*
+
+---
+
+## AI REMOVAL (S5/S6 Build Phase — Government-Mandated)
+
+**Decision:** LOCKED. Government flagged AI as able to mislead parents of disabled children. AI is removed from the parent portal.
+
+**Reason:** Parents of children with disabilities are in a vulnerable position. AI-generated advice (even well-intentioned) may be misread as professional or clinical guidance. Government explicitly prohibited it.
+
+**Scope (from investigation 2026-05-24):**
+
+| Surface | Remove? | Why |
+|---|---|---|
+| `teacher/src/parent/pages/AIChat.jsx` | ✅ Yes | Parent-facing AI chatbot. Direct AI advice to parents. Government-flagged risk. |
+| Route `/ai-chat` (parent subtree, App.jsx:67) | ✅ Yes | Mounts AIChat for parents. |
+| Nav links in BottomNav.jsx + Sidebar.jsx (parent) | ✅ Yes | Both nav components link to `/ai-chat`. |
+| `POST /parent/ai/chat` (parentRoutes.js:53) | ✅ Yes | Backend endpoint powering parent AI chat. Unmount entirely. |
+| `teacher/src/parent/pages/AIWarnings.jsx` | ✅ Yes (dead page) | Imported and used at `/teacher/ai-warnings` (teacher subtree). Backend requires admin/government — teachers get 403. Dead page. Also linked from parent sidebar at `/ai-warnings` (path mismatch → hits NotFound). Both surfaces broken. Remove page + both nav/route references. |
+| Route `/teacher/ai-warnings` (teacher subtree, App.jsx:93) | ✅ Yes | Teacher-mounted dead page (403 always). |
+| Parent sidebar link to `/ai-warnings` (Sidebar.jsx:60) | ✅ Yes | Dead link → hits NotFound. |
+| `backend/routes/aiWarningRoutes.js` + `aiWarningController.js` | ❌ Keep | Serves admin/government legitimately (analyze, view, resolve, notify). Not a parent-access concern. |
+| `POST /teacher/ai/chat` (teacherRoutes.js:79) | ⚠️ Pending Max decision | Government flagged **parent-portal** AI specifically. Teacher AI chat (`getAIAdvice`) is a separate surface. Current decision: keep for now, flag for S6 feature plan review. |
+
+**Data disposition:** No stored data — no AI chat model or table exists. The parent AI chat is stateless (request → Claude API → response). No migration needed for removal.
+
+**Teardown standard:** This is a deliberate teardown, not `rm -rf`. When executed in S5/S6:
+- No orphaned routes (removed from App.jsx + route files)
+- No dead nav links (removed from Sidebar.jsx, BottomNav.jsx)
+- No blank parent screens without explanation (pages removed cleanly, nav updates to exclude AI links)
+- Backend endpoints fully unmounted from parentRoutes.js
+- i18n keys for AI chat removed from locale files (uz/ru/en)
+- No 404 landmines from old bookmarked URLs (React Router catches these with NotFound already, but confirm no hardcoded redirects)
+
+**When executed:** S5 or S6 build phase — as part of the teacher+parent portal feature build, not in S3 cleanup. S3 cleanup does NOT touch AI surfaces.
+
+**Open question for Max (non-blocking):** Should `POST /teacher/ai/chat` (teacher AI endpoint) also be removed? Government said "parent-portal AI" but the concern (AI misleading caregivers of disabled children) could extend to teachers too. Record decision before S6.

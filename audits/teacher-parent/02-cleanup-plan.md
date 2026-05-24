@@ -8,6 +8,39 @@
 
 ---
 
+## AI Surface Freeze (Government-Mandated Removal — Build Phase)
+
+**Decision recorded:** `audits/teacher-parent/IRR-DECISIONS.md` (AI REMOVAL section).
+
+**S3 must NOT touch any AI surface.** The following files are FROZEN FOR REMOVAL in S5/S6:
+
+| File | Status | Why frozen |
+|---|---|---|
+| `teacher/src/parent/pages/AIChat.jsx` | Frozen — remove in S5/S6 | Government-mandated removal (parent AI advice) |
+| `teacher/src/parent/pages/AIWarnings.jsx` | Frozen — remove in S5/S6 | Dead page (backend admin/govt-only); broken teacher route; dead parent nav link |
+| `teacher/src/parent/components/Sidebar.jsx` (ai-chat + ai-warnings links) | Frozen — remove in S5/S6 | Nav links for both AI pages |
+| `teacher/src/parent/components/BottomNav.jsx` (ai-chat link) | Frozen — remove in S5/S6 | Nav link |
+| `backend/routes/parentRoutes.js:53` (`POST /parent/ai/chat`) | Frozen — unmount in S5/S6 | Backend endpoint removed with teardown |
+| `teacher/src/App.jsx:67` (ai-chat route) | Frozen — remove in S5/S6 | Route definition removed with teardown |
+| `teacher/src/App.jsx:93` (ai-warnings teacher route) | Frozen — remove in S5/S6 | Dead teacher route removed with teardown |
+
+**Impact on S3 cleanup units — check each:**
+
+- **UNIT 1 (ToastContext):** ToastContext is in `teacher/src/shared/context/ToastContext.jsx` — no AI pages depend on it in a way that cleanup touches. ✓ No interaction.
+- **UNIT 2 (Attendance toast):** `Attendance.jsx` only. ✓ No interaction.
+- **UNIT 3 (security fixes):** Backend controllers. ✓ No interaction.
+- **UNIT 4 (CP-023):** `ProtectedRoute.jsx` + new ChangePassword pages. ✓ No interaction.
+- **UNIT 5 (cold-load):** `QuickObservation.jsx`, `Attendance.jsx`, `ChildContext.jsx`. ✓ No interaction with AI pages.
+- **UNIT 6 (express dep):** `package.json`. ✓ No interaction.
+
+**Conclusion:** No cleanup unit touches a frozen AI file. S3 can proceed without adjustment.
+
+**S4 reporting note:** When S4 (confirm clean) audits the portal, the AI surface will be reported as **PRESENT-BUT-FROZEN-FOR-REMOVAL** — not as a finding, not as clean-final. S4 explicitly calls this out rather than flagging it as an unresolved finding.
+
+---
+
+---
+
 ## UNIT 0 — Route-Reachability Confirmation (read-only gate)
 
 Confirms or denies the Section H "out of scope" claims from S1 before committing to cleanup scope.
