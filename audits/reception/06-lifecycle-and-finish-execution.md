@@ -103,6 +103,34 @@ Tests:       29 passed, 29 total
 
 Coverage: 6 revert-test pairs (1 per endpoint), 6 defense-in-depth 403 checks, idempotent 409 checks, success + DB-error paths for all 6 endpoints, 2 credential-security assertions.
 
+### Part A — Behavioral isolation supplement
+
+File: `backend/__tests__/controllers/receptionLifecycleBehavioral.test.js`
+
+**Why:** The existing revert-tests mock `findOne` to return `null` and assert the 404 handler fires. They prove null-handling is correct but do not prove the `WHERE schoolId` clause itself filters correctly. These tests close that gap.
+
+**Approach:** `jest.unstable_mockModule` redirects `'../../models/User.js'` to a real in-memory SQLite `UserModel` (same field definitions, no mocks). All other model imports get empty stubs. The actual `User.findOne({ where: { id, role, schoolId } })` call in the controller executes as a live SQL query against seeded two-school data.
+
+**Seed:** school-A parent + teacher, school-B parent + teacher — all seeded with known sentinel passwords and `status: 'suspended'`.
+
+**Per-endpoint test pair:**
+
+| Endpoint | Cross-school call | Assertion |
+|---|---|---|
+| `activateParent` | reception-A → parentB.id | 404; `parentB.status` still `'suspended'` in DB |
+| `suspendParent` | reception-A → parentB.id | 404; `parentB.status` still `'active'` in DB |
+| `resetParentCredentials` | reception-A → parentB.id | 404; `parentB.password` == seed hash (unchanged); `mustChangePassword` still false |
+| `activateTeacher` | reception-A → teacherB.id | 404; `teacherB.status` still `'suspended'` in DB |
+| `suspendTeacher` | reception-A → teacherB.id | 404; `teacherB.status` still `'active'` in DB |
+| `resetTeacherCredentials` | reception-A → teacherB.id | 404; `teacherB.password` == seed hash (unchanged); `mustChangePassword` still false |
+
+Each describe block also has a same-school success test proving the WHERE clause is correctly selective — only the schoolId boundary stops the cross-school case.
+
+```
+Test Suites: 1 passed, 1 total
+Tests:       12 passed, 12 total   (6 cross-school isolation + 6 same-school success)
+```
+
 ### Part A i18n
 
 11 new error codes added to `backend/i18n/uz-latn.json`, `ru.json`, `uz-cyrl.json`. Count: 135 → 146 (UNVERIFIED machine translation). New codes include: `PARENT_NOT_FOUND`, `PARENT_ALREADY_ACTIVE`, `PARENT_ALREADY_SUSPENDED`, `TEACHER_NOT_FOUND`, `TEACHER_ALREADY_ACTIVE`, `TEACHER_ALREADY_SUSPENDED`, `CREDENTIAL_RESET_FAILED`, plus status/action variants. All added to `audits/backend/i18n-error-codes.md`.
@@ -205,10 +233,10 @@ Same pattern as C-1 for teachers (`/reception/teachers/:id/activate|suspend|rese
 
 **Backend:**
 ```
-Test Suites: 116 passed, 116 total
-Tests:       1231 passed, 1231 total
+Test Suites: 117 passed, 117 total
+Tests:       1243 passed, 1243 total
 ```
-(was 1199 before S6/S7; +32 tests: 29 lifecycle + 1 group shape + 2 group test updates)
+(was 1199 before S6/S7; +44 tests: 29 mock-based lifecycle + 12 behavioral isolation + 1 group shape + 2 group test updates)
 
 **Reception frontend:**
 ```
