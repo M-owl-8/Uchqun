@@ -78,24 +78,6 @@ export const passwordResetLimiter = rateLimit({
   },
 });
 
-// Per-user rate limiter for AI chat endpoints (20 requests per minute per authenticated user)
-const AI_WINDOW = 60 * 1000;
-export const aiChatLimiter = rateLimit({
-  windowMs: AI_WINDOW,
-  max: Number(process.env.RATE_LIMIT_AI_MAX) || 20,
-  keyGenerator: (req) => req.user?.id || req.ip,
-  store: makeRedisStore(AI_WINDOW, 'aichat'),
-  standardHeaders: true,
-  legacyHeaders: false,
-  handler: (req, res) => {
-    res.status(429).json({
-      error: 'AI rate limit exceeded',
-      message: 'Too many AI requests. Please wait before trying again.',
-      retryAfter: Math.ceil(req.rateLimit.resetTime / 1000),
-    });
-  },
-});
-
 // Per-user rate limiter for data export endpoint (1 request per 24 hours)
 const EXPORT_WINDOW = 24 * 60 * 60 * 1000;
 export const dataExportLimiter = rateLimit({

@@ -10,9 +10,7 @@ import {
   Star,
   Bell,
   Settings,
-  Heart,
   Lightbulb,
-  AlertTriangle,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '../context/NotificationContext';
@@ -56,8 +54,6 @@ const Sidebar = ({ onClose }) => {
     { name: t('nav.media'), href: '/media', icon: ImageIcon },
     { name: t('nav.rating'), href: '/rating', icon: Star },
     { name: t('nav.therapy', { defaultValue: 'Foydali' }), href: '/therapy', icon: Lightbulb },
-    { name: t('nav.aiChat'), href: '/ai-chat', icon: Heart },
-    { name: t('nav.aiWarnings', { defaultValue: 'AI Warnings' }), href: '/ai-warnings', icon: AlertTriangle },
     { name: t('nav.chat'), href: '/chat', icon: MessageCircle, badge: unreadChat },
     { name: t('nav.notifications', { defaultValue: 'Notifications' }), href: '/notifications', icon: Bell, badge: count },
     { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/settings', icon: Settings },

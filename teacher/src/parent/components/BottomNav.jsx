@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, Star, Bot } from 'lucide-react';
+import { Home, User, Star } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const BottomNav = () => {
@@ -10,7 +10,6 @@ const BottomNav = () => {
     { name: t('nav.home', { defaultValue: 'Home' }), href: '/', icon: Home },
     { name: t('nav.profile'), href: '/child', icon: User },
     { name: t('nav.rating'), href: '/rating', icon: Star },
-    { name: t('nav.aiChat'), href: '/ai-chat', icon: Bot },
   ];
 
   const isActive = (path) => {

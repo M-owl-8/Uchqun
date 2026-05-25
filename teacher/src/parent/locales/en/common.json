@@ -6,7 +6,6 @@
     "media": "Media",
     "meals": "Meals",
     "profile": "Profile",
-    "aiChat": "AI Assistant",
     "chat": "Chat",
     "rating": "Feedback",
     "schoolRating": "School Rating",
@@ -171,16 +170,6 @@
       "unsupportedDesc": "Please use YouTube, Vimeo, or direct video file URLs (.mp4, .webm, etc.)",
       "openNewTab": "Open in New Tab"
     }
-  },
-  "aiChat": {
-    "title": "AI Assistant",
-    "subtitle": "Get advice on caring for your child at home and managing special needs",
-    "welcomeMessage": "Hello! I'm your AI assistant. I can help you with:\n\n• How to care for your child at home\n• Advice for children with disabilities\n• Daily routines and activities\n• Nutrition and meal planning\n• Communication strategies\n• Behavioral support\n\nFeel free to ask me any questions about caring for your child!",
-    "inputPlaceholder": "Ask a question about caring for your child...",
-    "send": "Send",
-    "footer": "AI responses are for informational purposes only. Always consult with healthcare professionals for medical advice.",
-    "errorMessage": "I apologize, but I encountered an error. Please try again in a moment.",
-    "errorToast": "Failed to get AI response. Please try again."
   },
   "chat": {
     "title": "Chat with Teacher",

@@ -32,7 +32,6 @@ import ParentMedia from './parent/pages/Media';
 import ParentChat from './parent/pages/Chat';
 import Notifications from './parent/pages/Notifications';
 import Help from './parent/pages/Help';
-import AIChat from './parent/pages/AIChat';
 import TeacherRating from './parent/pages/TeacherRating';
 import ParentSettings from './parent/pages/Settings';
 import Therapy from './parent/pages/Therapy';
@@ -84,7 +83,6 @@ function App() {
                     <Route path="activities" element={<ErrorBoundary><ParentActivities /></ErrorBoundary>} />
                     <Route path="meals" element={<ErrorBoundary><ParentMeals /></ErrorBoundary>} />
                     <Route path="media" element={<ErrorBoundary><ParentMedia /></ErrorBoundary>} />
-                    <Route path="ai-chat" element={<ErrorBoundary><AIChat /></ErrorBoundary>} />
                     <Route path="chat" element={<ErrorBoundary><ParentChat /></ErrorBoundary>} />
                     <Route path="notifications" element={<ErrorBoundary><Notifications /></ErrorBoundary>} />
                     <Route path="help" element={<ErrorBoundary><Help /></ErrorBoundary>} />

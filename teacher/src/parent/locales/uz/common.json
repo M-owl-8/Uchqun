@@ -6,7 +6,6 @@
     "media": "Media",
     "meals": "Ovqatlar",
     "profile": "Profil",
-    "aiChat": "AI Yordamchi",
     "chat": "Chat",
     "rating": "Fikr bildirish",
     "schoolRating": "Muassasa bahosi",
@@ -176,16 +175,6 @@
       "unsupportedDesc": "YouTube, Vimeo yoki to'g'ridan-to'g'ri video fayl (mp4, webm va h.k.) manzillaridan foydalaning",
       "openNewTab": "Yangi oynada ochish"
     }
-  },
-  "aiChat": {
-    "title": "AI Yordamchi",
-    "subtitle": "Uyda farzandingizni qanday parvarish qilish va maxsus ehtiyojlarni boshqarish bo'yicha maslahat oling",
-    "welcomeMessage": "Salom! Men sizning AI yordamchingizman. Men sizga quyidagilar bo'yicha yordam bera olaman:\n\n• Uyda farzandingizni qanday parvarish qilish\n• Nogironligi bor bolalar uchun maslahatlar\n• Kunlik tartib va mashg'ulotlar\n• Ovqatlanish va taomnoma rejalashtirish\n• Muloqot strategiyalari\n• Xulq-atvor yordami\n\nFarzandingizni parvarish qilish haqida har qanday savollaringizni so'rashingiz mumkin!",
-    "inputPlaceholder": "Farzandingizni parvarish qilish haqida savol bering...",
-    "send": "Yuborish",
-    "footer": "AI javoblar faqat ma'lumot uchun. Tibbiy maslahat uchun har doim tibbiyot mutaxassislari bilan maslahatlashing.",
-    "errorMessage": "Kechirasiz, lekin xatolik yuz berdi. Iltimos, biroz vaqt o'tgach qayta urinib ko'ring.",
-    "errorToast": "AI javob olishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring."
   },
   "chat": {
     "title": "O‘qituvchi bilan chat",

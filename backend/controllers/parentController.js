@@ -5,5 +5,4 @@ export * from './parent/parentMediaController.js';
 export * from './parent/parentProfileController.js';
 export * from './parent/parentTeacherRatingController.js';
 export * from './parent/parentSchoolRatingController.js';
-export * from './parent/parentAIController.js';
 export * from './parent/parentMessageController.js';
