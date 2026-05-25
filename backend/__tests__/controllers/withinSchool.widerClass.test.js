@@ -1,14 +1,25 @@
 /**
  * Behavioral within-school cross-teacher IDOR tests — wider class
  *
+ * LOAD-BEARING TEST SUITE — second-axis (teacher→child assignment) isolation
+ * for the full teacher portal wider class (observation/journal/attendance/
+ * activity/meal/media). The mock-based suites (attendance.test.js etc.) stub
+ * isTeacherAssignedToChild to `true` and do NOT prove the primitive works
+ * through a real child load. Do not delete or weaken without replacing this
+ * coverage. See also: goalController.withinSchool.test.js (goals class).
+ *
  * Proves that isTeacherAssignedToChild blocks Teacher B from mutating
  * children belonging to Teacher A's group, across all affected controllers.
+ * Also proves the LEGACY path (parent.teacherId) works through an actual
+ * controller child-load — not just the primitive in isolation.
  *
  * Shared fixture (real SQLite):
  *   School S — two groups
  *   Group G1 → Teacher A (TEACHER_A)
  *   Group G2 → Teacher B (TEACHER_B, same school)
- *   Child A1  → schoolId=S, groupId=G1 (Teacher A's child)
+ *   Child A1  → schoolId=S, groupId=G1 (Teacher A's child via modern path)
+ *   Child L1  → schoolId=S, parentId=PARENT_L, no groupId (legacy-assigned)
+ *   PARENT_L  → User with teacherId=TEACHER_L (legacy assignment record)
  *
  * For each controller, Teacher B tries to mutate Child A1's data → must get 4xx.
  * schoolValidation.js is NOT mocked — real primitive runs against real SQLite.
@@ -41,12 +52,16 @@ const UserModel = sqlite.define('User', {
   teacherId: { type: DataTypes.STRING, allowNull: true },
 }, { tableName: 'users', timestamps: false });
 
-const SCHOOL_S  = 'aa000001-0000-4000-a000-000000000001';
-const TEACHER_A = 'aa000002-0000-4000-a000-000000000002';
-const TEACHER_B = 'aa000003-0000-4000-a000-000000000003';
-const GROUP_G1  = 'aa000004-0000-4000-a000-000000000004';
-const GROUP_G2  = 'aa000005-0000-4000-a000-000000000005';
-const CHILD_A1  = 'aa000006-0000-4000-a000-000000000006';
+const SCHOOL_S   = 'aa000001-0000-4000-a000-000000000001';
+const TEACHER_A  = 'aa000002-0000-4000-a000-000000000002';
+const TEACHER_B  = 'aa000003-0000-4000-a000-000000000003';
+const GROUP_G1   = 'aa000004-0000-4000-a000-000000000004';
+const GROUP_G2   = 'aa000005-0000-4000-a000-000000000005';
+const CHILD_A1   = 'aa000006-0000-4000-a000-000000000006';
+// Legacy-path fixture: TEACHER_L assigned to CHILD_L1 via parent.teacherId (no group)
+const TEACHER_L  = 'aa000007-0000-4000-a000-000000000007';
+const PARENT_L   = 'aa000008-0000-4000-a000-000000000008';
+const CHILD_L1   = 'aa000009-0000-4000-a000-000000000009';
 
 // ── Mock helpers ──────────────────────────────────────────────────────────────
 
@@ -68,6 +83,14 @@ const reqTeacherB = (extra = {}) => ({
 
 const reqTeacherA = (extra = {}) => ({
   user: { id: TEACHER_A, role: 'teacher', schoolId: SCHOOL_S },
+  body: {},
+  params: {},
+  query: {},
+  ...extra,
+});
+
+const reqTeacherL = (extra = {}) => ({
+  user: { id: TEACHER_L, role: 'teacher', schoolId: SCHOOL_S },
   body: {},
   params: {},
   query: {},
@@ -171,6 +194,9 @@ beforeAll(async () => {
     { id: GROUP_G2, schoolId: SCHOOL_S, teacherId: TEACHER_B },
   ]);
   await ChildModel.create({ id: CHILD_A1, schoolId: SCHOOL_S, groupId: GROUP_G1 });
+  // Legacy-path fixture: parent user whose teacherId points to TEACHER_L; child has no group
+  await UserModel.create({ id: PARENT_L, teacherId: TEACHER_L });
+  await ChildModel.create({ id: CHILD_L1, schoolId: SCHOOL_S, parentId: PARENT_L, groupId: null });
 });
 
 afterAll(() => sqlite.close());
@@ -206,6 +232,19 @@ describe('observationController — within-school cross-teacher IDOR', () => {
     const res = mkRes();
     await obsCreate(reqTeacherA({
       body: { childId: CHILD_A1, observationDate: TODAY, domain: 'communication',
+              note: 'This is a long enough note to pass validation.', severity: 'routine' },
+    }), res);
+    expect(res.status).toHaveBeenCalledWith(201);
+  });
+
+  it('Teacher L (legacy-assigned via parent.teacherId, no group) can create observation (positive)', async () => {
+    // Proves the legacy path works through the controller's actual child-load
+    // (Child.findByPk returns parentId; User.findOne by teacherId finds PARENT_L).
+    // CHILD_L1 has no groupId → modern path returns false → legacy path must succeed.
+    mockObsCreate.mockResolvedValueOnce({ id: 'obs-legacy' });
+    const res = mkRes();
+    await obsCreate(reqTeacherL({
+      body: { childId: CHILD_L1, observationDate: TODAY, domain: 'communication',
               note: 'This is a long enough note to pass validation.', severity: 'routine' },
     }), res);
     expect(res.status).toHaveBeenCalledWith(201);

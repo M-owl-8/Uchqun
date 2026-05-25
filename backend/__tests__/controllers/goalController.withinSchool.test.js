@@ -1,6 +1,12 @@
 /**
  * goalController — within-school cross-teacher IDOR revert-test (behavioral SQLite)
  *
+ * LOAD-BEARING TEST SUITE — second-axis (teacher→child assignment) isolation
+ * for the goals class (V1 remediation). The mock-based suites stub
+ * isTeacherAssignedToChild to `true` and do NOT prove the primitive works
+ * through a real child load. Do not delete or weaken without replacing this
+ * coverage. See also: withinSchool.widerClass.test.js (wider class + legacy-positive).
+ *
  * V1 residual from S4: validateChildAccess checks school membership only.
  * Teacher B (same school S, group G2) can PATCH/DELETE/POST-review/POST-create goals
  * on Child A1 who belongs to Teacher A (group G1) — both in school S.
