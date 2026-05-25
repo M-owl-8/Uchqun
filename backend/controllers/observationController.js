@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import ChildObservation from '../models/ChildObservation.js';
 import logger from '../utils/logger.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
 const VALID_DOMAINS = ['communication', 'motor', 'social', 'cognitive', 'self_care'];
 const VALID_SEVERITIES = ['routine', 'concern', 'urgent'];
@@ -43,6 +43,9 @@ export const create = async (req, res) => {
 
     const child = await validateChildAccess(childId, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'OBSERVATION_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'OBSERVATION_CHILD_NOT_ACCESSIBLE' } });
     }
 
@@ -111,6 +114,9 @@ export const listByChild = async (req, res) => {
   try {
     const child = await validateChildAccess(req.params.id, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'OBSERVATION_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'OBSERVATION_CHILD_NOT_ACCESSIBLE' } });
     }
 

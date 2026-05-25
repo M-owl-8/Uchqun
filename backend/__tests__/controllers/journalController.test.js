@@ -41,6 +41,7 @@ jest.unstable_mockModule('../../models/User.js', () => ({
 }));
 jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
   validateChildAccess: mockValidateChildAccess,
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },

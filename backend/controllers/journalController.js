@@ -2,7 +2,7 @@ import Child from '../models/Child.js';
 import ChildJournalEntry from '../models/ChildJournalEntry.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -38,6 +38,9 @@ export const create = async (req, res) => {
     if (!child) {
       return res.status(404).json({ success: false, error: { code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' } });
     }
+    if (!await isTeacherAssignedToChild(child, req)) {
+      return res.status(404).json({ success: false, error: { code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' } });
+    }
 
     const visible = isVisibleToParent === false ? false : true;
 
@@ -67,6 +70,9 @@ export const listByChild = async (req, res) => {
   try {
     const child = await validateChildAccess(req.params.childId, req);
     if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' } });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ success: false, error: { code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' } });
     }
 

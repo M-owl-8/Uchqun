@@ -18,7 +18,10 @@ jest.unstable_mockModule('../models/Child.js', () => ({
 
 jest.unstable_mockModule('../models/Media.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: mockUserFindAll } }));
-jest.unstable_mockModule('../utils/schoolValidation.js', () => ({ validateChildAccess: mockValidateChildAccess }));
+jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
+  validateChildAccess: mockValidateChildAccess,
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
+}));
 jest.unstable_mockModule('../controllers/notificationController.js', () => ({ createNotification: jest.fn() }));
 jest.unstable_mockModule('../config/socket.js', () => ({ emitToUser: jest.fn() }));
 jest.unstable_mockModule('../utils/logger.js', () => ({

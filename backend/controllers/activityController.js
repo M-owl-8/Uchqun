@@ -4,7 +4,7 @@ import Child from '../models/Child.js';
 import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import logger from '../utils/logger.js';
 
 export const getActivities = async (req, res) => {
@@ -234,9 +234,12 @@ export const createActivity = async (req, res) => {
       return res.status(400).json({ error: 'childId, skill, goal, startDate, and endDate are required' });
     }
 
-    // Verify child exists and belongs to same school
+    // Verify child exists, belongs to same school, and is assigned to this teacher
     const child = await validateChildAccess(childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Child not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
@@ -379,6 +382,9 @@ export const updateActivity = async (req, res) => {
     if (!child) {
       return res.status(404).json({ error: 'Activity child not found or access denied' });
     }
+    if (!await isTeacherAssignedToChild(child, req)) {
+      return res.status(404).json({ error: 'Activity child not found or access denied' });
+    }
 
     const updateData = {};
     for (const k of ALLOWED_ACTIVITY_FIELDS) {
@@ -448,9 +454,12 @@ export const deleteActivity = async (req, res) => {
       return res.status(404).json({ error: 'Activity not found' });
     }
 
-    // Ownership + school-scope check (BACKEND-036: was Child.findByPk, no auth)
+    // Ownership + school-scope + assignment check
     const child = await validateChildAccess(activity.childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Activity not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Activity not found or access denied' });
     }
     const activityId = activity.id;

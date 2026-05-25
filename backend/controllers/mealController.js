@@ -4,7 +4,7 @@ import Child from '../models/Child.js';
 import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import logger from '../utils/logger.js';
 
 export const getMeals = async (req, res) => {
@@ -195,9 +195,12 @@ export const createMeal = async (req, res) => {
       return res.status(400).json({ error: 'childId, mealName, description, mealType, and date are required' });
     }
 
-    // Verify child exists and belongs to same school
+    // Verify child exists, belongs to same school, and is assigned to this teacher
     const child = await validateChildAccess(childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Child not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
@@ -264,9 +267,12 @@ export const updateMeal = async (req, res) => {
       return res.status(404).json({ error: 'Meal not found' });
     }
 
-    // School scope check (BACKEND-043); also fetches child for socket notification
+    // School scope + assignment check; also fetches child for socket notification
     const child = await validateChildAccess(meal.childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Meal not found' });
     }
 
@@ -311,9 +317,12 @@ export const deleteMeal = async (req, res) => {
       return res.status(404).json({ error: 'Meal not found' });
     }
 
-    // School scope check (BACKEND-043); also fetches child for socket notification
+    // School scope + assignment check; also fetches child for socket notification
     const child = await validateChildAccess(meal.childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Meal not found' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Meal not found' });
     }
     const mealId = meal.id;

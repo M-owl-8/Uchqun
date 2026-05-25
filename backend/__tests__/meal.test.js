@@ -27,6 +27,7 @@ jest.unstable_mockModule('../models/User.js', () => ({
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
   validateChildAccess: mockValidateChildAccess,
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
 jest.unstable_mockModule('../controllers/notificationController.js', () => ({
   createNotification: mockCreateNotification,

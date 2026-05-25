@@ -1,7 +1,7 @@
 import { Op } from 'sequelize';
 import ChildAttendance from '../models/ChildAttendance.js';
 import logger from '../utils/logger.js';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
 const VALID_STATUSES = ['present', 'absent', 'late', 'excused'];
 
@@ -27,9 +27,12 @@ export const createAttendance = async (req, res) => {
       return res.status(400).json({ success: false, error: 'date must not be in the future' });
     }
 
-    // School-scope validation
+    // School-scope + teacher-assignment validation
     const child = await validateChildAccess(childId, req);
     if (!child) return res.status(403).json({ success: false, error: 'Access denied or child not found' });
+    if (!await isTeacherAssignedToChild(child, req)) {
+      return res.status(403).json({ success: false, error: 'Access denied or child not found' });
+    }
 
     const childSnapshot = {
       firstName: child.firstName,
@@ -94,7 +97,9 @@ export const updateAttendance = async (req, res) => {
 
     const record = await ChildAttendance.findByPk(id);
     if (!record) return res.status(404).json({ success: false, error: 'Attendance record not found' });
-    if (record.schoolId !== req.user.schoolId) {
+    const attendChild = await validateChildAccess(record.childId, req);
+    if (!attendChild) return res.status(403).json({ success: false, error: 'Access denied' });
+    if (!await isTeacherAssignedToChild(attendChild, req)) {
       return res.status(403).json({ success: false, error: 'Access denied' });
     }
 
@@ -115,7 +120,9 @@ export const deleteAttendance = async (req, res) => {
 
     const record = await ChildAttendance.findByPk(id);
     if (!record) return res.status(404).json({ success: false, error: 'Attendance record not found' });
-    if (record.schoolId !== req.user.schoolId) {
+    const deleteChild = await validateChildAccess(record.childId, req);
+    if (!deleteChild) return res.status(403).json({ success: false, error: 'Access denied' });
+    if (!await isTeacherAssignedToChild(deleteChild, req)) {
       return res.status(403).json({ success: false, error: 'Access denied' });
     }
 

@@ -17,6 +17,7 @@ jest.unstable_mockModule('../models/Child.js', () => ({
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
   validateChildAccess: mockValidateChildAccess,
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn() },
@@ -154,9 +155,8 @@ describe('attendanceController — updateAttendance', () => {
   });
 
   it('403 when attendance record belongs to different school', async () => {
-    // Revert-test baseline: without the schoolId check, cross-school update succeeds.
-    // With check: returns 403.
-    mockAttFindByPk.mockResolvedValue({ id: 'att-1', schoolId: 'OTHER-school', save: jest.fn() });
+    mockAttFindByPk.mockResolvedValue({ id: 'att-1', childId: 'child-x', schoolId: 'OTHER-school', save: jest.fn() });
+    mockValidateChildAccess.mockResolvedValue(null); // cross-school → access denied
     const req = { user: { schoolId: 'school-1' }, params: { id: 'att-1' }, body: { status: 'absent' } };
     const res = mkRes();
     await updateAttendance(req, res);
@@ -164,9 +164,11 @@ describe('attendanceController — updateAttendance', () => {
   });
 
   it('200 on valid update', async () => {
+    const child = { id: 'child-1', schoolId: 'school-1' };
     const save = jest.fn().mockResolvedValue();
-    mockAttFindByPk.mockResolvedValue({ id: 'att-1', schoolId: 'school-1', status: 'present', save });
-    const req = { user: { schoolId: 'school-1' }, params: { id: 'att-1' }, body: { status: 'absent' } };
+    mockAttFindByPk.mockResolvedValue({ id: 'att-1', childId: 'child-1', schoolId: 'school-1', status: 'present', save });
+    mockValidateChildAccess.mockResolvedValue(child);
+    const req = { user: { schoolId: 'school-1', role: 'admin' }, params: { id: 'att-1' }, body: { status: 'absent' } };
     const res = mkRes();
     await updateAttendance(req, res);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
@@ -185,7 +187,8 @@ describe('attendanceController — deleteAttendance', () => {
   beforeEach(() => jest.clearAllMocks());
 
   it('403 when record belongs to different school', async () => {
-    mockAttFindByPk.mockResolvedValue({ id: 'att-1', schoolId: 'OTHER', destroy: jest.fn() });
+    mockAttFindByPk.mockResolvedValue({ id: 'att-1', childId: 'child-x', schoolId: 'OTHER', destroy: jest.fn() });
+    mockValidateChildAccess.mockResolvedValue(null); // cross-school → access denied
     const req = { user: { schoolId: 'school-1' }, params: { id: 'att-1' } };
     const res = mkRes();
     await deleteAttendance(req, res);
@@ -193,9 +196,11 @@ describe('attendanceController — deleteAttendance', () => {
   });
 
   it('200 on successful delete', async () => {
+    const child = { id: 'child-1', schoolId: 'school-1' };
     const destroy = jest.fn().mockResolvedValue();
-    mockAttFindByPk.mockResolvedValue({ id: 'att-1', schoolId: 'school-1', destroy });
-    const req = { user: { schoolId: 'school-1' }, params: { id: 'att-1' } };
+    mockAttFindByPk.mockResolvedValue({ id: 'att-1', childId: 'child-1', schoolId: 'school-1', destroy });
+    mockValidateChildAccess.mockResolvedValue(child);
+    const req = { user: { schoolId: 'school-1', role: 'admin' }, params: { id: 'att-1' } };
     const res = mkRes();
     await deleteAttendance(req, res);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));

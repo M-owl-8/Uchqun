@@ -11,7 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import logger from '../utils/logger.js';
 import axios from 'axios';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
 // sharp is loaded dynamically to avoid startup crashes in containers
 let sharpModule = null;
@@ -379,14 +379,11 @@ export const uploadMedia = async (req, res) => {
       return res.status(400).json({ error: 'File content does not match declared type or is not a supported format' });
     }
 
-    // Verify child exists and belongs to same school
+    // Verify child exists, belongs to same school, and is assigned to this teacher
     const child = await validateChildAccess(childId, req);
-    if (!child) {
-      // Clean up uploaded file
+    if (!child || !await isTeacherAssignedToChild(child, req)) {
       if (req.file.path) {
-        try {
-          fs.unlinkSync(req.file.path);
-        } catch (e) {
+        try { fs.unlinkSync(req.file.path); } catch (e) {
           logger.warn('Error deleting file during cleanup', { error: e.message, path: req.file?.path });
         }
       }
@@ -539,9 +536,12 @@ export const createMedia = async (req, res) => {
       return res.status(400).json({ error: 'Date is required' });
     }
 
-    // Verify child exists and belongs to same school
+    // Verify child exists, belongs to same school, and is assigned to this teacher
     const child = await validateChildAccess(childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Child not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Child not found or access denied' });
     }
 
@@ -637,9 +637,12 @@ export const updateMedia = async (req, res) => {
       return res.status(404).json({ error: 'Media not found' });
     }
 
-    // School/ownership check (BACKEND-003)
+    // School/ownership + assignment check (BACKEND-003)
     const child = await validateChildAccess(media.childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Media not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Media not found or access denied' });
     }
 
@@ -706,9 +709,9 @@ export const proxyMediaFile = async (req, res) => {
       return returnTransparentPng(res, 404);
     }
 
-    // School/ownership check (BACKEND-004)
+    // School/ownership + assignment check (BACKEND-004)
     const mediaChild = await validateChildAccess(media.childId, req);
-    if (!mediaChild) {
+    if (!mediaChild || !await isTeacherAssignedToChild(mediaChild, req)) {
       return returnTransparentPng(res, 403);
     }
 
@@ -927,9 +930,12 @@ export const deleteMedia = async (req, res) => {
       return res.status(404).json({ error: 'Media not found' });
     }
 
-    // School/ownership check (BACKEND-003)
+    // School/ownership + assignment check (BACKEND-003)
     const child = await validateChildAccess(media.childId, req);
     if (!child) {
+      return res.status(404).json({ error: 'Media not found or access denied' });
+    }
+    if (!await isTeacherAssignedToChild(child, req)) {
       return res.status(404).json({ error: 'Media not found or access denied' });
     }
     const mediaId = media.id;
