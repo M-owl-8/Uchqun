@@ -45,6 +45,16 @@ import ImportJob from './ImportJob.js';
 import ChildGoal from './ChildGoal.js';
 import ChildGoalReview from './ChildGoalReview.js';
 import SchoolCategory from './SchoolCategory.js';
+import IRR from './IRR.js';
+import AssessmentCriteria from './AssessmentCriteria.js';
+import AssessmentSession from './AssessmentSession.js';
+import AssessmentScore from './AssessmentScore.js';
+import LongTermGoal from './LongTermGoal.js';
+import GoalPeriod from './GoalPeriod.js';
+import ShortTermGoal from './ShortTermGoal.js';
+import DailyMonitoringEntry from './DailyMonitoringEntry.js';
+import WeeklyMonitoringEntry from './WeeklyMonitoringEntry.js';
+import QuarterlyMonitoringEntry from './QuarterlyMonitoringEntry.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -93,6 +103,16 @@ const models = {
   ChildGoal,
   ChildGoalReview,
   SchoolCategory,
+  IRR,
+  AssessmentCriteria,
+  AssessmentSession,
+  AssessmentScore,
+  LongTermGoal,
+  GoalPeriod,
+  ShortTermGoal,
+  DailyMonitoringEntry,
+  WeeklyMonitoringEntry,
+  QuarterlyMonitoringEntry,
   sequelize,
 };
 
@@ -349,6 +369,88 @@ ChildGoal.hasMany(ChildGoalReview, { foreignKey: 'goalId', as: 'reviews', onDele
 ChildGoalReview.belongsTo(ChildGoal, { foreignKey: 'goalId', as: 'goal' });
 User.hasMany(ChildGoalReview, { foreignKey: 'reviewerId', as: 'authoredGoalReviews' });
 ChildGoalReview.belongsTo(User, { foreignKey: 'reviewerId', as: 'reviewer' });
+
+// === ИРР models ===
+
+// IRR
+Child.hasMany(IRR, { foreignKey: 'childId', as: 'irrs' });
+IRR.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(IRR, { foreignKey: 'schoolId', as: 'irrs' });
+IRR.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(IRR, { foreignKey: 'createdBy', as: 'createdIRRs' });
+IRR.belongsTo(User, { foreignKey: 'createdBy', as: 'creator' });
+User.hasMany(IRR, { foreignKey: 'parentId', as: 'parentIRRs' });
+IRR.belongsTo(User, { foreignKey: 'parentId', as: 'irrParent' });
+
+// AssessmentSession
+IRR.hasMany(AssessmentSession, { foreignKey: 'irrId', as: 'assessmentSessions' });
+AssessmentSession.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr' });
+Child.hasMany(AssessmentSession, { foreignKey: 'childId', as: 'assessmentSessions' });
+AssessmentSession.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+User.hasMany(AssessmentSession, { foreignKey: 'completedBy', as: 'completedAssessments' });
+AssessmentSession.belongsTo(User, { foreignKey: 'completedBy', as: 'assessor' });
+
+// AssessmentScore
+AssessmentSession.hasMany(AssessmentScore, { foreignKey: 'sessionId', as: 'scores' });
+AssessmentScore.belongsTo(AssessmentSession, { foreignKey: 'sessionId', as: 'session' });
+AssessmentCriteria.hasMany(AssessmentScore, { foreignKey: 'criterionId', as: 'scores' });
+AssessmentScore.belongsTo(AssessmentCriteria, { foreignKey: 'criterionId', as: 'criterion' });
+
+// LongTermGoal
+IRR.hasMany(LongTermGoal, { foreignKey: 'irrId', as: 'longTermGoals' });
+LongTermGoal.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr' });
+Child.hasMany(LongTermGoal, { foreignKey: 'childId', as: 'longTermGoals' });
+LongTermGoal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(LongTermGoal, { foreignKey: 'schoolId', as: 'longTermGoals' });
+LongTermGoal.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
+// GoalPeriod
+IRR.hasMany(GoalPeriod, { foreignKey: 'irrId', as: 'goalPeriods' });
+GoalPeriod.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr' });
+Child.hasMany(GoalPeriod, { foreignKey: 'childId', as: 'goalPeriods' });
+GoalPeriod.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(GoalPeriod, { foreignKey: 'schoolId', as: 'goalPeriods' });
+GoalPeriod.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(GoalPeriod, { foreignKey: 'teacherSignedBy', as: 'teacherSignedPeriods' });
+GoalPeriod.belongsTo(User, { foreignKey: 'teacherSignedBy', as: 'teacherSigner' });
+User.hasMany(GoalPeriod, { foreignKey: 'managerSignedBy', as: 'managerSignedPeriods' });
+GoalPeriod.belongsTo(User, { foreignKey: 'managerSignedBy', as: 'managerSigner' });
+
+// ShortTermGoal
+GoalPeriod.hasMany(ShortTermGoal, { foreignKey: 'periodId', as: 'shortTermGoals' });
+ShortTermGoal.belongsTo(GoalPeriod, { foreignKey: 'periodId', as: 'period' });
+IRR.hasMany(ShortTermGoal, { foreignKey: 'irrId', as: 'shortTermGoals' });
+ShortTermGoal.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr' });
+Child.hasMany(ShortTermGoal, { foreignKey: 'childId', as: 'shortTermGoals' });
+ShortTermGoal.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(ShortTermGoal, { foreignKey: 'schoolId', as: 'shortTermGoals' });
+ShortTermGoal.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+
+// DailyMonitoringEntry
+Child.hasMany(DailyMonitoringEntry, { foreignKey: 'childId', as: 'dailyMonitoringEntries' });
+DailyMonitoringEntry.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(DailyMonitoringEntry, { foreignKey: 'schoolId', as: 'dailyMonitoringEntries' });
+DailyMonitoringEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(DailyMonitoringEntry, { foreignKey: 'recordedBy', as: 'dailyMonitoringEntries' });
+DailyMonitoringEntry.belongsTo(User, { foreignKey: 'recordedBy', as: 'recorder' });
+IRR.hasMany(DailyMonitoringEntry, { foreignKey: 'irrId', as: 'dailyMonitoringEntries', constraints: false });
+DailyMonitoringEntry.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr', constraints: false });
+
+// WeeklyMonitoringEntry
+Child.hasMany(WeeklyMonitoringEntry, { foreignKey: 'childId', as: 'weeklyMonitoringEntries' });
+WeeklyMonitoringEntry.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(WeeklyMonitoringEntry, { foreignKey: 'schoolId', as: 'weeklyMonitoringEntries' });
+WeeklyMonitoringEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(WeeklyMonitoringEntry, { foreignKey: 'recordedBy', as: 'weeklyMonitoringEntries' });
+WeeklyMonitoringEntry.belongsTo(User, { foreignKey: 'recordedBy', as: 'recorder' });
+IRR.hasMany(WeeklyMonitoringEntry, { foreignKey: 'irrId', as: 'weeklyMonitoringEntries', constraints: false });
+WeeklyMonitoringEntry.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr', constraints: false });
+
+// QuarterlyMonitoringEntry (facility-level, no childId)
+School.hasMany(QuarterlyMonitoringEntry, { foreignKey: 'schoolId', as: 'quarterlyMonitoringEntries' });
+QuarterlyMonitoringEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(QuarterlyMonitoringEntry, { foreignKey: 'recordedBy', as: 'quarterlyMonitoringEntries' });
+QuarterlyMonitoringEntry.belongsTo(User, { foreignKey: 'recordedBy', as: 'recorder' });
 
 // ─── AuditLog associations ────────────────────────────────────────────────────
 AuditLog.belongsTo(User, { foreignKey: 'actorId', as: 'actor', constraints: false });
@@ -742,6 +844,172 @@ ChildGoal.afterDestroy(async (instance, options) => {
   }
 });
 
+// ─── ИРР model afterDestroy hooks ────────────────────────────────────────────
+// Every ИРР model is registered here — no declared-but-not-hooked models.
+// Paranoid model (IRR): hook fires on soft-delete.
+// Non-paranoid models: hook fires on hard-delete (Phase 2 controllers must always
+//   pass { actorId, actorRole, reason } to destroy() calls on ИРР records).
+
+IRR.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'irrs',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, status: instance.status },
+    });
+  } catch {
+    // intentionally swallowed — audit failure does not block delete
+  }
+});
+
+AssessmentCriteria.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'assessment_criteria',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, code: instance.code },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+AssessmentSession.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'assessment_sessions',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, irrId: instance.irrId, childId: instance.childId, sessionType: instance.sessionType },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+AssessmentScore.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'assessment_scores',
+      entityId: instance.id,
+      schoolId: null,
+      meta: { reason: options?.reason ?? null, sessionId: instance.sessionId, criterionId: instance.criterionId, score: instance.score },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+LongTermGoal.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'long_term_goals',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, irrId: instance.irrId, childId: instance.childId },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+GoalPeriod.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'goal_periods',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, irrId: instance.irrId, childId: instance.childId, status: instance.status },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+ShortTermGoal.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'short_term_goals',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, irrId: instance.irrId, childId: instance.childId, skillAreaCode: instance.skillAreaCode },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+DailyMonitoringEntry.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'daily_monitoring_entries',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, entryDate: instance.entryDate },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+WeeklyMonitoringEntry.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'weekly_monitoring_entries',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, childId: instance.childId, weekStart: instance.weekStart },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
+QuarterlyMonitoringEntry.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'quarterly_monitoring_entries',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: { reason: options?.reason ?? null, quarterStart: instance.quarterStart },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
 // ─── School-scoped named scopes ───────────────────────────────────────────────
 Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
 Activity.addScope('byChild', (childId) => ({ where: { childId } }));
@@ -827,5 +1095,15 @@ export {
   ChildJournalEntry,
   ImportJob,
   SchoolCategory,
+  IRR,
+  AssessmentCriteria,
+  AssessmentSession,
+  AssessmentScore,
+  LongTermGoal,
+  GoalPeriod,
+  ShortTermGoal,
+  DailyMonitoringEntry,
+  WeeklyMonitoringEntry,
+  QuarterlyMonitoringEntry,
   sequelize,
 };
