@@ -318,6 +318,113 @@ Shared codes (already in locale from Admin section): `PARENT_NOT_FOUND`, `PARENT
 
 ---
 
+## ИРР — IRR Core (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `IRR_CHILD_NOT_ACCESSIBLE` | 404 | Child does not exist, belongs to a different school, or requesting teacher is not assigned to this child | "This child is not in your group." |
+| `IRR_ALREADY_EXISTS` | 409 | An active IRR already exists for this child | "This child already has an active development plan." |
+| `IRR_NOT_FOUND` | 404 | No IRR found with the given ID, belongs to a different school, or teacher is not assigned to the child | "Development plan not found." |
+| `IRR_HEADER_INCOMPLETE` | 400 | One or more of the 9 mandatory header fields are missing — IRR cannot be activated in draft state | "Please fill in all required fields before activating the plan." |
+| `IRR_INVALID_STATUS` | 409 | IRR status transition is not allowed (e.g. archiving an already-archived IRR, or activating a non-draft IRR) | "This operation is not allowed in the current plan status." |
+| `IRR_CREATE_FAILED` | 500 | Unexpected server error while creating IRR | "Failed to create development plan. Please try again." |
+| `IRR_FETCH_FAILED` | 500 | Unexpected server error while fetching IRR | "Failed to load development plan. Please try again." |
+| `IRR_UPDATE_FAILED` | 500 | Unexpected server error while updating or changing IRR status | "Failed to update development plan. Please try again." |
+
+## ИРР — Assessment Sessions (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `ASSESSMENT_INVALID_TYPE` | 400 | `sessionType` is missing or not one of `intake`, `3mo`, `6mo`, `9mo`, `12mo`, `custom` | "Please select a valid assessment type." |
+| `ASSESSMENT_SESSION_EXISTS` | 409 | A non-custom session of this type already exists for this IRR | "An assessment of this type already exists for this plan." |
+| `ASSESSMENT_INCOMPLETE` | 400 | `scores` array is missing, not an array, or does not contain exactly 17 values | "Please provide scores for all 17 assessment criteria." |
+| `ASSESSMENT_INVALID_SCORE` | 400 | One or more scores are not integers in the range 0–4 | "Each criterion score must be a whole number between 0 and 4." |
+| `ASSESSMENT_CRITERIA_MISSING` | 500 | Fewer than 17 active assessment criteria found in the database — seeder may not have run | "Assessment criteria are not configured. Contact your administrator." |
+| `ASSESSMENT_NOT_FOUND` | 404 | No assessment session found with the given ID in this school | "Assessment session not found." |
+| `ASSESSMENT_CREATE_FAILED` | 500 | Unexpected server error while creating assessment session or score rows | "Failed to save assessment. Please try again." |
+| `ASSESSMENT_LIST_FAILED` | 500 | Unexpected server error while listing assessment sessions | "Failed to load assessments. Please try again." |
+| `ASSESSMENT_FETCH_FAILED` | 500 | Unexpected server error while fetching a single assessment session | "Failed to load assessment. Please try again." |
+
+## ИРР — Long-Term Goals (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `LONG_TERM_GOAL_NOT_FOUND` | 404 | No long-term goal found with the given ID, or teacher is not assigned to this child | "Long-term goal not found." |
+| `LONG_TERM_GOAL_TEXT_TOO_SHORT` | 400 | `goalText` is missing or fewer than 5 characters after trimming | "Goal description must be at least 5 characters." |
+| `LONG_TERM_GOAL_CREATE_FAILED` | 500 | Unexpected server error while creating long-term goal | "Failed to save goal. Please try again." |
+| `LONG_TERM_GOAL_UPDATE_FAILED` | 500 | Unexpected server error while updating long-term goal | "Failed to update goal. Please try again." |
+| `LONG_TERM_GOAL_DELETE_FAILED` | 500 | Unexpected server error while deleting long-term goal | "Failed to delete goal. Please try again." |
+| `LONG_TERM_GOAL_LIST_FAILED` | 500 | Unexpected server error while listing long-term goals | "Failed to load goals. Please try again." |
+
+## ИРР — Goal Periods (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `GOAL_PERIOD_NOT_FOUND` | 404 | No goal period found with the given ID, or teacher is not assigned to this child | "Goal period not found." |
+| `GOAL_PERIOD_DATES_REQUIRED` | 400 | `periodStart` or `periodEnd` is missing | "Please provide both start and end dates for the goal period." |
+| `GOAL_PERIOD_CREATE_FAILED` | 500 | Unexpected server error while creating goal period | "Failed to create goal period. Please try again." |
+| `GOAL_PERIOD_UPDATE_FAILED` | 500 | Unexpected server error while updating goal period review or signature | "Failed to update goal period. Please try again." |
+| `GOAL_PERIOD_LIST_FAILED` | 500 | Unexpected server error while listing goal periods | "Failed to load goal periods. Please try again." |
+
+## ИРР — Short-Term Goals (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `SHORT_TERM_GOAL_NOT_FOUND` | 404 | No short-term goal found with the given ID, or teacher is not assigned to this child | "Short-term goal not found." |
+| `SHORT_TERM_GOAL_TEXT_TOO_SHORT` | 400 | `goalText` is missing or fewer than 3 characters after trimming | "Goal description must be at least 3 characters." |
+| `SHORT_TERM_GOAL_CREATE_FAILED` | 500 | Unexpected server error while creating short-term goal | "Failed to save goal. Please try again." |
+| `SHORT_TERM_GOAL_UPDATE_FAILED` | 500 | Unexpected server error while updating short-term goal | "Failed to update goal. Please try again." |
+| `SHORT_TERM_GOAL_DELETE_FAILED` | 500 | Unexpected server error while deleting short-term goal | "Failed to delete goal. Please try again." |
+| `SHORT_TERM_GOAL_LIST_FAILED` | 500 | Unexpected server error while listing short-term goals | "Failed to load goals. Please try again." |
+
+## ИРР — Daily Monitoring (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `DAILY_ENTRY_CHILD_NOT_ACCESSIBLE` | 404 | Child does not exist, belongs to a different school, or teacher is not assigned | "This child is not in your group." |
+| `DAILY_ENTRY_DATE_REQUIRED` | 400 | `entryDate` is missing | "Please provide the entry date." |
+| `DAILY_ENTRY_DUPLICATE` | 409 | A daily monitoring entry already exists for this child on this date | "A daily entry for this date already exists." |
+| `DAILY_ENTRY_CREATE_FAILED` | 500 | Unexpected server error while creating daily monitoring entry | "Failed to save daily entry. Please try again." |
+| `DAILY_ENTRY_LIST_FAILED` | 500 | Unexpected server error while listing daily monitoring entries | "Failed to load daily entries. Please try again." |
+
+## ИРР — Weekly Monitoring (`controllers/teacher/irrController.js`)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `WEEKLY_ENTRY_CHILD_NOT_ACCESSIBLE` | 404 | Child does not exist, belongs to a different school, or teacher is not assigned | "This child is not in your group." |
+| `WEEKLY_ENTRY_DATE_REQUIRED` | 400 | `weekStart` is missing | "Please provide the week start date." |
+| `WEEKLY_ENTRY_DUPLICATE` | 409 | A weekly monitoring entry already exists for this child for this week | "A weekly entry for this week already exists." |
+| `WEEKLY_ENTRY_CREATE_FAILED` | 500 | Unexpected server error while creating weekly monitoring entry | "Failed to save weekly entry. Please try again." |
+| `WEEKLY_ENTRY_LIST_FAILED` | 500 | Unexpected server error while listing weekly monitoring entries | "Failed to load weekly entries. Please try again." |
+
+## ИРР — Quarterly Monitoring (`controllers/teacher/irrController.js`, admin-only)
+
+Introduced: Teacher S5 Phase 2 (2026-05-26)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `QUARTERLY_ACCESS_DENIED` | 403 | Caller role is not `admin` or `reception` (defense-in-depth; route layer uses `requireAdmin`) | "Only managers can create quarterly monitoring reports." |
+| `QUARTERLY_ENTRY_DATES_REQUIRED` | 400 | `quarterStart` or `quarterEnd` is missing | "Please provide both start and end dates for the quarter." |
+| `QUARTERLY_ENTRY_DUPLICATE` | 409 | A quarterly monitoring entry already exists for this school and quarter | "A quarterly report for this period already exists." |
+| `QUARTERLY_ENTRY_CREATE_FAILED` | 500 | Unexpected server error while creating quarterly monitoring entry | "Failed to save quarterly report. Please try again." |
+| `QUARTERLY_ENTRY_LIST_FAILED` | 500 | Unexpected server error while listing quarterly monitoring entries | "Failed to load quarterly reports. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

@@ -32,6 +32,11 @@ import {
   getMyEvaluations,
 } from '../controllers/parentEvaluationController.js';
 import { exportMyData } from '../controllers/parent/parentDataExportController.js';
+import {
+  getChildIRR as getParentChildIRR,
+  getAssessmentProgression,
+  getGoals as getIRRGoals,
+} from '../controllers/parent/irrParentController.js';
 
 const router = express.Router();
 
@@ -79,6 +84,11 @@ router.get('/children/:id/journal', authenticate, requireParent, getChildJournal
 // Emotional Monitoring (read-only for parents)
 router.get('/emotional-monitoring/child/:childId', authenticate, requireParent, getMonitoringByChild);
 router.get('/emotional-monitoring/:id', authenticate, requireParent, getMonitoringById);
+
+// ИРР read-only (VIEW-ONLY — no parent write path, aggregate score only per OQ-4)
+router.get('/children/:childId/irr', authenticate, requireParent, getParentChildIRR);
+router.get('/children/:childId/irr/assessment', authenticate, requireParent, getAssessmentProgression);
+router.get('/children/:childId/irr/goals', authenticate, requireParent, getIRRGoals);
 
 // View parent data (accessible by Admin or Reception when clicking on parent in list)
 // This route must come after all specific routes to avoid conflicts

@@ -25,6 +25,15 @@ import {
   createReview as createGoalReview,
   listReviews as listGoalReviews,
 } from '../controllers/goalController.js';
+import {
+  createIRR, getChildIRR, getIRR, updateIRR, activateIRR, archiveIRR,
+  createAssessmentSession, listAssessmentSessions, getAssessmentSession,
+  createLongTermGoal, listLongTermGoals, updateLongTermGoal, deleteLongTermGoal,
+  createGoalPeriod, listGoalPeriods, updateGoalPeriodReview, signGoalPeriod,
+  createShortTermGoal, listShortTermGoals, updateShortTermGoal, deleteShortTermGoal,
+  createDailyEntry, listDailyEntries,
+  createWeeklyEntry, listWeeklyEntries,
+} from '../controllers/teacher/irrController.js';
 
 const router = express.Router();
 
@@ -111,5 +120,40 @@ router.delete('/emotional-monitoring/:id', deleteMonitoring);
 // General routes come after specific routes
 router.post('/emotional-monitoring', createEmotionalMonitoringValidator, handleValidationErrors, createOrUpdateMonitoring);
 router.get('/emotional-monitoring', getAllMonitoring);
+
+// ── ИРР (Individual Development Plan) ────────────────────────────────────────
+// IRR per child
+router.post('/children/:childId/irr', requireRole('teacher'), createIRR);
+router.get('/children/:childId/irr', getChildIRR);
+// Daily monitoring per child
+router.post('/children/:childId/daily-entries', requireRole('teacher'), createDailyEntry);
+router.get('/children/:childId/daily-entries', listDailyEntries);
+// Weekly monitoring per child
+router.post('/children/:childId/weekly-entries', requireRole('teacher'), createWeeklyEntry);
+router.get('/children/:childId/weekly-entries', listWeeklyEntries);
+// IRR resource by ID
+router.get('/irr/:irrId', getIRR);
+router.patch('/irr/:irrId', requireRole('teacher'), updateIRR);
+router.post('/irr/:irrId/activate', requireRole('teacher'), activateIRR);
+router.post('/irr/:irrId/archive', requireRole('teacher'), archiveIRR);
+// Assessment sessions
+router.post('/irr/:irrId/assessment-sessions', requireRole('teacher'), createAssessmentSession);
+router.get('/irr/:irrId/assessment-sessions', listAssessmentSessions);
+router.get('/assessment-sessions/:sessionId', getAssessmentSession);
+// Long-term goals
+router.post('/irr/:irrId/long-term-goals', requireRole('teacher'), createLongTermGoal);
+router.get('/irr/:irrId/long-term-goals', listLongTermGoals);
+router.patch('/long-term-goals/:id', requireRole('teacher'), updateLongTermGoal);
+router.delete('/long-term-goals/:id', requireRole('teacher'), deleteLongTermGoal);
+// Goal periods
+router.post('/irr/:irrId/goal-periods', requireRole('teacher'), createGoalPeriod);
+router.get('/irr/:irrId/goal-periods', listGoalPeriods);
+router.patch('/goal-periods/:id/review', requireRole('teacher'), updateGoalPeriodReview);
+router.post('/goal-periods/:id/sign', signGoalPeriod);
+// Short-term goals (nested under period)
+router.post('/goal-periods/:id/short-term-goals', requireRole('teacher'), createShortTermGoal);
+router.get('/goal-periods/:id/short-term-goals', listShortTermGoals);
+router.patch('/short-term-goals/:id', requireRole('teacher'), updateShortTermGoal);
+router.delete('/short-term-goals/:id', requireRole('teacher'), deleteShortTermGoal);
 
 export default router;

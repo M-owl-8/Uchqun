@@ -37,6 +37,7 @@ import { sendMessage } from '../controllers/governmentMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { createReceptionValidator, rejectDocumentValidator, adminIdParamValidator } from '../validators/adminValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
+import { createQuarterlyEntry, listQuarterlyEntries } from '../controllers/teacher/irrController.js';
 
 const router = express.Router();
 
@@ -117,6 +118,10 @@ router.get('/statistics', getStatistics); // Admin can view all statistics
 
 // School ratings
 router.get('/school-ratings', getSchoolRatings); // View school ratings from parents created by admin's receptions
+
+// Quarterly monitoring (ИРР — manager/admin only, facility-scoped, no childId, OQ-3)
+router.post('/irr/quarterly-entries', createQuarterlyEntry);
+router.get('/irr/quarterly-entries', listQuarterlyEntries);
 
 export default router;
 
