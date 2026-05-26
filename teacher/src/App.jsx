@@ -36,6 +36,7 @@ import Help from './parent/pages/Help';
 import TeacherRating from './parent/pages/TeacherRating';
 import ParentSettings from './parent/pages/Settings';
 import Therapy from './parent/pages/Therapy';
+import ChildIRR from './parent/pages/ChildIRR';
 import TeacherChangePassword from './pages/ChangePassword';
 import ParentChangePassword from './parent/pages/ChangePassword';
 import NotFound from './pages/NotFound';
@@ -90,6 +91,7 @@ function App() {
                     <Route path="rating" element={<ErrorBoundary><TeacherRating /></ErrorBoundary>} />
                     <Route path="settings" element={<ErrorBoundary><ParentSettings /></ErrorBoundary>} />
                     <Route path="therapy" element={<ErrorBoundary><Therapy /></ErrorBoundary>} />
+                    <Route path="irr" element={<ErrorBoundary><ChildIRR /></ErrorBoundary>} />
                   </Route>
 
                   <Route

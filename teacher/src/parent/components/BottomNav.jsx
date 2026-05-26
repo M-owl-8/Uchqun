@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, User, Star } from 'lucide-react';
+import { Home, User, Star, TrendingUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const BottomNav = () => {
@@ -9,6 +9,7 @@ const BottomNav = () => {
   const navigation = [
     { name: t('nav.home', { defaultValue: 'Home' }), href: '/', icon: Home },
     { name: t('nav.profile'), href: '/child', icon: User },
+    { name: t('nav.irr', { defaultValue: 'ИРР' }), href: '/irr', icon: TrendingUp },
     { name: t('nav.rating'), href: '/rating', icon: Star },
   ];
 

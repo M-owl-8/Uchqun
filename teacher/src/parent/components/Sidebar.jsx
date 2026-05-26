@@ -11,6 +11,7 @@ import {
   Bell,
   Settings,
   Lightbulb,
+  TrendingUp,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '../context/NotificationContext';
@@ -49,6 +50,7 @@ const Sidebar = ({ onClose }) => {
 
   const navigation = [
     { name: t('nav.profile'), href: '/child', icon: UserCircle },
+    { name: t('nav.irr', { defaultValue: 'Ривожланиш режаси' }), href: '/irr', icon: TrendingUp },
     { name: t('nav.activities'), href: '/activities', icon: CheckCircle },
     { name: t('nav.meals'), href: '/meals', icon: Utensils },
     { name: t('nav.media'), href: '/media', icon: ImageIcon },
