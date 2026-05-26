@@ -21,6 +21,7 @@ import {
   MessageSquare,
   Trash2,
   Mail,
+  ClipboardList,
 } from 'lucide-react';
 
 const NAV_SECTIONS = [
@@ -50,6 +51,7 @@ const NAV_SECTIONS = [
       { key: 'nav.schoolRatings',   href: '/admin/school-ratings', icon: BarChart3 },
       { key: 'nav.therapy',         href: '/admin/therapy',        icon: Brain },
       { key: 'nav.activity',        href: '/admin/activity',       icon: History },
+      { key: 'nav.irr',             href: '/admin/irr',            icon: ClipboardList },
     ],
   },
   {

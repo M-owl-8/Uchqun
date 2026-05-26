@@ -32,6 +32,7 @@ import ChildDetail from './pages/ChildDetail';
 import Communications from './pages/Communications';
 import Trash from './pages/Trash';
 import GovMessages from './pages/GovMessages';
+import ManagerIRR from './pages/ManagerIRR';
 
 const AppRoutes = () => {
   const { isAuthenticated, isAdmin, loading, mustChangePassword } = useAuth();
@@ -83,6 +84,7 @@ const AppRoutes = () => {
         <Route path="communications" element={<ErrorBoundary><Communications /></ErrorBoundary>} />
         <Route path="trash" element={<ErrorBoundary><Trash /></ErrorBoundary>} />
         <Route path="messages" element={<ErrorBoundary><GovMessages /></ErrorBoundary>} />
+        <Route path="irr" element={<ErrorBoundary><ManagerIRR /></ErrorBoundary>} />
       </Route>
 
       <Route path="/" element={<Navigate to={isAuthenticated && isAdmin ? '/admin' : '/login'} replace />} />
