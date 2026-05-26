@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Phone, Mail, Plus } from 'lucide-react';
+import { ArrowLeft, Phone, Mail, Plus, FileText } from 'lucide-react';
 import { ChildAvatar } from '../components/ChildAvatar';
 import { useChildRibbon } from '../hooks/useChildRibbon';
 import api from '../shared/services/api';
+import { useToast } from '../shared/context/ToastContext';
 
 const TABS = [
   { key: 'iep',       label: 'IEP Maqsadlar' },
@@ -136,8 +137,10 @@ function IEPTab({ child, goals }) {
 
 const ChildDetail = () => {
   const { id } = useParams();
+  const { error: showError } = useToast();
   const [child, setChild]   = useState(null);
   const [goals, setGoals]   = useState([]);
+  const [irr, setIrr]       = useState(null);
   const [tab, setTab]       = useState('iep');
   const [loading, setLoading] = useState(true);
 
@@ -146,9 +149,10 @@ const ChildDetail = () => {
   useEffect(() => {
     const loadChild = async () => {
       try {
-        const [childRes, goalsRes] = await Promise.allSettled([
+        const [childRes, goalsRes, irrRes] = await Promise.allSettled([
           api.get(`/teacher/children/${id}`),
           api.get(`/teacher/children/${id}/goals`), // TODO(phase-2)
+          api.get(`/teacher/children/${id}/irr`),
         ]);
         if (childRes.status === 'fulfilled') {
           setChild(childRes.value.data?.data || childRes.value.data);
@@ -157,6 +161,11 @@ const ChildDetail = () => {
           const gList = goalsRes.value.data?.data || goalsRes.value.data || [];
           setGoals(Array.isArray(gList) ? gList : []);
         }
+        if (irrRes.status === 'fulfilled') {
+          setIrr(irrRes.value.data?.data || null);
+        } else if (irrRes.reason?.response?.status !== 404) {
+          showError('ИРР ma\'lumotlari yuklanmadi');
+        }
       } catch {
         // graceful fallback
       } finally {
@@ -164,7 +173,7 @@ const ChildDetail = () => {
       }
     };
     loadChild();
-  }, [id]);
+  }, [id, showError]);
 
   if (loading) {
     return (
@@ -268,6 +277,13 @@ const ChildDetail = () => {
               className="h-9 px-3.5 rounded-md border border-slate-200 bg-surface hover:bg-slate-50 text-[13px] font-medium text-slate-700 flex items-center gap-1.5 transition-colors"
             >
               Ota-onaga yozish
+            </Link>
+            <Link
+              to={`/teacher/children/${id}/irr`}
+              className="h-9 px-3.5 rounded-md border border-slate-200 bg-surface hover:bg-slate-50 text-[13px] font-medium text-slate-700 flex items-center gap-1.5 transition-colors"
+            >
+              <FileText className="w-4 h-4" strokeWidth={1.75} />
+              {irr ? 'ИРРни кўриш' : 'ИРР тузиш'}
             </Link>
           </div>
         </div>

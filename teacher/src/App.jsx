@@ -22,6 +22,7 @@ import TherapyManagement from './pages/TherapyManagement';
 import AIWarnings from './parent/pages/AIWarnings';
 import Attendance from './pages/Attendance';
 import ChildDetail from './pages/ChildDetail';
+import IrrShell from './pages/IrrShell';
 import DailyReflection from './pages/DailyReflection';
 import ParentApp from './parent/ParentApp';
 import ParentDashboard from './parent/pages/Dashboard';
@@ -112,6 +113,7 @@ function App() {
                     <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
                     <Route path="attendance" element={<ErrorBoundary><Attendance /></ErrorBoundary>} />
                     <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
+                    <Route path="children/:id/irr" element={<ErrorBoundary><IrrShell /></ErrorBoundary>} />
                     <Route path="reflection" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
                     <Route path="journal" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
                   </Route>
