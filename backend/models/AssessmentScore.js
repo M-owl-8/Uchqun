@@ -22,6 +22,12 @@ const AssessmentScore = sequelize.define('AssessmentScore', {
     references: { model: 'assessment_criteria', key: 'id' },
     onDelete: 'RESTRICT',
   },
+  schoolId: {
+    type: DataTypes.UUID,
+    allowNull: false,
+    references: { model: 'schools', key: 'id' },
+    onDelete: 'RESTRICT',
+  },
   score: {
     type: DataTypes.INTEGER,
     allowNull: false,
