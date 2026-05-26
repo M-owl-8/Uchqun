@@ -112,6 +112,16 @@ JSONB fields:
 
 ---
 
+## additionalInfo Field — Mandatory for Activation (Build Record)
+
+**Decision (Phase 3b, 2026-05-26):**
+`additionalInfo` (Қўшимча маълумотлар) is **MANDATORY** for ИРР activation.  
+It is in `HEADER_FIELDS` in `backend/controllers/teacher/irrController.js` **by design**, per partner/standard requirements. This is **NOT** an oversight, despite `childStrengths` and `riskFactors` being advisory.
+
+Do not make `additionalInfo` optional. Do not remove it from `HEADER_FIELDS`. Any PR that does so should be rejected.
+
+---
+
 ## Security Primitive Mandate: isTeacherAssignedToChild
 
 **Decision (V1 Remediation 2026-05-25):** All ИРР build endpoints that read, write, or delete teacher-facing data on a per-child basis MUST call BOTH primitives in sequence:

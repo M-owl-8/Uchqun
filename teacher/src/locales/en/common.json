@@ -352,6 +352,33 @@
     "toastActivateError": "Error activating IRR",
     "toastIncompleteFill": "Please fill in all required fields",
     "activateErrorBannerTitle": "Fill in the following required fields before activating:",
-    "activateErrorFallback": "Required fields are not filled"
+    "activateErrorFallback": "Required fields are not filled",
+    "assessment": {
+      "sectionTitle": "Assessment results",
+      "sectionNote": "Assessment across 17 criteria (maximum {{max}} points)",
+      "newSession": "New assessment",
+      "sessionType": "Assessment type",
+      "sessionDate": "Assessment date",
+      "hearingImpaired": "Child has hearing impairment",
+      "liveScore": "Current score",
+      "scored": "{{n}} / 17 criteria scored",
+      "submitBtn": "Save results",
+      "submitting": "Saving...",
+      "notes": "Notes (optional)",
+      "progressionTitle": "Assessment history",
+      "colTime": "Time point",
+      "colScore": "Score",
+      "colDate": "Date",
+      "toastSaved": "Assessment results saved",
+      "errSessionExists": "A session of this type already exists. Choose a different type or use 'Other date'.",
+      "errIncomplete": "Score all 17 criteria.",
+      "errGeneric": "Error saving. Please try again.",
+      "sessionTypeIntake": "At admission to day care",
+      "sessionType3mo": "After 3 months",
+      "sessionType6mo": "After 6 months",
+      "sessionType9mo": "After 9 months",
+      "sessionType12mo": "After 12 months",
+      "sessionTypeCustom": "Other date"
+    }
   }
 }

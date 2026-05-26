@@ -352,6 +352,33 @@
     "toastActivateError": "Ошибка при активации",
     "toastIncompleteFill": "Заполните все обязательные поля",
     "activateErrorBannerTitle": "Перед активацией заполните следующие обязательные поля:",
-    "activateErrorFallback": "Обязательные поля не заполнены"
+    "activateErrorFallback": "Обязательные поля не заполнены",
+    "assessment": {
+      "sectionTitle": "Результаты оценки",
+      "sectionNote": "Оценка по 17 критериям (максимум {{max}} баллов)",
+      "newSession": "Новая оценка",
+      "sessionType": "Тип оценки",
+      "sessionDate": "Дата оценки",
+      "hearingImpaired": "У ребёнка нарушение слуха",
+      "liveScore": "Текущий балл",
+      "scored": "{{n}} / 17 критериев оценено",
+      "submitBtn": "Сохранить результаты",
+      "submitting": "Сохранение...",
+      "notes": "Примечание (необязательно)",
+      "progressionTitle": "История оценок",
+      "colTime": "Временная точка",
+      "colScore": "Баллы",
+      "colDate": "Дата",
+      "toastSaved": "Результаты оценки сохранены",
+      "errSessionExists": "Оценка данного типа уже существует. Выберите другой тип или «Другая дата».",
+      "errIncomplete": "Оцените все 17 критериев.",
+      "errGeneric": "Ошибка при сохранении. Попробуйте снова.",
+      "sessionTypeIntake": "При поступлении в службу дневного ухода",
+      "sessionType3mo": "Через 3 месяца",
+      "sessionType6mo": "Через 6 месяцев",
+      "sessionType9mo": "Через 9 месяцев",
+      "sessionType12mo": "Через 12 месяцев",
+      "sessionTypeCustom": "Другая дата"
+    }
   }
 }

@@ -352,6 +352,33 @@
     "toastActivateError": "Faollashtirishda xatolik yuz berdi",
     "toastIncompleteFill": "Barcha majburiy maydonlarni to'ldiring",
     "activateErrorBannerTitle": "Faollashtirishdan oldin quyidagi majburiy maydonlarni to'ldiring:",
-    "activateErrorFallback": "Majburiy maydonlar to'ldirilmagan"
+    "activateErrorFallback": "Majburiy maydonlar to'ldirilmagan",
+    "assessment": {
+      "sectionTitle": "Baholash natijalari",
+      "sectionNote": "17 ta mezon bo'yicha baholash (maksimum {{max}} ball)",
+      "newSession": "Yangi baholash",
+      "sessionType": "Baholash turi",
+      "sessionDate": "Baholash sanasi",
+      "hearingImpaired": "Bola eshitish qobiliyati cheklangan",
+      "liveScore": "Joriy ballar",
+      "scored": "{{n}} / 17 ta mezon baholandi",
+      "submitBtn": "Natijalarni saqlash",
+      "submitting": "Saqlanmoqda...",
+      "notes": "Izoh (ixtiyoriy)",
+      "progressionTitle": "Baholash tarixi",
+      "colTime": "Vaqti",
+      "colScore": "Ballar",
+      "colDate": "Sana",
+      "toastSaved": "Baholash natijalari saqlandi",
+      "errSessionExists": "Bu turdagi baholash allaqachon mavjud. Boshqa turni tanlang yoki \"Boshqa sana\"ni tanlang.",
+      "errIncomplete": "Barcha 17 ta mezonni baholang.",
+      "errGeneric": "Saqlashda xato yuz berdi. Qayta urinib ko'ring.",
+      "sessionTypeIntake": "Kunduzgi parvarish xizmatiga qabul qilinganida",
+      "sessionType3mo": "3 oydan keyin",
+      "sessionType6mo": "6 oydan keyin",
+      "sessionType9mo": "9 oydan keyin",
+      "sessionType12mo": "12 oydan keyin",
+      "sessionTypeCustom": "Boshqa sana"
+    }
   }
 }
