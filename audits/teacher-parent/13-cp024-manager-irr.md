@@ -1,6 +1,6 @@
 # CP-024 — Manager ИРР Surface (Admin portal)
 
-**Commit:** TBD (pending commit)
+**Commit:** 79cc9bf
 **Date:** 2026-05-26
 **Status:** ✅ COMPLETE
 
