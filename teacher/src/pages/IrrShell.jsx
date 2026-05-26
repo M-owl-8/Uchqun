@@ -4,6 +4,7 @@ import { ArrowLeft, FileText } from 'lucide-react';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
+import { SKILL_AREAS } from '@shared/config/skillAreas';
 
 // Must match HEADER_FIELDS in backend/controllers/teacher/irrController.js
 const MANDATORY_FIELDS = [
@@ -121,6 +122,31 @@ export default function IrrShell() {
   const [form, setForm]             = useState(EMPTY_FORM);
   const [activateError, setActivateError] = useState(null);
 
+  // ── Goals state (Phase 3c) ───────────────────────────────────────────────
+  const [longTermGoals, setLongTermGoals]   = useState([]);
+  const [loadingGoals, setLoadingGoals]     = useState(false);
+  const [ltgForm, setLtgForm]               = useState({ goalText: '', targetPeriodStart: '', targetPeriodEnd: '' });
+  const [savingLtg, setSavingLtg]           = useState(false);
+  const [ltgEditId, setLtgEditId]           = useState(null);
+  const [ltgEditForm, setLtgEditForm]       = useState({ goalText: '', targetPeriodStart: '', targetPeriodEnd: '' });
+
+  const [goalPeriods, setGoalPeriods]       = useState([]);
+  const [loadingPeriods, setLoadingPeriods] = useState(false);
+  const [periodForm, setPeriodForm]         = useState({ periodStart: '', periodEnd: '' });
+  const [savingPeriod, setSavingPeriod]     = useState(false);
+  const [periodError, setPeriodError]       = useState(null);
+  const [expandedPeriods, setExpandedPeriods] = useState(new Set());
+
+  const [stgByPeriod, setStgByPeriod]       = useState({});
+  const [stgForms, setStgForms]             = useState({});
+  const [savingStg, setSavingStg]           = useState(null);
+  const [stgEditId, setStgEditId]           = useState(null);
+  const [stgEditForm, setStgEditForm]       = useState({});
+
+  const [reviewForms, setReviewForms]       = useState({});
+  const [savingReview, setSavingReview]     = useState(null);
+  const [signingPeriod, setSigningPeriod]   = useState(null);
+
   // ── Assessment session state (Phase 3b) ──────────────────────────────────
   const [sessions, setSessions]           = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
@@ -165,10 +191,224 @@ export default function IrrShell() {
     }
   }, []);
 
+  // ── Phase 3c loaders ─────────────────────────────────────────────────────
+  const loadLongTermGoals = useCallback(async (irrId) => {
+    if (!irrId) return;
+    setLoadingGoals(true);
+    try {
+      const res = await api.get(`/teacher/irr/${irrId}/long-term-goals`);
+      setLongTermGoals(Array.isArray(res.data?.data) ? res.data.data : []);
+    } catch {
+      setLongTermGoals([]);
+    } finally {
+      setLoadingGoals(false);
+    }
+  }, []);
+
+  const loadGoalPeriods = useCallback(async (irrId) => {
+    if (!irrId) return;
+    setLoadingPeriods(true);
+    try {
+      const res = await api.get(`/teacher/irr/${irrId}/goal-periods`);
+      setGoalPeriods(Array.isArray(res.data?.data) ? res.data.data : []);
+    } catch {
+      setGoalPeriods([]);
+    } finally {
+      setLoadingPeriods(false);
+    }
+  }, []);
+
+  const loadShortTermGoals = useCallback(async (periodId) => {
+    if (!periodId) return;
+    try {
+      const res = await api.get(`/teacher/goal-periods/${periodId}/short-term-goals`);
+      setStgByPeriod(prev => ({
+        ...prev,
+        [periodId]: Array.isArray(res.data?.data) ? res.data.data : [],
+      }));
+    } catch {
+      setStgByPeriod(prev => ({ ...prev, [periodId]: [] }));
+    }
+  }, []);
+
+  // ── LTG handlers ─────────────────────────────────────────────────────────
+  const handleCreateLtg = useCallback(async () => {
+    if (!irr || !ltgForm.goalText.trim()) return;
+    setSavingLtg(true);
+    try {
+      const res = await api.post(`/teacher/irr/${irr.id}/long-term-goals`, {
+        goalText: ltgForm.goalText,
+        targetPeriodStart: ltgForm.targetPeriodStart || null,
+        targetPeriodEnd:   ltgForm.targetPeriodEnd   || null,
+      });
+      setLongTermGoals(prev => [...prev, res.data.data]);
+      setLtgForm({ goalText: '', targetPeriodStart: '', targetPeriodEnd: '' });
+    } catch {
+      showError('Мақсадни сақлашда хато');
+    } finally {
+      setSavingLtg(false);
+    }
+  }, [irr, ltgForm, showError]);
+
+  const handleUpdateLtg = useCallback(async () => {
+    if (!ltgEditId) return;
+    setSavingLtg(true);
+    try {
+      const res = await api.patch(`/teacher/long-term-goals/${ltgEditId}`, {
+        goalText:          ltgEditForm.goalText,
+        targetPeriodStart: ltgEditForm.targetPeriodStart || null,
+        targetPeriodEnd:   ltgEditForm.targetPeriodEnd   || null,
+      });
+      setLongTermGoals(prev => prev.map(g => g.id === ltgEditId ? res.data.data : g));
+      setLtgEditId(null);
+    } catch {
+      showError('Мақсадни янгилашда хато');
+    } finally {
+      setSavingLtg(false);
+    }
+  }, [ltgEditId, ltgEditForm, showError]);
+
+  const handleDeleteLtg = useCallback(async (id) => {
+    try {
+      await api.delete(`/teacher/long-term-goals/${id}`);
+      setLongTermGoals(prev => prev.filter(g => g.id !== id));
+    } catch {
+      showError('Мақсадни ўчиришда хато');
+    }
+  }, [showError]);
+
+  // ── Period handlers ───────────────────────────────────────────────────────
+  const handleCreatePeriod = useCallback(async () => {
+    if (!irr || !periodForm.periodStart || !periodForm.periodEnd) {
+      setPeriodError('Давр бошланиш ва тугаш санасини киритинг');
+      return;
+    }
+    setSavingPeriod(true);
+    setPeriodError(null);
+    try {
+      const res = await api.post(`/teacher/irr/${irr.id}/goal-periods`, periodForm);
+      setGoalPeriods(prev => [...prev, res.data.data]);
+      setPeriodForm({ periodStart: '', periodEnd: '' });
+    } catch {
+      setPeriodError('Даврни сақлашда хато');
+    } finally {
+      setSavingPeriod(false);
+    }
+  }, [irr, periodForm]);
+
+  const togglePeriod = useCallback((periodId) => {
+    setExpandedPeriods(prev => {
+      const next = new Set(prev);
+      if (next.has(periodId)) {
+        next.delete(periodId);
+      } else {
+        next.add(periodId);
+        loadShortTermGoals(periodId);
+      }
+      return next;
+    });
+  }, [loadShortTermGoals]);
+
+  // ── STG handlers ──────────────────────────────────────────────────────────
+  const getStgForm = (periodId) => stgForms[periodId] || {
+    skillAreaCode: SKILL_AREAS[0]?.code ?? '',
+    goalText: '', taskSetDate: '', targetDate: '',
+    tasks: '', methods: '', progress: '', observations: '',
+  };
+
+  const handleCreateStg = useCallback(async (periodId) => {
+    const form = stgForms[periodId] || {};
+    if (!form.goalText?.trim()) return;
+    setSavingStg(periodId);
+    try {
+      const res = await api.post(`/teacher/goal-periods/${periodId}/short-term-goals`, {
+        skillAreaCode: form.skillAreaCode || null,
+        goalText:      form.goalText,
+        taskSetDate:   form.taskSetDate   || null,
+        targetDate:    form.targetDate    || null,
+        tasks:         form.tasks         || null,
+        methods:       form.methods       || null,
+        progress:      form.progress      || null,
+        observations:  form.observations  || null,
+      });
+      setStgByPeriod(prev => ({
+        ...prev,
+        [periodId]: [...(prev[periodId] || []), res.data.data],
+      }));
+      setStgForms(prev => ({ ...prev, [periodId]: {} }));
+    } catch {
+      showError('Қисқа муддатли мақсадни сақлашда хато');
+    } finally {
+      setSavingStg(null);
+    }
+  }, [stgForms, showError]);
+
+  const handleUpdateStg = useCallback(async (periodId) => {
+    if (!stgEditId) return;
+    setSavingStg(stgEditId);
+    try {
+      const res = await api.patch(`/teacher/short-term-goals/${stgEditId}`, stgEditForm);
+      setStgByPeriod(prev => ({
+        ...prev,
+        [periodId]: (prev[periodId] || []).map(g => g.id === stgEditId ? res.data.data : g),
+      }));
+      setStgEditId(null);
+      setStgEditForm({});
+    } catch {
+      showError('Мақсадни янгилашда хато');
+    } finally {
+      setSavingStg(null);
+    }
+  }, [stgEditId, stgEditForm, showError]);
+
+  const handleDeleteStg = useCallback(async (id, periodId) => {
+    try {
+      await api.delete(`/teacher/short-term-goals/${id}`);
+      setStgByPeriod(prev => ({
+        ...prev,
+        [periodId]: (prev[periodId] || []).filter(g => g.id !== id),
+      }));
+    } catch {
+      showError('Мақсадни ўчиришда хато');
+    }
+  }, [showError]);
+
+  // ── Review + Sign handlers ────────────────────────────────────────────────
+  const handleSaveReview = useCallback(async (periodId) => {
+    setSavingReview(periodId);
+    try {
+      const form = reviewForms[periodId] || {};
+      const res = await api.patch(`/teacher/goal-periods/${periodId}/review`, form);
+      setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
+      success('Чорак якунлари сақланди');
+    } catch {
+      showError('Сақлашда хато юз берди');
+    } finally {
+      setSavingReview(null);
+    }
+  }, [reviewForms, success, showError]);
+
+  const handleSignPeriod = useCallback(async (periodId) => {
+    setSigningPeriod(periodId);
+    try {
+      const res = await api.post(`/teacher/goal-periods/${periodId}/sign`);
+      setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
+      success('Имзо қўйилди');
+    } catch {
+      showError('Имзо қўйишда хато');
+    } finally {
+      setSigningPeriod(null);
+    }
+  }, [success, showError]);
+
   const irrId = irr?.id;
   useEffect(() => {
-    if (irrId) loadSessions(irrId);
-  }, [irrId, loadSessions]);
+    if (irrId) {
+      loadSessions(irrId);
+      loadLongTermGoals(irrId);
+      loadGoalPeriods(irrId);
+    }
+  }, [irrId, loadSessions, loadLongTermGoals, loadGoalPeriods]);
 
   // ── Header form handlers ─────────────────────────────────────────────────
   const handleChange = useCallback((field) => (e) => {
@@ -700,7 +940,401 @@ export default function IrrShell() {
         </div>
       )}
 
-      {/* EXTENSION POINT — Phase 3c: goals tab; 3d: journals tab */}
+      {/* ─── Long-term goals (Phase 3c) ──────────────────────────────────────── */}
+      {irr && (
+        <div
+          className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100"
+          data-testid="ltg-section"
+        >
+          <div className="px-5 py-4">
+            <h2 className="text-[15px] font-semibold text-slate-900">Узоқ муддатли мақсадлар</h2>
+            <p className="text-[12px] text-slate-500 mt-0.5">
+              ПТПК амал қилиш муддатига мос равишда, жами 5 тагача (OQ-11: кўникма соҳаси белгиланмайди)
+            </p>
+          </div>
+
+          {loadingGoals && longTermGoals.length === 0 && (
+            <div className="px-5 py-3 text-[13px] text-slate-400">Yuklanmoqda...</div>
+          )}
+
+          {longTermGoals.map((goal, idx) => (
+            <div key={goal.id} className="px-5 py-4" data-testid={`ltg-row-${goal.id}`}>
+              {ltgEditId === goal.id ? (
+                <div className="space-y-2">
+                  <textarea
+                    rows={2}
+                    className={textareaCls}
+                    value={ltgEditForm.goalText}
+                    onChange={e => setLtgEditForm(f => ({ ...f, goalText: e.target.value }))}
+                    data-testid={`ltg-edit-text-${goal.id}`}
+                  />
+                  <div className="grid grid-cols-2 gap-2">
+                    <input type="date" className={inputCls} value={ltgEditForm.targetPeriodStart}
+                      onChange={e => setLtgEditForm(f => ({ ...f, targetPeriodStart: e.target.value }))} />
+                    <input type="date" className={inputCls} value={ltgEditForm.targetPeriodEnd}
+                      onChange={e => setLtgEditForm(f => ({ ...f, targetPeriodEnd: e.target.value }))} />
+                  </div>
+                  <div className="flex gap-2">
+                    <button onClick={handleUpdateLtg} disabled={savingLtg}
+                      className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
+                      data-testid={`ltg-edit-save-${goal.id}`}>
+                      Сақлаш
+                    </button>
+                    <button onClick={() => setLtgEditId(null)}
+                      className="h-8 px-3 rounded-md border border-slate-200 text-[12px] text-slate-600">
+                      Бекор
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="flex items-start gap-3">
+                  <span className="text-indigo-600 font-bold text-[13px] mt-0.5 shrink-0">{idx + 1}.</span>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] text-slate-800 leading-snug">{goal.goalText}</p>
+                    {(goal.targetPeriodStart || goal.targetPeriodEnd) && (
+                      <p className="text-[11px] text-slate-400 mt-0.5">
+                        {formatDate(goal.targetPeriodStart)} – {formatDate(goal.targetPeriodEnd)}
+                      </p>
+                    )}
+                  </div>
+                  {!isReadOnly && (
+                    <div className="flex gap-1 shrink-0">
+                      <button
+                        onClick={() => { setLtgEditId(goal.id); setLtgEditForm({ goalText: goal.goalText, targetPeriodStart: goal.targetPeriodStart || '', targetPeriodEnd: goal.targetPeriodEnd || '' }); }}
+                        className="h-7 px-2 rounded border border-slate-200 text-[11px] text-slate-500 hover:text-slate-800"
+                        data-testid={`ltg-edit-btn-${goal.id}`}
+                      >Тах.</button>
+                      <button
+                        onClick={() => handleDeleteLtg(goal.id)}
+                        className="h-7 px-2 rounded border text-[11px]"
+                        style={{ borderColor: '#FECACA', color: '#DC2626' }}
+                        data-testid={`ltg-delete-${goal.id}`}
+                      >✕</button>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          ))}
+
+          {!isReadOnly && longTermGoals.length < 5 && (
+            <div className="px-5 py-4 space-y-3" data-testid="ltg-add-form">
+              <h3 className="text-[13px] font-medium text-slate-700">Янги мақсад қўшиш</h3>
+              <textarea
+                rows={2}
+                className={textareaCls}
+                placeholder="Мақсад матни (камида 5 та белги)..."
+                value={ltgForm.goalText}
+                onChange={e => setLtgForm(f => ({ ...f, goalText: e.target.value }))}
+                data-testid="ltg-text-input"
+              />
+              <div className="grid grid-cols-2 gap-2">
+                <FieldRow label="Бошланиш санаси">
+                  <input type="date" className={inputCls} value={ltgForm.targetPeriodStart}
+                    onChange={e => setLtgForm(f => ({ ...f, targetPeriodStart: e.target.value }))}
+                    data-testid="ltg-start-input" />
+                </FieldRow>
+                <FieldRow label="Тугаш санаси">
+                  <input type="date" className={inputCls} value={ltgForm.targetPeriodEnd}
+                    onChange={e => setLtgForm(f => ({ ...f, targetPeriodEnd: e.target.value }))}
+                    data-testid="ltg-end-input" />
+                </FieldRow>
+              </div>
+              <button
+                onClick={handleCreateLtg}
+                disabled={savingLtg || !ltgForm.goalText.trim()}
+                className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
+                data-testid="ltg-save-btn"
+              >
+                {savingLtg ? 'Сақланмоқда...' : 'Мақсад қўшиш'}
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ─── Goal periods + short-term goals + review (Phase 3c) ─────────────── */}
+      {irr && (
+        <div
+          className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100"
+          data-testid="periods-section"
+        >
+          <div className="px-5 py-4">
+            <h2 className="text-[15px] font-semibold text-slate-900">Ривожланиш даврлари</h2>
+            <p className="text-[12px] text-slate-500 mt-0.5">
+              Ҳар бир давр учун 3–5 та қисқа муддатли мақсад белгиланади (3 ойлик давр)
+            </p>
+          </div>
+
+          {/* Create period form */}
+          {!isReadOnly && (
+            <div className="px-5 py-4 space-y-3" data-testid="period-create-form">
+              <h3 className="text-[13px] font-medium text-slate-700">Янги давр қўшиш</h3>
+              <div className="grid grid-cols-2 gap-3">
+                <FieldRow label="Давр бошланиши" required>
+                  <input type="date" className={inputCls} value={periodForm.periodStart}
+                    onChange={e => { setPeriodForm(f => ({ ...f, periodStart: e.target.value })); setPeriodError(null); }}
+                    data-testid="period-start-input" />
+                </FieldRow>
+                <FieldRow label="Давр тугаши" required>
+                  <input type="date" className={inputCls} value={periodForm.periodEnd}
+                    onChange={e => { setPeriodForm(f => ({ ...f, periodEnd: e.target.value })); setPeriodError(null); }}
+                    data-testid="period-end-input" />
+                </FieldRow>
+              </div>
+              {periodError && (
+                <div className="text-[12px] text-red-600" data-testid="period-error">{periodError}</div>
+              )}
+              <button
+                onClick={handleCreatePeriod}
+                disabled={savingPeriod}
+                className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
+                data-testid="period-create-btn"
+              >
+                {savingPeriod ? 'Сақланмоқда...' : 'Давр қўшиш'}
+              </button>
+            </div>
+          )}
+
+          {loadingPeriods && goalPeriods.length === 0 && (
+            <div className="px-5 py-3 text-[13px] text-slate-400">Yuklanmoqda...</div>
+          )}
+
+          {goalPeriods.map(period => {
+            const isExpanded = expandedPeriods.has(period.id);
+            const stgs = stgByPeriod[period.id] || [];
+            const stgForm = getStgForm(period.id);
+            const reviewForm = reviewForms[period.id] || {};
+            const initReview = (field, value) =>
+              setReviewForms(prev => ({ ...prev, [period.id]: { ...reviewForm, [field]: value } }));
+
+            return (
+              <div key={period.id} data-testid={`period-row-${period.id}`}>
+                {/* Period header — click to expand */}
+                <button
+                  type="button"
+                  onClick={() => togglePeriod(period.id)}
+                  className="w-full px-5 py-3 flex items-center justify-between text-left hover:bg-slate-50 transition-colors"
+                  data-testid={`period-toggle-${period.id}`}
+                >
+                  <div className="flex items-center gap-3">
+                    <span className="text-[13px] font-medium text-slate-800">
+                      {formatDate(period.periodStart)} – {formatDate(period.periodEnd)}
+                    </span>
+                    <span className="px-2 py-0.5 rounded-full text-[11px] font-medium"
+                      style={{ background: period.status === 'active' ? '#E2F0E8' : '#F1F2F4', color: period.status === 'active' ? '#4F8C72' : '#6F7585' }}>
+                      {period.status === 'active' ? 'Фаол' : period.status === 'completed' ? 'Якунланган' : period.status}
+                    </span>
+                  </div>
+                  <span className="text-[12px] text-slate-400">{isExpanded ? '▲' : '▼'}</span>
+                </button>
+
+                {isExpanded && (
+                  <div className="border-t border-slate-100 divide-y divide-slate-100">
+                    {/* Short-term goals */}
+                    <div className="px-5 py-4 space-y-3" data-testid={`stg-section-${period.id}`}>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-[13px] font-semibold text-slate-800">Қисқа муддатли мақсадлар</h3>
+                        {stgs.length > 0 && stgs.length < 3 && (
+                          <span className="text-[11px] text-amber-600" data-testid={`stg-guidance-${period.id}`}>
+                            Тавсия: {3 - stgs.length} та яна мақсад қўшинг (камида 3 та)
+                          </span>
+                        )}
+                        {stgs.length === 0 && !isReadOnly && (
+                          <span className="text-[11px] text-amber-600" data-testid={`stg-guidance-${period.id}`}>
+                            Тавсия: 3–5 та мақсад белгиланг
+                          </span>
+                        )}
+                      </div>
+
+                      {stgs.map(stg => (
+                        <div key={stg.id} className="rounded-lg border border-slate-200 p-3 space-y-1" data-testid={`stg-row-${stg.id}`}>
+                          {stgEditId === stg.id ? (
+                            <div className="space-y-2">
+                              <select className={inputCls} value={stgEditForm.skillAreaCode || ''}
+                                onChange={e => setStgEditForm(f => ({ ...f, skillAreaCode: e.target.value }))}>
+                                <option value="">— Соҳа танланмаган —</option>
+                                {SKILL_AREAS.map(sa => <option key={sa.code} value={sa.code}>{sa.textUz}</option>)}
+                              </select>
+                              <textarea rows={2} className={textareaCls} value={stgEditForm.goalText || ''}
+                                onChange={e => setStgEditForm(f => ({ ...f, goalText: e.target.value }))} />
+                              <div className="flex gap-2">
+                                <button onClick={() => handleUpdateStg(period.id)} disabled={savingStg === stgEditId}
+                                  className="h-7 px-2 rounded-md bg-brand-600 text-surface text-[11px] disabled:opacity-50"
+                                  data-testid={`stg-edit-save-${stg.id}`}>Сақлаш</button>
+                                <button onClick={() => { setStgEditId(null); setStgEditForm({}); }}
+                                  className="h-7 px-2 rounded border border-slate-200 text-[11px] text-slate-600">Бекор</button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex items-start gap-2">
+                              <div className="flex-1 min-w-0">
+                                {stg.skillAreaCode && (
+                                  <span className="inline-block px-2 py-0.5 rounded text-[10px] font-medium mb-1"
+                                    style={{ background: '#EEF2FF', color: '#4F46E5' }}
+                                    data-testid={`stg-skill-tag-${stg.id}`}>
+                                    {SKILL_AREAS.find(sa => sa.code === stg.skillAreaCode)?.textUz ?? stg.skillAreaCode}
+                                  </span>
+                                )}
+                                <p className="text-[13px] text-slate-800">{stg.goalText}</p>
+                                {stg.targetDate && (
+                                  <p className="text-[11px] text-slate-400 mt-0.5">Муддат: {formatDate(stg.targetDate)}</p>
+                                )}
+                              </div>
+                              {!isReadOnly && (
+                                <div className="flex gap-1 shrink-0">
+                                  <button onClick={() => { setStgEditId(stg.id); setStgEditForm({ skillAreaCode: stg.skillAreaCode || '', goalText: stg.goalText || '', targetDate: stg.targetDate || '' }); }}
+                                    className="h-6 px-2 rounded border border-slate-200 text-[10px] text-slate-500"
+                                    data-testid={`stg-edit-btn-${stg.id}`}>Тах.</button>
+                                  <button onClick={() => handleDeleteStg(stg.id, period.id)}
+                                    className="h-6 px-2 rounded border text-[10px]"
+                                    style={{ borderColor: '#FECACA', color: '#DC2626' }}
+                                    data-testid={`stg-delete-${stg.id}`}>✕</button>
+                                </div>
+                              )}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+
+                      {!isReadOnly && (
+                        <div className="rounded-lg border border-dashed border-slate-300 p-3 space-y-2" data-testid={`stg-add-form-${period.id}`}>
+                          <h4 className="text-[12px] font-medium text-slate-600">Янги мақсад</h4>
+                          <select className={inputCls}
+                            value={stgForm.skillAreaCode || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), skillAreaCode: e.target.value } }))}
+                            data-testid={`stg-skill-area-${period.id}`}>
+                            <option value="">— Соҳа танланмаган —</option>
+                            {SKILL_AREAS.map(sa => <option key={sa.code} value={sa.code}>{sa.textUz}</option>)}
+                          </select>
+                          <textarea rows={2} className={textareaCls}
+                            placeholder="Мақсад матни..."
+                            value={stgForm.goalText || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), goalText: e.target.value } }))}
+                            data-testid={`stg-text-${period.id}`} />
+                          <div className="grid grid-cols-2 gap-2">
+                            <input type="date" className={inputCls} placeholder="Вазифа санаси"
+                              value={stgForm.taskSetDate || ''}
+                              onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), taskSetDate: e.target.value } }))}
+                              data-testid={`stg-task-date-${period.id}`} />
+                            <input type="date" className={inputCls} placeholder="Мақсад муддати"
+                              value={stgForm.targetDate || ''}
+                              onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), targetDate: e.target.value } }))}
+                              data-testid={`stg-target-date-${period.id}`} />
+                          </div>
+                          <textarea rows={1} className={textareaCls} placeholder="Вазифалар..."
+                            value={stgForm.tasks || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), tasks: e.target.value } }))}
+                            data-testid={`stg-tasks-${period.id}`} />
+                          <textarea rows={1} className={textareaCls} placeholder="Усуллар..."
+                            value={stgForm.methods || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), methods: e.target.value } }))}
+                            data-testid={`stg-methods-${period.id}`} />
+                          <textarea rows={1} className={textareaCls} placeholder="Натижалар..."
+                            value={stgForm.progress || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), progress: e.target.value } }))}
+                            data-testid={`stg-progress-${period.id}`} />
+                          <textarea rows={1} className={textareaCls} placeholder="Кузатувлар..."
+                            value={stgForm.observations || ''}
+                            onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), observations: e.target.value } }))}
+                            data-testid={`stg-observations-${period.id}`} />
+                          <button onClick={() => handleCreateStg(period.id)} disabled={savingStg === period.id || !stgForm.goalText?.trim()}
+                            className="h-7 px-3 rounded-md bg-brand-600 text-surface text-[11px] font-medium disabled:opacity-50"
+                            data-testid={`stg-add-btn-${period.id}`}>
+                            {savingStg === period.id ? 'Сақланмоқда...' : 'Мақсад қўшиш'}
+                          </button>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Quarterly review */}
+                    <div className="px-5 py-4 space-y-3" data-testid={`review-section-${period.id}`}>
+                      <h3 className="text-[13px] font-semibold text-slate-800">Чорак якуни</h3>
+                      <FieldRow label="Умумий баҳолаш">
+                        <textarea rows={2} className={textareaCls}
+                          value={reviewForm.overallAssessment ?? (period.overallAssessment || '')}
+                          onChange={e => initReview('overallAssessment', e.target.value)}
+                          disabled={isReadOnly}
+                          data-testid={`review-overall-${period.id}`} />
+                      </FieldRow>
+                      <FieldRow label="Режа ўзгаришлари">
+                        <textarea rows={2} className={textareaCls}
+                          value={reviewForm.planChanges ?? (period.planChanges || '')}
+                          onChange={e => initReview('planChanges', e.target.value)}
+                          disabled={isReadOnly}
+                          data-testid={`review-changes-${period.id}`} />
+                      </FieldRow>
+                      <FieldRow label="Ота-она тавсиялари">
+                        <textarea rows={2} className={textareaCls}
+                          value={reviewForm.parentRecommendations ?? (period.parentRecommendations || '')}
+                          onChange={e => initReview('parentRecommendations', e.target.value)}
+                          disabled={isReadOnly}
+                          data-testid={`review-parent-rec-${period.id}`} />
+                      </FieldRow>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <FieldRow label="Кейинги кўриб чиқиш">
+                          <input type="date" className={inputCls}
+                            value={reviewForm.nextReviewDate ?? (period.nextReviewDate || '')}
+                            onChange={e => initReview('nextReviewDate', e.target.value)}
+                            disabled={isReadOnly}
+                            data-testid={`review-next-date-${period.id}`} />
+                        </FieldRow>
+                        <FieldRow label="Кейинги баҳолаш">
+                          <input type="date" className={inputCls}
+                            value={reviewForm.nextAssessmentDate ?? (period.nextAssessmentDate || '')}
+                            onChange={e => initReview('nextAssessmentDate', e.target.value)}
+                            disabled={isReadOnly}
+                            data-testid={`review-next-assess-${period.id}`} />
+                        </FieldRow>
+                        <FieldRow label="Ота-она билан мулоқот">
+                          <input type="date" className={inputCls}
+                            value={reviewForm.parentDiscussionDate ?? (period.parentDiscussionDate || '')}
+                            onChange={e => initReview('parentDiscussionDate', e.target.value)}
+                            disabled={isReadOnly}
+                            data-testid={`review-parent-date-${period.id}`} />
+                        </FieldRow>
+                      </div>
+
+                      {!isReadOnly && (
+                        <div className="flex items-center gap-3 flex-wrap pt-1">
+                          <button
+                            onClick={() => handleSaveReview(period.id)}
+                            disabled={savingReview === period.id}
+                            className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
+                            data-testid={`review-save-${period.id}`}
+                          >
+                            {savingReview === period.id ? 'Сақланмоқда...' : 'Чорак якунини сақлаш'}
+                          </button>
+
+                          <button
+                            onClick={() => handleSignPeriod(period.id)}
+                            disabled={signingPeriod === period.id || !!period.teacherSignedAt}
+                            className="h-8 px-3 rounded-md border text-[12px] font-medium disabled:opacity-50"
+                            style={{ borderColor: '#A8D2BC', color: '#4F8C72', background: '#E2F0E8' }}
+                            data-testid={`sign-teacher-${period.id}`}
+                          >
+                            {period.teacherSignedAt
+                              ? `Имзоланган: ${formatDate(period.teacherSignedAt)}`
+                              : signingPeriod === period.id ? 'Имзоланмоқда...' : 'Ўқитувчи имзоси'}
+                          </button>
+
+                          {period.teacherSignedAt && (
+                            <span className="text-[11px] text-slate-400" data-testid={`signed-at-${period.id}`}>
+                              {formatDate(period.teacherSignedAt)}
+                            </span>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* EXTENSION POINT — Phase 3d: monitoring journals */}
     </div>
   );
 }

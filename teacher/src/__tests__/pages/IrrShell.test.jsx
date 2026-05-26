@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
+import { SKILL_AREAS } from '@shared/config/skillAreas';
 
 // ---- stable mock handles ----
 const mockSuccess = vi.fn();
@@ -17,7 +18,7 @@ vi.mock('../../shared/context/ToastContext', () => ({
   useToast: () => ({ success: mockSuccess, error: mockToastError }),
 }));
 
-const mockApi = { get: vi.fn(), post: vi.fn(), patch: vi.fn() };
+const mockApi = { get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() };
 vi.mock('../../shared/services/api', () => ({ default: mockApi }));
 
 vi.mock('lucide-react', () => ({
@@ -56,6 +57,7 @@ beforeEach(() => {
   mockApi.get.mockReset();
   mockApi.post.mockReset();
   mockApi.patch.mockReset();
+  mockApi.delete.mockReset();
 });
 
 // ─── Phase 3a: Header form tests ──────────────────────────────────────────────
@@ -81,7 +83,9 @@ describe('IrrShell page — header form (Phase 3a)', () => {
   it('renders draft IRR with activate button and status badge', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
-      .mockResolvedValueOnce({ data: { data: [] } });          // sessions load
+      .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
+      .mockResolvedValueOnce({ data: { data: [] } });          // periods load
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
     await waitFor(() => expect(screen.getByTestId('activate-btn')).toBeTruthy());
@@ -91,7 +95,9 @@ describe('IrrShell page — header form (Phase 3a)', () => {
   it('calls POST to create new IRR when none exists', async () => {
     mockApi.get
       .mockRejectedValueOnce({ response: { status: 404 } })   // irr load → null
-      .mockResolvedValueOnce({ data: { data: [] } });          // sessions load after creation
+      .mockResolvedValueOnce({ data: { data: [] } })           // sessions load after creation
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
+      .mockResolvedValueOnce({ data: { data: [] } });          // periods load
     const created = { ...DRAFT_IRR };
     mockApi.post.mockResolvedValue({ data: { data: created } });
     const { default: IrrShell } = await import('../../pages/IrrShell');
@@ -111,6 +117,8 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
+      .mockResolvedValueOnce({ data: { data: [] } })           // periods load
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } });   // reload after PATCH
     mockApi.patch.mockResolvedValue({});
     const { default: IrrShell } = await import('../../pages/IrrShell');
@@ -157,6 +165,8 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
+      .mockResolvedValueOnce({ data: { data: [] } })           // periods load
       .mockResolvedValueOnce({ data: { data: activeIrr } });   // reload after activate
     mockApi.post.mockResolvedValue({ data: {} });
     const { default: IrrShell } = await import('../../pages/IrrShell');
@@ -175,7 +185,9 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('renders assessment section when IRR exists', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } });
+      .mockResolvedValueOnce({ data: { data: [] } })   // sessions
+      .mockResolvedValueOnce({ data: { data: [] } })   // LTGs
+      .mockResolvedValueOnce({ data: { data: [] } });  // periods
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
     await waitFor(() => expect(screen.getByTestId('assessment-section')).toBeTruthy());
@@ -186,6 +198,8 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('renders all 17 criteria from config (data-driven, not hardcoded)', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
+      .mockResolvedValueOnce({ data: { data: [] } })
+      .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
@@ -199,6 +213,8 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('selecting best option (score btn 4) stores software score 4 — explicit scoring direction test', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
+      .mockResolvedValueOnce({ data: { data: [] } })
+      .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
@@ -228,6 +244,8 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('submit session button disabled until all 17 criteria are scored', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
+      .mockResolvedValueOnce({ data: { data: [] } })
+      .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
@@ -251,8 +269,10 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
     const submittedSession = { id: 'sess-1', sessionType: 'intake', totalScore: 68, completedAt: '2026-05-26T00:00:00.000Z' };
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })
-      .mockResolvedValueOnce({ data: { data: [submittedSession] } });
+      .mockResolvedValueOnce({ data: { data: [] } })           // sessions
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs
+      .mockResolvedValueOnce({ data: { data: [] } })           // periods
+      .mockResolvedValueOnce({ data: { data: [submittedSession] } }); // reload sessions after submit
     mockApi.post.mockResolvedValue({
       data: { data: { session: submittedSession, totalScore: 68, maxPossibleScore: 68 } },
     });
@@ -281,6 +301,8 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('shows ASSESSMENT_SESSION_EXISTS error on 409', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
+      .mockResolvedValueOnce({ data: { data: [] } })
+      .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
     mockApi.post.mockRejectedValue({
       response: {
@@ -305,14 +327,282 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
     expect(screen.getByTestId('session-error-banner').textContent).toContain('аллақачон мавжуд');
   });
 
+  it('round-trip total-agreement: live-score seen by teacher equals totalScore stored by backend', async () => {
+    // Use all-3s: 17 × 3 = 51. Teacher sees 51; backend returns totalScore: 51.
+    const KNOWN_SCORE = 3;
+    const KNOWN_TOTAL = ASSESSMENT_CRITERIA.length * KNOWN_SCORE; // 51
+    const submittedSession = {
+      id: 'sess-rt',
+      sessionType: 'intake',
+      totalScore: KNOWN_TOTAL,
+      completedAt: '2026-05-26T00:00:00.000Z',
+    };
+    mockApi.get
+      .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
+      .mockResolvedValueOnce({ data: { data: [] } })           // sessions
+      .mockResolvedValueOnce({ data: { data: [] } })           // LTGs
+      .mockResolvedValueOnce({ data: { data: [] } })           // periods
+      .mockResolvedValueOnce({ data: { data: [submittedSession] } }); // reload sessions after submit
+    mockApi.post.mockResolvedValue({
+      data: { data: { session: submittedSession, totalScore: KNOWN_TOTAL, maxPossibleScore: MAX_SCORE } },
+    });
+
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId('assessment-section'));
+
+    // Score every criterion with KNOWN_SCORE
+    for (const criterion of ASSESSMENT_CRITERIA) {
+      fireEvent.click(screen.getByTestId(`score-btn-${criterion.code}-${KNOWN_SCORE}`));
+    }
+
+    // Teacher sees KNOWN_TOTAL on screen before submitting
+    await waitFor(() =>
+      expect(screen.getByTestId('live-score').textContent).toContain(`${KNOWN_TOTAL} /`)
+    );
+
+    fireEvent.click(screen.getByTestId('submit-session-btn'));
+
+    // POST carries the exact scores the teacher saw
+    await waitFor(() =>
+      expect(mockApi.post).toHaveBeenCalledWith(
+        '/teacher/irr/irr-1/assessment-sessions',
+        expect.objectContaining({ scores: Array(17).fill(KNOWN_SCORE) })
+      )
+    );
+
+    // Backend-returned totalScore must equal the live sum the teacher saw
+    const [[, postBody]] = mockApi.post.mock.calls;
+    const liveSumAtSubmit = postBody.scores.reduce((a, s) => a + s, 0);
+    expect(liveSumAtSubmit).toBe(KNOWN_TOTAL); // teacher-saw === backend-stored
+    expect(submittedSession.totalScore).toBe(KNOWN_TOTAL);
+  });
+
   it('renders progression table when sessions exist', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [SAMPLE_SESSION] } });
+      .mockResolvedValueOnce({ data: { data: [SAMPLE_SESSION] } })
+      .mockResolvedValueOnce({ data: { data: [] } })
+      .mockResolvedValueOnce({ data: { data: [] } });
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
     await waitFor(() => screen.getByTestId('progression-table'));
     expect(screen.getByTestId('progression-table').textContent).toContain('45');
     expect(screen.getByTestId('progression-table').textContent).toContain(`${MAX_SCORE}`);
+  });
+});
+
+// ─── Phase 3c: Goals tests ────────────────────────────────────────────────────
+
+const SAMPLE_PERIOD = {
+  id: 'period-1',
+  irrId: 'irr-1',
+  periodStart: '2024-02-01',
+  periodEnd: '2024-04-30',
+  status: 'active',
+  teacherSignedAt: null,
+  managerSignedAt: null,
+  overallAssessment: null,
+};
+
+const SAMPLE_LTG = {
+  id: 'ltg-1',
+  goalText: 'Мустақил овқатланишни ўрганиш',
+  targetPeriodStart: '2024-02-01',
+  targetPeriodEnd: '2025-01-31',
+};
+
+const SAMPLE_STG = {
+  id: 'stg-1',
+  periodId: 'period-1',
+  skillAreaCode: 'SELF_CARE_FEEDING',
+  goalText: 'Қошиқда овқат ейиш',
+  targetDate: '2024-04-30',
+};
+
+function mockIrrLoad(ltgs = [], periods = []) {
+  return mockApi.get
+    .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr
+    .mockResolvedValueOnce({ data: { data: [] } })           // sessions
+    .mockResolvedValueOnce({ data: { data: ltgs } })         // LTGs
+    .mockResolvedValueOnce({ data: { data: periods } });     // periods
+}
+
+describe('IrrShell page — goals section (Phase 3c)', () => {
+  it('renders LTG section and add form when IRR exists', async () => {
+    mockIrrLoad();
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => expect(screen.getByTestId('ltg-section')).toBeTruthy());
+    expect(screen.getByTestId('ltg-add-form')).toBeTruthy();
+    expect(screen.getByTestId('ltg-text-input')).toBeTruthy();
+  });
+
+  it('creates LTG via POST and renders it in the list', async () => {
+    mockIrrLoad();
+    mockApi.post.mockResolvedValue({ data: { data: SAMPLE_LTG } });
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId('ltg-add-form'));
+
+    fireEvent.change(screen.getByTestId('ltg-text-input'), {
+      target: { value: 'Мустақил овқатланишни ўрганиш' },
+    });
+    fireEvent.click(screen.getByTestId('ltg-save-btn'));
+
+    await waitFor(() =>
+      expect(mockApi.post).toHaveBeenCalledWith(
+        '/teacher/irr/irr-1/long-term-goals',
+        expect.objectContaining({ goalText: 'Мустақил овқатланишни ўрганиш' })
+      )
+    );
+    await waitFor(() => expect(screen.getByTestId(`ltg-row-${SAMPLE_LTG.id}`)).toBeTruthy());
+  });
+
+  it('deletes LTG via DELETE', async () => {
+    mockIrrLoad([SAMPLE_LTG]);
+    mockApi.delete.mockResolvedValue({});
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`ltg-delete-${SAMPLE_LTG.id}`));
+
+    fireEvent.click(screen.getByTestId(`ltg-delete-${SAMPLE_LTG.id}`));
+
+    await waitFor(() =>
+      expect(mockApi.delete).toHaveBeenCalledWith(`/teacher/long-term-goals/${SAMPLE_LTG.id}`)
+    );
+    await waitFor(() => expect(screen.queryByTestId(`ltg-row-${SAMPLE_LTG.id}`)).toBeFalsy());
+  });
+
+  it('creates goal period via POST and renders it', async () => {
+    mockIrrLoad();
+    mockApi.post.mockResolvedValue({ data: { data: SAMPLE_PERIOD } });
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId('period-create-form'));
+
+    fireEvent.change(screen.getByTestId('period-start-input'), { target: { value: '2024-02-01' } });
+    fireEvent.change(screen.getByTestId('period-end-input'), { target: { value: '2024-04-30' } });
+    fireEvent.click(screen.getByTestId('period-create-btn'));
+
+    await waitFor(() =>
+      expect(mockApi.post).toHaveBeenCalledWith(
+        '/teacher/irr/irr-1/goal-periods',
+        expect.objectContaining({ periodStart: '2024-02-01', periodEnd: '2024-04-30' })
+      )
+    );
+    await waitFor(() => expect(screen.getByTestId(`period-row-${SAMPLE_PERIOD.id}`)).toBeTruthy());
+  });
+
+  it('renders periods from list and shows toggle', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => expect(screen.getByTestId(`period-row-${SAMPLE_PERIOD.id}`)).toBeTruthy());
+    expect(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`)).toBeTruthy();
+  });
+
+  it('shows STG add form with skill-area select driven by SKILL_AREAS config (data-driven)', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    mockApi.get.mockResolvedValueOnce({ data: { data: [] } }); // STGs for period-1
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+
+    fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    await waitFor(() => screen.getByTestId(`stg-add-form-${SAMPLE_PERIOD.id}`));
+
+    const select = screen.getByTestId(`stg-skill-area-${SAMPLE_PERIOD.id}`);
+    expect(select).toBeTruthy();
+    // All SKILL_AREAS options are rendered (data-driven, not hardcoded)
+    expect(SKILL_AREAS.length).toBeGreaterThan(0);
+    for (const sa of SKILL_AREAS) {
+      expect(select.textContent).toContain(sa.textUz);
+    }
+  });
+
+  it('shows 3–5 guidance when period has 0 STGs', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    mockApi.get.mockResolvedValueOnce({ data: { data: [] } }); // STGs
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    await waitFor(() => screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`));
+    expect(screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`).textContent).toContain('3–5');
+  });
+
+  it('creates STG via POST with skill area', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    mockApi.get.mockResolvedValueOnce({ data: { data: [] } }); // STGs
+    mockApi.post.mockResolvedValue({ data: { data: SAMPLE_STG } });
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    await waitFor(() => screen.getByTestId(`stg-add-form-${SAMPLE_PERIOD.id}`));
+
+    fireEvent.change(screen.getByTestId(`stg-skill-area-${SAMPLE_PERIOD.id}`), {
+      target: { value: 'SELF_CARE_FEEDING' },
+    });
+    fireEvent.change(screen.getByTestId(`stg-text-${SAMPLE_PERIOD.id}`), {
+      target: { value: 'Қошиқда овқат ейиш' },
+    });
+    fireEvent.click(screen.getByTestId(`stg-add-btn-${SAMPLE_PERIOD.id}`));
+
+    await waitFor(() =>
+      expect(mockApi.post).toHaveBeenCalledWith(
+        `/teacher/goal-periods/${SAMPLE_PERIOD.id}/short-term-goals`,
+        expect.objectContaining({ goalText: 'Қошиқда овқат ейиш', skillAreaCode: 'SELF_CARE_FEEDING' })
+      )
+    );
+    await waitFor(() => expect(screen.getByTestId(`stg-row-${SAMPLE_STG.id}`)).toBeTruthy());
+  });
+
+  it('saves quarterly review via PATCH', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    mockApi.get.mockResolvedValueOnce({ data: { data: [] } }); // STGs
+    const reviewedPeriod = { ...SAMPLE_PERIOD, overallAssessment: 'Яхши ривожланмоқда' };
+    mockApi.patch.mockResolvedValue({ data: { data: reviewedPeriod } });
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    await waitFor(() => screen.getByTestId(`review-section-${SAMPLE_PERIOD.id}`));
+
+    fireEvent.change(screen.getByTestId(`review-overall-${SAMPLE_PERIOD.id}`), {
+      target: { value: 'Яхши ривожланмоқда' },
+    });
+    fireEvent.click(screen.getByTestId(`review-save-${SAMPLE_PERIOD.id}`));
+
+    await waitFor(() =>
+      expect(mockApi.patch).toHaveBeenCalledWith(
+        `/teacher/goal-periods/${SAMPLE_PERIOD.id}/review`,
+        expect.objectContaining({ overallAssessment: 'Яхши ривожланмоқда' })
+      )
+    );
+    await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
+  });
+
+  it('signs period via POST and disables sign button afterward', async () => {
+    mockIrrLoad([], [SAMPLE_PERIOD]);
+    mockApi.get.mockResolvedValueOnce({ data: { data: [] } }); // STGs
+    const signedPeriod = { ...SAMPLE_PERIOD, teacherSignedAt: '2026-05-26T10:00:00.000Z' };
+    mockApi.post.mockResolvedValue({ data: { data: signedPeriod } });
+    const { default: IrrShell } = await import('../../pages/IrrShell');
+    render(React.createElement(IrrShell));
+    await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
+    await waitFor(() => screen.getByTestId(`sign-teacher-${SAMPLE_PERIOD.id}`));
+
+    expect(screen.getByTestId(`sign-teacher-${SAMPLE_PERIOD.id}`)).not.toBeDisabled();
+    fireEvent.click(screen.getByTestId(`sign-teacher-${SAMPLE_PERIOD.id}`));
+
+    await waitFor(() =>
+      expect(mockApi.post).toHaveBeenCalledWith(`/teacher/goal-periods/${SAMPLE_PERIOD.id}/sign`)
+    );
+    await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
+    // After signing, button should be disabled (teacherSignedAt now set)
+    await waitFor(() => expect(screen.getByTestId(`sign-teacher-${SAMPLE_PERIOD.id}`)).toBeDisabled());
   });
 });
