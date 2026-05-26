@@ -1,6 +1,6 @@
 # S5 PHASE 3c — ИРР Goals (Long-term + Periods + Short-term + Review)
 
-**Commit:** TBD (post-commit SHA)
+**Commit:** 0458433
 **Date:** 2026-05-26
 **Status:** ✅ COMPLETE
 
