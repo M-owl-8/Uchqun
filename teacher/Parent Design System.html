@@ -1,0 +1,2297 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Uchqun — Ota-ona · Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ['Inter', 'system-ui', 'sans-serif'],
+          serif: ['"Source Serif 4"', 'Georgia', 'serif'],
+          mono: ['"JetBrains Mono"', 'ui-monospace', 'monospace'],
+        },
+        colors: {
+          paper: '#F7F2E8',         /* book-page cream */
+          surface: '#FDFAF3',       /* lighter cream */
+          ink: '#1E2230',           /* deep navy-ink text */
+          /* Brand: twilight blue */
+          brand: {
+            50:  '#EEF2F6',
+            100: '#D9E2EB',
+            200: '#B5C5D7',
+            300: '#8AA4BD',
+            400: '#5F81A2',
+            500: '#406589',
+            600: '#2D5377',  /* primary */
+            700: '#234363',
+            800: '#1A324C',
+            900: '#11243A',
+          },
+          /* Warm neutrals — paper/sepia family */
+          sepia: {
+            50:  '#FAF6EE',
+            100: '#F1EBDD',
+            200: '#E3D9C2',
+            300: '#C9BBA0',
+            400: '#9F907A',
+            500: '#766A58',
+            600: '#5A5142',
+            700: '#3F3930',
+            800: '#2A2620',
+            900: '#1B1813',
+          },
+          /* Honey: warm secondary accent — milestone "embossed sticker" */
+          honey: {
+            100: '#FAEFD5',
+            300: '#EAC976',
+            500: '#C99A3F',
+            700: '#8E6924',
+          },
+          /* Semantic — calmer parent-facing */
+          success: { 50:'#EEF4E8', 200:'#CFDFB8', 500:'#6D8E48', 700:'#4F6A33' },
+          warning: { 50:'#FBF2DE', 200:'#EFD89A', 500:'#BC8624', 700:'#825B14' },
+          error:   { 50:'#F5E8E4', 200:'#E1C2BA', 500:'#925046', 700:'#6A372E' },
+          info:    { 50:'#EBEEF3', 200:'#C0CAD9', 500:'#4A6385', 700:'#33475F' },
+        },
+        borderRadius: { sm:'6px', md:'8px', lg:'12px', xl:'16px', '2xl':'20px', '3xl':'28px' },
+        boxShadow: {
+          xs: '0 1px 2px rgba(30,34,48,.04), 0 1px 1px rgba(30,34,48,.03)',
+          sm: '0 2px 4px rgba(30,34,48,.06), 0 1px 2px rgba(30,34,48,.04)',
+          md: '0 8px 24px rgba(30,34,48,.10), 0 2px 6px rgba(30,34,48,.05)',
+          lg: '0 20px 48px rgba(30,34,48,.14), 0 8px 16px rgba(30,34,48,.07)',
+          page:'0 1px 0 rgba(255,255,255,.6) inset, 0 1px 3px rgba(30,34,48,.06), 0 6px 14px rgba(30,34,48,.04)',
+          ring:'0 0 0 2px #FDFAF3, 0 0 0 4px rgba(45,83,119,.30)',
+        },
+        fontSize: {
+          'h1': ['30px',{ lineHeight:'1.18', fontWeight:'600' }],
+          'h1l':['34px',{ lineHeight:'1.15', fontWeight:'600' }],
+          'h2': ['22px',{ lineHeight:'1.3',  fontWeight:'600' }],
+          'h3': ['18px',{ lineHeight:'1.35', fontWeight:'600' }],
+          'body':['16px',{ lineHeight:'1.6' }],
+          'body-l':['17px',{ lineHeight:'1.65' }],
+          'small':['14px',{ lineHeight:'1.5' }],
+          'caption':['12px',{ lineHeight:'1.45' }],
+        },
+      }
+    }
+  };
+</script>
+<style>
+  :root { font-feature-settings: 'cv11','ss01','tnum'; }
+  html, body { background:#EFE8D8; color:#1E2230; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+  .tnum { font-variant-numeric: tabular-nums; }
+  /* Paper texture (very subtle) */
+  body::before {
+    content:""; position:fixed; inset:0; pointer-events:none; z-index:-1;
+    background:
+      radial-gradient(900px 600px at 92% -10%, rgba(45,83,119,.06), transparent 60%),
+      radial-gradient(700px 500px at -10% 110%, rgba(201,154,63,.06), transparent 60%);
+  }
+  /* Anchor offset */
+  section[id]{ scroll-margin-top: 76px; }
+  /* Phone / desktop frames */
+  .device-mobile { width: 400px; height: 820px; }
+  /* Stitched divider — Parent's signature flourish */
+  .stitch {
+    --c: #C9BBA0;
+    background-image: repeating-linear-gradient(90deg, var(--c) 0 8px, transparent 8px 16px);
+    height: 1px;
+  }
+  .stitch-v {
+    --c: #C9BBA0;
+    background-image: repeating-linear-gradient(0deg, var(--c) 0 8px, transparent 8px 16px);
+    width: 1px;
+  }
+  /* Photo placeholder */
+  .photo-placeholder {
+    background:
+      linear-gradient(135deg, rgba(255,255,255,.4), rgba(255,255,255,0)),
+      var(--ph-color, #E3D9C2);
+    color:#5A5142;
+    display:flex; align-items:center; justify-content:center; flex-direction:column;
+  }
+  .photo-placeholder svg { opacity:.55; }
+  /* Day card sticker corner — subtle inner shadow that says "page edge" */
+  .page-card {
+    background: #FDFAF3;
+    border:1px solid #E3D9C2;
+    box-shadow: 0 1px 0 rgba(255,255,255,.6) inset, 0 1px 3px rgba(30,34,48,.06), 0 6px 14px rgba(30,34,48,.04);
+  }
+  /* Stitched page corner-fold (book metaphor) */
+  .page-corner::after {
+    content:""; position:absolute; bottom:0; right:0; width:24px; height:24px;
+    background: linear-gradient(135deg, transparent 50%, #F1EBDD 50%);
+    border-top:1px solid #E3D9C2; border-left:1px solid #E3D9C2;
+    border-bottom-right-radius:inherit;
+  }
+  /* Language pill (login footer) */
+  .pill-seg { display:inline-flex; padding:2px; gap:2px; background:#F1EBDD; border-radius:999px; }
+  .pill-seg button { padding:3px 10px; font-size:11px; font-weight:500; border-radius:999px; color:#5A5142; }
+  .pill-seg button[aria-current="true"]{ background:#FDFAF3; color:#1E2230; box-shadow:0 1px 2px rgba(30,34,48,.06); }
+  .focus-ring:focus { outline:none; box-shadow:0 0 0 2px #FDFAF3, 0 0 0 4px rgba(45,83,119,.30); border-color:#2D5377; }
+  /* Tab bar shadow */
+  .tabbar-shadow { box-shadow: 0 -8px 24px rgba(30,34,48,.06); }
+</style>
+</head>
+<body class="font-sans antialiased text-ink">
+
+<!-- ============================ TOP NAV ============================ -->
+<header class="sticky top-0 z-40 bg-paper/90 backdrop-blur border-b border-sepia-200">
+  <div class="max-w-[1320px] mx-auto px-6 h-[60px] flex items-center gap-6">
+    <a href="#top" class="flex items-center gap-2">
+      <span class="w-7 h-7 rounded-md bg-brand-800 text-brand-200 grid place-items-center font-semibold text-[13px]">U</span>
+      <span class="text-[14px] font-semibold tracking-tight">Uchqun · Ota-ona</span>
+      <span class="text-[12px] text-sepia-500 ml-1">Design System</span>
+    </a>
+    <nav class="hidden md:flex items-center gap-1 text-[13px] text-sepia-600 ml-2">
+      <a href="#handoff"     class="px-2 py-1 rounded hover:bg-sepia-100">Handoff</a>
+      <a href="#tokens"      class="px-2 py-1 rounded hover:bg-sepia-100">Tokens</a>
+      <a href="#signature"   class="px-2 py-1 rounded hover:bg-sepia-100">Day card</a>
+      <a href="#photography" class="px-2 py-1 rounded hover:bg-sepia-100">Photography</a>
+      <a href="#components"  class="px-2 py-1 rounded hover:bg-sepia-100">Components</a>
+      <a href="#sensitive"   class="px-2 py-1 rounded hover:bg-sepia-100">Sensitive info</a>
+      <a href="#onboarding"  class="px-2 py-1 rounded hover:bg-sepia-100">Onboarding</a>
+      <a href="#home"        class="px-2 py-1 rounded hover:bg-sepia-100">Home</a>
+      <a href="#journal"     class="px-2 py-1 rounded hover:bg-sepia-100">Day open</a>
+      <a href="#profile"     class="px-2 py-1 rounded hover:bg-sepia-100">Child profile</a>
+      <a href="#desktop"     class="px-2 py-1 rounded hover:bg-sepia-100">Desktop</a>
+    </nav>
+    <div class="ml-auto flex items-center gap-2 text-[12px] text-sepia-500">
+      <span class="hidden sm:inline">Phase 5 · Parent</span>
+      <span class="w-px h-4 bg-sepia-200"></span>
+      <span class="px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 font-medium">v0.1</span>
+    </div>
+  </div>
+</header>
+
+<main id="top" class="max-w-[1320px] mx-auto px-6 py-10 space-y-20">
+
+<!-- ============================ HANDOFF ============================ -->
+<section id="handoff" class="scroll-mt-20">
+  <div class="grid lg:grid-cols-[1.1fr_1fr] gap-8 items-start">
+    <div>
+      <div class="flex items-center gap-2 text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">
+        <span class="w-6 h-px bg-brand-600"></span>
+        Phase 5 · Ota-ona portali
+      </div>
+      <h1 class="mt-3 font-serif text-[48px] leading-[1.04] tracking-tight text-ink">
+        Your child is in good hands.
+      </h1>
+      <p class="mt-5 text-[17px] leading-[1.65] text-sepia-700 max-w-[58ch]">
+        The Parent portal is a quiet, warm window into the school day — built mobile-first
+        for tired-but-hopeful parents who check it on the bus, in the kitchen, between meetings.
+        It uses <span class="text-ink font-medium">twilight blue on warm cream paper</span>,
+        with each day rendered as a <span class="text-ink font-medium">stitched page in a book</span> —
+        a small keepsake, not a feed.
+      </p>
+
+      <dl class="mt-8 grid sm:grid-cols-2 gap-x-8 gap-y-5 text-[14px]">
+        <div>
+          <dt class="text-sepia-500">Brand color</dt>
+          <dd class="mt-1 flex items-center gap-2 text-ink font-medium">
+            <span class="w-4 h-4 rounded-sm bg-brand-600"></span> Twilight blue · #2D5377
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sepia-500">Paper</dt>
+          <dd class="mt-1 flex items-center gap-2 text-ink font-medium">
+            <span class="w-4 h-4 rounded-sm border border-sepia-300" style="background:#F7F2E8"></span> Warm cream · #F7F2E8
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sepia-500">Secondary accent</dt>
+          <dd class="mt-1 flex items-center gap-2 text-ink font-medium">
+            <span class="w-4 h-4 rounded-sm bg-honey-500"></span> Honey · milestones #C99A3F
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sepia-500">Signature element</dt>
+          <dd class="mt-1 text-ink font-medium">Day-card stack · stitched divider</dd>
+        </div>
+        <div>
+          <dt class="text-sepia-500">Type</dt>
+          <dd class="mt-1 text-ink font-medium">Source Serif (headings) · Inter (body) · 16px base</dd>
+        </div>
+        <div>
+          <dt class="text-sepia-500">Navigation</dt>
+          <dd class="mt-1 text-ink font-medium">Mobile tab bar · desktop top nav · no sidebar</dd>
+        </div>
+      </dl>
+
+      <div class="mt-8 flex flex-wrap gap-2 text-[12px]">
+        <span class="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">Distinct from Teacher lavender</span>
+        <span class="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">Distinct from Gov green</span>
+        <span class="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">Distinct from Admin terracotta</span>
+        <span class="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 font-medium">Distinct from Reception amber</span>
+        <span class="px-2.5 py-1 rounded-full bg-honey-100 text-honey-700 font-medium">No ribbons · the one child IS the surface</span>
+      </div>
+    </div>
+
+    <!-- For Implementation card -->
+    <div class="rounded-2xl border border-sepia-200 bg-surface shadow-sm overflow-hidden">
+      <div class="px-6 py-4 border-b border-sepia-200 bg-paper flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4 text-sepia-500"></i>
+          <span class="text-[13px] font-medium text-ink">For implementation</span>
+        </div>
+        <span class="text-[11px] font-mono text-sepia-500">parent/tailwind.config.js</span>
+      </div>
+      <div class="p-6 space-y-5 text-[13px] leading-relaxed">
+
+        <div>
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-2">New token families (Parent-local)</div>
+          <ul class="space-y-1.5">
+            <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-brand-600 shrink-0"></span><div><span class="font-mono text-brand-700">brand.*</span> — 10-stop twilight blue, 600 primary</div></li>
+            <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-sepia-400 shrink-0"></span><div><span class="font-mono text-brand-700">sepia.*</span> — paper neutrals (replaces slate.* for Parent)</div></li>
+            <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-honey-500 shrink-0"></span><div><span class="font-mono text-brand-700">honey.*</span> — 4 stops, milestone/positive only</div></li>
+            <li class="flex items-start gap-2"><span class="mt-1 w-1.5 h-1.5 rounded-full bg-paper border border-sepia-300 shrink-0"></span><div><span class="font-mono text-brand-700">paper / surface / ink</span> — single-value tokens</div></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-2">Inherit / override</div>
+          <ul class="space-y-1.5 text-sepia-700">
+            <li><span class="font-mono text-success-700">success.*</span> — define LOCALLY (parent-warmed olive, slightly different curve than Teacher)</li>
+            <li><span class="font-mono text-warning-700">warning.*</span> — soft amber <span class="font-mono">#BC8624</span></li>
+            <li><span class="font-mono text-error-700">error.*</span> — <span class="text-error-700 font-medium">softer Bordeaux #925046</span> · same intent as Teacher</li>
+            <li><span class="font-mono text-info-700">info.*</span> — slate-blue <span class="font-mono">#4A6385</span></li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-2">New components to scaffold</div>
+          <ul class="space-y-1 font-mono text-[12px] text-sepia-700">
+            <li>parent/src/components/DayCard.jsx</li>
+            <li>parent/src/components/DayStack.jsx</li>
+            <li>parent/src/components/ChildSwitcher.jsx</li>
+            <li>parent/src/components/MilestoneSticker.jsx</li>
+            <li>parent/src/components/SensitiveNotice.jsx</li>
+            <li>parent/src/components/CallTeacherButton.jsx</li>
+            <li>parent/src/components/MobileTabBar.jsx · DesktopTopNav.jsx</li>
+          </ul>
+        </div>
+
+        <div>
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-2">Migration order</div>
+          <ol class="list-decimal pl-5 space-y-0.5 text-sepia-700 marker:text-sepia-400">
+            <li>Tokens → paper/cream surfaces + brand scale</li>
+            <li>Shared components verify (Button, Input, Badge)</li>
+            <li>DayCard → DayStack → ChildSwitcher → MilestoneSticker → SensitiveNotice</li>
+            <li>Pages: Onboarding → Home → Day open → Child profile → Messages</li>
+          </ol>
+        </div>
+
+        <div class="pt-2 border-t border-sepia-100 text-[12px] text-sepia-500">
+          Type: Source Serif 4 (Google Fonts) for headings · Inter for body. Self-host both in production.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Register pills -->
+  <div class="mt-10 grid md:grid-cols-3 gap-4">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700">
+        <i data-lucide="heart" class="w-4 h-4"></i> Register
+      </div>
+      <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Reassuring, warm. "Your child is in good hands." Never anxious. Never performative.</p>
+    </div>
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700">
+        <i data-lucide="smartphone" class="w-4 h-4"></i> Device priority
+      </div>
+      <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Mobile-first. Desktop is a courtesy — read-mostly, no power-user moves.</p>
+    </div>
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700">
+        <i data-lucide="shield-check" class="w-4 h-4"></i> Forbidden
+      </div>
+      <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">No emoji, mascots, gamification, exclamation marks, "great job!", alarming red, or growth-mindset copy.</p>
+    </div>
+  </div>
+</section>
+<!-- ============================ TOKENS ============================ -->
+<section id="tokens" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">01</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Tokens</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[60ch]">Every color, type, spacing, radius, shadow, icon size — named, hex-specified, with intended use.</p>
+    </div>
+    <div class="text-[12px] text-sepia-500 font-mono hidden md:block">tailwind.config.js → theme.extend</div>
+  </header>
+
+  <!-- ---- Color ---- -->
+  <h3 class="mt-10 font-serif text-h3 text-ink">Color</h3>
+
+  <!-- brand scale -->
+  <div class="mt-4 rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+    <div class="px-5 py-3 border-b border-sepia-200 flex items-center justify-between">
+      <div>
+        <div class="text-[13px] font-medium text-ink">Brand · twilight blue</div>
+        <div class="text-[12px] text-sepia-500">Calm, trustworthy, evening-light. Primary action: <span class="font-mono">brand-600</span>.</div>
+      </div>
+      <span class="text-[11px] font-mono text-sepia-500">brand.*</span>
+    </div>
+    <div class="grid grid-cols-5 sm:grid-cols-10">
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#EEF2F6"></div><div class="text-[11px] font-medium text-ink">50</div><div class="text-[10px] font-mono text-sepia-500">#EEF2F6</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#D9E2EB"></div><div class="text-[11px] font-medium text-ink">100</div><div class="text-[10px] font-mono text-sepia-500">#D9E2EB</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#B5C5D7"></div><div class="text-[11px] font-medium text-ink">200</div><div class="text-[10px] font-mono text-sepia-500">#B5C5D7</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#8AA4BD"></div><div class="text-[11px] font-medium text-ink">300</div><div class="text-[10px] font-mono text-sepia-500">#8AA4BD</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#5F81A2"></div><div class="text-[11px] font-medium text-ink">400</div><div class="text-[10px] font-mono text-sepia-500">#5F81A2</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#406589"></div><div class="text-[11px] font-medium text-ink">500</div><div class="text-[10px] font-mono text-sepia-500">#406589</div></div>
+      <div class="p-3 border-r border-sepia-100 bg-brand-50/30"><div class="aspect-[3/2] rounded-md mb-2 ring-1 ring-brand-700/10" style="background:#2D5377"></div><div class="text-[11px] font-semibold text-brand-700">600 · primary</div><div class="text-[10px] font-mono text-sepia-500">#2D5377</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#234363"></div><div class="text-[11px] font-medium text-ink">700</div><div class="text-[10px] font-mono text-sepia-500">#234363</div></div>
+      <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#1A324C"></div><div class="text-[11px] font-medium text-ink">800</div><div class="text-[10px] font-mono text-sepia-500">#1A324C</div></div>
+      <div class="p-3"><div class="aspect-[3/2] rounded-md mb-2" style="background:#11243A"></div><div class="text-[11px] font-medium text-ink">900</div><div class="text-[10px] font-mono text-sepia-500">#11243A</div></div>
+    </div>
+  </div>
+
+  <!-- sepia + honey -->
+  <div class="mt-6 grid lg:grid-cols-[1.6fr_1fr] gap-6">
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200 flex items-center justify-between">
+        <div>
+          <div class="text-[13px] font-medium text-ink">Sepia · paper neutrals</div>
+          <div class="text-[12px] text-sepia-500">Warm-leaning grays. Replaces slate.* for Parent.</div>
+        </div>
+        <span class="text-[11px] font-mono text-sepia-500">sepia.*</span>
+      </div>
+      <div class="grid grid-cols-5 sm:grid-cols-10">
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2 ring-1 ring-sepia-200" style="background:#FAF6EE"></div><div class="text-[11px] font-medium text-ink">50</div><div class="text-[10px] font-mono text-sepia-500">#FAF6EE</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#F1EBDD"></div><div class="text-[11px] font-medium text-ink">100</div><div class="text-[10px] font-mono text-sepia-500">#F1EBDD</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#E3D9C2"></div><div class="text-[11px] font-medium text-ink">200</div><div class="text-[10px] font-mono text-sepia-500">#E3D9C2</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#C9BBA0"></div><div class="text-[11px] font-medium text-ink">300</div><div class="text-[10px] font-mono text-sepia-500">#C9BBA0</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#9F907A"></div><div class="text-[11px] font-medium text-ink">400</div><div class="text-[10px] font-mono text-sepia-500">#9F907A</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#766A58"></div><div class="text-[11px] font-medium text-ink">500</div><div class="text-[10px] font-mono text-sepia-500">#766A58</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#5A5142"></div><div class="text-[11px] font-medium text-ink">600</div><div class="text-[10px] font-mono text-sepia-500">#5A5142</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#3F3930"></div><div class="text-[11px] font-medium text-ink">700</div><div class="text-[10px] font-mono text-sepia-500">#3F3930</div></div>
+        <div class="p-3 border-r border-sepia-100"><div class="aspect-[3/2] rounded-md mb-2" style="background:#2A2620"></div><div class="text-[11px] font-medium text-ink">800</div><div class="text-[10px] font-mono text-sepia-500">#2A2620</div></div>
+        <div class="p-3"><div class="aspect-[3/2] rounded-md mb-2" style="background:#1B1813"></div><div class="text-[11px] font-medium text-ink">900</div><div class="text-[10px] font-mono text-sepia-500">#1B1813</div></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Honey · milestone accent</div>
+        <div class="text-[12px] text-sepia-500">"Embossed sticker" moments — first words, mastery, birthdays.</div>
+      </div>
+      <div class="p-5 grid grid-cols-2 gap-3">
+        <div><div class="aspect-square rounded-md ring-1 ring-sepia-200" style="background:#FAEFD5"></div><div class="mt-1 text-[11px] font-medium text-ink">100</div><div class="text-[10px] font-mono text-sepia-500">#FAEFD5</div></div>
+        <div><div class="aspect-square rounded-md" style="background:#EAC976"></div><div class="mt-1 text-[11px] font-medium text-ink">300</div><div class="text-[10px] font-mono text-sepia-500">#EAC976</div></div>
+        <div><div class="aspect-square rounded-md" style="background:#C99A3F"></div><div class="mt-1 text-[11px] font-medium text-ink">500</div><div class="text-[10px] font-mono text-sepia-500">#C99A3F</div></div>
+        <div><div class="aspect-square rounded-md" style="background:#8E6924"></div><div class="mt-1 text-[11px] font-medium text-ink">700</div><div class="text-[10px] font-mono text-sepia-500">#8E6924</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- surfaces + semantics -->
+  <div class="mt-6 grid lg:grid-cols-3 gap-6">
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Surfaces · cream paper</div>
+        <div class="text-[12px] text-sepia-500">Warmer than Teacher's near-white. "Book-page" feel.</div>
+      </div>
+      <div class="p-5 grid grid-cols-2 gap-3">
+        <div><div class="aspect-[4/3] rounded-md ring-1 ring-sepia-200" style="background:#F7F2E8"></div><div class="mt-1 text-[11px] font-medium text-ink">paper</div><div class="text-[10px] font-mono text-sepia-500">#F7F2E8 · page bg</div></div>
+        <div><div class="aspect-[4/3] rounded-md ring-1 ring-sepia-200" style="background:#FDFAF3"></div><div class="mt-1 text-[11px] font-medium text-ink">surface</div><div class="text-[10px] font-mono text-sepia-500">#FDFAF3 · cards</div></div>
+        <div class="col-span-2"><div class="aspect-[6/2] rounded-md ring-1 ring-sepia-200" style="background:#1E2230"></div><div class="mt-1 text-[11px] font-medium text-ink">ink</div><div class="text-[10px] font-mono text-sepia-500">#1E2230 · text · deep navy, not pure black</div></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Stitched divider · signature flourish</div>
+        <div class="text-[12px] text-sepia-500">Used between day-cards. Sepia-300 dashes.</div>
+      </div>
+      <div class="p-5">
+        <div class="stitch my-4"></div>
+        <div class="text-[12px] text-sepia-600">Repeating 8px dash / 8px gap. Horizontal in stacks. Vertical between facing pages on desktop.</div>
+        <div class="mt-4 flex items-center gap-4">
+          <div class="stitch flex-1"></div>
+          <i data-lucide="leaf" class="w-4 h-4 text-honey-500" style="stroke-width:1.5"></i>
+          <div class="stitch flex-1"></div>
+        </div>
+        <div class="text-[12px] text-sepia-600 mt-2">With center ornament: used at "today" boundary.</div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Semantic</div>
+        <div class="text-[12px] text-sepia-500">Calmer than Teacher — Parent surfaces never alarm.</div>
+      </div>
+      <div class="p-5 space-y-2 text-[12px]">
+        <div class="flex items-center gap-3"><span class="w-6 h-6 rounded-md" style="background:#6D8E48"></span><span class="font-medium text-ink w-20">success</span><span class="font-mono text-sepia-500">#6D8E48</span><span class="ml-auto text-sepia-500">olive</span></div>
+        <div class="flex items-center gap-3"><span class="w-6 h-6 rounded-md" style="background:#BC8624"></span><span class="font-medium text-ink w-20">warning</span><span class="font-mono text-sepia-500">#BC8624</span><span class="ml-auto text-sepia-500">soft amber</span></div>
+        <div class="flex items-center gap-3"><span class="w-6 h-6 rounded-md" style="background:#925046"></span><span class="font-medium text-ink w-20">error</span><span class="font-mono text-sepia-500">#925046</span><span class="ml-auto text-error-700 font-medium">softer Bordeaux</span></div>
+        <div class="flex items-center gap-3"><span class="w-6 h-6 rounded-md" style="background:#4A6385"></span><span class="font-medium text-ink w-20">info</span><span class="font-mono text-sepia-500">#4A6385</span><span class="ml-auto text-sepia-500">slate-blue</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Typography -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Typography</h3>
+  <div class="mt-4 grid lg:grid-cols-[1.4fr_1fr] gap-6">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6 space-y-4">
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Serif H1 · 34</span>
+        <span class="font-serif text-h1l text-ink">Bugun yaxshi kun bo'ldi</span>
+      </div>
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Serif H2 · 22</span>
+        <span class="font-serif text-h2 text-ink">Yusufning kuni</span>
+      </div>
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Sans H3 · 18</span>
+        <span class="text-h3 text-ink">Bugungi diqqat</span>
+      </div>
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Body · 16/1.6</span>
+        <span class="text-body text-sepia-800">Bugun darsda yangi so'zlarni o'rgandik. Yusuf ikkita yangi so'zni mustaqil ravishda aytdi.</span>
+      </div>
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Body-l · 17/1.65</span>
+        <span class="text-body-l text-sepia-800">Letter-grade reading width for journal entries.</span>
+      </div>
+      <div class="flex items-baseline gap-4 pb-3 border-b border-sepia-100">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Small · 14</span>
+        <span class="text-small text-sepia-700">Dilnoza opa · O'qituvchi · 14:32</span>
+      </div>
+      <div class="flex items-baseline gap-4">
+        <span class="text-[11px] font-mono text-sepia-500 w-24">Caption · 12</span>
+        <span class="text-caption text-sepia-500">3 rasm · 2 yangi yozuv</span>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6 space-y-4 text-[13px]">
+      <div>
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Families</div>
+        <div class="mt-1 text-ink font-medium">Source Serif 4 · headings</div>
+        <div class="mt-1 text-sepia-500">Quiet serif for "letter" feel. Used on H1, H2, page titles, day-card date.</div>
+        <div class="mt-2 text-ink font-medium">Inter · everything else</div>
+        <div class="mt-1 text-sepia-500">Body, labels, UI chrome.</div>
+      </div>
+      <div class="pt-3 border-t border-sepia-100">
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Mobile base</div>
+        <div class="mt-1 text-ink font-medium">16px · 1.6 line-height</div>
+        <div class="mt-1 text-sepia-500">Read-comfortable; never below 14 except captions.</div>
+      </div>
+      <div class="pt-3 border-t border-sepia-100">
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Tabular numerics</div>
+        <div class="mt-1 tnum text-ink text-[18px]">14:32 · 3 mart · 2 yangi</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacing / Radius / Shadow -->
+  <div class="mt-12 grid lg:grid-cols-3 gap-6">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+      <div class="text-[13px] font-medium text-ink">Spacing · 8px grid</div>
+      <div class="mt-1 text-[12px] text-sepia-500">More breathing room than Teacher — Parent is read, not worked.</div>
+      <div class="mt-4 space-y-1.5">
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">4</span><span class="h-2 bg-brand-300 rounded" style="width:4px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">8</span><span class="h-2 bg-brand-300 rounded" style="width:8px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">12</span><span class="h-2 bg-brand-300 rounded" style="width:12px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">16</span><span class="h-2 bg-brand-300 rounded" style="width:16px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">20</span><span class="h-2 bg-brand-400 rounded" style="width:20px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">24</span><span class="h-2 bg-brand-400 rounded" style="width:24px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">32</span><span class="h-2 bg-brand-500 rounded" style="width:32px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">40</span><span class="h-2 bg-brand-500 rounded" style="width:40px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">48</span><span class="h-2 bg-brand-600 rounded" style="width:48px"></span></div>
+        <div class="flex items-center gap-3"><span class="font-mono text-[11px] w-8 text-sepia-500">64</span><span class="h-2 bg-brand-700 rounded" style="width:64px"></span></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+      <div class="text-[13px] font-medium text-ink">Radius</div>
+      <div class="mt-1 text-[12px] text-sepia-500">Day cards use lg-xl. Avatar/badge full.</div>
+      <div class="mt-4 grid grid-cols-3 gap-3">
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-sm"></div><div class="mt-1 text-[11px] font-medium">sm · 6</div><div class="text-[10px] text-sepia-500">chips</div></div>
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-md"></div><div class="mt-1 text-[11px] font-medium">md · 8</div><div class="text-[10px] text-sepia-500">buttons</div></div>
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-lg"></div><div class="mt-1 text-[11px] font-medium">lg · 12</div><div class="text-[10px] text-sepia-500">photos</div></div>
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-xl"></div><div class="mt-1 text-[11px] font-medium">xl · 16</div><div class="text-[10px] text-sepia-500">day cards</div></div>
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-2xl"></div><div class="mt-1 text-[11px] font-medium">2xl · 20</div><div class="text-[10px] text-sepia-500">hero</div></div>
+        <div><div class="aspect-square bg-brand-100 ring-1 ring-brand-300 rounded-full"></div><div class="mt-1 text-[11px] font-medium">full</div><div class="text-[10px] text-sepia-500">avatars</div></div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+      <div class="text-[13px] font-medium text-ink">Shadow</div>
+      <div class="mt-1 text-[12px] text-sepia-500"><span class="font-mono">page</span> shadow makes day cards feel like pages.</div>
+      <div class="mt-4 grid grid-cols-2 gap-3">
+        <div class="rounded-lg bg-surface p-3 text-[11px] font-medium text-center">none</div>
+        <div class="rounded-lg bg-surface p-3 text-[11px] font-medium text-center shadow-xs">xs</div>
+        <div class="rounded-lg bg-surface p-3 text-[11px] font-medium text-center shadow-sm">sm</div>
+        <div class="rounded-lg bg-surface p-3 text-[11px] font-medium text-center shadow-md">md</div>
+        <div class="col-span-2 rounded-xl bg-surface p-3 text-[11px] font-medium text-center shadow-page">page — used on day-cards</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Iconography -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Iconography</h3>
+  <div class="mt-4 rounded-xl border border-sepia-200 bg-surface p-6">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div>
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Library</div>
+        <div class="mt-1 text-ink font-medium">lucide-react</div>
+        <div class="mt-1 text-[12px] text-sepia-500">Stroke 1.5 (softer than Teacher's 1.75) · sepia-500 default · brand-600 active</div>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Sizes</div>
+        <div class="mt-2 flex items-center gap-4 text-sepia-700">
+          <div class="flex flex-col items-center gap-1"><i data-lucide="circle-dot" class="w-4 h-4" style="stroke-width:1.5"></i><span class="text-[10px] font-mono">16</span></div>
+          <div class="flex flex-col items-center gap-1"><i data-lucide="circle-dot" class="w-[18px] h-[18px]" style="stroke-width:1.5"></i><span class="text-[10px] font-mono">18</span></div>
+          <div class="flex flex-col items-center gap-1"><i data-lucide="circle-dot" class="w-5 h-5" style="stroke-width:1.5"></i><span class="text-[10px] font-mono">20</span></div>
+          <div class="flex flex-col items-center gap-1"><i data-lucide="circle-dot" class="w-[22px] h-[22px]" style="stroke-width:1.5"></i><span class="text-[10px] font-mono">22</span></div>
+          <div class="flex flex-col items-center gap-1"><i data-lucide="circle-dot" class="w-6 h-6" style="stroke-width:1.5"></i><span class="text-[10px] font-mono">24</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Parent vocabulary</div>
+        <div class="mt-2 flex flex-wrap gap-3 text-sepia-600">
+          <i data-lucide="home" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="book-open" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="image" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="message-circle" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="heart" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="leaf" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="phone" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="calendar" class="w-5 h-5" style="stroke-width:1.5"></i>
+          <i data-lucide="award" class="w-5 h-5" style="stroke-width:1.5"></i>
+        </div>
+      </div>
+      <div>
+        <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Style</div>
+        <div class="mt-1 text-[12px] text-sepia-600 leading-relaxed">Softer stroke than Teacher. Filled icons reserved for milestones (honey-filled <span class="font-mono">award</span>) and the active tab in the bottom bar.</div>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================ SIGNATURE · DAY CARDS ============================ -->
+<section id="signature" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">02</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">The day card</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">Parent's signature element. Each school day becomes a stitched page in an ongoing book — a small keepsake the parent collects, not a feed they scroll past.</p>
+    </div>
+    <div class="text-[12px] text-sepia-500 font-mono hidden md:block">&lt;DayCard /&gt;</div>
+  </header>
+
+  <div class="mt-8 grid lg:grid-cols-[1fr_1.1fr] gap-8 items-start">
+
+    <!-- LEFT · anatomy of a card -->
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-3">Anatomy</div>
+
+      <div class="relative page-card rounded-xl p-5 page-corner">
+        <!-- date band -->
+        <div class="flex items-center justify-between">
+          <div>
+            <div class="font-mono text-[11px] uppercase tracking-[.14em] text-brand-700">Juma · 14 mart</div>
+            <div class="font-serif text-[22px] font-semibold text-ink mt-0.5">Bahor keldi</div>
+          </div>
+          <div class="text-right text-[11px] text-sepia-500">
+            <div>Dilnoza opa</div>
+            <div class="mt-0.5">15:42</div>
+          </div>
+        </div>
+
+        <div class="stitch my-4"></div>
+
+        <!-- body -->
+        <p class="text-[15px] text-sepia-800 leading-[1.6]">Bugun darsda yangi so'zlarni o'rgandik. Yusuf <span class="text-ink font-medium">ikkita yangi so'zni</span> mustaqil ravishda aytdi.</p>
+
+        <!-- milestone sticker -->
+        <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-honey-100 text-honey-700 text-[12px] font-medium border border-honey-300/60">
+          <i data-lucide="award" class="w-3.5 h-3.5" style="stroke-width:2"></i>
+          Birinchi marta · 5-so'zli jumla
+        </div>
+
+        <!-- photos -->
+        <div class="mt-4 grid grid-cols-3 gap-1.5">
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#E3D9C2"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+        </div>
+
+        <!-- footer -->
+        <div class="mt-4 flex items-center justify-between text-[12px] text-sepia-500">
+          <span class="flex items-center gap-1"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i> 3 rasm</span>
+          <button class="font-medium text-brand-700 hover:underline">Ochish →</button>
+        </div>
+      </div>
+
+      <!-- annotations -->
+      <ul class="mt-5 space-y-2.5 text-[13px] text-sepia-700 leading-relaxed">
+        <li><span class="text-ink font-medium">Date band</span> — day of week + date in monospace tracking; title in serif right below. Author name + send time on the right.</li>
+        <li><span class="text-ink font-medium">Stitched divider</span> — sepia-300 dashed line. Separates "header" from "letter".</li>
+        <li><span class="text-ink font-medium">Body</span> — letter-grade reading: 15–17px, line-height 1.6, generous side margins.</li>
+        <li><span class="text-ink font-medium">Milestone sticker</span> — honey pill with filled <span class="font-mono">award</span> icon. Only for genuine firsts and mastery moments.</li>
+        <li><span class="text-ink font-medium">Photo strip</span> — 1, 3, or 6 in a small grid. Tap to open full.</li>
+        <li><span class="text-ink font-medium">Page-corner fold</span> — bottom-right diagonal hint. Subtle but lands the "book page" metaphor.</li>
+      </ul>
+    </div>
+
+    <!-- RIGHT · stack -->
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-3">A week in the stack</div>
+
+      <div class="rounded-2xl bg-paper border border-sepia-200 p-5 shadow-xs">
+        <!-- Today -->
+        <div class="relative page-card rounded-xl p-5 page-corner">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[.14em] text-brand-700">Bugun · Juma</div>
+              <div class="font-serif text-[19px] font-semibold text-ink">Bahor keldi</div>
+            </div>
+            <div class="text-[11px] text-sepia-500">15:42</div>
+          </div>
+          <p class="mt-3 text-[14px] text-sepia-800 leading-[1.6] line-clamp-2">Bugun darsda yangi so'zlarni o'rgandik. Yusuf ikkita yangi so'zni mustaqil ravishda aytdi.</p>
+          <div class="mt-2 inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-honey-100 text-honey-700 text-[11px] font-medium border border-honey-300/60">
+            <i data-lucide="award" class="w-3 h-3" style="stroke-width:2"></i> Birinchi marta
+          </div>
+          <div class="mt-3 grid grid-cols-3 gap-1.5">
+            <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#E3D9C2"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+            <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+            <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          </div>
+        </div>
+
+        <!-- stitched divider · today boundary -->
+        <div class="flex items-center gap-3 my-4">
+          <div class="stitch flex-1"></div>
+          <span class="text-[10px] uppercase tracking-[.14em] text-sepia-500">avvalgi kunlar</span>
+          <div class="stitch flex-1"></div>
+        </div>
+
+        <!-- Thu -->
+        <div class="relative rounded-xl p-5 bg-surface border border-sepia-200/80">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[.14em] text-sepia-500">Pay · 13 mart</div>
+              <div class="font-serif text-[18px] font-semibold text-ink">Erkin o'yin</div>
+            </div>
+            <div class="text-[11px] text-sepia-500">15:30</div>
+          </div>
+          <p class="mt-3 text-[14px] text-sepia-700 leading-[1.6] line-clamp-2">Bolalar bilan o'yin maydonchasida vaqt o'tkazdik. Yusuf Doniyor bilan o'yinchoq baham ko'rdi.</p>
+          <div class="mt-3 grid grid-cols-3 gap-1.5">
+            <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#EEF2F6"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+            <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#F1EBDD"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+            <div class="aspect-square"></div>
+          </div>
+        </div>
+
+        <div class="stitch my-4"></div>
+
+        <!-- Wed -->
+        <div class="relative rounded-xl p-5 bg-surface border border-sepia-200/80">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[.14em] text-sepia-500">Chor · 12 mart</div>
+              <div class="font-serif text-[18px] font-semibold text-ink">Rasm chizish darsi</div>
+            </div>
+            <div class="text-[11px] text-sepia-500">16:08</div>
+          </div>
+          <p class="mt-3 text-[14px] text-sepia-700 leading-[1.6] line-clamp-2">Bugun bolalar rang aralashtirishni o'rgandi. Yusufning ranglarni nomlash mashqi yaxshi o'tdi.</p>
+        </div>
+
+        <div class="stitch my-4"></div>
+
+        <!-- Tue (no entry) -->
+        <div class="rounded-xl p-5 border border-dashed border-sepia-300 bg-surface/40">
+          <div class="flex items-center gap-3">
+            <i data-lucide="moon" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i>
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[.14em] text-sepia-400">Sesh · 11 mart</div>
+              <div class="text-[13px] text-sepia-500 mt-0.5">Bu kun yozuvsiz · maktab dam olish</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="stitch my-4"></div>
+
+        <!-- Mon -->
+        <div class="relative rounded-xl p-5 bg-surface border border-sepia-200/80">
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="font-mono text-[11px] uppercase tracking-[.14em] text-sepia-500">Du · 10 mart</div>
+              <div class="font-serif text-[18px] font-semibold text-ink">Yangi haftaning birinchi kuni</div>
+            </div>
+            <div class="text-[11px] text-sepia-500">15:50</div>
+          </div>
+          <p class="mt-3 text-[14px] text-sepia-700 leading-[1.6] line-clamp-2">Yusuf darsga juda quvonib keldi. Yangi do'sti Rasul bilan tanishdi.</p>
+        </div>
+      </div>
+
+      <p class="mt-3 text-[12px] text-sepia-500 leading-relaxed">
+        Days without an entry are <span class="text-ink font-medium">silent dashed cards</span> — the calendar continues, gaps are honest. Today's card always sits above the stitched "avvalgi kunlar" boundary.
+      </p>
+    </div>
+  </div>
+
+  <!-- variants -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Day card variants</h3>
+  <div class="mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <!-- standard -->
+    <div>
+      <div class="relative page-card rounded-xl p-4 page-corner">
+        <div class="font-mono text-[10px] uppercase tracking-[.14em] text-brand-700">Bugun</div>
+        <div class="font-serif text-[16px] font-semibold text-ink">Standart kun</div>
+        <div class="stitch my-3"></div>
+        <p class="text-[13px] text-sepia-700 line-clamp-3 leading-[1.55]">Qisqacha kun yozuvi · 1–2 paragraf.</p>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Standard</div>
+    </div>
+    <!-- milestone -->
+    <div>
+      <div class="relative rounded-xl p-4 page-corner" style="background:linear-gradient(180deg,#FAEFD5 0%,#FDFAF3 60%);border:1px solid #EAC976;box-shadow:0 6px 14px rgba(201,154,63,.12), 0 1px 0 rgba(255,255,255,.6) inset;">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="award" class="w-3.5 h-3.5 text-honey-700" style="stroke-width:2"></i>
+          <div class="font-mono text-[10px] uppercase tracking-[.14em] text-honey-700">Diqqatga sazovor</div>
+        </div>
+        <div class="font-serif text-[16px] font-semibold text-ink mt-0.5">Birinchi marta</div>
+        <div class="stitch my-3" style="--c:#EAC976"></div>
+        <p class="text-[13px] text-sepia-800 line-clamp-3 leading-[1.55]">Mahorat erishildi yoki ahamiyatli birinchi marta.</p>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Milestone · honey-tinted</div>
+    </div>
+    <!-- sensitive -->
+    <div>
+      <div class="relative rounded-xl p-4 page-corner" style="background:#FBF2DE;border:1px solid #EFD89A;">
+        <div class="flex items-center gap-1.5">
+          <i data-lucide="info" class="w-3.5 h-3.5 text-warning-700" style="stroke-width:1.5"></i>
+          <div class="font-mono text-[10px] uppercase tracking-[.14em] text-warning-700">Eslatma</div>
+        </div>
+        <div class="font-serif text-[16px] font-semibold text-ink mt-0.5">Bugun biroz qiyin edi</div>
+        <div class="stitch my-3" style="--c:#EFD89A"></div>
+        <p class="text-[13px] text-sepia-800 line-clamp-3 leading-[1.55]">Kontekst + keyingi qadam + o'qituvchiga qo'ng'iroq tugmasi ichkarida.</p>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Sensitive · warning-tinted</div>
+    </div>
+    <!-- empty/absent -->
+    <div>
+      <div class="rounded-xl p-4 border border-dashed border-sepia-300 bg-surface/40">
+        <div class="flex items-center gap-2"><i data-lucide="moon" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i><div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-400">Yozuvsiz</div></div>
+        <div class="mt-1 text-[13px] text-sepia-500">Bayram · dam olish · yoki yozuv hali yo'q</div>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Empty · dashed</div>
+    </div>
+  </div>
+</section>
+<!-- ============================ PHOTOGRAPHY ============================ -->
+<section id="photography" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">03</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Photography</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">Balanced with text — photos earn their place, but never dominate. A parent should be able to read a day even if no photo loaded.</p>
+    </div>
+  </header>
+
+  <!-- placeholders + grid -->
+  <div class="mt-8 grid lg:grid-cols-3 gap-6">
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Placeholder treatment</div>
+        <div class="text-[12px] text-sepia-500">Used in this reference. Production replaces with real classroom photos.</div>
+      </div>
+      <div class="p-5 space-y-3">
+        <div class="rounded-lg photo-placeholder h-36" style="--ph-color:#E3D9C2">
+          <i data-lucide="image" class="w-7 h-7" style="stroke-width:1.5"></i>
+          <span class="mt-1 text-[11px] font-mono">Photo placeholder</span>
+        </div>
+        <p class="text-[12px] text-sepia-500 leading-relaxed">Warm sepia tint by default. Tints can match the moment — honey for milestones, brand-50 for calm days.</p>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Photo grid · 1 / 3 / 6</div>
+        <div class="text-[12px] text-sepia-500">Day cards always show one of these counts. Tap any to enter gallery.</div>
+      </div>
+      <div class="p-5 space-y-3">
+        <!-- 1 -->
+        <div class="photo-placeholder rounded-lg" style="--ph-color:#D9E2EB;aspect-ratio:16/9"><i data-lucide="image" class="w-5 h-5" style="stroke-width:1.5"></i></div>
+        <!-- 3 -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#E3D9C2"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+        </div>
+        <!-- 6 -->
+        <div class="grid grid-cols-3 gap-1.5">
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#E3D9C2"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#F1EBDD"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#EEF2F6"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+          <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAF6EE"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface overflow-hidden">
+      <div class="px-5 py-3 border-b border-sepia-200">
+        <div class="text-[13px] font-medium text-ink">Avatar fallback</div>
+        <div class="text-[12px] text-sepia-500">When the child has no profile photo.</div>
+      </div>
+      <div class="p-5 flex items-center justify-around">
+        <div class="text-center">
+          <div class="w-14 h-14 rounded-full grid place-items-center text-white text-[16px] font-semibold mx-auto bg-brand-600">YT</div>
+          <div class="mt-2 text-[11px] text-sepia-500">Avatar</div>
+        </div>
+        <div class="text-center">
+          <div class="w-20 h-20 rounded-2xl grid place-items-center text-white text-[22px] font-semibold mx-auto bg-brand-700">YT</div>
+          <div class="mt-2 text-[11px] text-sepia-500">Hero square</div>
+        </div>
+      </div>
+      <div class="px-5 pb-5">
+        <p class="text-[12px] text-sepia-500 leading-relaxed">Brand-600 background, white initials. Parent-side fallback is brand-colored (not child-ribbon) — the one child IS the surface.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- the rule -->
+  <div class="mt-6 rounded-xl border border-brand-200 bg-brand-50/40 p-5 flex items-start gap-3">
+    <i data-lucide="feather" class="w-5 h-5 text-brand-700 mt-0.5 shrink-0" style="stroke-width:1.5"></i>
+    <p class="text-[14px] text-sepia-700 leading-relaxed">
+      <span class="font-medium text-ink">A parent should be able to read a day card even if no photo loaded.</span>
+      Text always carries the meaning; photos add warmth. Day cards never lead with a full-bleed photo — the date and title come first, the way a letter would.
+    </p>
+  </div>
+
+  <!-- privacy -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Privacy &amp; consent</h3>
+  <div class="mt-4 grid md:grid-cols-2 gap-4">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700"><i data-lucide="shield" class="w-4 h-4" style="stroke-width:1.5"></i> Only your child</div>
+      <p class="mt-2 text-[13px] text-sepia-700 leading-relaxed">Parents see <span class="text-ink font-medium">only photos of their own child</span>. Group shots where other children appear are filtered server-side. If a photo can't be safely shared, the day card silently shows fewer photos — never an error.</p>
+    </div>
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700"><i data-lucide="download" class="w-4 h-4" style="stroke-width:1.5"></i> Save &amp; share</div>
+      <p class="mt-2 text-[13px] text-sepia-700 leading-relaxed">Parents can save photos and entire day cards as keepsakes. Sharing outside the app prompts a calm reminder about other families' privacy — not a blocking warning.</p>
+    </div>
+  </div>
+</section>
+<!-- ============================ COMPONENTS ============================ -->
+<section id="components" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">04</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Components</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">Standard set, with two Parent-specific surfaces: <span class="text-ink font-medium">Child switcher</span> and the <span class="text-ink font-medium">"Call teacher" button</span> that lives at the end of any sensitive notice.</p>
+    </div>
+  </header>
+
+  <!-- Logo lockup -->
+  <h3 class="mt-10 font-serif text-h3 text-ink">Logo lockup</h3>
+  <div class="mt-3 grid sm:grid-cols-3 gap-4">
+    <div class="rounded-xl overflow-hidden border border-sepia-200">
+      <div class="px-5 py-8 bg-paper grid place-items-center">
+        <div class="text-center">
+          <span class="inline-grid place-items-center w-11 h-11 rounded-lg font-semibold text-[20px] bg-brand-800 text-brand-200">U</span>
+          <div class="mt-2 font-serif text-[20px] font-semibold text-ink leading-none">Uchqun</div>
+          <div class="text-[12px] text-sepia-600 mt-1">Ota-ona</div>
+        </div>
+      </div>
+      <div class="px-4 py-2 bg-sepia-50 text-[11px] text-sepia-500">Onboarding · centered</div>
+    </div>
+    <div class="rounded-xl overflow-hidden border border-sepia-200">
+      <div class="px-5 py-4 bg-surface flex items-center gap-2.5">
+        <span class="w-7 h-7 rounded-md bg-brand-800 text-brand-200 grid place-items-center font-semibold text-[13px]">U</span>
+        <div class="font-serif text-[16px] font-semibold text-ink leading-none">Uchqun</div>
+        <span class="text-[11px] text-sepia-500 ml-1">Ota-ona</span>
+      </div>
+      <div class="px-4 py-2 bg-sepia-50 text-[11px] text-sepia-500">Top nav · desktop</div>
+    </div>
+    <div class="rounded-xl overflow-hidden border border-sepia-200">
+      <div class="px-5 py-8 bg-surface grid place-items-center">
+        <div class="font-mono text-[12px] text-sepia-500 tracking-wide">UCHQUN · OTA-ONA</div>
+      </div>
+      <div class="px-4 py-2 bg-sepia-50 text-[11px] text-sepia-500">Email / footer · mono</div>
+    </div>
+  </div>
+
+  <!-- Child switcher -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Child switcher</h3>
+  <p class="mt-1 text-[13px] text-sepia-500">For parents with more than one child at the school. Sits at the very top of mobile + desktop. With one child, it collapses to a simple name.</p>
+
+  <div class="mt-4 grid md:grid-cols-2 gap-4">
+
+    <!-- closed -->
+    <div>
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-sepia-50 text-left">
+          <div class="w-10 h-10 rounded-full grid place-items-center text-white text-[13px] font-semibold bg-brand-600">YT</div>
+          <div class="flex-1 min-w-0">
+            <div class="font-serif text-[16px] font-semibold text-ink leading-tight">Yusuf Toshmatov</div>
+            <div class="text-[12px] text-sepia-500">7 yosh · "Quyosh" guruhi</div>
+          </div>
+          <i data-lucide="chevron-down" class="w-4 h-4 text-sepia-500" style="stroke-width:1.5"></i>
+        </button>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Closed · resting state</div>
+    </div>
+
+    <!-- open dropdown -->
+    <div>
+      <div class="rounded-xl border border-sepia-200 bg-surface p-2 shadow-md">
+        <div class="flex items-center gap-3 p-2 rounded-lg bg-brand-50">
+          <div class="w-10 h-10 rounded-full grid place-items-center text-white text-[13px] font-semibold bg-brand-600">YT</div>
+          <div class="flex-1 min-w-0">
+            <div class="font-serif text-[15px] font-semibold text-ink leading-tight">Yusuf Toshmatov</div>
+            <div class="text-[12px] text-sepia-500">7 yosh · "Quyosh"</div>
+          </div>
+          <i data-lucide="check" class="w-4 h-4 text-brand-700" style="stroke-width:2"></i>
+        </div>
+        <div class="flex items-center gap-3 p-2 rounded-lg hover:bg-sepia-50 mt-1">
+          <div class="w-10 h-10 rounded-full grid place-items-center text-white text-[13px] font-semibold bg-brand-500">DT</div>
+          <div class="flex-1 min-w-0">
+            <div class="font-serif text-[15px] font-semibold text-ink leading-tight">Diyora Toshmatova</div>
+            <div class="text-[12px] text-sepia-500">5 yosh · "Yulduz"</div>
+          </div>
+          <span class="px-1.5 py-0.5 rounded-full bg-honey-100 text-honey-700 text-[10px] font-medium">2 yangi</span>
+        </div>
+        <div class="stitch my-1 mx-2"></div>
+        <button class="w-full text-left px-2 py-1.5 rounded text-[13px] text-sepia-600 hover:bg-sepia-50 flex items-center gap-2">
+          <i data-lucide="settings" class="w-3.5 h-3.5" style="stroke-width:1.5"></i> Bolalar va kirish huquqlari
+        </button>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono">Open · 2-child dropdown with unread badges</div>
+    </div>
+  </div>
+
+  <!-- Mobile tab bar -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Mobile tab bar</h3>
+  <p class="mt-1 text-[13px] text-sepia-500">4 tabs — no FAB. Parent doesn't create; they receive and respond.</p>
+
+  <div class="mt-4 grid lg:grid-cols-[auto_1fr] gap-6 items-start">
+    <div class="rounded-2xl bg-paper border border-sepia-200 p-5" style="width:420px">
+      <div class="rounded-2xl bg-surface shadow-sm relative tabbar-shadow border border-sepia-200/60" style="height:96px">
+        <div class="absolute inset-x-0 bottom-0 h-[64px] flex items-end justify-around px-2 pb-2 bg-surface border-t border-sepia-200">
+          <button class="flex flex-col items-center gap-1 w-16">
+            <i data-lucide="home" class="w-[22px] h-[22px] text-brand-600" style="stroke-width:1.6"></i>
+            <span class="text-[11px] font-medium text-brand-700">Bugun</span>
+          </button>
+          <button class="flex flex-col items-center gap-1 w-16">
+            <i data-lucide="book-open" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i>
+            <span class="text-[11px] text-sepia-600">Kundalik</span>
+          </button>
+          <button class="flex flex-col items-center gap-1 w-16 relative">
+            <i data-lucide="message-circle" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i>
+            <span class="absolute -top-1 right-3 w-[18px] h-[18px] rounded-full bg-honey-500 text-white text-[10px] font-semibold grid place-items-center">2</span>
+            <span class="text-[11px] text-sepia-600">Xabarlar</span>
+          </button>
+          <button class="flex flex-col items-center gap-1 w-16">
+            <i data-lucide="user" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i>
+            <span class="text-[11px] text-sepia-600">Profil</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-[13px] text-sepia-700 space-y-2 leading-relaxed">
+      <p><span class="text-ink font-medium">Active</span> · brand-600 icon and label.</p>
+      <p><span class="text-ink font-medium">Inactive</span> · sepia-500 icon, sepia-600 label.</p>
+      <p><span class="text-ink font-medium">Unread badges</span> · honey on Messages (warm) — never error red for routine unreads.</p>
+      <p><span class="text-ink font-medium">No center FAB</span> · Parent receives. Replying happens inside Messages.</p>
+    </div>
+  </div>
+
+  <!-- Buttons -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Buttons</h3>
+  <div class="mt-4 rounded-xl border border-sepia-200 bg-surface p-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <button class="h-11 px-5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[15px] font-medium flex items-center gap-2">
+        <i data-lucide="phone" class="w-4 h-4" style="stroke-width:1.75"></i> O'qituvchiga qo'ng'iroq
+      </button>
+      <button class="h-11 px-5 rounded-md bg-surface border border-sepia-300 hover:bg-sepia-50 text-ink text-[15px] font-medium">Keyinroq</button>
+      <button class="h-11 px-4 rounded-md hover:bg-sepia-100 text-sepia-700 text-[15px] font-medium flex items-center gap-1.5">
+        <i data-lucide="message-circle" class="w-4 h-4" style="stroke-width:1.5"></i> Xabar yozish
+      </button>
+      <button class="h-11 px-5 rounded-md bg-honey-500 hover:bg-honey-700 text-white text-[15px] font-medium flex items-center gap-2">
+        <i data-lucide="award" class="w-4 h-4" style="stroke-width:2"></i> Saqlash
+      </button>
+      <button class="h-11 px-5 rounded-md bg-error-500 hover:bg-error-700 text-white text-[15px] font-medium">O'chirish</button>
+    </div>
+
+    <div class="mt-5 pt-5 border-t border-sepia-100">
+      <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-3">Sizes — mobile-led, generous</div>
+      <div class="flex flex-wrap items-center gap-3">
+        <button class="h-9 px-4 rounded-md bg-brand-600 text-white text-[13px] font-medium">sm · 36</button>
+        <button class="h-11 px-5 rounded-md bg-brand-600 text-white text-[15px] font-medium">md · 44 (mobile default)</button>
+        <button class="h-12 px-6 rounded-md bg-brand-600 text-white text-[16px] font-medium">lg · 48 (primary CTA)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Form components -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Form components</h3>
+  <p class="mt-1 text-[13px] text-sepia-500">Generous 44–48px field height on mobile. Quiet labels. No required-marker chevrons of doom.</p>
+
+  <div class="mt-4 grid lg:grid-cols-2 gap-4">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6 space-y-5">
+      <div>
+        <label class="block text-[13px] font-medium text-sepia-700 mb-1.5">Ota-onaning ismi</label>
+        <input value="Madina Abdullayeva" class="focus-ring w-full h-11 px-3.5 rounded-md border border-sepia-200 bg-surface text-[15px] text-ink" />
+      </div>
+      <div>
+        <label class="block text-[13px] font-medium text-sepia-700 mb-1.5">Telefon raqami</label>
+        <div class="flex items-center gap-2 rounded-md border border-sepia-200 bg-surface px-3.5 h-11">
+          <i data-lucide="phone" class="w-[18px] h-[18px] text-sepia-500" style="stroke-width:1.5"></i>
+          <input value="+998 90 123 45 67" class="flex-1 outline-none text-[15px] text-ink" />
+        </div>
+      </div>
+      <div>
+        <label class="block text-[13px] font-medium text-sepia-700 mb-1.5">Yozma xabar</label>
+        <textarea rows="3" class="focus-ring w-full p-3.5 rounded-md border border-sepia-200 bg-surface text-[15px] leading-relaxed">Rahmat, Dilnoza opa. Yusufga aytib qo'yaman.</textarea>
+      </div>
+    </div>
+
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6 space-y-5">
+      <div>
+        <div class="text-[13px] font-medium text-sepia-700 mb-2">Bildirishnomalar</div>
+        <label class="flex items-center justify-between py-2 cursor-pointer">
+          <div>
+            <div class="text-[14px] text-ink font-medium">Yangi kun yozuvi</div>
+            <div class="text-[12px] text-sepia-500">Har kuni 16:00 atrofida</div>
+          </div>
+          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-brand-600">
+            <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 shadow-sm"></span>
+          </span>
+        </label>
+        <label class="flex items-center justify-between py-2 cursor-pointer border-t border-sepia-100">
+          <div>
+            <div class="text-[14px] text-ink font-medium">O'qituvchidan xabar</div>
+            <div class="text-[12px] text-sepia-500">Darhol</div>
+          </div>
+          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-brand-600">
+            <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 shadow-sm"></span>
+          </span>
+        </label>
+        <label class="flex items-center justify-between py-2 cursor-pointer border-t border-sepia-100">
+          <div>
+            <div class="text-[14px] text-ink font-medium">Maktab e'lonlari</div>
+            <div class="text-[12px] text-sepia-500">Faqat muhim e'lonlar</div>
+          </div>
+          <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-sepia-300">
+            <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-1 shadow-sm"></span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badges & stickers -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Badges &amp; stickers</h3>
+  <div class="mt-4 rounded-xl border border-sepia-200 bg-surface p-6 flex flex-wrap items-center gap-2.5">
+    <span class="px-2.5 py-1 rounded-full bg-sepia-100 text-sepia-700 text-[12px] font-medium">neutral</span>
+    <span class="px-2.5 py-1 rounded-full bg-success-50 text-success-700 text-[12px] font-medium">success</span>
+    <span class="px-2.5 py-1 rounded-full bg-warning-50 text-warning-700 text-[12px] font-medium">warning</span>
+    <span class="px-2.5 py-1 rounded-full bg-error-50 text-error-700 text-[12px] font-medium">error</span>
+    <span class="px-2.5 py-1 rounded-full bg-info-50 text-info-700 text-[12px] font-medium">info</span>
+    <span class="px-2.5 py-1 rounded-full bg-brand-50 text-brand-700 text-[12px] font-medium">brand</span>
+    <!-- milestone sticker -->
+    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-honey-100 text-honey-700 text-[12px] font-medium border border-honey-300/60">
+      <i data-lucide="award" class="w-3.5 h-3.5" style="stroke-width:2"></i> Birinchi marta
+    </span>
+    <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-honey-100 text-honey-700 text-[12px] font-medium border border-honey-300/60">
+      <i data-lucide="leaf" class="w-3.5 h-3.5" style="stroke-width:2"></i> Mahorat
+    </span>
+    <span class="ml-2 text-[11px] text-sepia-500 font-mono">milestone stickers — honey only</span>
+  </div>
+
+  <!-- Toast + bottom sheet -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Toast · bottom sheet</h3>
+  <div class="mt-4 grid lg:grid-cols-2 gap-4">
+
+    <!-- Toast -->
+    <div class="rounded-xl border border-sepia-200 bg-paper p-5 space-y-2.5">
+      <div class="bg-surface rounded-xl shadow-md border border-sepia-200 flex items-stretch overflow-hidden" style="max-width:320px">
+        <span class="w-1 bg-success-500"></span>
+        <div class="flex-1 p-3.5 flex items-start gap-2">
+          <i data-lucide="check-circle-2" class="w-4 h-4 text-success-700 mt-0.5" style="stroke-width:1.75"></i>
+          <div class="flex-1">
+            <div class="text-[13px] font-medium text-ink">Xabar yuborildi</div>
+            <div class="text-[11px] text-sepia-500">Dilnoza opa tez orada javob beradi</div>
+          </div>
+          <button><i data-lucide="x" class="w-3.5 h-3.5 text-sepia-400" style="stroke-width:1.5"></i></button>
+        </div>
+      </div>
+      <div class="bg-surface rounded-xl shadow-md border border-sepia-200 flex items-stretch overflow-hidden" style="max-width:320px">
+        <span class="w-1 bg-honey-500"></span>
+        <div class="flex-1 p-3.5 flex items-start gap-2">
+          <i data-lucide="bookmark" class="w-4 h-4 text-honey-700 mt-0.5" style="stroke-width:1.5"></i>
+          <div class="flex-1">
+            <div class="text-[13px] font-medium text-ink">Saqlangan</div>
+            <div class="text-[11px] text-sepia-500">"Birinchi marta · 5-so'zli jumla"</div>
+          </div>
+        </div>
+      </div>
+      <div class="text-[11px] text-sepia-500 font-mono">Toast · semantic left bar</div>
+    </div>
+
+    <!-- Bottom sheet -->
+    <div class="rounded-xl border border-sepia-200 bg-paper p-5">
+      <div class="rounded-2xl bg-surface border border-sepia-200 shadow-md p-5" style="max-width:380px;margin:auto">
+        <div class="w-10 h-1 rounded-full bg-sepia-200 mx-auto"></div>
+        <div class="mt-4 flex items-start gap-3">
+          <span class="w-10 h-10 rounded-full bg-brand-50 grid place-items-center"><i data-lucide="phone" class="w-5 h-5 text-brand-600" style="stroke-width:1.5"></i></span>
+          <div>
+            <div class="font-serif text-[18px] font-semibold text-ink">O'qituvchi bilan bog'lanish</div>
+            <p class="text-[13px] text-sepia-600 mt-1">Dilnoza opa · Bugun 08:00–16:00 ish vaqti</p>
+          </div>
+        </div>
+        <div class="mt-5 space-y-2">
+          <button class="w-full h-11 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[15px] font-medium flex items-center justify-center gap-2">
+            <i data-lucide="phone" class="w-4 h-4" style="stroke-width:1.75"></i> Qo'ng'iroq qilish
+          </button>
+          <button class="w-full h-11 rounded-md bg-surface border border-sepia-300 text-ink text-[15px] font-medium flex items-center justify-center gap-2">
+            <i data-lucide="message-circle" class="w-4 h-4" style="stroke-width:1.5"></i> Xabar yozish
+          </button>
+          <button class="w-full h-11 rounded-md text-sepia-600 text-[14px] font-medium">Keyinroq</button>
+        </div>
+      </div>
+      <div class="mt-3 text-[11px] text-sepia-500 font-mono text-center">Bottom sheet · "Call teacher" action</div>
+    </div>
+  </div>
+</section>
+<!-- ============================ SENSITIVE INFO ============================ -->
+<section id="sensitive" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">05</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">When the news is sensitive</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">Behavior incidents, missed milestones, illness — these can frighten a parent. Every sensitive notice follows the same four-part shape: <span class="text-ink font-medium">context · what happened · next step · call teacher</span>.</p>
+    </div>
+  </header>
+
+  <div class="mt-8 grid lg:grid-cols-[1.1fr_1fr] gap-8 items-start">
+
+    <!-- The card itself -->
+    <div>
+      <div class="rounded-2xl border-2 p-6 shadow-sm" style="background:#FBF2DE;border-color:#EFD89A">
+        <!-- 1. label -->
+        <div class="flex items-center gap-2">
+          <i data-lucide="info" class="w-4 h-4 text-warning-700" style="stroke-width:1.75"></i>
+          <span class="font-mono text-[11px] uppercase tracking-[.14em] text-warning-700 font-medium">Eslatma · 14 mart</span>
+        </div>
+
+        <!-- 2. what happened (the headline first, calmly) -->
+        <h3 class="mt-2 font-serif text-[22px] font-semibold text-ink leading-tight">Yusuf bugun ozgina bezovta edi</h3>
+        <p class="mt-2 text-[15px] text-sepia-800 leading-[1.65]">
+          Erkin o'yin paytida baland ovozdan biroz qiynaldi. Dilnoza opa uni jim joyga olib chiqdi, suv ichirdi va birgalikda 10 daqiqa o'tirdi. Soat 11:30 ga kelib u o'zini yaxshi his qildi va boshqa bolalar bilan o'ynashda davom etdi.
+        </p>
+
+        <!-- 3. context -->
+        <div class="mt-4 rounded-xl bg-surface/80 border border-warning-200/60 p-4">
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 font-medium mb-1.5">Kontekst</div>
+          <p class="text-[14px] text-sepia-800 leading-[1.6]">Bu Yusufning birinchi marta tinch joyga o'tishi emas — biz buni ish rejasida belgilab qo'yganmiz. Bunday holatlar uning baland ovozli muhitga moslashuvining bir qismi.</p>
+        </div>
+
+        <!-- 4. next step -->
+        <div class="mt-3 rounded-xl bg-surface/80 border border-warning-200/60 p-4">
+          <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 font-medium mb-1.5">Keyingi qadam</div>
+          <p class="text-[14px] text-sepia-800 leading-[1.6]">Ertaga ham xuddi shu vaziyatni kuzatamiz. Agar uyda quloqqa teginib bezovta bo'lishi davom etsa, logoped bilan kichik ko'rik tashkil qilamiz.</p>
+        </div>
+
+        <!-- 5. call teacher -->
+        <div class="mt-5 pt-5 border-t border-warning-200">
+          <p class="text-[13px] text-sepia-700 mb-3">Savollaringiz bo'lsa, qo'ng'iroq qiling yoki yozing. Bu butun kun ish vaqtida mumkin.</p>
+          <div class="flex flex-wrap items-center gap-2">
+            <button class="h-11 px-5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-medium flex items-center gap-2">
+              <i data-lucide="phone" class="w-4 h-4" style="stroke-width:1.75"></i> Dilnoza opaga qo'ng'iroq
+            </button>
+            <button class="h-11 px-4 rounded-md bg-surface border border-sepia-300 hover:bg-sepia-50 text-ink text-[14px] font-medium flex items-center gap-2">
+              <i data-lucide="message-circle" class="w-4 h-4" style="stroke-width:1.5"></i> Xabar yozish
+            </button>
+            <button class="h-11 px-4 rounded-md hover:bg-sepia-100/60 text-sepia-600 text-[14px] font-medium ml-auto">
+              Tushundim
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p class="mt-3 text-[12px] text-sepia-500">Same shape, three intensities — warning (above), info (illness/absence), error (only for safety incidents requiring immediate response).</p>
+    </div>
+
+    <!-- Anatomy + tone rules -->
+    <div class="space-y-5">
+      <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Anatomy</div>
+        <ol class="mt-3 space-y-3 text-[13px] text-sepia-700 leading-relaxed">
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">1</span><div><span class="text-ink font-medium">Eslatma label</span> — semantic tag with date. Always the first thing the parent sees.</div></li>
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">2</span><div><span class="text-ink font-medium">Headline</span> — calm declarative sentence. No exclamation. No "incident" or "alert".</div></li>
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">3</span><div><span class="text-ink font-medium">What happened</span> — short paragraph, named action by the teacher, named outcome. End on something the child did well or recovered to.</div></li>
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">4</span><div><span class="text-ink font-medium">Kontekst</span> — frames the event. "This is normal / expected / planned for."</div></li>
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">5</span><div><span class="text-ink font-medium">Keyingi qadam</span> — what the school will do. Action belongs with the school, not loaded onto the parent.</div></li>
+          <li class="flex gap-3"><span class="font-mono text-brand-700 shrink-0">6</span><div><span class="text-ink font-medium">Call teacher</span> — primary action. Always reachable in one tap.</div></li>
+        </ol>
+      </div>
+
+      <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Copy rules</div>
+        <div class="mt-3 grid grid-cols-1 gap-2.5 text-[13px]">
+          <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-success-700 mt-0.5 shrink-0" style="stroke-width:2"></i><div><span class="text-ink font-medium">"Yusuf bugun ozgina bezovta edi."</span></div></div>
+          <div class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-error-500 mt-0.5 shrink-0" style="stroke-width:2"></i><div class="text-sepia-600"><span class="line-through">"Yusuf jiddiy buzilish ko'rsatdi!"</span></div></div>
+          <div class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-success-700 mt-0.5 shrink-0" style="stroke-width:2"></i><div>Active voice. Named teacher. Named outcome.</div></div>
+          <div class="flex items-start gap-2"><i data-lucide="x" class="w-4 h-4 text-error-500 mt-0.5 shrink-0" style="stroke-width:2"></i><div class="text-sepia-600">Passive voice. "Was observed". Open-ended worry.</div></div>
+        </div>
+      </div>
+
+      <div class="rounded-xl border border-brand-200 bg-brand-50/40 p-6">
+        <div class="flex items-center gap-2 text-[12px] font-medium text-brand-700"><i data-lucide="phone" class="w-4 h-4" style="stroke-width:1.5"></i> Call-teacher button</div>
+        <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Direct dial during school hours (08:00–16:00). Outside those hours, the same button becomes <span class="font-mono text-brand-700">"Xabar yozish"</span> as primary — the parent never feels stuck.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- The three intensities -->
+  <h3 class="mt-12 font-serif text-h3 text-ink">Three intensities · same shape</h3>
+  <div class="mt-4 grid md:grid-cols-3 gap-4">
+    <!-- info · illness/absence -->
+    <div class="rounded-xl p-5 border-2" style="background:#EBEEF3;border-color:#C0CAD9">
+      <div class="flex items-center gap-2"><i data-lucide="thermometer" class="w-4 h-4 text-info-700" style="stroke-width:1.5"></i><span class="font-mono text-[11px] uppercase tracking-[.14em] text-info-700 font-medium">Ma'lumot · 14 mart</span></div>
+      <h4 class="mt-2 font-serif text-[18px] font-semibold text-ink">Bugun harorati biroz balandroq</h4>
+      <p class="mt-2 text-[13px] text-sepia-700 leading-[1.6]">37.4° · Yusuf hozir tinch yotibdi. Suv ichdi. Vaziyat ko'rilmoqda.</p>
+      <div class="mt-3 stitch" style="--c:#C0CAD9"></div>
+      <button class="mt-3 w-full h-10 rounded-md bg-brand-600 text-white text-[13px] font-medium">Qo'ng'iroq qilish</button>
+    </div>
+
+    <!-- warning · sample (smaller) -->
+    <div class="rounded-xl p-5 border-2" style="background:#FBF2DE;border-color:#EFD89A">
+      <div class="flex items-center gap-2"><i data-lucide="info" class="w-4 h-4 text-warning-700" style="stroke-width:1.75"></i><span class="font-mono text-[11px] uppercase tracking-[.14em] text-warning-700 font-medium">Eslatma · 14 mart</span></div>
+      <h4 class="mt-2 font-serif text-[18px] font-semibold text-ink">Ozgina qiyin daqiqa</h4>
+      <p class="mt-2 text-[13px] text-sepia-700 leading-[1.6]">Erkin o'yinda biroz bezovta edi · 10 daqiqa ichida tinchidi · keyin yaxshi ishladi.</p>
+      <div class="mt-3 stitch" style="--c:#EFD89A"></div>
+      <button class="mt-3 w-full h-10 rounded-md bg-brand-600 text-white text-[13px] font-medium">Qo'ng'iroq qilish</button>
+    </div>
+
+    <!-- error · safety -->
+    <div class="rounded-xl p-5 border-2" style="background:#F5E8E4;border-color:#E1C2BA">
+      <div class="flex items-center gap-2"><i data-lucide="alert-circle" class="w-4 h-4 text-error-700" style="stroke-width:1.75"></i><span class="font-mono text-[11px] uppercase tracking-[.14em] text-error-700 font-medium">Diqqat · 14 mart 11:42</span></div>
+      <h4 class="mt-2 font-serif text-[18px] font-semibold text-ink">Yusuf bugun yiqildi</h4>
+      <p class="mt-2 text-[13px] text-sepia-700 leading-[1.6]">Tirsagida kichik ko'karish bor · sog'liq tekshirildi · u hozir o'zini yaxshi his qilmoqda.</p>
+      <div class="mt-3 stitch" style="--c:#E1C2BA"></div>
+      <button class="mt-3 w-full h-10 rounded-md bg-error-500 hover:bg-error-700 text-white text-[13px] font-medium">Hozir qo'ng'iroq qiling</button>
+    </div>
+  </div>
+  <p class="mt-3 text-[12px] text-sepia-500 leading-relaxed max-w-[70ch]">Error intensity is reserved for genuine safety events that warrant an immediate parent response. Behavior incidents are <span class="text-ink font-medium">warning</span>, illness is <span class="text-ink font-medium">info</span>. The softer Bordeaux color is intentional — Parent never sees harsh red.</p>
+</section>
+<!-- ============================ ONBOARDING ============================ -->
+<section id="onboarding" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Page 1 of 5</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Onboarding · first-time setup</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">A four-step welcome — each step is one decision, the parent always knows where they are and they can back out at any moment. Mobile-led.</p>
+    </div>
+  </header>
+
+  <!-- Four phone frames in a row -->
+  <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 justify-items-center">
+
+    <!-- STEP 1 · Welcome / phone -->
+    <div>
+      <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md">
+        <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+          <!-- status bar -->
+          <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100">
+            <span>14:32</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+          </div>
+
+          <!-- progress bar -->
+          <div class="px-5 pt-4">
+            <div class="flex items-center gap-1.5">
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+            </div>
+            <div class="mt-2 text-[11px] text-sepia-500 font-mono uppercase tracking-[.14em]">Qadam 1 / 4</div>
+          </div>
+
+          <!-- body -->
+          <div class="flex-1 flex flex-col px-6 pt-10">
+            <span class="inline-grid place-items-center w-14 h-14 rounded-2xl font-semibold text-[24px] bg-brand-800 text-brand-200">U</span>
+            <h1 class="mt-6 font-serif text-[30px] leading-[1.15] font-semibold text-ink">Xush kelibsiz,<br/>Madina opa</h1>
+            <p class="mt-3 text-[16px] text-sepia-700 leading-[1.6]">Yusufning kunlik hayotini bir oyna ortidan ko'ring. Faqat sizning bolangiz uchun.</p>
+
+            <div class="mt-8 rounded-2xl border border-sepia-200 bg-surface p-4">
+              <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-1.5">Telefon raqamingiz</div>
+              <div class="flex items-center gap-2 rounded-md border border-sepia-200 bg-surface px-3 h-12 focus-within:border-brand-600 focus-within:shadow-ring transition-shadow">
+                <i data-lucide="phone" class="w-[18px] h-[18px] text-sepia-500" style="stroke-width:1.5"></i>
+                <input value="+998 90 123 45 67" class="flex-1 outline-none text-[16px] text-ink" />
+              </div>
+              <p class="mt-2 text-[12px] text-sepia-500">Maktabdagi ro'yxatga olingan raqam.</p>
+            </div>
+          </div>
+
+          <!-- footer -->
+          <div class="p-5 border-t border-sepia-100 bg-surface/60">
+            <button class="w-full h-12 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[16px] font-semibold">Davom etish</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono text-center">1 · Phone</div>
+    </div>
+
+    <!-- STEP 2 · OTP -->
+    <div>
+      <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md">
+        <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+          <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100">
+            <span>14:33</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+          </div>
+
+          <div class="px-5 pt-4">
+            <div class="flex items-center gap-1.5">
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+            </div>
+            <div class="mt-2 flex items-center gap-2 text-[11px] text-sepia-500 font-mono uppercase tracking-[.14em]">
+              <button class="hover:text-ink"><i data-lucide="arrow-left" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></button>
+              Qadam 2 / 4
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-col px-6 pt-10">
+            <h1 class="font-serif text-[26px] leading-[1.2] font-semibold text-ink">SMS kodingizni kiriting</h1>
+            <p class="mt-2 text-[15px] text-sepia-700 leading-[1.6]">Telefoningizga 6-raqamli kod yubordik · <span class="font-mono text-ink">+998 90 ··· ··67</span></p>
+
+            <div class="mt-8 flex items-center gap-2 justify-center">
+              <div class="w-11 h-14 rounded-md border-2 border-brand-600 grid place-items-center text-[22px] font-semibold text-ink tnum bg-surface">2</div>
+              <div class="w-11 h-14 rounded-md border-2 border-brand-600 grid place-items-center text-[22px] font-semibold text-ink tnum bg-surface">8</div>
+              <div class="w-11 h-14 rounded-md border-2 border-brand-600 grid place-items-center text-[22px] font-semibold text-ink tnum bg-surface">4</div>
+              <div class="w-11 h-14 rounded-md border border-sepia-300 grid place-items-center text-[22px] font-semibold text-brand-600 tnum bg-surface" style="border-color:#2D5377; box-shadow:0 0 0 2px #FDFAF3, 0 0 0 4px rgba(45,83,119,.25)">
+                <span class="inline-block w-px h-7 bg-brand-600 animate-pulse"></span>
+              </div>
+              <div class="w-11 h-14 rounded-md border border-sepia-300 grid place-items-center bg-surface"></div>
+              <div class="w-11 h-14 rounded-md border border-sepia-300 grid place-items-center bg-surface"></div>
+            </div>
+
+            <div class="mt-6 text-center">
+              <div class="text-[12px] text-sepia-500">Kod kelmadi? <button class="text-brand-700 font-medium">Qayta yuborish</button></div>
+              <div class="mt-1 text-[11px] text-sepia-400 tnum">0:42 dan keyin</div>
+            </div>
+          </div>
+
+          <div class="p-5 border-t border-sepia-100 bg-surface/60">
+            <button class="w-full h-12 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[16px] font-semibold">Tasdiqlash</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono text-center">2 · SMS code</div>
+    </div>
+
+    <!-- STEP 3 · Confirm child -->
+    <div>
+      <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md">
+        <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+          <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100">
+            <span>14:33</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+          </div>
+
+          <div class="px-5 pt-4">
+            <div class="flex items-center gap-1.5">
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-sepia-200"></span>
+            </div>
+            <div class="mt-2 flex items-center gap-2 text-[11px] text-sepia-500 font-mono uppercase tracking-[.14em]">
+              <button class="hover:text-ink"><i data-lucide="arrow-left" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></button>
+              Qadam 3 / 4
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-col px-6 pt-8 overflow-y-auto">
+            <h1 class="font-serif text-[26px] leading-[1.2] font-semibold text-ink">Bolalaringizni tasdiqlang</h1>
+            <p class="mt-2 text-[15px] text-sepia-700 leading-[1.6]">Maktab ro'yxatida sizning ismingiz bilan bog'liq bolalar.</p>
+
+            <div class="mt-5 space-y-3">
+              <!-- Yusuf -->
+              <label class="flex items-center gap-3 p-3.5 rounded-2xl bg-surface border-2 border-brand-600 shadow-sm">
+                <input type="checkbox" checked class="rounded text-brand-600 w-5 h-5" />
+                <div class="w-12 h-12 rounded-full grid place-items-center text-white text-[14px] font-semibold bg-brand-600">YT</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-serif text-[16px] font-semibold text-ink leading-tight">Yusuf Toshmatov</div>
+                  <div class="text-[12px] text-sepia-500">7 yosh · "Quyosh" guruhi</div>
+                </div>
+              </label>
+
+              <!-- Diyora -->
+              <label class="flex items-center gap-3 p-3.5 rounded-2xl bg-surface border-2 border-brand-600 shadow-sm">
+                <input type="checkbox" checked class="rounded text-brand-600 w-5 h-5" />
+                <div class="w-12 h-12 rounded-full grid place-items-center text-white text-[14px] font-semibold bg-brand-500">DT</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-serif text-[16px] font-semibold text-ink leading-tight">Diyora Toshmatova</div>
+                  <div class="text-[12px] text-sepia-500">5 yosh · "Yulduz" guruhi</div>
+                </div>
+              </label>
+            </div>
+
+            <button class="mt-4 self-start text-[13px] text-brand-700 font-medium flex items-center gap-1">
+              <i data-lucide="info" class="w-3.5 h-3.5" style="stroke-width:1.5"></i> Bola ro'yxatda yo'qmi?
+            </button>
+          </div>
+
+          <div class="p-5 border-t border-sepia-100 bg-surface/60">
+            <button class="w-full h-12 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[16px] font-semibold">Davom etish</button>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono text-center">3 · Confirm children</div>
+    </div>
+
+    <!-- STEP 4 · Notifications -->
+    <div>
+      <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md">
+        <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+          <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100">
+            <span>14:34</span>
+            <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+          </div>
+
+          <div class="px-5 pt-4">
+            <div class="flex items-center gap-1.5">
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+              <span class="h-1 flex-1 rounded-full bg-brand-600"></span>
+            </div>
+            <div class="mt-2 flex items-center gap-2 text-[11px] text-sepia-500 font-mono uppercase tracking-[.14em]">
+              <button class="hover:text-ink"><i data-lucide="arrow-left" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></button>
+              Qadam 4 / 4
+            </div>
+          </div>
+
+          <div class="flex-1 flex flex-col px-6 pt-8 overflow-y-auto">
+            <h1 class="font-serif text-[26px] leading-[1.2] font-semibold text-ink">Qachon eshitishni xohlaysiz?</h1>
+            <p class="mt-2 text-[15px] text-sepia-700 leading-[1.6]">Keyinroq sozlamalarda o'zgartirishingiz mumkin.</p>
+
+            <div class="mt-6 rounded-2xl border border-sepia-200 bg-surface divide-y divide-sepia-100">
+              <label class="flex items-center justify-between p-4 cursor-pointer">
+                <div class="flex-1 pr-4">
+                  <div class="text-[15px] text-ink font-medium">Har kuni kun yozuvi</div>
+                  <div class="text-[12px] text-sepia-500 mt-0.5">16:00 atrofida · maktab kunlari</div>
+                </div>
+                <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-brand-600 shrink-0">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 shadow-sm"></span>
+                </span>
+              </label>
+              <label class="flex items-center justify-between p-4 cursor-pointer">
+                <div class="flex-1 pr-4">
+                  <div class="text-[15px] text-ink font-medium">O'qituvchidan xabar</div>
+                  <div class="text-[12px] text-sepia-500 mt-0.5">Darhol</div>
+                </div>
+                <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-brand-600 shrink-0">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 shadow-sm"></span>
+                </span>
+              </label>
+              <label class="flex items-center justify-between p-4 cursor-pointer">
+                <div class="flex-1 pr-4">
+                  <div class="text-[15px] text-ink font-medium">Eslatma va sog'liq xabarlari</div>
+                  <div class="text-[12px] text-sepia-500 mt-0.5">Diqqat talab qiluvchi holatlar</div>
+                </div>
+                <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-brand-600 shrink-0">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-6 shadow-sm"></span>
+                </span>
+              </label>
+              <label class="flex items-center justify-between p-4 cursor-pointer">
+                <div class="flex-1 pr-4">
+                  <div class="text-[15px] text-ink font-medium">Maktab e'lonlari</div>
+                  <div class="text-[12px] text-sepia-500 mt-0.5">Faqat muhim · ko'p emas</div>
+                </div>
+                <span class="relative inline-flex h-7 w-12 items-center rounded-full bg-sepia-300 shrink-0">
+                  <span class="inline-block h-5 w-5 transform rounded-full bg-white translate-x-1 shadow-sm"></span>
+                </span>
+              </label>
+            </div>
+          </div>
+
+          <div class="p-5 border-t border-sepia-100 bg-surface/60">
+            <button class="w-full h-12 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[16px] font-semibold">Boshlash</button>
+            <p class="mt-2 text-center text-[11px] text-sepia-500">IHMA</p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-2 text-[11px] text-sepia-500 font-mono text-center">4 · Notifications</div>
+    </div>
+  </div>
+
+  <!-- Footnote -->
+  <div class="mt-10 grid md:grid-cols-2 gap-4">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Notes</div>
+      <ul class="mt-3 text-[13px] text-sepia-700 space-y-2 leading-relaxed list-disc pl-5 marker:text-sepia-400">
+        <li>Phone-first auth (no email). The school already has the parent's number.</li>
+        <li>Progress dots use brand-600 on the current step — never percentages or "step 1 of 4" mid-flow without context.</li>
+        <li>Back arrow always present from step 2 onward. Onboarding is reversible.</li>
+        <li>"Bola ro'yxatda yo'qmi?" opens a "call school" sheet — parent never has to figure it out alone.</li>
+      </ul>
+    </div>
+    <div class="rounded-xl border border-honey-300/60 bg-honey-100/60 p-5">
+      <div class="text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">Returning parent</div>
+      <p class="mt-2 text-[14px] text-sepia-800 leading-relaxed">For repeat logins, the same screen runs as a single phone + SMS step. Step indicators are hidden — this isn't onboarding anymore.</p>
+    </div>
+  </div>
+</section>
+<!-- ============================ HOME ============================ -->
+<section id="home" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Page 2 of 5</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Home · Bugun</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">First surface after login. Today's card sits at the top with the stitched divider below. The child switcher is the very first thing in the header.</p>
+    </div>
+  </header>
+
+  <div class="mt-8 grid lg:grid-cols-[auto_1fr] gap-8 items-start">
+
+    <!-- phone frame -->
+    <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md mx-auto">
+      <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+
+        <!-- status bar -->
+        <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100 shrink-0">
+          <span>14:32</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+        </div>
+
+        <!-- child switcher header -->
+        <div class="px-4 pt-3 pb-2 bg-surface border-b border-sepia-200 shrink-0">
+          <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-sepia-50">
+            <div class="w-9 h-9 rounded-full grid place-items-center text-white text-[12px] font-semibold bg-brand-600 shrink-0">YT</div>
+            <div class="flex-1 min-w-0 text-left">
+              <div class="font-serif text-[15px] font-semibold text-ink leading-tight truncate">Yusuf Toshmatov</div>
+              <div class="text-[11px] text-sepia-500">"Quyosh" · Dilnoza opa</div>
+            </div>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-sepia-500" style="stroke-width:1.5"></i>
+          </button>
+        </div>
+
+        <!-- scroll body -->
+        <div class="flex-1 overflow-y-auto px-4 pt-5 pb-24">
+          <!-- greeting -->
+          <div class="px-1">
+            <div class="font-mono text-[11px] uppercase tracking-[.14em] text-brand-700">Juma · 14 mart</div>
+            <h1 class="font-serif text-[28px] leading-[1.15] font-semibold text-ink mt-1">Bugun yaxshi kun bo'ldi</h1>
+            <p class="mt-1 text-[14px] text-sepia-600">Dilnoza opa soat 15:42 da yozdi</p>
+          </div>
+
+          <!-- TODAY card (full) -->
+          <div class="mt-5 relative page-card rounded-2xl p-5 page-corner">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="font-mono text-[10px] uppercase tracking-[.14em] text-brand-700">Bugun</div>
+                <div class="font-serif text-[20px] font-semibold text-ink">Bahor keldi</div>
+              </div>
+              <div class="text-[10px] text-sepia-500">15:42</div>
+            </div>
+            <div class="stitch my-3"></div>
+            <p class="text-[15px] text-sepia-800 leading-[1.6]">Bugun darsda yangi so'zlarni o'rgandik. Yusuf <span class="text-ink font-medium">ikkita yangi so'zni</span> mustaqil ravishda aytdi — "bahor" va "quyosh".</p>
+            <div class="mt-3 inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-honey-100 text-honey-700 text-[11px] font-medium border border-honey-300/60">
+              <i data-lucide="award" class="w-3 h-3" style="stroke-width:2"></i> Birinchi marta · 5-so'zli jumla
+            </div>
+            <div class="mt-3 grid grid-cols-3 gap-1.5">
+              <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#E3D9C2"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+              <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+              <div class="photo-placeholder rounded-md aspect-square" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></div>
+            </div>
+            <div class="mt-4 flex items-center justify-between text-[12px] text-sepia-600">
+              <span class="flex items-center gap-1"><i data-lucide="image" class="w-3.5 h-3.5" style="stroke-width:1.5"></i> 3 rasm</span>
+              <button class="font-medium text-brand-700">To'liq o'qish →</button>
+            </div>
+          </div>
+
+          <!-- stitched today boundary -->
+          <div class="flex items-center gap-3 my-5">
+            <div class="stitch flex-1"></div>
+            <span class="text-[10px] uppercase tracking-[.14em] text-sepia-500">avvalgi kunlar</span>
+            <div class="stitch flex-1"></div>
+          </div>
+
+          <!-- previous days -->
+          <div class="space-y-4">
+            <!-- Thu -->
+            <div class="rounded-xl p-4 bg-surface border border-sepia-200/80">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-500">Pay · 13 mart</div>
+                  <div class="font-serif text-[16px] font-semibold text-ink">Erkin o'yin</div>
+                </div>
+                <div class="text-[10px] text-sepia-500">15:30</div>
+              </div>
+              <p class="mt-2 text-[14px] text-sepia-700 leading-[1.55] line-clamp-2">Bolalar bilan o'yin maydonchasida vaqt o'tkazdik. Yusuf Doniyor bilan o'yinchoq baham ko'rdi.</p>
+              <div class="mt-2.5 grid grid-cols-3 gap-1">
+                <div class="photo-placeholder rounded aspect-square" style="--ph-color:#EEF2F6"><i data-lucide="image" class="w-3 h-3" style="stroke-width:1.5"></i></div>
+                <div class="photo-placeholder rounded aspect-square" style="--ph-color:#F1EBDD"><i data-lucide="image" class="w-3 h-3" style="stroke-width:1.5"></i></div>
+                <div class="aspect-square"></div>
+              </div>
+            </div>
+
+            <!-- Wed -->
+            <div class="rounded-xl p-4 bg-surface border border-sepia-200/80">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-500">Chor · 12 mart</div>
+                  <div class="font-serif text-[16px] font-semibold text-ink">Rasm chizish darsi</div>
+                </div>
+                <div class="text-[10px] text-sepia-500">16:08</div>
+              </div>
+              <p class="mt-2 text-[14px] text-sepia-700 leading-[1.55] line-clamp-2">Bugun bolalar rang aralashtirishni o'rgandi. Yusufning ranglarni nomlash mashqi yaxshi o'tdi.</p>
+            </div>
+
+            <!-- Tue (silent) -->
+            <div class="rounded-xl p-4 border border-dashed border-sepia-300 bg-surface/40">
+              <div class="flex items-center gap-3">
+                <i data-lucide="moon" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i>
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-400">Sesh · 11 mart</div>
+                  <div class="text-[12px] text-sepia-500 mt-0.5">Maktab dam olish</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Mon -->
+            <div class="rounded-xl p-4 bg-surface border border-sepia-200/80">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-500">Du · 10 mart</div>
+                  <div class="font-serif text-[16px] font-semibold text-ink">Yangi haftaning birinchi kuni</div>
+                </div>
+                <div class="text-[10px] text-sepia-500">15:50</div>
+              </div>
+              <p class="mt-2 text-[14px] text-sepia-700 leading-[1.55] line-clamp-2">Yusuf darsga juda quvonib keldi. Yangi do'sti Rasul bilan tanishdi.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- tab bar -->
+        <div class="absolute inset-x-0 bottom-0 bg-surface border-t border-sepia-200 tabbar-shadow">
+          <div class="h-[64px] flex items-end justify-around px-2 pb-2">
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="home" class="w-[22px] h-[22px] text-brand-600" style="stroke-width:1.6"></i><span class="text-[11px] font-medium text-brand-700">Bugun</span></button>
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="book-open" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="text-[11px] text-sepia-600">Kundalik</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 relative"><i data-lucide="message-circle" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="absolute -top-1 right-3 w-[18px] h-[18px] rounded-full bg-honey-500 text-white text-[10px] font-semibold grid place-items-center">2</span><span class="text-[11px] text-sepia-600">Xabarlar</span></button>
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="user" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="text-[11px] text-sepia-600">Profil</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- annotations -->
+    <div class="max-w-[440px] space-y-5">
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">First thing the parent sees</div>
+        <ol class="mt-3 space-y-2.5 text-[13px] text-sepia-700 leading-relaxed list-decimal pl-5 marker:text-sepia-400">
+          <li><span class="text-ink font-medium">Child switcher</span> — even with one child, it's there as a confidence signal.</li>
+          <li><span class="text-ink font-medium">Greeting line</span> — date + author + send time, in serif. Sets the "letter" feel before any card opens.</li>
+          <li><span class="text-ink font-medium">Today's card</span> — full body, full photos, milestone sticker if any.</li>
+          <li><span class="text-ink font-medium">Stitched boundary</span> — "avvalgi kunlar" label. Today never sits in the same flow as yesterday.</li>
+          <li><span class="text-ink font-medium">Recent days</span> — compact cards, scrollable.</li>
+        </ol>
+      </div>
+
+      <div class="rounded-xl border border-honey-300/60 bg-honey-100/60 p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">No empty home</div>
+        <p class="mt-2 text-[14px] text-sepia-800 leading-relaxed">If today has no entry yet, the top card is a quiet "Bugun hali yozuv yo'q" with a small calendar icon — never a loading skeleton, never an apology. The "avvalgi kunlar" stack still loads underneath.</p>
+      </div>
+
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Pull-to-refresh</div>
+        <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Pull reveals a single serif line: <span class="font-serif italic text-ink">"Yangilanmoqda…"</span> No spinning circles in the body. The list updates in place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================ DAY OPEN ============================ -->
+<section id="journal" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Page 3 of 5</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">A day, opened</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">When the parent taps "to'liq o'qish", the day card becomes the whole screen. This is the keepsake form — designed to be saved, screenshot, or just sat with.</p>
+    </div>
+  </header>
+
+  <div class="mt-8 grid lg:grid-cols-[auto_1fr] gap-8 items-start">
+
+    <!-- phone -->
+    <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md mx-auto">
+      <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+
+        <!-- status -->
+        <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100 shrink-0">
+          <span>14:33</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+        </div>
+
+        <!-- minimal top bar -->
+        <div class="h-12 px-3 flex items-center bg-surface border-b border-sepia-200 shrink-0">
+          <button class="w-9 h-9 rounded-md grid place-items-center hover:bg-sepia-50"><i data-lucide="chevron-left" class="w-5 h-5 text-ink" style="stroke-width:1.5"></i></button>
+          <div class="flex-1 text-center text-[13px] text-sepia-700 font-mono uppercase tracking-[.14em]">Bugun</div>
+          <button class="w-9 h-9 rounded-md grid place-items-center hover:bg-sepia-50"><i data-lucide="bookmark" class="w-5 h-5 text-sepia-700" style="stroke-width:1.5"></i></button>
+          <button class="w-9 h-9 rounded-md grid place-items-center hover:bg-sepia-50"><i data-lucide="share-2" class="w-5 h-5 text-sepia-700" style="stroke-width:1.5"></i></button>
+        </div>
+
+        <!-- body -->
+        <div class="flex-1 overflow-y-auto px-6 pt-6 pb-12">
+          <!-- letter header -->
+          <div class="text-center">
+            <div class="font-mono text-[11px] uppercase tracking-[.14em] text-brand-700">Juma · 14 mart 2026</div>
+            <h1 class="mt-2 font-serif text-[28px] leading-[1.15] font-semibold text-ink">Bahor keldi</h1>
+            <div class="mt-3 text-[12px] text-sepia-500">Dilnoza opa · 15:42 da yozildi</div>
+          </div>
+
+          <!-- ornamental stitched separator -->
+          <div class="flex items-center gap-3 my-6">
+            <div class="stitch flex-1"></div>
+            <i data-lucide="leaf" class="w-4 h-4 text-honey-500" style="stroke-width:1.5"></i>
+            <div class="stitch flex-1"></div>
+          </div>
+
+          <!-- letter body -->
+          <div class="text-body-l text-sepia-800 space-y-4">
+            <p>Hurmatli Madina opa,</p>
+            <p>Bugun darsda yangi so'zlarni o'rgandik. Mavzu bahor edi — biz darslarda ko'pincha bolalarning hayotidan misol keltirishni xohlaymiz, va Yusuf bahor haqidagi rasmlarga juda qiziqdi.</p>
+            <p>Eng ajoyibi shu bo'ldiki, Yusuf bugun <span class="text-ink font-medium">ikkita yangi so'zni</span> mustaqil ravishda aytdi — "bahor" va "quyosh". Ko'p marta takrorlanishi shart bo'lmadi.</p>
+          </div>
+
+          <!-- milestone callout -->
+          <div class="my-6 rounded-2xl p-5 page-corner relative" style="background:linear-gradient(180deg,#FAEFD5 0%,#FDFAF3 70%);border:1px solid #EAC976;box-shadow:0 6px 14px rgba(201,154,63,.12), 0 1px 0 rgba(255,255,255,.6) inset">
+            <div class="flex items-center gap-2">
+              <i data-lucide="award" class="w-4 h-4 text-honey-700" style="stroke-width:2"></i>
+              <span class="font-mono text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">Birinchi marta</span>
+            </div>
+            <h3 class="mt-1.5 font-serif text-[18px] font-semibold text-ink">5-so'zli jumla</h3>
+            <p class="mt-1 text-[14px] text-sepia-800 leading-[1.6]">Yusuf bugun mustaqil ravishda 5 ta so'zli jumla aytdi — bu hafta birinchi marta. Aprel oxiriga mahorat darajasiga yaqinlashmoqda.</p>
+          </div>
+
+          <!-- more letter body -->
+          <div class="text-body-l text-sepia-800 space-y-4">
+            <p>Tushlikdan keyin ozgina charchadi, lekin keyingi mashg'ulotda yana faol qatnashdi. Bolalar yangi ranglardan kichik rasmlar chizishdi va Yusuf o'zining rasmini "bahor" deb nomladi.</p>
+            <p>Yana bir kichik narsa — bugun Doniyor bilan o'yinchoqni baham ko'rdi. Bu ijtimoiy maqsadlar bo'yicha juda yaxshi qadam.</p>
+            <p class="font-serif italic text-sepia-700">— Dilnoza opa</p>
+          </div>
+
+          <!-- photos -->
+          <div class="mt-7">
+            <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-3">Rasmlar · 3 ta</div>
+            <div class="grid grid-cols-2 gap-2">
+              <div class="photo-placeholder rounded-lg col-span-2" style="--ph-color:#E3D9C2;aspect-ratio:16/10"><i data-lucide="image" class="w-6 h-6" style="stroke-width:1.5"></i><span class="mt-1 text-[10px] font-mono">classroom-painting</span></div>
+              <div class="photo-placeholder rounded-lg" style="--ph-color:#D9E2EB;aspect-ratio:1"><i data-lucide="image" class="w-5 h-5" style="stroke-width:1.5"></i></div>
+              <div class="photo-placeholder rounded-lg" style="--ph-color:#FAEFD5;aspect-ratio:1"><i data-lucide="image" class="w-5 h-5" style="stroke-width:1.5"></i></div>
+            </div>
+          </div>
+
+          <!-- reply hint -->
+          <div class="mt-7 rounded-xl border border-sepia-200 bg-surface p-4 flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full grid place-items-center bg-brand-50"><i data-lucide="message-circle" class="w-5 h-5 text-brand-700" style="stroke-width:1.5"></i></div>
+            <div class="flex-1">
+              <div class="text-[14px] font-medium text-ink">Dilnoza opaga rahmat ayting</div>
+              <div class="text-[11px] text-sepia-500">Yoki savol bering · u tez orada javob beradi</div>
+            </div>
+            <button class="h-9 px-3 rounded-md bg-brand-600 text-white text-[12px] font-medium">Yozish</button>
+          </div>
+
+          <!-- footer · keepsake -->
+          <div class="mt-8 text-center">
+            <div class="stitch w-32 mx-auto" style="--c:#9F907A"></div>
+            <div class="mt-3 font-mono text-[10px] uppercase tracking-[.18em] text-sepia-500">Uchqun · saqlangan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- annotations -->
+    <div class="max-w-[440px] space-y-5">
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Letter form</div>
+        <ul class="mt-3 text-[13px] text-sepia-700 space-y-2 leading-relaxed list-disc pl-5 marker:text-sepia-400">
+          <li>Centered date + title + author — <span class="text-ink font-medium">like a letter header</span>, not a feed post.</li>
+          <li>"Hurmatli Madina opa" opens the body. The teacher's name signs it.</li>
+          <li>Ornamental stitched divider with a leaf · single brand flourish.</li>
+          <li>Body is 17px / line-height 1.65 — read-comfortable for adults at arm's length.</li>
+          <li>Milestone callout is the only chrome inside the body.</li>
+        </ul>
+      </div>
+
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Top-bar actions</div>
+        <div class="mt-3 grid grid-cols-3 gap-3 text-[12px] text-sepia-600">
+          <div class="flex flex-col items-center gap-1.5"><i data-lucide="chevron-left" class="w-4 h-4" style="stroke-width:1.5"></i><span>Back to stack</span></div>
+          <div class="flex flex-col items-center gap-1.5"><i data-lucide="bookmark" class="w-4 h-4" style="stroke-width:1.5"></i><span>Save keepsake</span></div>
+          <div class="flex flex-col items-center gap-1.5"><i data-lucide="share-2" class="w-4 h-4" style="stroke-width:1.5"></i><span>Share image / PDF</span></div>
+        </div>
+      </div>
+
+      <div class="rounded-xl border border-honey-300/60 bg-honey-100/60 p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">"Uchqun · saqlangan" foot</div>
+        <p class="mt-2 text-[14px] text-sepia-800 leading-relaxed">Every day card carries a tiny mono attribution at the bottom — so if the parent screenshots or PDFs it, the keepsake stays identifiable. No watermark across the photo.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================ CHILD PROFILE ============================ -->
+<section id="profile" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Page 4 of 5</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Child profile</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">A parent-friendly view of who their child is at school. Demographics, the teacher, the goals they're working on — explained in plain language, not IEP code.</p>
+    </div>
+  </header>
+
+  <div class="mt-8 grid lg:grid-cols-[auto_1fr] gap-8 items-start">
+
+    <!-- phone -->
+    <div class="device-mobile rounded-[32px] bg-brand-800 p-2.5 shadow-md mx-auto">
+      <div class="rounded-[24px] bg-paper overflow-hidden relative flex flex-col" style="height:100%">
+
+        <!-- status -->
+        <div class="h-7 px-5 flex items-center justify-between text-[11px] text-ink font-medium tnum bg-surface border-b border-sepia-100 shrink-0">
+          <span>14:35</span>
+          <span class="flex items-center gap-1.5"><i data-lucide="signal" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="wifi" class="w-3.5 h-3.5" style="stroke-width:1.5"></i><i data-lucide="battery-full" class="w-4 h-4" style="stroke-width:1.5"></i></span>
+        </div>
+
+        <!-- top bar with switcher -->
+        <div class="px-4 pt-3 pb-2 bg-surface border-b border-sepia-200 shrink-0">
+          <button class="w-full flex items-center gap-3 p-2 rounded-lg hover:bg-sepia-50">
+            <div class="w-9 h-9 rounded-full grid place-items-center text-white text-[12px] font-semibold bg-brand-600 shrink-0">YT</div>
+            <div class="flex-1 min-w-0 text-left">
+              <div class="font-serif text-[15px] font-semibold text-ink leading-tight truncate">Yusuf Toshmatov</div>
+              <div class="text-[11px] text-sepia-500">Profil</div>
+            </div>
+            <i data-lucide="chevron-down" class="w-4 h-4 text-sepia-500" style="stroke-width:1.5"></i>
+          </button>
+        </div>
+
+        <!-- body -->
+        <div class="flex-1 overflow-y-auto pt-6 pb-24">
+
+          <!-- Hero -->
+          <div class="px-6 text-center">
+            <div class="w-28 h-28 rounded-3xl grid place-items-center text-white text-[36px] font-semibold mx-auto bg-brand-600 shadow-md">YT</div>
+            <h1 class="mt-4 font-serif text-[24px] leading-tight font-semibold text-ink">Yusuf Toshmatov</h1>
+            <p class="mt-1 text-[13px] text-sepia-600">7 yosh · "Quyosh" guruhi · 8-maktab</p>
+
+            <div class="mt-4 flex items-center justify-center gap-1.5">
+              <span class="px-2 py-0.5 rounded-full bg-brand-50 text-brand-700 text-[11px] font-medium">Autizm spektri · yengil</span>
+              <span class="px-2 py-0.5 rounded-full bg-sepia-100 text-sepia-700 text-[11px] font-medium">Allergiya yo'q</span>
+            </div>
+          </div>
+
+          <!-- Teacher card -->
+          <div class="mx-4 mt-6 rounded-xl bg-surface border border-sepia-200 p-4">
+            <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-2">O'qituvchingiz</div>
+            <div class="flex items-center gap-3">
+              <div class="w-12 h-12 rounded-full grid place-items-center text-white text-[14px] font-semibold bg-brand-700">DK</div>
+              <div class="flex-1 min-w-0">
+                <div class="font-serif text-[15px] font-semibold text-ink leading-tight">Dilnoza Karimova</div>
+                <div class="text-[11px] text-sepia-500">O'qituvchi · 4 yil tajriba</div>
+              </div>
+              <button class="w-10 h-10 grid place-items-center rounded-md border border-sepia-300 bg-surface"><i data-lucide="phone" class="w-4 h-4 text-brand-700" style="stroke-width:1.5"></i></button>
+              <button class="w-10 h-10 grid place-items-center rounded-md border border-sepia-300 bg-surface"><i data-lucide="message-circle" class="w-4 h-4 text-brand-700" style="stroke-width:1.5"></i></button>
+            </div>
+            <div class="mt-3 text-[11px] text-sepia-500">Ish vaqti · 08:00–16:00 · Du–Ju</div>
+          </div>
+
+          <!-- Specialists -->
+          <div class="mx-4 mt-3 rounded-xl bg-surface border border-sepia-200">
+            <div class="px-4 py-3 border-b border-sepia-100 flex items-center justify-between">
+              <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Mutaxassislar</div>
+              <span class="text-[11px] text-sepia-500 tnum">2 kishi</span>
+            </div>
+            <div class="px-4 py-3 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full grid place-items-center text-white text-[12px] font-semibold bg-info-500">DA</div>
+              <div class="flex-1">
+                <div class="text-[14px] font-medium text-ink">Dilbar Aliyeva</div>
+                <div class="text-[11px] text-sepia-500">Logoped · haftada 2 ta dars</div>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i>
+            </div>
+            <div class="border-t border-sepia-100 px-4 py-3 flex items-center gap-3">
+              <div class="w-9 h-9 rounded-full grid place-items-center text-white text-[12px] font-semibold bg-success-500">FO</div>
+              <div class="flex-1">
+                <div class="text-[14px] font-medium text-ink">Feruza Omonova</div>
+                <div class="text-[11px] text-sepia-500">Psixolog · oyda 1 ta uchrashuv</div>
+              </div>
+              <i data-lucide="chevron-right" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i>
+            </div>
+          </div>
+
+          <!-- Goals section -->
+          <div class="mt-7 px-4">
+            <div class="flex items-center gap-2 mb-3">
+              <i data-lucide="leaf" class="w-4 h-4 text-honey-500" style="stroke-width:1.75"></i>
+              <h2 class="font-serif text-[18px] font-semibold text-ink">Bu yilda nima ustida ishlamoqdamiz</h2>
+            </div>
+            <p class="text-[13px] text-sepia-600 leading-[1.6]">Yusufning shaxsiy o'sish rejasi. O'qituvchi va logoped birga belgilashgan.</p>
+
+            <div class="mt-4 space-y-3">
+              <!-- Goal 1 -->
+              <div class="rounded-xl bg-surface border border-sepia-200 p-4">
+                <div class="text-[11px] font-mono uppercase tracking-[.14em] text-brand-700">Nutq</div>
+                <div class="font-serif text-[16px] font-semibold text-ink mt-0.5">Mustaqil 5-so'zli jumla</div>
+                <p class="mt-1.5 text-[13px] text-sepia-700 leading-[1.55]">Tanish vaziyatlarda 5 ta so'zdan iborat jumla aytish.</p>
+                <div class="mt-3 flex items-center gap-2">
+                  <div class="flex-1 h-2 rounded-full bg-sepia-100 overflow-hidden">
+                    <span class="block h-full bg-honey-500" style="width:68%"></span>
+                  </div>
+                  <span class="text-[11px] text-sepia-500 tnum">68%</span>
+                </div>
+                <div class="mt-1.5 text-[11px] text-sepia-500">Aprel oxiriga mahorat darajasiga yaqinlashmoqda</div>
+              </div>
+
+              <!-- Goal 2 (mastered) -->
+              <div class="rounded-xl p-4 border" style="background:linear-gradient(180deg,#FAEFD5 0%,#FDFAF3 60%);border-color:#EAC976">
+                <div class="flex items-center gap-1.5">
+                  <i data-lucide="award" class="w-3.5 h-3.5 text-honey-700" style="stroke-width:2"></i>
+                  <div class="text-[11px] font-mono uppercase tracking-[.14em] text-honey-700">Mahorat erishildi</div>
+                </div>
+                <div class="font-serif text-[16px] font-semibold text-ink mt-0.5">Navbat kutish 5 daqiqa</div>
+                <p class="mt-1.5 text-[13px] text-sepia-800 leading-[1.55]">28-fevralda mustaqil ravishda navbat kuta oldi · 7 ta ketma-ket kuzatuv.</p>
+              </div>
+
+              <!-- Goal 3 -->
+              <div class="rounded-xl bg-surface border border-sepia-200 p-4">
+                <div class="text-[11px] font-mono uppercase tracking-[.14em] text-brand-700">Motor</div>
+                <div class="font-serif text-[16px] font-semibold text-ink mt-0.5">Qaychi bilan kesish</div>
+                <p class="mt-1.5 text-[13px] text-sepia-700 leading-[1.55]">To'g'ri chiziq bo'ylab qog'ozni kesish.</p>
+                <div class="mt-3 flex items-center gap-2">
+                  <div class="flex-1 h-2 rounded-full bg-sepia-100 overflow-hidden">
+                    <span class="block h-full bg-brand-500" style="width:28%"></span>
+                  </div>
+                  <span class="text-[11px] text-sepia-500 tnum">28%</span>
+                </div>
+                <div class="mt-1.5 text-[11px] text-sepia-500">Dilnoza opa uy mashqi tavsiya qildi · "Profil → uy mashqlari"</div>
+              </div>
+            </div>
+
+            <p class="mt-4 text-[12px] text-sepia-500 leading-relaxed">Faollik foizlari haftalik. Savollaringiz bo'lsa, Dilnoza opa bilan bog'laning.</p>
+          </div>
+        </div>
+
+        <!-- tab bar -->
+        <div class="absolute inset-x-0 bottom-0 bg-surface border-t border-sepia-200 tabbar-shadow">
+          <div class="h-[64px] flex items-end justify-around px-2 pb-2">
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="home" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="text-[11px] text-sepia-600">Bugun</span></button>
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="book-open" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="text-[11px] text-sepia-600">Kundalik</span></button>
+            <button class="flex flex-col items-center gap-1 w-16 relative"><i data-lucide="message-circle" class="w-[22px] h-[22px] text-sepia-500" style="stroke-width:1.5"></i><span class="absolute -top-1 right-3 w-[18px] h-[18px] rounded-full bg-honey-500 text-white text-[10px] font-semibold grid place-items-center">2</span><span class="text-[11px] text-sepia-600">Xabarlar</span></button>
+            <button class="flex flex-col items-center gap-1 w-16"><i data-lucide="user" class="w-[22px] h-[22px] text-brand-600" style="stroke-width:1.6"></i><span class="text-[11px] font-medium text-brand-700">Profil</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- annotations -->
+    <div class="max-w-[440px] space-y-5">
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Goals · parent-friendly translation</div>
+        <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">"IEP Goal #3: Fine-motor scissor manipulation along linear axis" becomes <span class="text-ink font-medium">"Qaychi bilan kesish · to'g'ri chiziq bo'ylab"</span>. No clinical codes on this surface. Teacher controls phrasing; backend stores both.</p>
+      </div>
+
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Progress bars · soft, not stressful</div>
+        <ul class="mt-3 text-[13px] text-sepia-700 space-y-2 leading-relaxed list-disc pl-5 marker:text-sepia-400">
+          <li>Honey-500 fill for "approaching mastery" (60%+).</li>
+          <li>Brand-500 for in-progress (5–60%).</li>
+          <li>No red. Slow goals don't get punished by color.</li>
+          <li>A short qualitative line accompanies every number — context, not just data.</li>
+        </ul>
+      </div>
+
+      <div class="rounded-xl border border-honey-300/60 bg-honey-100/60 p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">Mastered goals stay visible</div>
+        <p class="mt-2 text-[14px] text-sepia-800 leading-relaxed">Once achieved, a goal doesn't disappear — it becomes a honey-tinted card the parent can revisit. The book metaphor again: pages turned, not erased.</p>
+      </div>
+
+      <div class="rounded-xl border border-sepia-200 bg-surface p-5">
+        <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Multi-child</div>
+        <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Profile is always one child. The switcher at the top is the only way to change context — never inline. Diyora's profile is its own surface with its own teacher card and goals.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- ============================ DESKTOP COURTESY ============================ -->
+<section id="desktop" class="scroll-mt-20">
+  <header class="flex items-end justify-between gap-6 border-b border-sepia-200 pb-4">
+    <div>
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Page 5 of 5</div>
+      <h2 class="mt-1 font-serif text-h2 text-ink">Desktop · the courtesy view</h2>
+      <p class="mt-1 text-sepia-600 text-[14px] max-w-[64ch]">Mobile-equivalent content, comfortably read on a 13–15" laptop. Simple top nav, never a sidebar. Facing-page metaphor — today is open like a book on the left, the stack on the right.</p>
+    </div>
+  </header>
+
+  <div class="mt-6 rounded-2xl overflow-hidden border border-sepia-200 shadow-xs">
+    <!-- viewport label -->
+    <div class="px-5 py-2.5 bg-paper border-b border-sepia-200 flex items-center gap-3 text-[11px] text-sepia-500">
+      <span class="w-2 h-2 rounded-full bg-brand-600"></span>
+      <span class="font-medium text-ink">/bugun</span>
+      <span class="font-mono">1280 wide · desktop</span>
+      <span class="ml-auto">read-mostly · no power moves</span>
+    </div>
+
+    <div class="bg-paper" style="min-height:920px">
+      <!-- top nav -->
+      <header class="bg-surface border-b border-sepia-200">
+        <div class="max-w-[1160px] mx-auto px-7 h-[64px] flex items-center gap-6">
+          <div class="flex items-center gap-2.5">
+            <span class="w-8 h-8 rounded-md bg-brand-800 text-brand-200 grid place-items-center font-semibold text-[14px]">U</span>
+            <div class="font-serif text-[18px] font-semibold text-ink leading-none">Uchqun</div>
+            <span class="text-[12px] text-sepia-500 ml-1">Ota-ona</span>
+          </div>
+          <nav class="ml-4 flex items-center gap-1 text-[14px]">
+            <a class="px-3 py-1.5 rounded-md bg-brand-50 text-brand-700 font-medium">Bugun</a>
+            <a class="px-3 py-1.5 rounded-md text-sepia-700 hover:bg-sepia-100">Kundalik</a>
+            <a class="px-3 py-1.5 rounded-md text-sepia-700 hover:bg-sepia-100 relative">Xabarlar <span class="ml-1 inline-flex items-center justify-center w-5 h-5 text-[10px] font-semibold text-white bg-honey-500 rounded-full">2</span></a>
+            <a class="px-3 py-1.5 rounded-md text-sepia-700 hover:bg-sepia-100">Profil</a>
+          </nav>
+          <div class="ml-auto flex items-center gap-3">
+            <!-- child switcher -->
+            <button class="flex items-center gap-2.5 pl-1.5 pr-3 py-1.5 rounded-full border border-sepia-200 bg-surface hover:bg-sepia-50">
+              <div class="w-7 h-7 rounded-full grid place-items-center text-white text-[11px] font-semibold bg-brand-600">YT</div>
+              <div class="text-left leading-tight">
+                <div class="text-[12px] font-medium text-ink">Yusuf T.</div>
+                <div class="text-[10px] text-sepia-500">"Quyosh"</div>
+              </div>
+              <i data-lucide="chevron-down" class="w-3.5 h-3.5 text-sepia-500" style="stroke-width:1.5"></i>
+            </button>
+            <button class="w-9 h-9 grid place-items-center rounded-md hover:bg-sepia-100 relative">
+              <i data-lucide="bell" class="w-[18px] h-[18px] text-sepia-600" style="stroke-width:1.5"></i>
+              <span class="absolute top-1 right-1 w-1.5 h-1.5 rounded-full bg-honey-500"></span>
+            </button>
+            <div class="w-9 h-9 rounded-full grid place-items-center text-white text-[12px] font-semibold bg-sepia-600">MA</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- content -->
+      <div class="max-w-[1160px] mx-auto px-7 py-10">
+        <!-- letter line -->
+        <div>
+          <div class="font-mono text-[11px] uppercase tracking-[.14em] text-brand-700">Juma · 14 mart 2026</div>
+          <h1 class="mt-2 font-serif text-[44px] leading-[1.05] font-semibold text-ink">Bahor keldi</h1>
+          <p class="mt-2 text-[15px] text-sepia-600">Dilnoza opa · 15:42 da yozildi · Yusufning bugungi kuni</p>
+        </div>
+
+        <!-- 2-column "facing pages" -->
+        <div class="mt-8 grid grid-cols-[1.4fr_1fr] gap-10 items-start">
+
+          <!-- LEFT: today's letter (open page) -->
+          <div class="relative">
+            <div class="page-card rounded-2xl p-8 relative page-corner">
+              <!-- ornament -->
+              <div class="flex items-center gap-3 mb-5">
+                <div class="stitch flex-1"></div>
+                <i data-lucide="leaf" class="w-4 h-4 text-honey-500" style="stroke-width:1.5"></i>
+                <div class="stitch flex-1"></div>
+              </div>
+
+              <div class="text-body-l text-sepia-800 space-y-4">
+                <p>Hurmatli Madina opa,</p>
+                <p>Bugun darsda yangi so'zlarni o'rgandik. Mavzu bahor edi — biz darslarda ko'pincha bolalarning hayotidan misol keltirishni xohlaymiz, va Yusuf bahor haqidagi rasmlarga juda qiziqdi.</p>
+                <p>Eng ajoyibi shu bo'ldiki, Yusuf bugun <span class="text-ink font-medium">ikkita yangi so'zni</span> mustaqil ravishda aytdi — "bahor" va "quyosh".</p>
+              </div>
+
+              <!-- milestone -->
+              <div class="my-6 rounded-2xl p-5 page-corner relative" style="background:linear-gradient(180deg,#FAEFD5 0%,#FDFAF3 70%);border:1px solid #EAC976;box-shadow:0 6px 14px rgba(201,154,63,.12), 0 1px 0 rgba(255,255,255,.6) inset">
+                <div class="flex items-center gap-2">
+                  <i data-lucide="award" class="w-4 h-4 text-honey-700" style="stroke-width:2"></i>
+                  <span class="font-mono text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">Birinchi marta</span>
+                </div>
+                <h3 class="mt-1.5 font-serif text-[20px] font-semibold text-ink">5-so'zli jumla</h3>
+                <p class="mt-1.5 text-[15px] text-sepia-800 leading-[1.6]">Yusuf bugun mustaqil ravishda 5 ta so'zli jumla aytdi — bu hafta birinchi marta. Aprel oxiriga mahorat darajasiga yaqinlashmoqda.</p>
+              </div>
+
+              <div class="text-body-l text-sepia-800 space-y-4">
+                <p>Tushlikdan keyin ozgina charchadi, lekin keyingi mashg'ulotda yana faol qatnashdi. Yana bir kichik narsa — bugun Doniyor bilan o'yinchoqni baham ko'rdi.</p>
+                <p class="font-serif italic text-sepia-700">— Dilnoza opa</p>
+              </div>
+
+              <!-- photos -->
+              <div class="mt-7 grid grid-cols-3 gap-2">
+                <div class="photo-placeholder rounded-lg col-span-2" style="--ph-color:#E3D9C2;aspect-ratio:16/10"><i data-lucide="image" class="w-6 h-6" style="stroke-width:1.5"></i><span class="mt-1 text-[10px] font-mono">classroom-painting</span></div>
+                <div class="grid grid-rows-2 gap-2">
+                  <div class="photo-placeholder rounded-lg" style="--ph-color:#D9E2EB"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+                  <div class="photo-placeholder rounded-lg" style="--ph-color:#FAEFD5"><i data-lucide="image" class="w-4 h-4" style="stroke-width:1.5"></i></div>
+                </div>
+              </div>
+
+              <!-- actions -->
+              <div class="mt-7 pt-5 border-t border-sepia-200 flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <button class="h-10 px-4 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-medium flex items-center gap-2">
+                    <i data-lucide="message-circle" class="w-4 h-4" style="stroke-width:1.5"></i> Rahmat ayting
+                  </button>
+                  <button class="h-10 px-4 rounded-md bg-surface border border-sepia-300 hover:bg-sepia-50 text-ink text-[14px] font-medium flex items-center gap-2">
+                    <i data-lucide="bookmark" class="w-4 h-4" style="stroke-width:1.5"></i> Saqlash
+                  </button>
+                </div>
+                <button class="h-10 px-3.5 rounded-md text-sepia-600 hover:bg-sepia-100 text-[14px] font-medium flex items-center gap-1.5">
+                  <i data-lucide="share-2" class="w-4 h-4" style="stroke-width:1.5"></i> Ulashish
+                </button>
+              </div>
+            </div>
+
+            <!-- keepsake foot -->
+            <div class="mt-5 text-center">
+              <div class="stitch w-32 mx-auto" style="--c:#9F907A"></div>
+              <div class="mt-2 font-mono text-[10px] uppercase tracking-[.18em] text-sepia-500">Uchqun · saqlangan</div>
+            </div>
+          </div>
+
+          <!-- RIGHT: stack + side info (facing page) -->
+          <div class="space-y-5">
+
+            <!-- This week -->
+            <div class="rounded-2xl border border-sepia-200 bg-surface p-5">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="book-open" class="w-4 h-4 text-brand-700" style="stroke-width:1.5"></i>
+                <div class="text-[11px] uppercase tracking-[.14em] text-brand-700 font-medium">Avvalgi kunlar · shu hafta</div>
+              </div>
+
+              <!-- Thu -->
+              <div class="rounded-xl p-4 bg-paper border border-sepia-200/80 hover:bg-sepia-50 transition cursor-pointer">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-500">Pay · 13 mart</div>
+                    <div class="font-serif text-[16px] font-semibold text-ink">Erkin o'yin</div>
+                  </div>
+                  <div class="text-[10px] text-sepia-500">15:30</div>
+                </div>
+                <p class="mt-2 text-[14px] text-sepia-700 leading-[1.55] line-clamp-2">Bolalar bilan o'yin maydonchasida vaqt o'tkazdik. Yusuf Doniyor bilan o'yinchoq baham ko'rdi.</p>
+                <div class="mt-2.5 grid grid-cols-3 gap-1">
+                  <div class="photo-placeholder rounded aspect-square" style="--ph-color:#EEF2F6"><i data-lucide="image" class="w-3 h-3" style="stroke-width:1.5"></i></div>
+                  <div class="photo-placeholder rounded aspect-square" style="--ph-color:#F1EBDD"><i data-lucide="image" class="w-3 h-3" style="stroke-width:1.5"></i></div>
+                  <div class="aspect-square"></div>
+                </div>
+              </div>
+
+              <div class="stitch my-4"></div>
+
+              <div class="rounded-xl p-4 bg-paper border border-sepia-200/80 hover:bg-sepia-50 transition cursor-pointer">
+                <div class="flex items-center justify-between">
+                  <div>
+                    <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-500">Chor · 12 mart</div>
+                    <div class="font-serif text-[16px] font-semibold text-ink">Rasm chizish darsi</div>
+                  </div>
+                  <div class="text-[10px] text-sepia-500">16:08</div>
+                </div>
+                <p class="mt-2 text-[14px] text-sepia-700 leading-[1.55] line-clamp-2">Bugun bolalar rang aralashtirishni o'rgandi. Yusufning ranglarni nomlash mashqi yaxshi o'tdi.</p>
+              </div>
+
+              <div class="stitch my-4"></div>
+
+              <div class="rounded-xl p-4 border border-dashed border-sepia-300 bg-surface/40">
+                <div class="flex items-center gap-3">
+                  <i data-lucide="moon" class="w-4 h-4 text-sepia-400" style="stroke-width:1.5"></i>
+                  <div>
+                    <div class="font-mono text-[10px] uppercase tracking-[.14em] text-sepia-400">Sesh · 11 mart</div>
+                    <div class="text-[12px] text-sepia-500">Maktab dam olish</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teacher -->
+            <div class="rounded-2xl border border-sepia-200 bg-surface p-5">
+              <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500 mb-3">O'qituvchingiz</div>
+              <div class="flex items-center gap-3">
+                <div class="w-11 h-11 rounded-full grid place-items-center text-white text-[13px] font-semibold bg-brand-700">DK</div>
+                <div class="flex-1 min-w-0">
+                  <div class="font-serif text-[15px] font-semibold text-ink leading-tight">Dilnoza Karimova</div>
+                  <div class="text-[11px] text-sepia-500">Ish vaqti · 08:00–16:00</div>
+                </div>
+                <button class="w-9 h-9 grid place-items-center rounded-md border border-sepia-300 bg-surface"><i data-lucide="phone" class="w-4 h-4 text-brand-700" style="stroke-width:1.5"></i></button>
+                <button class="w-9 h-9 grid place-items-center rounded-md border border-sepia-300 bg-surface"><i data-lucide="message-circle" class="w-4 h-4 text-brand-700" style="stroke-width:1.5"></i></button>
+              </div>
+            </div>
+
+            <!-- This year overview -->
+            <div class="rounded-2xl border border-sepia-200 bg-surface p-5">
+              <div class="flex items-center gap-2 mb-3">
+                <i data-lucide="leaf" class="w-4 h-4 text-honey-500" style="stroke-width:1.75"></i>
+                <div class="text-[11px] uppercase tracking-[.14em] text-honey-700 font-medium">Yil davomida</div>
+              </div>
+              <ul class="space-y-2.5 text-[13px]">
+                <li class="flex items-center gap-3">
+                  <span class="w-1 h-6 rounded bg-honey-500"></span>
+                  <div class="flex-1">
+                    <div class="text-ink font-medium">Navbat kutish 5 daqiqa</div>
+                    <div class="text-sepia-500 text-[11px]">Mahorat erishildi · 28 fev</div>
+                  </div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-1 h-6 rounded bg-honey-500"></span>
+                  <div class="flex-1">
+                    <div class="text-ink font-medium">Birinchi mustaqil 5-so'zli jumla</div>
+                    <div class="text-sepia-500 text-[11px]">Diqqatga sazovor · 14 mart</div>
+                  </div>
+                </li>
+                <li class="flex items-center gap-3">
+                  <span class="w-1 h-6 rounded bg-brand-300"></span>
+                  <div class="flex-1">
+                    <div class="text-ink font-medium">Qaychi bilan kesish</div>
+                    <div class="text-sepia-500 text-[11px]">Davom etmoqda · 28%</div>
+                  </div>
+                </li>
+              </ul>
+              <a class="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">To'liq profilga o'tish <i data-lucide="arrow-right" class="w-3.5 h-3.5" style="stroke-width:1.5"></i></a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- closing note -->
+  <div class="mt-10 grid md:grid-cols-2 gap-4">
+    <div class="rounded-xl border border-sepia-200 bg-surface p-6">
+      <div class="text-[11px] uppercase tracking-[.14em] text-sepia-500">Closing note</div>
+      <h3 class="mt-1 font-serif text-h3 text-ink">A small window, not a feed</h3>
+      <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Parents check Uchqun on the bus, between meetings, before bed. The portal should leave them feeling reassured — not informed-and-alarmed. Every surface above respects the parent's adulthood, their time, and their child's dignity.</p>
+    </div>
+    <div class="rounded-xl border border-brand-200 bg-brand-50/40 p-6">
+      <div class="text-[11px] uppercase tracking-[.14em] text-brand-700">Next</div>
+      <h3 class="mt-1 font-serif text-h3 text-ink">Ready for implementation</h3>
+      <p class="mt-2 text-[14px] text-sepia-700 leading-relaxed">Tokens, components, and reference surfaces translate to <span class="font-mono text-[12px] text-brand-700">parent/tailwind.config.js</span> and <span class="font-mono text-[12px] text-brand-700">parent/src/components/*</span>. See the handoff card at the top for the migration order.</p>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="border-t border-sepia-200 mt-20 py-10 bg-paper">
+  <div class="max-w-[1320px] mx-auto px-6 flex flex-wrap items-center gap-6 text-[12px] text-sepia-500">
+    <span class="font-mono">IHMA</span>
+    <span>Uchqun · Ota-ona portali · Design system reference, v0.1</span>
+    <span class="ml-auto">© 2026</span>
+  </div>
+</footer>
+
+<script>
+  if (window.lucide) lucide.createIcons();
+</script>
+</body>
+</html>
