@@ -20,23 +20,51 @@ export const apiLimiter = rateLimit({
   },
 });
 
-// Stricter rate limiter for authentication endpoints
-// Override with RATE_LIMIT_AUTH_MAX / RATE_LIMIT_WINDOW_MS (AUTH_LIMIT_MAX still accepted)
+// Per-IP limiter for auth endpoints that don't carry a user identifier in the body
+// (set-password, admin-register). Override with RATE_LIMIT_AUTH_MAX / RATE_LIMIT_WINDOW_MS.
 const AUTH_WINDOW = Number(process.env.AUTH_LIMIT_WINDOW_MS) || WINDOW_MS;
 export const authLimiter = rateLimit({
   windowMs: AUTH_WINDOW,
   max: Number(process.env.RATE_LIMIT_AUTH_MAX) || Number(process.env.AUTH_LIMIT_MAX) || 50,
   store: makeRedisStore(AUTH_WINDOW, 'auth'),
-  message: 'Too many login attempts, please try again later.',
+  message: 'Too many requests, please try again later.',
   skipSuccessfulRequests: true,
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     const retryAfterSec = req.rateLimit?.resetTime ? Math.ceil(req.rateLimit.resetTime / 1000) : undefined;
     res.status(429).json({
-      error: 'Too many login attempts',
-      message: 'Too many login attempts from this IP, please try again later.',
+      error: 'Too many requests',
+      message: 'Too many requests from this IP, please try again later.',
       retryAfter: retryAfterSec,
+    });
+  },
+});
+
+// Per-EMAIL limiter for the login endpoint only.
+// Keying by email (not IP) means one user's failed attempts never block other users,
+// even when multiple users share the same NAT/school IP across all portals.
+// Falls back to IP when no email is present (unauthenticated probes).
+// The per-email lockout in loginRateLimitStore is the primary brute-force guard;
+// this adds a secondary layer without causing cross-user collateral damage.
+export const loginLimiter = rateLimit({
+  windowMs: AUTH_WINDOW,
+  max: Number(process.env.RATE_LIMIT_LOGIN_MAX) || 20,
+  keyGenerator: (req) => {
+    const email = req.body?.email?.toLowerCase().trim();
+    return email ? `email:${email}` : req.ip;
+  },
+  store: makeRedisStore(AUTH_WINDOW, 'login'),
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'LOGIN_RATE_LIMITED',
+        detail: 'Too many failed login attempts for this account. Please try again later.',
+      },
     });
   },
 });

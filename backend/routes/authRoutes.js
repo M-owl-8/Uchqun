@@ -5,12 +5,14 @@ import { loginValidator } from '../validators/authValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { submitRegistrationRequest } from '../controllers/adminRegistrationController.js';
 import { uploadDocuments, handleUploadError } from '../middleware/upload.js';
-import { authLimiter, uploadLimiter } from '../middleware/rateLimiter.js';
+import { authLimiter, loginLimiter, uploadLimiter } from '../middleware/rateLimiter.js';
 
 const router = express.Router();
 
-router.post('/login', authLimiter, loginValidator, handleValidationErrors, login);
-router.post('/refresh', authLimiter, refresh);
+// loginLimiter keys by email so one user's failures never block others on the same NAT/school IP
+router.post('/login', loginLimiter, loginValidator, handleValidationErrors, login);
+// /refresh carries a random 40-byte token — not brute-forceable; apiLimiter (global) is sufficient
+router.post('/refresh', refresh);
 router.post('/set-password', authLimiter, setPassword);
 router.get('/me', authenticate, getMe);
 router.post('/logout', authenticate, logout);
