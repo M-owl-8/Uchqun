@@ -81,7 +81,7 @@ const Login = () => {
           <div className="mt-3 text-[20px] font-semibold text-slate-900 leading-none">
             Uchqun
           </div>
-          <div className="mt-1 text-[12px] text-slate-500">O'qituvchi portali</div>
+          <div className="mt-1 text-[12px] text-slate-500">O&apos;qituvchi portali</div>
         </div>
 
         {/* Heading */}

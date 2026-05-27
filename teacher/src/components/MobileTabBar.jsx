@@ -1,7 +1,6 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { Home, Users, Plus, MessageSquare, User } from 'lucide-react';
-import { useSocket } from '../shared/context/SocketContext';
 import QuickObservation from './QuickObservation';
 
 const TABS = [

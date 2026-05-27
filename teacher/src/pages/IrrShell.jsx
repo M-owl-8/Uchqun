@@ -8,13 +8,6 @@ import { SKILL_AREAS } from '@shared/config/skillAreas';
 import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
 import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 
-// Must match HEADER_FIELDS in backend/controllers/teacher/irrController.js
-const MANDATORY_FIELDS = [
-  'childFullName', 'dateOfBirth', 'ageAtAssessmentStart',
-  'ptpkIntakeDate', 'ptpkConclusionDate', 'ptpkConclusionNumber',
-  'ptpkDiagnosis', 'irrStartDate', 'additionalInfo',
-];
-
 // Uzbek labels for missing-field error display (backend returns field names in detail)
 const FIELD_LABELS_UZ = {
   childFullName:        'Боланинг фамилияси, исми',
@@ -159,7 +152,7 @@ export default function IrrShell() {
 
   // ── Monitoring journal state (Phase 3d) ──────────────────────────────────
   const [dailyEntries, setDailyEntries]   = useState([]);
-  const [loadingDaily, setLoadingDaily]   = useState(false);
+  const [_loadingDaily, setLoadingDaily]   = useState(false);
   const [dailyDate, setDailyDate]         = useState(todayIso);
   const [dailyChecks, setDailyChecks]     = useState({});
   const [dailyNotes, setDailyNotes]       = useState('');
@@ -167,7 +160,7 @@ export default function IrrShell() {
   const [dailyError, setDailyError]       = useState(null);
 
   const [weeklyEntries, setWeeklyEntries] = useState([]);
-  const [loadingWeekly, setLoadingWeekly] = useState(false);
+  const [_loadingWeekly, setLoadingWeekly] = useState(false);
   const [weekStart, setWeekStart]         = useState(getMondayIso);
   const [weeklyChecks, setWeeklyChecks]   = useState({});
   const [weeklyNotes, setWeeklyNotes]     = useState('');
@@ -677,7 +670,7 @@ export default function IrrShell() {
         {!irr && (
           <p className="mt-2 text-[13px] text-slate-500">
             Bola uchun yangi ИРР tuzing. Barcha majburiy maydonlarni{' '}
-            (<span className="text-red-500">*</span>) to'ldiring va saqlang.
+            (<span className="text-red-500">*</span>) to&apos;ldiring va saqlang.
           </p>
         )}
       </div>
@@ -685,7 +678,7 @@ export default function IrrShell() {
       {/* ─── Header form ─────────────────────────────────────────────────────── */}
       <div className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100">
         <div className="px-5 py-4">
-          <h2 className="text-[15px] font-semibold text-slate-900">Asosiy ma'lumotlar</h2>
+          <h2 className="text-[15px] font-semibold text-slate-900">Asosiy ma&apos;lumotlar</h2>
           <p className="text-[12px] text-slate-500 mt-0.5">
             <span className="text-red-500">*</span> belgilangan maydonlar faollashtirish uchun majburiy
           </p>
@@ -808,7 +801,7 @@ export default function IrrShell() {
         <div className="px-5 py-4">
           <h2 className="text-[15px] font-semibold text-slate-900">Ehtiyojlarni baholash</h2>
           <p className="text-[12px] text-slate-500 mt-0.5">
-            Majburiy emas — maqsadlar belgilashdan oldin to'ldirilishi tavsiya etiladi
+            Majburiy emas — maqsadlar belgilashdan oldin to&apos;ldirilishi tavsiya etiladi
           </p>
         </div>
         <div className="px-5 py-5 space-y-4">
@@ -843,7 +836,7 @@ export default function IrrShell() {
           data-testid="activate-error-banner"
         >
           <div className="text-[13px] font-semibold text-red-700 mb-2">
-            Faollashtirishdan oldin quyidagi majburiy maydonlarni to'ldiring:
+            Faollashtirishdan oldin quyidagi majburiy maydonlarni to&apos;ldiring:
           </div>
           <ul className="list-disc list-inside space-y-0.5">
             {activateError.map(label => (

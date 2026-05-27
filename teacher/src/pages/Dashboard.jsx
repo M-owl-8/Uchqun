@@ -275,7 +275,7 @@ const Dashboard = () => {
               <span className="text-[13px] text-slate-500">ota-onadan</span>
             </div>
             <Link to="/teacher/chat" className="mt-3 text-[12px] text-brand-700 font-medium flex items-center gap-1 hover:underline">
-              Xabarlarni ko'rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+              Xabarlarni ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
         </div>
@@ -299,7 +299,7 @@ const Dashboard = () => {
           <div className="rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
             <div className="flex items-center gap-3 mb-3">
               <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[18px] font-semibold text-slate-900">So'nggi kuzatuvlar</h2>
+              <h2 className="text-[18px] font-semibold text-slate-900">So&apos;nggi kuzatuvlar</h2>
             </div>
             {obs.length === 0 ? (
               <div className="py-8 text-center text-[13px] text-slate-500">Bugun hali kuzatuv yozilmadi</div>
@@ -309,7 +309,7 @@ const Dashboard = () => {
               </div>
             )}
             <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium hover:underline">
-              Hammasini ko'rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+              Hammasini ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
 
@@ -399,7 +399,7 @@ const Dashboard = () => {
 
         <div className="rounded-xl border border-slate-200 bg-surface p-4">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[13px] font-medium text-slate-900">So'nggi kuzatuvlar</span>
+            <span className="text-[13px] font-medium text-slate-900">So&apos;nggi kuzatuvlar</span>
           </div>
           {obs.length === 0 ? (
             <p className="text-[12px] text-slate-500 text-center py-4">Hali kuzatuv yozilmadi</p>
@@ -409,7 +409,7 @@ const Dashboard = () => {
             </div>
           )}
           <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">
-            Hammasini ko'rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+            Hammasini ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
           </Link>
         </div>
       </div>

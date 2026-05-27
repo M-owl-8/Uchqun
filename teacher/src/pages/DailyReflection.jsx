@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
 import { Lock, TrendingUp } from 'lucide-react';
-import { ChildRibbon } from '../components/ChildRibbon';
 import { ChildAvatar } from '../components/ChildAvatar';
 import { ParentJournalComposer } from '../components/ParentJournalComposer';
 import { useChildRibbon } from '../hooks/useChildRibbon';
@@ -136,7 +135,7 @@ const DailyReflection = () => {
               <Lock className="w-4 h-4 text-slate-500" strokeWidth={1.75} />
               <span className="text-[12px] font-medium text-slate-700 uppercase tracking-[.1em]">Shaxsiy</span>
               <span className="ml-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px]">
-                Faqat men ko'raman
+                Faqat men ko&apos;raman
               </span>
             </div>
             <textarea

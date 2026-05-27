@@ -67,8 +67,8 @@ function IEPTab({ child, goals }) {
         <div className="w-12 h-12 rounded-full bg-brand-50 grid place-items-center mx-auto">
           <Plus className="w-5 h-5 text-brand-600" strokeWidth={1.75} />
         </div>
-        <div className="mt-3 text-[15px] font-semibold text-slate-900">Hozircha maqsad yo'q</div>
-        <p className="mt-1 text-[13px] text-slate-500">Birinchi IEP maqsadini qo'shing</p>
+        <div className="mt-3 text-[15px] font-semibold text-slate-900">Hozircha maqsad yo&apos;q</div>
+        <p className="mt-1 text-[13px] text-slate-500">Birinchi IEP maqsadini qo&apos;shing</p>
       </div>
     );
   }
@@ -116,7 +116,7 @@ function IEPTab({ child, goals }) {
 
             {/* Heatmap */}
             <div className="mt-3">
-              <div className="text-[11px] text-slate-500 mb-1">So'nggi 12 kuzatuv</div>
+              <div className="text-[11px] text-slate-500 mb-1">So&apos;nggi 12 kuzatuv</div>
               <GoalHeatmap records={goal.recentObservations || []} />
             </div>
 
@@ -190,7 +190,7 @@ const ChildDetail = () => {
       <div className="text-center py-16">
         <div className="text-[15px] text-slate-500">Bola topilmadi</div>
         <Link to="/teacher/parents" className="mt-3 text-[13px] text-brand-700 font-medium hover:underline">
-          ← Ro'yxatga qaytish
+          ← Ro&apos;yxatga qaytish
         </Link>
       </div>
     );
@@ -198,7 +198,6 @@ const ChildDetail = () => {
 
   const parentPhone = child.parentPhone || child.parent?.phone;
   const parentEmail = child.parentEmail || child.parent?.email;
-  const parentName  = child.parentName  || child.parent?.name || 'Ota-ona';
 
   return (
     <div className="max-w-3xl mx-auto space-y-5">
@@ -207,7 +206,7 @@ const ChildDetail = () => {
         to="/teacher/parents"
         className="inline-flex items-center gap-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> Guruh ro'yxati
+        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> Guruh ro&apos;yxati
       </Link>
 
       {/* Hero card */}
@@ -330,25 +329,25 @@ const ChildDetail = () => {
         {tab === 'iep' && <IEPTab child={child} goals={goals} />}
         {tab === 'obs' && (
           <div className="py-8 text-center text-[13px] text-slate-500">
-            Kuzatuvlar tez orada qo'shiladi
+            Kuzatuvlar tez orada qo&apos;shiladi
           </div>
         )}
         {tab === 'docs' && (
           <div className="py-8 text-center text-[13px] text-slate-500">
-            Hujjatlar tez orada qo'shiladi
+            Hujjatlar tez orada qo&apos;shiladi
           </div>
         )}
         {tab === 'messages' && (
           <div className="py-8 text-center">
             <Link to="/teacher/chat" className="text-[13px] text-brand-700 font-medium hover:underline">
-              Chat sahifasiga o'tish →
+              Chat sahifasiga o&apos;tish →
             </Link>
           </div>
         )}
         {tab === 'gallery' && (
           <div className="py-8 text-center">
             <Link to="/teacher/media" className="text-[13px] text-brand-700 font-medium hover:underline">
-              Galereya sahifasiga o'tish →
+              Galereya sahifasiga o&apos;tish →
             </Link>
           </div>
         )}

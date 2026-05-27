@@ -113,7 +113,7 @@ const Sidebar = ({ onClose }) => {
           <div>
             <div className="text-[14px] font-semibold leading-none">Uchqun</div>
             <div className="text-[11px] mt-0.5" style={{ color: '#928A9C' }}>
-              O'qituvchi portali
+              O&apos;qituvchi portali
             </div>
           </div>
         </div>
@@ -215,7 +215,7 @@ const Sidebar = ({ onClose }) => {
             <div className="text-[13px] font-medium truncate" style={{ color: '#F4F0F5' }}>
               {user?.firstName} {user?.lastName}
             </div>
-            <div className="text-[10px]" style={{ color: '#928A9C' }}>O'qituvchi</div>
+            <div className="text-[10px]" style={{ color: '#928A9C' }}>O&apos;qituvchi</div>
           </div>
           <button
             onClick={logout}

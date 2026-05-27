@@ -1,5 +1,5 @@
 // refs #09-004 — parentT() custom function bypassed shared i18n; removed in favour of t()
-// refs #09-007 — AIWarnings page had no navigation entry; Sidebar now includes it
+// refs #09-007 — /ai-warnings nav entry was added then REMOVED in Phase 0 AIChat teardown (bd1dbcd)
 import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
@@ -43,12 +43,14 @@ describe('#09-004 parent Sidebar uses standard t() not parentT()', () => {
   });
 });
 
-describe('#09-007 AIWarnings navigation entry exists in parent Sidebar', () => {
-  it('renders an /ai-warnings link in the nav', async () => {
+describe('#09-007 AIWarnings removed from parent Sidebar (Phase 0 teardown)', () => {
+  it('does NOT render an /ai-warnings link in the nav (removed in Phase 0 — bd1dbcd)', async () => {
+    // Phase 0 (AIChat teardown) removed /ai-warnings from parent Sidebar as government-mandated.
+    // AIWarnings page still exists for teacher/admin; only the parent nav entry is gone.
     const { default: Sidebar } = await import('../../parent/components/Sidebar');
     const { container } = render(React.createElement(Sidebar, { onClose: vi.fn() }));
     const links = Array.from(container.querySelectorAll('a'));
     const aiWarningsLink = links.find((a) => a.getAttribute('href') === '/ai-warnings');
-    expect(aiWarningsLink).toBeTruthy();
+    expect(aiWarningsLink).toBeUndefined();
   });
 });

@@ -96,7 +96,7 @@ export function ParentJournalComposer({ children = [], onSend }) {
               onChange={toggleAll}
               className="rounded accent-brand-600"
             />
-            Hammasiga jo'natish
+            Hammasiga jo&apos;natish
           </label>
           <div className="mt-3 space-y-1.5">
             {children.map(child => {
@@ -235,7 +235,7 @@ export function ParentJournalComposer({ children = [], onSend }) {
                 className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium flex items-center gap-1.5 hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" strokeWidth={1.75} />
-                Jo'natish · {selectedIds.length}
+                Jo&apos;natish · {selectedIds.length}
               </button>
             </div>
           </div>
