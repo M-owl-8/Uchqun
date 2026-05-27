@@ -14,6 +14,6 @@ RUN mkdir -p uploads logs && chown -R uchqun:nodejs uploads logs
 USER uchqun
 EXPOSE 5000
 ENV NODE_ENV=production
-HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=120s --retries=3 \
   CMD wget -qO- http://localhost:5000/health || exit 1
-CMD ["node", "server.js"]
+CMD ["sh", "-c", "node config/migrate.js && node server.js"]
