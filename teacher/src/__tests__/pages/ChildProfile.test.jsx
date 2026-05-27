@@ -250,10 +250,12 @@ describe('CL-013c ChildProfile integration', () => {
     fireEvent.click(sendBtn);
 
     await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/parent/message-to-government', {
+      // CP-022: POST now includes recipientLevel (default 'republic')
+      expect(api.post).toHaveBeenCalledWith('/parent/message-to-government', expect.objectContaining({
         subject: 'Test subject',
         message: 'Test message body',
-      });
+        recipientLevel: 'republic',
+      }));
     });
   });
 

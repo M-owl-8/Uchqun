@@ -1,8 +1,47 @@
-import { MessageSquare, X } from 'lucide-react';
+import { MessageSquare, X, AlertTriangle, ChevronsUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
-const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
+// PL-009: uz/ru strings use defaultValue — require professional review before beta.
+
+const LEVEL_BADGES = {
+  owner:    { label: 'Maktab',     cls: 'bg-amber-100 text-amber-700 border border-amber-200' },
+  region:   { label: 'Viloyat',    cls: 'bg-blue-100 text-blue-700 border border-blue-200' },
+  republic: { label: 'Respublika', cls: 'bg-indigo-100 text-indigo-700 border border-indigo-200' },
+};
+
+const LevelBadge = ({ level, t }) => {
+  const badge = LEVEL_BADGES[level];
+  if (!badge) return null;
+  return (
+    <span
+      data-testid={`level-badge-${level}`}
+      className={`px-2 py-0.5 rounded-full text-xs font-semibold ${badge.cls}`}
+    >
+      {t(`message.level_${level}`, { defaultValue: badge.label })}
+    </span>
+  );
+};
+
+/**
+ * Parent messages history modal — CP-022.
+ *
+ * Props:
+ *   show             boolean
+ *   onClose          () → void
+ *   messages         Message[]
+ *   loadingMessages  boolean
+ *   messagesError    string | null
+ *   onEscalate       ({ messageId, subject, currentLevel }) → void
+ */
+const MessagesModal = ({
+  show,
+  onClose,
+  messages,
+  loadingMessages,
+  messagesError = null,
+  onEscalate,
+}) => {
   const { t, i18n } = useTranslation();
 
   if (!show) return null;
@@ -30,6 +69,17 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
           </button>
         </div>
 
+        {/* Cold-load error */}
+        {messagesError && (
+          <div
+            data-testid="messages-error"
+            className="mb-4 p-3 bg-error-50 border border-error-200 rounded-xl flex items-center gap-2 text-error-700 text-sm"
+          >
+            <AlertTriangle className="w-4 h-4 flex-shrink-0" />
+            {messagesError}
+          </div>
+        )}
+
         {loadingMessages ? (
           <div className="flex justify-center items-center py-12">
             <LoadingSpinner size="md" />
@@ -43,23 +93,47 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
           <div className="space-y-4">
             {messages.map((msg) => (
               <div key={msg.id} className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
-                <div className="flex items-start justify-between mb-3">
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-lg">{msg.subject}</h3>
-                    <p className="text-sm text-slate-500 mt-1">
+                <div className="flex items-start justify-between mb-3 gap-3">
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2 flex-wrap mb-1">
+                      <h3 className="font-bold text-slate-900 text-lg leading-tight truncate">{msg.subject}</h3>
+                      {msg.recipientLevel && (
+                        <LevelBadge level={msg.recipientLevel} t={t} />
+                      )}
+                    </div>
+                    <p className="text-sm text-slate-500">
                       {new Date(msg.createdAt).toLocaleDateString(i18n.language, {
                         year: 'numeric', month: 'long', day: 'numeric',
                         hour: '2-digit', minute: '2-digit',
                       })}
                     </p>
                   </div>
-                  {msg.reply && (
-                    <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
-                      {t('profile.replied', { defaultValue: 'Javob berildi' })}
-                    </span>
-                  )}
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    {msg.reply && (
+                      <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
+                        {t('profile.replied', { defaultValue: 'Javob berildi' })}
+                      </span>
+                    )}
+                  </div>
                 </div>
 
+                {/* Escalation chain indicator */}
+                {msg.escalatedFrom && (
+                  <div
+                    data-testid={`escalation-chain-${msg.id}`}
+                    className="mb-3 p-2 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-2"
+                  >
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600 flex-shrink-0" />
+                    <span className="text-xs text-amber-700">
+                      <span className="font-semibold">
+                        {t('message.escalatedFrom', { defaultValue: '⚠️ Ko\'tarildi:' })}
+                      </span>{' '}
+                      <span className="truncate">{msg.escalatedFrom.subject}</span>
+                    </span>
+                  </div>
+                )}
+
+                {/* Message body */}
                 <div className="mb-4">
                   <p className="text-sm font-medium text-slate-700 mb-2">
                     {t('profile.yourMessage', { defaultValue: 'Sizning xabaringiz' })}:
@@ -67,6 +141,7 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
                   <p className="text-slate-800 bg-slate-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                 </div>
 
+                {/* Government reply */}
                 {msg.reply && (
                   <div className="border-t border-slate-200 pt-4 mt-4">
                     <div className="flex items-center gap-2 mb-2">
@@ -84,6 +159,24 @@ const MessagesModal = ({ show, onClose, messages, loadingMessages }) => {
                       </span>
                     </div>
                     <p className="text-slate-800 bg-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                  </div>
+                )}
+
+                {/* Escalate action */}
+                {onEscalate && msg.recipientLevel !== 'republic' && (
+                  <div className="mt-3 flex justify-end">
+                    <button
+                      onClick={() => onEscalate({
+                        messageId: msg.id,
+                        subject: msg.subject,
+                        currentLevel: msg.recipientLevel,
+                      })}
+                      data-testid={`escalate-btn-${msg.id}`}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-200 rounded-lg hover:bg-amber-100 transition-colors"
+                    >
+                      <ChevronsUp className="w-3.5 h-3.5" />
+                      {t('message.escalate', { defaultValue: 'Ko\'tarish' })}
+                    </button>
                   </div>
                 )}
               </div>

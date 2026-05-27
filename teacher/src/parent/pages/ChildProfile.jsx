@@ -38,7 +38,9 @@ const ChildProfile = () => {
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [myMessages, setMyMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [messagesError, setMessagesError] = useState(null);
   const [showMessagesModal, setShowMessagesModal] = useState(false);
+  const [escalationTarget, setEscalationTarget] = useState(null); // { messageId, subject, currentLevel }
   const [monitoringRecords, setMonitoringRecords] = useState([]);
 
   const handleUploadSuccess = (updatedChild) => {
@@ -70,18 +72,20 @@ const ChildProfile = () => {
     const loadMessages = async () => {
       try {
         setLoadingMessages(true);
+        setMessagesError(null);
         const response = await api.get('/parent/messages', { signal: controller.signal });
         setMyMessages(response.data.data || []);
       } catch (error) {
         if (error.code === 'ERR_CANCELED') return;
         setMyMessages([]);
+        setMessagesError(t('profile.messageError', { defaultValue: 'Xabarlarni yuklab bo\'lmadi' }));
       } finally {
         setLoadingMessages(false);
       }
     };
     loadMessages();
     return () => controller.abort();
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (selectedChildId) {
@@ -369,14 +373,23 @@ const ChildProfile = () => {
       />
       <MessageModal
         show={showMessageModal}
-        onClose={() => setShowMessageModal(false)}
+        onClose={() => { setShowMessageModal(false); setEscalationTarget(null); }}
         onSent={(messages) => setMyMessages(messages)}
+        escalatedFromId={escalationTarget?.messageId ?? null}
+        escalatedFromSubject={escalationTarget?.subject ?? null}
+        escalatedFromLevel={escalationTarget?.currentLevel ?? null}
       />
       <MessagesModal
         show={showMessagesModal}
         onClose={() => setShowMessagesModal(false)}
         messages={myMessages}
         loadingMessages={loadingMessages}
+        messagesError={messagesError}
+        onEscalate={(target) => {
+          setEscalationTarget(target);
+          setShowMessagesModal(false);
+          setShowMessageModal(true);
+        }}
       />
     </div>
   );
