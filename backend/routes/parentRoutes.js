@@ -2,7 +2,7 @@ import express from 'express';
 import { authenticate, requireParent, requireAdminOrReception } from '../middleware/auth.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { rateTeacherValidator, rateSchoolValidator, submitEvaluationValidator } from '../validators/parentRatingValidator.js';
-import { messageToGovValidator } from '../validators/messageValidator.js';
+import { parentMessageToGovValidator } from '../validators/messageValidator.js';
 import { dataExportLimiter } from '../middleware/rateLimiter.js';
 import {
   getMyChildren,
@@ -17,11 +17,10 @@ import {
   rateSchool,
   getMySchoolRating,
   getSchools,
-  getMyMessages,
   rateMyTeacher,
   getMyRating,
 } from '../controllers/parentController.js';
-import { sendMessage } from '../controllers/governmentMessageController.js';
+import { parentSendMessage, getMyMessages } from '../controllers/parent/parentMessageController.js';
 import {
   getMonitoringByChild,
   getMonitoringById,
@@ -70,8 +69,8 @@ router.get('/schools', authenticate, requireParent, getSchools);
 router.post('/evaluations', authenticate, requireParent, submitEvaluationValidator, handleValidationErrors, submitParentEvaluation);
 router.get('/evaluations', authenticate, requireParent, getMyEvaluations);
 
-// Send message to government
-router.post('/message-to-government', authenticate, requireParent, messageToGovValidator, handleValidationErrors, sendMessage);
+// Send message to government (CP-022: parent-only routing with recipientLevel + escalation)
+router.post('/message-to-government', authenticate, requireParent, parentMessageToGovValidator, handleValidationErrors, parentSendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', authenticate, requireParent, getMyMessages);
 

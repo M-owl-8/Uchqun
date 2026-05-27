@@ -96,13 +96,26 @@ export const sendMessage = async (req, res) => {
  */
 export const getAllMessages = async (req, res) => {
   try {
-    const { isRead, search } = req.query;
+    const { isRead, search, level } = req.query;
     const { limit, offset } = parsePagination(req.query);
 
     // Return only top-level messages; replies are eager-loaded as children
     const where = { parentMessageId: null };
     if (isRead !== undefined) {
       where.isRead = isRead === 'true';
+    }
+
+    // CP-022: additive level filter on top of existing region scope (backward-compatible:
+    // omitting level returns all levels within the gov account's region).
+    const VALID_LEVELS = ['owner', 'region', 'republic'];
+    if (level !== undefined) {
+      if (!VALID_LEVELS.includes(level)) {
+        return res.status(400).json({
+          success: false,
+          error: { code: 'MESSAGE_RECIPIENT_LEVEL_INVALID' },
+        });
+      }
+      where.recipientLevel = level;
     }
 
     if (search) {
@@ -149,6 +162,12 @@ export const getAllMessages = async (req, res) => {
             },
           ],
           order: [['createdAt', 'ASC']],
+          required: false,
+        },
+        {
+          model: GovernmentMessage,
+          as: 'escalatedFrom',
+          attributes: ['id', 'subject', 'recipientLevel', 'createdAt'],
           required: false,
         },
       ],

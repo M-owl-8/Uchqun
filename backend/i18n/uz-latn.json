@@ -234,5 +234,15 @@
   "RATING_DIRECTION_INVALID": "Yo'nalish parametri noto'g'ri.",
   "RATING_CHILD_NOT_FOUND": "Bola topilmadi.",
   "RATING_CREATE_FAILED": "Baholashni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-  "RATING_FETCH_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
+  "RATING_FETCH_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+
+  "MESSAGE_SEND_FORBIDDEN": "Faqat ota-onalar bu kanal orqali xabar yuborishi mumkin.",
+  "MESSAGE_SUBJECT_REQUIRED": "Iltimos, mavzuni kiriting.",
+  "MESSAGE_BODY_REQUIRED": "Iltimos, xabarni yozing.",
+  "MESSAGE_RECIPIENT_LEVEL_INVALID": "Iltimos, to'g'ri qabul qiluvchi darajasini tanlang.",
+  "MESSAGE_ESCALATE_NOT_FOUND": "Murojaat qilinayotgan dastlabki xabar topilmadi.",
+  "MESSAGE_ESCALATE_NOT_OWN": "Siz faqat o'zingizning xabarlaringizni ko'tarishingiz mumkin.",
+  "MESSAGE_NO_SCHOOL": "Sizning hisobingiz maktabga biriktirilmagan.",
+  "MESSAGE_SEND_FAILED": "Xabar yuborib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+  "MESSAGE_FETCH_FAILED": "Xabarlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
 }

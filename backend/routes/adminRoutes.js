@@ -34,6 +34,7 @@ import { validate as validateImport, start as startImport, getStatus as getImpor
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
+import { getOwnerMessages } from '../controllers/admin/adminMessageController.js';
 import { handleValidationErrors } from '../middleware/validation.js';
 import { createReceptionValidator, rejectDocumentValidator, adminIdParamValidator } from '../validators/adminValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
@@ -62,6 +63,8 @@ router.use(requireSchoolScope);
 router.post('/message-to-government', messageToGovValidator, handleValidationErrors, sendMessage);
 // Get my messages to government (with replies)
 router.get('/messages', getMyMessages);
+// CP-022: admin owner inbox — owner-level messages from parents at this school
+router.get('/owner-messages', getOwnerMessages);
 
 // Reception management (Admin can CREATE, EDIT, DELETE and MANAGE)
 router.post('/receptions', createReceptionValidator, handleValidationErrors, createReception); // Admin can create Reception

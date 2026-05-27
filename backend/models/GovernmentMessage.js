@@ -27,6 +27,22 @@ const GovernmentMessage = sequelize.define('GovernmentMessage', {
     references: { model: 'government_messages', key: 'id' },
     onDelete: 'SET NULL',
   },
+  // CP-022: routing level. 'owner' = school admin inbox; 'region' = regional gov;
+  // 'republic' = republic-level gov. Legacy rows default to 'republic'.
+  recipientLevel: {
+    type: DataTypes.ENUM('owner', 'region', 'republic'),
+    allowNull: false,
+    defaultValue: 'republic',
+  },
+  // CP-022: escalation chain pointer. If set, this message is an escalation of
+  // the referenced message. Parent can only escalate their own prior message.
+  escalatedFromId: {
+    type: DataTypes.UUID,
+    allowNull: true,
+    references: { model: 'government_messages', key: 'id' },
+    onDelete: 'SET NULL',
+    onUpdate: 'CASCADE',
+  },
 }, {
   tableName: 'government_messages',
   timestamps: true,
@@ -35,10 +51,14 @@ const GovernmentMessage = sequelize.define('GovernmentMessage', {
     { fields: ['isRead'] },
     { fields: ['createdAt'] },
     { fields: ['parentMessageId'] },
+    { fields: ['recipientLevel'] },
+    { fields: ['escalatedFromId'] },
   ],
 });
 
 GovernmentMessage.hasMany(GovernmentMessage, { as: 'replies', foreignKey: 'parentMessageId' });
 GovernmentMessage.belongsTo(GovernmentMessage, { as: 'parent', foreignKey: 'parentMessageId' });
+// Escalation chain: a message can be escalated from a prior message by the same sender.
+GovernmentMessage.belongsTo(GovernmentMessage, { as: 'escalatedFrom', foreignKey: 'escalatedFromId' });
 
 export default GovernmentMessage;

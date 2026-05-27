@@ -446,6 +446,26 @@ Introduced: CP-020 Backend (2026-05-27)
 
 ---
 
+## CP-022 — Parent Message Routing + Escalation
+
+Added 2026-05-27. Introduced by `parentSendMessage` (parent route), `getAllMessages` level filter (gov route), `getOwnerMessages` (admin route).
+
+| Code | HTTP | When triggered | User-facing meaning |
+|---|---|---|---|
+| `MESSAGE_SEND_FORBIDDEN` | 403 | Non-parent attempted to use parent send endpoint (defense-in-depth role check) | "Only parents can send messages via this channel." |
+| `MESSAGE_SUBJECT_REQUIRED` | 400 | `subject` missing or empty | "Please enter a subject." |
+| `MESSAGE_BODY_REQUIRED` | 400 | `message` body missing or empty | "Please write your message." |
+| `MESSAGE_RECIPIENT_LEVEL_INVALID` | 400 | `recipientLevel` missing or not in `['owner','region','republic']`; also used for invalid `?level=` query param | "Please select a valid recipient level." |
+| `MESSAGE_ESCALATE_NOT_FOUND` | 400 | `escalatedFromId` provided but no matching message found | "The original message to escalate was not found." |
+| `MESSAGE_ESCALATE_NOT_OWN` | 403 | `escalatedFromId` points to a message sent by a different user | "You can only escalate your own messages." |
+| `MESSAGE_NO_SCHOOL` | 400 | Admin or parent has no `schoolId` (edge case — should not occur with correct data) | "Your account is not associated with a school." |
+| `MESSAGE_SEND_FAILED` | 500 | Unexpected server error while creating the message | "Failed to send message. Please try again." |
+| `MESSAGE_FETCH_FAILED` | 500 | Unexpected server error while fetching owner-level messages | "Failed to load messages. Please try again." |
+
+**Role restriction note:** Admin, teacher, and reception roles retain their own dedicated send routes (`POST /admin/message-to-government`, `/teacher/message-to-government`, `/reception/message-to-government`) using the flat `sendMessage` handler (no routing). CP-022 routing features (`recipientLevel`, `escalatedFromId`) are parent-only by design.
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."
