@@ -224,24 +224,24 @@ const TeacherRating = () => {
   }
 
   return (
-    <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div className="space-y-5 animate-in fade-in duration-300">
       {/* Teacher Rating Section */}
       {!teacher ? (
-        <Card className="flex items-start gap-3">
-          <div className="p-2 rounded-full bg-brand-50 text-brand-600">
-            <AlertCircle className="w-5 h-5" />
+        <div className="page-card rounded-xl p-5 flex items-start gap-3">
+          <div className="p-2 rounded-full bg-p-brand-50 text-p-brand-600 shrink-0">
+            <AlertCircle className="w-4 h-4" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-900">{t('ratingPage.title')}</h2>
-            <p className="text-slate-600">{t('ratingPage.noTeacher')}</p>
+            <h2 className="font-serif text-[16px] font-semibold text-p-ink">{t('ratingPage.title')}</h2>
+            <p className="text-[13px] text-p-sepia-500">{t('ratingPage.noTeacher')}</p>
           </div>
-        </Card>
+        </div>
       ) : (
         <>
-          <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('ratingPage.title')}</h1>
-            <p className="text-white/90 text-sm md:text-base">{t('ratingPage.subtitle')}</p>
-          </Card>
+          <div className="bg-p-brand-700 rounded-xl p-5 text-white">
+            <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">{t('ratingPage.subtitle')}</p>
+            <h1 className="font-serif text-[22px] font-semibold">{t('ratingPage.title')}</h1>
+          </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2">

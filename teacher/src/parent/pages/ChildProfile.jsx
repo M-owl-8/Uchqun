@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useChild } from '../context/ChildContext';
 import { useSocket } from '../../shared/context/SocketContext';
 import api from '../services/api';
-import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LanguageSwitcher from '../components/LanguageSwitcher';
 import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users } from 'lucide-react';
@@ -193,25 +192,26 @@ const ChildProfile = () => {
 
   if (Array.isArray(children) && children.length > 1 && !selectedChildId) {
     return (
-      <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in duration-500">
-        <div className="mb-10">
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">{t('child.title')}</h1>
-          <p className="text-slate-500 font-medium">{t('child.selectPrompt')}</p>
+      <div className="space-y-6 animate-in fade-in duration-300">
+        <div>
+          <h1 className="font-serif text-[24px] text-p-ink font-semibold">{t('child.title')}</h1>
+          <p className="text-[14px] text-p-sepia-500 mt-0.5">{t('child.selectPrompt')}</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="space-y-3">
           {children.map((c) => (
-            <Card key={c.id} onClick={() => selectChild(c.id)} className="p-6 cursor-pointer hover:shadow-lg transition-shadow">
-              <div className="flex items-center gap-4">
-                <div className="w-16 h-16 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold text-xl">
-                  {c.firstName?.charAt(0)}{c.lastName?.charAt(0)}
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold text-slate-900">{c.firstName} {c.lastName}</h3>
-                  <p className="text-sm text-slate-500">{c.childSchool?.name || ''}</p>
-                  {parentGroupName && <p className="text-sm text-slate-500">{parentGroupName}</p>}
-                </div>
+            <button
+              key={c.id}
+              onClick={() => selectChild(c.id)}
+              className="page-card page-corner w-full rounded-xl p-4 flex items-center gap-4 hover:shadow-md transition-shadow text-left"
+            >
+              <div className="w-12 h-12 rounded-full bg-p-brand-100 flex items-center justify-center text-p-brand-700 font-semibold text-[16px] shrink-0">
+                {c.firstName?.charAt(0)}{c.lastName?.charAt(0)}
               </div>
-            </Card>
+              <div>
+                <p className="font-medium text-p-ink">{c.firstName} {c.lastName}</p>
+                <p className="text-[13px] text-p-sepia-500">{c.childSchool?.name || ''}</p>
+              </div>
+            </button>
           ))}
         </div>
       </div>
@@ -220,53 +220,47 @@ const ChildProfile = () => {
 
   if (error || !child) {
     return (
-      <div className="max-w-2xl mx-auto py-20">
-        <Card className="text-center p-12">
-          <div className="w-24 h-24 bg-brand-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <User className="w-12 h-12 text-brand-600" />
+      <div className="py-20">
+        <div className="page-card rounded-xl p-10 text-center">
+          <div className="w-16 h-16 bg-p-brand-100 rounded-full flex items-center justify-center mx-auto mb-5">
+            <User className="w-8 h-8 text-p-brand-600" />
           </div>
-          <h2 className="text-2xl font-black text-slate-900 mb-4">{t('child.notFoundTitle')}</h2>
-          <p className="text-slate-600 font-medium mb-6">{error || t('child.notFoundDesc')}</p>
-          <p className="text-sm text-slate-500">{t('child.notFoundHelp')}</p>
-        </Card>
+          <h2 className="font-serif text-[20px] font-semibold text-p-ink mb-2">{t('child.notFoundTitle')}</h2>
+          <p className="text-[14px] text-p-sepia-500">{error || t('child.notFoundDesc')}</p>
+          <p className="text-[13px] text-p-sepia-400 mt-2">{t('child.notFoundHelp')}</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="max-w-6xl mx-auto space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+    <div className="space-y-5 animate-in fade-in duration-300">
 
+      {/* Multi-child switcher (inline) */}
       {Array.isArray(children) && children.length > 1 && (
-        <Card className="p-4 bg-gradient-to-r from-brand-50 to-indigo-50 border-brand-200">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="flex-1">
-              <label className="block text-sm font-semibold text-slate-700 mb-2">
-                <Users className="w-4 h-4 inline mr-2" />
-                {t('child.selectLabel', { defaultValue: 'Farzandni tanlang' })}
-              </label>
-              <select
-                value={selectedChildId || ''}
-                onChange={(e) => {
-                  selectChild(e.target.value);
-                  setChild(null);
-                  setLoading(true);
-                  setImageLoading(true);
-                  setPhotoTimestamp(Date.now());
-                }}
-                className="w-full sm:w-auto min-w-[250px] px-4 py-2.5 bg-surface border-2 border-brand-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-brand-500 font-medium text-slate-900 shadow-sm hover:border-brand-400 transition-colors"
-              >
-                {children.map((c) => (
-                  <option key={c.id} value={c.id}>
-                    {c.firstName} {c.lastName}{c.childSchool?.name ? ` - ${c.childSchool.name}` : ''}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="text-sm text-slate-600 font-medium">
-              {t('child.totalChildren', { count: children.length, defaultValue: `Jami: ${children.length} ta farzand` })}
-            </div>
-          </div>
-        </Card>
+        <div className="page-card rounded-lg px-4 py-3 flex items-center gap-3">
+          <Users className="w-4 h-4 text-p-sepia-400 shrink-0" />
+          <label className="text-[13px] font-medium text-p-sepia-600 shrink-0">
+            {t('child.selectLabel', { defaultValue: 'Farzand' })}
+          </label>
+          <select
+            value={selectedChildId || ''}
+            onChange={(e) => {
+              selectChild(e.target.value);
+              setChild(null);
+              setLoading(true);
+              setImageLoading(true);
+              setPhotoTimestamp(Date.now());
+            }}
+            className="flex-1 px-3 py-1.5 bg-p-surface border border-p-sepia-200 rounded-md text-[13px] text-p-ink focus:outline-none focus:border-p-brand-400"
+          >
+            {children.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.firstName} {c.lastName}{c.childSchool?.name ? ` — ${c.childSchool.name}` : ''}
+              </option>
+            ))}
+          </select>
+        </div>
       )}
 
       <ChildProfileHero
@@ -280,86 +274,82 @@ const ChildProfile = () => {
         API_BASE={API_BASE}
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 space-y-8">
-          <section className="bg-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
-            <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
-              <User className="w-6 h-6 text-brand-600" /> {t('child.basicInfo')}
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <InfoItem label={t('child.fullName')} value={`${child.firstName} ${child.lastName}`} icon={User} />
-              <InfoItem label={t('child.birthDate')} value={new Date(child.dateOfBirth).toLocaleDateString(locale)} icon={Calendar} />
-              <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-error-500" />
-              <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-brand-500" />
-            </div>
-          </section>
-
-          <section className="bg-gradient-to-br from-red-50 to-brand-50 rounded-[2rem] p-8 border border-error-100 shadow-inner">
-            <h3 className="text-xl font-bold text-error-900 mb-4 flex items-center gap-2">
-              <Heart className="w-6 h-6 text-error-600 animate-pulse" /> {t('child.specialNeeds')}
-            </h3>
-            <div className="bg-surface/60 backdrop-blur-sm rounded-2xl p-6 text-error-800 font-medium leading-relaxed border border-white/50">
-              {child.specialNeeds}
-            </div>
-          </section>
-
-          <EmotionalMonitoringSection records={monitoringRecords} />
+      {/* Basic info */}
+      <section className="page-card page-corner rounded-xl p-5">
+        <h3 className="font-serif text-[16px] font-semibold text-p-ink mb-4 flex items-center gap-2">
+          <User className="w-4 h-4 text-p-brand-500" /> {t('child.basicInfo')}
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <InfoItem label={t('child.fullName')} value={`${child.firstName} ${child.lastName}`} icon={User} />
+          <InfoItem label={t('child.birthDate')} value={new Date(child.dateOfBirth).toLocaleDateString(locale)} icon={Calendar} />
+          <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-error-500" />
+          <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-p-brand-500" />
         </div>
+      </section>
 
-        <div className="space-y-8">
-          <section className="bg-surface/95 backdrop-blur-sm rounded-[2rem] p-6 shadow-xl border border-white/20">
-            <h3 className="text-lg font-bold text-slate-900 mb-4">
-              {t('profile.account', { defaultValue: 'Account' })}
-            </h3>
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-sm font-semibold text-slate-700">
-                {t('language', { defaultValue: 'Language' })}
-              </div>
-              <LanguageSwitcher />
-            </div>
+      {/* Special needs */}
+      <section className="page-card rounded-xl p-5 border-l-2 border-l-p-sepia-300">
+        <h3 className="text-[15px] font-semibold text-p-ink mb-3 flex items-center gap-2">
+          <Heart className="w-4 h-4 text-error-500" /> {t('child.specialNeeds')}
+        </h3>
+        <p className="text-[14px] text-p-sepia-700 leading-relaxed">{child.specialNeeds}</p>
+      </section>
+
+      <EmotionalMonitoringSection records={monitoringRecords} />
+
+      {/* Weekly stats */}
+      <section className="bg-p-sepia-800 rounded-xl p-5 text-white">
+        <h3 className="font-serif text-[16px] font-semibold mb-4 text-white">{t('child.weeklyResults')}</h3>
+        <div className="space-y-4">
+          <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-p-brand-400" />
+          <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-p-brand-400" />
+          <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-p-brand-400" />
+        </div>
+      </section>
+
+      {/* Account section */}
+      <section className="page-card rounded-xl p-5">
+        <h3 className="text-[15px] font-semibold text-p-ink mb-4">
+          {t('profile.account', { defaultValue: 'Account' })}
+        </h3>
+        <div className="flex items-center justify-between gap-3 mb-3">
+          <span className="text-[13px] font-medium text-p-sepia-600">
+            {t('language', { defaultValue: 'Language' })}
+          </span>
+          <LanguageSwitcher />
+        </div>
+        <div className="stitch mb-3" />
+        <div className="space-y-2">
+          <button
+            onClick={() => setShowMessageModal(true)}
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
+          >
+            <MessageSquare className="w-4 h-4" />
+            {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
+          </button>
+          {myMessages.length > 0 && (
             <button
-              onClick={() => setShowMessageModal(true)}
-              className="mt-4 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-brand-50 text-brand-600 border border-brand-100 hover:bg-brand-100 transition-colors"
+              onClick={() => setShowMessagesModal(true)}
+              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-sepia-50 text-p-sepia-700 border border-p-sepia-200 hover:bg-p-sepia-100 transition-colors text-[13px] font-medium relative"
             >
               <MessageSquare className="w-4 h-4" />
-              {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
+              {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
+              {myMessages.some((m) => m.reply) && (
+                <span className="absolute -top-1 -right-1 w-5 h-5 bg-p-brand-600 text-white text-[10px] rounded-full flex items-center justify-center">
+                  {myMessages.filter((m) => m.reply).length}
+                </span>
+              )}
             </button>
-            {myMessages.length > 0 && (
-              <button
-                onClick={() => setShowMessagesModal(true)}
-                className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-success-50 text-success-600 border border-success-100 hover:bg-success-100 transition-colors relative"
-              >
-                <MessageSquare className="w-4 h-4" />
-                {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
-                {myMessages.some((m) => m.reply) && (
-                  <span className="absolute -top-1 -right-1 w-5 h-5 bg-success-500 text-white text-xs rounded-full flex items-center justify-center">
-                    {myMessages.filter((m) => m.reply).length}
-                  </span>
-                )}
-              </button>
-            )}
-            <button
-              onClick={() => setShowLogoutModal(true)}
-              className="mt-2 w-full inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-error-50 text-error-600 border border-error-100 hover:bg-error-100 transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              {t('nav.exit', { defaultValue: 'Exit' })}
-            </button>
-          </section>
-
-          <section className="bg-slate-800 rounded-[2rem] p-8 text-white shadow-xl relative overflow-hidden">
-            <div className="absolute bottom-0 right-0 opacity-20">
-              <Award className="w-40 h-40 text-slate-700" />
-            </div>
-            <h3 className="text-xl font-bold mb-6 text-white">{t('child.weeklyResults')}</h3>
-            <div className="space-y-6 relative z-10">
-              <StatRow label={t('child.activities')} value={weeklyStats.activities} color="bg-brand-500" />
-              <StatRow label={t('child.meals')} value={weeklyStats.meals} color="bg-brand-500" />
-              <StatRow label={t('child.media')} value={weeklyStats.media} color="bg-brand-500" />
-            </div>
-          </section>
+          )}
+          <button
+            onClick={() => setShowLogoutModal(true)}
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-error-50 text-error-600 border border-error-200 hover:bg-error-100 transition-colors text-[13px] font-medium"
+          >
+            <LogOut className="w-4 h-4" />
+            {t('nav.exit', { defaultValue: 'Exit' })}
+          </button>
         </div>
-      </div>
+      </section>
 
       <AvatarUploadModal
         show={showAvatarSelector}

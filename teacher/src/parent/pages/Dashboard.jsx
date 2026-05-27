@@ -8,17 +8,12 @@ import { useNotification } from '../context/NotificationContext';
 import { useToast } from '../../shared/context/ToastContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
-import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
-import {
-  Activity,
-  UtensilsCrossed,
-  Camera,
-  Bell,
-  HeartPulse,
-  Star,
-  ChevronRight,
-} from 'lucide-react';
+import ChildSwitcher from '../components/ChildSwitcher';
+import DayCard from '../components/DayCard';
+import { Bell, Activity, UtensilsCrossed, Camera, Star, HeartPulse, ChevronRight } from 'lucide-react';
+
+const today = new Date().toISOString().split('T')[0];
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -73,7 +68,6 @@ const Dashboard = () => {
     if (cached) {
       setStats(cached);
       setLoading(false);
-      // Silent background refresh
       fetchFresh(signal)
         .then(data => {
           if (!data) return;
@@ -105,40 +99,15 @@ const Dashboard = () => {
     return () => controller.abort();
   }, [selectedChildId, loadData]);
 
-  // Real-time WebSocket listeners
   useEffect(() => {
     if (!connected || !selectedChildId) return;
-
-    const handleDataChange = (_data) => {
+    const handleDataChange = () => {
       cache.invalidate(`parent:dashboard:${selectedChildId}`);
       loadData();
     };
-
-    // Subscribe to all relevant events
-    on('activity:created', handleDataChange);
-    on('activity:updated', handleDataChange);
-    on('activity:deleted', handleDataChange);
-    on('meal:created', handleDataChange);
-    on('meal:updated', handleDataChange);
-    on('meal:deleted', handleDataChange);
-    on('media:created', handleDataChange);
-    on('media:updated', handleDataChange);
-    on('media:deleted', handleDataChange);
-    on('child:updated', handleDataChange);
-
-    // Cleanup
-    return () => {
-      off('activity:created', handleDataChange);
-      off('activity:updated', handleDataChange);
-      off('activity:deleted', handleDataChange);
-      off('meal:created', handleDataChange);
-      off('meal:updated', handleDataChange);
-      off('meal:deleted', handleDataChange);
-      off('media:created', handleDataChange);
-      off('media:updated', handleDataChange);
-      off('media:deleted', handleDataChange);
-      off('child:updated', handleDataChange);
-    };
+    const events = ['activity:created','activity:updated','activity:deleted','meal:created','meal:updated','meal:deleted','media:created','media:updated','media:deleted','child:updated'];
+    events.forEach(ev => on(ev, handleDataChange));
+    return () => events.forEach(ev => off(ev, handleDataChange));
   }, [connected, selectedChildId, on, off, loadData]);
 
   if (loading) {
@@ -149,87 +118,81 @@ const Dashboard = () => {
     );
   }
 
-  const overviewCards = [
-    {
-      title: t('dashboard.individualPlan') || 'Individual reja',
-      value: stats?.activities || 0,
-      icon: Activity,
-      href: '/activities',
-    },
-    {
-      title: t('dashboard.meals') || t('dashboard.mealsTracked'),
-      value: stats?.meals || 0,
-      icon: UtensilsCrossed,
-      href: '/meals',
-    },
-    {
-      title: t('dashboard.media') || t('dashboard.photos'),
-      value: stats?.media || 0,
-      icon: Camera,
-      href: '/media',
-    },
-    {
-      title: t('dashboard.childStatus', { defaultValue: "Bolaning holati" }),
-      value: `${stats?.childStatusScore || 0}%`,
-      icon: HeartPulse,
-      href: '/child',
-    },
-    {
-      title: t('dashboard.teacherRating', { defaultValue: "Tarbiyachi bahosi" }),
-      value: `${stats?.teacherRating || '0.0'} (${stats?.teacherRatingCount || 0})`,
-      icon: Star,
-      href: '/rating',
-    },
+  const quickLinks = [
+    { title: t('dashboard.individualPlan') || 'Faoliyat',        value: stats?.activities || 0,   icon: Activity,       href: '/activities' },
+    { title: t('dashboard.meals') || 'Ovqat',                   value: stats?.meals || 0,        icon: UtensilsCrossed, href: '/meals' },
+    { title: t('dashboard.media') || 'Rasm',                    value: stats?.media || 0,        icon: Camera,          href: '/media' },
+    { title: t('dashboard.childStatus') || 'Hissiy holat',      value: `${stats?.childStatusScore || 0}%`, icon: HeartPulse, href: '/child' },
+    { title: t('dashboard.teacherRating') || 'Baholash',        value: `${stats?.teacherRating || '0.0'} (${stats?.teacherRatingCount || 0})`, icon: Star, href: '/rating' },
   ];
 
   return (
-    <div className="max-w-7xl mx-auto pb-20 animate-in fade-in duration-500 relative z-10">
-      <div className="space-y-6 relative z-10">
-          {/* Welcome Header Card */}
-          <Card className="relative bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 z-10">
-            {/* Notifications Icon in Top Right Corner of Card */}
-            <Link to="/notifications" className="absolute top-4 right-4 md:top-6 md:right-6 z-10">
-              <div className="p-2 bg-surface/20 hover:bg-surface/30 rounded-lg transition-colors backdrop-blur-sm relative">
-                <Bell className="w-5 h-5 text-white" />
-                {count > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-error-500 text-white text-[10px] leading-none font-extrabold rounded-full px-1.5 py-1 border-2 border-white shadow-sm">
-                    {count > 9 ? '9+' : count}
-                  </span>
-                )}
+    <div className="space-y-6 animate-in fade-in duration-300">
+
+      {/* Header row: greeting + notifications */}
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="text-[12px] uppercase tracking-[.12em] font-medium text-p-sepia-500 mb-0.5">
+            Ota-ona portali
+          </p>
+          <h1 className="font-serif text-[26px] leading-tight text-p-ink font-semibold">
+            {user?.firstName || ''} {user?.lastName || ''}
+          </h1>
+        </div>
+        <Link to="/notifications" className="relative mt-1 p-2 rounded-lg hover:bg-p-sepia-100 transition-colors">
+          <Bell className="w-5 h-5 text-p-sepia-500" />
+          {count > 0 && (
+            <span className="absolute -top-1 -right-1 bg-p-brand-600 text-white text-[10px] leading-none font-bold rounded-full px-1.5 py-0.5 border-2 border-p-paper">
+              {count > 9 ? '9+' : count}
+            </span>
+          )}
+        </Link>
+      </div>
+
+      {/* Child switcher */}
+      <div>
+        <ChildSwitcher />
+      </div>
+
+      {/* Today's day card */}
+      <div>
+        <div className="flex items-center gap-2 mb-3">
+          <span className="w-5 h-px bg-p-brand-400" />
+          <span className="text-[11px] uppercase tracking-[.12em] font-semibold text-p-brand-600">
+            Bugungi xulosa
+          </span>
+        </div>
+        <DayCard
+          date={today}
+          activities={stats?.activities || 0}
+          meals={stats?.meals || 0}
+          media={stats?.media || 0}
+          isToday
+        />
+      </div>
+
+      {/* Stitch separator */}
+      <div className="stitch" />
+
+      {/* Quick access links */}
+      <div>
+        <h2 className="text-[13px] uppercase tracking-[.1em] font-semibold text-p-sepia-500 mb-3">
+          {t('dashboard.overview') || 'Tezkor havolalar'}
+        </h2>
+        <div className="space-y-2">
+          {quickLinks.map((item) => (
+            <Link key={item.href} to={item.href}>
+              <div className="page-card rounded-lg px-4 py-3 flex items-center gap-3 hover:shadow-md transition-shadow group">
+                <div className="w-8 h-8 rounded-md bg-p-brand-50 grid place-items-center shrink-0">
+                  <item.icon className="w-4 h-4 text-p-brand-600" />
+                </div>
+                <span className="flex-1 text-[14px] font-medium text-p-ink">{item.title}</span>
+                <span className="text-[14px] font-semibold text-p-brand-700 tnum">{item.value}</span>
+                <ChevronRight className="w-4 h-4 text-p-sepia-400 group-hover:text-p-brand-600 transition-colors" />
               </div>
             </Link>
-            
-            <div className="flex items-center gap-3 mb-2">
-              <p className="text-white/90 text-sm font-medium">{t('dashboard.role')}</p>
-            </div>
-            <p className="text-white/90 text-sm mb-1">{t('dashboard.welcome')}</p>
-            <h1 className="text-3xl md:text-4xl font-bold text-white">
-              {user?.firstName || ''} {user?.lastName || ''}
-            </h1>
-          </Card>
-
-          {/* Overview Cards */}
-          <div>
-            <h2 className="text-lg font-semibold text-white mb-4 drop-shadow-sm">{t('dashboard.overview')}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-5 gap-4">
-              {overviewCards.map((card) => (
-                <Link key={card.title} to={card.href}>
-                  <Card className="p-5 hover:shadow-xl transition-all duration-300 bg-surface/95 backdrop-blur-sm cursor-pointer group">
-                    <div className="flex items-center gap-4">
-                      <div className="p-3 bg-gradient-to-br from-brand-50 to-brand-100 rounded-xl shadow-sm group-hover:scale-110 transition-transform">
-                        <card.icon className="w-6 h-6 text-brand-600" />
-                      </div>
-                      <div className="flex-1">
-                        <p className="text-2xl font-bold text-slate-900">{card.value}</p>
-                        <p className="text-sm text-slate-600 font-medium">{card.title}</p>
-                      </div>
-                      <ChevronRight className="w-5 h-5 text-slate-400 group-hover:text-brand-600 transition-colors" />
-                    </div>
-                  </Card>
-                </Link>
-              ))}
-            </div>
-          </div>
+          ))}
+        </div>
       </div>
     </div>
   );

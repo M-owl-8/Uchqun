@@ -1,4 +1,4 @@
-import { User, School, Baby, Users } from 'lucide-react';
+import { User, School, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const defaultAvatar = '/avatars/avatar1.jfif';
@@ -33,67 +33,62 @@ const ChildProfileHero = ({
   })();
 
   return (
-    <div className="relative overflow-hidden bg-surface rounded-[2rem] shadow-xl border border-slate-100 p-8 md:p-10">
-      <div className="absolute top-0 right-0 w-64 h-64 bg-brand-50 rounded-full -mr-32 -mt-32 opacity-50" />
-
-      <div className="relative flex flex-col md:flex-row items-center gap-8">
-        <div className="relative">
-          <div className="relative group cursor-pointer">
-            {imageLoading && (
-              <div className="absolute inset-0 w-32 h-32 md:w-40 md:h-40 rounded-3xl bg-slate-200 animate-pulse flex items-center justify-center">
-                <User className="w-12 h-12 md:w-16 md:h-16 text-slate-400" />
-              </div>
-            )}
-            <img
-              key={`${child.photo}-${photoTimestamp}`}
-              src={photoSrc}
-              alt={`${child.firstName} ${child.lastName}`}
-              className={`w-32 h-32 md:w-40 md:h-40 rounded-3xl object-cover shadow-2xl border-4 border-white transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
-              loading="eager"
-              decoding="async"
-              fetchPriority="high"
-              onLoad={onImageLoad}
-              onError={onImageError}
-            />
-            <div className="absolute inset-0 bg-black/40 rounded-3xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition">
-              <span className="text-white text-sm font-semibold">Rasmni o&apos;zgartirish</span>
-            </div>
-            <button
-              onClick={onAvatarClick}
-              className="absolute inset-0 opacity-0 cursor-pointer"
-            />
+    <div className="page-card page-corner rounded-xl p-5 flex items-center gap-5">
+      {/* Avatar */}
+      <div className="relative shrink-0">
+        <div className="relative group cursor-pointer">
+          {imageLoading && (
+            <div className="absolute inset-0 w-20 h-20 rounded-2xl bg-p-sepia-200 animate-pulse" />
+          )}
+          <img
+            key={`${child.photo}-${photoTimestamp}`}
+            src={photoSrc}
+            alt={`${child.firstName} ${child.lastName}`}
+            className={`w-20 h-20 rounded-2xl object-cover border-2 border-p-sepia-200 transition-opacity duration-300 ${imageLoading ? 'opacity-0' : 'opacity-100'}`}
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            onLoad={onImageLoad}
+            onError={onImageError}
+          />
+          <div className="absolute inset-0 bg-p-ink/30 rounded-2xl opacity-0 group-hover:opacity-100 flex items-center justify-center transition pointer-events-none">
+            <span className="text-white text-[11px] font-medium">O&apos;zgartirish</span>
           </div>
-          <div className="absolute -bottom-2 -right-2 bg-success-500 w-6 h-6 rounded-full border-4 border-white shadow-sm" title="Active" />
+          <button
+            onClick={onAvatarClick}
+            className="absolute inset-0 opacity-0 cursor-pointer"
+            aria-label="Rasmni o'zgartirish"
+          />
         </div>
+        <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-success-500 rounded-full border-2 border-p-surface" />
+      </div>
 
-        <div className="flex-1 text-center md:text-left space-y-4">
-          <div>
-            <div className="flex flex-wrap justify-center md:justify-start items-center gap-3 mb-2">
-              <h1 className="text-4xl font-black text-slate-900 leading-tight">
-                {child.firstName} {child.lastName}
-              </h1>
-              <span className="px-4 py-1 bg-brand-100 text-brand-700 rounded-full text-xs font-bold uppercase tracking-wider">
-                {t(`child.gender.${child.gender?.toLowerCase()}`) || child.gender}
-              </span>
-            </div>
-            <p className="text-lg text-slate-700 font-medium flex items-center justify-center md:justify-start gap-2">
-              <Baby className="w-5 h-5 text-brand-600" />
-              {t('child.ageYears', { count: age })}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap justify-center md:justify-start gap-3">
-            <div className="flex items-center gap-2 px-4 py-2 bg-surface/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-              <School className="w-4 h-4 text-brand-600" />
-              <span className="text-sm font-bold text-slate-800">{child.childSchool?.name || ''}</span>
-            </div>
-            {parentGroupName && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-surface/90 backdrop-blur-sm rounded-xl border border-white/20 shadow-lg">
-                <Users className="w-4 h-4 text-brand-600" />
-                <span className="text-sm font-bold text-slate-800">{parentGroupName}</span>
-              </div>
-            )}
-          </div>
+      {/* Info */}
+      <div className="flex-1 min-w-0">
+        <div className="flex flex-wrap items-baseline gap-2 mb-1">
+          <h2 className="font-serif text-[20px] font-semibold text-p-ink leading-tight truncate">
+            {child.firstName} {child.lastName}
+          </h2>
+          <span className="shrink-0 px-2 py-0.5 rounded-full bg-p-brand-100 text-p-brand-700 text-[11px] font-medium">
+            {t(`child.gender.${child.gender?.toLowerCase()}`) || child.gender}
+          </span>
+        </div>
+        <p className="text-[13px] text-p-sepia-500 mb-2">
+          {t('child.ageYears', { count: age })}
+        </p>
+        <div className="flex flex-wrap gap-2">
+          {child.childSchool?.name && (
+            <span className="inline-flex items-center gap-1 text-[12px] text-p-sepia-600 bg-p-sepia-100 rounded-md px-2 py-0.5">
+              <School className="w-3 h-3" />
+              {child.childSchool.name}
+            </span>
+          )}
+          {parentGroupName && (
+            <span className="inline-flex items-center gap-1 text-[12px] text-p-sepia-600 bg-p-sepia-100 rounded-md px-2 py-0.5">
+              <Users className="w-3 h-3" />
+              {parentGroupName}
+            </span>
+          )}
         </div>
       </div>
     </div>

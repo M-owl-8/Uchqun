@@ -82,3 +82,54 @@ html {
 .page-fade-in {
   animation: page-fade-in 0.2s ease-out both;
 }
+
+/* ── Parent portal design system ─────────────────────────────────────── */
+.font-serif { font-family: 'Source Serif 4', Georgia, serif; }
+
+/* Stitched divider — Parent signature */
+.stitch {
+  --c: #C9BBA0;
+  background-image: repeating-linear-gradient(90deg, var(--c) 0 8px, transparent 8px 16px);
+  height: 1px;
+}
+.stitch-v {
+  --c: #C9BBA0;
+  background-image: repeating-linear-gradient(0deg, var(--c) 0 8px, transparent 8px 16px);
+  width: 1px;
+}
+
+/* Book-page card */
+.page-card {
+  background: #FDFAF3;
+  border: 1px solid #E3D9C2;
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.6) inset,
+    0 1px 3px rgba(30,34,48,.06),
+    0 6px 14px rgba(30,34,48,.04);
+}
+
+/* Corner-fold metaphor (must be position:relative on parent) */
+.page-corner {
+  position: relative;
+  overflow: hidden;
+}
+.page-corner::after {
+  content: "";
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 24px; height: 24px;
+  background: linear-gradient(135deg, transparent 50%, #F1EBDD 50%);
+  border-top: 1px solid #E3D9C2;
+  border-left: 1px solid #E3D9C2;
+  border-bottom-right-radius: inherit;
+}
+
+/* Tab bar subtle top shadow */
+.tabbar-shadow { box-shadow: 0 -8px 24px rgba(30,34,48,.06); }
+
+/* Focus ring for parent surface */
+.parent-focus:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #FDFAF3, 0 0 0 4px rgba(45,83,119,.30);
+  border-color: #2D5377;
+}

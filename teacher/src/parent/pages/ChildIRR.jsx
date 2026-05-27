@@ -89,20 +89,20 @@ const ChildIRR = () => {
   if (pageLoading) {
     return (
       <div data-testid="irr-loading" className="flex justify-center items-center h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-600" />
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-p-brand-600" />
       </div>
     );
   }
 
   if (notFound) {
     return (
-      <div data-testid="irr-not-found" className="max-w-xl mx-auto py-20 text-center">
-        <div className="bg-surface rounded-[2rem] p-12 shadow-sm border border-slate-100">
-          <TrendingUp className="w-16 h-16 text-brand-300 mx-auto mb-6" />
-          <h2 className="text-xl font-bold text-slate-800 mb-3">
+      <div data-testid="irr-not-found" className="py-16 text-center">
+        <div className="page-card rounded-xl p-10">
+          <TrendingUp className="w-12 h-12 text-p-brand-300 mx-auto mb-5" />
+          <h2 className="font-serif text-[18px] font-semibold text-p-ink mb-2">
             {t('irr.notFoundTitle', { defaultValue: 'Ривожланиш режаси ҳали тузилмаган' })}
           </h2>
-          <p className="text-slate-500 font-medium leading-relaxed">
+          <p className="text-[14px] text-p-sepia-500 leading-relaxed">
             {t('irr.notFoundDesc', { defaultValue: 'Ўқитувчи режани тузгач, сиз бу ерда фарзандингизнинг ривожланишини кузата оласиз.' })}
           </p>
         </div>
@@ -112,15 +112,15 @@ const ChildIRR = () => {
 
   if (loadError) {
     return (
-      <div data-testid="irr-load-error" className="max-w-xl mx-auto py-20 text-center">
-        <div className="bg-surface rounded-[2rem] p-12 shadow-sm border border-slate-100">
-          <p className="text-slate-600 font-medium mb-6">
+      <div data-testid="irr-load-error" className="py-16 text-center">
+        <div className="page-card rounded-xl p-10">
+          <p className="text-[14px] text-p-sepia-600 mb-5">
             {t('irr.loadError', { defaultValue: 'Маълумот юкланмади. Яна уриниб кўринг.' })}
           </p>
           {selectedChildId && (
             <button
               onClick={() => load(selectedChildId)}
-              className="px-6 py-2.5 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-colors"
+              className="px-5 py-2 rounded-lg bg-p-brand-600 text-white text-[14px] font-medium hover:bg-p-brand-700 transition-colors"
             >
               {t('irr.retry', { defaultValue: 'Яна уриниш' })}
             </button>
@@ -136,31 +136,31 @@ const ChildIRR = () => {
     : 0;
 
   return (
-    <div data-testid="child-irr-page" className="max-w-3xl mx-auto space-y-8 animate-in fade-in duration-500">
+    <div data-testid="child-irr-page" className="space-y-5 animate-in fade-in duration-300">
       {/* Header card */}
-      <div className="bg-gradient-to-r from-brand-600 to-indigo-600 rounded-[2rem] p-8 text-white shadow-lg">
-        <h1 className="text-2xl font-black mb-1">
-          {t('irr.title', { defaultValue: 'Ривожланиш режаси (ИРР)' })}
-        </h1>
-        <p className="text-brand-100 font-medium">
+      <div className="bg-p-brand-700 rounded-xl p-6 text-white">
+        <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">
           {t('irr.subtitle', { defaultValue: 'Фарзандингизнинг ривожланиш йўли' })}
         </p>
+        <h1 className="font-serif text-[22px] font-semibold">
+          {t('irr.title', { defaultValue: 'Ривожланиш режаси (ИРР)' })}
+        </h1>
         {latestSession && (
-          <div className="mt-6">
+          <div className="mt-5">
             <div className="flex items-end gap-2 mb-2">
-              <span className="text-4xl font-black">{latestSession.totalScore}</span>
-              <span className="text-brand-200 text-lg mb-1">/ {latestSession.maxPossibleScore || MAX_SCORE}</span>
-              <span className="ml-2 text-brand-100 text-sm mb-1">
+              <span className="text-[36px] font-bold tnum">{latestSession.totalScore}</span>
+              <span className="text-p-brand-200 text-[15px] mb-1">/ {latestSession.maxPossibleScore || MAX_SCORE}</span>
+              <span className="ml-1 text-p-brand-100 text-[12px] mb-1">
                 {t('irr.progressLabel', { defaultValue: 'кўникмалар кўрсаткичи' })}
               </span>
             </div>
-            <div className="w-full bg-white/20 rounded-full h-3">
+            <div className="w-full bg-white/20 rounded-full h-2">
               <div
-                className="bg-white h-3 rounded-full transition-all duration-700"
+                className="bg-white h-2 rounded-full transition-all duration-700"
                 style={{ width: `${progressPct}%` }}
               />
             </div>
-            <p className="text-brand-100 text-xs mt-2">
+            <p className="text-p-brand-200 text-[11px] mt-1.5">
               {t('irr.scoreNote', { defaultValue: `Максимал кўрсаткич: ${MAX_SCORE} балл. Балл ошиши — ривожланишнинг белгиси.` })}
             </p>
           </div>
@@ -169,9 +169,9 @@ const ChildIRR = () => {
 
       {/* Progression section */}
       {sessions.length > 0 && (
-        <section data-testid="progression-section" className="bg-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
-          <h2 className="text-lg font-bold text-slate-900 mb-6 flex items-center gap-2">
-            <TrendingUp className="w-5 h-5 text-brand-600" />
+        <section data-testid="progression-section" className="page-card rounded-xl p-5">
+          <h2 className="font-serif text-[16px] font-semibold text-p-ink mb-4 flex items-center gap-2">
+            <TrendingUp className="w-4 h-4 text-p-brand-600" />
             {t('irr.progressionTitle', { defaultValue: 'Ривожланиш динамикаси' })}
           </h2>
           <div className="space-y-5">
@@ -214,7 +214,7 @@ const ChildIRR = () => {
 
       {/* Long-term goals */}
       {goals?.longTermGoals?.length > 0 && (
-        <section data-testid="ltg-section" className="bg-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
+        <section data-testid="ltg-section" className="page-card rounded-xl p-5">
           <h2 className="text-lg font-bold text-slate-900 mb-6">
             {t('irr.ltgTitle', { defaultValue: 'Узоқ муддатли мақсадлар' })}
           </h2>
@@ -223,7 +223,7 @@ const ChildIRR = () => {
               <div
                 key={ltg.id}
                 data-testid={`ltg-row-${ltg.id}`}
-                className="p-4 bg-brand-50 rounded-xl border border-brand-100"
+                className="p-4 bg-p-brand-50 rounded-xl border border-p-brand-100"
               >
                 <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-1">
                   {skillLabel(ltg.skillArea, i18n.language)}
@@ -249,7 +249,7 @@ const ChildIRR = () => {
               <div
                 key={period.id}
                 data-testid={`period-card-${period.id}`}
-                className="bg-surface rounded-[2rem] p-6 shadow-sm border border-slate-100"
+                className="page-card rounded-xl p-5"
               >
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-bold text-slate-800">{period.periodLabel}</h3>
@@ -272,7 +272,7 @@ const ChildIRR = () => {
                       <div
                         key={stg.id}
                         data-testid={`stg-row-${stg.id}`}
-                        className="border-l-4 border-brand-200 pl-4"
+                        className="border-l-2 border-p-brand-200 pl-4"
                       >
                         <p className="text-sm font-medium text-slate-800 mb-2">{stg.stgText}</p>
                         {stg.review && (

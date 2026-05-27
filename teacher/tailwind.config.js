@@ -15,6 +15,41 @@ export default {
         paper: '#FAFAF8',
         surface: '#FFFFFE',
 
+        // ── Parent portal token families (p-prefix — coexist with teacher lavender) ──
+        'p-paper':   '#F7F2E8',
+        'p-surface': '#FDFAF3',
+        'p-ink':     '#1E2230',
+        'p-brand': {
+          50:  '#EEF2F6',
+          100: '#D9E2EB',
+          200: '#B5C5D7',
+          300: '#8AA4BD',
+          400: '#5F81A2',
+          500: '#406589',
+          600: '#2D5377',
+          700: '#234363',
+          800: '#1A324C',
+          900: '#11243A',
+        },
+        'p-sepia': {
+          50:  '#FAF6EE',
+          100: '#F1EBDD',
+          200: '#E3D9C2',
+          300: '#C9BBA0',
+          400: '#9F907A',
+          500: '#766A58',
+          600: '#5A5142',
+          700: '#3F3930',
+          800: '#2A2620',
+          900: '#1B1813',
+        },
+        'p-honey': {
+          100: '#FAEFD5',
+          300: '#EAC976',
+          500: '#C99A3F',
+          700: '#8E6924',
+        },
+
         // Brand: muted lavender (10-stop scale, 600 = primary)
         brand: {
           50:  '#F6F3FB',
