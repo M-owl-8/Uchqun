@@ -10,9 +10,10 @@
 
 ### SequelizeMeta summary
 
-83 migrations applied on Railway. Last applied: `20260526000011-add-schoolid-to-assessment-scores.js`
+82 migrations applied on Railway. Last applied: `20260526000011-add-schoolid-to-assessment-scores.js`  
+*(Note: original audit said "83" — counting error corrected post-promote. Same 3 deferred files, same conclusions.)*
 
-### Local migration files: 86 total
+### Local migration files: 85 total
 
 3 local files NOT in SequelizeMeta (all three are the deliberately deferred PL-021 migrations):
 
@@ -22,7 +23,7 @@
 | `20260527000002-update-school-ratings-cp020.js` | Adds `indicators` JSONB + tightens `comment` NOT NULL in `school_ratings` (CP-020) |
 | `20260527000003-add-routing-to-government-messages.js` | Adds `recipientLevel` ENUM + `escalatedFromId` FK to `government_messages` (CP-022) |
 
-No other gaps. All 83 SequelizeMeta entries match local migration files exactly.
+No other gaps. All 82 SequelizeMeta entries match local migration files exactly.
 
 ### Live schema drift
 

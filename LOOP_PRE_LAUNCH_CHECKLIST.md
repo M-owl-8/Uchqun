@@ -4,7 +4,7 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-27 (Database S0 — UzCloud portability flags PL-UZ-01→05 added)
+**Last updated:** 2026-05-27 (Database PROMOTE — PL-021 resolved; UzCloud portability flags PL-UZ-01→05 added)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
 
 ---
@@ -71,7 +71,7 @@ These items are documented in `audits/teacher-parent/IRR-DECISIONS.md`. The ИР
 
 | ID | Item | Status | Notes |
 |---|---|---|---|
-| PL-021 | **Railway migration promotion — CP-020 + CP-022 migrations** — `20260527000001-create-government-school-rating.js`, `20260527000002-update-school-ratings-cp020.js`, `20260527000003-add-routing-to-government-messages.js` are proven locally. Railway auto-runs `npm run start:migrate` on deploy. Promotion = next push to main or a deliberate `railway run npm run migrate`. | ⬜ Not started | Not a code blocker — migrations are correct and tested. A deliberate deploy step. No `FORCE_SYNC=true`. |
+| PL-021 | **Railway migration promotion — CP-020 + CP-022 migrations** — `20260527000001-create-government-school-rating.js`, `20260527000002-update-school-ratings-cp020.js`, `20260527000003-add-routing-to-government-messages.js`. | ✅ Promoted 2026-05-27 | Promoted via push to main (SHA 832b36f). BEFORE: 82 meta entries, `government_school_ratings` absent, `school_ratings.indicators` absent, comment nullable. AFTER: 85 entries, table created, indicators present, comment NOT NULL, null-comment row backfilled to '—', 2 rows survived. See `audits/database/01-promote.md`. |
 | PL-022 | **Legacy `POST /government/messages` route deprecation** — the old flat parent → government message route (no recipientLevel) should be restricted or removed before beta to prevent clients sending malformed payloads. CP-022 wired `parentSendMessage` on the parent route. Admin/teacher/reception send paths preserved. The government route itself may still exist — confirm and gate before beta. | ⬜ Not started | Review `backend/routes/governmentRoutes.js` before beta. |
 | PL-023 | **ИРР terminology translations (PL-009 extension)** — all uz/ru strings for ИРР domain (criteria names, level descriptions, journal item labels, goal skill areas, quarterly checklist labels) are AI-generated / UNVERIFIED. Must be included in the PL-009-VERIFY professional review scope before beta. ~300+ additional strings on top of the existing 216 backend error codes. | ⬜ Not started | Extend PL-009-REVIEW.md scope to cover ИРР terminology. Flag P1 (clinical/scoring text) for priority review. |
 
