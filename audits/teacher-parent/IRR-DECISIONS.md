@@ -112,6 +112,28 @@ JSONB fields:
 
 ---
 
+## Quarterly Monitoring: Full Structured 55-Item Checklist (CP-024 Closeout)
+
+**Decision (CP-024 closeout, 2026-05-27):**
+The quarterly monitoring form in `admin/src/pages/ManagerIRR.jsx` (Tab 2) is now the **FULL structured 55-item checklist**, data-driven from `shared/config/quarterlyJournalItems.js`. This supersedes the free-text-per-section stopgap shipped in the original CP-024 build (commit 79cc9bf).
+
+**JSONB shape:** 5 columns in `QuarterlyMonitoringEntry`, each a `code → boolean` map:
+- `infoSystemData` — 2 items (`info_tizimga_kiritildi`, `info_face_id`)
+- `parentWorkData` — 14 items (OQ-10 provisional — partner to confirm full list)
+- `documentationData` — 9 items
+- `careQualityData` — 17 items
+- `conditionsData` — 10 items
+
+**OQ-10 note:** parentWork section count (14 items visible in source PDF) remains partner-pending. Config contains 14 items flagged with the OQ-10 comment. Render whatever the config has; update config when partner confirms.
+
+**Frontend:** renders checkboxes from config keys — NOT hardcoded, NOT re-transcribed. Reuses config `textUz`/`textRu`/`textEn` (PL-009 — AI-generated, pending professional review).
+
+**Backend:** POST sends `{ infoSystemData: { code: bool, … }, … }` — same shape as daily/weekly journal JSONB. Backend stores and returns as-is; no validation of individual keys (content is non-exhaustive, partner may amend).
+
+Do NOT replace the structured checklist with free-text or replace config-driven rendering with hardcoded JSX.
+
+---
+
 ## additionalInfo Field — Mandatory for Activation (Build Record)
 
 **Decision (Phase 3b, 2026-05-26):**

@@ -20,6 +20,18 @@ vi.mock('@shared/context/ToastContext', () => ({
   useToast: () => ({ error: mockToastError, success: mockToastSuccess }),
 }));
 
+// Minimal mock — real data not needed; tests verify structure, not content.
+vi.mock('@shared/config/quarterlyJournalItems', () => ({
+  QUARTERLY_JOURNAL_ITEMS: {
+    infoSystem:    [{ code: 'info_a', textUz: 'Ахборот А' }, { code: 'info_b', textUz: 'Ахборот Б' }],
+    parentWork:    [{ code: 'par_a',  textUz: 'Ота-она А' }],
+    documentation: [{ code: 'doc_a',  textUz: 'Ҳужжат А'  }],
+    careQuality:   [{ code: 'care_a', textUz: 'Парвариш А' }],
+    conditions:    [{ code: 'shar_a', textUz: 'Шароит А'   }],
+  },
+  QUARTERLY_ITEM_COUNT: 6,
+}));
+
 vi.mock('../../services/api', () => ({
   default: { get: vi.fn(), post: vi.fn() },
 }));
@@ -164,15 +176,54 @@ describe('ManagerIRR', () => {
     expect(screen.getByTestId('quarterly-tab')).toBeTruthy();
     expect(screen.getByTestId('quarterly-form')).toBeTruthy();
 
+    // Structured checklist sections are rendered
+    expect(screen.getByTestId('section-infoSystemData')).toBeTruthy();
+    expect(screen.getByTestId('section-parentWorkData')).toBeTruthy();
+    // infoSystem has 2 mock items; parentWork has 1
+    expect(screen.getAllByTestId(/^item-info_/)).toHaveLength(2);
+    expect(screen.getByTestId('item-par_a')).toBeTruthy();
+
+    // Toggle one checkbox (info_a → true)
+    fireEvent.click(screen.getByTestId('item-info_a'));
+
     fireEvent.change(screen.getByTestId('quarter-start'), { target: { value: '2026-01-01' } });
     fireEvent.change(screen.getByTestId('quarter-end'),   { target: { value: '2026-03-31' } });
     fireEvent.click(screen.getByTestId('quarterly-submit'));
 
     await waitFor(() => expect(api.post).toHaveBeenCalledWith(
       '/admin/irr/quarterly-entries',
-      expect.objectContaining({ quarterStart: '2026-01-01', quarterEnd: '2026-03-31' })
+      expect.objectContaining({
+        quarterStart: '2026-01-01',
+        quarterEnd:   '2026-03-31',
+        // code→boolean shape: checked item is true, unchecked is false
+        infoSystemData: expect.objectContaining({ info_a: true, info_b: false }),
+        parentWorkData: expect.objectContaining({ par_a: false }),
+      })
     ));
     expect(mockToastSuccess).toHaveBeenCalled();
+  });
+
+  it('quarterly form shows duplicate-quarter error toast on 409', async () => {
+    const api = (await import('../../services/api')).default;
+    api.get.mockImplementation((url) => {
+      if (url === '/teacher/children')           return Promise.resolve({ data: { data: [] } });
+      if (url.includes('/irr/quarterly-entries')) return Promise.resolve({ data: { data: [] } });
+      return Promise.reject(new Error('Unexpected GET: ' + url));
+    });
+    api.post.mockRejectedValue({ response: { status: 409 } });
+
+    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
+    render(React.createElement(ManagerIRR));
+
+    await waitFor(() => expect(screen.getByTestId('manager-irr-page')).toBeTruthy());
+    fireEvent.click(screen.getByTestId('tab-quarterly'));
+
+    fireEvent.change(screen.getByTestId('quarter-start'), { target: { value: '2026-01-01' } });
+    fireEvent.change(screen.getByTestId('quarter-end'),   { target: { value: '2026-03-31' } });
+    fireEvent.click(screen.getByTestId('quarterly-submit'));
+
+    await waitFor(() => expect(mockToastError).toHaveBeenCalled());
+    expect(mockToastSuccess).not.toHaveBeenCalled();
   });
 
   it('quarterly tab lists existing entries from GET /admin/irr/quarterly-entries', async () => {

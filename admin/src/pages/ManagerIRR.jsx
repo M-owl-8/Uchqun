@@ -3,25 +3,31 @@ import { useTranslation } from 'react-i18next';
 import { ChevronDown, ChevronRight, CheckCircle2, PenLine, AlertCircle, PlusCircle, Trash2 } from 'lucide-react';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
+import { QUARTERLY_JOURNAL_ITEMS } from '@shared/config/quarterlyJournalItems';
 
-// ── Quarterly section labels ──────────────────────────────────────────────────
+// ── Quarterly section config ──────────────────────────────────────────────────
+// formKey  → JSONB column name sent to backend
+// configKey → key in QUARTERLY_JOURNAL_ITEMS
 
-const QUARTERLY_SECTIONS = [
-  { key: 'infoSystemData',    label: 'Ахборот тизими' },
-  { key: 'parentWorkData',    label: 'Ота-оналар билан иш' },
-  { key: 'documentationData', label: 'Ҳужжатчилик' },
-  { key: 'careQualityData',   label: 'Парвариш сифати' },
-  { key: 'conditionsData',    label: 'Шарт-шароит' },
+const SECTION_MAP = [
+  { formKey: 'infoSystemData',    configKey: 'infoSystem',    label: 'Ахборот тизими' },
+  { formKey: 'parentWorkData',    configKey: 'parentWork',    label: 'Ота-оналар билан иш' },
+  { formKey: 'documentationData', configKey: 'documentation', label: 'Ҳужжатчилик' },
+  { formKey: 'careQualityData',   configKey: 'careQuality',   label: 'Парвариш сифати' },
+  { formKey: 'conditionsData',    configKey: 'conditions',    label: 'Шарт-шароит' },
 ];
+
+const buildEmptySectionChecks = (items) =>
+  items.reduce((acc, item) => ({ ...acc, [item.code]: false }), {});
 
 const EMPTY_QUARTERLY = {
   quarterStart: '',
   quarterEnd: '',
-  infoSystemData:    { notes: '' },
-  parentWorkData:    { notes: '' },
-  documentationData: { notes: '' },
-  careQualityData:   { notes: '' },
-  conditionsData:    { notes: '' },
+  infoSystemData:    buildEmptySectionChecks(QUARTERLY_JOURNAL_ITEMS.infoSystem),
+  parentWorkData:    buildEmptySectionChecks(QUARTERLY_JOURNAL_ITEMS.parentWork),
+  documentationData: buildEmptySectionChecks(QUARTERLY_JOURNAL_ITEMS.documentation),
+  careQualityData:   buildEmptySectionChecks(QUARTERLY_JOURNAL_ITEMS.careQuality),
+  conditionsData:    buildEmptySectionChecks(QUARTERLY_JOURNAL_ITEMS.conditions),
   departures: [],
   notes: '',
 };
@@ -202,8 +208,11 @@ const QuarterlyTab = () => {
 
   useEffect(() => { fetchEntries(); }, [fetchEntries]);
 
-  const setSectionNotes = (sectionKey, value) => {
-    setForm((f) => ({ ...f, [sectionKey]: { notes: value } }));
+  const toggleCheck = (sectionKey, code) => {
+    setForm((f) => ({
+      ...f,
+      [sectionKey]: { ...f[sectionKey], [code]: !f[sectionKey][code] },
+    }));
   };
 
   const addDeparture = () => {
@@ -290,18 +299,24 @@ const QuarterlyTab = () => {
           </div>
         </div>
 
-        {/* 5 JSONB sections */}
-        {QUARTERLY_SECTIONS.map(({ key, label }) => (
-          <div key={key}>
-            <label className="block text-sm font-semibold text-warm-800 mb-1">{label}</label>
-            <textarea
-              data-testid={`section-${key}`}
-              value={form[key].notes}
-              onChange={(e) => setSectionNotes(key, e.target.value)}
-              rows={3}
-              placeholder={t('managerIrr.sectionPlaceholder', { defaultValue: 'Қисқача хулоса…' })}
-              className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-y"
-            />
+        {/* 5 JSONB sections — structured 52-item checklist (OQ-10: parentWork count provisional) */}
+        {SECTION_MAP.map(({ formKey, configKey, label }) => (
+          <div key={formKey}>
+            <h4 className="text-sm font-semibold text-warm-800 mb-2">{label}</h4>
+            <div data-testid={`section-${formKey}`} className="space-y-1.5 bg-warm-50 rounded-lg p-3">
+              {QUARTERLY_JOURNAL_ITEMS[configKey].map((item) => (
+                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    data-testid={`item-${item.code}`}
+                    checked={!!form[formKey][item.code]}
+                    onChange={() => toggleCheck(formKey, item.code)}
+                    className="mt-0.5 h-4 w-4 rounded border-warm-300 text-brand-600 focus:ring-brand-500"
+                  />
+                  <span className="text-sm text-warm-800">{item.textUz}</span>
+                </label>
+              ))}
+            </div>
           </div>
         ))}
 
