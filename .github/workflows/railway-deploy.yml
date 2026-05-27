@@ -10,8 +10,8 @@ env:
   VITE_API_URL: https://uchqun-production-b484.up.railway.app/api
 
 jobs:
-  # Backend: Railway GitHub integration handles build via root railway.toml + Dockerfile.backend
-  # CI railway up re-uploads backend/ as a belt-and-suspenders in case GH integration misfires
+  # Backend: railway up runs from REPO ROOT so Railway's configured
+  # Root Directory ("backend") points correctly into the uploaded content.
   deploy-backend:
     runs-on: ubuntu-latest
     steps:
@@ -26,12 +26,13 @@ jobs:
             exit 0
           fi
           npm install -g @railway/cli
-          cd backend
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
-  # Frontends: build in CI (../shared is accessible here), then upload pre-built dist/
-  # railway up runs from WITHIN each app dir so .railwayignore is respected and dist/ is included
+  # Frontends: build in CI (../shared is accessible in full checkout),
+  # then deploy from REPO ROOT so dist/ is in the upload context.
+  # Root .railwayignore excludes node_modules but NOT dist/,
+  # so pre-built dist/ is included in the Railway upload.
   deploy-frontends:
     runs-on: ubuntu-latest
     strategy:
@@ -56,14 +57,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Build and Deploy ${{ matrix.label }}
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          VITE_API_URL: ${{ env.VITE_API_URL }}
+      - name: Build ${{ matrix.label }}
         run: |
           cd ${{ matrix.app }}
           npm ci
           npm run build
+        env:
+          VITE_API_URL: ${{ env.VITE_API_URL }}
+
+      - name: Deploy ${{ matrix.label }} to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+        run: |
           if [ -z "$RAILWAY_TOKEN" ]; then
             echo "RAILWAY_TOKEN not set — skipping deployment."
             exit 0

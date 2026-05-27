@@ -1,0 +1,13 @@
+node_modules/
+*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.git/
+coverage/
+.nyc_output/
+*.log
+uploads/
+backend/uploads/
