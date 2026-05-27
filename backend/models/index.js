@@ -128,7 +128,7 @@ District.belongsTo(Region, { foreignKey: 'regionId', as: 'region' });
 
 // Region ↔ School (constraints: false — regionId is nullable during backfill period)
 Region.hasMany(School, { foreignKey: 'regionId', as: 'schools', constraints: false });
-School.belongsTo(Region, { foreignKey: 'regionId', as: 'region', constraints: false });
+School.belongsTo(Region, { foreignKey: 'regionId', as: 'regionRef', constraints: false });
 
 // SchoolCategory ↔ School (constraints: false — categoryId is nullable; set by government)
 SchoolCategory.hasMany(School, { foreignKey: 'categoryId', as: 'schools', constraints: false });
@@ -238,7 +238,7 @@ GovernmentStats.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(GovernmentStats, { foreignKey: 'generatedBy', as: 'generatedStats' });
 GovernmentStats.belongsTo(User, { foreignKey: 'generatedBy', as: 'generator' });
 Region.hasMany(GovernmentStats, { foreignKey: 'regionId', as: 'regionStats', constraints: false });
-GovernmentStats.belongsTo(Region, { foreignKey: 'regionId', as: 'region', constraints: false });
+GovernmentStats.belongsTo(Region, { foreignKey: 'regionId', as: 'regionRef', constraints: false });
 
 // === Activities & Media ===
 

@@ -232,7 +232,7 @@ export const createAssessmentSession = async (req, res) => {
     if (!result) {
       return res.status(404).json({ success: false, error: { code: 'IRR_NOT_FOUND' } });
     }
-    const { irr, child } = result;
+    const { irr } = result;
 
     const { sessionType, completedAt, isHearingImpaired, scores, notes } = req.body;
     if (!sessionType || !VALID_SESSION_TYPES.includes(sessionType)) {

@@ -17,7 +17,7 @@ const localStorageMock = {
   removeItem: (k) => { delete storedItems[k]; },
 };
 
-Object.defineProperty(global, 'localStorage', { value: localStorageMock, writable: true });
+Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true });
 
 import TranslationNotice from '../components/TranslationNotice';
 

@@ -90,7 +90,7 @@ describe('MessageModal — CP-022 level selector', () => {
   });
 
   it('send POSTs with recipientLevel=region when region is selected', async () => {
-    const { api, onSent } = await renderMessageModal();
+    const { api } = await renderMessageModal();
     api.post.mockResolvedValue({ data: {} });
     api.get.mockResolvedValue({ data: { data: [] } });
 

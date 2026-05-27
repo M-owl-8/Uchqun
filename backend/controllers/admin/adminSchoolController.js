@@ -13,7 +13,7 @@ export const getAdminSchool = async (req, res) => {
   try {
     const school = await School.findByPk(req.user.schoolId, {
       include: [
-        { model: Region, as: 'region', attributes: ['id', 'name', 'code'], required: false },
+        { model: Region, as: 'regionRef', attributes: ['id', 'name', 'code'], required: false },
         { model: SchoolCategory, as: 'category', attributes: ['id', 'name', 'code'], required: false },
       ],
     });
