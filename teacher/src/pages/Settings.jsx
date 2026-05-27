@@ -65,7 +65,10 @@ const Settings = () => {
       setLoadingMessages(true);
       const response = await api.get('/teacher/messages');
       setMyMessages(response.data.data || []);
-    } catch (error) {
+    } catch {
+      // Secondary inbox widget — failure silently resets to empty.
+      // The "My Messages" button hides (myMessages.length === 0) rather than showing an error.
+      // Teacher can still send new messages. Intentional UX: non-critical widget, not the swallow-bug class.
       setMyMessages([]);
     } finally {
       setLoadingMessages(false);

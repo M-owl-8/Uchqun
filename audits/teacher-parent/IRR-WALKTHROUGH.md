@@ -396,7 +396,6 @@ POST /admin/irr/quarterly-entries
 Body: {
   "quarterStart": "2026-01-01",
   "quarterEnd":   "2026-03-31",
-  "childId":      "{CHILD_ID}",
   "infoSystemData": {
     "info_tizimga_kiritildi": true,
     "info_face_id":           false
@@ -566,12 +565,13 @@ The following issues were identified during the walkthrough script review. None 
 
 `getAssessmentProgression` and `getGoals` (parent) both call `IRR.findOne({ where: { childId, status: 'active' } })`. This means if the IRR is archived, both return `404 IRR_NOT_FOUND` — correct behavior. No issue.
 
-### F-004 — Quarterly entry POST: no `childId` required by route — schoolId isolation only
+### F-004 — ~~Quarterly entry POST: cross-school childId~~ RETRACTED — FALSE POSITIVE
 
-`POST /admin/irr/quarterly-entries` uses `req.user.schoolId` to scope the entry but does not verify the `childId` in the body belongs to that school. The admin controller should call `Child.findOne({ where: { id: childId, schoolId } })` before creating.
+**Retracted in consolidation follow-up (15-consolidation-followup.md).**
 
-**Impact:** Medium — an admin could create a quarterly entry referencing a cross-school child's ID. The entry would be visible in `GET /admin/irr/quarterly-entries?childId=X` which is also school-scoped, so read-back is contained, but the write-time isolation gap exists.  
-**Recommendation:** Add `childId` school-scope validation to `createQuarterlyEntry` before next admin handoff.
+`QuarterlyMonitoringEntry` has NO `childId` column — it is FACILITY-LEVEL (one per school per quarter, per OQ-3/OQ-6). `departures` rows are `{name, admitDate, departDate, reason}` plain text; no UUID child references exist. `schoolId` is always stamped from `req.user.schoolId`, never from the request body.
+
+**Isolation is correct.** Confirmed by `irr.quarterlyIsolation.realDB.test.js` (3/3 ✅). The `childId` field in the example body above was a documentation error and has been removed.
 
 ---
 

@@ -19,7 +19,7 @@ const getDraftKey = () => {
  * Composer: subject + body + moment chips + photo gallery
  * Auto-saves to localStorage every 5s
  */
-export function ParentJournalComposer({ children = [], onSend }) {
+export function ParentJournalComposer({ childList = [], onSend }) {
   const today  = new Date().toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
   const draftKey = getDraftKey();
 
@@ -56,7 +56,7 @@ export function ParentJournalComposer({ children = [], onSend }) {
       setSelectedIds([]);
       setSelectAll(false);
     } else {
-      setSelectedIds(children.map(c => c.id));
+      setSelectedIds(childList.map(c => c.id));
       setSelectAll(true);
     }
   };
@@ -99,7 +99,7 @@ export function ParentJournalComposer({ children = [], onSend }) {
             Hammasiga jo&apos;natish
           </label>
           <div className="mt-3 space-y-1.5">
-            {children.map(child => {
+            {childList.map(child => {
               const checked = selectedIds.includes(child.id);
               return (
                 <label

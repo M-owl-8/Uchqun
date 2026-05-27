@@ -182,7 +182,7 @@ const DailyReflection = () => {
           </div>
           <div style={{ minHeight: 500 }}>
             <ParentJournalComposer
-              children={children}
+              childList={children}
               onSend={handleJournalSend}
             />
           </div>

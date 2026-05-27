@@ -44,6 +44,11 @@ export default defineConfig(({ mode }) => {
       globals: true,
       environment: 'jsdom',
       setupFiles: './src/setupTests.js',
+      // Cap workers to prevent resource-exhaustion timeouts in parallel suite runs.
+      // Without this cap the full 13-file suite had 12 flaky timeouts on resource-constrained hosts.
+      // Tradeoff: ~2× slower full run; deterministic green baseline is worth it.
+      pool: 'threads',
+      poolOptions: { threads: { maxThreads: 2, minThreads: 1 } },
     },
   };
 });
