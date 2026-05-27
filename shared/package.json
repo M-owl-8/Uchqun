@@ -1,0 +1,7 @@
+{
+  "name": "uchqun-shared",
+  "version": "1.0.0",
+  "description": "Shared configuration files (read by backend + all frontends)",
+  "type": "module",
+  "private": true
+}

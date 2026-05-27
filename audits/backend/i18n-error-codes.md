@@ -425,6 +425,27 @@ Introduced: Teacher S5 Phase 2 (2026-05-26)
 
 ---
 
+## School Rating — CP-020 (`controllers/parent/parentSchoolRatingController.js`, `controllers/government/governmentSchoolRatingController.js`)
+
+Introduced: CP-020 Backend (2026-05-27)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `RATING_FORBIDDEN` | 403 | Caller role is not `parent` (defense-in-depth; route middleware is `requireParent`) | "Only parents can submit school ratings." |
+| `RATING_COMMENT_REQUIRED` | 400 | `comment` field is missing, null, or whitespace-only | "Please write a comment before submitting." |
+| `RATING_SCHOOL_ID_REQUIRED` | 400 | `schoolId` field is missing or null | "Please select a school." |
+| `RATING_INDICATORS_REQUIRED` | 400 | `indicators` object is absent or not an object | "Please rate all 5 indicators." |
+| `RATING_INDICATOR_INVALID` | 400 | One or more indicator values are missing or outside 1–5 integer range | "Each indicator must be rated 1–5." |
+| `RATING_SCHOOL_NOT_FOUND` | 404 | School not found (parent direction: by PK; government direction: by PK + region scope) | "School not found." |
+| `RATING_SCHOOL_FORBIDDEN` | 403 | Parent's `schoolId` is null or does not match the rated school (TP-05 deny-on-null) | "You can only rate your own school." |
+| `RATING_PERIOD_INVALID` | 400 | `period` is missing or does not match `Q1-YYYY`…`Q4-YYYY` format | "Please select a valid rating period (e.g. Q2-2026)." |
+| `RATING_DIRECTION_INVALID` | 400 | `?direction=` query param is not `parent` or `gov` | "Invalid direction parameter." |
+| `RATING_CHILD_NOT_FOUND` | 404 | Child not found or does not belong to this parent (getMySchoolRating) | "Child not found." |
+| `RATING_CREATE_FAILED` | 500 | Unexpected server error while saving a rating | "Failed to save rating. Please try again." |
+| `RATING_FETCH_FAILED` | 500 | Unexpected server error while fetching ratings or schools | "Failed to load ratings. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

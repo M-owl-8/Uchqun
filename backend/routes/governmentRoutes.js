@@ -4,7 +4,6 @@ import {
   getSchoolsStats,
   getSchoolById,
   getStudentsStats,
-  getRatingsStats,
   getSchoolRatings,
   generateStats,
   getSavedStats,
@@ -18,6 +17,11 @@ import {
   getAuditLog,
   getRegions,
 } from '../controllers/governmentController.js';
+import {
+  rateSchoolAsGov,
+  getGovRatingsForSchool,
+  getRatingsAggregated,
+} from '../controllers/government/governmentSchoolRatingController.js';
 import {
   createAdmin,
   updateAdmin,
@@ -70,8 +74,10 @@ router.put('/schools/:id/category', changeSchoolCategory);
 router.get('/students', requireGovAccess('canViewStudents'), getStudentsStats);
 router.get('/teachers', requireGovAccess('canViewTeachers'), getTeachersList);
 router.get('/parents', requireGovAccess('canViewParents'), getParentsList);
-router.get('/ratings', requireGovAccess('canViewRatings'), getRatingsStats);
+router.get('/ratings', requireGovAccess('canViewRatings'), getRatingsAggregated);
 router.get('/ratings/:schoolId', requireGovAccess('canViewRatings'), getSchoolRatings);
+router.post('/schools/:id/rate', requireGovAccess('canRateSchools'), rateSchoolAsGov);
+router.get('/schools/:id/ratings/gov', requireGovAccess('canViewRatings'), getGovRatingsForSchool);
 router.post('/stats/generate', generateStats);  // Available for future stats snapshot feature
 router.get('/stats', getSavedStats);             // Available for future stats snapshot feature
 

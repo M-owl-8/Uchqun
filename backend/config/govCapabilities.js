@@ -19,6 +19,7 @@ export const GOV_CAPABILITIES = [
   'canViewSchools',
   'canArchiveSchools',
   'canViewRatings',
+  'canRateSchools',
   'canViewAuditLog',
   'canViewStudents',
   'canViewTeachers',

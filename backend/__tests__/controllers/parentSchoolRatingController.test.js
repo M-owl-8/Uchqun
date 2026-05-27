@@ -56,13 +56,17 @@ describe('rateSchool — TP-05 revert-tests', () => {
   });
 
   // TP-05 revert-test 1: null-schoolId bypass.
-  // Before fix: null && (null !== SCHOOL_B) = false → guard skipped → rating created.
-  // After fix:  null !== SCHOOL_B = true → 403. FAILS pre-fix, PASSES post-fix.
+  // Before fix (3-part): null && (null !== SCHOOL_B) = false → guard skipped → rating created.
+  // After fix (2-part deny-on-null): !null = true → immediate 403.
   it('403 (TP-05) when req.user.schoolId is null — null-bypass guard', async () => {
     mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_B });
     const req = {
       user: { id: 'parent-1', role: 'parent', schoolId: null },
-      body: { schoolId: SCHOOL_B, stars: 4 },
+      body: {
+        schoolId: SCHOOL_B,
+        indicators: { parent_indicator_1: 4, parent_indicator_2: 3, parent_indicator_3: 5, parent_indicator_4: 2, parent_indicator_5: 4 },
+        comment: 'Cross-school attempt',
+      },
     };
     const res = mkRes();
     await rateSchool(req, res);
@@ -70,27 +74,40 @@ describe('rateSchool — TP-05 revert-tests', () => {
     expect(mockSchoolRatingCreate).not.toHaveBeenCalled();
   });
 
-  // TP-05 revert-test 2: schoolName path allows arbitrary School.create.
-  // Before fix: schoolName accepted → School.findOne returns null → School.create called.
-  // After fix:  schoolName path rejected immediately (400, schoolId required).
-  //             FAILS pre-fix, PASSES post-fix.
-  it('400 (TP-05) when only schoolName provided — schoolId required', async () => {
+  // TP-05 revert-test 2: schoolId is required — body without it must be rejected.
+  it('400 (TP-05) when schoolId is missing — schoolId required', async () => {
     const req = {
       user: { id: 'parent-1', role: 'parent', schoolId: SCHOOL_A },
-      body: { schoolName: 'Arbitrary School XYZ', stars: 4 },
+      body: {
+        schoolId: null,
+        indicators: { parent_indicator_1: 4, parent_indicator_2: 3, parent_indicator_3: 5, parent_indicator_4: 2, parent_indicator_5: 4 },
+        comment: 'good',
+      },
     };
     const res = mkRes();
     await rateSchool(req, res);
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(mockSchoolCreate).not.toHaveBeenCalled();
+    expect(mockSchoolRatingCreate).not.toHaveBeenCalled();
   });
 
-  // Sanity: valid same-school rating still succeeds.
+  // Sanity: valid same-school rating with mandatory comment + indicators succeeds.
   it('200 parent can rate their own school by schoolId', async () => {
     mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_A });
+    mockSchoolRatingFindOne.mockResolvedValue(null);
+    mockSchoolRatingCreate.mockResolvedValue({
+      id: 'r-1', schoolId: SCHOOL_A, parentId: 'parent-1', stars: 4,
+      toJSON: () => ({ id: 'r-1', stars: 4 }),
+    });
     const req = {
       user: { id: 'parent-1', role: 'parent', schoolId: SCHOOL_A },
-      body: { schoolId: SCHOOL_A, stars: 4 },
+      body: {
+        schoolId: SCHOOL_A,
+        indicators: {
+          parent_indicator_1: 4, parent_indicator_2: 3, parent_indicator_3: 5,
+          parent_indicator_4: 2, parent_indicator_5: 4,
+        },
+        comment: 'Good school',
+      },
     };
     const res = mkRes();
     await rateSchool(req, res);

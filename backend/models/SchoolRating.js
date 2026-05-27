@@ -46,8 +46,11 @@ const SchoolRating = sequelize.define('SchoolRating', {
       },
     },
   },
+  // Legacy generic evaluation JSONB — superseded by indicators (CP-020). Old data kept as-is.
   evaluation: { type: DataTypes.JSONB, allowNull: true },
-  comment: { type: DataTypes.TEXT, allowNull: true },
+  // 5 PARENT_INDICATORS each scored 1–5. Null for legacy rows (pre-CP-020).
+  indicators: { type: DataTypes.JSONB, allowNull: true },
+  comment: { type: DataTypes.TEXT, allowNull: false },
 }, {
   tableName: 'school_ratings',
   timestamps: true,

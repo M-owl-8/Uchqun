@@ -14,16 +14,13 @@ export const rateTeacherValidator = [
 ];
 
 export const rateSchoolValidator = [
-  body('stars')
-    .notEmpty().withMessage('stars is required')
-    .isInt({ min: 1, max: 5 }).withMessage('stars must be an integer between 1 and 5'),
+  body('indicators')
+    .notEmpty().withMessage('indicators is required')
+    .isObject().withMessage('indicators must be an object with 5 keys'),
   body('comment')
-    .optional()
+    .notEmpty().withMessage('comment is required')
     .trim()
-    .isLength({ max: 2000 }).withMessage('comment must be 2000 characters or less'),
-  body('evaluation')
-    .optional()
-    .isObject().withMessage('evaluation must be an object'),
+    .isLength({ min: 1, max: 2000 }).withMessage('comment must be 1–2000 characters'),
 ];
 
 export const submitEvaluationValidator = [

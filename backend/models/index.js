@@ -21,6 +21,7 @@ import TeacherRating from './TeacherRating.js';
 import ChatMessage from './ChatMessage.js';
 import School from './School.js';
 import SchoolRating from './SchoolRating.js';
+import GovernmentSchoolRating from './GovernmentSchoolRating.js';
 import GovernmentMessage from './GovernmentMessage.js';
 import AdminRegistrationRequest from './AdminRegistrationRequest.js';
 import EmotionalMonitoring from './EmotionalMonitoring.js';
@@ -79,6 +80,7 @@ const models = {
   ChatMessage,
   School,
   SchoolRating,
+  GovernmentSchoolRating,
   GovernmentMessage,
   AdminRegistrationRequest,
   EmotionalMonitoring,
@@ -210,11 +212,17 @@ User.hasMany(Group, { foreignKey: 'teacherId', as: 'groups' });
 Group.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 School.hasMany(Group, { foreignKey: 'schoolId', as: 'groups' });
 
-// School ratings
+// School ratings (parent direction)
 School.hasMany(SchoolRating, { foreignKey: 'schoolId', as: 'ratings' });
 SchoolRating.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(SchoolRating, { foreignKey: 'parentId', as: 'schoolRatings' });
 SchoolRating.belongsTo(User, { foreignKey: 'parentId', as: 'ratingParent' });
+
+// School ratings (government direction — CP-020)
+School.hasMany(GovernmentSchoolRating, { foreignKey: 'schoolId', as: 'govRatings' });
+GovernmentSchoolRating.belongsTo(School, { foreignKey: 'schoolId', as: 'ratedSchool' });
+User.hasMany(GovernmentSchoolRating, { foreignKey: 'govUserId', as: 'govSchoolRatings' });
+GovernmentSchoolRating.belongsTo(User, { foreignKey: 'govUserId', as: 'ratingGovUser' });
 
 // AIWarning
 School.hasMany(AIWarning, { foreignKey: 'schoolId', as: 'warnings' });
@@ -803,6 +811,23 @@ SchoolRating.afterDestroy(async (instance, options) => {
   }
 });
 
+// GovernmentSchoolRating afterDestroy
+GovernmentSchoolRating.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'government_school_ratings',
+      entityId: instance.id,
+      schoolId: instance.schoolId ?? null,
+      meta: { reason: options?.reason ?? null, govUserId: instance.govUserId, period: instance.period },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
 // TeacherRating afterDestroy
 TeacherRating.afterDestroy(async (instance, options) => {
   try {
@@ -1073,6 +1098,7 @@ export {
   ChatMessage,
   School,
   SchoolRating,
+  GovernmentSchoolRating,
   GovernmentMessage,
   AdminRegistrationRequest,
   EmotionalMonitoring,

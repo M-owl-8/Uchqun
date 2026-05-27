@@ -221,5 +221,18 @@
   "QUARTERLY_ENTRY_DATES_REQUIRED": "Iltimos, chorakning boshlanish va tugash sanalarini ko'rsating.",
   "QUARTERLY_ENTRY_DUPLICATE": "Bu davr uchun choraklik hisobot allaqachon mavjud.",
   "QUARTERLY_ENTRY_CREATE_FAILED": "Choraklik hisobotni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-  "QUARTERLY_ENTRY_LIST_FAILED": "Choraklik hisobotlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
+  "QUARTERLY_ENTRY_LIST_FAILED": "Choraklik hisobotlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+
+  "RATING_FORBIDDEN": "Faqat ota-onalar maktablarni baholashi mumkin.",
+  "RATING_COMMENT_REQUIRED": "Iltimos, yuborishdan oldin izoh yozing.",
+  "RATING_SCHOOL_ID_REQUIRED": "Iltimos, maktabni tanlang.",
+  "RATING_INDICATORS_REQUIRED": "Iltimos, barcha 5 ko'rsatkichni baholang.",
+  "RATING_INDICATOR_INVALID": "Har bir ko'rsatkich 1 dan 5 gacha baholanishi kerak.",
+  "RATING_SCHOOL_NOT_FOUND": "Maktab topilmadi.",
+  "RATING_SCHOOL_FORBIDDEN": "Siz faqat o'z maktabingizni baholashingiz mumkin.",
+  "RATING_PERIOD_INVALID": "Iltimos, to'g'ri baholash davrini tanlang (masalan, Q2-2026).",
+  "RATING_DIRECTION_INVALID": "Yo'nalish parametri noto'g'ri.",
+  "RATING_CHILD_NOT_FOUND": "Bola topilmadi.",
+  "RATING_CREATE_FAILED": "Baholashni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+  "RATING_FETCH_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
 }
