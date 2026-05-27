@@ -4,7 +4,7 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-27 (Loop 5 close — ИРР sign-offs + CP-022/CP-020 residuals added)
+**Last updated:** 2026-05-27 (Database S0 — UzCloud portability flags PL-UZ-01→05 added)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
 
 ---
@@ -74,3 +74,17 @@ These items are documented in `audits/teacher-parent/IRR-DECISIONS.md`. The ИР
 | PL-021 | **Railway migration promotion — CP-020 + CP-022 migrations** — `20260527000001-create-government-school-rating.js`, `20260527000002-update-school-ratings-cp020.js`, `20260527000003-add-routing-to-government-messages.js` are proven locally. Railway auto-runs `npm run start:migrate` on deploy. Promotion = next push to main or a deliberate `railway run npm run migrate`. | ⬜ Not started | Not a code blocker — migrations are correct and tested. A deliberate deploy step. No `FORCE_SYNC=true`. |
 | PL-022 | **Legacy `POST /government/messages` route deprecation** — the old flat parent → government message route (no recipientLevel) should be restricted or removed before beta to prevent clients sending malformed payloads. CP-022 wired `parentSendMessage` on the parent route. Admin/teacher/reception send paths preserved. The government route itself may still exist — confirm and gate before beta. | ⬜ Not started | Review `backend/routes/governmentRoutes.js` before beta. |
 | PL-023 | **ИРР terminology translations (PL-009 extension)** — all uz/ru strings for ИРР domain (criteria names, level descriptions, journal item labels, goal skill areas, quarterly checklist labels) are AI-generated / UNVERIFIED. Must be included in the PL-009-VERIFY professional review scope before beta. ~300+ additional strings on top of the existing 216 backend error codes. | ⬜ Not started | Extend PL-009-REVIEW.md scope to cover ИРР terminology. Flag P1 (clinical/scoring text) for priority review. |
+
+---
+
+## UzCloud Portability (Database S0 — pre-procurement checklist)
+
+These items were identified in `audits/database/00-live-state-audit.md` and must be resolved before any UzCloud infrastructure procurement or deploy. None require code changes unless noted.
+
+| ID | Item | Status | Notes |
+|---|---|---|---|
+| PL-UZ-01 | **Postgres ≥ 13 required** — all UUID primary keys use `gen_random_uuid()` (Postgres built-in since v13, no extension needed). Procuring Postgres 12 or below on UzCloud causes all 83 migrations to fail at the first UUID default. | ⬜ Not started | Confirm UzCloud managed Postgres version ≥ 13 in procurement spec. Postgres 15 preferred (matches Railway). |
+| PL-UZ-02 | **Appwrite (file storage) must be configured** — production storage driver is Appwrite (`APPWRITE_ENDPOINT` + 3 vars). No cloud storage configured = upload errors in production. Recommended path: self-hosted Appwrite on UzCloud infrastructure keeps media within the country boundary. | ⬜ Not started | Procure or deploy self-hosted Appwrite instance. Update `APPWRITE_*` env vars on UzCloud service. An S3-compatible rewrite of `backend/config/storage.js` is the alternative if Appwrite is not viable. |
+| PL-UZ-03 | **Redis recommended for multi-instance** — login lockout, JTI revocation, and Socket.io are in-memory if `REDIS_URL` absent. Single-instance deploy works; multi-instance requires Redis. | ⬜ Not started | Provision managed Redis on UzCloud if multi-instance is planned. `REDIS_URL` env var. |
+| PL-UZ-04 | **OpenAI/OpenRouter outbound egress** — AI analysis features (`POST /ai-warnings/analyze`) call `OPENAI_BASE_URL` (OpenRouter or similar). If UzCloud restricts outbound internet, these endpoints fail. Feature degrades gracefully when `OPENAI_API_KEY` is absent. | ⬜ Not started | Confirm egress policy with UzCloud. If restricted, leave `OPENAI_API_KEY` unset to disable AI features. Consider local LLM alternative if gov requirement mandates on-prem AI. |
+| PL-UZ-05 | **Database SSL configuration** — `backend/config/database.js` uses Railway-specific SSL detection. UzCloud managed Postgres may need explicit SSL config (CA cert or `rejectUnauthorized: false`). Before UzCloud deploy, add a `DB_SSL=true` env flag with explicit SSL options to `database.js`. | ⬜ Not started | Code change required: add `DB_SSL` env flag to `database.js` before UzCloud deploy. Low-risk one-liner. |
