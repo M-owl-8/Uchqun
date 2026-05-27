@@ -4,6 +4,9 @@
   "description": "Backend API for Uchqun Platform - Special Education School Management",
   "main": "server.js",
   "type": "module",
+  "engines": {
+    "node": ">=20.0.0 <21.0.0"
+  },
   "scripts": {
     "check-auth": "node scripts/check-auth.js",
     "start": "node server.js",

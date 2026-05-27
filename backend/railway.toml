@@ -1,25 +1,9 @@
 [build]
 builder = "NIXPACKS"
-buildCommand = "npm install"
 
 [deploy]
-# Run pending migrations before starting the server. healthcheckTimeout=120s
-# gives migrations enough runway; migrate.js is idempotent (skips already-run files).
 startCommand = "npm run start:migrate"
 healthcheckPath = "/health"
 healthcheckTimeout = 120
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-
-# Explicitly define deployment phases to avoid "undefined" stage
-[phases.setup]
-nixPkgs = ["nodejs_20", "npm"]
-
-[phases.install]
-cmds = ["npm install"]
-
-[phases.build]
-cmds = ["npm run build"]
-
-[phases.start]
-cmds = ["npm run start:migrate"]

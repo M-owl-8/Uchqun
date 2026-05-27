@@ -1,11 +1,11 @@
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm"]
+nixPkgs = ["nodejs_20"]
 
 [phases.install]
 cmds = ["npm ci"]
 
 [phases.build]
-cmds = ["echo 'Build phase completed'"]
+cmds = ["echo 'Backend: no compile step'"]
 
 [start]
 cmd = "npm run start:migrate"

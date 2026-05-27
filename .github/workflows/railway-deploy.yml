@@ -25,6 +25,7 @@ jobs:
             exit 0
           fi
           npm install -g @railway/cli
+          cd backend
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
