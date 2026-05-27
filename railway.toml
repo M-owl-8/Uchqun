@@ -1,0 +1,11 @@
+# Root-level railway.toml — read by Railway GitHub integration when root directory = "."
+# Tells Railway to use Dockerfile.backend (handles monorepo context, pins Node 20)
+[build]
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile.backend"
+
+[deploy]
+healthcheckPath = "/health"
+healthcheckTimeout = 120
+restartPolicyType = "ON_FAILURE"
+restartPolicyMaxRetries = 10

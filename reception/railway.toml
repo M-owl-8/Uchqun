@@ -2,17 +2,17 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "node server.js"
+startCommand = "npx serve dist -s -l $PORT"
+healthcheckPath = "/"
+healthcheckTimeout = 60
 restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 5
+restartPolicyMaxRetries = 3
 
 [phases.setup]
-nixPkgs = ["nodejs_20", "npm"]
+nixPkgs = ["nodejs_20"]
 
-# dist/ is pre-built in GitHub Actions where ../shared is accessible.
-# Railway only needs production deps to run server.js.
 [phases.install]
-cmds = ["npm ci --omit=dev"]
+cmds = ["echo 'dist pre-built in CI — skipping npm ci'"]
 
 [phases.build]
-cmds = ["echo 'Pre-built in CI'"]
+cmds = ["echo 'noop'"]
