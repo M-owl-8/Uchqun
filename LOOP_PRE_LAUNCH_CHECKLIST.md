@@ -4,7 +4,7 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-21 (Government S7 — PL-015 region list + school categories added)
+**Last updated:** 2026-05-27 (Loop 5 close — ИРР sign-offs + CP-022/CP-020 residuals added)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
 
 ---
@@ -50,3 +50,27 @@ Items without an owner or ETA are blocking unless explicitly deprioritised by th
 | PL-011 | **Avatar URL migration (CP-002 / BACKEND-010)** — avatars currently stored as base64 in DB. Migrate to URL-based storage (Appwrite) after all portals are audited. | ⬜ Not started | Cross-portal blocker; tracked as CP-002 in LOOP_CROSS_PORTAL.md. |
 | PL-012 | **Response shape migration (CP-003 / BACKEND-012 grandfather clause)** — legacy endpoints still return `{ error: '<string>' }`. Migrate opportunistically when touched. | ⬜ Not started | Not blocking; migration is gradual. |
 | PL-013 | **Tier 3 backend features (T3-1 through T3-9)** — admin activity feed, school logo, reporting, scheduled jobs, notification preferences, group validation, child search, group teacher boundary, parent EM summary | ⬜ Not started | Post-launch polish. None block any portal launch. See Sprint E execution log Section 9. |
+
+---
+
+## ИРР Partner / Ministry Sign-offs (Loop 5 residuals — not open build work)
+
+These items are documented in `audits/teacher-parent/IRR-DECISIONS.md`. The ИРР is fully built; these are external confirmations required before beta launch. NO code changes needed — resolving them means receiving partner/ministry acknowledgment, updating documentation, and adjusting config/seed where needed.
+
+| ID | Item | Status | Notes |
+|---|---|---|---|
+| PL-016 | **F-1: Scoring inversion ministry acknowledgment** — software direction (0=worst, 4=best) diverges from printed ИРР standard (0=best, 4=worst). Ministry must acknowledge before staff onboarding to avoid confusion when comparing software scores to physical tables. | ⬜ Not started | Partner to communicate to ministry before beta. See `IRR-DECISIONS.md` F-1. |
+| PL-017 | **F-2: Physical journal stamp regulation** — regulation requires all ИРР journals to be stamped by regional social protection administration, sewn, and numbered. Legal question: does a digital record satisfy this, or must physical journals coexist? Affects whether the platform is the system-of-record or a supplement. | ⬜ Not started | Partner/legal to clarify. If physical journals must coexist, UX note required at data entry. See `IRR-DECISIONS.md` F-2. |
+| PL-018 | **F-3: DRAFT standard acknowledgment** — source ИРР document is marked ЛОЙИҲА (DRAFT). Post-finalization changes may require data migrations. Partner to confirm: is this draft the beta-evaluation version, or will the final version be provided before launch? | ⬜ Not started | If standard changes after beta data is collected, schema migration required. See `IRR-DECISIONS.md` F-3. |
+| PL-019 | **OQ-2: ПТПК validity duration** — typical validity period for ПТПК conclusions (sets goal-period date range). Without this, `irr.startDate` → `goalPeriod.targetDate` auto-population cannot be confirmed correct. | ⬜ Not started | One-sentence confirmation from partner sufficient. No code change required unless the duration changes. |
+| PL-020 | **OQ-10: Quarterly parent-engagement section item count** — source photos show 14–15 items in the parentWork section (image cut-off). Config currently has 14 items (provisional). Partner to confirm complete list. Config-only update when confirmed. | ⬜ Not started | `shared/config/quarterlyJournalItems.js` — update config when confirmed. No schema migration needed (JSONB). |
+
+---
+
+## CP-022 / CP-020 Pre-Beta Residuals (Loop 5, not build work)
+
+| ID | Item | Status | Notes |
+|---|---|---|---|
+| PL-021 | **Railway migration promotion — CP-020 + CP-022 migrations** — `20260527000001-create-government-school-rating.js`, `20260527000002-update-school-ratings-cp020.js`, `20260527000003-add-routing-to-government-messages.js` are proven locally. Railway auto-runs `npm run start:migrate` on deploy. Promotion = next push to main or a deliberate `railway run npm run migrate`. | ⬜ Not started | Not a code blocker — migrations are correct and tested. A deliberate deploy step. No `FORCE_SYNC=true`. |
+| PL-022 | **Legacy `POST /government/messages` route deprecation** — the old flat parent → government message route (no recipientLevel) should be restricted or removed before beta to prevent clients sending malformed payloads. CP-022 wired `parentSendMessage` on the parent route. Admin/teacher/reception send paths preserved. The government route itself may still exist — confirm and gate before beta. | ⬜ Not started | Review `backend/routes/governmentRoutes.js` before beta. |
+| PL-023 | **ИРР terminology translations (PL-009 extension)** — all uz/ru strings for ИРР domain (criteria names, level descriptions, journal item labels, goal skill areas, quarterly checklist labels) are AI-generated / UNVERIFIED. Must be included in the PL-009-VERIFY professional review scope before beta. ~300+ additional strings on top of the existing 216 backend error codes. | ⬜ Not started | Extend PL-009-REVIEW.md scope to cover ИРР terminology. Flag P1 (clinical/scoring text) for priority review. |
