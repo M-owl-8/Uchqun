@@ -2,7 +2,7 @@ import Child from '../../models/Child.js';
 import School from '../../models/School.js';
 import SchoolRating from '../../models/SchoolRating.js';
 import logger from '../../utils/logger.js';
-import { PARENT_INDICATORS } from '../../../shared/config/ratingIndicators.js';
+import { PARENT_INDICATORS } from '../../config/ratingIndicators.js';
 
 const INDICATOR_KEYS = PARENT_INDICATORS.map(i => i.key);
 

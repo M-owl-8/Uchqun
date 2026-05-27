@@ -4,7 +4,7 @@ import SchoolRating from '../../models/SchoolRating.js';
 import User from '../../models/User.js';
 import logger from '../../utils/logger.js';
 import { regionWhere } from '../../middleware/regionScope.js';
-import { GOV_INDICATORS } from '../../../shared/config/ratingIndicators.js';
+import { GOV_INDICATORS } from '../../config/ratingIndicators.js';
 
 const INDICATOR_KEYS = GOV_INDICATORS.map(i => i.key);
 const PERIOD_RE = /^Q[1-4]-\d{4}$/;
