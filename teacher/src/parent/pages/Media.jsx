@@ -337,7 +337,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Play/Pause */}
               <button
                 onClick={togglePlay}
-                className="text-white hover:text-brand-400 transition-colors p-2"
+                className="text-white hover:text-p-brand-400 transition-colors p-2"
                 aria-label={isPlaying ? 'Pause' : 'Play'}
               >
                 {isPlaying ? (
@@ -350,7 +350,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Skip Backward */}
               <button
                 onClick={skipBackward}
-                className="text-white hover:text-brand-400 transition-colors p-2"
+                className="text-white hover:text-p-brand-400 transition-colors p-2"
                 aria-label="Skip backward 10 seconds"
               >
                 <SkipBack className="w-5 h-5" />
@@ -359,7 +359,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               {/* Skip Forward */}
               <button
                 onClick={skipForward}
-                className="text-white hover:text-brand-400 transition-colors p-2"
+                className="text-white hover:text-p-brand-400 transition-colors p-2"
                 aria-label="Skip forward 10 seconds"
               >
                 <SkipForward className="w-5 h-5" />
@@ -369,7 +369,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               <div className="flex items-center gap-2">
                 <button
                   onClick={toggleMute}
-                  className="text-white hover:text-brand-400 transition-colors p-2"
+                  className="text-white hover:text-p-brand-400 transition-colors p-2"
                   aria-label={isMuted ? 'Unmute' : 'Mute'}
                 >
                   {isMuted || volume === 0 ? (
@@ -435,7 +435,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
           href={url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-4 inline-block px-6 py-3 bg-brand-600 hover:bg-brand-700 rounded-lg font-bold transition-colors"
+          className="mt-4 inline-block px-6 py-3 bg-p-brand-600 hover:bg-p-brand-700 rounded-lg font-bold transition-colors"
         >
           {t('media.video.openNewTab')}
         </a>
@@ -499,7 +499,7 @@ const Media = () => {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700 pb-24">
       
       {/* --- Dynamic Header --- */}
-      <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
+      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('media.title')}</h1>
@@ -518,7 +518,7 @@ const Media = () => {
               onClick={() => setFilter(option.id)}
               className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
                 filter === option.id 
-                ? 'bg-surface text-brand-600 shadow-md scale-105' 
+                ? 'bg-p-surface text-p-brand-600 shadow-md scale-105'
                 : 'text-white/80 hover:text-white hover:bg-surface/20'
               }`}
             >
@@ -589,7 +589,7 @@ const Media = () => {
                 
                 {/* Overlay on Hover */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 text-white">
-                    <p className="text-xs font-bold uppercase tracking-widest text-brand-400 mb-1">
+                    <p className="text-xs font-bold uppercase tracking-widest text-p-brand-400 mb-1">
                         {typeLabels[item.type] || item.type}
                     </p>
                     <h3 className="text-lg font-bold leading-tight">{item.title}</h3>
@@ -669,17 +669,17 @@ const Media = () => {
             </div>
 
             {/* Sidebar Info Area */}
-            <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-surface">
-              <button 
+            <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-p-surface">
+              <button
                 onClick={() => setSelectedMedia(null)}
-                className="hidden lg:flex items-center gap-2 text-slate-400 hover:text-brand-600 font-bold text-sm mb-10 transition-colors"
+                className="hidden lg:flex items-center gap-2 text-slate-400 hover:text-p-brand-600 font-bold text-sm mb-10 transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" /> {t('media.back')}
               </button>
 
               <div className="space-y-6">
                 <div>
-                  <span className="px-4 py-1.5 bg-brand-50 text-brand-600 rounded-full text-[10px] font-black uppercase tracking-widest">
+                  <span className="px-4 py-1.5 bg-p-sepia-50 text-p-brand-600 rounded-full text-[10px] font-black uppercase tracking-widest">
                     {selectedMedia.type === 'video' ? t('media.videoLabel') : t('media.photoLabel')}
                   </span>
                   <h3 className="text-3xl font-black text-slate-900 mt-4 leading-tight">

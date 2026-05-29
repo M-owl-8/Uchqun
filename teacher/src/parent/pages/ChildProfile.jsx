@@ -4,7 +4,8 @@ import { useSocket } from '../../shared/context/SocketContext';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
 import LanguageSwitcher from '../components/LanguageSwitcher';
-import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users } from 'lucide-react';
+import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users, TrendingUp, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import ChildProfileHero from './childProfile/ChildProfileHero';
 import AvatarUploadModal from './childProfile/AvatarUploadModal';
@@ -320,6 +321,20 @@ const ChildProfile = () => {
         </div>
         <div className="stitch mb-3" />
         <div className="space-y-2">
+          <Link
+            to="/irr"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
+          >
+            <TrendingUp className="w-4 h-4" />
+            {t('irr.title', { defaultValue: 'Ривожланиш режаси (ИРР)' })}
+          </Link>
+          <Link
+            to="/settings"
+            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-sepia-50 text-p-sepia-700 border border-p-sepia-200 hover:bg-p-sepia-100 transition-colors text-[13px] font-medium"
+          >
+            <Settings className="w-4 h-4" />
+            {t('settings.title', { defaultValue: 'Sozlamalar' })}
+          </Link>
           <button
             onClick={() => setShowMessageModal(true)}
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"

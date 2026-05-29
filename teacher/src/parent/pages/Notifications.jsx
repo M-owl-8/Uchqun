@@ -16,14 +16,14 @@ import {
 } from 'lucide-react';
 
 const Notifications = () => {
-  const { 
-    notifications, 
-    loading, 
-    count, 
-    markAsRead, 
-    markAllAsRead, 
+  const {
+    notifications,
+    loading,
+    count,
+    markAsRead,
+    markAllAsRead,
     deleteNotification,
-    loadAllNotifications 
+    loadAllNotifications
   } = useNotification();
   const { selectedChildId } = useChild();
   const { t, i18n } = useTranslation();
@@ -61,11 +61,11 @@ const Notifications = () => {
   const getNotificationColor = (type) => {
     switch (type) {
       case 'activity':
-        return 'bg-brand-50 text-brand-600';
+        return 'bg-p-sepia-50 text-p-brand-600';
       case 'meal':
         return 'bg-success-50 text-success-600';
       case 'media':
-        return 'bg-brand-50 text-brand-600';
+        return 'bg-p-sepia-50 text-p-brand-600';
       default:
         return 'bg-slate-50 text-slate-600';
     }
@@ -82,21 +82,21 @@ const Notifications = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6 animate-in fade-in duration-500">
       {/* Header */}
-      <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('notifications.title', { defaultValue: 'Bildirishnomalar' })}</h1>
             <p className="text-white/90 text-sm md:text-base">
-              {count > 0 
+              {count > 0
                 ? t('notifications.unreadCount', { count, defaultValue: `${count} ta o'qilmagan bildirishnoma` })
                 : t('notifications.allRead', { defaultValue: 'Barcha bildirishnomalar o\'qilgan' })}
             </p>
           </div>
-          
+
           {count > 0 && (
             <button
               onClick={markAllAsRead}
-              className="flex items-center gap-2 px-4 py-2 bg-surface/20 hover:bg-surface/30 backdrop-blur-sm text-white rounded-xl font-bold transition-colors border border-white/30"
+              className="flex items-center gap-2 px-4 py-2 bg-p-surface/20 hover:bg-p-surface/30 backdrop-blur-sm text-white rounded-xl font-bold transition-colors border border-white/30"
             >
               <CheckCheck className="w-4 h-4" />
               {t('notifications.markAllRead', { defaultValue: 'Barchasini o\'qilgan deb belgilash' })}
@@ -111,7 +111,7 @@ const Notifications = () => {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'all'
-              ? 'bg-brand-500 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
@@ -121,7 +121,7 @@ const Notifications = () => {
           onClick={() => setFilter('unread')}
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'unread'
-              ? 'bg-brand-500 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
@@ -131,7 +131,7 @@ const Notifications = () => {
           onClick={() => setFilter('read')}
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'read'
-              ? 'bg-brand-500 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
@@ -145,19 +145,19 @@ const Notifications = () => {
           {filteredNotifications.map((notification) => {
             const Icon = getNotificationIcon(notification.type);
             const colorClass = getNotificationColor(notification.type);
-            
+
             return (
               <Card
                 key={notification.id}
                 className={`p-6 transition-all ${
-                  !notification.isRead ? 'bg-brand-50 border-brand-200' : 'bg-surface'
+                  !notification.isRead ? 'bg-p-sepia-50 border-p-sepia-300' : 'bg-p-surface'
                 }`}
               >
                 <div className="flex items-start gap-4">
                   <div className={`p-3 rounded-xl ${colorClass}`}>
                     <Icon className="w-6 h-6" />
                   </div>
-                  
+
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-4 mb-2">
                       <div>
@@ -183,19 +183,19 @@ const Notifications = () => {
                           })}
                         </div>
                       </div>
-                      
+
                       {!notification.isRead && (
-                        <span className="px-2 py-1 bg-brand-500 text-white text-xs font-bold rounded-full">
+                        <span className="px-2 py-1 bg-p-brand-600 text-white text-xs font-bold rounded-full">
                           {t('notifications.new', { defaultValue: 'Yangi' })}
                         </span>
                       )}
                     </div>
-                    
+
                     <div className="flex items-center gap-2 mt-4">
                       {!notification.isRead && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="flex items-center gap-2 px-3 py-1.5 bg-surface border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                         >
                           <CheckCircle2 className="w-4 h-4" />
                           {t('notifications.markAsRead', { defaultValue: 'O\'qilgan deb belgilash' })}
@@ -203,7 +203,7 @@ const Notifications = () => {
                       )}
                       <button
                         onClick={() => deleteNotification(notification.id)}
-                        className="flex items-center gap-2 px-3 py-1.5 bg-surface border border-error-200 rounded-lg text-sm font-medium text-error-600 hover:bg-error-50 transition-colors"
+                        className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-error-200 rounded-lg text-sm font-medium text-error-600 hover:bg-error-50 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
                         {t('notifications.delete', { defaultValue: 'O\'chirish' })}
@@ -216,10 +216,10 @@ const Notifications = () => {
           })}
         </div>
       ) : (
-        <Card className="text-center py-32 bg-surface/95 backdrop-blur-sm">
+        <Card className="text-center py-32 bg-p-surface/95 backdrop-blur-sm">
           <Bell className="w-16 h-16 text-slate-300 mx-auto mb-4" />
           <p className="text-slate-500 font-bold text-lg">
-            {filter === 'all' 
+            {filter === 'all'
               ? t('notifications.empty', { defaultValue: 'Hozircha bildirishnomalar yo\'q' })
               : filter === 'unread'
               ? t('notifications.emptyUnread', { defaultValue: 'O\'qilmagan bildirishnomalar yo\'q' })

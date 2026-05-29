@@ -21,7 +21,7 @@ const MobileTabBar = () => {
       <nav className="flex justify-around items-center h-16">
         {TABS.map((tab) => {
           const active = isActive(tab.href);
-          const showBadge = tab.key === 'messages' && count > 0;
+          const showBadge = tab.key === 'home' && count > 0;
           return (
             <Link
               key={tab.key}

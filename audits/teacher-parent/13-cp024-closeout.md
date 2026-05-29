@@ -1,159 +1,57 @@
-# CP-024 Closeout Audit
+# Loop 5 — Consolidation / Hardening Pass (full)
 
-**Date:** 2026-05-27
-**Scope:** Admin cross-school isolation test + full 55-item structured quarterly checklist + CP-025 suite confirmation
+## What this is
+ИРР is complete across teacher + parent + admin. Before CP-020/CP-022, harden what's built. Four parts, in dependency order: (A) restore a clean test baseline by resolving the 15 teacher-suite reds, (B) end-to-end human-walk script + execution through the whole ИРР, (C) PL-009 translation SCOPING into a reviewable artifact for the partner (NOT verification — that needs a native speaker), (D) the 302 frontend lint debt. NO new features. NO CP-020/022.
 
----
+## Pre-flight
+1. Read `LOOP_TRACKER.md`. Mark CONSOLIDATION = 🟡.
+2. Read `LOOP_PRE_LAUNCH_CHECKLIST.md` (PL-009 lives here), `IRR-DECISIONS.md`.
 
-## STEP 1 — Cross-School Admin Isolation Test (real SQLite, two-school seed)
+## PART A — Restore clean test baseline (15 teacher reds) — DO FIRST, it gates Part B
+The CP-024 closeout reported 15 teacher-suite failures claimed pre-existing (Settings mock mismatch, parentSidebar /ai-warnings link removed in S3, AIWarnings parent-role test). VERIFY, don't trust the claim (this project's standard — "pre-existing" has needed proof twice before):
+1. For each of the 15: PROVE it's pre-existing by checking it fails at a commit BEFORE the ИРР/CP work began (stash or checkout a prior SHA, run, confirm red there too). Quote the proof per failure (or group them if same root cause).
+2. Any failure that does NOT fail at the prior commit = CAUSED BY our work = a real regression → fix it.
+3. For the genuinely-pre-existing ones, decide per failure: FIX (if cheap + correct — e.g. the /ai-warnings parentSidebar test should be updated to match the S3 dead-link removal, since WE made that change intentionally) or QUARANTINE (skip with a documented reason + a tracked debt item). Prefer FIX for anything our own prior cleanup caused (the /ai-warnings one is ours — that test should be corrected, not skipped).
+4. Goal: teacher suite returns to CLEAN GREEN (0 unexplained reds). Any remaining skips are documented, intentional, tracked.
+Quote the before (15 red) → after (green + N documented skips) state. This clean baseline is required before Part B's walk is trustworthy.
 
-### Pre-check: did any existing Phase-2 tests exercise the admin role on teacher routes?
+## PART B — End-to-end human-walk script + execution
+No test has exercised the ИРР as a HUMAN SEQUENCE. Build a structured click-path that doubles as the demo script, and execute it (locally, real DB).
+1. Write the walk script: the full ИРР lifecycle as ordered steps with expected outcome at each:
+   - Teacher: create ИРР for a child → fill 9 header fields → activate (gate passes) → assess at intake (score 17 criteria, see live total → submit, see it in progression) → add long-term goals → create a goal period → add 3–5 short-term goals → write quarterly review + parentRecommendations → teacher-sign → log a daily journal entry → log a weekly entry.
+   - Parent: open the child's ИРР → see the intake score → see goals + the highlighted parentRecommendations → (no edit affordance anywhere).
+   - Admin: open Manager ИРР → see the child's period → manager-sign → fill a quarterly monitoring entry (55 items).
+   - Teacher again: assess at 3mo (higher score) → Parent: see the progression RISE (the demo payoff).
+2. EXECUTE it against a local DB with seeded data — actually run each step (via the API for backend steps + a scripted/manual frontend check, or an integration test that walks the sequence). Record at each step: did it work, did the data flow correctly (teacher input → parent sees it), any dead links / broken states / missing-data assumptions / wrong date formats / anything audit-invisible.
+3. Report findings: anything that broke or felt wrong in the SEQUENCE (not caught by isolated tests). For each finding: severity + fix-now or log.
+Deliverable: a reusable `IRR-WALKTHROUGH.md` (the demo script) + the execution findings.
 
-Reviewed `backend/__tests__/controllers/irr.realDB.test.js` and `irr.withinSchool.test.js`. **No existing test exercised the admin role** through `GET /teacher/children`, `GET /teacher/children/:id/irr`, `GET /teacher/irr/:irrId/goal-periods`, or `POST /teacher/goal-periods/:id/sign`. All Phase-2 tests use `role: 'teacher'`. The admin-path gap was confirmed.
+## PART C — PL-009 translation SCOPING (prepare for native review — do NOT verify)
+Claude Code CANNOT verify Uzbek/Russian clinical-government terminology — that needs a native speaker who knows the ministry's language (Otabek / a ministry contact). This part PREPARES the review:
+1. Extract EVERY PL-009 (AI-generated, unverified) uz + ru string across the ИРР: the 17 criteria + their level descriptions, the 45 journal items (daily 27 + weekly 18), the 55 quarterly items, all ИРР UI labels/buttons/toasts/errors across teacher+parent+admin, the i18n error-code catalog additions.
+2. Organize into a single reviewable artifact (`PL-009-REVIEW.md` or a spreadsheet-style table): each row = key | English (reference) | current uz | current ru | [blank: corrected uz] | [blank: corrected ru] | source (where it appears). Group by area (criteria / journals / UI / errors) so a reviewer can work section by section.
+3. Flag the HIGHEST-RISK strings: the clinical/standard terminology (criteria names, ПТПК terms, the level descriptions, assessment language) — these are where wrong Uzbek most damages credibility with a ministry reviewer. Mark them priority-1 for review.
+4. Note count + the partner-handoff: "N strings need native uz/ru review before beta; clinical terminology is priority-1; recommend Otabek or a ministry contact review the standard-derived terms specifically."
+Do NOT change any translation — just scope, organize, prioritize, and prepare the handoff.
 
-### Why the admin path is the highest-stakes boundary
+## PART D — Frontend lint debt (302)
+1. Run lint across the full frontend (teacher + admin + parent). Quote the actual count.
+2. Categorize: auto-fixable (formatting, unescaped entities) vs. needs-judgment (unused vars, hook deps). Auto-fix the safe ones (run the fixer, confirm tests still green after). For the needs-judgment ones, fix where clearly correct, log the rest.
+3. Do NOT introduce behavior changes to satisfy lint (e.g. don't "fix" a hook-dep warning by changing deps in a way that alters behavior — log those for careful review instead). Tests must stay green through lint cleanup.
+4. Quote before (302) → after count + what remains + why.
 
-`requireTeacher` allows `['teacher', 'reception', 'admin']`. For teachers, the assignment axis (`isTeacherAssignedToChild`) is the primary guard. For admins, `isTeacherAssignedToChild` returns `true` immediately (non-teacher bypass). The ONLY boundary for an admin is the `schoolId` check inside each controller resolver. If that check were absent or incorrect, admin A could read school B's children's IRRs, assessments, goal periods, and clinical diagnoses.
+## Deliverable
+`audits/teacher-parent/14-consolidation.md` — Part A (15-reds proof + clean-green result), Part B (link to IRR-WALKTHROUGH.md + execution findings), Part C (PL-009-REVIEW.md scope + count + partner-handoff note), Part D (lint before/after). All suites green (or documented skips), quoted.
 
-### Test file
+## Rules
+- Part A FIRST and it GATES Part B (clean baseline before the walk).
+- VERIFY the 15 reds are pre-existing (prior-commit proof) — don't trust the claim. Fix what's ours (the /ai-warnings test), regression if any, quarantine only with documented reason.
+- Part B: actually EXECUTE the walk, real DB — report sequence findings audits missed.
+- Part C: SCOPE + prepare only. Do NOT verify/change translations (needs native speaker). Prioritize clinical terms.
+- Part D: no behavior changes to satisfy lint; tests stay green.
+- NO new features. NO CP-020/022.
 
-`backend/__tests__/controllers/irr.adminIsolation.realDB.test.js`
-
-Two-school seed:
-- School A: child `adm-iso-child-a1`, IRR `adm-iso-irr-a`
-- School B: child `adm-iso-child-b1`, IRR `adm-iso-irr-b`, period `adm-iso-period-b`
-- Admin under test: `role: 'admin', schoolId: SCHOOL_A`
-
-`schoolValidation.js` is NOT mocked — real `isTeacherAssignedToChild` confirms the admin bypass is in place, making the resolver `schoolId` check the sole guard.
-
-### Results (all 4 PASS)
-
-| Test | Route | Expected | Actual |
-|---|---|---|---|
-| `getChildren` — school A admin sees only school A's children | `GET /teacher/children` | school-B child absent, list length 1 | ✅ PASS — school-A child returned, school-B child NOT in list |
-| `getChildIRR` — admin A blocked from school-B child | `GET /teacher/children/:schoolB_childId/irr` | 404 | ✅ PASS — 404 |
-| `listGoalPeriods` — admin A blocked from school-B IRR | `GET /teacher/irr/:schoolB_irrId/goal-periods` | 404 | ✅ PASS — 404 |
-| `signGoalPeriod` — admin A blocked from signing school-B period | `POST /teacher/goal-periods/:schoolB_periodId/sign` | 404 | ✅ PASS — 404 |
-
-**Result: school-axis boundary HOLDS for admin role. No cross-school leak.**
-
-Full suite run: `125 suites / 1313 tests — all green` (includes the 4 isolation tests).
-
----
-
-## STEP 2 — Full 55-Item Structured Quarterly Checklist
-
-### Prior state (free-text stopgap — commit 79cc9bf)
-
-The original CP-024 build shipped the quarterly form with 5 free-text `<textarea>` inputs per section — a stopgap to meet the deadline. The backend JSONB columns were designed for `code → boolean` maps but the frontend was not yet data-driven.
-
-### Current state (structured checklist — this closeout)
-
-`admin/src/pages/ManagerIRR.jsx` — `QuarterlyTab` component now renders a data-driven structured checklist:
-
-```js
-const SECTION_MAP = [
-  { formKey: 'infoSystemData',    configKey: 'infoSystem',    label: 'Ахборот тизими' },
-  { formKey: 'parentWorkData',    configKey: 'parentWork',    label: 'Ота-оналар билан иш' },
-  { formKey: 'documentationData', configKey: 'documentation', label: 'Ҳужжатчилик' },
-  { formKey: 'careQualityData',   configKey: 'careQuality',   label: 'Парвариш сифати' },
-  { formKey: 'conditionsData',    configKey: 'conditions',    label: 'Шарт-шароит' },
-];
-```
-
-Each section renders `QUARTERLY_JOURNAL_ITEMS[configKey].map(item => <checkbox key={item.code} ... />)` — not hardcoded, not re-transcribed.
-
-### Item counts (from `shared/config/quarterlyJournalItems.js`)
-
-| Section | Config key | Item count | OQ note |
-|---|---|---|---|
-| Ахборот тизими | `infoSystem` | 2 | — |
-| Ота-оналар билан иш | `parentWork` | 14 | OQ-10 provisional — partner to confirm |
-| Ҳужжатчилик | `documentation` | 9 | — |
-| Парвариш сифати | `careQuality` | 17 | — |
-| Шарт-шароит | `conditions` | 10 | — |
-| **Total** | — | **52** (`QUARTERLY_ITEM_COUNT`) | OQ-10 may add 1 |
-
-### JSONB shape (confirmed from test)
-
-POST body sends:
-```json
-{
-  "quarterStart": "2026-01-01",
-  "quarterEnd":   "2026-03-31",
-  "infoSystemData":    { "info_tizimga_kiritildi": true, "info_face_id": false },
-  "parentWorkData":    { "par_malumot_oladilar": false, … },
-  "documentationData": { "doc_irr_dolzarb": false, … },
-  "careQualityData":   { "care_ovqat_rejim": false, … },
-  "conditionsData":    { "shar_harorat": false, … },
-  "departures": [],
-  "notes": null
-}
-```
-
-Shape matches daily/weekly JSONB pattern. Backend stores and returns as-is.
-
-### OQ-10 flag
-
-The `parentWork` section shows 14 items (all visible in source PDF). OQ-10 remains pending partner confirmation. The config comment: `// OQ-10: 14 items confirmed visible in source PDF; one may be partially obscured.`
-
-### Departures sub-table + general notes
-
-Retained from original CP-024: departures sub-table (name/admitDate/departDate/reason) and free-text notes field. Structured checklist replaces the per-section free-text areas only.
-
-### IRR-DECISIONS.md
-
-Decision recorded under "Quarterly Monitoring: Full Structured 55-Item Checklist (CP-024 Closeout)" — supersedes free-text stopgap.
-
----
-
-## STEP 3 — CP-025 Commit + Full Suite Confirmation
-
-### CP-025 commit
-
-**SHA: c22f726** — `feat(teacher-parent): parent ИРР view-only surface — progression + goals (Phase 3e, CP-025)`
-
-Commit contents: `ChildIRR.jsx` (3 parent read endpoints, aggregate-only, view-only, parentRecommendations amber box, progression score bars + trend arrows, STGs nested in period cards), `/irr` route, Sidebar/BottomNav nav entries. Audit: `audits/teacher-parent/12-phase3e-parent-irr.md`.
-
-### Suite results (CP-025 specific — run in isolation)
-
-- **IrrShell.test.jsx**: `32/32` — all phases (3a header, 3b assessment, 3c goals, 3d monitoring journals) green
-- **ChildIRR.test.jsx**: `7/7` — parent view-only (Phase 3e) all green
-
-CP-025 did NOT break any prior teacher/parent pages. The full teacher suite has 15 pre-existing failures (Settings.test.jsx loading-state mock mismatch, parentSidebar.test.jsx `/ai-warnings` link test written before S3 cleanup removed that link, AIWarnings.test.jsx parent role test) — none are caused by CP-024 or CP-025 changes.
-
----
-
-## STEP 4 — CP-024 Tests Updated for Structured Quarterly Checklist
-
-`admin/src/__tests__/pages/ManagerIRR.test.jsx` — updated to reflect structured checklist:
-
-- **Mock:** `QUARTERLY_JOURNAL_ITEMS` mocked with 2 `infoSystem` items, 1 each for other sections (6 total)
-- **Test: quarterly tab renders structured checklist items** — asserts `section-infoSystemData`, `section-parentWorkData` testids; asserts `item-info_a` and `item-info_b` (data-driven, 2 infoSystem items); toggles a checkbox to `true`
-- **Test: submit sends code→boolean JSONB shape** — asserts POST body includes `infoSystemData: { info_a: true, info_b: false }` and `parentWorkData: { par_a: false }` (the exact JSONB shape)
-- **Test: 409 duplicate-quarter toast** — unchanged, still works
-- **Test: lists existing entries** — unchanged, still works
-
-**Admin frontend suite: `30 suites / 160 tests — all green`**
-
----
-
-## Summary
-
-| Item | Result |
-|---|---|
-| Admin cross-school isolation test | ✅ 4/4 PASS — school-axis boundary HOLDS for admin role |
-| Quarterly checklist structured 52-item data-driven | ✅ Code→boolean JSONB, from config, 5 sections |
-| OQ-10 parentWork count | ⬜ 14 provisional — partner pending |
-| CP-025 SHA confirmed | ✅ c22f726 |
-| IrrShell 32/32 green | ✅ |
-| ChildIRR 7/7 green | ✅ |
-| ManagerIRR 7/7 green | ✅ |
-| Backend 125 suites / 1313 tests | ✅ |
-| Admin frontend 30 suites / 160 tests | ✅ |
-| Teacher pre-existing failures | ⚠️ 15 pre-existing (Settings, parentSidebar, AIWarnings) — not caused by CP-024/CP-025 |
-| IRR-DECISIONS.md updated | ✅ "Quarterly Monitoring: Full Structured 55-Item Checklist (CP-024 Closeout)" |
-
-**CP-024 CLOSED. CP-025 CLOSED. ИРР COMPLETE across teacher + parent + admin.**
-
-Next: consolidation/hardening pass (end-to-end human walk, PL-009 translation review, 302 lint debt), then CP-020/CP-022.
+## Close-out
+- Commit: `chore(teacher-parent): consolidation — clean test baseline + ИРР walkthrough + PL-009 scope + lint`
+- Tracker: CONSOLIDATION = ✅. Log: 15-reds resolution, walk findings count, PL-009 string count + partner-handoff, lint before/after.
+- STOP. Then CP-020 (school ratings) + CP-022 (message routing) — the displaced overhauls — then the loop's later stages.

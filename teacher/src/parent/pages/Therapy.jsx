@@ -86,9 +86,9 @@ const Therapy = () => {
   const getTherapyColor = (type) => {
     switch (type) {
       case 'music':
-        return 'bg-purple-50 text-purple-600';
+        return 'bg-p-sepia-100 text-p-brand-600';
       case 'video':
-        return 'bg-brand-50 text-brand-600';
+        return 'bg-p-sepia-50 text-p-brand-600';
       case 'content':
         return 'bg-success-50 text-success-600';
       default:
@@ -118,13 +118,13 @@ const Therapy = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          {t('therapy.title', { defaultValue: 'Foydali' })}
-        </h1>
-        <p className="text-slate-600">
+      <div className="bg-p-brand-700 rounded-xl p-6 text-white mb-2">
+        <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">
           {t('therapy.subtitle', { defaultValue: 'Musiqa, video va tavsiya bo\'limi' })}
         </p>
+        <h1 className="font-serif text-[22px] font-semibold">
+          {t('therapy.title', { defaultValue: 'Foydali' })}
+        </h1>
       </div>
 
       {/* Filters */}
@@ -136,7 +136,7 @@ const Therapy = () => {
             placeholder={t('therapy.search', { defaultValue: 'Qidirish...' })}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
           />
         </div>
         <div className="flex gap-2">
@@ -144,7 +144,7 @@ const Therapy = () => {
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'all'
-                ? 'bg-brand-600 text-white'
+                ? 'bg-p-brand-600 text-white'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
@@ -154,7 +154,7 @@ const Therapy = () => {
             onClick={() => setFilter('music')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'music'
-                ? 'bg-brand-600 text-white'
+                ? 'bg-p-brand-600 text-white'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
@@ -164,7 +164,7 @@ const Therapy = () => {
             onClick={() => setFilter('video')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'video'
-                ? 'bg-brand-600 text-white'
+                ? 'bg-p-brand-600 text-white'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
@@ -174,7 +174,7 @@ const Therapy = () => {
             onClick={() => setFilter('content')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'content'
-                ? 'bg-brand-600 text-white'
+                ? 'bg-p-brand-600 text-white'
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
@@ -185,7 +185,7 @@ const Therapy = () => {
 
       {/* Active Session */}
       {activeSession && selectedTherapy && (
-        <Card className="p-6 bg-gradient-to-r from-brand-500 to-brand-600 text-white">
+        <Card className="p-6 bg-p-brand-700 text-white">
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-bold mb-1">{selectedTherapy.title}</h3>
@@ -195,7 +195,7 @@ const Therapy = () => {
             </div>
             <button
               onClick={() => endTherapy(activeSession.id)}
-              className="px-4 py-2 bg-surface text-brand-600 rounded-lg font-semibold hover:bg-brand-50 transition-colors"
+              className="px-4 py-2 bg-p-surface text-p-brand-600 rounded-lg font-semibold hover:bg-p-sepia-50 transition-colors"
             >
               {t('therapy.end', { defaultValue: 'Yakunlash' })}
             </button>
@@ -254,7 +254,7 @@ const Therapy = () => {
                 className={`w-full py-2 rounded-lg font-semibold transition-colors ${
                   activeSession
                     ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
-                    : 'bg-brand-600 text-white hover:bg-brand-700'
+                    : 'bg-p-brand-600 text-white hover:bg-p-brand-700'
                 }`}
               >
                 {t('therapy.start', { defaultValue: 'Boshlash' })}

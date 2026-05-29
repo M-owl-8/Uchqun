@@ -247,12 +247,12 @@ const TeacherRating = () => {
             <Card className="lg:col-span-2">
               <div className="flex items-start justify-between gap-4 mb-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-brand-100 text-brand-700 font-black flex items-center justify-center text-xl">
+                  <div className="w-12 h-12 rounded-2xl bg-p-brand-50 text-p-brand-700 font-black flex items-center justify-center text-xl">
                     {teacher.firstName?.[0]}
                     {teacher.lastName?.[0]}
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-brand-600 uppercase tracking-wide">
+                    <p className="text-xs font-semibold text-p-brand-600 uppercase tracking-wide">
                       {t('ratingPage.yourTeacher')}
                     </p>
                     <h2 className="text-xl font-bold text-slate-900">
@@ -267,8 +267,8 @@ const TeacherRating = () => {
                     {t('ratingPage.average')}
                   </p>
                   <div className="flex items-center gap-2">
-                    <div className="flex items-center gap-1 text-brand-600 font-bold text-xl">
-                      <Star className="w-5 h-5 fill-brand-500 text-brand-500" />
+                    <div className="flex items-center gap-1 text-p-brand-600 font-bold text-xl">
+                      <Star className="w-5 h-5 fill-p-brand-500 text-p-brand-500" />
                       {summary.average?.toFixed(1) || '0.0'}
                     </div>
                     <span className="text-xs text-slate-500">
@@ -300,8 +300,8 @@ const TeacherRating = () => {
                         onClick={() => setStars(value)}
                         className={`p-3 rounded-2xl border transition-colors ${
                           stars >= value
-                            ? 'bg-brand-50 border-brand-200 text-brand-600'
-                            : 'bg-surface border-slate-200 text-slate-400 hover:border-brand-200 hover:text-brand-500'
+                            ? 'bg-p-brand-50 border-p-brand-200 text-p-brand-600'
+                            : 'bg-p-surface border-slate-200 text-slate-400 hover:border-p-brand-200 hover:text-p-brand-500'
                         }`}
                       >
                         <Star
@@ -324,7 +324,7 @@ const TeacherRating = () => {
                     onChange={(e) => setComment(e.target.value)}
                     rows={4}
                     placeholder={t('ratingPage.commentPlaceholder')}
-                    className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                    className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   />
                 </div>
 
@@ -350,7 +350,7 @@ const TeacherRating = () => {
                     type="button"
                     onClick={handleSubmit}
                     disabled={saving}
-                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-p-brand-600 text-white font-semibold hover:bg-p-brand-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                   >
                     {saving && <LoadingSpinner size="sm" />}
                     {rating ? t('ratingPage.update') : t('ratingPage.submit')}
@@ -362,7 +362,7 @@ const TeacherRating = () => {
             <div className="space-y-4">
               <Card className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-brand-50 text-brand-600">
+                  <div className="p-2 rounded-xl bg-p-brand-50 text-p-brand-600">
                     <MessageSquare className="w-5 h-5" />
                   </div>
                   <div>
@@ -390,7 +390,7 @@ const TeacherRating = () => {
                 <p className="text-sm font-semibold text-slate-900">{t('ratingPage.summaryTitle')}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-brand-500 fill-brand-500" />
+                    <Star className="w-5 h-5 text-p-brand-500 fill-p-brand-500" />
                     <div>
                       <p className="text-xl font-bold text-slate-900">{summary.average?.toFixed(1) || '0.0'}</p>
                       <p className="text-xs text-slate-500">{t('ratingPage.average')}</p>
@@ -410,7 +410,7 @@ const TeacherRating = () => {
       {/* School Rating Section — 5-indicator form (CP-020) */}
       {school ? (
         <>
-          <Card className="bg-gradient-to-r from-green-500 to-green-400 rounded-2xl p-6 md:p-8 shadow-xl border-0">
+          <Card className="bg-p-honey-500 rounded-2xl p-6 md:p-8 shadow-xl border-0">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">{t('schoolRatingPage.title')}</h2>
             <p className="text-white/90 text-sm md:text-base">{t('schoolRatingPage.subtitle')}</p>
           </Card>
@@ -420,11 +420,11 @@ const TeacherRating = () => {
               {/* School header */}
               <div className="flex items-start justify-between gap-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-success-100 text-success-700 font-black flex items-center justify-center text-xl">
+                  <div className="w-12 h-12 rounded-2xl bg-p-honey-100 text-p-honey-700 font-black flex items-center justify-center text-xl">
                     <Building2 className="w-6 h-6" />
                   </div>
                   <div>
-                    <p className="text-xs font-semibold text-success-600 uppercase tracking-wide">
+                    <p className="text-xs font-semibold text-p-honey-700 uppercase tracking-wide">
                       {t('schoolRatingPage.yourSchool')}
                     </p>
                     <h2 className="text-xl font-bold text-slate-900">{school.name}</h2>
@@ -435,8 +435,8 @@ const TeacherRating = () => {
                   <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
                     {t('schoolRatingPage.average')}
                   </p>
-                  <div className="flex items-center gap-1 text-success-600 font-bold text-xl">
-                    <Star className="w-5 h-5 fill-green-500 text-success-500" />
+                  <div className="flex items-center gap-1 text-p-honey-700 font-bold text-xl">
+                    <Star className="w-5 h-5 fill-p-honey-500 text-p-honey-500" />
                     {schoolSummary.average?.toFixed(1) || '0.0'}
                   </div>
                   <span className="text-xs text-slate-500">
@@ -448,7 +448,7 @@ const TeacherRating = () => {
               {/* 5-indicator sliders — PL-015 GATE: labels are placeholders */}
               <div className="space-y-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
-                  <BarChart3 className="w-4 h-4 text-success-600" />
+                  <BarChart3 className="w-4 h-4 text-p-honey-700" />
                   {t('schoolRatingPage.indicatorsLabel', { defaultValue: "Ko'rsatkichlar bo'yicha baho" })}
                 </div>
                 {PARENT_INDICATORS.map((ind) => (
@@ -458,7 +458,7 @@ const TeacherRating = () => {
                         {ind[i18n.language] || ind.en}
                       </label>
                       <span
-                        className="text-sm font-bold text-success-700 min-w-[3rem] text-right"
+                        className="text-sm font-bold text-p-honey-700 min-w-[3rem] text-right"
                         data-testid={`score-${ind.key}`}
                       >
                         {schoolIndicators[ind.key]} / 5
@@ -473,7 +473,7 @@ const TeacherRating = () => {
                       onChange={(e) =>
                         setSchoolIndicators((prev) => ({ ...prev, [ind.key]: Number(e.target.value) }))
                       }
-                      className="w-full accent-green-600 cursor-pointer"
+                      className="w-full accent-p-honey-700 cursor-pointer"
                       data-testid={`slider-${ind.key}`}
                       aria-label={ind[i18n.language] || ind.en}
                     />
@@ -500,7 +500,7 @@ const TeacherRating = () => {
                   rows={4}
                   required
                   placeholder={t('schoolRatingPage.commentPlaceholder')}
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-honey-500 focus:border-transparent"
                   data-testid="school-comment"
                 />
               </div>
@@ -518,7 +518,7 @@ const TeacherRating = () => {
                   onClick={handleSchoolSubmit}
                   disabled={savingSchool}
                   data-testid="school-submit"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-success-600 text-white font-semibold hover:bg-success-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-p-honey-500 text-white font-semibold hover:bg-p-honey-700 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   {savingSchool && <LoadingSpinner size="sm" />}
                   {schoolRating ? t('schoolRatingPage.update') : t('schoolRatingPage.submit')}
@@ -530,7 +530,7 @@ const TeacherRating = () => {
             <div className="space-y-4">
               <Card className="space-y-3">
                 <div className="flex items-center gap-3">
-                  <div className="p-2 rounded-xl bg-success-50 text-success-600">
+                  <div className="p-2 rounded-xl bg-p-honey-100 text-p-honey-700">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
                   <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.yourRating')}</p>
@@ -541,7 +541,7 @@ const TeacherRating = () => {
                     {PARENT_INDICATORS.map((ind) => (
                       <div key={ind.key} className="flex items-center justify-between text-sm">
                         <span className="text-slate-600 truncate max-w-[70%]">{ind[i18n.language] || ind.en}</span>
-                        <span className="font-semibold text-success-700">
+                        <span className="font-semibold text-p-honey-700">
                           {schoolRating.indicators[ind.key] ?? '—'} / 5
                         </span>
                       </div>
@@ -562,7 +562,7 @@ const TeacherRating = () => {
                 <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.summaryTitle')}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Star className="w-5 h-5 text-success-500 fill-green-500" />
+                    <Star className="w-5 h-5 text-p-honey-500 fill-p-honey-500" />
                     <div>
                       <p className="text-xl font-bold text-slate-900">{schoolSummary.average?.toFixed(1) || '0.0'}</p>
                       <p className="text-xs text-slate-500">{t('schoolRatingPage.average')}</p>
@@ -581,7 +581,7 @@ const TeacherRating = () => {
         </>
       ) : (
         <Card className="flex items-start gap-3">
-          <div className="p-2 rounded-full bg-success-50 text-success-600">
+          <div className="p-2 rounded-full bg-p-honey-100 text-p-honey-700">
             <Building2 className="w-5 h-5" />
           </div>
           <div>

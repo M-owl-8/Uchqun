@@ -181,25 +181,25 @@ const ChildIRR = () => {
               return (
                 <div key={s.id} data-testid={`session-row-${s.id}`} className="flex items-center gap-4">
                   <div className="w-36 shrink-0">
-                    <p className="text-sm font-semibold text-slate-700">{sessionLabel(s.sessionType)}</p>
+                    <p className="text-sm font-semibold text-p-ink">{sessionLabel(s.sessionType)}</p>
                     {s.completedAt && (
-                      <p className="text-xs text-slate-400">
+                      <p className="text-xs text-p-sepia-400">
                         {new Date(s.completedAt).toLocaleDateString()}
                       </p>
                     )}
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-2 mb-1.5">
-                      <span className="text-sm font-bold text-slate-900">{s.totalScore}</span>
-                      <span className="text-xs text-slate-400">/ {s.maxPossibleScore || MAX_SCORE}</span>
-                      {trend === 'up' && <TrendingUp className="w-4 h-4 text-success-600" aria-label="ошди" />}
-                      {trend === 'down' && <TrendingDown className="w-4 h-4 text-amber-500" aria-label="камайди" />}
+                      <span className="text-sm font-bold text-p-ink">{s.totalScore}</span>
+                      <span className="text-xs text-p-sepia-400">/ {s.maxPossibleScore || MAX_SCORE}</span>
+                      {trend === 'up' && <TrendingUp className="w-4 h-4 text-p-honey-700" aria-label="ошди" />}
+                      {trend === 'down' && <TrendingDown className="w-4 h-4 text-p-sepia-400" aria-label="камайди" />}
                       {trend === 'stable' && <Minus className="w-4 h-4 text-slate-400" aria-label="ўзгармади" />}
                     </div>
-                    <div className="w-full bg-slate-100 rounded-full h-2">
+                    <div className="w-full bg-p-sepia-100 rounded-full h-2">
                       <div
                         className={`h-2 rounded-full transition-all duration-500 ${
-                          pct >= 60 ? 'bg-success-500' : pct >= 30 ? 'bg-brand-500' : 'bg-amber-400'
+                          pct >= 60 ? 'bg-p-honey-500' : pct >= 30 ? 'bg-p-brand-500' : 'bg-p-honey-300'
                         }`}
                         style={{ width: `${pct}%` }}
                       />
@@ -225,7 +225,7 @@ const ChildIRR = () => {
                 data-testid={`ltg-row-${ltg.id}`}
                 className="p-4 bg-p-brand-50 rounded-xl border border-p-brand-100"
               >
-                <p className="text-xs font-semibold text-brand-500 uppercase tracking-wide mb-1">
+                <p className="text-xs font-semibold text-p-brand-500 uppercase tracking-wide mb-1">
                   {skillLabel(ltg.skillArea, i18n.language)}
                 </p>
                 <p className="text-sm font-medium text-slate-800">{ltg.goalText}</p>
@@ -254,7 +254,7 @@ const ChildIRR = () => {
                 <div className="flex items-center justify-between mb-3">
                   <h3 className="font-bold text-slate-800">{period.periodLabel}</h3>
                   {period.signedAt && (
-                    <span className="text-xs text-success-600 font-semibold bg-success-50 px-2 py-1 rounded-lg">
+                    <span className="text-xs text-p-honey-700 font-semibold bg-p-honey-100 px-2 py-1 rounded-lg">
                       {t('irr.signed', { defaultValue: 'Тасдиқланган' })}
                     </span>
                   )}
@@ -319,7 +319,7 @@ const ChildIRR = () => {
 
       {/* Empty data state (IRR exists but no sessions and no goals yet) */}
       {irr && sessions.length === 0 && !goals?.longTermGoals?.length && !goals?.periods?.length && (
-        <div className="bg-surface rounded-[2rem] p-10 text-center shadow-sm border border-slate-100">
+        <div className="bg-p-surface rounded-[2rem] p-10 text-center shadow-sm border border-p-sepia-100">
           <p className="text-slate-500 font-medium">
             {t('irr.noData', { defaultValue: 'Режа тузилган, аммо ҳали баҳолаш ўтказилмаган.' })}
           </p>

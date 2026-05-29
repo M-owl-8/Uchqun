@@ -54,11 +54,11 @@ const AIWarnings = () => {
       case 'critical':
         return 'bg-error-100 text-error-800 border-error-300';
       case 'high':
-        return 'bg-orange-100 text-orange-800 border-orange-300';
+        return 'bg-warning-100 text-warning-800 border-warning-300';
       case 'medium':
         return 'bg-warning-100 text-warning-800 border-yellow-300';
       default:
-        return 'bg-brand-100 text-brand-800 border-brand-300';
+        return 'bg-p-sepia-100 text-p-ink border-p-sepia-300';
     }
   };
 
@@ -98,13 +98,13 @@ const AIWarnings = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
-          {t('warnings.title', { defaultValue: 'AI Ogohlantirishlar' })}
-        </h1>
-        <p className="text-slate-600">
+      <div className="bg-p-brand-700 rounded-xl p-6 text-white">
+        <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">
           {t('warnings.subtitle', { defaultValue: 'Reytinglar asosida yaratilgan ogohlantirishlar' })}
         </p>
+        <h1 className="font-serif text-[22px] font-semibold">
+          {t('warnings.title', { defaultValue: 'AI Ogohlantirishlar' })}
+        </h1>
       </div>
 
       {/* Filters */}
@@ -113,7 +113,7 @@ const AIWarnings = () => {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'all'
-              ? 'bg-brand-600 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
@@ -123,7 +123,7 @@ const AIWarnings = () => {
           onClick={() => setFilter('unresolved')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'unresolved'
-              ? 'bg-brand-600 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
@@ -133,7 +133,7 @@ const AIWarnings = () => {
           onClick={() => setFilter('resolved')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'resolved'
-              ? 'bg-brand-600 text-white'
+              ? 'bg-p-brand-600 text-white'
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
@@ -164,8 +164,8 @@ const AIWarnings = () => {
                   </div>
                   <p className="text-slate-700 mb-3">{warning.message}</p>
                   {warning.aiAnalysis && (
-                    <div className="p-3 bg-brand-50 rounded-lg mb-3">
-                      <p className="text-sm text-brand-900">
+                    <div className="p-3 bg-p-sepia-50 rounded-lg mb-3">
+                      <p className="text-sm text-p-ink">
                         <strong>{t('warnings.aiAnalysis', { defaultValue: 'AI Tahlil' })}:</strong>{' '}
                         {warning.aiAnalysis}
                       </p>

@@ -67,7 +67,11 @@ const Chat = () => {
     const trimmed = input.trim();
     if (!trimmed) return;
     if (!conversationId) return;
-    await addMessage('parent', trimmed, conversationId);
+    const result = await addMessage('parent', trimmed, conversationId);
+    if (!result) {
+      toastError(t('chat.sendFailed', { defaultValue: 'Xabar yuborilmadi. Qaytadan urining.' }));
+      return;
+    }
     justSentRef.current = true;
     const msgs = await loadMessages(conversationId);
     setMessages(Array.isArray(msgs) ? msgs : []);
@@ -118,7 +122,7 @@ const Chat = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-4 -mb-16 lg:mb-0">
-      <Card className="bg-gradient-to-r from-brand-500 to-brand-400 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-4">
+      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-4">
         <div className="flex items-center gap-3 mb-2">
           <MessageCircle className="w-6 h-6 text-white" />
           <h1 className="text-2xl md:text-3xl font-bold text-white">{t('chat.title')}</h1>
@@ -126,7 +130,7 @@ const Chat = () => {
         <p className="text-white/90 text-sm md:text-base">{t('chat.subtitle')}</p>
       </Card>
 
-      <Card className="bg-surface/95 backdrop-blur-sm h-[calc(100vh-220px)] min-h-[420px] lg:h-[60vh] flex flex-col relative shadow-xl">
+      <Card className="bg-p-surface/95 backdrop-blur-sm h-[calc(100vh-220px)] min-h-[420px] lg:h-[60vh] flex flex-col relative shadow-xl">
         <div
           ref={messagesWrapRef}
           className="flex-1 overflow-y-auto p-4 space-y-3"
@@ -150,7 +154,7 @@ const Chat = () => {
               >
                 <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm border ${
                   isYou
-                    ? 'bg-brand-50 text-brand-900 border-brand-100'
+                    ? 'bg-p-sepia-50 text-p-ink border-p-sepia-200'
                     : 'bg-slate-100 text-slate-900 border-slate-200'
                 }`}>
                   <div className="flex items-start justify-between gap-3">
@@ -191,7 +195,7 @@ const Chat = () => {
                       <textarea
                         value={editValue}
                         onChange={(e) => setEditValue(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-surface"
+                        className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-p-brand-500 focus:border-transparent bg-p-surface"
                         rows={3}
                       />
                       <div className="flex items-center justify-end gap-2">
@@ -209,7 +213,7 @@ const Chat = () => {
                         </button>
                         <button
                           type="button"
-                          className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700"
+                          className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-p-brand-600 text-white hover:bg-p-brand-700"
                           onClick={() => handleSaveEdit(msg.id)}
                           disabled={busyId === msg.id || !editValue.trim()}
                         >
@@ -231,7 +235,7 @@ const Chat = () => {
         {!isAtBottom && sorted.length > 0 && (
           <button
             type="button"
-            className="absolute bottom-16 right-4 w-11 h-11 rounded-full bg-surface border border-slate-200 shadow-lg flex items-center justify-center hover:bg-slate-50"
+            className="absolute bottom-16 right-4 w-11 h-11 rounded-full bg-p-surface border border-slate-200 shadow-lg flex items-center justify-center hover:bg-slate-50"
             aria-label={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
             title={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
             onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
@@ -246,7 +250,7 @@ const Chat = () => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={t('chat.placeholder')}
-            className="flex-1 h-12 rounded-xl border border-slate-200 px-4 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            className="flex-1 h-12 rounded-xl border border-slate-200 px-4 focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
@@ -256,7 +260,7 @@ const Chat = () => {
           />
           <button
             onClick={handleSend}
-            className="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-brand-600 text-white hover:bg-brand-700 transition-colors"
+            className="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-p-brand-600 text-white hover:bg-p-brand-700 transition-colors"
             aria-label={t('chat.send')}
             title={t('chat.send')}
           >
@@ -267,7 +271,7 @@ const Chat = () => {
 
       {confirmDeleteId && (
         <div className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-surface rounded-2xl shadow-xl border border-slate-200 p-5">
+          <div className="w-full max-w-sm bg-p-surface rounded-2xl shadow-xl border border-slate-200 p-5">
             <div className="text-lg font-bold text-slate-900">
               {t('chat.delete', { defaultValue: 'Delete' })}
             </div>

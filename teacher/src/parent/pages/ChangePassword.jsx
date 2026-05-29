@@ -58,12 +58,12 @@ const ParentChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-cream flex items-center justify-center p-4">
+    <div className="min-h-screen bg-p-paper flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-surface rounded-xl border border-slate-200 shadow-sm p-8">
+        <div className="bg-p-surface rounded-xl border border-slate-200 shadow-sm p-8">
           <div className="flex justify-center mb-6">
-            <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center">
-              <Lock className="w-6 h-6 text-brand-600" />
+            <div className="w-12 h-12 rounded-full bg-p-sepia-100 flex items-center justify-center">
+              <Lock className="w-6 h-6 text-p-brand-600" />
             </div>
           </div>
 
@@ -94,7 +94,7 @@ const ParentChangePassword = () => {
                     value={form[key]}
                     onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                     required
-                    className="w-full h-10 px-3.5 pr-10 text-sm bg-surface border border-slate-300 rounded-md text-slate-900 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
+                    className="w-full h-10 px-3.5 pr-10 text-sm bg-p-surface border border-slate-300 rounded-md text-slate-900 focus:outline-none focus:ring-2 focus:ring-p-brand-600/30 focus:border-p-brand-600"
                     autoComplete={key === 'currentPassword' ? 'current-password' : 'new-password'}
                   />
                   <button
@@ -113,7 +113,7 @@ const ParentChangePassword = () => {
             <button
               type="submit"
               disabled={saving}
-              className="w-full inline-flex items-center justify-center h-11 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-white rounded-md shadow-xs transition-colors"
+              className="w-full inline-flex items-center justify-center h-11 px-4 text-sm font-medium bg-p-brand-600 hover:bg-p-brand-700 disabled:opacity-50 text-white rounded-md shadow-xs transition-colors"
             >
               {saving
                 ? t('common.loading', { defaultValue: 'Loading...' })

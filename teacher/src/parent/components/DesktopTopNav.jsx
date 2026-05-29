@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BookOpen, MessageCircle, User } from 'lucide-react';
+import { Home, BookOpen, MessageCircle, User, Bell, Settings } from 'lucide-react';
 import ChildSwitcher from './ChildSwitcher';
+import { useNotification } from '../context/NotificationContext';
 
 const NAV_LINKS = [
   { label: 'Bugun',    href: '/',           icon: Home          },
@@ -11,6 +12,7 @@ const NAV_LINKS = [
 
 const DesktopTopNav = () => {
   const location = useLocation();
+  const { count = 0 } = useNotification();
 
   const isActive = (href) =>
     href === '/' ? location.pathname === '/' : location.pathname.startsWith(href);
@@ -46,7 +48,26 @@ const DesktopTopNav = () => {
           })}
         </nav>
 
-        <div className="ml-auto">
+        <div className="ml-auto flex items-center gap-1">
+          <Link
+            to="/notifications"
+            className="relative p-2 rounded-md text-p-sepia-500 hover:bg-p-sepia-100 hover:text-p-ink transition-colors"
+            aria-label="Bildirishnomalar"
+          >
+            <Bell className="w-4 h-4" />
+            {count > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-p-brand-600 text-white text-[9px] leading-none font-bold rounded-full px-1 py-0.5 border border-p-paper">
+                {count > 9 ? '9+' : count}
+              </span>
+            )}
+          </Link>
+          <Link
+            to="/settings"
+            className="p-2 rounded-md text-p-sepia-500 hover:bg-p-sepia-100 hover:text-p-ink transition-colors"
+            aria-label="Sozlamalar"
+          >
+            <Settings className="w-4 h-4" />
+          </Link>
           <ChildSwitcher compact />
         </div>
       </div>

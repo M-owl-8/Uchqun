@@ -12,7 +12,7 @@ const EmotionalMonitoringSection = ({ records }) => {
   if (!records || records.length === 0) return null;
 
   return (
-    <section className="bg-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
+    <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
       <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
         <Heart className="w-6 h-6 text-pink-600" />
         {t('profile.monitoringJournal', { defaultValue: 'Monitoring Journal' })}
@@ -40,7 +40,7 @@ const EmotionalMonitoringSection = ({ records }) => {
                   )}
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-bold text-brand-600">{percentage}%</div>
+                  <div className="text-2xl font-bold text-p-brand-600">{percentage}%</div>
                   <div className="text-xs text-slate-500">{checkedCount} / {totalCount}</div>
                 </div>
               </div>

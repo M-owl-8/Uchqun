@@ -77,6 +77,7 @@
   "CHILD_TRANSFER_SAME_SCHOOL": "Bola allaqachon ushbu maktabda.",
   "CHILD_TRANSFER_SCHOOL_NOT_FOUND": "Maqsad maktab topilmadi.",
   "CHILD_TRANSFER_FAILED": "Ko'chirish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
+  "LOGIN_RATE_LIMITED": "Juda ko'p muvaffaqiyatsiz urinish. Iltimos, bir necha daqiqa kuting va qayta urinib ko'ring.",
   "ACCOUNT_NOT_ACTIVE": "Sizning hisobingiz to'xtatildi. Maktab administratoringizga murojaat qiling.",
   "PARENT_SUSPEND_FORBIDDEN": "Faqat administratorlar ota-ona hisoblarini to'xtatishi mumkin.",
   "PARENT_ACTIVATE_FORBIDDEN": "Faqat administratorlar ota-ona hisoblarini qayta faollashtirishi mumkin.",

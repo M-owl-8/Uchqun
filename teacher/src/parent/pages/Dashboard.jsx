@@ -11,7 +11,7 @@ import * as cache from '../../../../shared/utils/cache';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ChildSwitcher from '../components/ChildSwitcher';
 import DayCard from '../components/DayCard';
-import { Bell, Activity, UtensilsCrossed, Camera, Star, HeartPulse, ChevronRight } from 'lucide-react';
+import { Bell, Activity, UtensilsCrossed, Camera, Star, HeartPulse, ChevronRight, TrendingUp, Dumbbell, HelpCircle } from 'lucide-react';
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -124,6 +124,9 @@ const Dashboard = () => {
     { title: t('dashboard.media') || 'Rasm',                    value: stats?.media || 0,        icon: Camera,          href: '/media' },
     { title: t('dashboard.childStatus') || 'Hissiy holat',      value: `${stats?.childStatusScore || 0}%`, icon: HeartPulse, href: '/child' },
     { title: t('dashboard.teacherRating') || 'Baholash',        value: `${stats?.teacherRating || '0.0'} (${stats?.teacherRatingCount || 0})`, icon: Star, href: '/rating' },
+    { title: t('dashboard.irr') || 'ИРР — Ривожланиш режаси',  value: '',                       icon: TrendingUp,      href: '/irr' },
+    { title: t('dashboard.therapy') || 'Foydali materiallar',   value: '',                       icon: Dumbbell,        href: '/therapy' },
+    { title: t('dashboard.help') || 'Yordam',                   value: '',                       icon: HelpCircle,      href: '/help' },
   ];
 
   return (
