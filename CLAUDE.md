@@ -101,6 +101,10 @@ Error codes follow the pattern `<FEATURE>_<CONDITION>`, e.g. `OBSERVATION_CHILD_
 
 **Grandfather clause:** existing endpoints that return `{ error: '<string>' }` are NOT required to migrate immediately. They migrate opportunistically when next touched for any reason. New endpoints and refactors MUST use the new shape. Do NOT silently change an existing endpoint's shape — it will break the consuming UI.
 
+## Test Accounts (Railway)
+
+Seeded 31 accounts for all roles. Password: `Test@2026`. See `credentials.md` for emails and login details, `demo-profile.md` for full demo profiles (names, phones, children diagnoses, ПТПК IRR creation values).
+
 ## Deployment
 - Backend → Railway (auto-deploy on `main` push via `.github/workflows/railway-deploy.yml`)
 - Frontends → Netlify / Vercel
