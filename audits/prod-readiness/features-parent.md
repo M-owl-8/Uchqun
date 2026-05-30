@@ -2,8 +2,8 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 106 (✅ 51 · 🟡 54 · ❌ 1 · 🚧 0)  
-**Last verified:** 2026-05-30 — S2 session 1 (P-001–P-020): 15 newly ✅ + 1 ❌ + 1 🟡 confirmed blocked
+**Total features:** 106 (✅ 60 · 🟡 45 · ❌ 1 · 🚧 0)  
+**Last verified:** 2026-05-30 — S3 session 2 (P-021–P-040): 9 newly ✅ + 0 ❌ + 8 🟡 confirmed data-blocked
 
 ---
 ## 1. Auth & Onboarding
@@ -55,12 +55,12 @@
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
 | P-021 | Select child from list | teacher/src/parent/pages/ChildProfile.jsx:194-219 | ✅ | If parent has 2+ children and none selected, show list of children; click → selectChild → reload page |
-| P-022 | View child basic info (hero section) | teacher/src/parent/pages/ChildProfile.jsx:267-276 | 🟡 | See child photo (with upload modal), name, assigned teacher, school, group |
-| P-023 | Upload child avatar | teacher/src/parent/pages/childProfile/AvatarUploadModal.jsx | 🟡 | Click photo → modal with 4 avatar choices → select → POST /child/avatar → toast success + photo updates |
-| P-024 | View child basic info (card) | teacher/src/parent/pages/ChildProfile.jsx:279-289 | 🟡 | Card with name, date of birth, diagnosis (disability type), assigned teacher |
-| P-025 | View special needs description | teacher/src/parent/pages/ChildProfile.jsx:291-297 | 🟡 | Read-only text card displaying child's special needs from DB |
-| P-026 | View emotional monitoring records | teacher/src/parent/pages/ChildProfile.jsx:299 | 🟡 | Latest emotional monitoring snapshot: emotionalState fields (% completion) |
-| P-027 | View weekly stats (activities/meals/media) | teacher/src/parent/pages/ChildProfile.jsx:301-309 | 🟡 | Dark card showing 7-day rolling counts for activities, meals, media |
+| P-022 | View child basic info (hero section) | teacher/src/parent/pages/ChildProfile.jsx:267-276 | ✅ | See child photo (with upload modal), name, assigned teacher, school, group |
+| P-023 | Upload child avatar | teacher/src/parent/pages/childProfile/AvatarUploadModal.jsx | ✅ | Click photo → file-upload modal "Rasm yuklash" → select from gallery → PUT /child/:id {photoBase64} → toast success. ⚠️ Spec said "4 avatar choices" — actual impl is direct file upload (no pre-built avatars). |
+| P-024 | View child basic info (card) | teacher/src/parent/pages/ChildProfile.jsx:279-289 | ✅ | Card with name, date of birth, diagnosis (disability type), assigned teacher |
+| P-025 | View special needs description | teacher/src/parent/pages/ChildProfile.jsx:291-297 | ✅ | Read-only text card displaying child's special needs from DB |
+| P-026 | View emotional monitoring records | teacher/src/parent/pages/ChildProfile.jsx:299 | 🟡 | DATA-BLOCKED: EmotionalMonitoringSection.jsx:12 returns null when records.length === 0. Need teacher to create ≥1 monitoring record for Bobur. |
+| P-027 | View weekly stats (activities/meals/media) | teacher/src/parent/pages/ChildProfile.jsx:301-309 | ✅ | Dark card showing 7-day rolling counts for activities, meals, media (0/0/0 empty state verified) |
 | P-028 | Account action buttons (IRR, Settings, Govt Message, View Messages) | teacher/src/parent/pages/ChildProfile.jsx:324-366 | ✅ | 4-5 action buttons in account section; click → navigate or open modal |
 
 ---
@@ -68,30 +68,30 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| P-029 | List all child's activities (cards) | teacher/src/parent/pages/Activities.jsx:72-183 | 🟡 | Grid of activity cards with skill name, start/end dates, teacher, services pills |
+| P-029 | List all child's activities (cards) | teacher/src/parent/pages/Activities.jsx:72-183 | 🟡 | DATA-BLOCKED: No activities seeded for Bobur. Page loads, empty state renders. Card layout unverifiable without data. |
 | P-030 | View activity detail modal | teacher/src/parent/pages/Activities.jsx:173-179 · 192-334 | ✅ | Click "Batafsil" button → full modal with goal, dates, tasks, methods, progress, observation, services |
-| P-031 | Empty state for activities | teacher/src/parent/pages/Activities.jsx:185-189 | 🟡 | No activities → show "Faoliyatlar yo'q" message with icon |
+| P-031 | Empty state for activities | teacher/src/parent/pages/Activities.jsx:185-189 | ✅ | "Hozircha ushbu turdagi mashg'ulotlar yo'q" with document-X icon — verified screenshot |
 
 ---
 ## 7. Meals
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| P-032 | List meals for selected date | teacher/src/parent/pages/Meals.jsx:101-203 | 🟡 | Show all meals for one day with type (Breakfast/Lunch/Snack/Dinner), name, time, eaten status, quantity, special notes |
-| P-033 | Select date from dropdown | teacher/src/parent/pages/Meals.jsx:131-149 | 🟡 | Dropdown of available meal dates (latest first); select one → filter meals to that date |
-| P-034 | Meal eaten/not eaten indicator | teacher/src/parent/pages/Meals.jsx:185-188 | 🟡 | Green checkmark if meal.eaten; red X if not; label changes |
-| P-035 | Daily nutrition summary card | teacher/src/parent/pages/Meals.jsx:212-245 | 🟡 | Dark card showing total meals, eaten count (green), skipped count (red), quality stars |
-| P-036 | Empty state for meals | teacher/src/parent/pages/Meals.jsx:204-208 | 🟡 | No meals → show utensils icon + "Ovqatlar yo'q" |
+| P-032 | List meals for selected date | teacher/src/parent/pages/Meals.jsx:101-203 | 🟡 | DATA-BLOCKED: No meals seeded for Bobur. Page loads. Card layout unverifiable. |
+| P-033 | Select date from dropdown | teacher/src/parent/pages/Meals.jsx:131-149 | ✅ | "KUNNI TANLANG" date selector renders (Playwright confirmed visible); no options because no meals seeded — correct behavior |
+| P-034 | Meal eaten/not eaten indicator | teacher/src/parent/pages/Meals.jsx:185-188 | 🟡 | DATA-BLOCKED: Requires meals with eaten/not-eaten records. |
+| P-035 | Daily nutrition summary card | teacher/src/parent/pages/Meals.jsx:212-245 | 🟡 | DATA-BLOCKED: Requires meal records. |
+| P-036 | Empty state for meals | teacher/src/parent/pages/Meals.jsx:204-208 | ✅ | Fork+knife icon + "Bu kunda taomlar qayd etilmagan" — verified screenshot |
 
 ---
 ## 8. Media (Photos & Videos)
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| P-037 | Grid view of media (photos + videos) | teacher/src/parent/pages/Media.jsx:534-621 | 🟡 | Responsive grid (1-4 cols) of media thumbnails with type badge (photo/video) |
-| P-038 | Filter media by type (all/photo/video) | teacher/src/parent/pages/Media.jsx:509-529 | 🟡 | 3 filter buttons with glassmorphic style; click → show only media of that type |
-| P-039 | Video preview on hover | teacher/src/parent/pages/Media.jsx:553-575 | 🟡 | Hover over video thumbnail → play preview (muted, looping); show play icon overlay |
-| P-040 | Open media in fullscreen modal | teacher/src/parent/pages/Media.jsx:651-668 | 🟡 | Click thumbnail → large modal with image or video player (title, date, description in sidebar) |
+| P-037 | Grid view of media (photos + videos) | teacher/src/parent/pages/Media.jsx:534-621 | 🟡 | DATA-BLOCKED: No media seeded for Bobur. Grid layout unverifiable. |
+| P-038 | Filter media by type (all/photo/video) | teacher/src/parent/pages/Media.jsx:509-529 | ✅ | Code: 3 filter buttons (all/photo/video) at Media.jsx:511-514. On 375px mobile, text labels are `hidden sm:inline` so only icons show. Filter state mechanism confirmed built. |
+| P-039 | Video preview on hover | teacher/src/parent/pages/Media.jsx:553-575 | 🟡 | DATA-BLOCKED: Requires video media items in grid. |
+| P-040 | Open media in fullscreen modal | teacher/src/parent/pages/Media.jsx:651-668 | 🟡 | DATA-BLOCKED: Requires media items to click. |
 | P-041 | Custom video player (play/pause, volume, skip, progress) | teacher/src/parent/pages/Media.jsx:62-444 | 🟡 | Play/pause, skip ±10s, mute, volume slider, progress bar, time display; auto-hide controls |
 | P-042 | YouTube & Vimeo embed support | teacher/src/parent/pages/Media.jsx:46-59, 213-258 | 🟡 | Detect YT/Vimeo URLs → embed iframe (fullscreen allowed) |
 | P-043 | Appwrite proxy for videos | teacher/src/parent/pages/Media.jsx:26-43 | 🟡 | Convert Appwrite storage URL to /api/media/proxy/ID → use in video src |
