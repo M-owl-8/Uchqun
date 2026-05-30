@@ -64,7 +64,7 @@ export async function up(queryInterface) {
       CASE WHEN t.use_school THEN s.id ELSE NULL END,
       CASE WHEN t.use_school THEN s.id ELSE NULL END,
       jsonb_build_object('seed', '${SEED_MARKER}', 'seq', t.seq),
-      NOW() - (t.seq || ' hours')::interval
+      NOW() - (t.seq::text || ' hours')::interval
     FROM (VALUES
       (1,  'view_schools_list',        'school',                    false),
       (2,  'view_school_detail',       'school',                    true),
