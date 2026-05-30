@@ -266,13 +266,15 @@ export const createAssessmentSession = async (req, res) => {
       return res.status(400).json({ success: false, error: { code: scoring.error } });
     }
 
+    const completedAtDate = completedAt ? new Date(completedAt) : new Date();
     const session = await AssessmentSession.create({
       irrId: irr.id,
       childId: irr.childId,
       schoolId: irr.schoolId,
       sessionType,
       completedBy: req.user.id,
-      completedAt: completedAt || new Date(),
+      completedAt: completedAtDate,
+      assessmentDate: completedAtDate.toISOString().split('T')[0],
       isHearingImpaired: isHearingImpaired ?? false,
       totalScore: scoring.totalScore,
       maxPossibleScore: scoring.maxPossibleScore,
