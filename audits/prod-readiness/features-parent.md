@@ -2,19 +2,20 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 106 (✅ 36 · 🟡 70 · ❌ 0 · 🚧 0)
+**Total features:** 106 (✅ 51 · 🟡 54 · ❌ 1 · 🚧 0)  
+**Last verified:** 2026-05-30 — S2 session 1 (P-001–P-020): 15 newly ✅ + 1 ❌ + 1 🟡 confirmed blocked
 
 ---
 ## 1. Auth & Onboarding
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| P-001 | Login with email+password | backend/routes/authRoutes.js:13 · teacher/src/pages/Login.jsx | 🟡 | Log in as parent1@uchqun.uz with password, expect JWT cookie + redirect to dashboard |
-| P-002 | Refresh JWT token | backend/routes/authRoutes.js:15 · teacher/src/shared/context/AuthContext.jsx | 🟡 | Navigate away and back; expect token silently refreshed |
-| P-003 | Logout | backend/routes/authRoutes.js:18 · teacher/src/parent/pages/childProfile/LogoutModal.jsx:30 | 🟡 | Click Exit button in profile, confirm modal → POST /logout → redirect to /login |
+| P-001 | Login with email+password | backend/routes/authRoutes.js:13 · teacher/src/pages/Login.jsx | ✅ | Log in as parent1@uchqun.uz with password, expect JWT cookie + redirect to dashboard |
+| P-002 | Refresh JWT token | backend/routes/authRoutes.js:15 · teacher/src/shared/context/AuthContext.jsx | ✅ | Navigate away and back; expect token silently refreshed |
+| P-003 | Logout | backend/routes/authRoutes.js:18 · teacher/src/parent/pages/childProfile/LogoutModal.jsx:30 | ✅ | Click Exit button in profile, confirm modal → POST /logout → redirect to /login |
 | P-004 | Change password (first login) | backend/routes/authRoutes.js:16 · teacher/src/parent/pages/ChangePassword.jsx:39 | ✅ | Log in with mustChangePassword=true → force /change-password → submit new password with uppercase, lowercase, digit → expect redirect to dashboard |
-| P-005 | Change password (settings) | teacher/src/parent/pages/Settings.jsx:100 · backend/routes/parentRoutes.js (via /user/password) | 🟡 | In Settings, enter current + new password → PUT /user/password → expect toast success + form reset |
-| P-006 | Parent role check on login | backend/middleware/auth.js:102 (skips isActive for parent) | 🟡 | Parent with status=suspended can still login (intentional per CP-020 bypass) |
+| P-005 | Change password (settings) | teacher/src/parent/pages/Settings.jsx:100 · backend/routes/parentRoutes.js (via /user/password) | ✅ | In Settings, enter current + new password → PUT /user/password → expect toast success + form reset |
+| P-006 | Parent role check on login | backend/middleware/auth.js:102 (skips isActive for parent) | ✅ | Parent with status=suspended can still login (intentional per CP-020 bypass) |
 
 ---
 ## 2. Navigation & Layout
@@ -22,20 +23,20 @@
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
 | P-007 | Mobile tab bar (4 tabs) | teacher/src/parent/components/MobileTabBar.jsx:5-10 | ✅ | On mobile, see bottom nav with Bugun, Kundalik, Xabarlar, Profil tabs; active tab highlighted |
-| P-008 | Desktop top nav (4 links) | teacher/src/parent/components/DesktopTopNav.jsx:6-11 | 🟡 | On desktop, see top nav with same links + notification bell + settings gear + child switcher |
-| P-009 | Notification badge on nav | teacher/src/parent/components/MobileTabBar.jsx:24-39 · teacher/src/parent/components/DesktopTopNav.jsx:57-62 | 🟡 | When count > 0, show red badge with count (capped at 9+) |
-| P-010 | Active route highlighting | teacher/src/parent/components/MobileTabBar.jsx:15-18 · teacher/src/parent/components/DesktopTopNav.jsx:17-18 | 🟡 | Current page nav item highlighted with brand color; non-active items grayed |
-| P-011 | Sidebar (desktop variant) | teacher/src/parent/components/Sidebar.jsx | 🟡 | Expanded menu with 10 nav items + unread chat/notification badges; user profile footer |
+| P-008 | Desktop top nav (4 links) | teacher/src/parent/components/DesktopTopNav.jsx:6-11 | ✅ | On desktop, see top nav with same links + notification bell + settings gear + child switcher |
+| P-009 | Notification badge on nav | teacher/src/parent/components/MobileTabBar.jsx:24-39 · teacher/src/parent/components/DesktopTopNav.jsx:57-62 | ✅ | When count > 0, show red badge with count (capped at 9+) |
+| P-010 | Active route highlighting | teacher/src/parent/components/MobileTabBar.jsx:15-18 · teacher/src/parent/components/DesktopTopNav.jsx:17-18 | ✅ | Current page nav item highlighted with brand color; non-active items grayed |
+| P-011 | Sidebar (desktop variant) | teacher/src/parent/components/Sidebar.jsx | ❌ | Sidebar.jsx implemented (10 items, badges, footer) but NOT imported in parent/components/Layout.jsx — dead code, never rendered |
 
 ---
 ## 3. Account & Child Management
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| P-012 | Switch between multiple children | teacher/src/parent/components/ChildSwitcher.jsx · teacher/src/parent/pages/ChildProfile.jsx:247-263 | 🟡 | Parent with 2+ children can select via dropdown or button pills; page reloads with new childId |
-| P-013 | Language switcher (Uz/Ru/En) | teacher/src/parent/components/LanguageSwitcher.jsx · teacher/src/parent/pages/Settings.jsx:129 | 🟡 | Click language selector in settings/profile, choose language, UI updates to new locale |
-| P-014 | View parent profile fields | teacher/src/parent/pages/Settings.jsx:39-48 | 🟡 | See firstName, lastName, email, phone, notification preferences filled from auth context |
-| P-015 | Edit profile (name, phone, notifications) | teacher/src/parent/pages/Settings.jsx:63-83 | 🟡 | Update name/phone → PUT /user/profile → toast success + context updates |
+| P-012 | Switch between multiple children | teacher/src/parent/components/ChildSwitcher.jsx · teacher/src/parent/pages/ChildProfile.jsx:247-263 | 🟡 | Parent1 has 1 child (Bobur) — ChildSwitcher renders static span for single child; pill switcher requires 2+ children (DATA-BLOCKED) |
+| P-013 | Language switcher (Uz/Ru/En) | teacher/src/parent/components/LanguageSwitcher.jsx · teacher/src/parent/pages/Settings.jsx:129 | ✅ | select renders; onChange fires i18n.changeLanguage + localStorage persist; ⚠ UI text stays Uzbek (PL-009 i18n gap) |
+| P-014 | View parent profile fields | teacher/src/parent/pages/Settings.jsx:39-48 | ✅ | Settings shows Hulkar/Sobirova, parent1@uchqun.uz, +998 97 672 35 84 |
+| P-015 | Edit profile (name, phone, notifications) | teacher/src/parent/pages/Settings.jsx:63-83 | ✅ | Updated phone → Saqlash → green toast "Profil muvaffaqiyatli yangilandi" |
 
 ---
 ## 4. Dashboard & Overview
@@ -43,10 +44,10 @@
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
 | P-016 | Dashboard home page | teacher/src/parent/pages/Dashboard.jsx:16-204 | ✅ | Load /, see greeting with parent name + child switcher + today's day card + 8 quick link cards |
-| P-017 | Fetch and cache dashboard stats | teacher/src/parent/pages/Dashboard.jsx:29-94 | 🟡 | Load dashboard: fetch /activities, /meals, /media, /parent/ratings, /parent/emotional-monitoring in parallel; display counts and teacher rating |
-| P-018 | Today's day card (counts) | teacher/src/parent/pages/Dashboard.jsx:160-175 | 🟡 | Show summary card with activities count, meals count, media count for today |
+| P-017 | Fetch and cache dashboard stats | teacher/src/parent/pages/Dashboard.jsx:29-94 | ✅ | Promise.all([activities,meals,media]) then Promise.all([ratings,emotional-monitoring]); cache via shared/utils/cache |
+| P-018 | Today's day card (counts) | teacher/src/parent/pages/Dashboard.jsx:160-175 | ✅ | "BUGUNGI XULOSA" card shows date (M05 30) + activities/meals/media counts (0/0/0 — empty state correct) |
 | P-019 | Quick access links (8 items) | teacher/src/parent/pages/Dashboard.jsx:121-199 | ✅ | 8 linkable cards: Activities, Meals, Media, Child Status %, Teacher Rating, ИРР, Therapy, Help; click → navigate |
-| P-020 | Real-time dashboard refresh | teacher/src/parent/pages/Dashboard.jsx:102-111 | 🟡 | Listen on socket events (activity:created, meal:updated, media:deleted, child:updated); cache invalidate + refetch |
+| P-020 | Real-time dashboard refresh | teacher/src/parent/pages/Dashboard.jsx:102-111 | ✅ | useEffect subscribes to 10 socket events (activity/meal/media ×3 + child:updated); cache.invalidate + loadData() on event |
 
 ---
 ## 5. Child Profile & Features
