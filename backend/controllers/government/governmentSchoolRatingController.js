@@ -206,7 +206,7 @@ export const getRatingsAggregated = async (req, res) => {
       // Group by school
       const bySchool = {};
       for (const school of schools) {
-        bySchool[school.id] = { id: school.id, name: school.name, ratings: [], averageStars: 0, count: 0 };
+        bySchool[school.id] = { id: school.id, name: school.name, address: school.address, ratings: [] };
       }
       for (const r of allRatings) {
         if (bySchool[r.schoolId]) {
@@ -216,8 +216,11 @@ export const getRatingsAggregated = async (req, res) => {
       const ranked = Object.values(bySchool).map(s => {
         const count = s.ratings.length;
         const avg = count > 0 ? Math.round((s.ratings.reduce((a, b) => a + b, 0) / count) * 10) / 10 : 0;
-        return { id: s.id, name: s.name, averageStars: avg, count };
-      }).sort((a, b) => b.averageStars - a.averageStars);
+        // Distribution by star bucket
+        const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+        s.ratings.forEach(star => { const b = Math.min(5, Math.max(1, star)); distribution[b] = (distribution[b] || 0) + 1; });
+        return { id: s.id, name: s.name, address: s.address, averageRating: avg, ratingsCount: count, distribution };
+      }).sort((a, b) => b.averageRating - a.averageRating);
 
       const totalRatings = allRatings.length;
       const overallAvg = totalRatings > 0
@@ -226,7 +229,7 @@ export const getRatingsAggregated = async (req, res) => {
 
       return res.json({
         success: true,
-        data: { direction: 'gov', schools: ranked, overall: { count: totalRatings, averageStars: overallAvg } },
+        data: { direction: 'gov', total: totalRatings, average: overallAvg, schools: ranked },
       });
     }
 
@@ -239,7 +242,7 @@ export const getRatingsAggregated = async (req, res) => {
 
     const bySchool = {};
     for (const school of schools) {
-      bySchool[school.id] = { id: school.id, name: school.name, ratings: [], averageStars: 0, count: 0 };
+      bySchool[school.id] = { id: school.id, name: school.name, address: school.address, ratings: [] };
     }
     for (const r of allRatings) {
       if (bySchool[r.schoolId]) bySchool[r.schoolId].ratings.push(r.stars);
@@ -247,8 +250,10 @@ export const getRatingsAggregated = async (req, res) => {
     const ranked = Object.values(bySchool).map(s => {
       const count = s.ratings.length;
       const avg = count > 0 ? Math.round((s.ratings.reduce((a, b) => a + b, 0) / count) * 10) / 10 : 0;
-      return { id: s.id, name: s.name, averageStars: avg, count };
-    }).sort((a, b) => b.averageStars - a.averageStars);
+      const distribution = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+      s.ratings.forEach(star => { const b = Math.min(5, Math.max(1, star)); distribution[b] = (distribution[b] || 0) + 1; });
+      return { id: s.id, name: s.name, address: s.address, averageRating: avg, ratingsCount: count, distribution };
+    }).sort((a, b) => b.averageRating - a.averageRating);
 
     const totalRatings = allRatings.length;
     const overallAvg = totalRatings > 0
@@ -257,7 +262,7 @@ export const getRatingsAggregated = async (req, res) => {
 
     return res.json({
       success: true,
-      data: { direction: 'parent', schools: ranked, overall: { count: totalRatings, averageStars: overallAvg } },
+      data: { direction: 'parent', total: totalRatings, average: overallAvg, schools: ranked },
     });
   } catch (error) {
     logger.error('getRatingsAggregated error', { error: error.message });

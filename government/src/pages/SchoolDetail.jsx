@@ -1,25 +1,207 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useToast } from '@shared/context/ToastContext';
-import { Building2, ChevronRight, Star, Users, UserCheck, FileText } from 'lucide-react';
+import { Building2, ChevronRight, Star, Users, UserCheck, FileText, ClipboardCheck } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
+import { GOV_INDICATORS } from '@shared/config/ratingIndicators';
+
+// Generate last 4 quarters from today, e.g. ['Q2-2026', 'Q1-2026', 'Q4-2025', 'Q3-2025']
+function lastFourQuarters() {
+  const today = new Date();
+  const year = today.getFullYear();
+  const q = Math.ceil((today.getMonth() + 1) / 3);
+  const result = [];
+  let curQ = q;
+  let curY = year;
+  for (let i = 0; i < 4; i++) {
+    result.push(`Q${curQ}-${curY}`);
+    curQ--;
+    if (curQ < 1) { curQ = 4; curY--; }
+  }
+  return result;
+}
+
+const QUARTERS = lastFourQuarters();
+const DEFAULT_INDICATORS = Object.fromEntries(GOV_INDICATORS.map(ind => [ind.key, 3]));
+
+const GovRatingForm = ({ schoolId, onSuccess }) => {
+  const { t } = useTranslation();
+  const { success: showSuccess, error: showError } = useToast();
+  const [period, setPeriod] = useState(QUARTERS[0]);
+  const [indicators, setIndicators] = useState(DEFAULT_INDICATORS);
+  const [comment, setComment] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [existing, setExisting] = useState(null);
+  const [loadingExisting, setLoadingExisting] = useState(false);
+
+  const loadExisting = useCallback(async (p) => {
+    setLoadingExisting(true);
+    try {
+      const res = await api.get(`/government/schools/${schoolId}/ratings/gov`, { params: { period: p } });
+      const ratings = res.data?.data?.ratings || [];
+      if (ratings.length > 0) {
+        const r = ratings[0];
+        setExisting(r);
+        setIndicators({ ...DEFAULT_INDICATORS, ...r.indicators });
+        setComment(r.comment || '');
+      } else {
+        setExisting(null);
+        setIndicators(DEFAULT_INDICATORS);
+        setComment('');
+      }
+    } catch {
+      setExisting(null);
+    } finally {
+      setLoadingExisting(false);
+    }
+  }, [schoolId]);
+
+  useEffect(() => { loadExisting(period); }, [loadExisting, period]);
+
+  const handleIndicatorChange = (key, val) => {
+    setIndicators(prev => ({ ...prev, [key]: Number(val) }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!comment.trim()) {
+      showError(t('govRating.commentRequired', { defaultValue: "Izoh majburiy" }));
+      return;
+    }
+    setSubmitting(true);
+    try {
+      await api.post(`/government/schools/${schoolId}/rate`, { period, indicators, comment: comment.trim() });
+      showSuccess(t('govRating.success', { defaultValue: "Baho muvaffaqiyatli saqlandi" }));
+      await loadExisting(period);
+      onSuccess?.();
+    } catch (err) {
+      const code = err.response?.data?.error?.code;
+      const errorMap = {
+        RATING_COMMENT_REQUIRED: t('govRating.commentRequired', { defaultValue: "Izoh majburiy" }),
+        RATING_PERIOD_INVALID: t('govRating.periodInvalid', { defaultValue: "Noto'g'ri davr formati" }),
+        RATING_INDICATORS_REQUIRED: t('govRating.indicatorsRequired', { defaultValue: "Barcha ko'rsatkichlar kerak" }),
+        RATING_INDICATOR_INVALID: t('govRating.indicatorInvalid', { defaultValue: "Ko'rsatkich 1-5 oralig'ida bo'lishi kerak" }),
+        RATING_SCHOOL_NOT_FOUND: t('govRating.schoolNotFound', { defaultValue: "Muassasa topilmadi" }),
+      };
+      showError(errorMap[code] ?? err.response?.data?.error?.detail ?? t('govRating.failed', { defaultValue: "Xato yuz berdi" }));
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="bg-paper-card border border-brand-200 rounded-lg">
+      <div className="px-5 py-4 border-b border-brand-100 flex items-center gap-2">
+        <ClipboardCheck className="w-4 h-4 text-brand-600" />
+        <h2 className="text-sm font-semibold text-gray-900">
+          {existing
+            ? t('govRating.editTitle', { defaultValue: "Davlat bahosini tahrirlash" })
+            : t('govRating.addTitle', { defaultValue: "Davlat bahosi qo'shish" })}
+        </h2>
+        {/* PL-015 notice */}
+        <span className="ml-auto text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5">
+          {t('govRating.pl015Notice', { defaultValue: "Ko'rsatkich nomlari: PL-015 pending" })}
+        </span>
+      </div>
+      <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4">
+        {/* Period selector */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            {t('govRating.period', { defaultValue: "Chorak (davr)" })} <span className="text-red-500">*</span>
+          </label>
+          <select
+            value={period}
+            onChange={e => { setPeriod(e.target.value); }}
+            className="w-full text-sm border border-gray-200 rounded-md px-3 py-2 bg-white focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+          >
+            {QUARTERS.map(q => (
+              <option key={q} value={q}>{q}</option>
+            ))}
+          </select>
+          {loadingExisting && <p className="text-xs text-gray-400 mt-1">{t('govRating.checking', { defaultValue: "Mavjud baho tekshirilmoqda..." })}</p>}
+          {existing && !loadingExisting && (
+            <p className="text-xs text-brand-600 mt-1">
+              {t('govRating.existingFound', { defaultValue: "Ushbu davr uchun baho topildi — tahrirlashingiz mumkin" })}
+            </p>
+          )}
+        </div>
+
+        {/* 5 indicator sliders */}
+        <div className="space-y-3">
+          <p className="text-xs font-medium text-gray-700">
+            {t('govRating.indicators', { defaultValue: "Ko'rsatkichlar (1–5)" })}
+          </p>
+          {GOV_INDICATORS.map((ind) => (
+            <div key={ind.key} className="flex items-center gap-3">
+              <span className="text-xs text-gray-600 w-28 flex-shrink-0">{ind.uz}</span>
+              <input
+                type="range"
+                min={1}
+                max={5}
+                step={1}
+                value={indicators[ind.key]}
+                onChange={e => handleIndicatorChange(ind.key, e.target.value)}
+                className="flex-1 h-2 accent-brand-600"
+              />
+              <span className="text-sm font-semibold tabular-nums w-5 text-center text-brand-700">
+                {indicators[ind.key]}
+              </span>
+              <div className="flex gap-0.5">
+                {[1,2,3,4,5].map(s => (
+                  <Star key={s} className={`w-3 h-3 ${s <= indicators[ind.key] ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Comment */}
+        <div>
+          <label className="block text-xs font-medium text-gray-700 mb-1">
+            {t('govRating.comment', { defaultValue: "Izoh" })} <span className="text-red-500">*</span>
+          </label>
+          <textarea
+            value={comment}
+            onChange={e => setComment(e.target.value)}
+            rows={3}
+            required
+            placeholder={t('govRating.commentPlaceholder', { defaultValue: "Muassasaning ushbu davrdagi faoliyati haqida izoh yozing..." })}
+            className="w-full text-sm border border-gray-200 rounded-lg px-3 py-2 focus:ring-2 focus:ring-brand-500 focus:border-transparent resize-none"
+          />
+        </div>
+
+        <button
+          type="submit"
+          disabled={submitting}
+          className="w-full py-2.5 text-sm font-semibold text-white bg-brand-600 hover:bg-brand-700 disabled:opacity-50 rounded-lg transition-colors flex items-center justify-center gap-2"
+        >
+          {submitting ? <LoadingSpinner size="sm" /> : null}
+          {existing
+            ? t('govRating.updateBtn', { defaultValue: "Bahoni yangilash" })
+            : t('govRating.submitBtn', { defaultValue: "Baho yuborish" })}
+        </button>
+      </form>
+    </div>
+  );
+};
 
 const SchoolDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { t } = useTranslation();
   const { success: showSuccess, error: showError } = useToast();
+  const { hasCapability } = useAuth();
 
-  const { data, loading, error } = useFetch(`/government/schools/${id}`);
+  const { data, loading, error, refresh } = useFetch(`/government/schools/${id}`);
 
-  // Local override for isActive so UI updates immediately after archive/reactivate
   const [isActiveOverride, setIsActiveOverride] = useState(null);
   const [archiving, setArchiving] = useState(false);
-  const [archiveTarget, setArchiveTarget] = useState(null); // 'archive' | 'reactivate' | null
+  const [archiveTarget, setArchiveTarget] = useState(null);
 
   if (loading) {
     return (
@@ -75,6 +257,8 @@ const SchoolDetail = () => {
       setArchiving(false);
     }
   };
+
+  const canRate = hasCapability('canRateSchools');
 
   return (
     <div className="space-y-5">
@@ -151,6 +335,10 @@ const SchoolDetail = () => {
             </div>
           </div>
 
+          {/* G-027: Government rating form — only for users with canRateSchools */}
+          {canRate && (
+            <GovRatingForm schoolId={id} onSuccess={() => refresh(true)} />
+          )}
         </div>
 
         {/* Right rail */}

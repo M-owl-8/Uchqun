@@ -87,6 +87,7 @@ const AIWarnings = () => {
   const [loading, setLoading] = useState(true);
   const [loadError, setLoadError] = useState(false);
   const [filter, setFilter] = useState('active');
+  const [severity, setSeverity] = useState('all');
   const [resolveModal, setResolveModal] = useState(null); // { warning, note }
   const [submittingResolve, setSubmittingResolve] = useState(false);
 
@@ -106,6 +107,9 @@ const AIWarnings = () => {
   }, [filter]);
 
   useEffect(() => { load(); }, [load]);
+  useEffect(() => { setSeverity('all'); }, [filter]);
+
+  const displayedWarnings = severity === 'all' ? warnings : warnings.filter(w => w.severity === severity);
 
   const handleRequestResolve = (warning) => {
     setResolveModal({ warning, note: '' });
@@ -204,6 +208,34 @@ const AIWarnings = () => {
         ))}
       </div>
 
+      {/* G-063: Severity filter pills */}
+      {!loading && warnings.length > 0 && (
+        <div className="flex flex-wrap gap-2" data-testid="severity-filter">
+          {['all', 'critical', 'high', 'medium', 'low'].map((sev) => {
+            const isActive = severity === sev;
+            const meta = sev !== 'all' ? SEVERITY_META[sev] : null;
+            return (
+              <button
+                key={sev}
+                onClick={() => setSeverity(sev)}
+                data-testid={`severity-${sev}`}
+                className={`px-3 py-1 text-xs font-medium rounded-full border transition-colors ${
+                  isActive && sev !== 'all'
+                    ? meta.badge
+                    : isActive
+                    ? 'bg-gray-800 text-white border-gray-800'
+                    : 'bg-white text-gray-500 border-gray-200 hover:border-gray-300'
+                }`}
+              >
+                {sev === 'all'
+                  ? t('warnings.severityAll', { defaultValue: 'Barchasi' })
+                  : t(`warnings.severity.${sev}`, { defaultValue: sev.charAt(0).toUpperCase() + sev.slice(1) })}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
       {loadError && (
         <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center justify-between">
           <span>{t('warnings.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik yuz berdi" })}</span>
@@ -217,11 +249,13 @@ const AIWarnings = () => {
         <div className="py-16 text-center text-sm text-gray-400">
           {t('warnings.loading', { defaultValue: 'Yuklanmoqda...' })}
         </div>
-      ) : !loadError && warnings.length === 0 ? (
+      ) : !loadError && displayedWarnings.length === 0 ? (
         <div className="py-16 text-center">
           <Shield className="w-10 h-10 text-gray-200 mx-auto mb-3" />
           <p className="text-sm text-gray-400">
-            {filter === 'active'
+            {warnings.length > 0
+              ? t('warnings.noMatchSeverity', { defaultValue: 'Bu darajada ogohlantirishlar topilmadi' })
+              : filter === 'active'
               ? (isRegionAccount && regionName
                   ? t('warnings.noActiveRegion', { name: regionName, defaultValue: 'No active warnings for {{name}}' })
                   : t('warnings.noActive', { defaultValue: 'Faol ogohlantirishlar yo\'q' }))
@@ -232,7 +266,7 @@ const AIWarnings = () => {
         </div>
       ) : (
         <div className="space-y-3">
-          {warnings.map(w => (
+          {displayedWarnings.map(w => (
             <WarningCard
               key={w.id}
               warning={w}

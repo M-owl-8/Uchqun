@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User, Globe, MapPin } from 'lucide-react';
+import { Star, Building2, Search, ChevronDown, ChevronUp, MessageSquare, User, Globe, MapPin, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
@@ -65,7 +65,7 @@ const DistributionBar = ({ distribution, total }) => {
   );
 };
 
-const SchoolCard = ({ school, showRank }) => {
+const ParentSchoolCard = ({ school, showRank }) => {
   const { t } = useTranslation();
   const [expanded, setExpanded] = useState(false);
   const [reviews, setReviews] = useState([]);
@@ -107,46 +107,7 @@ const SchoolCard = ({ school, showRank }) => {
 
   return (
     <Card className="p-6">
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3 flex-1">
-          {showRank && (
-            <div className="flex-shrink-0">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
-                school.rank === 1
-                  ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400'
-                  : school.rank === 2
-                  ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
-                  : school.rank === 3
-                  ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                  : 'bg-brand-100 text-brand-600'
-              }`}>
-                {school.rank}
-              </div>
-            </div>
-          )}
-          <div className="flex items-center gap-3 flex-1">
-            <div className="w-12 h-12 bg-brand-100 rounded-lg flex items-center justify-center">
-              <Building2 className="w-6 h-6 text-brand-600" />
-            </div>
-            <div>
-              <h3 className="font-bold text-gray-900">{school.name}</h3>
-              {school.address && (
-                <p className="text-sm text-gray-500 mt-0.5">{school.address}</p>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3 mb-4">
-        <StarDisplay rating={school.averageRating || 0} />
-        <span className="text-lg font-bold text-gray-900">
-          {(school.averageRating || 0).toFixed(1)}
-        </span>
-        <span className="text-sm text-gray-500">
-          ({school.ratingsCount || 0} {t('ratings.ratingsCount')})
-        </span>
-      </div>
+      <SchoolCardHeader school={school} showRank={showRank} />
 
       {school.ratingsCount > 0 && (
         <div className="mb-4">
@@ -238,19 +199,180 @@ const SchoolCard = ({ school, showRank }) => {
   );
 };
 
-const RATINGS_CACHE_KEY = 'government:ratings';
+const GovSchoolCard = ({ school, showRank }) => {
+  const { t } = useTranslation();
+  const [expanded, setExpanded] = useState(false);
+  const [reviews, setReviews] = useState([]);
+  const [reviewsLoading, setReviewsLoading] = useState(false);
+  const [reviewsLoaded, setReviewsLoaded] = useState(false);
+  const [reviewsError, setReviewsError] = useState(false);
+
+  const loadReviews = async () => {
+    setReviewsError(false);
+    try {
+      setReviewsLoading(true);
+      const res = await api.get(`/government/schools/${school.id}/ratings/gov`);
+      const data = res.data?.data || {};
+      setReviews(data.ratings || []);
+      setReviewsLoaded(true);
+    } catch {
+      setReviewsError(true);
+    } finally {
+      setReviewsLoading(false);
+    }
+  };
+
+  const handleToggle = () => {
+    if (!expanded && !reviewsLoaded) loadReviews();
+    setExpanded(!expanded);
+  };
+
+  return (
+    <Card className="p-6 border-brand-100">
+      {/* Gov direction indicator */}
+      <div className="flex items-center gap-1.5 mb-3">
+        <Building2 className="w-3.5 h-3.5 text-brand-500" />
+        <span className="text-xs font-medium text-brand-600 uppercase tracking-wide">
+          {t('ratings.govDirection', { defaultValue: "Davlat baholashi" })}
+        </span>
+      </div>
+
+      <SchoolCardHeader school={school} showRank={showRank} ratingField="averageRating" countField="ratingsCount" />
+
+      {school.ratingsCount > 0 && (
+        <button
+          onClick={handleToggle}
+          className="w-full flex items-center justify-center gap-2 py-2 text-sm font-medium text-brand-600 hover:bg-brand-50 rounded-lg transition-colors"
+        >
+          {expanded ? (
+            <>
+              <ChevronUp className="w-4 h-4" />
+              {t('ratings.hideReviews')}
+            </>
+          ) : (
+            <>
+              <ChevronDown className="w-4 h-4" />
+              {t('ratings.showReviews')}
+            </>
+          )}
+        </button>
+      )}
+
+      {expanded && (
+        <div className="mt-4 space-y-3 border-t pt-4">
+          {reviewsError ? (
+            <p className="text-sm text-red-500 text-center py-2">
+              {t('ratings.loadError', { defaultValue: "Izohlarni yuklashda xatolik" })}
+            </p>
+          ) : reviewsLoading ? (
+            <div className="flex justify-center py-4"><LoadingSpinner size="sm" /></div>
+          ) : reviews.length === 0 ? (
+            <p className="text-sm text-gray-500 text-center py-2">{t('ratings.notFound')}</p>
+          ) : (
+            reviews.map((r) => (
+              <div key={r.id} className="bg-brand-50/50 rounded-lg p-3">
+                <div className="flex items-center justify-between mb-1.5">
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-7 bg-brand-100 rounded-full flex items-center justify-center">
+                      <Users className="w-3.5 h-3.5 text-brand-600" />
+                    </div>
+                    <div>
+                      <span className="text-sm font-medium text-gray-900">{r.govUserName || '—'}</span>
+                      {r.govLevel && (
+                        <span className="ml-1.5 text-xs text-gray-400">({r.govLevel})</span>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                    <span className="text-sm font-semibold text-gray-700">{r.stars}</span>
+                    <span className="text-xs text-gray-400 ml-1">{r.period}</span>
+                  </div>
+                </div>
+                {r.comment && (
+                  <div className="flex items-start gap-1.5 mt-1">
+                    <MessageSquare className="w-3.5 h-3.5 text-gray-400 mt-0.5 shrink-0" />
+                    <p className="text-sm text-gray-600">{r.comment}</p>
+                  </div>
+                )}
+                <p className="text-xs text-gray-400 mt-2">{new Date(r.createdAt).toLocaleDateString()}</p>
+              </div>
+            ))
+          )}
+        </div>
+      )}
+    </Card>
+  );
+};
+
+// Shared header component for school cards
+const SchoolCardHeader = ({ school, showRank }) => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <div className="flex items-start justify-between mb-4">
+        <div className="flex items-center gap-3 flex-1">
+          {showRank && (
+            <div className="flex-shrink-0">
+              <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
+                school.rank === 1
+                  ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400'
+                  : school.rank === 2
+                  ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
+                  : school.rank === 3
+                  ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
+                  : 'bg-brand-100 text-brand-600'
+              }`}>
+                {school.rank}
+              </div>
+            </div>
+          )}
+          <div className="flex items-center gap-3 flex-1">
+            <div className="w-12 h-12 bg-brand-100 rounded-lg flex items-center justify-center">
+              <Building2 className="w-6 h-6 text-brand-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-900">{school.name}</h3>
+              {school.address && (
+                <p className="text-sm text-gray-500 mt-0.5">{school.address}</p>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3 mb-4">
+        <StarDisplay rating={school.averageRating || 0} />
+        <span className="text-lg font-bold text-gray-900">
+          {(school.averageRating || 0).toFixed(1)}
+        </span>
+        <span className="text-sm text-gray-500">
+          ({school.ratingsCount || 0} {t('ratings.ratingsCount')})
+        </span>
+      </div>
+    </>
+  );
+};
+
+const RATINGS_CACHE_KEY = 'government:ratings:parent';
+const RATINGS_GOV_CACHE_KEY = 'government:ratings:gov';
 
 const Ratings = () => {
   const { t } = useTranslation();
   const { isRepublic, isRegionAccount } = useAuth();
   const regionName = useRegionName();
+  const [direction, setDirection] = useState('parent');
   const [schools, setSchools] = useState(() => cache.get(RATINGS_CACHE_KEY)?.schools ?? []);
+  const [govSchools, setGovSchools] = useState(() => cache.get(RATINGS_GOV_CACHE_KEY)?.schools ?? []);
   const [stats, setStats] = useState(() => cache.get(RATINGS_CACHE_KEY)?.stats ?? { total: 0, average: 0 });
+  const [govStats, setGovStats] = useState(() => cache.get(RATINGS_GOV_CACHE_KEY)?.stats ?? { total: 0, average: 0 });
   const [loading, setLoading] = useState(!cache.get(RATINGS_CACHE_KEY));
+  const [govLoading, setGovLoading] = useState(false);
+  const [govLoaded, setGovLoaded] = useState(!!cache.get(RATINGS_GOV_CACHE_KEY));
   const [loadError, setLoadError] = useState(false);
   const [search, setSearch] = useState('');
 
-  const doFetch = (signal) => api.get('/government/ratings', { signal })
+  const fetchParent = useCallback((signal) => api.get('/government/ratings', { signal, params: { direction: 'parent' } })
     .then(res => {
       const data = res.data?.data || {};
       const result = { schools: data.schools || [], stats: { total: data.total || 0, average: data.average || 0 } };
@@ -258,49 +380,69 @@ const Ratings = () => {
       setSchools(result.schools);
       setStats(result.stats);
       setLoadError(false);
-    });
+    }), []);
+
+  const fetchGov = useCallback((signal) => {
+    setGovLoading(true);
+    return api.get('/government/ratings', { signal, params: { direction: 'gov' } })
+      .then(res => {
+        const data = res.data?.data || {};
+        const result = { schools: data.schools || [], stats: { total: data.total || 0, average: data.average || 0 } };
+        cache.set(RATINGS_GOV_CACHE_KEY, result);
+        setGovSchools(result.schools);
+        setGovStats(result.stats);
+        setGovLoaded(true);
+      })
+      .catch(() => {})
+      .finally(() => setGovLoading(false));
+  }, []);
 
   useEffect(() => {
     const controller = new AbortController();
-
     const cached = cache.get(RATINGS_CACHE_KEY);
     if (cached) {
       setSchools(cached.schools);
       setStats(cached.stats);
       setLoading(false);
-      doFetch(controller.signal).catch(() => {});
+      fetchParent(controller.signal).catch(() => {});
       return () => controller.abort();
     }
-
     setLoading(true);
-    doFetch(controller.signal)
+    fetchParent(controller.signal)
       .catch(() => setLoadError(true))
       .finally(() => setLoading(false));
-
     return () => controller.abort();
-  }, []);
+  }, [fetchParent]);
 
-  // Filter and sort schools by rating (highest first), then add rank
-  const filteredSchools = schools
+  // Fetch gov direction when toggled for the first time
+  const handleDirectionToggle = (dir) => {
+    setDirection(dir);
+    if (dir === 'gov' && !govLoaded) {
+      const controller = new AbortController();
+      fetchGov(controller.signal);
+    }
+  };
+
+  const activeSchools = direction === 'parent' ? schools : govSchools;
+  const activeStats = direction === 'parent' ? stats : govStats;
+  const activeLoading = direction === 'parent' ? loading : govLoading;
+
+  const filteredSchools = activeSchools
     .filter((school) =>
       school.name.toLowerCase().includes(search.toLowerCase())
     )
     .sort((a, b) => {
-      // Sort by average rating (descending), then by ratings count (descending)
       const ratingA = a.averageRating || 0;
       const ratingB = b.averageRating || 0;
-      if (ratingB !== ratingA) {
-        return ratingB - ratingA;
-      }
-      // If ratings are equal, sort by count
+      if (ratingB !== ratingA) return ratingB - ratingA;
       return (b.ratingsCount || 0) - (a.ratingsCount || 0);
     })
     .map((school, index) => ({
       ...school,
-      rank: index + 1, // Add rank (1, 2, 3, ...)
+      rank: index + 1,
     }));
 
-  if (loading) {
+  if (loading && direction === 'parent') {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <LoadingSpinner size="lg" />
@@ -313,7 +455,7 @@ const Ratings = () => {
       <div className="py-16 text-center">
         <p className="text-sm text-red-600 mb-3">{t('ratings.loadError', { defaultValue: "Ma'lumotlarni yuklashda xatolik" })}</p>
         <button
-          onClick={() => { setLoadError(false); setLoading(true); doFetch(new AbortController().signal).finally(() => setLoading(false)); }}
+          onClick={() => { setLoadError(false); setLoading(true); const c = new AbortController(); fetchParent(c.signal).finally(() => setLoading(false)); }}
           className="px-4 py-2 text-sm font-medium text-brand-600 border border-brand-200 rounded-md hover:bg-brand-50"
         >
           {t('warnings.retry', { defaultValue: 'Qayta urinish' })}
@@ -346,15 +488,41 @@ const Ratings = () => {
         </div>
       </div>
 
+      {/* G-028: Direction toggle */}
+      <div className="flex gap-1 p-1 bg-gray-100 rounded-lg w-fit" data-testid="direction-toggle">
+        <button
+          onClick={() => handleDirectionToggle('parent')}
+          className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            direction === 'parent'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+          data-testid="direction-parent"
+        >
+          {t('ratings.directionParent', { defaultValue: "Ota-onalar" })}
+        </button>
+        <button
+          onClick={() => handleDirectionToggle('gov')}
+          className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
+            direction === 'gov'
+              ? 'bg-white text-gray-900 shadow-sm'
+              : 'text-gray-500 hover:text-gray-700'
+          }`}
+          data-testid="direction-gov"
+        >
+          {t('ratings.directionGov', { defaultValue: "Davlat" })}
+        </button>
+      </div>
+
       {/* Summary stats */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <Card className="p-5">
           <p className="text-xs text-gray-500 mb-1">{t('ratings.totalRatings')}</p>
-          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{stats.total}</p>
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{activeStats.total}</p>
         </Card>
         <Card className="p-5">
           <p className="text-xs text-gray-500 mb-1">{t('ratings.schoolsCount')}</p>
-          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{schools.length}</p>
+          <p className="text-2xl font-semibold text-inkGreen-900 tabular-nums">{activeSchools.length}</p>
         </Card>
       </div>
 
@@ -371,7 +539,9 @@ const Ratings = () => {
       </div>
 
       {/* School list */}
-      {filteredSchools.length === 0 ? (
+      {activeLoading ? (
+        <div className="flex justify-center py-8"><LoadingSpinner size="lg" /></div>
+      ) : filteredSchools.length === 0 ? (
         <Card className="p-12">
           <div className="text-center">
             <Star className="w-16 h-16 text-gray-300 mx-auto mb-4" />
@@ -384,9 +554,13 @@ const Ratings = () => {
         </Card>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredSchools.map((school) => (
-            <SchoolCard key={school.id} school={school} showRank={!search.trim()} />
-          ))}
+          {filteredSchools.map((school) =>
+            direction === 'parent' ? (
+              <ParentSchoolCard key={school.id} school={school} showRank={!search.trim()} />
+            ) : (
+              <GovSchoolCard key={school.id} school={school} showRank={!search.trim()} />
+            )
+          )}
         </div>
       )}
     </div>
