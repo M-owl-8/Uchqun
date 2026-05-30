@@ -61,6 +61,22 @@
 - `ptpkConclusionNumber`: ПТПК-2024-T01-0081
 - `ptpkDiagnosis`: Аутистик спектр бузилишлари, F84.0 (ДСМ-5 мезони бўйича 1-даража)
 
+**Seeded content (PROD-READINESS-05-S4, 2026-05-31):**
+- `childId`: 08b49ab0-c2f8-4921-b1d0-32554bc2b4ab
+- `parentId`: e67cf25b-e129-4f3d-89b3-eef89b77c2b0
+- `schoolId`: eec19bb5-36ae-4006-a330-031d07654c40
+- `groupId`: 11c55e67-ae5b-4b4a-892a-d2aacb7f5c0b
+- teacher1 `teacherId`: d77eb37b-0da4-4530-8096-9ea221e9a891
+- IRR: f5b8439d-fba0-48c8-a654-80c6efea201b (active, intake assessment 42/68, 2 LTGs, 1 goal-period, 2 STGs)
+- Activities: 2 (skill="Nutq va muloqot ko'nikmalari" + 1 more)
+- Meals: 2 (Breakfast eaten=true, Snack eaten=false)
+- Media: 4 (2 photo + 2 video, URL-based)
+- EmotionalMonitoring: 1 (date=2026-05-31, 7/9 booleans true)
+- Chat: 3 messages from teacher1 to parent1
+- TeacherRating: 5 stars from parent1
+- SchoolRating: indicators {1:5,2:4,3:5,4:5,5:4} from parent1
+- GovernmentMessage: 1 (recipientLevel=region) from parent1
+
 ---
 
 #### Shahlo Tursunova (A-guruh → Zulfiya Nazarova, parent: Dilorom Tursunova)
