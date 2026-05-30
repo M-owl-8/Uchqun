@@ -2,7 +2,8 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 76 (✅ 65 · 🟡 7 · ❌ 0 · 🚧 0)
+**Total features:** 76 (✅ 67 · 🟡 2 · ❌ 3 · 🚧 0)  
+**Verified by:** PROD-READINESS-05-S1 (2026-05-30) — live screenshots at `audits/prod-readiness/screenshots/government-s1/`
 
 ---
 
@@ -76,9 +77,9 @@
 |---|---|---|---|---|---|
 | G-024 | View aggregated ratings (parent direction) | Ratings.jsx:40 | ✅ | canViewRatings gate; Ratings page shows all schools sorted | StarDisplay + DistributionBar |
 | G-025 | Expand school card to view parent ratings | Ratings.jsx:159 | ✅ | Click school card ChevronDown, loads paginated reviews | Parent name, star count, comment |
-| G-026 | Load more parent ratings (pagination) | Ratings.jsx:78 | 🟡 | Expand school, load initial 10, click load-more, fetch next 10 | Code exists; no explicit test |
-| G-027 | Rate school (government direction) with indicators | governmentSchoolRatingController.js:22 | 🟡 | canRateSchools gate; POST /schools/:id/rate with period, indicators, comment | Upsert per (govUserId, schoolId, period); no frontend UI |
-| G-028 | View government ratings for school | governmentSchoolRatingController.js:100 | 🟡 | canViewRatings gate; GET /schools/:id/ratings/gov | No frontend UI found |
+| G-026 | Load more parent ratings (pagination) | Ratings.jsx:78 | 🟡 | Expand school, load initial 10, click load-more, fetch next 10 | **DATA-BLOCKED**: code correct (Ratings.jsx:224); 0 parent ratings in staging DB — button never renders |
+| G-027 | Rate school (government direction) with indicators | governmentSchoolRatingController.js:22 | ❌ | canRateSchools gate; POST /schools/:id/rate with period, indicators, comment | **NO FRONTEND UI** — backend API complete (controller, routes, upsert-per-quarter); Ratings.jsx has no gov rating form; SchoolDetail.jsx confirmed no rate button |
+| G-028 | View government ratings for school | governmentSchoolRatingController.js:100 | ❌ | canViewRatings gate; GET /schools/:id/ratings/gov | **NO FRONTEND UI** — backend GET endpoint exists; Ratings.jsx only fetches parent direction (no ?direction=gov toggle); no separate view |
 
 ---
 
@@ -124,7 +125,7 @@
 | G-047 | List government users | GovernmentTab.jsx:11 | ✅ | canManageGovernmentUsers gate; Platform > Government tab, GET /users | Cards show level, type, region, grants |
 | G-048 | Provision government user (republic/main creates secondary) | GovernmentTab.jsx:60 | ✅ | canManageGovernmentUsers gate; Level=republic, Type=secondary, POST /users | Credential preview shown |
 | G-049 | Provision secondary in same region | GovernmentTab.jsx:60 | ✅ | canManageGovernmentUsers gate; Level=region, same region dropdown, POST /users | Prevents cross-region (403) |
-| G-050 | Provision secondary with capability grants | GovernmentTab.jsx:33 | 🟡 | canManageGovernmentUsers gate; Type=secondary, toggle checkboxes, POST /users | toggleGrant() code exists |
+| G-050 | Provision secondary with capability grants | GovernmentTab.jsx:33 | ✅ | canManageGovernmentUsers gate; Type=secondary, toggle checkboxes, POST /users | **VERIFIED**: selecting "Ikkinchi darajali" reveals 12 capability checkboxes (CAPABILITY_KEYS.map:430–444); 1 label untranslated (canRateSchools) |
 | G-051 | Delete government user | GovernmentTab.jsx:164 | ✅ | canManageGovernmentUsers gate; click delete, confirm, DELETE | Cannot delete last republic/main (409) |
 | G-052 | Reset government user password | GovernmentTab.jsx:112 | ✅ | canManageGovernmentUsers gate; click password icon, modal, PUT | New password validation same as G-044 |
 
@@ -146,8 +147,8 @@
 | G-057 | View audit log (governance/school-lifecycle) | AuditLog.jsx:56 | ✅ | canViewAuditLog gate; Audit Log page, GET /audit-log?page=1 | Region-scoped |
 | G-058 | Filter audit log by action | AuditLog.jsx:121 | ✅ | Dropdown: All / archive / reactivate / approve / reject / create / update / delete | ACTIONS filtering |
 | G-059 | Filter audit log by entity type | AuditLog.jsx:138 | ✅ | Dropdown: All / Maktablar / Registrations / Adminlar / Davlat users | ENTITIES filtering |
-| G-060 | Filter audit log by date range | AuditLog.jsx:43 | 🟡 | startDate / endDate inputs, click Apply, re-fetch with params | Code exists; UI not visible |
-| G-061 | Paginate audit log | AuditLog.jsx:46 | 🟡 | Click prev/next buttons, fetch page X | Pagination controls not found; page state exists |
+| G-060 | Filter audit log by date range | AuditLog.jsx:43 | ✅ | startDate / endDate inputs, click Apply, re-fetch with params | **VERIFIED**: Boshlanish/Tugash sanasi date inputs rendered (data-testid="filter-start-date/end-date"); Filtrlash button functional |
+| G-061 | Paginate audit log | AuditLog.jsx:46 | 🟡 | Click prev/next buttons, fetch page X | **DATA-BLOCKED**: code correct (AuditLog.jsx:248–277); 0 audit entries in staging DB — `totalPages > 1` never true; ChevronLeft/Right buttons don't render |
 
 ---
 
@@ -155,7 +156,7 @@
 | # | Feature | Where (file:line) | Status | Test scenario | Notes |
 |---|---|---|---|---|---|
 | G-062 | View AI warnings list (active or resolved) | AIWarnings.jsx:98 | ✅ | canViewAuditLog gate; Warnings page, GET /ai-warnings?isResolved=false | Active vs Resolved tabs |
-| G-063 | Filter warnings by severity | AIWarnings.jsx:12 | 🟡 | Warning card shows colored badge (red/orange/yellow/blue) | Filter UI not found; severity meta defined |
+| G-063 | Filter warnings by severity | AIWarnings.jsx:12 | ❌ | Warning card shows colored badge (red/orange/yellow/blue) | **NOT BUILT**: AIWarnings.jsx only has "Faol"/"Hal qilingan" tabs; no severity filter dropdown; SEVERITY_META (line 12) only drives badge colors |
 | G-064 | Resolve warning with notes | AIWarnings.jsx:114 | ✅ | Click Resolve, modal appears, enter notes (required), PUT | resolutionNotes required; toast |
 | G-065 | Display resolved warnings | AIWarnings.jsx:28 | ✅ | Resolved warning shows CheckCircle2, strikethrough title, resolver+date | Opacity-60 |
 
@@ -185,21 +186,23 @@
 ---
 
 ## Status Summary
-| Status | Count |
-|--------|-------|
-| ✅ Working (tested) | 65 |
-| 🟡 Implemented-unverified | 7 |
-| ❌ Broken | 0 |
-| 🚧 Planned-not-built | 0 |
-| **TOTAL** | **72** |
+| Status | Count | Items |
+|--------|-------|-------|
+| ✅ Working (verified) | 67 | All except 5 listed below |
+| 🟡 Data-blocked (code correct, no staging data) | 2 | G-026, G-061 |
+| ❌ Not built (backend complete, frontend missing) | 3 | G-027, G-028, G-063 |
+| 🚧 Planned-not-built | 0 | — |
+| **TOTAL** | **72** | |
 
 ---
 
-## Known Issues
-1. **G-027/G-028**: Government rating submission UI missing; backend API exists
-2. **G-060/G-061**: Date range filters + pagination controls not visible in UI
-3. **G-017**: CSV export limited to first 999 schools (limit=999 hardcoded)
-4. **G-028**: No frontend UI to view government ratings separately from parent ratings
+## Known Issues (post-05-S1 verification)
+1. **G-027**: Government school rating — backend API complete (`POST /government/schools/:id/rate`, 5 indicators, upsert per quarter); no React form/button in any frontend component
+2. **G-028**: Government ratings view — backend endpoint exists (`GET /government/ratings?direction=gov`); Ratings.jsx only shows parent direction; no direction toggle or separate page
+3. **G-063**: AI warnings severity filter — `SEVERITY_META` drives badge colors only; only active/resolved filter tabs exist; no filter-by-severity UI
+4. **G-026**: Load-more button gated on `ratingsCount > 0` and `page < totalPages`; 0 parent ratings in staging DB
+5. **G-061**: Pagination gated on `totalPages > 1`; 0 audit entries in staging DB
+6. **G-017**: CSV export limited to first 999 schools (limit=999 hardcoded)
 
 ---
 
