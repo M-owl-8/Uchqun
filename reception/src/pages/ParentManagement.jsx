@@ -443,10 +443,55 @@ const ParentManagement = () => {
         <div className="inline-flex items-center gap-1 p-1.5 rounded-md bg-teak text-teak-text shadow-md">
           <span className="text-[12.5px] px-2.5 num">{selectedRows.size} tanlangan</span>
           <span className="w-px h-5 bg-teak-divider" />
-          <button className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors">
+          <button
+            onClick={() => {
+              const count = selectedRows.size;
+              setConfirmDialog({
+                message: `${count} ta ota-onani faollashtirasizmi?`,
+                onConfirm: async () => {
+                  setConfirmDialog(null);
+                  let failed = 0;
+                  for (const id of selectedRows) {
+                    try { await api.put(`/reception/parents/${id}/activate`); } catch { failed++; }
+                  }
+                  if (failed > 0) {
+                    showErrorRef.current(
+                      t('parentsPage.bulkActivatePartialFailure', { defaultValue: `${failed} ta yozuv faollashtirilmadi` })
+                    );
+                  }
+                  setSelectedRows(new Set());
+                  loadParents(true);
+                },
+              });
+            }}
+            className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors"
+          >
             <CheckCircle className="w-3.5 h-3.5" strokeWidth={2} /> Faollashtirish
           </button>
-          <button className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors">
+          <button
+            onClick={() => {
+              const selected = parents.filter((p) => selectedRows.has(p.id));
+              const headers = ['Ism', 'Familiya', 'Email', 'Telefon', 'Holat'];
+              const rows = selected.map((p) => [
+                p.firstName || '',
+                p.lastName || '',
+                p.email || '',
+                p.phone || '',
+                p.status === 'suspended' ? "To'xtatilgan" : p.isActive !== false ? 'Faol' : 'Kutmoqda',
+              ]);
+              const csv = [headers, ...rows]
+                .map((r) => r.map((v) => `"${String(v).replace(/"/g, '""')}"`).join(','))
+                .join('\n');
+              const blob = new Blob(['﻿' + csv], { type: 'text/csv;charset=utf-8;' });
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `ota-onalar-${new Date().toISOString().slice(0, 10)}.csv`;
+              a.click();
+              URL.revokeObjectURL(url);
+            }}
+            className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors"
+          >
             <Download className="w-3.5 h-3.5" strokeWidth={2} /> Eksport
           </button>
           <button

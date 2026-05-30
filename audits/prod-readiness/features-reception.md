@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 89 (✅ 14 · 🟡 73 · ❌ 2 · 🚧 0)
+**Total features:** 89 (✅ 16 · 🟡 71 · ❌ 0 · 🚧 0) — BRK-001/BRK-002 resolved S6
 
 ---
 
@@ -65,8 +65,8 @@
 | R-032 | Activate parent (status=suspended → active) | reception/src/pages/ParentManagement.jsx:205–213 | 🟡 | Button exists; no test |
 | R-033 | Suspend parent (block login) | reception/src/pages/ParentManagement.jsx:215–229 | 🟡 | Button exists; no test |
 | R-034 | Reset parent password (generate temp password) | reception/src/pages/ParentManagement.jsx:231–244 | 🟡 | Confirm dialog + API POST; no test |
-| R-035 | Bulk select parents (checkbox row selection) | reception/src/pages/ParentManagement.jsx:366–380 | 🟡 | Selection logic exists; bulk actions (activate/export/delete) partially implemented |
-| R-036 | Bulk delete parents | reception/src/pages/ParentManagement.jsx:452–474 | 🟡 | Button renders; no test |
+| R-035 | Bulk select parents (checkbox row selection) | reception/src/pages/ParentManagement.jsx:366–380 | ✅ | All three bulk actions wired (S6): activate (confirm dialog + iterate PUT activate), export (client-side CSV BOM), delete (confirm dialog + iterate DELETE). Partial-failure toast for activate/delete. |
+| R-036 | Bulk delete parents | reception/src/pages/ParentManagement.jsx:497–519 | ✅ | Delete button wired with confirm dialog; iterates DELETE /reception/parents/:id; surfaces partial failures (S6) |
 
 ---
 
@@ -169,8 +169,8 @@
 
 | # | Issue | Severity | Details |
 |---|---|---|---|
-| BRK-001 | Bulk action buttons (activate, export) not wired to handlers | Medium | ParentManagement.jsx:446–451 buttons render but click handlers missing |
-| BRK-002 | Group management update endpoint may not exist for reception | Low | API PUT /groups called but backend route not verified |
+| BRK-001 | ✅ RESOLVED (S6) | Medium | All three bulk-action handlers wired in ParentManagement.jsx: activate (confirm + iterate PUT /reception/parents/:id/activate), export (client-side CSV), delete (confirm + iterate DELETE). Confirm-before-destructive; partial-failure toasts. |
+| BRK-002 | ✅ VERIFIED (S6) | Low | PUT /groups/:id accessible via groupRoutes.js:45 with requireRole('reception'). Controller updateGroup:181 checks `!group.schoolId \|\| group.schoolId !== req.user.schoolId → 403`. Cross-school isolation proven by groupController.receptionScope.test.js (3 tests, all green). |
 
 ---
 
