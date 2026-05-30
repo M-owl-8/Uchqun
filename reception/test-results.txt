@@ -1,0 +1,37 @@
+﻿node.exe : [1m[43m DEPRECATED [49m[22m [33m`test.poolOptions` was rem
+oved in Vitest 4. All previous `poolOptions` are now top-level options. Pl
+ease, refer to the migration guide: https://vitest.dev/guide/migration#poo
+l-rework[39m
+At line:1 char:1
++ & "C:\Program Files\nodejs/node.exe" "C:\Program Files\nodejs/node_mo ..
+.
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ([1m[43m DEPRE...ool-rework 
+   [39m:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+[1m[46m RUN [49m[22m [36mv4.0.18 [39m[90mC:/work/Uchqun/reception[39m
+
+ [32m✓[39m src/__tests__/utils.test.js [2m([22m[2m17 tests[22m[2m)[22m[32m 123[2mms[22m[39m
+ [32m✓[39m src/__tests__/auth.test.js [2m([22m[2m6 tests[22m[2m)[22m[32m 38[2mms[22m[39m
+ [32m✓[39m src/__tests__/pages/GroupStep.test.jsx [2m([22m[2m3 tests[22m[2m)[22m[33m 1029[2mms[22m[39m
+     [33m[2m✓[22m[39m shows groups when API succeeds [33m 526[2mms[22m[39m
+     [33m[2m✓[22m[39m shows "no groups" when API returns empty array [33m 320[2mms[22m[39m
+ [32m✓[39m src/__tests__/pages/ChangePassword.test.jsx [2m([22m[2m4 tests[22m[2m)[22m[33m 3635[2mms[22m[39m
+     [33m[2m✓[22m[39m renders all three password fields [33m 800[2mms[22m[39m
+     [33m[2m✓[22m[39m shows mismatch error when new passwords differ [33m 1598[2mms[22m[39m
+     [33m[2m✓[22m[39m calls PUT /user/password and navigates to /reception on success [33m 599[2mms[22m[39m
+     [33m[2m✓[22m[39m shows incorrect-password error on 401 [33m 618[2mms[22m[39m
+ [31m❯[39m src/__tests__/pages/ParentManagement.test.jsx [2m([22m[2m11 tests[22m[2m | [22m[31m9 failed[39m[2m)[22m[33m 7634[2mms[22m[39m
+     [32m✓[39m shows skeleton list while loading[32m 149[2mms[22m[39m
+     [33m[2m✓[22m[39m renders parent cards after data loads [33m 1152[2mms[22m[39m
+[31m     [31m×[31m filters parents by search query[39m[33m 1008[2mms[22m[39m
+[31m     [31m×[31m opens create parent modal on add button click[39m[33m 1253[2mms[22m[39m
+[31m     [31m×[31m submits create parent form via POST /reception/parents[39m[33m 1037[2mms[22m[39m
+[31m     [31m×[31m opens edit modal prefilled with parent data[39m[32m 279[2mms[22m[39m
+[31m     [31m×[31m submits edit parent form via PUT /reception/parents/:id[39m[32m 194[2mms[22m[39m
+[31m     [31m×[31m shows confirm dialog and calls DELETE on parent delete confirm[39m[32m 183[2mms[22m[39m
+[31m     [31m×[31m opens add child modal when add child button clicked[39m[32m 225[2mms[22m[39m
+[31m     [31m×[31m opens edit child modal when child edit button clicked[39m[33m 1040[2mms[22m[39m
+[31m     [31m×[31m shows confirm dialog and calls DELETE on child delete confirm[39m[33m 1105[2mms[22m[39m

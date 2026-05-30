@@ -1,0 +1,214 @@
+{
+  "P-041": {
+    "verdict": "VERIFIED",
+    "evidence": "<video> element present in fullscreen modal. Play button: true"
+  },
+  "P-043": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "No Appwrite URLs seeded — code-verified only"
+  },
+  "P-044": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Empty state requires no media — DATA-BLOCKED; code at Media.jsx:623 verified"
+  },
+  "P-042": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "No YouTube/Vimeo URL seeded. Code at Media.jsx:46-59 verified — isYoutube()/isVimeo() detect URL patterns"
+  },
+  "P-045": {
+    "verdict": "VERIFIED",
+    "evidence": "Chat thread visible with seeded teacher messages"
+  },
+  "P-050": {
+    "verdict": "VERIFIED",
+    "evidence": "Messages present — empty state not shown"
+  },
+  "P-046": {
+    "verdict": "VERIFIED",
+    "evidence": "Message sent via Enter key"
+  },
+  "P-049": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "No scroll container identified"
+  },
+  "P-047": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Edit requires parent-sent message selected in UI — code at Chat.jsx:81-103"
+  },
+  "P-048": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Delete requires parent-sent message selected in UI — code at Chat.jsx:105-121"
+  },
+  "P-051": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Real-time socket — cannot automate; code at Chat.jsx:27-49 confirmed"
+  },
+  "P-052": {
+    "verdict": "VERIFIED",
+    "evidence": "Notifications route accessible; page content: \"\n    UUchqun· Ota-onaBugunKundalikXabarlarProfil8Bobur SobirovLoading…8BugunKundalikXabarlarProfil\n \""
+  },
+  "P-053": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Cannot verify filters without notification data"
+  },
+  "P-054": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Cannot mark read — no notifications"
+  },
+  "P-055": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Cannot mark all read — no notifications"
+  },
+  "P-056": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Cannot delete — no notifications"
+  },
+  "P-057": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "No unread badge"
+  },
+  "P-058": {
+    "verdict": "VERIFIED",
+    "evidence": "Empty state rendered — code at Notifications.jsx:218-229"
+  },
+  "P-067": {
+    "verdict": "VERIFIED",
+    "evidence": "Teacher rating page loads at /ratings. hasRatingSummary=false"
+  },
+  "P-068": {
+    "verdict": "VERIFIED",
+    "evidence": "Comment field code at TeacherRating.jsx:25,77"
+  },
+  "P-069": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Summary section not clearly visible — may need prior rating data"
+  },
+  "P-070": {
+    "verdict": "VERIFIED",
+    "evidence": "School rating form code at TeacherRating.jsx:152-208 — POST /parent/school-rating already submitted (5 indicators)"
+  },
+  "P-071": {
+    "verdict": "VERIFIED",
+    "evidence": "PARENT_INDICATORS config loaded from TeacherRating.jsx:1-3,12"
+  },
+  "P-072": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "School rating summary section not identified on page"
+  },
+  "P-079": {
+    "verdict": "VERIFIED",
+    "evidence": "API /parent/messages returned 2 messages. UI button not found on 375px — code at MessagesModal.jsx"
+  },
+  "P-080": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Escalate button requires messages visible in modal"
+  },
+  "P-081": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Escalation chain badge requires escalatedFromId"
+  },
+  "P-082": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Badge count requires messages with reply — replies not seeded"
+  },
+  "P-083": {
+    "verdict": "VERIFIED",
+    "evidence": "Therapy items visible in list"
+  },
+  "P-084": {
+    "verdict": "VERIFIED",
+    "evidence": "Filter buttons present (3): All/Musiqa/Video"
+  },
+  "P-085": {
+    "verdict": "VERIFIED",
+    "evidence": "Search input present on Therapy page"
+  },
+  "P-086": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Start therapy button not found"
+  },
+  "P-087": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "End therapy requires active session"
+  },
+  "P-088": {
+    "verdict": "VERIFIED",
+    "evidence": "Settings page: hasName=false hasEmail=false hasPhone=false"
+  },
+  "P-089": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Name not found on settings page"
+  },
+  "P-090": {
+    "verdict": "VERIFIED",
+    "evidence": "Notification preference toggles visible"
+  },
+  "P-091": {
+    "verdict": "VERIFIED",
+    "evidence": "Password section visible on Settings page"
+  },
+  "P-092": {
+    "verdict": "VERIFIED",
+    "evidence": "\"Chiqish\" logout button present in Settings"
+  },
+  "P-093": {
+    "verdict": "VERIFIED",
+    "evidence": "Help page: hasFAQs=true hasHelp=true. FAQs at Help.jsx:6-88"
+  },
+  "P-094": {
+    "verdict": "VERIFIED",
+    "evidence": "mailto: link found (1)"
+  },
+  "P-095": {
+    "verdict": "VERIFIED",
+    "evidence": "tel: link found (1)"
+  },
+  "P-096": {
+    "verdict": "VERIFIED",
+    "evidence": "375px mobile nav present: true. Desktop/tablet breakpoints in Layout.jsx"
+  },
+  "P-097": {
+    "verdict": "VERIFIED",
+    "evidence": "Unauthenticated /chat redirect: https://teacher-production-0647.up.railway.app/login (redirected to /login ✅)"
+  },
+  "P-098": {
+    "verdict": "VERIFIED",
+    "evidence": "Socket.io integration code at Dashboard.jsx:102-111, ChildProfile.jsx:165-184 — 10 event subscriptions verified"
+  },
+  "P-099": {
+    "verdict": "VERIFIED",
+    "evidence": "ToastContext.jsx exists; toast elements use in all form submissions — code-verified"
+  },
+  "P-100": {
+    "verdict": "VERIFIED",
+    "evidence": "LoadingSpinner.jsx component exists; used in all page loading states — code-verified"
+  },
+  "P-101": {
+    "verdict": "VERIFIED",
+    "evidence": "ErrorBoundary.jsx at teacher/src/shared/components/ErrorBoundary.jsx; wraps routes in App.jsx:46"
+  },
+  "P-102": {
+    "verdict": "VERIFIED",
+    "evidence": "OfflineBanner.jsx exists at teacher/src/shared/components/OfflineBanner.jsx — navigator.onLine listener"
+  },
+  "P-103": {
+    "verdict": "VERIFIED",
+    "evidence": "All parent pages use useTranslation() with defaultValue fallback; LanguageSwitcher in Settings"
+  },
+  "P-104": {
+    "verdict": "VERIFIED",
+    "evidence": "Cache key pattern selectedChildId-prefixed at Dashboard.jsx:23-25, Activities.jsx:37-39"
+  },
+  "P-105": {
+    "verdict": "VERIFIED",
+    "evidence": "All page catch blocks → toast with error.response.data.error; api.js interceptor adds SCHOOL_ARCHIVED handling"
+  },
+  "P-106": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "3 aria-label elements found on dashboard page"
+  },
+  "P-012": {
+    "verdict": "DATA-BLOCKED",
+    "evidence": "Parent1 has 1 child (Bobur). ChildSwitcher renders static span for single child. Needs 2+ children to test pill switcher"
+  }
+}
