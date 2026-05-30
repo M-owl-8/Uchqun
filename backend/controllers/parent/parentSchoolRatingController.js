@@ -100,6 +100,7 @@ export const getMySchoolRating = async (req, res) => {
   try {
     const parentId = req.user.id;
     const { childId } = req.query;
+    const emptyData = { rating: null, school: null, summary: { average: 0, count: 0 } };
 
     let child;
     if (childId) {
@@ -113,24 +114,33 @@ export const getMySchoolRating = async (req, res) => {
     } else {
       const children = await Child.findAll({ where: { parentId } });
       if (children.length === 0) {
-        return res.json({ success: true, data: { rating: null, schoolId: null } });
+        return res.json({ success: true, data: emptyData });
       }
       child = children[0];
     }
 
     if (!child.schoolId) {
-      return res.json({ success: true, data: { rating: null, schoolId: null } });
+      return res.json({ success: true, data: emptyData });
     }
 
-    const school = await School.findByPk(child.schoolId);
-    const rating = await SchoolRating.findOne({ where: { schoolId: child.schoolId, parentId } });
+    const [school, rating, allRatings] = await Promise.all([
+      School.findByPk(child.schoolId),
+      SchoolRating.findOne({ where: { schoolId: child.schoolId, parentId } }),
+      SchoolRating.findAll({ where: { schoolId: child.schoolId }, attributes: ['stars'] }),
+    ]);
+
+    const count = allRatings.length;
+    const average =
+      count > 0
+        ? Math.round((allRatings.reduce((s, r) => s + r.stars, 0) / count) * 10) / 10
+        : 0;
 
     return res.json({
       success: true,
       data: {
         rating: rating ? rating.toJSON() : null,
-        schoolId: child.schoolId,
-        schoolName: school?.name ?? null,
+        school: school ? { id: school.id, name: school.name } : null,
+        summary: { average, count },
       },
     });
   } catch (error) {

@@ -5,6 +5,7 @@ const mockSchoolFindAll = jest.fn();
 const mockSchoolRatingFindOne = jest.fn();
 const mockSchoolRatingCreate = jest.fn();
 const mockSchoolRatingUpdate = jest.fn();
+const mockSchoolRatingFindAll = jest.fn().mockResolvedValue([]);
 const mockChildFindOne = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockSchoolFindByPkForChild = jest.fn();
@@ -19,7 +20,7 @@ jest.unstable_mockModule('../models/SchoolRating.js', () => ({
   default: {
     findOne: mockSchoolRatingFindOne,
     create: mockSchoolRatingCreate,
-    findAll: jest.fn().mockResolvedValue([]),
+    findAll: mockSchoolRatingFindAll,
   },
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
@@ -124,7 +125,10 @@ describe('parentSchoolRatingController.rateSchool', () => {
 });
 
 describe('parentSchoolRatingController.getMySchoolRating', () => {
-  beforeEach(() => jest.resetAllMocks());
+  beforeEach(() => {
+    jest.resetAllMocks();
+    mockSchoolRatingFindAll.mockResolvedValue([]);
+  });
 
   it('returns empty data when parent has no children', async () => {
     mockChildFindAll.mockResolvedValue([]);
@@ -145,7 +149,7 @@ describe('parentSchoolRatingController.getMySchoolRating', () => {
     expect(payload.data.rating).toBeNull();
   });
 
-  it('returns rating and schoolName when data exists', async () => {
+  it('returns { school, rating, summary } when data exists', async () => {
     mockChildFindAll.mockResolvedValue([{ id: 'c1', schoolId: 's1' }]);
     mockSchoolFindByPk.mockResolvedValue({ id: 's1', name: 'Test School' });
     const fakeRating = { id: 'r1', stars: 5, toJSON: () => ({ id: 'r1', stars: 5 }) };
@@ -155,8 +159,10 @@ describe('parentSchoolRatingController.getMySchoolRating', () => {
     await getMySchoolRating(req, res);
     const payload = res.json.mock.calls[0][0];
     expect(payload.success).toBe(true);
-    expect(payload.data.schoolName).toBe('Test School');
+    // New shape: school object (not schoolName string) so frontend TeacherRating.jsx:80-81 can read school.id
+    expect(payload.data.school).toEqual({ id: 's1', name: 'Test School' });
     expect(payload.data.rating).toBeDefined();
+    expect(payload.data.summary).toBeDefined();
   });
 });
 

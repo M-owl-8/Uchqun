@@ -5,6 +5,9 @@ const mockSchoolFindOne = jest.fn();
 const mockSchoolCreate = jest.fn();
 const mockSchoolRatingFindOne = jest.fn();
 const mockSchoolRatingCreate = jest.fn();
+const mockSchoolRatingFindAll = jest.fn().mockResolvedValue([]);
+const mockChildFindOne = jest.fn();
+const mockChildFindAll = jest.fn().mockResolvedValue([]);
 const mockUserFindByPk = jest.fn();
 
 jest.unstable_mockModule('../../models/School.js', () => ({
@@ -19,14 +22,14 @@ jest.unstable_mockModule('../../models/SchoolRating.js', () => ({
   default: {
     findOne: mockSchoolRatingFindOne,
     create: mockSchoolRatingCreate,
-    findAll: jest.fn().mockResolvedValue([]),
+    findAll: mockSchoolRatingFindAll,
   },
 }));
 jest.unstable_mockModule('../../models/User.js', () => ({
   default: { findByPk: mockUserFindByPk },
 }));
 jest.unstable_mockModule('../../models/Child.js', () => ({
-  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+  default: { findOne: mockChildFindOne, findAll: mockChildFindAll },
 }));
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
@@ -35,7 +38,7 @@ jest.unstable_mockModule('../../utils/governmentLevel.js', () => ({
   computeAverageRating: jest.fn().mockReturnValue({ average: 4, count: 1 }),
 }));
 
-const { rateSchool } = await import('../../controllers/parent/parentSchoolRatingController.js');
+const { rateSchool, getMySchoolRating } = await import('../../controllers/parent/parentSchoolRatingController.js');
 
 const mkRes = () => {
   const res = {};
@@ -113,5 +116,81 @@ describe('rateSchool — TP-05 revert-tests', () => {
     await rateSchool(req, res);
     expect(res.status).not.toHaveBeenCalledWith(403);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+  });
+});
+
+describe('getMySchoolRating — response shape', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSchoolRatingFindAll.mockResolvedValue([]);
+  });
+
+  it('returns { school, rating, summary } shape when child+school+rating all found', async () => {
+    mockChildFindAll.mockResolvedValue([{ schoolId: SCHOOL_A }]);
+    mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_A, name: 'Test School' });
+    mockSchoolRatingFindOne.mockResolvedValue({
+      toJSON: () => ({ id: 'r-1', stars: 5, comment: 'Great' }),
+    });
+    mockSchoolRatingFindAll.mockResolvedValue([{ stars: 5 }, { stars: 4 }]);
+
+    const req = { user: { id: 'parent-1' }, query: {} };
+    const res = mkRes();
+    await getMySchoolRating(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({
+        success: true,
+        data: expect.objectContaining({
+          school: { id: SCHOOL_A, name: 'Test School' },
+          rating: expect.objectContaining({ stars: 5 }),
+          summary: { average: 4.5, count: 2 },
+        }),
+      })
+    );
+  });
+
+  it('returns { school: null, rating: null, summary: 0/0 } when parent has no children', async () => {
+    mockChildFindAll.mockResolvedValue([]);
+
+    const req = { user: { id: 'parent-1' }, query: {} };
+    const res = mkRes();
+    await getMySchoolRating(req, res);
+
+    expect(res.json).toHaveBeenCalledWith({
+      success: true,
+      data: { rating: null, school: null, summary: { average: 0, count: 0 } },
+    });
+  });
+
+  it('404 when childId provided but child not found for this parent', async () => {
+    mockChildFindOne.mockResolvedValue(null);
+
+    const req = { user: { id: 'parent-1' }, query: { childId: 'nonexistent' } };
+    const res = mkRes();
+    await getMySchoolRating(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith(
+      expect.objectContaining({ success: false, error: { code: 'RATING_CHILD_NOT_FOUND' } })
+    );
+  });
+
+  // Revert-test: old response shape had schoolId+schoolName, not school object.
+  // Frontend TeacherRating.jsx:80-81 reads schoolRatingData.school — undefined → null → "Muassasa topilmadi".
+  it('response.data.school is an object (not schoolId+schoolName) — regression guard', async () => {
+    mockChildFindAll.mockResolvedValue([{ schoolId: SCHOOL_A }]);
+    mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_A, name: 'My School' });
+    mockSchoolRatingFindOne.mockResolvedValue(null);
+    mockSchoolRatingFindAll.mockResolvedValue([]);
+
+    const req = { user: { id: 'parent-1' }, query: {} };
+    const res = mkRes();
+    await getMySchoolRating(req, res);
+
+    const call = res.json.mock.calls[0][0];
+    expect(call.data.school).toEqual({ id: SCHOOL_A, name: 'My School' });
+    // Old shape would have schoolId/schoolName instead — ensure those are absent
+    expect(call.data.schoolId).toBeUndefined();
+    expect(call.data.schoolName).toBeUndefined();
   });
 });
