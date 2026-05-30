@@ -105,6 +105,13 @@ Error codes follow the pattern `<FEATURE>_<CONDITION>`, e.g. `OBSERVATION_CHILD_
 
 Seeded 31 accounts for all roles. Password: `Test@2026`. See `credentials.md` for emails and login details, `demo-profile.md` for full demo profiles (names, phones, children diagnoses, ПТПК IRR creation values).
 
+## Feature Inventory
+
+Complete atomic-grain, code-sourced feature map (482 features across 5 portals):
+- **Master index + demo critical paths:** `audits/prod-readiness/features-INDEX.md`
+- **Per-role files:** `audits/prod-readiness/features-teacher.md` (116) · `features-parent.md` (106) · `features-admin.md` (95) · `features-reception.md` (89) · `features-government.md` (76)
+- Source commit: 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d (2026-05-30)
+
 ## Deployment
 - Backend → Railway (auto-deploy on `main` push via `.github/workflows/railway-deploy.yml`)
 - Frontends → Netlify / Vercel
