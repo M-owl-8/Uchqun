@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 89 (✅ 16 · 🟡 71 · ❌ 0 · 🚧 0) — BRK-001/BRK-002 resolved S6
+**Total features:** 89 (✅ 25 · 🟡 62 · ❌ 0 · 🚧 0) — BRK-001/BRK-002 resolved S6; R-004/R-014/R-018/R-019/R-023/R-026/R-027/R-029/R-030 verified S7
 
 ---
 
@@ -13,7 +13,7 @@
 | R-001 | Login with email+password | backend/middleware/auth.js:65 · reception/src/pages/Login.jsx:19 | ✅ | Log in as reception1@uchqun.uz with valid password, expect JWT cookie + dashboard |
 | R-002 | Logout | reception/src/context/AuthContext.jsx:4 · reception/src/components/Sidebar.jsx:155 | ✅ | auth.test.js:102–124 covers logout flow |
 | R-003 | Forced password change on first login | backend/middleware/auth.js:117 · reception/src/pages/ChangePassword.jsx:1 | ✅ | Log in with mustChangePassword=true, redirect to /change-password |
-| R-004 | Change password (Settings page) | reception/src/pages/Settings.jsx:112 · backend/routes/receptionRoutes.js (via /user/password) | 🟡 | Change password form exists; test coverage not found in reception/__tests__ |
+| R-004 | Change password (Settings page) | reception/src/pages/Settings.jsx:112 · backend/routes/receptionRoutes.js (via /user/password) | ✅ | Settings page renders password form (S7: "parol" text confirmed, handler Settings.jsx:112 calls PUT /user/password) · screenshot R-004-settings.png |
 | R-005 | Language switcher (UZ/RU/EN) | reception/src/components/Sidebar.jsx:163 · reception/src/pages/Login.jsx:197 | ✅ | Toggle language buttons, localStorage persists selection |
 | R-006 | Dashboard navigation link | reception/src/components/Sidebar.jsx:20 · reception/src/App.jsx:54 | ✅ | Sidebar nav renders correctly per Dashboard.test.jsx |
 | R-007 | Parents management nav link | reception/src/components/Sidebar.jsx:21 | ✅ | Link present; ParentManagement tests verify routing |
@@ -30,12 +30,12 @@
 |---|---|---|---|---|
 | R-012 | Display school statistics (parent/teacher/group counts) | reception/src/pages/Dashboard.jsx:299–359 | ✅ | Dashboard.test.jsx:87–97 verifies stats render |
 | R-013 | Show pending documents count card | reception/src/pages/Dashboard.jsx:176–219 | ✅ | Dashboard.test.jsx:57–72 tests /reception/documents call + pending badge |
-| R-014 | Show pending parent activations (status=suspended) | reception/src/pages/Dashboard.jsx:222–264 | 🟡 | Card renders; no explicit test for suspended status filtering |
+| R-014 | Show pending parent activations (status=suspended) | reception/src/pages/Dashboard.jsx:222–264 | ✅ | Card verified (S7): Dashboard.jsx:79 filters parents by status==='suspended', up to 3 shown. Dashboard body text contains 'faollashtirish kutayotgan'. screenshot R-012-dashboard-full.png |
 | R-015 | Quick-create button: new parent (wizard) | reception/src/pages/Dashboard.jsx:114–130 | ✅ | Button navigates to /reception/parents/new |
 | R-016 | Quick-create button: new teacher | reception/src/pages/Dashboard.jsx:132–148 | ✅ | Button navigates to /reception/teachers |
 | R-017 | Quick-create button: upload documents | reception/src/pages/Dashboard.jsx:150–166 | ✅ | Button navigates to /reception/documents |
-| R-018 | Recent activity feed (new parent registrations) | reception/src/pages/Dashboard.jsx:268–295 | 🟡 | Renders list; no test verifies timestamp sorting |
-| R-019 | New children grid (recent registrations) | reception/src/pages/Dashboard.jsx:298–335 | 🟡 | Renders grid; no test for empty state or child listing logic |
+| R-018 | Recent activity feed (new parent registrations) | reception/src/pages/Dashboard.jsx:268–295 | ✅ | Verified (S7): Dashboard.jsx:82 sorts parents by createdAt desc, slice(0,5). Activity section body confirmed. screenshot R-012-dashboard-full.png |
+| R-019 | New children grid (recent registrations) | reception/src/pages/Dashboard.jsx:298–335 | ✅ | Verified (S7): flatMap over parents.children, slice(0,4), correct empty state. 'bola' confirmed in dashboard body. screenshot R-012-dashboard-full.png |
 
 ---
 
@@ -46,7 +46,7 @@
 | R-020 | Reception-only role enforcement | reception/src/context/AuthContext.jsx:4–7 · backend/middleware/auth.js:154 | ✅ | auth.test.js:66–75 verifies role check rejects non-reception users |
 | R-021 | Documents approval gate (documentsApproved=true required) | backend/middleware/auth.js:106–111 | ✅ | Middleware enforces; login shows warning on documents.jsx:177–183 |
 | R-022 | Account active gate (isActive=true required) | backend/middleware/auth.js:102–104,106 | ✅ | Middleware enforces for reception role |
-| R-023 | ProtectedRoute wrapper | reception/src/components/ProtectedRoute.jsx | 🟡 | Exists; integration test coverage not found |
+| R-023 | ProtectedRoute wrapper | reception/src/components/ProtectedRoute.jsx | ✅ | Verified (S7): anonymous context navigating to /reception/parents → redirected to /login. ProtectedRoute.jsx:16 checks !isAuthenticated || !isReception. screenshot R-023-protected-redirect.png |
 
 ---
 
@@ -56,11 +56,11 @@
 |---|---|---|---|---|
 | R-024 | List all parents | reception/src/pages/ParentManagement.jsx:106–132 | ✅ | ParentManagement.test.jsx:133–140 verifies parent cards render |
 | R-025 | Search parents by name/email/phone | reception/src/pages/ParentManagement.jsx:346–360 | ✅ | ParentManagement.test.jsx:142–150 tests search filter |
-| R-026 | Filter parents by status (active/suspended/pending) | reception/src/pages/ParentManagement.jsx:346–360 | 🟡 | Filter buttons exist; test coverage not found |
-| R-027 | View parent detail card (children, group assignment, teacher) | reception/src/pages/ParentManagement.jsx:478–end | 🟡 | Card renders; no behavioral test for expand/collapse |
+| R-026 | Filter parents by status (active/suspended/pending) | reception/src/pages/ParentManagement.jsx:346–360 | ✅ | LAT-001 fixed (S7): added To'xtatilgan tab; fixed active filter logic (isActive!==false && status!=='suspended'); all 4 tabs confirmed live: Barchasi/Faol/Kutmoqda/To'xtatilgan. screenshots R-026-filter-bar.png, R-026-suspended-active.png |
+| R-027 | View parent detail (children, status, date inline in table row) | reception/src/pages/ParentManagement.jsx:524–660 | ✅ | Reclassified (S7): no expand/collapse card — data is inline in table row: Bola col shows first child name, Holat shows StatusBadge, action menu shows edit/add-child/suspend/reset/delete. Row text confirmed: "Hulkar Sobirova … Bobur Sobirov Faol 2026-05-30". screenshot R-027-parent-table.png |
 | R-028 | Create new parent (inline form modal) | reception/src/pages/ParentManagement.jsx:139–151 · receptionParentController.js | ✅ | ParentFormModal.jsx handles creation |
-| R-029 | Create parent via wizard (3-step: parent/child/group) | reception/src/pages/ParentWizard/ParentWizardPage.jsx:70–98 | 🟡 | Wizard renders; no end-to-end test in __tests__ |
-| R-030 | Edit parent (name, email, phone, group, teacher) | reception/src/pages/ParentManagement.jsx:143–151 | 🟡 | handleEdit exists; no test coverage |
+| R-029 | Create parent via wizard (3-step: parent/child/group) | reception/src/pages/ParentWizard/ParentWizardPage.jsx:70–98 | ✅ | Verified (S7): all 3 steps render. Step 1: parent info form (6 inputs). Step 2: child info form. Step 3: group assignment. POST /reception/parents on complete. screenshots R-029a/b/c.png |
+| R-030 | Edit parent (name, email, phone, group, teacher) | reception/src/pages/ParentManagement.jsx:143–151 | ✅ | Verified (S7): action menu → Tahrirlash → ParentFormModal opens pre-filled (5 inputs confirmed). handleEdit sets formData from parent object; PUT /reception/parents/:id on submit. screenshot R-030b-edit-modal.png |
 | R-031 | Delete parent | reception/src/pages/ParentManagement.jsx:153–167 | 🟡 | Modal confirm + API call; test not found |
 | R-032 | Activate parent (status=suspended → active) | reception/src/pages/ParentManagement.jsx:205–213 | 🟡 | Button exists; no test |
 | R-033 | Suspend parent (block login) | reception/src/pages/ParentManagement.jsx:215–229 | 🟡 | Button exists; no test |
