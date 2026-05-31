@@ -52,7 +52,9 @@
     "addParent": "Добавить родителя",
     "viewAll": "Всё",
     "active": "Активный",
-    "inactive": "Неактивный"
+    "inactive": "Неактивный",
+    "noRecentActivity": "Активности пока нет. Зарегистрируйте первого родителя.",
+    "addParentLink": "Добавить родителя"
   },
   "common": {
     "viewAll": "Всё",

@@ -11,8 +11,10 @@ import {
   UserCheck,
   User,
   Baby,
+  Info,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import EmptyState from '@shared/components/EmptyState';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
@@ -161,11 +163,12 @@ const AdminDetails = () => {
         </div>
       </div>
 
-      {receptions.length > 0 && (
-        <Card>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">
-            {t('adminDetails.receptions', { defaultValue: 'Receptionlar' })} ({receptions.length})
-          </h2>
+      <Card>
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          {t('adminDetails.receptions', { defaultValue: 'Receptionlar' })}
+          {receptions.length > 0 && ` (${receptions.length})`}
+        </h2>
+        {receptions.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {receptions.map((reception) => (
               <div key={reception.id} className="border border-gray-200 rounded-lg p-4">
@@ -179,14 +182,17 @@ const AdminDetails = () => {
               </div>
             ))}
           </div>
-        </Card>
-      )}
+        ) : (
+          <EmptyState icon={Info} title={t('adminDetails.empty.receptions', { defaultValue: "Bu admin hozircha reception xodimlarini ro'yxatga olmagan." })} className="py-8" />
+        )}
+      </Card>
 
-      {schools.length > 0 && (
-        <Card>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">
-            {t('adminDetails.schools', { defaultValue: 'Muassasalar' })} ({schools.length})
-          </h2>
+      <Card>
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          {t('adminDetails.schools', { defaultValue: 'Muassasalar' })}
+          {schools.length > 0 && ` (${schools.length})`}
+        </h2>
+        {schools.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {schools.map((school) => (
               <div key={school.id} className="border border-gray-200 rounded-lg p-4">
@@ -200,14 +206,17 @@ const AdminDetails = () => {
               </div>
             ))}
           </div>
-        </Card>
-      )}
+        ) : (
+          <EmptyState icon={Building2} title={t('adminDetails.empty.schools', { defaultValue: "Bu admin hozircha hech qanday maktabni boshqarmaydi." })} className="py-8" />
+        )}
+      </Card>
 
-      {teachers.length > 0 && (
-        <Card>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">
-            {t('adminDetails.teachers', { defaultValue: 'O\'qituvchilar' })} ({teachers.length})
-          </h2>
+      <Card>
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          {t('adminDetails.teachers', { defaultValue: "O'qituvchilar" })}
+          {teachers.length > 0 && ` (${teachers.length})`}
+        </h2>
+        {teachers.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {teachers.map((teacher) => (
               <div key={teacher.id} className="border border-gray-200 rounded-lg p-4">
@@ -221,14 +230,17 @@ const AdminDetails = () => {
               </div>
             ))}
           </div>
-        </Card>
-      )}
+        ) : (
+          <EmptyState icon={GraduationCap} title={t('adminDetails.empty.teachers', { defaultValue: "Bu maktabda hali o'qituvchilar yo'q." })} className="py-8" />
+        )}
+      </Card>
 
-      {parents.length > 0 && (
-        <Card>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">
-            {t('adminDetails.parents', { defaultValue: 'Ota-onalar' })} ({parents.length})
-          </h2>
+      <Card>
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          {t('adminDetails.parents', { defaultValue: 'Ota-onalar' })}
+          {parents.length > 0 && ` (${parents.length})`}
+        </h2>
+        {parents.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {parents.map((parent) => (
               <div key={parent.id} className="border border-gray-200 rounded-lg p-4">
@@ -242,14 +254,17 @@ const AdminDetails = () => {
               </div>
             ))}
           </div>
-        </Card>
-      )}
+        ) : (
+          <EmptyState icon={Users} title={t('adminDetails.empty.parents', { defaultValue: "Bu maktabda hali ota-onalar ro'yxatga olinmagan." })} className="py-8" />
+        )}
+      </Card>
 
-      {children.length > 0 && (
-        <Card>
-          <h2 className="text-base font-semibold text-gray-900 mb-3">
-            {t('adminDetails.students', { defaultValue: 'O\'quvchilar' })} ({children.length})
-          </h2>
+      <Card>
+        <h2 className="text-base font-semibold text-gray-900 mb-3">
+          {t('adminDetails.students', { defaultValue: "O'quvchilar" })}
+          {children.length > 0 && ` (${children.length})`}
+        </h2>
+        {children.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {children.map((child) => (
               <div key={child.id} className="border border-gray-200 rounded-lg p-4">
@@ -267,8 +282,10 @@ const AdminDetails = () => {
               </div>
             ))}
           </div>
-        </Card>
-      )}
+        ) : (
+          <EmptyState icon={Baby} title={t('adminDetails.empty.children', { defaultValue: "Bu maktabda hali bolalar ro'yxatga olinmagan." })} className="py-8" />
+        )}
+      </Card>
     </div>
   );
 };

@@ -40,7 +40,11 @@
     "parents": "Ota-onalar",
     "activities": "Mashg'ulotlar",
     "meals": "Taomlar",
-    "media": "Media"
+    "media": "Media",
+    "noChildren": {
+      "title": "Sizning sinfingizda hali bolalar yo'q",
+      "description": "Sinfingizga bolalar tayinlanmaguncha, bu sahifa bo'sh ko'rinadi. Maktab adminiga murojaat qiling."
+    }
   },
   "parentsPage": {
     "title": "Ota-onalarni boshqarish",
@@ -399,7 +403,13 @@
     "successWeeklySaved": "Haftalik monitoring saqlandi",
     "successCreated": "IRR yaratildi",
     "successSaved": "IRR saqlandi",
-    "successActivated": "IRR faollashtirildi!"
+    "successActivated": "IRR faollashtirildi!",
+    "noSessions": "Hali baholash sessiyalari o'tkazilmagan. Yangi sessiya yaratish uchun yuqoridagi formdan foydalaning.",
+    "noDailyEntries": "Hali kundalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi.",
+    "noWeeklyEntries": "Hali haftalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi.",
+    "noSessionsParent": "Hali baholash o'tkazilmagan. O'qituvchi birinchi baholashdan keyin bu yerda ko'rinadi.",
+    "noGoalsParent": "Hali uzoq muddatli maqsadlar belgilanmagan. O'qituvchi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi.",
+    "noPeriodsParent": "Hali maqsad davrlari yaratilmagan."
   },
   "common": {
     "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
@@ -417,5 +427,10 @@
     "TIMEOUT_ERROR": "So'rov vaqti tugadi",
     "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan",
     "SCHOOL_ARCHIVED": "Maktab arxivlangan"
+  },
+  "profile": {
+    "emotionalEmpty": "Emotsional kuzatuv hali yo'q",
+    "emotionalEmptyDesc": "O'qituvchi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi.",
+    "noMessagesSent": "Hali yuborilgan xabar yo'q"
   }
 }

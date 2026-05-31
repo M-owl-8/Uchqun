@@ -342,20 +342,24 @@ const ChildProfile = () => {
             <MessageSquare className="w-4 h-4" />
             {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
           </button>
-          {myMessages.length > 0 && (
-            <button
-              onClick={() => setShowMessagesModal(true)}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-sepia-50 text-p-sepia-700 border border-p-sepia-200 hover:bg-p-sepia-100 transition-colors text-[13px] font-medium relative"
-            >
-              <MessageSquare className="w-4 h-4" />
-              {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
-              {myMessages.some((m) => m.reply) && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-p-brand-600 text-white text-[10px] rounded-full flex items-center justify-center">
-                  {myMessages.filter((m) => m.reply).length}
-                </span>
-              )}
-            </button>
-          )}
+          <button
+            onClick={() => myMessages.length > 0 && setShowMessagesModal(true)}
+            disabled={myMessages.length === 0}
+            title={myMessages.length === 0 ? t('profile.noMessagesSent', { defaultValue: "Hali yuborilgan xabar yo'q" }) : undefined}
+            className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-colors text-[13px] font-medium relative ${
+              myMessages.length > 0
+                ? 'bg-p-sepia-50 text-p-sepia-700 border-p-sepia-200 hover:bg-p-sepia-100 cursor-pointer'
+                : 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4" />
+            {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
+            {myMessages.some((m) => m.reply) && (
+              <span className="absolute -top-1 -right-1 w-5 h-5 bg-p-brand-600 text-white text-[10px] rounded-full flex items-center justify-center">
+                {myMessages.filter((m) => m.reply).length}
+              </span>
+            )}
+          </button>
           <button
             onClick={() => setShowLogoutModal(true)}
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-error-50 text-error-600 border border-error-200 hover:bg-error-100 transition-colors text-[13px] font-medium"

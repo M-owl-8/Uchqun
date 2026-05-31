@@ -67,7 +67,8 @@
     "noRatings": "Mintaqaviy reyting ma'lumotlari yo'q",
     "unknownRegion": "Noma'lum mintaqa",
     "pendingAdminList": "Kutilayotgan ro'yxatdan o'tishlar",
-    "noPendingAdmins": "Kutilayotgan ro'yxatdan o'tishlar yo'q"
+    "noPendingAdmins": "Kutilayotgan ro'yxatdan o'tishlar yo'q",
+    "noSchools": "Hozircha hech qanday maktab ro'yxatga olinmagan."
   },
   "schools": {
     "title": "Muassasalar",
@@ -230,7 +231,14 @@
     "phone": "Telefon",
     "status": "Holati",
     "createdAt": "Yaratilgan sana",
-    "birthDate": "Tug'ilgan sana"
+    "birthDate": "Tug'ilgan sana",
+    "empty": {
+      "receptions": "Bu admin hozircha reception xodimlarini ro'yxatga olmagan.",
+      "schools": "Bu admin hozircha hech qanday maktabni boshqarmaydi.",
+      "teachers": "Bu maktabda hali o'qituvchilar yo'q.",
+      "parents": "Bu maktabda hali ota-onalar ro'yxatga olinmagan.",
+      "children": "Bu maktabda hali bolalar ro'yxatga olinmagan."
+    }
   },
   "platform": {
     "tabs": {

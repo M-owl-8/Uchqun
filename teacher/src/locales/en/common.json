@@ -40,7 +40,11 @@
     "parents": "Parents",
     "activities": "Activities",
     "meals": "Meals",
-    "media": "Media"
+    "media": "Media",
+    "noChildren": {
+      "title": "No children in your class yet",
+      "description": "This dashboard will show data once children are assigned to your class. Contact your school administrator."
+    }
   },
   "parentsPage": {
     "title": "Parent Management",
@@ -399,7 +403,13 @@
     "successWeeklySaved": "Weekly monitoring saved",
     "successCreated": "IRR created",
     "successSaved": "IRR saved",
-    "successActivated": "IRR activated!"
+    "successActivated": "IRR activated!",
+    "noSessions": "No assessment sessions yet. Use the form above to record the first session.",
+    "noDailyEntries": "No daily entries yet — they will appear here after the first submission.",
+    "noWeeklyEntries": "No weekly entries yet — they will appear here after the first submission.",
+    "noSessionsParent": "No assessments conducted yet. Results will appear here after the teacher's first assessment.",
+    "noGoalsParent": "No long-term goals set yet. These will appear after the teacher activates the IRR.",
+    "noPeriodsParent": "No goal periods created yet."
   },
   "common": {
     "networkError": "Network error. Check your connection and try again.",
@@ -417,5 +427,10 @@
     "TIMEOUT_ERROR": "Request timed out",
     "ACCOUNT_NOT_ACTIVE": "Account suspended",
     "SCHOOL_ARCHIVED": "School archived"
+  },
+  "profile": {
+    "emotionalEmpty": "No emotional monitoring yet",
+    "emotionalEmptyDesc": "Data will appear here once the teacher begins monitoring your child.",
+    "noMessagesSent": "No messages sent yet"
   }
 }

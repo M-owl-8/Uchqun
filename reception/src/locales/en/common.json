@@ -52,7 +52,9 @@
     "addParent": "Add Parent",
     "viewAll": "View All",
     "active": "Active",
-    "inactive": "Inactive"
+    "inactive": "Inactive",
+    "noRecentActivity": "No activity yet. Register your first parent to get started.",
+    "addParentLink": "Add Parent"
   },
   "common": {
     "viewAll": "View All",

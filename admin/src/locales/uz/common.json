@@ -70,7 +70,8 @@
     "allClear": "Hammasi joyida!",
     "noPending": "Hozircha kutilayotgan vazifalar yo‘q.",
     "systemStats": "Tizim statistikasi",
-    "totalUsers": "Jami foydalanuvchilar: {{count}} | Aktiv qabul: {{active}} | Guruhlar: {{groups}}"
+    "totalUsers": "Jami foydalanuvchilar: {{count}} | Aktiv qabul: {{active}} | Guruhlar: {{groups}}",
+    "viewAllChildren": "Barcha bolalarni ota-onalar orqali ko'rish"
   },
   "parentsPage": {
     "title": "Ota-onalar boshqaruvi",

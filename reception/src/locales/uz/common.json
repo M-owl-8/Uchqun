@@ -52,7 +52,9 @@
     "addParent": "Ota-ona qo'shish",
     "viewAll": "Barchasi",
     "active": "Aktiv",
-    "inactive": "Noaktiv"
+    "inactive": "Noaktiv",
+    "noRecentActivity": "Hali faoliyat yo'q. Birinchi ota-onani ro'yxatga olib boshlang.",
+    "addParentLink": "Ota-ona qo'shish"
   },
   "common": {
     "viewAll": "Barchasi",

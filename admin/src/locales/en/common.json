@@ -71,7 +71,8 @@
     "allClear": "All Clear!",
     "noPending": "No pending assignments at this time.",
     "systemStats": "System Statistics",
-    "totalUsers": "Total users: {{count}} | Active receptions: {{active}} | Groups: {{groups}}"
+    "totalUsers": "Total users: {{count}} | Active receptions: {{active}} | Groups: {{groups}}",
+    "viewAllChildren": "Browse all children via Parents"
   },
   "parentsPage": {
     "title": "Parent Management",

@@ -370,9 +370,12 @@ const Dashboard = () => {
         <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
           <p className="text-sm text-warm-500">{t('dashboard.children', { defaultValue: 'Bolalar' })}</p>
           <p className="num text-3xl font-semibold text-warm-900 mt-1">{stats?.children || 0}</p>
-          <p className="mt-2.5 flex items-center gap-1.5 text-xs text-warm-500">
-            <Minus className="w-3.5 h-3.5" strokeWidth={2} /><span>{t('dashboard.noChange', { defaultValue: 'o\'zgarish yo\'q' })}</span>
-          </p>
+          <Link
+            to="/admin/parents"
+            className="mt-2.5 inline-flex items-center gap-1 text-xs text-brand-700 font-medium hover:text-brand-800"
+          >
+            {t('dashboard.viewAllChildren', { defaultValue: "Barchasini ko'rish" })} <ArrowRight className="w-3 h-3" strokeWidth={2} />
+          </Link>
         </div>
         <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
           <p className="text-sm text-warm-500">{t('dashboard.teachers', { defaultValue: 'O\'qituvchilar' })}</p>

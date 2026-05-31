@@ -266,11 +266,11 @@ const Dashboard = () => {
       </section>
 
       {/* So'nggi faoliyat */}
-      {recentActivity.length > 0 && (
-        <section>
-          <h2 className="h2-tab text-[18px] font-semibold text-slate-900 mb-4">
-            {t('dashboard.recentActivity', { defaultValue: "So'nggi faoliyat" })}
-          </h2>
+      <section>
+        <h2 className="h2-tab text-[18px] font-semibold text-slate-900 mb-4">
+          {t('dashboard.recentActivity', { defaultValue: "So'nggi faoliyat" })}
+        </h2>
+        {recentActivity.length > 0 ? (
           <article className="bg-surface border border-slate-200 rounded-lg shadow-xs">
             <ul className="divide-y divide-slate-100">
               {recentActivity.map((parent) => (
@@ -292,8 +292,24 @@ const Dashboard = () => {
               ))}
             </ul>
           </article>
-        </section>
-      )}
+        ) : (
+          <article className="bg-surface border border-slate-200 rounded-lg shadow-xs px-5 py-10 text-center">
+            <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-3">
+              <UserPlus className="w-6 h-6 text-gray-400" strokeWidth={1.5} />
+            </div>
+            <p className="text-[14px] font-medium text-slate-700 mb-1">
+              {t('dashboard.noRecentActivity', { defaultValue: "Hali faoliyat yo'q. Birinchi ota-onani ro'yxatga olib boshlang." })}
+            </p>
+            <Link
+              to="/reception/parents/new"
+              className="mt-3 inline-flex items-center gap-1.5 text-[13px] text-brand-700 font-medium hover:text-brand-800"
+            >
+              {t('dashboard.addParentLink', { defaultValue: "Ota-ona qo'shish" })}
+              <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
+            </Link>
+          </article>
+        )}
+      </section>
 
       {/* Lower split: children grid + school stats */}
       <section className="grid lg:grid-cols-[2fr_1fr] gap-4">

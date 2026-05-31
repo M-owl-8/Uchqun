@@ -168,6 +168,17 @@ const ChildIRR = () => {
       </div>
 
       {/* Progression section */}
+      {sessions.length === 0 && (
+        <section data-testid="progression-empty" className="page-card rounded-xl p-5 text-center py-8">
+          <TrendingUp className="w-8 h-8 text-p-brand-200 mx-auto mb-3" />
+          <p className="text-[14px] font-medium text-p-ink mb-1">
+            {t('irr.noSessionsParent', { defaultValue: "Hali baholash o'tkazilmagan." })}
+          </p>
+          <p className="text-[13px] text-p-sepia-400">
+            {t('irr.noSessionsParentDesc', { defaultValue: "O'qituvchi birinchi baholashdan keyin bu yerda ko'rinadi." })}
+          </p>
+        </section>
+      )}
       {sessions.length > 0 && (
         <section data-testid="progression-section" className="page-card rounded-xl p-5">
           <h2 className="font-serif text-[16px] font-semibold text-p-ink mb-4 flex items-center gap-2">
@@ -213,6 +224,13 @@ const ChildIRR = () => {
       )}
 
       {/* Long-term goals */}
+      {goals && goals.longTermGoals?.length === 0 && (
+        <section data-testid="ltg-empty" className="page-card rounded-xl p-5 text-center py-8">
+          <p className="text-[14px] text-p-sepia-400">
+            {t('irr.noGoalsParent', { defaultValue: "Hali uzoq muddatli maqsadlar belgilanmagan. O'qituvchi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi." })}
+          </p>
+        </section>
+      )}
       {goals?.longTermGoals?.length > 0 && (
         <section data-testid="ltg-section" className="page-card rounded-xl p-5">
           <h2 className="text-lg font-bold text-slate-900 mb-6">
@@ -236,6 +254,13 @@ const ChildIRR = () => {
       )}
 
       {/* Periods with STGs */}
+      {goals && goals.periods?.length === 0 && (
+        <section data-testid="periods-empty" className="page-card rounded-xl p-5 text-center py-8">
+          <p className="text-[14px] text-p-sepia-400">
+            {t('irr.noPeriodsParent', { defaultValue: "Hali maqsad davrlari yaratilmagan." })}
+          </p>
+        </section>
+      )}
       {goals?.periods?.length > 0 && (
         <section data-testid="periods-section" className="space-y-6">
           <h2 className="text-lg font-bold text-slate-900">

@@ -935,6 +935,12 @@ export default function IrrShell() {
             <div className="px-5 py-4 text-[13px] text-slate-400">Yuklanmoqda...</div>
           )}
 
+          {!loadingSessions && sessions.length === 0 && (
+            <div className="px-5 py-6 text-center text-[13px] text-slate-400">
+              {t('irr.noSessions', { defaultValue: "Hali baholash sessiyalari o'tkazilmagan. Yangi sessiya yaratish uchun quyidagi formdan foydalaning." })}
+            </div>
+          )}
+
           {/* New session form */}
           {!isReadOnly && (
             <div className="px-5 py-5 space-y-5">
@@ -1589,6 +1595,12 @@ export default function IrrShell() {
           </button>
         </div>
 
+        {dailyEntries.length === 0 && (
+          <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
+            {t('irr.noDailyEntries', { defaultValue: "Hali kundalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi." })}
+          </div>
+        )}
+
         {dailyEntries.length > 0 && (
           <div className="px-5 py-3">
             <h3 className="text-[13px] font-semibold text-slate-700 mb-2">Сўнгги ёзувлар</h3>
@@ -1704,6 +1716,12 @@ export default function IrrShell() {
             {savingWeekly ? 'Сақланмоқда...' : 'Ҳафталик мониторингни сақлаш'}
           </button>
         </div>
+
+        {weeklyEntries.length === 0 && (
+          <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
+            {t('irr.noWeeklyEntries', { defaultValue: "Hali haftalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi." })}
+          </div>
+        )}
 
         {weeklyEntries.length > 0 && (
           <div className="px-5 py-3">

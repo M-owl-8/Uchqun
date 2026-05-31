@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, Plus, MessageSquare } from 'lucide-react';
+import { TrendingUp, ArrowRight, Plus, MessageSquare, Users } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ChildAvatar } from '../components/ChildAvatar';
 import { useChildRibbon } from '../hooks/useChildRibbon';
 import { SkeletonDashboard } from '../../../shared/components/Skeleton';
@@ -133,6 +134,7 @@ const FALLBACK_DATA = {
 
 const Dashboard = () => {
   const { user } = useAuth();
+  const { t } = useTranslation();
   const [data, setData]       = useState(() => cache.get(CACHE_KEY));
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
 
@@ -214,6 +216,21 @@ const Dashboard = () => {
             <Plus className="w-4 h-4" strokeWidth={2} /> Yangi yozuv
           </Link>
         </div>
+
+        {/* No-children empty state */}
+        {children.length === 0 && (
+          <div className="mt-6 rounded-xl border border-slate-200 bg-surface shadow-xs px-6 py-10 text-center">
+            <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mx-auto mb-4">
+              <Users className="w-7 h-7 text-gray-400" strokeWidth={1.5} />
+            </div>
+            <h3 className="text-base font-semibold text-slate-900 mb-1">
+              {t('dashboard.noChildren.title', { defaultValue: "Sizning sinfingizda hali bolalar yo'q" })}
+            </h3>
+            <p className="text-sm text-slate-500 max-w-sm mx-auto">
+              {t('dashboard.noChildren.description', { defaultValue: "Sinfingizga bolalar tayinlanmaguncha, bu sahifa bo'sh ko'rinadi. Maktab adminiga murojaat qiling." })}
+            </p>
+          </div>
+        )}
 
         {/* Class at a glance */}
         {children.length > 0 && (
@@ -344,6 +361,18 @@ const Dashboard = () => {
           <h1 className="text-[22px] font-semibold text-slate-900">Bugun, {user?.firstName} opa/aka</h1>
           <p className="text-[13px] text-slate-500">{today}</p>
         </div>
+
+        {children.length === 0 && (
+          <div className="rounded-xl border border-slate-200 bg-surface px-5 py-8 text-center">
+            <Users className="w-8 h-8 text-gray-300 mx-auto mb-2" strokeWidth={1.5} />
+            <p className="text-[13px] font-semibold text-slate-800 mb-0.5">
+              {t('dashboard.noChildren.title', { defaultValue: "Sizning sinfingizda hali bolalar yo'q" })}
+            </p>
+            <p className="text-[12px] text-slate-500">
+              {t('dashboard.noChildren.description', { defaultValue: "Maktab adminiga murojaat qiling." })}
+            </p>
+          </div>
+        )}
 
         {children.length > 0 && (
           <div className="rounded-xl bg-surface border border-slate-200 p-4">

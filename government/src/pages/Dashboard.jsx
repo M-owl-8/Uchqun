@@ -279,6 +279,11 @@ const Dashboard = () => {
       </div>
 
       {/* Regional breakdown — republic accounts only; region accounts see 1 region (their own) so breakdown is redundant */}
+      {isRepublic && regionBreakdown.length === 0 && (
+        <div className="bg-paper-card border border-gray-200 rounded-lg px-5 py-10 text-center">
+          <p className="text-sm text-gray-400">{t('dashboard.noSchools', { defaultValue: "Hozircha hech qanday maktab ro'yxatga olinmagan." })}</p>
+        </div>
+      )}
       {isRepublic && regionBreakdown.length > 0 && (
         <div className="bg-paper-card border border-gray-200 rounded-lg">
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">

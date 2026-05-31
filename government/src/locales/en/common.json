@@ -67,7 +67,8 @@
     "noRatings": "No regional rating data",
     "unknownRegion": "Unknown region",
     "pendingAdminList": "Pending registrations",
-    "noPendingAdmins": "No pending registrations"
+    "noPendingAdmins": "No pending registrations",
+    "noSchools": "No schools are registered yet."
   },
   "schools": {
     "title": "Schools",
@@ -221,7 +222,14 @@
     "phone": "Phone",
     "status": "Status",
     "createdAt": "Created date",
-    "birthDate": "Date of birth"
+    "birthDate": "Date of birth",
+    "empty": {
+      "receptions": "This admin hasn't registered any reception staff yet.",
+      "schools": "This admin doesn't manage any schools yet.",
+      "teachers": "No teachers enrolled at this school yet.",
+      "parents": "No parents registered at this school yet.",
+      "children": "No children registered at this school yet."
+    }
   },
   "platform": {
     "tabs": {

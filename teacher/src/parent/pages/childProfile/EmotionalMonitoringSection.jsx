@@ -1,4 +1,4 @@
-import { Heart } from 'lucide-react';
+import { Heart, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const EMOTIONAL_KEYS = [
@@ -9,7 +9,27 @@ const EMOTIONAL_KEYS = [
 const EmotionalMonitoringSection = ({ records }) => {
   const { t, i18n } = useTranslation();
 
-  if (!records || records.length === 0) return null;
+  if (!records || records.length === 0) {
+    return (
+      <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
+        <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <Heart className="w-6 h-6 text-pink-600" />
+          {t('profile.monitoringJournal', { defaultValue: 'Monitoring Journal' })}
+        </h3>
+        <div className="flex flex-col items-center justify-center py-8 text-center">
+          <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+            <Activity className="w-7 h-7 text-gray-400" strokeWidth={1.5} />
+          </div>
+          <p className="text-[15px] font-medium text-slate-700 mb-1">
+            {t('profile.emotionalEmpty', { defaultValue: "Emotsional kuzatuv hali yo'q" })}
+          </p>
+          <p className="text-[13px] text-slate-400 max-w-xs">
+            {t('profile.emotionalEmptyDesc', { defaultValue: "O'qituvchi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi." })}
+          </p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">

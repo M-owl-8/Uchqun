@@ -4,7 +4,7 @@ import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   ShieldAlert, AlertTriangle, AlertCircle, Info,
-  CheckCircle2, RefreshCw, Shield, Globe, MapPin,
+  CheckCircle2, RefreshCw, ShieldCheck, Globe, MapPin,
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
@@ -251,18 +251,29 @@ const AIWarnings = () => {
         </div>
       ) : !loadError && displayedWarnings.length === 0 ? (
         <div className="py-16 text-center">
-          <Shield className="w-10 h-10 text-gray-200 mx-auto mb-3" />
-          <p className="text-sm text-gray-400">
-            {warnings.length > 0
-              ? t('warnings.noMatchSeverity', { defaultValue: 'Bu darajada ogohlantirishlar topilmadi' })
-              : filter === 'active'
-              ? (isRegionAccount && regionName
-                  ? t('warnings.noActiveRegion', { name: regionName, defaultValue: 'No active warnings for {{name}}' })
-                  : t('warnings.noActive', { defaultValue: 'Faol ogohlantirishlar yo\'q' }))
-              : (isRegionAccount && regionName
-                  ? t('warnings.noResolvedRegion', { name: regionName, defaultValue: 'No resolved warnings for {{name}}' })
-                  : t('warnings.noResolved', { defaultValue: 'Hal qilingan ogohlantirishlar yo\'q' }))}
-          </p>
+          <ShieldCheck className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+          {warnings.length > 0 ? (
+            <p className="text-sm text-gray-400">
+              {t('warnings.noMatchSeverity', { defaultValue: 'Bu darajada ogohlantirishlar topilmadi' })}
+            </p>
+          ) : filter === 'active' ? (
+            <>
+              <p className="text-sm font-medium text-gray-600 mb-1">
+                {t('warnings.noActive', { defaultValue: "Hozircha AI ogohlantirishlar yo'q" })}
+              </p>
+              <p className="text-sm text-gray-400 max-w-xs mx-auto">
+                {isRegionAccount && regionName
+                  ? t('warnings.noActiveRegionDesc', { name: regionName, defaultValue: '{{name}} hududidagi maktablarda hech qanday muammoli signal aniqlanmadi.' })
+                  : t('warnings.noActiveDesc', { defaultValue: "Sizning vakolatingizdagi maktablarda hech qanday muammoli signal aniqlanmadi." })}
+              </p>
+            </>
+          ) : (
+            <p className="text-sm text-gray-400">
+              {isRegionAccount && regionName
+                ? t('warnings.noResolvedRegion', { name: regionName, defaultValue: 'No resolved warnings for {{name}}' })
+                : t('warnings.noResolved', { defaultValue: "Hal qilingan ogohlantirishlar yo'q" })}
+            </p>
+          )}
         </div>
       ) : (
         <div className="space-y-3">
