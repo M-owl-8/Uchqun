@@ -5,15 +5,17 @@
 **Seeded:** 2026-05-30  
 **Password (all accounts):** `Test@2026`
 
+**CREDS-SYNC 2026-05-31 (S12):** All display names updated to match live DB after PROD-READINESS-03 demo-profile rename pass. Previous names (from original seed) were replaced with Uzbek professional-sounding names. Emails and password unchanged.
+
 ---
 
 ## Government (3 users)
 
 | Email | Name | Level | Region |
 |---|---|---|---|
-| `gov.republic@uchqun.uz` | Alisher Nazarov | republic / main | — |
-| `gov.toshkent@uchqun.uz` | Bobur Yusupov | region / main | Region 01 (Toshkent) |
-| `gov.samarqand@uchqun.uz` | Sardor Karimov | region / main | Region 02 (Samarqand) |
+| `gov.republic@uchqun.uz` | Hamidjon Mirzayev | republic / main | — |
+| `gov.toshkent@uchqun.uz` | Nodira Yusupova | region / main | Region 01 (Toshkent) |
+| `gov.samarqand@uchqun.uz` | Sherzod Raximov | region / main | Region 02 (Samarqand) |
 
 ---
 
@@ -21,17 +23,16 @@
 
 | Role | Email | Name |
 |---|---|---|
-| admin | `admin1@uchqun.uz` | Aziz Umarov |
-| reception | `reception1@uchqun.uz` | Zilola Raximova |
-| teacher | `teacher1@uchqun.uz` | Malika Yunusova |
-| teacher | `teacher2@uchqun.uz` | Nodir Ismoilov |
-| parent | `parent1@uchqun.uz` | Hulkar Nasirova |
-| parent | `parent2@uchqun.uz` | Dilorom Sobirov |
-| parent | `parent3@uchqun.uz` | Jasur Tursunov |
+| admin | `admin1@uchqun.uz` | Dilnoza Xoliqova |
+| reception | `reception1@uchqun.uz` | Iroda Abdullayeva |
+| teacher | `teacher1@uchqun.uz` | Zulfiya Nazarova |
+| teacher | `teacher2@uchqun.uz` | Doniyor Ergashev |
+| parent | `parent1@uchqun.uz` | Hulkar Sobirova |
+| parent | `parent2@uchqun.uz` | Dilorom Tursunova |
+| parent | `parent3@uchqun.uz` | Jasur Qodirov |
 
-**Groups:**
-- A-guruh → Malika Yunusova (children: Asilbek Hulkarovich, Gulnora Diloromovna)
-- B-guruh → Nodir Ismoilov (child: Muhammadali Jasurovich)
+**Groups:** No groups seeded for School 1 (data gap from PROD-READINESS-02 seeder — see S12 note).  
+**Children:** Linked to parents via parentId; exist in DB but no group assignment for School 1.
 
 ---
 
@@ -39,17 +40,17 @@
 
 | Role | Email | Name |
 |---|---|---|
-| admin | `admin2@uchqun.uz` | Bahrom Solijev |
+| admin | `admin2@uchqun.uz` | Bahrom Xasanov |
 | reception | `reception2@uchqun.uz` | Yulduz Mirzayeva |
-| teacher | `teacher3@uchqun.uz` | Feruza Qosimova |
-| teacher | `teacher4@uchqun.uz` | Doniyor Xoliqov |
-| parent | `parent4@uchqun.uz` | Kamola Hasanov |
-| parent | `parent5@uchqun.uz` | Laylo Mirzayev |
+| teacher | `teacher3@uchqun.uz` | Feruza Normatova |
+| teacher | `teacher4@uchqun.uz` | Sardor Toshpulatov |
+| parent | `parent4@uchqun.uz` | Kamola Hasanova |
+| parent | `parent5@uchqun.uz` | Lobar Mirzayeva |
 | parent | `parent6@uchqun.uz` | Mansur Rahimov |
 
 **Groups:**
-- A-guruh → Feruza Qosimova (children: Nodira Kamolaovna, Otabek Layloevich)
-- B-guruh → Doniyor Xoliqov (child: Parviz Mansurovich)
+- A-guruh → teacher3 (Feruza Normatova)
+- B-guruh → teacher4 (Sardor Toshpulatov)
 
 ---
 
@@ -57,17 +58,17 @@
 
 | Role | Email | Name |
 |---|---|---|
-| admin | `admin3@uchqun.uz` | Vohid Toshmatov |
-| reception | `reception3@uchqun.uz` | Xurmo Normatova |
+| admin | `admin3@uchqun.uz` | Vohida Toshmatova |
+| reception | `reception3@uchqun.uz` | Xurshida Norqulova |
 | teacher | `teacher5@uchqun.uz` | Shahnoza Ergasheva |
 | teacher | `teacher6@uchqun.uz` | Erkin Nazarov |
-| parent | `parent7@uchqun.uz` | Nafisa Hamidov |
-| parent | `parent8@uchqun.uz` | Ozoda Karimov |
+| parent | `parent7@uchqun.uz` | Nafosatoy Hamidova |
+| parent | `parent8@uchqun.uz` | Ozoda Karimova |
 | parent | `parent9@uchqun.uz` | Pahlavon Ergashev |
 
 **Groups:**
-- A-guruh → Shahnoza Ergasheva (children: Qunduz Nafisaovna, Rustam Ozodinovich)
-- B-guruh → Erkin Nazarov (child: Sarvinoz Pahlavonovna)
+- A-guruh → teacher5 (Shahnoza Ergasheva)
+- B-guruh → teacher6 (Erkin Nazarov)
 
 ---
 
@@ -78,14 +79,14 @@
 | admin | `admin4@uchqun.uz` | Gulsanam Xolmatova |
 | reception | `reception4@uchqun.uz` | Umida Qodirboyeva |
 | teacher | `teacher7@uchqun.uz` | Maftuna Aliyeva |
-| teacher | `teacher8@uchqun.uz` | Akmal Pulatov |
-| parent | `parent10@uchqun.uz` | Rano Yusupov |
+| teacher | `teacher8@uchqun.uz` | Akbar Pulatov |
+| parent | `parent10@uchqun.uz` | Rano Yusupova |
 | parent | `parent11@uchqun.uz` | Sanjar Qodirov |
-| parent | `parent12@uchqun.uz` | Tursun Ahmedov |
+| parent | `parent12@uchqun.uz` | Tursunoy Ahmedova |
 
 **Groups:**
-- A-guruh → Maftuna Aliyeva (children: Tohir Ranoevich, Ulugbek Sanjarovich)
-- B-guruh → Akmal Pulatov (child: Feruza Tursunovna)
+- A-guruh → teacher7 (Maftuna Aliyeva)
+- B-guruh → teacher8 (Akbar Pulatov)
 
 ---
 
@@ -109,3 +110,5 @@ All chains verified via JOIN queries (see `audits/prod-readiness/02-account-seed
 - Government: `govLevel=republic/region`, `govType=main`, `govRegionId` set for region accounts
 - Reception: meets both `documentsApproved && isActive` auth gate (CLAUDE.md)
 - Password hash: bcrypt 10 rounds — `$2b$10$.ovwHitQ4P/HBG4RmhrYR.LRGIrOGlFaCtM.d9Gi.yXuCZ0q6KyTO`
+- createdBy chain: backfilled via migration 20260531000001 (S11/S12) — reception.createdBy = admin, teacher/parent.createdBy = first reception in same school
+- School 1 groups: missing from DB (seeder gap) — children exist but unassigned to groups in School 1
