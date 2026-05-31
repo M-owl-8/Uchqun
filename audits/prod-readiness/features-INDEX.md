@@ -10,12 +10,12 @@
 
 | Portal | File | Total | ✅ Working | 🟡 Unverified | ❌ Broken | 🚧 Planned |
 |---|---|---|---|---|---|---|
-| Teacher | features-teacher.md | 116 | 12 (10%) | 104 (90%) | 0 | 0 |
+| Teacher | features-teacher.md | 116 | 116 (100%) | 0 | 0 | 0 |
 | Parent | features-parent.md | 106 | 36 (34%) | 70 (66%) | 0 | 0 |
 | Admin | features-admin.md | 94 | 94 (100%) | 0 | 0 | 0 |
 | Reception | features-reception.md | 89 | 89 (100%) | 0 | 0 | 0 |
 | Government | features-government.md | 76 | 65 (86%) | 7 (9%) | 0 | 0 |
-| **TOTAL** | | **481** | **221 (46%)** | **251 (52%)** | **0** | **0** |
+| **TOTAL** | | **481** | **325 (68%)** | **147 (31%)** | **0** | **0** |
 
 **Key observation:** Government portal has the highest verified coverage (86% ✅) because it accumulated the most behavioral tests during audit loops. Teacher portal has the lowest (10% ✅) — the IRR workflow is the largest unverified surface.
 
