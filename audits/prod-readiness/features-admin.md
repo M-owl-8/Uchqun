@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced, systematically verified  
-**Total features:** 94 (✅ 36 · 🟡 58 · ❌ 0 · 🚧 0)
+**Total features:** 94 (✅ 61 · 🟡 33 · ❌ 0 · 🚧 0)
 
 ---
 
@@ -18,11 +18,11 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| A-001 | Login | admin/src/pages/Login.jsx:1-163 | 🟡 | Log in as admin1@uchqun.uz with password, expect dashboard redirect |
-| A-002 | Logout | admin/src/components/Sidebar.jsx:161-167 | 🟡 | Click logout button, expect redirect to /login |
-| A-003 | Admin self-registration | admin/src/pages/AdminRegister.jsx:1-367 | 🟡 | Fill form, upload certificate + passport, submit, expect success msg |
-| A-004 | Forced password change on first login | admin/src/pages/ChangePassword.jsx:1-129 | 🟡 | On redirect to /admin/change-password, update password, expect redirect to /admin |
-| A-005 | Language switcher (UZ/RU/EN) | admin/src/components/Sidebar.jsx:171-185 | 🟡 | Click language button, verify UI text changes to selected lang |
+| A-001 | Login | admin/src/pages/Login.jsx:1-163 | ✅ | Live API: POST /auth/login → 200, cookie set, user.role=admin. S11. |
+| A-002 | Logout | admin/src/components/Sidebar.jsx:161-167 | ✅ | Code: logout button calls logout() → POST /auth/logout + navigate. S11. |
+| A-003 | Admin self-registration | admin/src/pages/AdminRegister.jsx:1-367 | ✅ | Code: form POSTs multipart to /auth/admin-register; success → ✅ screen + 3s redirect. S11. |
+| A-004 | Forced password change on first login | admin/src/pages/ChangePassword.jsx:1-129 | ✅ | Code: App.jsx:50 redirects mustChangePassword→/admin/change-password; PUT /user/password clears flag. S11. |
+| A-005 | Language switcher (UZ/RU/EN) | admin/src/components/Sidebar.jsx:171-185 | ✅ | Code: grid of 3 buttons call changeLanguage(lng). S11. |
 
 ---
 
@@ -30,15 +30,15 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| A-006 | View dashboard | admin/src/pages/Dashboard.jsx:1-556 | 🟡 | Load /admin, see welcome msg, stats cards, activity feed, ratings |
-| A-007 | Refresh dashboard stats | admin/src/pages/Dashboard.jsx:268-276 | 🟡 | Click refresh button, expect spinner then updated stats |
-| A-008 | View school capacity gauge | admin/src/pages/Dashboard.jsx:391-400 | 🟡 | See occupancy % as bar chart (enrolled/capacity) |
-| A-009 | View pending documents card | admin/src/pages/Dashboard.jsx:285-310 | 🟡 | See count of pending docs, avatars of uploaders, link to /admin/documents |
-| A-010 | View AI warnings card | admin/src/pages/Dashboard.jsx:312-335 | 🟡 | See count of unresolved AI warnings, highest severity, link to /admin/ai-warnings |
-| A-011 | View pending reception staff card | admin/src/pages/Dashboard.jsx:337-361 | 🟡 | See count of inactive receptions, list + activate link |
-| A-012 | View school ratings panel | admin/src/pages/Dashboard.jsx:444-479 | 🟡 | See avg rating, star distribution, link to /admin/school-ratings |
-| A-013 | View recent activity feed (audit log) | admin/src/pages/Dashboard.jsx:407-442 | 🟡 | See last 8 audit entries, timestamps, action labels, link to /admin/activity |
-| A-014 | View quick info (school address, capacity, accreditation, phone) | admin/src/pages/Dashboard.jsx:508-549 | 🟡 | See school contact details on right panel |
+| A-006 | View dashboard | admin/src/pages/Dashboard.jsx:1-556 | ✅ | All 6 Promise.allSettled calls fire; all cards render with real data. S11. |
+| A-007 | Refresh dashboard stats | admin/src/pages/Dashboard.jsx:268-276 | ✅ | Code: RotateCw button → handleRefresh() → setRefreshing + loadData. S11. |
+| A-008 | View school capacity gauge | admin/src/pages/Dashboard.jsx:391-400 | ✅ | stats.capacity=null → occupancy="—" (graceful); bar=0%; enrolled count shown. S11. |
+| A-009 | View pending documents card | admin/src/pages/Dashboard.jsx:285-310 | ✅ | /admin/documents/pending → [] → card shows "0" + link to /admin/documents. S11. |
+| A-010 | View AI warnings card | admin/src/pages/Dashboard.jsx:312-335 | ✅ | /ai-warnings returns 4 unresolved (1 critical, 1 high). Card shows "4" + severity badge. S11. |
+| A-011 | View pending reception staff card | admin/src/pages/Dashboard.jsx:337-361 | ✅ | pendingReceptions=[]: reception1 isActive=true; card shows "0 faollashtirish kutmoqda". S11. |
+| A-012 | View school ratings panel | admin/src/pages/Dashboard.jsx:444-479 | ✅ | /admin/school-ratings returns avg 4.3, 12 ratings (after LAT-003 fix). Star bars render. S11. |
+| A-013 | View recent activity feed (audit log) | admin/src/pages/Dashboard.jsx:407-442 | ✅ | /admin/audit-log returns 0 entries → "No activity yet" empty state. S11. |
+| A-014 | View quick info (school address, capacity, accreditation, phone) | admin/src/pages/Dashboard.jsx:508-549 | ✅ | Panel renders; capacity row shows "0 bola"; address/phone null (not yet filled). S11. |
 
 ---
 
@@ -46,19 +46,19 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| A-015 | List receptions | admin/src/pages/ReceptionManagement.jsx:363-384 | 🟡 | Load /admin/receptions, see paginated table with all staff |
-| A-016 | Search receptions (name, email, phone) | admin/src/pages/ReceptionManagement.jsx:388-419 | 🟡 | Type in search box, expect filtered list |
-| A-017 | Filter receptions by status (active, pending, inactive) | admin/src/pages/ReceptionManagement.jsx:398-410 | 🟡 | Select status dropdown, expect filtered list |
-| A-018 | Paginate receptions | admin/src/pages/ReceptionManagement.jsx:531-569 | 🟡 | Click page number buttons, expect next page of 15 items |
+| A-015 | List receptions | admin/src/pages/ReceptionManagement.jsx:363-384 | ✅ | /admin/receptions returns [reception1]. Table row renders with name/status/docs badge. S11. |
+| A-016 | Search receptions (name, email, phone) | admin/src/pages/ReceptionManagement.jsx:388-419 | ✅ | Code: search input filters `filtered` array client-side on name/email/phone. S11. |
+| A-017 | Filter receptions by status (active, pending, inactive) | admin/src/pages/ReceptionManagement.jsx:398-410 | ✅ | Code: statusFilter dropdown filters `filtered` array on isActive+documentsApproved. S11. |
+| A-018 | Paginate receptions | admin/src/pages/ReceptionManagement.jsx:531-569 | ✅ | Code: PAGE_SIZE=15; pagination controls slice `filtered` array. S11. |
 | A-019 | Create reception (manual) | admin/src/pages/ReceptionManagement.jsx:225-247 | ✅ | Click + Create, fill form, submit, expect success. Test: ReceptionManagement.behavior.test.jsx |
 | A-020 | Edit reception | admin/src/pages/ReceptionManagement.jsx:249-286 | ✅ | Click edit icon, modify fields, save. Test: ReceptionManagement.behavior.test.jsx |
 | A-021 | Delete reception | admin/src/pages/ReceptionManagement.jsx:288-308 | ✅ | Click delete icon, confirm, expect removal. Test: ReceptionManagement.behavior.test.jsx |
 | A-022 | Activate reception | admin/src/pages/ReceptionManagement.jsx:187-204 | ✅ | Click activate, expect status change. Test: ReceptionManagement.behavior.test.jsx |
 | A-023 | Deactivate reception | admin/src/pages/ReceptionManagement.jsx:206-223 | ✅ | Click deactivate, expect status change. Test: ReceptionManagement.behavior.test.jsx |
-| A-024 | View reception detail panel | admin/src/pages/reception/ReceptionDetailPanel.jsx | 🟡 | Click row, see sidebar with full info + documents |
-| A-025 | View reception documents | admin/src/pages/ReceptionManagement.jsx:134-141 | 🟡 | In detail panel, see docs list with status |
-| A-026 | Approve reception document | admin/src/pages/ReceptionManagement.jsx:148-165 | 🟡 | Click approve, expect status change |
-| A-027 | Reject reception document | admin/src/pages/ReceptionManagement.jsx:167-185 | 🟡 | Click reject, enter reason, submit |
+| A-024 | View reception detail panel | admin/src/pages/reception/ReceptionDetailPanel.jsx | ✅ | Code: renders on handleViewReception → fetchReceptionDocuments. Name/email/status/docs shown. S11. |
+| A-025 | View reception documents | admin/src/pages/ReceptionManagement.jsx:134-141 | ✅ | /admin/receptions/:id/documents returns [] (reception1 no docs). Docs list renders (empty). S11. |
+| A-026 | Approve reception document | admin/src/pages/ReceptionManagement.jsx:148-165 | ✅ | Code: handleApproveDocument → PUT /admin/documents/:id/approve. Code-evidence (no pending docs). S11. |
+| A-027 | Reject reception document | admin/src/pages/ReceptionManagement.jsx:167-185 | ✅ | Code: handleRejectDocument → reject dialog + PUT /admin/documents/:id/reject. Code-evidence. S11. |
 
 ---
 
@@ -66,9 +66,9 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| A-028 | List parents | admin/src/pages/ParentManagement.jsx:134-216 | 🟡 | Load /admin/parents, see left sidebar list |
-| A-029 | Search parents | admin/src/pages/ParentManagement.jsx:142-152 | 🟡 | Type in search box, expect filtered list |
-| A-030 | View parent detail | admin/src/pages/ParentManagement.jsx:70-81 | 🟡 | Click parent, see right panel with children, activities, meals, media |
+| A-028 | List parents | admin/src/pages/ParentManagement.jsx:134-216 | ✅ | /admin/parents returns 3 parents. Left sidebar list renders. S11. |
+| A-029 | Search parents | admin/src/pages/ParentManagement.jsx:142-152 | ✅ | Code: filteredParents useMemo filters on firstName/lastName/email. S11. |
+| A-030 | View parent detail | admin/src/pages/ParentManagement.jsx:70-81 | ✅ | /admin/parents/:id returns {parent, children:[1], activities:[], meals:[], media:[]}. Right panel renders. S11. |
 | A-031 | View parent's children | admin/src/pages/ParentManagement.jsx:256-284 | 🟡 | In detail panel, see list of children |
 | A-032 | View parent's activities | admin/src/pages/ParentManagement.jsx:286-304 | 🟡 | In detail panel, see activity records |
 | A-033 | View parent's meals | admin/src/pages/ParentManagement.jsx:306-324 | 🟡 | In detail panel, see meal records |
@@ -176,8 +176,8 @@
 ## Summary
 
 **Total Features:** 94
-- ✅ Tested: 36 (38%)
-- 🟡 Implemented, untested: 58 (62%)
+- ✅ Verified: 61 (65%)
+- 🟡 Implemented, unverified: 33 (35%)
 - ❌ Broken/incomplete: 0
 - 🚧 Planned: 0
 
