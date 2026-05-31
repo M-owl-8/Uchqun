@@ -727,7 +727,11 @@ const ParentManagement = () => {
           teachers={teachers}
           groups={groups}
           onSubmit={handleSubmit}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setEditingParent(null);
+            setFormData({ firstName: '', lastName: '', email: '', phone: '', password: '', teacherId: '', groupId: '', child: { firstName: '', lastName: '', dateOfBirth: '', gender: 'Male', disabilityType: '', medicalDiagnosis: '', specialNeeds: '' } });
+          }}
         />
       )}
       {showChildModal && (
@@ -736,7 +740,10 @@ const ParentManagement = () => {
           setChildFormData={setChildFormData}
           isEditing={false}
           onSubmit={handleSubmitChild}
-          onClose={() => setShowChildModal(false)}
+          onClose={() => {
+            setShowChildModal(false);
+            setChildFormData({ firstName: '', lastName: '', dateOfBirth: '', gender: 'Male', disabilityType: '', medicalDiagnosis: '', specialNeeds: '', photo: null, photoPreview: null });
+          }}
         />
       )}
       {showEditChildModal && (
@@ -745,7 +752,10 @@ const ParentManagement = () => {
           setChildFormData={setChildFormData}
           isEditing={true}
           onSubmit={handleUpdateChild}
-          onClose={() => setShowEditChildModal(false)}
+          onClose={() => {
+            setShowEditChildModal(false);
+            setChildFormData({ firstName: '', lastName: '', dateOfBirth: '', gender: 'Male', disabilityType: '', medicalDiagnosis: '', specialNeeds: '', photo: null, photoPreview: null });
+          }}
         />
       )}
       {confirmDialog && (

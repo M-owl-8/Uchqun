@@ -266,7 +266,12 @@ const Media = () => {
           isTeacher={isTeacher}
           setFile={setFile}
           onSubmit={handleSubmit}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setEditingMedia(null);
+            setFile(null);
+            setFormData({ childId: '', title: '', description: '', type: 'photo', date: new Date().toISOString().split('T')[0] });
+          }}
         />
       )}
 

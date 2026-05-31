@@ -333,7 +333,11 @@ const TherapyManagement = () => {
           childList={childList}
           saving={saving}
           onSave={handleSave}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setEditingTherapy(null);
+            setFormData({ title: '', description: '', therapyType: 'music', contentUrl: '', contentType: 'audio', duration: '', ageGroup: 'all', difficultyLevel: 'all', tags: '', childId: '' });
+          }}
         />
       )}
 

@@ -293,7 +293,16 @@ const Activities = () => {
           parents={parents}
           childList={children}
           onSubmit={handleSubmit}
-          onClose={() => setShowModal(false)}
+          onClose={() => {
+            setShowModal(false);
+            setEditingActivity(null);
+            setFormData({
+              parentId: '', childId: '',
+              teacher: user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : 'Teacher',
+              skill: '', goal: '', startDate: new Date().toISOString().split('T')[0], endDate: '',
+              tasks: [''], methods: '', progress: '', observation: '', services: [],
+            });
+          }}
           loadChildrenForParent={loadChildrenForParent}
         />
       )}

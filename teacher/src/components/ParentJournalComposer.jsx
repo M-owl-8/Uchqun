@@ -61,6 +61,14 @@ export function ParentJournalComposer({ childList = [], onSend }) {
     }
   };
 
+  // Warn before unload if photos are attached (they are not persisted)
+  useEffect(() => {
+    if (photos.length === 0) return;
+    const handler = (e) => { e.preventDefault(); return (e.returnValue = ''); };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [photos.length]);
+
   const handleSend = async () => {
     if (!subject || !body || selectedIds.length === 0) return;
     setSending(true);
@@ -191,6 +199,13 @@ export function ParentJournalComposer({ childList = [], onSend }) {
               }}
             />
           </div>
+
+          {/* Photo persistence warning */}
+          {photos.length > 0 && (
+            <p className="mt-2 text-[11px] text-amber-700 bg-amber-50 border border-amber-100 rounded px-2 py-1">
+              Suratlar faqat shu sahifada saqlanadi — boshqa sahifaga o&apos;tsangiz yo&apos;qoladi. Avval xabarni yuboring.
+            </p>
+          )}
 
           {/* Photo thumbnails */}
           {photos.length > 0 && (

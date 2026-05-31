@@ -7,9 +7,9 @@ import GroupStep from './steps/GroupStep';
 import api from '../../services/api';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
-import * as cache from '../../../../shared/utils/cache';
+import { useAuth } from '../../context/AuthContext';
+import useFormPersistence from '@shared/hooks/useFormPersistence';
 
-const DRAFT_KEY = 'reception:wizard:parent-draft';
 const STEPS = ["Ota-ona ma'lumotlari", "Bola ma'lumotlari", 'Guruh tayinlash'];
 
 const defaultParent = {
@@ -26,6 +26,10 @@ export default function ParentWizardPage() {
   const navigate = useNavigate();
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+  const { user } = useAuth();
+
+  const DRAFT_KEY = `wizard:parent:${user?.id || 'anon'}:draft`;
+  const { restore, save, clear } = useFormPersistence(DRAFT_KEY, { storage: 'localStorage' });
 
   const [step, setStep] = useState(0);
   const [parentData, setParentData] = useState(defaultParent);
@@ -34,11 +38,27 @@ export default function ParentWizardPage() {
   const [loading, setLoading] = useState(false);
   const [draftBanner, setDraftBanner] = useState(null);
 
-  // On mount: check for draft — show inline banner instead of window.confirm
+  // On mount: check for persisted draft — show inline banner
   useEffect(() => {
-    const draft = cache.get(DRAFT_KEY);
+    const draft = restore();
     if (draft) setDraftBanner(draft);
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-save draft to localStorage on every data change (throttled by hook)
+  useEffect(() => {
+    const hasData = parentData.firstName || parentData.lastName || parentData.email ||
+                    childData.firstName || childData.lastName;
+    if (hasData) save({ parentData, childData, groupData, step });
+  }, [parentData, childData, groupData, step]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Warn before unload when wizard has data
+  useEffect(() => {
+    const hasDirtyData = parentData.firstName || parentData.email || childData.firstName;
+    if (!hasDirtyData) return;
+    const handler = (e) => { e.preventDefault(); return (e.returnValue = ''); };
+    window.addEventListener('beforeunload', handler);
+    return () => window.removeEventListener('beforeunload', handler);
+  }, [parentData.firstName, parentData.email, childData.firstName]);
 
   const handleResumeDraft = () => {
     if (!draftBanner) return;
@@ -50,12 +70,12 @@ export default function ParentWizardPage() {
   };
 
   const handleDiscardDraft = () => {
-    cache.set(DRAFT_KEY, null);
+    clear();
     setDraftBanner(null);
   };
 
   const saveDraft = () => {
-    cache.set(DRAFT_KEY, { parentData, childData, groupData, step });
+    save({ parentData, childData, groupData, step });
     success("Qoralama saqlandi");
   };
 
@@ -86,8 +106,7 @@ export default function ParentWizardPage() {
         });
       }
       await api.post('/reception/parents', payload);
-      cache.set(DRAFT_KEY, null);
-      cache.set('reception:parents', null); // bust parent list cache
+      clear();
       success("Ota-ona muvaffaqiyatli qo'shildi");
       navigate('/reception/wizard/complete');
     } catch (err) {

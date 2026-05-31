@@ -3,6 +3,9 @@ import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
+import useFormPersistence from '@shared/hooks/useFormPersistence';
+
+const PERSIST_KEY = 'bulkimport:wizard:active';
 
 const ERROR_CODE_MAP = {
   IMPORT_ROW_FIRST_NAME_REQUIRED: "Ism majburiy",
@@ -58,6 +61,38 @@ const BulkImport = () => {
 
   const { error: toastError } = useToast();
   const { t } = useTranslation();
+  const { restore, save, clear } = useFormPersistence(PERSIST_KEY);
+
+  const startPolling = (jobId) => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    intervalRef.current = setInterval(async () => {
+      try {
+        const res = await api.get(`/admin/import/${jobId}/status`);
+        const status = res.data.data ?? res.data;
+        setPollStatus(status);
+        if (status.status === 'completed' || status.status === 'failed') {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+          clear();
+          setStep(5);
+        }
+      } catch {
+        // polling error — keep trying
+      }
+    }, 3000);
+  };
+
+  // Restore active import session on mount
+  useEffect(() => {
+    const saved = restore();
+    if (!saved) return;
+    if (saved.jobResult) setJobResult(saved.jobResult);
+    if (saved.step) setStep(saved.step);
+    if (saved.step === 4 && saved.jobResult?.importJobId) {
+      setPollStatus({ status: 'importing' });
+      startPolling(saved.jobResult.importJobId);
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     return () => {
@@ -73,6 +108,7 @@ const BulkImport = () => {
     setPollStatus(null);
     setShowErrors(false);
     if (intervalRef.current) clearInterval(intervalRef.current);
+    clear();
   };
 
   const handleValidate = async () => {
@@ -84,7 +120,9 @@ const BulkImport = () => {
       const res = await api.post('/admin/import/children/validate', formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-      setJobResult(res.data.data ?? res.data);
+      const result = res.data.data ?? res.data;
+      setJobResult(result);
+      save({ step: 2, jobResult: result });
       setStep(2);
     } catch (err) {
       toastError(err.response?.data?.error?.detail || t('import.uploadError', { defaultValue: 'Upload failed' }));
@@ -96,23 +134,10 @@ const BulkImport = () => {
   const handleStart = async () => {
     try {
       await api.post(`/admin/import/${jobResult.importJobId}/start`);
+      save({ step: 4, jobResult });
       setStep(4);
       setPollStatus({ status: 'importing' });
-
-      intervalRef.current = setInterval(async () => {
-        try {
-          const res = await api.get(`/admin/import/${jobResult.importJobId}/status`);
-          const status = res.data.data ?? res.data;
-          setPollStatus(status);
-          if (status.status === 'completed' || status.status === 'failed') {
-            clearInterval(intervalRef.current);
-            intervalRef.current = null;
-            setStep(5);
-          }
-        } catch {
-          // polling error — keep trying
-        }
-      }, 3000);
+      startPolling(jobResult.importJobId);
     } catch (err) {
       toastError(err.response?.data?.error?.detail || t('import.startError', { defaultValue: 'Could not start import' }));
     }

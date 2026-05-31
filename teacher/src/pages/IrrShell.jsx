@@ -9,6 +9,7 @@ import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteri
 import { SKILL_AREAS } from '@shared/config/skillAreas';
 import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
 import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
+import useFormPersistence from '@shared/hooks/useFormPersistence';
 
 // Uzbek labels for missing-field error display (backend returns field names in detail)
 const FIELD_LABELS_UZ = {
@@ -604,6 +605,27 @@ export default function IrrShell() {
     }
   }, [irr, success, showError, load]);
 
+  // ── Assessment session persistence (FSL-002) ────────────────────────────
+  const { restore: restoreScores, save: saveScores, clear: clearScores } =
+    useFormPersistence(`irr:assessment:${id}`, { storage: 'sessionStorage' });
+
+  // Restore draft scores when child changes
+  useEffect(() => {
+    const saved = restoreScores();
+    if (!saved) return;
+    if (saved.scores?.length === 17) setScores(saved.scores);
+    if (saved.sessionType) setSessionType(saved.sessionType);
+    if (saved.completedAt) setCompletedAt(saved.completedAt);
+    if (saved.sessionNotes) setSessionNotes(saved.sessionNotes);
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Auto-save whenever any score is touched
+  useEffect(() => {
+    if (scores.some(s => s !== null)) {
+      saveScores({ scores, sessionType, completedAt, sessionNotes });
+    }
+  }, [scores, sessionType, completedAt, sessionNotes]); // eslint-disable-line react-hooks/exhaustive-deps
+
   // ── Assessment session handlers (Phase 3b) ───────────────────────────────
   const handleScoreChange = useCallback((criterionIndex, score) => {
     setScores(prev => {
@@ -627,6 +649,7 @@ export default function IrrShell() {
         completedAt,
       });
       success('Баҳолаш натижалари сақланди');
+      clearScores();
       setScores(Array(17).fill(null));
       setSessionNotes('');
       await loadSessions(irr.id);
