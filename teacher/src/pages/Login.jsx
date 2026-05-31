@@ -43,6 +43,7 @@ const Login = () => {
       }
     } else {
       if (result.status === 429) setError(t('login.accountLocked'));
+      else if (result.status === 403 && result.error === 'ACCOUNT_NOT_ACTIVE') setError(t('login.accountSuspended', { defaultValue: "Hisobingiz to'xtatilgan. Administrator bilan bog'laning." }));
       else if (result.status === 403) setError(t('login.notApproved'));
       else setError(t('login.invalid'));
     }

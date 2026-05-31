@@ -177,7 +177,7 @@ const Media = () => {
       setShowModal(false);
       loadMedia(true);
     } catch (error) {
-      const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || error.message || t('mediaPage.toastError');
+      const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || t('mediaPage.toastError');
       showError(errorMessage);
     }
   };

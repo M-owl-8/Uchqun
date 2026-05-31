@@ -28,7 +28,8 @@
     "invalid": "Invalid email or password",
     "invalidRole": "Only teachers and parents can login. Other roles are not allowed.",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
+    "accountSuspended": "Your account has been suspended. Contact the administrator."
   },
   "dashboard": {
     "role": "My Role: Teacher",
@@ -379,6 +380,42 @@
       "sessionType9mo": "After 9 months",
       "sessionType12mo": "After 12 months",
       "sessionTypeCustom": "Other date"
-    }
+    },
+    "errorLoad": "IRR failed to load. Please try again.",
+    "errorSaveLtg": "Error saving goal",
+    "errorUpdateGoal": "Error updating goal",
+    "errorDeleteGoal": "Error deleting goal",
+    "errorSavePeriod": "Error saving period",
+    "errorSaveStg": "Error saving short-term goal",
+    "errorSave": "Error saving",
+    "errorSign": "Error signing",
+    "errorDuplicateDailyEntry": "A daily monitoring record already exists for this date",
+    "errorDuplicateWeeklyEntry": "A monitoring record already exists for this week",
+    "errorActivateFillRequired": "Please fill in all required fields",
+    "errorActivateStatus": "IRR is already active or archived",
+    "errorActivate": "Activation error",
+    "successSign": "Signed",
+    "successDailySaved": "Daily monitoring saved",
+    "successWeeklySaved": "Weekly monitoring saved",
+    "successCreated": "IRR created",
+    "successSaved": "IRR saved",
+    "successActivated": "IRR activated!"
+  },
+  "common": {
+    "networkError": "Network error. Check your connection and try again.",
+    "timeoutError": "Request timed out. Please try again."
+  },
+  "attendance": {
+    "errorLoadChildren": "Error loading children list",
+    "errorSave": "Error saving"
+  },
+  "childDetail": {
+    "errorIrrLoad": "IRR data failed to load"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Network error",
+    "TIMEOUT_ERROR": "Request timed out",
+    "ACCOUNT_NOT_ACTIVE": "Account suspended",
+    "SCHOOL_ARCHIVED": "School archived"
   }
 }

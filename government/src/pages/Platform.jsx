@@ -177,7 +177,7 @@ const Platform = () => {
             return next;
           });
         } catch (error) {
-          const code = error.response?.data?.error?.code;
+          const code = error?.response?.data?.error;
           if (code === 'DELETE_LAST_REPUBLIC_MAIN') {
             showError(t('provision.errors.deleteLastRepublicMain'));
           } else {

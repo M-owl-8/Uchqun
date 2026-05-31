@@ -30,7 +30,7 @@
     "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
     "auditTrail": "Login attempts are recorded",
     "rateLimited": "Too many attempts. Please wait a moment.",
-    "accountSuspended": "Your account has been suspended. Please contact your administrator.",
+    "accountSuspended": "Your account has been suspended. Contact the administrator.",
     "showPassword": "Show password",
     "hidePassword": "Hide password"
   },
@@ -332,7 +332,6 @@
     "submittedAt": "Submitted:",
     "passport": "Passport",
     "address": "Address",
-    "confirmReject": "Reject this request?",
     "confirmDeleteMessage": "Delete this message?",
     "status": {
       "loadingAdmins": "Loading admins...",
@@ -453,7 +452,8 @@
     "loading": "Loading...",
     "error": "An error occurred",
     "notFound": "Not found",
-    "unknown": "Unknown"
+    "unknown": "Unknown",
+    "networkError": "Network error. Please try again."
   },
   "scope": {
     "national": "All regions",
@@ -485,5 +485,10 @@
     "heading": "404",
     "message": "Page not found",
     "goBack": "Go to Dashboard"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Network error",
+    "ACCOUNT_NOT_ACTIVE": "Account suspended",
+    "DELETE_LAST_REPUBLIC_MAIN": "Cannot delete the last republic administrator"
   }
 }

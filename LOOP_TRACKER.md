@@ -50,6 +50,7 @@
 | PROD-ISSUE-AUDIT-01 | Quality / convenience / friction audit — 9 categories across all portals: rate limits, empty states, form state-loss, destructive-action safety, orphan routes, error message quality, cross-portal delivery, loading states, i18n completeness | ✅ Closed (see commit) | `audits/prod-readiness/PROD-ISSUE-AUDIT-01.md` — 74 findings: 24 HIGH · 36 MEDIUM · 14 LOW |
 | PROD-FIX-01 | Fix 5 A-1 blockers from PROD-ISSUE-AUDIT-01: [object Object] toast, Reception RU locale, teacher orphan routes, urgent observation notify, parent suspension force-logout | ✅ Closed (see commit) | `audits/prod-readiness/PROD-FIX-01-blockers.md` — 7 HIGH findings closed; 17 HIGH remain |
 | PROD-FIX-02 | Destructive action safety — 11 DS items: 4 HIGH (confirm missing) + 5 MEDIUM (confirm missing/weak) + 2 LOW (no irreversibility language) | ✅ Closed (see commit) | `audits/prod-readiness/PROD-FIX-02-destructive-actions.md` — HIGH 17→13, MEDIUM 36→31, LOW 14→12 |
+| PROD-FIX-03 | Error messages — 11 EM items: network error centralization, IrrShell hardcoded Cyrillic, BulkImport unmapped codes, JSON.stringify in toast, login suspended message, hardcoded Uzbek in Attendance/ChildDetail, backend i18n architecture | ✅ Closed (see commit) | `audits/prod-readiness/PROD-FIX-03-error-messages.md` — HIGH 13→8 (−5), MEDIUM 31→25 (−6). Total open 45. |
 
 ## Rules (read before every step)
 

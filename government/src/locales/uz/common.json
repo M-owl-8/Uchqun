@@ -449,7 +449,8 @@
     "loading": "Yuklanmoqda...",
     "error": "Xatolik yuz berdi",
     "notFound": "Topilmadi",
-    "unknown": "Noma'lum"
+    "unknown": "Noma'lum",
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring."
   },
   "page404": {
     "heading": "404",
@@ -496,5 +497,10 @@
     "weakPassword": "Parol katta va kichik harflar hamda raqamdan iborat bo'lishi kerak",
     "error": "Parolni o'zgartirishda xatolik yuz berdi",
     "incorrect": "Joriy parol noto'g'ri"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Tarmoq xatosi",
+    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan",
+    "DELETE_LAST_REPUBLIC_MAIN": "Oxirgi respublika administratorini o'chirish mumkin emas"
   }
 }

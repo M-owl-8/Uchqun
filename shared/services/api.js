@@ -53,18 +53,26 @@ export function createApi({
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
+      // Network-level failures (no server response): create a synthetic response so
+      // every component's `err.response?.data?.error` receives a translatable code
+      // string instead of Axios's always-English "Network Error" / "timeout" message.
+      if (!error.response) {
+        const networkCode = error.code === 'ECONNABORTED' ? 'TIMEOUT_ERROR' : 'NETWORK_ERROR';
+        error.response = { status: 0, data: { success: false, error: networkCode } };
+        return Promise.reject(error); // skip auth retry — no server to retry against
+      }
+
       // Normalize BACKEND-012 error shape: { error: { code, detail } } → { error: string }
       // so every component-level catch block receives a plain string, never [object Object].
-      // detail is "for Sentry triage only — never shown to users" per BACKEND-012; prefer code
-      // as user-facing text when detail is absent. Falls through unchanged for old-shape strings.
+      // `code` is preferred over `detail` — `detail` is for Sentry triage only, never shown to users.
       if (
         error.response?.data != null &&
         typeof error.response.data.error === 'object' &&
         error.response.data.error !== null
       ) {
         const e = error.response.data.error;
-        error.response.data.error = typeof e.detail === 'string' ? e.detail
-          : typeof e.code === 'string' ? e.code
+        error.response.data.error = typeof e.code === 'string' ? e.code
+          : typeof e.detail === 'string' ? e.detail
           : JSON.stringify(e);
       }
       const originalRequest = error.config;

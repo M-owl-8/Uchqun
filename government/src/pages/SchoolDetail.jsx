@@ -80,7 +80,7 @@ const GovRatingForm = ({ schoolId, onSuccess }) => {
       await loadExisting(period);
       onSuccess?.();
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       const errorMap = {
         RATING_COMMENT_REQUIRED: t('govRating.commentRequired', { defaultValue: "Izoh majburiy" }),
         RATING_PERIOD_INVALID: t('govRating.periodInvalid', { defaultValue: "Noto'g'ri davr formati" }),
@@ -244,13 +244,13 @@ const SchoolDetail = () => {
         : t('schoolDetail.archiveSuccess', { defaultValue: "Maktab arxivlandi" })
       );
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'SCHOOL_ALREADY_ARCHIVED') {
         showError(t('schoolDetail.alreadyArchived', { defaultValue: "Maktab allaqachon arxivlangan" }));
       } else if (code === 'SCHOOL_ALREADY_ACTIVE') {
         showError(t('schoolDetail.alreadyActive', { defaultValue: "Maktab allaqachon faol" }));
       } else {
-        const msg = err.response?.data?.error?.detail ?? err.response?.data?.error?.code ?? t('schoolDetail.archiveError', { defaultValue: "Xato yuz berdi" });
+        const msg = err.response?.data?.error?.detail ?? err?.response?.data?.error ?? t('schoolDetail.archiveError', { defaultValue: "Xato yuz berdi" });
         showError(msg);
       }
     } finally {

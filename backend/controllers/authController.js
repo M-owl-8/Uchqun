@@ -111,6 +111,15 @@ export const login = async (req, res) => {
       });
     }
 
+    // Suspended/archived accounts cannot log in (government role exempt — mirrors authenticate middleware)
+    if (user.role !== 'government' && (user.status === 'suspended' || user.status === 'archived')) {
+      logger.warn('Login blocked — account suspended or archived', { userId: user.id, status: user.status });
+      return res.status(403).json({
+        success: false,
+        error: { code: 'ACCOUNT_NOT_ACTIVE', detail: `Account is ${user.status}` },
+      });
+    }
+
     // Reception cannot log in until documents are approved by Admin
     if (user.role === 'reception') {
       if (!user.documentsApproved || !user.isActive) {

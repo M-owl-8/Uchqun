@@ -51,7 +51,7 @@ const Trash = () => {
       }));
       toastSuccessRef.current(t('trash.restoreSuccess', { defaultValue: 'Record restored successfully' }));
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'RESTORE_NOT_DELETED') {
         toastErrorRef.current(t('trash.notDeleted', { defaultValue: 'This record is not deleted' }));
       } else {

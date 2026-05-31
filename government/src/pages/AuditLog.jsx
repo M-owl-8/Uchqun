@@ -62,7 +62,7 @@ const AuditLog = () => {
     } catch (err) {
       setFetchError(
         err.response?.data?.error?.detail ??
-        err.response?.data?.error?.code ??
+        err?.response?.data?.error ??
         t('auditLog.fetchError', { defaultValue: 'Xato yuz berdi' })
       );
     } finally {

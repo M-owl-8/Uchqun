@@ -93,7 +93,7 @@ export default function GovernmentTab({
       setType('main');
       if (isRepublic) setLevel('republic');
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'PROVISION_CREDENTIAL_TAKEN') {
         setCreateError(t('provision.errors.credentialTaken'));
       } else if (code === 'REPUBLIC_MAIN_EXISTS') {

@@ -87,7 +87,7 @@ const Dashboard = () => {
       refreshNotifications();
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
-      showError(error.response?.data?.error || error.message);
+      showError(error.response?.data?.error || t('common.networkError', { defaultValue: 'Tarmoq xatosi yuz berdi. Qayta urinib ko\'ring.' }));
     } finally {
       setLoading(false);
     }

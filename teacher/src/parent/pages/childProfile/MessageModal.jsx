@@ -117,7 +117,7 @@ const MessageModal = ({
       const response = await api.get('/parent/messages');
       onSent(response.data.data || []);
     } catch (error) {
-      const code = error.response?.data?.error?.code;
+      const code = error?.response?.data?.error;
       const msg = code
         ? (t(`message.err_${code}`, { defaultValue: ERROR_CODES[code] || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }) }))
         : (error.response?.data?.message || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));

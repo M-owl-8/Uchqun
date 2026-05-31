@@ -267,9 +267,7 @@ const ParentManagement = () => {
       setShowChildModal(false);
       loadParents(true);
     } catch (error) {
-      const msg = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedAddChild');
-      const details = error.response?.data?.missing ? ` - Missing: ${JSON.stringify(error.response.data.missing)}` : '';
-      showError(`${msg}${details}`);
+      showError(error.response?.data?.error || t('parentsPage.failedAddChild'));
     }
   };
 
@@ -295,9 +293,7 @@ const ParentManagement = () => {
       setShowEditChildModal(false);
       loadParents(true);
     } catch (error) {
-      const msg = error.response?.data?.error || error.response?.data?.message || t('parentsPage.failedUpdateChild');
-      const details = error.response?.data?.missing ? ` - Missing: ${JSON.stringify(error.response.data.missing)}` : '';
-      showError(`${msg}${details}`);
+      showError(error.response?.data?.error || t('parentsPage.failedUpdateChild'));
     }
   };
 

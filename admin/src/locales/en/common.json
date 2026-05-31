@@ -49,7 +49,8 @@
     "blockSubtitle": "Use your admin credentials to access the system",
     "errorInvalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
+    "accountSuspended": "Your account has been suspended. Contact the administrator."
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",
@@ -395,5 +396,12 @@
     "newImport": "New Import",
     "uploadError": "Upload failed",
     "startError": "Could not start import"
+  },
+  "common": {
+    "networkError": "Network error. Please try again."
+  },
+  "errors": {
+    "NETWORK_ERROR": "Network error",
+    "ACCOUNT_NOT_ACTIVE": "Account suspended"
   }
 }

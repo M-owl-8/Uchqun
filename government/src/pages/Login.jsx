@@ -26,9 +26,9 @@ const Login = () => {
       navigate('/government');
     } else {
       if (result.status === 429) setError(t('login.rateLimited', { defaultValue: 'Juda ko\'p urinish. Iltimos, bir oz kuting.' }));
-      else if (result.status === 403) setError(t('login.notApproved'));
-      else if (result.status === 401 && result.error?.code === 'ACCOUNT_NOT_ACTIVE')
+      else if (result.status === 403 && result.error === 'ACCOUNT_NOT_ACTIVE')
         setError(t('login.accountSuspended', { defaultValue: "Hisobingiz to'xtatilgan. Administrator bilan bog'laning." }));
+      else if (result.status === 403) setError(t('login.notApproved'));
       else setError(t('login.error'));
     }
     setLoading(false);

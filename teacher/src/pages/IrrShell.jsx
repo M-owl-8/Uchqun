@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
+import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
@@ -117,6 +118,7 @@ const textareaCls =
 export default function IrrShell() {
   const { id } = useParams();
   const { success, error: showError } = useToast();
+  const { t } = useTranslation();
 
   const [confirmDialog, setConfirmDialog] = useState(null);
 
@@ -190,7 +192,7 @@ export default function IrrShell() {
       if (data) setForm(irrToForm(data));
     } catch (err) {
       if (err.response?.status !== 404) {
-        showError('ИРР yuklanmadi. Qayta urinib ko\'ring.');
+        showError(t('irr.errorLoad', { defaultValue: 'IRR yuklanmadi. Qayta urinib ko'ring.' }));
       }
       setIrr(null);
     } finally {
@@ -294,7 +296,7 @@ export default function IrrShell() {
       setLongTermGoals(prev => [...prev, res.data.data]);
       setLtgForm({ goalText: '', targetPeriodStart: '', targetPeriodEnd: '' });
     } catch {
-      showError('Мақсадни сақлашда хато');
+      showError(t('irr.errorSaveLtg', { defaultValue: 'Maqsadni saqlashda xatolik' }));
     } finally {
       setSavingLtg(false);
     }
@@ -312,7 +314,7 @@ export default function IrrShell() {
       setLongTermGoals(prev => prev.map(g => g.id === ltgEditId ? res.data.data : g));
       setLtgEditId(null);
     } catch {
-      showError('Мақсадни янгилашда хато');
+      showError(t('irr.errorUpdateGoal', { defaultValue: 'Maqsadni yangilashda xatolik' }));
     } finally {
       setSavingLtg(false);
     }
@@ -328,7 +330,7 @@ export default function IrrShell() {
           await api.delete(`/teacher/long-term-goals/${id}`);
           setLongTermGoals(prev => prev.filter(g => g.id !== id));
         } catch {
-          showError('Мақсадни ўчиришда хато');
+          showError(t('irr.errorDeleteGoal', { defaultValue: "Maqsadni o'chirishda xatolik" }));
         }
       },
     });
@@ -347,7 +349,7 @@ export default function IrrShell() {
       setGoalPeriods(prev => [...prev, res.data.data]);
       setPeriodForm({ periodStart: '', periodEnd: '' });
     } catch {
-      setPeriodError('Даврни сақлашда хато');
+      setPeriodError(t('irr.errorSavePeriod', { defaultValue: 'Davrni saqlashda xatolik' }));
     } finally {
       setSavingPeriod(false);
     }
@@ -394,7 +396,7 @@ export default function IrrShell() {
       }));
       setStgForms(prev => ({ ...prev, [periodId]: {} }));
     } catch {
-      showError('Қисқа муддатли мақсадни сақлашда хато');
+      showError(t('irr.errorSaveStg', { defaultValue: 'Qisqa muddatli maqsadni saqlashda xatolik' }));
     } finally {
       setSavingStg(null);
     }
@@ -412,7 +414,7 @@ export default function IrrShell() {
       setStgEditId(null);
       setStgEditForm({});
     } catch {
-      showError('Мақсадни янгилашда хато');
+      showError(t('irr.errorUpdateGoal', { defaultValue: 'Maqsadni yangilashda xatolik' }));
     } finally {
       setSavingStg(null);
     }
@@ -431,7 +433,7 @@ export default function IrrShell() {
             [periodId]: (prev[periodId] || []).filter(g => g.id !== id),
           }));
         } catch {
-          showError('Мақсадни ўчиришда хато');
+          showError(t('irr.errorDeleteGoal', { defaultValue: "Maqsadni o'chirishda xatolik" }));
         }
       },
     });
@@ -446,7 +448,7 @@ export default function IrrShell() {
       setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
       success('Чорак якунлари сақланди');
     } catch {
-      showError('Сақлашда хато юз берди');
+      showError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
     } finally {
       setSavingReview(null);
     }
@@ -457,9 +459,9 @@ export default function IrrShell() {
     try {
       const res = await api.post(`/teacher/goal-periods/${periodId}/sign`);
       setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
-      success('Имзо қўйилди');
+      success(t('irr.successSign', { defaultValue: "Imzo qo'yildi" }));
     } catch {
-      showError('Имзо қўйишда хато');
+      showError(t('irr.errorSign', { defaultValue: "Imzo qo'yishda xatolik" }));
     } finally {
       setSigningPeriod(null);
     }
@@ -491,13 +493,13 @@ export default function IrrShell() {
       setDailyEntries(prev => [res.data.data, ...prev]);
       setDailyChecks({});
       setDailyNotes('');
-      success('Кундалик мониторинг сақланди');
+      success(t('irr.successDailySaved', { defaultValue: 'Kundalik monitoring saqlandi' }));
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'DAILY_ENTRY_DUPLICATE') {
-        setDailyError('Бу сана учун кундалик мониторинг аллақачон мавжуд');
+        setDailyError(t('irr.errorDuplicateDailyEntry', { defaultValue: 'Bu sana uchun kundalik monitoring allaqachon mavjud' }));
       } else {
-        setDailyError('Сақлашда хато юз берди');
+        setDailyError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
       }
     } finally {
       setSavingDaily(false);
@@ -525,13 +527,13 @@ export default function IrrShell() {
       setWeeklyEntries(prev => [res.data.data, ...prev]);
       setWeeklyChecks({});
       setWeeklyNotes('');
-      success('Ҳафталик мониторинг сақланди');
+      success(t('irr.successWeeklySaved', { defaultValue: 'Haftalik monitoring saqlandi' }));
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'WEEKLY_ENTRY_DUPLICATE') {
-        setWeeklyError('Бу ҳафта учун мониторинг аллақачон мавжуд');
+        setWeeklyError(t('irr.errorDuplicateWeeklyEntry', { defaultValue: 'Bu hafta uchun monitoring allaqachon mavjud' }));
       } else {
-        setWeeklyError('Сақлашда хато юз берди');
+        setWeeklyError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
       }
     } finally {
       setSavingWeekly(false);
@@ -566,14 +568,14 @@ export default function IrrShell() {
         const created = res.data?.data;
         setIrr(created);
         if (created) setForm(irrToForm(created));
-        success('ИРР yaratildi');
+        success(t('irr.successCreated', { defaultValue: 'IRR yaratildi' }));
       } else {
         await api.patch(`/teacher/irr/${irr.id}`, form);
-        success('ИРР saqlandi');
+        success(t('irr.successSaved', { defaultValue: 'IRR saqlandi' }));
         await load();
       }
     } catch {
-      showError('Saqlashda xatolik yuz berdi');
+      showError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
     } finally {
       setSaving(false);
     }
@@ -585,21 +587,17 @@ export default function IrrShell() {
     setActivateError(null);
     try {
       await api.post(`/teacher/irr/${irr.id}/activate`);
-      success('ИРР faollashtirildi!');
+      success(t('irr.successActivated', { defaultValue: 'IRR faollashtirildi!' }));
       await load();
     } catch (err) {
-      const code   = err.response?.data?.error?.code;
-      const detail = err.response?.data?.error?.detail || '';
+      const code = err?.response?.data?.error;
       if (code === 'IRR_HEADER_INCOMPLETE') {
-        const raw           = detail.replace(/^Missing:\s*/i, '');
-        const missingKeys   = raw.split(',').map(s => s.trim()).filter(Boolean);
-        const missingLabels = missingKeys.map(k => FIELD_LABELS_UZ[k] || k);
-        setActivateError(missingLabels.length ? missingLabels : ['Majburiy maydonlar to\'ldirilmagan']);
-        showError('Barcha majburiy maydonlarni to\'ldiring');
+        setActivateError([t('irr.errorActivateFillRequired', { defaultValue: 'Barcha majburiy maydonlarni to\'ldiring' })]);
+        showError(t('irr.errorActivateFillRequired', { defaultValue: 'Barcha majburiy maydonlarni to\'ldiring' }));
       } else if (code === 'IRR_INVALID_STATUS') {
-        showError('ИРР allaqachon faol yoki arxivlangan');
+        showError(t('irr.errorActivateStatus', { defaultValue: 'ИРР allaqachon faol yoki arxivlangan' }));
       } else {
-        showError('Faollashtirishda xatolik yuz berdi');
+        showError(t('irr.errorActivate', { defaultValue: 'Faollashtirishda xatolik yuz berdi' }));
       }
     } finally {
       setActivating(false);
@@ -633,7 +631,7 @@ export default function IrrShell() {
       setSessionNotes('');
       await loadSessions(irr.id);
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       if (code === 'ASSESSMENT_SESSION_EXISTS') {
         setSessionError('Бу турдаги баҳолаш аллақачон мавжуд. Бошқа турни танланг ёки "Бошқа сана"ни танланг.');
       } else if (code === 'ASSESSMENT_INCOMPLETE') {

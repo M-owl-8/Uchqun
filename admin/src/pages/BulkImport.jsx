@@ -8,8 +8,15 @@ const ERROR_CODE_MAP = {
   IMPORT_ROW_FIRST_NAME_REQUIRED: "Ism majburiy",
   IMPORT_ROW_LAST_NAME_REQUIRED: "Familiya majburiy",
   IMPORT_ROW_PARENT_NOT_FOUND: "Ota-ona topilmadi",
-  IMPORT_ROW_DUPLICATE: "Takroriy yozuv",
+  IMPORT_ROW_DUPLICATE: "Takroriy yozuv (bir xil ism + tug'ilgan sana)",
   IMPORT_ROW_PARENT_EMAIL_INVALID: "Ota-ona email manzili noto'g'ri",
+  IMPORT_ROW_DOB_INVALID: "Tug'ilgan sana noto'g'ri format (YYYY-MM-DD kerak)",
+  IMPORT_ROW_DOB_IN_FUTURE: "Tug'ilgan sana kelajakda bo'lishi mumkin emas",
+  IMPORT_ROW_GENDER_INVALID: "Jinsi noto'g'ri (Male, Female yoki Other kerak)",
+  IMPORT_ROW_DISABILITY_TYPE_REQUIRED: "Imkoniyat cheklovi turi majburiy",
+  IMPORT_ROW_CLASS_REQUIRED: "Sinf/guruh majburiy",
+  IMPORT_ROW_TEACHER_REQUIRED: "O'qituvchi majburiy",
+  IMPORT_ROW_CREATE_FAILED: "Yozuvni saqlashda xatolik — qayta urinib ko'ring",
 };
 
 const humanizeCode = (code) => ERROR_CODE_MAP[code] ?? code;

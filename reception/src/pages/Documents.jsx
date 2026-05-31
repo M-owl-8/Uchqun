@@ -78,7 +78,7 @@ export default function Documents() {
           await api.delete(`/reception/documents/${id}`);
           loadDocs(true);
         } catch (err) {
-          const code = err.response?.data?.error?.code;
+          const code = err?.response?.data?.error;
           if (code === 'DOCUMENT_CANNOT_DELETE_NON_PENDING') {
             showError(t('documents.deleteNonPendingError', { defaultValue: 'Faqat kutilayotgan hujjatlarni o\'chirish mumkin.' }));
           } else {

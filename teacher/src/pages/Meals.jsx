@@ -82,7 +82,7 @@ const Meals = () => {
       if (allChildren.length > 0) {
         setFormData(prev => prev.childId ? prev : { ...prev, childId: allChildren[0].id });
       }
-    } catch (error) { showError(error.response?.data?.error || error.message); }
+    } catch (error) { showError(error.response?.data?.error || t('common.networkError', { defaultValue: 'Tarmoq xatosi yuz berdi. Qayta urinib ko\'ring.' })); }
   }, [showError]);
 
   const loadMeals = useCallback(async (bust = false, signal) => {

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Phone, Mail, Plus, FileText } from 'lucide-react';
 import { ChildAvatar } from '../components/ChildAvatar';
 import { useChildRibbon } from '../hooks/useChildRibbon';
+import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 
@@ -137,6 +138,7 @@ function IEPTab({ child, goals }) {
 
 const ChildDetail = () => {
   const { id } = useParams();
+  const { t } = useTranslation();
   const { error: showError } = useToast();
   const [child, setChild]   = useState(null);
   const [goals, setGoals]   = useState([]);
@@ -164,7 +166,7 @@ const ChildDetail = () => {
         if (irrRes.status === 'fulfilled') {
           setIrr(irrRes.value.data?.data || null);
         } else if (irrRes.reason?.response?.status !== 404) {
-          showError('ИРР ma\'lumotlari yuklanmadi');
+          showError(t('childDetail.errorIrrLoad', { defaultValue: 'IRR ma\'lumotlari yuklanmadi' }));
         }
       } catch {
         // graceful fallback

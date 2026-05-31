@@ -28,7 +28,8 @@
     "invalid": "Email yoki parol noto'g'ri",
     "invalidRole": "Faqat o'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
+    "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning."
   },
   "dashboard": {
     "role": "Mening rolim: O'qituvchi",
@@ -379,6 +380,42 @@
       "sessionType9mo": "9 oydan keyin",
       "sessionType12mo": "12 oydan keyin",
       "sessionTypeCustom": "Boshqa sana"
-    }
+    },
+    "errorLoad": "IRR yuklanmadi. Qayta urinib ko'ring.",
+    "errorSaveLtg": "Maqsadni saqlashda xatolik",
+    "errorUpdateGoal": "Maqsadni yangilashda xatolik",
+    "errorDeleteGoal": "Maqsadni o'chirishda xatolik",
+    "errorSavePeriod": "Davrni saqlashda xatolik",
+    "errorSaveStg": "Qisqa muddatli maqsadni saqlashda xatolik",
+    "errorSave": "Saqlashda xatolik yuz berdi",
+    "errorSign": "Imzo qo'yishda xatolik",
+    "errorDuplicateDailyEntry": "Bu sana uchun kundalik monitoring allaqachon mavjud",
+    "errorDuplicateWeeklyEntry": "Bu hafta uchun monitoring allaqachon mavjud",
+    "errorActivateFillRequired": "Barcha majburiy maydonlarni to'ldiring",
+    "errorActivateStatus": "IRR allaqachon faol yoki arxivlangan",
+    "errorActivate": "Faollashtirishda xatolik yuz berdi",
+    "successSign": "Imzo qo'yildi",
+    "successDailySaved": "Kundalik monitoring saqlandi",
+    "successWeeklySaved": "Haftalik monitoring saqlandi",
+    "successCreated": "IRR yaratildi",
+    "successSaved": "IRR saqlandi",
+    "successActivated": "IRR faollashtirildi!"
+  },
+  "common": {
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
+    "timeoutError": "So'rov vaqti tugadi."
+  },
+  "attendance": {
+    "errorLoadChildren": "Bolalar ro'yxatini yuklashda xatolik",
+    "errorSave": "Saqlashda xatolik yuz berdi"
+  },
+  "childDetail": {
+    "errorIrrLoad": "IRR ma'lumotlari yuklanmadi"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Tarmoq xatosi",
+    "TIMEOUT_ERROR": "So'rov vaqti tugadi",
+    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan",
+    "SCHOOL_ARCHIVED": "Maktab arxivlangan"
   }
 }

@@ -28,7 +28,8 @@
     "invalid": "Неверный email или пароль",
     "invalidRole": "Только учителя и родители могут войти. Другие роли не могут войти.",
     "accountLocked": "Слишком много попыток. Повторите через 15 минут.",
-    "notApproved": "Ваш аккаунт ещё не одобрен. Дождитесь подтверждения администратора."
+    "notApproved": "Ваш аккаунт ещё не одобрен. Дождитесь подтверждения администратора.",
+    "accountSuspended": "Ваш аккаунт заблокирован. Обратитесь к администратору."
   },
   "dashboard": {
     "role": "Моя роль: Учитель",
@@ -379,6 +380,42 @@
       "sessionType9mo": "Через 9 месяцев",
       "sessionType12mo": "Через 12 месяцев",
       "sessionTypeCustom": "Другая дата"
-    }
+    },
+    "errorLoad": "IRR не загружен. Попробуйте снова.",
+    "errorSaveLtg": "Ошибка при сохранении цели",
+    "errorUpdateGoal": "Ошибка при обновлении цели",
+    "errorDeleteGoal": "Ошибка при удалении цели",
+    "errorSavePeriod": "Ошибка при сохранении периода",
+    "errorSaveStg": "Ошибка при сохранении краткосрочной цели",
+    "errorSave": "Ошибка при сохранении",
+    "errorSign": "Ошибка при подписании",
+    "errorDuplicateDailyEntry": "Запись ежедневного мониторинга за эту дату уже существует",
+    "errorDuplicateWeeklyEntry": "Запись мониторинга за эту неделю уже существует",
+    "errorActivateFillRequired": "Заполните все обязательные поля",
+    "errorActivateStatus": "IRR уже активен или архивирован",
+    "errorActivate": "Ошибка при активации",
+    "successSign": "Подписан",
+    "successDailySaved": "Ежедневный мониторинг сохранён",
+    "successWeeklySaved": "Еженедельный мониторинг сохранён",
+    "successCreated": "IRR создан",
+    "successSaved": "IRR сохранён",
+    "successActivated": "IRR активирован!"
+  },
+  "common": {
+    "networkError": "Ошибка сети. Попробуйте снова.",
+    "timeoutError": "Время ожидания истекло."
+  },
+  "attendance": {
+    "errorLoadChildren": "Ошибка загрузки списка детей",
+    "errorSave": "Ошибка при сохранении"
+  },
+  "childDetail": {
+    "errorIrrLoad": "Данные IRR не загружены"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Ошибка сети",
+    "TIMEOUT_ERROR": "Время ожидания истекло",
+    "ACCOUNT_NOT_ACTIVE": "Аккаунт заблокирован",
+    "SCHOOL_ARCHIVED": "Школа архивирована"
   }
 }

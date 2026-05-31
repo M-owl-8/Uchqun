@@ -193,7 +193,7 @@ const TeacherRating = () => {
       setSchoolSummary(ratingData.summary || { average: 0, count: 0 });
       if (ratingData.school) setSchool(ratingData.school);
     } catch (err) {
-      const code = err.response?.data?.error?.code;
+      const code = err?.response?.data?.error;
       const errMap = {
         RATING_COMMENT_REQUIRED: t('schoolRatingPage.commentRequired', { defaultValue: 'Izoh majburiy' }),
         RATING_INDICATORS_REQUIRED: t('schoolRatingPage.indicatorsRequired', { defaultValue: "Barcha ko'rsatkichlarni to'ldiring" }),

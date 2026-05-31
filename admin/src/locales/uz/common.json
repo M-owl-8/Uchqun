@@ -48,7 +48,8 @@
     "blockSubtitle": "Admin hisobingiz bilan tizimga kiring",
     "errorInvalid": "Email yoki parol noto’g’ri",
     "accountLocked": "Juda ko’p urinish. 15 daqiqadan so’ng qaytadan urinib ko’ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig’ini kuting."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig’ini kuting.",
+    "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning."
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}",
@@ -394,5 +395,12 @@
     "newImport": "Yangi import",
     "uploadError": "Yuklash muvaffaqiyatsiz",
     "startError": "Importni boshlash muvaffaqiyatsiz"
+  },
+  "common": {
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring."
+  },
+  "errors": {
+    "NETWORK_ERROR": "Tarmoq xatosi",
+    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan"
   }
 }

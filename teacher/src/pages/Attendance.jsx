@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCheck } from 'lucide-react';
 import { AttendanceGrid } from '../components/AttendanceGrid';
+import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 
@@ -20,6 +21,7 @@ const formatDate = () => {
 
 const Attendance = () => {
   const navigate    = useNavigate();
+  const { t } = useTranslation();
   const { success, error: showError } = useToast();
   const [children, setChildren] = useState([]);
   const [states, setStates]     = useState({});
@@ -41,7 +43,7 @@ const Attendance = () => {
         setStates(initial);
       } catch {
         setChildren([]);
-        showError("Bolalar ro'yxatini yuklashda xatolik");
+        showError(t('attendance.errorLoadChildren', { defaultValue: "Bolalar ro'yxatini yuklashda xatolik" }));
       } finally {
         setLoading(false);
       }
@@ -72,7 +74,7 @@ const Attendance = () => {
       success('Davomat saqlandi');
       navigate('/teacher');
     } catch {
-      showError('Saqlashda xatolik yuz berdi');
+      showError(t('attendance.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
     } finally {
       setSaving(false);
     }

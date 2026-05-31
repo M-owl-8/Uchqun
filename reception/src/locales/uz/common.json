@@ -10,8 +10,7 @@
     "menu": "Tizim menyu",
     "profile": "Profil",
     "documents": "Mening hujjatlarim",
-    "system": "Tizim",
-    "logout": "Chiqish"
+    "system": "Tizim"
   },
   "sidebar": {
     "title": "Uchqun Reception",
@@ -33,7 +32,8 @@
     "invalid": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
     "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
-    "documentsNotice": "Hujjatlaringiz hali tasdiqlanmagan bo'lsa, kirish mumkin emas. Maktab rahbari bilan bog'laning."
+    "documentsNotice": "Hujjatlaringiz hali tasdiqlanmagan bo'lsa, kirish mumkin emas. Maktab rahbari bilan bog'laning.",
+    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab administratori bilan bog'laning."
   },
   "dashboard": {
     "role": "Mening rolim: Reception",
@@ -57,7 +57,8 @@
   "common": {
     "viewAll": "Barchasi",
     "active": "Aktiv",
-    "inactive": "Noaktiv"
+    "inactive": "Noaktiv",
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring."
   },
   "parentsPage": {
     "title": "Ota-onalarni boshqarish",
@@ -293,5 +294,9 @@
     "help": "Yordam",
     "allApproved": "Barcha hujjatlar tasdiqlangan",
     "pendingWarning": "Tasdiq kutayotgan hujjatlar bor"
+  },
+  "errors": {
+    "NETWORK_ERROR": "Tarmoq xatosi",
+    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan"
   }
 }
