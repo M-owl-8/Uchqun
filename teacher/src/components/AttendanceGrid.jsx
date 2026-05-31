@@ -1,8 +1,8 @@
 import { Check, X, Clock, Thermometer } from 'lucide-react';
 import { ChildAvatar } from './ChildAvatar';
 
-// Attendance states cycle: unset → present → absent → late → sick → unset
-const STATES = ['unset', 'present', 'absent', 'late', 'sick'];
+// Attendance states cycle: unset → present → absent → late → excused → unset
+const STATES = ['unset', 'present', 'absent', 'late', 'excused'];
 
 const STATE_CONFIG = {
   unset: {
@@ -40,7 +40,7 @@ const STATE_CONFIG = {
     iconBg: '#C58A1F',
     dim: false,
   },
-  sick: {
+  excused: {
     border: '2px solid #4D6584',
     bg: '#FFFFFE',
     label: 'Kasal',

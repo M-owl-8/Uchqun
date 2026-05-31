@@ -10,7 +10,7 @@ const FILTER_OPTIONS = [
   { key: 'present', label: 'Bor' },
   { key: 'absent',  label: "Yo'q" },
   { key: 'late',    label: 'Kech' },
-  { key: 'sick',    label: 'Kasal' },
+  { key: 'excused', label: 'Kasal' },
 ];
 
 const formatDate = () => {
