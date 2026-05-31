@@ -104,7 +104,7 @@ describe('Communications (FE-7)', () => {
     expect(screen.getByText('No active conversations')).toBeTruthy();
   });
 
-  it('has no message input textbox — read-only', async () => {
+  it('has no message send input — read-only (search input is not a compose box)', async () => {
     api.get
       .mockResolvedValueOnce({ data: CONVERSATIONS })
       .mockResolvedValueOnce({ data: { data: PARENTS } });
@@ -112,7 +112,56 @@ describe('Communications (FE-7)', () => {
     render(<MemoryRouter><Communications /></MemoryRouter>);
     await waitFor(() => screen.getByText('Barno Umarova'));
 
-    expect(screen.queryByPlaceholderText(/message|xabar/i)).toBeNull();
-    expect(screen.queryByRole('textbox')).toBeNull();
+    // No message-compose textarea (read-only admin)
+    expect(screen.queryByRole('textbox', { name: /yuborish|send|xabar/i })).toBeNull();
+    // Search input exists (A-BRK-01 fix)
+    expect(screen.getByPlaceholderText('Ota-onani qidirish…')).toBeTruthy();
+  });
+
+  it('search filters conversations by parent name', async () => {
+    const CONV2 = [
+      ...CONVERSATIONS,
+      {
+        conversationId: 'parent:p-2',
+        lastMessage: { content: 'Hi', senderRole: 'parent', createdAt: new Date().toISOString() },
+        unreadCount: 0,
+        updatedAt: new Date().toISOString(),
+      },
+    ];
+    const PARENTS2 = [
+      ...PARENTS,
+      { id: 'p-2', firstName: 'Zulayho', lastName: 'Karimova', email: 'z@test.com', status: 'active' },
+    ];
+    api.get
+      .mockResolvedValueOnce({ data: CONV2 })
+      .mockResolvedValueOnce({ data: { data: PARENTS2 } });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+    expect(screen.getByText('Zulayho Karimova')).toBeTruthy();
+
+    // Search for 'Barno' — Zulayho should disappear
+    const searchInput = screen.getByPlaceholderText('Ota-onani qidirish…');
+    fireEvent.change(searchInput, { target: { value: 'Barno' } });
+    expect(screen.getByText('Barno Umarova')).toBeTruthy();
+    expect(screen.queryByText('Zulayho Karimova')).toBeNull();
+  });
+
+  it('uses correct API URLs without /v1/ prefix (A-BRK-02)', async () => {
+    const getCalls = [];
+    api.get.mockImplementation((url) => {
+      getCalls.push(url);
+      if (url.includes('/messages')) return Promise.resolve({ data: MESSAGES });
+      if (url.includes('/conversations')) return Promise.resolve({ data: CONVERSATIONS });
+      return Promise.resolve({ data: { data: PARENTS } });
+    });
+
+    render(<MemoryRouter><Communications /></MemoryRouter>);
+    await waitFor(() => screen.getByText('Barno Umarova'));
+
+    // Conversations URL must NOT include /v1/ (API_BASE already includes it)
+    const convCall = getCalls.find(u => u.includes('conversations'));
+    expect(convCall).toBe('/chat/conversations');
+    expect(convCall).not.toContain('/v1/chat');
   });
 });

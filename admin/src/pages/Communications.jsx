@@ -1,8 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
-import { MessageSquare } from 'lucide-react';
+import { MessageSquare, Search } from 'lucide-react';
 
 const Communications = () => {
   const { t } = useTranslation();
@@ -15,6 +15,7 @@ const Communications = () => {
   const [selected, setSelected] = useState(null);
   const [messages, setMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     const controller = new AbortController();
@@ -22,7 +23,7 @@ const Communications = () => {
     const fetchData = async () => {
       try {
         const [convsRes, parentsRes] = await Promise.all([
-          api.get('/v1/chat/conversations', { signal: controller.signal }),
+          api.get('/chat/conversations', { signal: controller.signal }),
           api.get('/admin/parents', { signal: controller.signal }),
         ]);
 
@@ -52,7 +53,7 @@ const Communications = () => {
     setSelected(conv);
     setLoadingMessages(true);
     try {
-      const res = await api.get('/v1/chat/messages', {
+      const res = await api.get('/chat/messages', {
         params: { conversationId: conv.conversationId },
       });
       setMessages(res.data || []);
@@ -63,6 +64,16 @@ const Communications = () => {
       setLoadingMessages(false);
     }
   };
+
+  const filteredConversations = useMemo(() => {
+    const q = searchQuery.trim().toLowerCase();
+    if (!q) return conversations;
+    return conversations.filter((conv) => {
+      const parent = conv.parent;
+      const name = parent ? `${parent.firstName ?? ''} ${parent.lastName ?? ''}`.toLowerCase() : '';
+      return name.includes(q) || conv.conversationId.toLowerCase().includes(q);
+    });
+  }, [conversations, searchQuery]);
 
   const formatTime = (iso) => {
     if (!iso) return '';
@@ -91,19 +102,33 @@ const Communications = () => {
 
       <div className="flex gap-0 border border-warm-200 rounded-lg overflow-hidden" style={{ minHeight: '480px' }}>
         {/* Left panel — conversation list */}
-        <div className="w-80 shrink-0 border-r border-warm-200 overflow-y-auto">
+        <div className="w-80 shrink-0 border-r border-warm-200 flex flex-col">
+          {/* Search input */}
+          <div className="p-3 border-b border-warm-100">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" strokeWidth={2} />
+              <input
+                type="text"
+                placeholder={t('communications.search', { defaultValue: "Ota-onani qidirish…" })}
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-9 pr-3 h-9 text-sm rounded-md border border-warm-200 bg-surface text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-400 focus:border-transparent"
+              />
+            </div>
+          </div>
+          <div className="flex-1 overflow-y-auto">
           {loading ? (
             <div className="space-y-3 p-4 animate-pulse">
               {[1,2,3].map((i) => <div key={i} className="skel h-14 w-full" />)}
             </div>
-          ) : conversations.length === 0 ? (
+          ) : filteredConversations.length === 0 ? (
             <div className="p-6 text-center text-warm-400">
               <MessageSquare className="w-10 h-10 mx-auto mb-2 opacity-40" strokeWidth={1.5} />
               <p className="font-medium">{t('communications.noConversations', { defaultValue: 'No active conversations' })}</p>
               <p className="text-xs mt-1">{t('communications.noConversationsSub', { defaultValue: 'Conversations will appear here once parents and teachers start messaging' })}</p>
             </div>
           ) : (
-            conversations.map((conv) => {
+            filteredConversations.map((conv) => {
               const parent = conv.parent;
               const isSelected = selected?.conversationId === conv.conversationId;
               return (
@@ -145,6 +170,7 @@ const Communications = () => {
               );
             })
           )}
+          </div>
         </div>
 
         {/* Right panel — messages */}

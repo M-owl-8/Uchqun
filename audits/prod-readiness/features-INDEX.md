@@ -12,10 +12,10 @@
 |---|---|---|---|---|---|---|
 | Teacher | features-teacher.md | 116 | 12 (10%) | 104 (90%) | 0 | 0 |
 | Parent | features-parent.md | 106 | 36 (34%) | 70 (66%) | 0 | 0 |
-| Admin | features-admin.md | 95 | 34 (36%) | 58 (61%) | 2 (2%) | 1 (1%) |
+| Admin | features-admin.md | 94 | 36 (38%) | 58 (62%) | 0 | 0 |
 | Reception | features-reception.md | 89 | 89 (100%) | 0 | 0 | 0 |
 | Government | features-government.md | 76 | 65 (86%) | 7 (9%) | 0 | 0 |
-| **TOTAL** | | **482** | **161 (33%)** | **309 (64%)** | **4 (1%)** | **1 (<1%)** |
+| **TOTAL** | | **481** | **163 (34%)** | **309 (64%)** | **0** | **0** |
 
 **Key observation:** Government portal has the highest verified coverage (86% ✅) because it accumulated the most behavioral tests during audit loops. Teacher portal has the lowest (10% ✅) — the IRR workflow is the largest unverified surface.
 
@@ -111,10 +111,10 @@ These 6 flows prove the platform works end-to-end. Each maps to credentials from
 
 | ID | Portal | Feature | File:line | Issue |
 |---|---|---|---|---|
-| A-BRK-01 | Admin | Search conversations (direct) | admin/src/pages/ | Referenced in admin UI but not wired to backend |
-| A-BRK-02 | Admin | (1 more — see features-admin.md) | — | See admin file |
-| R-BRK-001 | Reception | Bulk action buttons (activate, export) | reception/src/pages/ParentManagement.jsx:446–451 | Buttons render but click handlers missing |
-| R-BRK-002 | Reception | Group update endpoint scope | backend/routes/receptionRoutes.js | PUT /groups reception access unverified |
+| ~~A-BRK-01~~ | Admin | Search conversations | admin/src/pages/Communications.jsx:53-62 | ✅ FIXED S10 — filteredConversations + search input added |
+| ~~A-BRK-02~~ | Admin | Chat API URL double-prefix | admin/src/pages/Communications.jsx:27,59 | ✅ FIXED S10 — /v1/chat/→/chat/ (API base already includes /v1/) |
+| ~~R-BRK-001~~ | Reception | Bulk action buttons (activate, export) | reception/src/pages/ParentManagement.jsx:446–451 | ✅ FIXED S6 |
+| ~~R-BRK-002~~ | Reception | Group update endpoint scope | backend/routes/receptionRoutes.js | ✅ FIXED S6 |
 
 ---
 
@@ -137,7 +137,7 @@ These 6 flows prove the platform works end-to-end. Each maps to credentials from
 ### Features in prior audit docs with no code found (planned-not-built)
 | Doc reference | Status | Notes |
 |---|---|---|
-| Admin: 1 item (see features-admin.md A-🚧) | 🚧 | See admin file for details |
+| ~~Admin: AG-009 inter-school child transfer UI~~ | removed | S10 decision: documentation drift — AG-009 explicitly deferred from S7 as government-managed workflow; never planned for admin phase |
 
 ### Features the code has that prior audits didn't document (hidden)
 - Teacher responsibilities/tasks/work-history endpoints (routes exist, no teacher frontend page)

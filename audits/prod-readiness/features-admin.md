@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced, systematically verified  
-**Total features:** 95 (✅ 34 · 🟡 58 · ❌ 2 · 🚧 1)
+**Total features:** 94 (✅ 36 · 🟡 58 · ❌ 0 · 🚧 0)
 
 ---
 
@@ -156,6 +156,8 @@
 | A-080 | Restore parent | admin/src/pages/Trash.jsx:44-63 | 🟡 |
 | A-081 | Restore reception | admin/src/pages/Trash.jsx:44-63 | 🟡 |
 | A-082 | View conversations | admin/src/pages/Communications.jsx:92-148 | ✅ Test: Communications.test.jsx |
+| A-082a | Search conversations by parent name (A-BRK-01) | admin/src/pages/Communications.jsx:53-62 | ✅ | Type in search box, list filters. Test: Communications.test.jsx |
+| A-082b | Chat API URL prefix correct (A-BRK-02) | admin/src/pages/Communications.jsx:27,59 | ✅ | /chat/conversations + /chat/messages (no double /v1/ prefix). Test: Communications.test.jsx |
 | A-083 | View conversation detail | admin/src/pages/Communications.jsx:150-200 | ✅ Test: Communications.test.jsx |
 | A-084 | View admin profile | admin/src/pages/Profile.jsx:89-137 | 🟡 |
 | A-085 | Logout from profile | admin/src/pages/Profile.jsx:175-182 | 🟡 |
@@ -173,11 +175,16 @@
 
 ## Summary
 
-**Total Features:** 95
-- ✅ Tested: 34 (36%)
-- 🟡 Implemented, untested: 58 (61%)
-- ❌ Broken/incomplete: 2 (2%)
-- 🚧 Planned: 1 (1%)
+**Total Features:** 94
+- ✅ Tested: 36 (38%)
+- 🟡 Implemented, untested: 58 (62%)
+- ❌ Broken/incomplete: 0
+- 🚧 Planned: 0
+
+**S10 fix log (2026-05-31):**
+- A-BRK-01 (search conversations not wired) → ✅ FIXED: added `filteredConversations` + search input in Communications.jsx:53-62; new test `search filters conversations by parent name`.
+- A-BRK-02 (wrong /v1/chat/ URL double-prefix) → ✅ FIXED: `/v1/chat/conversations`→`/chat/conversations`, `/v1/chat/messages`→`/chat/messages`; new test `uses correct API URLs without /v1/ prefix`.
+- A-095 🚧 (inter-school child transfer UI, AG-009) → **REMOVED — documentation drift.** AG-009 was explicitly deferred from S7 as a government-managed workflow. Never planned for the admin phase. Drops total 95→94.
 
 **Key Test Files:**
 - ReceptionManagement.behavior.test.jsx
