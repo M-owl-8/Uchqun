@@ -476,7 +476,9 @@ Fix: on suspension, add the parent's current JTI to the revocation store (Redis 
 
 | Severity | Count |
 |----------|-------|
-| HIGH | 24 |
+| HIGH | ~~24~~ **17** (7 closed by PROD-FIX-01: EM-001, I18N-001, OR-002, OR-003, OR-004, CP-001, CP-002) |
 | MEDIUM | 36 |
 | LOW | 14 |
-| **TOTAL** | **74** |
+| **TOTAL** | ~~74~~ **67 open** |
+
+**PROD-FIX-01 commit:** see `audits/prod-readiness/PROD-FIX-01-blockers.md`

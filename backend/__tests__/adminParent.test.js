@@ -28,6 +28,20 @@ jest.unstable_mockModule('../utils/auditLogger.js', () => ({
   logAudit: mockLogAudit,
 }));
 jest.unstable_mockModule('../models/AuditLog.js', () => ({ default: {} }));
+const mockRTUpdate = jest.fn().mockResolvedValue([0]);
+jest.unstable_mockModule('../models/RefreshToken.js', () => ({
+  default: { update: mockRTUpdate },
+}));
+const mockInvalidateUserCache = jest.fn();
+jest.unstable_mockModule('../middleware/auth.js', () => ({
+  invalidateUserCache: mockInvalidateUserCache,
+  authenticate: jest.fn(),
+  requireAdmin: jest.fn(),
+}));
+const mockEmitToUser = jest.fn().mockResolvedValue(undefined);
+jest.unstable_mockModule('../config/socket.js', () => ({
+  emitToUser: mockEmitToUser,
+}));
 
 const { getParents, getParentById, suspendParent, activateParent } = await import('../controllers/admin/adminParentController.js');
 
@@ -121,6 +135,23 @@ describe('admin/adminParentController', () => {
       await suspendParent(adminReq('p1'), res);
       expect(mockUserUpdate).toHaveBeenCalledWith({ status: 'suspended' });
       expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    });
+
+    it('revokes refresh tokens, invalidates cache, and emits force-logout on suspension', async () => {
+      const mockParent = { id: 'parent-uuid', status: 'active', update: mockUserUpdate };
+      mockUserFindOne.mockResolvedValue(mockParent);
+      mockUserUpdate.mockResolvedValue({ ...mockParent, status: 'suspended' });
+      const res = mkRes();
+      await suspendParent(adminReq('parent-uuid'), res);
+      // Refresh tokens revoked so parent cannot silently re-authenticate
+      expect(mockRTUpdate).toHaveBeenCalledWith(
+        { revoked: true, revokedAt: expect.any(Date) },
+        { where: { userId: 'parent-uuid', revoked: false } },
+      );
+      // User cache invalidated so next authenticate() re-reads status=suspended from DB immediately
+      expect(mockInvalidateUserCache).toHaveBeenCalledWith('parent-uuid');
+      // Force-logout event pushed to parent socket session
+      expect(mockEmitToUser).toHaveBeenCalledWith('parent-uuid', 'user:force-logout', expect.anything());
     });
 
     it('403 when caller role is not admin (defense-in-depth)', async () => {

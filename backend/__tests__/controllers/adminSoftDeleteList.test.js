@@ -60,6 +60,12 @@ jest.unstable_mockModule('../../middleware/auth.js', () => ({
   authenticate: jest.fn(),
   requireAdmin: jest.fn(),
 }));
+jest.unstable_mockModule('../../models/RefreshToken.js', () => ({
+  default: { update: jest.fn().mockResolvedValue([0]) },
+}));
+jest.unstable_mockModule('../../config/socket.js', () => ({
+  emitToUser: jest.fn().mockResolvedValue(undefined),
+}));
 
 const { getParents } = await import('../../controllers/admin/adminParentController.js');
 const { getReceptions } = await import('../../controllers/admin/adminReceptionController.js');

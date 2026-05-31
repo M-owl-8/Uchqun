@@ -1,4 +1,5 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { AuthProvider } from './shared/context/AuthContext';
@@ -7,7 +8,26 @@ import { ToastProvider } from './shared/context/ToastContext';
 import { NotificationProvider } from './shared/context/NotificationContext';
 import { ToastContainer } from './shared/components/Toast';
 import ProtectedRoute from './shared/components/ProtectedRoute';
+import { useAuth } from './shared/context/AuthContext';
+import { useSocket } from './shared/context/SocketContext';
 import Login from './pages/Login';
+
+// Listens for server-pushed force-logout events (e.g. account suspended by admin).
+// Must sit inside both AuthProvider and SocketProvider and inside a Router.
+function ForceLogoutHandler() {
+  const { logout } = useAuth();
+  const { on, off } = useSocket();
+  const navigate = useNavigate();
+  useEffect(() => {
+    const handle = () => {
+      logout();
+      navigate('/login', { replace: true });
+    };
+    on('user:force-logout', handle);
+    return () => off('user:force-logout', handle);
+  }, [on, off, logout, navigate]);
+  return null;
+}
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
 import ParentManagement from './pages/ParentManagement';
@@ -49,6 +69,7 @@ function App() {
           <SocketProvider>
             <NotificationProvider>
               <Router>
+                <ForceLogoutHandler />
                 <OfflineBanner />
                 <ToastContainer />
                 <Routes>

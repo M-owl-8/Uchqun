@@ -1,7 +1,10 @@
 import { Op } from 'sequelize';
 import ChildObservation from '../models/ChildObservation.js';
+import Notification from '../models/Notification.js';
+import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { emitToUser } from '../config/socket.js';
 
 const VALID_DOMAINS = ['communication', 'motor', 'social', 'cognitive', 'self_care'];
 const VALID_SEVERITIES = ['routine', 'concern', 'urgent'];
@@ -73,6 +76,53 @@ export const create = async (req, res) => {
         dateOfBirth: child.dateOfBirth,
       },
     });
+
+    // Notify parent and school admin for urgent observations
+    if (severity === 'urgent') {
+      const childName = `${child.firstName} ${child.lastName}`;
+      const noteClip = trimmedNote.length > 100 ? trimmedNote.slice(0, 100) + '…' : trimmedNote;
+      const notifTitle = `Shoshilinch kuzatuv: ${childName}`;
+      const notifMessage = `O'qituvchi ${domain} sohasida shoshilinch kuzatuv qoldirdi: ${noteClip}`;
+
+      // Notify parent (has socket + NotificationContext)
+      if (child.parentId) {
+        try {
+          await Notification.create({
+            userId: child.parentId,
+            childId,
+            type: 'general',
+            title: notifTitle,
+            message: notifMessage,
+            relatedId: observation.id,
+            relatedType: null,
+            schoolId: req.user.schoolId,
+          });
+          await emitToUser(child.parentId, 'notification:new', { childId });
+        } catch (notifErr) {
+          logger.error('Failed to notify parent of urgent observation', { error: notifErr.message, childId });
+        }
+      }
+
+      // Notify school admin (creates DB row; admin portal gets it on next page load)
+      try {
+        const admin = await User.findOne({ where: { role: 'admin', schoolId: req.user.schoolId } });
+        if (admin) {
+          await Notification.create({
+            userId: admin.id,
+            childId,
+            type: 'general',
+            title: notifTitle,
+            message: notifMessage,
+            relatedId: observation.id,
+            relatedType: null,
+            schoolId: req.user.schoolId,
+          });
+          await emitToUser(admin.id, 'notification:new', { childId });
+        }
+      } catch (adminNotifErr) {
+        logger.error('Failed to notify admin of urgent observation', { error: adminNotifErr.message, childId });
+      }
+    }
 
     return res.status(201).json({ success: true, data: observation });
   } catch (error) {

@@ -8,22 +8,31 @@
     "settings": "Settings",
     "logout": "Logout",
     "menu": "System Menu",
-    "profile": "Profile"
+    "profile": "Profile",
+    "documents": "My Documents",
+    "system": "System"
   },
   "sidebar": {
     "title": "Uchqun Reception",
+    "subtitle": "Reception Portal",
+    "school": "School",
     "menu": "System Menu"
   },
   "login": {
     "title": "Reception Panel",
-    "subtitle": "Uchqun Reception Management",
+    "subtitle": "Please sign in to your account.",
+    "welcome": "Welcome",
     "email": "Email Address",
     "password": "Password",
+    "forgotPassword": "Forgot password?",
     "submit": "Login",
     "loading": "Logging in...",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "invalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
+    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
+    "documentsNotice": "If your documents have not yet been approved, login is not available. Contact your school administration."
   },
   "dashboard": {
     "role": "My Role: Reception",
@@ -249,5 +258,34 @@
     "heading": "404",
     "message": "Page not found",
     "goBack": "Go Back"
+  },
+  "wizard": {
+    "title": "Add New Parent",
+    "step1": "Parent Information",
+    "step2": "Child Information",
+    "step3": "Group Assignment",
+    "back": "Back",
+    "next": "Continue",
+    "saveDraft": "Save Draft",
+    "complete": "Complete",
+    "draftRestored": "Draft loaded",
+    "success": "Successfully added"
+  },
+  "palette": {
+    "placeholder": "Search for a parent, teacher, group or action…",
+    "noResults": "No results found",
+    "quickActions": "Quick actions",
+    "parents": "Parents",
+    "teachers": "Teachers",
+    "groups": "Groups"
+  },
+  "documents": {
+    "title": "My Documents",
+    "subtitle": "Upload your documents and wait for admin approval.",
+    "upload": "Upload Document",
+    "progress": "Status",
+    "help": "Help",
+    "allApproved": "All documents approved",
+    "pendingWarning": "Documents are awaiting approval"
   }
 }

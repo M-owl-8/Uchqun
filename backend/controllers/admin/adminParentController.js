@@ -2,11 +2,14 @@ import { Op } from 'sequelize';
 import User from '../../models/User.js';
 import Child from '../../models/Child.js';
 import School from '../../models/School.js';
+import RefreshToken from '../../models/RefreshToken.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
 import logger from '../../utils/logger.js';
 import { logAudit } from '../../utils/auditLogger.js';
+import { emitToUser } from '../../config/socket.js';
+import { invalidateUserCache } from '../../middleware/auth.js';
 
 /**
  * Get all Parents (read-only for Admin)
@@ -175,6 +178,22 @@ export const suspendParent = async (req, res) => {
       meta: { previousStatus: parent.status },
     });
     await parent.update({ status: 'suspended' });
+
+    // Immediate enforcement: revoke all active refresh tokens so the parent
+    // cannot silently re-authenticate after their 15-min access token expires.
+    await RefreshToken.update(
+      { revoked: true, revokedAt: new Date() },
+      { where: { userId: parent.id, revoked: false } },
+    ).catch((err) => logger.error('suspendParent: refresh token revocation error', { error: err.message }));
+
+    // Invalidate the 30-second server-side user cache so the next
+    // authenticate() call re-reads status=suspended from DB immediately.
+    invalidateUserCache(parent.id);
+
+    // Push force-logout to any open parent socket session so the browser
+    // navigates to /login without waiting for access token expiry.
+    await emitToUser(parent.id, 'user:force-logout', { reason: 'suspended' });
+
     return res.json({ success: true, data: { id: parent.id, status: parent.status } });
   } catch (error) {
     logger.error('suspendParent error', { error: error.message });

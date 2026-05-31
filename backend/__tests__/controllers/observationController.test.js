@@ -18,6 +18,18 @@ jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: mockLoggerWarn, debug: jest.fn() },
 }));
+const mockNotifCreate = jest.fn().mockResolvedValue({});
+jest.unstable_mockModule('../../models/Notification.js', () => ({
+  default: { create: mockNotifCreate },
+}));
+const mockAdminFindOne = jest.fn().mockResolvedValue(null);
+jest.unstable_mockModule('../../models/User.js', () => ({
+  default: { findOne: mockAdminFindOne },
+}));
+const mockEmitToUser = jest.fn().mockResolvedValue(undefined);
+jest.unstable_mockModule('../../config/socket.js', () => ({
+  emitToUser: mockEmitToUser,
+}));
 const { create, listRecent, listByChild } = await import('../../controllers/observationController.js');
 
 const mkRes = () => {
@@ -120,6 +132,54 @@ describe('observationController — create', () => {
     const res = mkRes();
     await create(req, res);
     expect(mockLoggerWarn).toHaveBeenCalledWith('urgent observation recorded', expect.objectContaining({ childId: VALID_CHILD_ID }));
+  });
+
+  it('urgent observation: creates Notification for parent and emits socket event', async () => {
+    const child = { id: VALID_CHILD_ID, firstName: 'Bobur', lastName: 'Yusupov', parentId: 'parent-uuid', schoolId: 'school-1', dateOfBirth: null };
+    mockValidateChildAccess.mockResolvedValue(child);
+    mockObsCreate.mockResolvedValue({ id: 'obs-urgent' });
+    mockAdminFindOne.mockResolvedValue(null); // no admin found — parent-only notification path
+    const req = { ...baseReq(), body: { ...baseReq().body, severity: 'urgent' } };
+    const res = mkRes();
+    await create(req, res);
+    expect(res.status).toHaveBeenCalledWith(201);
+    // Notification row created for the child's parent
+    expect(mockNotifCreate).toHaveBeenCalledWith(expect.objectContaining({
+      userId: 'parent-uuid',
+      childId: VALID_CHILD_ID,
+      type: 'general',
+    }));
+    // Socket event pushed to parent
+    expect(mockEmitToUser).toHaveBeenCalledWith('parent-uuid', 'notification:new', expect.anything());
+  });
+
+  it('urgent observation: also notifies school admin when admin exists', async () => {
+    const child = { id: VALID_CHILD_ID, firstName: 'Bobur', lastName: 'Yusupov', parentId: 'parent-uuid', schoolId: 'school-1', dateOfBirth: null };
+    mockValidateChildAccess.mockResolvedValue(child);
+    mockObsCreate.mockResolvedValue({ id: 'obs-urgent-admin' });
+    mockAdminFindOne.mockResolvedValue({ id: 'admin-uuid' });
+    const req = { ...baseReq(), body: { ...baseReq().body, severity: 'urgent' } };
+    const res = mkRes();
+    await create(req, res);
+    // Admin notification row created
+    expect(mockNotifCreate).toHaveBeenCalledWith(expect.objectContaining({
+      userId: 'admin-uuid',
+      childId: VALID_CHILD_ID,
+      type: 'general',
+    }));
+    // Socket event pushed to admin
+    expect(mockEmitToUser).toHaveBeenCalledWith('admin-uuid', 'notification:new', expect.anything());
+  });
+
+  it('routine observation: no Notification created, no socket event', async () => {
+    const child = { id: VALID_CHILD_ID, firstName: 'A', lastName: 'B', schoolId: 'school-1', dateOfBirth: null };
+    mockValidateChildAccess.mockResolvedValue(child);
+    mockObsCreate.mockResolvedValue({ id: 'obs-routine' });
+    // severity defaults to 'routine'
+    const res = mkRes();
+    await create(baseReq(), res);
+    expect(mockNotifCreate).not.toHaveBeenCalled();
+    expect(mockEmitToUser).not.toHaveBeenCalled();
   });
 
   it('500 when DB throws', async () => {

@@ -53,6 +53,20 @@ export function createApi({
   api.interceptors.response.use(
     (response) => response,
     async (error) => {
+      // Normalize BACKEND-012 error shape: { error: { code, detail } } → { error: string }
+      // so every component-level catch block receives a plain string, never [object Object].
+      // detail is "for Sentry triage only — never shown to users" per BACKEND-012; prefer code
+      // as user-facing text when detail is absent. Falls through unchanged for old-shape strings.
+      if (
+        error.response?.data != null &&
+        typeof error.response.data.error === 'object' &&
+        error.response.data.error !== null
+      ) {
+        const e = error.response.data.error;
+        error.response.data.error = typeof e.detail === 'string' ? e.detail
+          : typeof e.code === 'string' ? e.code
+          : JSON.stringify(e);
+      }
       const originalRequest = error.config;
       // Auth endpoints that must never be retried:
       // - /auth/login: 401 means wrong credentials, not an expired token

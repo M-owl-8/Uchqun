@@ -11,6 +11,9 @@ import {
   FileText,
   Settings,
   LogOut,
+  UtensilsCrossed,
+  Stethoscope,
+  ShieldAlert,
 } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
 import { useSocket } from '../shared/context/SocketContext';
@@ -30,15 +33,18 @@ const NAV_SECTIONS = [
   {
     label: 'Bolalar',
     items: [
-      { key: 'parents', href: '/teacher/parents', icon: Users,     label: "Guruh ro'yxati" },
-      { key: 'media',   href: '/teacher/media',   icon: ImageIcon, label: 'Galereya' },
+      { key: 'parents', href: '/teacher/parents', icon: Users,           label: "Guruh ro'yxati" },
+      { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: 'Galereya' },
+      { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: 'Ovqatlanish' },
     ],
   },
   {
     label: 'IEP',
     items: [
-      { key: 'monitoring', href: '/teacher/monitoring', icon: Target,        label: 'Maqsadlar' },
-      { key: 'activities', href: '/teacher/activities', icon: ClipboardList, label: 'Kuzatuvlar' },
+      { key: 'monitoring',   href: '/teacher/monitoring',   icon: Target,        label: 'Maqsadlar' },
+      { key: 'activities',   href: '/teacher/activities',   icon: ClipboardList, label: 'Kuzatuvlar' },
+      { key: 'therapy',      href: '/teacher/therapy',      icon: Stethoscope,   label: 'Terapiya' },
+      { key: 'ai-warnings',  href: '/teacher/ai-warnings',  icon: ShieldAlert,   label: 'AI Ogohlantirishlar' },
     ],
   },
   {
