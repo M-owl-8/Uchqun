@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 89 (✅ 25 · 🟡 62 · ❌ 0 · 🚧 0) — BRK-001/BRK-002 resolved S6; R-004/R-014/R-018/R-019/R-023/R-026/R-027/R-029/R-030 verified S7
+**Total features:** 89 (✅ 51 · 🟡 36 · ❌ 0 · 🚧 0) — S6: BRK-001/BRK-002; S7: +9; S8: +26 (R-031–060)
 
 ---
 
@@ -61,10 +61,10 @@
 | R-028 | Create new parent (inline form modal) | reception/src/pages/ParentManagement.jsx:139–151 · receptionParentController.js | ✅ | ParentFormModal.jsx handles creation |
 | R-029 | Create parent via wizard (3-step: parent/child/group) | reception/src/pages/ParentWizard/ParentWizardPage.jsx:70–98 | ✅ | Verified (S7): all 3 steps render. Step 1: parent info form (6 inputs). Step 2: child info form. Step 3: group assignment. POST /reception/parents on complete. screenshots R-029a/b/c.png |
 | R-030 | Edit parent (name, email, phone, group, teacher) | reception/src/pages/ParentManagement.jsx:143–151 | ✅ | Verified (S7): action menu → Tahrirlash → ParentFormModal opens pre-filled (5 inputs confirmed). handleEdit sets formData from parent object; PUT /reception/parents/:id on submit. screenshot R-030b-edit-modal.png |
-| R-031 | Delete parent | reception/src/pages/ParentManagement.jsx:153–167 | 🟡 | Modal confirm + API call; test not found |
-| R-032 | Activate parent (status=suspended → active) | reception/src/pages/ParentManagement.jsx:205–213 | 🟡 | Button exists; no test |
-| R-033 | Suspend parent (block login) | reception/src/pages/ParentManagement.jsx:215–229 | 🟡 | Button exists; no test |
-| R-034 | Reset parent password (generate temp password) | reception/src/pages/ParentManagement.jsx:231–244 | 🟡 | Confirm dialog + API POST; no test |
+| R-031 | Delete parent | reception/src/pages/ParentManagement.jsx:153–167 | ✅ | Confirm dialog (S8): Tasdiqlash + Bekor visible. DELETE /reception/parents/:id. screenshot R-031-delete-confirm.png |
+| R-032 | Activate parent (status=suspended → active) | reception/src/pages/ParentManagement.jsx:205–213 | ✅ | Faollashtirish → PUT activate → parent reloads (S8). screenshot R-032b-after-activate.png |
+| R-033 | Suspend parent (block login) | reception/src/pages/ParentManagement.jsx:215–229 | ✅ | To'xtatish → confirm → PUT suspend → status changes (S8). screenshot R-033b-after-suspend.png |
+| R-034 | Reset parent password (generate temp password) | reception/src/pages/ParentManagement.jsx:231–244 | ✅ | Parolni tiklash → confirm → POST reset-credentials → temp password modal (S8). screenshot R-034b-temp-password.png |
 | R-035 | Bulk select parents (checkbox row selection) | reception/src/pages/ParentManagement.jsx:366–380 | ✅ | All three bulk actions wired (S6): activate (confirm dialog + iterate PUT activate), export (client-side CSV BOM), delete (confirm dialog + iterate DELETE). Partial-failure toast for activate/delete. |
 | R-036 | Bulk delete parents | reception/src/pages/ParentManagement.jsx:497–519 | ✅ | Delete button wired with confirm dialog; iterates DELETE /reception/parents/:id; surfaces partial failures (S6) |
 
@@ -74,10 +74,10 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| R-037 | Add child to existing parent | reception/src/pages/ParentManagement.jsx:198–203 · receptionParentController.js | 🟡 | ChildFormModal handles add; no test coverage |
-| R-038 | Edit child (name, DOB, disability type, medical diagnosis, photo) | reception/src/pages/ParentManagement.jsx:169–180 | 🟡 | handleEditChild exists; test not found |
-| R-039 | Delete child from parent | reception/src/pages/ParentManagement.jsx:182–196 | 🟡 | Delete endpoint exists; no test |
-| R-040 | View child photo (avatar preview) | reception/src/pages/ParentManagement.jsx:311 (render children grid) | 🟡 | Grid renders photo fallback; no test for actual image load |
+| R-037 | Add child to existing parent | reception/src/pages/ParentManagement.jsx:198–203 · receptionParentController.js | ✅ | Bola qo'shish → ChildFormModal opens (S8). Fields: firstName/lastName/DOB/gender/disabilityType/specialNeeds. POST /reception/children. screenshot R-037b-child-form-modal.png |
+| R-038 | Edit child (name, DOB, disability type, medical diagnosis, photo) | reception/src/pages/ParentManagement.jsx:169–180 | ✅ | Pencil button (p-0.5) in Bola col → handleEditChild → ChildFormModal pre-filled (S8). PUT /reception/children/:id. screenshot R-038-edit-child-modal.png |
+| R-039 | Delete child from parent | reception/src/pages/ParentManagement.jsx:182–196 | ✅ | Trash button in Bola col → confirm dialog (S8). DELETE /reception/children/:id. screenshot R-039-delete-child-confirm.png |
+| R-040 | View child photo (avatar preview) | reception/src/pages/ParentManagement.jsx:311 (render children grid) | ✅ | Bola column shows child name + initials avatar fallback when no photo (S8). screenshot R-040-child-col.png |
 
 ---
 
@@ -86,14 +86,14 @@
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
 | R-041 | List all teachers | reception/src/pages/TeacherManagement.jsx:57–91 | ✅ | TeacherManagement.test.jsx verifies teacher list renders |
-| R-042 | Search teachers by name/email/phone | reception/src/pages/TeacherManagement.jsx:242–250 | 🟡 | Search input exists; test coverage not found |
-| R-043 | Create new teacher (modal form) | reception/src/pages/TeacherManagement.jsx:93–103 | 🟡 | Modal renders; no test for submission |
-| R-044 | Edit teacher (name, email, phone, password) | reception/src/pages/TeacherManagement.jsx:105–115 | 🟡 | handleEdit exists; no test |
-| R-045 | Delete teacher | reception/src/pages/TeacherManagement.jsx:147–161 | 🟡 | Confirm dialog + API DELETE; no test |
-| R-046 | Activate teacher (status=suspended → active) | reception/src/pages/TeacherManagement.jsx:163–171 | 🟡 | Button exists; no test |
-| R-047 | Suspend teacher (block login) | reception/src/pages/TeacherManagement.jsx:173–187 | 🟡 | Button exists; no test |
-| R-048 | Reset teacher password (generate temp password) | reception/src/pages/TeacherManagement.jsx:189–202 | 🟡 | Confirm dialog + API call; no test |
-| R-049 | View teacher ratings modal (stars, comments, parent attribution) | reception/src/pages/TeacherManagement.jsx:117–134 | 🟡 | Modal renders ratings; no test verifies API call or data display |
+| R-042 | Search teachers by name/email/phone | reception/src/pages/TeacherManagement.jsx:242–250 | ✅ | Search filters teacher cards in real-time (S8). screenshot R-042-teacher-search.png |
+| R-043 | Create new teacher (modal form) | reception/src/pages/TeacherManagement.jsx:93–103 | ✅ | bg-brand-600 button → modal. handleSubmit:204 → POST /reception/teachers (S8, code-confirmed). screenshot R-043-clean-modal.png |
+| R-044 | Edit teacher (name, email, phone, password) | reception/src/pages/TeacherManagement.jsx:105–115 | ✅ | "Yangilash" button in card → modal pre-filled. PUT /reception/teachers/:id (S8). screenshot R-044-edit-modal.png |
+| R-045 | Delete teacher | reception/src/pages/TeacherManagement.jsx:147–161 | ✅ | "O'chirish" in card → confirm dialog (S8). DELETE /reception/teachers/:id. screenshot R-045-delete-teacher-confirm.png |
+| R-046 | Activate teacher (status=suspended → active) | reception/src/pages/TeacherManagement.jsx:163–171 | ✅ | "Faollashtirish" button (after suspend) → PUT activate → badge removed (S8). screenshot R-046-after-activate.png |
+| R-047 | Suspend teacher (block login) | reception/src/pages/TeacherManagement.jsx:173–187 | ✅ | "To'xtatish" → confirm → PUT suspend → "To'xtatilgan" badge shown (S8). screenshot R-047-confirm-dialog.png |
+| R-048 | Reset teacher password (generate temp password) | reception/src/pages/TeacherManagement.jsx:189–202 | ✅ | "Parolni tiklash" → confirm → POST reset-credentials → temp password shown (S8). screenshot R-048b-reset-teacher-result.png |
+| R-049 | View teacher ratings modal (stars, comments, parent attribution) | reception/src/pages/TeacherManagement.jsx:117–134 | ✅ | Click teacher CARD → handleViewRatings → modal with summary+ratings. API: {summary:{average,count}, ratings:[...]}. No shape bug (S8). screenshot R-049-ratings-modal.png |
 
 ---
 
@@ -102,11 +102,11 @@
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
 | R-050 | List all groups | reception/src/pages/GroupManagement.jsx:38–55 | ✅ | GroupManagement.test.jsx verifies groups render |
-| R-051 | Search groups by name/description | reception/src/pages/GroupManagement.jsx:122–126 | 🟡 | Filter logic exists; test not found |
-| R-052 | Create new group (name, teacher, capacity, age range) | reception/src/pages/GroupManagement.jsx:57–67 | 🟡 | Modal form exists; no test |
-| R-053 | Edit group | reception/src/pages/GroupManagement.jsx:69–80 | 🟡 | handleEdit exists; no test |
-| R-054 | Delete group | reception/src/pages/GroupManagement.jsx:82–96 | 🟡 | Confirm + API DELETE; no test |
-| R-055 | Assign teacher to group | reception/src/pages/GroupManagement.jsx:98–120 (formData.teacherId) | 🟡 | Form field exists; no test |
+| R-051 | Search groups by name/description | reception/src/pages/GroupManagement.jsx:122–126 | ✅ | Text input filters group cards in real-time (S8). screenshot R-051-group-search.png |
+| R-052 | Create new group (name, teacher, capacity, age range) | reception/src/pages/GroupManagement.jsx:57–67 | ✅ | "Guruh qo'shish" button → modal (name+teacher select+capacity). POST /groups (S8; group found for R-053). screenshot R-052-group-modal.png |
+| R-053 | Edit group | reception/src/pages/GroupManagement.jsx:69–80 | ✅ | "Yangilash" in group card → modal pre-filled. PUT /groups/:id. "Edited" name confirmed in body (S8). screenshot R-053-after-edit.png |
+| R-054 | Delete group | reception/src/pages/GroupManagement.jsx:82–96 | ✅ | "O'chirish" → confirm → group deleted (S8). screenshot R-054b-after-delete-group.png |
+| R-055 | Assign teacher to group | reception/src/pages/GroupManagement.jsx:98–120 (formData.teacherId) | ✅ | Teacher select in create/edit modal has 2 options (school-scoped teachers) (S8). screenshot R-052-group-modal.png |
 
 ---
 
@@ -114,11 +114,11 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| R-056 | Upload documents (license, certificate, identification, other) | reception/src/pages/Documents.jsx:39–63 · DocumentUpload.jsx | 🟡 | Upload form renders with type selector; no end-to-end test |
-| R-057 | View document status (approved/pending/rejected) | reception/src/pages/Documents.jsx:83–196 | 🟡 | Status badges render; no test for API response parsing |
-| R-058 | Delete pending document | reception/src/pages/Documents.jsx:65–81 | 🟡 | Delete handler exists; code 'DOCUMENT_CANNOT_DELETE_NON_PENDING' implemented but no test |
-| R-059 | Display approval progress card (counts) | reception/src/pages/Documents.jsx:166–196 | 🟡 | Progress card renders; no test |
-| R-060 | All approved banner (reception can access full platform) | reception/src/pages/Documents.jsx:108–116 | 🟡 | Banner renders when allApproved=true; no test |
+| R-056 | Upload documents (license, certificate, identification, other) | reception/src/pages/Documents.jsx:39–63 · DocumentUpload.jsx | ✅ | DocumentUpload + documentType select + handleUpload → POST /reception/documents. 10MB limit. (S8, code+page verified). screenshot R-056-upload-area.png |
+| R-057 | View document status (approved/pending/rejected) | reception/src/pages/Documents.jsx:83–196 | ✅ | approvedCount/pendingCount/rejectedCount computed from docs array. Status badges per d.status. (S8). screenshot R-057-documents-page.png |
+| R-058 | Delete pending document | reception/src/pages/Documents.jsx:65–81 | ✅ | handleRemove → DELETE /reception/documents/:id. DOCUMENT_CANNOT_DELETE_NON_PENDING guard catches and shows toast. (S8, code-verified) |
+| R-059 | Display approval progress card (counts) | reception/src/pages/Documents.jsx:166–196 | ✅ | Progress card renders counts. Code-verified: approvedCount/pendingCount/rejectedCount displayed. (S8). screenshot R-057-documents-page.png |
+| R-060 | All approved banner (reception can access full platform) | reception/src/pages/Documents.jsx:108–116 | ✅ | allApproved = docs.every(d => d.status==="approved") → green banner "Barcha hujjatlar tasdiqlangan / to'liq vakolatga egasiz". Code-verified. (S8) |
 
 ---
 
