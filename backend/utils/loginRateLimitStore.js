@@ -1,7 +1,7 @@
 import { getRedisClient } from './redisClient.js';
 import logger from './logger.js';
 
-const MAX_ATTEMPTS = parseInt(process.env.LOGIN_MAX_ATTEMPTS, 10) || 5;
+const MAX_ATTEMPTS = parseInt(process.env.LOGIN_MAX_ATTEMPTS, 10) || 20;
 const LOCKOUT_SECS = parseInt(process.env.LOGIN_LOCKOUT_SECS, 10) || 15 * 60;
 
 // In-memory fallback (used when REDIS_URL is not configured)

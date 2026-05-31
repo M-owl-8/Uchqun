@@ -69,6 +69,29 @@ export const loginLimiter = rateLimit({
   },
 });
 
+// Secondary IP-level limiter for the login endpoint.
+// Defends against distributed brute-force across many different email accounts
+// from a single IP. Generous (100/hour) so it only fires on genuine attacks,
+// never on normal school-network usage.
+const LOGIN_IP_WINDOW = 60 * 60 * 1000;
+export const loginIpLimiter = rateLimit({
+  windowMs: LOGIN_IP_WINDOW,
+  max: Number(process.env.RATE_LIMIT_LOGIN_IP_MAX) || 100,
+  store: makeRedisStore(LOGIN_IP_WINDOW, 'loginip'),
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      success: false,
+      error: {
+        code: 'LOGIN_RATE_LIMITED',
+        detail: 'Too many login attempts from this network. Please try again later.',
+      },
+    });
+  },
+});
+
 // Rate limiter for the logged-in change-password endpoint.
 // Counts only failed attempts (skipSuccessfulRequests) to allow normal use
 // while still blocking brute-force attempts against the current password.

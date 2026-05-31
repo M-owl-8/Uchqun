@@ -84,9 +84,14 @@ const Login = () => {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-                  {t('login.password', { defaultValue: 'Parol' })}
-                </label>
+                <div className="flex items-baseline justify-between mb-1.5">
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                    {t('login.password', { defaultValue: 'Parol' })}
+                  </label>
+                  <span className="text-xs text-brand-600">
+                    {t('login.forgotPassword', { defaultValue: 'Parolni unutdingizmi? Tizim administratoriga murojaat qiling.' })}
+                  </span>
+                </div>
                 <div className="relative">
                   <input
                     id="password"

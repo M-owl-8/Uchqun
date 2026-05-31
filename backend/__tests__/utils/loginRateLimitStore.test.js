@@ -48,8 +48,8 @@ describe('loginRateLimitStore — Redis path', () => {
     expect(mockRedis.set).not.toHaveBeenCalled();
   });
 
-  test('recordFailedAttempt sets locked key on MAX_ATTEMPTS (5)', async () => {
-    mockRedis.incr.mockResolvedValue(5);
+  test('recordFailedAttempt sets locked key on MAX_ATTEMPTS (20)', async () => {
+    mockRedis.incr.mockResolvedValue(20);
     await recordFailedAttempt('user@test.com');
     expect(mockRedis.set).toHaveBeenCalledWith(
       'lockout:locked:user@test.com',
@@ -78,8 +78,8 @@ describe('loginRateLimitStore — Redis path', () => {
   test('isLockedOut returns true from in-memory when Redis is down but account is locked in-memory', async () => {
     const key = 'inmem-lock@test.com';
     mockRedis.incr.mockRejectedValue(new Error('ECONNREFUSED'));
-    // 5 failed attempts fall through to in-memory store
-    for (let i = 0; i < 5; i++) {
+    // 20 failed attempts fall through to in-memory store (MAX_ATTEMPTS = 20)
+    for (let i = 0; i < 20; i++) {
       await recordFailedAttempt(key);
     }
     mockRedis.exists.mockRejectedValue(new Error('ECONNREFUSED'));

@@ -63,8 +63,10 @@ export const login = async (req, res) => {
       logger.warn('Login blocked — account locked out', { email: normalizedEmail.substring(0, 3) + '***' });
       return res.status(429).json({
         success: false,
-        error: 'Account temporarily locked',
-        message: 'Too many failed login attempts. Please try again in 15 minutes.',
+        error: {
+          code: 'LOGIN_RATE_LIMITED',
+          detail: 'Too many failed login attempts. Please try again later.',
+        },
       });
     }
 
