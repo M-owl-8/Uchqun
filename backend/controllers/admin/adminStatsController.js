@@ -358,7 +358,7 @@ export const getSchoolRatings = async (req, res) => {
           u."lastName" as "parent_lastName",
           u.email as "parent_email"
         FROM school_ratings sr
-        LEFT JOIN schools s ON sr."schoolId" = s.id AND s."deletedAt" IS NULL
+        LEFT JOIN schools s ON sr."schoolId" = s.id
         LEFT JOIN users u ON sr."parentId" = u.id AND u."deletedAt" IS NULL
         WHERE sr."deletedAt" IS NULL
         ORDER BY sr."updatedAt" DESC
