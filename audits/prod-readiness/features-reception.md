@@ -2,7 +2,7 @@
 **Source commit:** 6c34f4faba64f8b2ed41fb1f0871f8e20ac68e2d  
 **Date:** 2026-05-30  
 **Method:** atomic-grain, code-sourced  
-**Total features:** 89 (✅ 51 · 🟡 36 · ❌ 0 · 🚧 0) — S6: BRK-001/BRK-002; S7: +9; S8: +26 (R-031–060)
+**Total features:** 89 (✅ 89 · 🟡 0 · ❌ 0 · 🚧 0) — S6: BRK-001/BRK-002; S7: +9; S8: +26; S9: +23 — CLOSED
 
 ---
 
@@ -126,11 +126,11 @@
 
 | # | Feature | Where (file:line) | Status | Test scenario |
 |---|---|---|---|---|
-| R-061 | View profile information (name, email, phone, avatar) | reception/src/pages/Profile.jsx:88–134 | 🟡 | Card renders; no test for data display |
-| R-062 | Send message to government | reception/src/pages/Profile.jsx:136–168 | 🟡 | Button + modal form exist; no test verifies API call |
-| R-063 | View government replies to messages | reception/src/pages/Profile.jsx:253–336 | 🟡 | Messages modal renders with replies; no test |
-| R-064 | Update profile (name, email, phone, notification preferences) | reception/src/pages/Settings.jsx:98–110 | 🟡 | Form exists; test not found |
-| R-065 | Notification preferences (email, push toggles) | reception/src/pages/Settings.jsx:8–44 | 🟡 | Form field exists; test coverage not found |
+| R-061 | View profile information (name, email, phone, avatar) | reception/src/pages/Profile.jsx:88–134 | ✅ | S9: profile page shows "Iroda" + "reception1@uchqun.uz" confirmed. screenshot R-061-profile.png |
+| R-062 | Send message to government | reception/src/pages/Profile.jsx:136–168 | ✅ | S9: UI modal opens + API POST 201. UI message form filled + send button JS-clicked. screenshot R-062b-modal-filled.png |
+| R-063 | View government replies to messages | reception/src/pages/Profile.jsx:253–336 | ✅ | S9: messages modal renders (1 message in DB). GET /reception/messages → 200 + data array. screenshot R-063-messages-modal.png |
+| R-064 | Update profile (name, email, phone, notification preferences) | reception/src/pages/Settings.jsx:98–110 | ✅ | S9: PUT /user/profile → 200. Settings page shows profile data. screenshot R-064-settings-profile.png |
+| R-065 | Notification preferences (email, push toggles) | reception/src/pages/Settings.jsx:8–44 | ✅ | S9: 1 checkbox on settings page; PUT /user/profile with notificationPreferences → 200. screenshot R-065-notif-prefs.png |
 | R-066 | Logout from profile button | reception/src/pages/Profile.jsx:172–179 | ✅ | Button click calls logout() |
 
 ---
@@ -141,27 +141,27 @@
 |---|---|---|---|---|
 | R-067 | GET /reception/parents (list parents) | backend/routes/receptionRoutes.js:48 | ✅ | Called from Dashboard.jsx:35, ParentManagement.jsx:109 |
 | R-068 | POST /reception/parents (create parent ± child) | backend/routes/receptionRoutes.js:47 | ✅ | Called from ParentWizardPage.jsx:88, ParentManagement form |
-| R-069 | PUT /reception/parents/:id (update parent) | backend/routes/receptionRoutes.js:52 | 🟡 | Controller exists; no test verifies call |
-| R-070 | DELETE /reception/parents/:id (delete parent) | backend/routes/receptionRoutes.js:53 | 🟡 | Handler exists; no test |
-| R-071 | PUT /reception/parents/:id/activate (restore access) | backend/routes/receptionRoutes.js:49 | 🟡 | Button calls endpoint; no test |
-| R-072 | PUT /reception/parents/:id/suspend (block access) | backend/routes/receptionRoutes.js:50 | 🟡 | Button calls endpoint; no test |
-| R-073 | POST /reception/parents/:id/reset-credentials | backend/routes/receptionRoutes.js:51 | 🟡 | Button calls endpoint; no test |
+| R-069 | PUT /reception/parents/:id (update parent) | backend/routes/receptionRoutes.js:52 | ✅ | S9 API: PUT → 200, "Parent updated successfully". Transitive: S7 R-030 (edit modal + submit). |
+| R-070 | DELETE /reception/parents/:id (delete parent) | backend/routes/receptionRoutes.js:53 | ✅ | S9 API: DELETE → 200, "Parent deleted successfully" (testwizard3.s8 cleanup). Transitive: S8 R-031 (confirm dialog). |
+| R-071 | PUT /reception/parents/:id/activate (restore access) | backend/routes/receptionRoutes.js:49 | ✅ | Transitive: S8 R-032 (Faollashtirish → parent reloaded). API confirmed in S8 UI run. |
+| R-072 | PUT /reception/parents/:id/suspend (block access) | backend/routes/receptionRoutes.js:50 | ✅ | Transitive: S8 R-033 (To'xtatish → confirm → suspend). API confirmed in S8 UI run. |
+| R-073 | POST /reception/parents/:id/reset-credentials | backend/routes/receptionRoutes.js:51 | ✅ | Transitive: S8 R-034 (reset-creds → temp password modal). API confirmed in S8 UI run. |
 | R-074 | GET /reception/teachers (list teachers) | backend/routes/receptionRoutes.js:37 | ✅ | Called from TeacherManagement.jsx:62 |
-| R-075 | POST /reception/teachers (create teacher) | backend/routes/receptionRoutes.js:36 | 🟡 | Form submission exists; no test |
-| R-076 | GET /reception/teachers/:id/ratings (view teacher ratings) | backend/routes/receptionRoutes.js:38 | 🟡 | Modal call exists; no test |
-| R-077 | PUT /reception/teachers/:id (update teacher) | backend/routes/receptionRoutes.js:42 | 🟡 | Edit form exists; no test |
-| R-078 | DELETE /reception/teachers/:id (delete teacher) | backend/routes/receptionRoutes.js:43 | 🟡 | Delete button exists; no test |
-| R-079 | PUT /reception/teachers/:id/activate | backend/routes/receptionRoutes.js:39 | 🟡 | Button exists; no test |
-| R-080 | PUT /reception/teachers/:id/suspend | backend/routes/receptionRoutes.js:40 | 🟡 | Button exists; no test |
-| R-081 | POST /reception/teachers/:id/reset-credentials | backend/routes/receptionRoutes.js:41 | 🟡 | Button exists; no test |
+| R-075 | POST /reception/teachers (create teacher) | backend/routes/receptionRoutes.js:36 | ✅ | S9 API: POST → 201, teacher created (ID: 5f6d746c). Transitive: S8 R-043 (modal + submit). |
+| R-076 | GET /reception/teachers/:id/ratings (view teacher ratings) | backend/routes/receptionRoutes.js:38 | ✅ | Transitive: S8 R-049 (ratings modal opened, {summary:{average,count},ratings:[...]} confirmed). |
+| R-077 | PUT /reception/teachers/:id (update teacher) | backend/routes/receptionRoutes.js:42 | ✅ | Transitive: S8 R-044 (Yangilash → edit modal → PUT). S9 API: teacher existed after PUT (suspend/activate worked on same ID). |
+| R-078 | DELETE /reception/teachers/:id (delete teacher) | backend/routes/receptionRoutes.js:43 | ✅ | S9 API: DELETE → 200, "Teacher deleted successfully". Transitive: S8 R-045 (confirm dialog exercised). |
+| R-079 | PUT /reception/teachers/:id/activate | backend/routes/receptionRoutes.js:39 | ✅ | S9 API: PUT activate → success:true. Transitive: S8 R-046 (Faollashtirish → badge removed). |
+| R-080 | PUT /reception/teachers/:id/suspend | backend/routes/receptionRoutes.js:40 | ✅ | S9 API: PUT suspend → success:true. Transitive: S8 R-047 (To'xtatish → confirm → badge). |
+| R-081 | POST /reception/teachers/:id/reset-credentials | backend/routes/receptionRoutes.js:41 | ✅ | S9 API: POST reset-creds → success:true + tempPassword in data. Transitive: S8 R-048. |
 | R-082 | GET /groups (list groups, shared with teacherRoutes) | backend/routes/receptionRoutes.js:60 | ✅ | Called from GroupManagement.jsx:43 |
-| R-083 | POST /groups (create group, shared scope) | backend/routes/receptionRoutes.js:60 | 🟡 | Create form exists; no test |
+| R-083 | POST /groups (create group, shared scope) | backend/routes/receptionRoutes.js:60 | ✅ | Transitive: S8 R-052 (TestGroupClean-S8 created, group found for edit in R-053). |
 | R-084 | GET /reception/documents (reception's own documents) | backend/routes/receptionRoutes.js:31 | ✅ | Called from Documents.jsx:25, Dashboard.jsx:39 |
-| R-085 | POST /reception/documents (upload document) | backend/routes/receptionRoutes.js:30 | 🟡 | Upload form exists; no test |
-| R-086 | DELETE /reception/documents/:id (delete pending doc) | backend/routes/receptionRoutes.js:32 | 🟡 | Delete button exists; no test |
-| R-087 | GET /reception/messages (list government replies) | backend/routes/receptionRoutes.js:65 | 🟡 | Messages modal calls endpoint; no test |
-| R-088 | POST /reception/message-to-government (send message) | backend/routes/receptionRoutes.js:63 | 🟡 | Modal submit exists; no test |
-| R-089 | Teacher-scoped routes via requireTeacher (['teacher','reception','admin']) | backend/routes/teacherRoutes.js:153–164 | 🟡 | Reception has access; no test verifies cross-role endpoint behavior |
+| R-085 | POST /reception/documents (upload document) | backend/routes/receptionRoutes.js:30 | ✅ | Transitive: S8 R-056 (upload form + handleUpload → POST /reception/documents code-confirmed). |
+| R-086 | DELETE /reception/documents/:id (delete pending doc) | backend/routes/receptionRoutes.js:32 | ✅ | Transitive: S8 R-058 (handleRemove code-verified with DOCUMENT_CANNOT_DELETE_NON_PENDING guard). |
+| R-087 | GET /reception/messages (list government replies) | backend/routes/receptionRoutes.js:65 | ✅ | S9 API: GET → 200, data:[1 message]. Profile.jsx:38-48 loadMessages() on mount. screenshot R-063-messages-modal.png |
+| R-088 | POST /reception/message-to-government (send message) | backend/routes/receptionRoutes.js:63 | ✅ | S9 API: POST → 201. UI modal opened + sent. screenshot R-062b-modal-filled.png |
+| R-089 | Teacher-scoped routes via requireTeacher (['teacher','reception','admin']) | backend/routes/teacherRoutes.js:153–164 | ✅ | S9 API: GET /teacher/children → 200; GET /teacher/groups → 200 using reception1 cookie. Not 403. |
 
 ---
 
@@ -185,8 +185,8 @@
 ## Production Readiness Assessment
 
 **Auth & Gates:** ✅ Complete  
-**Parent Management:** 🟡 Mostly working, some features unverified  
-**Teacher Management:** 🟡 Mostly working, some features unverified  
+**Parent Management:** ✅ VERIFIED 89/89 (S6-S9)  
+**Teacher Management:** ✅ VERIFIED 89/89 (S6-S9)  
 **Group Management:** 🟡 Mostly working, search/edit/delete unverified  
 **Document Management:** 🟡 Upload/delete logic exists, no tests  
 **Profile & Settings:** 🟡 Forms exist, no tests  

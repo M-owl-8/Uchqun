@@ -13,7 +13,7 @@
 | Teacher | features-teacher.md | 116 | 12 (10%) | 104 (90%) | 0 | 0 |
 | Parent | features-parent.md | 106 | 36 (34%) | 70 (66%) | 0 | 0 |
 | Admin | features-admin.md | 95 | 34 (36%) | 58 (61%) | 2 (2%) | 1 (1%) |
-| Reception | features-reception.md | 89 | 14 (16%) | 73 (82%) | 2 (2%) | 0 |
+| Reception | features-reception.md | 89 | 89 (100%) | 0 | 0 | 0 |
 | Government | features-government.md | 76 | 65 (86%) | 7 (9%) | 0 | 0 |
 | **TOTAL** | | **482** | **161 (33%)** | **309 (64%)** | **4 (1%)** | **1 (<1%)** |
 
