@@ -2,7 +2,7 @@ import { Clock, Edit2, Play, Star, Trash2, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Card from '../../shared/components/Card';
 
-const TherapyCard = ({ therapy, pendingDeleteId, getTherapyIcon, getTherapyColor, onAssign, onEdit, onDelete }) => {
+const TherapyCard = ({ therapy, getTherapyIcon, getTherapyColor, onAssign, onEdit, onDelete }) => {
   const { t } = useTranslation();
   const Icon = getTherapyIcon(therapy.therapyType);
   const colorClass = getTherapyColor(therapy.therapyType);
@@ -65,11 +65,7 @@ const TherapyCard = ({ therapy, pendingDeleteId, getTherapyIcon, getTherapyColor
         </button>
         <button
           onClick={() => onDelete(therapy.id)}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-            pendingDeleteId === therapy.id
-              ? 'bg-error-600 text-white'
-              : 'bg-error-50 text-error-600 hover:bg-error-100'
-          }`}
+          className="px-4 py-2 bg-error-50 text-error-600 rounded-lg font-medium hover:bg-error-100 transition-colors"
         >
           <Trash2 className="w-4 h-4" />
         </button>

@@ -147,6 +147,7 @@ const TeacherManagement = () => {
   const handleDelete = (teacherId) => {
     setConfirmDialog({
       message: t('teachersPage.confirmDelete'),
+      warning: t('teachersPage.confirmDeleteWarning', { defaultValue: "O'qituvchi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

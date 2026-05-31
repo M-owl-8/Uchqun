@@ -147,6 +147,7 @@ const Meals = () => {
   const handleDelete = (mealId) => {
     setConfirmDialog({
       message: t('mealsPage.form.confirmDelete'),
+      warning: t('mealsPage.form.confirmDeleteWarning', { defaultValue: "Ovqat yumshoq o'chiriladi, lekin bu portalda tiklash imkoniyati yo'q." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

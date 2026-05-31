@@ -10,6 +10,7 @@ import {
   Baby,
 } from 'lucide-react';
 import Card from '../shared/components/Card';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
 import { useToast } from '../shared/context/ToastContext';
@@ -44,7 +45,7 @@ const MonitoringJournal = () => {
     teacherSignature: '',
   });
   const [children, setChildren] = useState([]);
-  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   const buildChildrenFromParents = (parentsList) => {
     const all = [];
@@ -185,23 +186,22 @@ const MonitoringJournal = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (pendingDeleteId !== id) {
-      setPendingDeleteId(id);
-      showError(t('common.confirmDeleteClick', { defaultValue: 'Click again to confirm deletion' }));
-      setTimeout(() => setPendingDeleteId(null), 5000);
-      return;
-    }
-    setPendingDeleteId(null);
-
-    try {
-      await api.delete(`/teacher/emotional-monitoring/${id}`);
-      success(t('monitoring.toastDelete'));
-      cache.invalidate('teacher:monitoring');
-      loadMonitoringRecords(true);
-    } catch (error) {
-      showError(t('monitoring.toastError'));
-    }
+  const handleDelete = (id) => {
+    setConfirmDialog({
+      message: t('monitoring.confirmDelete', { defaultValue: "Bu monitoring yozuvini o'chirmoqchimisiz?" }),
+      warning: t('monitoring.confirmDeleteWarning', { defaultValue: "Yozuv yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/teacher/emotional-monitoring/${id}`);
+          success(t('monitoring.toastDelete'));
+          cache.invalidate('teacher:monitoring');
+          loadMonitoringRecords(true);
+        } catch (error) {
+          showError(t('monitoring.toastError'));
+        }
+      },
+    });
   };
 
   const toggleEmotionalState = (key) => {
@@ -432,6 +432,8 @@ const MonitoringJournal = () => {
         </div>
       )}
     </div>
+
+    <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
   );
 };
 

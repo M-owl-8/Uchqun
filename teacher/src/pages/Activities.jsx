@@ -189,6 +189,7 @@ const Activities = () => {
   const handleDelete = (activityId) => {
     setConfirmDialog({
       message: t('activitiesPage.confirmDelete'),
+      warning: t('activitiesPage.confirmDeleteWarning', { defaultValue: "Faoliyat yumshoq o'chiriladi, lekin bu portalda tiklash imkoniyati yo'q." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

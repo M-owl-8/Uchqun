@@ -138,6 +138,7 @@ const TherapyManagement = () => {
   const handleDelete = (id) => {
     setConfirmDialog({
       message: t('therapy.confirmDelete', { defaultValue: "Terapiyani o'chirishni tasdiqlaysizmi?" }),
+      warning: t('therapy.confirmDeleteWarning', { defaultValue: "Terapiya yumshoq o'chiriladi, lekin bu portalda tiklash imkoniyati yo'q." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

@@ -153,6 +153,7 @@ const ParentManagement = () => {
   const handleDelete = (parentId) => {
     setConfirmDialog({
       message: t('parentsPage.confirmDelete'),
+      warning: t('parentsPage.confirmDeleteWarning', { defaultValue: "Ota-ona yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -182,6 +183,7 @@ const ParentManagement = () => {
   const handleDeleteChild = (parentId, childId) => {
     setConfirmDialog({
       message: t('parentsPage.confirmDeleteChild'),
+      warning: t('parentsPage.confirmDeleteChildWarning', { defaultValue: "Bola yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

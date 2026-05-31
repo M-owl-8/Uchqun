@@ -49,6 +49,7 @@
 | PROD-ISSUE-RATE-LIMIT | Login rate limit — threshold too low (5→20), cross-user/portal isolation, IP secondary bucket, redisRateLimitStore undefined bug | ✅ Closed (61ae4bf) | `audits/prod-readiness/PROD-ISSUE-RATE-LIMIT.md` |
 | PROD-ISSUE-AUDIT-01 | Quality / convenience / friction audit — 9 categories across all portals: rate limits, empty states, form state-loss, destructive-action safety, orphan routes, error message quality, cross-portal delivery, loading states, i18n completeness | ✅ Closed (see commit) | `audits/prod-readiness/PROD-ISSUE-AUDIT-01.md` — 74 findings: 24 HIGH · 36 MEDIUM · 14 LOW |
 | PROD-FIX-01 | Fix 5 A-1 blockers from PROD-ISSUE-AUDIT-01: [object Object] toast, Reception RU locale, teacher orphan routes, urgent observation notify, parent suspension force-logout | ✅ Closed (see commit) | `audits/prod-readiness/PROD-FIX-01-blockers.md` — 7 HIGH findings closed; 17 HIGH remain |
+| PROD-FIX-02 | Destructive action safety — 11 DS items: 4 HIGH (confirm missing) + 5 MEDIUM (confirm missing/weak) + 2 LOW (no irreversibility language) | ✅ Closed (see commit) | `audits/prod-readiness/PROD-FIX-02-destructive-actions.md` — HIGH 17→13, MEDIUM 36→31, LOW 14→12 |
 
 ## Rules (read before every step)
 

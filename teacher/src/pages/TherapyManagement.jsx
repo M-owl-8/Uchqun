@@ -9,6 +9,7 @@ import Card from '../shared/components/Card';
 import TherapyFilters from './therapy/TherapyFilters';
 import TherapyCard from './therapy/TherapyCard';
 import TherapyFormModal from './therapy/TherapyFormModal';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 import TherapyAssignModal from './therapy/TherapyAssignModal';
 
 const TherapyManagement = () => {
@@ -40,7 +41,7 @@ const TherapyManagement = () => {
   });
   const [saving, setSaving] = useState(false);
   const [assigning, setAssigning] = useState(false);
-  const [pendingDeleteId, setPendingDeleteId] = useState(null);
+  const [confirmDialog, setConfirmDialog] = useState(null);
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
 
@@ -218,23 +219,22 @@ const TherapyManagement = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (pendingDeleteId !== id) {
-      setPendingDeleteId(id);
-      showError(t('common.confirmDeleteClick', { defaultValue: 'Click again to confirm deletion' }));
-      setTimeout(() => setPendingDeleteId(null), 5000);
-      return;
-    }
-    setPendingDeleteId(null);
-
-    try {
-      await api.delete(`/therapy/${id}`);
-      success(t('therapy.deleteSuccess', { defaultValue: 'Terapiya o\'chirildi' }));
-      cache.invalidatePrefix('teacher:therapy');
-      fetchTherapies(true);
-    } catch (error) {
-      showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
-    }
+  const handleDelete = (id) => {
+    setConfirmDialog({
+      message: t('therapy.confirmDelete', { defaultValue: "Bu terapiyani o'chirmoqchimisiz?" }),
+      warning: t('therapy.confirmDeleteWarning', { defaultValue: "Terapiya yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/therapy/${id}`);
+          success(t('therapy.deleteSuccess', { defaultValue: 'Terapiya o\'chirildi' }));
+          cache.invalidatePrefix('teacher:therapy');
+          fetchTherapies(true);
+        } catch (error) {
+          showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
+        }
+      },
+    });
   };
 
   const getTherapyIcon = (type) => {
@@ -304,7 +304,6 @@ const TherapyManagement = () => {
           <TherapyCard
             key={therapy.id}
             therapy={therapy}
-            pendingDeleteId={pendingDeleteId}
             getTherapyIcon={getTherapyIcon}
             getTherapyColor={getTherapyColor}
             onAssign={handleAssign}
@@ -350,6 +349,8 @@ const TherapyManagement = () => {
         />
       )}
     </div>
+
+    <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
   );
 };
 

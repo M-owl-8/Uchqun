@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
 import DocumentUpload from '../components/DocumentUpload';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useToast } from '@shared/context/ToastContext';
 import { AlertTriangle, CheckCircle2, HelpCircle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -15,6 +16,7 @@ export default function Documents() {
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
   const [fetchError, setFetchError] = useState(null);
   const [documentType, setDocumentType] = useState('license');
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   const loadDocs = useCallback(async (bust = false) => {
     const cached = !bust && cache.get(CACHE_KEY);
@@ -62,22 +64,29 @@ export default function Documents() {
     }
   };
 
-  const handleRemove = async (id) => {
+  const handleRemove = (id) => {
     if (!id || id.startsWith('tmp-')) {
       setDocs((prev) => prev.filter((d) => d.id !== id));
       return;
     }
-    try {
-      await api.delete(`/reception/documents/${id}`);
-      loadDocs(true);
-    } catch (err) {
-      const code = err.response?.data?.error?.code;
-      if (code === 'DOCUMENT_CANNOT_DELETE_NON_PENDING') {
-        showError(t('documents.deleteNonPendingError', { defaultValue: 'Faqat kutilayotgan hujjatlarni o\'chirish mumkin.' }));
-      } else {
-        showError(t('documents.deleteError', { defaultValue: 'Hujjatni o\'chirib bo\'lmadi.' }));
-      }
-    }
+    setConfirmDialog({
+      message: t('documents.confirmDelete', { defaultValue: "Bu hujjatni o'chirmoqchimisiz?" }),
+      warning: t('documents.confirmDeleteWarning', { defaultValue: "Hujjatni o'chirsangiz, uni qayta yuklashingiz va admin tomonidan qayta tasdiqlatishingiz kerak bo'ladi." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/reception/documents/${id}`);
+          loadDocs(true);
+        } catch (err) {
+          const code = err.response?.data?.error?.code;
+          if (code === 'DOCUMENT_CANNOT_DELETE_NON_PENDING') {
+            showError(t('documents.deleteNonPendingError', { defaultValue: 'Faqat kutilayotgan hujjatlarni o\'chirish mumkin.' }));
+          } else {
+            showError(t('documents.deleteError', { defaultValue: 'Hujjatni o\'chirib bo\'lmadi.' }));
+          }
+        }
+      },
+    });
   };
 
   const approvedCount = docs.filter((d) => d.status === 'approved').length;
@@ -216,5 +225,7 @@ export default function Documents() {
         </div>
       </div>
     </div>
+
+    <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
   );
 }

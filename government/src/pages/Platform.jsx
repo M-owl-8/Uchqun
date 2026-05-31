@@ -136,6 +136,7 @@ const Platform = () => {
   const handleDeleteAdmin = (id) => {
     setConfirmDialog({
       message: t('government.confirmDelete'),
+      warning: t('government.confirmDeleteWarning', { defaultValue: "Bu amal qaytarib bo'lmaydi — adminni tiklash uchun hukumat portali orqali murojaat qiling." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -164,6 +165,7 @@ const Platform = () => {
   const handleDeleteGovernment = (id) => {
     setConfirmDialog({
       message: t('provision.actions.confirmDelete'),
+      warning: t('provision.actions.confirmDeleteWarning', { defaultValue: "Bu amal qaytarib bo'lmaydi — hukumat foydalanuvchisini tiklab bo'lmaydi." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -220,18 +222,25 @@ const Platform = () => {
     });
   };
 
-  const handleRejectRequest = async (id) => {
-    setRejectingRequest(true);
-    try {
-      await api.post(`/government/admin-registrations/${id}/reject`, { reason: rejectionReason.trim() || null });
-      success(t('government.requestRejected', { defaultValue: 'Request rejected' }));
-      setSelectedRequest(null);
-      setRejectionReason('');
-      const res = await api.get('/government/admin-registrations?status=pending');
-      setRegistrationRequests(res.data?.data || []);
-    } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.rejectError', { defaultValue: 'Reject failed' }));
-    } finally { setRejectingRequest(false); }
+  const handleRejectRequest = (id) => {
+    setConfirmDialog({
+      message: t('government.confirmRejectRequest', { defaultValue: "Ushbu admin ro'yxatdan o'tish so'rovini rad etmoqchimisiz?" }),
+      warning: t('government.confirmRejectRequestWarning', { defaultValue: "Bu amal qaytarib bo'lmaydi — ariza beruvchi qayta ariza topshirishi kerak bo'ladi." }),
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        setRejectingRequest(true);
+        try {
+          await api.post(`/government/admin-registrations/${id}/reject`, { reason: rejectionReason.trim() || null });
+          success(t('government.requestRejected', { defaultValue: 'Request rejected' }));
+          setSelectedRequest(null);
+          setRejectionReason('');
+          const res = await api.get('/government/admin-registrations?status=pending');
+          setRegistrationRequests(res.data?.data || []);
+        } catch (error) {
+          showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.rejectError', { defaultValue: 'Reject failed' }));
+        } finally { setRejectingRequest(false); }
+      },
+    });
   };
 
   const TAB_LABELS = {

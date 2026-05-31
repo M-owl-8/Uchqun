@@ -215,18 +215,25 @@ const AIWarnings = () => {
 
   useEffect(() => { fetchWarnings(); }, [fetchWarnings]);
 
-  const handleResolve = async (id) => {
-    try {
-      setResolving(id);
-      await api.put(`/ai-warnings/${id}/resolve`);
-      success(t('aiWarnings.resolveSuccess', { defaultValue: 'Ogohlantirish hal qilindi' }));
-      cache.invalidate('admin:ai-warnings');
-      await fetchWarnings(true);
-    } catch (err) {
-      showError(err.response?.data?.error || t('aiWarnings.resolveError', { defaultValue: 'Xatolik yuz berdi' }));
-    } finally {
-      setResolving(null);
-    }
+  const handleResolve = (id) => {
+    setDialog({
+      message: t('aiWarnings.resolveConfirm', { defaultValue: "Bu ogohlantirishni hal qilingan deb belgilamoqchimisiz?" }),
+      warning: t('aiWarnings.resolveConfirmWarning', { defaultValue: "Bu amal qaytarib bo'lmaydi — hal qilish doimiy." }),
+      onConfirm: async () => {
+        setDialog(null);
+        try {
+          setResolving(id);
+          await api.put(`/ai-warnings/${id}/resolve`);
+          success(t('aiWarnings.resolveSuccess', { defaultValue: 'Ogohlantirish hal qilindi' }));
+          cache.invalidate('admin:ai-warnings');
+          await fetchWarnings(true);
+        } catch (err) {
+          showError(err.response?.data?.error || t('aiWarnings.resolveError', { defaultValue: 'Xatolik yuz berdi' }));
+        } finally {
+          setResolving(null);
+        }
+      },
+    });
   };
 
   const handleAnalyze = async () => {

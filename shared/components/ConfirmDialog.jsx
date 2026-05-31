@@ -27,7 +27,10 @@ export default function ConfirmDialog({ dialog, onCancel }) {
       aria-modal="true"
     >
       <div className="bg-white rounded-modal p-6 max-w-sm w-full shadow-xl">
-        <p className="text-gray-800 mb-4">{dialog.message}</p>
+        <p className={`text-gray-800 ${dialog.warning ? 'mb-2' : 'mb-4'}`}>{dialog.message}</p>
+        {dialog.warning && (
+          <p className="text-sm text-red-600 font-medium mb-4">{dialog.warning}</p>
+        )}
         {dialog.requireReason && (
           <textarea
             value={reason}

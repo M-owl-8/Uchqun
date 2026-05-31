@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
+import ConfirmDialog from '../shared/components/ConfirmDialog';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
@@ -116,6 +117,8 @@ const textareaCls =
 export default function IrrShell() {
   const { id } = useParams();
   const { success, error: showError } = useToast();
+
+  const [confirmDialog, setConfirmDialog] = useState(null);
 
   // ── Header form state ────────────────────────────────────────────────────
   const [loading, setLoading]       = useState(true);
@@ -315,13 +318,20 @@ export default function IrrShell() {
     }
   }, [ltgEditId, ltgEditForm, showError]);
 
-  const handleDeleteLtg = useCallback(async (id) => {
-    try {
-      await api.delete(`/teacher/long-term-goals/${id}`);
-      setLongTermGoals(prev => prev.filter(g => g.id !== id));
-    } catch {
-      showError('Мақсадни ўчиришда хато');
-    }
+  const handleDeleteLtg = useCallback((id) => {
+    setConfirmDialog({
+      message: "Uzoq muddatli maqsadni o'chirmoqchimisiz?",
+      warning: "Bu maqsad yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q.",
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/teacher/long-term-goals/${id}`);
+          setLongTermGoals(prev => prev.filter(g => g.id !== id));
+        } catch {
+          showError('Мақсадни ўчиришда хато');
+        }
+      },
+    });
   }, [showError]);
 
   // ── Period handlers ───────────────────────────────────────────────────────
@@ -408,16 +418,23 @@ export default function IrrShell() {
     }
   }, [stgEditId, stgEditForm, showError]);
 
-  const handleDeleteStg = useCallback(async (id, periodId) => {
-    try {
-      await api.delete(`/teacher/short-term-goals/${id}`);
-      setStgByPeriod(prev => ({
-        ...prev,
-        [periodId]: (prev[periodId] || []).filter(g => g.id !== id),
-      }));
-    } catch {
-      showError('Мақсадни ўчиришда хато');
-    }
+  const handleDeleteStg = useCallback((id, periodId) => {
+    setConfirmDialog({
+      message: "Qisqa muddatli maqsadni o'chirmoqchimisiz?",
+      warning: "Bu maqsad yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q.",
+      onConfirm: async () => {
+        setConfirmDialog(null);
+        try {
+          await api.delete(`/teacher/short-term-goals/${id}`);
+          setStgByPeriod(prev => ({
+            ...prev,
+            [periodId]: (prev[periodId] || []).filter(g => g.id !== id),
+          }));
+        } catch {
+          showError('Мақсадни ўчиришда хато');
+        }
+      },
+    });
   }, [showError]);
 
   // ── Review + Sign handlers ────────────────────────────────────────────────
@@ -1711,5 +1728,7 @@ export default function IrrShell() {
         )}
       </div>
     </div>
+
+    <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
   );
 }
