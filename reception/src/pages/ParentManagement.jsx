@@ -353,8 +353,9 @@ const ParentManagement = () => {
         parent.phone?.toLowerCase().includes(query);
       const matchStatus =
         statusFilter === 'all' ||
-        (statusFilter === 'active' && parent.isActive !== false) ||
-        (statusFilter === 'pending' && parent.isActive === false);
+        (statusFilter === 'active' && parent.isActive !== false && parent.status !== 'suspended') ||
+        (statusFilter === 'suspended' && parent.status === 'suspended') ||
+        (statusFilter === 'pending' && parent.isActive === false && parent.status !== 'suspended');
       return matchQuery && matchStatus;
     });
   }, [parents, searchQuery, statusFilter]);
@@ -424,6 +425,7 @@ const ParentManagement = () => {
             { value: 'all', label: 'Barchasi' },
             { value: 'active', label: 'Faol' },
             { value: 'pending', label: 'Kutmoqda' },
+            { value: 'suspended', label: "To'xtatilgan" },
           ].map((opt) => (
             <button
               key={opt.value}
