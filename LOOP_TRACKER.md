@@ -42,6 +42,13 @@
 > **PARENT-FIX ✅ (2026-05-29 · 37b12d7):** P1 V5-CRIT-01 chat send: backend validator CONVERSATION_ID_RE accepts `parent:<UUID>` (tight regex, not loosened); 6 behavioral tests green; toastError surfaced on send fail (Chat.jsx:71-73). P2 nav wiring: /irr (Dashboard QuickLink + ChildProfile link), /therapy+/help (Dashboard QuickLinks), /notifications (Dashboard Bell + DesktopTopNav Bell with badge), /settings (DesktopTopNav gear + ChildProfile link) — all ≤2 clicks from Home. P3 re-skin: 11 pages confirmed zero teacher brand-* tokens; ChildIRR progression bars → p-honey-*; TeacherRating school section → p-honey-*. Collateral: LOGIN_RATE_LIMITED added to 3 i18n files (pre-existing gap from 3eaab28), i18n.test EXPECTED_CODE_COUNT 216→217, rateLimiterEnv capturedOpts[5]→[6]. Suite: 130/1352 backend ✅ · 13/16 teacher files confirmed ✅ (Activities pre-existing Vitest 4 pool loop, unrelated to PARENT-FIX). BEFORE screenshots from production. `audits/teacher-parent/PARENT-FIX.md`.
 > **Parent Portal Design System ✅ CLOSED (1d2c635):** Re-skin of `teacher/src/parent/` — twilight blue + warm cream design system on top of existing wired behavior. Token strategy: p-brand/p-sepia/p-honey/p-paper/p-surface/p-ink added alongside teacher lavender (zero teacher token overwrite). CSS: .stitch, .page-card, .page-corner, .tabbar-shadow. Source Serif 4 font. 7 new components: MobileTabBar, DesktopTopNav, ChildSwitcher, DayCard, DayStack, SensitiveNotice, CallTeacherButton. Re-skinned: Layout (no sidebar, no JoyfulBackground), Dashboard (day-card + serif greeting), ChildProfile, ChildIRR, TeacherRating. PL-015 gate preserved. 22 new component tests + 27 existing tests green. `audits/teacher-parent/PARENT-DESIGN-implementation.md`. **LOOP COMPLETE — all 7 portals done.**
 
+## Production Issues (cross-cutting, outside portal loop order)
+
+| ID | Description | Status | Deliverable |
+|---|---|---|---|
+| PROD-ISSUE-RATE-LIMIT | Login rate limit — threshold too low (5→20), cross-user/portal isolation, IP secondary bucket, redisRateLimitStore undefined bug | ✅ Closed (61ae4bf) | `audits/prod-readiness/PROD-ISSUE-RATE-LIMIT.md` |
+| PROD-ISSUE-AUDIT-01 | Quality / convenience / friction audit — 9 categories across all portals: rate limits, empty states, form state-loss, destructive-action safety, orphan routes, error message quality, cross-portal delivery, loading states, i18n completeness | ✅ Closed (see commit) | `audits/prod-readiness/PROD-ISSUE-AUDIT-01.md` — 74 findings: 24 HIGH · 36 MEDIUM · 14 LOW |
+
 ## Rules (read before every step)
 
 1. Before starting ANY step, read this entire tracker. If the previous portal has any step that is not ✅, stop and report which one is incomplete. Never jump ahead.
