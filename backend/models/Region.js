@@ -16,6 +16,14 @@ const Region = sequelize.define('Region', {
     type: DataTypes.STRING(255),
     allowNull: false,
   },
+  nameRu: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
+  nameCyrl: {
+    type: DataTypes.STRING(255),
+    allowNull: true,
+  },
   isRepublic: {
     type: DataTypes.BOOLEAN,
     allowNull: false,

@@ -41,8 +41,8 @@ const mkRes = () => {
 };
 
 const allRegions = [
-  { id: REGION_A, code: 'r01', name: 'Region 01', isRepublic: false, toJSON() { return this; } },
-  { id: REGION_B, code: 'r02', name: 'Region 02', isRepublic: false, toJSON() { return this; } },
+  { id: REGION_A, code: 'r01', name: 'Toshkent shahri',   nameRu: 'Город Ташкент',          nameCyrl: 'Тошкент шаҳри',    isRepublic: false, toJSON() { return this; } },
+  { id: REGION_B, code: 'r02', name: 'Samarqand viloyati', nameRu: 'Самаркандская область', nameCyrl: 'Самарқанд вилояти', isRepublic: false, toJSON() { return this; } },
 ];
 
 beforeEach(() => jest.clearAllMocks());

@@ -1267,7 +1267,7 @@ export const getRegions = async (req, res) => {
     }
     const regions = await Region.findAll({
       where,
-      attributes: ['id', 'code', 'name', 'isRepublic'],
+      attributes: ['id', 'code', 'name', 'nameRu', 'nameCyrl', 'isRepublic'],
       order: [['name', 'ASC']],
     });
     return res.json({
