@@ -1,14 +1,10 @@
 import { useState, useEffect } from 'react';
 import { X, Camera, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useChildRibbon } from '../hooks/useChildRibbon';
 import api from '../shared/services/api';
 
-const OUTCOMES = [
-  { key: 'emerging',    label: 'Yangi' },
-  { key: 'assisted',    label: 'Yordam bilan' },
-  { key: 'independent', label: 'Mustaqil' },
-  { key: 'mastered',    label: 'Mahorat' },
-];
+const OUTCOME_KEYS = ['emerging', 'assisted', 'independent', 'mastered'];
 
 function ChildChip({ child, selected, onClick }) {
   const ribbon = useChildRibbon(child);
@@ -41,6 +37,7 @@ function ChildChip({ child, selected, onClick }) {
  * Opens when FAB is tapped. Closes on save or cancel.
  */
 const QuickObservation = ({ onClose, preselectedChild = null }) => {
+  const { t } = useTranslation();
   const [children, setChildren]       = useState([]);
   const [selectedChild, setSelectedChild] = useState(preselectedChild);
   const [goals, setGoals]             = useState([]);
@@ -57,7 +54,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
       setChildren(Array.isArray(list) ? list : []);
       if (!selectedChild && list.length > 0) setSelectedChild(list[0]);
     }).catch(() => {
-      setChildLoadError("Bolalar ro'yxatini yuklashda xatolik");
+      setChildLoadError(t('quickObs.loadError', { defaultValue: "Bolalar ro'yxatini yuklashda xatolik" }));
     });
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -109,7 +106,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
           <div className="w-10 h-1 rounded-full bg-slate-200 mx-auto mb-3 md:hidden" />
 
           <div className="flex items-center justify-between">
-            <div className="text-[16px] font-semibold text-slate-900">Yangi kuzatuv</div>
+            <div className="text-[16px] font-semibold text-slate-900">{t('quickObs.title', { defaultValue: 'Yangi kuzatuv' })}</div>
             <button
               type="button"
               onClick={onClose}
@@ -128,7 +125,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
           {/* Child strip */}
           {children.length > 0 && (
             <div className="mt-4">
-              <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 mb-2">Bola</div>
+              <div className="text-[11px] uppercase tracking-[.14em] text-slate-500 mb-2">{t('quickObs.child', { defaultValue: 'Bola' })}</div>
               <div className="flex items-center gap-2 overflow-x-auto pb-1">
                 {children.map(child => (
                   <ChildChip
@@ -144,14 +141,14 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
 
           {/* Goal dropdown */}
           <div className="mt-4">
-            <label className="block text-[12px] font-medium text-slate-700 mb-1.5">Maqsad</label>
+            <label className="block text-[12px] font-medium text-slate-700 mb-1.5">{t('quickObs.goal', { defaultValue: 'Maqsad' })}</label>
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setGoalOpen(v => !v)}
                 className="w-full h-[44px] px-3 rounded-md border border-slate-200 bg-surface flex items-center justify-between text-[14px] text-slate-900 hover:bg-slate-50 transition-colors"
               >
-                <span>{selectedGoal ? `${selectedGoal.title || selectedGoal.label || 'Maqsad'}` : 'Maqsad tanlang'}</span>
+                <span>{selectedGoal ? `${selectedGoal.title || selectedGoal.label || t('quickObs.goal', { defaultValue: 'Maqsad' })}` : t('quickObs.selectGoal', { defaultValue: 'Maqsad tanlang' })}</span>
                 <ChevronDown className="w-4 h-4 text-slate-400" strokeWidth={1.75} />
               </button>
               {goalOpen && goals.length > 0 && (
@@ -170,27 +167,27 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
               )}
             </div>
             <div className="mt-1 text-[11px] text-slate-500">
-              {"Eng so'nggi yozilgan maqsad — smart default"}
+              {t('quickObs.goalHint', { defaultValue: "Eng so'nggi yozilgan maqsad" })}
             </div>
           </div>
 
           {/* Outcome chips */}
           <div className="mt-4">
-            <label className="block text-[12px] font-medium text-slate-700 mb-1.5">Natija</label>
+            <label className="block text-[12px] font-medium text-slate-700 mb-1.5">{t('quickObs.outcome', { defaultValue: 'Natija' })}</label>
             <div className="grid grid-cols-2 gap-1.5">
-              {OUTCOMES.map(o => (
+              {OUTCOME_KEYS.map(key => (
                 <button
-                  key={o.key}
+                  key={key}
                   type="button"
-                  onClick={() => setOutcome(o.key)}
+                  onClick={() => setOutcome(key)}
                   className="h-10 rounded-md text-[12px] font-medium transition-colors"
                   style={
-                    outcome === o.key
+                    outcome === key
                       ? { background: '#7A6FA8', color: '#FFFFFE' }
                       : { border: '1px solid #DDE0E6', background: '#FFFFFE', color: '#3D424F' }
                   }
                 >
-                  {o.label}
+                  {t(`quickObs.outcomes.${key}`, { defaultValue: key })}
                 </button>
               ))}
             </div>
@@ -199,13 +196,13 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
           {/* Note */}
           <div className="mt-4">
             <label className="block text-[12px] font-medium text-slate-700 mb-1.5">
-              Izoh <span className="text-slate-400 font-normal">(ixtiyoriy)</span>
+              {t('quickObs.note', { defaultValue: 'Izoh' })} <span className="text-slate-400 font-normal">{t('quickObs.noteOptional', { defaultValue: '(ixtiyoriy)' })}</span>
             </label>
             <textarea
               rows={2}
               value={note}
               onChange={e => setNote(e.target.value)}
-              placeholder="Qisqacha kuzatuv..."
+              placeholder={t('quickObs.notePlaceholder', { defaultValue: 'Qisqacha kuzatuv...' })}
               className="w-full px-3 py-2 rounded-md border border-slate-200 bg-surface text-[14px] placeholder:text-slate-400 resize-none focus:outline-none focus:border-brand-600 transition-colors"
             />
           </div>
@@ -216,7 +213,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
               type="button"
               className="h-10 px-3 rounded-md border border-slate-200 bg-surface text-[12px] font-medium text-slate-700 flex items-center gap-1.5 hover:bg-slate-50 transition-colors"
             >
-              <Camera className="w-4 h-4 text-slate-500" strokeWidth={1.75} /> Rasm
+              <Camera className="w-4 h-4 text-slate-500" strokeWidth={1.75} /> {t('quickObs.photo', { defaultValue: 'Rasm' })}
             </button>
             <div className="ml-auto flex items-center gap-1.5">
               <button
@@ -224,7 +221,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
                 onClick={onClose}
                 className="h-10 px-3 rounded-md text-[13px] font-medium text-slate-600 hover:bg-slate-50 transition-colors"
               >
-                Bekor
+                {t('quickObs.cancel', { defaultValue: 'Bekor' })}
               </button>
               <button
                 type="button"
@@ -232,7 +229,7 @@ const QuickObservation = ({ onClose, preselectedChild = null }) => {
                 disabled={saving || !selectedChild || !outcome}
                 className="h-10 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-semibold hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {saving ? 'Saqlanmoqda...' : 'Saqlash'}
+                {saving ? t('quickObs.saving', { defaultValue: 'Saqlanmoqda...' }) : t('quickObs.save', { defaultValue: 'Saqlash' })}
               </button>
             </div>
           </div>

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CheckCircle2, Copy, Check, AlertTriangle } from 'lucide-react';
 
-function CopyField({ label, value }) {
+function CopyField({ label, value, copyLabel }) {
   const [copied, setCopied] = useState(false);
   const handleCopy = () => {
     navigator.clipboard.writeText(value).then(() => {
@@ -19,7 +20,7 @@ function CopyField({ label, value }) {
       <button
         onClick={handleCopy}
         className="shrink-0 p-1.5 rounded text-slate-400 hover:text-brand-600 hover:bg-brand-50 transition-colors"
-        title="Nusxa olish"
+        title={copyLabel}
       >
         {copied ? <Check className="w-4 h-4 text-success-600" /> : <Copy className="w-4 h-4" />}
       </button>
@@ -30,6 +31,7 @@ function CopyField({ label, value }) {
 export default function WizardCompletePage() {
   const navigate = useNavigate();
   const { state } = useLocation();
+  const { t } = useTranslation();
   const email = state?.email;
   const password = state?.password;
 
@@ -43,9 +45,11 @@ export default function WizardCompletePage() {
         />
       </div>
 
-      <h1 className="text-[28px] font-semibold text-slate-900 mb-2">Tayyor!</h1>
+      <h1 className="text-[28px] font-semibold text-slate-900 mb-2">
+        {t('wizard.completePage.title', { defaultValue: 'Tayyor!' })}
+      </h1>
       <p className="text-[14px] text-slate-500 max-w-[40ch] mx-auto mb-6">
-        {"Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi."}
+        {t('wizard.completePage.description', { defaultValue: "Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi." })}
       </p>
 
       {email && password && (
@@ -53,16 +57,20 @@ export default function WizardCompletePage() {
           <div className="flex items-start gap-2">
             <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" strokeWidth={2} />
             <p className="text-[12.5px] text-amber-800 font-medium leading-snug">
-              Yangi ota-ona uchun ma&apos;lumotlar — bu sahifani yopgandan keyin parol qaytadan ko&apos;rsatilmaydi.
+              {t('wizard.completePage.credentialsWarning', { defaultValue: "Yangi ota-ona uchun ma'lumotlar — bu sahifani yopgandan keyin parol qaytadan ko'rsatilmaydi." })}
             </p>
           </div>
           <div className="bg-white rounded-lg border border-amber-100 p-3 space-y-3">
-            <CopyField label="Email" value={email} />
+            <CopyField label="Email" value={email} copyLabel={t('wizard.completePage.copy', { defaultValue: 'Nusxa olish' })} />
             <div className="border-t border-amber-100" />
-            <CopyField label="Parol" value={password} />
+            <CopyField
+              label={t('wizard.completePage.passwordLabel', { defaultValue: 'Parol' })}
+              value={password}
+              copyLabel={t('wizard.completePage.copy', { defaultValue: 'Nusxa olish' })}
+            />
           </div>
           <p className="text-[11.5px] text-amber-700">
-            Bu parolni ota-onaga yetkazing. Birinchi kirishda o&apos;zgartirishni tavsiya eting.
+            {t('wizard.completePage.credentialsNote', { defaultValue: "Bu parolni ota-onaga yetkazing. Birinchi kirishda o'zgartirishni tavsiya eting." })}
           </p>
         </div>
       )}
@@ -72,13 +80,13 @@ export default function WizardCompletePage() {
           onClick={() => navigate('/reception/parents/new')}
           className="h-10 px-5 rounded-md border border-slate-300 bg-surface hover:bg-slate-50 text-slate-800 text-[13.5px] font-medium transition-colors"
         >
-          {"Yana qo'shish"}
+          {t('wizard.completePage.addAnother', { defaultValue: "Yana qo'shish" })}
         </button>
         <button
           onClick={() => navigate('/reception')}
           className="h-10 px-5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[13.5px] font-medium transition-colors"
         >
-          Boshqaruv paneliga
+          {t('wizard.completePage.backToDashboard', { defaultValue: 'Boshqaruv paneliga' })}
         </button>
       </div>
     </div>

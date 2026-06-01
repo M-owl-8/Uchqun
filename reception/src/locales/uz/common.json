@@ -278,7 +278,17 @@
     "saveDraft": "Saqlab chiqish",
     "complete": "Yakunlash",
     "draftRestored": "Qoralama yuklandi",
-    "success": "Muvaffaqiyatli qo'shildi"
+    "success": "Muvaffaqiyatli qo'shildi",
+    "completePage": {
+      "title": "Tayyor!",
+      "description": "Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.",
+      "copy": "Nusxa olish",
+      "credentialsWarning": "Yangi ota-ona uchun ma'lumotlar — bu sahifani yopgandan keyin parol qaytadan ko'rsatilmaydi.",
+      "passwordLabel": "Parol",
+      "credentialsNote": "Bu parolni ota-onaga yetkazing. Birinchi kirishda o'zgartirishni tavsiya eting.",
+      "addAnother": "Yana qo'shish",
+      "backToDashboard": "Boshqaruv paneliga"
+    }
   },
   "palette": {
     "placeholder": "Ota-ona, o'qituvchi, guruh yoki amal qidiring…",
@@ -295,7 +305,10 @@
     "progress": "Holat",
     "help": "Yordam",
     "allApproved": "Barcha hujjatlar tasdiqlangan",
-    "pendingWarning": "Tasdiq kutayotgan hujjatlar bor"
+    "pendingWarning": "Tasdiq kutayotgan hujjatlar bor",
+    "fileSizeLimit": "Fayl hajmi {{maxMB}} MB dan oshmasin.",
+    "uploadSuccess": "Hujjat yuklandi. Admin tasdiqlashi kutilmoqda.",
+    "uploadError": "Hujjat yuklanmadi. Qayta urinib ko'ring."
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",

@@ -23,7 +23,8 @@
     "activity": "Faoliyat tarixchasi",
     "communications": "Muloqotlar",
     "govMessages": "Xabarlar",
-    "trash": "Savatcha"
+    "trash": "Savatcha",
+    "pnts": "PNTS"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -71,7 +72,8 @@
     "noPending": "Hozircha kutilayotgan vazifalar yo‘q.",
     "systemStats": "Tizim statistikasi",
     "totalUsers": "Jami foydalanuvchilar: {{count}} | Aktiv qabul: {{active}} | Guruhlar: {{groups}}",
-    "viewAllChildren": "Barcha bolalarni ota-onalar orqali ko'rish"
+    "viewAllChildren": "Barcha bolalarni ota-onalar orqali ko'rish",
+    "pntsCard": "PNTS ko'rsatkichlari"
   },
   "parentsPage": {
     "title": "Ota-onalar boshqaruvi",

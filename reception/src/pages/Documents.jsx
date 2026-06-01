@@ -48,7 +48,7 @@ export default function Documents() {
   const handleUpload = async (file) => {
     const maxMB = 10;
     if (file.size > maxMB * 1024 * 1024) {
-      showError(`Fayl hajmi ${maxMB} MB dan oshmasin.`);
+      showError(t('documents.fileSizeLimit', { maxMB, defaultValue: `Fayl hajmi ${maxMB} MB dan oshmasin.` }));
       return;
     }
     const tempId = `tmp-${Date.now()}`;
@@ -63,10 +63,10 @@ export default function Documents() {
           setDocs((prev) => prev.map((d) => d.id === tempId ? { ...d, progress: pct } : d));
         },
       });
-      success('Hujjat yuklandi. Admin tasdiqlashi kutilmoqda.');
+      success(t('documents.uploadSuccess', { defaultValue: 'Hujjat yuklandi. Admin tasdiqlashi kutilmoqda.' }));
       loadDocs(true);
     } catch (err) {
-      showError(err.response?.data?.error || 'Hujjat yuklanmadi. Qayta urinib ko\'ring.');
+      showError(err.response?.data?.error || t('documents.uploadError', { defaultValue: "Hujjat yuklanmadi. Qayta urinib ko'ring." }));
       setDocs((prev) => prev.filter((d) => d.id !== tempId));
     }
   };

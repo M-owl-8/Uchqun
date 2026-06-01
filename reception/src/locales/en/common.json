@@ -273,7 +273,17 @@
     "saveDraft": "Save Draft",
     "complete": "Complete",
     "draftRestored": "Draft loaded",
-    "success": "Successfully added"
+    "success": "Successfully added",
+    "completePage": {
+      "title": "Done!",
+      "description": "Parent, child and group successfully registered.",
+      "copy": "Copy",
+      "credentialsWarning": "New parent credentials — the password will not be shown again after you close this page.",
+      "passwordLabel": "Password",
+      "credentialsNote": "Share this password with the parent. They should change it on first login.",
+      "addAnother": "Add another",
+      "backToDashboard": "Back to Dashboard"
+    }
   },
   "palette": {
     "placeholder": "Search for a parent, teacher, group or action…",
@@ -290,7 +300,10 @@
     "progress": "Status",
     "help": "Help",
     "allApproved": "All documents approved",
-    "pendingWarning": "Documents are awaiting approval"
+    "pendingWarning": "Documents are awaiting approval",
+    "fileSizeLimit": "File size must not exceed {{maxMB}} MB.",
+    "uploadSuccess": "Document uploaded. Awaiting admin approval.",
+    "uploadError": "Document upload failed. Please try again."
   },
   "errors": {
     "NETWORK_ERROR": "Network error",

@@ -23,7 +23,8 @@
     "activity": "Лента активности",
     "communications": "Коммуникации",
     "govMessages": "Сообщения",
-    "trash": "Корзина"
+    "trash": "Корзина",
+    "pnts": "PNTS"
   },
   "sidebar": {
     "title": "Uchqun Admin",
@@ -71,7 +72,8 @@
     "noPending": "Нет ожидающих заданий.",
     "systemStats": "Статистика системы",
     "totalUsers": "Всего пользователей: {{count}} | Активных приемов: {{active}} | Группы: {{groups}}",
-    "viewAllChildren": "Посмотреть всех детей через Родителей"
+    "viewAllChildren": "Посмотреть всех детей через Родителей",
+    "pntsCard": "Показатели PNTS"
   },
   "parentsPage": {
     "title": "Управление родителями",

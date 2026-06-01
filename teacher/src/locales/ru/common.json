@@ -16,7 +16,46 @@
   },
   "sidebar": {
     "title": "Uchqun Учитель",
-    "menu": "Главное меню"
+    "menu": "Главное меню",
+    "section": {
+      "today": "Сегодня",
+      "children": "Дети",
+      "iep": "ИОП",
+      "communication": "Общение"
+    },
+    "dashboard": "Главная",
+    "attendance": "Посещаемость",
+    "childrenList": "Список класса",
+    "gallery": "Галерея",
+    "meals": "Питание",
+    "goals": "Цели",
+    "observations": "Наблюдения",
+    "therapy": "Терапия",
+    "aiWarnings": "AI-предупреждения",
+    "chat": "Родители",
+    "reflection": "Дневник"
+  },
+  "quickObs": {
+    "title": "Новое наблюдение",
+    "child": "Ребёнок",
+    "goal": "Цель",
+    "selectGoal": "Выберите цель",
+    "goalHint": "Последняя записанная цель",
+    "outcome": "Результат",
+    "note": "Примечание",
+    "noteOptional": "(необязательно)",
+    "notePlaceholder": "Краткое наблюдение...",
+    "photo": "Фото",
+    "cancel": "Отмена",
+    "save": "Сохранить",
+    "saving": "Сохранение...",
+    "loadError": "Ошибка загрузки списка детей",
+    "outcomes": {
+      "emerging": "Начальный",
+      "assisted": "С поддержкой",
+      "independent": "Самостоятельно",
+      "mastered": "Освоено"
+    }
   },
   "login": {
     "title": "Uchqun Portal",

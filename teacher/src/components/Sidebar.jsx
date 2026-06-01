@@ -23,45 +23,45 @@ import api from '../shared/services/api';
 
 const LANG_OPTIONS = ['UZ', 'RU', 'EN'];
 
-const NAV_SECTIONS = [
-  {
-    label: 'Bugun',
-    items: [
-      { key: 'dashboard',  href: '/teacher',            icon: LayoutDashboard, label: 'Bosh sahifa' },
-      { key: 'attendance', href: '/teacher/attendance',  icon: CalendarCheck,   label: 'Davomat' },
-    ],
-  },
-  {
-    label: 'Bolalar',
-    items: [
-      { key: 'parents', href: '/teacher/parents', icon: Users,           label: "Guruh ro'yxati" },
-      { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: 'Galereya' },
-      { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: 'Ovqatlanish' },
-    ],
-  },
-  {
-    label: 'IEP',
-    items: [
-      { key: 'monitoring',   href: '/teacher/monitoring',   icon: Target,        label: 'Maqsadlar' },
-      { key: 'activities',   href: '/teacher/activities',   icon: ClipboardList, label: 'Kuzatuvlar' },
-      { key: 'therapy',      href: '/teacher/therapy',      icon: Stethoscope,   label: 'Terapiya' },
-      { key: 'ai-warnings',  href: '/teacher/ai-warnings',  icon: ShieldAlert,   label: 'AI Ogohlantirishlar' },
-    ],
-  },
-  {
-    label: 'Aloqa',
-    items: [
-      { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: 'Ota-onalar', badgeKey: 'chat' },
-      { key: 'reflection', href: '/teacher/reflection', icon: FileText,      label: 'Kun jurnali' },
-    ],
-  },
-];
-
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
   const { on, off } = useSocket();
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
+
+  const navSections = [
+    {
+      label: t('sidebar.section.today', { defaultValue: 'Bugun' }),
+      items: [
+        { key: 'dashboard',  href: '/teacher',            icon: LayoutDashboard, label: t('sidebar.dashboard',  { defaultValue: 'Bosh sahifa' }) },
+        { key: 'attendance', href: '/teacher/attendance',  icon: CalendarCheck,   label: t('sidebar.attendance', { defaultValue: 'Davomat' }) },
+      ],
+    },
+    {
+      label: t('sidebar.section.children', { defaultValue: 'Bolalar' }),
+      items: [
+        { key: 'parents', href: '/teacher/parents', icon: Users,           label: t('sidebar.childrenList', { defaultValue: "Guruh ro'yxati" }) },
+        { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: t('sidebar.gallery',      { defaultValue: 'Galereya' }) },
+        { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: t('sidebar.meals',        { defaultValue: 'Ovqatlanish' }) },
+      ],
+    },
+    {
+      label: t('sidebar.section.iep', { defaultValue: 'IEP' }),
+      items: [
+        { key: 'monitoring',  href: '/teacher/monitoring',  icon: Target,        label: t('sidebar.goals',       { defaultValue: 'Maqsadlar' }) },
+        { key: 'activities',  href: '/teacher/activities',  icon: ClipboardList, label: t('sidebar.observations', { defaultValue: 'Kuzatuvlar' }) },
+        { key: 'therapy',     href: '/teacher/therapy',     icon: Stethoscope,   label: t('sidebar.therapy',     { defaultValue: 'Terapiya' }) },
+        { key: 'ai-warnings', href: '/teacher/ai-warnings', icon: ShieldAlert,   label: t('sidebar.aiWarnings',  { defaultValue: 'AI Ogohlantirishlar' }) },
+      ],
+    },
+    {
+      label: t('sidebar.section.communication', { defaultValue: 'Aloqa' }),
+      items: [
+        { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: t('sidebar.chat',       { defaultValue: 'Ota-onalar' }), badgeKey: 'chat' },
+        { key: 'reflection', href: '/teacher/reflection', icon: FileText,      label: t('sidebar.reflection', { defaultValue: 'Kun jurnali' }) },
+      ],
+    },
+  ];
   const [unreadChat, setUnreadChat] = useState(0);
   const [activeLang, setActiveLang] = useState(
     (i18n.language || 'uz').slice(0, 2).toUpperCase()
@@ -136,7 +136,7 @@ const Sidebar = ({ onClose }) => {
 
       {/* Nav */}
       <nav className="px-2 py-3 flex-1 overflow-y-auto text-[13px]">
-        {NAV_SECTIONS.map((section) => (
+        {navSections.map((section) => (
           <div key={section.label} className="mb-1">
             <div
               className="px-3 pb-1.5 pt-3 text-[10px] uppercase tracking-[.14em]"

@@ -16,7 +16,46 @@
   },
   "sidebar": {
     "title": "Uchqun O'qituvchi",
-    "menu": "Asosiy menyu"
+    "menu": "Asosiy menyu",
+    "section": {
+      "today": "Bugun",
+      "children": "Bolalar",
+      "iep": "IEP",
+      "communication": "Aloqa"
+    },
+    "dashboard": "Bosh sahifa",
+    "attendance": "Davomat",
+    "childrenList": "Guruh ro'yxati",
+    "gallery": "Galereya",
+    "meals": "Ovqatlanish",
+    "goals": "Maqsadlar",
+    "observations": "Kuzatuvlar",
+    "therapy": "Terapiya",
+    "aiWarnings": "AI Ogohlantirishlar",
+    "chat": "Ota-onalar",
+    "reflection": "Kun jurnali"
+  },
+  "quickObs": {
+    "title": "Yangi kuzatuv",
+    "child": "Bola",
+    "goal": "Maqsad",
+    "selectGoal": "Maqsad tanlang",
+    "goalHint": "Eng so'nggi yozilgan maqsad",
+    "outcome": "Natija",
+    "note": "Izoh",
+    "noteOptional": "(ixtiyoriy)",
+    "notePlaceholder": "Qisqacha kuzatuv...",
+    "photo": "Rasm",
+    "cancel": "Bekor",
+    "save": "Saqlash",
+    "saving": "Saqlanmoqda...",
+    "loadError": "Bolalar ro'yxatini yuklashda xatolik",
+    "outcomes": {
+      "emerging": "Yangi",
+      "assisted": "Yordam bilan",
+      "independent": "Mustaqil",
+      "mastered": "Mahorat"
+    }
   },
   "login": {
     "title": "Uchqun Portal",

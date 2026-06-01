@@ -16,7 +16,46 @@
   },
   "sidebar": {
     "title": "Uchqun Teacher",
-    "menu": "Main menu"
+    "menu": "Main menu",
+    "section": {
+      "today": "Today",
+      "children": "Students",
+      "iep": "IEP",
+      "communication": "Communication"
+    },
+    "dashboard": "Home",
+    "attendance": "Attendance",
+    "childrenList": "Class list",
+    "gallery": "Gallery",
+    "meals": "Meals",
+    "goals": "Goals",
+    "observations": "Observations",
+    "therapy": "Therapy",
+    "aiWarnings": "AI Warnings",
+    "chat": "Parents",
+    "reflection": "Daily journal"
+  },
+  "quickObs": {
+    "title": "New observation",
+    "child": "Child",
+    "goal": "Goal",
+    "selectGoal": "Select goal",
+    "goalHint": "Most recent recorded goal",
+    "outcome": "Outcome",
+    "note": "Note",
+    "noteOptional": "(optional)",
+    "notePlaceholder": "Brief observation...",
+    "photo": "Photo",
+    "cancel": "Cancel",
+    "save": "Save",
+    "saving": "Saving...",
+    "loadError": "Error loading children",
+    "outcomes": {
+      "emerging": "Emerging",
+      "assisted": "With support",
+      "independent": "Independent",
+      "mastered": "Mastered"
+    }
   },
   "login": {
     "title": "Uchqun Portal",
