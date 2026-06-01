@@ -20,6 +20,7 @@ import { EyeIcon } from '../icons/EyeIcon';
 export function Field({
   id,
   label,
+  labelRight,
   type = 'text',
   value,
   onChange,
@@ -29,6 +30,7 @@ export function Field({
   trailing,
   disabled,
   onKeyDown,
+  ...rest
 }) {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === 'password';
@@ -51,13 +53,18 @@ export function Field({
 
   return (
     <div className="flex flex-col w-full">
-      {label && (
-        <label
-          htmlFor={id}
-          className="mb-[7px] text-[13px] font-medium text-[#1C2A1E]"
-        >
-          {label}
-        </label>
+      {(label || labelRight) && (
+        <div className={['flex mb-[7px]', labelRight ? 'items-center justify-between' : 'items-center'].join(' ')}>
+          {label && (
+            <label
+              htmlFor={id}
+              className="text-[13px] font-semibold text-[#1C2A1E] tracking-[0.005em]"
+            >
+              {label}
+            </label>
+          )}
+          {labelRight && <div>{labelRight}</div>}
+        </div>
       )}
 
       <div className={containerClasses}>
@@ -70,6 +77,7 @@ export function Field({
           placeholder={placeholder}
           autoFocus={autoFocus}
           disabled={disabled}
+          {...rest}
           className={[
             'flex-1 min-w-0 bg-transparent border-none outline-none',
             'text-[15px] font-normal',

@@ -41,6 +41,16 @@ body {
   animation: page-fade-in 0.2s ease-out both;
 }
 
+/* Force field-bg (#FAFAF7) on browser autofill — prevents lavender/blue override */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #FAFAF7 inset !important;
+  -webkit-text-fill-color: #1C2A1E !important;
+  caret-color: #1C2A1E;
+}
+
 /* DNP design system — spinner (GOV-REDESIGN-01) */
 @keyframes dnp-spin {
   to { transform: rotate(360deg); }

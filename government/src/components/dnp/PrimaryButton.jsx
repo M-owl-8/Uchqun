@@ -14,6 +14,7 @@ import { Spinner } from './Spinner';
  */
 export function PrimaryButton({
   children,
+  loadingLabel,
   onClick,
   loading = false,
   done = false,
@@ -42,30 +43,31 @@ export function PrimaryButton({
         className,
       ].join(' ')}
     >
-      {loading && (
-        <span className="flex items-center">
+      {loading ? (
+        <span className="flex items-center gap-[8px]">
           <Spinner size={17} color="white" />
+          <span>{loadingLabel || children}</span>
         </span>
-      )}
-      {done && !loading && (
+      ) : done ? (
         <svg
-          width="17"
-          height="17"
-          viewBox="0 0 17 17"
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
           fill="none"
           aria-hidden="true"
           className="flex-shrink-0"
         >
           <path
-            d="M3.5 8.5l3.5 3.5 6.5-7"
+            d="M4 12.5 9.5 18 20 6.5"
             stroke="white"
-            strokeWidth="2"
+            strokeWidth="2.4"
             strokeLinecap="round"
             strokeLinejoin="round"
           />
         </svg>
+      ) : (
+        <span>{children}</span>
       )}
-      <span>{children}</span>
     </button>
   );
 }

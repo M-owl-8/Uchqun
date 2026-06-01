@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { GlobeIcon } from '../icons/GlobeIcon';
 
-const STORAGE_KEY = 'dnp-lang';
+const STORAGE_KEY = 'dnp:lang';
 
 /**
  * DNP LangToggle — globe icon + UZ/RU segmented buttons.
