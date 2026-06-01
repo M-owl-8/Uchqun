@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
 import { I18nextProvider } from 'react-i18next';
@@ -25,6 +26,11 @@ import AuditLog from './pages/AuditLog';
 import AIWarnings from './pages/AIWarnings';
 import NotFound from './pages/NotFound';
 import ChangePassword from './pages/ChangePassword';
+
+// Dev-only: DNP design system preview (tree-shaken in prod)
+const DnpPreview = import.meta.env.DEV
+  ? lazy(() => import('./pages/_DnpPreview'))
+  : null;
 
 export const AppRoutes = () => {
   const { isAuthenticated, isGovernment, loading, mustChangePassword } = useAuth();
@@ -74,6 +80,18 @@ export const AppRoutes = () => {
 
       <Route path="/" element={<Navigate to={isAuthenticated && isGovernment ? '/government' : '/login'} replace />} />
       <Route path="*" element={<NotFound />} />
+
+      {/* Dev-only: DNP design system preview — tree-shaken in prod builds */}
+      {import.meta.env.DEV && DnpPreview && (
+        <Route
+          path="/_dnp-preview"
+          element={
+            <Suspense fallback={<div className="flex items-center justify-center min-h-screen"><LoadingSpinner size="lg" /></div>}>
+              <DnpPreview />
+            </Suspense>
+          }
+        />
+      )}
     </Routes>
   );
 };

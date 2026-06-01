@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
 
@@ -22,6 +22,9 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Inter', system-ui, sans-serif;
+  background-color: #F4F1EA;
+  color: #1C2A1E;
 }
 
 #root {
@@ -36,4 +39,23 @@ body {
 
 .page-fade-in {
   animation: page-fade-in 0.2s ease-out both;
+}
+
+/* DNP design system — spinner (GOV-REDESIGN-01) */
+@keyframes dnp-spin {
+  to { transform: rotate(360deg); }
+}
+
+.dnp-spinner {
+  animation: dnp-spin 0.7s linear infinite;
+}
+
+/* DNP guilloche pattern overlay */
+.dnp-guilloche {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.07;
+  pointer-events: none;
 }
