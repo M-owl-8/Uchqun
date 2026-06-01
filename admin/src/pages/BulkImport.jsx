@@ -310,9 +310,26 @@ const BulkImport = () => {
           <h2 className="text-lg font-semibold text-warm-900">
             {t('import.step4Title', { defaultValue: 'Importing…' })}
           </h2>
-          <p className="text-sm text-warm-500" data-testid="polling-status">
-            {t('import.polling', { defaultValue: 'Import in progress…' })}
-          </p>
+          {pollStatus?.processedRows != null && pollStatus?.totalRows != null ? (
+            <div className="max-w-sm mx-auto space-y-2">
+              <div className="text-sm text-warm-700 tabular-nums">
+                {pollStatus.processedRows} / {pollStatus.totalRows} {t('import.rowsProcessed', { defaultValue: 'satr' })}
+              </div>
+              <div className="h-2 rounded-full bg-warm-100 overflow-hidden">
+                <div
+                  className="h-full bg-brand-600 rounded-full transition-all duration-500"
+                  style={{ width: `${Math.min(100, Math.round((pollStatus.processedRows / pollStatus.totalRows) * 100))}%` }}
+                />
+              </div>
+              <div className="text-xs text-warm-400">
+                {Math.min(100, Math.round((pollStatus.processedRows / pollStatus.totalRows) * 100))}%
+              </div>
+            </div>
+          ) : (
+            <p className="text-sm text-warm-500" data-testid="polling-status">
+              {t('import.polling', { defaultValue: 'Import in progress…' })}
+            </p>
+          )}
         </div>
       )}
 

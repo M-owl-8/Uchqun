@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import * as cache from '../../../shared/utils/cache';
+import { SkeletonDashboard } from '@shared/components/Skeleton';
 import {
   UserPlus,
   GraduationCap,
@@ -25,7 +26,7 @@ const Dashboard = () => {
   const [, setTeachers] = useState(() => cache.get(CACHE_KEY)?.teachers ?? []);
   const [parents, setParents] = useState(() => cache.get(CACHE_KEY)?.parents ?? []);
   const [pendingDocs, setPendingDocs] = useState(() => cache.get(CACHE_KEY)?.pendingDocs ?? []);
-  const [, setLoading] = useState(!cache.get(CACHE_KEY));
+  const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
 
   useEffect(() => {
     const controller = new AbortController();
@@ -82,6 +83,8 @@ const Dashboard = () => {
   const recentActivity = [...parents]
     .sort((a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0))
     .slice(0, 5);
+
+  if (loading) return <SkeletonDashboard stats={3} cards={2} />;
 
   return (
     <div className="space-y-8">

@@ -20,6 +20,8 @@ const Chat = () => {
     return cached?.length > 0 ? cached[0] : null;
   });
   const [messages, setMessages] = useState([]);
+  const [loadingParents, setLoadingParents] = useState(!cache.get('teacher:parents'));
+  const [loadingMessages, setLoadingMessages] = useState(false);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef(null);
   const messagesWrapRef = useRef(null);
@@ -38,6 +40,7 @@ const Chat = () => {
     };
     if (cached) {
       applyList(cached);
+      setLoadingParents(false);
       // Silent background refresh
       api.get('/teacher/parents')
         .then(res => {
@@ -54,7 +57,8 @@ const Chat = () => {
         cache.set('teacher:parents', list);
         applyList(list);
       })
-      .catch(() => toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })));
+      .catch(() => toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })))
+      .finally(() => setLoadingParents(false));
   }, [user?.id, toastError, t]);
 
   useEffect(() => {
@@ -62,10 +66,12 @@ const Chat = () => {
 
     const load = async () => {
       if (!selectedParent) return;
+      setLoadingMessages(true);
       const convoId = `parent:${selectedParent.id}`;
       const msgs = await loadMessages(convoId);
       if (!alive) return;
       setMessages(Array.isArray(msgs) ? msgs : []);
+      setLoadingMessages(false);
       await markRead(convoId);
     };
 
@@ -175,22 +181,26 @@ const Chat = () => {
       {/* Parent selector */}
       <div className="bg-surface border border-slate-100 rounded-xl p-3 flex gap-3 items-center shadow-sm">
         <span className="text-sm font-medium text-slate-600">{t('chat.parent') || 'Parent'}:</span>
-        <select
-          className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-          value={selectedParent?.id || ''}
-          onChange={(e) => {
-            const v = e.target.value;
-            const p = parents.find((x) => String(x.id) === String(v));
-            setSelectedParent(p || null);
-          }}
-        >
-          {(parents || []).length === 0 && <option value="">{t('chat.empty')}</option>}
-          {(parents || []).map((p) => (
-            <option key={p.id} value={p.id}>
-              {p.firstName} {p.lastName}
-            </option>
-          ))}
-        </select>
+        {loadingParents ? (
+          <div className="flex-1 h-9 bg-slate-200 animate-pulse rounded-lg" />
+        ) : (
+          <select
+            className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            value={selectedParent?.id || ''}
+            onChange={(e) => {
+              const v = e.target.value;
+              const p = parents.find((x) => String(x.id) === String(v));
+              setSelectedParent(p || null);
+            }}
+          >
+            {(parents || []).length === 0 && <option value="">{t('chat.empty')}</option>}
+            {(parents || []).map((p) => (
+              <option key={p.id} value={p.id}>
+                {p.firstName} {p.lastName}
+              </option>
+            ))}
+          </select>
+        )}
       </div>
 
       <Card className="bg-surface/95 backdrop-blur-sm h-[60vh] flex flex-col relative shadow-xl">
@@ -203,7 +213,16 @@ const Chat = () => {
             setIsAtBottom(distance < 80);
           }}
         >
-          {sorted.length === 0 && (
+          {loadingMessages && (
+            <div className="space-y-3 py-4">
+              {[1,2,3].map(i => (
+                <div key={i} className={`flex ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                  <div className="h-8 w-40 bg-slate-200 animate-pulse rounded-2xl" />
+                </div>
+              ))}
+            </div>
+          )}
+          {!loadingMessages && sorted.length === 0 && (
             <div className="text-center text-slate-400 py-8 text-sm">
               {t('chat.empty')}
             </div>

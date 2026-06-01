@@ -63,6 +63,7 @@ const DailyReflection = () => {
   const [observations, setObservations] = useState([]);
   const [children, setChildren]         = useState([]);
   const [saving, setSaving]             = useState(false);
+  const [loading, setLoading]           = useState(true);
   const autoSaveTimer = useRef(null);
 
   const today = new Date().toLocaleDateString('uz-UZ', {
@@ -82,7 +83,7 @@ const DailyReflection = () => {
         const list = obsRes.value.data?.data || obsRes.value.data || [];
         setObservations(Array.isArray(list) ? list : []);
       }
-    });
+    }).finally(() => setLoading(false));
   }, []);
 
   // Auto-save reflection to localStorage
@@ -160,7 +161,11 @@ const DailyReflection = () => {
               <span className="ml-auto text-[12px] text-slate-500">{observations.length} ta</span>
             </div>
 
-            {observations.length === 0 ? (
+            {loading ? (
+              <div className="space-y-2">
+                {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-200 animate-pulse rounded-xl" />)}
+              </div>
+            ) : observations.length === 0 ? (
               <div className="rounded-xl border border-slate-200 bg-surface p-8 text-center text-[13px] text-slate-500">
                 Bugun hali kuzatuv yozilmadi
               </div>

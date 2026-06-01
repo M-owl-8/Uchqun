@@ -15,6 +15,7 @@ const Chat = () => {
   const conversationId = user?.id ? `parent:${user.id}` : null;
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
+  const [loadingMessages, setLoadingMessages] = useState(!!conversationId);
   const messagesEndRef = useRef(null);
   const messagesWrapRef = useRef(null);
   const justSentRef = useRef(false);
@@ -29,9 +30,11 @@ const Chat = () => {
 
     const load = async () => {
       if (!conversationId) return;
+      setLoadingMessages(true);
       const msgs = await loadMessages(conversationId);
       if (!alive) return;
       setMessages(Array.isArray(msgs) ? msgs : []);
+      setLoadingMessages(false);
       await markRead(conversationId);
     };
 
@@ -140,7 +143,16 @@ const Chat = () => {
             setIsAtBottom(distance < 80);
           }}
         >
-          {sorted.length === 0 && (
+          {loadingMessages && (
+            <div className="flex flex-col gap-2 py-4">
+              {[40, 64, 48].map((w, i) => (
+                <div key={i} className={`flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'}`}>
+                  <div className={`h-8 bg-p-sepia-100 animate-pulse rounded-2xl`} style={{ width: w * 4 }} />
+                </div>
+              ))}
+            </div>
+          )}
+          {!loadingMessages && sorted.length === 0 && (
             <div className="text-center text-slate-400 py-8 text-sm">
               {t('chat.empty')}
             </div>
