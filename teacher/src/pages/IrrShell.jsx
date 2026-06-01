@@ -193,7 +193,7 @@ export default function IrrShell() {
       if (data) setForm(irrToForm(data));
     } catch (err) {
       if (err.response?.status !== 404) {
-        showError(t('irr.errorLoad', { defaultValue: 'IRR yuklanmadi. Qayta urinib ko'ring.' }));
+        showError(t('irr.errorLoad', { defaultValue: "IRR yuklanmadi. Qayta urinib ko'ring." }));
       }
       setIrr(null);
     } finally {
