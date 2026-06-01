@@ -79,7 +79,9 @@ export function Field({
           disabled={disabled}
           {...rest}
           className={[
-            'flex-1 min-w-0 bg-transparent border-none outline-none',
+            'flex-1 min-w-0 bg-transparent',
+            'border-0 border-none outline-none shadow-none',
+            'focus:outline-none focus-visible:outline-none focus:ring-0 focus:shadow-none',
             'text-[15px] font-normal',
             disabled ? 'text-[#93A293] cursor-not-allowed' : 'text-[#1C2A1E]',
             'placeholder:text-[#93A293]',
