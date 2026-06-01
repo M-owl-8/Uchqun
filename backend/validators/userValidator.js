@@ -43,13 +43,7 @@ export const changePasswordValidator = [
     .withMessage('New password must be at least 8 characters long')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
     .withMessage('New password must contain at least one uppercase letter, one lowercase letter, and one number'),
-  body('confirmPassword')
-    .custom((value, { req }) => {
-      if (value !== req.body.newPassword) {
-        throw new Error('Password confirmation does not match new password');
-      }
-      return true;
-    }),
+  // confirmPassword is not validated here — matching is a UI concern; the API only needs currentPassword + newPassword
 ];
 
 

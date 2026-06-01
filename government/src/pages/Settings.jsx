@@ -35,6 +35,10 @@ const Settings = () => {
       showError(t('settings.passwordTooShort', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' }));
       return;
     }
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
+      showError(t('settings.passwordWeak', { defaultValue: 'Parol katta va kichik harflar hamda raqamdan iborat bo\'lishi kerak' }));
+      return;
+    }
     setSavingPassword(true);
     try {
       await api.put('/user/password', {
@@ -44,7 +48,11 @@ const Settings = () => {
       success(t('settings.passwordChanged', { defaultValue: 'Parol muvaffaqiyatli o\'zgartirildi' }));
       setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+      if (error.response?.status === 401) {
+        showError(t('settings.passwordIncorrect', { defaultValue: 'Joriy parol noto\'g\'ri' }));
+      } else {
+        showError(t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+      }
     } finally {
       setSavingPassword(false);
     }

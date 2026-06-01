@@ -43,14 +43,10 @@ const ChangePassword = () => {
       if (user) setUser({ ...user, mustChangePassword: false });
       navigate('/admin', { replace: true });
     } catch (err) {
-      const msg =
-        err.response?.data?.error?.detail ??
-        err.response?.data?.error ??
-        t('changePasswordForced.error', { defaultValue: 'Failed to change password' });
       if (err.response?.status === 401) {
         setError(t('changePasswordForced.incorrect', { defaultValue: 'Current password is incorrect' }));
       } else {
-        setError(typeof msg === 'string' ? msg : t('changePasswordForced.error', { defaultValue: 'Failed to change password' }));
+        setError(t('changePasswordForced.error', { defaultValue: 'Failed to change password' }));
       }
     } finally {
       setSaving(false);

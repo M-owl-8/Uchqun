@@ -116,6 +116,14 @@ const Settings = () => {
       showError(t('settings.passwordsDoNotMatch'));
       return;
     }
+    if (passwordForm.newPassword.length < 8) {
+      showError(t('settings.passwordTooShort', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' }));
+      return;
+    }
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
+      showError(t('settings.passwordWeak', { defaultValue: 'Parol katta va kichik harflar hamda raqamdan iborat bo\'lishi kerak' }));
+      return;
+    }
 
     try {
       await api.put('/user/password', {
@@ -129,7 +137,11 @@ const Settings = () => {
         confirmPassword: '',
       });
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.passwordChangeError'));
+      if (error.response?.status === 401) {
+        showError(t('settings.passwordIncorrect', { defaultValue: 'Joriy parol noto\'g\'ri' }));
+      } else {
+        showError(t('settings.passwordChangeError'));
+      }
     }
   };
 
