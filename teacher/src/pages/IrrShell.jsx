@@ -685,6 +685,7 @@ export default function IrrShell() {
   const isReadOnly = irr?.status === 'archived';
 
   return (
+    <>
     <div className="max-w-2xl mx-auto space-y-5" data-testid="irr-shell">
       {/* Back */}
       <Link
@@ -1769,5 +1770,6 @@ export default function IrrShell() {
     </div>
 
     <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
+    </>
   );
 }

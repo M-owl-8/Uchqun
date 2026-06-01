@@ -239,6 +239,7 @@ const MonitoringJournal = () => {
   }
 
   return (
+    <>
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
@@ -434,6 +435,7 @@ const MonitoringJournal = () => {
     </div>
 
     <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
+    </>
   );
 };
 
