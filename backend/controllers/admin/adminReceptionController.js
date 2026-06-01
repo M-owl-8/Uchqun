@@ -4,6 +4,7 @@ import Document from '../../models/Document.js';
 import logger from '../../utils/logger.js';
 import { invalidateUserCache } from '../../middleware/auth.js';
 import { logAudit } from '../../utils/auditLogger.js';
+import { emitToUser } from '../../config/socket.js';
 
 /**
  * Get all Reception accounts with their verification status
@@ -223,6 +224,9 @@ export const approveDocument = async (req, res) => {
     document.reviewedAt = new Date();
     await document.save();
 
+    // Notify reception in real-time so their Documents page updates without refresh
+    emitToUser(document.userId, 'document:updated', { documentId: document.id, status: 'approved' });
+
     // Check if all documents for this Reception are approved
     const allDocuments = await Document.findAll({
       where: { userId: document.userId },
@@ -318,6 +322,9 @@ export const rejectDocument = async (req, res) => {
     document.reviewedAt = new Date();
     document.rejectionReason = rejectionReason;
     await document.save();
+
+    // Notify reception in real-time
+    emitToUser(document.userId, 'document:updated', { documentId: document.id, status: 'rejected' });
 
     // Deactivate Reception account if document is rejected
     const reception = await User.findByPk(document.userId);

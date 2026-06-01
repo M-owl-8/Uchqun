@@ -10,22 +10,27 @@ import { ToastContainer } from './shared/components/Toast';
 import ProtectedRoute from './shared/components/ProtectedRoute';
 import { useAuth } from './shared/context/AuthContext';
 import { useSocket } from './shared/context/SocketContext';
+import { useToast } from './shared/context/ToastContext';
 import Login from './pages/Login';
 
-// Listens for server-pushed force-logout events (e.g. account suspended by admin).
-// Must sit inside both AuthProvider and SocketProvider and inside a Router.
+// Listens for server-pushed force-logout events (e.g. account suspended by admin, school archived).
+// Must sit inside AuthProvider, SocketProvider, ToastProvider, and Router.
 function ForceLogoutHandler() {
   const { logout } = useAuth();
   const { on, off } = useSocket();
+  const { error: showError } = useToast();
   const navigate = useNavigate();
   useEffect(() => {
-    const handle = () => {
+    const handle = (data) => {
+      if (data?.reason === 'SCHOOL_ARCHIVED') {
+        showError("Maktabingiz arxivlandi. Iltimos, adminizga murojaat qiling.");
+      }
       logout();
       navigate('/login', { replace: true });
     };
     on('user:force-logout', handle);
     return () => off('user:force-logout', handle);
-  }, [on, off, logout, navigate]);
+  }, [on, off, logout, navigate, showError]);
   return null;
 }
 import Layout from './components/Layout';
@@ -138,7 +143,6 @@ function App() {
                     <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
                     <Route path="children/:id/irr" element={<ErrorBoundary><IrrShell /></ErrorBoundary>} />
                     <Route path="reflection" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
-                    <Route path="journal" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
                   </Route>
 
                   <Route path="*" element={<NotFound />} />

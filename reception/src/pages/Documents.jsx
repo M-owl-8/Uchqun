@@ -38,6 +38,13 @@ export default function Documents() {
 
   useEffect(() => { loadDocs(); }, [loadDocs]);
 
+  // Poll every 30 s so document status updates from admin approval are reflected
+  // without requiring a manual refresh (reception portal has no socket context).
+  useEffect(() => {
+    const id = setInterval(() => loadDocs(true), 30000);
+    return () => clearInterval(id);
+  }, [loadDocs]);
+
   const handleUpload = async (file) => {
     const maxMB = 10;
     if (file.size > maxMB * 1024 * 1024) {

@@ -13,6 +13,7 @@ import { isTeacherAssignedToChild } from '../../utils/schoolValidation.js';
 import { computeAssessmentResult } from '../../utils/irrScoring.js';
 import { logAudit } from '../../utils/auditLogger.js';
 import logger from '../../utils/logger.js';
+import { emitToUser } from '../../config/socket.js';
 
 const VALID_SESSION_TYPES = ['intake', '3mo', '6mo', '9mo', '12mo', 'custom'];
 const HEADER_FIELDS = ['childFullName', 'dateOfBirth', 'ageAtAssessmentStart',
@@ -291,6 +292,11 @@ export const createAssessmentSession = async (req, res) => {
 
     logAudit({ entity: 'assessment_sessions', entityId: session.id, action: 'create',
       actorId: req.user.id, actorRole: req.user.role, schoolId: irr.schoolId });
+
+    // Notify parent in real-time so their ChildIRR view refreshes
+    if (irr.parentId) {
+      emitToUser(irr.parentId, 'irr:updated', { childId: irr.childId, event: 'assessment_session_created' });
+    }
 
     return res.status(201).json({
       success: true,

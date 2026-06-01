@@ -14,6 +14,7 @@ import {
   UtensilsCrossed,
   Stethoscope,
   ShieldAlert,
+  UserCircle2,
 } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
 import { useSocket } from '../shared/context/SocketContext';
@@ -192,8 +193,19 @@ const Sidebar = ({ onClose }) => {
           </div>
         ))}
 
-        {/* Settings */}
+        {/* Account links */}
         <div className="mt-2">
+          <Link
+            to="/teacher/profile"
+            onClick={onClose}
+            className="flex items-center gap-2.5 px-3 py-2 rounded-md transition-colors"
+            style={{ color: '#F4F0F5' }}
+            onMouseEnter={e => { e.currentTarget.style.background = '#3A3340'; }}
+            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
+          >
+            <UserCircle2 className="w-[18px] h-[18px] shrink-0" strokeWidth={1.75} style={{ color: '#928A9C' }} />
+            <span>Profil</span>
+          </Link>
           <Link
             to="/teacher/settings"
             onClick={onClose}

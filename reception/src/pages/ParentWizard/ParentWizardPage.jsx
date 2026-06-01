@@ -108,7 +108,9 @@ export default function ParentWizardPage() {
       await api.post('/reception/parents', payload);
       clear();
       success("Ota-ona muvaffaqiyatli qo'shildi");
-      navigate('/reception/wizard/complete');
+      navigate('/reception/wizard/complete', {
+        state: { email: parentData.email, password: parentData.password },
+      });
     } catch (err) {
       showError(err.response?.data?.error || "Xatolik yuz berdi. Qayta urinib ko'ring.");
     } finally {

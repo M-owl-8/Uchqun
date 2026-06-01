@@ -67,6 +67,12 @@ export default function MessagesTab({ onUnreadCountChange }) {
     fetchMessages(1, false);
   }, [fetchMessages]);
 
+  // Poll every 30 s for new messages — government portal has no socket context.
+  useEffect(() => {
+    const id = setInterval(() => fetchMessages(1, false), 30_000);
+    return () => clearInterval(id);
+  }, [fetchMessages]);
+
   const handleMarkRead = async (msgId) => {
     try {
       await api.put(`/government/messages/${msgId}/read`, { isRead: true });

@@ -75,6 +75,13 @@ export function createApi({
           : typeof e.detail === 'string' ? e.detail
           : JSON.stringify(e);
       }
+      // School archived: the school's admin/reception/teacher sessions are revoked immediately.
+      // Treat the same as 401 — clear auth and redirect to login without retry.
+      if (error.response?.status === 403 && error.response?.data?.error === 'SCHOOL_ARCHIVED') {
+        clearAuth();
+        return Promise.reject(error);
+      }
+
       const originalRequest = error.config;
       // Auth endpoints that must never be retried:
       // - /auth/login: 401 means wrong credentials, not an expired token

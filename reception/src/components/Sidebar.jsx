@@ -8,6 +8,7 @@ import {
   FolderOpen,
   Settings,
   LogOut,
+  User,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
@@ -25,6 +26,7 @@ const Sidebar = ({ onClose }) => {
   ];
 
   const secondaryNav = [
+    { name: t('nav.profile', { defaultValue: 'Profil' }), href: '/reception/profile', icon: User },
     { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/reception/settings', icon: Settings },
   ];
 

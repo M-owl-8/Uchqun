@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useChild } from '../context/ChildContext';
 import { useToast } from '../../shared/context/ToastContext';
+import { useSocket } from '../../shared/context/SocketContext';
 import { SKILL_AREAS } from '@shared/config/skillAreas';
 
 const MAX_SCORE = 68;
@@ -39,6 +40,7 @@ const ChildIRR = () => {
   const { selectedChildId } = useChild();
   const { error: showError } = useToast();
   const { t, i18n } = useTranslation();
+  const { on, off } = useSocket();
 
   const [irr, setIrr] = useState(null);
   const [sessions, setSessions] = useState([]);
@@ -85,6 +87,18 @@ const ChildIRR = () => {
       setPageLoading(false);
     }
   }, [selectedChildId, load]);
+
+  // Real-time IRR updates from teacher actions
+  useEffect(() => {
+    if (!selectedChildId) return;
+    const handle = (data) => {
+      if (data?.childId === selectedChildId) {
+        load(selectedChildId);
+      }
+    };
+    on('irr:updated', handle);
+    return () => off('irr:updated', handle);
+  }, [selectedChildId, on, off, load]);
 
   if (pageLoading) {
     return (

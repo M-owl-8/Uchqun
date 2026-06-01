@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Lock, Eye, EyeOff } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Lock, Eye, EyeOff, ExternalLink } from 'lucide-react';
 import Card from '@shared/components/Card';
 import Button from '@shared/components/Button';
 import Input from '@shared/components/Input';
@@ -159,6 +160,13 @@ export default function AdminsTab({
                   </div>
                 </div>
                 <div className="flex gap-2 mt-3">
+                  <Link
+                    to={`/government/admin/${adm.id}`}
+                    className="inline-flex items-center gap-1 text-xs font-medium text-brand-700 hover:text-brand-800 border border-brand-200 hover:bg-brand-50 rounded-md px-2.5 py-1.5 transition-colors"
+                  >
+                    <ExternalLink className="w-3 h-3" />
+                    {t('adminDetails.view', { defaultValue: "Ko'rish" })}
+                  </Link>
                   <Button variant="secondary" size="sm" onClick={() => onStartEdit(adm)}>
                     {t('government.form.update')}
                   </Button>

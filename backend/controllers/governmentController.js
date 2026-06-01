@@ -7,12 +7,15 @@ import User from '../models/User.js';
 import Child from '../models/Child.js';
 import AIWarning from '../models/AIWarning.js';
 import AuditLog from '../models/AuditLog.js';
+import RefreshToken from '../models/RefreshToken.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
 import { logAudit } from '../utils/auditLogger.js';
 import { getGovernmentLevel, sortSchoolsByRating, computeRatingScore, computeAverageRating } from '../utils/governmentLevel.js';
 import { parsePagination } from '../utils/pagination.js';
 import { regionWhere } from '../middleware/regionScope.js';
+import { emitToUser } from '../config/socket.js';
+import { invalidateUserCache } from '../middleware/auth.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const isValidUuid = (s) => UUID_RE.test(s);
@@ -1022,6 +1025,21 @@ export const archiveSchool = async (req, res) => {
     });
 
     await school.update({ isActive: false });
+
+    // Revoke sessions and force-logout all school staff (admin/reception/teacher).
+    // Parents are excluded — their access is child-scoped, not school-scoped.
+    const schoolUsers = await User.findAll({
+      where: { schoolId: school.id, role: { [Op.in]: ['admin', 'reception', 'teacher'] } },
+      attributes: ['id'],
+    });
+    await Promise.all(schoolUsers.map(async (u) => {
+      await RefreshToken.update(
+        { revoked: true, revokedAt: new Date() },
+        { where: { userId: u.id, revoked: false } },
+      ).catch((err) => logger.error('archiveSchool: token revocation error', { error: err.message, userId: u.id }));
+      invalidateUserCache(u.id);
+      await emitToUser(u.id, 'user:force-logout', { reason: 'SCHOOL_ARCHIVED' });
+    }));
 
     return res.json({ success: true, data: { id: school.id, isActive: false } });
   } catch (error) {
