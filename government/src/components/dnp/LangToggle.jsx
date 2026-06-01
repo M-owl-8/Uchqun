@@ -14,7 +14,7 @@ export function LangToggle({ lang, setLang }) {
   // On mount: read persisted preference and apply it
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'uz' || saved === 'ru') {
+    if (saved === 'uz' || saved === 'ru' || saved === 'en') {
       setLang(saved);
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -31,7 +31,7 @@ export function LangToggle({ lang, setLang }) {
         <GlobeIcon size={14} />
       </span>
 
-      {['uz', 'ru'].map((code) => {
+      {['uz', 'ru', 'en'].map((code) => {
         const isActive = lang === code;
         return (
           <button

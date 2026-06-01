@@ -63,6 +63,31 @@ const STRINGS = {
     loginError:   'Неверный email или пароль.',
     footer:      AGENCY_CONFIG.footer_ru,
   },
+  en: {
+    nation:      'Republic of Uzbekistan',
+    org:         'National Agency for Social Protection',
+    title:       'State Control Panel',
+    panelTag:    'Unified Information System',
+    heading:     'Sign in',
+    sub:         'Sign in to your account to continue',
+    email:       'Email address',
+    emailPh:     'name@agency.uz',
+    password:    'Password',
+    passwordPh:  'Your password',
+    forgot:      'Forgot password?',
+    forgotHelp:  'To reset your password, please contact the system administrator.',
+    remember:    'Remember this device',
+    submit:      'Sign in',
+    submitting:  'Verifying…',
+    security:    'Login attempts are logged',
+    invalidEmail: 'Enter a valid email address',
+    emptyPass:   'Enter your password',
+    rateLimited:  'Too many attempts. Please wait a moment.',
+    suspended:    'Your account has been suspended. Contact the administrator.',
+    notApproved:  'Your documents have not been approved.',
+    loginError:   'Incorrect email or password.',
+    footer:      `© 2026 ${AGENCY_CONFIG.acronym} · Republic of Uzbekistan`,
+  },
 };
 
 const Login = () => {
@@ -71,7 +96,7 @@ const Login = () => {
 
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('dnp:lang');
-    return saved === 'ru' ? 'ru' : 'uz';
+    return saved === 'ru' || saved === 'en' ? saved : 'uz';
   });
   const t = STRINGS[lang];
 
