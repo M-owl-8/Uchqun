@@ -102,6 +102,7 @@ export default function Documents() {
   const allApproved = docs.length > 0 && docs.every((d) => d.status === 'approved');
 
   return (
+    <>
     <div className="space-y-6">
       {/* Page header */}
       <header>
@@ -234,5 +235,6 @@ export default function Documents() {
     </div>
 
     <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
+    </>
   );
 }
