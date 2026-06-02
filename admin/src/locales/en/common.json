@@ -37,19 +37,20 @@
     "exit": "Exit"
   },
   "login": {
-    "title": "Admin",
+    "title": "Director",
+    "tagline": "Institution management system",
     "subtitle": "Uchqun System Administration",
     "email": "Email Address",
     "password": "Password",
-    "placeholderEmail": "admin@uchqun.com",
+    "placeholderEmail": "director@institution.uz",
     "placeholderPassword": "Enter your password",
-    "button": "Login",
-    "loading": "Logging in...",
-    "blockTitle": "Admin Login",
-    "blockSubtitle": "Use your admin credentials to access the system",
+    "button": "Sign in",
+    "loading": "Signing in...",
+    "blockTitle": "Director Login",
+    "blockSubtitle": "Use your director credentials to access the system",
     "errorInvalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
+    "notApproved": "Your account is not yet approved. Please wait for confirmation.",
     "accountSuspended": "Your account has been suspended. Contact the administrator."
   },
   "dashboard": {

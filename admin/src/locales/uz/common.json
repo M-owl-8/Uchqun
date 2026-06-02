@@ -37,20 +37,21 @@
     "exit": "Chiqish"
   },
   "login": {
-    "title": "Admin",
+    "title": "Direktor",
+    "tagline": "Muassasa boshqaruv tizimi",
     "subtitle": "Uchqun tizim administratsiyasi",
     "email": "Email manzil",
     "password": "Parol",
-    "placeholderEmail": "admin@uchqun.com",
+    "placeholderEmail": "direktor@muassasa.uz",
     "placeholderPassword": "Parolni kiriting",
     "button": "Kirish",
     "loading": "Kirilmoqda...",
-    "blockTitle": "Admin kirishi",
-    "blockSubtitle": "Admin hisobingiz bilan tizimga kiring",
+    "blockTitle": "Direktor kirishi",
+    "blockSubtitle": "Direktor akkauntingiz bilan tizimga kiring",
     "errorInvalid": "Email yoki parol noto’g’ri",
     "accountLocked": "Juda ko’p urinish. 15 daqiqadan so’ng qaytadan urinib ko’ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig’ini kuting.",
-    "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, tasdig’ini kuting.",
+    "accountSuspended": "Hisobingiz to’xtatilgan. Administrator bilan bog’laning."
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}",

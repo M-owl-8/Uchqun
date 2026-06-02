@@ -1,162 +1,319 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { Eye, EyeOff } from 'lucide-react';
-import { useTranslation } from 'react-i18next';
+import { UEmblem } from '../components/identity/UEmblem';
+import { GuillochePattern } from '../components/identity/GuillochePattern';
+import { LockIcon } from '../components/icons/LockIcon';
+import { Field } from '../components/dnp/Field';
+import { PrimaryButton } from '../components/dnp/PrimaryButton';
+import { Checkbox } from '../components/dnp/Checkbox';
+import { InlineLink } from '../components/dnp/InlineLink';
+import { SecurePill } from '../components/dnp/SecurePill';
+import { LangDropdown } from '../components/dnp/LangDropdown';
+
+const STRINGS = {
+  uz: {
+    wordmark:   'Uchqun',
+    tagline:    'Muassasa boshqaruv tizimi',
+    roleBadge:  'Direktor',
+    eyebrow:    'DIREKTOR PANELI',
+    panelTitle: "Muassasalarni yagona boshqaruv markazi",
+    panelSub:   "Tizim sozlamalari, foydalanuvchilar va nazorat — bitta xavfsiz hududda.",
+    formBadge:  'Direktor',
+    heading:    'Direktor',
+    formSub:    'Uchqun tizim administratsiyasi',
+    email:      'Email manzil',
+    emailPh:    'direktor@muassasa.uz',
+    password:   'Parol',
+    passwordPh: 'Parolingiz',
+    forgot:     'Parolni unutdingizmi?',
+    forgotHelp: 'Parolni tiklash uchun tizim administratoriga murojaat qiling.',
+    remember:   'Bu qurilmani eslab qolish',
+    submit:     'Kirish',
+    submitting: 'Tekshirilmoqda…',
+    security:   'Chegaralangan hudud',
+    footer:     "Direktor kirishi · IHMA · O‘zbekiston Respublikasi",
+    invalidEmail: "To‘g‘ri elektron pochta manzilini kiriting",
+    emptyPass:    'Parolni kiriting',
+    rateLimited:  "Juda ko‘p urinish. Iltimos, bir oz kuting.",
+    suspended:    "Hisobingiz to‘xtatilgan. Administrator bilan bog‘laning.",
+    notApproved:  "Hujjatlaringiz tasdiqlanmagan.",
+    loginError:   "Email yoki parol noto‘g‘ri.",
+  },
+  ru: {
+    wordmark:   'Uchqun',
+    tagline:    'Система управления учреждением',
+    roleBadge:  'Директор',
+    eyebrow:    'ПАНЕЛЬ ДИРЕКТОРА',
+    panelTitle: 'Единый центр управления учреждениями',
+    panelSub:   'Настройки системы, пользователи и контроль — в едином защищённом пространстве.',
+    formBadge:  'Директор',
+    heading:    'Директор',
+    formSub:    'Администрирование системы Uchqun',
+    email:      'Электронная почта',
+    emailPh:    'direktor@uchqun.uz',
+    password:   'Пароль',
+    passwordPh: 'Ваш пароль',
+    forgot:     'Забыли пароль?',
+    forgotHelp: 'Для восстановления пароля обратитесь к администратору системы.',
+    remember:   'Запомнить это устройство',
+    submit:     'Войти',
+    submitting: 'Проверка…',
+    security:   'Ограниченная зона',
+    footer:     'Вход директора · ИХМА · Республика Узбекистан',
+    invalidEmail: 'Введите корректный адрес электронной почты',
+    emptyPass:    'Введите пароль',
+    rateLimited:  'Слишком много попыток. Пожалуйста, подождите.',
+    suspended:    'Ваш аккаунт заблокирован. Обратитесь к администратору.',
+    notApproved:  'Ваши документы не подтверждены.',
+    loginError:   'Неверный email или пароль.',
+  },
+  en: {
+    wordmark:   'Uchqun',
+    tagline:    'Institution management system',
+    roleBadge:  'Director',
+    eyebrow:    'DIRECTOR PANEL',
+    panelTitle: 'Unified institution management center',
+    panelSub:   'System settings, users, and oversight — in one secure space.',
+    formBadge:  'Director',
+    heading:    'Director',
+    formSub:    'Uchqun System Administration',
+    email:      'Email address',
+    emailPh:    'director@institution.uz',
+    password:   'Password',
+    passwordPh: 'Your password',
+    forgot:     'Forgot password?',
+    forgotHelp: 'To reset your password, contact the system administrator.',
+    remember:   'Remember this device',
+    submit:     'Sign in',
+    submitting: 'Verifying…',
+    security:   'Restricted area',
+    footer:     'Director login · IHMA · Republic of Uzbekistan',
+    invalidEmail: 'Enter a valid email address',
+    emptyPass:    'Enter your password',
+    rateLimited:  'Too many attempts. Please wait a moment.',
+    suspended:    'Your account has been suspended. Contact the administrator.',
+    notApproved:  'Your documents have not been approved.',
+    loginError:   'Incorrect email or password.',
+  },
+};
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [showPassword, setShowPassword] = useState(false);
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
+  const [lang, setLang] = useState(() => {
+    const saved = localStorage.getItem('dnp:lang');
+    return saved === 'ru' || saved === 'en' ? saved : 'uz';
+  });
+  const t = STRINGS[lang];
+
+  const [email, setEmail]         = useState('');
+  const [password, setPassword]   = useState('');
+  const [remember, setRemember]   = useState(true);
+  const [errors, setErrors]       = useState({});
+  const [formError, setFormError] = useState('');
+  const [helpOpen, setHelpOpen]   = useState(false);
+  const [loading, setLoading]     = useState(false);
+  const [done, setDone]           = useState(false);
+
+  const clearEmailErr = () => errors.email && setErrors((p) => ({ ...p, email: null }));
+  const clearPassErr  = () => errors.pass  && setErrors((p) => ({ ...p, pass:  null }));
+
+  const submit = async () => {
+    if (loading || done) return;
+    setFormError('');
+    const e = {};
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = t.invalidEmail;
+    if (!password) e.pass = t.emptyPass;
+    setErrors(e);
+    if (Object.keys(e).length) return;
+
     setLoading(true);
-
     const result = await login(email, password);
+    setLoading(false);
 
     if (result.success) {
-      navigate(result.mustChangePassword ? '/admin/change-password' : '/admin');
+      setDone(true);
+      setTimeout(() => navigate(result.mustChangePassword ? '/admin/change-password' : '/admin'), 500);
     } else {
-      if (result.status === 429) setError(t('login.accountLocked'));
-      else if (result.status === 403 && result.error === 'ACCOUNT_NOT_ACTIVE') setError(t('login.accountSuspended', { defaultValue: "Hisobingiz to'xtatilgan. Administrator bilan bog'laning." }));
-      else if (result.status === 403) setError(t('login.notApproved'));
-      else setError(t('login.errorInvalid'));
+      const errorCode = typeof result.error === 'object' ? result.error?.code : result.error;
+      if (result.status === 429) setFormError(t.rateLimited);
+      else if (errorCode === 'ACCOUNT_NOT_ACTIVE') setFormError(t.suspended);
+      else if (result.status === 403) setFormError(t.notApproved);
+      else setFormError(t.loginError);
     }
-
-    setLoading(false);
   };
 
-  const currentLang = i18n.language?.split('-')[0] || 'uz';
-
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream px-4 py-12">
-      <div
-        className="absolute inset-x-0 top-0 h-32 pointer-events-none"
-        style={{ background: 'radial-gradient(ellipse at top, rgba(168,92,64,0.06), transparent 60%)' }}
-      />
+    <div className="min-h-screen min-[880px]:grid min-[880px]:grid-cols-[minmax(420px,1.05fr)_minmax(440px,1fr)]">
 
-      <div className="w-full max-w-[420px] relative">
-        {/* 2px terracotta hairline */}
-        <div className="absolute top-0 left-6 right-6 h-0.5 bg-brand-600 rounded-full" />
+      {/* ── Identity panel ─────────────────────────────────────────────── */}
+      <aside
+        className={[
+          'relative overflow-hidden flex flex-col justify-between',
+          'bg-gradient-to-b from-panel-top to-panel-bottom text-panel-ink',
+          'py-9 px-7 gap-10',
+          'min-[880px]:p-14 min-[880px]:gap-0',
+        ].join(' ')}
+      >
+        {/* Guilloché backdrop */}
+        <div className="absolute inset-0 text-white/[.06] pointer-events-none select-none">
+          <GuillochePattern />
+        </div>
 
-        <div className="bg-surface border border-warm-200 rounded-lg shadow-sm pt-8 px-8 pb-7">
-          {/* Wordmark */}
-          <div className="flex items-center gap-2.5 mb-1">
-            <span
-              className="inline-flex items-center justify-center w-9 h-9 rounded-md bg-walnut text-walnut-text font-semibold text-lg"
-              style={{ letterSpacing: '-0.06em' }}
-            >
-              U
-            </span>
-            <div>
-              <p className="text-lg font-semibold tracking-tight text-warm-900" style={{ lineHeight: 1.1 }}>
-                Uchqun
-              </p>
-              <p className="text-xs text-warm-500">{t('login.tagline', { defaultValue: 'Maktab boshqaruv tizimi' })}</p>
-            </div>
-          </div>
+        {/* Large "U" watermark — desktop only, bottom-right */}
+        <div
+          className="hidden min-[880px]:block absolute -bottom-12 -right-8 pointer-events-none select-none"
+          style={{ opacity: 0.04, fontSize: 340, fontWeight: 800, color: '#F2E9DF',
+                   letterSpacing: '-0.08em', lineHeight: 1, userSelect: 'none' }}
+          aria-hidden="true"
+        >
+          U
+        </div>
 
-          <div className="h-px bg-warm-100 my-5" />
-
-          <h3 className="text-xl font-semibold text-warm-900">{t('login.title', { defaultValue: 'Kirish' })}</h3>
-          <p className="text-sm text-warm-500 mt-1">{t('login.subtitle', { defaultValue: 'Maktab rahbari sifatida tizimga kiring.' })}</p>
-
-          <form onSubmit={handleSubmit} className="mt-5 space-y-4">
-            {error && (
-              <div className="bg-error-50 border border-error-100 text-error-700 px-4 py-3 rounded-md text-sm">
-                {error}
-              </div>
-            )}
-
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-warm-800 mb-1.5">
-                {t('login.email', { defaultValue: 'Email manzil' })}
-              </label>
-              <input
-                id="email"
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="w-full h-10 px-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
-                placeholder={t('login.placeholderEmail', { defaultValue: 'rahbar@maktab.uz' })}
-              />
-            </div>
-
-            <div>
-              <div className="flex items-baseline justify-between mb-1.5">
-                <label htmlFor="password" className="block text-sm font-medium text-warm-800">
-                  {t('login.password', { defaultValue: 'Parol' })}
-                </label>
-                <span className="text-xs text-brand-700 hover:underline cursor-pointer">
-                  {t('login.forgotPassword', { defaultValue: 'Parolni unutdingizmi?' })}
-                </span>
-              </div>
-              <div className="relative">
-                <input
-                  id="password"
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                  className="w-full h-10 pl-3.5 pr-10 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
-                  placeholder={t('login.placeholderPassword', { defaultValue: '••••••••' })}
-                  autoComplete="current-password"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  aria-label={showPassword ? t('login.hidePassword', { defaultValue: 'Parolni yashirish' }) : t('login.showPassword', { defaultValue: 'Parolni ko\'rsatish' })}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 text-warm-500 hover:text-warm-800 p-1.5"
-                >
-                  {showPassword ? <EyeOff className="w-4 h-4" strokeWidth={1.75} /> : <Eye className="w-4 h-4" strokeWidth={1.75} />}
-                </button>
-              </div>
-            </div>
-
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full inline-flex items-center justify-center h-11 px-4 text-base font-medium bg-brand-600 hover:bg-brand-700 text-walnut-text rounded-md shadow-xs disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-            >
-              {loading ? (
-                <span className="w-4 h-4 border-2 border-white/40 border-t-white rounded-full animate-spin" />
-              ) : (
-                t('login.button', { defaultValue: 'Kirish' })
-              )}
-            </button>
-          </form>
-
-          <div className="mt-6 pt-4 border-t border-warm-100 flex items-end justify-between gap-3">
-            <div className="text-[11px] text-warm-500 leading-tight">
-              <p>{t('login.blockTitle', { defaultValue: 'Davlat tomonidan vakolatlangan tizim' })}</p>
-              <p className="mt-0.5">IHMA · O&apos;zbekiston Respublikasi</p>
-            </div>
-            <div className="grid grid-cols-3 gap-1 bg-warm-100 rounded-md p-0.5 text-xs">
-              {['uz', 'ru', 'en'].map((lng) => (
-                <button
-                  key={lng}
-                  onClick={() => i18n.changeLanguage(lng)}
-                  className={`px-2 py-1 rounded-sm font-medium transition-colors ${
-                    currentLang === lng ? 'bg-surface text-warm-900 shadow-xs' : 'text-warm-500 hover:text-warm-800'
-                  }`}
-                >
-                  {lng === 'uz' ? 'UZ' : lng === 'ru' ? 'РУ' : 'EN'}
-                </button>
-              ))}
-            </div>
+        {/* Top: Wordmark */}
+        <div className="relative flex items-center gap-3">
+          <UEmblem size={48} />
+          <div>
+            <p className="text-[16px] font-bold leading-snug text-panel-ink tracking-tight">
+              {t.wordmark}
+            </p>
+            <p className="text-[13px] leading-snug text-panel-dim mt-0.5">
+              {t.tagline}
+            </p>
           </div>
         </div>
 
-        <p className="text-center text-[11px] text-warm-500 mt-5 num">© 2026 Uchqun · v1.0 · admin-portal</p>
-      </div>
+        {/* Middle: badge + eyebrow + title + subtitle */}
+        <div className="relative">
+          <span className="inline-flex items-center px-[10px] py-[4px] rounded-full bg-brand-600/20 border border-brand-600/30 text-[11.5px] font-semibold text-brand-300 mb-3 tracking-wide">
+            {t.roleBadge}
+          </span>
+          <p className="text-[12px] font-semibold uppercase tracking-[0.18em] text-panel-dim mb-3">
+            {t.eyebrow}
+          </p>
+          <h1
+            className={[
+              'font-extrabold leading-[1.05] tracking-[-0.025em] max-w-[14ch]',
+              'text-balance text-panel-ink',
+              'text-[30px] min-[880px]:text-[clamp(34px,4.2vw,52px)]',
+            ].join(' ')}
+          >
+            {t.panelTitle}
+          </h1>
+          <p className="mt-3 text-[13.5px] text-panel-dim leading-relaxed max-w-[30ch]">
+            {t.panelSub}
+          </p>
+        </div>
+
+        {/* Bottom: TLS pill + footer */}
+        <div className="relative flex flex-wrap items-center gap-3 text-[12.5px] text-panel-dim">
+          <SecurePill />
+          <span className="w-px h-3 bg-white/25 flex-shrink-0" aria-hidden="true" />
+          <span>{t.footer}</span>
+        </div>
+      </aside>
+
+      {/* ── Form panel ─────────────────────────────────────────────────── */}
+      <main
+        className={[
+          'flex items-center justify-center bg-bg',
+          'px-[22px] pt-8 pb-12',
+          'min-[880px]:px-12 min-[880px]:py-0',
+        ].join(' ')}
+      >
+        <div className="w-full max-w-[392px] min-[880px]:py-12">
+
+          {/* Heading area */}
+          <header className="mb-7">
+            <span className="inline-flex items-center px-[10px] py-[4px] rounded-full bg-brand-50 border border-brand-200 text-[11.5px] font-semibold text-brand-700 mb-3 tracking-wide">
+              {t.formBadge}
+            </span>
+            <h2 className="text-[26px] font-extrabold tracking-[-0.02em] text-ink mb-2">
+              {t.heading}
+            </h2>
+            <p className="text-[14.5px] text-muted leading-relaxed">
+              {t.formSub}
+            </p>
+          </header>
+
+          {/* Form-level error banner */}
+          {formError && (
+            <div className="mb-5 px-4 py-3 rounded-[9px] bg-red-50 border border-danger/20 text-[13.5px] text-danger leading-relaxed">
+              {formError}
+            </div>
+          )}
+
+          {/* Email */}
+          <div className="mb-[18px]">
+            <Field
+              id="email"
+              label={t.email}
+              type="email"
+              value={email}
+              onChange={(e) => { setEmail(e.target.value); clearEmailErr(); }}
+              placeholder={t.emailPh}
+              error={errors.email}
+              autoFocus
+              autoComplete="username"
+              onKeyDown={(e) => e.key === 'Enter' && document.getElementById('password')?.focus()}
+            />
+          </div>
+
+          {/* Password — custom label row so forgot-link sits right-aligned */}
+          <div className="mb-[18px]">
+            <div className="flex items-center justify-between mb-[7px]">
+              <label htmlFor="password" className="text-[13px] font-semibold text-ink tracking-[0.005em]">
+                {t.password}
+              </label>
+              <InlineLink onClick={() => setHelpOpen((o) => !o)}>
+                {t.forgot}
+              </InlineLink>
+            </div>
+            <Field
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => { setPassword(e.target.value); clearPassErr(); }}
+              placeholder={t.passwordPh}
+              error={errors.pass}
+              autoComplete="current-password"
+              onKeyDown={(e) => e.key === 'Enter' && submit()}
+            />
+            {helpOpen && (
+              <div className="mt-[9px] px-3 py-2.5 rounded-[9px] bg-brand-50/60 border border-brand-200/60 text-[13.5px] text-ink/80 leading-relaxed">
+                {t.forgotHelp}
+              </div>
+            )}
+          </div>
+
+          {/* Remember me */}
+          <div className="mb-5">
+            <Checkbox id="remember" checked={remember} onChange={(e) => setRemember(e.target.checked)}>
+              {t.remember}
+            </Checkbox>
+          </div>
+
+          {/* Submit */}
+          <PrimaryButton onClick={submit} loading={loading} done={done} loadingLabel={t.submitting}>
+            {t.submit}
+          </PrimaryButton>
+
+          {/* Security notice */}
+          <div className="mt-4 flex items-center justify-center gap-1.5 text-[12.5px] text-faint">
+            <LockIcon size={13} />
+            <span>{t.security}</span>
+          </div>
+
+          {/* Footer: copyright + language dropdown */}
+          <footer className="mt-5 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
+            <span className="text-[12px] text-faint">{t.footer}</span>
+            <LangDropdown lang={lang} setLang={setLang} />
+          </footer>
+
+        </div>
+      </main>
     </div>
   );
 };

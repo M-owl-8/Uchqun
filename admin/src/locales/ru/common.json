@@ -37,19 +37,20 @@
     "exit": "Выход"
   },
   "login": {
-    "title": "Админ",
+    "title": "Директор",
+    "tagline": "Система управления учреждением",
     "subtitle": "Администрирование системы Uchqun",
-    "email": "Email",
+    "email": "Электронная почта",
     "password": "Пароль",
-    "placeholderEmail": "admin@uchqun.com",
+    "placeholderEmail": "direktor@uchqun.uz",
     "placeholderPassword": "Введите пароль",
     "button": "Войти",
     "loading": "Вход...",
-    "blockTitle": "Вход администратора",
-    "blockSubtitle": "Используйте учетные данные администратора",
+    "blockTitle": "Вход директора",
+    "blockSubtitle": "Используйте учётные данные директора",
     "errorInvalid": "Неверный email или пароль",
     "accountLocked": "Слишком много попыток. Повторите через 15 минут.",
-    "notApproved": "Ваш аккаунт ещё не одобрен. Дождитесь подтверждения администратора.",
+    "notApproved": "Ваш аккаунт ещё не подтверждён. Ожидайте подтверждения.",
     "accountSuspended": "Ваш аккаунт заблокирован. Обратитесь к администратору."
   },
   "dashboard": {
