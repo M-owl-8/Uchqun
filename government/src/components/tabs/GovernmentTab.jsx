@@ -46,9 +46,9 @@ export default function GovernmentTab({
   const credentialPreview = useMemo(() => {
     const slug = firstName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
     if (!slug) return '';
-    if (level === 'republic') return `${slug}@respublika`;
+    if (level === 'republic') return `${slug}@davlat.uz`;
     const reg = regions.find((r) => r.id === regionId);
-    return reg ? `${slug}@${reg.code.toLowerCase()}` : '';
+    return reg ? `${slug}@${(reg.slug || reg.code).toLowerCase()}.uz` : '';
   }, [firstName, level, regionId, regions]);
 
   const regionName = (id) => regions.find((r) => r.id === id)?.name ?? null;

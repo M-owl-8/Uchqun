@@ -35,6 +35,7 @@ const mockMsgFindByPk = jest.fn();
 const mockMsgCreate = jest.fn();
 const mockMsgFindAndCountAll = jest.fn();
 const mockUserFindAll = jest.fn();
+const mockResolveEmailDomain = jest.fn().mockResolvedValue('test.uz');
 
 jest.unstable_mockModule('../../models/User.js', () => ({
   default: {
@@ -79,6 +80,11 @@ jest.unstable_mockModule('../../config/govCapabilities.js', () => ({
 }));
 jest.unstable_mockModule('../../utils/pagination.js', () => ({
   parsePagination: jest.fn().mockReturnValue({ limit: 50, offset: 0 }),
+}));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: mockResolveEmailDomain,
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
 }));
 
 const { updateAdmin, deleteAdmin, createAdmin, updateGovernmentUser } = await import('../../controllers/admin/adminUserController.js');
@@ -196,27 +202,27 @@ describe('Hole 1 — Admin mutation region scoping', () => {
 
   // ── createAdmin ──────────────────────────────────────────────────────────
 
-  it('createAdmin: region-A account assigning out-of-region school → 404', async () => {
-    mockSchoolFindOne.mockResolvedValue(null); // SCHOOL_B not in REGION_A
+  it('createAdmin: region-A account assigning out-of-region school → 403', async () => {
+    mockResolveEmailDomain.mockRejectedValueOnce({ code: 'ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE', detail: 'school not found in your region' });
 
     const res = mkRes();
     await createAdmin(regionAReq({
-      body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026', schoolId: SCHOOL_B },
+      body: { firstName: 'A', lastName: 'B', localPart: 'a', password: 'Pass@2026', schoolId: SCHOOL_B },
     }), res);
 
-    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.status).toHaveBeenCalledWith(403);
     expect(mockUserCreate).not.toHaveBeenCalled();
   });
 
   it('createAdmin: region-A account assigning own-region school → 201', async () => {
-    mockSchoolFindOne.mockResolvedValue({ id: SCHOOL_A });
+    mockResolveEmailDomain.mockResolvedValueOnce('school-a.uz');
     mockUserFindOne.mockResolvedValue(null); // no existing user
-    mockUserCreate.mockResolvedValue({ id: 'new-admin', email: 'a@x.com', toJSON: () => ({ id: 'new-admin' }) });
+    mockUserCreate.mockResolvedValue({ id: 'new-admin', email: 'a@school-a.uz', toJSON: () => ({ id: 'new-admin' }) });
 
     const res = mkRes();
     await createAdmin(regionAReq({
       user: { id: 'reg-a', role: 'government' },
-      body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026', schoolId: SCHOOL_A },
+      body: { firstName: 'A', lastName: 'B', localPart: 'a', password: 'Pass@2026', schoolId: SCHOOL_A },
     }), res);
 
     expect(res.status).toHaveBeenCalledWith(201);

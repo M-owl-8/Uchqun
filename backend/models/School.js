@@ -11,6 +11,14 @@ const School = sequelize.define('School', {
     type: DataTypes.STRING(500),
     allowNull: false,
   },
+  slug: {
+    type: DataTypes.STRING(32),
+    allowNull: false,
+    unique: true,
+    validate: {
+      is: /^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$/,
+    },
+  },
   type: {
     type: DataTypes.ENUM('school', 'kindergarten', 'both'),
     defaultValue: 'both',

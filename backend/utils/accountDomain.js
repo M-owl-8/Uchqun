@@ -1,0 +1,131 @@
+/**
+ * GOV-ACCOUNT-DOMAINS: Email domain enforcement by creator hierarchy.
+ *
+ * Domain is ALWAYS system-determined — never accepted from the frontend.
+ * Frontend sends only the local part (before @); backend computes and appends the domain.
+ *
+ * Hierarchy:
+ *   republic gov → republic gov peer    : @davlat.uz
+ *   republic gov → region gov           : @<region.slug>.uz
+ *   republic gov → admin                : @<school.slug>.uz
+ *   region  gov → region gov (own)      : @<own_region.slug>.uz
+ *   region  gov → region gov (other)    : ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE
+ *   region  gov → admin (own region)    : @<school.slug>.uz
+ *   region  gov → admin (other region)  : ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE
+ *   admin        → reception/teacher    : @<own_school.slug>.uz
+ *   admin        → parent              : @<own_school.slug>.uz
+ *   admin        → admin / gov          : ACCOUNT_CREATE_FORBIDDEN_HIERARCHY
+ *   reception    → (cannot create)      : ACCOUNT_CREATE_FORBIDDEN_HIERARCHY
+ */
+
+import Region from '../models/Region.js';
+import School from '../models/School.js';
+
+export const REPUBLIC_DOMAIN = 'davlat.uz';
+
+// local part: 2-32 chars, lowercase alpha/digit/dot/underscore/hyphen, no leading/trailing dots
+export const LOCAL_PART_RE = /^[a-z0-9][a-z0-9._-]{0,30}[a-z0-9]$|^[a-z0-9]$/;
+
+/**
+ * Validate the local part of an email address.
+ * @param {string} localPart
+ * @returns {boolean}
+ */
+export function isValidLocalPart(localPart) {
+  if (!localPart || typeof localPart !== 'string') return false;
+  return LOCAL_PART_RE.test(localPart);
+}
+
+/**
+ * Resolve the enforced email domain for a new account.
+ *
+ * @param {object} creator      - req.user from middleware
+ * @param {string} newRole      - 'government' | 'admin' | 'reception' | 'teacher' | 'parent'
+ * @param {object} [context]    - { govLevel?, govRegionId?, schoolId? }
+ * @returns {Promise<string>}   - domain string, e.g. 'davlat.uz' | 'toshkent.uz' | 'tmm1.uz'
+ * @throws {{ code: string, detail: string }} structured error matching BACKEND-012
+ */
+export async function resolveEmailDomain(creator, newRole, context = {}) {
+  const { role, govLevel, govRegionId, schoolId: creatorSchoolId } = creator;
+
+  // ── Government account creating another government account ─────────────────
+  if (newRole === 'government') {
+    const { govLevel: targetLevel, govRegionId: targetRegionId } = context;
+
+    if (role !== 'government') {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'only government accounts can create government accounts' };
+    }
+
+    if (targetLevel === 'republic') {
+      // Region-level gov cannot elevate to republic level
+      if (govLevel === 'region') {
+        throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'region accounts cannot create republic-level accounts' };
+      }
+      return REPUBLIC_DOMAIN;
+    }
+
+    if (targetLevel === 'region') {
+      if (!targetRegionId) {
+        throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'govRegionId required for region-level government account' };
+      }
+      // Region-main can only create accounts in their own region
+      if (govLevel === 'region' && targetRegionId !== govRegionId) {
+        throw { code: 'ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE', detail: 'region accounts can only create peers in their own region' };
+      }
+      const region = await Region.findByPk(targetRegionId, { attributes: ['slug'] });
+      if (!region) throw { code: 'ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE', detail: 'target region not found' };
+      return `${region.slug}.uz`;
+    }
+
+    throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'invalid govLevel for target account' };
+  }
+
+  // ── Government account creating an admin ───────────────────────────────────
+  if (newRole === 'admin') {
+    if (role !== 'government') {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'only government accounts can create admin accounts' };
+    }
+    const { schoolId } = context;
+    if (!schoolId) {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'schoolId required to create admin account' };
+    }
+
+    // Region accounts may only create admins for schools in their region
+    const schoolWhere = { id: schoolId };
+    if (govLevel === 'region') {
+      schoolWhere.regionId = govRegionId;
+    }
+    const school = await School.findOne({ where: schoolWhere, attributes: ['slug'] });
+    if (!school) {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_CROSS_SCOPE', detail: 'school not found in your region' };
+    }
+    return `${school.slug}.uz`;
+  }
+
+  // ── Admin creating reception / teacher ────────────────────────────────────
+  if (newRole === 'reception' || newRole === 'teacher') {
+    if (role !== 'admin') {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: `only admin accounts can create ${newRole} accounts` };
+    }
+    if (!creatorSchoolId) {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'admin has no school assignment' };
+    }
+    const school = await School.findByPk(creatorSchoolId, { attributes: ['slug'] });
+    if (!school) throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'admin school not found' };
+    return `${school.slug}.uz`;
+  }
+
+  // ── Reception / admin creating parent ─────────────────────────────────────
+  if (newRole === 'parent') {
+    if (role !== 'reception' && role !== 'admin') {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'only reception or admin accounts can create parent accounts' };
+    }
+    const schoolId = creatorSchoolId || context.schoolId;
+    if (!schoolId) throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'no school context for parent creation' };
+    const school = await School.findByPk(schoolId, { attributes: ['slug'] });
+    if (!school) throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'creator school not found' };
+    return `${school.slug}.uz`;
+  }
+
+  throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: `unhandled role: ${newRole}` };
+}

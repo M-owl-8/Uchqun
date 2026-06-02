@@ -5,6 +5,7 @@ import logger from '../../utils/logger.js';
 import { invalidateUserCache } from '../../middleware/auth.js';
 import { logAudit } from '../../utils/auditLogger.js';
 import { emitToUser } from '../../config/socket.js';
+import { resolveEmailDomain, isValidLocalPart } from '../../utils/accountDomain.js';
 
 /**
  * Get all Reception accounts with their verification status
@@ -459,18 +460,37 @@ export const deactivateReception = async (req, res) => {
  */
 export const createReception = async (req, res) => {
   try {
-    const { email, password, firstName, lastName, phone } = req.body;
+    const { localPart, password, firstName, lastName, phone } = req.body;
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!localPart || !password || !firstName || !lastName) {
       return res.status(400).json({
-        error: 'Email, password, first name, and last name are required'
+        success: false,
+        error: { code: 'RECEPTION_CREATE_INVALID', detail: 'localPart, password, firstName, lastName are required' },
       });
     }
 
-    // Check if user already exists
-    const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
+    if (!isValidLocalPart(localPart)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'EMAIL_LOCAL_PART_INVALID', detail: 'local part must be 1-32 chars, lowercase alphanumeric/dot/underscore/hyphen' },
+      });
+    }
+
+    let domain;
+    try {
+      domain = await resolveEmailDomain(req.user, 'reception');
+    } catch (err) {
+      return res.status(403).json({ success: false, error: err });
+    }
+
+    const email = `${localPart.toLowerCase()}@${domain}`;
+
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'User with this email already exists' });
+      return res.status(409).json({
+        success: false,
+        error: { code: 'EMAIL_ALREADY_EXISTS', detail: `${email} is already in use` },
+      });
     }
 
     logAudit({
@@ -480,11 +500,11 @@ export const createReception = async (req, res) => {
       entity: 'receptions',
       entityId: null,
       schoolId: req.user.schoolId,
-      meta: { email: email.toLowerCase(), firstName, lastName },
+      meta: { email, firstName, lastName },
     });
 
     const reception = await User.create({
-      email: email.toLowerCase(),
+      email,
       password,
       firstName,
       lastName,
@@ -494,7 +514,7 @@ export const createReception = async (req, res) => {
       documentsApproved: false,
       isActive: false,
       createdBy: req.user.id,
-      schoolId: req.user.schoolId, // Inherit school from admin
+      schoolId: req.user.schoolId,
     });
 
     logger.info('Reception account created by Admin', {

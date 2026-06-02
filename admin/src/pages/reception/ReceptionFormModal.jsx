@@ -1,8 +1,8 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { X, Eye, EyeOff } from 'lucide-react';
 
-const ReceptionFormModal = ({ mode, formData, onChange, onSubmit, onClose, loading }) => {
+const ReceptionFormModal = ({ mode, formData, onChange, onSubmit, onClose, loading, schoolDomain }) => {
   const { t } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
 
@@ -46,18 +46,29 @@ const ReceptionFormModal = ({ mode, formData, onChange, onSubmit, onClose, loadi
               className="w-full px-3 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-warm-700 mb-1">
-              {t('receptionsPage.email')} *
-            </label>
-            <input
-              type="email"
-              required
-              value={formData.email}
-              onChange={(e) => onChange({ ...formData, email: e.target.value })}
-              className="w-full px-3 py-2 border border-warm-300 rounded-lg focus:ring-2 focus:ring-brand-500"
-            />
-          </div>
+          {isCreate && (
+            <div>
+              <label className="block text-sm font-medium text-warm-700 mb-1">
+                {t('receptionsPage.email')} *
+              </label>
+              <div className="flex items-center border border-warm-300 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-brand-500">
+                <input
+                  type="text"
+                  required
+                  value={formData.localPart || ''}
+                  onChange={(e) => onChange({ ...formData, localPart: e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, '') })}
+                  placeholder={t('receptionsPage.localPartPlaceholder', { defaultValue: 'iroda' })}
+                  className="flex-1 px-3 py-2 border-0 outline-none bg-transparent"
+                />
+                <span className="px-3 py-2 bg-warm-100 text-warm-600 text-sm border-l border-warm-300 select-none whitespace-nowrap">
+                  @{schoolDomain || 'your_school.uz'}
+                </span>
+              </div>
+              <p className="mt-1 text-xs text-warm-500">
+                {t('receptionsPage.domainLocked', { defaultValue: 'Email domeni maktab tomonidan belgilanadi' })}
+              </p>
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-warm-700 mb-1">
               {isCreate ? t('receptionsPage.password') : t('receptionsPage.newPassword')}

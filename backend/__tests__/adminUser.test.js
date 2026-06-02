@@ -23,7 +23,12 @@ jest.unstable_mockModule('../models/Region.js', () => ({
   default: { findByPk: mockRegionFindByPk },
 }));
 jest.unstable_mockModule('../models/School.js', () => ({
-  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]), findByPk: jest.fn().mockResolvedValue({ slug: 'test-school' }) },
+}));
+jest.unstable_mockModule('../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test-school.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
 }));
 jest.unstable_mockModule('../middleware/auth.js', () => ({
   revokeJti: mockRevokeJti,
@@ -139,29 +144,29 @@ describe('admin/adminUserController', () => {
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it('401 when no req.user', async () => {
-      const req = { body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'pass1234' } };
-      const res = mkRes();
-      await createAdmin(req, res);
-      expect(res.status).toHaveBeenCalledWith(401);
-    });
-
-    it('400 when email exists', async () => {
-      mockFindOne.mockResolvedValue({ id: 'existing' });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'a@x.com', password: 'Pass@2026' }, isGlobalAccess: true };
+    it('400 when localPart missing (no req.user)', async () => {
+      const req = { body: { firstName: 'A', lastName: 'B', password: 'pass1234' } };
       const res = mkRes();
       await createAdmin(req, res);
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
+    it('409 when email exists', async () => {
+      mockFindOne.mockResolvedValue({ id: 'existing' });
+      const req = { user: { id: 'g1', role: 'government' }, body: { firstName: 'A', lastName: 'B', localPart: 'a', password: 'Pass@2026', schoolId: 'test-school-id' }, isGlobalAccess: true };
+      const res = mkRes();
+      await createAdmin(req, res);
+      expect(res.status).toHaveBeenCalledWith(409);
+    });
+
     it('creates admin (role=admin) when valid', async () => {
       mockFindOne.mockResolvedValue(null);
-      mockCreate.mockResolvedValue({ id: 'a1', email: 'a@x.com', toJSON: () => ({ id: 'a1' }) });
-      const req = { user: { id: 'g1' }, body: { firstName: 'A', lastName: 'B', email: 'A@X.COM', password: 'Pass@2026' }, isGlobalAccess: true };
+      mockCreate.mockResolvedValue({ id: 'a1', email: 'a@test-school.uz', toJSON: () => ({ id: 'a1' }) });
+      const req = { user: { id: 'g1', role: 'government' }, body: { firstName: 'A', lastName: 'B', localPart: 'a', password: 'Pass@2026', schoolId: 'test-school-id' }, isGlobalAccess: true };
       const res = mkRes();
       await createAdmin(req, res);
       expect(mockCreate).toHaveBeenCalledWith(expect.objectContaining({
-        email: 'a@x.com', role: 'admin',
+        email: 'a@test-school.uz', role: 'admin',
       }));
       expect(res.status).toHaveBeenCalledWith(201);
     });
@@ -215,10 +220,10 @@ describe('admin/adminUserController', () => {
 
     it('201 when republic-main creates region-main (happy path)', async () => {
       const REGION_ID = '00000000-0000-0000-0000-000000000001';
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_ID, code: 'R01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_ID, code: 'R01', slug: 'region-a' });
       mockFindOne.mockResolvedValue(null); // credential not taken
       mockCreate.mockResolvedValue({
-        id: 'g2', email: 'ali@r01', toJSON: () => ({ id: 'g2', email: 'ali@r01', govLevel: 'region', govType: 'main' }),
+        id: 'g2', email: 'ali@region-a.uz', toJSON: () => ({ id: 'g2', email: 'ali@region-a.uz', govLevel: 'region', govType: 'main' }),
       });
       const req = {
         user: { id: 'g1', govType: 'main', govLevel: 'republic' },

@@ -13,6 +13,7 @@ import sequelize from '../config/database.js';
 import { uploadFile, deleteFile } from '../config/storage.js';
 import { logAudit } from '../utils/auditLogger.js';
 import fs from 'fs';
+import { resolveEmailDomain, isValidLocalPart } from '../utils/accountDomain.js';
 
 // Fisher-Yates shuffle using crypto bytes; 8+ chars; upper+lower+digit guaranteed
 function generateTempPassword() {
@@ -57,7 +58,7 @@ export const createParent = async (req, res) => {
       };
     }
 
-    const email = req.body.email;
+    const localPart = req.body.localPart || req.body.email; // accept localPart; legacy 'email' field as fallback for non-breaking transition
     const password = req.body.password;
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -65,16 +66,29 @@ export const createParent = async (req, res) => {
     const teacherId = req.body.teacherId || null;
     const groupId = req.body.groupId || null;
 
-    if (!email || !password || !firstName || !lastName) {
+    if (!localPart || !password || !firstName || !lastName) {
       logger.warn('Create parent validation failed', {
-        email: !!email, password: !!password, firstName: !!firstName, lastName: !!lastName,
-        bodyKeys: Object.keys(req.body),
+        hasLocalPart: !!localPart, password: !!password, firstName: !!firstName, lastName: !!lastName,
       });
-      return res.status(400).json({ error: 'Email, password, first name, and last name are required' });
+      return res.status(400).json({ success: false, error: { code: 'PARENT_CREATE_INVALID', detail: 'localPart, password, firstName, lastName are required' } });
     }
 
-    const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
-    if (existingUser) return res.status(400).json({ error: 'User with this email already exists' });
+    // Extract localPart: if full email provided (legacy), strip domain
+    const cleanLocal = localPart.includes('@') ? localPart.split('@')[0] : localPart;
+    if (!isValidLocalPart(cleanLocal)) {
+      return res.status(400).json({ success: false, error: { code: 'EMAIL_LOCAL_PART_INVALID', detail: 'local part must be 1-32 chars, lowercase alphanumeric/dot/underscore/hyphen' } });
+    }
+
+    let domain;
+    try {
+      domain = await resolveEmailDomain(req.user, 'parent');
+    } catch (err) {
+      return res.status(403).json({ success: false, error: err });
+    }
+    const email = `${cleanLocal.toLowerCase()}@${domain}`;
+
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) return res.status(409).json({ success: false, error: { code: 'EMAIL_ALREADY_EXISTS', detail: `${email} is already in use` } });
 
     if (teacherId) {
       // RE-14 fix: per-school scope (any reception at school can assign any school teacher)

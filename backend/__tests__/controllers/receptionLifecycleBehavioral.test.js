@@ -61,6 +61,11 @@ jest.unstable_mockModule('../../models/Progress.js',     () => ({ default: {} })
 jest.unstable_mockModule('../../models/TeacherRating.js',() => ({ default: {} }));
 jest.unstable_mockModule('../../config/database.js',     () => ({ default: {} }));
 jest.unstable_mockModule('../../config/storage.js',      () => ({ uploadFile: jest.fn(), deleteFile: jest.fn() }));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
+}));
 
 const mockLogAudit = jest.fn();
 jest.unstable_mockModule('../../utils/auditLogger.js',   () => ({ logAudit: mockLogAudit }));

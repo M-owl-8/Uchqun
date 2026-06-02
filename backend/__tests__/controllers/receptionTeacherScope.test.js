@@ -66,6 +66,11 @@ jest.unstable_mockModule('../../config/database.js', () => ({
     transaction: mockSequelizeTransaction.mockImplementation(async (fn) => fn({})),
   },
 }));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
+}));
 
 const { createParent, updateParent } = await import('../../controllers/receptionParentController.js');
 

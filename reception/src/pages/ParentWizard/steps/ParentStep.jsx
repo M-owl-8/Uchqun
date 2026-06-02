@@ -38,26 +38,35 @@ export default function ParentStep({ data, onChange }) {
           />
         </div>
 
-        {/* Email */}
+        {/* Email — local part only; domain enforced by backend */}
         <div>
           <label className="block text-[13px] font-medium text-slate-800 mb-1.5">
             Email <span className="text-error-500">*</span>
           </label>
-          <div className="relative">
-            <Mail
-              className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
-              style={{ width: 18, height: 18 }}
-              strokeWidth={2}
-            />
-            <input
-              type="email"
-              {...field('email')}
-              required
-              placeholder="ota-ona@maktab.uz"
-              className="input-ring w-full h-10 pl-10 pr-3 rounded-md border border-slate-300 bg-surface text-[14px] text-slate-900 focus:outline-none"
-            />
+          <div className="flex items-center border border-slate-300 rounded-md overflow-hidden input-ring focus-within:outline-none">
+            <div className="relative flex-1">
+              <Mail
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                style={{ width: 18, height: 18 }}
+                strokeWidth={2}
+              />
+              <input
+                type="text"
+                {...field('localPart')}
+                required
+                placeholder="hulkar"
+                className="w-full h-10 pl-10 pr-3 border-0 outline-none bg-surface text-[14px] text-slate-900"
+                onChange={(e) => {
+                  const cleaned = e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, '');
+                  field('localPart').onChange({ target: { value: cleaned } });
+                }}
+              />
+            </div>
+            <span className="h-10 flex items-center px-3 bg-slate-100 text-slate-500 text-[13px] border-l border-slate-300 select-none whitespace-nowrap">
+              @your-school.uz
+            </span>
           </div>
-          <p className="text-[12px] text-slate-500 mt-1.5">Tasdiqlash xati yuboriladi.</p>
+          <p className="text-[12px] text-slate-500 mt-1.5">Email domeni maktab tomonidan belgilanadi.</p>
         </div>
 
         {/* Telefon */}

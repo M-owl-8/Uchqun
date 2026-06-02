@@ -24,9 +24,17 @@ jest.unstable_mockModule('../../models/User.js', () => ({
 jest.unstable_mockModule('../../models/Region.js', () => ({
   default: { findByPk: mockRegionFindByPk },
 }));
+jest.unstable_mockModule('../../models/School.js', () => ({
+  default: { findOne: jest.fn(), findByPk: jest.fn() },
+}));
 jest.unstable_mockModule('../../middleware/auth.js', () => ({
   revokeJti: mockRevokeJti,
   invalidateUserCache: jest.fn(),
+}));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
 }));
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
@@ -172,7 +180,7 @@ describe('createGovernment', () => {
     });
 
     it('[REVERT-TEST: FIXED] region-main creating account in other region → 403 PROVISION_REGION_OUT_OF_SCOPE', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_B, code: 'R02' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_B, code: 'R02', slug: 'region-b' });
       const req = {
         user: regionMainA(), // actor is region A
         body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'region', govType: 'main', govRegionId: REGION_B },
@@ -189,7 +197,7 @@ describe('createGovernment', () => {
 
   describe('grant validation', () => {
     it('secondary creation without govAccessGrants → 400 PROVISION_GRANTS_REQUIRED', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
       const req = {
         user: republicMain(),
         body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'region', govType: 'secondary', govRegionId: REGION_A },
@@ -203,7 +211,7 @@ describe('createGovernment', () => {
     });
 
     it('grants with unknown capability key → 400 PROVISION_INVALID_GRANTS', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
       const req = {
         user: republicMain(),
         body: {
@@ -221,10 +229,10 @@ describe('createGovernment', () => {
     });
 
     it('secondary creation with valid grants → 201, mustChangePassword=true', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
       mockUserFindOne.mockResolvedValue(null);
       mockUserCreate.mockResolvedValue({
-        id: 'sec1', email: 'ali@r01',
+        id: 'sec1', email: 'ali@region-a.uz',
         toJSON: () => ({ id: 'sec1', govType: 'secondary', govAccessGrants: { canViewSchools: true } }),
       });
       const req = {
@@ -245,22 +253,22 @@ describe('createGovernment', () => {
   });
 
   describe('credential generation', () => {
-    it('region account gets email = firstName@regioncode', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
+    it('region account gets email = firstName@regionslug.uz', async () => {
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
       mockUserFindOne.mockResolvedValue(null);
-      mockUserCreate.mockResolvedValue({ id: 'g2', email: 'ali@r01', toJSON: () => ({}) });
+      mockUserCreate.mockResolvedValue({ id: 'g2', email: 'ali@region-a.uz', toJSON: () => ({}) });
       const req = {
         user: republicMain(),
         body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'region', govType: 'main', govRegionId: REGION_A },
       };
       const res = mkRes();
       await createGovernment(req, res);
-      expect(mockUserCreate).toHaveBeenCalledWith(expect.objectContaining({ email: 'ali@r01' }));
+      expect(mockUserCreate).toHaveBeenCalledWith(expect.objectContaining({ email: 'ali@region-a.uz' }));
     });
 
-    it('republic-secondary account gets email = firstName@respublika', async () => {
+    it('republic-secondary account gets email = firstName@davlat.uz', async () => {
       mockUserFindOne.mockResolvedValue(null);
-      mockUserCreate.mockResolvedValue({ id: 'g3', email: 'sarvar@respublika', toJSON: () => ({}) });
+      mockUserCreate.mockResolvedValue({ id: 'g3', email: 'sarvar@davlat.uz', toJSON: () => ({}) });
       const req = {
         user: republicMain(),
         body: {
@@ -271,12 +279,12 @@ describe('createGovernment', () => {
       };
       const res = mkRes();
       await createGovernment(req, res);
-      expect(mockUserCreate).toHaveBeenCalledWith(expect.objectContaining({ email: 'sarvar@respublika' }));
+      expect(mockUserCreate).toHaveBeenCalledWith(expect.objectContaining({ email: 'sarvar@davlat.uz' }));
     });
 
     it('409 PROVISION_CREDENTIAL_TAKEN when generated email already in use', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
-      mockUserFindOne.mockResolvedValue({ id: 'existing', email: 'ali@r01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
+      mockUserFindOne.mockResolvedValue({ id: 'existing', email: 'ali@region-a.uz' });
       const req = {
         user: republicMain(),
         body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'region', govType: 'main', govRegionId: REGION_A },
@@ -292,9 +300,9 @@ describe('createGovernment', () => {
 
   describe('region-main creates account in own region', () => {
     it('region-main creates region-secondary in own region → 201', async () => {
-      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01' });
+      mockRegionFindByPk.mockResolvedValue({ id: REGION_A, code: 'R01', slug: 'region-a' });
       mockUserFindOne.mockResolvedValue(null);
-      mockUserCreate.mockResolvedValue({ id: 'new', email: 'ali@r01', toJSON: () => ({}) });
+      mockUserCreate.mockResolvedValue({ id: 'new', email: 'ali@region-a.uz', toJSON: () => ({}) });
       const req = {
         user: regionMainA(),
         body: {

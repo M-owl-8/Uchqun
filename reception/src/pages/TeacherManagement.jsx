@@ -43,7 +43,7 @@ const TeacherManagement = () => {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    localPart: '',
     phone: '',
     password: '',
   });
@@ -95,7 +95,7 @@ const TeacherManagement = () => {
     setFormData({
       firstName: '',
       lastName: '',
-      email: '',
+      localPart: '',
       phone: '',
       password: '',
     });
@@ -225,7 +225,7 @@ const TeacherManagement = () => {
         const teacherData = {
           firstName: formData.firstName,
           lastName: formData.lastName,
-          email: formData.email,
+          localPart: formData.localPart,
           phone: formData.phone,
           password: formData.password,
         };
@@ -537,13 +537,19 @@ const TeacherManagement = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.email')}</label>
-                <input
-                  type="email"
-                  required
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-                />
+                <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-brand-500">
+                  <input
+                    type="text"
+                    required={!editingTeacher}
+                    value={formData.localPart || ''}
+                    onChange={(e) => setFormData({ ...formData, localPart: e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, '') })}
+                    placeholder="zulfiya"
+                    className="flex-1 px-4 py-3 border-0 outline-none bg-transparent"
+                  />
+                  <span className="px-3 py-3 bg-slate-100 text-slate-500 text-sm border-l border-slate-200 select-none whitespace-nowrap">
+                    @your-school.uz
+                  </span>
+                </div>
               </div>
 
               <div>

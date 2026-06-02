@@ -58,6 +58,11 @@ jest.unstable_mockModule('../../config/storage.js', () => ({
 jest.unstable_mockModule('../../config/database.js', () => ({
   default: { transaction: jest.fn(async (fn) => fn({})) },
 }));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
+}));
 
 const {
   activateParent, suspendParent, resetParentCredentials,

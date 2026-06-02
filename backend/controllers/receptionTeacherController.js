@@ -4,6 +4,7 @@ import TeacherRating from '../models/TeacherRating.js';
 import logger from '../utils/logger.js';
 import { fn, col } from 'sequelize';
 import { logAudit } from '../utils/auditLogger.js';
+import { resolveEmailDomain, isValidLocalPart } from '../utils/accountDomain.js';
 
 // Fisher-Yates shuffle using crypto bytes; 12 chars; upper+lower+digit guaranteed
 function generateTempPassword() {
@@ -28,28 +29,42 @@ function generateTempPassword() {
 export const createTeacher = async (req, res) => {
   try {
     if (!req.user.schoolId) {
-      return res.status(403).json({ error: 'School assignment required. Contact your administrator to assign your account to a school before creating staff.' });
+      return res.status(403).json({ success: false, error: { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'school assignment required' } });
     }
 
-    const { email, password, firstName, lastName, phone } = req.body;
+    const { localPart, password, firstName, lastName, phone } = req.body;
 
-    if (!email || !password || !firstName || !lastName) {
-      return res.status(400).json({ error: 'Email, password, first name, and last name are required' });
+    if (!localPart || !password || !firstName || !lastName) {
+      return res.status(400).json({ success: false, error: { code: 'TEACHER_CREATE_INVALID', detail: 'localPart, password, firstName, lastName are required' } });
     }
 
-    const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
-    if (existingUser) return res.status(400).json({ error: 'User with this email already exists' });
+    if (!isValidLocalPart(localPart)) {
+      return res.status(400).json({ success: false, error: { code: 'EMAIL_LOCAL_PART_INVALID', detail: 'local part must be 1-32 chars, lowercase alphanumeric/dot/underscore/hyphen' } });
+    }
+
+    let domain;
+    try {
+      domain = await resolveEmailDomain(req.user, 'teacher');
+    } catch (err) {
+      return res.status(403).json({ success: false, error: err });
+    }
+
+    const email = `${localPart.toLowerCase()}@${domain}`;
+    const existingUser = await User.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(409).json({ success: false, error: { code: 'EMAIL_ALREADY_EXISTS', detail: `${email} is already in use` } });
+    }
 
     const teacher = await User.create({
-      email: email.toLowerCase(), password, firstName, lastName, phone,
+      email, password, firstName, lastName, phone,
       role: 'teacher', isActive: true, createdBy: req.user.id, schoolId: req.user.schoolId,
     });
 
-    logger.info('Teacher created by Reception', { teacherId: teacher.id, email: teacher.email, createdBy: req.user.id });
-    res.status(201).json({ success: true, message: 'Teacher account created successfully', data: teacher.toJSON() });
+    logger.info('Teacher created', { teacherId: teacher.id, email: teacher.email, createdBy: req.user.id });
+    res.status(201).json({ success: true, data: teacher.toJSON() });
   } catch (error) {
     logger.error('Create teacher error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to create teacher account' });
+    res.status(500).json({ success: false, error: { code: 'TEACHER_CREATE_FAILED' } });
   }
 };
 

@@ -12,6 +12,11 @@ const Region = sequelize.define('Region', {
     allowNull: false,
     unique: true,
   },
+  slug: {
+    type: DataTypes.STRING(32),
+    allowNull: false,
+    unique: true,
+  },
   name: {
     type: DataTypes.STRING(255),
     allowNull: false,

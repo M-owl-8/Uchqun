@@ -5,6 +5,7 @@ import logger from '../../utils/logger.js';
 import { logAudit } from '../../utils/auditLogger.js';
 import { isValidGrantSet, unknownGrantKeys } from '../../config/govCapabilities.js';
 import { revokeJti } from '../../middleware/auth.js';
+import { resolveEmailDomain, isValidLocalPart, REPUBLIC_DOMAIN } from '../../utils/accountDomain.js';
 
 /**
  * Get all Admin accounts (Government view)
@@ -136,40 +137,49 @@ export const deleteAdmin = async (req, res) => {
  */
 export const createAdmin = async (req, res) => {
   try {
-    const { firstName, lastName, email, password, schoolId, role: _role } = req.body;
+    const { localPart, firstName, lastName, password, schoolId } = req.body;
 
-    if (!firstName || !lastName || !email || !password) {
+    if (!localPart || !firstName || !lastName || !password) {
       return res.status(400).json({
-        error: 'First name, last name, email and password are required'
+        success: false,
+        error: { code: 'ADMIN_CREATE_INVALID', detail: 'localPart, firstName, lastName, password are required' },
       });
     }
 
-    if (!req.user) {
-      return res.status(401).json({ error: 'Authentication required' });
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({ error: 'Invalid email format' });
+    if (!isValidLocalPart(localPart)) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'EMAIL_LOCAL_PART_INVALID', detail: 'local part must be 1-32 chars, lowercase alphanumeric/dot/underscore/hyphen' },
+      });
     }
 
     if (password.length < 8 || !/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-      return res.status(400).json({ error: 'Password must be at least 8 characters and contain uppercase, lowercase, and a digit' });
+      return res.status(400).json({
+        success: false,
+        error: { code: 'ADMIN_CREATE_INVALID', detail: 'password must be 8+ chars with uppercase, lowercase, digit' },
+      });
     }
 
-    // Region accounts may only assign admins to schools within their region.
-    if (!req.isGlobalAccess && schoolId) {
-      const school = await School.findOne({ where: { id: schoolId, regionId: req.regionScope } });
-      if (!school) return res.status(404).json({ error: 'School not found in your region' });
+    // Resolve enforced domain — throws structured error if not authorized
+    let domain;
+    try {
+      domain = await resolveEmailDomain(req.user, 'admin', { schoolId });
+    } catch (err) {
+      return res.status(403).json({ success: false, error: err });
     }
 
-    const existingUser = await User.findOne({ where: { email: email.toLowerCase() } });
+    const email = `${localPart.toLowerCase()}@${domain}`;
+
+    const existingUser = await User.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: 'User with this email already exists' });
+      return res.status(409).json({
+        success: false,
+        error: { code: 'EMAIL_ALREADY_EXISTS', detail: `${email} is already in use` },
+      });
     }
 
     const admin = await User.create({
-      email: email.toLowerCase(),
+      email,
       password,
       firstName,
       lastName,
@@ -183,20 +193,15 @@ export const createAdmin = async (req, res) => {
       meta: { email: admin.email },
     });
 
-    logger.info('Admin account created', {
-      adminId: admin.id,
-      email: admin.email,
-      createdBy: req.user.id,
-    });
+    logger.info('Admin account created', { adminId: admin.id, email: admin.email, createdBy: req.user.id });
 
     res.status(201).json({
       success: true,
-      message: 'Admin account created successfully',
-      data: admin.toJSON(),
+      data: { ...admin.toJSON(), password: undefined },
     });
   } catch (error) {
     logger.error('Create admin error', { error: error.message, stack: error.stack });
-    res.status(500).json({ error: 'Failed to create admin account' });
+    res.status(500).json({ success: false, error: { code: 'ADMIN_CREATE_FAILED' } });
   }
 };
 
@@ -312,16 +317,22 @@ export const createGovernment = async (req, res) => {
       });
     }
 
-    // ── Build credential email ──────────────────────────────────────────────
-    let emailSuffix;
+    // ── Build credential email using enforced domain ───────────────────────
+    let domain;
     if (govLevel === 'republic') {
-      emailSuffix = 'respublika';
+      domain = REPUBLIC_DOMAIN; // 'davlat.uz'
     } else {
-      const region = await Region.findByPk(govRegionId);
-      emailSuffix = region.code.toLowerCase();
+      const region = await Region.findByPk(govRegionId, { attributes: ['slug'] });
+      if (!region || !region.slug) {
+        return res.status(400).json({
+          success: false,
+          error: { code: 'PROVISION_REGION_REQUIRED', detail: 'target region has no slug assigned' },
+        });
+      }
+      domain = `${region.slug}.uz`;
     }
     const baseSlug = firstName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
-    const candidateEmail = `${baseSlug}@${emailSuffix}`;
+    const candidateEmail = `${baseSlug}@${domain}`;
 
     const existingUser = await User.findOne({ where: { email: candidateEmail } });
     if (existingUser) {

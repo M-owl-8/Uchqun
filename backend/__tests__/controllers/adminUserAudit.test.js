@@ -25,10 +25,15 @@ jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
   logAudit: mockLogAudit,
 }));
 jest.unstable_mockModule('../../models/School.js', () => ({
-  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]) },
+  default: { findOne: jest.fn(), findAll: jest.fn().mockResolvedValue([]), findByPk: jest.fn().mockResolvedValue({ slug: 'test' }) },
 }));
 jest.unstable_mockModule('../../models/Region.js', () => ({
   default: { findByPk: jest.fn() },
+}));
+jest.unstable_mockModule('../../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
 }));
 jest.unstable_mockModule('../../middleware/auth.js', () => ({
   revokeJti: jest.fn(),
@@ -86,7 +91,7 @@ describe('BC-02a: logAudit calls in governance functions', () => {
       mockUserFindOne.mockResolvedValue(null);
       mockUserCreate.mockResolvedValue(admin);
 
-      const req = govReq({ firstName: 'A', lastName: 'B', email: 'admin@test.uz', password: 'Abc12345' });
+      const req = govReq({ firstName: 'A', lastName: 'B', localPart: 'admin', password: 'Abc12345', schoolId: 'school-1' });
       await createAdmin(req, mkRes());
 
       expect(mockLogAudit).toHaveBeenCalledWith(expect.objectContaining({
@@ -102,7 +107,7 @@ describe('BC-02a: logAudit calls in governance functions', () => {
       mockUserCreate.mockResolvedValue(admin);
 
       const res = mkRes();
-      const req = govReq({ firstName: 'A', lastName: 'B', email: 'admin@test.uz', password: 'Abc12345' });
+      const req = govReq({ firstName: 'A', lastName: 'B', localPart: 'admin', password: 'Abc12345', schoolId: 'school-1' });
       // logAudit throws but the operation should still succeed
       // (note: logAudit in production swallows errors; here we test createAdmin survives it)
       await createAdmin(req, res);

@@ -11,7 +11,7 @@ import ConfirmDialog from '@shared/components/ConfirmDialog';
 import ReceptionFormModal from './reception/ReceptionFormModal';
 import ReceptionDetailPanel from './reception/ReceptionDetailPanel';
 
-const EMPTY_CREATE_FORM = { email: '', password: '', firstName: '', lastName: '', phone: '' };
+const EMPTY_CREATE_FORM = { localPart: '', password: '', firstName: '', lastName: '', phone: '' };
 const EMPTY_EDIT_FORM   = { email: '', firstName: '', lastName: '', phone: '', password: '' };
 const PAGE_SIZE = 15;
 
@@ -83,6 +83,7 @@ const ReceptionManagement = () => {
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(!cache.get('admin:receptions'));
   const [actionLoading, setActionLoading] = useState(false);
+  const [schoolDomain, setSchoolDomain] = useState(null);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingReception, setEditingReception] = useState(null);
@@ -130,6 +131,14 @@ const ReceptionManagement = () => {
   }, [applyReceptions, showError, t]);
 
   useEffect(() => { fetchReceptions(true); }, [fetchReceptions]);
+
+  // Fetch school slug for email domain display in the create reception form
+  useEffect(() => {
+    api.get('/admin/school').then(res => {
+      const slug = res.data?.data?.slug;
+      if (slug) setSchoolDomain(`${slug}.uz`);
+    }).catch(() => {});
+  }, []);
 
   const fetchReceptionDocuments = async (receptionId) => {
     try {
@@ -600,6 +609,7 @@ const ReceptionManagement = () => {
           onSubmit={handleCreateReception}
           onClose={() => setShowCreateModal(false)}
           loading={actionLoading}
+          schoolDomain={schoolDomain}
         />
       )}
 

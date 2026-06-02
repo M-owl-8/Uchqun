@@ -36,6 +36,11 @@ jest.unstable_mockModule('../utils/logger.js', () => ({
 jest.unstable_mockModule('../utils/auditLogger.js', () => ({
   logAudit: jest.fn(),
 }));
+jest.unstable_mockModule('../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
+}));
 
 const { createTeacher, getTeachers, updateTeacher, deleteTeacher } = await import('../controllers/receptionTeacherController.js');
 const { getParents, deleteParent } = await import('../controllers/receptionParentController.js');
@@ -65,15 +70,15 @@ describe('receptionController', () => {
       expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it('400 when email already exists', async () => {
+    it('409 when email already exists', async () => {
       mockUserFindOne.mockResolvedValue({ id: 'existing' });
       const req = {
         user: { id: 'r1', schoolId: 's1' },
-        body: { email: 'a@x.com', password: 'p', firstName: 'A', lastName: 'B' },
+        body: { localPart: 'a', password: 'p', firstName: 'A', lastName: 'B' },
       };
       const res = mkRes();
       await createTeacher(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.status).toHaveBeenCalledWith(409);
     });
 
     it('inherits schoolId and createdBy from reception', async () => {
@@ -81,7 +86,7 @@ describe('receptionController', () => {
       mockUserCreate.mockResolvedValue({ id: 't1', toJSON: () => ({ id: 't1' }) });
       const req = {
         user: { id: 'r1', schoolId: 's1' },
-        body: { email: 'a@x.com', password: 'p', firstName: 'A', lastName: 'B' },
+        body: { localPart: 'a', password: 'p', firstName: 'A', lastName: 'B' },
       };
       const res = mkRes();
       await createTeacher(req, res);

@@ -13,7 +13,7 @@ import useFormPersistence from '@shared/hooks/useFormPersistence';
 const STEPS = ["Ota-ona ma'lumotlari", "Bola ma'lumotlari", 'Guruh tayinlash'];
 
 const defaultParent = {
-  firstName: '', lastName: '', email: '', phone: '', password: '',
+  firstName: '', lastName: '', localPart: '', phone: '', password: '',
   address: '', passport: '', nativeLanguage: '',
 };
 const defaultChild = {

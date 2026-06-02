@@ -50,6 +50,11 @@ jest.unstable_mockModule('../config/storage.js', () => ({
   uploadFile: jest.fn(),
   deleteFile: jest.fn(),
 }));
+jest.unstable_mockModule('../utils/accountDomain.js', () => ({
+  resolveEmailDomain: jest.fn().mockResolvedValue('test.uz'),
+  isValidLocalPart: jest.fn().mockReturnValue(true),
+  REPUBLIC_DOMAIN: 'davlat.uz',
+}));
 
 const { getParents, deleteParent, createChildForParent } = await import('../controllers/receptionParentController.js');
 
