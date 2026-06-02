@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **GOV-FORCE-PASSWORD-FLOW ✅ CLOSED (pending user Railway verification):** Compound bug: backend returned 401 for wrong currentPassword → Axios interceptor treated as token-expiry → tried refresh+retry → clearAuth() → session destroyed, no error shown. Fix: backend now returns 400 CURRENT_PASSWORD_INCORRECT (2 lines: userController.js + ChangePassword.jsx). 7 new frontend tests (ChangePassword.test.jsx). Backend 135/135 1422/1422, gov 18/18 127/127 green. `audits/redesign/GOV-FORCE-PASSWORD-FLOW.md`.
+
 > **GOV-ACCOUNT-FORM-AUDIT-2 ✅ CLOSED:** Form enumeration: 1 form total (GovernmentTab.jsx IS "Davlat Hisobi Yaratish" — not a hidden second form). No email-field drift: gov credential is auto-generated from firstName+domain (by design). Single finding: `canRateSchools` missing from `provision.grants` in all 3 locale files → added (EN: "Rate Schools", UZ: "Maktablarni Baholash", RU: "Оценивать Школы"). 120/120 tests. `audits/redesign/GOV-ACCOUNT-FORM-AUDIT-2.md`. Gate: user Railway verification required before full ✅.
 
 > **GOV-PROD-VERIFY ✅ CLOSED 🟡 residuals:** Code-level verification of 8 GOV-* sessions. HIGH drift fixed: AdminsTab.jsx sent `{email}` → now sends `{localPart, schoolId}`; Platform.jsx updated; 6 EN locale keys added; 120/120 gov tests green. Verdicts: GOV-ACCOUNT-DOMAINS 🟢 FIXED, GOV-ACCOUNT-AUDIT-FIX 🟢, GOV-REGIONS-NAME 🟢, GOV-RATING-STARS 🟢, GOV-RATINGS-POLISH 🟢, GOV-IA-RESTRUCTURE 🟡 (sidebar clean, orphan pages still routable), GOV-LOGIN-NOW/FIX ⚪ (browser verification pending). `audits/redesign/GOV-PROD-VERIFY.md`.

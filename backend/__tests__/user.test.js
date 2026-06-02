@@ -123,23 +123,41 @@ describe('userController', () => {
       expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it('401 when current password wrong', async () => {
+    it('400 when current password wrong (not 401 — wrong password is a bad-input error, not an auth error)', async () => {
       const user = mkUser({ comparePassword: jest.fn().mockResolvedValue(false) });
       mockUserFindByPk.mockResolvedValue(user);
       const req = { user: { id: 'u1' }, body: { currentPassword: 'wrong', newPassword: 'newPass1' } };
       const res = mkRes();
       await changePassword(req, res);
-      expect(res.status).toHaveBeenCalledWith(401);
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+        success: false,
+        error: expect.objectContaining({ code: 'CURRENT_PASSWORD_INCORRECT' }),
+      }));
     });
 
-    it('persists new password and saves', async () => {
-      const user = mkUser({ comparePassword: jest.fn().mockResolvedValue(true) });
+    it('persists new password, clears mustChangePassword flag, and saves', async () => {
+      const user = mkUser({ comparePassword: jest.fn().mockResolvedValue(true), mustChangePassword: true });
       mockUserFindByPk.mockResolvedValue(user);
       const req = { user: { id: 'u1' }, body: { currentPassword: 'old', newPassword: 'newPass1' } };
       const res = mkRes();
       await changePassword(req, res);
       expect(user.password).toBe('newPass1');
+      expect(user.mustChangePassword).toBe(false);
       expect(user.save).toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    });
+
+    it('500 on save failure', async () => {
+      const user = mkUser({
+        comparePassword: jest.fn().mockResolvedValue(true),
+        save: jest.fn().mockRejectedValue(new Error('DB')),
+      });
+      mockUserFindByPk.mockResolvedValue(user);
+      const req = { user: { id: 'u1' }, body: { currentPassword: 'old', newPassword: 'newPass1' } };
+      const res = mkRes();
+      await changePassword(req, res);
+      expect(res.status).toHaveBeenCalledWith(500);
     });
   });
 });

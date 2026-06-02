@@ -44,7 +44,7 @@ const ChangePassword = () => {
       if (user) setUser({ ...user, mustChangePassword: false });
       navigate('/government', { replace: true });
     } catch (err) {
-      if (err.response?.status === 401) {
+      if (err.response?.status === 400) {
         setError(t('changePasswordForced.incorrect', { defaultValue: 'Current password is incorrect' }));
       } else {
         setError(t('changePasswordForced.error', { defaultValue: 'Failed to change password' }));

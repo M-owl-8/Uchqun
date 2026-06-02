@@ -113,7 +113,10 @@ export const changePassword = async (req, res) => {
 
     const isPasswordValid = await user.comparePassword(currentPassword);
     if (!isPasswordValid) {
-      return res.status(401).json({ error: 'Current password is incorrect' });
+      return res.status(400).json({
+        success: false,
+        error: { code: 'CURRENT_PASSWORD_INCORRECT', detail: 'Current password is incorrect' },
+      });
     }
 
     user.password = newPassword;

@@ -90,3 +90,17 @@ These items were identified in `audits/database/00-live-state-audit.md` and must
 | PL-UZ-03 | **CUTOVER — Redis for multi-instance** — login lockout, JTI revocation, and Socket.io are in-memory if `REDIS_URL` absent. Single-instance deploy works without Redis; multi-instance requires it. | ⬜ Not started | Provision managed Redis on UzCloud if multi-instance planned. `REDIS_URL` env var. Defer until scaling decision made. |
 | PL-UZ-04 | **CUTOVER (low) — AI egress** — AI analysis features (`POST /ai-warnings/analyze`) call `OPENAI_BASE_URL`. If UzCloud restricts outbound internet, these endpoints fail. Feature degrades gracefully when `OPENAI_API_KEY` is absent. | ⬜ Not started | Confirm egress policy at cutover. If restricted, leave `OPENAI_API_KEY` unset to disable. Consider on-prem LLM if government mandates it. |
 | PL-UZ-05 | **CUTOVER — DB SSL flag** — `backend/config/database.js` uses Railway-specific SSL detection. UzCloud managed Postgres may require explicit SSL config. Requires a one-liner code change before UzCloud deploy. | ⬜ Not started | Add `DB_SSL=true` env flag + explicit SSL options to `database.js` before UzCloud deploy. Low-risk. |
+
+---
+
+## Critical User Flows — Manual Verification Required Before Beta
+
+These flows have been systematically under-tested: backend tests mock too much, frontend tests don't exercise full auth state. They must be walked through on Railway production by a human before any beta user is invited. Added: GOV-FORCE-PASSWORD-FLOW (2026-06-02).
+
+| ID | Flow | Status | Steps |
+|---|---|---|---|
+| PL-026 | **New account onboarding — create → first login → force password change → second login** | ⬜ Not verified | (1) Create gov secondary account, (2) log in with temp password, (3) complete force-change, (4) log out, (5) log in with new password, (6) confirm no force-change prompt, (7) confirm temp password rejected |
+| PL-027 | **Account suspension and reactivation** | ⬜ Not verified | Admin suspends parent → parent login returns 401 → admin reactivates → parent can log in |
+| PL-028 | **Cross-portal communication — admin messages government** | ⬜ Not verified | Admin sends message to government → government sees message in inbox → replies → admin sees reply |
+| PL-029 | **Multi-tenant isolation — cross-school access attempt** | ⬜ Not verified | Admin of school A attempts to access school B children via direct URL → 403 or 404 |
+| PL-030 | **New admin registration flow** | ⬜ Not verified | Admin self-registers → government approves → admin receives credential email → admin logs in → force-change prompt → completes flow |
