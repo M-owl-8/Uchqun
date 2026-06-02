@@ -138,6 +138,9 @@ describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
     await waitFor(() => screen.getByText('Unresolved warning'));
     const resolveBtn = screen.getByRole('button', { name: /Hal qilingan deb belgilash/ });
     fireEvent.click(resolveBtn);
+    // handleResolve opens a ConfirmDialog — must confirm before api.put is called
+    const confirmBtn = await screen.findByTestId('confirm-ok');
+    fireEvent.click(confirmBtn);
     await waitFor(() => expect(api.put).toHaveBeenCalled());
     const [url] = api.put.mock.calls[0];
     expect(url).toBe('/ai-warnings/w-1/resolve');

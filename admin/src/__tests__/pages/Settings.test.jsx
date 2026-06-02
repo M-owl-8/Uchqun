@@ -135,8 +135,9 @@ describe('CL-014a Settings', () => {
 
     const pwdInputs = container.querySelectorAll('input[type="password"]');
     fireEvent.change(pwdInputs[0], { target: { value: 'current123' } });
-    fireEvent.change(pwdInputs[1], { target: { value: 'newpass123' } });
-    fireEvent.change(pwdInputs[2], { target: { value: 'newpass123' } });
+    // password must pass strength check: lowercase + uppercase + digit (Settings.jsx:137)
+    fireEvent.change(pwdInputs[1], { target: { value: 'newPass123' } });
+    fireEvent.change(pwdInputs[2], { target: { value: 'newPass123' } });
 
     const passwordForm = container.querySelectorAll('form')[2];
     fireEvent.submit(passwordForm);
@@ -144,7 +145,7 @@ describe('CL-014a Settings', () => {
     await waitFor(() => {
       expect(api.put).toHaveBeenCalledWith('/user/password', {
         currentPassword: 'current123',
-        newPassword: 'newpass123',
+        newPassword: 'newPass123',
       });
     });
   });
