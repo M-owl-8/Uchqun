@@ -37,7 +37,7 @@ jest.unstable_mockModule('../../models/Child.js', () => ({
   default: { findAll: mockChildFindAll, count: jest.fn().mockResolvedValue(0) },
 }));
 jest.unstable_mockModule('../../models/User.js', () => ({
-  default: { count: jest.fn().mockResolvedValue(0) },
+  default: { count: jest.fn().mockResolvedValue(0), findAll: jest.fn().mockResolvedValue([]) },
 }));
 jest.unstable_mockModule('../../models/AIWarning.js', () => ({ default: { count: jest.fn().mockResolvedValue(0) } }));
 jest.unstable_mockModule('../../models/GovernmentStats.js', () => ({ default: {} }));

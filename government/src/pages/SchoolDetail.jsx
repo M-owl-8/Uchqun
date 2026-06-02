@@ -244,13 +244,14 @@ const SchoolDetail = () => {
         : t('schoolDetail.archiveSuccess', { defaultValue: "Maktab arxivlandi" })
       );
     } catch (err) {
-      const code = err?.response?.data?.error;
+      const errPayload = err?.response?.data?.error;
+      const code = typeof errPayload === 'object' ? errPayload?.code : errPayload;
       if (code === 'SCHOOL_ALREADY_ARCHIVED') {
         showError(t('schoolDetail.alreadyArchived', { defaultValue: "Maktab allaqachon arxivlangan" }));
       } else if (code === 'SCHOOL_ALREADY_ACTIVE') {
         showError(t('schoolDetail.alreadyActive', { defaultValue: "Maktab allaqachon faol" }));
       } else {
-        const msg = err.response?.data?.error?.detail ?? err?.response?.data?.error ?? t('schoolDetail.archiveError', { defaultValue: "Xato yuz berdi" });
+        const msg = errPayload?.detail ?? t('schoolDetail.archiveError', { defaultValue: "Xato yuz berdi" });
         showError(msg);
       }
     } finally {

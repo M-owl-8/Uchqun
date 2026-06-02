@@ -1,4 +1,4 @@
-import { apiLimiter, authLimiter, loginLimiter, passwordResetLimiter } from '../../middleware/rateLimiter.js';
+import { apiLimiter, authLimiter, loginLimiter } from '../../middleware/rateLimiter.js';
 
 describe('Rate Limiters', () => {
   it('apiLimiter is a function (middleware)', () => {
@@ -11,9 +11,5 @@ describe('Rate Limiters', () => {
 
   it('loginLimiter is a function (middleware)', () => {
     expect(typeof loginLimiter).toBe('function');
-  });
-
-  it('passwordResetLimiter is a function (middleware)', () => {
-    expect(typeof passwordResetLimiter).toBe('function');
   });
 });

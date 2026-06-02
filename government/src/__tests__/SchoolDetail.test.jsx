@@ -17,6 +17,10 @@ vi.mock('react-router-dom', () => ({
   Link: ({ children, to }) => <a href={to}>{children}</a>,
 }));
 
+vi.mock('../context/AuthContext', () => ({
+  useAuth: () => ({ hasCapability: () => false }),
+}));
+
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
     t: (_key, opts) => opts?.defaultValue ?? _key,

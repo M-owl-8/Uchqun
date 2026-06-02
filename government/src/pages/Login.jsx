@@ -129,8 +129,9 @@ const Login = () => {
       setDone(true);
       setTimeout(() => navigate('/government'), 500);
     } else {
+      const errorCode = typeof result.error === 'object' ? result.error?.code : result.error;
       if (result.status === 429) setFormError(t.rateLimited);
-      else if (result.status === 403 && result.error === 'ACCOUNT_NOT_ACTIVE') setFormError(t.suspended);
+      else if (errorCode === 'ACCOUNT_NOT_ACTIVE') setFormError(t.suspended);
       else if (result.status === 403) setFormError(t.notApproved);
       else setFormError(t.loginError);
     }

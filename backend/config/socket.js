@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import { createAdapter } from '@socket.io/redis-adapter';
 import jwt from 'jsonwebtoken';
-import { User } from '../models/index.js';
+import User from '../models/User.js';
 import { getRedisClient } from '../utils/redisClient.js';
 import logger from '../utils/logger.js';
 

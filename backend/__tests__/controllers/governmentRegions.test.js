@@ -16,6 +16,7 @@ jest.unstable_mockModule('../../models/User.js', () => ({ default: {} }));
 jest.unstable_mockModule('../../models/Child.js', () => ({ default: {} }));
 jest.unstable_mockModule('../../models/AIWarning.js', () => ({ default: {} }));
 jest.unstable_mockModule('../../models/AuditLog.js', () => ({ default: {} }));
+jest.unstable_mockModule('../../models/RefreshToken.js', () => ({ default: { update: jest.fn() } }));
 jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));

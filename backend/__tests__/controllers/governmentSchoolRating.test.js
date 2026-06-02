@@ -185,8 +185,8 @@ describe('getRatingsAggregated — region scope on direction=gov', () => {
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
     const result = res.json.mock.calls[0][0];
     expect(result.data.direction).toBe('gov');
-    expect(result.data.overall.count).toBe(2);
-    expect(result.data.overall.averageStars).toBe(4.5);
+    expect(result.data.total).toBe(2);
+    expect(result.data.average).toBe(4.5);
 
     // findAll on School was called with regionId filter for region account
     expect(mockSchoolFindAll).toHaveBeenCalledWith(expect.objectContaining({

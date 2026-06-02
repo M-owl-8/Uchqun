@@ -9,7 +9,7 @@ jest.unstable_mockModule('../models/School.js', () => ({
 }));
 jest.unstable_mockModule('../models/GovernmentStats.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/SchoolRating.js', () => ({ default: {} }));
-jest.unstable_mockModule('../models/User.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/User.js', () => ({ default: { findAll: jest.fn().mockResolvedValue([]) } }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: {} }));
 jest.unstable_mockModule('../models/AIWarning.js', () => ({ default: {} }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
