@@ -51,10 +51,10 @@ const Platform = () => {
 
   // admins
   const [admins, setAdmins, loadingAdmins, refreshAdmins, adminsError] = useApiCache('/government/admins', 'platform:admins');
+  const [schools, , loadingSchools] = useApiCache('/government/schools?limit=999', 'platform:schools:all');
   const [editingAdmin, setEditingAdmin] = useState(null);
   const [editFirstName, setEditFirstName] = useState('');
   const [editLastName, setEditLastName] = useState('');
-  const [editEmail, setEditEmail] = useState('');
   const [editPhone, setEditPhone] = useState('');
   const [editPassword, setEditPassword] = useState('');
   const [editSaving, setEditSaving] = useState(false);
@@ -89,19 +89,26 @@ const Platform = () => {
     })();
   }, [activeTab]);
 
-  const handleSubmitAdmin = async ({ firstName, lastName, email, password }, reset) => {
-    if (!firstName || !lastName || !email || !password) {
-      showError(t('government.validation.required'));
+  const handleSubmitAdmin = async ({ firstName, lastName, localPart, schoolId, password }, reset) => {
+    if (!firstName || !lastName || !localPart || !schoolId || !password) {
+      showError(t('government.validation.allFieldsRequired'));
       return;
     }
     try {
       setCreatingAdmin(true);
-      await api.post('/government/admins', { firstName, lastName, email, password });
+      const res = await api.post('/government/admins', { firstName, lastName, localPart, schoolId, password });
       success(t('government.toastCreate'));
       reset?.();
       await refreshAdmins();
-    } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.toastSaveError'));
+      // Surface the created email as a brief credential notice
+      const createdEmail = res.data?.data?.email;
+      if (createdEmail) success(`${t('government.credentialsTitle')}: ${createdEmail}`);
+    } catch (err) {
+      const errPayload = err.response?.data?.error;
+      const code = typeof errPayload === 'object' ? errPayload?.code : null;
+      const detail = typeof errPayload === 'object' ? errPayload?.detail : errPayload;
+      const msg = detail ?? (code ? t(`adminCreateErrors.${code}`, { defaultValue: code }) : null) ?? t('government.toastSaveError');
+      showError(msg);
     } finally { setCreatingAdmin(false); }
   };
 
@@ -109,7 +116,6 @@ const Platform = () => {
     setEditingAdmin(adm);
     setEditFirstName(adm.firstName || '');
     setEditLastName(adm.lastName || '');
-    setEditEmail(adm.email || '');
     setEditPhone(adm.phone || '');
     setEditPassword('');
     setShowPasswords({ edit: false });
@@ -120,16 +126,19 @@ const Platform = () => {
     if (!editingAdmin) return;
     try {
       setEditSaving(true);
+      // email is intentionally excluded — immutable post-creation
       await api.put(`/government/admins/${editingAdmin.id}`, {
-        firstName: editFirstName, lastName: editLastName, email: editEmail,
+        firstName: editFirstName, lastName: editLastName,
         phone: editPhone, password: editPassword || undefined,
       });
       success(t('government.toastUpdate'));
       await refreshAdmins();
       setEditingAdmin(null);
       setEditPassword('');
-    } catch (error) {
-      showError(error.response?.data?.error?.detail ?? error.response?.data?.error ?? t('government.toastSaveError'));
+    } catch (err) {
+      const errPayload = err.response?.data?.error;
+      const detail = typeof errPayload === 'object' ? errPayload?.detail : errPayload;
+      showError(detail ?? t('government.toastSaveError'));
     } finally { setEditSaving(false); }
   };
 
@@ -281,11 +290,12 @@ const Platform = () => {
         {activeTab === 'admins' && (
           <AdminsTab
             admins={admins} loadingAdmins={loadingAdmins} loading={creatingAdmin}
+            schools={schools?.schools ?? schools ?? []} loadingSchools={loadingSchools}
             onSubmit={handleSubmitAdmin}
             editingAdmin={editingAdmin} editFirstName={editFirstName} editLastName={editLastName}
-            editEmail={editEmail} editPhone={editPhone} editPassword={editPassword} editSaving={editSaving}
+            editPhone={editPhone} editPassword={editPassword} editSaving={editSaving}
             setEditFirstName={setEditFirstName} setEditLastName={setEditLastName}
-            setEditEmail={setEditEmail} setEditPhone={setEditPhone} setEditPassword={setEditPassword}
+            setEditPhone={setEditPhone} setEditPassword={setEditPassword}
             onStartEdit={startEdit} onUpdateAdmin={handleUpdateAdmin}
             onDeleteAdmin={handleDeleteAdmin} onCloseEdit={() => setEditingAdmin(null)}
             showPasswords={showPasswords} setShowPasswords={setShowPasswords}
