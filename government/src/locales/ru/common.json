@@ -61,7 +61,7 @@
     "colStatus": "Статус",
     "refresh": "Обновить данные",
     "pendingAdmins": "Ожидающие регистрации администраторов",
-    "activeWarnings": "Активные ИИ-предупреждения",
+    "activeWarnings": "Активные предупреждения",
     "andMore": "и ещё {{count}}",
     "viewAll": "Посмотреть все",
     "schoolsMore": "ещё {{count}} школ",
@@ -124,7 +124,21 @@
     "reactivateSuccess": "Школа восстановлена",
     "archiveError": "Произошла ошибка",
     "alreadyArchived": "Школа уже архивирована",
-    "alreadyActive": "Школа уже активна"
+    "alreadyActive": "Школа уже активна",
+    "tabOverview": "Общая информация",
+    "tabTeachers": "Учителя",
+    "tabStudents": "Ученики",
+    "tabParents": "Родители",
+    "tabWarnings": "Предупреждения",
+    "tabAudit": "Аудит",
+    "noTeachers": "В этой школе пока нет учителей",
+    "noStudents": "В этой школе пока нет учеников",
+    "noParents": "В этой школе пока нет родителей",
+    "noWarnings": "Нет активных предупреждений для этой школы",
+    "noAudit": "Нет записей аудита для этой школы",
+    "totalTeachers": "Всего учителей",
+    "totalStudents": "Всего учеников",
+    "totalParents": "Всего родителей"
   },
   "studentsPage": {
     "title": "Все ученики",
@@ -429,7 +443,7 @@
     }
   },
   "warnings": {
-    "title": "ИИ-предупреждения",
+    "title": "Предупреждения",
     "subtitle": "Результаты автоматического анализа по учреждениям",
     "refresh": "Обновить",
     "kpiActive": "Активные",

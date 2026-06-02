@@ -2,6 +2,10 @@
  * Binding test: Sidebar filters nav items by hasCapability.
  * Proves the JSX wiring (NAV_ITEMS.filter → canSee → hasCapability) is correct —
  * NOT just the hasCapability logic (that's in GovAuthContext.test.js).
+ *
+ * After GOV-IA-RESTRUCTURE: Students/Teachers/Parents removed from primary nav.
+ * They are now accessed inside SchoolDetail tabs (school-centric IA).
+ * 8 nav items total: dashboard, schools, ratings, warnings, auditLog, platform, profile, settings.
  */
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
@@ -25,13 +29,10 @@ vi.mock('../context/AuthContext', () => ({
 
 const Sidebar = (await import('../components/Sidebar.jsx')).default;
 
-// Hrefs for the 11 nav items defined in NAV_ITEMS
+// Hrefs for the 8 nav items defined in NAV_ITEMS (students/teachers/parents removed from primary nav)
 const HREF = {
   dashboard:  '/government',
   schools:    '/government/schools',
-  students:   '/government/students',
-  teachers:   '/government/teachers',
-  parents:    '/government/parents',
   ratings:    '/government/ratings',
   warnings:   '/government/warnings',
   auditLog:   '/government/audit-log',
@@ -56,24 +57,24 @@ const getNavHrefs = () =>
 describe('Sidebar — capability binding', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it('republic-main: all 11 nav links rendered', () => {
+  it('republic-main: all 8 nav links rendered', () => {
     mockUseAuth.mockReturnValue(
       makeCtx({ govType: 'main', isRepublic: true, isRegionAccount: false, hasCapability: () => true })
     );
     render(<Sidebar />);
     const hrefs = getNavHrefs();
     ALL_NAV_HREFS.forEach((h) => expect(hrefs).toContain(h));
-    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(11);
+    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(8);
   });
 
-  it('region-main: all 11 nav links rendered', () => {
+  it('region-main: all 8 nav links rendered', () => {
     mockUseAuth.mockReturnValue(
       makeCtx({ govType: 'main', isRepublic: false, isRegionAccount: true, hasCapability: () => true })
     );
     render(<Sidebar />);
     const hrefs = getNavHrefs();
     ALL_NAV_HREFS.forEach((h) => expect(hrefs).toContain(h));
-    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(11);
+    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(8);
   });
 
   it('secondary {canViewSchools}: only dashboard + schools + profile + settings', () => {
@@ -91,9 +92,6 @@ describe('Sidebar — capability binding', () => {
     expect(hrefs).toContain(HREF.settings);
 
     // Gated-out items
-    expect(hrefs).not.toContain(HREF.students);
-    expect(hrefs).not.toContain(HREF.teachers);
-    expect(hrefs).not.toContain(HREF.parents);
     expect(hrefs).not.toContain(HREF.ratings);
     expect(hrefs).not.toContain(HREF.warnings);
     expect(hrefs).not.toContain(HREF.auditLog);
@@ -102,7 +100,7 @@ describe('Sidebar — capability binding', () => {
     expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(4);
   });
 
-  it('secondary {canViewSchools, canViewAuditLog}: schools + warnings + auditLog visible; directory/ratings/platform absent', () => {
+  it('secondary {canViewSchools, canViewAuditLog}: schools + warnings + auditLog visible; ratings/platform absent', () => {
     const grants = { canViewSchools: true, canViewAuditLog: true };
     mockUseAuth.mockReturnValue(
       makeCtx({ govType: 'secondary', isRepublic: false, isRegionAccount: true, hasCapability: (k) => grants[k] === true })
@@ -114,32 +112,10 @@ describe('Sidebar — capability binding', () => {
     expect(hrefs).toContain(HREF.warnings);   // canViewAuditLog gates this
     expect(hrefs).toContain(HREF.auditLog);   // canViewAuditLog gates this
 
-    expect(hrefs).not.toContain(HREF.students);
-    expect(hrefs).not.toContain(HREF.teachers);
-    expect(hrefs).not.toContain(HREF.parents);
     expect(hrefs).not.toContain(HREF.ratings);
     expect(hrefs).not.toContain(HREF.platform);
 
-    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(6);
-  });
-
-  it('secondary {canViewStudents, canViewTeachers, canViewParents}: directory items visible', () => {
-    const grants = { canViewStudents: true, canViewTeachers: true, canViewParents: true };
-    mockUseAuth.mockReturnValue(
-      makeCtx({ govType: 'secondary', isRepublic: false, isRegionAccount: true, hasCapability: (k) => grants[k] === true })
-    );
-    render(<Sidebar />);
-    const hrefs = getNavHrefs();
-
-    expect(hrefs).toContain(HREF.students);
-    expect(hrefs).toContain(HREF.teachers);
-    expect(hrefs).toContain(HREF.parents);
-
-    expect(hrefs).not.toContain(HREF.schools);
-    expect(hrefs).not.toContain(HREF.ratings);
-    expect(hrefs).not.toContain(HREF.platform);
-
-    // dashboard + students + teachers + parents + profile + settings = 6
+    // dashboard + schools + warnings + auditLog + profile + settings = 6
     expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(6);
   });
 
@@ -159,6 +135,7 @@ describe('Sidebar — capability binding', () => {
     expect(hrefs).not.toContain(HREF.warnings);
     expect(hrefs).not.toContain(HREF.auditLog);
 
+    // dashboard + platform + profile + settings = 4
     expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(4);
   });
 });

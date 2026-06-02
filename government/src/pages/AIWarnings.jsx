@@ -141,7 +141,7 @@ const AIWarnings = () => {
       <div className="flex items-start justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold text-inkGreen-900">
-            {t('warnings.title', { defaultValue: 'AI Ogohlantirishlari' })}
+            {t('warnings.title', { defaultValue: 'Ogohlantirishlar' })}
           </h1>
           <p className="text-sm text-gray-500 mt-0.5">
             {t('warnings.subtitle', { defaultValue: 'Muassasalar bo\'yicha avtomatik tahlil natijalari' })}
@@ -259,7 +259,7 @@ const AIWarnings = () => {
           ) : filter === 'active' ? (
             <>
               <p className="text-sm font-medium text-gray-600 mb-1">
-                {t('warnings.noActive', { defaultValue: "Hozircha AI ogohlantirishlar yo'q" })}
+                {t('warnings.noActive', { defaultValue: "Hozircha faol ogohlantirishlar yo'q" })}
               </p>
               <p className="text-sm text-gray-400 max-w-xs mx-auto">
                 {isRegionAccount && regionName

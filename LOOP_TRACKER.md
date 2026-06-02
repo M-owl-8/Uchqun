@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **GOV-IA-RESTRUCTURE 🟡 In progress:** Remove "AI" prefix from warning labels (all 3 locales); restructure government portal to school-centric IA — Students/Teachers/Parents removed from primary sidebar, moved inside SchoolDetail as tabs. Building tabs: Teachers, Students, Parents, Warnings (school-scoped), Audit. Backend: schoolId filter added to teachers + parents endpoints.
+
 > **GOV-REGIONS-NAME ✅ CLOSED (0deb941):** 13→14 regions renamed to official Uzbekistan administrative division names in UZ Latin / RU / UZ Cyrillic. Migration adds nameRu+nameCyrl columns; all 13 rows updated; Xorazm viloyati (r14) added as the previously-missing 14th division. useRegionName hook picks nameRu for ru language. gov.toshkent=Toshkent shahri, gov.samarqand=Samarqand viloyati — both credentials intact. `audits/redesign/GOV-REGIONS-NAME.md`.
 
 **Amendment passes:** Sub-steps (e.g. S6.1) are tracked in the Log below and as notes here. They do not add columns to the table above.

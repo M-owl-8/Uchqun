@@ -56,7 +56,7 @@
     "colStatus": "Holat",
     "refresh": "Ma'lumotlarni yangilash",
     "pendingAdmins": "Kutilayotgan admin ro'yxatdan o'tishlari",
-    "activeWarnings": "Faol AI ogohlantirishlari",
+    "activeWarnings": "Faol ogohlantirishlar",
     "andMore": "va yana {{count}} ta",
     "viewAll": "Barchasini ko'rish",
     "schoolsMore": "+{{count}} ta maktab ko'proq",
@@ -119,7 +119,21 @@
     "reactivateSuccess": "Maktab qayta faollashtirildi",
     "archiveError": "Xato yuz berdi",
     "alreadyArchived": "Maktab allaqachon arxivlangan",
-    "alreadyActive": "Maktab allaqachon faol"
+    "alreadyActive": "Maktab allaqachon faol",
+    "tabOverview": "Umumiy ma'lumot",
+    "tabTeachers": "O'qituvchilar",
+    "tabStudents": "O'quvchilar",
+    "tabParents": "Ota-onalar",
+    "tabWarnings": "Ogohlantirishlar",
+    "tabAudit": "Audit",
+    "noTeachers": "Bu maktabda hali o'qituvchilar yo'q",
+    "noStudents": "Bu maktabda hali o'quvchilar yo'q",
+    "noParents": "Bu maktabda hali ota-onalar yo'q",
+    "noWarnings": "Bu maktab uchun faol ogohlantirishlar yo'q",
+    "noAudit": "Bu maktab uchun audit yozuvlari yo'q",
+    "totalTeachers": "Jami o'qituvchilar",
+    "totalStudents": "Jami o'quvchilar",
+    "totalParents": "Jami ota-onalar"
   },
   "studentsPage": {
     "title": "Barcha o'quvchilar",
@@ -424,7 +438,7 @@
     }
   },
   "warnings": {
-    "title": "AI Ogohlantirishlari",
+    "title": "Ogohlantirishlar",
     "subtitle": "Muassasalar bo'yicha avtomatik tahlil natijalari",
     "refresh": "Yangilash",
     "kpiActive": "Faol",

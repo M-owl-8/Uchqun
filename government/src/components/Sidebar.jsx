@@ -3,9 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import {
   LayoutDashboard,
   Building2,
-  GraduationCap,
-  UserCheck,
-  Users,
   Star,
   ShieldAlert,
   ClipboardList,
@@ -21,12 +18,10 @@ import ihmaLogo from '@shared/assets/ihma-logo.png';
 
 // Capability required to show a nav item. null = always visible.
 // Arrays mean ANY of the listed grants suffices (secondary only needs one to see the tab).
+// Students, Teachers, Parents are accessed inside school detail — not top-level nav items.
 const NAV_ITEMS = [
   { href: '/government',           labelKey: 'nav.dashboard', icon: LayoutDashboard, capability: null },
   { href: '/government/schools',   labelKey: 'nav.schools',   icon: Building2,       capability: 'canViewSchools' },
-  { href: '/government/students',  labelKey: 'nav.students',  icon: GraduationCap,   capability: 'canViewStudents' },
-  { href: '/government/teachers',  labelKey: 'nav.teachers',  icon: UserCheck,       capability: 'canViewTeachers' },
-  { href: '/government/parents',   labelKey: 'nav.parents',   icon: Users,           capability: 'canViewParents' },
   { href: '/government/ratings',   labelKey: 'nav.ratings',   icon: Star,            capability: 'canViewRatings' },
   { href: '/government/warnings',  labelKey: 'nav.warnings',  icon: ShieldAlert,     capability: 'canViewAuditLog' },
   { href: '/government/audit-log', labelKey: 'nav.auditLog',  icon: ClipboardList,   capability: 'canViewAuditLog' },
