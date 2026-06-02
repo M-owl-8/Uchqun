@@ -304,9 +304,10 @@ const ParentManagement = () => {
     }
     try {
       if (editingParent) {
+        // email is intentionally excluded — accounts are immutable post-creation
         const updateData = {
           firstName: formData.firstName, lastName: formData.lastName,
-          email: formData.email, phone: formData.phone,
+          phone: formData.phone,
           teacherId: formData.teacherId || null, groupId: formData.groupId || null,
         };
         if (formData.password) updateData.password = formData.password;

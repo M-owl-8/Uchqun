@@ -1,6 +1,6 @@
 import { Mail, ChevronDown } from 'lucide-react';
 
-export default function ParentStep({ data, onChange }) {
+export default function ParentStep({ data, onChange, schoolSlug }) {
   const field = (key) => ({
     value: data[key] || '',
     onChange: (e) => onChange({ ...data, [key]: e.target.value }),
@@ -63,7 +63,7 @@ export default function ParentStep({ data, onChange }) {
               />
             </div>
             <span className="h-10 flex items-center px-3 bg-slate-100 text-slate-500 text-[13px] border-l border-slate-300 select-none whitespace-nowrap">
-              @your-school.uz
+              @{schoolSlug || 'your-school.uz'}
             </span>
           </div>
           <p className="text-[12px] text-slate-500 mt-1.5">Email domeni maktab tomonidan belgilanadi.</p>

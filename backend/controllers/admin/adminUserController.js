@@ -36,7 +36,8 @@ export const getAdmins = async (req, res) => {
 export const updateAdmin = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, phone, password } = req.body;
+    // email is intentionally excluded — accounts are immutable post-creation
+    const { firstName, lastName, phone, password } = req.body;
 
     const admin = await User.findOne({ where: { id, role: 'admin' } });
     if (!admin) {
@@ -48,14 +49,6 @@ export const updateAdmin = async (req, res) => {
       if (!admin.schoolId) return res.status(404).json({ error: 'Admin not found' });
       const school = await School.findOne({ where: { id: admin.schoolId, regionId: req.regionScope } });
       if (!school) return res.status(404).json({ error: 'Admin not found' });
-    }
-
-    if (email && email.toLowerCase() !== admin.email) {
-      const existing = await User.findOne({ where: { email: email.toLowerCase() } });
-      if (existing) {
-        return res.status(400).json({ error: 'Email already in use' });
-      }
-      admin.email = email.toLowerCase();
     }
 
     if (firstName) admin.firstName = firstName;
@@ -419,7 +412,8 @@ export const getGovernments = async (req, res) => {
 export const updateGovernmentUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, email, password } = req.body;
+    // email is intentionally excluded — accounts are immutable post-creation
+    const { firstName, lastName, password } = req.body;
 
     const government = await User.findOne({ where: { id, role: 'government' } });
     if (!government) {
@@ -435,14 +429,6 @@ export const updateGovernmentUser = async (req, res) => {
       if (government.govRegionId !== req.user.govRegionId) {
         return res.status(403).json({ success: false, error: { code: 'UPDATE_FORBIDDEN', detail: 'region accounts can only update accounts in their own region' } });
       }
-    }
-
-    if (email && email.toLowerCase() !== government.email) {
-      const existing = await User.findOne({ where: { email: email.toLowerCase() } });
-      if (existing) {
-        return res.status(400).json({ error: 'Email already in use' });
-      }
-      government.email = email.toLowerCase();
     }
 
     if (firstName) government.firstName = firstName.trim();

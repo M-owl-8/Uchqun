@@ -59,11 +59,15 @@ const ParentFormModal = ({ editingParent, formData, setFormData, teachers, group
             <label className="block text-sm font-medium text-slate-700 mb-2">{t('parentsPage.form.email')}</label>
             <input
               type="email"
-              required
               value={formData.email}
+              disabled={!!editingParent}
+              required={!editingParent}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              className={`w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent ${editingParent ? 'bg-slate-50 text-slate-500 cursor-not-allowed' : ''}`}
             />
+            {editingParent && (
+              <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange', { defaultValue: 'Email o\'zgartirib bo\'lmaydi' })}</p>
+            )}
           </div>
 
           <div>

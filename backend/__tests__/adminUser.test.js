@@ -77,14 +77,17 @@ describe('admin/adminUserController', () => {
       expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it('400 when new email already in use', async () => {
-      mockFindOne
-        .mockResolvedValueOnce({ id: 'a1', email: 'old@x.com', save: jest.fn() })
-        .mockResolvedValueOnce({ id: 'other' });
-      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { email: 'new@x.com' }, isGlobalAccess: true };
+    it('email field in body is silently ignored (immutable post-creation)', async () => {
+      const save = jest.fn().mockResolvedValue();
+      const admin = { id: 'a1', email: 'old@x.com', save, toJSON: () => ({}) };
+      mockFindOne.mockResolvedValueOnce(admin);
+      const req = { user: { id: 'g1' }, params: { id: 'a1' }, body: { email: 'new@x.com', firstName: 'Same' }, isGlobalAccess: true };
       const res = mkRes();
       await updateAdmin(req, res);
-      expect(res.status).toHaveBeenCalledWith(400);
+      // Email must not change
+      expect(admin.email).toBe('old@x.com');
+      // Other fields still update
+      expect(admin.firstName).toBe('Same');
     });
 
     it('saves changes when fields valid', async () => {

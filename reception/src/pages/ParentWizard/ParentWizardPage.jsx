@@ -37,6 +37,14 @@ export default function ParentWizardPage() {
   const [groupData, setGroupData] = useState(defaultGroup);
   const [loading, setLoading] = useState(false);
   const [draftBanner, setDraftBanner] = useState(null);
+  const [schoolSlug, setSchoolSlug] = useState('');
+
+  useEffect(() => {
+    api.get('/reception/school-info').then(res => {
+      const slug = res.data?.data?.slug;
+      if (slug) setSchoolSlug(slug);
+    }).catch(() => {});
+  }, []);
 
   // On mount: check for persisted draft — show inline banner
   useEffect(() => {
@@ -166,7 +174,7 @@ export default function ParentWizardPage() {
         loading={loading}
         title="Yangi ota-ona qo'shish"
       >
-        {step === 0 && <ParentStep data={parentData} onChange={setParentData} />}
+        {step === 0 && <ParentStep data={parentData} onChange={setParentData} schoolSlug={schoolSlug} />}
         {step === 1 && <ChildStep data={childData} onChange={setChildData} />}
         {step === 2 && (
           <GroupStep

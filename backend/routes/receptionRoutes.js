@@ -1,7 +1,7 @@
 import express from 'express';
 import { authenticate, requireReception } from '../middleware/auth.js';
 import { upload } from '../middleware/upload.js';
-import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages, deleteDocument } from '../controllers/receptionController.js';
+import { uploadDocument, getMyDocuments, getVerificationStatus, getMyMessages, deleteDocument, getSchoolInfo } from '../controllers/receptionController.js';
 import { createTeacher, getTeachers, getTeacherRatings, updateTeacher, deleteTeacher, activateTeacher, suspendTeacher, resetTeacherCredentials } from '../controllers/receptionTeacherController.js';
 import { createParent, getParents, updateParent, deleteParent, createChildForParent, updateChildForReception, deleteChildForReception, activateParent, suspendParent, resetParentCredentials } from '../controllers/receptionParentController.js';
 import { getGroups } from '../controllers/groupController.js';
@@ -25,6 +25,9 @@ const router = express.Router();
 // All routes require Reception authentication
 router.use(authenticate);
 router.use(requireReception);
+
+// School info (for email domain display in frontend forms)
+router.get('/school-info', getSchoolInfo);
 
 // Document management (for Reception's own documents)
 router.post('/documents', upload.single('file'), uploadDocument);

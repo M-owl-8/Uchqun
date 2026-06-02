@@ -184,7 +184,8 @@ export const getParents = async (req, res) => {
 export const updateParent = async (req, res) => {
   try {
     const { id } = req.params;
-    let { email, password, firstName, lastName, phone, teacherId, groupId } = req.body;
+    // email is intentionally excluded — accounts are immutable post-creation
+    let { password, firstName, lastName, phone, teacherId, groupId } = req.body;
 
     const teacherIdProvided = teacherId !== undefined;
     const groupIdProvided = groupId !== undefined;
@@ -209,7 +210,6 @@ export const updateParent = async (req, res) => {
     }
 
     const updateData = {};
-    if (email) updateData.email = email.toLowerCase();
     if (password) updateData.password = password;
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;

@@ -285,15 +285,17 @@ Introduced: Sprint E T2-10 (2026-05-20)
 
 ---
 
-## Reception Documents (`controllers/receptionController.js`)
+## Reception Documents / School Info (`controllers/receptionController.js`)
 
-Introduced: Reception S3 U-4 (2026-05-23)
+Introduced: Reception S3 U-4 (2026-05-23) · GOV-ACCOUNT-AUDIT-FIX (2026-06-02)
 
 | Code | HTTP | Meaning | Frontend translation guidance |
 |---|---|---|---|
 | `DOCUMENT_NOT_FOUND` | 404 | No document found with the given `:id` | "Document not found." |
 | `DOCUMENT_ACCESS_DENIED` | 403 | Document belongs to a different user — caller is not the owner | "You do not have permission to delete this document." |
 | `DOCUMENT_CANNOT_DELETE_NON_PENDING` | 400 | Document status is `approved` or `rejected` — only pending documents may be deleted | "Only pending documents can be deleted." |
+| `SCHOOL_NOT_ASSIGNED` | 404 | Reception user has no `schoolId` on their account | "School not assigned to your account." |
+| `SCHOOL_NOT_FOUND` | 404 | The school record referenced by `schoolId` no longer exists | "School not found." |
 
 ---
 

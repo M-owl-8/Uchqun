@@ -124,13 +124,13 @@ export const getTeachers = async (req, res) => {
 export const updateTeacher = async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, password, firstName, lastName, phone } = req.body;
+    // email is intentionally excluded — accounts are immutable post-creation
+    const { password, firstName, lastName, phone } = req.body;
 
     const teacher = await User.findOne({ where: { id, role: 'teacher', schoolId: req.user.schoolId } });
     if (!teacher) return res.status(404).json({ error: 'Teacher not found' });
 
     const updateData = {};
-    if (email) updateData.email = email.toLowerCase();
     if (password) updateData.password = password;
     if (firstName) updateData.firstName = firstName;
     if (lastName) updateData.lastName = lastName;

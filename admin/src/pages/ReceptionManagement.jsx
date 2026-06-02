@@ -271,7 +271,9 @@ const ReceptionManagement = () => {
     e.preventDefault();
     try {
       setActionLoading(true);
-      const updateData = { ...editFormData };
+      // email is intentionally excluded — accounts are immutable post-creation
+      const { email: _email, ...updateFields } = editFormData;
+      const updateData = { ...updateFields };
       if (!updateData.password) delete updateData.password;
       const res = await api.put(`/admin/receptions/${editingReception.id}`, updateData);
       const updatedReception = res.data?.data;

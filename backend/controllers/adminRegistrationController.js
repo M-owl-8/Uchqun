@@ -13,6 +13,7 @@ import { uploadFile, deleteFile } from '../config/storage.js';
 import fs from 'fs';
 import { generateSetPasswordToken } from './authController.js';
 import { logAudit } from '../utils/auditLogger.js';
+import { resolveEmailDomain } from '../utils/accountDomain.js';
 
 const TELEGRAM_USERNAME_RE = /^[a-zA-Z0-9_]{5,32}$/;
 
@@ -321,7 +322,7 @@ export const approveRegistrationRequest = async (req, res) => {
   try {
     const { id } = req.params;
     if (!isValidUuid(id)) return res.status(400).json({ error: 'Invalid ID' });
-    const { password, schoolId } = req.body;
+    const { password, schoolId, localPart } = req.body;
 
     // Generate cryptographically secure password if not provided
     const generatedPassword = password || generateSecurePassword(16);
@@ -339,13 +340,14 @@ export const approveRegistrationRequest = async (req, res) => {
       return res.status(404).json({ error: 'Registration request not found' });
     }
 
+    const finalSchoolId = schoolId || request.schoolId;
+
     // Region accounts may only approve requests for schools in their region.
     if (!req.isGlobalAccess) {
-      const targetSchoolId = schoolId || request.schoolId;
-      if (!targetSchoolId) {
+      if (!finalSchoolId) {
         return res.status(404).json({ error: 'Registration request not found' });
       }
-      const school = await School.findOne({ where: { id: targetSchoolId, regionId: req.regionScope } });
+      const school = await School.findOne({ where: { id: finalSchoolId, regionId: req.regionScope } });
       if (!school) return res.status(404).json({ error: 'Registration request not found' });
     }
 
@@ -355,14 +357,36 @@ export const approveRegistrationRequest = async (req, res) => {
       });
     }
 
-    // Check if email is already taken
+    // Resolve enforced email domain using the hierarchy (same as createAdmin).
+    // The applicant's submitted email is contact-only metadata; the login credential
+    // is derived from their firstName + the school's enforced domain.
+    let domain;
+    try {
+      domain = await resolveEmailDomain(req.user, 'admin', { schoolId: finalSchoolId });
+    } catch (err) {
+      return res.status(403).json({ success: false, error: err });
+    }
+
+    // Use provided localPart or derive from applicant's first name
+    const resolvedLocalPart = localPart
+      ? localPart.trim().toLowerCase().replace(/[^a-z0-9._-]/g, '')
+      : request.firstName.trim().toLowerCase().replace(/[^a-z0-9]/g, '');
+
+    if (!resolvedLocalPart) {
+      return res.status(400).json({ error: 'Cannot derive email local part from applicant name; provide localPart in body' });
+    }
+
+    const enforcedEmail = `${resolvedLocalPart}@${domain}`;
+
+    // Check if enforced email is already taken
     const existingUser = await User.findOne({
-      where: { email: request.email },
+      where: { email: enforcedEmail },
     });
 
     if (existingUser) {
-      return res.status(400).json({
-        error: 'Email already registered',
+      return res.status(409).json({
+        success: false,
+        error: { code: 'EMAIL_ALREADY_EXISTS', detail: `${enforcedEmail} is already in use; provide a different localPart` },
       });
     }
 
@@ -371,7 +395,7 @@ export const approveRegistrationRequest = async (req, res) => {
     let adminUser;
     await sequelize.transaction(async (t) => {
       adminUser = await User.create({
-        email: request.email,
+        email: enforcedEmail,
         password: placeholderPassword,
         firstName: request.firstName,
         lastName: request.lastName,
@@ -380,7 +404,7 @@ export const approveRegistrationRequest = async (req, res) => {
         isVerified: true,
         documentsApproved: true,
         isActive: true,
-        schoolId: schoolId || request.schoolId,
+        schoolId: finalSchoolId,
       }, { transaction: t });
 
       // Populate region/city/director on the school from registration data

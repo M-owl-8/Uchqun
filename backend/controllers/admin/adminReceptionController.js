@@ -541,7 +541,8 @@ export const createReception = async (req, res) => {
 export const updateReception = async (req, res) => {
   try {
     const { id } = req.params;
-    const { email, firstName, lastName, phone, password } = req.body;
+    // email is intentionally excluded — accounts are immutable post-creation
+    const { firstName, lastName, phone, password } = req.body;
 
     const receptionWhere = { id, role: 'reception', createdBy: req.user.id };
 
@@ -551,20 +552,6 @@ export const updateReception = async (req, res) => {
 
     if (!reception) {
       return res.status(404).json({ error: 'Reception account not found' });
-    }
-
-    // Check if email is being changed and if it's already taken
-    if (email && email.toLowerCase() !== reception.email) {
-      const existingUser = await User.findOne({
-        where: {
-          email: email.toLowerCase(),
-          id: { [Op.ne]: id }
-        }
-      });
-      if (existingUser) {
-        return res.status(400).json({ error: 'Email already in use' });
-      }
-      reception.email = email.toLowerCase();
     }
 
     if (firstName) reception.firstName = firstName;

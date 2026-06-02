@@ -1,5 +1,6 @@
 import Document from '../models/Document.js';
 import GovernmentMessage from '../models/GovernmentMessage.js';
+import School from '../models/School.js';
 import logger from '../utils/logger.js';
 import { uploadFile } from '../config/storage.js';
 import { fileTypeFromBuffer } from 'file-type';
@@ -119,5 +120,28 @@ export const getMyMessages = async (req, res) => {
   } catch (error) {
     logger.error('Get my messages error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch messages' });
+  }
+};
+
+/**
+ * Get the reception user's school info (name + slug) for email domain display.
+ * GET /api/reception/school-info
+ * Reception role only.
+ */
+export const getSchoolInfo = async (req, res) => {
+  try {
+    if (!req.user.schoolId) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_ASSIGNED' } });
+    }
+    const school = await School.findByPk(req.user.schoolId, {
+      attributes: ['id', 'name', 'slug'],
+    });
+    if (!school) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_FOUND' } });
+    }
+    return res.json({ success: true, data: { id: school.id, name: school.name, slug: school.slug } });
+  } catch (error) {
+    logger.error('getSchoolInfo error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: { code: 'INTERNAL_ERROR' } });
   }
 };

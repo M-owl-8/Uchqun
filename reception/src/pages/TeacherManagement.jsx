@@ -53,6 +53,14 @@ const TeacherManagement = () => {
   useEffect(() => { showErrorRef.current = showError; }, [showError]);
   const [showPassword, setShowPassword] = useState(false);
   const [tempPassword, setTempPassword] = useState(null);
+  const [schoolSlug, setSchoolSlug] = useState('');
+
+  useEffect(() => {
+    api.get('/reception/school-info').then(res => {
+      const slug = res.data?.data?.slug;
+      if (slug) setSchoolSlug(slug);
+    }).catch(() => {});
+  }, []);
 
   const loadTeachers = useCallback(async (bust = false) => {
     const CACHE_KEY = 'reception:teachers';
@@ -207,14 +215,12 @@ const TeacherManagement = () => {
     
     try {
       if (editingTeacher) {
-        // Update teacher info
+        // Update teacher info — email is not sent (immutable post-creation)
         const updateData = {
           firstName: formData.firstName,
           lastName: formData.lastName,
-          email: formData.email,
           phone: formData.phone,
         };
-        // Include password in update if provided
         if (formData.password) {
           updateData.password = formData.password;
         }
@@ -537,19 +543,28 @@ const TeacherManagement = () => {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">{t('teachersPage.form.email')}</label>
-                <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-brand-500">
+                {editingTeacher ? (
                   <input
-                    type="text"
-                    required={!editingTeacher}
-                    value={formData.localPart || ''}
-                    onChange={(e) => setFormData({ ...formData, localPart: e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, '') })}
-                    placeholder="zulfiya"
-                    className="flex-1 px-4 py-3 border-0 outline-none bg-transparent"
+                    type="email"
+                    value={formData.email || ''}
+                    disabled
+                    className="w-full px-4 py-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
                   />
-                  <span className="px-3 py-3 bg-slate-100 text-slate-500 text-sm border-l border-slate-200 select-none whitespace-nowrap">
-                    @your-school.uz
-                  </span>
-                </div>
+                ) : (
+                  <div className="flex items-center border border-slate-200 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-brand-500">
+                    <input
+                      type="text"
+                      required
+                      value={formData.localPart || ''}
+                      onChange={(e) => setFormData({ ...formData, localPart: e.target.value.toLowerCase().replace(/[^a-z0-9._-]/g, '') })}
+                      placeholder="zulfiya"
+                      className="flex-1 px-4 py-3 border-0 outline-none bg-transparent"
+                    />
+                    <span className="px-3 py-3 bg-slate-100 text-slate-500 text-sm border-l border-slate-200 select-none whitespace-nowrap">
+                      @{schoolSlug || 'your-school.uz'}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div>
