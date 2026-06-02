@@ -155,6 +155,7 @@
   "DOCUMENT_NOT_FOUND": "Ҳужжат топилмади.",
   "DOCUMENT_ACCESS_DENIED": "Сиз бу ҳужжатни ўчириш ҳуқуқига эга эмассиз.",
   "DOCUMENT_CANNOT_DELETE_NON_PENDING": "Фақат кутилаётган ҳужжатларни ўчириш мумкин.",
+  "SCHOOL_NOT_ASSIGNED": "Ҳисобингизга мактаб бириктирилмаган.",
   "RECEPTION_PARENT_ACTIVATE_FORBIDDEN": "Сиз ота-оналар ҳисобини фаоллаштириш ҳуқуқига эга эмассиз.",
   "RECEPTION_PARENT_SUSPEND_FORBIDDEN": "Сиз ота-оналар ҳисобини тўхтатиш ҳуқуқига эга эмассиз.",
   "RECEPTION_CREDENTIAL_RESET_FORBIDDEN": "Сиз кириш маълумотларини тиклаш ҳуқуқига эга эмассиз.",

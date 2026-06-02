@@ -4,7 +4,7 @@ import { Phone } from 'lucide-react';
  * CallTeacherButton — tel: link styled as a secondary action.
  * Renders nothing when phone is absent.
  */
-const CallTeacherButton = ({ phone, label = "O'qituvchiga qo'ng'iroq" }) => {
+const CallTeacherButton = ({ phone, label = "Tarbiyachiga qo'ng'iroq" }) => {
   if (!phone) return null;
 
   return (

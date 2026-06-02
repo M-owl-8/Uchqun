@@ -189,7 +189,7 @@ const ChildIRR = () => {
             {t('irr.noSessionsParent', { defaultValue: "Hali baholash o'tkazilmagan." })}
           </p>
           <p className="text-[13px] text-p-sepia-400">
-            {t('irr.noSessionsParentDesc', { defaultValue: "O'qituvchi birinchi baholashdan keyin bu yerda ko'rinadi." })}
+            {t('irr.noSessionsParentDesc', { defaultValue: "Tarbiyachi birinchi baholashdan keyin bu yerda ko'rinadi." })}
           </p>
         </section>
       )}
@@ -241,7 +241,7 @@ const ChildIRR = () => {
       {goals && goals.longTermGoals?.length === 0 && (
         <section data-testid="ltg-empty" className="page-card rounded-xl p-5 text-center py-8">
           <p className="text-[14px] text-p-sepia-400">
-            {t('irr.noGoalsParent', { defaultValue: "Hali uzoq muddatli maqsadlar belgilanmagan. O'qituvchi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi." })}
+            {t('irr.noGoalsParent', { defaultValue: "Hali uzoq muddatli maqsadlar belgilanmagan. Tarbiyachi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi." })}
           </p>
         </section>
       )}

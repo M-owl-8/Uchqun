@@ -367,7 +367,7 @@ const Dashboard = () => {
               <dd className="num font-semibold text-slate-900">{stats?.parents ?? 0}</dd>
             </div>
             <div className="px-5 py-3 flex items-baseline justify-between">
-              <dt className="text-slate-500">{t('dashboard.totalTeachers', { defaultValue: "O'qituvchilar" })}</dt>
+              <dt className="text-slate-500">{t('dashboard.totalTeachers', { defaultValue: "Tarbiyachilar" })}</dt>
               <dd className="num font-semibold text-slate-900">{stats?.teachers ?? 0}</dd>
             </div>
             <div className="px-5 py-3 flex items-baseline justify-between">

@@ -83,7 +83,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
                 </div>
                 {group.teacher && (
                   <div className="mt-3 text-[12.5px] text-slate-700">
-                    {"O'qituvchi"} · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
+                    {"Tarbiyachi"} · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
                   </div>
                 )}
                 <div className="mt-3">

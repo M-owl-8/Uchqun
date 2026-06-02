@@ -20,9 +20,12 @@ const School = sequelize.define('School', {
     },
   },
   type: {
-    type: DataTypes.ENUM('school', 'kindergarten', 'both'),
-    defaultValue: 'both',
+    type: DataTypes.STRING(32),
+    defaultValue: 'support',
     allowNull: false,
+    validate: {
+      isIn: [['daycare', 'early_preschool', 'support', 'early_intervention', 'home_care']],
+    },
   },
   address: {
     type: DataTypes.TEXT,

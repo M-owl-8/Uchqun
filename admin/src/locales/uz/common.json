@@ -9,7 +9,7 @@
     "dashboard": "Bosh sahifa",
     "receptions": "Qabul boshqaruvi",
     "parents": "Ota-onalar",
-    "teachers": "O'qituvchilar",
+    "teachers": "Tarbiyachilar",
     "groups": "Guruhlar",
     "schoolRatings": "Muassasa baholari",
     "documents": "Hujjatlar navbati",
@@ -60,7 +60,7 @@
     "pending": "Kutilayotgan vazifalar",
     "receptionCard": "Qabul boshqaruvi",
     "parentsCard": "Ota-onalar",
-    "teachersCard": "O‘qituvchilar",
+    "teachersCard": "Tarbiyachilar",
     "groupsCard": "Guruhlar",
     "pendingDocuments": "Kutilayotgan hujjatlar",
     "pendingDocumentsDesc": "Tasdiqlash uchun {{count}} ta hujjat bor.",
@@ -94,13 +94,13 @@
     "dataError": "Ota-ona ma’lumotlarini yuklab bo‘lmadi"
   },
   "teachersPage": {
-    "title": "O‘qituvchilar boshqaruvi",
-    "subtitle": "O‘qituvchi akkauntlarini ko‘rish (faqat o‘qish)",
-    "search": "O‘qituvchilarni qidirish...",
-    "emptySearch": "O‘qituvchilar topilmadi",
-    "empty": "Hozircha o‘qituvchilar yo‘q",
-    "badge": "O‘qituvchi akkaunti",
-    "loadError": "O‘qituvchilarni yuklab bo‘lmadi"
+    "title": "Tarbiyachilar boshqaruvi",
+    "subtitle": "Tarbiyachi akkauntlarini ko’rish (faqat o’qish)",
+    "search": "Tarbiyachilarni qidirish...",
+    "emptySearch": "Tarbiyachilar topilmadi",
+    "empty": "Hozircha tarbiyachilar yo’q",
+    "badge": "Tarbiyachi akkaunti",
+    "loadError": "Tarbiyachilarni yuklab bo’lmadi"
   },
   "groupsPage": {
     "title": "Guruh boshqaruvi",
@@ -270,13 +270,13 @@
     "saveError": "O'zgarishlarni saqlashda xatolik"
   },
   "teacherDetail": {
-    "back": "O'qituvchilarga qaytish",
+    "back": "Tarbiyachilarga qaytish",
     "groups": "Tayinlangan guruhlar",
     "noGroups": "Guruhlar tayinlanmagan",
     "groupName": "Guruh",
     "ageRange": "Yosh oralig'i",
     "capacity": "Sig'imi",
-    "loadError": "O'qituvchini yuklab bo'lmadi",
+    "loadError": "Tarbiyachini yuklab bo'lmadi",
     "viewOnly": "Faqat ko'rish — qabul tomonidan boshqariladi"
   },
   "activityFeed": {
@@ -359,11 +359,11 @@
     "title": "Muloqotlar",
     "subtitle": "Maktabingizdagi xodim-ota-ona suhbatlarini faqat ko'rish",
     "noConversations": "Faol suhbatlar yo'q",
-    "noConversationsSub": "Ota-onalar va o'qituvchilar xabar yuborgach, suhbatlar bu yerda ko'rinadi",
+    "noConversationsSub": "Ota-onalar va tarbiyachilar xabar yuborgach, suhbatlar bu yerda ko'rinadi",
     "selectConversation": "Xabarlarni ko'rish uchun suhbatni tanlang",
     "unread": "{{count}} ta o'qilmagan",
     "roleParent": "Ota-ona",
-    "roleTeacher": "O'qituvchi / Xodim",
+    "roleTeacher": "Tarbiyachi / Xodim",
     "loadError": "Suhbatlarni yuklab bo'lmadi",
     "messagesLoadError": "Xabarlarni yuklab bo'lmadi",
     "readOnly": "Faqat o'qish — admin xabar yubora olmaydi"

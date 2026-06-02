@@ -155,6 +155,7 @@
   "DOCUMENT_NOT_FOUND": "Документ не найден.",
   "DOCUMENT_ACCESS_DENIED": "У вас нет прав на удаление этого документа.",
   "DOCUMENT_CANNOT_DELETE_NON_PENDING": "Удалять можно только документы со статусом «Ожидает проверки».",
+  "SCHOOL_NOT_ASSIGNED": "К вашему аккаунту не привязана школа.",
   "RECEPTION_PARENT_ACTIVATE_FORBIDDEN": "У вас нет прав для активации аккаунтов родителей.",
   "RECEPTION_PARENT_SUSPEND_FORBIDDEN": "У вас нет прав для приостановки аккаунтов родителей.",
   "RECEPTION_CREDENTIAL_RESET_FORBIDDEN": "У вас нет прав для сброса учётных данных.",

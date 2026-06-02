@@ -3,7 +3,7 @@
   "nav": {
     "dashboard": "Bosh sahifa",
     "parents": "Ota-onalar",
-    "teachers": "O'qituvchilar",
+    "teachers": "Tarbiyachilar",
     "groups": "Guruhlar",
     "settings": "Sozlamalar",
     "logout": "Chiqish",
@@ -40,15 +40,15 @@
     "welcome": "Xush kelibsiz",
     "stats": "Statistika",
     "totalParents": "Jami ota-onalar",
-    "totalTeachers": "Jami o'qituvchilar",
+    "totalTeachers": "Jami tarbiyachilar",
     "totalGroups": "Jami guruhlar",
     "child": "bola",
     "children": "bola",
-    "teachersList": "O'qituvchilar",
+    "teachersList": "Tarbiyachilar",
     "parentsList": "Ota-onalar",
-    "noTeachers": "Hozircha o'qituvchilar yo'q",
+    "noTeachers": "Hozircha tarbiyachilar yo'q",
     "noParents": "Hozircha ota-onalar yo'q",
-    "addTeacher": "O'qituvchi qo'shish",
+    "addTeacher": "Tarbiyachi qo'shish",
     "addParent": "Ota-ona qo'shish",
     "viewAll": "Barchasi",
     "active": "Aktiv",
@@ -68,7 +68,7 @@
     "search": "Ota-onalarni qidirish...",
     "add": "Ota-ona qo'shish",
     "assignment": "Biriktirish",
-    "teacherLabel": "O'qituvchi:",
+    "teacherLabel": "Tarbiyachi:",
     "groupLabel": "Guruh:",
     "children": "{{count}} bola",
     "children_plural": "{{count}} bola",
@@ -90,7 +90,7 @@
       "email": "Email",
       "phone": "Telefon",
       "password": "Parol",
-      "teacher": "O'qituvchi",
+      "teacher": "Tarbiyachi",
       "group": "Guruh",
       "child": "Bola (ixtiyoriy)",
       "childFirstName": "Bola ismi",
@@ -134,20 +134,20 @@
     "failedUpdateChild": "Bolani yangilashda xatolik"
   },
   "teachersPage": {
-    "title": "O'qituvchilarni boshqarish",
-    "subtitle": "O'qituvchi akkauntlarini yaratish va boshqarish",
-    "search": "O'qituvchilarni qidirish...",
-    "add": "O'qituvchi qo'shish",
-    "noTeachers": "Hozircha o'qituvchilar yo'q",
-    "noTeachersFound": "O'qituvchilar topilmadi",
-    "addFirst": "Birinchi o'qituvchini qo'shish",
-    "confirmDelete": "Ushbu o'qituvchi akkauntini o'chirmoqchimisiz?",
-    "toastCreate": "O'qituvchi akkaunti yaratildi",
-    "toastUpdate": "O'qituvchi akkaunti yangilandi",
-    "toastDelete": "O'qituvchi akkaunti o'chirildi",
-    "toastSaveError": "O'qituvchi akkauntini saqlashda xatolik",
-    "toastLoadError": "O'qituvchilarni yuklashda xatolik",
-    "toastDeleteError": "O'qituvchi akkauntini o'chirishda xatolik",
+    "title": "Tarbiyachilarni boshqarish",
+    "subtitle": "Tarbiyachi akkauntlarini yaratish va boshqarish",
+    "search": "Tarbiyachilarni qidirish...",
+    "add": "Tarbiyachi qo'shish",
+    "noTeachers": "Hozircha tarbiyachilar yo'q",
+    "noTeachersFound": "Tarbiyachilar topilmadi",
+    "addFirst": "Birinchi tarbiyachini qo'shish",
+    "confirmDelete": "Ushbu tarbiyachi akkauntini o'chirmoqchimisiz?",
+    "toastCreate": "Tarbiyachi akkaunti yaratildi",
+    "toastUpdate": "Tarbiyachi akkaunti yangilandi",
+    "toastDelete": "Tarbiyachi akkaunti o'chirildi",
+    "toastSaveError": "Tarbiyachi akkauntini saqlashda xatolik",
+    "toastLoadError": "Tarbiyachilarni yuklashda xatolik",
+    "toastDeleteError": "Tarbiyachi akkauntini o'chirishda xatolik",
     "ratings": {
       "title": "Ota-onalar fikri",
       "average": "O'rtacha baho",
@@ -193,14 +193,14 @@
     "form": {
       "name": "Guruh nomi",
       "description": "Tavsif",
-      "teacher": "O'qituvchi",
+      "teacher": "Tarbiyachi",
       "capacity": "Sig'im",
       "ageRange": "Yosh oralig'i",
       "save": "Saqlash",
       "cancel": "Bekor qilish",
       "create": "Yaratish",
       "update": "Yangilash",
-      "selectTeacher": "O'qituvchi tanlang",
+      "selectTeacher": "Tarbiyachi tanlang",
       "delete": "O'chirish"
     },
     "buttons": {
@@ -209,7 +209,7 @@
     },
     "labels": {
       "capacity": "Sig'im:",
-      "teacher": "O'qituvchi:"
+      "teacher": "Tarbiyachi:"
     }
   },
   "settings": {
@@ -291,11 +291,11 @@
     }
   },
   "palette": {
-    "placeholder": "Ota-ona, o'qituvchi, guruh yoki amal qidiring…",
+    "placeholder": "Ota-ona, tarbiyachi, guruh yoki amal qidiring…",
     "noResults": "Natija topilmadi",
     "quickActions": "Tezkor amallar",
     "parents": "Ota-onalar",
-    "teachers": "O'qituvchilar",
+    "teachers": "Tarbiyachilar",
     "groups": "Guruhlar"
   },
   "documents": {

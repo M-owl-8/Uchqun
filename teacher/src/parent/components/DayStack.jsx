@@ -12,7 +12,7 @@ const DayStack = ({ days = [], onDayClick }) => {
           Hali ma'lumot yo'q
         </p>
         <p className="mt-1 text-[13px] text-p-sepia-400">
-          O'qituvchi faoliyatni kiritgach, bu yerda ko'rinadi.
+          Tarbiyachi faoliyatni kiritgach, bu yerda ko'rinadi.
         </p>
       </div>
     );

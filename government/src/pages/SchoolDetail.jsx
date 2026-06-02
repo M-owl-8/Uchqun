@@ -214,7 +214,16 @@ const OverviewTab = ({ school, canRate, onRefresh }) => {
           </div>
           <div className="px-5 py-4 grid grid-cols-2 gap-x-8 gap-y-4">
             {[
-              { label: t('schoolDetail.type', { defaultValue: 'Tur' }), value: school.type || '—' },
+              { label: t('schoolDetail.type', { defaultValue: 'Tur' }), value: (() => {
+                const typeMap = {
+                  daycare: t('schools.typeDaycare', { defaultValue: 'Kunduzgi parvarish' }),
+                  early_preschool: t('schools.typeEarlyPreschool', { defaultValue: 'Yangi kun' }),
+                  support: t('schools.typeSupport', { defaultValue: 'Madad' }),
+                  early_intervention: t('schools.typeEarlyIntervention', { defaultValue: 'Erta aralashuv' }),
+                  home_care: t('schools.typeHomeCare', { defaultValue: 'Uyda qarab turish' }),
+                };
+                return typeMap[school.type] || school.type || '—';
+              })() },
               { label: t('schoolDetail.region', { defaultValue: 'Viloyat' }), value: school.region || '—' },
               { label: t('schoolDetail.city', { defaultValue: 'Shahar' }), value: school.city || '—' },
               { label: t('schoolDetail.phone', { defaultValue: 'Telefon' }), value: school.phone || '—' },
@@ -238,7 +247,7 @@ const OverviewTab = ({ school, canRate, onRefresh }) => {
           <div className="divide-y divide-gray-50">
             {[
               { icon: Users,     label: t('schoolDetail.students', { defaultValue: "O'quvchilar" }), value: school.studentsCount || 0 },
-              { icon: UserCheck, label: t('schoolDetail.teachers', { defaultValue: "O'qituvchilar" }), value: school.teachersCount || 0 },
+              { icon: UserCheck, label: t('schoolDetail.teachers', { defaultValue: "Tarbiyachilar" }), value: school.teachersCount || 0 },
               { icon: FileText,  label: t('schoolDetail.ratings',  { defaultValue: 'Baholar' }),       value: school.ratingsCount || 0 },
             ].map(({ icon: Icon, label, value }) => (
               <div key={label} className="flex items-center justify-between px-5 py-3">
@@ -567,7 +576,7 @@ const AuditTab = ({ schoolId }) => {
 
 const TABS = [
   { id: 'overview',  labelKey: 'schoolDetail.tabOverview',  defaultLabel: "Umumiy ma'lumot" },
-  { id: 'teachers',  labelKey: 'schoolDetail.tabTeachers',  defaultLabel: "O'qituvchilar" },
+  { id: 'teachers',  labelKey: 'schoolDetail.tabTeachers',  defaultLabel: "Tarbiyachilar" },
   { id: 'students',  labelKey: 'schoolDetail.tabStudents',  defaultLabel: "O'quvchilar" },
   { id: 'parents',   labelKey: 'schoolDetail.tabParents',   defaultLabel: 'Ota-onalar' },
   { id: 'warnings',  labelKey: 'schoolDetail.tabWarnings',  defaultLabel: 'Ogohlantirishlar' },

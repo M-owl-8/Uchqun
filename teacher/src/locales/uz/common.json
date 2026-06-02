@@ -15,7 +15,7 @@
     "settings": "Sozlamalar"
   },
   "sidebar": {
-    "title": "Uchqun O'qituvchi",
+    "title": "Uchqun Tarbiyachi",
     "menu": "Asosiy menyu",
     "section": {
       "today": "Bugun",
@@ -65,14 +65,14 @@
     "submit": "Kirish",
     "loading": "Kirish...",
     "invalid": "Email yoki parol noto'g'ri",
-    "invalidRole": "Faqat o'qituvchi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.",
+    "invalidRole": "Faqat tarbiyachi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
     "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
     "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning."
   },
   "dashboard": {
-    "role": "Mening rolim: O'qituvchi",
-    "roleTeacher": "Mening rolim: O'qituvchi",
+    "role": "Mening rolim: Tarbiyachi",
+    "roleTeacher": "Mening rolim: Tarbiyachi",
     "roleAdmin": "Mening rolim: Admin",
     "welcome": "Xush kelibsiz",
     "overview": "Umumiy ko'rinish",
@@ -109,7 +109,7 @@
     "filterPhysical": "Jismoniy",
     "duration": "{{count}} daq",
     "engagement": "Ishtirok",
-    "teacher": "O'qituvchi",
+    "teacher": "Tarbiyachi",
     "notes": "Izohlar",
     "empty": "Hozircha ushbu turdagi mashg'ulotlar yo'q",
     "edit": "Tahrirlash",
@@ -287,7 +287,7 @@
     "empty": "Hozircha xabarlar yo'q",
     "you": "Siz",
     "parent": "Ota-ona",
-    "teacher": "O'qituvchi",
+    "teacher": "Tarbiyachi",
     "edit": "Tahrirlash",
     "delete": "O'chirish",
     "confirmDelete": "Ushbu xabar o'chirilsinmi?",
@@ -446,8 +446,8 @@
     "noSessions": "Hali baholash sessiyalari o'tkazilmagan. Yangi sessiya yaratish uchun yuqoridagi formdan foydalaning.",
     "noDailyEntries": "Hali kundalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi.",
     "noWeeklyEntries": "Hali haftalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi.",
-    "noSessionsParent": "Hali baholash o'tkazilmagan. O'qituvchi birinchi baholashdan keyin bu yerda ko'rinadi.",
-    "noGoalsParent": "Hali uzoq muddatli maqsadlar belgilanmagan. O'qituvchi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi.",
+    "noSessionsParent": "Hali baholash o'tkazilmagan. Tarbiyachi birinchi baholashdan keyin bu yerda ko'rinadi.",
+    "noGoalsParent": "Hali uzoq muddatli maqsadlar belgilanmagan. Tarbiyachi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi.",
     "noPeriodsParent": "Hali maqsad davrlari yaratilmagan."
   },
   "common": {
@@ -469,7 +469,7 @@
   },
   "profile": {
     "emotionalEmpty": "Emotsional kuzatuv hali yo'q",
-    "emotionalEmptyDesc": "O'qituvchi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi.",
+    "emotionalEmptyDesc": "Tarbiyachi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi.",
     "noMessagesSent": "Hali yuborilgan xabar yo'q"
   }
 }

@@ -155,7 +155,7 @@ const TeacherManagement = () => {
   const handleDelete = (teacherId) => {
     setConfirmDialog({
       message: t('teachersPage.confirmDelete'),
-      warning: t('teachersPage.confirmDeleteWarning', { defaultValue: "O'qituvchi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
+      warning: t('teachersPage.confirmDeleteWarning', { defaultValue: "Tarbiyachi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -172,7 +172,7 @@ const TeacherManagement = () => {
   const handleActivateTeacher = async (teacherId) => {
     try {
       await api.put(`/reception/teachers/${teacherId}/activate`);
-      success(t('teachersPage.toastActivated', { defaultValue: "O'qituvchi faollashtirildi" }));
+      success(t('teachersPage.toastActivated', { defaultValue: "Tarbiyachi faollashtirildi" }));
       loadTeachers(true);
     } catch (error) {
       showError(error.response?.data?.error?.detail || t('teachersPage.toastActivateError', { defaultValue: "Faollashtirib bo'lmadi" }));
@@ -186,7 +186,7 @@ const TeacherManagement = () => {
         setConfirmDialog(null);
         try {
           await api.put(`/reception/teachers/${teacherId}/suspend`);
-          success(t('teachersPage.toastSuspended', { defaultValue: "O'qituvchi to'xtatildi" }));
+          success(t('teachersPage.toastSuspended', { defaultValue: "Tarbiyachi to'xtatildi" }));
           loadTeachers(true);
         } catch (error) {
           showError(error.response?.data?.error?.detail || t('teachersPage.toastSuspendError', { defaultValue: "To'xtatib bo'lmadi" }));

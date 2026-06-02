@@ -77,9 +77,11 @@ const Schools = () => {
   }
 
   const typeLabel = (type) => {
-    if (type === 'school') return t('schools.typeSchool', { defaultValue: 'Maktab' });
-    if (type === 'kindergarten') return t('schools.typeKindergarten', { defaultValue: "Bog'cha" });
-    if (type === 'both') return t('schools.typeBoth', { defaultValue: 'Aralash' });
+    if (type === 'daycare') return t('schools.typeDaycare', { defaultValue: 'Kunduzgi parvarish' });
+    if (type === 'early_preschool') return t('schools.typeEarlyPreschool', { defaultValue: 'Yangi kun' });
+    if (type === 'support') return t('schools.typeSupport', { defaultValue: 'Madad' });
+    if (type === 'early_intervention') return t('schools.typeEarlyIntervention', { defaultValue: 'Erta aralashuv' });
+    if (type === 'home_care') return t('schools.typeHomeCare', { defaultValue: 'Uyda qarab turish' });
     return type || '—';
   };
 
@@ -144,9 +146,11 @@ const Schools = () => {
           className="px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-white"
         >
           <option value="">{t('schools.allTypes', { defaultValue: 'Barcha turlar' })}</option>
-          <option value="school">{t('schools.typeSchool', { defaultValue: 'Maktab' })}</option>
-          <option value="kindergarten">{t('schools.typeKindergarten', { defaultValue: "Bog'cha" })}</option>
-          <option value="both">{t('schools.typeBoth', { defaultValue: 'Aralash' })}</option>
+          <option value="daycare">{t('schools.typeDaycare', { defaultValue: 'Kunduzgi parvarish' })}</option>
+          <option value="early_preschool">{t('schools.typeEarlyPreschool', { defaultValue: 'Yangi kun' })}</option>
+          <option value="support">{t('schools.typeSupport', { defaultValue: 'Madad' })}</option>
+          <option value="early_intervention">{t('schools.typeEarlyIntervention', { defaultValue: 'Erta aralashuv' })}</option>
+          <option value="home_care">{t('schools.typeHomeCare', { defaultValue: 'Uyda qarab turish' })}</option>
         </select>
       </div>
 

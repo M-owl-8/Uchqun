@@ -18,7 +18,7 @@ const ERROR_CODE_MAP = {
   IMPORT_ROW_GENDER_INVALID: "Jinsi noto'g'ri (Male, Female yoki Other kerak)",
   IMPORT_ROW_DISABILITY_TYPE_REQUIRED: "Imkoniyat cheklovi turi majburiy",
   IMPORT_ROW_CLASS_REQUIRED: "Sinf/guruh majburiy",
-  IMPORT_ROW_TEACHER_REQUIRED: "O'qituvchi majburiy",
+  IMPORT_ROW_TEACHER_REQUIRED: "Tarbiyachi majburiy",
   IMPORT_ROW_CREATE_FAILED: "Yozuvni saqlashda xatolik — qayta urinib ko'ring",
 };
 

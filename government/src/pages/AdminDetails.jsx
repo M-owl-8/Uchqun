@@ -65,7 +65,7 @@ const AdminDetails = () => {
   const statCards = [
     { title: t('adminDetails.students',   { defaultValue: "O'quvchilar" }),   value: stats.students   || 0, icon: Baby,         description: t('adminDetails.studentsDesc',   { defaultValue: "Jami o'quvchilar soni" }) },
     { title: t('adminDetails.parents',    { defaultValue: 'Ota-onalar' }),    value: stats.parents    || 0, icon: Users,        description: t('adminDetails.parentsDesc',    { defaultValue: 'Jami ota-onalar soni' }) },
-    { title: t('adminDetails.teachers',   { defaultValue: "O'qituvchilar" }), value: stats.teachers   || 0, icon: GraduationCap, description: t('adminDetails.teachersDesc',  { defaultValue: "Jami o'qituvchilar soni" }) },
+    { title: t('adminDetails.teachers',   { defaultValue: "Tarbiyachilar" }), value: stats.teachers   || 0, icon: GraduationCap, description: t('adminDetails.teachersDesc',  { defaultValue: "Jami tarbiyachilar soni" }) },
     { title: t('adminDetails.receptions', { defaultValue: 'Receptionlar' }),  value: stats.receptions || 0, icon: UserCheck,    description: t('adminDetails.receptionsDesc', { defaultValue: 'Jami receptionlar soni' }) },
   ];
 
@@ -213,7 +213,7 @@ const AdminDetails = () => {
 
       <Card>
         <h2 className="text-base font-semibold text-gray-900 mb-3">
-          {t('adminDetails.teachers', { defaultValue: "O'qituvchilar" })}
+          {t('adminDetails.teachers', { defaultValue: "Tarbiyachilar" })}
           {teachers.length > 0 && ` (${teachers.length})`}
         </h2>
         {teachers.length > 0 ? (

@@ -24,7 +24,7 @@ const EmotionalMonitoringSection = ({ records }) => {
             {t('profile.emotionalEmpty', { defaultValue: "Emotsional kuzatuv hali yo'q" })}
           </p>
           <p className="text-[13px] text-slate-400 max-w-xs">
-            {t('profile.emotionalEmptyDesc', { defaultValue: "O'qituvchi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi." })}
+            {t('profile.emotionalEmptyDesc', { defaultValue: "Tarbiyachi farzandingizning kuzatuvini boshlagandan so'ng, ma'lumotlar bu yerda ko'rinadi." })}
           </p>
         </div>
       </section>
