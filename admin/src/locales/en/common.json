@@ -2,35 +2,36 @@
   "nav": {
     "section": {
       "management": "Management",
-      "documents": "Documents",
+      "communications": "Communications",
       "reports": "Reports",
-      "settings": "Settings"
+      "settings": "System"
     },
     "dashboard": "Dashboard",
     "receptions": "Reception Management",
-    "pnts": "Pnts",
+    "pnts": "PNTS",
     "teachers": "Teachers",
     "groups": "Groups",
-    "schoolRatings": "School Ratings",
+    "schoolRatings": "Institution Ratings",
     "documents": "Document Queue",
-    "aiWarnings": "AI Warnings",
+    "aiWarnings": "Warnings",
     "therapy": "Therapy Management",
     "parents": "Parents",
     "profile": "Profile",
     "settings": "Settings",
     "menu": "Main menu",
     "import": "Bulk Import",
-    "school": "School Profile",
+    "school": "Institution Profile",
     "activity": "Activity Feed",
     "communications": "Communications",
     "govMessages": "Messages",
     "trash": "Trash"
   },
   "sidebar": {
-    "title": "Uchqun Admin",
-    "menu": "System Menu"
+    "title": "Uchqun",
+    "menu": "System Menu",
+    "school": "Institution"
   },
-  "role.admin": "Administrator",
+  "role.admin": "Director",
   "logout": "Logout",
   "mobileNav": {
     "reception": "Reception",
@@ -55,7 +56,7 @@
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",
-    "role": "My Role: Admin",
+    "role": "My Role: Director",
     "subtitle": "System administration and reception verification",
     "overview": "System Overview",
     "pending": "Pending Assignments",

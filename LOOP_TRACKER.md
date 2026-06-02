@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **ADMIN-PORTAL-FOUNDATION 🟡 In progress:** 7-phase foundational cleanup: banner removal, spot-color discipline, Direktor/Muassasa rename (cross-portal), sidebar consolidation (18→14 items), language switcher to dropdown in sidebar, dashboard restructure. Pending user Railway verification. `audits/redesign/ADMIN-PORTAL-FOUNDATION.md`.
+
 > **ADMIN-AUTH-REDESIGN 🟡 In progress:** Split-screen Login page redesign for admin portal. Direktor/Muassasa terminology corrections + dropdown language switcher. New DNP component set (Field, PrimaryButton, Checkbox, InlineLink, SecurePill, LangDropdown, Spinner) + identity primitives (UEmblem, GuillochePattern) + icon copies. Tailwind panel/layout tokens added. Locale files updated UZ/RU/EN. Pending: user Railway visual verification + ADMIN-LOCALE-HYGIENE follow-up for wider portal drift. `audits/redesign/ADMIN-AUTH-REDESIGN.md`.
 
 > **GOV-FORCE-PASSWORD-FLOW ✅ CLOSED (pending user Railway verification):** Compound bug: backend returned 401 for wrong currentPassword → Axios interceptor treated as token-expiry → tried refresh+retry → clearAuth() → session destroyed, no error shown. Fix: backend now returns 400 CURRENT_PASSWORD_INCORRECT (2 lines: userController.js + ChangePassword.jsx). 7 new frontend tests (ChangePassword.test.jsx). Backend 135/135 1422/1422, gov 18/18 127/127 green. `audits/redesign/GOV-FORCE-PASSWORD-FLOW.md`.

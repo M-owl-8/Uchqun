@@ -2,9 +2,9 @@
   "nav": {
     "section": {
       "management": "Boshqaruv",
-      "documents": "Hujjatlar",
+      "communications": "Aloqa",
       "reports": "Hisobotlar",
-      "settings": "Sozlamalar"
+      "settings": "Tizim"
     },
     "dashboard": "Bosh sahifa",
     "receptions": "Qabul boshqaruvi",
@@ -13,13 +13,13 @@
     "groups": "Guruhlar",
     "schoolRatings": "Muassasa baholari",
     "documents": "Hujjatlar navbati",
-    "aiWarnings": "AI ogohlantirishlar",
+    "aiWarnings": "Ogohlantirishlar",
     "therapy": "Terapiya boshqaruvi",
     "profile": "Profil",
     "settings": "Sozlamalar",
     "menu": "Asosiy menyu",
     "import": "Ommaviy import",
-    "school": "Maktab profili",
+    "school": "Muassasa profili",
     "activity": "Faoliyat tarixchasi",
     "communications": "Muloqotlar",
     "govMessages": "Xabarlar",
@@ -27,10 +27,11 @@
     "pnts": "PNTS"
   },
   "sidebar": {
-    "title": "Uchqun Admin",
-    "menu": "Tizim menyusi"
+    "title": "Uchqun",
+    "menu": "Tizim menyusi",
+    "school": "Muassasa"
   },
-  "role.admin": "Administrator",
+  "role.admin": "Direktor",
   "logout": "Chiqish",
   "mobileNav": {
     "reception": "Qabul",
@@ -55,7 +56,7 @@
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}",
-    "role": "Mening rolim: Admin",
+    "role": "Mening rolim: Direktor",
     "subtitle": "Tizim administratsiyasi va qabulni tasdiqlash",
     "overview": "Tizim sharhi",
     "pending": "Kutilayotgan vazifalar",

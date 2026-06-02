@@ -73,9 +73,9 @@
   "dashboard": {
     "role": "My Role: Teacher",
     "roleTeacher": "My Role: Teacher",
-    "roleAdmin": "My Role: Admin",
+    "roleAdmin": "My Role: Director",
     "welcome": "Welcome back",
-    "overview": "Admin Overview",
+    "overview": "Director Overview",
     "parents": "Parents",
     "activities": "Activities",
     "meals": "Meals",

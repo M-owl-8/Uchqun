@@ -3,7 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import CommandPalette from './CommandPalette';
-import TranslationNotice from './TranslationNotice';
 import { useCommandPalette } from '../hooks/useCommandPalette';
 import { Search, Bell, Menu } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -56,8 +55,6 @@ const Layout = () => {
 
       {/* Main area */}
       <div className="lg:pl-[240px]">
-        {/* Translation notice */}
-        <TranslationNotice />
         {/* Top bar */}
         <div className="sticky top-0 z-20 h-14 bg-surface border-b border-slate-200 px-6 flex items-center gap-3">
           <button

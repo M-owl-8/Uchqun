@@ -32,7 +32,7 @@ const ACTION_META = {
   'restore:users':          { label: 'Foydalanuvchi tiklandi',       color: 'text-info-600' },
   'bulk_import:children':   { label: 'Bolalar import qilindi',       color: 'text-brand-600' },
   'transfer:children':      { label: "Bola ko'chirildi",             color: 'text-warning-600' },
-  'update:schools':         { label: 'Maktab yangilandi',            color: 'text-brand-600' },
+  'update:schools':         { label: 'Muassasa yangilandi',           color: 'text-brand-600' },
 };
 
 const getActionLabel = (action, entity) =>
@@ -208,7 +208,7 @@ const Dashboard = () => {
     },
     aiWarningsArray.filter((w) => !w.resolvedAt).length > 0 && {
       id: 'ai',
-      text: 'AI ogohlantirishni ko\'rib chiqish',
+      text: 'Ogohlantirishni ko\'rib chiqish',
       sub: aiWarningsArray.find((w) => !w.resolvedAt)?.title || '',
       link: '/admin/ai-warnings',
       linkLabel: 'Ogohlantirishga o\'tish →',
@@ -277,8 +277,7 @@ const Dashboard = () => {
       </div>
 
       {/* ATTENTION ROW */}
-      <h2 className="text-lg font-semibold text-warm-900 mb-3 flex items-center gap-2">
-        <span className="w-1 h-4 bg-brand-600 rounded-full" />
+      <h2 className="text-lg font-semibold text-warm-900 mb-3">
         {t('dashboard.attention', { defaultValue: 'Sizning e\'tiboringizni talab qiladi' })}
       </h2>
       <div className="grid md:grid-cols-3 gap-4 mb-10">
@@ -312,7 +311,7 @@ const Dashboard = () => {
         {/* AI warnings */}
         <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
           <div className="flex items-start justify-between mb-2">
-            <p className="text-sm font-medium text-warm-700">{t('dashboard.aiWarnings', { defaultValue: 'Yangi AI ogohlantirishlar' })}</p>
+            <p className="text-sm font-medium text-warm-700">{t('dashboard.aiWarnings', { defaultValue: 'Ogohlantirishlar' })}</p>
             <BellRing className="w-5 h-5 text-warning-600" strokeWidth={1.75} />
           </div>
           <p className="num text-4xl font-semibold text-warm-900 mt-1">{aiWarningsArray.filter((w) => !w.resolvedAt).length}</p>
@@ -362,9 +361,8 @@ const Dashboard = () => {
       </div>
 
       {/* STATS ROW */}
-      <h2 className="text-lg font-semibold text-warm-900 mb-3 flex items-center gap-2">
-        <span className="w-1 h-4 bg-warm-300 rounded-full" />
-        {t('dashboard.atAGlance', { defaultValue: 'Maktab — bir qarashda' })}
+      <h2 className="text-lg font-semibold text-warm-900 mb-3">
+        {t('dashboard.atAGlance', { defaultValue: 'Muassasa — bir qarashda' })}
       </h2>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
         <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
@@ -378,7 +376,7 @@ const Dashboard = () => {
           </Link>
         </div>
         <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-          <p className="text-sm text-warm-500">{t('dashboard.teachers', { defaultValue: 'O\'qituvchilar' })}</p>
+          <p className="text-sm text-warm-500">{t('dashboard.teachers', { defaultValue: 'Tarbiyachilar' })}</p>
           <p className="num text-3xl font-semibold text-warm-900 mt-1">{stats?.teachers || 0}</p>
           <p className="mt-2.5 flex items-center gap-1.5 text-xs text-warm-500">
             <Minus className="w-3.5 h-3.5" strokeWidth={2} /><span>{t('dashboard.noChange', { defaultValue: 'o\'zgarish yo\'q' })}</span>
@@ -448,7 +446,7 @@ const Dashboard = () => {
           <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
             <header className="flex items-baseline justify-between mb-4">
               <div>
-                <p className="text-base font-semibold text-warm-900">{t('dashboard.schoolRating', { defaultValue: 'Maktab reytingi' })}</p>
+                <p className="text-base font-semibold text-warm-900">{t('dashboard.schoolRating', { defaultValue: 'Muassasa reytingi' })}</p>
                 <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.ratingPeriod', { defaultValue: 'Ota-onalar tomonidan berilgan baholar · oxirgi 30 kun' })}</p>
               </div>
               <Link to="/admin/school-ratings" className="text-sm text-brand-700 hover:text-brand-800 font-medium">
@@ -510,7 +508,7 @@ const Dashboard = () => {
           {/* Quick info */}
           <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
             <p className="text-base font-semibold text-warm-900">{t('dashboard.quickInfo', { defaultValue: 'Tezkor ma\'lumot' })}</p>
-            <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.schoolInfo', { defaultValue: 'Maktab haqida' })}</p>
+            <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.schoolInfo', { defaultValue: 'Muassasa haqida' })}</p>
             <dl className="mt-4 space-y-3 text-sm">
               {user?.school?.address && (
                 <div className="flex items-start gap-3">

@@ -1,46 +1,21 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, fireEvent } from '@testing-library/react';
+/**
+ * CP-019 TranslationNotice — REMOVED per ADMIN-PORTAL-FOUNDATION.
+ * Banner was AI-generated-translation notice. Eliminated for pre-launch.
+ * This test confirms the component no longer renders anything.
+ */
+import { describe, it, expect } from 'vitest';
+import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 
 vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (_key, opts) => opts?.defaultValue ?? _key,
-  }),
+  useTranslation: () => ({ t: (_k, opts) => opts?.defaultValue ?? _k }),
 }));
-
-vi.mock('lucide-react', () => ({ X: () => <span>X</span> }));
-
-let storedItems = {};
-const localStorageMock = {
-  getItem: (k) => storedItems[k] ?? null,
-  setItem: (k, v) => { storedItems[k] = v; },
-  removeItem: (k) => { delete storedItems[k]; },
-};
-
-Object.defineProperty(globalThis, 'localStorage', { value: localStorageMock, writable: true });
 
 import TranslationNotice from '../components/TranslationNotice';
 
-describe('TranslationNotice (CP-019)', () => {
-  beforeEach(() => { storedItems = {}; });
-
-  it('renders the notice by default', () => {
-    render(<TranslationNotice />);
-    expect(screen.getByTestId('translation-notice')).toBeInTheDocument();
-    expect(screen.getByText(/AI-generated/i)).toBeInTheDocument();
-  });
-
-  it('does not render when previously dismissed (localStorage)', () => {
-    storedItems['gov_translation_notice_dismissed'] = '1';
+describe('TranslationNotice (CP-019 — banner removed)', () => {
+  it('renders nothing — banner eliminated per ADMIN-PORTAL-FOUNDATION', () => {
     render(<TranslationNotice />);
     expect(screen.queryByTestId('translation-notice')).not.toBeInTheDocument();
-  });
-
-  it('dismiss button hides the notice and persists to localStorage', () => {
-    render(<TranslationNotice />);
-    const btn = screen.getByRole('button', { name: /dismiss/i });
-    fireEvent.click(btn);
-    expect(screen.queryByTestId('translation-notice')).not.toBeInTheDocument();
-    expect(localStorageMock.getItem('gov_translation_notice_dismissed')).toBe('1');
   });
 });

@@ -3,8 +3,6 @@ import { Outlet, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
-import LanguageSwitcher from './LanguageSwitcher';
-import TranslationNotice from './TranslationNotice';
 
 const Layout = () => {
   const location = useLocation();
@@ -30,7 +28,6 @@ const Layout = () => {
           <Menu className="w-5 h-5" aria-hidden="true" />
         </button>
         <span className="font-semibold text-white text-sm flex-1">{t('sidebar.title', { defaultValue: 'Davlat Panel' })}</span>
-        <LanguageSwitcher />
       </div>
 
       {/* Mobile sidebar overlay */}
@@ -63,7 +60,6 @@ const Layout = () => {
 
       {/* Main content — own scroll context; sidebar never scrolls off */}
       <div className="flex-1 min-w-0 overflow-y-auto pt-14 lg:pt-0">
-        <TranslationNotice />
         <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Outlet />
         </main>

@@ -2,24 +2,24 @@
   "nav": {
     "section": {
       "management": "Управление",
-      "documents": "Документы",
+      "communications": "Связь",
       "reports": "Отчёты",
-      "settings": "Настройки"
+      "settings": "Система"
     },
     "dashboard": "Главная",
-    "receptions": "Приемы",
+    "receptions": "Приёмы",
     "parents": "Родители",
     "teachers": "Воспитатели",
     "groups": "Группы",
-    "schoolRatings": "Оценки школ",
+    "schoolRatings": "Оценки учреждений",
     "documents": "Очередь документов",
-    "aiWarnings": "AI Предупреждения",
+    "aiWarnings": "Предупреждения",
     "therapy": "Управление терапиями",
     "profile": "Профиль",
     "settings": "Настройки",
     "menu": "Главное меню",
     "import": "Массовый импорт",
-    "school": "Профиль школы",
+    "school": "Профиль учреждения",
     "activity": "Лента активности",
     "communications": "Коммуникации",
     "govMessages": "Сообщения",
@@ -27,10 +27,11 @@
     "pnts": "PNTS"
   },
   "sidebar": {
-    "title": "Uchqun Admin",
-    "menu": "Системное меню"
+    "title": "Uchqun",
+    "menu": "Системное меню",
+    "school": "Учреждение"
   },
-  "role.admin": "Администратор",
+  "role.admin": "Директор",
   "logout": "Выход",
   "mobileNav": {
     "reception": "Прием",
@@ -55,7 +56,7 @@
   },
   "dashboard": {
     "welcome": "Добро пожаловать, {{name}}",
-    "role": "Моя роль: Админ",
+    "role": "Моя роль: Директор",
     "subtitle": "Администрирование системы и проверка приемов",
     "overview": "Обзор системы",
     "pending": "Ожидающие задания",
@@ -178,13 +179,13 @@
     "subtitle": "Просмотр оценок от родителей для школ и детских садов",
     "errorLoad": "Не удалось загрузить оценки школ",
     "error": "Ошибка",
-    "empty": "Пока нет оценок школ",
+    "empty": "Пока нет оценок учреждений",
     "ratingsCount": "{{count}} оценок",
     "recentRatings": "Последние оценки",
     "by": "От",
-    "typeSchool": "Школа",
+    "typeSchool": "Учреждение",
     "typeKindergarten": "Детский сад",
-    "typeBoth": "Школа и Детский сад"
+    "typeBoth": "Учреждение и Детский сад"
   },
   "profile": {
     "title": "Профиль",

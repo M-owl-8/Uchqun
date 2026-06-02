@@ -67,13 +67,13 @@
     "invalid": "Email yoki parol noto'g'ri",
     "invalidRole": "Faqat tarbiyachi va ota-ona kirishi mumkin. Boshqa rollar kirishi mumkin emas.",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
-    "accountSuspended": "Hisobingiz to'xtatilgan. Administrator bilan bog'laning."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, maktab direktori tasdig'ini kuting.",
+    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab direktori bilan bog'laning."
   },
   "dashboard": {
     "role": "Mening rolim: Tarbiyachi",
     "roleTeacher": "Mening rolim: Tarbiyachi",
-    "roleAdmin": "Mening rolim: Admin",
+    "roleAdmin": "Mening rolim: Direktor",
     "welcome": "Xush kelibsiz",
     "overview": "Umumiy ko'rinish",
     "parents": "Ota-onalar",
