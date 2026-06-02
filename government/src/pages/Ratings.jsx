@@ -8,13 +8,6 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
 
-const STAR_COLORS = {
-  5: 'bg-green-500',
-  4: 'bg-blue-500',
-  3: 'bg-yellow-500',
-  2: 'bg-orange-500',
-  1: 'bg-red-500',
-};
 
 const StarDisplay = ({ rating, size = 'sm' }) => {
   const fullStars = Math.floor(rating);
@@ -53,7 +46,7 @@ const DistributionBar = ({ distribution, total }) => {
             <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
             <div className="flex-1 h-2 bg-gray-100 rounded-full overflow-hidden">
               <div
-                className={`h-full rounded-full ${STAR_COLORS[star]}`}
+                className="h-full rounded-full bg-brand-600"
                 style={{ width: `${pct}%` }}
               />
             </div>
@@ -314,15 +307,7 @@ const SchoolCardHeader = ({ school, showRank }) => {
         <div className="flex items-center gap-3 flex-1">
           {showRank && (
             <div className="flex-shrink-0">
-              <div className={`w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg ${
-                school.rank === 1
-                  ? 'bg-yellow-100 text-yellow-700 border-2 border-yellow-400'
-                  : school.rank === 2
-                  ? 'bg-gray-100 text-gray-700 border-2 border-gray-400'
-                  : school.rank === 3
-                  ? 'bg-orange-100 text-orange-700 border-2 border-orange-400'
-                  : 'bg-brand-100 text-brand-600'
-              }`}>
+              <div className="w-12 h-12 rounded-lg flex items-center justify-center font-bold text-lg bg-white border border-gray-200 text-gray-900">
                 {school.rank}
               </div>
             </div>

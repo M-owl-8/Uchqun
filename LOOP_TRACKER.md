@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **GOV-RATINGS-POLISH ✅ CLOSED (next commit):** Ratings page: STAR_COLORS rainbow (green/blue/yellow/orange/red) → all bars use bg-brand-600; rank badges (gold/silver/bronze) → uniform bg-white border border-gray-200 text-gray-900. Layout: min-h-screen body-scroll → h-screen overflow-hidden flex, sidebar=flex-col sibling, main=flex-1 overflow-y-auto. Mobile elements preserved (fixed drawer, fixed top bar). Tests 17/17 120/120. `audits/redesign/GOV-RATINGS-POLISH.md`.
+
 > **GOV-RATING-STARS ✅ CLOSED (next commit):** Case B — government-only fix. Replaced range sliders + static stars in GovRatingForm with StarRating component: role=radiogroup, 5×role=radio per indicator, aria-checked, ArrowKey nav, hover preview (yellow-300), commit state (yellow-400), disabled during submit, 3/5 numeric confirmation. Parent portal (TeacherRating.jsx:468) has same slider antipattern — flagged follow-up. `audits/redesign/GOV-RATING-STARS.md`.
 
 > **GOV-IA-RESTRUCTURE 🟡 In progress:** Remove "AI" prefix from warning labels (all 3 locales); restructure government portal to school-centric IA — Students/Teachers/Parents removed from primary sidebar, moved inside SchoolDetail as tabs. Building tabs: Teachers, Students, Parents, Warnings (school-scoped), Audit. Backend: schoolId filter added to teachers + parents endpoints.

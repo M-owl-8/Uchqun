@@ -12,11 +12,13 @@ const Layout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-paper">
-      <div className="hidden lg:block fixed inset-y-0 left-0 w-64 z-40">
+    <div className="flex h-screen overflow-hidden bg-paper">
+      {/* Desktop sidebar — flex sibling, never scrolls off */}
+      <div className="hidden lg:flex lg:flex-col flex-shrink-0 w-64 z-40">
         <Sidebar />
       </div>
 
+      {/* Mobile top bar — fixed to viewport, above the flex container */}
       <div className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-sidebar z-40 flex items-center px-4 gap-3">
         <button
           type="button"
@@ -31,6 +33,7 @@ const Layout = () => {
         <LanguageSwitcher />
       </div>
 
+      {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div
           className="lg:hidden fixed inset-0 bg-black/50 z-40"
@@ -39,6 +42,7 @@ const Layout = () => {
         />
       )}
 
+      {/* Mobile sidebar drawer */}
       <div
         className={`lg:hidden fixed inset-y-0 left-0 w-64 z-50 transform transition-transform duration-300 ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
@@ -57,7 +61,8 @@ const Layout = () => {
         <Sidebar onClose={() => setSidebarOpen(false)} />
       </div>
 
-      <div className="lg:pl-64 relative z-10 pt-14 lg:pt-0">
+      {/* Main content — own scroll context; sidebar never scrolls off */}
+      <div className="flex-1 min-w-0 overflow-y-auto pt-14 lg:pt-0">
         <TranslationNotice />
         <main key={location.pathname} className="page-fade-in max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <Outlet />
