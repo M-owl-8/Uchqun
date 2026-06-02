@@ -13,6 +13,59 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { GOV_INDICATORS } from '@shared/config/ratingIndicators';
 
+// ── StarRating ────────────────────────────────────────────────────────────────
+// Interactive 5-star input. Each star is a radio button for a11y.
+// Hover previews the value; click commits it; arrows navigate within the group.
+
+const StarRating = ({ value, onChange, name, disabled }) => {
+  const [hoverVal, setHoverVal] = useState(0);
+  const display = hoverVal || value;
+
+  return (
+    <div
+      role="radiogroup"
+      aria-label={name}
+      className="flex items-center gap-0.5"
+    >
+      {[1, 2, 3, 4, 5].map((s) => (
+        <button
+          key={s}
+          type="button"
+          role="radio"
+          aria-checked={value === s}
+          aria-label={String(s)}
+          disabled={disabled}
+          onClick={() => !disabled && onChange(s)}
+          onMouseEnter={() => !disabled && setHoverVal(s)}
+          onMouseLeave={() => setHoverVal(0)}
+          onKeyDown={(e) => {
+            if (disabled) return;
+            if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
+              e.preventDefault(); onChange(Math.min(5, value + 1));
+            }
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
+              e.preventDefault(); onChange(Math.max(1, value - 1));
+            }
+          }}
+          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-sm disabled:cursor-not-allowed"
+        >
+          <Star
+            className={`w-6 h-6 transition-colors duration-100 ${
+              s <= display
+                ? hoverVal
+                  ? 'fill-yellow-300 text-yellow-300'
+                  : 'fill-yellow-400 text-yellow-400'
+                : disabled
+                  ? 'text-gray-200'
+                  : 'text-gray-300 hover:text-yellow-200'
+            }`}
+          />
+        </button>
+      ))}
+    </div>
+  );
+};
+
 // ── helpers ──────────────────────────────────────────────────────────────────
 
 function lastFourQuarters() {
@@ -109,20 +162,23 @@ const GovRatingForm = ({ schoolId, onSuccess }) => {
             <p className="text-xs text-brand-600 mt-1">{t('govRating.existingFound', { defaultValue: "Ushbu davr uchun baho topildi — tahrirlashingiz mumkin" })}</p>
           )}
         </div>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <p className="text-xs font-medium text-gray-700">{t('govRating.indicators', { defaultValue: "Ko'rsatkichlar (1–5)" })}</p>
           {GOV_INDICATORS.map((ind) => (
             <div key={ind.key} className="flex items-center gap-3">
               <span className="text-xs text-gray-600 w-28 flex-shrink-0">{ind.uz}</span>
-              <input type="range" min={1} max={5} step={1} value={indicators[ind.key]}
-                onChange={e => setIndicators(prev => ({ ...prev, [ind.key]: Number(e.target.value) }))}
-                className="flex-1 h-2 accent-brand-600" />
-              <span className="text-sm font-semibold tabular-nums w-5 text-center text-brand-700">{indicators[ind.key]}</span>
-              <div className="flex gap-0.5">
-                {[1,2,3,4,5].map(s => (
-                  <Star key={s} className={`w-3 h-3 ${s <= indicators[ind.key] ? 'fill-yellow-400 text-yellow-400' : 'text-gray-200'}`} />
-                ))}
-              </div>
+              <StarRating
+                value={indicators[ind.key]}
+                onChange={(v) => setIndicators(prev => ({ ...prev, [ind.key]: v }))}
+                name={ind.uz}
+                disabled={submitting}
+              />
+              <span
+                className="text-sm font-semibold tabular-nums w-8 text-right text-brand-700"
+                aria-hidden="true"
+              >
+                {indicators[ind.key]}/5
+              </span>
             </div>
           ))}
         </div>

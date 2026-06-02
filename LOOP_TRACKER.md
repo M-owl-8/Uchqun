@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **GOV-RATING-STARS ✅ CLOSED (next commit):** Case B — government-only fix. Replaced range sliders + static stars in GovRatingForm with StarRating component: role=radiogroup, 5×role=radio per indicator, aria-checked, ArrowKey nav, hover preview (yellow-300), commit state (yellow-400), disabled during submit, 3/5 numeric confirmation. Parent portal (TeacherRating.jsx:468) has same slider antipattern — flagged follow-up. `audits/redesign/GOV-RATING-STARS.md`.
+
 > **GOV-IA-RESTRUCTURE 🟡 In progress:** Remove "AI" prefix from warning labels (all 3 locales); restructure government portal to school-centric IA — Students/Teachers/Parents removed from primary sidebar, moved inside SchoolDetail as tabs. Building tabs: Teachers, Students, Parents, Warnings (school-scoped), Audit. Backend: schoolId filter added to teachers + parents endpoints.
 
 > **GOV-REGIONS-NAME ✅ CLOSED (0deb941):** 13→14 regions renamed to official Uzbekistan administrative division names in UZ Latin / RU / UZ Cyrillic. Migration adds nameRu+nameCyrl columns; all 13 rows updated; Xorazm viloyati (r14) added as the previously-missing 14th division. useRegionName hook picks nameRu for ru language. gov.toshkent=Toshkent shahri, gov.samarqand=Samarqand viloyati — both credentials intact. `audits/redesign/GOV-REGIONS-NAME.md`.
