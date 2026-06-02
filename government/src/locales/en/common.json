@@ -512,6 +512,45 @@
     "yourRegion": "Your region",
     "inRegion": "in {{name}}"
   },
+  "colName": "Name",
+  "colEmail": "Email",
+  "colPhone": "Phone",
+  "colDate": "Date",
+  "colStatus": "Status",
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  },
+  "auditActions": {
+    "archive": "Archive",
+    "reactivate": "Reactivate",
+    "approve_registration": "Approve registration",
+    "reject_registration": "Reject registration",
+    "create": "Create",
+    "update": "Update",
+    "delete": "Delete",
+    "suspend": "Suspend",
+    "activate": "Activate",
+    "transfer": "Transfer",
+    "change_category": "Change category",
+    "reset_password": "Reset password",
+    "bulk_import": "Bulk import",
+    "approve": "Approve",
+    "reject": "Reject"
+  },
+  "auditEntities": {
+    "schools": "Schools",
+    "admin_registrations": "Registration requests",
+    "admins": "Admins",
+    "government_users": "Government users",
+    "users": "Users",
+    "children": "Children",
+    "receptions": "Reception staff",
+    "teachers": "Caregivers",
+    "parents": "Parents",
+    "documents": "Documents"
+  },
   "auditLog": {
     "title": "Audit Log",
     "action": "Action",

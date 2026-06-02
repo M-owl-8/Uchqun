@@ -96,8 +96,9 @@ describe('AuditLog — S1-F02 audit viewer', () => {
     render(<AuditLog />);
     await waitFor(() => expect(screen.getByTestId('audit-table')).toBeInTheDocument());
     expect(screen.getByText('Ali Valiyev')).toBeInTheDocument();
-    // 'Arxivlash' appears in both the dropdown option and the table badge
-    expect(screen.getAllByText('Arxivlash').length).toBeGreaterThan(0);
+    // action label uses t('auditActions.archive', { defaultValue: 'archive' })
+    // test mock returns defaultValue → 'archive' appears in table badge and dropdown
+    expect(screen.getAllByText('archive').length).toBeGreaterThan(0);
     expect(screen.getByText('school-uuid-1')).toBeInTheDocument();
     expect(screen.getByText('—')).toBeInTheDocument(); // null actor
   });

@@ -500,6 +500,45 @@
     "message": "Sahifa topilmadi",
     "goBack": "Bosh sahifaga qaytish"
   },
+  "colName": "Ism",
+  "colEmail": "Email",
+  "colPhone": "Telefon",
+  "colDate": "Sana",
+  "colStatus": "Holat",
+  "gender": {
+    "male": "Erkak",
+    "female": "Ayol",
+    "other": "Boshqa"
+  },
+  "auditActions": {
+    "archive": "Arxivlash",
+    "reactivate": "Qayta faollashtirish",
+    "approve_registration": "Tasdiqlash",
+    "reject_registration": "Rad etish",
+    "create": "Yaratish",
+    "update": "Yangilash",
+    "delete": "O'chirish",
+    "suspend": "To'xtatish",
+    "activate": "Faollashtirish",
+    "transfer": "Ko'chirish",
+    "change_category": "Toifani o'zgartirish",
+    "reset_password": "Parolni tiklash",
+    "bulk_import": "Ommaviy import",
+    "approve": "Tasdiqlash",
+    "reject": "Rad etish"
+  },
+  "auditEntities": {
+    "schools": "Muassasalar",
+    "admin_registrations": "Ro'yxatga olish so'rovlari",
+    "admins": "Adminlar",
+    "government_users": "Davlat foydalanuvchilari",
+    "users": "Foydalanuvchilar",
+    "children": "Bolalar",
+    "receptions": "Qabulxona xodimlari",
+    "teachers": "Tarbiyachilar",
+    "parents": "Ota-onalar",
+    "documents": "Hujjatlar"
+  },
   "auditLog": {
     "title": "Audit jurnali",
     "action": "Harakat",

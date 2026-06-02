@@ -505,6 +505,45 @@
     "message": "Страница не найдена",
     "goBack": "На главную"
   },
+  "colName": "Имя",
+  "colEmail": "Email",
+  "colPhone": "Телефон",
+  "colDate": "Дата",
+  "colStatus": "Статус",
+  "gender": {
+    "male": "Мужской",
+    "female": "Женский",
+    "other": "Другой"
+  },
+  "auditActions": {
+    "archive": "Архивировать",
+    "reactivate": "Восстановить",
+    "approve_registration": "Подтвердить",
+    "reject_registration": "Отклонить",
+    "create": "Создать",
+    "update": "Обновить",
+    "delete": "Удалить",
+    "suspend": "Заблокировать",
+    "activate": "Активировать",
+    "transfer": "Перевести",
+    "change_category": "Изменить категорию",
+    "reset_password": "Сбросить пароль",
+    "bulk_import": "Массовый импорт",
+    "approve": "Подтвердить",
+    "reject": "Отклонить"
+  },
+  "auditEntities": {
+    "schools": "Учреждения",
+    "admin_registrations": "Заявки на регистрацию",
+    "admins": "Администраторы",
+    "government_users": "Государственные пользователи",
+    "users": "Пользователи",
+    "children": "Дети",
+    "receptions": "Сотрудники ресепшена",
+    "teachers": "Воспитатели",
+    "parents": "Родители",
+    "documents": "Документы"
+  },
   "auditLog": {
     "title": "Журнал аудита",
     "action": "Действие",

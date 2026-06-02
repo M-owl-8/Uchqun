@@ -9,23 +9,6 @@ import { useRegionName } from '../hooks/useRegionName';
 const ACTIONS = ['archive', 'reactivate', 'approve_registration', 'reject_registration', 'create', 'update', 'delete'];
 const ENTITIES = ['schools', 'admin_registrations', 'admins', 'government_users'];
 
-const ACTION_LABELS = {
-  archive: 'Arxivlash',
-  reactivate: 'Qayta faollashtirish',
-  approve_registration: 'Tasdiqlash',
-  reject_registration: 'Rad etish',
-  create: 'Yaratish',
-  update: 'Tahrirlash',
-  delete: "O'chirish",
-};
-
-const ENTITY_LABELS = {
-  schools: 'Maktablar',
-  admin_registrations: "Ro'yxatga olish",
-  admins: 'Adminlar',
-  government_users: 'Davlat foydalanuvchilari',
-};
-
 const AuditLog = () => {
   const { t } = useTranslation();
   const { isRepublic, isRegionAccount } = useAuth();
@@ -126,7 +109,7 @@ const AuditLog = () => {
             >
               <option value="">{t('auditLog.allActions', { defaultValue: 'Barcha harakatlar' })}</option>
               {ACTIONS.map((a) => (
-                <option key={a} value={a}>{ACTION_LABELS[a] || a}</option>
+                <option key={a} value={a}>{t(`auditActions.${a}`, { defaultValue: a })}</option>
               ))}
             </select>
           </div>
@@ -143,7 +126,7 @@ const AuditLog = () => {
             >
               <option value="">{t('auditLog.allEntities', { defaultValue: "Barcha ob'ektlar" })}</option>
               {ENTITIES.map((en) => (
-                <option key={en} value={en}>{ENTITY_LABELS[en] || en}</option>
+                <option key={en} value={en}>{t(`auditEntities.${en}`, { defaultValue: en })}</option>
               ))}
             </select>
           </div>
@@ -230,10 +213,10 @@ const AuditLog = () => {
                   <td className="px-5 py-3 text-gray-800">{actorName(entry)}</td>
                   <td className="px-5 py-3">
                     <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-brand-50 text-brand-700">
-                      {ACTION_LABELS[entry.action] || entry.action}
+                      {t(`auditActions.${entry.action}`, { defaultValue: entry.action })}
                     </span>
                   </td>
-                  <td className="px-5 py-3 text-gray-600">{ENTITY_LABELS[entry.entity] || entry.entity}</td>
+                  <td className="px-5 py-3 text-gray-600">{t(`auditEntities.${entry.entity}`, { defaultValue: entry.entity })}</td>
                   <td className="px-5 py-3 text-gray-400 font-mono text-xs truncate max-w-[160px]">
                     {entry.entityId || '—'}
                   </td>

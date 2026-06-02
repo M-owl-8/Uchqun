@@ -135,7 +135,7 @@ const Students = () => {
                   <td className="px-5 py-3 text-gray-400 tabular-nums">{i + 1}</td>
                   <td className="px-5 py-3 font-medium text-gray-900">
                     {s.firstName} {s.lastName}
-                    {s.gender && <span className="ml-2 text-xs text-gray-400">{s.gender}</span>}
+                    {s.gender && <span className="ml-2 text-xs text-gray-400">{t(`gender.${s.gender.toLowerCase()}`, { defaultValue: s.gender })}</span>}
                   </td>
                   <td className="px-5 py-3 text-gray-500 hidden sm:table-cell tabular-nums">
                     {s.dateOfBirth ? new Date(s.dateOfBirth).toLocaleDateString() : '—'}

@@ -600,7 +600,7 @@ const AuditTab = ({ schoolId }) => {
           <tbody>
             {entries.map((e) => (
               <tr key={e.id} className="border-b border-gray-50 last:border-0 hover:bg-gray-50 transition-colors">
-                <td className="px-5 py-3 font-mono text-xs text-gray-700">{e.action}</td>
+                <td className="px-5 py-3 text-xs text-gray-700">{t(`auditActions.${e.action}`, { defaultValue: e.action })}</td>
                 <td className="px-5 py-3 text-gray-500 hidden sm:table-cell">
                   {e.actor ? `${e.actor.firstName || ''} ${e.actor.lastName || ''}`.trim() || e.actor.email : '—'}
                 </td>
