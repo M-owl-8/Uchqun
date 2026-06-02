@@ -27,6 +27,14 @@ jest.unstable_mockModule('../utils/governmentLevel.js', () => ({
 jest.unstable_mockModule('../utils/pagination.js', () => ({
   parsePagination: jest.fn(),
 }));
+jest.unstable_mockModule('../services/schoolRatingService.js', () => ({
+  getSchoolRatingAggregated: jest.fn().mockResolvedValue({
+    parent: { avg: null, count: 0 },
+    government: null,
+    cumulative: { avg: null, isPartial: false },
+  }),
+  getSchoolRatingsBatch: jest.fn().mockResolvedValue({}),
+}));
 
 const { archiveSchool, reactivateSchool } = await import('../controllers/governmentController.js');
 

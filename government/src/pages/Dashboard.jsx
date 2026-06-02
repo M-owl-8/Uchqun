@@ -244,7 +244,11 @@ const Dashboard = () => {
           ) : (
             <div className="divide-y divide-gray-50">
               {schools
-                .sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0))
+                .sort((a, b) => {
+                  const vA = a.cumulativeAvg ?? a.averageRating ?? 0;
+                  const vB = b.cumulativeAvg ?? b.averageRating ?? 0;
+                  return vB - vA;
+                })
                 .slice(0, 6)
                 .map((school, index) => (
                   <div key={school.id} className="flex items-center justify-between px-5 py-3 hover:bg-brand-50 cursor-pointer transition-colors"
@@ -256,12 +260,24 @@ const Dashboard = () => {
                         {school.address && <p className="text-xs text-gray-400 truncate max-w-[200px]">{school.address}</p>}
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 flex-shrink-0">
-                      <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
-                      <span className="text-sm font-semibold tabular-nums text-gray-900">
-                        {(school.averageRating || 0).toFixed(1)}
-                      </span>
-                      <span className="text-xs text-gray-400">({school.ratingsCount || 0})</span>
+                    <div className="flex flex-col items-end flex-shrink-0">
+                      {(school.cumulativeAvg != null) ? (
+                        <>
+                          <div className="flex items-center gap-1">
+                            <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                            <span className="text-sm font-semibold tabular-nums text-gray-900">
+                              {school.cumulativeAvg.toFixed(1)}
+                            </span>
+                          </div>
+                          <span className="text-xs text-gray-400 tabular-nums">
+                            {school.parentAvg != null ? `P:${school.parentAvg.toFixed(1)}` : ''}
+                            {school.parentAvg != null && school.govAvg != null ? ' · ' : ''}
+                            {school.govAvg != null ? `D:${school.govAvg.toFixed(1)}` : ''}
+                          </span>
+                        </>
+                      ) : (
+                        <span className="text-xs text-gray-400">—</span>
+                      )}
                     </div>
                   </div>
                 ))}

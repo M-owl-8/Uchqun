@@ -264,14 +264,56 @@ const OverviewTab = ({ school, canRate, onRefresh }) => {
           <div className="px-5 py-4 border-b border-gray-100">
             <h2 className="text-sm font-semibold text-gray-900">{t('schoolDetail.rating', { defaultValue: 'Reyting' })}</h2>
           </div>
-          <div className="px-5 py-4 text-center">
-            <p className="text-4xl font-bold tabular-nums text-inkGreen-900">{(school.averageRating || 0).toFixed(1)}</p>
-            <div className="flex justify-center gap-0.5 my-2">
-              {[1,2,3,4,5].map(s => (
-                <Star key={s} className={`w-4 h-4 ${s <= Math.round(school.averageRating || 0) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200'}`} />
-              ))}
+          <div className="px-5 py-4 space-y-3">
+            {/* Cumulative headline */}
+            <div className="text-center pb-2 border-b border-gray-100">
+              {(school.cumulativeAvg != null) ? (
+                <>
+                  <p className="text-4xl font-bold tabular-nums text-inkGreen-900">{school.cumulativeAvg.toFixed(1)}</p>
+                  <div className="flex justify-center gap-0.5 my-1">
+                    {[1,2,3,4,5].map(s => (
+                      <Star key={s} className={`w-3.5 h-3.5 ${s <= Math.round(school.cumulativeAvg) ? 'fill-yellow-400 text-yellow-400' : 'fill-gray-200 text-gray-200'}`} />
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500">{t('schoolDetail.cumulativeRating', { defaultValue: 'Umumiy reyting' })}</p>
+                  {school.cumulativeIsPartial && (
+                    <p className="text-xs text-amber-600 mt-0.5">
+                      {school.parentAvg != null && school.govAvg == null
+                        ? t('ratings.parentOnly', { defaultValue: 'Faqat ota-onalar bahosi' })
+                        : t('ratings.govOnly', { defaultValue: 'Faqat davlat bahosi' })}
+                    </p>
+                  )}
+                </>
+              ) : (
+                <p className="text-sm text-gray-400 italic py-2">{t('ratings.noRating', { defaultValue: "Reyting yo'q" })}</p>
+              )}
             </div>
-            <p className="text-xs text-gray-400">{school.ratingsCount || 0} {t('schoolDetail.ratingsCount')}</p>
+            {/* Parent row */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">{t('schoolDetail.parentRating', { defaultValue: 'Ota-onalar' })}</span>
+              {(school.parentAvg != null) ? (
+                <div className="flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                  <span className="font-semibold text-gray-900">{school.parentAvg.toFixed(1)}</span>
+                  <span className="text-xs text-gray-400">({school.parentCount || school.ratingsCount || 0})</span>
+                </div>
+              ) : (
+                <span className="text-xs text-gray-400 italic">{t('ratings.noRating', { defaultValue: "Yo'q" })}</span>
+              )}
+            </div>
+            {/* Government row */}
+            <div className="flex items-center justify-between text-sm">
+              <span className="text-gray-500">{t('schoolDetail.govRating', { defaultValue: 'Davlat' })}</span>
+              {(school.govAvg != null) ? (
+                <div className="flex items-center gap-1">
+                  <Star className="w-3.5 h-3.5 fill-yellow-400 text-yellow-400" />
+                  <span className="font-semibold text-gray-900">{school.govAvg.toFixed(1)}</span>
+                  {school.govPeriod && <span className="text-xs text-gray-400">{school.govPeriod}</span>}
+                </div>
+              ) : (
+                <span className="text-xs text-gray-400 italic">{t('ratings.noRating', { defaultValue: "Yo'q" })}</span>
+              )}
+            </div>
           </div>
         </div>
       </div>

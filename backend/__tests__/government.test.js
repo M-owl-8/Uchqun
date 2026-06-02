@@ -32,6 +32,14 @@ jest.unstable_mockModule('../models/TherapyUsage.js', () => ({ default: {} }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
+jest.unstable_mockModule('../services/schoolRatingService.js', () => ({
+  getSchoolRatingAggregated: jest.fn().mockResolvedValue({
+    parent: { avg: null, count: 0 },
+    government: null,
+    cumulative: { avg: null, isPartial: false },
+  }),
+  getSchoolRatingsBatch: jest.fn().mockResolvedValue({}),
+}));
 
 const { getOverview, getStudentsStats, getTeachersList, getParentsList } = await import('../controllers/governmentController.js');
 

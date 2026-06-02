@@ -38,6 +38,13 @@ jest.unstable_mockModule('../../utils/governmentLevel.js', () => ({
   computeAverageRating: jest.fn().mockReturnValue({ average: 4, count: 1 }),
 }));
 
+// Mock the service so GovernmentSchoolRating is not loaded
+const mockGetSchoolRatingAggregated = jest.fn();
+jest.unstable_mockModule('../../services/schoolRatingService.js', () => ({
+  getSchoolRatingAggregated: mockGetSchoolRatingAggregated,
+  getSchoolRatingsBatch: jest.fn().mockResolvedValue({}),
+}));
+
 const { rateSchool, getMySchoolRating } = await import('../../controllers/parent/parentSchoolRatingController.js');
 
 const mkRes = () => {
@@ -125,13 +132,17 @@ describe('getMySchoolRating — response shape', () => {
     mockSchoolRatingFindAll.mockResolvedValue([]);
   });
 
-  it('returns { school, rating, summary } shape when child+school+rating all found', async () => {
+  it('returns { school, rating, summary, parentAvg, govAvg, cumulativeAvg } when child+school+rating all found', async () => {
     mockChildFindAll.mockResolvedValue([{ schoolId: SCHOOL_A }]);
     mockSchoolFindByPk.mockResolvedValue({ id: SCHOOL_A, name: 'Test School' });
     mockSchoolRatingFindOne.mockResolvedValue({
       toJSON: () => ({ id: 'r-1', stars: 5, comment: 'Great' }),
     });
-    mockSchoolRatingFindAll.mockResolvedValue([{ stars: 5 }, { stars: 4 }]);
+    mockGetSchoolRatingAggregated.mockResolvedValue({
+      parent: { avg: 4.5, count: 2 },
+      government: { avg: 4, period: 'Q2-2026' },
+      cumulative: { avg: 4.3, isPartial: false },
+    });
 
     const req = { user: { id: 'parent-1' }, query: {} };
     const res = mkRes();
@@ -143,7 +154,15 @@ describe('getMySchoolRating — response shape', () => {
         data: expect.objectContaining({
           school: { id: SCHOOL_A, name: 'Test School' },
           rating: expect.objectContaining({ stars: 5 }),
+          // Legacy compat
           summary: { average: 4.5, count: 2 },
+          // Three-rating model
+          parentAvg: 4.5,
+          parentCount: 2,
+          govAvg: 4,
+          govPeriod: 'Q2-2026',
+          cumulativeAvg: 4.3,
+          cumulativeIsPartial: false,
         }),
       })
     );

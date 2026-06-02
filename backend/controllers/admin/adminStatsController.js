@@ -13,6 +13,7 @@ import Meal from '../../models/Meal.js';
 import Media from '../../models/Media.js';
 import TherapyUsage from '../../models/TherapyUsage.js';
 import logger from '../../utils/logger.js';
+import { getSchoolRatingAggregated } from '../../services/schoolRatingService.js';
 import { parsePagination } from '../../utils/pagination.js';
 
 /**
@@ -684,5 +685,24 @@ export const getAllSchools = async (req, res) => {
   } catch (error) {
     logger.error('Get all schools error', { error: error.message, stack: error.stack });
     res.status(500).json({ error: 'Failed to fetch schools' });
+  }
+};
+
+/**
+ * Three-rating summary for the admin's own school.
+ * GET /api/admin/school-rating-summary
+ * Admin role only. Returns parentAvg + govAvg + cumulativeAvg for the admin's school.
+ */
+export const getAdminSchoolRatingSummary = async (req, res) => {
+  try {
+    const schoolId = req.user.schoolId;
+    if (!schoolId) {
+      return res.status(404).json({ success: false, error: { code: 'SCHOOL_NOT_ASSIGNED' } });
+    }
+    const agg = await getSchoolRatingAggregated(schoolId);
+    return res.json({ success: true, data: agg });
+  } catch (error) {
+    logger.error('getAdminSchoolRatingSummary error', { error: error.message });
+    return res.status(500).json({ success: false, error: { code: 'RATING_FETCH_FAILED' } });
   }
 };

@@ -18,6 +18,7 @@ import {
   getParentById,
   getStatistics,
   getSchoolRatings,
+  getAdminSchoolRatingSummary,
   getMyMessages,
   getDocuments,
   suspendParent,
@@ -121,6 +122,7 @@ router.get('/statistics', getStatistics); // Admin can view all statistics
 
 // School ratings
 router.get('/school-ratings', getSchoolRatings); // View school ratings from parents created by admin's receptions
+router.get('/school-rating-summary', getAdminSchoolRatingSummary); // Three-rating summary (parent + gov + cumulative)
 
 // Quarterly monitoring (ИРР — manager/admin only, facility-scoped, no childId, OQ-3)
 router.post('/irr/quarterly-entries', createQuarterlyEntry);

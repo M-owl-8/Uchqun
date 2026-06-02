@@ -3,6 +3,7 @@ import School from '../../models/School.js';
 import SchoolRating from '../../models/SchoolRating.js';
 import logger from '../../utils/logger.js';
 import { PARENT_INDICATORS } from '../../config/ratingIndicators.js';
+import { getSchoolRatingAggregated } from '../../services/schoolRatingService.js';
 
 const INDICATOR_KEYS = PARENT_INDICATORS.map(i => i.key);
 
@@ -123,24 +124,29 @@ export const getMySchoolRating = async (req, res) => {
       return res.json({ success: true, data: emptyData });
     }
 
-    const [school, rating, allRatings] = await Promise.all([
+    const [school, rating, ratingAgg] = await Promise.all([
       School.findByPk(child.schoolId),
       SchoolRating.findOne({ where: { schoolId: child.schoolId, parentId } }),
-      SchoolRating.findAll({ where: { schoolId: child.schoolId }, attributes: ['stars'] }),
+      getSchoolRatingAggregated(child.schoolId).catch(() => ({ parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } })),
     ]);
 
-    const count = allRatings.length;
-    const average =
-      count > 0
-        ? Math.round((allRatings.reduce((s, r) => s + r.stars, 0) / count) * 10) / 10
-        : 0;
+    const parentAvg = ratingAgg.parent.avg;
+    const parentCount = ratingAgg.parent.count;
 
     return res.json({
       success: true,
       data: {
         rating: rating ? rating.toJSON() : null,
         school: school ? { id: school.id, name: school.name } : null,
-        summary: { average, count },
+        // Legacy compat
+        summary: { average: parentAvg ?? 0, count: parentCount },
+        // Three-rating model
+        parentAvg,
+        parentCount,
+        govAvg: ratingAgg.government?.avg ?? null,
+        govPeriod: ratingAgg.government?.period ?? null,
+        cumulativeAvg: ratingAgg.cumulative.avg,
+        cumulativeIsPartial: ratingAgg.cumulative.isPartial,
       },
     });
   } catch (error) {

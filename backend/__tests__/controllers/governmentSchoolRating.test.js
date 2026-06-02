@@ -39,6 +39,10 @@ jest.unstable_mockModule('../../utils/logger.js', () => ({
 jest.unstable_mockModule('../../middleware/regionScope.js', () => ({
   regionWhere: jest.fn(),
 }));
+jest.unstable_mockModule('../../services/schoolRatingService.js', () => ({
+  getSchoolRatingsBatch: jest.fn().mockResolvedValue({}),
+  getSchoolRatingAggregated: jest.fn().mockResolvedValue({ parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } }),
+}));
 
 const { rateSchoolAsGov, getGovRatingsForSchool, getRatingsAggregated } =
   await import('../../controllers/government/governmentSchoolRatingController.js');
@@ -194,12 +198,12 @@ describe('getRatingsAggregated — region scope on direction=gov', () => {
     }));
   });
 
-  it('direction=parent (default): SchoolRating is queried, not GovernmentSchoolRating', async () => {
+  it('direction=parent: SchoolRating is queried, not GovernmentSchoolRating', async () => {
     const schoolA = { id: SCHOOL_A1, name: 'School A' };
     mockSchoolFindAll.mockResolvedValue([schoolA]);
     mockSchoolRatingFindAll.mockResolvedValue([{ schoolId: SCHOOL_A1, stars: 3 }]);
 
-    const req = mkReq({ query: {} });
+    const req = mkReq({ query: { direction: 'parent' } });
     const res = mkRes();
     await getRatingsAggregated(req, res);
 
@@ -208,5 +212,19 @@ describe('getRatingsAggregated — region scope on direction=gov', () => {
     expect(result.data.direction).toBe('parent');
     expect(mockGovRatingFindAll).not.toHaveBeenCalled();
     expect(mockSchoolRatingFindAll).toHaveBeenCalled();
+  });
+
+  it('direction=combined (default): returns combined ratings per school', async () => {
+    const schoolA = { id: SCHOOL_A1, name: 'School A', address: null };
+    mockSchoolFindAll.mockResolvedValue([schoolA]);
+
+    const req = mkReq({ query: {} });
+    const res = mkRes();
+    await getRatingsAggregated(req, res);
+
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+    const result = res.json.mock.calls[0][0];
+    expect(result.data.direction).toBe('combined');
+    expect(result.data.schools).toHaveLength(1);
   });
 });

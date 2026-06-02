@@ -16,6 +16,7 @@ import { parsePagination } from '../utils/pagination.js';
 import { regionWhere } from '../middleware/regionScope.js';
 import { emitToUser } from '../config/socket.js';
 import { invalidateUserCache } from '../middleware/auth.js';
+import { getSchoolRatingAggregated, getSchoolRatingsBatch } from '../services/schoolRatingService.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const isValidUuid = (s) => UUID_RE.test(s);
@@ -212,31 +213,44 @@ export const getSchoolsStats = async (req, res) => {
       }
     }
 
+    // Batch-load government ratings for all schools (2 queries total via service)
+    const schoolIds = schools.rows.map(s => s.id);
+    const ratingsBatch = await getSchoolRatingsBatch(schoolIds).catch(() => ({}));
+
     const schoolsWithStats = schools.rows.map((school) => {
-      let ratings;
       let studentsCount;
 
-      // If includes loaded, use eager-loaded data; otherwise use pre-fetched batch
       if (includesLoaded && school.ratings !== undefined) {
-        ratings = school.ratings || [];
         studentsCount = (school.schoolChildren || []).length;
       } else {
-        ratings = ratingsBySchool[school.id] || [];
         studentsCount = childCountBySchool[school.id] || 0;
       }
 
-      const ratingResult = computeAverageRating(ratings);
-      const ratingsCount = ratingResult.count;
-      const avgRating = ratingResult.average;
+      const agg = ratingsBatch[school.id] || { parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } };
+      const parentAvg = agg.parent.avg;
+      const parentCount = agg.parent.count;
+      // Fallback: if batch didn't run (catch above), use eager-loaded parent data
+      const fallbackRatings = includesLoaded ? (school.ratings || []) : (ratingsBySchool[school.id] || []);
+      const fallbackResult = agg.parent.count === 0 && fallbackRatings.length > 0
+        ? computeAverageRating(fallbackRatings)
+        : { average: parentAvg ?? 0, count: parentCount };
 
-      const { id, name, type, address, phone, email, description, isActive, createdAt } = school.toJSON();
+      const { id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId } = school.toJSON();
 
       return {
-        id, name, type, address, phone, email, description, isActive, createdAt,
-        averageRating: avgRating,
-        ratingsCount,
+        id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId,
+        // Legacy fields (backward compat)
+        averageRating: fallbackResult.average,
+        ratingsCount: fallbackResult.count,
         studentsCount,
-        governmentLevel: getGovernmentLevel(avgRating, ratingsCount),
+        governmentLevel: getGovernmentLevel(fallbackResult.average, fallbackResult.count),
+        // Three-rating model
+        parentAvg,
+        parentCount,
+        govAvg: agg.government?.avg ?? null,
+        govPeriod: agg.government?.period ?? null,
+        cumulativeAvg: agg.cumulative.avg,
+        cumulativeIsPartial: agg.cumulative.isPartial,
       };
     });
 
@@ -291,13 +305,14 @@ export const getSchoolById = async (req, res) => {
       return res.status(404).json({ error: 'School not found' });
     }
 
-    const [studentsCount, teachersCount, ratings] = await Promise.all([
+    const [studentsCount, teachersCount, ratingAgg] = await Promise.all([
       Child.count({ where: { schoolId: id } }).catch(() => 0),
       User.count({ where: { role: 'teacher', schoolId: id } }).catch(() => 0),
-      SchoolRating.findAll({ where: { schoolId: id }, attributes: ['stars', 'evaluation'] }).catch(() => []),
+      getSchoolRatingAggregated(id).catch(() => ({ parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } })),
     ]);
 
-    const ratingResult = computeAverageRating(ratings);
+    const parentAvg = ratingAgg.parent.avg;
+    const parentCount = ratingAgg.parent.count;
 
     res.json({
       success: true,
@@ -305,9 +320,17 @@ export const getSchoolById = async (req, res) => {
         ...school.toJSON(),
         studentsCount,
         teachersCount,
-        ratingsCount: ratingResult.count,
-        averageRating: ratingResult.average,
-        governmentLevel: getGovernmentLevel(ratingResult.average, ratingResult.count),
+        // Legacy fields (backward compat — parent avg only)
+        ratingsCount: parentCount,
+        averageRating: parentAvg ?? 0,
+        governmentLevel: getGovernmentLevel(parentAvg ?? 0, parentCount),
+        // Three-rating model
+        parentAvg,
+        parentCount,
+        govAvg: ratingAgg.government?.avg ?? null,
+        govPeriod: ratingAgg.government?.period ?? null,
+        cumulativeAvg: ratingAgg.cumulative.avg,
+        cumulativeIsPartial: ratingAgg.cumulative.isPartial,
       },
     });
   } catch (error) {

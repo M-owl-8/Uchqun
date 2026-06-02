@@ -49,6 +49,14 @@ jest.unstable_mockModule('../../utils/governmentLevel.js', () => ({
 jest.unstable_mockModule('../../utils/pagination.js', () => ({
   parsePagination: () => ({ limit: 20, offset: 0 }),
 }));
+jest.unstable_mockModule('../../services/schoolRatingService.js', () => ({
+  getSchoolRatingAggregated: jest.fn().mockResolvedValue({
+    parent: { avg: null, count: 0 },
+    government: null,
+    cumulative: { avg: null, isPartial: false },
+  }),
+  getSchoolRatingsBatch: jest.fn().mockResolvedValue({}),
+}));
 
 const { changeSchoolCategory } = await import('../../controllers/governmentController.js');
 

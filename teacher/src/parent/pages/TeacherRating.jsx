@@ -29,6 +29,7 @@ const TeacherRating = () => {
   const [schoolSummary, setSchoolSummary] = useState({ average: 0, count: 0 });
   const [schoolIndicators, setSchoolIndicators] = useState(DEFAULT_INDICATORS);
   const [schoolComment, setSchoolComment] = useState('');
+  const [schoolRatingAgg, setSchoolRatingAgg] = useState(null);
 
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -82,6 +83,14 @@ const TeacherRating = () => {
         setSchoolRating(schoolRatingData.rating);
         setSchoolComment(schoolRatingData.rating?.comment || '');
         setSchoolSummary(schoolRatingData.summary || { average: 0, count: 0 });
+        setSchoolRatingAgg({
+          parentAvg: schoolRatingData.parentAvg ?? schoolRatingData.summary?.average ?? null,
+          parentCount: schoolRatingData.parentCount ?? schoolRatingData.summary?.count ?? 0,
+          govAvg: schoolRatingData.govAvg ?? null,
+          govPeriod: schoolRatingData.govPeriod ?? null,
+          cumulativeAvg: schoolRatingData.cumulativeAvg ?? null,
+          cumulativeIsPartial: schoolRatingData.cumulativeIsPartial ?? false,
+        });
 
         const saved = schoolRatingData.rating?.indicators;
         if (saved && typeof saved === 'object') {
@@ -431,17 +440,40 @@ const TeacherRating = () => {
                     {school.address && <p className="text-sm text-slate-500">{school.address}</p>}
                   </div>
                 </div>
-                <div className="flex flex-col items-end text-right">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                    {t('schoolRatingPage.average')}
-                  </p>
-                  <div className="flex items-center gap-1 text-p-honey-700 font-bold text-xl">
-                    <Star className="w-5 h-5 fill-p-honey-500 text-p-honey-500" />
-                    {schoolSummary.average?.toFixed(1) || '0.0'}
-                  </div>
-                  <span className="text-xs text-slate-500">
-                    {t('schoolRatingPage.ratingsCount', { count: schoolSummary.count || 0 })}
-                  </span>
+                <div className="flex flex-col items-end text-right min-w-[120px]">
+                  {/* Cumulative headline */}
+                  {schoolRatingAgg?.cumulativeAvg != null ? (
+                    <>
+                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                        {t('schoolRatingPage.cumulative', { defaultValue: 'Umumiy' })}
+                      </p>
+                      <div className="flex items-center gap-1 text-p-honey-700 font-bold text-xl">
+                        <Star className="w-5 h-5 fill-p-honey-500 text-p-honey-500" />
+                        {schoolRatingAgg.cumulativeAvg.toFixed(1)}
+                      </div>
+                    </>
+                  ) : (
+                    <span className="text-xs text-slate-400 italic">{t('schoolRatingPage.noRating', { defaultValue: "Reyting yo'q" })}</span>
+                  )}
+                  {/* Parent + Gov breakdown */}
+                  {schoolRatingAgg && (
+                    <div className="mt-1.5 space-y-0.5 text-right">
+                      <p className="text-xs text-slate-500">
+                        {t('schoolRatingPage.parentAvg', { defaultValue: 'Ota-onalar:' })}{' '}
+                        <span className="font-semibold text-slate-700">
+                          {schoolRatingAgg.parentAvg != null ? schoolRatingAgg.parentAvg.toFixed(1) : '—'}
+                        </span>
+                        {schoolRatingAgg.parentCount > 0 && <span className="text-slate-400"> ({schoolRatingAgg.parentCount})</span>}
+                      </p>
+                      <p className="text-xs text-slate-500">
+                        {t('schoolRatingPage.govAvg', { defaultValue: 'Davlat:' })}{' '}
+                        <span className="font-semibold text-slate-700">
+                          {schoolRatingAgg.govAvg != null ? schoolRatingAgg.govAvg.toFixed(1) : '—'}
+                        </span>
+                        {schoolRatingAgg.govPeriod && <span className="text-slate-400"> {schoolRatingAgg.govPeriod}</span>}
+                      </p>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -4,9 +4,28 @@ import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Building2, Star, AlertCircle } from 'lucide-react';
 
+const RatingSummaryRow = ({ label, avg, extra }) => {
+  const { t } = useTranslation();
+  return (
+    <div className="flex items-center justify-between py-2 border-b border-warm-100 last:border-0">
+      <span className="text-sm text-warm-600">{label}</span>
+      {avg != null ? (
+        <div className="flex items-center gap-1.5">
+          <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+          <span className="text-sm font-bold text-warm-900">{Number(avg).toFixed(1)}</span>
+          {extra && <span className="text-xs text-warm-400">{extra}</span>}
+        </div>
+      ) : (
+        <span className="text-xs text-warm-400 italic">{t('schoolRatings.noRating', { defaultValue: "Reyting yo'q" })}</span>
+      )}
+    </div>
+  );
+};
+
 const SchoolRatings = () => {
   const { t } = useTranslation();
   const { data: schoolRatings, loading, error } = useFetch('/admin/school-ratings', { initialData: [] });
+  const { data: ratingSummary } = useFetch('/admin/school-rating-summary');
 
   if (loading) {
     return (
@@ -51,6 +70,28 @@ const SchoolRatings = () => {
         <h1 className="text-3xl font-bold text-warm-900">{t('schoolRatings.title')}</h1>
         <p className="text-warm-600 mt-2">{t('schoolRatings.subtitle')}</p>
       </div>
+
+      {/* Three-rating summary card */}
+      {ratingSummary && (
+        <Card className="p-5">
+          <h2 className="text-sm font-semibold text-warm-800 mb-3">{t('schoolRatings.summaryTitle', { defaultValue: "Maktab Reytingi Xulosasi" })}</h2>
+          <RatingSummaryRow
+            label={t('schoolRatings.parentRating', { defaultValue: 'Ota-onalar reytingi' })}
+            avg={ratingSummary.parent?.avg}
+            extra={ratingSummary.parent?.count != null ? `(${ratingSummary.parent.count} ta baho)` : undefined}
+          />
+          <RatingSummaryRow
+            label={t('schoolRatings.govRating', { defaultValue: 'Davlat reytingi' })}
+            avg={ratingSummary.government?.avg}
+            extra={ratingSummary.government?.period}
+          />
+          <RatingSummaryRow
+            label={t('schoolRatings.cumulativeRating', { defaultValue: 'Umumiy reyting' })}
+            avg={ratingSummary.cumulative?.avg}
+            extra={ratingSummary.cumulative?.isPartial ? t('schoolRatings.partial', { defaultValue: 'qisman' }) : undefined}
+          />
+        </Card>
+      )}
 
       <div className="grid grid-cols-1 gap-6">
         {schoolRatings.map((schoolData, index) => (

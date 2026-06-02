@@ -5,6 +5,7 @@ import User from '../../models/User.js';
 import logger from '../../utils/logger.js';
 import { regionWhere } from '../../middleware/regionScope.js';
 import { GOV_INDICATORS } from '../../config/ratingIndicators.js';
+import { getSchoolRatingsBatch } from '../../services/schoolRatingService.js';
 
 const INDICATOR_KEYS = GOV_INDICATORS.map(i => i.key);
 const PERIOD_RE = /^Q[1-4]-\d{4}$/;
@@ -171,11 +172,50 @@ export const getGovRatingsForSchool = async (req, res) => {
  */
 export const getRatingsAggregated = async (req, res) => {
   try {
-    const direction = req.query.direction ?? 'parent';
-    if (direction !== 'parent' && direction !== 'gov') {
+    const direction = req.query.direction ?? 'combined';
+    if (!['parent', 'gov', 'combined'].includes(direction)) {
       return res.status(400).json({
         success: false,
-        error: { code: 'RATING_DIRECTION_INVALID', detail: "direction must be 'parent' or 'gov'" },
+        error: { code: 'RATING_DIRECTION_INVALID', detail: "direction must be 'parent', 'gov', or 'combined'" },
+      });
+    }
+
+    // ── Combined direction: all 3 ratings per school ─────────────────────────
+    if (direction === 'combined') {
+      const schools = await School.findAll({ where: { isActive: true, ...regionWhere(req) } });
+      const schoolIds = schools.map(s => s.id);
+      const ratingsBatch = await getSchoolRatingsBatch(schoolIds);
+
+      const ranked = schools.map(school => {
+        const agg = ratingsBatch[school.id] || { parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } };
+        const distStars = [];
+        return {
+          id: school.id,
+          name: school.name,
+          address: school.address,
+          parentAvg: agg.parent.avg,
+          parentCount: agg.parent.count,
+          govAvg: agg.government?.avg ?? null,
+          govPeriod: agg.government?.period ?? null,
+          cumulativeAvg: agg.cumulative.avg,
+          cumulativeIsPartial: agg.cumulative.isPartial,
+          // Legacy compat
+          averageRating: agg.parent.avg ?? 0,
+          ratingsCount: agg.parent.count,
+        };
+      }).sort((a, b) => {
+        const cA = a.cumulativeAvg ?? -1;
+        const cB = b.cumulativeAvg ?? -1;
+        return cB - cA;
+      });
+
+      return res.json({
+        success: true,
+        data: {
+          direction: 'combined',
+          schools: ranked,
+          total: ranked.length,
+        },
       });
     }
 
