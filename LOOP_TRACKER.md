@@ -17,6 +17,10 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **CLEANUP-02-SPOT-COLORS 🟡 In progress:** Remove all decorative accent color usage from admin portal. Functional accents (buttons, links, active states, logo) preserved. Pending user Railway verification. `audits/redesign/CLEANUP-02-SPOT-COLORS.md`.
+
+> **CLEANUP-01-AI-BANNER 🟡 In progress:** Comprehensive removal of AI translation banner from all portals. Deleting component files (not stub), removing test, final grep confirms zero src hits. Pending user Railway verification. `audits/redesign/CLEANUP-01-AI-BANNER.md`.
+
 > **ADMIN-PORTAL-FOUNDATION 🟡 In progress:** 7-phase foundational cleanup: banner removal, spot-color discipline, Direktor/Muassasa rename (cross-portal), sidebar consolidation (18→14 items), language switcher to dropdown in sidebar, dashboard restructure. Pending user Railway verification. `audits/redesign/ADMIN-PORTAL-FOUNDATION.md`.
 
 > **ADMIN-AUTH-REDESIGN 🟡 In progress:** Split-screen Login page redesign for admin portal. Direktor/Muassasa terminology corrections + dropdown language switcher. New DNP component set (Field, PrimaryButton, Checkbox, InlineLink, SecurePill, LangDropdown, Spinner) + identity primitives (UEmblem, GuillochePattern) + icon copies. Tailwind panel/layout tokens added. Locale files updated UZ/RU/EN. Pending: user Railway visual verification + ADMIN-LOCALE-HYGIENE follow-up for wider portal drift. `audits/redesign/ADMIN-AUTH-REDESIGN.md`.

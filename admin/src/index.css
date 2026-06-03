@@ -36,19 +36,8 @@ html {
   outline-offset: 2px;
 }
 
-/* Letterhead hairline — 2px terracotta bar above page titles */
 .letterhead {
   position: relative;
-}
-.letterhead::before {
-  content: '';
-  position: absolute;
-  top: -14px;
-  left: 0;
-  height: 2px;
-  width: 56px;
-  background: #A85C40;
-  border-radius: 1px;
 }
 
 /* Document preview striped background */
