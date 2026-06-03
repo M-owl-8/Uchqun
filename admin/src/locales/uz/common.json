@@ -31,7 +31,6 @@
     "menu": "Tizim menyusi",
     "school": "Muassasa"
   },
-  "role.admin": "Direktor",
   "logout": "Chiqish",
   "mobileNav": {
     "reception": "Qabul",
@@ -52,7 +51,7 @@
     "errorInvalid": "Email yoki parol noto’g’ri",
     "accountLocked": "Juda ko’p urinish. 15 daqiqadan so’ng qaytadan urinib ko’ring.",
     "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, tasdig’ini kuting.",
-    "accountSuspended": "Hisobingiz to’xtatilgan. Administrator bilan bog’laning."
+    "accountSuspended": "Hisobingiz to’xtatilgan. Direktor bilan bog’laning."
   },
   "dashboard": {
     "welcome": "Xush kelibsiz, {{name}}",
@@ -368,7 +367,7 @@
     "roleTeacher": "Tarbiyachi / Xodim",
     "loadError": "Suhbatlarni yuklab bo'lmadi",
     "messagesLoadError": "Xabarlarni yuklab bo'lmadi",
-    "readOnly": "Faqat o'qish — admin xabar yubora olmaydi"
+    "readOnly": "Faqat o'qish — direktor xabar yubora olmaydi"
   },
   "import": {
     "title": "Ommaviy import",

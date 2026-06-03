@@ -12,7 +12,7 @@
     "parents": "Ota-onalar",
     "groups": "Guruhlar",
     "receptions": "Qabul bo'limi",
-    "admins": "Adminlar",
+    "admins": "Direktorlar",
     "reports": "Hisobotlar",
     "ratings": "Reytinglar",
     "rating": "Reyting",
@@ -38,7 +38,7 @@
     "hidePassword": "Parolni yashirish",
     "invalid": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, direktor tasdig'ini kuting."
   },
   "common": {
     "loading": "Yuklanmoqda...",
@@ -92,7 +92,7 @@
   },
   "role": {
     "government": "Davlat",
-    "admin": "Administrator",
+    "admin": "Direktor",
     "reception": "Qabul",
     "teacher": "O'qituvchi",
     "parent": "Ota-ona"

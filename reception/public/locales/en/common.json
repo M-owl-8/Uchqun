@@ -23,7 +23,7 @@
     "loading": "Logging in...",
     "invalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation."
+    "notApproved": "Your account is not yet approved. Please wait for director confirmation."
   },
   "dashboard": {
     "role": "My Role: Reception",
@@ -256,7 +256,7 @@
   },
   "documents": {
     "title": "My Documents",
-    "subtitle": "Upload documents and wait for admin approval.",
+    "subtitle": "Upload documents and wait for director approval.",
     "upload": "Upload Document",
     "documentType": "Document type",
     "type": {

@@ -23,7 +23,7 @@
     "loading": "Kirish...",
     "invalid": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting."
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, direktor tasdig'ini kuting."
   },
   "dashboard": {
     "role": "Mening rolim: Reception",

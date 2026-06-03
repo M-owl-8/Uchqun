@@ -12,7 +12,7 @@
     "parents": "Parents",
     "groups": "Groups",
     "receptions": "Reception",
-    "admins": "Admins",
+    "admins": "Directors",
     "reports": "Reports",
     "ratings": "Ratings",
     "rating": "Rating",
@@ -38,7 +38,7 @@
     "hidePassword": "Hide password",
     "invalid": "Invalid email or password",
     "accountLocked": "Too many attempts. Try again in 15 minutes.",
-    "notApproved": "Your account has not been approved yet. Please wait for admin approval."
+    "notApproved": "Your account has not been approved yet. Please wait for director approval."
   },
   "common": {
     "loading": "Loading...",
@@ -92,7 +92,7 @@
   },
   "role": {
     "government": "Government",
-    "admin": "Administrator",
+    "admin": "Director",
     "reception": "Reception",
     "teacher": "Teacher",
     "parent": "Parent"

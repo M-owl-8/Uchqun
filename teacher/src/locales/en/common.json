@@ -67,8 +67,8 @@
     "invalid": "Invalid email or password",
     "invalidRole": "Only teachers and parents can login. Other roles are not allowed.",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
-    "accountSuspended": "Your account has been suspended. Contact the administrator."
+    "notApproved": "Your account is not yet approved. Please wait for director confirmation.",
+    "accountSuspended": "Your account has been suspended. Contact the Director."
   },
   "dashboard": {
     "role": "My Role: Teacher",
@@ -82,7 +82,7 @@
     "media": "Media",
     "noChildren": {
       "title": "No children in your class yet",
-      "description": "This dashboard will show data once children are assigned to your class. Contact your school administrator."
+      "description": "This dashboard will show data once children are assigned to your class. Contact your school director."
     }
   },
   "parentsPage": {

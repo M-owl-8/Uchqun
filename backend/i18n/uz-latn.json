@@ -181,7 +181,7 @@
   "ASSESSMENT_SESSION_EXISTS": "Bu turdagi baholash ushbu reja uchun allaqachon mavjud.",
   "ASSESSMENT_INCOMPLETE": "Iltimos, 17 ta baholash mezoni bo'yicha ballarni ko'rsating.",
   "ASSESSMENT_INVALID_SCORE": "Har bir ball 0 dan 4 gacha bo'lgan butun son bo'lishi kerak.",
-  "ASSESSMENT_CRITERIA_MISSING": "Baholash mezonlari sozlanmagan. Administrator bilan bog'laning.",
+  "ASSESSMENT_CRITERIA_MISSING": "Baholash mezonlari sozlanmagan. Maktab direktori bilan bog'laning.",
   "ASSESSMENT_NOT_FOUND": "Baholash sessiyasi topilmadi.",
   "ASSESSMENT_CREATE_FAILED": "Baholashni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "ASSESSMENT_LIST_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",

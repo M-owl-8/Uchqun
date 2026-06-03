@@ -31,7 +31,6 @@
     "menu": "System Menu",
     "school": "Institution"
   },
-  "role.admin": "Director",
   "logout": "Logout",
   "mobileNav": {
     "reception": "Reception",
@@ -52,7 +51,7 @@
     "errorInvalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
     "notApproved": "Your account is not yet approved. Please wait for confirmation.",
-    "accountSuspended": "Your account has been suspended. Contact the administrator."
+    "accountSuspended": "Your account has been suspended. Contact the Director."
   },
   "dashboard": {
     "welcome": "Welcome, {{name}}",
@@ -367,7 +366,7 @@
     "roleTeacher": "Teacher / Staff",
     "loadError": "Failed to load conversations",
     "messagesLoadError": "Failed to load messages",
-    "readOnly": "Read-only — admin cannot send messages"
+    "readOnly": "Read-only — Director cannot send messages"
   },
   "import": {
     "title": "Bulk Import",

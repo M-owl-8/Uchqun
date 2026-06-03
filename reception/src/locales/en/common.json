@@ -31,9 +31,9 @@
     "hidePassword": "Hide password",
     "invalid": "Invalid email or password",
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
-    "notApproved": "Your account is not yet approved. Please wait for admin confirmation.",
-    "documentsNotice": "If your documents have not yet been approved, login is not available. Contact your school administration.",
-    "accountSuspended": "Your account has been suspended. Contact the school administrator."
+    "notApproved": "Your account is not yet approved. Please wait for director confirmation.",
+    "documentsNotice": "If your documents have not yet been approved, login is not available. Contact your school director.",
+    "accountSuspended": "Your account has been suspended. Contact the school director."
   },
   "dashboard": {
     "role": "My Role: Reception",
@@ -295,14 +295,14 @@
   },
   "documents": {
     "title": "My Documents",
-    "subtitle": "Upload your documents and wait for admin approval.",
+    "subtitle": "Upload your documents and wait for director approval.",
     "upload": "Upload Document",
     "progress": "Status",
     "help": "Help",
     "allApproved": "All documents approved",
     "pendingWarning": "Documents are awaiting approval",
     "fileSizeLimit": "File size must not exceed {{maxMB}} MB.",
-    "uploadSuccess": "Document uploaded. Awaiting admin approval.",
+    "uploadSuccess": "Document uploaded. Awaiting director approval.",
     "uploadError": "Document upload failed. Please try again."
   },
   "errors": {

@@ -31,9 +31,9 @@
     "hidePassword": "Parolni yashirish",
     "invalid": "Email yoki parol noto'g'ri",
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
-    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, admin tasdig'ini kuting.",
+    "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, direktor tasdig'ini kuting.",
     "documentsNotice": "Hujjatlaringiz hali tasdiqlanmagan bo'lsa, kirish mumkin emas. Maktab rahbari bilan bog'laning.",
-    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab administratori bilan bog'laning."
+    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab direktori bilan bog'laning."
   },
   "dashboard": {
     "role": "Mening rolim: Reception",
@@ -300,14 +300,14 @@
   },
   "documents": {
     "title": "Mening hujjatlarim",
-    "subtitle": "Hujjatlarni yuklang va admin tasdiqlashini kuting.",
+    "subtitle": "Hujjatlarni yuklang va direktor tasdiqlashini kuting.",
     "upload": "Hujjat yuklash",
     "progress": "Holat",
     "help": "Yordam",
     "allApproved": "Barcha hujjatlar tasdiqlangan",
     "pendingWarning": "Tasdiq kutayotgan hujjatlar bor",
     "fileSizeLimit": "Fayl hajmi {{maxMB}} MB dan oshmasin.",
-    "uploadSuccess": "Hujjat yuklandi. Admin tasdiqlashi kutilmoqda.",
+    "uploadSuccess": "Hujjat yuklandi. Direktor tasdiqlashi kutilmoqda.",
     "uploadError": "Hujjat yuklanmadi. Qayta urinib ko'ring."
   },
   "errors": {
