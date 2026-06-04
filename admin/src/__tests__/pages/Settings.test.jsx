@@ -90,7 +90,8 @@ describe('CL-014a Settings', () => {
     expect(screen.getByText('settings.profileInfo')).toBeTruthy();
     expect(screen.getByText('settings.notifications')).toBeTruthy();
     expect(screen.getByText('settings.changePassword')).toBeTruthy();
-    expect(screen.getByText('settings.contactGovernment')).toBeTruthy();
+    // Contact Government section removed — functionality moved to Xabarlar page (/admin/messages)
+    expect(screen.getByText('settings.quickLinks')).toBeTruthy();
   });
 
   it('renders title immediately since profile comes from auth context', async () => {
@@ -146,60 +147,16 @@ describe('CL-014a Settings', () => {
     });
   });
 
-  it('opens compose modal when send message button clicked', async () => {
+  it('Xabarlar Quick Link navigates to /admin/messages', async () => {
     const api = (await import('../../services/api')).default;
     stubLoad(api);
     const { default: Settings } = await import('../../pages/Settings');
     render(React.createElement(Settings));
-    await waitFor(() => expect(screen.getByText('settings.sendMessage')).toBeTruthy());
-
-    fireEvent.click(screen.getByText('settings.sendMessage').closest('button'));
-
-    expect(screen.getByText('settings.sendToGovernment')).toBeTruthy();
-  });
-
-  it('shows my messages button when messages exist and opens history modal', async () => {
-    const messages = [{
-      id: 1,
-      subject: 'Maktab muammosi',
-      message: 'Body text',
-      reply: null,
-      createdAt: new Date().toISOString(),
-    }];
-    const api = (await import('../../services/api')).default;
-    stubLoad(api, messages);
-    const { default: Settings } = await import('../../pages/Settings');
-    render(React.createElement(Settings));
-    await waitFor(() => expect(screen.getByText('settings.myMessages')).toBeTruthy());
-
-    fireEvent.click(screen.getByText('settings.myMessages').closest('button'));
-
-    expect(screen.getByText('Maktab muammosi')).toBeTruthy();
-  });
-
-  it('calls POST /admin/message-to-government when message is sent', async () => {
-    const api = (await import('../../services/api')).default;
-    stubLoad(api);
-    api.post.mockResolvedValue({});
-    const { default: Settings } = await import('../../pages/Settings');
-    const { container } = render(React.createElement(Settings));
-    await waitFor(() => expect(screen.getByText('settings.sendMessage')).toBeTruthy());
-
-    fireEvent.click(screen.getByText('settings.sendMessage').closest('button'));
-
-    const subjectInput = container.querySelector('input[placeholder="settings.subjectPlaceholder"]');
-    const textarea = container.querySelector('textarea');
-    fireEvent.change(subjectInput, { target: { value: 'Test subject' } });
-    fireEvent.change(textarea, { target: { value: 'Test message body' } });
-
-    fireEvent.click(screen.getByText('settings.send').closest('button'));
-
-    await waitFor(() => {
-      expect(api.post).toHaveBeenCalledWith('/admin/message-to-government', {
-        subject: 'Test subject',
-        message: 'Test message body',
-      });
-    });
+    await waitFor(() => expect(screen.getByText('settings.title')).toBeTruthy());
+    // Contact Government section was removed and replaced by a Quick Link to /admin/messages
+    const messagesLink = screen.getByText('nav.govMessages').closest('a');
+    expect(messagesLink).toBeTruthy();
+    expect(messagesLink.getAttribute('href')).toBe('/admin/messages');
   });
 
   it('shows error toast when profile save fails', async () => {

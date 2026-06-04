@@ -46,15 +46,15 @@ describe('SchoolProfile (FE-6)', () => {
   it('shows Active badge when isActive=true', async () => {
     api.get.mockResolvedValue({ data: { data: { ...SCHOOL, isActive: true } } });
     render(<SchoolProfile />);
-    await waitFor(() => screen.getByText('Active'));
-    expect(screen.getByText('Active')).toBeTruthy();
+    await waitFor(() => screen.getByText('Faol'));
+    expect(screen.getByText('Faol')).toBeTruthy();
   });
 
   it('shows Archived badge when isActive=false', async () => {
     api.get.mockResolvedValue({ data: { data: { ...SCHOOL, isActive: false } } });
     render(<SchoolProfile />);
-    await waitFor(() => screen.getByText('Archived'));
-    expect(screen.getByText('Archived')).toBeTruthy();
+    await waitFor(() => screen.getByText('Arxivlangan'));
+    expect(screen.getByText('Arxivlangan')).toBeTruthy();
   });
 
   it('displays region and category names when present', async () => {

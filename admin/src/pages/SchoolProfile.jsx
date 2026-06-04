@@ -100,22 +100,29 @@ const SchoolProfile = () => {
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-warm-900">
-          {school?.name ?? t('schoolProfile.title', { defaultValue: 'School Profile' })}
+      <div className="letterhead pt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('nav.settings', { defaultValue: 'Sozlamalar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {school?.name ?? t('schoolProfile.title', { defaultValue: 'Muassasa profili' })}
         </h1>
-        <p className="text-warm-500 mt-1">{t('schoolProfile.subtitle', { defaultValue: "View and update your school's contact information" })}</p>
+        <p className="text-sm text-warm-600 mt-1">{t('schoolProfile.subtitle', { defaultValue: "Muassasaning aloqa ma'lumotlarini ko'ring va yangilang" })}</p>
         <div className="flex items-center gap-2 mt-3">
-          <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-warm-100 text-warm-700">
-            {school?.type ?? '—'}
-          </span>
+          {school?.type && (
+            <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-sm bg-warm-100 text-warm-700 border border-warm-200">
+              {school.type}
+            </span>
+          )}
           {school?.isActive ? (
-            <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700">
-              {t('schoolProfile.statusActive', { defaultValue: 'Active' })}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-sm bg-success-50 text-success-700 border border-success-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-success-600" />
+              {t('schoolProfile.statusActive', { defaultValue: 'Faol' })}
             </span>
           ) : (
-            <span className="inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
-              {t('schoolProfile.statusArchived', { defaultValue: 'Archived' })}
+            <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-sm bg-error-50 text-error-700 border border-error-100">
+              <span className="w-1.5 h-1.5 rounded-full bg-error-600" />
+              {t('schoolProfile.statusArchived', { defaultValue: 'Arxivlangan' })}
             </span>
           )}
         </div>
@@ -156,7 +163,7 @@ const SchoolProfile = () => {
               type={type}
               value={editing[key]}
               onChange={(e) => setEditing((prev) => ({ ...prev, [key]: e.target.value }))}
-              className="w-full px-3 py-2 border border-warm-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full px-3 py-2 border border-warm-200 rounded-md text-sm focus:outline-none focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
             />
           </div>
         ))}
@@ -168,7 +175,7 @@ const SchoolProfile = () => {
             value={editing.description}
             onChange={(e) => setEditing((prev) => ({ ...prev, description: e.target.value }))}
             rows={3}
-            className="w-full px-3 py-2 border border-warm-200 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-none"
+            className="w-full px-3 py-2 border border-warm-200 rounded-md text-sm focus:outline-none focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600 resize-none"
           />
         </div>
 
@@ -176,7 +183,7 @@ const SchoolProfile = () => {
           <button
             onClick={handleSave}
             disabled={saving}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-white text-sm font-medium rounded-md transition-colors"
+            className="inline-flex items-center gap-2 h-10 px-4 bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-walnut-text text-sm font-medium rounded-md transition-colors shadow-xs"
           >
             {saving
               ? t('schoolProfile.saving', { defaultValue: 'Saving…' })

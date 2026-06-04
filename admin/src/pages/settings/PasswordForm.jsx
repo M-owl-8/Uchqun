@@ -20,7 +20,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.current ? 'text' : 'password'}
                 value={passwordForm.currentPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
                 required
               />
               <button
@@ -40,7 +40,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.new ? 'text' : 'password'}
                 value={passwordForm.newPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
                 required
                 minLength={8}
               />
@@ -62,7 +62,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 type={showPasswords.confirm ? 'text' : 'password'}
                 value={passwordForm.confirmPassword}
                 onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 pr-12 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
                 required
                 minLength={8}
               />
@@ -81,10 +81,10 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
           <button
             type="submit"
             disabled={savingPassword}
-            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 h-10 px-4 text-sm bg-brand-600 text-walnut-text rounded-md font-medium hover:bg-brand-700 transition-colors shadow-xs disabled:opacity-50"
           >
             {savingPassword ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-walnut-text border-t-transparent rounded-full animate-spin" />
             ) : (
               <Save className="w-5 h-5" />
             )}

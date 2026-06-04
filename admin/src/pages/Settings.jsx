@@ -1,16 +1,14 @@
-﻿import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { MessageSquare, LogOut, Building2, Upload, ClipboardList, UsersRound } from 'lucide-react';
+import { LogOut, Building2, Upload, ClipboardList, UsersRound, Mail } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import ProfileForm from './settings/ProfileForm';
 import NotificationPreferences from './settings/NotificationPreferences';
 import PasswordForm from './settings/PasswordForm';
-import MessageModal from './settings/MessageModal';
-import MessagesModal from './settings/MessagesModal';
 
 const Settings = () => {
   const { user, setUser, logout } = useAuth();
@@ -39,13 +37,6 @@ const Settings = () => {
     },
   });
   const { success, error: showError } = useToast();
-  const [showMessageModal, setShowMessageModal] = useState(false);
-  const [messageSubject, setMessageSubject] = useState('');
-  const [messageText, setMessageText] = useState('');
-  const [sendingMessage, setSendingMessage] = useState(false);
-  const [myMessages, setMyMessages] = useState([]);
-  const [loadingMessages, setLoadingMessages] = useState(false);
-  const [showMessagesModal, setShowMessagesModal] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -59,50 +50,9 @@ const Settings = () => {
     }
   }, [user]);
 
-  const loadMessages = useCallback(async () => {
-    try {
-      setLoadingMessages(true);
-      const response = await api.get('/admin/messages');
-      setMyMessages(response.data.data || []);
-    } catch (error) {
-      setMyMessages([]);
-    } finally {
-      setLoadingMessages(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadMessages();
-  }, [loadMessages]);
-
-  const handleSendMessage = async () => {
-    if (!messageSubject.trim() || !messageText.trim()) {
-      showError(t('settings.messageRequired', { defaultValue: 'Mavzu va xabar to\'ldirilishi kerak' }));
-      return;
-    }
-
-    setSendingMessage(true);
-    try {
-      await api.post('/admin/message-to-government', {
-        subject: messageSubject.trim(),
-        message: messageText.trim(),
-      });
-      success(t('settings.messageSent', { defaultValue: 'Xabar muvaffaqiyatli yuborildi' }));
-      setMessageSubject('');
-      setMessageText('');
-      setShowMessageModal(false);
-      await loadMessages();
-    } catch (error) {
-      showError(error.response?.data?.error || t('settings.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
-    } finally {
-      setSendingMessage(false);
-    }
-  };
-
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-
     try {
       const response = await api.put('/user/profile', {
         firstName: profileForm.firstName,
@@ -128,9 +78,8 @@ const Settings = () => {
       showError(t('settings.passwordMismatch', { defaultValue: 'Yangi parollar mos kelmadi' }));
       return;
     }
-
     if (passwordForm.newPassword.length < 8) {
-      showError(t('settings.passwordTooShort', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' }));
+      showError(t('settings.passwordTooShort', { defaultValue: "Parol kamida 8 ta belgidan iborat bo'lishi kerak" }));
       return;
     }
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
@@ -144,17 +93,13 @@ const Settings = () => {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
-      success(t('settings.passwordChanged', { defaultValue: 'Parol muvaffaqiyatli o\'zgartirildi' }));
-      setPasswordForm({
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: '',
-      });
+      success(t('settings.passwordChanged', { defaultValue: "Parol muvaffaqiyatli o'zgartirildi" }));
+      setPasswordForm({ currentPassword: '', newPassword: '', confirmPassword: '' });
     } catch (error) {
-      if (error.response?.status === 401) {
-        showError(t('settings.passwordIncorrect', { defaultValue: 'Joriy parol noto\'g\'ri' }));
+      if (error.response?.status === 400) {
+        showError(t('settings.passwordIncorrect', { defaultValue: "Joriy parol noto'g'ri" }));
       } else {
-        showError(t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+        showError(t('settings.passwordError', { defaultValue: "Parolni o'zgartirishda xatolik" }));
       }
     } finally {
       setSavingPassword(false);
@@ -167,10 +112,18 @@ const Settings = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div>
-        <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
-        <p className="text-warm-500 font-medium mt-1">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
+    <div className="max-w-4xl mx-auto space-y-6">
+      {/* Header */}
+      <div className="letterhead pt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('nav.settings', { defaultValue: 'Sozlamalar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('settings.title', { defaultValue: 'Sozlamalar' })}
+        </h1>
+        <p className="text-sm text-warm-600 mt-1">
+          {t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}
+        </p>
       </div>
 
       {/* Profile Settings */}
@@ -199,107 +152,67 @@ const Settings = () => {
         onSubmit={handlePasswordSubmit}
       />
 
-      {/* Quick links — low-frequency pages accessible from here instead of sidebar */}
+      {/* Quick links */}
       <Card className="p-6">
-        <h2 className="text-xl font-bold text-warm-900 mb-4">{t('settings.quickLinks', { defaultValue: 'Boshqa bo\'limlar' })}</h2>
+        <h2 className="text-sm font-semibold text-warm-800 mb-4 uppercase tracking-wider">
+          {t('settings.quickLinks', { defaultValue: "Boshqa bo'limlar" })}
+        </h2>
         <div className="grid sm:grid-cols-2 gap-3">
-          <Link to="/admin/school" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
-            <Building2 className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+          <Link to="/admin/school" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <Building2 className="w-4 h-4 text-brand-600 shrink-0" strokeWidth={1.75} />
             <div>
-              <p className="text-sm font-semibold text-warm-900">{t('nav.school', { defaultValue: 'Muassasa profili' })}</p>
+              <p className="text-sm font-medium text-warm-900">{t('nav.school', { defaultValue: 'Muassasa profili' })}</p>
               <p className="text-xs text-warm-500">{t('settings.schoolProfileDesc', { defaultValue: "Manzil, aloqa va muassasa ma'lumotlari" })}</p>
             </div>
           </Link>
-          <Link to="/admin/import" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
-            <Upload className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+          <Link to="/admin/import" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <Upload className="w-4 h-4 text-brand-600 shrink-0" strokeWidth={1.75} />
             <div>
-              <p className="text-sm font-semibold text-warm-900">{t('nav.import', { defaultValue: 'Ommaviy import' })}</p>
+              <p className="text-sm font-medium text-warm-900">{t('nav.import', { defaultValue: 'Ommaviy import' })}</p>
               <p className="text-xs text-warm-500">{t('settings.importDesc', { defaultValue: 'CSV orqali bolalarni import qilish' })}</p>
             </div>
           </Link>
-          <Link to="/admin/irr" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
-            <ClipboardList className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+          <Link to="/admin/irr" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <ClipboardList className="w-4 h-4 text-brand-600 shrink-0" strokeWidth={1.75} />
             <div>
-              <p className="text-sm font-semibold text-warm-900">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
+              <p className="text-sm font-medium text-warm-900">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
               <p className="text-xs text-warm-500">{t('settings.irrDesc', { defaultValue: "Har chorakda bir marta to'ldiriladi" })}</p>
             </div>
           </Link>
-          <Link to="/admin/groups" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
-            <UsersRound className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+          <Link to="/admin/groups" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <UsersRound className="w-4 h-4 text-brand-600 shrink-0" strokeWidth={1.75} />
             <div>
-              <p className="text-sm font-semibold text-warm-900">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
+              <p className="text-sm font-medium text-warm-900">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
               <p className="text-xs text-warm-500">{t('settings.groupsDesc', { defaultValue: "Guruhlar ro'yxati (faqat ko'rish)" })}</p>
             </div>
           </Link>
-        </div>
-      </Card>
-
-      {/* Contact Government */}
-      <Card className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <MessageSquare className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-warm-900">{t('settings.contactGovernment', { defaultValue: 'Davlat bilan bog\'lanish' })}</h2>
-        </div>
-        <p className="text-sm text-warm-600 mb-4">
-          {t('settings.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
-        </p>
-        <div className="flex gap-3">
-          <button
-            onClick={() => setShowMessageModal(true)}
-            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
-          >
-            <MessageSquare className="w-5 h-5" />
-            {t('settings.sendMessage', { defaultValue: 'Xabar yuborish' })}
-          </button>
-          {myMessages.length > 0 && (
-            <button
-              onClick={() => setShowMessagesModal(true)}
-              className="flex items-center gap-2 px-6 py-3 bg-success-600 text-white rounded-xl font-bold hover:bg-success-700 transition-colors shadow-sm relative"
-            >
-              <MessageSquare className="w-5 h-5" />
-              {t('settings.myMessages', { defaultValue: 'Mening xabarlarim' })}
-              {myMessages.some(m => m.reply) && (
-                <span className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center">
-                  {myMessages.filter(m => m.reply).length}
-                </span>
-              )}
-            </button>
-          )}
+          <Link to="/admin/messages" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <Mail className="w-4 h-4 text-brand-600 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-medium text-warm-900">{t('nav.govMessages', { defaultValue: 'Hukumatga xabarlar' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.messagesDesc', { defaultValue: 'Davlat nazorat organiga murojaatlar' })}</p>
+            </div>
+          </Link>
+          <Link to="/admin/trash" className="flex items-center gap-3 p-3 border border-warm-200 rounded-md hover:bg-warm-50 transition-colors">
+            <LogOut className="w-4 h-4 text-warm-500 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-medium text-warm-900">{t('nav.trash', { defaultValue: 'Savatcha' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.trashDesc', { defaultValue: "O'chirilgan ma'lumotlar arxivi" })}</p>
+            </div>
+          </Link>
         </div>
       </Card>
 
       {/* Logout */}
-      <Card className="p-6">
+      <Card className="p-4">
         <button
           onClick={handleLogout}
-          className="flex items-center justify-center gap-2 px-6 py-3 bg-error-600 text-white rounded-xl font-bold hover:bg-error-700 transition-colors shadow-sm w-full"
+          className="inline-flex items-center justify-center gap-2 h-10 px-4 text-sm font-medium bg-error-50 hover:bg-error-100 text-error-700 border border-error-200 rounded-md transition-colors w-full"
         >
-          <LogOut className="w-5 h-5" />
+          <LogOut className="w-4 h-4" strokeWidth={1.75} />
           {t('logout', { defaultValue: 'Chiqish' })}
         </button>
       </Card>
-
-      {/* Message Modal */}
-      {showMessageModal && (
-        <MessageModal
-          messageSubject={messageSubject}
-          setMessageSubject={setMessageSubject}
-          messageText={messageText}
-          setMessageText={setMessageText}
-          sendingMessage={sendingMessage}
-          onSend={handleSendMessage}
-          onClose={() => setShowMessageModal(false)}
-        />
-      )}
-
-      {/* My Messages Modal */}
-      {showMessagesModal && (
-        <MessagesModal
-          myMessages={myMessages}
-          loadingMessages={loadingMessages}
-          onClose={() => setShowMessagesModal(false)}
-        />
-      )}
     </div>
   );
 };

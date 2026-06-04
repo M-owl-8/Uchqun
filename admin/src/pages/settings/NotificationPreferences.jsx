@@ -37,7 +37,7 @@ const NotificationPreferences = ({ profileForm, setProfileForm, saving, onSubmit
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 h-10 px-4 text-sm bg-brand-600 text-walnut-text rounded-md font-medium hover:bg-brand-700 transition-colors shadow-xs disabled:opacity-50"
           >
             <Save className="w-5 h-5" />
             {t('settings.savePreferences', { defaultValue: 'Saqlash' })}

@@ -20,7 +20,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit }) => {
                 type="text"
                 value={profileForm.firstName}
                 onChange={(e) => setProfileForm({ ...profileForm, firstName: e.target.value })}
-                className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
                 required
               />
             </div>
@@ -31,7 +31,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit }) => {
                 type="text"
                 value={profileForm.lastName}
                 onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
-                className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
                 required
               />
             </div>
@@ -60,7 +60,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit }) => {
               type="tel"
               value={profileForm.phone}
               onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-              className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-warm-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
               placeholder="+998 90 123 45 67"
             />
           </div>
@@ -70,10 +70,10 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit }) => {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50"
+            className="inline-flex items-center gap-2 h-10 px-4 text-sm bg-brand-600 text-walnut-text rounded-md font-medium hover:bg-brand-700 transition-colors shadow-xs disabled:opacity-50"
           >
             {saving ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              <div className="w-4 h-4 border-2 border-walnut-text border-t-transparent rounded-full animate-spin" />
             ) : (
               <Save className="w-5 h-5" />
             )}

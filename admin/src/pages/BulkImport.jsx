@@ -144,12 +144,15 @@ const BulkImport = () => {
   };
 
   return (
-    <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-700">
-      <div>
-        <h1 className="text-3xl font-bold text-warm-900 tracking-tight">
-          {t('import.title', { defaultValue: 'Bulk Import' })}
+    <div className="max-w-3xl mx-auto space-y-6">
+      <div className="letterhead pt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('nav.settings', { defaultValue: 'Sozlamalar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('import.title', { defaultValue: 'Ommaviy import' })}
         </h1>
-        <p className="text-warm-500 mt-1">{t('import.subtitle', { defaultValue: 'Import children from a CSV file' })}</p>
+        <p className="text-sm text-warm-600 mt-1">{t('import.subtitle', { defaultValue: 'CSV fayl orqali bolalarni import qilish' })}</p>
       </div>
 
       <StepIndicator step={step} />
@@ -186,7 +189,7 @@ const BulkImport = () => {
             onClick={handleValidate}
             disabled={!file || validating}
             data-testid="validate-btn"
-            className="inline-flex items-center justify-center h-10 px-6 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-50"
+            className="inline-flex items-center justify-center h-10 px-6 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-walnut-text rounded-md transition-colors disabled:opacity-50"
           >
             {validating ? (
               <>
@@ -263,7 +266,7 @@ const BulkImport = () => {
               onClick={() => setStep(3)}
               disabled={jobResult.validRows === 0}
               data-testid="continue-btn"
-              className="inline-flex items-center justify-center h-10 px-6 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-50"
+              className="inline-flex items-center justify-center h-10 px-6 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-walnut-text rounded-md transition-colors disabled:opacity-50"
             >
               {t('import.continueBtn', { defaultValue: 'Continue with valid rows' })}
             </button>
