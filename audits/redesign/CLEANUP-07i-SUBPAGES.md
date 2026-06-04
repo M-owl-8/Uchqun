@@ -1,8 +1,10 @@
-# CLEANUP-07i-SUBPAGES — IRR + Guruhlar + Audit jurnali
+# CLEANUP-07i-SUBPAGES — IRR + Guruhlar + Audit jurnali (full audit pass)
 
 **Status:** ✅ CLOSED (pending user Railway verification)
-**Commit:** df3abb8
-**Tests:** 30/30 · 165/165 · build clean
+**Commit:** 3abffb0
+**Tests:** 30/30 · 165/165
+**Build:** clean
+**check:locales:** 560 keys · 0 missing
 
 ---
 
@@ -12,153 +14,156 @@
 |---|---|---|
 | ManagerIRR | `/admin/irr` | Dashboard Hisobotlar → "IRR →" + Settings Quick Links |
 | GroupManagement | `/admin/groups` | Dashboard Hisobotlar → "Guruhlar →" + Settings Quick Links |
-| ActivityFeed | `/admin/activity` | Dashboard → "Audit jurnali →" link |
+| ActivityFeed | `/admin/activity` | Dashboard → "Audit jurnali →" |
 
 ---
 
-## STEP 1 — Current state audit
+## STEP 1 — Audit findings (all three pages)
 
-### ActivityFeed
+### ActivityFeed (`/admin/activity`)
 
-| Element | Finding | Severity |
+| Element | State | Action |
 |---|---|---|
-| Header | Plain `h1 text-3xl font-semibold` — no letterhead/eyebrow | Medium |
-| Locale collision | **CRITICAL**: Two `activityFeed` top-level keys in all 3 JSON files. JSON parser keeps last block (pageOf/prev/next), first block (title/subtitle/filter keys) is silently dropped. Component renders via `defaultValue` only. | High |
-| Date format | Hardcoded `toLocaleString('uz-UZ')` — shows wrong format in RU/EN | Medium |
-| Focus rings | `focus:ring-brand-500` — should be `focus:ring-brand-600/30 focus:border-brand-600` | Low |
-| Actor display | `${entry.actor.firstName} ${entry.actor.lastName}` — correct, names not UUIDs | OK |
-| Filters | Working select + date range filters — functional, translated | OK |
-| Pagination | prev/next keys were in the orphan block — broken until fix | Fixed |
+| Header | ✅ Letterhead + eyebrow "Hisobotlar" | Prior session — holds |
+| Actor display | ✅ `firstName + lastName`, not UUIDs | Prior session — holds |
+| Action labels | ✅ `t(activityActions.${action}_${entity})` | Prior session — holds |
+| Date format | ✅ `DATE_LOCALE[i18n?.language]` — locale-aware | Prior session — holds |
+| Filters | ✅ Functional (action select + date range) — not stubs | Verified |
+| Pagination | ✅ Translated prev/next/pageOf | Prior session — holds |
+| Focus rings | ✅ `ring-brand-600/30` | Prior session — holds |
+| **Empty state** | ❌ Single empty state for both no-data and filter-empty | **Fixed this pass** |
+| **Entity column** | ❌ Raw strings ("documents", "receptions", "users") | **Fixed this pass** |
 
-### GroupManagement
+### GroupManagement (`/admin/groups`)
 
-| Element | Finding | Severity |
-|---|---|---|
-| Header | `text-4xl font-black` — old oversized pattern, no letterhead/eyebrow, no (N) count | Medium |
-| Avatar | `bg-brand-100 text-brand-700` — raw brand color, should be warm-100/600 | Low |
-| Search input | `rounded-xl` — should be `rounded-md` per 07h convention | Low |
-| Focus ring | `focus:ring-brand-500` — wrong | Low |
-| Empty state | No explanation of who creates groups | Low |
-| Read-only | No create/edit/delete buttons — correctly enforced | OK |
-| Locale | Missing `eyebrow`, `emptyReason`; title "Guruh boshqaruvi" → "Guruhlar" | Medium |
+| Element | State |
+|---|---|
+| Header | ✅ Letterhead + eyebrow + `(N)` count |
+| Avatar | ✅ `bg-warm-100 text-warm-600` |
+| Search input | ✅ `rounded-md h-10 ring-brand-600/30` |
+| Read-only | ✅ No create/edit/delete buttons |
+| Empty states | ✅ `emptySearch` vs `empty` — distinguished; `emptyReason` explains business logic |
+| Tokens | ✅ All warm palette |
+| Locale | ✅ Full eyebrow/emptyReason coverage |
 
-### ManagerIRR
+### ManagerIRR (`/admin/irr`)
 
-| Element | Finding | Severity |
-|---|---|---|
-| Header | `text-xl font-bold` — small, no letterhead/eyebrow | Medium |
-| SECTION_MAP labels | 5 section labels hardcoded in UZ Cyrillic (`'Ахборот тизими'`, etc.) — not translatable | Medium |
-| Focus rings | `focus:ring-brand-500` on all inputs + textarea | Low |
-| No locale section | All strings fell through to Cyrillic defaultValues — no proper UZ Latin, RU, or EN translations | High |
-| CRUD tabs | Two tabs (Goal Periods + Quarterly) both working with validation + toasts | OK |
-| Sign button | `bg-brand-600 text-white` — small inline CTA, acceptable as primary accent | OK |
+| Element | State |
+|---|---|
+| Header | ✅ Letterhead + eyebrow "Hisobotlar" |
+| SECTION_MAP labels | ✅ `t(labelKey)` — 5 sections × 3 langs |
+| Focus rings | ✅ `ring-brand-600/30` on all inputs |
+| Toasts | ✅ showError/showSuccess on all mutations (sign, quarterly submit) |
+| Empty states | ✅ No-children, no-IRR, no-periods all handled |
+| Locale section | ✅ 40 keys × 3 langs (added in ADMIN-LOCALE-FINAL) |
+| Tabs | ✅ "Maqsadli davrlar" / "Chorakli monitoring" in locale |
 
 ---
 
 ## STEP 2 — Decisions
 
-No ambiguous decisions. All three pages map cleanly to established 07-series conventions.
+None needed. All findings map to established conventions.
 
 ---
 
-## STEP 3 — Implementation
+## STEP 3 — Implementation (this pass)
 
-### Locale fixes (3 files: uz, en, ru)
+### ActivityFeed filter-empty state
 
-**activityFeed duplicate collision fix:**
-- Merged the orphan second `activityFeed` block (pageOf/prev/next) into the canonical first block
-- Added `eyebrow` key to the canonical block
-- Removed orphan block from end of each file
-
-**groupsPage additions:**
-- `eyebrow`: "Boshqaruv" / "Management" / "Управление"
-- `title`: "Guruhlar" / "Groups" / "Группы" (was "Guruh boshqaruvi" etc.)
-- `emptyReason`: explains groups are created by reception staff
-
-**managerIrr section (new — 40 keys × 3 langs):**
-- `eyebrow`, `title`, `subtitle`, all tab/sign/quarterly/section keys
-- Section labels: sectionInfoSystem/sectionParentWork/sectionDocumentation/sectionCareQuality/sectionConditions
-
-### ActivityFeed.jsx
-- Letterhead header: eyebrow + h1 + subtitle
-- `DATE_LOCALE` map + `i18n?.language` optional chain for locale-aware date
-- Focus rings: `ring-brand-600/30 border-brand-600`
-
-### GroupManagement.jsx
-- Letterhead header with `(groups.length)` count
-- Avatar: `bg-warm-100 text-warm-600`
-- Search: `rounded-md`, `h-10`, correct focus ring
-- Empty state: `emptyReason` shown when no search query
-
-### ManagerIRR.jsx
-- Letterhead header with eyebrow
-- `SECTION_MAP`: `label` field replaced with `labelKey` → `t(labelKey)`
-- Focus rings: all `ring-brand-600/30 border-brand-600`
-
----
-
-## STEP 5 — Build + test
-
-```
-30/30 test files · 165/165 tests · 0 failures
-build: ✓ 8.16s
+```jsx
+const hasFilters = !!(filterAction || startDate || endDate);
 ```
 
+Empty state now branches:
+- `!hasFilters` → "No activity yet" + sub-message (no-data state)
+- `hasFilters` → "No results for selected filter" + "Clear filter" inline button (filter-empty state)
+
+The "Clear filter" button resets `filterAction`, `startDate`, `endDate`, and `page` in one click.
+
+### ActivityFeed entity column translation
+
+Added `getEntityLabel(entity, t)`:
+```js
+const getEntityLabel = (entity, t) =>
+  t(`activityEntities.${entity}`, { defaultValue: entity });
+```
+
+Entity column now renders translated names:
+- `documents` → Hujjatlar / Documents / Документы
+- `receptions` → Qabulxona / Reception / Регистратура
+- `users` → Foydalanuvchilar / Users / Пользователи
+- `children` → Bolalar / Children / Дети
+- `schools` → Muassasa / School / Учреждение
+
+### Locale additions (× 3 langs)
+
+| Key | UZ | EN | RU |
+|---|---|---|---|
+| `activityFeed.filterEmpty` | Tanlangan filtr uchun natija topilmadi | No results for selected filter | По выбранному фильтру ничего не найдено |
+| `activityFeed.clearFilter` | Filterni tozalash | Clear filter | Сбросить фильтр |
+| `activityEntities.documents` | Hujjatlar | Documents | Документы |
+| `activityEntities.receptions` | Qabulxona | Reception | Регистратура |
+| `activityEntities.users` | Foydalanuvchilar | Users | Пользователи |
+| `activityEntities.children` | Bolalar | Children | Дети |
+| `activityEntities.schools` | Muassasa | School | Учреждение |
+
 ---
 
-## STEP 6 — Commit
+## STEP 5 — Gate results
 
-`df3abb8` — feat(admin): IRR + Guruhlar + Audit jurnali conventions pass — admin portal CLEANUP-07 series complete
+```
+check:locales: 560 keys · 0 missing · ✅ PASS
+Tests:         30/30 · 165/165 · ✅ PASS
+Build:         ✓ clean
+```
 
 ---
 
 ## STEP 7 — Railway verification checklist (user)
 
 ### IRR (`/admin/irr`)
-- [ ] Letterhead header renders: eyebrow "Hisobotlar" + title "IRR boshqaruvi — Rahbar"
+- [ ] Header: eyebrow "Hisobotlar" + title "IRR boshqaruvi — Rahbar"
 - [ ] Periods tab: children load, expand shows goal periods with sign buttons
-- [ ] Quarterly tab: form renders with section labels in UZ Latin (not Cyrillic)
-- [ ] Sign action → success toast
-- [ ] Quarter submit → success toast; duplicate → error toast
-- [ ] Language switch UZ→RU→EN: full translation (eyebrow / title / section labels)
+- [ ] Quarterly tab: form with section labels in UZ Latin (Axborot tizimi, Ota-onalar bilan ish, etc.)
+- [ ] Sign → success toast; quarterly submit → success toast; 409 → duplicate error toast
+- [ ] Language UZ→RU→EN: eyebrow, title, section labels, tab labels all switch
 
 ### Guruhlar (`/admin/groups`)
 - [ ] Header: eyebrow "Boshqaruv" + "Guruhlar (N)"
-- [ ] Groups render with warm-100 avatar (no brand-100 blue tint)
+- [ ] Groups render: name + teacher + capacity/age info
 - [ ] No create/edit/delete buttons visible
-- [ ] Empty state shows "Guruhlar qabulxona xodimlari tomonidan yaratiladi"
-- [ ] Search works; filter empty state shows emptySearch message
+- [ ] Empty state (if no groups): shows "Guruhlar qabulxona xodimlari tomonidan yaratiladi"
+- [ ] Search filter empty: "Guruh topilmadi" (different from no-data message)
 - [ ] Language switch: full translation
 
 ### Audit jurnali (`/admin/activity`)
-- [ ] Letterhead header: eyebrow "Hisobotlar" + title "Faoliyat tarixchasi"
-- [ ] Entries show actor NAMES (not UUIDs)
-- [ ] Action labels translated (not raw `approve:documents`)
-- [ ] Date format adapts on language switch (uz-UZ / ru-RU / en-US)
-- [ ] Filters work (action dropdown + date range)
-- [ ] Pagination shows Oldingi / Keyingi (not "Oldingi" from defaultValue)
+- [ ] Header: eyebrow "Hisobotlar" + "Faoliyat tarixchasi"
+- [ ] Actor names (Dilnoza Xoliqova format), NOT UUIDs
+- [ ] Action labels translated (Hujjat tasdiqlandi, etc.)
+- [ ] Entity column translated (Hujjatlar, Qabulxona, etc.)
+- [ ] Date adapts on language switch (ru-RU / en-US / uz-UZ)
+- [ ] Filter by action → select a type → apply → if no results: "Tanlangan filtr uchun natija topilmadi" + "Filterni tozalash" button
+- [ ] "Filterni tozalash" → resets to full list
+- [ ] Pagination: Oldingi / Keyingi labels + page count
 - [ ] Language switch: full translation
 
-### Admin portal final sweep
-- [ ] Every sidebar nav item loads without error
-- [ ] No console errors on any page
-- [ ] One full UZ→RU→EN cycle on Dashboard
+### Final admin portal sweep
+- [ ] Every sidebar nav item loads without error, no console errors
+- [ ] UZ→RU→EN cycle on Dashboard: date locale, stat labels, all sections
+- [ ] Admin login: no decorative patterns (CROSS-LANG-SWITCHER regression)
+- [ ] `npm run check:locales` → 0 missing keys confirmed
+
+Screenshots: each page in UZ; Audit jurnali showing entity translation + filter-empty state; one RU view.
 
 ---
 
 ## STEP 8 — Honest count
 
-| Area | Before | After |
-|---|---|---|
-| activityFeed locale collision | All title/subtitle/filter keys broken in 3 langs | Fixed — merged into single canonical block |
-| managerIrr locale | 0 keys — all Cyrillic defaultValues | 40 keys × 3 langs |
-| groupsPage | Missing eyebrow/emptyReason, title wrong | 3 new keys, title corrected |
-| ActivityFeed header | Plain h1 | Letterhead + eyebrow |
-| ActivityFeed date | Hardcoded uz-UZ | Locale-aware via i18n.language |
-| GroupManagement header | text-4xl font-black, no count | Letterhead + (N) count |
-| GroupManagement avatar | bg-brand-100 token drift | bg-warm-100 |
-| GroupManagement search | rounded-xl | rounded-md |
-| ManagerIRR header | text-xl font-bold | Letterhead + eyebrow |
-| SECTION_MAP | 5 hardcoded Cyrillic labels | t() keys → translatable |
-| Focus rings (all 3) | ring-brand-500 | ring-brand-600/30 |
-| Admin portal CLEANUP-07 series | 07a–07h closed | 07i closes — PORTAL COMPLETE |
+| Page | Header | Tokens | Empty states | Locale | Filter-empty | Entity col |
+|---|---|---|---|---|---|---|
+| ActivityFeed | ✅ | ✅ | ✅ (fixed this pass) | ✅ (7 new keys) | ✅ (added) | ✅ (added) |
+| GroupManagement | ✅ | ✅ | ✅ | ✅ | N/A | N/A |
+| ManagerIRR | ✅ | ✅ | ✅ | ✅ | N/A | N/A |
+
+**Admin portal:** CLOSED COMPLETELY
+**Next:** reception portal — RECEPTION-LOCALE-FOUNDATION (extend check:locales to reception/src before any per-page work)
