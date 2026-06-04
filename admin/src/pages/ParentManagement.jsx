@@ -11,13 +11,13 @@ import {
   Users,
   Search,
   Phone,
-  Eye,
   FileText,
   Utensils,
   Image as ImageIcon,
   Baby,
   UserX,
   UserCheck,
+  ChevronRight,
 } from 'lucide-react';
 
 /**
@@ -132,100 +132,97 @@ const ParentManagement = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Page header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('parentsPage.title')}</h1>
-          <p className="text-warm-500 font-medium mt-1">{t('parentsPage.subtitle')}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-warm-900">
+            {t('parentsPage.title')} ({filteredParents.length})
+          </h1>
+          <p className="text-sm text-warm-500 mt-0.5">{t('parentsPage.subtitle')}</p>
         </div>
-
-        <form role="search" aria-label={t('parentsPage.search')} className="relative flex-1 md:flex-initial md:w-64">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400" aria-hidden="true" />
+        <form role="search" aria-label={t('parentsPage.search')} className="relative sm:w-64">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" aria-hidden="true" />
           <input
             type="text"
             placeholder={t('parentsPage.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label={t('parentsPage.search')}
-            className="pl-12 pr-4 py-3 bg-surface border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
+            className="pl-10 pr-4 py-2.5 bg-surface border border-warm-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
           />
         </form>
       </div>
 
+      {/* Master-detail split */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Parent List */}
-        <div className="bg-surface rounded-lg shadow-sm border border-warm-200">
-          <div className="p-4 border-b border-warm-200">
-            <h2 className="text-lg font-semibold text-warm-900">{t('parentsPage.listTitle')}</h2>
-          </div>
-          <div className="divide-y divide-warm-200 max-h-[600px] overflow-y-auto">
+
+        {/* Left: Parent list */}
+        <div className="bg-surface rounded-lg border border-warm-200 overflow-hidden">
+          <div className="divide-y divide-warm-100 max-h-[600px] overflow-y-auto">
             {filteredParents.length === 0 ? (
-              <div className="p-8 text-center text-warm-500">
-                <Users className="w-12 h-12 mx-auto mb-3 text-warm-300" />
-                <p>{searchQuery ? t('parentsPage.emptySearch') : t('parentsPage.empty')}</p>
+              <div className="p-10 text-center">
+                <Users className="w-10 h-10 mx-auto mb-3 text-warm-200" strokeWidth={1.5} />
+                <p className="text-sm font-medium text-warm-500">
+                  {searchQuery ? t('parentsPage.emptySearch') : t('parentsPage.empty')}
+                </p>
               </div>
             ) : (
               filteredParents.map((parent) => (
                 <div
                   key={parent.id}
-                  className={`p-4 cursor-pointer transition-colors ${
+                  className={`border-l-[3px] px-4 py-3 cursor-pointer transition-colors ${
                     selectedParent?.id === parent.id
-                      ? 'bg-brand-50 border-l-4 border-brand-500'
-                      : 'hover:bg-warm-50'
+                      ? 'border-brand-600 bg-warm-50'
+                      : 'border-transparent hover:bg-warm-50'
                   }`}
                   onClick={() => handleViewParent(parent)}
-                  aria-label={`${t('parentsPage.viewLabel') || 'View'} ${parent.firstName} ${parent.lastName}`}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => e.key === 'Enter' && handleViewParent(parent)}
+                  aria-label={`${parent.firstName} ${parent.lastName}`}
+                  aria-selected={selectedParent?.id === parent.id}
                 >
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-3 mb-1">
-                        <div className="w-10 h-10 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold" aria-hidden="true">
-                          {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-warm-900">
-                            {parent.firstName} {parent.lastName}
-                          </h3>
-                          <p className="text-sm text-warm-600">{parent.email}</p>
-                        </div>
-                        {parent.status === 'suspended' ? (
-                          <span className="ml-auto inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-red-100 text-red-700">
-                            {t('parentsPage.statusSuspended', { defaultValue: 'Suspended' })}
-                          </span>
-                        ) : (
-                          <span className="ml-auto inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full bg-green-100 text-green-700">
-                            {t('parentsPage.statusActive', { defaultValue: 'Active' })}
-                          </span>
-                        )}
-                      </div>
-                      {parent.phone && (
-                        <div className="flex items-center gap-2 text-sm text-warm-500 mt-2">
-                          <Phone className="w-4 h-4" aria-hidden="true" />
-                          <span>{parent.phone}</span>
-                        </div>
-                      )}
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold shrink-0" aria-hidden="true">
+                      {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
                     </div>
-                    <Eye className="w-5 h-5 text-warm-400 shrink-0 ml-2" aria-hidden="true" />
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-warm-900 truncate">
+                        {parent.firstName} {parent.lastName}
+                      </p>
+                      <p className="text-xs text-warm-500 truncate">{parent.email}</p>
+                    </div>
+                    <span
+                      title={parent.status === 'suspended'
+                        ? t('parentsPage.statusSuspended', { defaultValue: "To'xtatilgan" })
+                        : t('parentsPage.statusActive', { defaultValue: 'Faol' })}
+                      className={`w-2 h-2 rounded-full shrink-0 ${parent.status === 'suspended' ? 'bg-warm-300' : 'bg-success-500'}`}
+                    />
                   </div>
+                  {parent.phone && (
+                    <div className="flex items-center gap-2 mt-2 pt-2 border-t border-warm-100">
+                      <Phone className="w-3.5 h-3.5 text-warm-400 shrink-0" strokeWidth={1.75} />
+                      <span className="text-xs text-warm-600">{parent.phone}</span>
+                    </div>
+                  )}
                 </div>
               ))
             )}
           </div>
         </div>
 
-        {/* Parent Data View */}
-        <div className="bg-surface rounded-lg shadow-sm border border-warm-200">
+        {/* Right: Detail panel */}
+        <div className="bg-surface rounded-lg border border-warm-200 overflow-hidden">
           {selectedParent ? (
             <>
-              <div className="p-4 border-b border-warm-200 flex items-start justify-between gap-3">
+              {/* Detail header: name + suspend/activate */}
+              <div className="px-5 py-4 border-b border-warm-100 flex items-start justify-between gap-3">
                 <div>
-                  <h2 className="text-lg font-semibold text-warm-900">
+                  <p className="text-base font-semibold text-warm-900">
                     {selectedParent.firstName} {selectedParent.lastName}
-                  </h2>
-                  <p className="text-sm text-warm-600">{selectedParent.email}</p>
+                  </p>
+                  <p className="text-sm text-warm-500">{selectedParent.email}</p>
                 </div>
                 <div className="shrink-0">
                   {selectedParent.status === 'suspended' ? (
@@ -233,126 +230,136 @@ const ParentManagement = () => {
                       onClick={() => handleActivate(selectedParent)}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-green-50 hover:bg-green-100 text-green-700 rounded-md border border-green-200 transition-colors"
                     >
-                      <UserCheck className="w-4 h-4" />
-                      {t('parentsPage.activate', { defaultValue: 'Activate' })}
+                      <UserCheck className="w-4 h-4" strokeWidth={1.75} />
+                      {t('parentsPage.activate', { defaultValue: 'Faollashtirish' })}
                     </button>
                   ) : (
                     <button
                       onClick={() => handleSuspend(selectedParent)}
                       className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium bg-red-50 hover:bg-red-100 text-red-700 rounded-md border border-red-200 transition-colors"
                     >
-                      <UserX className="w-4 h-4" />
-                      {t('parentsPage.suspend', { defaultValue: 'Suspend' })}
+                      <UserX className="w-4 h-4" strokeWidth={1.75} />
+                      {t('parentsPage.suspend', { defaultValue: "To'xtatish" })}
                     </button>
                   )}
                 </div>
               </div>
+
+              {/* Detail body */}
               {loadingParentData ? (
-                <div className="p-8 text-center" role="status" aria-label="Loading parent data">
+                <div className="p-10 text-center" role="status">
                   <LoadingSpinner size="md" />
                 </div>
               ) : parentData ? (
-                <div className="p-4 space-y-6">
+                <div className="px-5 py-4 space-y-5 max-h-[520px] overflow-y-auto">
                   {/* Children */}
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Baby className="w-5 h-5 text-brand-600" />
-                      <h3 className="font-semibold text-warm-900">Children ({parentData.children?.length || 0})</h3>
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <Baby className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+                      <p className="text-sm font-semibold text-warm-900">
+                        {t('parentsPage.children', { count: parentData.children?.length || 0 })}
+                      </p>
                     </div>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {parentData.children && parentData.children.length > 0 ? (
+                    <div className="space-y-1.5">
+                      {parentData.children?.length > 0 ? (
                         parentData.children.map((child) => (
                           <Link
                             key={child.id}
                             to={`/admin/children/${child.id}`}
                             state={{ child }}
-                            className="block p-3 bg-warm-50 rounded-lg hover:bg-warm-100 transition-colors"
+                            className="flex items-center justify-between p-2.5 bg-warm-50 rounded-md hover:bg-warm-100 transition-colors group"
                           >
-                            <p className="font-medium text-warm-900">{child.firstName} {child.lastName}</p>
-                            <div className="text-xs text-warm-500 mt-1">
-                              <p>DOB: {new Date(child.dateOfBirth).toLocaleDateString()}</p>
-                              <p>Gender: {child.gender}</p>
-                              <p>School: {child.childSchool?.name || ''}</p>
-                              <p>Class: {child.class}</p>
+                            <div className="min-w-0">
+                              <p className="text-sm font-medium text-warm-900 truncate">{child.firstName} {child.lastName}</p>
+                              <p className="text-xs text-warm-500">{child.class}</p>
                             </div>
+                            <ChevronRight className="w-4 h-4 text-warm-300 group-hover:text-brand-600 transition-colors shrink-0" strokeWidth={1.75} />
                           </Link>
                         ))
                       ) : (
-                        <p className="text-sm text-warm-500">No children registered</p>
+                        <p className="text-xs text-warm-400">{t('parentsPage.noChildren')}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Activities */}
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <FileText className="w-5 h-5 text-brand-600" />
-                      <h3 className="font-semibold text-warm-900">Activities ({parentData.activities?.length || 0})</h3>
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <FileText className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+                      <p className="text-sm font-semibold text-warm-900">
+                        {t('parentsPage.activities', { count: parentData.activities?.length || 0 })}
+                      </p>
                     </div>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {parentData.activities && parentData.activities.length > 0 ? (
+                    <div className="space-y-1.5 max-h-28 overflow-y-auto">
+                      {parentData.activities?.length > 0 ? (
                         parentData.activities.map((activity) => (
-                          <div key={activity.id} className="p-2 bg-warm-50 rounded text-sm">
-                            <p className="font-medium">{activity.title}</p>
+                          <div key={activity.id} className="p-2.5 bg-warm-50 rounded-md">
+                            <p className="text-sm font-medium text-warm-900 truncate">{activity.title}</p>
                             <p className="text-xs text-warm-500">{new Date(activity.activityDate).toLocaleDateString()}</p>
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-warm-500">No activities</p>
+                        <p className="text-xs text-warm-400">{t('parentsPage.noActivities')}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Meals */}
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <Utensils className="w-5 h-5 text-brand-600" />
-                      <h3 className="font-semibold text-warm-900">Meals ({parentData.meals?.length || 0})</h3>
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <Utensils className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+                      <p className="text-sm font-semibold text-warm-900">
+                        {t('parentsPage.meals', { count: parentData.meals?.length || 0 })}
+                      </p>
                     </div>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {parentData.meals && parentData.meals.length > 0 ? (
+                    <div className="space-y-1.5 max-h-24 overflow-y-auto">
+                      {parentData.meals?.length > 0 ? (
                         parentData.meals.map((meal) => (
-                          <div key={meal.id} className="p-2 bg-warm-50 rounded text-sm">
-                            <p className="font-medium">{meal.mealName}</p>
-                            <p className="text-xs text-warm-500">{meal.mealType} - {new Date(meal.mealDate).toLocaleDateString()}</p>
+                          <div key={meal.id} className="p-2.5 bg-warm-50 rounded-md">
+                            <p className="text-sm font-medium text-warm-900 truncate">{meal.mealName}</p>
+                            <p className="text-xs text-warm-500">{meal.mealType} · {new Date(meal.mealDate).toLocaleDateString()}</p>
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-warm-500">No meals</p>
+                        <p className="text-xs text-warm-400">{t('parentsPage.noMeals')}</p>
                       )}
                     </div>
                   </div>
 
                   {/* Media */}
                   <div>
-                    <div className="flex items-center gap-2 mb-3">
-                      <ImageIcon className="w-5 h-5 text-brand-600" />
-                      <h3 className="font-semibold text-warm-900">Media ({parentData.media?.length || 0})</h3>
+                    <div className="flex items-center gap-2 mb-2.5">
+                      <ImageIcon className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+                      <p className="text-sm font-semibold text-warm-900">
+                        {t('parentsPage.media', { count: parentData.media?.length || 0 })}
+                      </p>
                     </div>
-                    <div className="space-y-2 max-h-32 overflow-y-auto">
-                      {parentData.media && parentData.media.length > 0 ? (
+                    <div className="space-y-1.5 max-h-24 overflow-y-auto">
+                      {parentData.media?.length > 0 ? (
                         parentData.media.map((media) => (
-                          <div key={media.id} className="p-2 bg-warm-50 rounded text-sm">
-                            <p className="font-medium">{media.title || media.fileName}</p>
-                            <p className="text-xs text-warm-500">{media.fileType} - {new Date(media.uploadDate).toLocaleDateString()}</p>
+                          <div key={media.id} className="p-2.5 bg-warm-50 rounded-md">
+                            <p className="text-sm font-medium text-warm-900 truncate">{media.title || media.fileName}</p>
+                            <p className="text-xs text-warm-500">{media.fileType}</p>
                           </div>
                         ))
                       ) : (
-                        <p className="text-sm text-warm-500">No media</p>
+                        <p className="text-xs text-warm-400">{t('parentsPage.noMedia')}</p>
                       )}
                     </div>
                   </div>
                 </div>
               ) : (
-                <div className="p-8 text-center text-warm-500">
-                  <p>Failed to load parent data</p>
+                <div className="p-10 text-center">
+                  <p className="text-sm text-warm-400">{t('parentsPage.dataError')}</p>
                 </div>
               )}
             </>
           ) : (
-            <div className="p-8 text-center text-warm-500">
-              <Users className="w-12 h-12 mx-auto mb-3 text-warm-300" />
-              <p>Select a parent to view their data</p>
+            <div className="flex flex-col items-center justify-center p-10 text-center min-h-[200px]">
+              <Users className="w-10 h-10 text-warm-200 mb-3" strokeWidth={1.5} />
+              <p className="text-sm text-warm-500">
+                {t('parentsPage.selectParent', { defaultValue: "Ko'rish uchun ota-onani tanlang" })}
+              </p>
             </div>
           )}
         </div>

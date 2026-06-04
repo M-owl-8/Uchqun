@@ -83,18 +83,19 @@ describe('ParentManagement (FE-2)', () => {
     expect(screen.getByText('aziz@example.com')).toBeTruthy();
   });
 
-  it('shows Active badge for active parents', async () => {
+  it('shows active status dot for active parents', async () => {
     api.get.mockResolvedValue({ data: { data: [ACTIVE_PARENT] } });
     render(<ParentManagement />);
     await waitFor(() => screen.getByText('Aziz Karimov'));
-    expect(screen.getByText('Active')).toBeTruthy();
+    // Status is now a dot with title attribute, not a text badge
+    expect(document.querySelector('[title="Faol"]')).toBeTruthy();
   });
 
-  it('shows Suspended badge for suspended parents', async () => {
+  it('shows suspended status dot for suspended parents', async () => {
     api.get.mockResolvedValue({ data: { data: [SUSPENDED_PARENT] } });
     render(<ParentManagement />);
     await waitFor(() => screen.getByText('Malika Yusupova'));
-    expect(screen.getByText('Suspended')).toBeTruthy();
+    expect(document.querySelector('[title="To\'xtatilgan"]')).toBeTruthy();
   });
 
   it('Suspend button opens ConfirmDialog', async () => {
@@ -106,9 +107,9 @@ describe('ParentManagement (FE-2)', () => {
     await waitFor(() => screen.getByText('Aziz Karimov'));
 
     fireEvent.click(screen.getByRole('button', { name: /Aziz Karimov/i }));
-    await waitFor(() => screen.getByText('Suspend'));
+    await waitFor(() => screen.getByText("To'xtatish"));
 
-    fireEvent.click(screen.getByText('Suspend'));
+    fireEvent.click(screen.getByText("To'xtatish"));
     expect(screen.getByTestId('confirm-dialog')).toBeTruthy();
   });
 
@@ -122,9 +123,9 @@ describe('ParentManagement (FE-2)', () => {
     await waitFor(() => screen.getByText('Aziz Karimov'));
 
     fireEvent.click(screen.getByRole('button', { name: /Aziz Karimov/i }));
-    await waitFor(() => screen.getByText('Suspend'));
+    await waitFor(() => screen.getByText("To'xtatish"));
 
-    fireEvent.click(screen.getByText('Suspend'));
+    fireEvent.click(screen.getByText("To'xtatish"));
     await waitFor(() => screen.getByTestId('confirm-dialog'));
 
     fireEvent.click(screen.getByTestId('confirm-ok'));
@@ -140,9 +141,9 @@ describe('ParentManagement (FE-2)', () => {
     await waitFor(() => screen.getByText('Aziz Karimov'));
 
     fireEvent.click(screen.getByRole('button', { name: /Aziz Karimov/i }));
-    await waitFor(() => screen.getByText('Suspend'));
+    await waitFor(() => screen.getByText("To'xtatish"));
 
-    fireEvent.click(screen.getByText('Suspend'));
+    fireEvent.click(screen.getByText("To'xtatish"));
     await waitFor(() => screen.getByTestId('confirm-dialog'));
 
     fireEvent.click(screen.getByTestId('confirm-cancel'));

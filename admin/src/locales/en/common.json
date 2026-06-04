@@ -83,12 +83,17 @@
     "refresh": "Refresh"
   },
   "parentsPage": {
-    "title": "Parent Management",
+    "title": "Parents",
     "subtitle": "View parent accounts (read-only)",
     "search": "Search parents...",
     "listTitle": "Parents",
     "emptySearch": "No parents found",
     "empty": "No parents yet",
+    "selectParent": "Select a parent to view their details",
+    "statusActive": "Active",
+    "statusSuspended": "Suspended",
+    "activate": "Activate",
+    "suspend": "Suspend",
     "children": "Children ({{count}})",
     "noChildren": "No children registered",
     "activities": "Activities ({{count}})",

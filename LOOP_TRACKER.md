@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **CLEANUP-07c-OTA-ONALAR 🟡 In progress:** STEP 1+2 audit complete. Session doc was incorrect: no ParentFormModal exists, admin is VIEW+suspend/activate only (no create/edit). Current layout = master-detail split. STEP 3 corrected proposal surfaced to user. Awaiting response. `audits/redesign/CLEANUP-07c-OTA-ONALAR.md`.
+
 > **CLEANUP-07b-TARBIYACHILAR 🟡 In progress:** Card grid cleaned (no duplicate email, no badge, status dot, neutral avatar, button wrapper). Header "Tarbiyachilar (N)" convention. Two empty states. O'qituvchi→Tarbiyachi in utils.test.js. Title shortened in all 3 locales. 30/30 · 162/162 · build clean. Commit fe2ef2c. Pending: user Railway verification. `audits/redesign/CLEANUP-07b-TARBIYACHILAR.md`.
 
 > **CLEANUP-07a-DASHBOARD 🟡 In progress:** Dashboard restructure complete. Attention zone 3 cards→1 consolidated (per-row hide). Stats 4 cards→1 compact strip (12/15 ratio + subtle bar). Right column: rating only (300px). Tasks + Quick info removed. Hisobotlar 2→3 cards (+Audit jurnali). 6 new locale keys × 3 langs. 30/30 · 162/162 · build clean. Commit e603958. Pending: user Railway verification. `audits/redesign/CLEANUP-07a-DASHBOARD.md`.
