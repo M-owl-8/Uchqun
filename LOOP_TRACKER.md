@@ -17,7 +17,7 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
-> **CLEANUP-05-SIDEBAR-CONSOLIDATION 🟡 In progress:** Admin sidebar: current 14 items / 4 sections. STEP 2 enumeration complete. STEP 3 decisions surfaced to user (awaiting responses). `audits/redesign/CLEANUP-05-SIDEBAR-CONSOLIDATION.md`.
+> **CLEANUP-05-SIDEBAR-CONSOLIDATION 🟡 In progress:** 15→10 primary nav items, 4→3 sections + 1 standalone Sozlamalar link. Viewport math: 810px (was 1015px). IRR linked from Dashboard Hisobotlar + Settings Quick Links. Groups linked from Dashboard + Settings. nav.irr locale bug fixed. 30/30 tests · 162/162 · build clean. Commit b5ede9c. Pending: user Railway verification (sidebar no-scroll at 1080px). `audits/redesign/CLEANUP-05-SIDEBAR-CONSOLIDATION.md`.
 
 > **CLEANUP-04-LANGUAGE-SWITCHER 🟡 In progress:** Government sidebar LangDropdown verified present (Sidebar.jsx:192-196). Stale LanguageSwitchers removed from Settings/Profile pages in government, admin, teacher, parent portals. localStorage reconciled to `dnp:lang` in all 4 i18n.js + all sidebar writes + canonical parent LanguageSwitcher. One-time migration code added. Dead LanguageSwitcher component files deleted (4). Pending: user Railway verification. `audits/redesign/CLEANUP-04-LANGUAGE-SWITCHER.md`.
 

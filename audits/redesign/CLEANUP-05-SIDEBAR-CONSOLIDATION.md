@@ -196,4 +196,137 @@ Or if Settings counts as a nav item: 11 with section headers for first 3 groups 
 
 ---
 
-**Please answer A through E.** Once you reply with your choices, I apply the consolidation (STEP 4).
+**User responses:** A1 + B1 + C1 + D1 + E1. Additional: IRR linked from Dashboard Hisobotlar section + Settings; Bolalar workflow verified; Audit jurnali link confirmed.
+
+---
+
+## STEP 4 — Consolidation applied
+
+### Pre-consolidation verification items
+
+**Audit jurnali on Dashboard:** Already present at `Dashboard.jsx:416` — `Link to="/admin/activity"` labeled "Audit jurnali →" inside the Recent Activity card header. ✅ No change needed.
+
+**Bolalar workflow:** No standalone `/admin/children` route exists — only `/admin/children/:id` (detail page, accessed from ParentManagement links). Dashboard "Bolalar" stat card links to `/admin/parents`. ✅ Confirmed — no top-level children list page needed.
+
+**Guruhlar access:** Route `/admin/groups` stays live. Added to Dashboard Hisobotlar section + Settings Quick Links.
+
+### Before → After
+
+| Section | Before | After |
+|---|---|---|
+| Boshqaruv | 6 items (incl. Guruhlar) | 5 items (Guruhlar removed) |
+| Aloqa | 2 items | 2 items (unchanged) |
+| Hisobotlar | 4 items (incl. IRR) | 3 items (IRR removed) |
+| Tizim | 3 items (school, import, settings) | **Removed** — replaced by standalone Sozlamalar link |
+| **Total nav items** | **15** | **10 + 1 Sozlamalar** |
+| **Sections** | 4 | 3 + standalone |
+
+### Files changed
+
+| File | Change |
+|---|---|
+| `admin/src/components/Sidebar.jsx` | Removed Guruhlar, IRR from sections; removed entire Tizim section; added `SETTINGS_ITEM` constant; added standalone Settings NavItem with top-border divider between nav and footer; removed unused icons (UsersRound, ClipboardList, Building2, Upload) |
+| `admin/src/pages/Dashboard.jsx` | Added `ClipboardList` import; added Hisobotlar section at bottom with IRR + Groups quick-link cards |
+| `admin/src/pages/Settings.jsx` | Added `Link, Building2, Upload, ClipboardList, UsersRound` imports; added Quick Links card with 4 navigation links (School Profile, Import, IRR, Groups) |
+| `admin/src/locales/uz/common.json` | Added `nav.irr: "Choraklik monitoring jurnali"` |
+| `admin/src/locales/ru/common.json` | Added `nav.irr: "Квартальный журнал ИРР"` |
+| `admin/src/locales/en/common.json` | Added `nav.irr: "Quarterly IRR Journal"` |
+| `admin/src/__tests__/pages/Settings.test.jsx` | Added `Link` to react-router-dom mock |
+
+---
+
+## STEP 5 — Viewport math
+
+| Component | Height |
+|---|---|
+| Header (logo + institution card + pt-6 pb-5 padding) | ~144px |
+| Section 1 label "Boshqaruv" | 28px |
+| Section 1: 5 items × 36px | 180px |
+| Gap (space-y-5) | 20px |
+| Section 2 label "Aloqa" | 28px |
+| Section 2: 2 items × 36px | 72px |
+| Gap | 20px |
+| Section 3 label "Hisobotlar" | 28px |
+| Section 3: 3 items × 36px | 108px |
+| Settings divider + NavItem (border-t + pt-2 pb-1 + 36px) | 50px |
+| Lang dropdown | 36px |
+| User card | 68px |
+| Footer outer padding (m-3 space-y-1) | 28px |
+| **Total** | **~810px** |
+
+**Target: ≤ 850px** ✅ (810px < 850px)  
+**Previous total: ~1015px** — explains why scroll was present.  
+**Browser chrome at 1080px viewport: ~80px** → available content height: ~1000px → 810px fits with 190px headroom.
+
+---
+
+## STEP 6 — Test and build results
+
+| Check | Result |
+|---|---|
+| `admin` tests | ✅ 30/30 files · 162/162 tests |
+| `admin` build | ✅ built in 8.54s |
+
+One test fix: `admin/src/__tests__/pages/Settings.test.jsx` — added `Link` to the `react-router-dom` mock (Settings.jsx now imports Link for Quick Links card).
+
+---
+
+## STEP 7 — Commit
+
+Commit: `b5ede9c`  
+Message: `feat(admin): consolidate sidebar to 10 nav items in 3 sections — fits 1080px viewport without scroll`  
+Pushed to `origin/main`. Railway auto-deploy triggered.
+
+---
+
+## STEP 8 — User Railway verification (REQUIRED before close)
+
+1. Open admin portal on Railway, login as a director
+2. Resize browser to 1080px height (or use standard laptop resolution)
+3. **No scroll in sidebar** — confirm every nav item + Settings link + lang dropdown + user card all visible without scrolling
+4. Count primary nav items: should be 10 (5+2+3) + 1 Sozlamalar link
+5. Confirm removed items are reachable:
+   - Dashboard → scroll down → "Hisobotlar" section → click IRR → ManagerIRR page loads
+   - Dashboard → scroll down → "Hisobotlar" section → click Guruhlar → GroupManagement loads
+   - Sidebar → Sozlamalar → Settings page → Quick Links card visible with 4 links → each link navigates correctly
+6. Confirm Audit jurnali link: Dashboard → "So'nggi faoliyat" panel header → "Audit jurnali →" link visible, clicks to ActivityFeed
+7. Switch language (UZ/RU/EN) — confirm all 3 sections' labels + nav items translate
+8. Screenshot sidebar at 1080px viewport (primary deliverable — must show no scrollbar)
+
+Reply "verified" with screenshots before this is marked ✅.
+
+---
+
+## STEP 9 — Honest count
+
+| Item | Status |
+|---|---|
+| STEP 2 enumeration complete | ✅ All 15 items documented with function + frequency |
+| STEP 3 decisions surfaced | ✅ A–E surfaced; user responded A1+B1+C1+D1+E1 |
+| Bolalar workflow verified | ✅ No standalone children route; dashboard links to parents |
+| Audit jurnali verified present | ✅ Dashboard:416 → `/admin/activity` |
+| Final nav item count | 10 primary + 1 Sozlamalar = 11 visible |
+| Section count | 3 sections + standalone settings |
+| Sidebar fits 1080px without scroll | ✅ 810px (math verified) |
+| IRR accessible from Dashboard | ✅ Hisobotlar section → IRR card |
+| IRR accessible from Settings | ✅ Quick Links card → IRR link |
+| Groups accessible | ✅ Dashboard Hisobotlar + Settings Quick Links |
+| School Profile accessible | ✅ Settings Quick Links |
+| Import accessible | ✅ Settings Quick Links |
+| Tests passing | ✅ 30/30 · 162/162 |
+| Build clean | ✅ |
+| User Railway verification | ⏳ pending |
+
+---
+
+## Incidental observations
+
+1. **`nav.irr` had no locale entry in any of the 3 locale files** — sidebar was rendering "nav.irr" as literal text in all languages. Fixed as part of this session.
+
+2. **Sidebar previously had 15 items, not 14** — the comment in Sidebar.jsx said "14 items" but the Tizim section had 3 items (school + import + settings), making the actual count 15. Now correctly 10 + 1.
+
+3. **Guruhlar (Groups) is read-only for admin** — `GroupManagement.jsx` comment says "Admin can only VIEW groups (read-only). Admin cannot create, edit, or delete groups." This confirms it was appropriately demoted from primary nav.
+
+4. **ManagerIRR uses Uzbek Cyrillic labels directly** — the quarterly form labels are in Cyrillic (`'Ахборот тизими'`, `'Ота-оналар билан иш'` etc.) hardcoded. This is a pre-existing issue (out of scope for this session).
+
+5. **Dashboard Hisobotlar section also provides Groups access** — not just IRR. This is useful since Groups was removed from sidebar with no other explicit entry point.
