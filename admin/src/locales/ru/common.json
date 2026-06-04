@@ -119,11 +119,13 @@
     "loadError": "Не удалось загрузить воспитателей"
   },
   "groupsPage": {
-    "title": "Управление группами",
+    "eyebrow": "Управление",
+    "title": "Группы",
     "subtitle": "Просмотр групп (только чтение)",
     "search": "Поиск групп...",
     "emptySearch": "Группы не найдены",
     "empty": "Пока нет групп",
+    "emptyReason": "Группы создаются сотрудниками регистратуры",
     "capacity": "Вместимость: {{count}}",
     "age": "Возраст: {{range}}",
     "loadError": "Не удалось загрузить группы"
@@ -328,6 +330,7 @@
     "viewOnly": "Только просмотр — управляется приемом"
   },
   "activityFeed": {
+    "eyebrow": "Отчёты",
     "title": "Лента активности",
     "subtitle": "Журнал аудита всех действий в вашей школе",
     "filterAction": "Фильтр по действию",
@@ -340,7 +343,10 @@
     "action": "Действие",
     "entity": "Объект",
     "date": "Дата",
-    "loadError": "Не удалось загрузить активность"
+    "loadError": "Не удалось загрузить активность",
+    "pageOf": "{{page}} / {{totalPages}} ({{total}} всего)",
+    "prev": "Назад",
+    "next": "Вперёд"
   },
   "childDetail": {
     "back": "Назад",
@@ -520,9 +526,44 @@
     "hours": "{{count}} ч. назад",
     "days": "{{count}} дн. назад"
   },
-  "activityFeed": {
-    "pageOf": "{{page}} / {{totalPages}} ({{total}} всего)",
-    "prev": "Назад",
-    "next": "Вперёд"
+  "managerIrr": {
+    "eyebrow": "Отчёты",
+    "title": "Управление ИРР — Директор",
+    "subtitle": "Подписание целевых периодов и квартальный мониторинг",
+    "tabPeriods": "Целевые периоды",
+    "tabQuarterly": "Квартальный мониторинг",
+    "childrenLoadError": "Не удалось загрузить список детей",
+    "noChildren": "Список детей пуст",
+    "loadPeriodsError": "Не удалось загрузить периоды",
+    "noIrr": "ИРР ещё не создан",
+    "noPeriods": "Целевые периоды отсутствуют",
+    "teacherSign": "Воспитатель",
+    "managerSign": "Директор",
+    "pending": "ожидается",
+    "sign": "Подписать",
+    "signSuccess": "Подписано",
+    "signError": "Ошибка подписания",
+    "signed": "Подписано",
+    "quarterlyLoadError": "Не удалось загрузить квартальные записи",
+    "quarterlyDatesRequired": "Укажите дату начала и окончания",
+    "quarterlySubmitSuccess": "Квартальный отчёт сохранён",
+    "quarterlyDuplicate": "Запись за этот квартал уже существует",
+    "quarterlySubmitError": "Произошла ошибка",
+    "quarterStart": "Начало квартала",
+    "quarterEnd": "Конец квартала",
+    "departures": "Выбывшие",
+    "addDeparture": "Добавить",
+    "noDepartures": "Выбывших нет",
+    "departureName": "Имя",
+    "departureReason": "Причина",
+    "generalNotes": "Общие примечания",
+    "quarterlySubmit": "Сохранить отчёт",
+    "quarterlyHistory": "Предыдущие отчёты",
+    "quarterlyNoEntries": "Отчётов нет",
+    "sectionInfoSystem": "Информационная система",
+    "sectionParentWork": "Работа с родителями",
+    "sectionDocumentation": "Документация",
+    "sectionCareQuality": "Качество ухода",
+    "sectionConditions": "Условия"
   }
 }

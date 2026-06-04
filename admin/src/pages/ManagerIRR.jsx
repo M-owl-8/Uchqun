@@ -10,11 +10,11 @@ import { QUARTERLY_JOURNAL_ITEMS } from '@shared/config/quarterlyJournalItems';
 // configKey → key in QUARTERLY_JOURNAL_ITEMS
 
 const SECTION_MAP = [
-  { formKey: 'infoSystemData',    configKey: 'infoSystem',    label: 'Ахборот тизими' },
-  { formKey: 'parentWorkData',    configKey: 'parentWork',    label: 'Ота-оналар билан иш' },
-  { formKey: 'documentationData', configKey: 'documentation', label: 'Ҳужжатчилик' },
-  { formKey: 'careQualityData',   configKey: 'careQuality',   label: 'Парвариш сифати' },
-  { formKey: 'conditionsData',    configKey: 'conditions',    label: 'Шарт-шароит' },
+  { formKey: 'infoSystemData',    configKey: 'infoSystem',    labelKey: 'managerIrr.sectionInfoSystem' },
+  { formKey: 'parentWorkData',    configKey: 'parentWork',    labelKey: 'managerIrr.sectionParentWork' },
+  { formKey: 'documentationData', configKey: 'documentation', labelKey: 'managerIrr.sectionDocumentation' },
+  { formKey: 'careQualityData',   configKey: 'careQuality',   labelKey: 'managerIrr.sectionCareQuality' },
+  { formKey: 'conditionsData',    configKey: 'conditions',    labelKey: 'managerIrr.sectionConditions' },
 ];
 
 const buildEmptySectionChecks = (items) =>
@@ -280,7 +280,7 @@ const QuarterlyTab = () => {
               data-testid="quarter-start"
               value={form.quarterStart}
               onChange={(e) => setForm((f) => ({ ...f, quarterStart: e.target.value }))}
-              className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
               required
             />
           </div>
@@ -293,16 +293,18 @@ const QuarterlyTab = () => {
               data-testid="quarter-end"
               value={form.quarterEnd}
               onChange={(e) => setForm((f) => ({ ...f, quarterEnd: e.target.value }))}
-              className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500"
+              className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
               required
             />
           </div>
         </div>
 
         {/* 5 JSONB sections — structured 52-item checklist (OQ-10: parentWork count provisional) */}
-        {SECTION_MAP.map(({ formKey, configKey, label }) => (
+        {SECTION_MAP.map(({ formKey, configKey, labelKey }) => (
           <div key={formKey}>
-            <h4 className="text-sm font-semibold text-warm-800 mb-2">{label}</h4>
+            <h4 className="text-sm font-semibold text-warm-800 mb-2">
+              {t(labelKey, { defaultValue: labelKey })}
+            </h4>
             <div data-testid={`section-${formKey}`} className="space-y-1.5 bg-warm-50 rounded-lg p-3">
               {QUARTERLY_JOURNAL_ITEMS[configKey].map((item) => (
                 <label key={item.code} className="flex items-start gap-2 cursor-pointer">
@@ -392,7 +394,7 @@ const QuarterlyTab = () => {
             value={form.notes}
             onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
             rows={2}
-            className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 resize-y"
+            className="w-full border border-warm-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600 resize-y"
           />
         </div>
 
@@ -468,12 +470,15 @@ const ManagerIRR = () => {
 
   return (
     <div data-testid="manager-irr-page" className="max-w-4xl mx-auto px-4 py-6">
-      <div className="mb-6">
-        <h1 className="text-xl font-bold text-warm-900">
-          {t('managerIrr.title', { defaultValue: 'ИРР бошқаруви — Раҳбар' })}
+      <div className="letterhead pt-4 mb-6">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('managerIrr.eyebrow', { defaultValue: 'Hisobotlar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('managerIrr.title', { defaultValue: 'IRR boshqaruvi — Rahbar' })}
         </h1>
-        <p className="text-sm text-warm-500 mt-1">
-          {t('managerIrr.subtitle', { defaultValue: 'Мақсадли даврларни имзолаш ва чоракли мониторинг' })}
+        <p className="text-sm text-warm-600 mt-1">
+          {t('managerIrr.subtitle', { defaultValue: 'Maqsadli davrlarni imzolash va chorakli monitoring' })}
         </p>
       </div>
 

@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 
+const DATE_LOCALE = { uz: 'uz-UZ', ru: 'ru-RU', en: 'en-US' };
+
 const ACTION_KEYS = [
   'approve:documents', 'reject:documents',
   'create:receptions', 'delete:receptions', 'activate:receptions', 'deactivate:receptions',
@@ -35,7 +37,7 @@ const getActionLabel = (action, entity, t) => {
 const PAGE_SIZE = 20;
 
 const ActivityFeed = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { error: toastError } = useToast();
   const toastErrorRef = useRef(toastError);
   toastErrorRef.current = toastError;
@@ -94,12 +96,15 @@ const ActivityFeed = () => {
   return (
     <div className="max-w-5xl mx-auto space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-semibold tracking-tight text-warm-900">
-          {t('activityFeed.title', { defaultValue: 'Activity Feed' })}
+      <div className="letterhead pt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('activityFeed.eyebrow', { defaultValue: 'Hisobotlar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('activityFeed.title', { defaultValue: 'Faoliyat tarixchasi' })}
         </h1>
-        <p className="text-warm-500 mt-1">
-          {t('activityFeed.subtitle', { defaultValue: 'Audit log of all actions at your school' })}
+        <p className="text-sm text-warm-600 mt-1">
+          {t('activityFeed.subtitle', { defaultValue: "Maktabingizdagi barcha amallar audit jurnali" })}
         </p>
       </div>
 
@@ -112,7 +117,7 @@ const ActivityFeed = () => {
           <select
             value={filterAction}
             onChange={handleActionChange}
-            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
           >
             <option value="">
               {t('activityFeed.filterAll', { defaultValue: 'All actions' })}
@@ -135,7 +140,7 @@ const ActivityFeed = () => {
             type="date"
             value={startDate}
             onChange={handleStartDate}
-            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
           />
         </div>
         <div>
@@ -146,7 +151,7 @@ const ActivityFeed = () => {
             type="date"
             value={endDate}
             onChange={handleEndDate}
-            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-500"
+            className="px-3 py-2 border border-warm-200 rounded-md text-sm bg-surface focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
           />
         </div>
       </div>
@@ -188,7 +193,7 @@ const ActivityFeed = () => {
               {entries.map((entry) => (
                 <tr key={entry.id} className="border-b border-warm-100 last:border-0">
                   <td className="px-4 py-3 text-warm-600 num whitespace-nowrap">
-                    {new Date(entry.occurredAt).toLocaleString('uz-UZ')}
+                    {new Date(entry.occurredAt).toLocaleString(DATE_LOCALE[i18n?.language] ?? 'uz-UZ')}
                   </td>
                   <td className="px-4 py-3 text-warm-900">
                     {entry.actor

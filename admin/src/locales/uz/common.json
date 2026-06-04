@@ -119,14 +119,16 @@
     "loadError": "Tarbiyachilarni yuklab bo’lmadi"
   },
   "groupsPage": {
-    "title": "Guruh boshqaruvi",
-    "subtitle": "Guruhlarni ko‘rish (faqat o‘qish)",
+    "eyebrow": "Boshqaruv",
+    "title": "Guruhlar",
+    "subtitle": "Guruhlarni ko’rish (faqat o’qish)",
     "search": "Guruhlarni qidirish...",
     "emptySearch": "Guruh topilmadi",
-    "empty": "Hozircha guruhlar yo‘q",
-    "capacity": "Sig‘imi: {{count}}",
+    "empty": "Hozircha guruhlar yo’q",
+    "emptyReason": "Guruhlar qabulxona xodimlari tomonidan yaratiladi",
+    "capacity": "Sig’imi: {{count}}",
     "age": "Yosh: {{range}}",
-    "loadError": "Guruhlarni yuklab bo‘lmadi"
+    "loadError": "Guruhlarni yuklab bo’lmadi"
   },
   "receptionsPage": {
     "loadError": "Qabul akkauntlarini yuklab bo‘lmadi",
@@ -328,6 +330,7 @@
     "viewOnly": "Faqat ko'rish — qabul tomonidan boshqariladi"
   },
   "activityFeed": {
+    "eyebrow": "Hisobotlar",
     "title": "Faoliyat tarixchasi",
     "subtitle": "Maktabingizdagi barcha amallar audit jurnali",
     "filterAction": "Amal bo'yicha filtrlash",
@@ -340,7 +343,10 @@
     "action": "Amal",
     "entity": "Ob'ekt",
     "date": "Sana",
-    "loadError": "Faoliyatni yuklab bo'lmadi"
+    "loadError": "Faoliyatni yuklab bo'lmadi",
+    "pageOf": "{{page}} / {{totalPages}} ({{total}} ta)",
+    "prev": "Oldingi",
+    "next": "Keyingi"
   },
   "childDetail": {
     "back": "Orqaga",
@@ -520,9 +526,44 @@
     "hours": "{{count}} soat oldin",
     "days": "{{count}} kun oldin"
   },
-  "activityFeed": {
-    "pageOf": "{{page}} / {{totalPages}} ({{total}} ta)",
-    "prev": "Oldingi",
-    "next": "Keyingi"
+  "managerIrr": {
+    "eyebrow": "Hisobotlar",
+    "title": "IRR boshqaruvi — Rahbar",
+    "subtitle": "Maqsadli davrlarni imzolash va chorakli monitoring",
+    "tabPeriods": "Maqsadli davrlar",
+    "tabQuarterly": "Chorakli monitoring",
+    "childrenLoadError": "Bolalar ro'yxati yuklanmadi",
+    "noChildren": "Bolalar ro'yxati bo'sh",
+    "loadPeriodsError": "Davrlar yuklanmadi",
+    "noIrr": "IRR hali yaratilmagan",
+    "noPeriods": "Maqsadli davrlar yo'q",
+    "teacherSign": "O'qituvchi",
+    "managerSign": "Rahbar",
+    "pending": "kutilmoqda",
+    "sign": "Imzolash",
+    "signSuccess": "Imzolandi",
+    "signError": "Imzolashda xatolik",
+    "signed": "Imzolangan",
+    "quarterlyLoadError": "Chorakli yozuvlar yuklanmadi",
+    "quarterlyDatesRequired": "Boshlanish va tugash sanasini kiriting",
+    "quarterlySubmitSuccess": "Chorakli hisobot saqlandi",
+    "quarterlyDuplicate": "Bu chorak uchun yozuv allaqachon mavjud",
+    "quarterlySubmitError": "Xatolik yuz berdi",
+    "quarterStart": "Chorak boshlanishi",
+    "quarterEnd": "Chorak tugashi",
+    "departures": "Chiqib ketganlar",
+    "addDeparture": "Qo'shish",
+    "noDepartures": "Chiqib ketganlar yo'q",
+    "departureName": "Ism",
+    "departureReason": "Sabab",
+    "generalNotes": "Umumiy izoh",
+    "quarterlySubmit": "Hisobotni saqlash",
+    "quarterlyHistory": "Oldingi hisobotlar",
+    "quarterlyNoEntries": "Hisobotlar mavjud emas",
+    "sectionInfoSystem": "Axborot tizimi",
+    "sectionParentWork": "Ota-onalar bilan ish",
+    "sectionDocumentation": "Hujjatchilik",
+    "sectionCareQuality": "Parvarish sifati",
+    "sectionConditions": "Shart-sharoit"
   }
 }

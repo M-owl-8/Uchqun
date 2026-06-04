@@ -118,11 +118,13 @@
     "loadError": "Failed to fetch teachers"
   },
   "groupsPage": {
-    "title": "Group Management",
+    "eyebrow": "Management",
+    "title": "Groups",
     "subtitle": "View groups (read-only)",
     "search": "Search groups...",
     "emptySearch": "No groups found",
     "empty": "No groups yet",
+    "emptyReason": "Groups are created by reception staff",
     "capacity": "Capacity: {{count}}",
     "age": "Age: {{range}}",
     "loadError": "Failed to fetch groups"
@@ -327,6 +329,7 @@
     "viewOnly": "View only — managed by reception"
   },
   "activityFeed": {
+    "eyebrow": "Reports",
     "title": "Activity Feed",
     "subtitle": "Audit log of all actions at your school",
     "filterAction": "Filter by action",
@@ -339,7 +342,10 @@
     "action": "Action",
     "entity": "Entity",
     "date": "Date",
-    "loadError": "Failed to load activity"
+    "loadError": "Failed to load activity",
+    "pageOf": "{{page}} of {{totalPages}} ({{total}} total)",
+    "prev": "Previous",
+    "next": "Next"
   },
   "childDetail": {
     "back": "Back",
@@ -519,9 +525,44 @@
     "hours": "{{count}}h ago",
     "days": "{{count}}d ago"
   },
-  "activityFeed": {
-    "pageOf": "{{page}} of {{totalPages}} ({{total}} total)",
-    "prev": "Previous",
-    "next": "Next"
+  "managerIrr": {
+    "eyebrow": "Reports",
+    "title": "IRR Management — Manager",
+    "subtitle": "Sign goal periods and submit quarterly monitoring",
+    "tabPeriods": "Goal Periods",
+    "tabQuarterly": "Quarterly Monitoring",
+    "childrenLoadError": "Failed to load children",
+    "noChildren": "No children found",
+    "loadPeriodsError": "Failed to load periods",
+    "noIrr": "IRR not yet created",
+    "noPeriods": "No goal periods found",
+    "teacherSign": "Teacher",
+    "managerSign": "Manager",
+    "pending": "pending",
+    "sign": "Sign",
+    "signSuccess": "Signed",
+    "signError": "Failed to sign",
+    "signed": "Signed",
+    "quarterlyLoadError": "Failed to load quarterly records",
+    "quarterlyDatesRequired": "Enter start and end date",
+    "quarterlySubmitSuccess": "Quarterly report saved",
+    "quarterlyDuplicate": "A record for this quarter already exists",
+    "quarterlySubmitError": "An error occurred",
+    "quarterStart": "Quarter start",
+    "quarterEnd": "Quarter end",
+    "departures": "Departures",
+    "addDeparture": "Add",
+    "noDepartures": "No departures",
+    "departureName": "Name",
+    "departureReason": "Reason",
+    "generalNotes": "General notes",
+    "quarterlySubmit": "Save report",
+    "quarterlyHistory": "Previous reports",
+    "quarterlyNoEntries": "No reports yet",
+    "sectionInfoSystem": "Information System",
+    "sectionParentWork": "Parent Engagement",
+    "sectionDocumentation": "Documentation",
+    "sectionCareQuality": "Care Quality",
+    "sectionConditions": "Conditions"
   }
 }

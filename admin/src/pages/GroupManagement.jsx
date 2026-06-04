@@ -74,21 +74,26 @@ const GroupManagement = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="max-w-7xl mx-auto space-y-6 animate-in fade-in duration-700">
+      <div className="letterhead pt-4 flex items-end justify-between flex-wrap gap-4">
         <div>
-          <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('groupsPage.title')}</h1>
-          <p className="text-warm-500 font-medium mt-1">{t('groupsPage.subtitle')}</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+            {t('groupsPage.eyebrow', { defaultValue: 'Boshqaruv' })}
+          </p>
+          <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+            {t('groupsPage.title', { defaultValue: 'Guruhlar' })} ({groups.length})
+          </h1>
+          <p className="text-sm text-warm-600 mt-1">{t('groupsPage.subtitle')}</p>
         </div>
 
-        <div className="relative flex-1 md:flex-initial md:w-64">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400" />
+        <div className="relative w-64">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" />
           <input
             type="text"
             placeholder={t('groupsPage.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-12 pr-4 py-3 bg-surface border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
+            className="pl-10 pr-4 h-10 bg-surface border border-warm-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600 w-full text-sm"
           />
         </div>
       </div>
@@ -99,7 +104,7 @@ const GroupManagement = () => {
             <Card key={group.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700">
+                  <div className="w-12 h-12 rounded-full bg-warm-100 flex items-center justify-center text-warm-600">
                     <UsersRound className="w-6 h-6" />
                   </div>
                   <div>
@@ -144,6 +149,11 @@ const GroupManagement = () => {
           <p className="text-warm-400 font-medium text-lg">
             {searchQuery ? t('groupsPage.emptySearch') : t('groupsPage.empty')}
           </p>
+          {!searchQuery && (
+            <p className="text-warm-400 text-sm mt-2">
+              {t('groupsPage.emptyReason', { defaultValue: "Guruhlar qabulxona xodimlari tomonidan yaratiladi" })}
+            </p>
+          )}
         </Card>
       )}
     </div>
