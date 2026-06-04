@@ -17,6 +17,7 @@ import {
   ShieldCheck,
   Phone,
   Star,
+  ClipboardList,
 } from 'lucide-react';
 
 const ACTION_META = {
@@ -549,6 +550,39 @@ const Dashboard = () => {
             </dl>
           </article>
         </aside>
+      </div>
+
+      {/* Hisobotlar — low-frequency pages removed from sidebar, linked here */}
+      <div className="mt-10">
+        <h2 className="text-lg font-semibold text-warm-900 mb-3">
+          {t('nav.section.reports', { defaultValue: 'Hisobotlar' })}
+        </h2>
+        <div className="grid md:grid-cols-2 gap-4">
+          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <ClipboardList className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+              <div>
+                <p className="text-sm font-semibold text-warm-900">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
+                <p className="text-xs text-warm-500">{t('dashboard.irrSub', { defaultValue: "Har chorakda bir marta to'ldiriladi" })}</p>
+              </div>
+            </div>
+            <Link to="/admin/irr" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+              {t('dashboard.open', { defaultValue: 'Ochish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
+            </Link>
+          </article>
+          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-4 flex items-center justify-between gap-3">
+            <div className="flex items-center gap-3">
+              <UsersRound className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+              <div>
+                <p className="text-sm font-semibold text-warm-900">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
+                <p className="text-xs text-warm-500">{t('dashboard.groupsSub', { defaultValue: "Guruhlar va tarbiyachilarni ko'rish" })}</p>
+              </div>
+            </div>
+            <Link to="/admin/groups" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+              {t('dashboard.open', { defaultValue: 'Ochish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
+            </Link>
+          </article>
+        </div>
       </div>
     </div>
   );

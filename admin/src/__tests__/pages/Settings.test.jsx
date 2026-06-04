@@ -43,6 +43,7 @@ vi.mock('react-i18next', () => ({
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
+  Link: ({ to, children, className }) => React.createElement('a', { href: to, className }, children),
 }));
 
 vi.mock('../../services/api', () => ({

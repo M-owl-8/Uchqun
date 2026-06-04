@@ -14,19 +14,16 @@ import {
   ShieldCheck,
   LogOut,
   Brain,
-  UsersRound,
-  Upload,
-  Building2,
   MessageSquare,
   Mail,
-  ClipboardList,
   Globe,
   ChevronDown,
 } from 'lucide-react';
 
-// 14 items in 4 sections (down from 18 in 4 sections)
-// Removed from primary nav: profile (user card), activity (dashboard link), trash (settings)
-// Documents promoted into Boshqaruv; new Aloqa section for comms
+// 10 primary nav items in 3 sections + 1 standalone Settings link
+// Removed from primary nav: Groups (read-only, linked from Dashboard + Settings),
+//   IRR (quarterly, linked from Dashboard + Settings),
+//   School Profile + Import (low-freq, accessible from Settings quick-links)
 const NAV_SECTIONS = [
   {
     labelKey: 'nav.section.management',
@@ -34,7 +31,6 @@ const NAV_SECTIONS = [
       { key: 'nav.dashboard',      href: '/admin',                icon: LayoutDashboard },
       { key: 'nav.receptions',     href: '/admin/receptions',     icon: Users },
       { key: 'nav.teachers',       href: '/admin/teachers',       icon: GraduationCap },
-      { key: 'nav.groups',         href: '/admin/groups',         icon: UsersRound },
       { key: 'nav.parents',        href: '/admin/parents',        icon: UserRound },
       { key: 'nav.documents',      href: '/admin/documents',      icon: FileCheck2 },
     ],
@@ -52,18 +48,11 @@ const NAV_SECTIONS = [
       { key: 'nav.aiWarnings',     href: '/admin/ai-warnings',    icon: BellRing },
       { key: 'nav.schoolRatings',  href: '/admin/school-ratings', icon: BarChart3 },
       { key: 'nav.therapy',        href: '/admin/therapy',        icon: Brain },
-      { key: 'nav.irr',            href: '/admin/irr',            icon: ClipboardList },
-    ],
-  },
-  {
-    labelKey: 'nav.section.settings',
-    items: [
-      { key: 'nav.school',         href: '/admin/school',         icon: Building2 },
-      { key: 'nav.import',         href: '/admin/import',         icon: Upload },
-      { key: 'nav.settings',       href: '/admin/settings',       icon: Settings },
     ],
   },
 ];
+
+const SETTINGS_ITEM = { key: 'nav.settings', href: '/admin/settings', icon: Settings };
 
 const LANG_LABELS = { uz: "O'zbekcha", ru: 'Русский', en: 'English' };
 
@@ -208,6 +197,11 @@ const Sidebar = ({ onClose }) => {
           </div>
         ))}
       </nav>
+
+      {/* Settings — standalone below nav, above footer */}
+      <div className="px-3 pt-2 pb-1 border-t border-walnut-divider">
+        <NavItem item={SETTINGS_ITEM} isActive={isActive(SETTINGS_ITEM.href)} onClick={onClose} />
+      </div>
 
       {/* Language dropdown + User card */}
       <div className="m-3 mt-1 space-y-1">

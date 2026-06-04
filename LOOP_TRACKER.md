@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **CLEANUP-05-SIDEBAR-CONSOLIDATION 🟡 In progress:** Admin sidebar: current 14 items / 4 sections. STEP 2 enumeration complete. STEP 3 decisions surfaced to user (awaiting responses). `audits/redesign/CLEANUP-05-SIDEBAR-CONSOLIDATION.md`.
+
 > **CLEANUP-04-LANGUAGE-SWITCHER 🟡 In progress:** Government sidebar LangDropdown verified present (Sidebar.jsx:192-196). Stale LanguageSwitchers removed from Settings/Profile pages in government, admin, teacher, parent portals. localStorage reconciled to `dnp:lang` in all 4 i18n.js + all sidebar writes + canonical parent LanguageSwitcher. One-time migration code added. Dead LanguageSwitcher component files deleted (4). Pending: user Railway verification. `audits/redesign/CLEANUP-04-LANGUAGE-SWITCHER.md`.
 
 > **CLEANUP-03-DIREKTOR-RENAME 🟡 In progress:** Root cause: admin sidebar user card "Administrator" still rendering. Comprehensive rename across all 5 portals. Pending user Railway verification. `audits/redesign/CLEANUP-03-DIREKTOR-RENAME.md`.

@@ -4,8 +4,8 @@ import Card from '@shared/components/Card';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import { MessageSquare, LogOut } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { MessageSquare, LogOut, Building2, Upload, ClipboardList, UsersRound } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import ProfileForm from './settings/ProfileForm';
 import NotificationPreferences from './settings/NotificationPreferences';
 import PasswordForm from './settings/PasswordForm';
@@ -198,6 +198,41 @@ const Settings = () => {
         savingPassword={savingPassword}
         onSubmit={handlePasswordSubmit}
       />
+
+      {/* Quick links — low-frequency pages accessible from here instead of sidebar */}
+      <Card className="p-6">
+        <h2 className="text-xl font-bold text-warm-900 mb-4">{t('settings.quickLinks', { defaultValue: 'Boshqa bo\'limlar' })}</h2>
+        <div className="grid sm:grid-cols-2 gap-3">
+          <Link to="/admin/school" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
+            <Building2 className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-semibold text-warm-900">{t('nav.school', { defaultValue: 'Muassasa profili' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.schoolProfileDesc', { defaultValue: "Manzil, aloqa va muassasa ma'lumotlari" })}</p>
+            </div>
+          </Link>
+          <Link to="/admin/import" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
+            <Upload className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-semibold text-warm-900">{t('nav.import', { defaultValue: 'Ommaviy import' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.importDesc', { defaultValue: 'CSV orqali bolalarni import qilish' })}</p>
+            </div>
+          </Link>
+          <Link to="/admin/irr" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
+            <ClipboardList className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-semibold text-warm-900">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.irrDesc', { defaultValue: "Har chorakda bir marta to'ldiriladi" })}</p>
+            </div>
+          </Link>
+          <Link to="/admin/groups" className="flex items-center gap-3 p-3 border border-warm-200 rounded-lg hover:bg-warm-50 transition-colors">
+            <UsersRound className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
+            <div>
+              <p className="text-sm font-semibold text-warm-900">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
+              <p className="text-xs text-warm-500">{t('settings.groupsDesc', { defaultValue: "Guruhlar ro'yxati (faqat ko'rish)" })}</p>
+            </div>
+          </Link>
+        </div>
+      </Card>
 
       {/* Contact Government */}
       <Card className="p-6">
