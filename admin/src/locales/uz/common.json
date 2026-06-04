@@ -442,5 +442,73 @@
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",
     "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan"
+  },
+  "aiWarnings": {
+    "resolved": "Hal qilingan",
+    "resolvedBy": "Hal qildi",
+    "showLess": "Kamroq",
+    "showMore": "Ko'proq",
+    "source": "Manba",
+    "review": "Ko'rib chiqish",
+    "notify": "Xabar berish",
+    "resolving": "Saqlanmoqda…",
+    "markResolved": "Hal qilingan deb belgilash",
+    "eyebrow": "Hisobotlar",
+    "title": "Ogohlantirishlar",
+    "subtitle": "Tizim aniqlagan e'tibor talab qiluvchi naqshlar va voqealar.",
+    "filterAll": "Hammasi",
+    "filterUnresolved": "Hal qilinmagan",
+    "filterResolved": "Hal qilingan",
+    "severityAll": "Hamma darajalar",
+    "severityLow": "Past",
+    "severityMedium": "O'rta",
+    "severityHigh": "Yuqori",
+    "severityCritical": "Kritik",
+    "analyze": "Tahlil qilish",
+    "analyzing": "Tahlil...",
+    "refresh": "Yangilash",
+    "emptyTitle": "Ogohlantirish yo'q",
+    "emptyBody": "Hozircha hech narsa sizning e'tiboringizni talab qilmaydi. Tizim doimiy ravishda ma'lumotlarni kuzatadi.",
+    "resolveConfirm": "Bu ogohlantirishni hal qilingan deb belgilamoqchimisiz?",
+    "resolveConfirmWarning": "Bu amal qaytarib bo'lmaydi — hal qilish doimiy.",
+    "resolveSuccess": "Ogohlantirish hal qilindi",
+    "resolveError": "Xatolik yuz berdi",
+    "analyzeSuccess": "Tahlil tugadi",
+    "analyzeError": "Tahlil xatosi",
+    "notifyConfirm": "Barcha manfaatdor tomonlarga xabar berish?",
+    "notifySuccess": "Xabar yuborildi",
+    "notifyError": "Xabar yuborishda xatolik",
+    "loadError": "Ogohlantirishlarni yuklashda xatolik"
+  },
+  "activityActions": {
+    "approve_documents": "Hujjat tasdiqlandi",
+    "reject_documents": "Hujjat rad etildi",
+    "create_receptions": "Qabulxona yaratildi",
+    "delete_receptions": "Qabulxona o'chirildi",
+    "activate_receptions": "Qabulxona faollashtirildi",
+    "deactivate_receptions": "Qabulxona o'chirildi",
+    "suspend_users": "Ota-ona to'xtatildi",
+    "activate_users": "Ota-ona faollashtirildi",
+    "restore_children": "Bola tiklandi",
+    "restore_users": "Foydalanuvchi tiklandi",
+    "bulk_import_children": "Bolalar import qilindi",
+    "transfer_children": "Bola ko'chirildi",
+    "update_schools": "Muassasa yangilandi"
+  },
+  "severity": {
+    "critical": "Kritik",
+    "high": "Yuqori",
+    "medium": "O'rta",
+    "low": "Past"
+  },
+  "timeAgo": {
+    "justNow": "Hozirgina",
+    "minutes": "{{count}} daqiqa oldin",
+    "hours": "{{count}} soat oldin"
+  },
+  "activityFeed": {
+    "pageOf": "{{page}} / {{totalPages}} ({{total}} ta)",
+    "prev": "Oldingi",
+    "next": "Keyingi"
   }
 }

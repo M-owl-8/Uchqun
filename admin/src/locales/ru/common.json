@@ -442,5 +442,73 @@
   "errors": {
     "NETWORK_ERROR": "Ошибка сети",
     "ACCOUNT_NOT_ACTIVE": "Аккаунт заблокирован"
+  },
+  "aiWarnings": {
+    "resolved": "Решено",
+    "resolvedBy": "Решил",
+    "showLess": "Свернуть",
+    "showMore": "Ещё",
+    "source": "Источник",
+    "review": "Просмотреть",
+    "notify": "Уведомить",
+    "resolving": "Сохранение…",
+    "markResolved": "Отметить как решённое",
+    "eyebrow": "Отчёты",
+    "title": "Предупреждения",
+    "subtitle": "Паттерны и события, выявленные системой, требующие внимания.",
+    "filterAll": "Все",
+    "filterUnresolved": "Нерешённые",
+    "filterResolved": "Решённые",
+    "severityAll": "Все уровни",
+    "severityLow": "Низкий",
+    "severityMedium": "Средний",
+    "severityHigh": "Высокий",
+    "severityCritical": "Критический",
+    "analyze": "Анализировать",
+    "analyzing": "Анализ...",
+    "refresh": "Обновить",
+    "emptyTitle": "Нет предупреждений",
+    "emptyBody": "Сейчас ничего не требует вашего внимания. Система продолжает мониторинг данных.",
+    "resolveConfirm": "Отметить это предупреждение как решённое?",
+    "resolveConfirmWarning": "Это действие необратимо — решение является постоянным.",
+    "resolveSuccess": "Предупреждение решено",
+    "resolveError": "Произошла ошибка",
+    "analyzeSuccess": "Анализ завершён",
+    "analyzeError": "Ошибка анализа",
+    "notifyConfirm": "Уведомить всех заинтересованных лиц?",
+    "notifySuccess": "Уведомление отправлено",
+    "notifyError": "Ошибка отправки уведомления",
+    "loadError": "Ошибка загрузки предупреждений"
+  },
+  "activityActions": {
+    "approve_documents": "Документ утверждён",
+    "reject_documents": "Документ отклонён",
+    "create_receptions": "Ресепшн создан",
+    "delete_receptions": "Ресепшн удалён",
+    "activate_receptions": "Ресепшн активирован",
+    "deactivate_receptions": "Ресепшн деактивирован",
+    "suspend_users": "Родитель заблокирован",
+    "activate_users": "Родитель активирован",
+    "restore_children": "Ребёнок восстановлен",
+    "restore_users": "Пользователь восстановлен",
+    "bulk_import_children": "Дети импортированы",
+    "transfer_children": "Ребёнок переведён",
+    "update_schools": "Учреждение обновлено"
+  },
+  "severity": {
+    "critical": "Критический",
+    "high": "Высокий",
+    "medium": "Средний",
+    "low": "Низкий"
+  },
+  "timeAgo": {
+    "justNow": "Только что",
+    "minutes": "{{count}} мин. назад",
+    "hours": "{{count}} ч. назад"
+  },
+  "activityFeed": {
+    "pageOf": "{{page}} / {{totalPages}} ({{total}} всего)",
+    "prev": "Назад",
+    "next": "Вперёд"
   }
 }

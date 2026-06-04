@@ -3,24 +3,34 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 
-const ACTION_META = {
-  'approve:documents':      { label: 'Hujjat tasdiqlandi',           color: 'text-success-600' },
-  'reject:documents':       { label: 'Hujjat rad etildi',            color: 'text-error-600' },
-  'create:receptions':      { label: 'Qabulxona yaratildi',          color: 'text-info-600' },
-  'delete:receptions':      { label: "Qabulxona o'chirildi",         color: 'text-error-600' },
-  'activate:receptions':    { label: 'Qabulxona faollashtirildi',    color: 'text-success-600' },
-  'deactivate:receptions':  { label: "Qabulxona o'chirildi",         color: 'text-warning-600' },
-  'suspend:users':          { label: "Ota-ona to'xtatildi",          color: 'text-error-600' },
-  'activate:users':         { label: 'Ota-ona faollashtirildi',      color: 'text-success-600' },
-  'restore:children':       { label: 'Bola tiklandi',                color: 'text-info-600' },
-  'restore:users':          { label: 'Foydalanuvchi tiklandi',       color: 'text-info-600' },
-  'bulk_import:children':   { label: 'Bolalar import qilindi',       color: 'text-brand-600' },
-  'transfer:children':      { label: "Bola ko'chirildi",             color: 'text-warning-600' },
-  'update:schools':         { label: 'Maktab yangilandi',            color: 'text-brand-600' },
+const ACTION_KEYS = [
+  'approve:documents', 'reject:documents',
+  'create:receptions', 'delete:receptions', 'activate:receptions', 'deactivate:receptions',
+  'suspend:users', 'activate:users',
+  'restore:children', 'restore:users', 'bulk_import:children', 'transfer:children',
+  'update:schools',
+];
+
+const ACTION_LABELS_UZ = {
+  'approve:documents':    'Hujjat tasdiqlandi',
+  'reject:documents':     'Hujjat rad etildi',
+  'create:receptions':    'Qabulxona yaratildi',
+  'delete:receptions':    "Qabulxona o'chirildi",
+  'activate:receptions':  'Qabulxona faollashtirildi',
+  'deactivate:receptions':"Qabulxona o'chirildi",
+  'suspend:users':        "Ota-ona to'xtatildi",
+  'activate:users':       'Ota-ona faollashtirildi',
+  'restore:children':     'Bola tiklandi',
+  'restore:users':        'Foydalanuvchi tiklandi',
+  'bulk_import:children': 'Bolalar import qilindi',
+  'transfer:children':    "Bola ko'chirildi",
+  'update:schools':       'Muassasa yangilandi',
 };
 
-const getActionLabel = (action, entity) =>
-  ACTION_META[`${action}:${entity}`]?.label ?? `${action} ${entity}`;
+const getActionLabel = (action, entity, t) => {
+  const key = `${action}:${entity}`;
+  return t(`activityActions.${action}_${entity}`, { defaultValue: ACTION_LABELS_UZ[key] ?? key });
+};
 
 const PAGE_SIZE = 20;
 
@@ -80,7 +90,6 @@ const ActivityFeed = () => {
     setPage(1);
   };
 
-  const actionKeys = Object.keys(ACTION_META);
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -108,11 +117,14 @@ const ActivityFeed = () => {
             <option value="">
               {t('activityFeed.filterAll', { defaultValue: 'All actions' })}
             </option>
-            {actionKeys.map((key) => (
-              <option key={key} value={key.split(':')[0]}>
-                {ACTION_META[key].label}
-              </option>
-            ))}
+            {ACTION_KEYS.map((key) => {
+              const [action, entity] = key.split(':');
+              return (
+                <option key={key} value={action}>
+                  {getActionLabel(action, entity, t)}
+                </option>
+              );
+            })}
           </select>
         </div>
         <div>
@@ -184,7 +196,7 @@ const ActivityFeed = () => {
                       : '—'}
                   </td>
                   <td className="px-4 py-3 text-warm-900">
-                    {getActionLabel(entry.action, entry.entity)}
+                    {getActionLabel(entry.action, entry.entity, t)}
                   </td>
                   <td className="px-4 py-3 text-warm-500">{entry.entity}</td>
                 </tr>
@@ -198,7 +210,7 @@ const ActivityFeed = () => {
       {totalPages > 1 && (
         <div className="flex items-center justify-between text-sm text-warm-600">
           <span>
-            Page {page} of {totalPages} ({total} total)
+            {t('activityFeed.pageOf', { page, totalPages, total, defaultValue: '{{page}} / {{totalPages}} ({{total}} ta)' })}
           </span>
           <div className="flex gap-2">
             <button
@@ -206,14 +218,14 @@ const ActivityFeed = () => {
               disabled={page <= 1}
               className="px-3 py-1.5 border border-warm-200 rounded-md hover:bg-warm-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Prev
+              {t('activityFeed.prev', { defaultValue: 'Oldingi' })}
             </button>
             <button
               onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
               disabled={page >= totalPages}
               className="px-3 py-1.5 border border-warm-200 rounded-md hover:bg-warm-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
             >
-              Next
+              {t('activityFeed.next', { defaultValue: 'Keyingi' })}
             </button>
           </div>
         </div>

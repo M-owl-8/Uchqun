@@ -12,28 +12,24 @@ import {
 
 const SEVERITY_META = {
   critical: {
-    label: 'Kritik · Critical',
     iconBox: 'bg-error-600 text-walnut-text',
     badge: 'bg-error-600 text-walnut-text border-error-700',
     cardBorder: 'border-error-100',
     Icon: ShieldAlert,
   },
   high: {
-    label: 'Yuqori · High',
     iconBox: 'bg-error-50 text-error-700',
     badge: 'bg-error-50 text-error-700 border-error-100',
     cardBorder: 'border-warm-200',
     Icon: AlertTriangle,
   },
   medium: {
-    label: "O'rta · Medium",
     iconBox: 'bg-warning-50 text-warning-700',
     badge: 'bg-warning-50 text-warning-700 border-warning-100',
     cardBorder: 'border-warm-200',
     Icon: AlertCircle,
   },
   low: {
-    label: 'Past · Low',
     iconBox: 'bg-info-50 text-info-700',
     badge: 'bg-info-50 text-info-700 border-info-100',
     cardBorder: 'border-warm-200',
@@ -91,7 +87,7 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap mb-1">
             <span className={`inline-flex items-center px-2 py-0.5 text-[11px] font-medium rounded-sm border ${meta.badge}`}>
-              {meta.label}
+              {t(`severity.${warning.severity}`, { defaultValue: warning.severity })}
             </span>
             {warning.category && <span className="text-xs text-warm-500">{warning.category}</span>}
             {warning.target && (
@@ -305,7 +301,7 @@ const AIWarnings = () => {
             {t('aiWarnings.eyebrow', { defaultValue: 'Hisobotlar' })}
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
-            {t('aiWarnings.title', { defaultValue: 'AI ogohlantirishlar' })}{' '}
+            {t('aiWarnings.title', { defaultValue: 'Ogohlantirishlar' })}{' '}
             <span className="text-xl font-medium text-warm-500 num">· {safeWarnings.length}</span>
           </h1>
           <p className="text-sm text-warm-600 mt-1">

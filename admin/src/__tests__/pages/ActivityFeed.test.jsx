@@ -84,7 +84,7 @@ describe('ActivityFeed (FE-5)', () => {
     api.get.mockResolvedValue(makeRes(ENTRIES, { total: 40, totalPages: 2 }));
     render(<MemoryRouter><ActivityFeed /></MemoryRouter>);
     await waitFor(() => screen.getByText('Sherzod Rakhimov'));
-    expect(screen.getByText('Prev')).toBeTruthy();
-    expect(screen.getByText('Next')).toBeTruthy();
+    expect(screen.getByText('Oldingi')).toBeTruthy();
+    expect(screen.getByText('Keyingi')).toBeTruthy();
   });
 });

@@ -441,5 +441,73 @@
   "errors": {
     "NETWORK_ERROR": "Network error",
     "ACCOUNT_NOT_ACTIVE": "Account suspended"
+  },
+  "aiWarnings": {
+    "resolved": "Resolved",
+    "resolvedBy": "Resolved by",
+    "showLess": "Show less",
+    "showMore": "Show more",
+    "source": "Source",
+    "review": "Review",
+    "notify": "Notify",
+    "resolving": "Saving…",
+    "markResolved": "Mark as resolved",
+    "eyebrow": "Reports",
+    "title": "Warnings",
+    "subtitle": "Patterns and events detected by the system that require attention.",
+    "filterAll": "All",
+    "filterUnresolved": "Unresolved",
+    "filterResolved": "Resolved",
+    "severityAll": "All severities",
+    "severityLow": "Low",
+    "severityMedium": "Medium",
+    "severityHigh": "High",
+    "severityCritical": "Critical",
+    "analyze": "Analyze",
+    "analyzing": "Analyzing...",
+    "refresh": "Refresh",
+    "emptyTitle": "No warnings",
+    "emptyBody": "Nothing requires your attention right now. The system continues monitoring data.",
+    "resolveConfirm": "Mark this warning as resolved?",
+    "resolveConfirmWarning": "This action is irreversible — resolution is permanent.",
+    "resolveSuccess": "Warning resolved",
+    "resolveError": "An error occurred",
+    "analyzeSuccess": "Analysis complete",
+    "analyzeError": "Analysis error",
+    "notifyConfirm": "Notify all interested parties?",
+    "notifySuccess": "Notification sent",
+    "notifyError": "Failed to send notification",
+    "loadError": "Failed to load warnings"
+  },
+  "activityActions": {
+    "approve_documents": "Document approved",
+    "reject_documents": "Document rejected",
+    "create_receptions": "Reception created",
+    "delete_receptions": "Reception deleted",
+    "activate_receptions": "Reception activated",
+    "deactivate_receptions": "Reception deactivated",
+    "suspend_users": "Parent suspended",
+    "activate_users": "Parent activated",
+    "restore_children": "Child restored",
+    "restore_users": "User restored",
+    "bulk_import_children": "Children imported",
+    "transfer_children": "Child transferred",
+    "update_schools": "Institution updated"
+  },
+  "severity": {
+    "critical": "Critical",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
+  },
+  "timeAgo": {
+    "justNow": "Just now",
+    "minutes": "{{count}} min ago",
+    "hours": "{{count}}h ago"
+  },
+  "activityFeed": {
+    "pageOf": "{{page}} of {{totalPages}} ({{total}} total)",
+    "prev": "Previous",
+    "next": "Next"
   }
 }

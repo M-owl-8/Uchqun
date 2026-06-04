@@ -16,37 +16,37 @@ import {
   ClipboardList,
 } from 'lucide-react';
 
-const ACTION_META = {
-  'approve:documents':      { label: 'Hujjat tasdiqlandi',           color: 'text-success-600' },
-  'reject:documents':       { label: 'Hujjat rad etildi',            color: 'text-error-600' },
-  'create:receptions':      { label: 'Qabulxona yaratildi',          color: 'text-info-600' },
-  'delete:receptions':      { label: "Qabulxona o'chirildi",         color: 'text-error-600' },
-  'activate:receptions':    { label: 'Qabulxona faollashtirildi',    color: 'text-success-600' },
-  'deactivate:receptions':  { label: "Qabulxona o'chirildi",         color: 'text-warning-600' },
-  'suspend:users':          { label: "Ota-ona to'xtatildi",          color: 'text-error-600' },
-  'activate:users':         { label: 'Ota-ona faollashtirildi',      color: 'text-success-600' },
-  'restore:children':       { label: 'Bola tiklandi',                color: 'text-info-600' },
-  'restore:users':          { label: 'Foydalanuvchi tiklandi',       color: 'text-info-600' },
-  'bulk_import:children':   { label: 'Bolalar import qilindi',       color: 'text-brand-600' },
-  'transfer:children':      { label: "Bola ko'chirildi",             color: 'text-warning-600' },
-  'update:schools':         { label: 'Muassasa yangilandi',           color: 'text-brand-600' },
+const ACTION_META_COLOR = {
+  'approve:documents':      'text-success-600',
+  'reject:documents':       'text-error-600',
+  'create:receptions':      'text-info-600',
+  'delete:receptions':      'text-error-600',
+  'activate:receptions':    'text-success-600',
+  'deactivate:receptions':  'text-warning-600',
+  'suspend:users':          'text-error-600',
+  'activate:users':         'text-success-600',
+  'restore:children':       'text-info-600',
+  'restore:users':          'text-info-600',
+  'bulk_import:children':   'text-brand-600',
+  'transfer:children':      'text-warning-600',
+  'update:schools':         'text-brand-600',
 };
 
-const getActionLabel = (action, entity) =>
-  ACTION_META[`${action}:${entity}`]?.label ?? `${action} ${entity}`;
+const getActionLabel = (action, entity, t) =>
+  t(`activityActions.${action}_${entity}`, { defaultValue: `${action}:${entity}` });
 
 const getActionColor = (action, entity) =>
-  ACTION_META[`${action}:${entity}`]?.color ?? 'text-warm-600';
+  ACTION_META_COLOR[`${action}:${entity}`] ?? 'text-warm-600';
 
-const formatRelativeTime = (iso) => {
+const formatRelativeTime = (iso, t) => {
   if (!iso) return '';
   const diff = Date.now() - new Date(iso).getTime();
   const min = Math.floor(diff / 60000);
-  if (min < 1) return 'Hozirgina';
-  if (min < 60) return `${min} daqiqa oldin`;
+  if (min < 1) return t('timeAgo.justNow', { defaultValue: 'Hozirgina' });
+  if (min < 60) return t('timeAgo.minutes', { count: min, defaultValue: '{{count}} daqiqa oldin' });
   const hr = Math.floor(min / 60);
-  if (hr < 24) return `${hr} soat oldin`;
-  return new Date(iso).toLocaleDateString('uz-UZ');
+  if (hr < 24) return t('timeAgo.hours', { count: hr, defaultValue: '{{count}} soat oldin' });
+  return new Date(iso).toLocaleDateString();
 };
 
 const CACHE_KEY = 'admin:dashboard';
@@ -387,10 +387,10 @@ const Dashboard = () => {
                   <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${getActionColor(entry.action, entry.entity).replace('text-', 'bg-')}`} />
                   <div className="flex-1 min-w-0">
                     <p className="text-sm text-warm-900 truncate">
-                      {getActionLabel(entry.action, entry.entity)}
+                      {getActionLabel(entry.action, entry.entity, t)}
                       {entry.actor && <span className="text-warm-500"> — {entry.actor.firstName} {entry.actor.lastName}</span>}
                     </p>
-                    <p className="text-xs text-warm-400">{formatRelativeTime(entry.occurredAt)}</p>
+                    <p className="text-xs text-warm-400">{formatRelativeTime(entry.occurredAt, t)}</p>
                   </div>
                 </div>
               ))
