@@ -27,7 +27,7 @@ function totalPages(itemCount, pageSize) {
 function getRoleLabel(role) {
   const map = {
     admin: 'Admin',
-    teacher: "O'qituvchi",
+    teacher: "Tarbiyachi",
     parent: 'Ota-ona',
     reception: 'Qabul',
     government: 'Davlat',
@@ -107,7 +107,7 @@ describe('totalPages', () => {
 
 describe('getRoleLabel', () => {
   it('returns Uzbek label for known roles', () => {
-    expect(getRoleLabel('teacher')).toBe("O'qituvchi");
+    expect(getRoleLabel('teacher')).toBe("Tarbiyachi");
     expect(getRoleLabel('parent')).toBe('Ota-ona');
     expect(getRoleLabel('government')).toBe('Davlat');
   });

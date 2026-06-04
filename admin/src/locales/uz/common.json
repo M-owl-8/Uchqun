@@ -102,11 +102,14 @@
     "dataError": "Ota-ona ma’lumotlarini yuklab bo‘lmadi"
   },
   "teachersPage": {
-    "title": "Tarbiyachilar boshqaruvi",
+    "title": "Tarbiyachilar",
     "subtitle": "Tarbiyachi akkauntlarini ko’rish (faqat o’qish)",
     "search": "Tarbiyachilarni qidirish...",
     "emptySearch": "Tarbiyachilar topilmadi",
     "empty": "Hozircha tarbiyachilar yo’q",
+    "emptyBusiness": "Tarbiyachilar qabulxona xodimlari tomonidan qo’shiladi",
+    "statusActive": "Faol",
+    "statusInactive": "Nofaol",
     "badge": "Tarbiyachi akkaunti",
     "loadError": "Tarbiyachilarni yuklab bo’lmadi"
   },

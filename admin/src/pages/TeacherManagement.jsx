@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import {
   UserCheck,
   Search,
-  Mail,
   Phone,
   ChevronRight,
 } from 'lucide-react';
@@ -75,78 +74,95 @@ const TeacherManagement = () => {
   }
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+    <div className="max-w-7xl mx-auto space-y-6">
+      {/* Page header */}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-4xl font-black text-warm-900 tracking-tight">{t('teachersPage.title')}</h1>
-          <p className="text-warm-500 font-medium mt-1">{t('teachersPage.subtitle')}</p>
+          <h1 className="text-3xl font-semibold tracking-tight text-warm-900">
+            {t('teachersPage.title')} ({filteredTeachers.length})
+          </h1>
+          <p className="text-sm text-warm-500 mt-0.5">{t('teachersPage.subtitle')}</p>
         </div>
-
-        <form role="search" aria-label={t('teachersPage.search')} className="relative flex-1 md:flex-initial md:w-64">
-          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-warm-400" aria-hidden="true" />
+        <form role="search" aria-label={t('teachersPage.search')} className="relative sm:w-64">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" aria-hidden="true" />
           <input
             type="text"
             placeholder={t('teachersPage.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             aria-label={t('teachersPage.search')}
-            className="pl-12 pr-4 py-3 bg-surface border border-warm-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
+            className="pl-10 pr-4 py-2.5 bg-surface border border-warm-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
           />
         </form>
       </div>
 
       {filteredTeachers.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredTeachers.map((teacher) => (
-            <div key={teacher.id} className="cursor-pointer" onClick={() => navigate('/admin/teachers/' + teacher.id)}>
-              <TeacherCard teacher={teacher} t={t} />
-            </div>
+            <TeacherCard
+              key={teacher.id}
+              teacher={teacher}
+              t={t}
+              onClick={() => navigate('/admin/teachers/' + teacher.id)}
+            />
           ))}
         </div>
+      ) : searchQuery ? (
+        <div className="bg-surface border border-warm-200 rounded-lg p-10 text-center">
+          <UserCheck className="w-10 h-10 text-warm-200 mx-auto mb-3" strokeWidth={1.5} />
+          <p className="text-sm font-medium text-warm-500">{t('teachersPage.emptySearch')}</p>
+          <p className="text-xs text-warm-400 mt-1">«{searchQuery}»</p>
+        </div>
       ) : (
-        <Card className="p-12 text-center">
-          <UserCheck className="w-16 h-16 text-warm-200 mx-auto mb-4" />
-          <p className="text-warm-400 font-medium text-lg">
-            {searchQuery ? t('teachersPage.emptySearch') : t('teachersPage.empty')}
+        <div className="bg-surface border border-warm-200 rounded-lg p-10 text-center">
+          <UserCheck className="w-10 h-10 text-warm-200 mx-auto mb-3" strokeWidth={1.5} />
+          <p className="text-sm font-medium text-warm-600">{t('teachersPage.empty')}</p>
+          <p className="text-xs text-warm-400 mt-2 max-w-xs mx-auto leading-relaxed">
+            {t('teachersPage.emptyBusiness', { defaultValue: "Tarbiyachilar qabulxona xodimlari tomonidan qo'shiladi" })}
           </p>
-        </Card>
+        </div>
       )}
     </div>
   );
 };
 
-const TeacherCard = memo(function TeacherCard({ teacher, t }) {
+const TeacherCard = memo(function TeacherCard({ teacher, t, onClick }) {
+  const initials = `${teacher.firstName?.charAt(0) ?? ''}${teacher.lastName?.charAt(0) ?? ''}`.toUpperCase();
+  const hasStatus = teacher.isActive !== undefined;
+
   return (
-  <Card className="p-6 hover:shadow-lg transition-shadow">
-    <div className="flex items-start justify-between mb-4">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
-          {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
+    <button type="button" onClick={onClick} className="w-full text-left">
+      <Card className="p-4 hover:border-warm-300 transition-colors">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-warm-100 text-warm-700 flex items-center justify-center text-sm font-semibold shrink-0">
+            {initials}
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-semibold text-warm-900 truncate">
+              {teacher.firstName} {teacher.lastName}
+            </p>
+            <p className="text-xs text-warm-500 truncate">{teacher.email}</p>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            {hasStatus && (
+              <span
+                title={teacher.isActive
+                  ? t('teachersPage.statusActive', { defaultValue: 'Faol' })
+                  : t('teachersPage.statusInactive', { defaultValue: 'Nofaol' })}
+                className={`w-2 h-2 rounded-full ${teacher.isActive ? 'bg-success-500' : 'bg-warm-300'}`}
+              />
+            )}
+            <ChevronRight className="w-4 h-4 text-warm-300 shrink-0" strokeWidth={1.75} />
+          </div>
         </div>
-        <div>
-          <h3 className="text-lg font-bold text-warm-900">{teacher.firstName} {teacher.lastName}</h3>
-          <p className="text-sm text-warm-500">{teacher.email}</p>
-        </div>
-      </div>
-      <ChevronRight className="w-5 h-5 text-warm-400 shrink-0" strokeWidth={1.75} />
-    </div>
-    <div className="space-y-3">
-      <div className="flex items-center gap-2 text-sm text-warm-600">
-        <Mail className="w-4 h-4 text-warm-400" aria-hidden="true" />
-        <span>{teacher.email}</span>
-      </div>
-      {teacher.phone && (
-        <div className="flex items-center gap-2 text-sm text-warm-600">
-          <Phone className="w-4 h-4 text-warm-400" aria-hidden="true" />
-          <span>{teacher.phone}</span>
-        </div>
-      )}
-      <div className="flex items-center gap-2 text-sm text-brand-600 mt-3 pt-3 border-t border-warm-100">
-        <UserCheck className="w-4 h-4" aria-hidden="true" />
-        <span className="font-medium">{t('teachersPage.badge')}</span>
-      </div>
-    </div>
-  </Card>
+        {teacher.phone && (
+          <div className="flex items-center gap-2 mt-2.5 pt-2.5 border-t border-warm-100">
+            <Phone className="w-3.5 h-3.5 text-warm-400 shrink-0" strokeWidth={1.75} />
+            <span className="text-xs text-warm-600">{teacher.phone}</span>
+          </div>
+        )}
+      </Card>
+    </button>
   );
 });
 

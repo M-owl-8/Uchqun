@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **CLEANUP-07b-TARBIYACHILAR 🟡 In progress:** A1 (card grid cleaned) + B1 (count in header). isActive confirmed in API response — status dot added. O'qituvchi→Tarbiyachi in utils.test.js. Implementing. `audits/redesign/CLEANUP-07b-TARBIYACHILAR.md`.
+
 > **CLEANUP-07a-DASHBOARD 🟡 In progress:** Dashboard restructure complete. Attention zone 3 cards→1 consolidated (per-row hide). Stats 4 cards→1 compact strip (12/15 ratio + subtle bar). Right column: rating only (300px). Tasks + Quick info removed. Hisobotlar 2→3 cards (+Audit jurnali). 6 new locale keys × 3 langs. 30/30 · 162/162 · build clean. Commit e603958. Pending: user Railway verification. `audits/redesign/CLEANUP-07a-DASHBOARD.md`.
 
 > **CLEANUP-06-SIDEBAR-SCROLL 🟡 In progress:** CSS-only fix — added `.sidebar-scroll` class (4px thin webkit scrollbar, rgba(255,255,255,0.15) thumb) to admin + government `index.css`. Applied to nav containers in both sidebars. Mobile drawer inherits fix via shared component. No scroll needed on gov at any laptop viewport (548px); admin needs scroll <768px (now clean). Admin 162/162 · Gov 124/124 · both builds clean. Commit 079a1af. Pending: user Railway verification at 1080px + 768px. `audits/redesign/CLEANUP-06-SIDEBAR-SCROLL.md`.

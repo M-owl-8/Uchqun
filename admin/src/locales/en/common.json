@@ -101,11 +101,14 @@
     "dataError": "Failed to fetch parent data"
   },
   "teachersPage": {
-    "title": "Teacher Management",
+    "title": "Teachers",
     "subtitle": "View teacher accounts (read-only)",
     "search": "Search teachers...",
     "emptySearch": "No teachers found",
     "empty": "No teachers yet",
+    "emptyBusiness": "Teachers are added by reception staff",
+    "statusActive": "Active",
+    "statusInactive": "Inactive",
     "badge": "Teacher Account",
     "loadError": "Failed to fetch teachers"
   },
