@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AGENCY_CONFIG } from '../config/agency.js';
 import { Emblem } from '../components/identity/Emblem';
-import { GuillochePattern } from '../components/identity/GuillochePattern';
 import { LockIcon } from '../components/icons/LockIcon';
 import { Field } from '../components/dnp/Field';
 import { PrimaryButton } from '../components/dnp/PrimaryButton';
 import { Checkbox } from '../components/dnp/Checkbox';
 import { InlineLink } from '../components/dnp/InlineLink';
 import { SecurePill } from '../components/dnp/SecurePill';
-import { LangToggle } from '../components/dnp/LangToggle';
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 const STRINGS = {
   uz: {
@@ -151,19 +150,6 @@ const Login = () => {
           'min-[880px]:p-14 min-[880px]:gap-0',
         ].join(' ')}
       >
-        {/* Guilloché backdrop — barely visible */}
-        <div className="absolute inset-0 text-white/[.06] pointer-events-none select-none">
-          <GuillochePattern />
-        </div>
-
-        {/* Large emblem watermark — desktop only, bottom-right */}
-        <div
-          className="hidden min-[880px]:block absolute -bottom-24 -right-24 pointer-events-none select-none"
-          style={{ color: 'rgba(255,255,255,0.045)' }}
-        >
-          <Emblem size={520} stroke={0.6} />
-        </div>
-
         {/* Top: glass crest tile + agency identity */}
         <div className="relative flex items-center gap-4">
           <div className="flex-shrink-0 w-[68px] h-[68px] rounded-2xl flex items-center justify-center bg-white/[.08] border border-white/[.14]">
@@ -309,7 +295,7 @@ const Login = () => {
           {/* Footer: copyright + language toggle */}
           <footer className="mt-5 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
             <span className="text-[12px] text-faint">{t.footer}</span>
-            <LangToggle lang={lang} setLang={setLang} />
+            <LanguageSwitcher variant="auth" onChange={setLang} />
           </footer>
 
         </div>

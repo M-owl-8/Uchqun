@@ -4,8 +4,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff, Mail, Lock } from 'lucide-react';
-
-const LANG_OPTIONS = ['UZ', 'RU', 'EN'];
+import { LanguageSwitcher } from '../../../shared/components/LanguageSwitcher';
 
 const Login = () => {
   const [email, setEmail]               = useState('');
@@ -13,7 +12,6 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError]               = useState('');
   const [loading, setLoading]           = useState(false);
-  const [activeLang, setActiveLang]     = useState('UZ');
 
   const { login } = useAuth();
   const navigate  = useNavigate();
@@ -51,10 +49,6 @@ const Login = () => {
     setLoading(false);
   };
 
-  const handleLangChange = (lang) => {
-    setActiveLang(lang);
-    i18n.changeLanguage(lang.toLowerCase());
-  };
 
   return (
     <div
@@ -189,27 +183,7 @@ const Login = () => {
       <div className="mt-8 flex flex-col items-center gap-3">
         <span className="font-mono text-[11px] tracking-[.18em] text-slate-400">IHMA</span>
 
-        {/* Language pill */}
-        <div
-          className="flex items-center gap-1 p-0.5 rounded-full"
-          style={{ background: '#EDEFF2' }}
-        >
-          {LANG_OPTIONS.map((lang) => (
-            <button
-              key={lang}
-              onClick={() => handleLangChange(lang)}
-              aria-current={activeLang === lang ? 'true' : undefined}
-              className="px-3 py-1 text-[11px] font-medium rounded-full transition-colors"
-              style={
-                activeLang === lang
-                  ? { background: '#FFFFFE', color: '#2A2530', boxShadow: '0 1px 2px rgba(30,32,38,.06)' }
-                  : { color: '#525868' }
-              }
-            >
-              {lang}
-            </button>
-          ))}
-        </div>
+        <LanguageSwitcher variant="auth" />
       </div>
     </div>
   );

@@ -20,8 +20,7 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useSocket } from '../shared/context/SocketContext';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
-
-const LANG_OPTIONS = ['UZ', 'RU', 'EN'];
+import { LanguageSwitcher } from '../../../shared/components/LanguageSwitcher';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -63,9 +62,6 @@ const Sidebar = ({ onClose }) => {
     },
   ];
   const [unreadChat, setUnreadChat] = useState(0);
-  const [activeLang, setActiveLang] = useState(
-    (i18n.language || 'uz').slice(0, 2).toUpperCase()
-  );
 
   useEffect(() => {
     let alive = true;
@@ -93,11 +89,6 @@ const Sidebar = ({ onClose }) => {
     return location.pathname === href || location.pathname.startsWith(href + '/');
   };
 
-  const handleLangChange = (lang) => {
-    setActiveLang(lang);
-    i18n.changeLanguage(lang.toLowerCase());
-    localStorage.setItem('dnp:lang', lang.toLowerCase());
-  };
 
   const initials =
     `${(user?.firstName || '').charAt(0)}${(user?.lastName || '').charAt(0)}`.toUpperCase();
@@ -248,25 +239,9 @@ const Sidebar = ({ onClose }) => {
           </button>
         </div>
 
-        {/* Language pill */}
-        <div
-          className="mt-2.5 flex items-center gap-1 p-0.5 rounded-full"
-          style={{ background: '#48404F' }}
-        >
-          {LANG_OPTIONS.map((lang) => (
-            <button
-              key={lang}
-              onClick={() => handleLangChange(lang)}
-              className="flex-1 text-[10px] font-medium py-1 rounded-full transition-colors"
-              style={
-                activeLang === lang
-                  ? { background: '#F4F0F5', color: '#2A2530' }
-                  : { color: '#928A9C' }
-              }
-            >
-              {lang}
-            </button>
-          ))}
+        {/* Language switcher */}
+        <div className="mt-2.5">
+          <LanguageSwitcher variant="sidebar" />
         </div>
       </div>
     </div>

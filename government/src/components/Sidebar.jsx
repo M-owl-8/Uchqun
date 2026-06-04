@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import {
@@ -13,72 +12,9 @@ import {
   LogOut,
   Globe,
   MapPin,
-  ChevronDown,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-
-const LANG_LABELS = { uz: "O'zbekcha", ru: 'Русский', en: 'English' };
-
-const LangDropdown = ({ currentLang, onChange }) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener('pointerdown', handler);
-    return () => document.removeEventListener('pointerdown', handler);
-  }, [open]);
-
-  const handleSelect = (lng) => {
-    onChange(lng);
-    setOpen(false);
-  };
-
-  return (
-    <div ref={ref} className="relative px-3 pb-2">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-sidebar-muted hover:text-white hover:bg-sidebar-hover rounded-md transition-colors"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-      >
-        <Globe className="w-3.5 h-3.5 flex-shrink-0" strokeWidth={1.75} />
-        <span className="flex-1 text-left">{LANG_LABELS[currentLang] || currentLang.toUpperCase()}</span>
-        <ChevronDown
-          className="w-3 h-3 flex-shrink-0 transition-transform"
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          strokeWidth={2}
-        />
-      </button>
-
-      {open && (
-        <div
-          role="listbox"
-          className="absolute bottom-full left-3 right-3 mb-1 rounded-md bg-sidebar-hover border border-sidebar-line py-0.5 z-10"
-        >
-          {['uz', 'ru', 'en'].map((lng) => (
-            <button
-              key={lng}
-              type="button"
-              role="option"
-              aria-selected={currentLang === lng}
-              onClick={() => handleSelect(lng)}
-              className={`w-full text-left px-3 py-1.5 text-xs transition-colors ${
-                currentLang === lng
-                  ? 'text-white font-semibold bg-brand-600/20'
-                  : 'text-sidebar-muted hover:text-white'
-              }`}
-            >
-              {LANG_LABELS[lng]}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 import ihmaLogo from '@shared/assets/ihma-logo.png';
 
 // Capability required to show a nav item. null = always visible.
@@ -105,8 +41,6 @@ const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout, hasCapability, govType, isRepublic, isRegionAccount } = useAuth();
   const { t, i18n } = useTranslation();
-  const currentLang = i18n?.language?.split('-')[0] || 'uz';
-
   const canSee = (capability) => {
     if (!capability) return true;
     if (Array.isArray(capability)) return capability.some((c) => hasCapability(c));
@@ -190,10 +124,9 @@ const Sidebar = ({ onClose }) => {
       </nav>
 
       {/* Language dropdown */}
-      <LangDropdown
-        currentLang={currentLang}
-        onChange={(lng) => { i18n?.changeLanguage(lng); localStorage.setItem('dnp:lang', lng); }}
-      />
+      <div className="px-3 pb-2">
+        <LanguageSwitcher variant="sidebar" />
+      </div>
 
       {/* User card */}
       <div className="px-3 py-3 border-t border-sidebar-line flex-shrink-0">

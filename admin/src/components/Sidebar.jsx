@@ -1,4 +1,3 @@
-import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
@@ -16,9 +15,8 @@ import {
   Brain,
   MessageSquare,
   Mail,
-  Globe,
-  ChevronDown,
 } from 'lucide-react';
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 // 10 primary nav items in 3 sections + 1 standalone Settings link
 // Removed from primary nav: Groups (read-only, linked from Dashboard + Settings),
@@ -54,63 +52,6 @@ const NAV_SECTIONS = [
 
 const SETTINGS_ITEM = { key: 'nav.settings', href: '/admin/settings', icon: Settings };
 
-const LANG_LABELS = { uz: "O'zbekcha", ru: 'Русский', en: 'English' };
-
-const LangDropdown = ({ currentLang, onChange }) => {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-
-  useEffect(() => {
-    if (!open) return;
-    const handler = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener('pointerdown', handler);
-    return () => document.removeEventListener('pointerdown', handler);
-  }, [open]);
-
-  return (
-    <div ref={ref} className="relative">
-      <button
-        type="button"
-        onClick={() => setOpen((o) => !o)}
-        className="w-full flex items-center gap-2 px-2.5 py-1.5 rounded-md text-[11.5px] font-medium text-walnut-muted hover:text-white hover:bg-walnut-hover transition-colors"
-        aria-haspopup="listbox"
-        aria-expanded={open}
-      >
-        <Globe className="w-3.5 h-3.5 shrink-0" strokeWidth={1.75} />
-        <span className="flex-1 text-left">{LANG_LABELS[currentLang] || currentLang.toUpperCase()}</span>
-        <ChevronDown
-          className="w-3 h-3 shrink-0 transition-transform"
-          style={{ transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }}
-          strokeWidth={2}
-        />
-      </button>
-
-      {open && (
-        <div
-          role="listbox"
-          className="absolute bottom-full left-0 right-0 mb-1 rounded-md bg-walnut-hover border border-walnut-divider py-0.5 z-10"
-        >
-          {['uz', 'ru', 'en'].map((lng) => (
-            <button
-              key={lng}
-              type="button"
-              role="option"
-              aria-selected={currentLang === lng}
-              onClick={() => { onChange(lng); setOpen(false); }}
-              className={`w-full text-left px-3 py-1.5 text-[11.5px] transition-colors ${
-                currentLang === lng
-                  ? 'text-white font-semibold bg-brand-600/20'
-                  : 'text-walnut-muted hover:text-white'
-              }`}
-            >
-              {LANG_LABELS[lng]}
-            </button>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-};
 
 const NavItem = ({ item, isActive, onClick }) => {
   const { t } = useTranslation();
@@ -143,13 +84,6 @@ const Sidebar = ({ onClose }) => {
 
   const isActive = (href) =>
     href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(href);
-
-  const currentLang = i18n.language?.split('-')[0] || 'uz';
-
-  const handleChangeLang = (lng) => {
-    i18n.changeLanguage(lng);
-    localStorage.setItem('dnp:lang', lng);
-  };
 
   return (
     <div className="flex flex-col h-full bg-walnut text-walnut-text">
@@ -207,7 +141,7 @@ const Sidebar = ({ onClose }) => {
       <div className="m-3 mt-1 space-y-1">
         {/* Language dropdown */}
         <div className="px-0.5">
-          <LangDropdown currentLang={currentLang} onChange={handleChangeLang} />
+          <LanguageSwitcher variant="sidebar" />
         </div>
 
         {/* User card */}

@@ -3,7 +3,7 @@ import { Menu, Bell, LogOut, User, Star, MessageCircle } from 'lucide-react';
 import { useNotification } from '../context/NotificationContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from './LanguageSwitcher';
+import { LanguageSwitcher } from '../../../../shared/components/LanguageSwitcher';
 import { getUnreadCount } from '../../shared/services/chatStore';
 
 const TopBar = ({ onMenuClick }) => {
@@ -71,7 +71,7 @@ const TopBar = ({ onMenuClick }) => {
           </div>
         </Link>
 
-        <LanguageSwitcher />
+        <LanguageSwitcher variant="topbar" />
         {/* Bell Icon with Notification Badge */}
         <button
           onClick={() => {

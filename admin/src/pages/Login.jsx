@@ -2,14 +2,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { UEmblem } from '../components/identity/UEmblem';
-import { GuillochePattern } from '../components/identity/GuillochePattern';
 import { LockIcon } from '../components/icons/LockIcon';
 import { Field } from '../components/dnp/Field';
 import { PrimaryButton } from '../components/dnp/PrimaryButton';
 import { Checkbox } from '../components/dnp/Checkbox';
 import { InlineLink } from '../components/dnp/InlineLink';
 import { SecurePill } from '../components/dnp/SecurePill';
-import { LangDropdown } from '../components/dnp/LangDropdown';
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 const STRINGS = {
   uz: {
@@ -157,21 +156,6 @@ const Login = () => {
           'min-[880px]:p-14 min-[880px]:gap-0',
         ].join(' ')}
       >
-        {/* Guilloché backdrop */}
-        <div className="absolute inset-0 text-white/[.06] pointer-events-none select-none">
-          <GuillochePattern />
-        </div>
-
-        {/* Large "U" watermark — desktop only, bottom-right */}
-        <div
-          className="hidden min-[880px]:block absolute -bottom-12 -right-8 pointer-events-none select-none"
-          style={{ opacity: 0.04, fontSize: 340, fontWeight: 800, color: '#F2E9DF',
-                   letterSpacing: '-0.08em', lineHeight: 1, userSelect: 'none' }}
-          aria-hidden="true"
-        >
-          U
-        </div>
-
         {/* Top: Wordmark */}
         <div className="relative flex items-center gap-3">
           <UEmblem size={48} />
@@ -309,7 +293,7 @@ const Login = () => {
           {/* Footer: copyright + language dropdown */}
           <footer className="mt-5 pt-5 border-t border-border flex items-center justify-between flex-wrap gap-3">
             <span className="text-[12px] text-faint">{t.footer}</span>
-            <LangDropdown lang={lang} setLang={setLang} />
+            <LanguageSwitcher variant="auth" onChange={setLang} />
           </footer>
 
         </div>

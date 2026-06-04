@@ -11,6 +11,7 @@ import {
   User,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -36,13 +37,6 @@ const Sidebar = ({ onClose }) => {
   };
 
   const initials = `${user?.firstName?.charAt(0) || ''}${user?.lastName?.charAt(0) || ''}`;
-  const langs = ['UZ', 'RU', 'EN'];
-  const currentLang = (i18n.language || 'uz').toUpperCase().slice(0, 2);
-
-  const handleLang = (lang) => {
-    i18n.changeLanguage(lang.toLowerCase());
-    localStorage.setItem('dnp:lang', lang.toLowerCase());
-  };
 
   return (
     <div className="flex flex-col h-screen w-[240px] bg-teak text-teak-text relative overflow-hidden">
@@ -163,23 +157,8 @@ const Sidebar = ({ onClose }) => {
         </div>
 
         {/* Language switcher */}
-        <div
-          className="mt-2.5 inline-flex items-center p-0.5 rounded-full w-full justify-around text-[11px]"
-          style={{ background: 'rgba(42,59,61,0.8)' }}
-        >
-          {langs.map((lang) => (
-            <button
-              key={lang}
-              onClick={() => handleLang(lang)}
-              className={`px-2 h-5 rounded-full font-medium transition-colors ${
-                currentLang === lang
-                  ? 'bg-brand-600 text-white'
-                  : 'text-teak-muted hover:text-teak-text'
-              }`}
-            >
-              {lang}
-            </button>
-          ))}
+        <div className="mt-2.5">
+          <LanguageSwitcher variant="sidebar" />
         </div>
       </div>
     </div>

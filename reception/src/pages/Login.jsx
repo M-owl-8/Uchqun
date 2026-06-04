@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Eye, EyeOff, Mail, Lock, AlertTriangle } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -35,12 +36,6 @@ const Login = () => {
     setLoading(false);
   };
 
-  const langs = ['UZ', 'RU', 'EN'];
-  const currentLang = (i18n.language || 'uz').toUpperCase().slice(0, 2);
-  const handleLang = (lang) => {
-    i18n.changeLanguage(lang.toLowerCase());
-    localStorage.setItem('dnp:lang', lang.toLowerCase());
-  };
 
   return (
     <div
@@ -194,22 +189,7 @@ const Login = () => {
               IHMA
             </span>
           </div>
-          {/* Language pill */}
-          <div className="inline-flex items-center p-0.5 rounded-full border border-slate-200 bg-surface text-[12px]">
-            {langs.map((lang) => (
-              <button
-                key={lang}
-                onClick={() => handleLang(lang)}
-                className={`px-2.5 h-6 rounded-full font-medium transition-colors ${
-                  currentLang === lang
-                    ? 'bg-brand-600 text-white'
-                    : 'text-slate-600 hover:text-slate-900'
-                }`}
-              >
-                {lang}
-              </button>
-            ))}
-          </div>
+          <LanguageSwitcher variant="auth" />
         </div>
       </div>
     </div>
