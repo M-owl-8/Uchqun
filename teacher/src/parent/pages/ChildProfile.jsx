@@ -3,7 +3,6 @@ import { useChild } from '../context/ChildContext';
 import { useSocket } from '../../shared/context/SocketContext';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users, TrendingUp, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -313,12 +312,6 @@ const ChildProfile = () => {
         <h3 className="text-[15px] font-semibold text-p-ink mb-4">
           {t('profile.account', { defaultValue: 'Account' })}
         </h3>
-        <div className="flex items-center justify-between gap-3 mb-3">
-          <span className="text-[13px] font-medium text-p-sepia-600">
-            {t('language', { defaultValue: 'Language' })}
-          </span>
-          <LanguageSwitcher />
-        </div>
         <div className="stitch mb-3" />
         <div className="space-y-2">
           <Link

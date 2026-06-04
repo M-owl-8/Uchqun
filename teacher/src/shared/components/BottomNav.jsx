@@ -3,9 +3,7 @@ import { Home, LogOut, UserCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
 import { getUnreadTotalForPrefix } from '../services/chatStore';
-import LanguageSwitcher from '../../components/LanguageSwitcher';
-
-const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, showExit = true }) => {
+const BottomNav = ({ variant = 'bottom', allowed, showExit = true }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { logout } = useAuth();
@@ -75,11 +73,7 @@ const BottomNav = ({ variant = 'bottom', allowed, showLanguageSwitcher = false, 
           </button>
         )}
 
-        {showLanguageSwitcher && (
-          <div className="flex-none">
-            <LanguageSwitcher />
-          </div>
-        )}
+
       </nav>
     </div>
   );

@@ -39,7 +39,7 @@ const Login = () => {
   const currentLang = (i18n.language || 'uz').toUpperCase().slice(0, 2);
   const handleLang = (lang) => {
     i18n.changeLanguage(lang.toLowerCase());
-    localStorage.setItem('lang', lang.toLowerCase());
+    localStorage.setItem('dnp:lang', lang.toLowerCase());
   };
 
   return (

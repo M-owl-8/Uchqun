@@ -4,7 +4,6 @@ import Card from '../components/Card';
 import { useToast } from '../../shared/context/ToastContext';
 import { useAuth } from '../../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   User,
   Lock,
@@ -14,7 +13,6 @@ import {
   Phone,
   Eye,
   EyeOff,
-  Globe,
   LogOut,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
@@ -126,7 +124,6 @@ const Settings = () => {
           <h1 className="text-3xl font-black text-slate-900">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
           <p className="text-slate-500 font-medium mt-1">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
         </div>
-        <LanguageSwitcher />
       </div>
 
       {/* Profile Settings */}
@@ -265,18 +262,6 @@ const Settings = () => {
           </div>
         </Card>
       </form>
-
-      {/* Language Settings */}
-      <Card className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Globe className="w-6 h-6 text-p-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('settings.language', { defaultValue: 'Til' })}</h2>
-        </div>
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-slate-600">{t('settings.selectLanguage', { defaultValue: 'Interfeys tilini tanlang' })}</p>
-          <LanguageSwitcher />
-        </div>
-      </Card>
 
       {/* Password Change */}
       <form onSubmit={handlePasswordSubmit} className="space-y-6">

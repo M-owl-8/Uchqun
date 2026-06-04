@@ -3,7 +3,6 @@ import { useAuth } from '../shared/context/AuthContext';
 import Card from '../shared/components/Card';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { useState, useEffect, useRef } from 'react';
@@ -130,16 +129,13 @@ const Profile = () => {
           <h1 className="text-3xl font-black text-white drop-shadow-sm">{t('profile.title', { defaultValue: 'Profile' })}</h1>
           <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('profile.subtitle', { defaultValue: 'Manage your account' })}</p>
         </div>
-        <div className="flex items-center gap-3">
-          <LanguageSwitcher />
-          <button
-            onClick={handleLogout}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-error-50 text-error-600 border border-error-100 hover:bg-error-100 transition-colors"
-          >
-            <LogOut className="w-4 h-4" />
-            {t('nav.logout')}
-          </button>
-        </div>
+        <button
+          onClick={handleLogout}
+          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-error-50 text-error-600 border border-error-100 hover:bg-error-100 transition-colors"
+        >
+          <LogOut className="w-4 h-4" />
+          {t('nav.logout')}
+        </button>
       </div>
 
       <Card className="p-6">

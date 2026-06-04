@@ -12,7 +12,6 @@ vi.mock('react-router-dom', () => ({
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (_key, opts) => opts?.defaultValue ?? _key }),
 }));
-vi.mock('../components/LanguageSwitcher', () => ({ default: () => null }));
 vi.mock('@shared/assets/ihma-logo.png', () => ({ default: 'logo.png' }));
 vi.mock('@shared/components/LoadingSpinner', () => ({ default: () => <span>loading</span> }));
 

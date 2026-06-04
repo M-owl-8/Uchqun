@@ -64,9 +64,15 @@ const resources = {
 
 // Load translations from bundled JSON instead of fetching from /public,
 // and use the default "translation" namespace to match useTranslation().
+if (typeof window !== 'undefined') {
+  const legacyLang = localStorage.getItem('lang');
+  const newLang = localStorage.getItem('dnp:lang');
+  if (legacyLang && !newLang) localStorage.setItem('dnp:lang', legacyLang);
+}
+
 i18n.use(initReactI18next).init({
   resources,
-  lng: ['uz', 'ru', 'en'].includes(localStorage.getItem('lang')) ? localStorage.getItem('lang') : 'uz',
+  lng: ['uz', 'ru', 'en'].includes(localStorage.getItem('dnp:lang')) ? localStorage.getItem('dnp:lang') : 'uz',
   fallbackLng: 'uz',
   supportedLngs: ['uz', 'ru', 'en'],
   defaultNS: 'translation',
@@ -84,7 +90,7 @@ if (import.meta.env.DEV) {
 }
 
 export const changeLanguage = (lng) => {
-  localStorage.setItem('lang', lng);
+  localStorage.setItem('dnp:lang', lng);
   i18n.changeLanguage(lng);
 };
 

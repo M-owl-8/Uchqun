@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@shared/context/ToastContext';
 import Card from '@shared/components/Card';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { Shield, Mail, Phone, LogOut, Pencil, X, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -72,7 +71,6 @@ const Profile = () => {
             {t('profile.subtitle', { defaultValue: "Hisobingiz ma'lumotlari" })}
           </p>
         </div>
-        <LanguageSwitcher />
       </div>
 
       {/* Profile Information */}

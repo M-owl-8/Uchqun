@@ -47,10 +47,6 @@ vi.mock('../../shared/services/api', () => ({
   },
 }));
 
-// Mock LanguageSwitcher to avoid its ../i18n import
-vi.mock('../../components/LanguageSwitcher', () => ({
-  default: () => React.createElement('div', { 'data-testid': 'lang-switcher' }),
-}));
 
 const profile = {
   firstName: 'Ali',

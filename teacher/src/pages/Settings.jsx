@@ -4,7 +4,6 @@ import Card from '../shared/components/Card';
 import { useToast } from '../shared/context/ToastContext';
 import { useAuth } from '../shared/context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { MessageSquare, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from './settings/ProfileForm';
@@ -177,7 +176,6 @@ const Settings = () => {
           <h1 className="text-4xl font-black text-white drop-shadow-sm">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
           <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
         </div>
-        <LanguageSwitcher />
       </div>
 
       {/* Profile Settings */}

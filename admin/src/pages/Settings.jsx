@@ -4,8 +4,7 @@ import Card from '@shared/components/Card';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../components/LanguageSwitcher';
-import { MessageSquare, Globe, LogOut } from 'lucide-react';
+import { MessageSquare, LogOut } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import ProfileForm from './settings/ProfileForm';
 import NotificationPreferences from './settings/NotificationPreferences';
@@ -189,18 +188,6 @@ const Settings = () => {
         saving={saving}
         onSubmit={handleProfileSubmit}
       />
-
-      {/* Language Settings */}
-      <Card className="p-6">
-        <div className="flex items-center gap-3 mb-6">
-          <Globe className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-warm-900">{t('settings.language', { defaultValue: 'Til' })}</h2>
-        </div>
-        <div className="flex items-center justify-between">
-          <p className="text-sm text-warm-600">{t('settings.selectLanguage', { defaultValue: 'Interfeys tilini tanlang' })}</p>
-          <LanguageSwitcher />
-        </div>
-      </Card>
 
       {/* Password Change */}
       <PasswordForm

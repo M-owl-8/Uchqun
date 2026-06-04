@@ -4,7 +4,6 @@ import { useToast } from '@shared/context/ToastContext';
 import api from '../services/api';
 import Card from '@shared/components/Card';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   Mail,
   MessageSquare,
@@ -12,7 +11,6 @@ import {
   X,
   Crown,
   LogOut,
-  Globe,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -124,16 +122,6 @@ const Profile = () => {
           </div>
         </div>
 
-        {/* Language Switcher */}
-        <div className="mt-6 pt-6 border-t border-warm-200">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <Globe className="w-5 h-5 text-warm-400" />
-              <p className="text-sm font-medium text-warm-700">{t('profile.language', { defaultValue: 'Language' })}</p>
-            </div>
-            <LanguageSwitcher />
-          </div>
-        </div>
       </Card>
 
       {/* Contact Government */}

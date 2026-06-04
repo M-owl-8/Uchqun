@@ -4,7 +4,6 @@ import Card from '@shared/components/Card';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { Lock, LogOut, Eye, EyeOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -74,7 +73,6 @@ const Settings = () => {
             {t('settings.subtitle', { defaultValue: 'Hisob sozlamalarini boshqarish' })}
           </p>
         </div>
-        <LanguageSwitcher />
       </div>
 
       {/* Change Password */}

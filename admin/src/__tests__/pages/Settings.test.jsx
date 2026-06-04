@@ -53,10 +53,6 @@ vi.mock('../../services/api', () => ({
   },
 }));
 
-// Mock LanguageSwitcher to avoid its ../i18n import
-vi.mock('../../components/LanguageSwitcher', () => ({
-  default: () => React.createElement('div', { 'data-testid': 'lang-switcher' }),
-}));
 
 const profile = {
   firstName: 'Ali',
@@ -92,7 +88,6 @@ describe('CL-014a Settings', () => {
     await waitFor(() => expect(screen.getByText('settings.title')).toBeTruthy());
     expect(screen.getByText('settings.profileInfo')).toBeTruthy();
     expect(screen.getByText('settings.notifications')).toBeTruthy();
-    expect(screen.getByText('settings.language')).toBeTruthy();
     expect(screen.getByText('settings.changePassword')).toBeTruthy();
     expect(screen.getByText('settings.contactGovernment')).toBeTruthy();
   });

@@ -41,7 +41,7 @@ const Sidebar = ({ onClose }) => {
 
   const handleLang = (lang) => {
     i18n.changeLanguage(lang.toLowerCase());
-    localStorage.setItem('lang', lang.toLowerCase());
+    localStorage.setItem('dnp:lang', lang.toLowerCase());
   };
 
   return (

@@ -96,6 +96,7 @@ const Sidebar = ({ onClose }) => {
   const handleLangChange = (lang) => {
     setActiveLang(lang);
     i18n.changeLanguage(lang.toLowerCase());
+    localStorage.setItem('dnp:lang', lang.toLowerCase());
   };
 
   const initials =

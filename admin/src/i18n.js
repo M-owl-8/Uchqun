@@ -14,7 +14,13 @@ const resources = {
   ru: { translation: mergeLocales(sharedRu, portalRu) },
 };
 
-const savedLang = localStorage.getItem('lang') || 'uz';
+if (typeof window !== 'undefined') {
+  const legacyLang = localStorage.getItem('lang');
+  const newLang = localStorage.getItem('dnp:lang');
+  if (legacyLang && !newLang) localStorage.setItem('dnp:lang', legacyLang);
+}
+
+const savedLang = localStorage.getItem('dnp:lang') || 'uz';
 
 i18n
   .use(initReactI18next)
@@ -30,7 +36,7 @@ i18n
 
 export const changeLanguage = (lng) => {
   i18n.changeLanguage(lng);
-  localStorage.setItem('lang', lng);
+  localStorage.setItem('dnp:lang', lng);
 };
 
 export default i18n;
