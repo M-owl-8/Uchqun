@@ -178,7 +178,7 @@ const Sidebar = ({ onClose }) => {
       </div>
 
       {/* Nav */}
-      <nav className="px-3 flex-1 overflow-y-auto space-y-5">
+      <nav className="px-3 flex-1 overflow-y-auto space-y-5 sidebar-scroll">
         {NAV_SECTIONS.map((section) => (
           <div key={section.labelKey}>
             <p className="px-3 text-[10px] font-semibold uppercase tracking-wider text-walnut-muted mb-1.5">
