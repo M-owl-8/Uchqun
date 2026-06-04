@@ -8,14 +8,10 @@ import {
   FileCheck2,
   BellRing,
   UserPlus,
-  TrendingUp,
-  Minus,
+  CheckCircle2,
   RotateCw,
   ArrowRight,
-  MapPin,
   UsersRound,
-  ShieldCheck,
-  Phone,
   Star,
   ClipboardList,
 } from 'lucide-react';
@@ -197,77 +193,71 @@ const Dashboard = () => {
   const enrolled  = stats?.children || stats?.enrolled || 0;
   const occupancy = capacity != null && capacity > 0 ? Math.round((enrolled / capacity) * 100) : null;
 
-  // Derived tasks from real data
-  const tasks = [
-    pendingDocsArray.length > 0 && {
-      id: 'docs',
-      text: `${pendingDocsArray.length} ta hujjatni tasdiqlash`,
-      sub: `Eng eskisi ${pendingDocsArray[0]?.daysOld ?? '?'} kun oldin yuklangan`,
-      link: '/admin/documents',
-      linkLabel: 'Hujjatlarga o\'tish →',
-      done: false,
-    },
-    aiWarningsArray.filter((w) => !w.resolvedAt).length > 0 && {
-      id: 'ai',
-      text: 'Ogohlantirishni ko\'rib chiqish',
-      sub: aiWarningsArray.find((w) => !w.resolvedAt)?.title || '',
-      link: '/admin/ai-warnings',
-      linkLabel: 'Ogohlantirishga o\'tish →',
-      done: false,
-    },
-  ].filter(Boolean);
-  // TODO(phase-2): wire to a real /admin/me/tasks endpoint
+  const openDocsCount      = pendingDocsArray.length;
+  const openWarningsCount  = aiWarningsArray.filter((w) => !w.resolvedAt).length;
+  const openReceptionsCount = pendingReceptions.length;
+  const allClear           = openDocsCount === 0 && openWarningsCount === 0 && openReceptionsCount === 0;
+  const hasHighSeverity    = aiWarningsArray.some(
+    (w) => !w.resolvedAt && (w.severity === 'high' || w.severity === 'critical')
+  );
 
-  const ratingAvg  = ratings?.average ?? null;
-  const ratingDist = ratings?.distribution ?? null;
+  const ratingAvg   = ratings?.average ?? null;
+  const ratingDist  = ratings?.distribution ?? null;
   const ratingTotal = ratingDist ? ratingDist.reduce((a, b) => a + b, 0) : 0;
-  const ratingPct  = (n) => ratingTotal > 0 ? Math.round((n / ratingTotal) * 100) : 0;
-
-  const highestAi = aiWarningsArray.find((w) => !w.resolvedAt && ['critical', 'high'].includes(w.severity?.toLowerCase()));
+  const ratingPct   = (n) => ratingTotal > 0 ? Math.round((n / ratingTotal) * 100) : 0;
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="letterhead pt-4">
+      <div className="space-y-8">
+        <div>
           <div className="skel h-3 w-48 mb-3" />
           <div className="skel h-8 w-64 mb-2" />
           <div className="skel h-4 w-80" />
         </div>
-        <div className="grid md:grid-cols-3 gap-4">
-          {[1,2,3].map((i) => (
-            <div key={i} className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-              <div className="skel h-3 w-40 mb-3" />
-              <div className="skel h-10 w-20 mb-2" />
-              <div className="skel h-3 w-32" />
+        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs divide-y divide-warm-100">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="flex items-center gap-4 px-5 py-3.5">
+              <div className="skel h-3 w-full max-w-sm" />
             </div>
           ))}
+        </div>
+        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-warm-100">
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className="px-5 py-4">
+                <div className="skel h-6 w-10 mb-2" />
+                <div className="skel h-3 w-16" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-0">
-      {/* Page header */}
-      <div className="letterhead pt-4 flex items-end justify-between flex-wrap gap-4 mb-9">
+    <div className="space-y-8">
+
+      {/* 1 · PAGE HEADER */}
+      <div className="flex items-start justify-between gap-4 flex-wrap">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-brand-700 num">{today}</p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
             {t('dashboard.title', { defaultValue: 'Boshqaruv paneli' })}
           </h1>
           <p className="text-base text-warm-600 mt-1">
-            {t('dashboard.welcome', { name: user?.firstName || '', defaultValue: `Xush kelibsiz, ${user?.firstName || ''}. Bugun e'tiboringizni talab qiladigan ishlar:` })}
+            {t('dashboard.welcome', { name: user?.firstName || '', defaultValue: `Xush kelibsiz, ${user?.firstName || ''}` })}
           </p>
         </div>
-        <div className="flex items-center gap-3 pb-1">
+        <div className="flex items-center gap-3 self-start pt-1">
           {lastUpdatedStr && (
             <div className="text-right">
-              <p className="text-[11px] text-warm-500">Oxirgi yangilanish</p>
+              <p className="text-[11px] text-warm-500">{t('dashboard.lastUpdated', { defaultValue: 'Oxirgi yangilanish' })}</p>
               <p className="text-sm text-warm-800 num">{lastUpdatedStr}</p>
             </div>
           )}
           <button
-            aria-label="Yangilash"
+            aria-label={t('dashboard.refresh', { defaultValue: 'Yangilash' })}
             onClick={handleRefresh}
             disabled={refreshing}
             className="inline-flex items-center justify-center w-10 h-10 text-warm-700 bg-surface border border-warm-200 hover:bg-warm-50 rounded-md shadow-xs disabled:opacity-50 transition-colors"
@@ -277,313 +267,224 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* ATTENTION ROW */}
-      <h2 className="text-lg font-semibold text-warm-900 mb-3">
-        {t('dashboard.attention', { defaultValue: 'Sizning e\'tiboringizni talab qiladi' })}
-      </h2>
-      <div className="grid md:grid-cols-3 gap-4 mb-10">
-        {/* Pending docs */}
-        <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
-          <div className="flex items-start justify-between mb-2">
-            <p className="text-sm font-medium text-warm-700">{t('dashboard.pendingDocs', { defaultValue: 'Tasdiq kutayotgan hujjatlar' })}</p>
-            <FileCheck2 className="w-5 h-5 text-brand-600" strokeWidth={1.75} />
-          </div>
-          <p className="num text-4xl font-semibold text-warm-900 mt-1">{pendingDocsArray.length}</p>
-          <p className="text-sm text-warm-500 mt-1">{t('dashboard.pendingDocsHint', { defaultValue: 'hujjat ko\'rib chiqilishi kerak' })}</p>
-          <div className="mt-4 pt-4 border-t border-warm-100 flex items-center justify-between">
-            <div className="flex -space-x-1.5">
-              {pendingDocsArray.slice(0, 3).map((d, i) => (
-                <div key={i} className="w-6 h-6 rounded-full bg-brand-100 text-brand-800 border-2 border-surface flex items-center justify-center text-[10px] font-semibold">
-                  {d.reception?.firstName?.charAt(0)}{d.reception?.lastName?.charAt(0)}
-                </div>
-              ))}
-              {pendingDocsArray.length > 3 && (
-                <div className="w-6 h-6 rounded-full bg-warm-100 text-warm-500 border-2 border-surface flex items-center justify-center text-[10px] font-semibold num">
-                  +{pendingDocsArray.length - 3}
+      {/* 2 · ATTENTION ZONE — single consolidated card, per-row hide if count=0 */}
+      <section>
+        <p className="text-xs font-semibold uppercase tracking-wider text-warm-500 mb-2">
+          {t('dashboard.attention', { defaultValue: "Sizning e'tiboringizni talab qiladi" })}
+        </p>
+        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs divide-y divide-warm-100">
+          {openDocsCount > 0 && (
+            <div className="flex items-center gap-4 px-5 py-3.5">
+              <FileCheck2 className="w-4 h-4 text-warm-400 shrink-0" strokeWidth={1.75} />
+              <span className="num text-base font-semibold text-warm-900 w-7 text-right shrink-0">{openDocsCount}</span>
+              <p className="flex-1 text-sm text-warm-700 min-w-0">
+                {t('dashboard.pendingDocs', { defaultValue: 'ta hujjat tasdiqlash kutmoqda' })}
+              </p>
+              <Link to="/admin/documents" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+                {t('dashboard.review', { defaultValue: "Ko'rib chiqish" })} <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
+              </Link>
+            </div>
+          )}
+          {openWarningsCount > 0 && (
+            <div className="flex items-center gap-4 px-5 py-3.5">
+              <BellRing className="w-4 h-4 text-warning-600 shrink-0" strokeWidth={1.75} />
+              <span className="num text-base font-semibold text-warm-900 w-7 text-right shrink-0">{openWarningsCount}</span>
+              <p className="flex-1 text-sm text-warm-700 min-w-0 flex items-center gap-2 flex-wrap">
+                {t('dashboard.aiWarnings', { defaultValue: 'ta ogohlantirish ochiq' })}
+                {hasHighSeverity && (
+                  <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-semibold rounded-sm bg-error-50 text-error-700 border border-error-100">
+                    {t('dashboard.highSeverity', { defaultValue: 'yuqori darajali' })}
+                  </span>
+                )}
+              </p>
+              <Link to="/admin/ai-warnings" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+                {t('dashboard.viewAll', { defaultValue: "Ko'rish" })} <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
+              </Link>
+            </div>
+          )}
+          {openReceptionsCount > 0 && (
+            <div className="flex items-center gap-4 px-5 py-3.5">
+              <UserPlus className="w-4 h-4 text-info-600 shrink-0" strokeWidth={1.75} />
+              <span className="num text-base font-semibold text-warm-900 w-7 text-right shrink-0">{openReceptionsCount}</span>
+              <p className="flex-1 text-sm text-warm-700 min-w-0">
+                {t('dashboard.newReception', { defaultValue: 'ta yangi xodim faollashtirish kutmoqda' })}
+              </p>
+              <Link to="/admin/receptions" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+                {t('dashboard.activate', { defaultValue: 'Faollashtirish' })} <ArrowRight className="w-3.5 h-3.5" strokeWidth={2} />
+              </Link>
+            </div>
+          )}
+          {allClear && (
+            <div className="flex items-center gap-3 px-5 py-4">
+              <CheckCircle2 className="w-4 h-4 text-success-600 shrink-0" strokeWidth={1.75} />
+              <p className="text-sm text-warm-500">
+                {t('dashboard.attentionAllClear', { defaultValue: "Hammasi joyida! Bugun e'tiboringizni talab qiladigan ishlar yo'q" })}
+              </p>
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* 3 · STATS STRIP — compact single-card inline metrics */}
+      <section>
+        <p className="text-xs font-semibold uppercase tracking-wider text-warm-500 mb-2">
+          {t('dashboard.atAGlance', { defaultValue: 'Muassasa — bir qarashda' })}
+        </p>
+        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs overflow-hidden">
+          <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-warm-100">
+            <div className="px-5 py-4">
+              <p className="num text-2xl font-semibold text-warm-900">{stats?.children || 0}</p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.children', { defaultValue: 'Bolalar' })}</p>
+            </div>
+            <div className="px-5 py-4">
+              <p className="num text-2xl font-semibold text-warm-900">{stats?.teachers || 0}</p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.teachers', { defaultValue: 'Tarbiyachilar' })}</p>
+            </div>
+            <div className="px-5 py-4">
+              <p className="num text-2xl font-semibold text-warm-900">{stats?.parents || 0}</p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.parents', { defaultValue: 'Ota-onalar' })}</p>
+            </div>
+            <div className="px-5 py-4">
+              <p className="num text-2xl font-semibold text-warm-900">
+                {capacity != null ? `${enrolled}/${capacity}` : (enrolled || '—')}
+              </p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.occupancy', { defaultValue: 'Bandlik' })}</p>
+              {capacity != null && (
+                <div className="mt-1.5 h-1 bg-warm-100 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-warm-400 rounded-full"
+                    style={{ width: `${Math.min(100, Math.round((enrolled / capacity) * 100))}%` }}
+                  />
                 </div>
               )}
             </div>
-            <Link to="/admin/documents" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">
-              {t('dashboard.review', { defaultValue: 'Ko\'rib chiqish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
-            </Link>
           </div>
-        </article>
+        </div>
+      </section>
 
-        {/* AI warnings */}
-        <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
-          <div className="flex items-start justify-between mb-2">
-            <p className="text-sm font-medium text-warm-700">{t('dashboard.aiWarnings', { defaultValue: 'Ogohlantirishlar' })}</p>
-            <BellRing className="w-5 h-5 text-warning-600" strokeWidth={1.75} />
-          </div>
-          <p className="num text-4xl font-semibold text-warm-900 mt-1">{aiWarningsArray.filter((w) => !w.resolvedAt).length}</p>
-          <p className="text-sm text-warm-500 mt-1">
-            {aiWarningsArray.filter((w) => w.severity === 'high' || w.severity === 'critical').length > 0
-              ? `shulardan ${aiWarningsArray.filter((w) => (w.severity === 'high' || w.severity === 'critical') && !w.resolvedAt).length} ta yuqori darajada`
-              : t('dashboard.noHighSeverity', { defaultValue: 'hech qanday yuqori darajali yo\'q' })}
-          </p>
-          <div className="mt-4 pt-4 border-t border-warm-100">
-            {highestAi && (
-              <div className="flex items-start gap-2 mb-3">
-                <span className="inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-sm bg-error-50 text-error-700 border border-error-100 shrink-0 mt-0.5">High</span>
-                <p className="text-xs text-warm-700 line-clamp-2">{highestAi.title || highestAi.message || ''}</p>
-              </div>
+      {/* 4 · TWO-COLUMN MAIN: activity feed (left) + rating (right) */}
+      <div className="grid lg:grid-cols-[1fr_300px] gap-6 items-start">
+
+        {/* Activity feed — left column */}
+        <article className="bg-surface border border-warm-200 rounded-lg shadow-xs">
+          <header className="flex items-center justify-between px-5 py-4 border-b border-warm-100">
+            <div>
+              <p className="text-base font-semibold text-warm-900">{t('dashboard.recentActivity', { defaultValue: "So'nggi faoliyat" })}</p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.recentActivitySub', { defaultValue: 'Qabulxona xodimlari bugun bajargan ishlar' })}</p>
+            </div>
+            <Link to="/admin/activity" className="text-sm font-medium text-brand-700 hover:text-brand-800">
+              {t('dashboard.auditLog', { defaultValue: 'Audit jurnali →' })}
+            </Link>
+          </header>
+          <div className="px-5 py-2">
+            {auditEntries.length === 0 ? (
+              <p className="text-sm text-warm-400 text-center py-6">
+                {t('activityFeed.noActivity', { defaultValue: 'No activity yet' })}
+              </p>
+            ) : (
+              auditEntries.map((entry) => (
+                <div key={entry.id} className="flex items-start gap-3 py-2.5 border-b border-warm-100 last:border-0">
+                  <div className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${getActionColor(entry.action, entry.entity).replace('text-', 'bg-')}`} />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm text-warm-900 truncate">
+                      {getActionLabel(entry.action, entry.entity)}
+                      {entry.actor && <span className="text-warm-500"> — {entry.actor.firstName} {entry.actor.lastName}</span>}
+                    </p>
+                    <p className="text-xs text-warm-400">{formatRelativeTime(entry.occurredAt)}</p>
+                  </div>
+                </div>
+              ))
             )}
-            <Link to="/admin/ai-warnings" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">
-              {t('dashboard.viewAll', { defaultValue: 'Hammasini ko\'rish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
-            </Link>
           </div>
         </article>
 
-        {/* New reception staff */}
-        <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5 flex flex-col">
-          <div className="flex items-start justify-between mb-2">
-            <p className="text-sm font-medium text-warm-700">{t('dashboard.newReception', { defaultValue: 'Yangi qabulxona xodimlari' })}</p>
-            <UserPlus className="w-5 h-5 text-info-600" strokeWidth={1.75} />
-          </div>
-          <p className="num text-4xl font-semibold text-warm-900 mt-1">{pendingReceptions.length}</p>
-          <p className="text-sm text-warm-500 mt-1">{t('dashboard.awaitingActivation', { defaultValue: 'faollashtirish kutmoqda' })}</p>
-          <div className="mt-4 pt-4 border-t border-warm-100">
-            <ul className="text-xs text-warm-700 space-y-1.5 mb-3">
-              {pendingReceptions.slice(0, 3).map((r, i) => (
-                <li key={i} className="flex items-center gap-1.5">
-                  <span className="w-1 h-1 rounded-full bg-warm-400" />
-                  {r.firstName} {r.lastName}
-                  {r.createdAt && (
-                    <span className="text-warm-500 num">· {Math.floor((Date.now() - new Date(r.createdAt)) / 86400000)} kun</span>
-                  )}
-                </li>
-              ))}
-            </ul>
-            <Link to="/admin/receptions" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800">
-              {t('dashboard.activate', { defaultValue: 'Faollashtirish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
-            </Link>
-          </div>
-        </article>
-      </div>
-
-      {/* STATS ROW */}
-      <h2 className="text-lg font-semibold text-warm-900 mb-3">
-        {t('dashboard.atAGlance', { defaultValue: 'Muassasa — bir qarashda' })}
-      </h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-          <p className="text-sm text-warm-500">{t('dashboard.children', { defaultValue: 'Bolalar' })}</p>
-          <p className="num text-3xl font-semibold text-warm-900 mt-1">{stats?.children || 0}</p>
-          <Link
-            to="/admin/parents"
-            className="mt-2.5 inline-flex items-center gap-1 text-xs text-brand-700 font-medium hover:text-brand-800"
-          >
-            {t('dashboard.viewAllChildren', { defaultValue: "Barchasini ko'rish" })} <ArrowRight className="w-3 h-3" strokeWidth={2} />
-          </Link>
-        </div>
-        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-          <p className="text-sm text-warm-500">{t('dashboard.teachers', { defaultValue: 'Tarbiyachilar' })}</p>
-          <p className="num text-3xl font-semibold text-warm-900 mt-1">{stats?.teachers || 0}</p>
-          <p className="mt-2.5 flex items-center gap-1.5 text-xs text-warm-500">
-            <Minus className="w-3.5 h-3.5" strokeWidth={2} /><span>{t('dashboard.noChange', { defaultValue: 'o\'zgarish yo\'q' })}</span>
-          </p>
-        </div>
-        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-          <p className="text-sm text-warm-500">{t('dashboard.parents', { defaultValue: 'Ota-onalar' })}</p>
-          <p className="num text-3xl font-semibold text-warm-900 mt-1">{stats?.parents || 0}</p>
-          <p className="mt-2.5 flex items-center gap-1.5 text-xs text-success-700">
-            <TrendingUp className="w-3.5 h-3.5" strokeWidth={2} /><span className="text-warm-500">{t('dashboard.activeAccounts', { defaultValue: 'faol akkaunt' })}</span>
-          </p>
-        </div>
-        <div className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-          <p className="text-sm text-warm-500">{t('dashboard.occupancy', { defaultValue: 'Bandlik' })}</p>
-          <p className="num text-3xl font-semibold text-warm-900 mt-1">{occupancy != null ? `${occupancy}%` : '—'}</p>
-          <div className="mt-2.5 h-1.5 bg-warm-100 rounded-full overflow-hidden">
-            <div className="h-full bg-brand-600 rounded-full" style={{ width: occupancy != null ? `${occupancy}%` : '0%' }} />
-          </div>
-          <p className="mt-1.5 text-xs text-warm-500 num">
-            {capacity != null ? `${enrolled} / ${capacity} ta o'rin` : `${enrolled} ta o'rin`}
-          </p>
-        </div>
-      </div>
-
-      {/* TWO COL */}
-      <div className="grid lg:grid-cols-[1fr_360px] gap-6">
-        {/* Left */}
-        <div className="space-y-6">
-          {/* Activity feed */}
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs">
-            <header className="flex items-center justify-between px-5 py-4 border-b border-warm-100">
-              <div>
-                <p className="text-base font-semibold text-warm-900">{t('dashboard.recentActivity', { defaultValue: 'So\'nggi faoliyat' })}</p>
-                <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.recentActivitySub', { defaultValue: 'Qabulxona xodimlari bugun bajargan ishlar' })}</p>
-              </div>
-              <Link to="/admin/activity" className="text-sm text-brand-700 font-medium hover:text-brand-800">
-                {t('dashboard.auditLog', { defaultValue: 'Audit jurnali →' })}
-              </Link>
-            </header>
-            <div className="px-5 py-2">
-              {auditEntries.length === 0 ? (
-                <p className="text-sm text-warm-400 text-center py-6">
-                  {t('activityFeed.noActivity', { defaultValue: 'No activity yet' })}
-                </p>
-              ) : (
-                auditEntries.map((entry) => (
-                  <div key={entry.id} className="flex items-start gap-3 py-2.5 border-b border-warm-100 last:border-0">
-                    <div
-                      className={`w-2 h-2 rounded-full mt-1.5 shrink-0 ${getActionColor(entry.action, entry.entity).replace('text-', 'bg-')}`}
-                    />
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm text-warm-900 truncate">
-                        {getActionLabel(entry.action, entry.entity)}
-                        {entry.actor && (
-                          <span className="text-warm-500"> — {entry.actor.firstName} {entry.actor.lastName}</span>
-                        )}
-                      </p>
-                      <p className="text-xs text-warm-400">{formatRelativeTime(entry.occurredAt)}</p>
-                    </div>
-                  </div>
-                ))
-              )}
+        {/* Rating card — right column */}
+        <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
+          <div className="flex items-start justify-between mb-4">
+            <div>
+              <p className="text-base font-semibold text-warm-900">{t('dashboard.schoolRating', { defaultValue: 'Muassasa reytingi' })}</p>
+              <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.ratingPeriod', { defaultValue: 'Ota-onalar · oxirgi 30 kun' })}</p>
             </div>
-          </article>
-
-          {/* Ratings panel */}
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-            <header className="flex items-baseline justify-between mb-4">
-              <div>
-                <p className="text-base font-semibold text-warm-900">{t('dashboard.schoolRating', { defaultValue: 'Muassasa reytingi' })}</p>
-                <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.ratingPeriod', { defaultValue: 'Ota-onalar tomonidan berilgan baholar · oxirgi 30 kun' })}</p>
-              </div>
-              <Link to="/admin/school-ratings" className="text-sm text-brand-700 hover:text-brand-800 font-medium">
-                {t('dashboard.viewDetails', { defaultValue: 'Batafsil →' })}
-              </Link>
-            </header>
-            {ratings != null ? (
-              <div className="grid md:grid-cols-[200px_1fr] gap-6 items-center">
-                <div className="text-center">
-                  <p className="num text-5xl font-semibold text-warm-900" style={{ lineHeight: 1 }}>
-                    {typeof ratingAvg === 'number' ? ratingAvg.toFixed(1) : '—'}
-                  </p>
-                  <div className="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
-                    {[1,2,3,4,5].map((s) => (
-                      <Star key={s} className={`w-4 h-4 ${ratingAvg != null && s <= Math.round(ratingAvg) ? '' : 'opacity-30'}`} strokeWidth={1.75} fill="currentColor" />
-                    ))}
-                  </div>
-                  <p className="text-xs text-warm-500 mt-2 num">{ratingTotal} ta baho</p>
-                </div>
-                <div className="space-y-2">
-                  {[5,4,3,2,1].map((star, idx) => (
-                    <RatingBar key={star} star={star} width={ratingPct(ratingDist?.[idx] ?? 0)} count={ratingDist?.[idx] ?? 0} />
+            <Link to="/admin/school-ratings" className="text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
+              {t('dashboard.viewDetails', { defaultValue: 'Batafsil →' })}
+            </Link>
+          </div>
+          {ratings != null ? (
+            <>
+              <div className="text-center mb-4">
+                <p className="num text-4xl font-semibold text-warm-900" style={{ lineHeight: 1 }}>
+                  {typeof ratingAvg === 'number' ? ratingAvg.toFixed(1) : '—'}
+                </p>
+                <div className="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star
+                      key={s}
+                      className={`w-4 h-4 ${ratingAvg != null && s <= Math.round(ratingAvg) ? '' : 'opacity-30'}`}
+                      strokeWidth={1.75}
+                      fill="currentColor"
+                    />
                   ))}
                 </div>
+                <p className="text-xs text-warm-500 mt-1.5 num">
+                  {ratingTotal} {t('dashboard.ratingsCount', { defaultValue: 'ta baho' })}
+                </p>
               </div>
-            ) : (
-              <p className="text-sm text-warm-400 py-4 text-center">
-                {t('dashboard.noRatings', { defaultValue: "Hozircha reytinglar mavjud emas." })}
-              </p>
-            )}
-          </article>
-        </div>
-
-        {/* Right rail */}
-        <aside className="space-y-6">
-          {/* Tasks */}
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-            <p className="text-base font-semibold text-warm-900 mb-1">{t('dashboard.tasks', { defaultValue: 'Mening vazifalarim' })}</p>
-            <p className="text-xs text-warm-500 mb-4">{t('dashboard.tasksSub', { defaultValue: 'Bugun bajarilishi lozim' })} · {tasks.length}</p>
-            <ul className="space-y-3">
-              {tasks.map((task) => (
-                <li key={task.id} className="flex items-start gap-3 pt-3 border-t border-warm-100 first:pt-0 first:border-t-0">
-                  <input type="checkbox" defaultChecked={task.done} className="mt-1 w-4 h-4 rounded-sm border-warm-300 text-brand-600 focus:ring-brand-600/40" readOnly />
-                  <div className="flex-1">
-                    <p className={`text-sm ${task.done ? 'text-warm-400 line-through' : 'text-warm-900'}`}>{task.text}</p>
-                    <p className="text-xs text-warm-500 mt-0.5">{task.sub}</p>
-                    {!task.done && (
-                      <Link to={task.link} className="text-xs text-brand-700 hover:underline mt-1 inline-block">{task.linkLabel}</Link>
-                    )}
-                  </div>
-                </li>
-              ))}
-              {tasks.length === 0 && (
-                <li className="text-sm text-warm-500 text-center py-4">{t('dashboard.noTasks', { defaultValue: 'Bugunlik vazifalar bajarildi' })}</li>
-              )}
-            </ul>
-          </article>
-
-          {/* Quick info */}
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-5">
-            <p className="text-base font-semibold text-warm-900">{t('dashboard.quickInfo', { defaultValue: 'Tezkor ma\'lumot' })}</p>
-            <p className="text-xs text-warm-500 mt-0.5">{t('dashboard.schoolInfo', { defaultValue: 'Muassasa haqida' })}</p>
-            <dl className="mt-4 space-y-3 text-sm">
-              {user?.school?.address && (
-                <div className="flex items-start gap-3">
-                  <MapPin className="w-4 h-4 text-warm-500 mt-0.5 shrink-0" strokeWidth={1.75} />
-                  <div>
-                    <dt className="text-xs text-warm-500">{t('dashboard.address', { defaultValue: 'Manzil' })}</dt>
-                    <dd className="text-warm-800">{user.school.address}</dd>
-                  </div>
-                </div>
-              )}
-              <div className="flex items-start gap-3 pt-3 border-t border-warm-100">
-                <UsersRound className="w-4 h-4 text-warm-500 mt-0.5 shrink-0" strokeWidth={1.75} />
-                <div>
-                  <dt className="text-xs text-warm-500">{t('dashboard.capacity', { defaultValue: 'Sig\'im' })}</dt>
-                  <dd className="text-warm-800 num">
-                    {capacity != null ? `${enrolled} / ${capacity}` : enrolled} {t('dashboard.capacityUnit', { defaultValue: 'bola' })}
-                  </dd>
-                </div>
+              <div className="space-y-1.5">
+                {[5, 4, 3, 2, 1].map((star, idx) => (
+                  <RatingBar key={star} star={star} width={ratingPct(ratingDist?.[idx] ?? 0)} count={ratingDist?.[idx] ?? 0} />
+                ))}
               </div>
-              {user?.school?.accreditation && (
-                <div className="flex items-start gap-3 pt-3 border-t border-warm-100">
-                  <ShieldCheck className="w-4 h-4 text-warm-500 mt-0.5 shrink-0" strokeWidth={1.75} />
-                  <div>
-                    <dt className="text-xs text-warm-500">{t('dashboard.accreditation', { defaultValue: 'Akkredidatsiya' })}</dt>
-                    <dd className="text-warm-800 num">{user.school.accreditation}</dd>
-                  </div>
-                </div>
-              )}
-              {user?.school?.phone && (
-                <div className="flex items-start gap-3 pt-3 border-t border-warm-100">
-                  <Phone className="w-4 h-4 text-warm-500 mt-0.5 shrink-0" strokeWidth={1.75} />
-                  <div>
-                    <dt className="text-xs text-warm-500">{t('dashboard.contact', { defaultValue: 'Aloqa' })}</dt>
-                    <dd className="text-warm-800 num">{user.school.phone}</dd>
-                  </div>
-                </div>
-              )}
-            </dl>
-          </article>
-        </aside>
+            </>
+          ) : (
+            <p className="text-sm text-warm-400 py-4 text-center">
+              {t('dashboard.noRatings', { defaultValue: 'Hozircha reytinglar mavjud emas.' })}
+            </p>
+          )}
+        </article>
       </div>
 
-      {/* Hisobotlar — low-frequency pages removed from sidebar, linked here */}
-      <div className="mt-10">
-        <h2 className="text-lg font-semibold text-warm-900 mb-3">
+      {/* 5 · HISOBOTLAR BOTTOM STRIP — 3 compact reference link-cards */}
+      <section>
+        <p className="text-xs font-semibold uppercase tracking-wider text-warm-500 mb-2">
           {t('nav.section.reports', { defaultValue: 'Hisobotlar' })}
-        </h2>
-        <div className="grid md:grid-cols-2 gap-4">
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <ClipboardList className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
-              <div>
-                <p className="text-sm font-semibold text-warm-900">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
-                <p className="text-xs text-warm-500">{t('dashboard.irrSub', { defaultValue: "Har chorakda bir marta to'ldiriladi" })}</p>
-              </div>
+        </p>
+        <div className="grid sm:grid-cols-3 gap-3">
+          <Link
+            to="/admin/irr"
+            className="flex items-center gap-3 bg-surface border border-warm-100 rounded-lg px-4 py-3 hover:border-warm-200 hover:bg-warm-50 transition-colors group"
+          >
+            <ClipboardList className="w-4 h-4 text-warm-400 group-hover:text-brand-600 shrink-0 transition-colors" strokeWidth={1.75} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-warm-800 truncate">{t('nav.irr', { defaultValue: 'Choraklik monitoring jurnali' })}</p>
+              <p className="text-xs text-warm-400">{t('dashboard.irrSub', { defaultValue: "Har chorakda bir marta" })}</p>
             </div>
-            <Link to="/admin/irr" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
-              {t('dashboard.open', { defaultValue: 'Ochish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
-            </Link>
-          </article>
-          <article className="bg-surface border border-warm-200 rounded-lg shadow-xs p-4 flex items-center justify-between gap-3">
-            <div className="flex items-center gap-3">
-              <UsersRound className="w-5 h-5 text-brand-600 shrink-0" strokeWidth={1.75} />
-              <div>
-                <p className="text-sm font-semibold text-warm-900">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
-                <p className="text-xs text-warm-500">{t('dashboard.groupsSub', { defaultValue: "Guruhlar va tarbiyachilarni ko'rish" })}</p>
-              </div>
+            <ArrowRight className="w-3.5 h-3.5 text-warm-300 group-hover:text-brand-600 transition-colors shrink-0" strokeWidth={2} />
+          </Link>
+          <Link
+            to="/admin/groups"
+            className="flex items-center gap-3 bg-surface border border-warm-100 rounded-lg px-4 py-3 hover:border-warm-200 hover:bg-warm-50 transition-colors group"
+          >
+            <UsersRound className="w-4 h-4 text-warm-400 group-hover:text-brand-600 shrink-0 transition-colors" strokeWidth={1.75} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-warm-800 truncate">{t('nav.groups', { defaultValue: 'Guruhlar' })}</p>
+              <p className="text-xs text-warm-400">{t('dashboard.groupsSub', { defaultValue: "Guruhlar ro'yxati" })}</p>
             </div>
-            <Link to="/admin/groups" className="inline-flex items-center gap-1 text-sm font-medium text-brand-700 hover:text-brand-800 shrink-0">
-              {t('dashboard.open', { defaultValue: 'Ochish' })} <ArrowRight className="w-4 h-4" strokeWidth={2} />
-            </Link>
-          </article>
+            <ArrowRight className="w-3.5 h-3.5 text-warm-300 group-hover:text-brand-600 transition-colors shrink-0" strokeWidth={2} />
+          </Link>
+          <Link
+            to="/admin/activity"
+            className="flex items-center gap-3 bg-surface border border-warm-100 rounded-lg px-4 py-3 hover:border-warm-200 hover:bg-warm-50 transition-colors group"
+          >
+            <ClipboardList className="w-4 h-4 text-warm-400 group-hover:text-brand-600 shrink-0 transition-colors" strokeWidth={1.75} />
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-warm-800 truncate">{t('nav.activity', { defaultValue: 'Audit jurnali' })}</p>
+              <p className="text-xs text-warm-400">{t('dashboard.auditRefSub', { defaultValue: "Barcha amallar ro'yxati" })}</p>
+            </div>
+            <ArrowRight className="w-3.5 h-3.5 text-warm-300 group-hover:text-brand-600 transition-colors shrink-0" strokeWidth={2} />
+          </Link>
         </div>
-      </div>
+      </section>
+
     </div>
   );
 };

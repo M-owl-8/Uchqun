@@ -75,7 +75,13 @@
     "systemStats": "Статистика системы",
     "totalUsers": "Всего пользователей: {{count}} | Активных приемов: {{active}} | Группы: {{groups}}",
     "viewAllChildren": "Посмотреть всех детей через Родителей",
-    "pntsCard": "Показатели PNTS"
+    "pntsCard": "Показатели PNTS",
+    "attentionAllClear": "Всё в порядке! Сегодня нет задач, требующих внимания",
+    "highSeverity": "высокий уровень",
+    "ratingsCount": "оценок",
+    "auditRefSub": "Журнал всех действий",
+    "lastUpdated": "Последнее обновление",
+    "refresh": "Обновить"
   },
   "parentsPage": {
     "title": "Управление родителями",

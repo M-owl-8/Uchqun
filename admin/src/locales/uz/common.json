@@ -75,7 +75,13 @@
     "systemStats": "Tizim statistikasi",
     "totalUsers": "Jami foydalanuvchilar: {{count}} | Aktiv qabul: {{active}} | Guruhlar: {{groups}}",
     "viewAllChildren": "Barcha bolalarni ota-onalar orqali ko'rish",
-    "pntsCard": "PNTS ko'rsatkichlari"
+    "pntsCard": "PNTS ko'rsatkichlari",
+    "attentionAllClear": "Hammasi joyida! Bugun e'tiboringizni talab qiladigan ishlar yo'q",
+    "highSeverity": "yuqori darajali",
+    "ratingsCount": "ta baho",
+    "auditRefSub": "Barcha amallar ro'yxati",
+    "lastUpdated": "Oxirgi yangilanish",
+    "refresh": "Yangilash"
   },
   "parentsPage": {
     "title": "Ota-onalar boshqaruvi",
