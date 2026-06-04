@@ -77,7 +77,7 @@ const Communications = () => {
 
   const formatTime = (iso) => {
     if (!iso) return '';
-    return new Date(iso).toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' });
+    return new Date(iso).toLocaleTimeString(undefined, { hour: '2-digit', minute: '2-digit' });
   };
 
   const parentInitials = (parent) => {
@@ -88,15 +88,18 @@ const Communications = () => {
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-6">
-        <h1 className="text-3xl font-semibold tracking-tight text-warm-900">
-          {t('communications.title', { defaultValue: 'Communications' })}
+      <div className="letterhead pt-4 mb-6">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('nav.section.communications', { defaultValue: 'Aloqa' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('communications.title', { defaultValue: 'Muloqotlar' })} ({conversations.length})
         </h1>
-        <p className="text-warm-500 mt-1">
-          {t('communications.subtitle', { defaultValue: 'Read-only view of staff-parent conversations at your school' })}
+        <p className="text-sm text-warm-600 mt-1">
+          {t('communications.subtitle', { defaultValue: "Xodim-ota-ona suhbatlarini faqat ko'rish" })}
         </p>
         <p className="text-xs text-info-600 mt-1 font-medium">
-          {t('communications.readOnly', { defaultValue: 'Read-only — admin cannot send messages' })}
+          {t('communications.readOnly', { defaultValue: "Faqat o'qish — direktor xabar yubora olmaydi" })}
         </p>
       </div>
 
@@ -140,7 +143,7 @@ const Communications = () => {
                   }`}
                 >
                   <div className="flex items-start gap-3">
-                    <div className="w-9 h-9 rounded-full bg-brand-100 text-brand-800 flex items-center justify-center text-sm font-semibold shrink-0">
+                    <div className="w-9 h-9 rounded-full bg-warm-100 text-warm-800 flex items-center justify-center text-sm font-semibold shrink-0">
                       {parentInitials(parent)}
                     </div>
                     <div className="flex-1 min-w-0">
@@ -197,8 +200,8 @@ const Communications = () => {
                     <div className="flex items-center gap-2 mb-1">
                       <span className={`inline-flex items-center px-1.5 py-0.5 text-[10px] font-medium rounded-sm ${
                         isParent
-                          ? 'bg-blue-50 text-blue-700'
-                          : 'bg-green-50 text-green-700'
+                          ? 'bg-info-50 text-info-700'
+                          : 'bg-warm-100 text-warm-700'
                       }`}>
                         {isParent
                           ? t('communications.roleParent', { defaultValue: 'Parent' })

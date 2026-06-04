@@ -369,6 +369,8 @@
   },
   "govMessages": {
     "title": "Hukumatga xabarlar",
+    "subtitle": "Davlat nazorat organiga murojaatlar",
+    "emptyHint": "Yangi xabar tugmasini bosib birinchi xabarni yuboring.",
     "sent": "Yuborilgan",
     "loading": "Yuklanmoqda…",
     "empty": "Hali xabar yuborilmagan",

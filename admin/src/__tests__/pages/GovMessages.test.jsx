@@ -50,16 +50,16 @@ describe('GovMessages (AG-008)', () => {
     api.get.mockResolvedValue({ data: { data: [MSG_WITH_REPLY] } });
 
     render(<MemoryRouter><GovMessages /></MemoryRouter>);
-    await waitFor(() => screen.getByText('Replied'));
-    expect(screen.getByText('Replied')).toBeTruthy();
+    await waitFor(() => screen.getAllByText('Javob berildi'));
+    expect(screen.getAllByText('Javob berildi').length).toBeGreaterThan(0);
   });
 
   it('shows Pending badge when reply field is null', async () => {
     api.get.mockResolvedValue({ data: { data: [MSG_PENDING] } });
 
     render(<MemoryRouter><GovMessages /></MemoryRouter>);
-    await waitFor(() => screen.getByText('Pending'));
-    expect(screen.getByText('Pending')).toBeTruthy();
+    await waitFor(() => screen.getAllByText('Kutilmoqda'));
+    expect(screen.getAllByText('Kutilmoqda').length).toBeGreaterThan(0);
   });
 
   it('thread view shows original message and government reply', async () => {
@@ -80,17 +80,17 @@ describe('GovMessages (AG-008)', () => {
     api.post.mockResolvedValue({ data: { data: { id: 'm-new', subject: 'New issue', message: 'Details here', reply: null, createdAt: new Date().toISOString() } } });
 
     render(<MemoryRouter><GovMessages /></MemoryRouter>);
-    await waitFor(() => screen.getByText('No messages sent yet'));
+    await waitFor(() => screen.getByText('Hali xabar yuborilmagan'));
 
-    fireEvent.click(screen.getByText('New Message'));
+    fireEvent.click(screen.getByText('Yangi xabar'));
 
-    const subjectInput = screen.getByPlaceholderText('Enter subject');
-    const bodyInput = screen.getByPlaceholderText('Enter your message');
+    const subjectInput = screen.getByPlaceholderText('Mavzuni kiriting');
+    const bodyInput = screen.getByPlaceholderText('Xabaringizni kiriting');
 
     fireEvent.change(subjectInput, { target: { value: 'New issue' } });
     fireEvent.change(bodyInput, { target: { value: 'Details here' } });
 
-    fireEvent.click(screen.getByText('Send'));
+    fireEvent.click(screen.getByText('Yuborish'));
 
     await waitFor(() => {
       expect(api.post).toHaveBeenCalledWith('/admin/message-to-government', {

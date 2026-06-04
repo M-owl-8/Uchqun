@@ -368,6 +368,8 @@
   },
   "govMessages": {
     "title": "Messages to Government",
+    "subtitle": "Official communications to the government oversight authority",
+    "emptyHint": "Click '+' to send your first message.",
     "sent": "Sent",
     "loading": "Loading…",
     "empty": "No messages sent yet",
