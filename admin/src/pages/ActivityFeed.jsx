@@ -34,6 +34,9 @@ const getActionLabel = (action, entity, t) => {
   return t(`activityActions.${action}_${entity}`, { defaultValue: ACTION_LABELS_UZ[key] ?? key });
 };
 
+const getEntityLabel = (entity, t) =>
+  t(`activityEntities.${entity}`, { defaultValue: entity });
+
 const PAGE_SIZE = 20;
 
 const ActivityFeed = () => {
@@ -92,6 +95,8 @@ const ActivityFeed = () => {
     setPage(1);
   };
 
+
+  const hasFilters = !!(filterAction || startDate || endDate);
 
   return (
     <div className="max-w-5xl mx-auto space-y-6">
@@ -165,11 +170,23 @@ const ActivityFeed = () => {
         ) : entries.length === 0 ? (
           <div className="px-5 py-12 text-center">
             <p className="text-warm-500 font-medium">
-              {t('activityFeed.noActivity', { defaultValue: 'No activity yet' })}
+              {hasFilters
+                ? t('activityFeed.filterEmpty', { defaultValue: 'No results for selected filter' })
+                : t('activityFeed.noActivity', { defaultValue: 'No activity yet' })}
             </p>
-            <p className="text-warm-400 text-sm mt-1">
-              {t('activityFeed.noActivitySub', { defaultValue: 'Actions will appear here once staff start working' })}
-            </p>
+            {!hasFilters && (
+              <p className="text-warm-400 text-sm mt-1">
+                {t('activityFeed.noActivitySub', { defaultValue: 'Actions will appear here once staff start working' })}
+              </p>
+            )}
+            {hasFilters && (
+              <button
+                onClick={() => { setFilterAction(''); setStartDate(''); setEndDate(''); setPage(1); }}
+                className="mt-3 text-sm text-brand-700 hover:text-brand-800 font-medium"
+              >
+                {t('activityFeed.clearFilter', { defaultValue: 'Clear filter' })}
+              </button>
+            )}
           </div>
         ) : (
           <table className="w-full text-sm">
@@ -203,7 +220,7 @@ const ActivityFeed = () => {
                   <td className="px-4 py-3 text-warm-900">
                     {getActionLabel(entry.action, entry.entity, t)}
                   </td>
-                  <td className="px-4 py-3 text-warm-500">{entry.entity}</td>
+                  <td className="px-4 py-3 text-warm-500">{getEntityLabel(entry.entity, t)}</td>
                 </tr>
               ))}
             </tbody>

@@ -393,9 +393,18 @@
     "entity": "Объект",
     "date": "Дата",
     "loadError": "Не удалось загрузить активность",
+    "filterEmpty": "По выбранному фильтру ничего не найдено",
+    "clearFilter": "Сбросить фильтр",
     "pageOf": "{{page}} / {{totalPages}} ({{total}} всего)",
     "prev": "Назад",
     "next": "Вперёд"
+  },
+  "activityEntities": {
+    "documents": "Документы",
+    "receptions": "Регистратура",
+    "users": "Пользователи",
+    "children": "Дети",
+    "schools": "Учреждение"
   },
   "childDetail": {
     "back": "Назад",

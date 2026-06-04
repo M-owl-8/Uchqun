@@ -392,9 +392,18 @@
     "entity": "Entity",
     "date": "Date",
     "loadError": "Failed to load activity",
+    "filterEmpty": "No results for selected filter",
+    "clearFilter": "Clear filter",
     "pageOf": "{{page}} of {{totalPages}} ({{total}} total)",
     "prev": "Previous",
     "next": "Next"
+  },
+  "activityEntities": {
+    "documents": "Documents",
+    "receptions": "Reception",
+    "users": "Users",
+    "children": "Children",
+    "schools": "School"
   },
   "childDetail": {
     "back": "Back",

@@ -393,9 +393,18 @@
     "entity": "Ob'ekt",
     "date": "Sana",
     "loadError": "Faoliyatni yuklab bo'lmadi",
+    "filterEmpty": "Tanlangan filtr uchun natija topilmadi",
+    "clearFilter": "Filterni tozalash",
     "pageOf": "{{page}} / {{totalPages}} ({{total}} ta)",
     "prev": "Oldingi",
     "next": "Keyingi"
+  },
+  "activityEntities": {
+    "documents": "Hujjatlar",
+    "receptions": "Qabulxona",
+    "users": "Foydalanuvchilar",
+    "children": "Bolalar",
+    "schools": "Muassasa"
   },
   "childDetail": {
     "back": "Orqaga",
