@@ -36,7 +36,7 @@ const EMPTY_QUARTERLY = {
 
 const fmt = (dateStr) => {
   if (!dateStr) return '—';
-  return new Date(dateStr).toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return new Date(dateStr).toLocaleDateString(undefined, { year: 'numeric', month: '2-digit', day: '2-digit' });
 };
 
 const ChildPeriodRow = ({ child, onSigned }) => {

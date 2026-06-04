@@ -77,9 +77,11 @@ const RatingBar = ({ star, width, count }) => {
   );
 };
 
+const DATE_LOCALE = { uz: 'uz-UZ', ru: 'ru-RU', en: 'en-US' };
+
 const Dashboard = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const [stats, setStats]               = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [receptions, setReceptions]     = useState(() => cache.get(CACHE_KEY)?.receptions ?? []);
@@ -184,9 +186,10 @@ const Dashboard = () => {
   const aiWarningsArray  = Array.isArray(aiWarnings) ? aiWarnings : [];
   const pendingReceptions = receptions.filter((r) => !r.isActive);
 
-  const today = new Date().toLocaleDateString('uz-UZ', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+  const dateLocale = DATE_LOCALE[i18n?.language] ?? 'uz-UZ';
+  const today = new Date().toLocaleDateString(dateLocale, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
   const lastUpdatedStr = lastUpdated
-    ? lastUpdated.toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' })
+    ? lastUpdated.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' })
     : null;
 
   const capacity  = stats?.capacity ?? null;
