@@ -10,6 +10,18 @@ import {
   CheckCircle2, Clock, ChevronDown, RotateCw,
 } from 'lucide-react';
 
+const formatRelativeTime = (iso, t) => {
+  if (!iso) return '';
+  const diff = Date.now() - new Date(iso).getTime();
+  const min = Math.floor(diff / 60000);
+  if (min < 1) return t('timeAgo.justNow', { defaultValue: 'Hozirgina' });
+  if (min < 60) return t('timeAgo.minutes', { count: min, defaultValue: '{{count}} daqiqa oldin' });
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return t('timeAgo.hours', { count: hr, defaultValue: '{{count}} soat oldin' });
+  const day = Math.floor(hr / 24);
+  return t('timeAgo.days', { count: day, defaultValue: '{{count}} kun oldin' });
+};
+
 const SEVERITY_META = {
   critical: {
     iconBox: 'bg-error-600 text-walnut-text',
@@ -55,14 +67,19 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
               </span>
               {warning.resolvedAt && (
                 <span className="text-xs text-warm-500 num">
-                  {new Intl.DateTimeFormat('uz-UZ', { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(warning.resolvedAt))}
+                  {new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(warning.resolvedAt))}
                 </span>
               )}
             </div>
             <p className="text-sm font-semibold text-warm-800 line-through">{warning.title}</p>
-            {warning.resolvedBy && (
+            {(warning.resolver || warning.resolvedBy) && (
               <p className="text-sm text-warm-600 mt-1">
-                {t('aiWarnings.resolvedBy', { defaultValue: 'Hal qildi' })}: <span className="text-warm-800 font-medium">{warning.resolvedBy}</span>
+                {t('aiWarnings.resolvedBy', { defaultValue: 'Hal qildi' })}:{' '}
+                <span className="text-warm-800 font-medium">
+                  {warning.resolver
+                    ? `${warning.resolver.firstName} ${warning.resolver.lastName}`.trim()
+                    : warning.resolvedBy}
+                </span>
                 {warning.resolutionNote && ` · "${warning.resolutionNote}"`}
               </p>
             )}
@@ -118,10 +135,7 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
               <span className="flex items-center gap-1.5">
                 <Clock className="w-3 h-3" strokeWidth={1.75} />
                 <span className="num">
-                  {new Intl.RelativeTimeFormat('uz', { numeric: 'auto' }).format(
-                    Math.round((new Date(warning.createdAt) - Date.now()) / 60000),
-                    'minute'
-                  )}
+                  {formatRelativeTime(warning.createdAt, t)}
                 </span>
               </span>
             )}
@@ -301,8 +315,7 @@ const AIWarnings = () => {
             {t('aiWarnings.eyebrow', { defaultValue: 'Hisobotlar' })}
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
-            {t('aiWarnings.title', { defaultValue: 'Ogohlantirishlar' })}{' '}
-            <span className="text-xl font-medium text-warm-500 num">· {safeWarnings.length}</span>
+            {t('aiWarnings.title', { defaultValue: 'Ogohlantirishlar' })} ({safeWarnings.length})
           </h1>
           <p className="text-sm text-warm-600 mt-1">
             {t('aiWarnings.subtitle', { defaultValue: "Tizim aniqlagan e'tibor talab qiluvchi naqshlar va voqealar." })}
@@ -338,7 +351,7 @@ const AIWarnings = () => {
           <button
             onClick={handleAnalyze}
             disabled={analyzing}
-            className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-white rounded-md transition-colors disabled:opacity-50"
+            className="inline-flex items-center justify-center h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-walnut-text rounded-md transition-colors disabled:opacity-50"
             aria-label={t('aiWarnings.analyze', { defaultValue: 'Tahlil qilish' })}
           >
             {analyzing ? t('aiWarnings.analyzing', { defaultValue: 'Tahlil...' }) : t('aiWarnings.analyze', { defaultValue: 'Tahlil qilish' })}

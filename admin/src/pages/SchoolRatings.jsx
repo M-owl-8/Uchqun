@@ -22,10 +22,21 @@ const RatingSummaryRow = ({ label, avg, extra }) => {
   );
 };
 
+const TYPE_KEYS = {
+  daycare:            'schoolRatings.typeDaycare',
+  early_preschool:    'schoolRatings.typeEarlyPreschool',
+  support:            'schoolRatings.typeSupport',
+  early_intervention: 'schoolRatings.typeEarlyIntervention',
+  home_care:          'schoolRatings.typeHomeCare',
+};
+
 const SchoolRatings = () => {
   const { t } = useTranslation();
   const { data: schoolRatings, loading, error } = useFetch('/admin/school-ratings', { initialData: [] });
   const { data: ratingSummary } = useFetch('/admin/school-rating-summary');
+
+  const typeLabel = (type) =>
+    t(TYPE_KEYS[type] ?? 'schoolRatings.typeUnknown', { defaultValue: type });
 
   if (loading) {
     return (
@@ -66,9 +77,14 @@ const SchoolRatings = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold text-warm-900">{t('schoolRatings.title')}</h1>
-        <p className="text-warm-600 mt-2">{t('schoolRatings.subtitle')}</p>
+      <div className="letterhead pt-4">
+        <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
+          {t('aiWarnings.eyebrow', { defaultValue: 'Hisobotlar' })}
+        </p>
+        <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
+          {t('schoolRatings.title')} ({schoolRatings.length})
+        </h1>
+        <p className="text-sm text-warm-600 mt-1">{t('schoolRatings.subtitle')}</p>
       </div>
 
       {/* Three-rating summary card */}
@@ -98,7 +114,7 @@ const SchoolRatings = () => {
           <Card key={schoolData.school?.id || `school-${index}`} className="p-6">
             <div className="flex items-start justify-between mb-4">
               <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-xl bg-success-100 text-success-700 flex items-center justify-center">
+                <div className="w-12 h-12 rounded-md bg-warm-100 text-warm-700 flex items-center justify-center">
                   <Building2 className="w-6 h-6" />
                 </div>
                 <div>
@@ -107,10 +123,8 @@ const SchoolRatings = () => {
                     <p className="text-sm text-warm-500 mt-1">{schoolData.school.address}</p>
                   )}
                   {schoolData.school?.type && (
-                    <span className="inline-block mt-2 px-2 py-1 text-xs font-semibold rounded bg-success-100 text-success-700">
-                      {schoolData.school.type === 'school' ? t('schoolRatings.typeSchool') :
-                       schoolData.school.type === 'kindergarten' ? t('schoolRatings.typeKindergarten') :
-                       t('schoolRatings.typeBoth')}
+                    <span className="inline-flex items-center mt-2 px-2 py-0.5 text-xs font-medium rounded-sm bg-warm-100 text-warm-700 border border-warm-200">
+                      {typeLabel(schoolData.school.type)}
                     </span>
                   )}
                 </div>

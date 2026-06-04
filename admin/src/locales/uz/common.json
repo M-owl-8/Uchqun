@@ -220,7 +220,18 @@
     "by": "Muallif",
     "typeSchool": "Muassasa",
     "typeKindergarten": "Bog'cha",
-    "typeBoth": "Muassasa va Bog'cha"
+    "typeBoth": "Muassasa va Bog'cha",
+    "typeDaycare": "Kunduzgi parvarish",
+    "typeEarlyPreschool": "Yangi kun",
+    "typeSupport": "Madad",
+    "typeEarlyIntervention": "Erta aralashuv",
+    "typeHomeCare": "Uyda qarab turish",
+    "noRating": "Reyting yo'q",
+    "summaryTitle": "Reyting xulosasi",
+    "parentRating": "Ota-onalar reytingi",
+    "govRating": "Davlat reytingi",
+    "cumulativeRating": "Umumiy reyting",
+    "partial": "qisman"
   },
   "profile": {
     "title": "Profil",
@@ -506,7 +517,8 @@
   "timeAgo": {
     "justNow": "Hozirgina",
     "minutes": "{{count}} daqiqa oldin",
-    "hours": "{{count}} soat oldin"
+    "hours": "{{count}} soat oldin",
+    "days": "{{count}} kun oldin"
   },
   "activityFeed": {
     "pageOf": "{{page}} / {{totalPages}} ({{total}} ta)",

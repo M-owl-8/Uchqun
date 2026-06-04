@@ -220,7 +220,18 @@
     "by": "От",
     "typeSchool": "Учреждение",
     "typeKindergarten": "Детский сад",
-    "typeBoth": "Учреждение и Детский сад"
+    "typeBoth": "Учреждение и Детский сад",
+    "typeDaycare": "Дневной уход",
+    "typeEarlyPreschool": "Новый день",
+    "typeSupport": "Поддержка",
+    "typeEarlyIntervention": "Раннее вмешательство",
+    "typeHomeCare": "Домашний уход",
+    "noRating": "Нет рейтинга",
+    "summaryTitle": "Сводка рейтингов",
+    "parentRating": "Рейтинг родителей",
+    "govRating": "Государственный рейтинг",
+    "cumulativeRating": "Общий рейтинг",
+    "partial": "частичный"
   },
   "profile": {
     "title": "Профиль",
@@ -506,7 +517,8 @@
   "timeAgo": {
     "justNow": "Только что",
     "minutes": "{{count}} мин. назад",
-    "hours": "{{count}} ч. назад"
+    "hours": "{{count}} ч. назад",
+    "days": "{{count}} дн. назад"
   },
   "activityFeed": {
     "pageOf": "{{page}} / {{totalPages}} ({{total}} всего)",

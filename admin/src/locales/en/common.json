@@ -219,6 +219,17 @@
     "by": "By",
     "typeSchool": "School",
     "typeKindergarten": "Kindergarten",
+    "typeDaycare": "Daycare",
+    "typeEarlyPreschool": "Early Preschool",
+    "typeSupport": "Support",
+    "typeEarlyIntervention": "Early Intervention",
+    "typeHomeCare": "Home Care",
+    "noRating": "Not rated",
+    "summaryTitle": "Rating Summary",
+    "parentRating": "Parent rating",
+    "govRating": "Government rating",
+    "cumulativeRating": "Overall rating",
+    "partial": "partial",
     "typeBoth": "School & Kindergarten"
   },
   "profile": {
@@ -505,7 +516,8 @@
   "timeAgo": {
     "justNow": "Just now",
     "minutes": "{{count}} min ago",
-    "hours": "{{count}}h ago"
+    "hours": "{{count}}h ago",
+    "days": "{{count}}d ago"
   },
   "activityFeed": {
     "pageOf": "{{page}} of {{totalPages}} ({{total}} total)",
