@@ -5,7 +5,7 @@ import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
 import {
   Plus, Search, ChevronDown, ChevronRight, ChevronLeft, SearchX,
-  SlidersHorizontal, Download, Edit2, Trash2,
+  Edit2, Trash2,
 } from 'lucide-react';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
 import ReceptionFormModal from './reception/ReceptionFormModal';
@@ -381,8 +381,7 @@ const ReceptionManagement = () => {
             {t('receptionsPage.eyebrow', { defaultValue: 'Xodimlar' })}
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
-            {t('receptionsPage.title')}{' '}
-            <span className="text-xl font-medium text-warm-500 num">· {receptions.length}</span>
+            {t('receptionsPage.title')} ({receptions.length})
           </h1>
           <p className="text-sm text-warm-600 mt-1">{t('receptionsPage.subtitle')}</p>
         </div>
@@ -403,7 +402,7 @@ const ReceptionManagement = () => {
             type="search"
             value={search}
             onChange={e => { setSearch(e.target.value); setPage(1); }}
-            placeholder={t('receptionsPage.searchPlaceholder', { defaultValue: 'Ism, email yoki telefon...' })}
+            placeholder={t('receptionsPage.staffSearch', { defaultValue: 'Ism, email yoki telefon...' })}
             className="w-full h-10 pl-9 pr-3.5 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 placeholder:text-warm-400 focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
           />
         </div>
@@ -420,14 +419,6 @@ const ReceptionManagement = () => {
           </select>
           <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-500 pointer-events-none" strokeWidth={1.75} />
         </div>
-        <button className="inline-flex items-center gap-1.5 h-10 px-3 text-sm font-medium text-warm-700 bg-surface border border-warm-300 hover:bg-warm-50 rounded-md transition-colors">
-          <SlidersHorizontal className="w-4 h-4" strokeWidth={1.75} />
-          {t('receptionsPage.filter', { defaultValue: 'Filtr' })}
-        </button>
-        <button className="inline-flex items-center gap-1.5 h-10 px-3 text-sm font-medium text-warm-700 hover:bg-warm-100 rounded-md transition-colors">
-          <Download className="w-4 h-4" strokeWidth={1.75} />
-          {t('receptionsPage.export', { defaultValue: 'Eksport' })}
-        </button>
       </div>
 
       {/* Main content */}
@@ -497,7 +488,7 @@ const ReceptionManagement = () => {
                                 className="w-3.5 h-3.5 rounded-sm border-warm-300 accent-brand-600"
                                 onClick={e => e.stopPropagation()}
                               />
-                              <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 ${r.isActive && r.documentsApproved ? 'bg-brand-100 text-brand-800' : 'bg-warm-100 text-warm-700'}`}>
+                              <div className="w-8 h-8 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 bg-warm-100 text-warm-700">
                                 {getInitials(r)}
                               </div>
                               <span className="font-medium">{r.firstName} {r.lastName}</span>

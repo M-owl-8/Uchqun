@@ -194,6 +194,7 @@
     "view": "Ko'rish",
     "documentFallback": "Hujjat",
     "queueSubtitle": "{{count}} ta hujjat sizning e'tiboringizni kutmoqda.",
+    "staffSearch": "Ism, email yoki telefon...",
     "searchPlaceholder": "Xodim yoki hujjat turi...",
     "noResults": "\"{{query}}\" so'roviga mos hujjat topilmadi",
     "emptyQueue": "Tasdiq kutayotgan hujjat yo'q",

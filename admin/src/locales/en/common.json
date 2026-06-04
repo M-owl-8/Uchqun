@@ -193,6 +193,7 @@
     "view": "View",
     "documentFallback": "Document",
     "queueSubtitle": "{{count}} document(s) awaiting your attention.",
+    "staffSearch": "Name, email or phone...",
     "searchPlaceholder": "Employee or document type...",
     "noResults": "No documents found for \"{{query}}\"",
     "emptyQueue": "No documents awaiting approval",
