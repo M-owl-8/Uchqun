@@ -415,7 +415,7 @@ const Dashboard = () => {
                 <p className="num text-4xl font-semibold text-warm-900" style={{ lineHeight: 1 }}>
                   {typeof ratingAvg === 'number' ? ratingAvg.toFixed(1) : '—'}
                 </p>
-                <div className="flex items-center justify-center gap-0.5 mt-2 text-brand-600">
+                <div className="flex items-center justify-center gap-0.5 mt-2 text-yellow-400">
                   {[1, 2, 3, 4, 5].map((s) => (
                     <Star
                       key={s}

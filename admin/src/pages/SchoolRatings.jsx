@@ -117,7 +117,7 @@ const SchoolRatings = () => {
               </div>
               <div className="flex flex-col items-end">
                 <div className="flex items-center gap-2">
-                  <Star className="w-5 h-5 fill-green-500 text-success-500" />
+                  <Star className="w-5 h-5 fill-yellow-400 text-yellow-400" />
                   <span className="text-2xl font-bold text-warm-900">
                     {schoolData.average?.toFixed(1) || '0.0'}
                   </span>
@@ -140,9 +140,7 @@ const SchoolRatings = () => {
                         {[1, 2, 3, 4, 5].map((value) => (
                           <Star
                             key={value}
-                            className="w-4 h-4"
-                            fill={rating.stars >= value ? '#22c55e' : 'none'}
-                            stroke={rating.stars >= value ? '#16a34a' : '#9ca3af'}
+                            className={`w-4 h-4 ${rating.stars >= value ? 'fill-yellow-400 text-yellow-400' : 'fill-transparent text-warm-300'}`}
                           />
                         ))}
                       </div>
