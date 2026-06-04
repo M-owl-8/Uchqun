@@ -1,11 +1,13 @@
 import { useState, useRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { UploadCloud, FileText, FileCheck2, FileX2, X, MoreHorizontal, Check } from 'lucide-react';
 
 function FileRow({ file, onRemove }) {
+  const { t } = useTranslation();
   const { name, size, status, progress, rejectionReason, uploadedAt } = file;
 
   const sizeStr = size ? (size / 1024 / 1024).toFixed(1) + ' MB' : '';
-  const dateStr = uploadedAt ? new Date(uploadedAt).toLocaleDateString('uz-Latn-UZ') : '';
+  const dateStr = uploadedAt ? new Date(uploadedAt).toLocaleDateString() : '';
 
   if (status === 'uploading') {
     return (
@@ -39,11 +41,13 @@ function FileRow({ file, onRemove }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-[13.5px] font-medium text-slate-900 truncate">{name}</div>
-          <div className="mt-0.5 text-[12px] text-slate-500 num">{sizeStr}{dateStr ? ` · yuklandi ${dateStr}` : ''}</div>
+          <div className="mt-0.5 text-[12px] text-slate-500 num">
+            {sizeStr}{dateStr ? ` · ${t('documentUpload.uploadedOn')} ${dateStr}` : ''}
+          </div>
         </div>
         <span className="inline-flex items-center h-6 px-2 rounded-sm bg-warning-50 text-warning-700 text-[12px] border border-warning-100 shrink-0">
           <span className="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5" />
-          {"Ko'rib chiqilmoqda"}
+          {t('documentStatus.pending')}
         </span>
         <button className="text-slate-500 hover:text-slate-800 p-1">
           <MoreHorizontal className="w-4 h-4" strokeWidth={2} />
@@ -60,15 +64,17 @@ function FileRow({ file, onRemove }) {
         </div>
         <div className="flex-1 min-w-0">
           <div className="text-[13.5px] font-medium text-slate-900 truncate">{name}</div>
-          <div className="mt-0.5 text-[12px] text-slate-500 num">{sizeStr}{dateStr ? ` · tasdiqlandi ${dateStr}` : ''}</div>
+          <div className="mt-0.5 text-[12px] text-slate-500 num">
+            {sizeStr}{dateStr ? ` · ${t('documentUpload.approvedOn')} ${dateStr}` : ''}
+          </div>
         </div>
         <span className="inline-flex items-center h-6 px-2 rounded-sm bg-success-50 text-success-700 text-[12px] border border-success-100 shrink-0">
           <Check className="w-3 h-3 mr-1.5" strokeWidth={2} />
-          Tasdiqlangan
+          {t('documentStatus.approved')}
         </span>
         {file.url && (
           <a href={file.url} target="_blank" rel="noreferrer" className="text-[12.5px] text-brand-700 hover:text-brand-800 font-medium px-2 shrink-0">
-            {"Ko'rish"}
+            {t('common.view')}
           </a>
         )}
       </div>
@@ -84,21 +90,23 @@ function FileRow({ file, onRemove }) {
           </div>
           <div className="flex-1 min-w-0">
             <div className="text-[13.5px] font-medium text-slate-900 truncate">{name}</div>
-            <div className="mt-0.5 text-[12px] text-slate-500 num">{sizeStr}{dateStr ? ` · yuklandi ${dateStr}` : ''}</div>
+            <div className="mt-0.5 text-[12px] text-slate-500 num">
+              {sizeStr}{dateStr ? ` · ${t('documentUpload.uploadedOn')} ${dateStr}` : ''}
+            </div>
           </div>
           <span className="inline-flex items-center h-6 px-2 rounded-sm bg-error-50 text-error-700 text-[12px] border border-error-100 shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-error-600 mr-1.5" />
-            Rad etilgan
+            {t('documentStatus.rejected')}
           </span>
         </div>
         {rejectionReason && (
           <div className="mt-2.5 ml-12 text-[12.5px] text-error-700 bg-error-50 border border-error-100 rounded px-3 py-2">
-            <span className="font-medium">Sabab:</span> {rejectionReason}
+            <span className="font-medium">{t('documentUpload.reasonLabel')}</span> {rejectionReason}
           </div>
         )}
         {onRemove && (
           <button className="mt-2 ml-12 text-[12.5px] text-brand-700 hover:text-brand-800 font-medium" onClick={() => onRemove(file.id)}>
-            Yangisini yuklash
+            {t('documentUpload.reUpload')}
           </button>
         )}
       </div>
@@ -116,17 +124,20 @@ function FileRow({ file, onRemove }) {
  *   onUpload   — (file: File) => void
  *   onRemove   — (id) => void
  *   disabled   — if true, shows locked state
- *   label      — drop zone label
+ *   label      — drop zone label (optional override)
  */
 export default function DocumentUpload({
   files = [],
   onUpload,
   onRemove,
   disabled = false,
-  label = "Hujjatlarni shu yerga tashlang yoki bosing",
+  label,
 }) {
+  const { t } = useTranslation();
   const [dragging, setDragging] = useState(false);
   const inputRef = useRef(null);
+
+  const dropLabel = label ?? t('documentUpload.dropLabel');
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -148,8 +159,8 @@ export default function DocumentUpload({
       {disabled ? (
         <div className="bg-slate-50 border-2 border-dashed border-slate-200 rounded-lg p-6 text-center">
           <UploadCloud className="w-8 h-8 mx-auto text-slate-300" strokeWidth={2} />
-          <div className="mt-3 text-[14px] font-medium text-slate-400">Yuklash mavjud emas</div>
-          <div className="mt-1 text-[12.5px] text-slate-400">Hujjat allaqachon tasdiqlangan</div>
+          <div className="mt-3 text-[14px] font-medium text-slate-400">{t('documentUpload.disabledTitle')}</div>
+          <div className="mt-1 text-[12.5px] text-slate-400">{t('documentUpload.disabledDesc')}</div>
         </div>
       ) : (
         <div
@@ -168,10 +179,10 @@ export default function DocumentUpload({
             strokeWidth={2}
           />
           <div className={`mt-3 text-[14px] font-medium ${dragging ? 'text-brand-800' : 'text-slate-800'}`}>
-            {dragging ? "Qo'yib yuboring" : label}
+            {dragging ? t('documentUpload.dragging') : dropLabel}
           </div>
           <div className={`mt-1 text-[12.5px] ${dragging ? 'text-brand-700/80' : 'text-slate-500'}`}>
-            {dragging ? 'Fayl yuklanadi' : 'PDF, JPG, PNG · maks. 10 MB'}
+            {dragging ? t('documentUpload.draggingHint') : t('documentUpload.formatHint')}
           </div>
           <input
             ref={inputRef}

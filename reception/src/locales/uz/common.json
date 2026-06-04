@@ -54,13 +54,46 @@
     "active": "Aktiv",
     "inactive": "Noaktiv",
     "noRecentActivity": "Hali faoliyat yo'q. Birinchi ota-onani ro'yxatga olib boshlang.",
-    "addParentLink": "Ota-ona qo'shish"
+    "addParentLink": "Ota-ona qo'shish",
+    "title": "Boshqaruv paneli",
+    "greeting": "Xush kelibsiz",
+    "todayTasks": "Bugun qiladigan ishlaringiz:",
+    "lastUpdated": "Oxirgi yangilanish",
+    "quickSearch": "Tezkor qidiruv",
+    "newParent": "Yangi ota-ona",
+    "newParentSub": "3 qadamli sehrgar bilan",
+    "newTeacher": "Yangi tarbiyachi",
+    "newTeacherSub": "Hisob va guruh tayinlash",
+    "uploadDoc": "Hujjat yuklash",
+    "uploadDocSub": "Maktab rahbari tasdiqlaydi",
+    "todayWork": "Bugungi ishlar",
+    "pendingDocs": "Tasdiq kutayotgan hujjatlarim",
+    "noPendingDocs": "Tasdiq kutayotgan hujjat yo'q",
+    "goToDocs": "Mening hujjatlarim sahifasiga",
+    "pendingParents": "Faollashtirish kutayotgan ota-onalar",
+    "noPendingParents": "Faollashtirish kutayotgan ota-ona yo'q",
+    "recentActivity": "So'nggi faoliyat",
+    "added": "qo'shildi",
+    "newChildren": "Guruhlaringizdagi yangi bolalar",
+    "noChildren": "Hozircha bola yo'q",
+    "schoolStats": "Maktab statistikasi"
   },
   "common": {
     "viewAll": "Barchasi",
     "active": "Aktiv",
     "inactive": "Noaktiv",
-    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring."
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
+    "copy": "Nusxalash",
+    "hidePassword": "Parolni yashirish",
+    "showPassword": "Parolni ko'rsatish",
+    "view": "Ko'rish",
+    "selected": "tanlangan",
+    "export": "Eksport"
+  },
+  "gender": {
+    "male": "Erkak",
+    "female": "Ayol",
+    "other": "Boshqa"
   },
   "parentsPage": {
     "title": "Ota-onalarni boshqarish",
@@ -78,12 +111,32 @@
     "noParents": "Hozircha ota-onalar yo'q",
     "noParentsFound": "Ota-onalar topilmadi",
     "confirmDelete": "Ushbu ota-ona akkauntini o'chirmoqchimisiz?",
+    "confirmDeleteWarning": "Ota-ona yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin).",
+    "confirmDeleteChildWarning": "Bola yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin).",
+    "confirmSuspend": "Ushbu ota-onani to'xtatmoqchimisiz? Kirish bloklanadi.",
+    "confirmResetCredentials": "{{name}} uchun parolni tiklashni tasdiqlaysizmi?",
     "toastCreate": "Ota-ona akkaunti yaratildi",
     "toastUpdate": "Ota-ona akkaunti yangilandi",
     "toastDelete": "Ota-ona akkaunti o'chirildi",
     "toastSaveError": "Ota-ona akkauntini saqlashda xatolik",
     "toastDeleteError": "Ota-ona akkauntini o'chirishda xatolik",
     "toastLoadError": "Ota-onalarni yuklashda xatolik",
+    "toastActivated": "Ota-ona faollashtirildi",
+    "toastActivateError": "Faollashtirib bo'lmadi",
+    "toastSuspended": "Ota-ona to'xtatildi",
+    "toastSuspendError": "To'xtatib bo'lmadi",
+    "toastResetError": "Parolni tiklash muvaffaqiyatsiz",
+    "tempPasswordTitle": "Vaqtinchalik parol",
+    "tempPasswordNote": "Foydalanuvchi birinchi kirishda parolni o'zgartirishi kerak.",
+    "invalidFileType": "Faqat JPEG, PNG, WebP va GIF rasmlarga ruxsat",
+    "fileTooLarge": "Rasm 5 MB dan kichik bo'lishi kerak",
+    "colName": "Ism",
+    "colPhone": "Telefon",
+    "colChild": "Bola",
+    "colStatus": "Holat",
+    "colJoined": "Qo'shilgan",
+    "bulkActivatePartialFailure": "Ba'zi yozuvlar faollashtirilmadi",
+    "bulkDeletePartialFailure": "{{count}} ta yozuv o'chirilmadi",
     "form": {
       "firstName": "Ism",
       "lastName": "Familiya",
@@ -114,13 +167,23 @@
       "update": "Yangilash",
       "edit": "Tahrirlash",
       "delete": "O'chirish",
-      "addChild": "Bola qo'shish"
+      "addChild": "Bola qo'shish",
+      "groupRequired": "Guruh tanlash majburiy",
+      "groupRequiredError": "Guruh tanlash majburiy"
     },
     "buttons": {
       "edit": "Tahrirlash",
       "delete": "O'chirish",
       "addChild": "Bola qo'shish",
-      "updateChild": "Saqlash"
+      "updateChild": "Saqlash",
+      "activate": "Faollashtirish",
+      "suspend": "To'xtatish",
+      "resetCredentials": "Parolni tiklash"
+    },
+    "wizard": {
+      "draftRestorePrompt": "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?",
+      "draftResume": "Davom etish",
+      "draftDiscard": "Bekor qilish"
     },
     "editChildTitle": "Bolani tahrirlash",
     "noChildrenRegistered": "Bola ro'yxatdan o'tmagan",
@@ -142,12 +205,22 @@
     "noTeachersFound": "Tarbiyachilar topilmadi",
     "addFirst": "Birinchi tarbiyachini qo'shish",
     "confirmDelete": "Ushbu tarbiyachi akkauntini o'chirmoqchimisiz?",
+    "confirmDeleteWarning": "Tarbiyachi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin).",
+    "confirmSuspend": "Ushbu tarbiyachini to'xtatmoqchimisiz? Kirish bloklanadi.",
+    "confirmResetCredentials": "{{name}} uchun parolni tiklashni tasdiqlaysizmi?",
     "toastCreate": "Tarbiyachi akkaunti yaratildi",
     "toastUpdate": "Tarbiyachi akkaunti yangilandi",
     "toastDelete": "Tarbiyachi akkaunti o'chirildi",
     "toastSaveError": "Tarbiyachi akkauntini saqlashda xatolik",
     "toastLoadError": "Tarbiyachilarni yuklashda xatolik",
     "toastDeleteError": "Tarbiyachi akkauntini o'chirishda xatolik",
+    "toastActivated": "Tarbiyachi faollashtirildi",
+    "toastActivateError": "Faollashtirib bo'lmadi",
+    "toastSuspended": "Tarbiyachi to'xtatildi",
+    "toastSuspendError": "To'xtatib bo'lmadi",
+    "toastResetError": "Parolni tiklash muvaffaqiyatsiz",
+    "tempPasswordTitle": "Vaqtinchalik parol",
+    "tempPasswordNote": "Foydalanuvchi birinchi kirishda parolni o'zgartirishi kerak.",
     "ratings": {
       "title": "Ota-onalar fikri",
       "average": "O'rtacha baho",
@@ -172,7 +245,10 @@
     },
     "buttons": {
       "edit": "Yangilash",
-      "delete": "O'chirish"
+      "delete": "O'chirish",
+      "activate": "Faollashtirish",
+      "suspend": "To'xtatish",
+      "resetCredentials": "Parolni tiklash"
     }
   },
   "groupsPage": {
@@ -184,6 +260,7 @@
     "noGroupsFound": "Guruhlar topilmadi",
     "addFirst": "Birinchi guruhni qo'shish",
     "confirmDelete": "Ushbu guruhni o'chirmoqchimisiz?",
+    "confirmDeleteWarning": "Bu amal qaytarib bo'lmaydi — guruh ma'lumotlari tiklanmaydi. Guruh bolalari qayta tayinlanishi kerak bo'ladi.",
     "toastCreate": "Guruh yaratildi",
     "toastUpdate": "Guruh yangilandi",
     "toastDelete": "Guruh o'chirildi",
@@ -235,7 +312,14 @@
     "passwordChangeSuccess": "Parol muvaffaqiyatli o'zgartirildi",
     "passwordChangeError": "Parolni o'zgartirishda xatolik",
     "passwordsDoNotMatch": "Yangi parollar mos kelmadi",
-    "loadProfileError": "Profilni yuklashda xatolik"
+    "loadProfileError": "Profilni yuklashda xatolik",
+    "govtReply": "Davlat javobi",
+    "passwordIncorrect": "Joriy parol noto'g'ri",
+    "passwordTooShort": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+    "passwordWeak": "Parol katta va kichik harflar hamda raqamdan iborat bo'lishi kerak",
+    "phonePlaceholder": "+998 90 123 45 67",
+    "replied": "Javob berildi",
+    "sendMessageToGovt": "Davlatga xabar yuborish"
   },
   "profile": {
     "title": "Profil",
@@ -308,7 +392,56 @@
     "pendingWarning": "Tasdiq kutayotgan hujjatlar bor",
     "fileSizeLimit": "Fayl hajmi {{maxMB}} MB dan oshmasin.",
     "uploadSuccess": "Hujjat yuklandi. Direktor tasdiqlashi kutilmoqda.",
-    "uploadError": "Hujjat yuklanmadi. Qayta urinib ko'ring."
+    "uploadError": "Hujjat yuklanmadi. Qayta urinib ko'ring.",
+    "confirmDelete": "Bu hujjatni o'chirmoqchimisiz?",
+    "confirmDeleteWarning": "Hujjatni o'chirsangiz, uni qayta yuklashingiz va admin tomonidan qayta tasdiqlatishingiz kerak bo'ladi.",
+    "deleteError": "Hujjatni o'chirib bo'lmadi.",
+    "deleteNonPendingError": "Faqat kutilayotgan hujjatlarni o'chirish mumkin.",
+    "documentType": "Hujjat turi",
+    "loadError": "Hujjatlarni yuklashda xatolik.",
+    "loading": "Yuklanmoqda...",
+    "type": {
+      "license": "Litsenziya",
+      "certificate": "Sertifikat",
+      "identification": "Shaxsni tasdiqlovchi hujjat",
+      "other": "Boshqa"
+    }
+  },
+  "changePasswordForced": {
+    "title": "Parolni o'zgartirish",
+    "subtitle": "Davom etish uchun yangi parol o'rnatishingiz kerak.",
+    "current": "Joriy parol",
+    "new": "Yangi parol",
+    "confirm": "Yangi parolni tasdiqlang",
+    "button": "Parolni o'zgartirish",
+    "mismatch": "Yangi parollar mos kelmadi",
+    "tooShort": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+    "weakPassword": "Parol katta, kichik harf va raqam o'z ichiga olishi kerak",
+    "incorrect": "Joriy parol noto'g'ri",
+    "error": "Parolni o'zgartirishda xatolik"
+  },
+  "documentStatus": {
+    "pending": "Ko'rib chiqilmoqda",
+    "approved": "Tasdiqlangan",
+    "rejected": "Rad etilgan",
+    "uploading": "Yuklanmoqda..."
+  },
+  "documentUpload": {
+    "dropLabel": "Hujjatlarni shu yerga tashlang yoki bosing",
+    "dragging": "Qo'yib yuboring",
+    "draggingHint": "Fayl yuklanadi",
+    "formatHint": "PDF, JPG, PNG · maks. 10 MB",
+    "disabledTitle": "Yuklash mavjud emas",
+    "disabledDesc": "Hujjat allaqachon tasdiqlangan",
+    "reUpload": "Yangisini yuklash",
+    "reasonLabel": "Sabab:",
+    "uploadedOn": "yuklandi",
+    "approvedOn": "tasdiqlandi"
+  },
+  "userStatus": {
+    "active": "Faol",
+    "suspended": "To'xtatilgan",
+    "pending": "Kutmoqda"
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",

@@ -1,9 +1,13 @@
 /**
  * check-locale-completeness.mjs
- * Extracts every t() key used in admin/src and diffs against uz/ru/en catalogs.
+ * Extracts every t() key used in a portal's src and diffs against uz/ru/en catalogs.
  * Exit 1 if any catalog gaps found.
  *
- * Usage: node scripts/check-locale-completeness.mjs [--quiet]
+ * Usage:
+ *   node scripts/check-locale-completeness.mjs [--portal=admin|reception] [--quiet]
+ *   node scripts/check-locale-completeness.mjs --all [--quiet]
+ *
+ * Defaults to --portal=admin for backwards compatibility.
  */
 
 import { readFileSync, readdirSync, statSync } from 'node:fs';
@@ -13,6 +17,34 @@ import { fileURLToPath } from 'node:url';
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const QUIET = process.argv.includes('--quiet');
+const RUN_ALL = process.argv.includes('--all');
+
+const portalArg = process.argv.find(a => a.startsWith('--portal='));
+const PORTAL = portalArg ? portalArg.split('=')[1] : 'admin';
+
+// Portals that have been onboarded to locale completeness checking
+const ONBOARDED_PORTALS = ['admin', 'reception'];
+
+// ── Portal config ─────────────────────────────────────────────────────────────
+
+function getPortalConfig(portal) {
+  const configs = {
+    admin: {
+      srcDir: join(ROOT, 'admin', 'src'),
+      localePath: (lang) => join(ROOT, 'admin', 'src', 'locales', lang, 'common.json'),
+    },
+    reception: {
+      srcDir: join(ROOT, 'reception', 'src'),
+      localePath: (lang) => join(ROOT, 'reception', 'src', 'locales', lang, 'common.json'),
+    },
+  };
+  const cfg = configs[portal];
+  if (!cfg) {
+    console.error(`Unknown portal: "${portal}". Onboarded portals: ${ONBOARDED_PORTALS.join(', ')}`);
+    process.exit(1);
+  }
+  return cfg;
+}
 
 // ── File walker ───────────────────────────────────────────────────────────────
 
@@ -43,7 +75,6 @@ function extractKeys(src) {
   const re = /\bt\(\s*['"]([a-zA-Z0-9_.]+)['"]/g;
   let m;
   while ((m = re.exec(src)) !== null) {
-    // Skip purely numeric keys, single-segment keys that are common non-translation calls
     if (m[1] && m[1].includes('.')) {
       keys.add(m[1]);
     }
@@ -52,7 +83,6 @@ function extractKeys(src) {
 }
 
 // ── Key resolver ──────────────────────────────────────────────────────────────
-// i18next resolves 'a.b.c' → catalog.a.b.c
 
 function resolveKey(catalog, keyPath) {
   const parts = keyPath.split('.');
@@ -61,7 +91,7 @@ function resolveKey(catalog, keyPath) {
     if (curr == null || typeof curr !== 'object') return undefined;
     curr = curr[part];
   }
-  if (typeof curr === 'object' && curr !== null) return undefined; // object ≠ string value
+  if (typeof curr === 'object' && curr !== null) return undefined;
   return curr;
 }
 
@@ -85,109 +115,123 @@ function mergeLocales(shared, portal) {
   return result;
 }
 
-// ── Load catalogs ─────────────────────────────────────────────────────────────
+// ── Run check for a single portal ─────────────────────────────────────────────
 
-const LANGS = ['uz', 'en', 'ru'];
-const catalogs = {};
+function runPortalCheck(portal) {
+  const cfg = getPortalConfig(portal);
+  const LANGS = ['uz', 'en', 'ru'];
+  const catalogs = {};
 
-for (const lang of LANGS) {
-  const sharedPath = join(ROOT, 'shared', 'locales', `${lang}.json`);
-  const portalPath = join(ROOT, 'admin', 'src', 'locales', lang, 'common.json');
-  const shared = JSON.parse(readFileSync(sharedPath, 'utf8'));
-  const portal = JSON.parse(readFileSync(portalPath, 'utf8'));
-  catalogs[lang] = mergeLocales(shared, portal);
-}
-
-// ── Walk admin/src ────────────────────────────────────────────────────────────
-
-const srcDir = join(ROOT, 'admin', 'src');
-const files = walkFiles(srcDir, ['.jsx', '.js', '.tsx', '.ts'], ['__tests__', 'node_modules']);
-
-const allKeys = new Set();
-const keyOrigins = {}; // key → [file, ...]
-
-for (const file of files) {
-  const src = readFileSync(file, 'utf8');
-  for (const key of extractKeys(src)) {
-    allKeys.add(key);
-    if (!keyOrigins[key]) keyOrigins[key] = [];
-    const rel = file.replace(ROOT + '\\', '').replace(ROOT + '/', '');
-    if (!keyOrigins[key].includes(rel)) keyOrigins[key].push(rel);
+  for (const lang of LANGS) {
+    const sharedPath = join(ROOT, 'shared', 'locales', `${lang}.json`);
+    const portalPath = cfg.localePath(lang);
+    const shared = JSON.parse(readFileSync(sharedPath, 'utf8'));
+    const portalLocale = JSON.parse(readFileSync(portalPath, 'utf8'));
+    catalogs[lang] = mergeLocales(shared, portalLocale);
   }
-}
 
-// ── Check each language ───────────────────────────────────────────────────────
+  const files = walkFiles(cfg.srcDir, ['.jsx', '.js', '.tsx', '.ts'], ['__tests__', 'node_modules']);
 
-const missing = {};
-for (const lang of LANGS) {
-  missing[lang] = [];
-  for (const key of allKeys) {
-    const val = resolveKey(catalogs[lang], key);
-    if (val === undefined || val === null) {
-      missing[lang].push(key);
+  const allKeys = new Set();
+  const keyOrigins = {};
+
+  for (const file of files) {
+    const src = readFileSync(file, 'utf8');
+    for (const key of extractKeys(src)) {
+      allKeys.add(key);
+      if (!keyOrigins[key]) keyOrigins[key] = [];
+      const rel = file.replace(ROOT + '\\', '').replace(ROOT + '/', '');
+      if (!keyOrigins[key].includes(rel)) keyOrigins[key].push(rel);
     }
   }
-  missing[lang].sort();
-}
 
-// ── Suspicious UZ==RU ─────────────────────────────────────────────────────────
-
-const uzRuSuspect = [];
-for (const key of allKeys) {
-  const uzVal = resolveKey(catalogs.uz, key);
-  const ruVal = resolveKey(catalogs.ru, key);
-  if (
-    uzVal && ruVal &&
-    typeof uzVal === 'string' && typeof ruVal === 'string' &&
-    uzVal === ruVal &&
-    uzVal.length > 3 &&
-    !/^\d+$/.test(uzVal) &&
-    !/^[A-Z0-9_]+$/.test(uzVal) // skip error code constants
-  ) {
-    uzRuSuspect.push({ key, value: uzVal });
+  const missing = {};
+  for (const lang of LANGS) {
+    missing[lang] = [];
+    for (const key of allKeys) {
+      const val = resolveKey(catalogs[lang], key);
+      if (val === undefined || val === null) {
+        missing[lang].push(key);
+      }
+    }
+    missing[lang].sort();
   }
-}
 
-// ── Report ────────────────────────────────────────────────────────────────────
+  const uzRuSuspect = [];
+  for (const key of allKeys) {
+    const uzVal = resolveKey(catalogs.uz, key);
+    const ruVal = resolveKey(catalogs.ru, key);
+    if (
+      uzVal && ruVal &&
+      typeof uzVal === 'string' && typeof ruVal === 'string' &&
+      uzVal === ruVal &&
+      uzVal.length > 3 &&
+      !/^\d+$/.test(uzVal) &&
+      !/^[A-Z0-9_]+$/.test(uzVal)
+    ) {
+      uzRuSuspect.push({ key, value: uzVal });
+    }
+  }
 
-console.log('\n=== LOCALE COMPLETENESS CHECK (admin portal) ===\n');
-console.log(`Source files scanned: ${files.length}`);
-console.log(`Unique t() keys found: ${allKeys.size}`);
+  console.log(`\n=== LOCALE COMPLETENESS CHECK (${portal} portal) ===\n`);
+  console.log(`Source files scanned: ${files.length}`);
+  console.log(`Unique t() keys found: ${allKeys.size}`);
 
-let anyMissing = false;
+  let anyMissing = false;
 
-for (const lang of LANGS) {
-  const count = missing[lang].length;
-  if (count === 0) {
-    console.log(`\n✅ ${lang.toUpperCase()}: all keys present`);
-  } else {
-    anyMissing = true;
-    console.log(`\n❌ ${lang.toUpperCase()}: ${count} missing keys:`);
-    for (const key of missing[lang]) {
-      if (!QUIET) {
-        const uzVal = resolveKey(catalogs.uz, key);
-        console.log(`   ${key}${uzVal ? `  [UZ: "${uzVal}"]` : ''}`);
-      } else {
-        console.log(`   ${key}`);
+  for (const lang of LANGS) {
+    const count = missing[lang].length;
+    if (count === 0) {
+      console.log(`\n✅ ${lang.toUpperCase()}: all keys present`);
+    } else {
+      anyMissing = true;
+      console.log(`\n❌ ${lang.toUpperCase()}: ${count} missing keys:`);
+      for (const key of missing[lang]) {
+        if (!QUIET) {
+          const uzVal = resolveKey(catalogs.uz, key);
+          console.log(`   ${key}${uzVal ? `  [UZ: "${uzVal}"]` : ''}`);
+        } else {
+          console.log(`   ${key}`);
+        }
       }
     }
   }
+
+  if (uzRuSuspect.length > 0) {
+    console.log(`\n⚠️  UZ==RU SUSPECT (${uzRuSuspect.length} keys — likely UZ copied into RU):`);
+    const show = QUIET ? uzRuSuspect.slice(0, 5) : uzRuSuspect.slice(0, 30);
+    for (const { key, value } of show) {
+      console.log(`   ${key}: "${value}"`);
+    }
+    if (uzRuSuspect.length > show.length) {
+      console.log(`   ... and ${uzRuSuspect.length - show.length} more`);
+    }
+  }
+
+  if (anyMissing) {
+    console.log(`\n❌ FAIL — catalog gaps found in ${portal} portal. Add all missing keys before merging.\n`);
+  } else {
+    console.log(`\n✅ PASS — all keys present in all three catalogs (${portal} portal).\n`);
+  }
+
+  return anyMissing;
 }
 
-if (uzRuSuspect.length > 0) {
-  console.log(`\n⚠️  UZ==RU SUSPECT (${uzRuSuspect.length} keys — likely UZ copied into RU):`);
-  const show = QUIET ? uzRuSuspect.slice(0, 5) : uzRuSuspect.slice(0, 30);
-  for (const { key, value } of show) {
-    console.log(`   ${key}: "${value}"`);
-  }
-  if (uzRuSuspect.length > show.length) {
-    console.log(`   ... and ${uzRuSuspect.length - show.length} more`);
-  }
-}
+// ── Main ──────────────────────────────────────────────────────────────────────
 
-if (anyMissing) {
-  console.log('\n❌ FAIL — catalog gaps found. Add all missing keys before merging.\n');
-  process.exit(1);
+if (RUN_ALL) {
+  let anyFailed = false;
+  for (const portal of ONBOARDED_PORTALS) {
+    const failed = runPortalCheck(portal);
+    if (failed) anyFailed = true;
+  }
+  if (anyFailed) {
+    console.log('❌ FAIL — one or more portals have catalog gaps.\n');
+    process.exit(1);
+  } else {
+    console.log('✅ PASS — all onboarded portals have complete catalogs.\n');
+  }
 } else {
-  console.log('\n✅ PASS — all keys present in all three catalogs.\n');
+  const failed = runPortalCheck(PORTAL);
+  if (failed) process.exit(1);
 }

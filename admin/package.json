@@ -10,7 +10,8 @@
     "start": "vite preview",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "test": "vitest",
-    "check:locales": "node ../scripts/check-locale-completeness.mjs"
+    "check:locales": "node ../scripts/check-locale-completeness.mjs --portal=admin",
+    "check:locales:all": "node ../scripts/check-locale-completeness.mjs --all"
   },
   "engines": { "node": ">=20.0.0", "npm": ">=9.0.0" },
   "dependencies": {

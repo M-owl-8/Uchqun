@@ -185,7 +185,7 @@ const Dashboard = () => {
               {pendingDocs.length > 0 && (
                 <span className="inline-flex items-center h-6 px-2 rounded-sm bg-warning-50 text-warning-700 text-[12px] border border-warning-100">
                   <span className="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5" />
-                  <span className="num">{pendingDocs.length} ta</span>
+                  <span className="num">{pendingDocs.length}</span>
                 </span>
               )}
             </header>
@@ -285,7 +285,7 @@ const Dashboard = () => {
                     <span className="font-medium text-slate-900">{parent.firstName} {parent.lastName}</span>
                     {' '}{t('dashboard.added', { defaultValue: "qo'shildi" })}
                     {parent.children?.length > 0 && (
-                      <> · bola <span className="font-medium text-slate-900">{parent.children[0]?.firstName}</span></>
+                      <> · {t('dashboard.child')} <span className="font-medium text-slate-900">{parent.children[0]?.firstName}</span></>
                     )}
                   </div>
                   <div className="text-[12px] text-slate-500 num shrink-0">

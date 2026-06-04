@@ -315,7 +315,7 @@ const TeacherManagement = () => {
                       </h3>
                       {teacher.status === 'suspended' && (
                         <span className="inline-flex items-center h-5 px-1.5 rounded-sm bg-error-50 text-error-700 text-[11px] border border-error-100">
-                          {"To'xtatilgan"}
+                          {t('userStatus.suspended')}
                         </span>
                       )}
                     </div>

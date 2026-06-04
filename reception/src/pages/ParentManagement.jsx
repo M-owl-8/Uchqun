@@ -16,11 +16,12 @@ import { EmptyDesk } from '../components/motifs/EmptyDesk';
 const PAGE_SIZE = 25;
 
 const StatusBadge = ({ status, isActive }) => {
+  const { t } = useTranslation();
   if (status === 'suspended') {
     return (
       <span className="inline-flex items-center h-6 px-2 rounded-sm bg-error-50 text-error-700 text-[12px] border border-error-100">
         <span className="w-1.5 h-1.5 rounded-full bg-error-500 mr-1.5" />
-        {"To'xtatilgan"}
+        {t('userStatus.suspended')}
       </span>
     );
   }
@@ -28,14 +29,14 @@ const StatusBadge = ({ status, isActive }) => {
     return (
       <span className="inline-flex items-center h-6 px-2 rounded-sm bg-success-50 text-success-700 text-[12px] border border-success-100">
         <span className="w-1.5 h-1.5 rounded-full bg-success-500 mr-1.5" />
-        Faol
+        {t('userStatus.active')}
       </span>
     );
   }
   return (
     <span className="inline-flex items-center h-6 px-2 rounded-sm bg-warning-50 text-warning-700 text-[12px] border border-warning-100">
       <span className="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5" />
-      Kutmoqda
+      {t('userStatus.pending')}
     </span>
   );
 };
@@ -421,10 +422,10 @@ const ParentManagement = () => {
         {/* Status filter */}
         <div className="inline-flex items-center p-0.5 rounded-md border border-slate-200 bg-surface text-[13px]">
           {[
-            { value: 'all', label: 'Barchasi' },
-            { value: 'active', label: 'Faol' },
-            { value: 'pending', label: 'Kutmoqda' },
-            { value: 'suspended', label: "To'xtatilgan" },
+            { value: 'all', label: t('common.all') },
+            { value: 'active', label: t('userStatus.active') },
+            { value: 'pending', label: t('userStatus.pending') },
+            { value: 'suspended', label: t('userStatus.suspended') },
           ].map((opt) => (
             <button
               key={opt.value}
@@ -442,7 +443,7 @@ const ParentManagement = () => {
       {/* Bulk action toolbar */}
       {selectedRows.size > 0 && (
         <div className="inline-flex items-center gap-1 p-1.5 rounded-md bg-teak text-teak-text shadow-md">
-          <span className="text-[12.5px] px-2.5 num">{selectedRows.size} tanlangan</span>
+          <span className="text-[12.5px] px-2.5 num">{selectedRows.size} {t('common.selected', { defaultValue: 'tanlangan' })}</span>
           <span className="w-px h-5 bg-teak-divider" />
           <button
             onClick={() => {
@@ -467,12 +468,12 @@ const ParentManagement = () => {
             }}
             className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors"
           >
-            <CheckCircle className="w-3.5 h-3.5" strokeWidth={2} /> Faollashtirish
+            <CheckCircle className="w-3.5 h-3.5" strokeWidth={2} /> {t('parentsPage.buttons.activate')}
           </button>
           <button
             onClick={() => {
               const selected = parents.filter((p) => selectedRows.has(p.id));
-              const headers = ['Ism', 'Familiya', 'Email', 'Telefon', 'Holat'];
+              const headers = [t('parentsPage.form.firstName'), t('parentsPage.form.lastName'), 'Email', t('parentsPage.form.phone'), t('colStatus', { defaultValue: 'Status' })];
               const rows = selected.map((p) => [
                 p.firstName || '',
                 p.lastName || '',
@@ -493,7 +494,7 @@ const ParentManagement = () => {
             }}
             className="h-7 px-2.5 rounded text-[12.5px] hover:bg-teak-hover inline-flex items-center gap-1.5 transition-colors"
           >
-            <Download className="w-3.5 h-3.5" strokeWidth={2} /> Eksport
+            <Download className="w-3.5 h-3.5" strokeWidth={2} /> {t('common.export')}
           </button>
           <button
             onClick={() => {
@@ -515,7 +516,7 @@ const ParentManagement = () => {
             }}
             className="h-7 px-2.5 rounded text-[12.5px] text-error-50 hover:bg-error-700/60 inline-flex items-center gap-1.5 transition-colors"
           >
-            <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> {"O'chirish"}
+            <Trash2 className="w-3.5 h-3.5" strokeWidth={2} /> {t('parentsPage.buttons.delete')}
           </button>
         </div>
       )}
@@ -534,12 +535,12 @@ const ParentManagement = () => {
                     onChange={toggleAll}
                   />
                 </th>
-                <th className="px-4 py-2.5 text-left font-medium">Ism</th>
-                <th className="px-4 py-2.5 text-left font-medium">Telefon</th>
+                <th className="px-4 py-2.5 text-left font-medium">{t('parentsPage.colName', { defaultValue: 'Ism' })}</th>
+                <th className="px-4 py-2.5 text-left font-medium">{t('parentsPage.colPhone', { defaultValue: 'Telefon' })}</th>
                 <th className="px-4 py-2.5 text-left font-medium hidden md:table-cell">Email</th>
-                <th className="px-4 py-2.5 text-left font-medium hidden lg:table-cell">Bola</th>
-                <th className="px-4 py-2.5 text-left font-medium">Holat</th>
-                <th className="px-4 py-2.5 text-right font-medium hidden md:table-cell">{"Qo'shilgan"}</th>
+                <th className="px-4 py-2.5 text-left font-medium hidden lg:table-cell">{t('parentsPage.colChild', { defaultValue: 'Bola' })}</th>
+                <th className="px-4 py-2.5 text-left font-medium">{t('parentsPage.colStatus', { defaultValue: 'Status' })}</th>
+                <th className="px-4 py-2.5 text-right font-medium hidden md:table-cell">{t('parentsPage.colJoined', { defaultValue: "Qo'shilgan" })}</th>
                 <th className="w-12" />
               </tr>
             </thead>
