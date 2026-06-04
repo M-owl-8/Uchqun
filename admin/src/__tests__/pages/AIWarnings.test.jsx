@@ -67,7 +67,7 @@ const RESOLVED = {
 };
 
 function stubLoad(warnings) {
-  api.get.mockResolvedValue({ data: { data: warnings } });
+  api.get.mockResolvedValue({ data: { data: { warnings, total: warnings.length } } });
 }
 
 describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
@@ -131,8 +131,8 @@ describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
   it('calls PUT /ai-warnings/:id/resolve — not POST /admin (AD-013)', async () => {
     // first GET returns the warning; second GET (after resolve) returns empty
     api.get
-      .mockResolvedValueOnce({ data: { data: [UNRESOLVED] } })
-      .mockResolvedValue({ data: { data: [] } });
+      .mockResolvedValueOnce({ data: { data: { warnings: [UNRESOLVED], total: 1 } } })
+      .mockResolvedValue({ data: { data: { warnings: [], total: 0 } } });
     api.put.mockResolvedValue({ data: { success: true } });
     render(<AIWarnings />);
     await waitFor(() => screen.getByText('Unresolved warning'));
@@ -152,7 +152,7 @@ describe('AIWarnings page (AD-001, AD-002, AD-009, AD-013)', () => {
 describe('AIWarnings analyze + notify (FE-4)', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-    api.get.mockResolvedValue({ data: { data: [UNRESOLVED] } });
+    api.get.mockResolvedValue({ data: { data: { warnings: [UNRESOLVED], total: 1 } } });
     api.post = vi.fn().mockResolvedValue({ data: { success: true } });
   });
 
@@ -171,8 +171,8 @@ describe('AIWarnings analyze + notify (FE-4)', () => {
 
   it('warning list refreshes after analyze', async () => {
     api.get
-      .mockResolvedValueOnce({ data: { data: [UNRESOLVED] } })
-      .mockResolvedValue({ data: { data: [] } });
+      .mockResolvedValueOnce({ data: { data: { warnings: [UNRESOLVED], total: 1 } } })
+      .mockResolvedValue({ data: { data: { warnings: [], total: 0 } } });
 
     render(<AIWarnings />);
     await waitFor(() => screen.getByText('Unresolved warning'));
@@ -209,5 +209,46 @@ describe('AIWarnings analyze + notify (FE-4)', () => {
       '/ai-warnings/w-1/notify',
       { includeParents: true, includeTeachers: true }
     ));
+  });
+});
+
+// Crash-guard tests — reproduce ADMIN-OGOHLANTIRISHLAR-CRASH (TypeError: e.filter is not a function)
+// These tests fail against pre-fix code and pass after the res.data?.data?.warnings fix.
+describe('AIWarnings crash guards (ADMIN-OGOHLANTIRISHLAR-CRASH)', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('no crash when API returns correct { warnings: [], total: 0 } shape', async () => {
+    api.get.mockResolvedValue({ data: { data: { warnings: [], total: 0 } } });
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText("Ogohlantirish yo'q"));
+  });
+
+  it('no crash when API returns correct { warnings: [...] } shape', async () => {
+    api.get.mockResolvedValue({
+      data: { data: { warnings: [UNRESOLVED], total: 1 } },
+    });
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText('Unresolved warning'));
+  });
+
+  it('no crash when API returns null body (edge case)', async () => {
+    api.get.mockResolvedValue({ data: { data: null } });
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText("Ogohlantirish yo'q"));
+  });
+
+  it('no crash when API returns object without warnings key', async () => {
+    // Root cause shape: { total: 0, limit: 10, offset: 0 } — no warnings field
+    api.get.mockResolvedValue({ data: { data: { total: 0, limit: 10, offset: 0 } } });
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText("Ogohlantirish yo'q"));
+  });
+
+  it('no crash when data.data is undefined', async () => {
+    api.get.mockResolvedValue({ data: {} });
+    render(<AIWarnings />);
+    await waitFor(() => screen.getByText("Ogohlantirish yo'q"));
   });
 });

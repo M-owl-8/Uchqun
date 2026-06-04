@@ -174,7 +174,10 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
 };
 
 const AIWarnings = () => {
-  const [warnings, setWarnings] = useState(() => cache.get('admin:ai-warnings') || []);
+  const [warnings, setWarnings] = useState(() => {
+    const cached = cache.get('admin:ai-warnings');
+    return Array.isArray(cached) ? cached : [];
+  });
   const [loading, setLoading] = useState(!cache.get('admin:ai-warnings'));
   const [resolving, setResolving] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
@@ -192,7 +195,7 @@ const AIWarnings = () => {
       setWarnings(cached);
       setLoading(false);
       api.get('/ai-warnings').then(res => {
-        const data = res.data.data || [];
+        const data = res.data?.data?.warnings || [];
         cache.set(CACHE_KEY, data);
         setWarnings(data);
       }).catch(err => {
@@ -203,7 +206,7 @@ const AIWarnings = () => {
     try {
       setLoading(true);
       const res = await api.get('/ai-warnings');
-      const data = res.data.data || [];
+      const data = res.data?.data?.warnings || [];
       cache.set(CACHE_KEY, data);
       setWarnings(data);
     } catch (err) {
@@ -265,7 +268,8 @@ const AIWarnings = () => {
     });
   };
 
-  const filtered = warnings.filter(w => {
+  const safeWarnings = Array.isArray(warnings) ? warnings : [];
+  const filtered = safeWarnings.filter(w => {
     const matchesStatus =
       statusFilter === 'all' ? true :
       statusFilter === 'unresolved' ? !w.resolvedAt :
@@ -275,8 +279,8 @@ const AIWarnings = () => {
     return matchesStatus && matchesSeverity;
   });
 
-  const unresolvedCount = warnings.filter(w => !w.resolvedAt).length;
-  const resolvedCount   = warnings.filter(w =>  w.resolvedAt).length;
+  const unresolvedCount = safeWarnings.filter(w => !w.resolvedAt).length;
+  const resolvedCount   = safeWarnings.filter(w =>  w.resolvedAt).length;
 
   if (loading) {
     return (
@@ -302,7 +306,7 @@ const AIWarnings = () => {
           </p>
           <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
             {t('aiWarnings.title', { defaultValue: 'AI ogohlantirishlar' })}{' '}
-            <span className="text-xl font-medium text-warm-500 num">· {warnings.length}</span>
+            <span className="text-xl font-medium text-warm-500 num">· {safeWarnings.length}</span>
           </h1>
           <p className="text-sm text-warm-600 mt-1">
             {t('aiWarnings.subtitle', { defaultValue: "Tizim aniqlagan e'tibor talab qiluvchi naqshlar va voqealar." })}
@@ -315,7 +319,7 @@ const AIWarnings = () => {
               onChange={e => setStatusFilter(e.target.value)}
               className="h-10 pl-3.5 pr-9 text-sm bg-surface border border-warm-300 rounded-md text-warm-900 appearance-none focus:outline-none focus:ring-2 focus:ring-brand-600/30 focus:border-brand-600"
             >
-              <option value="all">{t('aiWarnings.filterAll', { defaultValue: 'Hammasi' })} · {warnings.length}</option>
+              <option value="all">{t('aiWarnings.filterAll', { defaultValue: 'Hammasi' })} · {safeWarnings.length}</option>
               <option value="unresolved">{t('aiWarnings.filterUnresolved', { defaultValue: 'Hal qilinmagan' })} · {unresolvedCount}</option>
               <option value="resolved">{t('aiWarnings.filterResolved', { defaultValue: 'Hal qilingan' })} · {resolvedCount}</option>
             </select>
