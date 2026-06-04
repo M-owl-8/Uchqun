@@ -185,7 +185,27 @@
       "active": "Active",
       "pending": "Pending Approval",
       "inactive": "Inactive"
-    }
+    },
+    "uploaderRole": "Reception",
+    "unknownUploader": "Unknown",
+    "hoursAgo": "{{count}}h ago",
+    "noPreview": "No preview available",
+    "view": "View",
+    "documentFallback": "Document",
+    "queueSubtitle": "{{count}} document(s) awaiting your attention.",
+    "searchPlaceholder": "Employee or document type...",
+    "noResults": "No documents found for \"{{query}}\"",
+    "emptyQueue": "No documents awaiting approval",
+    "emptyQueueDetail": "All reviewed. New documents will appear here when reception uploads them.",
+    "clearSearch": "Adjust or clear your search.",
+    "clearFilter": "Clear filter",
+    "pageOf": "Showing {{from}}–{{to}} of {{total}}",
+    "rejectModalTitle": "Reject Document",
+    "rejectionReasonLabel": "Rejection reason",
+    "rejectionPlaceholder": "e.g. Document quality is poor, please re-upload with clearer images.",
+    "emailNotice": "A notification will be sent by email.",
+    "approveError": "Failed to approve document",
+    "rejectError": "Failed to reject document"
   },
   "schoolRatings": {
     "title": "School Ratings",

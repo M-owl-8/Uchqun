@@ -104,7 +104,7 @@ describe('DocumentApprovalQueue page smoke', () => {
   it('renders without crashing and shows queue heading', async () => {
     const { default: DocumentApprovalQueue } = await import('../../pages/DocumentApprovalQueue');
     wrap(DocumentApprovalQueue);
-    await waitFor(() => screen.getByText('Tasdiqlash navbati'));
+    await waitFor(() => screen.getByRole('heading', { name: /Hujjatlar navbati/ }));
   });
 });
 

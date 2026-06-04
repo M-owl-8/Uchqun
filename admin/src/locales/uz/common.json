@@ -186,7 +186,27 @@
       "active": "Faol",
       "pending": "Tasdiqlash kutilmoqda",
       "inactive": "Faol emas"
-    }
+    },
+    "uploaderRole": "Qabulxona",
+    "unknownUploader": "Noma'lum",
+    "hoursAgo": "{{count}} soat oldin",
+    "noPreview": "Oldindan ko'rish mavjud emas",
+    "view": "Ko'rish",
+    "documentFallback": "Hujjat",
+    "queueSubtitle": "{{count}} ta hujjat sizning e'tiboringizni kutmoqda.",
+    "searchPlaceholder": "Xodim yoki hujjat turi...",
+    "noResults": "\"{{query}}\" so'roviga mos hujjat topilmadi",
+    "emptyQueue": "Tasdiq kutayotgan hujjat yo'q",
+    "emptyQueueDetail": "Hammasi ko'rib chiqilgan. Qabulxona yangi hujjat yuklaganda bu yerda paydo bo'ladi.",
+    "clearSearch": "Qidiruvni o'zgartiring yoki tozalang.",
+    "clearFilter": "Filtrni tozalash",
+    "pageOf": "Ko'rsatilmoqda {{from}}–{{to}} / jami {{total}}",
+    "rejectModalTitle": "Hujjatni rad etish",
+    "rejectionReasonLabel": "Rad etish sababi",
+    "rejectionPlaceholder": "Misol: hujjat sifati past, qaytadan yuklang. Iltimos, aniq va to'liq variantni yuboring.",
+    "emailNotice": "Xabar email orqali yuboriladi.",
+    "approveError": "Hujjatni tasdiqlab bo'lmadi",
+    "rejectError": "Hujjatni rad etib bo'lmadi"
   },
   "schoolRatings": {
     "title": "Muassasa baholari",
