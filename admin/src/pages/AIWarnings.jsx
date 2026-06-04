@@ -71,7 +71,11 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
                 </span>
               )}
             </div>
-            <p className="text-sm font-semibold text-warm-800 line-through">{warning.title}</p>
+            <p className="text-sm font-semibold text-warm-800 line-through">
+              {warning.warningType
+                ? t(`aiWarnings.warningType.${warning.warningType}`, { defaultValue: warning.title })
+                : warning.title}
+            </p>
             {(warning.resolver || warning.resolvedBy) && (
               <p className="text-sm text-warm-600 mt-1">
                 {t('aiWarnings.resolvedBy', { defaultValue: 'Hal qildi' })}:{' '}
@@ -114,7 +118,11 @@ const WarningCard = ({ warning, onResolve, resolving, onNotify }) => {
               </>
             )}
           </div>
-          <p className="text-sm font-semibold text-warm-900">{warning.title}</p>
+          <p className="text-sm font-semibold text-warm-900">
+            {warning.warningType
+              ? t(`aiWarnings.warningType.${warning.warningType}`, { defaultValue: warning.title })
+              : warning.title}
+          </p>
           {body && (
             <p className="text-sm text-warm-700 mt-1">
               {displayBody}
