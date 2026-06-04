@@ -17,6 +17,8 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **CLEANUP-06-SIDEBAR-SCROLL 🟡 In progress:** CSS-only fix — added `.sidebar-scroll` class (4px thin webkit scrollbar, rgba(255,255,255,0.15) thumb) to admin + government `index.css`. Applied to nav containers in both sidebars. Mobile drawer inherits fix via shared component. No scroll needed on gov at any laptop viewport (548px); admin needs scroll <768px (now clean). Admin 162/162 · Gov 124/124 · both builds clean. Commit 079a1af. Pending: user Railway verification at 1080px + 768px. `audits/redesign/CLEANUP-06-SIDEBAR-SCROLL.md`.
+
 > **CLEANUP-05-SIDEBAR-CONSOLIDATION 🟡 In progress:** 15→10 primary nav items, 4→3 sections + 1 standalone Sozlamalar link. Viewport math: 810px (was 1015px). IRR linked from Dashboard Hisobotlar + Settings Quick Links. Groups linked from Dashboard + Settings. nav.irr locale bug fixed. 30/30 tests · 162/162 · build clean. Commit b5ede9c. Pending: user Railway verification (sidebar no-scroll at 1080px). `audits/redesign/CLEANUP-05-SIDEBAR-CONSOLIDATION.md`.
 
 > **CLEANUP-04-LANGUAGE-SWITCHER 🟡 In progress:** Government sidebar LangDropdown verified present (Sidebar.jsx:192-196). Stale LanguageSwitchers removed from Settings/Profile pages in government, admin, teacher, parent portals. localStorage reconciled to `dnp:lang` in all 4 i18n.js + all sidebar writes + canonical parent LanguageSwitcher. One-time migration code added. Dead LanguageSwitcher component files deleted (4). Pending: user Railway verification. `audits/redesign/CLEANUP-04-LANGUAGE-SWITCHER.md`.
