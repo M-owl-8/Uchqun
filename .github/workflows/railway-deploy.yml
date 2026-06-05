@@ -25,8 +25,7 @@ jobs:
             echo "RAILWAY_TOKEN not set — skipping deployment."
             exit 0
           fi
-          npm install -g @railway/cli
-          railway login --token "$RAILWAY_TOKEN"
+          curl -fsSL https://install.railway.app | sh
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
@@ -74,7 +73,6 @@ jobs:
             echo "RAILWAY_TOKEN not set — skipping deployment."
             exit 0
           fi
-          npm install -g @railway/cli
-          railway login --token "$RAILWAY_TOKEN"
+          curl -fsSL https://install.railway.app | sh
           railway up --service ${{ matrix.service }} --detach
           echo "${{ matrix.label }} deployment triggered."
