@@ -26,6 +26,7 @@ jobs:
             exit 0
           fi
           npm install -g @railway/cli
+          railway login --token "$RAILWAY_TOKEN"
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
@@ -74,5 +75,6 @@ jobs:
             exit 0
           fi
           npm install -g @railway/cli
+          railway login --token "$RAILWAY_TOKEN"
           railway up --service ${{ matrix.service }} --detach
           echo "${{ matrix.label }} deployment triggered."
