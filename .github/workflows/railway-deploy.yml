@@ -25,7 +25,8 @@ jobs:
             echo "RAILWAY_TOKEN not set — skipping deployment."
             exit 0
           fi
-          curl -fsSL https://install.railway.app | sh
+          curl -fsSL https://github.com/railwayapp/cli/releases/download/v5.4.0/railway-v5.4.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp
+          sudo mv /tmp/railway /usr/local/bin/railway
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
@@ -73,6 +74,7 @@ jobs:
             echo "RAILWAY_TOKEN not set — skipping deployment."
             exit 0
           fi
-          curl -fsSL https://install.railway.app | sh
+          curl -fsSL https://github.com/railwayapp/cli/releases/download/v5.4.0/railway-v5.4.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp
+          sudo mv /tmp/railway /usr/local/bin/railway
           railway up --service ${{ matrix.service }} --detach
           echo "${{ matrix.label }} deployment triggered."
