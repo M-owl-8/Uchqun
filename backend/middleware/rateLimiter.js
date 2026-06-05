@@ -9,6 +9,11 @@ const WINDOW_MS = Number(process.env.RATE_LIMIT_WINDOW_MS) || 15 * 60 * 1000;
 export const apiLimiter = rateLimit({
   windowMs: WINDOW_MS,
   max: Number(process.env.RATE_LIMIT_API_MAX) || 1000,
+  // Auth paths have their own dedicated limiters (loginLimiter, authLimiter).
+  // Excluding them here prevents a notification/API flood from consuming the
+  // shared bucket and blocking login attempts with spurious 429s.
+  // req.path is relative to the /api mount point, so auth paths appear as /v1/auth/*.
+  skip: (req) => req.path.startsWith('/v1/auth/'),
   store: makeRedisStore(WINDOW_MS, 'api'),
   standardHeaders: true,
   legacyHeaders: false,

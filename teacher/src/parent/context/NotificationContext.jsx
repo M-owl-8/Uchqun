@@ -1,6 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
 import api from '../services/api';
 import { useSocket } from '../../shared/context/SocketContext';
+import { useAuth } from './AuthContext';
 
 const NotificationContext = createContext(null);
 
@@ -14,20 +15,32 @@ export const useNotification = () => {
 
 export const NotificationProvider = ({ children }) => {
   const { on, off } = useSocket();
+  const { isAuthenticated } = useAuth();
   const [count, setCount] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  // Tracks when 429 backoff expires — avoids state re-renders for pause logic
+  const pausedUntilRef = useRef(0);
 
-  const loadNotifications = async () => {
+  const loadNotifications = useCallback(async () => {
+    if (Date.now() < pausedUntilRef.current) return;
     try {
       const response = await api.get('/notifications/count');
       setCount(response.data.count || 0);
-    } catch (error) {
+    } catch (err) {
+      const status = err?.response?.status;
+      // 401 — interceptor already calls clearAuth → isAuthenticated → false → effect tears down
+      if (status === 401) return;
+      if (status === 429) {
+        // Honour Retry-After header; minimum 60 s backoff to avoid hammering the bucket
+        const retryAfter = parseInt(err?.response?.headers?.['retry-after'] || '60', 10);
+        pausedUntilRef.current = Date.now() + Math.max(retryAfter * 1_000, 60_000);
+      }
       setCount(0);
     }
-  };
+  }, []);
 
-  const loadAllNotifications = async () => {
+  const loadAllNotifications = useCallback(async () => {
     try {
       setLoading(true);
       const response = await api.get('/notifications');
@@ -35,16 +48,20 @@ export const NotificationProvider = ({ children }) => {
       setCount(response.data.unreadCount || 0);
     } catch (error) {
       setNotifications([]);
+      void error;
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
+  // Gate on authentication: zero requests on /login or any unauthenticated route.
+  // Also stops immediately when the user logs out (isAuthenticated → false).
   useEffect(() => {
+    if (!isAuthenticated) return;
     loadNotifications();
     on('notification:new', loadNotifications);
     return () => off('notification:new', loadNotifications);
-  }, [on, off]);
+  }, [isAuthenticated, on, off, loadNotifications]);
 
   const markAsRead = async (id) => {
     try {
@@ -77,8 +94,8 @@ export const NotificationProvider = ({ children }) => {
 
   return (
     <NotificationContext.Provider
-      value={{ 
-        count, 
+      value={{
+        count,
         notifications,
         loading,
         markAsRead,
@@ -92,4 +109,3 @@ export const NotificationProvider = ({ children }) => {
     </NotificationContext.Provider>
   );
 };
-
