@@ -246,5 +246,14 @@
   "MESSAGE_ESCALATE_NOT_OWN": "Siz faqat o'zingizning xabarlaringizni ko'tarishingiz mumkin.",
   "MESSAGE_NO_SCHOOL": "Sizning hisobingiz maktabga biriktirilmagan.",
   "MESSAGE_SEND_FAILED": "Xabar yuborib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-  "MESSAGE_FETCH_FAILED": "Xabarlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
+  "MESSAGE_FETCH_FAILED": "Xabarlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+
+  "ATTENDANCE_RECORDS_REQUIRED": "Iltimos, kamida bitta davomat yozuvini qo'shing.",
+  "ATTENDANCE_CHILD_ID_REQUIRED": "Har bir yozuvda bola identifikatori bo'lishi kerak.",
+  "ATTENDANCE_DATE_REQUIRED": "Har bir yozuvda sana bo'lishi kerak.",
+  "ATTENDANCE_INVALID_DATE": "Iltimos, to'g'ri sana kiriting (YYYY-MM-DD).",
+  "ATTENDANCE_FUTURE_DATE": "Kelajakdagi sana uchun davomat belgilab bo'lmaydi.",
+  "ATTENDANCE_INVALID_STATUS": "Iltimos, to'g'ri holat tanlang.",
+  "ATTENDANCE_ACCESS_DENIED": "Siz bu bolaning yozuviga kira olmaysiz.",
+  "ATTENDANCE_SAVE_FAILED": "Davomat saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
 }

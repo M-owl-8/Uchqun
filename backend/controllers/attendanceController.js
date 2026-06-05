@@ -3,61 +3,90 @@ import ChildAttendance from '../models/ChildAttendance.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
-const VALID_STATUSES = ['present', 'absent', 'late', 'excused'];
+const VALID_STATUSES = ['present', 'absent', 'home_leave', 'sick', 'hospitalized'];
 
 export const createAttendance = async (req, res) => {
   try {
-    const { childId, date, status, note } = req.body;
+    const { records } = req.body;
 
-    if (!childId) return res.status(400).json({ success: false, error: 'childId is required' });
-    if (!date) return res.status(400).json({ success: false, error: 'date is required' });
-    if (!status) return res.status(400).json({ success: false, error: 'status is required' });
-    if (!VALID_STATUSES.includes(status)) {
-      return res.status(400).json({ success: false, error: `status must be one of: ${VALID_STATUSES.join(', ')}` });
+    if (!Array.isArray(records) || records.length === 0) {
+      return res.status(400).json({
+        success: false,
+        error: { code: 'ATTENDANCE_RECORDS_REQUIRED', detail: 'records array is required and must not be empty' },
+      });
     }
 
-    // Date must not be in the future
-    const attendanceDate = new Date(date);
-    if (isNaN(attendanceDate.getTime())) {
-      return res.status(400).json({ success: false, error: 'date must be a valid ISO 8601 date (YYYY-MM-DD)' });
+    const toSave = records.filter(r => r.status && r.status !== 'unset');
+    const results = { saved: 0, skipped: records.length - toSave.length, errors: [] };
+
+    for (const record of toSave) {
+      const { childId, date, status, note } = record;
+
+      if (!childId) { results.errors.push({ childId, code: 'ATTENDANCE_CHILD_ID_REQUIRED' }); continue; }
+      if (!date) { results.errors.push({ childId, code: 'ATTENDANCE_DATE_REQUIRED' }); continue; }
+      if (!VALID_STATUSES.includes(status)) {
+        results.errors.push({ childId, code: 'ATTENDANCE_INVALID_STATUS' }); continue;
+      }
+
+      const attendanceDate = new Date(date);
+      if (isNaN(attendanceDate.getTime())) {
+        results.errors.push({ childId, code: 'ATTENDANCE_INVALID_DATE' }); continue;
+      }
+      const todayBound = new Date();
+      todayBound.setHours(23, 59, 59, 999);
+      if (attendanceDate > todayBound) {
+        results.errors.push({ childId, code: 'ATTENDANCE_FUTURE_DATE' }); continue;
+      }
+
+      try {
+        const child = await validateChildAccess(childId, req);
+        if (!child) { results.errors.push({ childId, code: 'ATTENDANCE_ACCESS_DENIED' }); continue; }
+        if (!await isTeacherAssignedToChild(child, req)) {
+          results.errors.push({ childId, code: 'ATTENDANCE_ACCESS_DENIED' }); continue;
+        }
+
+        const childSnapshot = { firstName: child.firstName, lastName: child.lastName, schoolId: child.schoolId };
+        const existing = await ChildAttendance.findOne({ where: { childId, date } });
+
+        if (existing) {
+          existing.status = status;
+          if (note !== undefined) existing.note = note || null;
+          await existing.save();
+        } else {
+          await ChildAttendance.create({
+            childId,
+            teacherId: req.user.id,
+            schoolId: child.schoolId,
+            date,
+            status,
+            note: note || null,
+            markedBy: req.user.id,
+            childSnapshot,
+          });
+        }
+
+        if (status === 'absent') {
+          logger.warn('ATTENDANCE_ABSENT safeguarding marker', { childId, date, teacherId: req.user.id });
+        }
+        results.saved++;
+      } catch (err) {
+        logger.error('createAttendance record error', { childId, error: err.message });
+        results.errors.push({ childId, code: 'ATTENDANCE_SAVE_FAILED' });
+      }
     }
-    const today = new Date();
-    today.setHours(23, 59, 59, 999);
-    if (attendanceDate > today) {
-      return res.status(400).json({ success: false, error: 'date must not be in the future' });
+
+    if (results.errors.length > 0 && results.saved === 0 && toSave.length > 0) {
+      return res.status(400).json({
+        success: false,
+        error: { code: results.errors[0].code, detail: `${results.errors.length} record(s) failed to save` },
+        data: results,
+      });
     }
 
-    // School-scope + teacher-assignment validation
-    const child = await validateChildAccess(childId, req);
-    if (!child) return res.status(403).json({ success: false, error: 'Access denied or child not found' });
-    if (!await isTeacherAssignedToChild(child, req)) {
-      return res.status(403).json({ success: false, error: 'Access denied or child not found' });
-    }
-
-    const childSnapshot = {
-      firstName: child.firstName,
-      lastName: child.lastName,
-      schoolId: child.schoolId,
-    };
-
-    const record = await ChildAttendance.create({
-      childId,
-      teacherId: req.user.id,
-      schoolId: child.schoolId,
-      date,
-      status,
-      note: note || null,
-      markedBy: req.user.id,
-      childSnapshot,
-    });
-
-    return res.status(201).json({ success: true, data: record });
+    return res.status(201).json({ success: true, data: results });
   } catch (error) {
-    if (error.name === 'SequelizeUniqueConstraintError') {
-      return res.status(409).json({ success: false, error: 'Attendance already recorded for this child on this date' });
-    }
     logger.error('createAttendance error', { error: error.message, stack: error.stack });
-    return res.status(500).json({ success: false, error: 'Failed to record attendance' });
+    return res.status(500).json({ success: false, error: { code: 'ATTENDANCE_SAVE_FAILED', detail: 'Failed to record attendance' } });
   }
 };
 

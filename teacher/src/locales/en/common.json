@@ -532,7 +532,23 @@
   },
   "attendance": {
     "errorLoadChildren": "Error loading children list",
-    "errorSave": "Error saving"
+    "errorSave": "Error saving",
+    "saved": "Attendance saved",
+    "statusPresent": "Present",
+    "statusHomeLeave": "Home leave",
+    "statusSick": "Sick",
+    "statusHospitalized": "Hospitalized",
+    "statusAbsent": "Absent",
+    "statusUnset": "Not marked",
+    "filterAll": "All",
+    "markAll": "All present",
+    "viewDaily": "Daily",
+    "viewWeek": "Week",
+    "viewMonth": "Month",
+    "children": "children",
+    "noChildren": "No children match this filter",
+    "noHistory": "No attendance records",
+    "saving": "Saving..."
   },
   "childDetail": {
     "errorIrrLoad": "Failed to load IDP data"

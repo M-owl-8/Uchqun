@@ -532,7 +532,23 @@
   },
   "attendance": {
     "errorLoadChildren": "Bolalar ro'yxatini yuklashda xatolik",
-    "errorSave": "Saqlashda xatolik yuz berdi"
+    "errorSave": "Saqlashda xatolik yuz berdi",
+    "saved": "Davomat saqlandi",
+    "statusPresent": "Bor",
+    "statusHomeLeave": "Uyda",
+    "statusSick": "Kasal",
+    "statusHospitalized": "Shifoxonada",
+    "statusAbsent": "Yo'q",
+    "statusUnset": "Tegmang",
+    "filterAll": "Hammasi",
+    "markAll": "Hammasi keldi",
+    "viewDaily": "Kunlik",
+    "viewWeek": "Hafta",
+    "viewMonth": "Oy",
+    "children": "bola",
+    "noChildren": "Bu filtr bo'yicha bola yo'q",
+    "noHistory": "Davomat ma'lumotlari yo'q",
+    "saving": "Saqlanmoqda..."
   },
   "childDetail": {
     "errorIrrLoad": "IRR ma'lumotlari yuklanmadi"

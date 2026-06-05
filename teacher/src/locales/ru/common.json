@@ -532,7 +532,23 @@
   },
   "attendance": {
     "errorLoadChildren": "Ошибка загрузки списка детей",
-    "errorSave": "Ошибка сохранения"
+    "errorSave": "Ошибка сохранения",
+    "saved": "Посещаемость сохранена",
+    "statusPresent": "Присутствует",
+    "statusHomeLeave": "Дома",
+    "statusSick": "Болен",
+    "statusHospitalized": "Госпитализирован",
+    "statusAbsent": "Отсутствует",
+    "statusUnset": "Не отмечен",
+    "filterAll": "Все",
+    "markAll": "Все присутствуют",
+    "viewDaily": "День",
+    "viewWeek": "Неделя",
+    "viewMonth": "Месяц",
+    "children": "детей",
+    "noChildren": "Нет детей по этому фильтру",
+    "noHistory": "Нет данных о посещаемости",
+    "saving": "Сохранение..."
   },
   "childDetail": {
     "errorIrrLoad": "Не удалось загрузить данные ИРП"

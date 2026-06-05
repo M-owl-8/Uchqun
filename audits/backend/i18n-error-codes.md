@@ -57,6 +57,21 @@
 
 ---
 
+## Attendance (`attendanceController.js`)
+
+Introduced: TP-DAVOMAT-REWORK (2026-06-06)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `ATTENDANCE_RECORDS_REQUIRED` | 400 | `records` array is missing or empty | "Please provide at least one attendance record." |
+| `ATTENDANCE_CHILD_ID_REQUIRED` | 400 | A record in the batch is missing `childId` | "Each record must include a child identifier." |
+| `ATTENDANCE_DATE_REQUIRED` | 400 | A record in the batch is missing `date` | "Each record must include a date." |
+| `ATTENDANCE_INVALID_DATE` | 400 | `date` is not a valid ISO 8601 date string | "Please enter a valid date (YYYY-MM-DD)." |
+| `ATTENDANCE_FUTURE_DATE` | 400 | `date` is after today | "Attendance cannot be recorded for a future date." |
+| `ATTENDANCE_INVALID_STATUS` | 400 | `status` is not one of `present`, `absent`, `home_leave`, `sick`, `hospitalized` | "Please select a valid presence status." |
+| `ATTENDANCE_ACCESS_DENIED` | 400 (per-record) | Child does not belong to this school, or teacher is not assigned to the child | "You do not have access to this child's record." |
+| `ATTENDANCE_SAVE_FAILED` | 400/500 | Database error while saving a record | "Failed to save attendance. Please try again." |
+
 ---
 
 ## Bulk Import — file-level (`adminImportController.js`)

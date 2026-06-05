@@ -30,7 +30,7 @@ const ChildAttendance = sequelize.define('ChildAttendance', {
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('present', 'absent', 'late', 'excused'),
+    type: DataTypes.ENUM('present', 'absent', 'home_leave', 'sick', 'hospitalized'),
     allowNull: false,
   },
   note: {

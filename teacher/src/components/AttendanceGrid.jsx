@@ -1,14 +1,14 @@
-import { Check, X, Clock, Thermometer } from 'lucide-react';
+import { Check, X, Home, Thermometer, Building2 } from 'lucide-react';
 import { ChildAvatar } from './ChildAvatar';
 
-// Attendance states cycle: unset → present → absent → late → excused → unset
-const STATES = ['unset', 'present', 'absent', 'late', 'excused'];
+// Care-institution presence cycle: unset → present → home_leave → sick → hospitalized → absent → unset
+const STATES = ['unset', 'present', 'home_leave', 'sick', 'hospitalized', 'absent'];
 
 const STATE_CONFIG = {
   unset: {
     border: '2px dashed #DDE0E6',
     bg: '#FFFFFE',
-    label: 'tegmang',
+    label: 'Tegmang',
     labelColor: '#959BA8',
     icon: null,
     dim: false,
@@ -22,31 +22,40 @@ const STATE_CONFIG = {
     iconBg: '#7AB89A',
     dim: false,
   },
-  absent: {
-    border: '2px solid #DDE0E6',
-    bg: '#F6F7F9',
-    label: "Yo'q",
-    labelColor: '#6F7585',
-    icon: X,
-    iconBg: '#959BA8',
-    dim: true,
-  },
-  late: {
+  home_leave: {
     border: '2px solid #C58A1F',
-    bg: '#FFFFFE',
-    label: 'Kech',
+    bg: '#FFFBF0',
+    label: 'Uyda',
     labelColor: '#8E6314',
-    icon: Clock,
+    icon: Home,
     iconBg: '#C58A1F',
     dim: false,
   },
-  excused: {
+  sick: {
     border: '2px solid #4D6584',
-    bg: '#FFFFFE',
+    bg: '#F5F8FC',
     label: 'Kasal',
     labelColor: '#37495F',
     icon: Thermometer,
     iconBg: '#4D6584',
+    dim: false,
+  },
+  hospitalized: {
+    border: '2px solid #7C5CBF',
+    bg: '#F8F5FF',
+    label: 'Shifoxonada',
+    labelColor: '#5B3D9A',
+    icon: Building2,
+    iconBg: '#7C5CBF',
+    dim: false,
+  },
+  absent: {
+    border: '2px solid #E55A4E',
+    bg: '#FFF0EF',
+    label: "Yo'q",
+    labelColor: '#B83025',
+    icon: X,
+    iconBg: '#E55A4E',
     dim: false,
   },
 };
@@ -91,7 +100,7 @@ function ChildCard({ child, state, onStateChange }) {
 
 /**
  * AttendanceGrid — 2-column grid of child cards.
- * states: { [childId]: 'unset' | 'present' | 'absent' | 'late' | 'sick' }
+ * states: { [childId]: 'unset' | 'present' | 'home_leave' | 'sick' | 'hospitalized' | 'absent' }
  * onStateChange(childId, newState)
  */
 export function AttendanceGrid({ childList, states, onStateChange }) {
