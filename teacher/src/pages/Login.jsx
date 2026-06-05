@@ -6,20 +6,6 @@ import { useTranslation } from 'react-i18next';
 import { Eye, EyeOff, GraduationCap, Users, Shield } from 'lucide-react';
 import { LanguageSwitcher } from '../../../shared/components/LanguageSwitcher';
 
-// Decorative four-pointed star outline for the left panel lower portion.
-const StarGlyph = () => (
-  <svg
-    viewBox="-110 -110 220 220"
-    aria-hidden="true"
-    className="absolute bottom-[-12%] left-1/2 -translate-x-1/2 w-[88%] pointer-events-none select-none"
-    fill="none"
-    stroke="rgba(255,255,255,0.07)"
-    strokeWidth="1.2"
-  >
-    <path d="M0,-95 C9,-23 23,-9 95,0 C23,9 9,23 0,95 C-9,23 -23,9 -95,0 C-23,-9 -9,-23 0,-95 Z" />
-  </svg>
-);
-
 const Login = () => {
   const [email, setEmail]                   = useState('');
   const [password, setPassword]             = useState('');
@@ -72,8 +58,6 @@ const Login = () => {
         className="hidden lg:flex lg:w-[45%] flex-col relative overflow-hidden"
         style={{ background: '#2A2530' }}
       >
-        <StarGlyph />
-
         {/* Logo row */}
         <div className="relative z-10 px-10 pt-10 flex items-center gap-3">
           <span
