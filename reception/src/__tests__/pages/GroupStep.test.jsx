@@ -13,6 +13,20 @@ vi.mock('../../../../shared/utils/cache', () => ({
   set: vi.fn(),
 }));
 
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key, opts) => {
+      const map = {
+        'groupStep.loadError': 'Guruhlarni yuklashda xatolik yuz berdi. Iltimos, sahifani yangilang.',
+        'groupStep.noGroups': 'Guruhlar topilmadi',
+      };
+      if (map[key]) return map[key];
+      if (opts?.name) return `${key}:${opts.name}`;
+      return key;
+    },
+  }),
+}));
+
 import api from '../../services/api';
 import GroupStep from '../../pages/ParentWizard/steps/GroupStep';
 

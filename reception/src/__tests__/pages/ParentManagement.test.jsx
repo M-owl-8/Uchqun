@@ -154,9 +154,11 @@ describe('CL-012 ParentManagement integration', () => {
   it('clicking add button navigates to new parent wizard', async () => {
     stubLoad([], [teacher1], [group1]);
     render(React.createElement(ParentManagement));
-    await waitFor(() => expect(screen.getByText('parentsPage.add')).toBeTruthy());
+    // With empty parents both the toolbar Add and the empty-state Add render the
+    // same key text, so we use getAllByText and click the first (toolbar) button.
+    await waitFor(() => expect(screen.getAllByText('parentsPage.add').length).toBeGreaterThan(0));
 
-    fireEvent.click(screen.getByText('parentsPage.add').closest('button'));
+    fireEvent.click(screen.getAllByText('parentsPage.add')[0].closest('button'));
 
     expect(mockNavigate).toHaveBeenCalledWith('/reception/parents/new');
   });
