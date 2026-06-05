@@ -1,20 +1,6 @@
 import { CheckCircle2, ArrowLeft, ArrowRight, Save } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
-/**
- * Wizard progress strip and footer.
- *
- * Props:
- *   steps        — array of step label strings
- *   currentStep  — 0-based index of current step
- *   onBack       — called when "Orqaga" is clicked
- *   onNext       — called when "Davom etish" is clicked
- *   onSaveDraft  — called when "Saqlab chiqish" is clicked
- *   onComplete   — called when "Yakunlash" is clicked (last step)
- *   isFirst      — whether this is step 0
- *   isLast       — whether this is the final step
- *   loading      — show loading state on primary button
- *   title        — wizard title shown in header
- */
 export default function Wizard({
   steps = [],
   currentStep = 0,
@@ -28,6 +14,7 @@ export default function Wizard({
   title,
   children,
 }) {
+  const { t } = useTranslation();
   const total = steps.length;
 
   return (
@@ -36,7 +23,7 @@ export default function Wizard({
       <div className="px-6 pt-6">
         <div className="flex items-center justify-between mb-2">
           <div className="text-[12px] font-mono uppercase tracking-wider text-brand-700">
-            Qadam {currentStep + 1} / {total}
+            {t('wizard.stepOf', { current: currentStep + 1, total })}
           </div>
           {title && <div className="text-[12px] text-slate-500">{title}</div>}
         </div>
@@ -109,7 +96,7 @@ export default function Wizard({
           className="h-9 px-3 rounded-md hover:bg-slate-100 text-slate-700 text-[13px] font-medium inline-flex items-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
         >
           <ArrowLeft className="w-4 h-4" strokeWidth={2} />
-          Orqaga
+          {t('wizard.back')}
         </button>
 
         <div className="flex items-center gap-2">
@@ -120,7 +107,7 @@ export default function Wizard({
               className="h-9 px-3 rounded-md hover:bg-slate-100 text-slate-700 text-[13px] font-medium inline-flex items-center gap-1.5 transition-colors"
             >
               <Save className="w-4 h-4" strokeWidth={2} />
-              Saqlab chiqish
+              {t('wizard.saveDraft')}
             </button>
           )}
 
@@ -131,7 +118,7 @@ export default function Wizard({
               disabled={loading}
               className="h-10 px-5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-medium inline-flex items-center gap-2 disabled:opacity-50 transition-colors"
             >
-              {loading ? 'Saqlanmoqda…' : 'Yakunlash'}
+              {loading ? t('wizard.saving') : t('wizard.complete')}
             </button>
           ) : (
             <button
@@ -140,7 +127,7 @@ export default function Wizard({
               disabled={loading}
               className="h-10 px-5 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[14px] font-medium inline-flex items-center gap-2 disabled:opacity-50 transition-colors"
             >
-              Davom etish
+              {t('wizard.next')}
               <ArrowRight className="w-4 h-4" strokeWidth={2} />
             </button>
           )}

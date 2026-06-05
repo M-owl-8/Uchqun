@@ -10,7 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useAuth } from '../../context/AuthContext';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
 
-const STEPS = ["Ota-ona ma'lumotlari", "Bola ma'lumotlari", 'Guruh tayinlash'];
+// Step labels are derived inside the component via t() so they respond to language changes.
 
 const defaultParent = {
   firstName: '', lastName: '', localPart: '', phone: '', password: '',
@@ -27,6 +27,7 @@ export default function ParentWizardPage() {
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
   const { user } = useAuth();
+  const STEPS = [t('wizard.step1'), t('wizard.step2'), t('wizard.step3')];
 
   const DRAFT_KEY = `wizard:parent:${user?.id || 'anon'}:draft`;
   const { restore, save, clear } = useFormPersistence(DRAFT_KEY, { storage: 'localStorage' });
@@ -84,7 +85,7 @@ export default function ParentWizardPage() {
 
   const saveDraft = () => {
     save({ parentData, childData, groupData, step });
-    success("Qoralama saqlandi");
+    success(t('wizard.draftSaved'));
   };
 
   const handleNext = () => {
@@ -97,7 +98,7 @@ export default function ParentWizardPage() {
 
   const handleComplete = async () => {
     if (!groupData.groupId) {
-      showError("Guruh tanlash majburiy");
+      showError(t('wizard.groupRequired'));
       return;
     }
     setLoading(true);
@@ -115,12 +116,12 @@ export default function ParentWizardPage() {
       }
       await api.post('/reception/parents', payload);
       clear();
-      success("Ota-ona muvaffaqiyatli qo'shildi");
+      success(t('wizard.success'));
       navigate('/reception/wizard/complete', {
         state: { email: parentData.email, password: parentData.password },
       });
     } catch (err) {
-      showError(err.response?.data?.error || "Xatolik yuz berdi. Qayta urinib ko'ring.");
+      showError(err.response?.data?.error || t('wizard.error'));
     } finally {
       setLoading(false);
     }
@@ -155,10 +156,10 @@ export default function ParentWizardPage() {
 
       <div className="mb-6">
         <h1 className="h1-tab text-[26px] font-semibold tracking-tight text-slate-900">
-          {"Yangi ota-ona qo'shish"}
+          {t('wizard.title')}
         </h1>
         <p className="text-[13.5px] text-slate-500 mt-1.5">
-          {"3 qadamli sehrgar orqali ota-ona, bola va guruhni birga ro'yxatdan o'tkazing."}
+          {t('wizard.subtitle')}
         </p>
       </div>
 
@@ -172,7 +173,7 @@ export default function ParentWizardPage() {
         isFirst={step === 0}
         isLast={step === STEPS.length - 1}
         loading={loading}
-        title="Yangi ota-ona qo'shish"
+        title={t('wizard.title')}
       >
         {step === 0 && <ParentStep data={parentData} onChange={setParentData} schoolSlug={schoolSlug} />}
         {step === 1 && <ChildStep data={childData} onChange={setChildData} />}

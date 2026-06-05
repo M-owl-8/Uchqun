@@ -143,6 +143,10 @@
     "colChild": "Child",
     "colStatus": "Status",
     "colJoined": "Date Added",
+    "bulkActivateConfirm_one": "Activate {{count}} parent?",
+    "bulkActivateConfirm_other": "Activate {{count}} parents?",
+    "bulkDeleteConfirm_one": "Delete {{count}} parent?",
+    "bulkDeleteConfirm_other": "Delete {{count}} parents?",
     "bulkActivatePartialFailure": "Some records failed to activate",
     "bulkDeletePartialFailure": "{{count}} records failed to delete",
     "form": {
@@ -369,7 +373,13 @@
     "saveDraft": "Save Draft",
     "complete": "Complete",
     "draftRestored": "Draft loaded",
+    "draftSaved": "Draft saved",
     "success": "Successfully added",
+    "stepOf": "Step {{current}} / {{total}}",
+    "saving": "Saving…",
+    "subtitle": "Register a parent, child and group in 3 steps.",
+    "groupRequired": "Group selection is required",
+    "error": "An error occurred. Please try again.",
     "completePage": {
       "title": "Done!",
       "description": "Parent, child and group successfully registered.",
@@ -396,7 +406,13 @@
     "progress": "Status",
     "help": "Help",
     "allApproved": "All documents approved",
+    "allApprovedDesc": "You have full access.",
     "pendingWarning": "Documents are awaiting approval",
+    "pendingCountLabel_one": "{{count}} document pending review",
+    "pendingCountLabel_other": "{{count}} documents pending review",
+    "rejectedCountLabel_one": "{{count}} rejected",
+    "rejectedCountLabel_other": "{{count}} rejected",
+    "pendingDesc": "Contact the school administration or upload a new one.",
     "fileSizeLimit": "File size must not exceed {{maxMB}} MB.",
     "uploadSuccess": "Document uploaded. Awaiting director approval.",
     "uploadError": "Document upload failed. Please try again.",
@@ -453,5 +469,18 @@
   "errors": {
     "NETWORK_ERROR": "Network error",
     "ACCOUNT_NOT_ACTIVE": "Account suspended"
+  },
+  "groupStep": {
+    "title": "Group Assignment",
+    "subtitle": "Select a suitable group for {{name}}. Pay attention to the age range.",
+    "loadError": "Failed to load groups. Please refresh the page.",
+    "noGroups": "No groups found",
+    "teacher": "Teacher",
+    "occupancy": "Occupancy",
+    "summary": "Summary",
+    "summaryParent": "Parent",
+    "summaryChild": "Child",
+    "summaryGroup": "Group",
+    "fallbackGroupName": "Group {{id}}"
   }
 }

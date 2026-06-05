@@ -20,7 +20,9 @@ const CACHE_KEY = 'reception:dashboard';
 const Dashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+
+  const DATE_LOCALE = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-US' };
 
   const [stats, setStats] = useState(() => cache.get(CACHE_KEY)?.stats ?? null);
   const [, setTeachers] = useState(() => cache.get(CACHE_KEY)?.teachers ?? []);
@@ -72,9 +74,10 @@ const Dashboard = () => {
     return () => controller.abort();
   }, []);
 
+  const dateLocale = DATE_LOCALE[i18n.language] ?? 'uz-Latn-UZ';
   const now = new Date();
-  const dateStr = now.toLocaleDateString('uz-Latn-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
-  const timeStr = now.toLocaleTimeString('uz-Latn-UZ', { hour: '2-digit', minute: '2-digit' });
+  const dateStr = now.toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
+  const timeStr = now.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' });
 
   // Suspended parents (status !== 'active'); isActive is legacy/bypassed for parents
   const pendingParents = parents.filter((p) => p.status === 'suspended').slice(0, 3);
@@ -289,7 +292,7 @@ const Dashboard = () => {
                     )}
                   </div>
                   <div className="text-[12px] text-slate-500 num shrink-0">
-                    {parent.createdAt ? new Date(parent.createdAt).toLocaleDateString('uz-Latn-UZ') : ''}
+                    {parent.createdAt ? new Date(parent.createdAt).toLocaleDateString(dateLocale) : ''}
                   </div>
                 </li>
               ))}

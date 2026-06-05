@@ -28,6 +28,7 @@ const Layout = () => {
   const { open: paletteOpen, onOpen: openPalette, onClose: closePalette } = useCommandPalette();
   const pageLabel = usePageLabel();
   const location = useLocation();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen bg-paper">
@@ -73,7 +74,7 @@ const Layout = () => {
             className="h-9 px-3 rounded-md border border-slate-200 bg-surface hover:bg-slate-50 inline-flex items-center gap-2 text-[13px] text-slate-500 transition-colors"
           >
             <Search className="w-4 h-4" strokeWidth={2} />
-            <span className="hidden sm:inline">Tezkor qidiruv…</span>
+            <span className="hidden sm:inline">{t('dashboard.quickSearch')}…</span>
             <span className="kbd ml-1">⌘ K</span>
           </button>
 

@@ -83,6 +83,9 @@ function extractKeys(src) {
 }
 
 // ── Key resolver ──────────────────────────────────────────────────────────────
+// Mirrors i18next v23 plural-key lookup: if the bare key is absent, accept any
+// plural-suffix variant (_one, _other, _few, _many, _zero, _two) as proof of
+// presence.  This handles keys declared only as "key_one"/"key_other" etc.
 
 function resolveKey(catalog, keyPath) {
   const parts = keyPath.split('.');
@@ -92,7 +95,24 @@ function resolveKey(catalog, keyPath) {
     curr = curr[part];
   }
   if (typeof curr === 'object' && curr !== null) return undefined;
-  return curr;
+  // Bare key found (string, number, bool) — return it.
+  if (curr !== undefined) return curr;
+
+  // Bare key absent — check plural-suffix variants on the parent object.
+  const parentParts = parts.slice(0, -1);
+  const leafKey = parts[parts.length - 1];
+  let parent = catalog;
+  for (const part of parentParts) {
+    if (parent == null || typeof parent !== 'object') return undefined;
+    parent = parent[part];
+  }
+  if (parent == null || typeof parent !== 'object') return undefined;
+  const PLURAL_SUFFIXES = ['_one', '_other', '_few', '_many', '_zero', '_two'];
+  for (const suffix of PLURAL_SUFFIXES) {
+    const v = parent[leafKey + suffix];
+    if (v !== undefined && typeof v !== 'object') return v;
+  }
+  return undefined;
 }
 
 // ── mergeLocales (mirrors runtime behaviour) ──────────────────────────────────

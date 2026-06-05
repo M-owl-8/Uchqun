@@ -83,7 +83,9 @@ const ParentManagement = () => {
     photo: null, photoPreview: null,
   });
   const { success, error: showError } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const DATE_LOCALE = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-US' };
+  const dateLocale = DATE_LOCALE[i18n.language] ?? 'uz-Latn-UZ';
   const showErrorRef = useRef(showError);
   useEffect(() => { showErrorRef.current = showError; }, [showError]);
 
@@ -449,7 +451,7 @@ const ParentManagement = () => {
             onClick={() => {
               const count = selectedRows.size;
               setConfirmDialog({
-                message: `${count} ta ota-onani faollashtirasizmi?`,
+                message: t('parentsPage.bulkActivateConfirm', { count }),
                 onConfirm: async () => {
                   setConfirmDialog(null);
                   let failed = 0;
@@ -499,7 +501,7 @@ const ParentManagement = () => {
           <button
             onClick={() => {
               setConfirmDialog({
-                message: `${selectedRows.size} ta ota-onani o'chirishni tasdiqlaysizmi?`,
+                message: t('parentsPage.bulkDeleteConfirm', { count: selectedRows.size }),
                 onConfirm: async () => {
                   setConfirmDialog(null);
                   let failed = 0;
@@ -548,7 +550,7 @@ const ParentManagement = () => {
               {paginated.map((parent) => {
                 const initials = `${parent.firstName?.charAt(0) || ''}${parent.lastName?.charAt(0) || ''}`;
                 const colClass = avatarColor(initials);
-                const joined = parent.createdAt ? new Date(parent.createdAt).toLocaleDateString('uz-Latn-UZ') : '—';
+                const joined = parent.createdAt ? new Date(parent.createdAt).toLocaleDateString(dateLocale) : '—';
                 const firstChild = parent.children?.[0] ?? null;
                 return (
                   <tr key={parent.id} className="hover:bg-slate-50/60 transition-colors">

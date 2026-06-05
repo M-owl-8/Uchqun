@@ -185,7 +185,7 @@ const GroupManagement = () => {
 
                 <div className="space-y-2 mb-4">
                   <div className="text-sm text-slate-600">
-                    <strong>{t('groupsPage.labels.capacity')}</strong> {group.capacity} {t('parentsPage.children', {count: group.capacity})}
+                    <strong>{t('groupsPage.labels.capacity')}</strong> {t('parentsPage.children', {count: group.capacity})}
                   </div>
                   {groupTeacher && (
                     <div className="text-sm text-slate-600">

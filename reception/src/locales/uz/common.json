@@ -143,6 +143,8 @@
     "colChild": "Bola",
     "colStatus": "Holat",
     "colJoined": "Qo'shilgan",
+    "bulkActivateConfirm": "{{count}} ta ota-onani faollashtirasizmi?",
+    "bulkDeleteConfirm": "{{count}} ta ota-onani o'chirishni tasdiqlaysizmi?",
     "bulkActivatePartialFailure": "Ba'zi yozuvlar faollashtirilmadi",
     "bulkDeletePartialFailure": "{{count}} ta yozuv o'chirilmadi",
     "form": {
@@ -370,7 +372,13 @@
     "saveDraft": "Saqlab chiqish",
     "complete": "Yakunlash",
     "draftRestored": "Qoralama yuklandi",
+    "draftSaved": "Qoralama saqlandi",
     "success": "Muvaffaqiyatli qo'shildi",
+    "stepOf": "Qadam {{current}} / {{total}}",
+    "saving": "Saqlanmoqda…",
+    "subtitle": "Ota-ona, bola va guruhni 3 qadamda ro'yxatdan o'tkating.",
+    "groupRequired": "Guruh tanlash majburiy",
+    "error": "Xatolik yuz berdi. Qayta urinib ko'ring.",
     "completePage": {
       "title": "Tayyor!",
       "description": "Ota-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.",
@@ -397,7 +405,11 @@
     "progress": "Holat",
     "help": "Yordam",
     "allApproved": "Barcha hujjatlar tasdiqlangan",
+    "allApprovedDesc": "Siz to'liq vakolatga egasiz.",
     "pendingWarning": "Tasdiq kutayotgan hujjatlar bor",
+    "pendingCountLabel": "{{count}} ta hujjat tasdiq kutmoqda",
+    "rejectedCountLabel": "{{count}} ta rad etilgan",
+    "pendingDesc": "Maktab rahbari bilan bog'laning yoki yangisini yuklang.",
     "fileSizeLimit": "Fayl hajmi {{maxMB}} MB dan oshmasin.",
     "uploadSuccess": "Hujjat yuklandi. Direktor tasdiqlashi kutilmoqda.",
     "uploadError": "Hujjat yuklanmadi. Qayta urinib ko'ring.",
@@ -454,5 +466,18 @@
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",
     "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan"
+  },
+  "groupStep": {
+    "title": "Guruh tayinlash",
+    "subtitle": "{{name}} uchun mos guruhni tanlang. Yosh oralig'iga e'tibor bering.",
+    "loadError": "Guruhlarni yuklashda xatolik yuz berdi. Iltimos, sahifani yangilang.",
+    "noGroups": "Guruhlar topilmadi",
+    "teacher": "Tarbiyachi",
+    "occupancy": "To'liqlik",
+    "summary": "Xulosa",
+    "summaryParent": "Ota-ona",
+    "summaryChild": "Bola",
+    "summaryGroup": "Guruh",
+    "fallbackGroupName": "Guruh {{id}}"
   }
 }

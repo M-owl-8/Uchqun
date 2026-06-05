@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import api from '../../../services/api';
 import * as cache from '../../../../../shared/utils/cache';
 
 export default function GroupStep({ data, onChange, parentData, childData }) {
+  const { t } = useTranslation();
   const [groups, setGroups] = useState(() => cache.get('reception:groups') || []);
   const [loading, setLoading] = useState(!cache.get('reception:groups'));
   const [fetchError, setFetchError] = useState(null);
@@ -17,7 +19,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
         setGroups(g);
         setFetchError(null);
       })
-      .catch(() => setFetchError('groupStep.loadError'))
+      .catch(() => setFetchError(true))
       .finally(() => setLoading(false));
   }, []);
 
@@ -26,17 +28,17 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
   return (
     <div className="p-6">
       <h3 className="h2-tab text-[16px] font-semibold text-slate-900 mb-1">
-        Guruh tayinlash
+        {t('groupStep.title')}
       </h3>
       {childData?.firstName && (
         <p className="text-[13px] text-slate-500 mb-5">
-          {childData.firstName}{" uchun mos guruhni tanlang. Yosh oralig'iga e'tibor bering."}
+          {t('groupStep.subtitle', { name: childData.firstName })}
         </p>
       )}
 
       {fetchError ? (
         <div className="flex items-center gap-2 p-3 rounded-md bg-error-50 border border-error-100 text-[13px] text-error-700">
-          Guruhlarni yuklashda xatolik yuz berdi. Iltimos, sahifani yangilang.
+          {t('groupStep.loadError')}
         </div>
       ) : loading ? (
         <div className="grid md:grid-cols-3 gap-4">
@@ -46,7 +48,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
         </div>
       ) : groups.length === 0 ? (
         <div className="text-center py-8 text-[13px] text-slate-400">
-          Guruhlar topilmadi
+          {t('groupStep.noGroups')}
         </div>
       ) : (
         <div className="grid md:grid-cols-3 gap-4">
@@ -67,7 +69,7 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
                 <div className="flex items-start justify-between">
                   <div>
                     <div className="text-[15px] font-semibold text-slate-900">
-                      {group.name ? `"${group.name}"` : `Guruh ${group.id}`}
+                      {group.name ? `"${group.name}"` : t('groupStep.fallbackGroupName', { id: group.id })}
                     </div>
                     <div className="text-[12px] text-slate-500 mt-0.5">
                       {group.ageRange || ''}{group.schedule ? ` · ${group.schedule}` : ''}
@@ -83,12 +85,12 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
                 </div>
                 {group.teacher && (
                   <div className="mt-3 text-[12.5px] text-slate-700">
-                    {"Tarbiyachi"} · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
+                    {t('groupStep.teacher')} · <span className="text-slate-900 font-medium">{group.teacher?.firstName} {group.teacher?.lastName}</span>
                   </div>
                 )}
                 <div className="mt-3">
                   <div className="flex items-baseline justify-between text-[11.5px] font-mono text-slate-500">
-                    <span>{"To'liqlik"}</span>
+                    <span>{t('groupStep.occupancy')}</span>
                     <span className="num text-slate-900">{enrolled} / {capacity}</span>
                   </div>
                   <div className="mt-1 h-1.5 rounded-full bg-slate-200 overflow-hidden">
@@ -107,21 +109,21 @@ export default function GroupStep({ data, onChange, parentData, childData }) {
       {/* Confirmation summary */}
       {selected && (parentData?.firstName || childData?.firstName) && (
         <div className="mt-6 p-4 rounded-lg border border-slate-200 bg-paper text-[13.5px] text-slate-700 space-y-1">
-          <div className="font-medium text-slate-900 mb-2">Xulosa</div>
+          <div className="font-medium text-slate-900 mb-2">{t('groupStep.summary')}</div>
           {parentData?.firstName && (
             <div className="flex justify-between">
-              <span className="text-slate-500">Ota-ona</span>
+              <span className="text-slate-500">{t('groupStep.summaryParent')}</span>
               <span>{parentData.firstName} {parentData.lastName}</span>
             </div>
           )}
           {childData?.firstName && (
             <div className="flex justify-between">
-              <span className="text-slate-500">Bola</span>
+              <span className="text-slate-500">{t('groupStep.summaryChild')}</span>
               <span>{childData.firstName} {childData.lastName}</span>
             </div>
           )}
           <div className="flex justify-between">
-            <span className="text-slate-500">Guruh</span>
+            <span className="text-slate-500">{t('groupStep.summaryGroup')}</span>
             <span>{groups.find((g) => String(g.id) === selected)?.name || selected}</span>
           </div>
         </div>

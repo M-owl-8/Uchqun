@@ -127,8 +127,8 @@ export default function Documents() {
         <div className="flex items-start gap-3 p-4 rounded-lg bg-success-50 border border-success-100 text-[13px] text-success-700">
           <CheckCircle2 className="w-5 h-5 mt-0.5 shrink-0" style={{ fill: '#DFE4BE', stroke: '#5C7329' }} strokeWidth={2.4} />
           <div>
-            <div className="font-medium">Barcha hujjatlar tasdiqlangan</div>
-            <div className="text-success-700/80 mt-0.5">{"Siz to'liq vakolatga egasiz."}</div>
+            <div className="font-medium">{t('documents.allApproved')}</div>
+            <div className="text-success-700/80 mt-0.5">{t('documents.allApprovedDesc')}</div>
           </div>
         </div>
       ) : !fetchError && (pendingCount > 0 || rejectedCount > 0) ? (
@@ -136,11 +136,11 @@ export default function Documents() {
           <AlertTriangle className="w-5 h-5 mt-0.5 shrink-0" strokeWidth={2} />
           <div>
             <div className="font-medium">
-              {pendingCount > 0 && `${pendingCount} ta hujjat tasdiq kutmoqda`}
+              {pendingCount > 0 && t('documents.pendingCountLabel', { count: pendingCount })}
               {pendingCount > 0 && rejectedCount > 0 && ' · '}
-              {rejectedCount > 0 && `${rejectedCount} ta rad etilgan`}
+              {rejectedCount > 0 && t('documents.rejectedCountLabel', { count: rejectedCount })}
             </div>
-            <div className="mt-0.5">{"Maktab rahbari bilan bog'laning yoki yangisini yuklang."}</div>
+            <div className="mt-0.5">{t('documents.pendingDesc')}</div>
           </div>
         </div>
       ) : null}
