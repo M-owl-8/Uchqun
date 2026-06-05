@@ -11,7 +11,7 @@
 | 1. Backend | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Sprint E complete | ✅ |
 | 2. Government | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ Sprint E3 complete | ✅ CLOSED 🟡 residuals |
 | 3. Admin | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ All 4 phases complete | ✅ CLOSED |
-| 4. Reception | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ S6/S7 lifecycle+finish complete | 🟡 RECEPTION-FINAL-SWEEP in progress |
+| 4. Reception | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ S6/S7 lifecycle+finish complete | ✅ CLOSED — 434 keys/0 missing, 0 test failures, wizard i18n complete (da3a177) |
 | 5. Teacher + Parent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ ИРР LOOP COMPLETE (CP-024/CP-025) | ✅ CP-020/CP-022 backend | ✅ CP-020/CP-022 frontend | ✅ CLOSED — 130/1351 backend, 13/116 teacher, 30/160 admin, 9/75 isolation — all green |
 | 6. Parent | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ design system (1d2c635) | ✅ | ✅ | ✅ CLOSED — twilight/cream re-skin, 7 new components, 22+27 tests green |
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
