@@ -20,6 +20,7 @@ jobs:
       - name: Deploy Backend (Uchqun) to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
           if [ -z "$RAILWAY_TOKEN" ]; then
             echo "RAILWAY_TOKEN not set — skipping deployment."
@@ -27,6 +28,9 @@ jobs:
           fi
           curl -fsSL https://github.com/railwayapp/cli/releases/download/v5.4.0/railway-v5.4.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp
           sudo mv /tmp/railway /usr/local/bin/railway
+          echo "--- railway whoami ---"
+          railway whoami || true
+          echo "--- railway up ---"
           railway up --service Uchqun --detach
           echo "Backend deployment triggered."
 
@@ -69,6 +73,7 @@ jobs:
       - name: Deploy ${{ matrix.label }} to Railway
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_API_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
           if [ -z "$RAILWAY_TOKEN" ]; then
             echo "RAILWAY_TOKEN not set — skipping deployment."
@@ -76,5 +81,8 @@ jobs:
           fi
           curl -fsSL https://github.com/railwayapp/cli/releases/download/v5.4.0/railway-v5.4.0-x86_64-unknown-linux-gnu.tar.gz | tar xz -C /tmp
           sudo mv /tmp/railway /usr/local/bin/railway
+          echo "--- railway whoami ---"
+          railway whoami || true
+          echo "--- railway up ---"
           railway up --service ${{ matrix.service }} --detach
           echo "${{ matrix.label }} deployment triggered."
