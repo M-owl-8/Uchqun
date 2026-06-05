@@ -23,7 +23,7 @@ const portalArg = process.argv.find(a => a.startsWith('--portal='));
 const PORTAL = portalArg ? portalArg.split('=')[1] : 'admin';
 
 // Portals that have been onboarded to locale completeness checking
-const ONBOARDED_PORTALS = ['admin', 'reception'];
+const ONBOARDED_PORTALS = ['admin', 'reception', 'teacher'];
 
 // ── Portal config ─────────────────────────────────────────────────────────────
 
@@ -36,6 +36,12 @@ function getPortalConfig(portal) {
     reception: {
       srcDir: join(ROOT, 'reception', 'src'),
       localePath: (lang) => join(ROOT, 'reception', 'src', 'locales', lang, 'common.json'),
+    },
+    teacher: {
+      srcDir: join(ROOT, 'teacher', 'src'),
+      localePath: (lang) => join(ROOT, 'teacher', 'src', 'locales', lang, 'common.json'),
+      // Teacher app also merges parent locales at runtime; include them so keys from parent pages resolve.
+      extraLocalePaths: [(lang) => join(ROOT, 'teacher', 'src', 'parent', 'locales', lang, 'common.json')],
     },
   };
   const cfg = configs[portal];
@@ -148,6 +154,12 @@ function runPortalCheck(portal) {
     const shared = JSON.parse(readFileSync(sharedPath, 'utf8'));
     const portalLocale = JSON.parse(readFileSync(portalPath, 'utf8'));
     catalogs[lang] = mergeLocales(shared, portalLocale);
+    if (cfg.extraLocalePaths) {
+      for (const extraPath of cfg.extraLocalePaths) {
+        const extraLocale = JSON.parse(readFileSync(extraPath(lang), 'utf8'));
+        catalogs[lang] = mergeLocales(catalogs[lang], extraLocale);
+      }
+    }
   }
 
   const files = walkFiles(cfg.srcDir, ['.jsx', '.js', '.tsx', '.ts'], ['__tests__', 'node_modules']);
