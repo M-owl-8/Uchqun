@@ -48,7 +48,9 @@ const TeacherManagement = () => {
     password: '',
   });
   const { success, error: showError } = useToast();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const DATE_LOCALE = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-US' };
+  const dateLocale = DATE_LOCALE[i18n?.language] ?? 'uz-Latn-UZ';
   const showErrorRef = useRef(showError);
   useEffect(() => { showErrorRef.current = showError; }, [showError]);
   const [showPassword, setShowPassword] = useState(false);
@@ -149,7 +151,7 @@ const TeacherManagement = () => {
 
   const formatDate = (value) => {
     if (!value) return '';
-    return new Date(value).toLocaleString();
+    return new Date(value).toLocaleString(dateLocale);
   };
 
   const handleDelete = (teacherId) => {
@@ -268,7 +270,10 @@ const TeacherManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">{t('teachersPage.title')}</h1>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">
+            {t('teachersPage.title')}
+            <span className="ml-2 text-2xl text-slate-400 font-semibold">({filteredTeachers.length})</span>
+          </h1>
           <p className="text-slate-500 font-medium mt-1">{t('teachersPage.subtitle')}</p>
         </div>
 
@@ -305,7 +310,7 @@ const TeacherManagement = () => {
             >
               <div className="flex items-start justify-between mb-4">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold">
                     {teacher.firstName?.charAt(0)}{teacher.lastName?.charAt(0)}
                   </div>
                   <div>
@@ -394,7 +399,14 @@ const TeacherManagement = () => {
           <p className="text-slate-400 font-medium text-lg">
             {searchQuery ? t('teachersPage.noTeachersFound') : t('teachersPage.noTeachers')}
           </p>
-          {!searchQuery && (
+          {searchQuery ? (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors"
+            >
+              {t('teachersPage.clearSearch')}
+            </button>
+          ) : (
             <button
               onClick={handleCreate}
               className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors"

@@ -53,23 +53,23 @@ export default function WizardCompletePage() {
       </p>
 
       {email && password && (
-        <div className="w-full max-w-sm mb-8 text-left rounded-xl border border-amber-200 bg-amber-50 p-4 space-y-3">
+        <div className="w-full max-w-sm mb-8 text-left rounded-xl border border-warning-100 bg-warning-50 p-4 space-y-3">
           <div className="flex items-start gap-2">
-            <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 shrink-0" strokeWidth={2} />
-            <p className="text-[12.5px] text-amber-800 font-medium leading-snug">
+            <AlertTriangle className="w-4 h-4 text-warning-600 mt-0.5 shrink-0" strokeWidth={2} />
+            <p className="text-[12.5px] text-warning-700 font-medium leading-snug">
               {t('wizard.completePage.credentialsWarning', { defaultValue: "Yangi ota-ona uchun ma'lumotlar — bu sahifani yopgandan keyin parol qaytadan ko'rsatilmaydi." })}
             </p>
           </div>
-          <div className="bg-white rounded-lg border border-amber-100 p-3 space-y-3">
+          <div className="bg-white rounded-lg border border-warning-100 p-3 space-y-3">
             <CopyField label="Email" value={email} copyLabel={t('wizard.completePage.copy', { defaultValue: 'Nusxa olish' })} />
-            <div className="border-t border-amber-100" />
+            <div className="border-t border-warning-100" />
             <CopyField
               label={t('wizard.completePage.passwordLabel', { defaultValue: 'Parol' })}
               value={password}
               copyLabel={t('wizard.completePage.copy', { defaultValue: 'Nusxa olish' })}
             />
           </div>
-          <p className="text-[11.5px] text-amber-700">
+          <p className="text-[11.5px] text-warning-700">
             {t('wizard.completePage.credentialsNote', { defaultValue: "Bu parolni ota-onaga yetkazing. Birinchi kirishda o'zgartirishni tavsiya eting." })}
           </p>
         </div>

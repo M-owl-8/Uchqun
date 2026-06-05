@@ -74,7 +74,7 @@ const Dashboard = () => {
     return () => controller.abort();
   }, []);
 
-  const dateLocale = DATE_LOCALE[i18n.language] ?? 'uz-Latn-UZ';
+  const dateLocale = DATE_LOCALE[i18n?.language] ?? 'uz-Latn-UZ';
   const now = new Date();
   const dateStr = now.toLocaleDateString(dateLocale, { day: 'numeric', month: 'long', year: 'numeric' });
   const timeStr = now.toLocaleTimeString(dateLocale, { hour: '2-digit', minute: '2-digit' });
@@ -203,9 +203,6 @@ const Dashboard = () => {
                       <div className="text-[13.5px] font-medium text-slate-900 truncate">{doc.name || doc.fileName}</div>
                       <div className="text-[12px] text-slate-500 num">{doc.size || ''}</div>
                     </div>
-                    <button className="text-[12.5px] text-brand-700 font-medium hover:text-brand-800">
-                      {t('common.view', { defaultValue: "Ko'rish" })}
-                    </button>
                   </li>
                 ))}
               </ul>

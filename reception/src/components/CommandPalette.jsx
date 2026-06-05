@@ -3,33 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { Search, UserPlus, UploadCloud, UsersRound } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-const quickActions = [
-  {
-    id: 'new-parent',
-    label: "Yangi ota-ona qo'shish",
-    kbd: '⌘ N',
-    icon: UserPlus,
-    iconBg: 'bg-brand-50 text-brand-700',
-    href: '/reception/parents/new',
-  },
-  {
-    id: 'upload-doc',
-    label: 'Hujjat yuklash',
-    kbd: '⌘ U',
-    icon: UploadCloud,
-    iconBg: 'bg-brand-50 text-brand-700',
-    href: '/reception/documents',
-  },
-  {
-    id: 'new-group',
-    label: 'Guruhlar',
-    kbd: '⌘ G',
-    icon: UsersRound,
-    iconBg: 'bg-brand-50 text-brand-700',
-    href: '/reception/groups',
-  },
-];
-
 export default function CommandPalette({ open, onClose }) {
   const { t } = useTranslation();
   const navigate = useNavigate();
@@ -37,6 +10,33 @@ export default function CommandPalette({ open, onClose }) {
   const listRef = useRef(null);
   const [query, setQuery] = useState('');
   const [activeIdx, setActiveIdx] = useState(0);
+
+  const quickActions = [
+    {
+      id: 'new-parent',
+      label: t('palette.actions.newParent'),
+      kbd: '⌘ N',
+      icon: UserPlus,
+      iconBg: 'bg-brand-50 text-brand-700',
+      href: '/reception/parents/new',
+    },
+    {
+      id: 'upload-doc',
+      label: t('documents.upload'),
+      kbd: '⌘ U',
+      icon: UploadCloud,
+      iconBg: 'bg-brand-50 text-brand-700',
+      href: '/reception/documents',
+    },
+    {
+      id: 'new-group',
+      label: t('palette.groups'),
+      kbd: '⌘ G',
+      icon: UsersRound,
+      iconBg: 'bg-brand-50 text-brand-700',
+      href: '/reception/groups',
+    },
+  ];
 
   const items = quickActions;
   const filtered = query
@@ -140,13 +140,13 @@ export default function CommandPalette({ open, onClose }) {
           <div className="flex items-center gap-3">
             <span className="inline-flex items-center gap-1">
               <span className="kbd">↑</span><span className="kbd">↓</span>
-              {' '}navigatsiya
+              {' '}{t('palette.navigate')}
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="kbd">↵</span> tanlash
+              <span className="kbd">↵</span> {t('palette.select')}
             </span>
             <span className="inline-flex items-center gap-1">
-              <span className="kbd">esc</span> yopish
+              <span className="kbd">esc</span> {t('palette.close')}
             </span>
           </div>
           <span className="font-mono">⌘ K</span>

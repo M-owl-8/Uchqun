@@ -131,7 +131,7 @@ export default function ParentWizardPage() {
     <div className="max-w-3xl mx-auto">
       {/* Draft restore banner — replaces window.confirm (RE-8) */}
       {draftBanner && (
-        <div className="mb-4 p-4 rounded-lg border border-amber-200 bg-amber-50 flex items-start gap-4 text-[13.5px] text-amber-900">
+        <div className="mb-4 p-4 rounded-lg border border-warning-100 bg-warning-50 flex items-start gap-4 text-[13.5px] text-warning-700">
           <div className="flex-1">
             {t('parentsPage.wizard.draftRestorePrompt', { defaultValue: "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?" })}
           </div>
@@ -139,14 +139,14 @@ export default function ParentWizardPage() {
             <button
               type="button"
               onClick={handleResumeDraft}
-              className="h-8 px-3 rounded-md text-[12.5px] font-medium bg-amber-700 text-white hover:bg-amber-800 transition-colors"
+              className="h-8 px-3 rounded-md text-[12.5px] font-medium bg-warning-700 text-white hover:bg-warning-600 transition-colors"
             >
               {t('parentsPage.wizard.draftResume', { defaultValue: "Davom etish" })}
             </button>
             <button
               type="button"
               onClick={handleDiscardDraft}
-              className="h-8 px-3 rounded-md text-[12.5px] font-medium border border-amber-300 text-amber-800 hover:bg-amber-100 transition-colors"
+              className="h-8 px-3 rounded-md text-[12.5px] font-medium border border-warning-100 text-warning-700 hover:bg-warning-50 transition-colors"
             >
               {t('parentsPage.wizard.draftDiscard', { defaultValue: "Bekor qilish" })}
             </button>

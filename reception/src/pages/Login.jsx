@@ -150,17 +150,10 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <div className="flex items-baseline justify-between mb-1.5">
+              <div className="mb-1.5">
                 <label htmlFor="password" className="block text-[13px] font-medium text-slate-800">
                   {t('login.password')}
                 </label>
-                <button
-                  type="button"
-                  className="text-[12.5px] text-brand-700 hover:text-brand-800"
-                  tabIndex={-1}
-                >
-                  {t('login.forgotPassword')}
-                </button>
               </div>
               <div className="relative">
                 <input

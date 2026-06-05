@@ -155,6 +155,10 @@
     "bulkDeleteConfirm_other": "Удалить {{count}} родителей?",
     "bulkActivatePartialFailure": "Некоторые записи не удалось активировать",
     "bulkDeletePartialFailure": "{{count}} записей не удалось удалить",
+    "emptyTitle": "Пока пусто",
+    "emptyDesc": "Новые родители появятся здесь после добавления.",
+    "emptySearchDesc": "По запросу «{{query}}» ничего не найдено",
+    "clearSearch": "Сбросить поиск",
     "form": {
       "firstName": "Имя",
       "lastName": "Фамилия",
@@ -228,6 +232,7 @@
     "noTeachers": "Пока нет воспитателей",
     "noTeachersFound": "Воспитатели не найдены",
     "addFirst": "Добавить первого воспитателя",
+    "clearSearch": "Сбросить поиск",
     "confirmDelete": "Удалить аккаунт воспитателя?",
     "confirmDeleteWarning": "Воспитатель будет удалён (мягкое удаление). Восстановление через данный портал невозможно (возможно через портал директора).",
     "confirmSuspend": "Заблокировать этого воспитателя? Доступ будет ограничен.",
@@ -283,6 +288,7 @@
     "noGroups": "Пока нет групп",
     "noGroupsFound": "Группы не найдены",
     "addFirst": "Добавить первую группу",
+    "clearSearch": "Сбросить поиск",
     "confirmDelete": "Удалить эту группу?",
     "confirmDeleteWarning": "Это действие необратимо — данные группы не могут быть восстановлены. Дети из группы должны быть переназначены.",
     "toastCreate": "Группа создана",
@@ -343,7 +349,8 @@
     "passwordWeak": "Пароль должен содержать заглавные, строчные буквы и цифру",
     "phonePlaceholder": "+998 90 123 45 67",
     "replied": "Ответ получен",
-    "sendMessageToGovt": "Написать в государственный орган"
+    "sendMessageToGovt": "Написать в государственный орган",
+    "loadMessagesError": "Не удалось загрузить сообщения"
   },
   "profile": {
     "title": "Профиль",
@@ -369,7 +376,8 @@
     "yourMessage": "Ваше сообщение",
     "governmentReply": "Ответ государства",
     "replied": "Получен ответ",
-    "logout": "Выход"
+    "logout": "Выход",
+    "loadMessagesError": "Не удалось загрузить сообщения"
   },
   "page404": {
     "heading": "404",
@@ -410,7 +418,13 @@
     "quickActions": "Быстрые действия",
     "parents": "Родители",
     "teachers": "Воспитатели",
-    "groups": "Группы"
+    "groups": "Группы",
+    "actions": {
+      "newParent": "Добавить родителя"
+    },
+    "navigate": "навигация",
+    "select": "выбрать",
+    "close": "закрыть"
   },
   "documents": {
     "title": "Мои документы",
@@ -440,6 +454,11 @@
     "documentType": "Тип документа",
     "loadError": "Ошибка загрузки документов.",
     "loading": "Загрузка...",
+    "progressTotal": "Итого",
+    "helpFormats": "Принимаются форматы PDF, JPG, PNG",
+    "helpMaxSize": "Максимальный размер файла 10 МБ",
+    "helpReviewTime": "Администратор рассматривает заявки в течение 1–3 рабочих дней",
+    "helpContact": "По вопросам",
     "type": {
       "license": "Лицензия",
       "certificate": "Сертификат",
@@ -499,5 +518,62 @@
     "summaryChild": "Ребёнок",
     "summaryGroup": "Группа",
     "fallbackGroupName": "Группа {{id}}"
+  },
+  "role": {
+    "reception": "Сотрудник ресепшен"
+  },
+  "parentStep": {
+    "title": "Сведения о родителе",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "email": "Email",
+    "emailHint": "Домен почты задаётся школой.",
+    "phone": "Телефон",
+    "phoneHint": "9-значный номер телефона.",
+    "address": "Адрес",
+    "addressPlaceholder": "г. Ташкент, Юнусабадский район…",
+    "passport": "Серия и номер паспорта",
+    "passportOptional": "необязательно",
+    "nativeLanguage": "Родной язык",
+    "password": "Пароль",
+    "select": "Выберите"
+  },
+  "nativeLanguage": {
+    "uzbek": "Узбекский",
+    "russian": "Русский",
+    "tajik": "Таджикский"
+  },
+  "childStep": {
+    "title": "Сведения о ребёнке",
+    "firstName": "Имя",
+    "lastName": "Фамилия",
+    "dateOfBirth": "Дата рождения",
+    "gender": "Пол",
+    "disabilityType": "Тип диагноза",
+    "diagnosisLevel": "Степень диагноза",
+    "specialNeeds": "Особые потребности",
+    "specialNeedsPlaceholder": "Например: безглютеновое питание, индивидуальный помощник педагога…",
+    "ageLabel": "Возраст рассчитывается автоматически:",
+    "select": "Выберите",
+    "years_one": "{{count}} год",
+    "years_few": "{{count}} года",
+    "years_many": "{{count}} лет",
+    "years_other": "{{count}} года",
+    "months_one": "{{count}} месяц",
+    "months_few": "{{count}} месяца",
+    "months_many": "{{count}} месяцев",
+    "months_other": "{{count}} месяца"
+  },
+  "disabilityType": {
+    "autism": "Расстройство аутистического спектра",
+    "hearing": "Нарушение слуха",
+    "vision": "Нарушение зрения",
+    "speech": "Нарушение речи",
+    "mixed": "Сочетанные нарушения"
+  },
+  "diagnosisLevel": {
+    "light": "Лёгкая",
+    "medium": "Средняя",
+    "heavy": "Тяжёлая"
   }
 }

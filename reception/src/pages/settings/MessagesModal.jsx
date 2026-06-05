@@ -49,7 +49,8 @@ const MessagesModal = ({ myMessages, loadingMessages, onClose }) => {
                     </p>
                   </div>
                   {msg.reply && (
-                    <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
+                    <span className="inline-flex items-center gap-1.5 text-[11.5px] text-success-700 font-medium">
+                      <span className="w-1.5 h-1.5 rounded-full bg-success-500 shrink-0" />
                       {t('settings.replied', { defaultValue: 'Javob berildi' })}
                     </span>
                   )}

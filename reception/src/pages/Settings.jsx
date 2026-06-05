@@ -60,12 +60,13 @@ const Settings = () => {
       setLoadingMessages(true);
       const response = await api.get('/reception/messages');
       setMyMessages(response.data.data || []);
-    } catch (error) {
+    } catch {
       setMyMessages([]);
+      showError(t('settings.loadMessagesError'));
     } finally {
       setLoadingMessages(false);
     }
-  }, []);
+  }, [showError, t]);
 
   useEffect(() => {
     loadMessages();

@@ -9,7 +9,7 @@ const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDelet
     <Card className="p-6 hover:shadow-lg transition-shadow">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
+          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold">
             {parent.firstName?.charAt(0)}{parent.lastName?.charAt(0)}
           </div>
           <div>
@@ -48,7 +48,7 @@ const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDelet
                 </div>
               )}
               {parent.group && (
-                <div className="bg-purple-50 rounded-lg p-2 border border-purple-100">
+                <div className="bg-info-50 rounded-lg p-2 border border-info-100">
                   <p className="text-xs text-slate-600">
                     <span className="font-medium">{t('parentsPage.groupLabel')}</span> {parent.group.name}
                   </p>
@@ -77,7 +77,7 @@ const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDelet
                             className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
                           />
                         ) : (
-                          <div className="w-12 h-12 rounded-full bg-brand-100 flex items-center justify-center text-brand-700 font-bold">
+                          <div className="w-12 h-12 rounded-full bg-slate-100 flex items-center justify-center text-slate-700 font-bold">
                             {child.firstName?.charAt(0)}{child.lastName?.charAt(0)}
                           </div>
                         )}
@@ -88,7 +88,7 @@ const ParentCard = ({ parent, onAddChild, onEdit, onDelete, onEditChild, onDelet
                           <div className="mt-1 space-y-1">
                             {child.teacher && (
                               <p className="text-xs text-slate-600">
-                                <span className="font-medium">Teacher:</span> {child.teacher}
+                                <span className="font-medium">{t('parentsPage.teacherLabel')}</span> {child.teacher}
                               </p>
                             )}
                             {child.disabilityType && (

@@ -138,7 +138,10 @@ const GroupManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-slate-900 tracking-tight">{t('groupsPage.title')}</h1>
+          <h1 className="text-4xl font-black text-slate-900 tracking-tight">
+            {t('groupsPage.title')}
+            <span className="ml-2 text-2xl text-slate-400 font-semibold">({filteredGroups.length})</span>
+          </h1>
           <p className="text-slate-500 font-medium mt-1">{t('groupsPage.subtitle')}</p>
         </div>
 
@@ -220,7 +223,14 @@ const GroupManagement = () => {
           <p className="text-slate-400 font-medium text-lg">
             {searchQuery ? t('groupsPage.noGroupsFound') : t('groupsPage.noGroups')}
           </p>
-          {!searchQuery && (
+          {searchQuery ? (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="mt-4 inline-flex items-center gap-2 px-5 py-2.5 bg-slate-100 text-slate-700 rounded-xl font-medium hover:bg-slate-200 transition-colors"
+            >
+              {t('groupsPage.clearSearch')}
+            </button>
+          ) : (
             <button
               onClick={handleCreate}
               className="mt-4 inline-flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors"

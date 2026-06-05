@@ -193,19 +193,19 @@ export default function Documents() {
             ) : (
               <dl className="divide-y divide-slate-100 text-[13.5px]">
                 <div className="py-2 flex justify-between">
-                  <dt className="text-slate-500">Tasdiqlangan</dt>
+                  <dt className="text-slate-500">{t('documentStatus.approved')}</dt>
                   <dd className="num font-semibold text-success-700">{approvedCount}</dd>
                 </div>
                 <div className="py-2 flex justify-between">
-                  <dt className="text-slate-500">{"Ko'rib chiqilmoqda"}</dt>
+                  <dt className="text-slate-500">{t('documentStatus.pending')}</dt>
                   <dd className="num font-semibold text-warning-700">{pendingCount}</dd>
                 </div>
                 <div className="py-2 flex justify-between">
-                  <dt className="text-slate-500">Rad etilgan</dt>
+                  <dt className="text-slate-500">{t('documentStatus.rejected')}</dt>
                   <dd className="num font-semibold text-error-700">{rejectedCount}</dd>
                 </div>
                 <div className="py-2 flex justify-between">
-                  <dt className="text-slate-500">Jami</dt>
+                  <dt className="text-slate-500">{t('documents.progressTotal')}</dt>
                   <dd className="num font-semibold text-slate-900">{docs.length}</dd>
                 </div>
               </dl>
@@ -219,12 +219,12 @@ export default function Documents() {
               {t('documents.help', { defaultValue: 'Yordam' })}
             </div>
             <ul className="text-[13px] text-slate-600 space-y-1.5">
-              <li>· PDF, JPG, PNG formatlar qabul qilinadi</li>
-              <li>· Maksimal fayl hajmi 10 MB</li>
-              <li>{"· Admin 1-3 ish kuni ichida ko'rib chiqadi"}</li>
+              <li>· {t('documents.helpFormats')}</li>
+              <li>· {t('documents.helpMaxSize')}</li>
+              <li>· {t('documents.helpReviewTime')}</li>
             </ul>
             <div className="mt-4 pt-3 border-t border-slate-100 text-[12.5px] text-slate-500">
-              Savollar uchun:{' '}
+              {t('documents.helpContact')}:{' '}
               <a href="mailto:support@ihma.uz" className="text-brand-700 hover:text-brand-800">
                 support@ihma.uz
               </a>

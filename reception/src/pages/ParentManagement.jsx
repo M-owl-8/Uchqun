@@ -42,9 +42,9 @@ const StatusBadge = ({ status, isActive }) => {
 };
 
 const AVATAR_COLORS = [
-  'bg-brand-100 text-brand-800',
-  'bg-accent-100 text-accent-700',
+  'bg-slate-100 text-slate-700',
   'bg-info-100 text-info-700',
+  'bg-accent-100 text-accent-700',
   'bg-success-50 text-success-700',
 ];
 
@@ -85,7 +85,7 @@ const ParentManagement = () => {
   const { success, error: showError } = useToast();
   const { t, i18n } = useTranslation();
   const DATE_LOCALE = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-US' };
-  const dateLocale = DATE_LOCALE[i18n.language] ?? 'uz-Latn-UZ';
+  const dateLocale = DATE_LOCALE[i18n?.language] ?? 'uz-Latn-UZ';
   const showErrorRef = useRef(showError);
   useEffect(() => { showErrorRef.current = showError; }, [showError]);
 
@@ -665,19 +665,26 @@ const ParentManagement = () => {
         /* Empty state */
         <div className="bg-surface border border-slate-200 rounded-lg shadow-xs p-12 text-center">
           <EmptyDesk size={120} className="mx-auto" />
-          <h3 className="text-[18px] font-semibold text-slate-900 mt-4">{"Hozircha ish yo'q"}</h3>
+          <h3 className="text-[18px] font-semibold text-slate-900 mt-4">{t('parentsPage.emptyTitle')}</h3>
           <p className="text-[13.5px] text-slate-500 mt-1 max-w-[40ch] mx-auto">
             {searchQuery
-              ? `"${searchQuery}" bo'yicha natija topilmadi`
-              : "Yangi ota-ona qo'shilganda bu joyda paydo bo'ladi."}
+              ? t('parentsPage.emptySearchDesc', { query: searchQuery })
+              : t('parentsPage.emptyDesc')}
           </p>
-          {!searchQuery && (
+          {searchQuery ? (
+            <button
+              onClick={() => setSearchQuery('')}
+              className="mt-5 inline-flex items-center gap-2 h-9 px-4 rounded-md bg-slate-100 hover:bg-slate-200 text-slate-700 text-[13.5px] font-medium transition-colors"
+            >
+              {t('parentsPage.clearSearch')}
+            </button>
+          ) : (
             <button
               onClick={handleCreate}
               className="mt-5 inline-flex items-center gap-2 h-9 px-4 rounded-md bg-brand-600 hover:bg-brand-700 text-white text-[13.5px] font-medium transition-colors"
             >
               <Plus className="w-4 h-4" strokeWidth={2} />
-              {"Yangi ota-ona qo'shish"}
+              {t('parentsPage.add')}
             </button>
           )}
         </div>

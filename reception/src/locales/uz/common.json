@@ -147,6 +147,10 @@
     "bulkDeleteConfirm": "{{count}} ta ota-onani o'chirishni tasdiqlaysizmi?",
     "bulkActivatePartialFailure": "Ba'zi yozuvlar faollashtirilmadi",
     "bulkDeletePartialFailure": "{{count}} ta yozuv o'chirilmadi",
+    "emptyTitle": "Hozircha ish yo'q",
+    "emptyDesc": "Yangi ota-ona qo'shilganda bu joyda paydo bo'ladi.",
+    "emptySearchDesc": "\"{{query}}\" bo'yicha natija topilmadi",
+    "clearSearch": "Qidiruvni tozalash",
     "form": {
       "firstName": "Ism",
       "lastName": "Familiya",
@@ -214,6 +218,7 @@
     "noTeachers": "Hozircha tarbiyachilar yo'q",
     "noTeachersFound": "Tarbiyachilar topilmadi",
     "addFirst": "Birinchi tarbiyachini qo'shish",
+    "clearSearch": "Qidiruvni tozalash",
     "confirmDelete": "Ushbu tarbiyachi akkauntini o'chirmoqchimisiz?",
     "confirmDeleteWarning": "Tarbiyachi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin).",
     "confirmSuspend": "Ushbu tarbiyachini to'xtatmoqchimisiz? Kirish bloklanadi.",
@@ -269,6 +274,7 @@
     "noGroups": "Hozircha guruhlar yo'q",
     "noGroupsFound": "Guruhlar topilmadi",
     "addFirst": "Birinchi guruhni qo'shish",
+    "clearSearch": "Qidiruvni tozalash",
     "confirmDelete": "Ushbu guruhni o'chirmoqchimisiz?",
     "confirmDeleteWarning": "Bu amal qaytarib bo'lmaydi — guruh ma'lumotlari tiklanmaydi. Guruh bolalari qayta tayinlanishi kerak bo'ladi.",
     "toastCreate": "Guruh yaratildi",
@@ -329,7 +335,8 @@
     "passwordWeak": "Parol katta va kichik harflar hamda raqamdan iborat bo'lishi kerak",
     "phonePlaceholder": "+998 90 123 45 67",
     "replied": "Javob berildi",
-    "sendMessageToGovt": "Davlatga xabar yuborish"
+    "sendMessageToGovt": "Davlatga xabar yuborish",
+    "loadMessagesError": "Xabarlarni yuklashda xatolik"
   },
   "profile": {
     "title": "Profil",
@@ -355,7 +362,8 @@
     "yourMessage": "Sizning xabaringiz",
     "governmentReply": "Davlat javobi",
     "replied": "Javob berildi",
-    "logout": "Chiqish"
+    "logout": "Chiqish",
+    "loadMessagesError": "Xabarlarni yuklashda xatolik"
   },
   "page404": {
     "heading": "404",
@@ -396,7 +404,13 @@
     "quickActions": "Tezkor amallar",
     "parents": "Ota-onalar",
     "teachers": "Tarbiyachilar",
-    "groups": "Guruhlar"
+    "groups": "Guruhlar",
+    "actions": {
+      "newParent": "Yangi ota-ona qo'shish"
+    },
+    "navigate": "navigatsiya",
+    "select": "tanlash",
+    "close": "yopish"
   },
   "documents": {
     "title": "Mening hujjatlarim",
@@ -420,6 +434,11 @@
     "documentType": "Hujjat turi",
     "loadError": "Hujjatlarni yuklashda xatolik.",
     "loading": "Yuklanmoqda...",
+    "progressTotal": "Jami",
+    "helpFormats": "PDF, JPG, PNG formatlar qabul qilinadi",
+    "helpMaxSize": "Maksimal fayl hajmi 10 MB",
+    "helpReviewTime": "Admin 1-3 ish kuni ichida ko'rib chiqadi",
+    "helpContact": "Savollar uchun",
     "type": {
       "license": "Litsenziya",
       "certificate": "Sertifikat",
@@ -479,5 +498,58 @@
     "summaryChild": "Bola",
     "summaryGroup": "Guruh",
     "fallbackGroupName": "Guruh {{id}}"
+  },
+  "role": {
+    "reception": "Qabulxona xodimi"
+  },
+  "parentStep": {
+    "title": "Ota-ona ma'lumotlari",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "email": "Email",
+    "emailHint": "Email domeni maktab tomonidan belgilanadi.",
+    "phone": "Telefon",
+    "phoneHint": "9 raqamli telefon raqami.",
+    "address": "Manzil",
+    "addressPlaceholder": "Toshkent shahri, Yunusobod tumani…",
+    "passport": "Pasport seriya va raqami",
+    "passportOptional": "ixtiyoriy",
+    "nativeLanguage": "Ona tili",
+    "password": "Parol",
+    "select": "Tanlang"
+  },
+  "nativeLanguage": {
+    "uzbek": "O'zbek",
+    "russian": "Rus",
+    "tajik": "Tojik"
+  },
+  "childStep": {
+    "title": "Bola ma'lumotlari",
+    "firstName": "Ism",
+    "lastName": "Familiya",
+    "dateOfBirth": "Tug'ilgan sana",
+    "gender": "Jinsi",
+    "disabilityType": "Tashxis turi",
+    "diagnosisLevel": "Tashxis darajasi",
+    "specialNeeds": "Maxsus ehtiyojlar",
+    "specialNeedsPlaceholder": "Masalan: glyutensiz ovqat, individual o'qituvchi yordami…",
+    "ageLabel": "Yosh avtomatik hisoblanadi:",
+    "select": "Tanlang",
+    "years_one": "{{count}} yosh",
+    "years_other": "{{count}} yosh",
+    "months_one": "{{count}} oy",
+    "months_other": "{{count}} oy"
+  },
+  "disabilityType": {
+    "autism": "Autizm spektri",
+    "hearing": "Eshitish nuqsoni",
+    "vision": "Ko'rish nuqsoni",
+    "speech": "Nutq nuqsoni",
+    "mixed": "Aralash buzilishlar"
+  },
+  "diagnosisLevel": {
+    "light": "Yengil",
+    "medium": "O'rta",
+    "heavy": "Og'ir"
   }
 }

@@ -4,7 +4,7 @@ import Sidebar from './Sidebar';
 import BottomNav from './BottomNav';
 import CommandPalette from './CommandPalette';
 import { useCommandPalette } from '../hooks/useCommandPalette';
-import { Search, Bell, Menu } from 'lucide-react';
+import { Search, Menu } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 function usePageLabel() {
@@ -78,10 +78,6 @@ const Layout = () => {
             <span className="kbd ml-1">⌘ K</span>
           </button>
 
-          <button className="relative w-9 h-9 rounded-md hover:bg-slate-100 inline-flex items-center justify-center text-slate-600 transition-colors">
-            <Bell className="w-4 h-4" strokeWidth={2} />
-            <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-brand-600 ring-2 ring-surface" />
-          </button>
         </div>
 
         {/* Page content */}

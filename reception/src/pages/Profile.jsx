@@ -40,8 +40,9 @@ const Profile = () => {
       setLoadingMessages(true);
       const response = await api.get('/reception/messages');
       setMyMessages(response.data.data || []);
-    } catch (error) {
+    } catch {
       setMyMessages([]);
+      showError(t('profile.loadMessagesError'));
     } finally {
       setLoadingMessages(false);
     }
@@ -100,7 +101,7 @@ const Profile = () => {
         </div>
 
         <div className="flex items-center gap-6 mb-6">
-          <div className="w-20 h-20 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg overflow-hidden shrink-0">
+          <div className="w-20 h-20 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg overflow-hidden shrink-0">
             {user?.avatar ? (
               <img src={user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '') || window.location.origin}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
             ) : (
@@ -111,7 +112,7 @@ const Profile = () => {
             <h3 className="text-2xl font-bold text-slate-900">
               {user?.firstName} {user?.lastName}
             </h3>
-            <p className="text-sm text-brand-600 font-semibold mt-1">Reception</p>
+            <p className="text-sm text-brand-600 font-semibold mt-1">{t('role.reception')}</p>
           </div>
         </div>
 

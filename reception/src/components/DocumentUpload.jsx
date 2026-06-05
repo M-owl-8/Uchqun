@@ -1,13 +1,16 @@
 import { useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { UploadCloud, FileText, FileCheck2, FileX2, X, MoreHorizontal, Check } from 'lucide-react';
+import { UploadCloud, FileText, FileCheck2, FileX2, X, Check } from 'lucide-react';
+
+const DATE_LOCALE = { uz: 'uz-Latn-UZ', ru: 'ru-RU', en: 'en-US' };
 
 function FileRow({ file, onRemove }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { name, size, status, progress, rejectionReason, uploadedAt } = file;
+  const dateLocale = DATE_LOCALE[i18n?.language] ?? 'uz-Latn-UZ';
 
   const sizeStr = size ? (size / 1024 / 1024).toFixed(1) + ' MB' : '';
-  const dateStr = uploadedAt ? new Date(uploadedAt).toLocaleDateString() : '';
+  const dateStr = uploadedAt ? new Date(uploadedAt).toLocaleDateString(dateLocale) : '';
 
   if (status === 'uploading') {
     return (
@@ -49,9 +52,6 @@ function FileRow({ file, onRemove }) {
           <span className="w-1.5 h-1.5 rounded-full bg-warning-600 mr-1.5" />
           {t('documentStatus.pending')}
         </span>
-        <button className="text-slate-500 hover:text-slate-800 p-1">
-          <MoreHorizontal className="w-4 h-4" strokeWidth={2} />
-        </button>
       </div>
     );
   }

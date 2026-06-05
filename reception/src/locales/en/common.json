@@ -149,6 +149,10 @@
     "bulkDeleteConfirm_other": "Delete {{count}} parents?",
     "bulkActivatePartialFailure": "Some records failed to activate",
     "bulkDeletePartialFailure": "{{count}} records failed to delete",
+    "emptyTitle": "Nothing here yet",
+    "emptyDesc": "New parents will appear here once added.",
+    "emptySearchDesc": "No results for \"{{query}}\"",
+    "clearSearch": "Clear search",
     "form": {
       "firstName": "First Name",
       "lastName": "Last Name",
@@ -216,6 +220,7 @@
     "noTeachers": "No teachers yet",
     "noTeachersFound": "No teachers found",
     "addFirst": "Add First Teacher",
+    "clearSearch": "Clear search",
     "confirmDelete": "Are you sure you want to delete this teacher account?",
     "confirmDeleteWarning": "Teacher will be soft-deleted. Restoration is not available in this portal (can be done via admin portal).",
     "confirmSuspend": "Suspend this teacher? Their access will be blocked.",
@@ -270,6 +275,7 @@
     "noGroups": "No groups yet",
     "noGroupsFound": "No groups found",
     "addFirst": "Add First Group",
+    "clearSearch": "Clear search",
     "confirmDelete": "Are you sure you want to delete this group?",
     "confirmDeleteWarning": "This action cannot be undone — group data cannot be recovered. Children in the group will need to be reassigned.",
     "toastCreate": "Group created successfully",
@@ -330,7 +336,8 @@
     "passwordWeak": "Password must contain uppercase, lowercase letters and a number",
     "phonePlaceholder": "+998 90 123 45 67",
     "replied": "Replied",
-    "sendMessageToGovt": "Send message to Government"
+    "sendMessageToGovt": "Send message to Government",
+    "loadMessagesError": "Failed to load messages"
   },
   "profile": {
     "title": "Profile",
@@ -356,7 +363,8 @@
     "yourMessage": "Your message",
     "governmentReply": "Government reply",
     "replied": "Replied",
-    "logout": "Logout"
+    "logout": "Logout",
+    "loadMessagesError": "Failed to load messages"
   },
   "page404": {
     "heading": "404",
@@ -397,7 +405,13 @@
     "quickActions": "Quick actions",
     "parents": "Parents",
     "teachers": "Teachers",
-    "groups": "Groups"
+    "groups": "Groups",
+    "actions": {
+      "newParent": "Add new parent"
+    },
+    "navigate": "navigate",
+    "select": "select",
+    "close": "close"
   },
   "documents": {
     "title": "My Documents",
@@ -423,6 +437,11 @@
     "documentType": "Document Type",
     "loadError": "Error loading documents.",
     "loading": "Loading...",
+    "progressTotal": "Total",
+    "helpFormats": "PDF, JPG, PNG formats accepted",
+    "helpMaxSize": "Maximum file size 10 MB",
+    "helpReviewTime": "Admin reviews within 1-3 business days",
+    "helpContact": "For questions",
     "type": {
       "license": "License",
       "certificate": "Certificate",
@@ -482,5 +501,58 @@
     "summaryChild": "Child",
     "summaryGroup": "Group",
     "fallbackGroupName": "Group {{id}}"
+  },
+  "role": {
+    "reception": "Reception staff"
+  },
+  "parentStep": {
+    "title": "Parent information",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email",
+    "emailHint": "Email domain is set by the school.",
+    "phone": "Phone",
+    "phoneHint": "9-digit phone number.",
+    "address": "Address",
+    "addressPlaceholder": "Tashkent city, Yunusabad district…",
+    "passport": "Passport series and number",
+    "passportOptional": "optional",
+    "nativeLanguage": "Native language",
+    "password": "Password",
+    "select": "Select"
+  },
+  "nativeLanguage": {
+    "uzbek": "Uzbek",
+    "russian": "Russian",
+    "tajik": "Tajik"
+  },
+  "childStep": {
+    "title": "Child information",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "dateOfBirth": "Date of birth",
+    "gender": "Gender",
+    "disabilityType": "Diagnosis type",
+    "diagnosisLevel": "Diagnosis level",
+    "specialNeeds": "Special needs",
+    "specialNeedsPlaceholder": "E.g.: gluten-free diet, individual teacher assistant…",
+    "ageLabel": "Age calculated automatically:",
+    "select": "Select",
+    "years_one": "{{count}} year",
+    "years_other": "{{count}} years",
+    "months_one": "{{count}} month",
+    "months_other": "{{count}} months"
+  },
+  "disabilityType": {
+    "autism": "Autism spectrum",
+    "hearing": "Hearing impairment",
+    "vision": "Vision impairment",
+    "speech": "Speech impairment",
+    "mixed": "Combined disorders"
+  },
+  "diagnosisLevel": {
+    "light": "Mild",
+    "medium": "Moderate",
+    "heavy": "Severe"
   }
 }
