@@ -103,7 +103,7 @@ const AIWarnings = () => {
           {t('warnings.subtitle', { defaultValue: 'Reytinglar asosida yaratilgan ogohlantirishlar' })}
         </p>
         <h1 className="font-serif text-[22px] font-semibold">
-          {t('warnings.title', { defaultValue: 'AI Ogohlantirishlar' })}
+          {t('warnings.title', { defaultValue: 'Ogohlantirishlar' })}
         </h1>
       </div>
 
