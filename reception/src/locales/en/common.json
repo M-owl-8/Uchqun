@@ -33,7 +33,15 @@
     "accountLocked": "Too many failed attempts. Please try again in 15 minutes.",
     "notApproved": "Your account is not yet approved. Please wait for director confirmation.",
     "documentsNotice": "If your documents have not yet been approved, login is not available. Contact your school director.",
-    "accountSuspended": "Your account has been suspended. Contact the school director."
+    "accountSuspended": "Your account has been suspended. Contact the school director.",
+    "portalBadge": "Reception",
+    "eyebrow": "Reception Portal",
+    "headline": "Parent and Document Reception Center",
+    "heroSubtitle": "Register new parents, accept documents and assign them to groups.",
+    "tlsBadge": "256-bit TLS",
+    "copyright": "© 2026 Uchqun · v1.0 · reception",
+    "rememberDevice": "Remember this device",
+    "footerLeft": "Reception Login · IHMA · Republic of Uzbekistan"
   },
   "dashboard": {
     "role": "My Role: Reception",

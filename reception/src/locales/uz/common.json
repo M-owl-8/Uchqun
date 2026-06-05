@@ -33,7 +33,15 @@
     "accountLocked": "Juda ko'p urinish. 15 daqiqadan so'ng qaytadan urinib ko'ring.",
     "notApproved": "Hisobingiz hali tasdiqlanmagan. Iltimos, direktor tasdig'ini kuting.",
     "documentsNotice": "Hujjatlaringiz hali tasdiqlanmagan bo'lsa, kirish mumkin emas. Maktab rahbari bilan bog'laning.",
-    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab direktori bilan bog'laning."
+    "accountSuspended": "Hisobingiz to'xtatilgan. Maktab direktori bilan bog'laning.",
+    "portalBadge": "Qabulxona",
+    "eyebrow": "Qabulxona portali",
+    "headline": "Ota-onalar va hujjatlarni qabul qilish markazi",
+    "heroSubtitle": "Yangi ota-onalarni ro'yxatga oling, hujjatlarni qabul qiling va guruhlarga yo'naltiring.",
+    "tlsBadge": "256-bit TLS",
+    "copyright": "© 2026 Uchqun · v1.0 · reception",
+    "rememberDevice": "Bu qurilmani eslab qolish",
+    "footerLeft": "Qabulxona kirishi · IHMA · O'zbekiston Respublikasi"
   },
   "dashboard": {
     "role": "Mening rolim: Reception",
