@@ -48,13 +48,6 @@ const Login = () => {
         ].join(', '),
       }}
     >
-      {/* Rhombus motif backdrop */}
-      <div
-        className="fixed inset-0 motif-rhombus motif-rhombus-lg text-brand-700 pointer-events-none"
-        aria-hidden="true"
-        style={{ opacity: 0.03 }}
-      />
-
       <div className="relative w-full max-w-[440px]">
         {/* Card — Fix D: rounded-lg shadow-md */}
         <div className="relative bg-surface border border-slate-200 rounded-lg shadow-md overflow-hidden">
