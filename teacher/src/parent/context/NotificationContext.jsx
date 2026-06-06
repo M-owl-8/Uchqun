@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, useRef, useCallback } from 'react';
+import { createContext, useContext, useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import api from '../services/api';
 import { useSocket } from '../../shared/context/SocketContext';
 import { useAuth } from './AuthContext';
@@ -63,48 +63,51 @@ export const NotificationProvider = ({ children }) => {
     return () => off('notification:new', loadNotifications);
   }, [isAuthenticated, on, off, loadNotifications]);
 
-  const markAsRead = async (id) => {
+  // All exported callbacks MUST be memoized — they are read from useEffect deps
+  // by consumers (Dashboard, Notifications page). An unmemoized identity causes
+  // an infinite re-render loop in any consumer that lists them as deps.
+  const markAsRead = useCallback(async (id) => {
     try {
       await api.put(`/notifications/${id}/read`);
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) { /* swallowed */ void error; }
-  };
+  }, [loadNotifications, loadAllNotifications]);
 
-  const markAllAsRead = async () => {
+  const markAllAsRead = useCallback(async () => {
     try {
       await api.put('/notifications/read-all');
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) { /* swallowed */ void error; }
-  };
+  }, [loadNotifications, loadAllNotifications]);
 
-  const deleteNotification = async (id) => {
+  const deleteNotification = useCallback(async (id) => {
     try {
       await api.delete(`/notifications/${id}`);
       await loadNotifications();
       await loadAllNotifications();
     } catch (error) { /* swallowed */ void error; }
-  };
+  }, [loadNotifications, loadAllNotifications]);
 
-  const refreshNotifications = () => {
+  const refreshNotifications = useCallback(() => {
     loadNotifications();
     loadAllNotifications();
-  };
+  }, [loadNotifications, loadAllNotifications]);
+
+  const value = useMemo(() => ({
+    count,
+    notifications,
+    loading,
+    markAsRead,
+    markAllAsRead,
+    deleteNotification,
+    refreshNotifications,
+    loadAllNotifications,
+  }), [count, notifications, loading, markAsRead, markAllAsRead, deleteNotification, refreshNotifications, loadAllNotifications]);
 
   return (
-    <NotificationContext.Provider
-      value={{
-        count,
-        notifications,
-        loading,
-        markAsRead,
-        markAllAsRead,
-        deleteNotification,
-        refreshNotifications,
-        loadAllNotifications,
-      }}
-    >
+    <NotificationContext.Provider value={value}>
       {children}
     </NotificationContext.Provider>
   );
