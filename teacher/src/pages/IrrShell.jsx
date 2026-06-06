@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
@@ -11,15 +11,20 @@ import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJourn
 import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
 
-// Uzbek labels for missing-field error display (backend returns field names in detail)
-// Session type Uzbek labels (IRR-SPECIFICATION.md Part A-3a)
-const SESSION_TYPE_LABELS = {
-  intake: 'Кундузги парвариш хизматига қабул қилинганда',
-  '3mo':  '3 ойдан кейин',
-  '6mo':  '6 ойдан кейин',
-  '9mo':  '9 ойдан кейин',
-  '12mo': '12 ойдан кейин',
-  custom: 'Бошқа сана',
+// Maps backend field names (from IRR_HEADER_INCOMPLETE detail) to i18n keys
+const FIELD_LABEL_KEYS = {
+  childFullName:        'irr.fieldChildFullName',
+  dateOfBirth:          'irr.fieldDateOfBirth',
+  ageAtAssessmentStart: 'irr.fieldAgeAtAssessmentStart',
+  ptpkIntakeDate:       'irr.fieldPtpkIntakeDate',
+  ptpkConclusionDate:   'irr.fieldPtpkConclusionDate',
+  ptpkConclusionNumber: 'irr.fieldPtpkConclusionNumber',
+  ptpkDiagnosis:        'irr.fieldPtpkDiagnosis',
+  ptpkNotes:            'irr.fieldPtpkNotes',
+  irrStartDate:         'irr.fieldIrrStartDate',
+  additionalInfo:       'irr.fieldAdditionalInfo',
+  childStrengths:       'irr.fieldChildStrengths',
+  riskFactors:          'irr.fieldRiskFactors',
 };
 
 const EMPTY_FORM = {
@@ -66,18 +71,20 @@ function getMondayIso(date = new Date()) {
 }
 
 function StatusBadge({ status }) {
-  const cfg = {
-    draft:    { label: 'Qoralama',    bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
-    active:   { label: 'Faol',        bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
-    archived: { label: 'Arxivlangan', bg: '#F1F2F4', color: '#6F7585', border: '#DDE0E6' },
-  }[status] || { label: status, bg: '#F1F2F4', color: '#6F7585', border: '#DDE0E6' };
+  const { t } = useTranslation();
+  const STATUS_STYLE = {
+    draft:    { labelKey: 'irr.statusDraft',    bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
+    active:   { labelKey: 'irr.statusActive',   bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
+    archived: { labelKey: 'irr.statusArchived', bg: '#F1F2F4', color: '#6F7585', border: '#DDE0E6' },
+  };
+  const cfg = STATUS_STYLE[status] || { labelKey: null, bg: '#F1F2F4', color: '#6F7585', border: '#DDE0E6' };
 
   return (
     <span
       className="px-3 py-1 rounded-full text-[12px] font-semibold"
       style={{ background: cfg.bg, color: cfg.color, border: `1px solid ${cfg.border}` }}
     >
-      {cfg.label}
+      {cfg.labelKey ? t(cfg.labelKey) : status}
     </span>
   );
 }
@@ -108,6 +115,15 @@ export default function IrrShell() {
   const { id } = useParams();
   const { success, error: showError } = useToast();
   const { t } = useTranslation();
+
+  const SESSION_TYPE_LABELS = useMemo(() => ({
+    intake: t('irr.assessment.sessionTypeIntake'),
+    '3mo':  t('irr.assessment.sessionType3mo'),
+    '6mo':  t('irr.assessment.sessionType6mo'),
+    '9mo':  t('irr.assessment.sessionType9mo'),
+    '12mo': t('irr.assessment.sessionType12mo'),
+    custom: t('irr.assessment.sessionTypeCustom'),
+  }), [t]);
 
   const [confirmDialog, setConfirmDialog] = useState(null);
 
@@ -311,8 +327,8 @@ export default function IrrShell() {
 
   const handleDeleteLtg = useCallback((id) => {
     setConfirmDialog({
-      message: "Uzoq muddatli maqsadni o'chirmoqchimisiz?",
-      warning: "Bu maqsad yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q.",
+      message: t('irr.confirmDeleteLtg'),
+      warning: t('irr.confirmDeleteLtgWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -328,7 +344,7 @@ export default function IrrShell() {
   // ── Period handlers ───────────────────────────────────────────────────────
   const handleCreatePeriod = useCallback(async () => {
     if (!irr || !periodForm.periodStart || !periodForm.periodEnd) {
-      setPeriodError('Давр бошланиш ва тугаш санасини киритинг');
+      setPeriodError(t('irr.errorPeriodRequired'));
       return;
     }
     setSavingPeriod(true);
@@ -411,8 +427,8 @@ export default function IrrShell() {
 
   const handleDeleteStg = useCallback((id, periodId) => {
     setConfirmDialog({
-      message: "Qisqa muddatli maqsadni o'chirmoqchimisiz?",
-      warning: "Bu maqsad yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q.",
+      message: t('irr.confirmDeleteStg'),
+      warning: t('irr.confirmDeleteLtgWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -435,7 +451,7 @@ export default function IrrShell() {
       const form = reviewForms[periodId] || {};
       const res = await api.patch(`/teacher/goal-periods/${periodId}/review`, form);
       setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
-      success('Чорак якунлари сақланди');
+      success(t('irr.toastReviewSaved'));
     } catch {
       showError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
     } finally {
@@ -484,11 +500,12 @@ export default function IrrShell() {
       setDailyNotes('');
       success(t('irr.successDailySaved', { defaultValue: 'Kundalik monitoring saqlandi' }));
     } catch (err) {
-      const code = err?.response?.data?.error;
+      const errData = err?.response?.data?.error;
+      const code = errData?.code || errData;
       if (code === 'DAILY_ENTRY_DUPLICATE') {
-        setDailyError(t('irr.errorDuplicateDailyEntry', { defaultValue: 'Bu sana uchun kundalik monitoring allaqachon mavjud' }));
+        setDailyError(t('irr.errorDuplicateDailyEntry'));
       } else {
-        setDailyError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
+        setDailyError(t('irr.errorSave'));
       }
     } finally {
       setSavingDaily(false);
@@ -518,11 +535,12 @@ export default function IrrShell() {
       setWeeklyNotes('');
       success(t('irr.successWeeklySaved', { defaultValue: 'Haftalik monitoring saqlandi' }));
     } catch (err) {
-      const code = err?.response?.data?.error;
+      const errData = err?.response?.data?.error;
+      const code = errData?.code || errData;
       if (code === 'WEEKLY_ENTRY_DUPLICATE') {
-        setWeeklyError(t('irr.errorDuplicateWeeklyEntry', { defaultValue: 'Bu hafta uchun monitoring allaqachon mavjud' }));
+        setWeeklyError(t('irr.errorDuplicateWeeklyEntry'));
       } else {
-        setWeeklyError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
+        setWeeklyError(t('irr.errorSave'));
       }
     } finally {
       setSavingWeekly(false);
@@ -579,14 +597,20 @@ export default function IrrShell() {
       success(t('irr.successActivated', { defaultValue: 'IRR faollashtirildi!' }));
       await load();
     } catch (err) {
-      const code = err?.response?.data?.error;
+      const errData = err?.response?.data?.error;
+      const code = errData?.code || errData;
+      const detail = errData?.detail;
       if (code === 'IRR_HEADER_INCOMPLETE') {
-        setActivateError([t('irr.errorActivateFillRequired', { defaultValue: 'Barcha majburiy maydonlarni to\'ldiring' })]);
-        showError(t('irr.errorActivateFillRequired', { defaultValue: 'Barcha majburiy maydonlarni to\'ldiring' }));
+        const fieldNames = typeof detail === 'string' ? detail.split(',').map(f => f.trim()).filter(Boolean) : [];
+        const fieldLabels = fieldNames.length > 0
+          ? fieldNames.map(f => t(FIELD_LABEL_KEYS[f] || f))
+          : [t('irr.errorActivateFillRequired')];
+        setActivateError(fieldLabels);
+        showError(t('irr.toastIncompleteFill'));
       } else if (code === 'IRR_INVALID_STATUS') {
-        showError(t('irr.errorActivateStatus', { defaultValue: 'ИРР allaqachon faol yoki arxivlangan' }));
+        showError(t('irr.errorActivateStatus'));
       } else {
-        showError(t('irr.errorActivate', { defaultValue: 'Faollashtirishda xatolik yuz berdi' }));
+        showError(t('irr.errorActivate'));
       }
     } finally {
       setActivating(false);
@@ -636,24 +660,25 @@ export default function IrrShell() {
         notes: sessionNotes,
         completedAt,
       });
-      success('Баҳолаш натижалари сақланди');
+      success(t('irr.assessment.toastSaved'));
       clearScores();
       setScores(Array(17).fill(null));
       setSessionNotes('');
       await loadSessions(irr.id);
     } catch (err) {
-      const code = err?.response?.data?.error;
+      const errData = err?.response?.data?.error;
+      const code = errData?.code || errData;
       if (code === 'ASSESSMENT_SESSION_EXISTS') {
-        setSessionError('Бу турдаги баҳолаш аллақачон мавжуд. Бошқа турни танланг ёки "Бошқа сана"ни танланг.');
+        setSessionError(t('irr.assessment.errSessionExists'));
       } else if (code === 'ASSESSMENT_INCOMPLETE') {
-        setSessionError('Барча 17 та мезонни баҳоланг.');
+        setSessionError(t('irr.assessment.errIncomplete'));
       } else {
-        setSessionError('Сақлашда хато юз берди. Қайта уриниб кўринг.');
+        setSessionError(t('irr.assessment.errGeneric'));
       }
     } finally {
       setSubmittingSession(false);
     }
-  }, [irr, sessionType, scores, isHearingImpaired, sessionNotes, completedAt, success, loadSessions, clearScores]);
+  }, [irr, sessionType, scores, isHearingImpaired, sessionNotes, completedAt, success, loadSessions, clearScores, t]);
 
   // ── Derived values ────────────────────────────────────────────────────────
   const liveScore = scores.reduce((sum, s) => sum + (s !== null ? s : 0), 0);
@@ -680,7 +705,7 @@ export default function IrrShell() {
         to={`/teacher/children/${id}`}
         className="inline-flex items-center gap-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> Bolaning sahifasi
+        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> {t('irr.back')}
       </Link>
 
       {/* Title + status */}
@@ -689,30 +714,27 @@ export default function IrrShell() {
           <div className="flex items-center gap-2.5">
             <FileText className="w-5 h-5 text-brand-600" strokeWidth={1.75} />
             <h1 className="text-[20px] font-semibold text-slate-900">
-              Индивидуал Ривожланиш Режаси
+              {t('irr.pageTitle')}
             </h1>
           </div>
           {irr && <StatusBadge status={irr.status} />}
         </div>
         {!irr && (
-          <p className="mt-2 text-[13px] text-slate-500">
-            Bola uchun yangi ИРР tuzing. Barcha majburiy maydonlarni{' '}
-            (<span className="text-red-500">*</span>) to&apos;ldiring va saqlang.
-          </p>
+          <p className="mt-2 text-[13px] text-slate-500">{t('irr.newHint')}</p>
         )}
       </div>
 
       {/* ─── Header form ─────────────────────────────────────────────────────── */}
       <div className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100">
         <div className="px-5 py-4">
-          <h2 className="text-[15px] font-semibold text-slate-900">Asosiy ma&apos;lumotlar</h2>
+          <h2 className="text-[15px] font-semibold text-slate-900">{t('irr.sectionHeader')}</h2>
           <p className="text-[12px] text-slate-500 mt-0.5">
-            <span className="text-red-500">*</span> belgilangan maydonlar faollashtirish uchun majburiy
+            <span className="text-red-500">*</span> {t('irr.requiredNote')}
           </p>
         </div>
 
         <div className="px-5 py-5 space-y-4">
-          <FieldRow label="Боланинг фамилияси, исми" required>
+          <FieldRow label={t('irr.fieldChildFullName')} required>
             <input
               type="text"
               className={inputCls}
@@ -724,7 +746,7 @@ export default function IrrShell() {
           </FieldRow>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FieldRow label="Туғилган санаси" required>
+            <FieldRow label={t('irr.fieldDateOfBirth')} required>
               <input
                 type="date"
                 className={inputCls}
@@ -733,7 +755,7 @@ export default function IrrShell() {
                 disabled={isReadOnly}
               />
             </FieldRow>
-            <FieldRow label="Текширув бошланган вақтдаги ёш" required>
+            <FieldRow label={t('irr.fieldAgeAtAssessmentStart')} required>
               <input
                 type="text"
                 className={inputCls}
@@ -745,7 +767,7 @@ export default function IrrShell() {
             </FieldRow>
           </div>
 
-          <FieldRow label="ПТПКга келиб тушган сана" required>
+          <FieldRow label={t('irr.fieldPtpkIntakeDate')} required>
             <input
               type="date"
               className={inputCls}
@@ -756,7 +778,7 @@ export default function IrrShell() {
           </FieldRow>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <FieldRow label="ПТПК хулосаси санаси" required>
+            <FieldRow label={t('irr.fieldPtpkConclusionDate')} required>
               <input
                 type="date"
                 className={inputCls}
@@ -765,7 +787,7 @@ export default function IrrShell() {
                 disabled={isReadOnly}
               />
             </FieldRow>
-            <FieldRow label="ПТПК рўйхатдан ўтказиш рақами" required>
+            <FieldRow label={t('irr.fieldPtpkConclusionNumber')} required>
               <input
                 type="text"
                 className={inputCls}
@@ -777,7 +799,7 @@ export default function IrrShell() {
             </FieldRow>
           </div>
 
-          <FieldRow label="ПТПК ташхиси" required>
+          <FieldRow label={t('irr.fieldPtpkDiagnosis')} required>
             <textarea
               rows={2}
               className={textareaCls}
@@ -789,7 +811,7 @@ export default function IrrShell() {
           </FieldRow>
 
           {/* ptpkNotes — optional (NOT in HEADER_FIELDS gate) */}
-          <FieldRow label="ПТПК изоҳи">
+          <FieldRow label={t('irr.fieldPtpkNotes')}>
             <textarea
               rows={2}
               className={textareaCls}
@@ -800,7 +822,7 @@ export default function IrrShell() {
             />
           </FieldRow>
 
-          <FieldRow label="ИРР бошланган сана" required>
+          <FieldRow label={t('irr.fieldIrrStartDate')} required>
             <input
               type="date"
               className={inputCls}
@@ -810,7 +832,7 @@ export default function IrrShell() {
             />
           </FieldRow>
 
-          <FieldRow label="Қўшимча маълумотлар" required>
+          <FieldRow label={t('irr.fieldAdditionalInfo')} required>
             <textarea
               rows={3}
               className={textareaCls}
@@ -826,13 +848,11 @@ export default function IrrShell() {
       {/* ─── Needs assessment (advisory — OQ-9) ──────────────────────────────── */}
       <div className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100">
         <div className="px-5 py-4">
-          <h2 className="text-[15px] font-semibold text-slate-900">Ehtiyojlarni baholash</h2>
-          <p className="text-[12px] text-slate-500 mt-0.5">
-            Majburiy emas — maqsadlar belgilashdan oldin to&apos;ldirilishi tavsiya etiladi
-          </p>
+          <h2 className="text-[15px] font-semibold text-slate-900">{t('irr.sectionNeeds')}</h2>
+          <p className="text-[12px] text-slate-500 mt-0.5">{t('irr.needsNote')}</p>
         </div>
         <div className="px-5 py-5 space-y-4">
-          <FieldRow label="Боланинг кучли томонлари">
+          <FieldRow label={t('irr.fieldChildStrengths')}>
             <textarea
               rows={3}
               className={textareaCls}
@@ -842,7 +862,7 @@ export default function IrrShell() {
               disabled={isReadOnly}
             />
           </FieldRow>
-          <FieldRow label="Бола билан боғлиқ хатар омиллари">
+          <FieldRow label={t('irr.fieldRiskFactors')}>
             <textarea
               rows={3}
               className={textareaCls}
@@ -863,7 +883,7 @@ export default function IrrShell() {
           data-testid="activate-error-banner"
         >
           <div className="text-[13px] font-semibold text-red-700 mb-2">
-            Faollashtirishdan oldin quyidagi majburiy maydonlarni to&apos;ldiring:
+            {t('irr.activateErrorBannerTitle')}
           </div>
           <ul className="list-disc list-inside space-y-0.5">
             {activateError.map(label => (
@@ -883,7 +903,7 @@ export default function IrrShell() {
             data-testid="save-btn"
             className="h-9 px-4 rounded-md bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-surface text-[13px] font-medium transition-colors"
           >
-            {saving ? 'Saqlanmoqda...' : 'Saqlash'}
+            {saving ? t('irr.saving') : t('irr.save')}
           </button>
 
           {irr?.status === 'draft' && (
@@ -895,7 +915,7 @@ export default function IrrShell() {
               className="h-9 px-4 rounded-md border text-[13px] font-medium transition-colors disabled:opacity-50"
               style={{ background: '#E2F0E8', color: '#4F8C72', borderColor: '#A8D2BC' }}
             >
-              {activating ? 'Faollashtirilmoqda...' : 'ИРРни faollashtirish'}
+              {activating ? t('irr.activating') : t('irr.activate')}
             </button>
           )}
         </div>

@@ -178,11 +178,11 @@ const Profile = () => {
 
         <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="text-xs uppercase text-slate-400 font-bold">Role</div>
+            <div className="text-xs uppercase text-slate-400 font-bold">{t('profile.roleLabel')}</div>
             <div className="text-slate-900 font-semibold mt-1">{user?.role}</div>
           </div>
           <div className="p-4 rounded-xl bg-slate-50 border border-slate-100">
-            <div className="text-xs uppercase text-slate-400 font-bold">ID</div>
+            <div className="text-xs uppercase text-slate-400 font-bold">{t('profile.idLabel')}</div>
             <div className="text-slate-900 font-semibold mt-1">{user?.id}</div>
           </div>
         </div>

@@ -112,7 +112,7 @@ const Sidebar = ({ onClose }) => {
           <div>
             <div className="text-[14px] font-semibold leading-none">Uchqun</div>
             <div className="text-[11px] mt-0.5" style={{ color: '#928A9C' }}>
-              O&apos;qituvchi portali
+              {t('sidebar.portalSubtitle')}
             </div>
           </div>
         </div>
@@ -196,7 +196,7 @@ const Sidebar = ({ onClose }) => {
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
           >
             <UserCircle2 className="w-[18px] h-[18px] shrink-0" strokeWidth={1.75} style={{ color: '#928A9C' }} />
-            <span>Profil</span>
+            <span>{t('sidebar.profile')}</span>
           </Link>
           <Link
             to="/teacher/settings"
@@ -207,7 +207,7 @@ const Sidebar = ({ onClose }) => {
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
           >
             <Settings className="w-[18px] h-[18px] shrink-0" strokeWidth={1.75} style={{ color: '#928A9C' }} />
-            <span>Sozlamalar</span>
+            <span>{t('sidebar.settings')}</span>
           </Link>
         </div>
       </nav>
@@ -225,7 +225,7 @@ const Sidebar = ({ onClose }) => {
             <div className="text-[13px] font-medium truncate" style={{ color: '#F4F0F5' }}>
               {user?.firstName} {user?.lastName}
             </div>
-            <div className="text-[10px]" style={{ color: '#928A9C' }}>O&apos;qituvchi</div>
+            <div className="text-[10px]" style={{ color: '#928A9C' }}>{t('sidebar.roleTeacher')}</div>
           </div>
           <button
             onClick={logout}
@@ -233,7 +233,7 @@ const Sidebar = ({ onClose }) => {
             style={{ color: '#928A9C' }}
             onMouseEnter={e => { e.currentTarget.style.background = '#3A3340'; }}
             onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            aria-label="Chiqish"
+            aria-label={t('sidebar.logout')}
           >
             <LogOut className="w-4 h-4" strokeWidth={1.75} />
           </button>

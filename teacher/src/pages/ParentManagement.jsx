@@ -127,7 +127,7 @@ const ParentManagement = () => {
               {/* Children List */}
               {parent.children && parent.children.length > 0 && (
                 <div className="pt-4 border-t border-slate-100">
-                  <p className="text-xs font-bold text-slate-500 uppercase mb-2">Children:</p>
+                  <p className="text-xs font-bold text-slate-500 uppercase mb-2">{t('parentsPage.childrenLabel')}</p>
                   <div className="space-y-2">
                     {parent.children.map(child => (
                       <div key={child.id} className="flex items-center justify-between p-2 bg-slate-50 rounded-lg">

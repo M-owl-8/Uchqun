@@ -10,6 +10,12 @@ import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJo
 const mockSuccess = vi.fn();
 const mockToastError = vi.fn();
 
+vi.mock('react-i18next', () => {
+  const t = (k) => k;
+  const i18n = { language: 'en' };
+  return { useTranslation: () => ({ t, i18n }) };
+});
+
 vi.mock('react-router-dom', () => ({
   useParams: () => ({ id: 'child-123' }),
   Link: ({ to, children, ...props }) =>
@@ -93,7 +99,7 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     const { default: IrrShell } = await import('../../pages/IrrShell');
     render(React.createElement(IrrShell));
     await waitFor(() => expect(screen.getByTestId('activate-btn')).toBeTruthy());
-    expect(screen.getByText('Qoralama')).toBeTruthy();
+    expect(screen.getByText('irr.statusDraft')).toBeTruthy();
   });
 
   it('calls POST to create new IRR when none exists', async () => {
@@ -142,7 +148,7 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
   });
 
-  it('shows Uzbek field labels in error banner on 400 IRR_HEADER_INCOMPLETE', async () => {
+  it('shows field labels in error banner on 400 IRR_HEADER_INCOMPLETE', async () => {
     // mockResolvedValue (not Once) — sessions load gets DRAFT_IRR back but Array.isArray guard handles it
     mockApi.get.mockResolvedValue({ data: { data: DRAFT_IRR } });
     mockApi.post.mockRejectedValue({
@@ -152,7 +158,7 @@ describe('IrrShell page — header form (Phase 3a)', () => {
           success: false,
           error: {
             code: 'IRR_HEADER_INCOMPLETE',
-            detail: 'Missing: additionalInfo, irrStartDate',
+            detail: 'additionalInfo,irrStartDate',
           },
         },
       },
@@ -163,8 +169,8 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     fireEvent.click(screen.getByTestId('activate-btn'));
     await waitFor(() => expect(screen.getByTestId('activate-error-banner')).toBeTruthy());
     const banner = screen.getByTestId('activate-error-banner');
-    expect(banner.textContent).toContain('Қўшимча маълумотлар');
-    expect(banner.textContent).toContain('ИРР бошланган сана');
+    expect(banner.textContent).toContain('irr.fieldAdditionalInfo');
+    expect(banner.textContent).toContain('irr.fieldIrrStartDate');
     expect(mockToastError).toHaveBeenCalled();
   });
 
@@ -184,7 +190,7 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     await waitFor(() => screen.getByTestId('activate-btn'));
     fireEvent.click(screen.getByTestId('activate-btn'));
     await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
-    await waitFor(() => expect(screen.getByText('Faol')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('irr.statusActive')).toBeTruthy());
     expect(screen.queryByTestId('activate-btn')).toBeFalsy();
   });
 });
@@ -346,7 +352,7 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
     fireEvent.click(screen.getByTestId('submit-session-btn'));
 
     await waitFor(() => expect(screen.getByTestId('session-error-banner')).toBeTruthy());
-    expect(screen.getByTestId('session-error-banner').textContent).toContain('аллақачон мавжуд');
+    expect(screen.getByTestId('session-error-banner').textContent).toContain('irr.assessment.errSessionExists');
   });
 
   it('round-trip total-agreement: live-score seen by teacher equals totalScore stored by backend', async () => {
@@ -495,6 +501,10 @@ describe('IrrShell page — goals section (Phase 3c)', () => {
     await waitFor(() => screen.getByTestId(`ltg-delete-${SAMPLE_LTG.id}`));
 
     fireEvent.click(screen.getByTestId(`ltg-delete-${SAMPLE_LTG.id}`));
+
+    // ConfirmDialog appears — click the confirm button to proceed with deletion
+    await waitFor(() => screen.getByText('common.confirm'));
+    fireEvent.click(screen.getByText('common.confirm'));
 
     await waitFor(() =>
       expect(mockApi.delete).toHaveBeenCalledWith(`/teacher/long-term-goals/${SAMPLE_LTG.id}`)
@@ -700,7 +710,7 @@ describe('IrrShell page — monitoring journals (Phase 3d)', () => {
     fireEvent.click(screen.getByTestId('daily-submit-btn'));
 
     await waitFor(() => expect(screen.getByTestId('daily-error-banner')).toBeTruthy());
-    expect(screen.getByTestId('daily-error-banner').textContent).toContain('аллақачон мавжуд');
+    expect(screen.getByTestId('daily-error-banner').textContent).toContain('irr.errorDuplicateDailyEntry');
   });
 
   it('renders weekly-section with 18 checkboxes data-driven from WEEKLY_JOURNAL_ITEMS', async () => {
@@ -762,7 +772,7 @@ describe('IrrShell page — monitoring journals (Phase 3d)', () => {
     fireEvent.click(screen.getByTestId('weekly-submit-btn'));
 
     await waitFor(() => expect(screen.getByTestId('weekly-error-banner')).toBeTruthy());
-    expect(screen.getByTestId('weekly-error-banner').textContent).toContain('аллақачон мавжуд');
+    expect(screen.getByTestId('weekly-error-banner').textContent).toContain('irr.errorDuplicateWeeklyEntry');
   });
 
   it('daily and weekly sections render without an active ИРР (irrId nullable)', async () => {

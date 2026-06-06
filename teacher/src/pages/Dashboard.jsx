@@ -19,21 +19,22 @@ const STATE_COLORS = {
   sick:    '#4D6584',
 };
 
-const OUTCOME_BADGES = {
-  independent: { label: 'Mustaqil',     bg: '#E2F0E8', color: '#4F8C72' },
-  assisted:    { label: 'Yordam bilan', bg: '#FBF3E4', color: '#8E6314' },
-  emerging:    { label: 'Yangi',        bg: '#F6F3FB', color: '#5F567F' },
-  mastered:    { label: 'Mahorat',      bg: '#E2F0E8', color: '#4F8C72' },
+const OUTCOME_COLORS = {
+  independent: { bg: '#E2F0E8', color: '#4F8C72' },
+  assisted:    { bg: '#FBF3E4', color: '#8E6314' },
+  emerging:    { bg: '#F6F3FB', color: '#5F567F' },
+  mastered:    { bg: '#E2F0E8', color: '#4F8C72' },
 };
 
 function OutcomePill({ outcome }) {
-  const o = OUTCOME_BADGES[outcome] || OUTCOME_BADGES.emerging;
+  const { t } = useTranslation();
+  const c = OUTCOME_COLORS[outcome] || OUTCOME_COLORS.emerging;
   return (
     <span
       className="px-1.5 py-0.5 rounded-full text-[10px] font-medium"
-      style={{ background: o.bg, color: o.color }}
+      style={{ background: c.bg, color: c.color }}
     >
-      {o.label}
+      {t(`quickObs.outcomes.${outcome}`, { defaultValue: outcome })}
     </span>
   );
 }
@@ -97,20 +98,6 @@ function buildData(statsRes, childrenRes, obsRes) {
   const rawChildren = childrenRes.status === 'fulfilled' ? (childrenRes.value.data?.data || childrenRes.value.data || []) : [];
   const rawObs      = obsRes.status      === 'fulfilled' ? (obsRes.value.data?.data      || obsRes.value.data      || []) : [];
 
-  const attention = rawChildren
-    .filter(c => c.attendanceState === 'absent' || c.needsAttention)
-    .slice(0, 5)
-    .map(c => ({
-      child: c,
-      title: c.attendanceState === 'absent'
-        ? `${c.firstName} bugun yo'q`
-        : `${c.firstName} · diqqat kerak`,
-      subtitle: c.attendanceState === 'absent'
-        ? "Ota-onaga sabab so'rab xabar yo'llang"
-        : (c.attentionNote || ''),
-      action: { href: '/teacher/chat', icon: MessageSquare, label: 'Xabar' },
-    }));
-
   return {
     stats: {
       present:         rawStats.present         || rawChildren.filter(c => c.attendanceState === 'present').length || rawChildren.length,
@@ -121,7 +108,6 @@ function buildData(statsRes, childrenRes, obsRes) {
     },
     children: Array.isArray(rawChildren) ? rawChildren : [],
     observations: Array.isArray(rawObs) ? rawObs : [],
-    attention,
   };
 }
 
@@ -129,12 +115,11 @@ const FALLBACK_DATA = {
   stats:        { present: 0, total: 0, parents: 0, activities: 0, activitiesDelta: 0 },
   children:     [],
   observations: [],
-  attention:    [],
 };
 
 const Dashboard = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const [data, setData]       = useState(() => cache.get(CACHE_KEY));
   const [loading, setLoading] = useState(!cache.get(CACHE_KEY));
 
@@ -149,8 +134,8 @@ const Dashboard = () => {
         try {
           const [s, c, o] = await Promise.allSettled([
             api.get('/teacher/dashboard/counts',         { signal: controller.signal }),
-            api.get('/teacher/children',                 { signal: controller.signal }), // TODO(phase-2)
-            api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }), // TODO(phase-2)
+            api.get('/teacher/children',                 { signal: controller.signal }),
+            api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }),
           ]);
           const fresh = buildData(s, c, o);
           cache.set(CACHE_KEY, fresh, CACHE_TTL);
@@ -162,8 +147,8 @@ const Dashboard = () => {
       try {
         const [s, c, o] = await Promise.allSettled([
           api.get('/teacher/dashboard/counts',         { signal: controller.signal }),
-          api.get('/teacher/children',                 { signal: controller.signal }), // TODO(phase-2)
-          api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }), // TODO(phase-2)
+          api.get('/teacher/children',                 { signal: controller.signal }),
+          api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }),
         ]);
         const fresh = buildData(s, c, o);
         cache.set(CACHE_KEY, fresh, CACHE_TTL);
@@ -185,9 +170,22 @@ const Dashboard = () => {
   const stats    = data?.stats        || {};
   const children = data?.children     || [];
   const obs      = data?.observations || [];
-  const attention = data?.attention   || [];
 
-  const today = new Date().toLocaleDateString('uz-UZ', {
+  const attention = children
+    .filter(c => c.attendanceState === 'absent' || c.needsAttention)
+    .slice(0, 5)
+    .map(c => ({
+      child: c,
+      title: c.attendanceState === 'absent'
+        ? t('dashboard.absent', { name: c.firstName })
+        : t('dashboard.needsAttention', { name: c.firstName }),
+      subtitle: c.attendanceState === 'absent'
+        ? t('dashboard.contactParent')
+        : (c.attentionNote || ''),
+      action: { href: '/teacher/chat', icon: MessageSquare, label: t('dashboard.messageAction') },
+    }));
+
+  const today = new Date().toLocaleDateString(i18n.language, {
     day: 'numeric', month: 'long', year: 'numeric',
   });
 
@@ -200,11 +198,11 @@ const Dashboard = () => {
             className="text-[30px] font-semibold text-slate-900"
             style={{ borderLeft: '4px solid #7A6FA8', paddingLeft: '14px' }}
           >
-            Bugun
+            {t('dashboard.today')}
           </h1>
           <p className="mt-2 text-[14px] text-slate-600 self-end">
-            Xush kelibsiz, {user?.firstName} opa/aka.
-            {children.length > 0 && ` "${children[0]?.groupName || ''}" guruhi · ${children.length} bola.`}
+            {t('dashboard.greeting', { name: user?.firstName })}
+            {children.length > 0 && ` "${children[0]?.groupName || ''}" ${t('dashboard.groupLabel')} · ${children.length} bola.`}
           </p>
           <div className="ml-auto text-right shrink-0">
             <div className="text-[13px] text-slate-500">{today}</div>
@@ -213,7 +211,7 @@ const Dashboard = () => {
             to="/teacher/activities"
             className="h-9 px-3.5 rounded-md bg-brand-600 hover:bg-brand-700 text-surface text-[13px] font-medium flex items-center gap-1.5 transition-colors shrink-0"
           >
-            <Plus className="w-4 h-4" strokeWidth={2} /> Yangi yozuv
+            <Plus className="w-4 h-4" strokeWidth={2} /> {t('dashboard.newEntry')}
           </Link>
         </div>
 
@@ -224,10 +222,10 @@ const Dashboard = () => {
               <Users className="w-7 h-7 text-gray-400" strokeWidth={1.5} />
             </div>
             <h3 className="text-base font-semibold text-slate-900 mb-1">
-              {t('dashboard.noChildren.title', { defaultValue: "Sizning sinfingizda hali bolalar yo'q" })}
+              {t('dashboard.noChildren.title')}
             </h3>
             <p className="text-sm text-slate-500 max-w-sm mx-auto">
-              {t('dashboard.noChildren.description', { defaultValue: "Sinfingizga bolalar tayinlanmaguncha, bu sahifa bo'sh ko'rinadi. Maktab adminiga murojaat qiling." })}
+              {t('dashboard.noChildren.description')}
             </p>
           </div>
         )}
@@ -236,9 +234,9 @@ const Dashboard = () => {
         {children.length > 0 && (
           <div className="mt-6 rounded-xl bg-surface border border-slate-200 shadow-xs p-5">
             <div className="flex items-center justify-between mb-3">
-              <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">Sinf bir qarashda</div>
+              <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.classAtGlance')}</div>
               <span className="text-[11px] text-slate-500 tnum">
-                {stats.present || children.length}/{children.length} keldi
+                {stats.present || children.length}/{children.length} {t('dashboard.presentCount')}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
@@ -255,10 +253,10 @@ const Dashboard = () => {
         {/* 3-col stats */}
         <div className="mt-5 grid grid-cols-3 gap-4">
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
-            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">Davomat</div>
+            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.attendanceStat')}</div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.present || 0}</span>
-              <span className="text-[14px] text-slate-500">/ {children.length || 0} keldi</span>
+              <span className="text-[14px] text-slate-500">/ {children.length || 0} {t('dashboard.presentCount')}</span>
             </div>
             {children.length > 0 && (
               <>
@@ -266,33 +264,33 @@ const Dashboard = () => {
                   <span className="block h-full bg-mint-500" style={{ width: `${Math.round(((stats.present || 0) / (children.length || 1)) * 100)}%` }} />
                 </div>
                 <div className="mt-1 text-[11px] text-mint-700 font-medium">
-                  {Math.round(((stats.present || 0) / (children.length || 1)) * 100)}% · normal
+                  {Math.round(((stats.present || 0) / (children.length || 1)) * 100)}% · {t('dashboard.normal')}
                 </div>
               </>
             )}
           </div>
 
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
-            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">Kuzatuvlar bugun</div>
+            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.observationsToday')}</div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.activities || 0}</span>
               {stats.activitiesDelta > 0 && (
                 <span className="text-[11px] text-mint-700 font-medium flex items-center gap-0.5">
                   <TrendingUp className="w-3 h-3" strokeWidth={2} />
-                  +{stats.activitiesDelta} vs kecha
+                  +{stats.activitiesDelta} {t('dashboard.vsYesterday')}
                 </span>
               )}
             </div>
           </div>
 
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
-            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">Yangi xabarlar</div>
+            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.newMessages')}</div>
             <div className="mt-2 flex items-baseline gap-2">
               <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.parents || 0}</span>
-              <span className="text-[13px] text-slate-500">ota-onadan</span>
+              <span className="text-[13px] text-slate-500">{t('dashboard.fromParents')}</span>
             </div>
             <Link to="/teacher/chat" className="mt-3 text-[12px] text-brand-700 font-medium flex items-center gap-1 hover:underline">
-              Xabarlarni ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {t('dashboard.viewMessages')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
         </div>
@@ -302,8 +300,8 @@ const Dashboard = () => {
           <div className="mt-7">
             <div className="flex items-baseline gap-3">
               <span className="w-[3px] h-5 bg-brand-600 rounded" />
-              <h2 className="text-[22px] font-semibold text-slate-900">Bugungi diqqat</h2>
-              <span className="text-[12px] text-slate-500">{attention.length} ta · javob kutmoqda</span>
+              <h2 className="text-[22px] font-semibold text-slate-900">{t('dashboard.focusToday')}</h2>
+              <span className="text-[12px] text-slate-500">{t('dashboard.focusCount', { count: attention.length })}</span>
             </div>
             <div className="mt-3 grid gap-2.5">
               {attention.map((item, i) => <AttentionCard key={i} item={item} />)}
@@ -316,31 +314,31 @@ const Dashboard = () => {
           <div className="rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
             <div className="flex items-center gap-3 mb-3">
               <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[18px] font-semibold text-slate-900">So&apos;nggi kuzatuvlar</h2>
+              <h2 className="text-[18px] font-semibold text-slate-900">{t('dashboard.recentObservations')}</h2>
             </div>
             {obs.length === 0 ? (
-              <div className="py-8 text-center text-[13px] text-slate-500">Bugun hali kuzatuv yozilmadi</div>
+              <div className="py-8 text-center text-[13px] text-slate-500">{t('dashboard.noObservations')}</div>
             ) : (
               <div className="space-y-1.5">
                 {obs.slice(0, 6).map((o, i) => <ObservationRow key={i} obs={o} />)}
               </div>
             )}
             <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium hover:underline">
-              Hammasini ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+              {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
             <div className="flex items-center gap-3 mb-3">
               <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[18px] font-semibold text-slate-900">Tezkor havolalar</h2>
+              <h2 className="text-[18px] font-semibold text-slate-900">{t('dashboard.quickLinks')}</h2>
             </div>
             <div className="space-y-2">
               {[
-                { to: '/teacher/attendance', label: 'Davomat belgilash' },
-                { to: '/teacher/parents',    label: "Bolalar ro'yxati" },
-                { to: '/teacher/chat',       label: 'Ota-onalar bilan chat', badge: stats.parents },
-                { to: '/teacher/reflection', label: 'Kun jurnali' },
+                { to: '/teacher/attendance', label: t('dashboard.linkAttendance') },
+                { to: '/teacher/parents',    label: t('dashboard.linkChildren') },
+                { to: '/teacher/chat',       label: t('dashboard.linkChat'), badge: stats.parents },
+                { to: '/teacher/reflection', label: t('dashboard.linkReflection') },
               ].map(link => (
                 <Link key={link.to} to={link.to} className="flex items-center gap-3 p-3 rounded-lg bg-paper hover:bg-brand-50 transition-colors">
                   <span className="text-[13px] font-medium text-slate-900">{link.label}</span>
@@ -358,7 +356,7 @@ const Dashboard = () => {
       {/* ===== MOBILE ===== */}
       <div className="md:hidden space-y-4">
         <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">Bugun, {user?.firstName} opa/aka</h1>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('dashboard.greetingMobile', { name: user?.firstName })}</h1>
           <p className="text-[13px] text-slate-500">{today}</p>
         </div>
 
@@ -366,10 +364,10 @@ const Dashboard = () => {
           <div className="rounded-xl border border-slate-200 bg-surface px-5 py-8 text-center">
             <Users className="w-8 h-8 text-gray-300 mx-auto mb-2" strokeWidth={1.5} />
             <p className="text-[13px] font-semibold text-slate-800 mb-0.5">
-              {t('dashboard.noChildren.title', { defaultValue: "Sizning sinfingizda hali bolalar yo'q" })}
+              {t('dashboard.noChildren.title')}
             </p>
             <p className="text-[12px] text-slate-500">
-              {t('dashboard.noChildren.description', { defaultValue: "Maktab adminiga murojaat qiling." })}
+              {t('dashboard.noChildren.description')}
             </p>
           </div>
         )}
@@ -377,7 +375,7 @@ const Dashboard = () => {
         {children.length > 0 && (
           <div className="rounded-xl bg-surface border border-slate-200 p-4">
             <div className="flex items-center justify-between mb-3">
-              <span className="text-[11px] uppercase tracking-[.14em] text-slate-500">Guruh</span>
+              <span className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.groupLabel')}</span>
               <span className="text-[11px] text-slate-500 tnum">{stats.present || 0}/{children.length}</span>
             </div>
             <div className="grid grid-cols-6 gap-2">
@@ -395,25 +393,25 @@ const Dashboard = () => {
 
         <div className="grid grid-cols-3 gap-2">
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
-            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">Davomat</div>
+            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.attendanceStat')}</div>
             <div className="mt-1 flex items-baseline gap-0.5">
               <span className="text-[20px] font-semibold text-slate-900 tnum">{stats.present || 0}</span>
               <span className="text-[11px] text-slate-500">/{children.length || 0}</span>
             </div>
           </div>
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
-            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">Kuzatuv</div>
+            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.observationStat')}</div>
             <div className="mt-1"><span className="text-[20px] font-semibold text-slate-900 tnum">{stats.activities || 0}</span></div>
           </div>
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
-            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">Xabar</div>
+            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.messageStat')}</div>
             <div className="mt-1"><span className="text-[20px] font-semibold text-slate-900 tnum">{stats.parents || 0}</span></div>
           </div>
         </div>
 
         {attention.length > 0 && (
           <div className="space-y-2">
-            <div className="text-[12px] font-medium text-slate-900">Bugungi diqqat</div>
+            <div className="text-[12px] font-medium text-slate-900">{t('dashboard.focusToday')}</div>
             {attention.slice(0, 3).map((item, i) => (
               <div key={i} className="rounded-lg border border-slate-200 bg-surface p-3 flex items-start gap-3">
                 <ChildAvatar child={item.child} size="xs" />
@@ -428,17 +426,17 @@ const Dashboard = () => {
 
         <div className="rounded-xl border border-slate-200 bg-surface p-4">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-[13px] font-medium text-slate-900">So&apos;nggi kuzatuvlar</span>
+            <span className="text-[13px] font-medium text-slate-900">{t('dashboard.recentObservations')}</span>
           </div>
           {obs.length === 0 ? (
-            <p className="text-[12px] text-slate-500 text-center py-4">Hali kuzatuv yozilmadi</p>
+            <p className="text-[12px] text-slate-500 text-center py-4">{t('dashboard.noObservationsMobile')}</p>
           ) : (
             <div className="space-y-1.5">
               {obs.slice(0, 5).map((o, i) => <ObservationRow key={i} obs={o} />)}
             </div>
           )}
           <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">
-            Hammasini ko&apos;rish <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
+            {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
           </Link>
         </div>
       </div>

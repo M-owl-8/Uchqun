@@ -84,6 +84,7 @@ function StatusDot({ status }) {
 }
 
 function HistoryGrid({ childList, records, dates }) {
+  const { t } = useTranslation();
   const lookup = {};
   for (const r of records) {
     lookup[`${r.childId}-${r.date?.split('T')[0] || r.date}`] = r.status;
@@ -94,13 +95,13 @@ function HistoryGrid({ childList, records, dates }) {
       <table className="w-full text-[11px]" style={{ borderCollapse: 'separate', borderSpacing: 0, minWidth: `${140 + dates.length * 32}px` }}>
         <thead>
           <tr>
-            <th className="text-left py-1.5 px-2 text-slate-500 font-medium sticky left-0 bg-surface z-10 min-w-[120px]">Ism</th>
+            <th className="text-left py-1.5 px-2 text-slate-500 font-medium sticky left-0 bg-surface z-10 min-w-[120px]">{t('attendance.historyName')}</th>
             {dates.map(d => (
               <th key={d} className="text-center py-1.5 px-0.5 text-slate-400 font-medium w-8">
                 {formatShortDate(d)}
               </th>
             ))}
-            <th className="text-center py-1.5 px-2 text-slate-500 font-medium min-w-[44px]">Bor</th>
+            <th className="text-center py-1.5 px-2 text-slate-500 font-medium min-w-[44px]">{t('attendance.historyPresent')}</th>
           </tr>
         </thead>
         <tbody>
@@ -279,9 +280,9 @@ const Attendance = () => {
   });
 
   const VIEW_TABS = [
-    { key: 'daily', label: t('attendance.viewDaily', { defaultValue: 'Kunlik' }) },
-    { key: 'week',  label: t('attendance.viewWeek',  { defaultValue: 'Hafta' }) },
-    { key: 'month', label: t('attendance.viewMonth', { defaultValue: 'Oy' }) },
+    { key: 'daily', label: t('attendance.viewDaily') },
+    { key: 'week',  label: t('attendance.viewWeek') },
+    { key: 'month', label: t('attendance.viewMonth') },
   ];
 
   if (loading) {
@@ -351,7 +352,7 @@ const Attendance = () => {
         <>
           <div className="px-1 pb-3">
             <div className="text-[12px] text-slate-500">
-              {children[0]?.groupName || 'Guruh'} · {total} {t('attendance.children', { defaultValue: 'bola' })}
+              {children[0]?.groupName || t('attendance.group')} · {total} {t('attendance.children', { defaultValue: 'bola' })}
             </div>
             {!isFuture && (
               <button
@@ -421,8 +422,8 @@ const Attendance = () => {
                 />
                 <span className="relative">
                   {saving
-                    ? t('attendance.saving', { defaultValue: 'Saqlanmoqda...' })
-                    : `${total} dan ${markedCount} ta belgilangan · ${t('common.save', { defaultValue: 'Saqlash' })}`}
+                    ? t('attendance.saving')
+                    : `${t('attendance.saveProgress', { total, marked: markedCount })} · ${t('common.save')}`}
                 </span>
               </button>
             </div>
