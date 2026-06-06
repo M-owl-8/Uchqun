@@ -93,7 +93,8 @@
     "individualPlan": "Individual Plan",
     "meals": "Meals",
     "media": "Media",
-    "viewAll": "View all"
+    "viewAll": "View all",
+    "journal": "Daily journal"
   },
   "activities": {
     "title": "Individual Plan",
@@ -335,5 +336,13 @@
     "level_region": "District office",
     "level_republic": "Republic",
     "levelHint": "Selected: {{level}}"
+  },
+  "parentJournal": {
+    "title": "Daily journal",
+    "subtitle": "Daily entries the teacher writes about your child",
+    "empty": "No entries yet. New entries from the teacher will appear here.",
+    "loadError": "Failed to load the journal. Please try again.",
+    "noChild": "Select your child",
+    "author": "Teacher"
   }
 }

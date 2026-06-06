@@ -11,7 +11,7 @@ import * as cache from '../../../../shared/utils/cache';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ChildSwitcher from '../components/ChildSwitcher';
 import DayCard from '../components/DayCard';
-import { Bell, Activity, UtensilsCrossed, Camera, Star, HeartPulse, ChevronRight, TrendingUp, Dumbbell, HelpCircle } from 'lucide-react';
+import {Bell, Activity, UtensilsCrossed, Camera, Star, HeartPulse, ChevronRight, TrendingUp, Dumbbell, HelpCircle, NotebookPen} from 'lucide-react';
 
 const today = new Date().toISOString().split('T')[0];
 
@@ -120,6 +120,7 @@ const Dashboard = () => {
 
   const quickLinks = [
     { title: t('dashboard.individualPlan'),        value: stats?.activities || 0,   icon: Activity,       href: '/activities' },
+    { title: t('dashboard.journal'),                 value: '',                       icon: NotebookPen,     href: '/journal' },
     { title: t('dashboard.meals'),                   value: stats?.meals || 0,        icon: UtensilsCrossed, href: '/meals' },
     { title: t('dashboard.media'),                    value: stats?.media || 0,        icon: Camera,          href: '/media' },
     { title: t('dashboard.childStatus'),      value: `${stats?.childStatusScore || 0}%`, icon: HeartPulse, href: '/child' },

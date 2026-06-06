@@ -1,5 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BookOpen, MessageCircle, User, Bell, Settings, UtensilsCrossed, Image, HelpCircle, Heart, CalendarCheck } from 'lucide-react';
+import { Home, BookOpen, MessageCircle, User, Bell, Settings, UtensilsCrossed, Image, HelpCircle, Heart, CalendarCheck, NotebookPen } from 'lucide-react';
 import ChildSwitcher from './ChildSwitcher';
 import { useNotification } from '../context/NotificationContext';
 
@@ -7,6 +7,7 @@ const NAV_LINKS = [
   { label: 'Bugun',    href: '/',           icon: Home          },
   { label: 'Kundalik', href: '/activities', icon: BookOpen      },
   { label: 'Davomat',  href: '/attendance', icon: CalendarCheck },
+  { label: 'Jurnal',   href: '/journal',    icon: NotebookPen   },
   { label: 'Taomlar',  href: '/meals',      icon: UtensilsCrossed },
   { label: 'Galereya', href: '/media',      icon: Image         },
   { label: 'Terapiya', href: '/therapy',    icon: Heart         },

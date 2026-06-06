@@ -93,7 +93,8 @@
     "individualPlan": "Individual reja",
     "meals": "Ovqatlar",
     "media": "Media",
-    "viewAll": "Barchasini ko'rish"
+    "viewAll": "Barchasini ko'rish",
+    "journal": "Kun jurnali"
   },
   "activities": {
     "title": "Individual reja",
@@ -335,5 +336,13 @@
     "level_region": "Tuman bo'limi",
     "level_republic": "Respublika",
     "levelHint": "Tanlangan: {{level}}"
+  },
+  "parentJournal": {
+    "title": "Kun jurnali",
+    "subtitle": "Tarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar",
+    "empty": "Hali yozuv yo'q. Tarbiyachi yangi yozuv qo'shganda bu yerda ko'rinadi.",
+    "loadError": "Jurnalni yuklashda xatolik. Qaytadan urinib koʻring.",
+    "noChild": "Farzandingizni tanlang",
+    "author": "Tarbiyachi"
   }
 }

@@ -13,6 +13,7 @@ import {
   Lightbulb,
   TrendingUp,
   CalendarCheck,
+  NotebookPen,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNotification } from '../context/NotificationContext';
@@ -54,6 +55,7 @@ const Sidebar = ({ onClose }) => {
     { name: t('nav.irr'), href: '/irr', icon: TrendingUp },
     { name: t('nav.activities'), href: '/activities', icon: CheckCircle },
     { name: t('parentAttendance.title'), href: '/attendance', icon: CalendarCheck },
+    { name: t('parentJournal.title'), href: '/journal', icon: NotebookPen },
     { name: t('nav.meals'), href: '/meals', icon: Utensils },
     { name: t('nav.media'), href: '/media', icon: ImageIcon },
     { name: t('nav.rating'), href: '/rating', icon: Star },
