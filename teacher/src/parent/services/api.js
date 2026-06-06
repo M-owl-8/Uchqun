@@ -5,5 +5,5 @@
 // refresh races: parent-side would rotate the refresh token first; teacher-side
 // would then send the revoked token, fail, and call clearAuth() — logging the
 // user out spuriously.
-export { default } from '../shared/services/api';
+export { default } from '../../shared/services/api';
 export { createApi } from '@shared/services/api';
