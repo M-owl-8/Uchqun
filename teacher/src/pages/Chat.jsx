@@ -294,13 +294,13 @@ const Chat = () => {
                   </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-1">
-                      <span className="text-[13px] font-medium text-slate-900 truncate">
+                      <span className="flex-1 min-w-0 text-[13px] font-medium text-slate-900 truncate">
                         {p ? `${p.firstName} ${p.lastName}` : pid}
                       </span>
                       <span className="text-[10px] text-slate-400 shrink-0">{lastTime}</span>
                     </div>
                     <div className="flex items-center justify-between gap-1 mt-0.5">
-                      <span className="text-[11px] text-slate-500 truncate">
+                      <span className="flex-1 min-w-0 text-[11px] text-slate-500 truncate">
                         {lastText || t('chat.noMessages')}
                       </span>
                       {convo.unreadCount > 0 && (

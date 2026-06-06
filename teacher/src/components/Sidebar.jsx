@@ -21,6 +21,7 @@ import { useSocket } from '../shared/context/SocketContext';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { LanguageSwitcher } from '../../../shared/components/LanguageSwitcher';
+import LogoutButton from '@shared/components/LogoutButton';
 
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
@@ -227,16 +228,10 @@ const Sidebar = ({ onClose }) => {
             </div>
             <div className="text-[10px]" style={{ color: '#928A9C' }}>{t('sidebar.roleTeacher')}</div>
           </div>
-          <button
-            onClick={logout}
-            className="w-7 h-7 grid place-items-center rounded-md transition-colors"
-            style={{ color: '#928A9C' }}
-            onMouseEnter={e => { e.currentTarget.style.background = '#3A3340'; }}
-            onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; }}
-            aria-label={t('sidebar.logout')}
-          >
-            <LogOut className="w-4 h-4" strokeWidth={1.75} />
-          </button>
+        </div>
+        {/* TP-MOBILE-PASS S3: text-visible shared LogoutButton — no longer icon-only. */}
+        <div className="mt-2.5">
+          <LogoutButton onLogout={logout} label={t('sidebar.logout')} variant="sidebar" />
         </div>
 
         {/* Language switcher */}

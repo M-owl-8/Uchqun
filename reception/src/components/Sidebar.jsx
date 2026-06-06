@@ -11,6 +11,7 @@ import {
   User,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import LogoutButton from '@shared/components/LogoutButton';
 import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
 const Sidebar = ({ onClose }) => {
@@ -147,13 +148,10 @@ const Sidebar = ({ onClose }) => {
               {t('role.reception', { defaultValue: 'Qabulxona xodimi' })}
             </div>
           </div>
-          <button
-            onClick={logout}
-            className="p-1.5 rounded text-teak-muted hover:text-teak-text hover:bg-teak transition-colors"
-            title={t('nav.logout', { defaultValue: 'Chiqish' })}
-          >
-            <LogOut className="w-4 h-4" strokeWidth={2} />
-          </button>
+        </div>
+        {/* TP-MOBILE-PASS S3: text-visible shared LogoutButton. */}
+        <div className="mt-2.5">
+          <LogoutButton onLogout={logout} label={t('nav.logout')} variant="sidebar" />
         </div>
 
         {/* Language switcher */}

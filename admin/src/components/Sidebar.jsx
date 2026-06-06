@@ -1,6 +1,7 @@
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useTranslation } from 'react-i18next';
+import LogoutButton from '@shared/components/LogoutButton';
 import {
   LayoutDashboard,
   Users,
@@ -154,13 +155,10 @@ const Sidebar = ({ onClose }) => {
               <p className="text-sm font-semibold truncate">{user?.firstName} {user?.lastName}</p>
               <p className="text-[11px] text-walnut-muted truncate">{t('role.admin', { defaultValue: 'Direktor' })}</p>
             </div>
-            <button
-              aria-label={t('logout', { defaultValue: 'Chiqish' })}
-              onClick={logout}
-              className="text-walnut-muted hover:text-white p-1.5 rounded hover:bg-walnut transition-colors"
-            >
-              <LogOut className="w-4 h-4" strokeWidth={1.75} />
-            </button>
+          </div>
+          {/* TP-MOBILE-PASS S3: text-visible shared LogoutButton. */}
+          <div className="mt-2.5">
+            <LogoutButton onLogout={logout} label={t('logout')} variant="sidebar" />
           </div>
         </div>
       </div>
