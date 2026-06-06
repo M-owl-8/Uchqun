@@ -35,7 +35,11 @@
     "noMessages": "No messages yet",
     "yourMessage": "Your message",
     "governmentReply": "Davlat reply",
-    "replied": "Replied"
+    "replied": "Replied",
+    "avatarUpdated": "Photo uploaded successfully",
+    "imageTooLarge": "Image must not exceed 5 MB",
+    "invalidImage": "Only image files are accepted",
+    "uploadError": "Error uploading photo"
   },
   "child": {
     "title": "Child Profile",
@@ -75,7 +79,8 @@
       "quickRecovery": "Recovers quickly from stressful situations",
       "stableMood": "Mood remains stable throughout the day",
       "trustingRelationship": "Trusting relationship with the teacher"
-    }
+    },
+    "diagnosis": "Diagnosis"
   },
   "dashboard": {
     "role": "My Role: Parent",
@@ -306,7 +311,18 @@
     "hidePassword": "Hide password"
   },
   "irr": {
-    "scoreNote": "Maximum score: {{maxScore}} points. A rising score is a sign of progress."
+    "scoreNote": "Maximum score: {{maxScore}} points. A rising score is a sign of progress.",
+    "session": {
+      "initial": "Initial assessment",
+      "threeMonth": "After 3 months",
+      "sixMonth": "After 6 months",
+      "final": "Final assessment"
+    },
+    "trend": {
+      "increased": "increased",
+      "decreased": "decreased",
+      "unchanged": "unchanged"
+    }
   },
   "message": {
     "levelOwner": "Teacher",

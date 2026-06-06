@@ -559,7 +559,6 @@ const Media = () => {
                       }}
                       onError={(_e) => {
                         const originalUrl = item.url;
-                        const _proxyUrl = getProxyUrl(originalUrl, item.id);
                       }}
                     />
                     {/* Video Play Icon - Always visible */}
@@ -577,7 +576,6 @@ const Media = () => {
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     onError={(e) => {
                       const originalUrl = item.url || item.imageUrl || item.photoUrl;
-                      const _proxyUrl = getProxyUrl(originalUrl, item.id);
                       e.target.style.display = 'none';
                     }}
                   />
@@ -657,7 +655,6 @@ const Media = () => {
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
                     const originalUrl = selectedMedia.url || selectedMedia.imageUrl || selectedMedia.photoUrl;
-                    const _proxyUrl = getProxyUrl(originalUrl, selectedMedia.id);
                     e.target.style.display = 'none';
                   }}
                 />

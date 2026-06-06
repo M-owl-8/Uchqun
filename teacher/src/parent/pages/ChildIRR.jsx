@@ -11,16 +11,14 @@ import { SKILL_AREAS } from '@shared/config/skillAreas';
 
 const MAX_SCORE = 68;
 
-const SESSION_LABELS = {
-  initial: 'Дастлабки баҳолаш',
-  '3_month': '3 ойдан кейин',
-  '6_month': '6 ойдан кейин',
-  final: 'Якуний баҳолаш',
+// PP-FEATURE-FIXES S11: SESSION_LABELS migrated to i18n.
+// Keys live in irr.session.* in the parent catalog (× 3 locales).
+const SESSION_LABEL_KEYS = {
+  initial:   'irr.session.initial',
+  '3_month': 'irr.session.threeMonth',
+  '6_month': 'irr.session.sixMonth',
+  final:     'irr.session.final',
 };
-
-function sessionLabel(type) {
-  return SESSION_LABELS[type] || type;
-}
 
 function trendIcon(sessions, idx) {
   if (idx === 0) return null;
@@ -208,7 +206,7 @@ const ChildIRR = () => {
               return (
                 <div key={s.id} data-testid={`session-row-${s.id}`} className="flex items-center gap-4">
                   <div className="w-36 shrink-0">
-                    <p className="text-sm font-semibold text-p-ink">{sessionLabel(s.sessionType)}</p>
+                    <p className="text-sm font-semibold text-p-ink">{SESSION_LABEL_KEYS[s.sessionType] ? t(SESSION_LABEL_KEYS[s.sessionType]) : s.sessionType}</p>
                     {s.completedAt && (
                       <p className="text-xs text-p-sepia-400">
                         {formatDateMedium(s.completedAt, i18next.language)}
@@ -219,9 +217,9 @@ const ChildIRR = () => {
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-sm font-bold text-p-ink">{s.totalScore}</span>
                       <span className="text-xs text-p-sepia-400">/ {s.maxPossibleScore || MAX_SCORE}</span>
-                      {trend === 'up' && <TrendingUp className="w-4 h-4 text-p-honey-700" aria-label="ошди" />}
-                      {trend === 'down' && <TrendingDown className="w-4 h-4 text-p-sepia-400" aria-label="камайди" />}
-                      {trend === 'stable' && <Minus className="w-4 h-4 text-slate-400" aria-label="ўзгармади" />}
+                      {trend === 'up' && <TrendingUp className="w-4 h-4 text-p-honey-700" aria-label={t('irr.trend.increased')} />}
+                      {trend === 'down' && <TrendingDown className="w-4 h-4 text-p-sepia-400" aria-label={t('irr.trend.decreased')} />}
+                      {trend === 'stable' && <Minus className="w-4 h-4 text-slate-400" aria-label={t('irr.trend.unchanged')} />}
                     </div>
                     <div className="w-full bg-p-sepia-100 rounded-full h-2">
                       <div

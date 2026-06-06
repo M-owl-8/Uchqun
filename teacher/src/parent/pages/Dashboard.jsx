@@ -119,14 +119,14 @@ const Dashboard = () => {
   }
 
   const quickLinks = [
-    { title: t('dashboard.individualPlan') || 'Faoliyat',        value: stats?.activities || 0,   icon: Activity,       href: '/activities' },
-    { title: t('dashboard.meals') || 'Ovqat',                   value: stats?.meals || 0,        icon: UtensilsCrossed, href: '/meals' },
-    { title: t('dashboard.media') || 'Rasm',                    value: stats?.media || 0,        icon: Camera,          href: '/media' },
-    { title: t('dashboard.childStatus') || 'Hissiy holat',      value: `${stats?.childStatusScore || 0}%`, icon: HeartPulse, href: '/child' },
-    { title: t('dashboard.teacherRating') || 'Baholash',        value: `${stats?.teacherRating || '0.0'} (${stats?.teacherRatingCount || 0})`, icon: Star, href: '/rating' },
-    { title: t('dashboard.irr') || 'ИРР — Ривожланиш режаси',  value: '',                       icon: TrendingUp,      href: '/irr' },
-    { title: t('dashboard.therapy') || 'Foydali materiallar',   value: '',                       icon: Dumbbell,        href: '/therapy' },
-    { title: t('dashboard.help') || 'Yordam',                   value: '',                       icon: HelpCircle,      href: '/help' },
+    { title: t('dashboard.individualPlan'),        value: stats?.activities || 0,   icon: Activity,       href: '/activities' },
+    { title: t('dashboard.meals'),                   value: stats?.meals || 0,        icon: UtensilsCrossed, href: '/meals' },
+    { title: t('dashboard.media'),                    value: stats?.media || 0,        icon: Camera,          href: '/media' },
+    { title: t('dashboard.childStatus'),      value: `${stats?.childStatusScore || 0}%`, icon: HeartPulse, href: '/child' },
+    { title: t('dashboard.teacherRating'),        value: `${stats?.teacherRating || '0.0'} (${stats?.teacherRatingCount || 0})`, icon: Star, href: '/rating' },
+    { title: t('dashboard.irr'),  value: '',                       icon: TrendingUp,      href: '/irr' },
+    { title: t('dashboard.therapy'),   value: '',                       icon: Dumbbell,        href: '/therapy' },
+    { title: t('dashboard.help'),                   value: '',                       icon: HelpCircle,      href: '/help' },
   ];
 
   return (
@@ -180,7 +180,7 @@ const Dashboard = () => {
       {/* Quick access links */}
       <div>
         <h2 className="text-[13px] uppercase tracking-[.1em] font-semibold text-p-sepia-500 mb-3">
-          {t('dashboard.overview') || 'Tezkor havolalar'}
+          {t('dashboard.overview')}
         </h2>
         <div className="space-y-2">
           {quickLinks.map((item) => (

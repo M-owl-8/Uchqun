@@ -311,7 +311,18 @@
     "hidePassword": "Parolni yashirish"
   },
   "irr": {
-    "scoreNote": "Eng yuqori ko'rsatkich: {{maxScore}} ball. Ball ortishi — rivojlanish belgisi."
+    "scoreNote": "Eng yuqori ko'rsatkich: {{maxScore}} ball. Ball ortishi — rivojlanish belgisi.",
+    "session": {
+      "initial": "Dastlabki baholash",
+      "threeMonth": "3 oydan keyin",
+      "sixMonth": "6 oydan keyin",
+      "final": "Yakuniy baholash"
+    },
+    "trend": {
+      "increased": "ortdi",
+      "decreased": "kamaydi",
+      "unchanged": "o'zgarmadi"
+    }
   },
   "message": {
     "levelOwner": "O'qituvchiga",
