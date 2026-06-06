@@ -194,6 +194,11 @@ export const getWarnings = async (req, res) => {
       where.parentId = req.user.id;
     }
 
+    // Teacher: scope to own school only
+    if (req.user.role === 'teacher' && req.user.schoolId) {
+      where.schoolId = req.user.schoolId;
+    }
+
     // Government region scoping: region accounts only see warnings for their region's schools
     if (req.user.role === 'government' && req.user.govRegionId) {
       const regionSchools = await School.findAll({

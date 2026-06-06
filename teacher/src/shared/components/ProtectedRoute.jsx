@@ -5,7 +5,11 @@ import LoadingSpinner from './LoadingSpinner';
 const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   const { isAuthenticated, loading, isTeacher, isParent, user } = useAuth();
 
-  if (loading && !user) {
+  // Block rendering during auth verification regardless of stale localStorage data.
+  // The old guard `loading && !user` allowed zombie rendering: if localStorage had
+  // a stale user, the full authenticated layout mounted immediately and fired all
+  // page API requests before auth/me validated the session (request storm on 401).
+  if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <LoadingSpinner size="lg" />
