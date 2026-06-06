@@ -19,6 +19,7 @@ const PAGE_NAMES = {
   '/teacher/settings':   'Sozlamalar',
   '/teacher/meals':      'Ovqatlanish',
   '/teacher/therapy':    'Terapiya',
+  '/teacher/warnings':   'Ogohlantirishlar',
 };
 
 const getPageName = (pathname) => {

@@ -32,7 +32,7 @@
     "goals": "Goals",
     "observations": "Activities",
     "therapy": "Therapy",
-    "aiWarnings": "Warnings",
+    "warnings": "Warnings",
     "chat": "Messages",
     "reflection": "Daily Journal"
   },
@@ -575,7 +575,7 @@
   },
   "warnings": {
     "title": "Warnings",
-    "subtitle": "Warnings generated from ratings",
+    "subtitle": "Warnings about the children in your group",
     "all": "All",
     "unresolved": "Unresolved",
     "resolved": "Resolved",

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import ErrorBoundary from '../../shared/components/ErrorBoundary';
 import { OfflineBanner } from '../../shared/components/OfflineBanner';
@@ -137,7 +137,8 @@ function App() {
                     <Route path="chat" element={<ErrorBoundary><Chat /></ErrorBoundary>} />
                     <Route path="monitoring" element={<ErrorBoundary><MonitoringJournal /></ErrorBoundary>} />
                     <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
-                    <Route path="ai-warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
+                    <Route path="warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
+                    <Route path="ai-warnings" element={<Navigate to="/teacher/warnings" replace />} />
                     <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
                     <Route path="attendance" element={<ErrorBoundary><Attendance /></ErrorBoundary>} />
                     <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />

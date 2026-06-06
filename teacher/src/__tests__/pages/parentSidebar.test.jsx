@@ -44,13 +44,13 @@ describe('#09-004 parent Sidebar uses standard t() not parentT()', () => {
 });
 
 describe('#09-007 AIWarnings removed from parent Sidebar (Phase 0 teardown)', () => {
-  it('does NOT render an /ai-warnings link in the nav (removed in Phase 0 — bd1dbcd)', async () => {
-    // Phase 0 (AIChat teardown) removed /ai-warnings from parent Sidebar as government-mandated.
-    // AIWarnings page still exists for teacher/admin; only the parent nav entry is gone.
+  it('does NOT render a /warnings link in the nav (removed in Phase 0 — bd1dbcd)', async () => {
+    // Phase 0 (AIChat teardown) removed the warnings nav entry from parent Sidebar as government-mandated.
+    // Warnings page exists at /teacher/warnings for teachers; parent nav has no entry.
     const { default: Sidebar } = await import('../../parent/components/Sidebar');
     const { container } = render(React.createElement(Sidebar, { onClose: vi.fn() }));
     const links = Array.from(container.querySelectorAll('a'));
-    const aiWarningsLink = links.find((a) => a.getAttribute('href') === '/ai-warnings');
-    expect(aiWarningsLink).toBeUndefined();
+    const warningsLink = links.find((a) => a.getAttribute('href') === '/warnings');
+    expect(warningsLink).toBeUndefined();
   });
 });

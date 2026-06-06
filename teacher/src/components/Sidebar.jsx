@@ -50,7 +50,7 @@ const Sidebar = ({ onClose }) => {
         { key: 'monitoring',  href: '/teacher/monitoring',  icon: Target,        label: t('sidebar.goals',       { defaultValue: 'Maqsadlar' }) },
         { key: 'activities',  href: '/teacher/activities',  icon: ClipboardList, label: t('sidebar.observations', { defaultValue: 'Kuzatuvlar' }) },
         { key: 'therapy',     href: '/teacher/therapy',     icon: Stethoscope,   label: t('sidebar.therapy',     { defaultValue: 'Terapiya' }) },
-        { key: 'ai-warnings', href: '/teacher/ai-warnings', icon: ShieldAlert,   label: t('sidebar.aiWarnings',  { defaultValue: 'Ogohlantirishlar' }) },
+        { key: 'warnings', href: '/teacher/warnings', icon: ShieldAlert,   label: t('sidebar.warnings',  { defaultValue: 'Ogohlantirishlar' }) },
       ],
     },
     {

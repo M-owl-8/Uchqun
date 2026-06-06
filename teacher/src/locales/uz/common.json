@@ -32,7 +32,7 @@
     "goals": "Maqsadlar",
     "observations": "Kuzatuvlar",
     "therapy": "Terapiya",
-    "aiWarnings": "Ogohlantirishlar",
+    "warnings": "Ogohlantirishlar",
     "chat": "Muloqot",
     "reflection": "Kun jurnali"
   },
@@ -575,7 +575,7 @@
   },
   "warnings": {
     "title": "Ogohlantirishlar",
-    "subtitle": "Reytinglar asosida yaratilgan ogohlantirishlar",
+    "subtitle": "Guruhingiz bolalari bo'yicha ogohlantirishlar",
     "all": "Barchasi",
     "unresolved": "Yechilmagan",
     "resolved": "Yechilgan",
