@@ -117,6 +117,64 @@ describe('authenticate middleware', () => {
     await authenticate(req, res, next);
     expect(next).toHaveBeenCalled();
   });
+
+  // TP-AUTH-ZOMBIE S1: account-state failures normalized to 401 so the frontend
+  // interceptor treats them like expired tokens (clearAuth + redirect, no zombie UI).
+  it('returns 401 with ACCOUNT_NOT_ACTIVE when teacher isActive is false', async () => {
+    const token = jwt.sign({ userId: 't-inactive' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 't-inactive', role: 'teacher', isActive: false, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'ACCOUNT_NOT_ACTIVE' }),
+    }));
+    expect(next).not.toHaveBeenCalled();
+  });
+
+  it('returns 401 with ACCOUNT_NOT_ACTIVE when admin isActive is false', async () => {
+    const token = jwt.sign({ userId: 'a-inactive' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'a-inactive', role: 'admin', isActive: false, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'ACCOUNT_NOT_ACTIVE' }),
+    }));
+  });
+
+  it('returns 401 with RECEPTION_NOT_APPROVED when reception !documentsApproved', async () => {
+    const token = jwt.sign({ userId: 'r-pending' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'r-pending', role: 'reception', isActive: true, documentsApproved: false, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(res.status).toHaveBeenCalledWith(401);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'RECEPTION_NOT_APPROVED' }),
+      requiresApproval: true,
+    }));
+  });
+
+  it('parent isActive=false is NOT gated (parent suspension uses status, not isActive)', async () => {
+    const token = jwt.sign({ userId: 'p-inactive' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'p-inactive', role: 'parent', isActive: false, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(next).toHaveBeenCalled();
+  });
+
+  it('government isActive=false is NOT gated (government exempt)', async () => {
+    const token = jwt.sign({ userId: 'g-inactive' }, process.env.JWT_SECRET);
+    req.cookies = { accessToken: token };
+    mockFindByPk.mockResolvedValue({ id: 'g-inactive', role: 'government', isActive: false, status: 'active' });
+
+    await authenticate(req, res, next);
+    expect(next).toHaveBeenCalled();
+  });
 });
 
 describe('requireRole middleware', () => {

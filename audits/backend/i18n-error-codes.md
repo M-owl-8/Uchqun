@@ -141,7 +141,8 @@ Introduced: Sprint D T2-2 PR2 (2026-05-20)
 
 | Code | HTTP | Meaning | Frontend translation guidance |
 |---|---|---|---|
-| `ACCOUNT_NOT_ACTIVE` | 401 | User's `status` field is `suspended` or `archived` — emitted by `authenticate` middleware for all non-government users | "Your account has been suspended. Contact your administrator." |
+| `ACCOUNT_NOT_ACTIVE` | 401 | User's `status` field is `suspended` or `archived` OR legacy `isActive` is false (teacher/admin/reception) — emitted by `authenticate` middleware for all non-government users. TP-AUTH-ZOMBIE S1 normalized the legacy `!isActive` 403 path to 401 so the frontend interceptor handles it uniformly. | "Your account has been suspended. Contact your administrator." |
+| `RECEPTION_NOT_APPROVED` | 401 | Reception account is awaiting admin approval (`!documentsApproved` or `!isActive`). TP-AUTH-ZOMBIE S1 introduced this distinct code (was previously a 403 with a plain-string body) so the frontend can show the right CTA and the interceptor still clears the session. Response also carries `requiresApproval: true` for legacy callers. | "Your account is awaiting administrator approval." |
 | `PARENT_SUSPEND_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth check) | "Only admins can suspend parent accounts." |
 | `PARENT_ACTIVATE_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth check) | "Only admins can reactivate parent accounts." |
 | `PARENT_NOT_FOUND` | 404 | No parent user with that ID exists in this school, or the account was deleted | "Parent account not found." |

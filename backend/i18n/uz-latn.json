@@ -167,7 +167,6 @@
   "TEACHER_ALREADY_SUSPENDED": "Bu o'qituvchi hisobi allaqachon to'xtatilgan.",
   "TEACHER_SUSPEND_FAILED": "O'qituvchini to'xtatish muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
   "TEACHER_CREDENTIAL_RESET_FAILED": "O'qituvchining kirish ma'lumotlarini tiklash muvaffaqiyatsiz tugadi. Iltimos, qaytadan urinib ko'ring.",
-
   "IRR_CHILD_NOT_ACCESSIBLE": "Bu bola sizning guruhingizda emas.",
   "IRR_ALREADY_EXISTS": "Bu bolaning faol rivojlanish rejasi allaqachon mavjud.",
   "IRR_NOT_FOUND": "Rivojlanish rejasi topilmadi.",
@@ -176,7 +175,6 @@
   "IRR_CREATE_FAILED": "Rivojlanish rejasini yaratib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "IRR_FETCH_FAILED": "Rivojlanish rejasini yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "IRR_UPDATE_FAILED": "Rivojlanish rejasini yangilab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "ASSESSMENT_INVALID_TYPE": "Iltimos, to'g'ri baholash turini tanlang.",
   "ASSESSMENT_SESSION_EXISTS": "Bu turdagi baholash ushbu reja uchun allaqachon mavjud.",
   "ASSESSMENT_INCOMPLETE": "Iltimos, 17 ta baholash mezoni bo'yicha ballarni ko'rsating.",
@@ -186,45 +184,38 @@
   "ASSESSMENT_CREATE_FAILED": "Baholashni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "ASSESSMENT_LIST_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "ASSESSMENT_FETCH_FAILED": "Baholashni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "LONG_TERM_GOAL_NOT_FOUND": "Uzoq muddatli maqsad topilmadi.",
   "LONG_TERM_GOAL_TEXT_TOO_SHORT": "Maqsad tavsifi kamida 5 ta belgidan iborat bo'lishi kerak.",
   "LONG_TERM_GOAL_CREATE_FAILED": "Maqsadni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "LONG_TERM_GOAL_UPDATE_FAILED": "Maqsadni yangilab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "LONG_TERM_GOAL_DELETE_FAILED": "Maqsadni o'chirib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "LONG_TERM_GOAL_LIST_FAILED": "Maqsadlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "GOAL_PERIOD_NOT_FOUND": "Maqsad davri topilmadi.",
   "GOAL_PERIOD_DATES_REQUIRED": "Iltimos, maqsad davrining boshlanish va tugash sanalarini ko'rsating.",
   "GOAL_PERIOD_CREATE_FAILED": "Maqsad davrini yaratib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "GOAL_PERIOD_UPDATE_FAILED": "Maqsad davrini yangilab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "GOAL_PERIOD_LIST_FAILED": "Maqsad davrlarini yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "SHORT_TERM_GOAL_NOT_FOUND": "Qisqa muddatli maqsad topilmadi.",
   "SHORT_TERM_GOAL_TEXT_TOO_SHORT": "Maqsad tavsifi kamida 3 ta belgidan iborat bo'lishi kerak.",
   "SHORT_TERM_GOAL_CREATE_FAILED": "Maqsadni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "SHORT_TERM_GOAL_UPDATE_FAILED": "Maqsadni yangilab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "SHORT_TERM_GOAL_DELETE_FAILED": "Maqsadni o'chirib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "SHORT_TERM_GOAL_LIST_FAILED": "Maqsadlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "DAILY_ENTRY_CHILD_NOT_ACCESSIBLE": "Bu bola sizning guruhingizda emas.",
   "DAILY_ENTRY_DATE_REQUIRED": "Iltimos, yozuv sanasini ko'rsating.",
   "DAILY_ENTRY_DUPLICATE": "Bu kun uchun yozuv allaqachon mavjud.",
   "DAILY_ENTRY_CREATE_FAILED": "Kunlik yozuvni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "DAILY_ENTRY_LIST_FAILED": "Kunlik yozuvlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "WEEKLY_ENTRY_CHILD_NOT_ACCESSIBLE": "Bu bola sizning guruhingizda emas.",
   "WEEKLY_ENTRY_DATE_REQUIRED": "Iltimos, hafta boshlanish sanasini ko'rsating.",
   "WEEKLY_ENTRY_DUPLICATE": "Bu hafta uchun yozuv allaqachon mavjud.",
   "WEEKLY_ENTRY_CREATE_FAILED": "Haftalik yozuvni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "WEEKLY_ENTRY_LIST_FAILED": "Haftalik yozuvlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "QUARTERLY_ACCESS_DENIED": "Faqat menejerlar choraklik hisobotlar yaratishi mumkin.",
   "QUARTERLY_ENTRY_DATES_REQUIRED": "Iltimos, chorakning boshlanish va tugash sanalarini ko'rsating.",
   "QUARTERLY_ENTRY_DUPLICATE": "Bu davr uchun choraklik hisobot allaqachon mavjud.",
   "QUARTERLY_ENTRY_CREATE_FAILED": "Choraklik hisobotni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "QUARTERLY_ENTRY_LIST_FAILED": "Choraklik hisobotlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "RATING_FORBIDDEN": "Faqat ota-onalar maktablarni baholashi mumkin.",
   "RATING_COMMENT_REQUIRED": "Iltimos, yuborishdan oldin izoh yozing.",
   "RATING_SCHOOL_ID_REQUIRED": "Iltimos, maktabni tanlang.",
@@ -237,7 +228,6 @@
   "RATING_CHILD_NOT_FOUND": "Bola topilmadi.",
   "RATING_CREATE_FAILED": "Baholashni saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "RATING_FETCH_FAILED": "Baholashlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "MESSAGE_SEND_FORBIDDEN": "Faqat ota-onalar bu kanal orqali xabar yuborishi mumkin.",
   "MESSAGE_SUBJECT_REQUIRED": "Iltimos, mavzuni kiriting.",
   "MESSAGE_BODY_REQUIRED": "Iltimos, xabarni yozing.",
@@ -247,7 +237,6 @@
   "MESSAGE_NO_SCHOOL": "Sizning hisobingiz maktabga biriktirilmagan.",
   "MESSAGE_SEND_FAILED": "Xabar yuborib bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
   "MESSAGE_FETCH_FAILED": "Xabarlarni yuklab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-
   "ATTENDANCE_RECORDS_REQUIRED": "Iltimos, kamida bitta davomat yozuvini qo'shing.",
   "ATTENDANCE_CHILD_ID_REQUIRED": "Har bir yozuvda bola identifikatori bo'lishi kerak.",
   "ATTENDANCE_DATE_REQUIRED": "Har bir yozuvda sana bo'lishi kerak.",
@@ -255,5 +244,6 @@
   "ATTENDANCE_FUTURE_DATE": "Kelajakdagi sana uchun davomat belgilab bo'lmaydi.",
   "ATTENDANCE_INVALID_STATUS": "Iltimos, to'g'ri holat tanlang.",
   "ATTENDANCE_ACCESS_DENIED": "Siz bu bolaning yozuviga kira olmaysiz.",
-  "ATTENDANCE_SAVE_FAILED": "Davomat saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring."
+  "ATTENDANCE_SAVE_FAILED": "Davomat saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
+  "RECEPTION_NOT_APPROVED": "Sizning hisobingiz administrator tomonidan tasdiqlanishini kutmoqda."
 }

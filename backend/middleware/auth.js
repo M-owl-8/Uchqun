@@ -98,14 +98,17 @@ export const authenticate = async (req, res, next) => {
     }
 
     // Legacy isActive gate — applies to reception, teacher, admin (not parent, not government).
+    // TP-AUTH-ZOMBIE S1: returns 401 (not 403) so the frontend interceptor treats account-state
+    // failures the same as expired tokens — clearAuth + redirect to login, no zombie UI.
     const isParent = user.role === 'parent';
     if (!isParent && !isGovernment && !user.isActive) {
-      return res.status(403).json({ error: 'Account is not active' });
+      return res.status(401).json({ success: false, error: { code: 'ACCOUNT_NOT_ACTIVE' } });
     }
 
     if (user.role === 'reception' && (!user.documentsApproved || !user.isActive)) {
-      return res.status(403).json({
-        error: 'Account not approved. Please wait for Admin approval.',
+      return res.status(401).json({
+        success: false,
+        error: { code: 'RECEPTION_NOT_APPROVED' },
         requiresApproval: true,
       });
     }

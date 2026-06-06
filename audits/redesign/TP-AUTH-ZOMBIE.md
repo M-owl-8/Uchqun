@@ -149,3 +149,75 @@ Not fixed in this PR. Logged as separate item: refresh signed URLs on re-authent
 1. Log in as teacher. Force expiry: wait 15 min (access token TTL) with the app open, then navigate to any teacher page → app redirects to `/login` cleanly. Console shows no request storm.
 2. Log back in → all pages load. Console clean.
 3. Hard refresh `/teacher/settings` while authenticated → zero 401/403.
+
+---
+
+## S1 — Reopen (2026-06-06)
+
+The S1 reopen was triggered by PP-AUDIT C.2 reporting that `teacher/src/parent/components/ProtectedRoute.jsx:8` still used the old `loading && !user` guard. Investigation under this brief produced findings the prior round missed.
+
+### S1.H3 finding — parent-side foothold was a phantom
+
+```bash
+$ grep -rn "from .*parent/components/ProtectedRoute\|from .*'\./components/ProtectedRoute'" teacher/src --include='*.js' --include='*.jsx'
+# (empty — zero importers)
+```
+`teacher/src/parent/components/ProtectedRoute.jsx` is **not imported anywhere**. `teacher/src/App.jsx:10` imports `ProtectedRoute` from `./shared/components/ProtectedRoute`, and that same shared component guards both teacher routes (line 86, 126) and parent routes (lines 95, 104). All production parent traffic was already running through the fixed guard. PP-AUDIT's verdict that the parent zombie risk was live was based on file existence, not import wiring — corrected here.
+
+**Action:** the orphan file was deleted in this session to prevent future accidental imports of the old guard. New parent-role variants were added to the existing zombie regression suite to lock in that the shared route handles `requireRole: 'parent'` correctly.
+
+### S1.H1 finding — backend semantic split still leaked 403 from `authenticate`
+
+The S1 brief's H1 was the gap the original round did not address. The `authenticate` middleware itself returned **403** (not 401) for two account-state conditions, which the frontend interceptor does not treat as session-dead:
+
+| Path | Old behavior | New behavior |
+|---|---|---|
+| `auth.js:102-104` — `!user.isActive` (teacher/admin/reception) | `res.status(403).json({ error: 'Account is not active' })` | `res.status(401).json({ success: false, error: { code: 'ACCOUNT_NOT_ACTIVE' } })` |
+| `auth.js:106-110` — reception `!documentsApproved || !isActive` | `res.status(403).json({ error: 'Account not approved...', requiresApproval: true })` | `res.status(401).json({ success: false, error: { code: 'RECEPTION_NOT_APPROVED' }, requiresApproval: true })` |
+
+`PASSWORD_CHANGE_REQUIRED` (auth.js:117-127) stays **403** intentionally — `ProtectedRoute.jsx:24-27` already navigates to `/change-password` when `user.mustChangePassword`. That is a special UI flow, not session-dead.
+
+After the change, the interceptor's existing 401 path (`shared/services/api.js:96-111`) covers all account-state failures uniformly: one refresh attempt → on failure, `clearAuth()` → redirect to `/login`. No zombie window for deactivated/unapproved accounts either.
+
+### S1.H2 finding — re-verified, still clean
+
+```bash
+$ grep -rn "import axios\|require('axios')\|fetch(" teacher/src 2>/dev/null \
+    | grep -v "shared/services/api" | grep -v "__tests__" | grep -v ".test."
+# (empty — every teacher-app HTTP call routes through the shared client)
+```
+No bypass introduced since the original round.
+
+### S1.H4 finding — 502 on signed media URL is non-auth
+
+Classified: Appwrite-side. The 502 in capture 3 was on a signed Appwrite media URL whose validity is independent of the session (signed URLs carry their own expiry). Tracked separately as part of `TP-MEDIA-STORAGE`; not closed by this session, but the interceptor doesn't touch it either (no `auth/` path in `originalRequest.url`).
+
+### Files changed (S1)
+
+| File | Change |
+|---|---|
+| `backend/middleware/auth.js:100-110` | Two `403`s → `401` with `{ code: ACCOUNT_NOT_ACTIVE }` and `{ code: RECEPTION_NOT_APPROVED }` |
+| `audits/backend/i18n-error-codes.md` | `ACCOUNT_NOT_ACTIVE` row expanded to cover `!isActive`; new `RECEPTION_NOT_APPROVED` row |
+| `backend/i18n/{uz-latn,uz-cyrl,ru}.json` | Added `RECEPTION_NOT_APPROVED` translations (3 locales) |
+| `backend/__tests__/i18n.test.js` | `EXPECTED_CODE_COUNT 226 → 227` |
+| `backend/__tests__/middleware/auth.test.js` | +5 cases: teacher/admin `!isActive` → 401, reception `!documentsApproved` → 401, parent/government exempt |
+| `teacher/src/__tests__/ProtectedRoute.zombie.test.jsx` | +3 parent-role variants |
+| `teacher/src/parent/components/ProtectedRoute.jsx` | **Deleted (orphan)** |
+
+### Verification gates (S1)
+
+| Gate | Local | Notes |
+|---|---|---|
+| `node --check backend/middleware/auth.js` | ✅ | Plus the two test files |
+| JSON validate 3 locales | ✅ | `python3 json.load` passes on each |
+| `npm run lint` (teacher) | ⚠️ pending CI | Full dep tree not installable in this remote sandbox |
+| `npm test` backend / teacher | ⚠️ pending CI | Same reason. Tests pushed to `main`; GitHub Actions will run them. |
+
+### S1 User Railway verification
+
+In addition to the original three steps above:
+
+4. **Parent portal: force expiry** — log in as parent, wait 15 min, navigate → clean redirect to `/login`, console shows no 401/403 storm (this exercises the shared ProtectedRoute via the parent route mount at `App.jsx:95,104`).
+5. **Account-state semantic check (optional, requires admin)** — while a teacher session is open, an admin sets that teacher's `isActive=false`. The teacher's next API call gets `401` with `code: ACCOUNT_NOT_ACTIVE`. The interceptor clears the session and redirects to `/login` — no `Account is not active` 403 toast lingering in a still-mounted UI.
+
+Reply "verified" → flip `LOOP_TRACKER` to ✅, advance to S2 (TP-LOCALE-FOUNDATION re-inspect).

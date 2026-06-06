@@ -111,4 +111,66 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     expect(queryByTestId('spinner')).toBeNull();
     expect(queryByTestId('redirect')).toBeNull();
   });
+
+  // TP-AUTH-ZOMBIE S1 — parent-role variants. The previously-orphaned
+  // teacher/src/parent/components/ProtectedRoute.jsx (deleted in S1) had the
+  // old `loading && !user` guard; production parent routes always used the
+  // shared ProtectedRoute via App.jsx:10. These cases lock in that the shared
+  // guard does the right thing for the parent role too.
+  it('parent route: shows spinner during loading even with stale localStorage parent user', async () => {
+    useAuth.mockReturnValue({
+      loading: true,
+      user: { id: 2, role: 'parent' },
+      isAuthenticated: true,
+      isTeacher: false,
+      isParent: true,
+    });
+
+    const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
+    const { queryByTestId } = render(
+      React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
+    );
+
+    expect(queryByTestId('spinner')).not.toBeNull();
+    expect(queryByTestId('protected-child')).toBeNull();
+  });
+
+  it('parent route: redirects to /login when loading=false and parent session resolved as expired', async () => {
+    useAuth.mockReturnValue({
+      loading: false,
+      user: null,
+      isAuthenticated: false,
+      isTeacher: false,
+      isParent: false,
+    });
+
+    const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
+    const { queryByTestId } = render(
+      React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
+    );
+
+    const redirect = queryByTestId('redirect');
+    expect(redirect).not.toBeNull();
+    expect(redirect.getAttribute('data-to')).toBe('/login');
+    expect(queryByTestId('protected-child')).toBeNull();
+  });
+
+  it('parent route: renders children when authenticated parent has loading=false', async () => {
+    useAuth.mockReturnValue({
+      loading: false,
+      user: { id: 2, role: 'parent' },
+      isAuthenticated: true,
+      isTeacher: false,
+      isParent: true,
+    });
+
+    const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
+    const { queryByTestId } = render(
+      React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
+    );
+
+    expect(queryByTestId('protected-child')).not.toBeNull();
+    expect(queryByTestId('spinner')).toBeNull();
+    expect(queryByTestId('redirect')).toBeNull();
+  });
 });
