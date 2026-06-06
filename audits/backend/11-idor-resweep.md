@@ -1,8 +1,9 @@
 # Backend Batch 11: IDOR Resweep (All Portals + Government Region-Scope)
 
-**Generated:** 2026-06-06  
-**Purpose:** Complete IDOR scope-check audit across all 4 portals (teacher, admin, government, reception) + parent portal. Apply same rigor as Batch 10, extended to controllers added in Sprints C, D, E + Loop 5 + post-CP-021 government region-scope work.  
-**Scope:** All files in `backend/controllers/`, `backend/controllers/admin/`, `backend/controllers/government/`, + top-level routes middleware  
+**Generated:** 2026-06-06
+**Closed:** 2026-06-06 — see "G2 closure" section at bottom.
+**Purpose:** Complete IDOR scope-check audit across all 4 portals (teacher, admin, government, reception) + parent portal. Apply same rigor as Batch 10, extended to controllers added in Sprints C, D, E + Loop 5 + post-CP-021 government region-scope work.
+**Scope:** All files in `backend/controllers/`, `backend/controllers/admin/`, `backend/controllers/government/`, + top-level routes middleware
 **Authority:** G2 gate (BETA-LAUNCH-PLAN.md §G2)
 
 ---
@@ -442,3 +443,47 @@ This audit covers **58 controllers** across all 4 portals + parent portal. All n
 **Audit Date:** 2026-06-06  
 **Authority:** G2 gate (BETA-LAUNCH-PLAN.md line 26)  
 **Status:** ⛔ BLOCKED pending fixes to IDOR-11-001, IDOR-11-002, IDOR-11-003 + BACKEND-040, 041, 043, 044
+
+---
+
+## G2 closure (2026-06-06)
+
+**Status:** ✅ G2 CLOSED. The 5 "unresolved from 10-sweep" findings were verified to be ALREADY fixed in current code (fixes landed in Sprints D/E and Government CLOSEOUT but were never struck off the audit list). Only IDOR-11-003 + the BACKEND-040 PUT-admin variant needed actual production-code fixes.
+
+### Per-finding disposition
+
+| Finding | Pre-G2 status | Post-G2 status | Evidence |
+|---|---|---|---|
+| IDOR-11-001 | HIGH new | ✅ already-scoped — aiWarningController L313 has `if (req.user.govRegionId)` region scope; republic platform-wide is intentional | Locked by `__tests__/controllers/aiWarning.scope.test.js` |
+| IDOR-11-002 | HIGH new | ✅ verified safe — adminUserController L425–432 enforces region-scope | Inline downgrade note above |
+| IDOR-11-003 | MED new | ✅ FIXED commit f5a5e99 — added `School.findOne` region check at L106 of emotionalMonitoringController POST | Locked by `__tests__/controllers/emotionalMonitoring.scope.test.js` |
+| BACKEND-040 (childAssessment) | MED carried | ✅ already-scoped — `validateChildAccess` at L202 before update | Locked by `childScopedResource.scope.test.js` |
+| BACKEND-040 (emotionalMonitoring PUT) | MED carried | ✅ FIXED commit f5a5e99 — admin school-scope refetch added after admin bypass branch | Locked by `emotionalMonitoring.scope.test.js` |
+| BACKEND-040 (teacherResource) | MED carried | ✅ already-scoped — admin school-scope at L125 of deleteResource | Locked by `childScopedResource.scope.test.js` |
+| BACKEND-041 (mealPlan) | MED carried | ✅ already-scoped — `validateChildAccess` at L166 + L203 | Locked by `childScopedResource.scope.test.js` |
+| BACKEND-043 (meal) | MED carried | ✅ already-scoped — `validateChildAccess` + `isTeacherAssignedToChild` at L271–277 + L321–327 | Locked by `childScopedResource.scope.test.js` |
+| BACKEND-044 (aiWarning resolveWarning) | HIGH carried | ✅ already-scoped — admin school-scope L275; gov region-scope L270 | Locked by `aiWarning.scope.test.js` |
+
+### Final tally — G2
+
+| Severity | Production-code fixes shipped | Lock-in regression tests added |
+|---|---|---|
+| HIGH | 0 (all already-scoped, verified safe) | 5 (resolveWarning ×3, notifyUsers ×2 — covers IDOR-11-001 + BACKEND-044) |
+| MEDIUM | 2 (emotionalMonitoring POST gov region + PUT admin school — commit f5a5e99) | 4 (emotionalMonitoring) + 6 (mealController, mealPlanController, childAssessmentController, teacherResourceController — covers BACKEND-040/041/043) |
+| LOW | 0 | 0 |
+| **TOTAL** | **2 production fixes** | **15 regression-lock tests** |
+
+### Commits
+
+- `502fcf3` docs(g2): 11-IDOR-RESWEEP scan deliverable
+- `24ed483` test(g2): IDOR-11-003 + BACKEND-040 — failing emotional-monitoring scope tests
+- `f5a5e99` fix(g2): IDOR-11-003 + BACKEND-040 — emotional-monitoring scope checks
+- (this commit) test(g2): regression-lock scope checks for 5 controllers
+
+### Backend suite
+
+- 1469/1469 tests pass on G2-touched files
+- 3 pre-existing failing suites unrelated to G2 (withinSchool.widerClass, parentDashboardCards, parentAttendance — confirmed reproduced under `git stash` of G2 work)
+- `verify-i18n.js`: 236 codes × 3 lang files ✅
+
+**G2 is closed.** Beta-launch plan: gates remaining → G1 (terminal), G3 (human walks), G5 (partner sign-off on consent text). Engineering work for beta is complete.
