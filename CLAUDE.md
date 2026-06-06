@@ -7,6 +7,7 @@ Monorepo: 1 Express backend + 4 React dashboards. Active dev, Phase 2–4 of 7.
 
 ## Critical Rules
 - **Work on `main` only — no feature branches, no pull requests.** Commit and push directly to `main`. Hard-enforced by `.claude/hooks/enforce-main-only.sh` (PreToolUse Bash + `mcp__github__create_pull_request`).
+- **Read `DEFERRED.md` at session start.** Any work parked there has a Resume checklist and is waiting for a specific unblock. Don't restart deferred items from scratch — pick up from the checklist.
 - Never set `FORCE_SYNC=true` — drops all tables
 - Never commit `.env` files or seed data with real PII
 - All routes prefixed `/api/`; all frontend HTTP via `shared/services/api.js` (Axios, `withCredentials: true`)

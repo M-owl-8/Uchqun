@@ -1,6 +1,8 @@
 # TP-PARENT-ASSIGNMENT — Teacher ↔ Parent Assignment Chain
 
-**Status:** 🟡 In progress (STEP 1 complete, STEP 2 query plan ready, STEP 3 awaiting DB evidence)
+> ⏸ **DEFERRED 2026-06-06** — STEP 1 done; STEP 2 + STEP 3 paused until resumed from Claude Code terminal where `postgres-uchqun` MCP is attached. Full resume checklist in [`/DEFERRED.md`](../../DEFERRED.md). Do **not** restart this audit from scratch — pick up at STEP 2.
+
+**Status:** ⏸ DEFERRED (STEP 1 complete on `main`; STEP 2 query plan ready; STEP 3 staged but NOT applied)
 **Reported symptom:** Teacher Zulfiya Nazarova's group has 3 children (Lola Q., Bobur S., Shahlo T.); `/teacher/parents` and `/teacher/chat` both show only 1 parent — Hulkar Sobirova (Bobur's mother). Lola's and Shahlo's parents are absent from BOTH lists.
 **Scope:** map the assignment chain end-to-end, classify the root cause from real production data, unify scoping across the parent-list + chat surfaces.
 **Constraint this session:** the `postgres-uchqun` MCP server is not connected in this Claude session, so the STEP 2 production queries cannot be run from here. STEP 2 is therefore presented as a precise query plan (paste-ready SQL) that the user (or any session with the MCP attached) can execute. **No code fix is applied until STEP 2 evidence is in** — the brief is explicit: "Negative claims proven by query/read, never asserted."
