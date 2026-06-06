@@ -5,6 +5,7 @@ import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '@shared/utils/formatDate';
 import {
   AlertTriangle,
   CheckCircle,
@@ -14,7 +15,7 @@ import {
 
 const AIWarnings = () => {
   const { user } = useAuth();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { error: showError } = useToast();
   const [warnings, setWarnings] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -177,7 +178,7 @@ const AIWarnings = () => {
                   )}
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-sm text-slate-500">
-                      {new Date(warning.createdAt).toLocaleString()}
+                      {formatDateTime(warning.createdAt, i18n.language)}
                     </span>
                     {!warning.isResolved && user?.role !== 'parent' && (
                       <button

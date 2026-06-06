@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useNotification } from '../context/NotificationContext';
 import { useChild } from '../context/ChildContext';
 import { useTranslation } from 'react-i18next';
+import { formatDateTimeLong } from '@shared/utils/formatDate';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import {
@@ -29,11 +30,7 @@ const Notifications = () => {
   const { t, i18n } = useTranslation();
   const [filter, setFilter] = useState('all'); // all, unread, read
 
-  const locale = {
-    uz: 'uz-UZ',
-    ru: 'ru-RU',
-    en: 'en-US',
-  }[i18n.language] || 'en-US';
+  
 
   useEffect(() => {
     loadAllNotifications();
@@ -174,13 +171,7 @@ const Notifications = () => {
                         )}
                         <div className="flex items-center gap-2 mt-2 text-xs text-slate-400">
                           <Calendar className="w-3 h-3" />
-                          {new Date(notification.createdAt).toLocaleString(locale, {
-                            day: 'numeric',
-                            month: 'long',
-                            year: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
+                          {formatDateTimeLong(notification.createdAt, i18n.language)}
                         </div>
                       </div>
 

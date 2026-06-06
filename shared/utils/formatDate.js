@@ -74,3 +74,44 @@ export function formatDateTime(input, language) {
     });
   } catch { return ''; }
 }
+
+// PP-DATE-LOCALE additions — parent portal needs three more variants:
+
+// Weekday + day-numeric + month-long, NO year. Used on the parent dashboard
+// DayCard ("juma, 5-iyun") where the year is contextually obvious.
+export function formatDateWeekdayMonth(input, language) {
+  const d = toDate(input);
+  if (!d) return '';
+  try {
+    return d.toLocaleDateString(resolveLocale(language), {
+      weekday: 'long', day: 'numeric', month: 'long',
+    });
+  } catch { return ''; }
+}
+
+// Year + month-long + day-numeric, NO weekday, NO time. Used for record
+// timestamps where the long-month name reads more naturally than '2-digit'
+// (emotional-monitoring entries, message createdAt without hour).
+export function formatDateMonthLong(input, language) {
+  const d = toDate(input);
+  if (!d) return '';
+  try {
+    return d.toLocaleDateString(resolveLocale(language), {
+      year: 'numeric', month: 'long', day: 'numeric',
+    });
+  } catch { return ''; }
+}
+
+// Year + month-long + day + hour:minute. Used for message replies and
+// notifications where minute-precision matters and the long-month reads
+// naturally in the surrounding prose.
+export function formatDateTimeLong(input, language) {
+  const d = toDate(input);
+  if (!d) return '';
+  try {
+    return d.toLocaleString(resolveLocale(language), {
+      year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    });
+  } catch { return ''; }
+}

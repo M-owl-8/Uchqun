@@ -13,6 +13,7 @@ import {
   X,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatDateMedium } from '@shared/utils/formatDate';
 
 const Activities = () => {
   const { selectedChildId } = useChild();
@@ -20,11 +21,7 @@ const Activities = () => {
   const [loading, setLoading] = useState(true);
   const { t, i18n } = useTranslation();
 
-  const locale = {
-    uz: 'uz-UZ',
-    ru: 'ru-RU',
-    en: 'en-US',
-  }[i18n.language] || 'en-US';
+  
 
   useEffect(() => {
     if (!selectedChildId) {
@@ -116,7 +113,7 @@ const Activities = () => {
                         <div className="min-w-0">
                           <p className="text-xs text-p-brand-600 font-semibold mb-0.5">{t('activities.startDate') || 'Boshlanish'}</p>
                           <p className="text-sm font-bold text-slate-900 truncate">
-                            {new Date(activity.startDate).toLocaleDateString(locale)}
+                            {formatDateMedium(activity.startDate, i18n.language)}
                           </p>
                         </div>
                       </div>
@@ -127,7 +124,7 @@ const Activities = () => {
                         <div className="min-w-0">
                           <p className="text-xs text-p-brand-600 font-semibold mb-0.5">{t('activities.endDate') || 'Tugash'}</p>
                           <p className="text-sm font-bold text-slate-900 truncate">
-                            {new Date(activity.endDate).toLocaleDateString(locale)}
+                            {formatDateMedium(activity.endDate, i18n.language)}
                           </p>
                         </div>
                       </div>
@@ -222,7 +219,7 @@ const Activities = () => {
                     <div>
                       <p className="text-xs text-p-brand-600 font-semibold mb-1">{t('activities.startDate') || 'Boshlanish'}</p>
                       <p className="text-sm font-bold text-slate-900">
-                        {new Date(selectedActivity.startDate).toLocaleDateString(locale)}
+                        {formatDateMedium(selectedActivity.startDate, i18n.language)}
                       </p>
                     </div>
                   </div>
@@ -233,7 +230,7 @@ const Activities = () => {
                     <div>
                       <p className="text-xs text-p-brand-600 font-semibold mb-1">{t('activities.endDate') || 'Tugash'}</p>
                       <p className="text-sm font-bold text-slate-900">
-                        {new Date(selectedActivity.endDate).toLocaleDateString(locale)}
+                        {formatDateMedium(selectedActivity.endDate, i18n.language)}
                       </p>
                     </div>
                   </div>

@@ -21,6 +21,7 @@ import {
   Volume1,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatDateMedium, formatDateLong } from '@shared/utils/formatDate';
 
 // Helper function to convert Appwrite URL to proxy URL
 const getProxyUrl = (url, mediaId) => {
@@ -452,11 +453,7 @@ const Media = () => {
   const [filter, setFilter] = useState('all');
   const { t, i18n } = useTranslation();
 
-  const locale = {
-    uz: 'uz-UZ',
-    ru: 'ru-RU',
-    en: 'en-US',
-  }[i18n.language] || 'en-US';
+  
 
   const typeLabels = {
     photo: t('media.photoLabel'),
@@ -613,7 +610,7 @@ const Media = () => {
               <div className="p-5">
                 <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
                   <span className="flex items-center gap-1">
-                    <Calendar className="w-3 h-3" /> {new Date(item.date).toLocaleDateString(locale)}
+                    <Calendar className="w-3 h-3" /> {formatDateMedium(item.date, i18n.language)}
                   </span>
                 </div>
               </div>
@@ -699,12 +696,7 @@ const Media = () => {
                     <div>
                         <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('media.date')}</p>
                         <p className="text-slate-900 font-bold">
-                            {new Date(selectedMedia.date).toLocaleDateString(locale, { 
-                                weekday: 'long', 
-                                year: 'numeric', 
-                                month: 'long', 
-                                day: 'numeric' 
-                            })}
+                            {formatDateLong(selectedMedia.date, i18n.language)}
                         </p>
                     </div>
                   </div>

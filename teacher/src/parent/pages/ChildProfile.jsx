@@ -6,6 +6,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users, TrendingUp, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { formatDateMedium } from '@shared/utils/formatDate';
 import ChildProfileHero from './childProfile/ChildProfileHero';
 import AvatarUploadModal from './childProfile/AvatarUploadModal';
 import LogoutModal from './childProfile/LogoutModal';
@@ -20,7 +21,7 @@ const ChildProfile = () => {
   const { children, selectedChildId, selectChild, loading: childrenLoading } = useChild();
   const { on, off, connected } = useSocket();
   const { t, i18n } = useTranslation();
-  const locale = { uz: 'uz-UZ', ru: 'ru-RU', en: 'en-US' }[i18n.language] || 'en-US';
+
 
   const [child, setChild] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -281,7 +282,7 @@ const ChildProfile = () => {
         </h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <InfoItem label={t('child.fullName')} value={`${child.firstName} ${child.lastName}`} icon={User} />
-          <InfoItem label={t('child.birthDate')} value={new Date(child.dateOfBirth).toLocaleDateString(locale)} icon={Calendar} />
+          <InfoItem label={t('child.birthDate')} value={formatDateMedium(child.dateOfBirth, i18n.language)} icon={Calendar} />
           <InfoItem label={t('child.diagnosis')} value={child.disabilityType} icon={ShieldAlert} color="text-error-500" />
           <InfoItem label={t('child.teacher')} value={teacherName || child.teacher || '—'} icon={Award} color="text-p-brand-500" />
         </div>

@@ -1,5 +1,6 @@
 import { Heart, Activity } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatDateMonthLong } from '@shared/utils/formatDate';
 
 const EMOTIONAL_KEYS = [
   'stable', 'positiveEmotions', 'noAnxiety', 'noHostility',
@@ -49,9 +50,7 @@ const EmotionalMonitoringSection = ({ records }) => {
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <p className="font-semibold text-slate-900">
-                    {new Date(record.date).toLocaleDateString(i18n.language, {
-                      year: 'numeric', month: 'long', day: 'numeric',
-                    })}
+                    {formatDateMonthLong(record.date, i18n.language)}
                   </p>
                   {record.teacher && (
                     <p className="text-sm text-slate-500 mt-1">

@@ -3,6 +3,7 @@
 // partner provides real indicator names via PL-015 and ratingIndicators.js is updated.
 import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
+import { formatDateTime } from '@shared/utils/formatDate';
 import { Star, Mail, Phone, MessageSquare, AlertCircle, CheckCircle2, Building2, BarChart3 } from 'lucide-react';
 import api from '../services/api';
 import Card from '../components/Card';
@@ -37,15 +38,6 @@ const TeacherRating = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  const locale = useMemo(() => {
-    return (
-      {
-        uz: 'uz-UZ',
-        ru: 'ru-RU',
-        en: 'en-US',
-      }[i18n.language] || 'en-US'
-    );
-  }, [i18n.language]);
 
   useEffect(() => {
     const loadData = async () => {
@@ -219,8 +211,8 @@ const TeacherRating = () => {
   const lastUpdated = useMemo(() => {
     if (!rating?.updatedAt && !rating?.createdAt) return null;
     const dateValue = rating.updatedAt || rating.createdAt;
-    return new Date(dateValue).toLocaleString(locale);
-  }, [rating, locale]);
+    return formatDateTime(dateValue, i18n.language);
+  }, [rating, i18n.language]);
 
   const starButtons = [1, 2, 3, 4, 5];
 
@@ -541,7 +533,7 @@ const TeacherRating = () => {
               <div className="flex items-center justify-between">
                 <div className="text-xs text-slate-500">
                   {schoolRating?.updatedAt &&
-                    t('schoolRatingPage.lastUpdated', { date: new Date(schoolRating.updatedAt).toLocaleString(locale) })}
+                    t('schoolRatingPage.lastUpdated', { date: formatDateTime(schoolRating.updatedAt, i18n.language) })}
                 </div>
                 <button
                   type="button"

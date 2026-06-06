@@ -1,5 +1,6 @@
 import { MessageSquare, X, AlertTriangle, ChevronsUp } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatDateTimeLong } from '@shared/utils/formatDate';
 import LoadingSpinner from '../../components/LoadingSpinner';
 
 // PL-009: uz/ru strings use defaultValue — require professional review before beta.
@@ -102,10 +103,7 @@ const MessagesModal = ({
                       )}
                     </div>
                     <p className="text-sm text-slate-500">
-                      {new Date(msg.createdAt).toLocaleDateString(i18n.language, {
-                        year: 'numeric', month: 'long', day: 'numeric',
-                        hour: '2-digit', minute: '2-digit',
-                      })}
+                      {formatDateTimeLong(msg.createdAt, i18n.language)}
                     </p>
                   </div>
                   <div className="flex items-center gap-2 flex-shrink-0">
@@ -152,10 +150,7 @@ const MessagesModal = ({
                         {t('profile.governmentReply')}
                       </p>
                       <span className="text-xs text-slate-500 ml-auto">
-                        {new Date(msg.repliedAt).toLocaleDateString(i18n.language, {
-                          year: 'numeric', month: 'long', day: 'numeric',
-                          hour: '2-digit', minute: '2-digit',
-                        })}
+                        {formatDateTimeLong(msg.repliedAt, i18n.language)}
                       </span>
                     </div>
                     <p className="text-slate-800 bg-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>

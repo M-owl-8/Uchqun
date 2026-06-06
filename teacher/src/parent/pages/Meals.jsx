@@ -17,6 +17,7 @@ import {
   Moon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { formatDateWeekdayMonth, formatDateMonthLong } from '@shared/utils/formatDate';
 
 const Meals = () => {
   const { selectedChildId } = useChild();
@@ -25,50 +26,7 @@ const Meals = () => {
   const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
   const { t, i18n } = useTranslation();
 
-  const uzWeekdaysShort = ['Yak', 'Du', 'Se', 'Chor', 'Pay', 'Ju', 'Sha'];
-  const uzMonthsLong = [
-    'yanvar', 'fevral', 'mart', 'aprel', 'may', 'iyun',
-    'iyul', 'avgust', 'sentabr', 'oktabr', 'noyabr', 'dekabr',
-  ];
 
-  const localeCandidates = [
-    i18n.language === 'uz' ? 'uz-Latn-UZ' : i18n.language,
-    `${i18n.language}-UZ`,
-    'uz-Latn-UZ',
-    'uz-UZ',
-    'ru-RU',
-    'en-US',
-  ].filter(Boolean);
-
-  const formatDate = (dateStr, options) => {
-    const date = new Date(dateStr);
-
-    if (i18n.language === 'uz') {
-      const day = date.getDate();
-      const weekday = options.weekday ? uzWeekdaysShort[date.getDay()] : null;
-      const month = options.month === 'long' ? uzMonthsLong[date.getMonth()] : date.getMonth() + 1;
-      const year = options.year ? date.getFullYear() : null;
-
-      // Dropdown style: day-month, weekday
-      if (options.weekday && !options.year) {
-        return `${day}-${month}, ${weekday}`;
-      }
-      // Summary style: day-month-year
-      if (options.year) {
-        return `${day}-${month} ${year}`;
-      }
-      return `${day}-${month}`;
-    }
-
-    for (const loc of localeCandidates) {
-      try {
-        return new Intl.DateTimeFormat(loc, options).format(date);
-      } catch (e) {
-        continue;
-      }
-    }
-    return new Intl.DateTimeFormat('en-US', options).format(date);
-  };
 
   useEffect(() => {
     if (!selectedChildId) {
@@ -139,7 +97,7 @@ const Meals = () => {
           >
             {dates.map((date) => (
               <option key={date} value={date}>
-                {formatDate(date, { weekday: 'short', day: 'numeric', month: 'long' })}
+                {formatDateWeekdayMonth(date, i18n.language)}
               </option>
             ))}
           </select>
@@ -216,7 +174,7 @@ const Meals = () => {
             <div className="flex items-center justify-between border-b border-white/10 pb-6">
               <h3 className="text-xl font-bold">{t('meals.dailySummary')}</h3>
               <span className="text-p-brand-400 font-black text-sm uppercase tracking-widest">
-                {formatDate(selectedDate, { year: 'numeric', month: 'long', day: 'numeric' })}
+                {formatDateMonthLong(selectedDate, i18n.language)}
               </span>
             </div>
 

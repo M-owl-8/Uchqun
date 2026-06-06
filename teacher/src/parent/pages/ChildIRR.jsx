@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
+import { formatDateMedium } from '@shared/utils/formatDate';
 import api from '../services/api';
 import { useChild } from '../context/ChildContext';
 import { useToast } from '../../shared/context/ToastContext';
@@ -209,7 +211,7 @@ const ChildIRR = () => {
                     <p className="text-sm font-semibold text-p-ink">{sessionLabel(s.sessionType)}</p>
                     {s.completedAt && (
                       <p className="text-xs text-p-sepia-400">
-                        {new Date(s.completedAt).toLocaleDateString()}
+                        {formatDateMedium(s.completedAt, i18next.language)}
                       </p>
                     )}
                   </div>
@@ -300,9 +302,9 @@ const ChildIRR = () => {
                 </div>
                 {(period.startDate || period.endDate) && (
                   <p className="text-xs text-slate-400 mb-4">
-                    {period.startDate && new Date(period.startDate).toLocaleDateString()}
+                    {period.startDate && formatDateMedium(period.startDate, i18next.language)}
                     {period.startDate && period.endDate && ' — '}
-                    {period.endDate && new Date(period.endDate).toLocaleDateString()}
+                    {period.endDate && formatDateMedium(period.endDate, i18next.language)}
                   </p>
                 )}
                 {periodStgs.length > 0 ? (
@@ -339,7 +341,7 @@ const ChildIRR = () => {
                             className="text-xs text-slate-400 mt-2"
                           >
                             {t('irr.discussion')}{' '}
-                            {new Date(stg.discussionDate).toLocaleDateString()}
+                            {formatDateMedium(stg.discussionDate, i18next.language)}
                           </p>
                         )}
                       </div>

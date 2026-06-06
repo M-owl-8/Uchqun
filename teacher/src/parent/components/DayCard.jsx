@@ -1,16 +1,7 @@
 import { Activity, UtensilsCrossed, Camera } from 'lucide-react';
-
-const formatDate = (dateStr, locale = 'uz-UZ') => {
-  try {
-    return new Date(dateStr).toLocaleDateString(locale, {
-      weekday: 'long',
-      day: 'numeric',
-      month: 'long',
-    });
-  } catch {
-    return dateStr;
-  }
-};
+import { useTranslation } from 'react-i18next';
+// PP-DATE-LOCALE: shared util drives the dashboard date display via i18n.language.
+import { formatDateWeekdayMonth } from '@shared/utils/formatDate';
 
 /**
  * DayCard — a single school day rendered as a book page.
@@ -33,8 +24,9 @@ const DayCard = ({
   isToday = false,
   onClick,
 }) => {
+  const { i18n } = useTranslation();
   const displayDate = typeof date === 'string' && date.includes('-')
-    ? formatDate(date)
+    ? formatDateWeekdayMonth(date, i18n.language)
     : date;
 
   return (
