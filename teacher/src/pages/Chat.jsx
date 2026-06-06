@@ -6,26 +6,13 @@ import { useAuth } from '../shared/context/AuthContext';
 import { useSocket } from '../shared/context/SocketContext';
 import { useToast } from '../shared/context/ToastContext';
 import * as cache from '../../../shared/utils/cache';
+// TP-LOCALE-FOUNDATION S2: route through shared util; remove the 'en'-fallback formatters.
+import { formatTime as sharedFormatTime, formatDateShort } from '@shared/utils/formatDate';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatTime(dateStr, lang) {
-  if (!dateStr) return '';
-  try {
-    return new Date(dateStr).toLocaleTimeString(lang || 'en', {
-      hour: '2-digit', minute: '2-digit', hour12: false,
-    });
-  } catch { return ''; }
-}
-
-function formatDate(dateStr, lang) {
-  if (!dateStr) return '';
-  try {
-    return new Date(dateStr).toLocaleDateString(lang || 'en', {
-      day: 'numeric', month: 'short',
-    });
-  } catch { return ''; }
-}
+const formatTime = (dateStr, lang) => sharedFormatTime(dateStr, lang);
+const formatDate = (dateStr, lang) => formatDateShort(dateStr, lang);
 
 function isSameDay(a, b) {
   if (!a || !b) return false;

@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { FileX, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+// TP-LOCALE-FOUNDATION S2: shared locale-aware formatter (replaces inline locale mapping).
+import { resolveLocale } from '@shared/utils/formatDate';
 
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
@@ -40,11 +42,7 @@ const Activities = () => {
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
 
-  const locale = (() => {
-    if (i18n.language === 'uz') return 'uz-UZ';
-    if (i18n.language === 'ru') return 'ru-RU';
-    return 'en-US';
-  })();
+  const locale = resolveLocale(i18n.language);
 
   const getParentsList = useCallback(async () => {
     const cached = cache.get('teacher:parents');

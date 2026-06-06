@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, FileText } from 'lucide-react';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 import { useTranslation } from 'react-i18next';
+import i18next from 'i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
@@ -10,6 +11,7 @@ import { SKILL_AREAS } from '@shared/config/skillAreas';
 import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
 import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
+import { formatDateMedium } from '@shared/utils/formatDate';
 
 // Maps backend field names (from IRR_HEADER_INCOMPLETE detail) to i18n keys
 const FIELD_LABEL_KEYS = {
@@ -51,11 +53,11 @@ function irrToForm(data) {
   };
 }
 
+// TP-LOCALE-FOUNDATION S2: routes through the shared locale-aware util.
+// Previously hardcoded 'uz-UZ' regardless of UI language; now follows i18next.language.
 function formatDate(iso) {
   if (!iso) return '—';
-  const d = new Date(iso);
-  if (isNaN(d)) return iso;
-  return d.toLocaleDateString('uz-UZ', { year: 'numeric', month: '2-digit', day: '2-digit' });
+  return formatDateMedium(iso, i18next.language) || iso;
 }
 
 function todayIso() {

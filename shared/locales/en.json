@@ -158,5 +158,11 @@
     "bulkSaved": "Plan saved for {{count}} children",
     "addPlan": "Add Plan",
     "editPlan": "Edit Plan"
+  },
+  "severity": {
+    "critical": "Critical",
+    "high": "High",
+    "medium": "Medium",
+    "low": "Low"
   }
 }

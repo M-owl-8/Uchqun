@@ -158,5 +158,11 @@
     "bulkSaved": "{{count}} ta bola uchun reja saqlandi",
     "addPlan": "Reja qo'shish",
     "editPlan": "Rejani tahrirlash"
+  },
+  "severity": {
+    "critical": "Kritik",
+    "high": "Yuqori",
+    "medium": "O'rta",
+    "low": "Past"
   }
 }

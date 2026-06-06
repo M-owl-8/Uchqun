@@ -160,7 +160,7 @@ const AIWarnings = () => {
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-bold text-slate-900">{warning.title}</h3>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${colorClass}`}>
-                      {warning.severity}
+                      {t(`severity.${warning.severity}`, { defaultValue: warning.severity })}
                     </span>
                     <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">
                       {getWarningTypeLabel(warning.warningType)}

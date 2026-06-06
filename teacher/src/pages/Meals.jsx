@@ -23,6 +23,8 @@ import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import * as cache from '../../../shared/utils/cache';
 import { useTranslation } from 'react-i18next';
+// TP-LOCALE-FOUNDATION S2: single shared date util; per-page formatters removed.
+import { formatDateLong, formatDateShort } from '@shared/utils/formatDate';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 
 const Meals = () => {
@@ -48,25 +50,11 @@ const Meals = () => {
   });
   const [children, setChildren] = useState([]);
 
-  const localeCandidates = [
-    i18n.language === 'uz' ? 'uz-Latn-UZ' : i18n.language,
-    `${i18n.language}-UZ`,
-    'uz-Latn-UZ',
-    'uz-UZ',
-    'ru-RU',
-    'en-US',
-  ].filter(Boolean);
-
+  // Routes through shared util — single source of truth for locale mapping.
+  // Caller picks the format style (short/long); util resolves i18n.language → BCP-47.
   const formatDate = (dateStr, options) => {
-    const date = new Date(dateStr);
-    for (const loc of localeCandidates) {
-      try {
-        return new Intl.DateTimeFormat(loc, options).format(date);
-      } catch {
-        continue;
-      }
-    }
-    return new Intl.DateTimeFormat('en-US', options).format(date);
+    if (options?.weekday) return formatDateLong(dateStr, i18n.language);
+    return formatDateShort(dateStr, i18n.language);
   };
 
   const loadChildren = useCallback(async () => {
