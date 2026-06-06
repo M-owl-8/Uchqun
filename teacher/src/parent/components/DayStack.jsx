@@ -9,10 +9,10 @@ const DayStack = ({ days = [], onDayClick }) => {
     return (
       <div className="page-card rounded-xl p-8 text-center">
         <p className="font-serif text-[17px] text-p-sepia-500">
-          Hali ma'lumot yo'q
+          {"Hali ma'lumot yo'q"}
         </p>
         <p className="mt-1 text-[13px] text-p-sepia-400">
-          Tarbiyachi faoliyatni kiritgach, bu yerda ko'rinadi.
+          {"Tarbiyachi faoliyatni kiritgach, bu yerda ko'rinadi."}
         </p>
       </div>
     );
