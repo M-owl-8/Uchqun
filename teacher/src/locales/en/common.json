@@ -315,8 +315,13 @@
     "toastChildrenEmpty": "No children found. Please create a parent with child information first."
   },
   "chat": {
-    "title": "Parent Chat",
-    "subtitle": "Exchange messages with parents",
+    "title": "Parent conversations",
+    "subtitle": "Messages with your group's parents",
+    "searchParents": "Search parents...",
+    "noConversations": "No conversations",
+    "noMessages": "No messages",
+    "selectConversation": "Select a conversation",
+    "back": "Back",
     "placeholder": "Type a message...",
     "send": "Send",
     "empty": "No messages yet",

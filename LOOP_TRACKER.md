@@ -17,6 +17,7 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **TP-CHAT-MESSENGER 🟡 In progress:** Full-page two-panel messenger — conversation list (left) + thread (right), teacher-scoped chat API, 401 interceptor verified, teacher-perspective strings ×3 locales. `audits/redesign/TP-CHAT-MESSENGER.md`.
 > **TP-PAGE-CHROME ✅ CLOSED:** Letterhead headers on all 9 teacher pages, attendance month grid full-width (max-w-lg removed from root), sidebar "Guruh ro'yxati" → "Ota-onalar ro'yxati", chat "Ota-onalar" → "Muloqot" ×3 locales. commit fb7a75a. `audits/redesign/TP-PAGE-CHROME.md`.
 > **TP-DAVOMAT-REWORK 🟡 In progress:** Fix save 400 (batch API + upsert), care-model presence taxonomy (present/home_leave/sick/hospitalized/absent), week/month history grid. Migration 20260606000001. `audits/redesign/TP-DAVOMAT-REWORK.md`.
 > **TP-SIDEBAR-RESTRUCTURE ✅ CLOSED:** 13-item inventory produced. 4 overlap hypotheses all refuted — zero merges needed. Renamed "AI Ogohlantirishlar" → "Ogohlantirishlar" in sidebar + page title + uz/en/ru locale files (5 files). `audits/redesign/TP-SIDEBAR-RESTRUCTURE.md`.

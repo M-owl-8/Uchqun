@@ -1,388 +1,448 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ArrowDown, Pencil, Send, Trash2, X } from 'lucide-react';
+import { useState, useEffect, useRef, useMemo } from 'react';
+import { ChevronLeft, MessageSquare, Search, Send } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { loadMessages, addMessage, markRead, updateMessage, deleteMessage } from '../shared/services/chatStore';
 import api from '../shared/services/api';
 import { useAuth } from '../shared/context/AuthContext';
-import { useToast } from '../shared/context/ToastContext';
 import { useSocket } from '../shared/context/SocketContext';
-import Card from '../shared/components/Card';
+import { useToast } from '../shared/context/ToastContext';
 import * as cache from '../../../shared/utils/cache';
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function formatTime(dateStr) {
+  if (!dateStr) return '';
+  try {
+    return new Date(dateStr).toLocaleTimeString('default', {
+      hour: '2-digit', minute: '2-digit', hour12: false,
+    });
+  } catch { return ''; }
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return '';
+  try {
+    return new Date(dateStr).toLocaleDateString('default', {
+      day: 'numeric', month: 'short',
+    });
+  } catch { return ''; }
+}
+
+function isSameDay(a, b) {
+  if (!a || !b) return false;
+  return new Date(a).toDateString() === new Date(b).toDateString();
+}
+
+function getInitials(p) {
+  if (!p) return '?';
+  return `${(p.firstName || '').charAt(0)}${(p.lastName || '').charAt(0)}`.toUpperCase() || '?';
+}
+
+const AVATAR_BG = { background: '#7A6FA8', color: '#fff' };
+
+// ── Component ─────────────────────────────────────────────────────────────────
 
 const Chat = () => {
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { success: toastSuccess, error: toastError } = useToast();
   const { on, off } = useSocket();
-  const [parents, setParents] = useState(() => cache.get('teacher:parents') || []);
-  const [selectedParent, setSelectedParent] = useState(() => {
-    const cached = cache.get('teacher:parents');
-    return cached?.length > 0 ? cached[0] : null;
-  });
+  const { error: showError } = useToast();
+
+  const [parents, setParents] = useState([]);
+  const [conversations, setConversations] = useState([]);
+  const [selectedParentId, setSelectedParentId] = useState(null);
   const [messages, setMessages] = useState([]);
-  const [loadingParents, setLoadingParents] = useState(!cache.get('teacher:parents'));
+  const [search, setSearch] = useState('');
+  const [loadingConvos, setLoadingConvos] = useState(true);
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [input, setInput] = useState('');
+  const [sending, setSending] = useState(false);
+
   const messagesEndRef = useRef(null);
-  const messagesWrapRef = useRef(null);
-  const justSentRef = useRef(false);
-  const [isAtBottom, setIsAtBottom] = useState(true);
-  const [editingId, setEditingId] = useState(null);
-  const [editValue, setEditValue] = useState('');
-  const [busyId, setBusyId] = useState(null);
-  const [confirmDeleteId, setConfirmDeleteId] = useState(null);
+  const textareaRef = useRef(null);
 
-  useEffect(() => {
-    const cached = cache.get('teacher:parents');
-    const applyList = (list) => {
-      setParents(list);
-      setSelectedParent(prev => prev ?? (list.length > 0 ? list[0] : null));
-    };
-    if (cached) {
-      applyList(cached);
-      setLoadingParents(false);
-      // Silent background refresh
-      api.get('/teacher/parents')
-        .then(res => {
-          const list = res.data.parents || [];
-          cache.set('teacher:parents', list);
-          applyList(list);
-        })
-        .catch(() => {});
-      return;
-    }
-    api.get('/teacher/parents')
-      .then(res => {
-        const list = res.data.parents || [];
-        cache.set('teacher:parents', list);
-        applyList(list);
-      })
-      .catch(() => toastError(t('chat.loadError', { defaultValue: 'Failed to load parents' })))
-      .finally(() => setLoadingParents(false));
-  }, [user?.id, toastError, t]);
-
+  // Load parents (names + children) + conversations in parallel
   useEffect(() => {
     let alive = true;
-
     const load = async () => {
-      if (!selectedParent) return;
-      setLoadingMessages(true);
-      const convoId = `parent:${selectedParent.id}`;
-      const msgs = await loadMessages(convoId);
-      if (!alive) return;
-      setMessages(Array.isArray(msgs) ? msgs : []);
-      setLoadingMessages(false);
-      await markRead(convoId);
+      try {
+        const [parentsRes, convosRes] = await Promise.all([
+          api.get('/teacher/parents'),
+          api.get('/chat/conversations'),
+        ]);
+        if (!alive) return;
+        const parentList = parentsRes.data?.parents || [];
+        const convoList = Array.isArray(convosRes.data) ? convosRes.data : [];
+        cache.set('teacher:parents', parentList);
+        setParents(parentList);
+        setConversations(convoList);
+        if (convoList.length > 0) {
+          const firstId = convoList[0].conversationId.replace('parent:', '');
+          setSelectedParentId(prev => prev ?? firstId);
+        }
+      } catch {
+        // network failure — empty state shown below
+      } finally {
+        if (alive) setLoadingConvos(false);
+      }
     };
-
     load();
-
     return () => { alive = false; };
-  }, [selectedParent]);
+  }, [user?.id]);
 
+  // Load messages when selected conversation changes
   useEffect(() => {
-    if (!selectedParent) return;
-    const convoId = `parent:${selectedParent.id}`;
+    if (!selectedParentId) return;
+    const convoId = `parent:${selectedParentId}`;
+    let alive = true;
+    setLoadingMessages(true);
+    setMessages([]);
+    api.get('/chat/messages', { params: { conversationId: convoId, limit: 200 } })
+      .then(res => {
+        if (!alive) return;
+        setMessages(Array.isArray(res.data) ? res.data : []);
+        // mark this conversation read
+        api.post('/chat/read', { conversationId: convoId })
+          .then(() => {
+            setConversations(prev =>
+              prev.map(c => c.conversationId === convoId ? { ...c, unreadCount: 0 } : c)
+            );
+          })
+          .catch(() => {});
+      })
+      .catch(() => { if (alive) setMessages([]); })
+      .finally(() => { if (alive) setLoadingMessages(false); });
+    return () => { alive = false; };
+  }, [selectedParentId]);
 
-    const handleMessage = async (msg) => {
-      if (msg.conversationId !== convoId) return;
-      setMessages((prev) =>
-        prev.some((m) => m.id === msg.id) ? prev : [...prev, msg]
-      );
-      await markRead(convoId);
+  // Scroll to bottom when thread grows
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages.length]);
+
+  // Socket: incoming message
+  useEffect(() => {
+    const handle = (msg) => {
+      const msgConvoId = msg.conversationId;
+      const activeConvoId = selectedParentId ? `parent:${selectedParentId}` : null;
+      const isActiveConvo = msgConvoId === activeConvoId;
+
+      if (isActiveConvo) {
+        setMessages(prev => prev.some(m => m.id === msg.id) ? prev : [...prev, msg]);
+        api.post('/chat/read', { conversationId: msgConvoId }).catch(() => {});
+      }
+
+      setConversations(prev => prev.map(c => {
+        if (c.conversationId !== msgConvoId) return c;
+        return {
+          ...c,
+          lastMessage: msg,
+          updatedAt: msg.createdAt,
+          unreadCount: isActiveConvo ? 0 : (c.unreadCount || 0) + 1,
+        };
+      }));
     };
+    on('chat:message', handle);
+    return () => off('chat:message', handle);
+  }, [selectedParentId, on, off]);
 
-    on('chat:message', handleMessage);
-    return () => off('chat:message', handleMessage);
-  }, [selectedParent, on, off]);
+  // Derived state
+  const parentMap = useMemo(() => {
+    const m = {};
+    parents.forEach(p => { m[String(p.id)] = p; });
+    return m;
+  }, [parents]);
 
-  const sorted = useMemo(
-    () =>
-      [...messages].sort(
-        (a, b) => new Date(a.createdAt || a.time) - new Date(b.createdAt || b.time)
-      ),
+  const sorted = useMemo(() =>
+    [...messages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)),
     [messages]
   );
 
-  const canModerateDelete = user?.role === 'teacher' || user?.role === 'admin' || user?.role === 'government';
+  const filteredConvos = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    if (!q) return conversations;
+    return conversations.filter(c => {
+      const pid = c.conversationId.replace('parent:', '');
+      const p = parentMap[pid];
+      if (!p) return false;
+      return `${p.firstName} ${p.lastName}`.toLowerCase().includes(q);
+    });
+  }, [conversations, parentMap, search]);
 
-  useEffect(() => {
-    if (isAtBottom || justSentRef.current) {
-      messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-      justSentRef.current = false;
-    }
-  }, [sorted.length, isAtBottom]);
+  const selectedParent = selectedParentId ? parentMap[String(selectedParentId)] : null;
 
+  // Send message
   const handleSend = async () => {
     const trimmed = input.trim();
-    if (!trimmed) return;
-    if (!selectedParent) return;
-    const convoId = `parent:${selectedParent.id}`;
-    await addMessage('teacher', trimmed, convoId);
-    justSentRef.current = true;
-    const msgs = await loadMessages(convoId);
-    setMessages(Array.isArray(msgs) ? msgs : []);
-    setInput('');
+    if (!trimmed || !selectedParentId || sending) return;
+    setSending(true);
+    const convoId = `parent:${selectedParentId}`;
+    try {
+      const res = await api.post('/chat/messages', { conversationId: convoId, content: trimmed });
+      const msg = res.data;
+      setMessages(prev => [...prev, msg]);
+      setConversations(prev => prev.map(c =>
+        c.conversationId === convoId
+          ? { ...c, lastMessage: msg, updatedAt: msg.createdAt }
+          : c
+      ));
+      setInput('');
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
+    } catch {
+      showError(t('chat.sendFailed', { defaultValue: 'Xabar yuborishda xatolik' }));
+    } finally {
+      setSending(false);
+    }
   };
 
-  const handleSaveEdit = async (msgId) => {
-    const trimmed = editValue.trim();
-    if (!trimmed) return;
-    setBusyId(msgId);
-    // Optimistic update
-    setMessages((prev) =>
-      prev.map((m) => (m.id === msgId ? { ...m, content: trimmed } : m))
-    );
-
-    const updated = await updateMessage(msgId, trimmed);
-    if (!updated) {
-      toastError(t('chat.updateFailed', { defaultValue: 'Failed to update message' }));
-    } else {
-      toastSuccess(t('chat.updated', { defaultValue: 'Message updated' }));
-    }
-    if (selectedParent) {
-      const convoId = `parent:${selectedParent.id}`;
-      const msgs = await loadMessages(convoId);
-      setMessages(Array.isArray(msgs) ? msgs : []);
-    }
-    setEditingId(null);
-    setEditValue('');
-    setBusyId(null);
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+    const el = e.target;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
   };
 
-  const handleDelete = async (msgId) => {
-    setBusyId(msgId);
-    // Optimistic remove
-    setMessages((prev) => prev.filter((m) => m.id !== msgId));
-
-    const res = await deleteMessage(msgId);
-    if (!res?.success) {
-      toastError(t('chat.deleteFailed', { defaultValue: 'Failed to delete message' }));
-    } else {
-      toastSuccess(t('chat.deleted', { defaultValue: 'Message deleted' }));
-    }
-    if (selectedParent) {
-      const convoId = `parent:${selectedParent.id}`;
-      const msgs = await loadMessages(convoId);
-      setMessages(Array.isArray(msgs) ? msgs : []);
-    }
-    setBusyId(null);
+  const selectConversation = (pid) => {
+    setSelectedParentId(pid);
+    setSearch('');
   };
+
+  // ── Render ────────────────────────────────────────────────────────────────
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4 animate-in fade-in duration-500">
-      <div className="flex items-center justify-between gap-6">
-        <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">{t('chat.title')}</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">{t('chat.subtitle')}</p>
+    // Bust out of Layout padding to fill the full content area
+    <div
+      className="-mx-4 sm:-mx-6 -mt-6 -mb-24 md:-mb-8 flex overflow-hidden border-t border-slate-200"
+      style={{ height: 'calc(100vh - 56px)' }}
+    >
+      {/* ── LEFT PANEL: conversation list ───────────────────────────────── */}
+      <div
+        className={`${
+          selectedParentId ? 'hidden md:flex' : 'flex'
+        } md:w-[300px] w-full flex-col shrink-0 border-r border-slate-200 bg-surface`}
+      >
+        {/* Panel header */}
+        <div className="px-4 py-3 border-b border-slate-100 shrink-0">
+          <div className="text-[15px] font-semibold text-slate-900">
+            {t('chat.title', { defaultValue: 'Ota-onalar bilan muloqot' })}
+          </div>
+          <div className="text-[11px] text-slate-500 mt-0.5">
+            {t('chat.subtitle', { defaultValue: "Guruhingiz ota-onalari bilan yozishmalar" })}
+          </div>
         </div>
-      </div>
 
-      {/* Parent selector */}
-      <div className="bg-surface border border-slate-100 rounded-xl p-3 flex gap-3 items-center shadow-sm">
-        <span className="text-sm font-medium text-slate-600">{t('chat.parent') || 'Parent'}:</span>
-        {loadingParents ? (
-          <div className="flex-1 h-9 bg-slate-200 animate-pulse rounded-lg" />
-        ) : (
-          <select
-            className="flex-1 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-            value={selectedParent?.id || ''}
-            onChange={(e) => {
-              const v = e.target.value;
-              const p = parents.find((x) => String(x.id) === String(v));
-              setSelectedParent(p || null);
-            }}
-          >
-            {(parents || []).length === 0 && <option value="">{t('chat.empty')}</option>}
-            {(parents || []).map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.firstName} {p.lastName}
-              </option>
-            ))}
-          </select>
-        )}
-      </div>
+        {/* Search */}
+        <div className="px-3 py-2 border-b border-slate-100 shrink-0">
+          <div className="relative">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-400" />
+            <input
+              type="text"
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder={t('chat.searchParents', { defaultValue: "Ota-ona qidirish..." })}
+              className="w-full pl-8 pr-3 h-8 rounded-lg border border-slate-200 text-[12px] bg-paper focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+            />
+          </div>
+        </div>
 
-      <Card className="bg-surface/95 backdrop-blur-sm h-[60vh] flex flex-col relative shadow-xl">
-        <div
-          ref={messagesWrapRef}
-          className="flex-1 overflow-y-auto p-4 space-y-3"
-          onScroll={(e) => {
-            const el = e.currentTarget;
-            const distance = el.scrollHeight - el.scrollTop - el.clientHeight;
-            setIsAtBottom(distance < 80);
-          }}
-        >
-          {loadingMessages && (
-            <div className="space-y-3 py-4">
-              {[1,2,3].map(i => (
-                <div key={i} className={`flex ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
-                  <div className="h-8 w-40 bg-slate-200 animate-pulse rounded-2xl" />
-                </div>
-              ))}
-            </div>
-          )}
-          {!loadingMessages && sorted.length === 0 && (
-            <div className="text-center text-slate-400 py-8 text-sm">
-              {t('chat.empty')}
-            </div>
-          )}
-          {sorted.map((msg) => {
-            const isYou = msg.senderRole === 'teacher';
-            return (
-              <div
-                key={msg.id}
-                className={`flex ${isYou ? 'justify-end' : 'justify-start'}`}
-              >
-                <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm border ${
-                  isYou
-                    ? 'bg-brand-50 text-brand-900 border-brand-100'
-                    : 'bg-slate-100 text-slate-900 border-slate-200'
-                }`}>
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="text-xs font-semibold mb-1">
-                      {isYou ? t('chat.you') : t('chat.parent')}
-                    </div>
-                    {(isYou || canModerateDelete) && (
-                      <div className="flex items-center gap-1">
-                        {isYou && (
-                          <button
-                            type="button"
-                            className="p-1 rounded-md hover:bg-black/5"
-                            aria-label={t('chat.edit', { defaultValue: 'Edit' })}
-                            title={t('chat.edit', { defaultValue: 'Edit' })}
-                            disabled={busyId === msg.id}
-                            onClick={() => {
-                              setEditingId(msg.id);
-                              setEditValue((msg.content || msg.text || '').toString());
-                            }}
-                          >
-                            <Pencil className="w-4 h-4" />
-                          </button>
-                        )}
-                        <button
-                          type="button"
-                          className="p-1 rounded-md hover:bg-black/5 text-error-600"
-                          aria-label={t('chat.delete', { defaultValue: 'Delete' })}
-                          title={t('chat.delete', { defaultValue: 'Delete' })}
-                          disabled={busyId === msg.id}
-                          onClick={() => setConfirmDeleteId(msg.id)}
-                        >
-                          <Trash2 className="w-4 h-4" />
-                        </button>
-                      </div>
-                    )}
-                  </div>
-
-                  {editingId === msg.id ? (
-                    <div className="mt-2 space-y-2">
-                      <textarea
-                        value={editValue}
-                        onChange={(e) => setEditValue(e.target.value)}
-                        className="w-full rounded-xl border border-slate-200 px-3 py-2 text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-surface"
-                        rows={3}
-                      />
-                      <div className="flex items-center justify-end gap-2">
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-1 px-3 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50"
-                          onClick={() => {
-                            setEditingId(null);
-                            setEditValue('');
-                          }}
-                          disabled={busyId === msg.id}
-                        >
-                          <X className="w-4 h-4" />
-                          {t('cancel', { defaultValue: 'Cancel' })}
-                        </button>
-                        <button
-                          type="button"
-                          className="inline-flex items-center gap-1 px-3 py-2 rounded-xl bg-brand-600 text-white hover:bg-brand-700"
-                          onClick={() => handleSaveEdit(msg.id)}
-                          disabled={busyId === msg.id || !editValue.trim()}
-                        >
-                          <Send className="w-4 h-4" />
-                          {t('save', { defaultValue: 'Save' })}
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="whitespace-pre-wrap break-words">{msg.content || msg.text}</div>
-                  )}
+        {/* Conversation rows */}
+        <div className="flex-1 overflow-y-auto">
+          {loadingConvos ? (
+            [...Array(5)].map((_, i) => (
+              <div key={i} className="flex items-center gap-3 px-3 py-3 border-b border-slate-50">
+                <div className="w-9 h-9 rounded-full bg-slate-200 animate-pulse shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="h-3 bg-slate-200 animate-pulse rounded w-28" />
+                  <div className="h-2.5 bg-slate-200 animate-pulse rounded w-36" />
                 </div>
               </div>
-            );
-          })}
-          <div ref={messagesEndRef} />
+            ))
+          ) : filteredConvos.length === 0 ? (
+            <div className="py-14 text-center text-[12px] text-slate-400">
+              {t('chat.noConversations', { defaultValue: "Suhbatlar yo'q" })}
+            </div>
+          ) : (
+            filteredConvos.map(convo => {
+              const pid = convo.conversationId.replace('parent:', '');
+              const p = parentMap[pid];
+              const isActive = pid === String(selectedParentId);
+              const lastText = convo.lastMessage?.content || '';
+              const lastTime = convo.updatedAt ? formatTime(convo.updatedAt) : '';
+
+              return (
+                <button
+                  key={convo.conversationId}
+                  type="button"
+                  onClick={() => selectConversation(pid)}
+                  className="w-full text-left flex items-center gap-3 px-3 py-3 border-b border-slate-50 transition-colors"
+                  style={{ background: isActive ? 'rgba(122,111,168,.12)' : 'transparent' }}
+                >
+                  <div
+                    className="w-9 h-9 rounded-full shrink-0 grid place-items-center text-[12px] font-semibold"
+                    style={AVATAR_BG}
+                  >
+                    {getInitials(p)}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center justify-between gap-1">
+                      <span className="text-[13px] font-medium text-slate-900 truncate">
+                        {p ? `${p.firstName} ${p.lastName}` : pid}
+                      </span>
+                      <span className="text-[10px] text-slate-400 shrink-0">{lastTime}</span>
+                    </div>
+                    <div className="flex items-center justify-between gap-1 mt-0.5">
+                      <span className="text-[11px] text-slate-500 truncate">
+                        {lastText || t('chat.noMessages', { defaultValue: "Xabar yo'q" })}
+                      </span>
+                      {convo.unreadCount > 0 && (
+                        <span
+                          className="shrink-0 min-w-[16px] h-4 px-1 rounded-full text-[9px] font-semibold grid place-items-center"
+                          style={{ background: '#9A5045', color: '#fff' }}
+                        >
+                          {convo.unreadCount > 9 ? '9+' : convo.unreadCount}
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              );
+            })
+          )}
         </div>
+      </div>
 
-        {!isAtBottom && sorted.length > 0 && (
-          <button
-            type="button"
-            className="absolute bottom-16 right-4 w-11 h-11 rounded-full bg-surface border border-slate-200 shadow-lg flex items-center justify-center hover:bg-slate-50"
-            aria-label={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
-            title={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
-            onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            <ArrowDown className="w-5 h-5 text-slate-700" />
-          </button>
-        )}
-
-        <div className="border-t border-slate-100 p-3 bg-slate-50 rounded-b-2xl flex gap-2">
-          <input
-            type="text"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            placeholder={t('chat.placeholder')}
-            className="flex-1 h-12 rounded-xl border border-slate-200 px-4 focus:ring-2 focus:ring-brand-500 focus:border-transparent"
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-          />
-          <button
-            onClick={handleSend}
-            className="w-12 h-12 inline-flex items-center justify-center rounded-xl bg-brand-600 text-white hover:bg-brand-700 transition-colors"
-            aria-label={t('chat.send')}
-            title={t('chat.send')}
-          >
-            <Send className="w-5 h-5" />
-          </button>
+      {/* ── RIGHT PANEL: thread ──────────────────────────────────────────── */}
+      {!selectedParentId ? (
+        <div className="hidden md:flex flex-1 flex-col items-center justify-center gap-3 text-slate-400 bg-paper">
+          <MessageSquare className="w-10 h-10 opacity-25" strokeWidth={1.5} />
+          <span className="text-[14px]">
+            {t('chat.selectConversation', { defaultValue: "Suhbat tanlang" })}
+          </span>
         </div>
-      </Card>
+      ) : (
+        <div className="flex-1 flex flex-col min-w-0 bg-paper">
+          {/* Thread header */}
+          <div
+            className="shrink-0 border-b border-slate-200 px-4 flex items-center gap-3 bg-surface"
+            style={{ height: 56 }}
+          >
+            {/* Mobile back button */}
+            <button
+              type="button"
+              className="md:hidden mr-1 text-brand-600 flex items-center gap-1 text-[13px]"
+              onClick={() => setSelectedParentId(null)}
+              aria-label={t('chat.back', { defaultValue: 'Orqaga' })}
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
 
-      {confirmDeleteId && (
-        <div className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center p-4">
-          <div className="w-full max-w-sm bg-surface rounded-2xl shadow-xl border border-slate-200 p-5">
-            <div className="text-lg font-bold text-slate-900">
-              {t('chat.delete', { defaultValue: 'Delete' })}
+            <div
+              className="w-8 h-8 rounded-full grid place-items-center text-[11px] font-semibold shrink-0"
+              style={AVATAR_BG}
+            >
+              {getInitials(selectedParent)}
             </div>
-            <div className="text-sm text-slate-600 mt-1">
-              {t('chat.confirmDelete', { defaultValue: 'Delete this message?' })}
+            <div className="min-w-0">
+              <div className="text-[14px] font-semibold text-slate-900 truncate">
+                {selectedParent
+                  ? `${selectedParent.firstName} ${selectedParent.lastName}`
+                  : selectedParentId}
+              </div>
+              {selectedParent?.children?.length > 0 && (
+                <div className="text-[11px] text-slate-500 truncate">
+                  {selectedParent.children
+                    .map(c => `${c.firstName} ${c.lastName}`)
+                    .join(', ')}
+                </div>
+              )}
             </div>
-            <div className="mt-4 flex items-center justify-end gap-2">
-              <button
-                type="button"
-                className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50"
-                onClick={() => setConfirmDeleteId(null)}
-              >
-                {t('cancel', { defaultValue: 'Cancel' })}
-              </button>
-              <button
-                type="button"
-                className="px-4 py-2 rounded-xl bg-error-600 text-white hover:bg-error-700"
-                onClick={async () => {
-                  const id = confirmDeleteId;
-                  setConfirmDeleteId(null);
-                  await handleDelete(id);
-                }}
-                disabled={busyId === confirmDeleteId}
-              >
-                {t('chat.delete', { defaultValue: 'Delete' })}
-              </button>
-            </div>
+          </div>
+
+          {/* Message area */}
+          <div className="flex-1 overflow-y-auto px-4 py-3">
+            {loadingMessages ? (
+              <div className="space-y-3 py-4">
+                {[1, 2, 3].map(i => (
+                  <div key={i} className={`flex ${i % 2 === 0 ? 'justify-end' : 'justify-start'}`}>
+                    <div className="h-9 w-44 bg-slate-200 animate-pulse rounded-2xl" />
+                  </div>
+                ))}
+              </div>
+            ) : sorted.length === 0 ? (
+              <div className="h-full flex items-center justify-center text-[13px] text-slate-400">
+                {t('chat.empty', { defaultValue: "Hozircha xabarlar yo'q" })}
+              </div>
+            ) : (
+              sorted.map((msg, idx) => {
+                const isYou = msg.senderRole === 'teacher';
+                const prev = sorted[idx - 1];
+                const showSep = !prev || !isSameDay(prev.createdAt, msg.createdAt);
+
+                return (
+                  <div key={msg.id}>
+                    {showSep && (
+                      <div className="flex items-center gap-2 my-4">
+                        <div className="flex-1 h-px bg-slate-200" />
+                        <span className="text-[10px] text-slate-400 shrink-0">
+                          {formatDate(msg.createdAt)}
+                        </span>
+                        <div className="flex-1 h-px bg-slate-200" />
+                      </div>
+                    )}
+                    <div className={`flex mb-1.5 ${isYou ? 'justify-end' : 'justify-start'}`}>
+                      <div
+                        className={`max-w-[68%] rounded-2xl px-3 py-2 text-[13px] ${
+                          isYou
+                            ? 'bg-brand-600 text-white rounded-br-sm'
+                            : 'bg-surface border border-slate-100 text-slate-900 rounded-bl-sm'
+                        }`}
+                      >
+                        <div className="whitespace-pre-wrap break-words leading-relaxed">
+                          {msg.content}
+                        </div>
+                        <div
+                          className={`text-[9px] mt-0.5 ${
+                            isYou ? 'text-white/60 text-right' : 'text-slate-400'
+                          }`}
+                        >
+                          {formatTime(msg.createdAt)}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Composer pinned to bottom */}
+          <div className="shrink-0 border-t border-slate-200 p-3 bg-surface flex items-end gap-2">
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={handleInputChange}
+              placeholder={t('chat.placeholder', { defaultValue: 'Xabar yozing...' })}
+              rows={1}
+              className="flex-1 resize-none rounded-xl border border-slate-200 px-3 py-2.5 text-[13px] focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-surface leading-5"
+              style={{ maxHeight: 120, overflowY: 'auto', minHeight: 40 }}
+              onKeyDown={e => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+            />
+            <button
+              type="button"
+              onClick={handleSend}
+              disabled={!input.trim() || sending}
+              className="w-10 h-10 rounded-xl grid place-items-center bg-brand-600 text-white hover:bg-brand-700 transition-colors disabled:opacity-40 shrink-0"
+              aria-label={t('chat.send', { defaultValue: 'Yuborish' })}
+            >
+              <Send className="w-4 h-4" />
+            </button>
           </div>
         </div>
       )}
@@ -391,5 +451,3 @@ const Chat = () => {
 };
 
 export default Chat;
-
-

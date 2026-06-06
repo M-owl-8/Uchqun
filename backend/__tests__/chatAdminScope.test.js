@@ -270,3 +270,53 @@ describe('canAccessConversation — admin conversation access', () => {
     expect(res.status).not.toHaveBeenCalledWith(403);
   });
 });
+
+// ──────────────────────────────────────────────────────────────────────────────
+// TEST 3: listConversations — teacher scope
+// Teacher role must only receive conversations for parents whose children are
+// in the teacher's own groups. The fix is: getAccessibleConversationIds scopes
+// via Group.findAll({ where: { teacherId } }) → Child.findAll({ groupId }).
+// ──────────────────────────────────────────────────────────────────────────────
+describe('listConversations — teacher group scope', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  const GROUP_1 = 'group-0001-0000-0000-0000-000000000001';
+  const TEACHER_ID = 'teacher-0000-0000-0000-000000000001';
+  const PARENT_T1 = 'pteach-001-0000-0000-0000-000000000001';
+  const PARENT_T2 = 'pteach-002-0000-0000-0000-000000000002';
+
+  it('teacher gets conversations only for own-group parents', async () => {
+    mockGroupFindAll.mockResolvedValue([{ id: GROUP_1 }]);
+    mockChildFindAll.mockResolvedValue([
+      { parentId: PARENT_T1 },
+      { parentId: PARENT_T2 },
+    ]);
+    mockChatFindOne.mockResolvedValue(null);
+    mockChatCount.mockResolvedValue(0);
+
+    const res = mkRes();
+    await listConversations(teacherReq(TEACHER_ID), res);
+
+    // Groups must be looked up by teacherId
+    expect(mockGroupFindAll).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { teacherId: TEACHER_ID } })
+    );
+    // Result contains exactly the two parents in the group
+    const result = res.json.mock.calls[0][0];
+    expect(Array.isArray(result)).toBe(true);
+    const ids = result.map(c => c.conversationId);
+    expect(ids).toContain(`parent:${PARENT_T1}`);
+    expect(ids).toContain(`parent:${PARENT_T2}`);
+  });
+
+  it('teacher with no groups gets empty array', async () => {
+    mockGroupFindAll.mockResolvedValue([]);
+
+    const res = mkRes();
+    await listConversations(teacherReq(TEACHER_ID), res);
+
+    expect(res.json).toHaveBeenCalledWith([]);
+    // Child.findAll never called — early return after empty groups
+    expect(mockChildFindAll).not.toHaveBeenCalled();
+  });
+});

@@ -315,8 +315,13 @@
     "toastChildrenEmpty": "Bolalar topilmadi. Avval bola ma'lumotlari bilan ota-ona yarating."
   },
   "chat": {
-    "title": "Ota-ona bilan chat",
-    "subtitle": "Ota-onalar bilan xabar almashing",
+    "title": "Ota-onalar bilan muloqot",
+    "subtitle": "Guruhingiz ota-onalari bilan yozishmalar",
+    "searchParents": "Ota-ona qidirish...",
+    "noConversations": "Suhbatlar yo'q",
+    "noMessages": "Xabar yo'q",
+    "selectConversation": "Suhbat tanlang",
+    "back": "Orqaga",
     "placeholder": "Xabar yozing...",
     "send": "Yuborish",
     "empty": "Hozircha xabarlar yo'q",
