@@ -286,10 +286,10 @@ const WeekGrid = ({ days, t, lang, todayIso, isFuture }) => (
           {meta ? (
             <div className="flex items-center gap-1.5">
               <span className={`w-2 h-2 rounded-full ${meta.dot}`} aria-hidden="true" />
-              <span className="text-[10px] font-medium text-slate-700 truncate">{t(meta.labelKey)}</span>
+              <span className="hidden sm:inline text-[10px] font-medium text-slate-700 truncate">{t(meta.labelKey)}</span>
             </div>
           ) : !future ? (
-            <span className="text-[10px] text-slate-400">{t('attendance.statusUnset')}</span>
+            <span className="hidden sm:inline text-[10px] text-slate-400">{t('attendance.statusUnset')}</span>
           ) : null}
         </div>
       );

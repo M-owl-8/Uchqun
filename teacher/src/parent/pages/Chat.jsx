@@ -134,7 +134,7 @@ const Chat = () => {
   };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-4 -mb-16 lg:mb-0">
+    <div className="max-w-4xl mx-auto space-y-4">
       <ParentPageHeader
         title={t('parentChat.title')}
         subtitle={t('parentChat.subtitle')}
