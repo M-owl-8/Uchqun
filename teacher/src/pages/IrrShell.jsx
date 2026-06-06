@@ -12,18 +12,6 @@ import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJo
 import useFormPersistence from '@shared/hooks/useFormPersistence';
 
 // Uzbek labels for missing-field error display (backend returns field names in detail)
-const FIELD_LABELS_UZ = {
-  childFullName:        'Боланинг фамилияси, исми',
-  dateOfBirth:          'Туғилган санаси',
-  ageAtAssessmentStart: 'Текширув бошланган вақтдаги ёш',
-  ptpkIntakeDate:       'ПТПКга келиб тушган сана',
-  ptpkConclusionDate:   'ПТПК хулосаси санаси',
-  ptpkConclusionNumber: 'ПТПК рўйхатдан ўтказиш рақами',
-  ptpkDiagnosis:        'ПТПК ташхиси',
-  irrStartDate:         'ИРР бошланган сана',
-  additionalInfo:       'Қўшимча маълумотлар',
-};
-
 // Session type Uzbek labels (IRR-SPECIFICATION.md Part A-3a)
 const SESSION_TYPE_LABELS = {
   intake: 'Кундузги парвариш хизматига қабул қилинганда',
@@ -199,7 +187,7 @@ export default function IrrShell() {
     } finally {
       setLoading(false);
     }
-  }, [id, showError]);
+  }, [id, showError, t]);
 
   useEffect(() => { load(); }, [load]);
 
@@ -301,7 +289,7 @@ export default function IrrShell() {
     } finally {
       setSavingLtg(false);
     }
-  }, [irr, ltgForm, showError]);
+  }, [irr, ltgForm, showError, t]);
 
   const handleUpdateLtg = useCallback(async () => {
     if (!ltgEditId) return;
@@ -319,7 +307,7 @@ export default function IrrShell() {
     } finally {
       setSavingLtg(false);
     }
-  }, [ltgEditId, ltgEditForm, showError]);
+  }, [ltgEditId, ltgEditForm, showError, t]);
 
   const handleDeleteLtg = useCallback((id) => {
     setConfirmDialog({
@@ -335,7 +323,7 @@ export default function IrrShell() {
         }
       },
     });
-  }, [showError]);
+  }, [showError, t]);
 
   // ── Period handlers ───────────────────────────────────────────────────────
   const handleCreatePeriod = useCallback(async () => {
@@ -354,7 +342,7 @@ export default function IrrShell() {
     } finally {
       setSavingPeriod(false);
     }
-  }, [irr, periodForm]);
+  }, [irr, periodForm, t]);
 
   const togglePeriod = useCallback((periodId) => {
     setExpandedPeriods(prev => {
@@ -401,7 +389,7 @@ export default function IrrShell() {
     } finally {
       setSavingStg(null);
     }
-  }, [stgForms, showError]);
+  }, [stgForms, showError, t]);
 
   const handleUpdateStg = useCallback(async (periodId) => {
     if (!stgEditId) return;
@@ -419,7 +407,7 @@ export default function IrrShell() {
     } finally {
       setSavingStg(null);
     }
-  }, [stgEditId, stgEditForm, showError]);
+  }, [stgEditId, stgEditForm, showError, t]);
 
   const handleDeleteStg = useCallback((id, periodId) => {
     setConfirmDialog({
@@ -438,7 +426,7 @@ export default function IrrShell() {
         }
       },
     });
-  }, [showError]);
+  }, [showError, t]);
 
   // ── Review + Sign handlers ────────────────────────────────────────────────
   const handleSaveReview = useCallback(async (periodId) => {
@@ -453,7 +441,7 @@ export default function IrrShell() {
     } finally {
       setSavingReview(null);
     }
-  }, [reviewForms, success, showError]);
+  }, [reviewForms, success, showError, t]);
 
   const handleSignPeriod = useCallback(async (periodId) => {
     setSigningPeriod(periodId);
@@ -466,7 +454,7 @@ export default function IrrShell() {
     } finally {
       setSigningPeriod(null);
     }
-  }, [success, showError]);
+  }, [success, showError, t]);
 
   // ── Phase 3d handlers ────────────────────────────────────────────────────
   const handleSubmitDaily = useCallback(async () => {
@@ -505,7 +493,7 @@ export default function IrrShell() {
     } finally {
       setSavingDaily(false);
     }
-  }, [dailyDate, dailyChecks, dailyNotes, id, irr, success]);
+  }, [dailyDate, dailyChecks, dailyNotes, id, irr, success, t]);
 
   const handleSubmitWeekly = useCallback(async () => {
     if (!weekStart) return;
@@ -539,7 +527,7 @@ export default function IrrShell() {
     } finally {
       setSavingWeekly(false);
     }
-  }, [weekStart, weeklyChecks, weeklyNotes, id, irr, success]);
+  }, [weekStart, weeklyChecks, weeklyNotes, id, irr, success, t]);
 
   useEffect(() => {
     loadDailyEntries(id);
@@ -580,7 +568,7 @@ export default function IrrShell() {
     } finally {
       setSaving(false);
     }
-  }, [irr, id, form, success, showError, load]);
+  }, [irr, id, form, success, showError, load, t]);
 
   const handleActivate = useCallback(async () => {
     if (!irr) return;
@@ -603,7 +591,7 @@ export default function IrrShell() {
     } finally {
       setActivating(false);
     }
-  }, [irr, success, showError, load]);
+  }, [irr, success, showError, load, t]);
 
   // ── Assessment session persistence (FSL-002) ────────────────────────────
   const { restore: restoreScores, save: saveScores, clear: clearScores } =
@@ -665,7 +653,7 @@ export default function IrrShell() {
     } finally {
       setSubmittingSession(false);
     }
-  }, [irr, sessionType, scores, isHearingImpaired, sessionNotes, completedAt, success, loadSessions]);
+  }, [irr, sessionType, scores, isHearingImpaired, sessionNotes, completedAt, success, loadSessions, clearScores]);
 
   // ── Derived values ────────────────────────────────────────────────────────
   const liveScore = scores.reduce((sum, s) => sum + (s !== null ? s : 0), 0);

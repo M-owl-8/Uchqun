@@ -85,7 +85,6 @@ const DistributionBar = ({ distribution, total }) => {
 // ── Combined school card: all three ratings ────────────────────────────────────
 const CombinedSchoolCard = ({ school, showRank }) => {
   const { t } = useTranslation();
-  const [expanded, setExpanded] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [govReviews, setGovReviews] = useState([]);
   const [reviewsLoading, setReviewsLoading] = useState(false);

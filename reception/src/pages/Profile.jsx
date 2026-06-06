@@ -1,4 +1,4 @@
-﻿import { useEffect, useState } from 'react';
+﻿import { useCallback, useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@shared/context/ToastContext';
 import api from '../services/api';
@@ -30,12 +30,7 @@ const Profile = () => {
   const [loadingMessages, setLoadingMessages] = useState(false);
   const [showMessagesModal, setShowMessagesModal] = useState(false);
 
-  useEffect(() => {
-    loadMessages();
-    setLoading(false);
-  }, []);
-
-  const loadMessages = async () => {
+  const loadMessages = useCallback(async () => {
     try {
       setLoadingMessages(true);
       const response = await api.get('/reception/messages');
@@ -46,7 +41,12 @@ const Profile = () => {
     } finally {
       setLoadingMessages(false);
     }
-  };
+  }, [showError, t]);
+
+  useEffect(() => {
+    loadMessages();
+    setLoading(false);
+  }, [loadMessages]);
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {

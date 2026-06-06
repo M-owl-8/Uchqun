@@ -91,7 +91,7 @@ const Dashboard = () => {
     } finally {
       setLoading(false);
     }
-  }, [selectedChildId, fetchFresh, refreshNotifications, showError]);
+  }, [selectedChildId, fetchFresh, refreshNotifications, showError, t]);
 
   useEffect(() => {
     const controller = new AbortController();

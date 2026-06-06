@@ -80,7 +80,7 @@ const NavItem = ({ item, isActive, onClick }) => {
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
 
   const isActive = (href) =>
     href === '/admin' ? location.pathname === '/admin' : location.pathname.startsWith(href);

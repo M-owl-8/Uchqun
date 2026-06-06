@@ -16,7 +16,7 @@ import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   const navigation = [
     { name: t('nav.dashboard'), href: '/reception', icon: LayoutDashboard },

@@ -40,7 +40,7 @@ const NAV_ITEMS = [
 const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout, hasCapability, govType, isRepublic, isRegionAccount } = useAuth();
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const canSee = (capability) => {
     if (!capability) return true;
     if (Array.isArray(capability)) return capability.some((c) => hasCapability(c));

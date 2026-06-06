@@ -194,8 +194,6 @@ const Dashboard = () => {
 
   const capacity  = stats?.capacity ?? null;
   const enrolled  = stats?.children || stats?.enrolled || 0;
-  const occupancy = capacity != null && capacity > 0 ? Math.round((enrolled / capacity) * 100) : null;
-
   const openDocsCount      = pendingDocsArray.length;
   const openWarningsCount  = aiWarningsArray.filter((w) => !w.resolvedAt).length;
   const openReceptionsCount = pendingReceptions.length;

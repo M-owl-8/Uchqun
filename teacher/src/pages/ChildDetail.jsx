@@ -175,7 +175,7 @@ const ChildDetail = () => {
       }
     };
     loadChild();
-  }, [id, showError]);
+  }, [id, showError, t]);
 
   if (loading) {
     return (

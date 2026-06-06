@@ -1,4 +1,4 @@
-import { User, School, Users } from 'lucide-react';
+import { School, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
 const defaultAvatar = '/avatars/avatar1.jfif';

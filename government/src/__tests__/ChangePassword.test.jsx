@@ -35,15 +35,6 @@ vi.mock('react-i18next', () => ({
 
 const ChangePassword = (await import('../pages/ChangePassword.jsx')).default;
 
-const fillForm = (current = 'TempPass@2026', newPwd = 'NewPass@2026', confirm = 'NewPass@2026') => {
-  fireEvent.change(screen.getByDisplayValue(current === '' ? '' : ''), { target: { value: current } });
-  // Use label-based selection
-  const inputs = document.querySelectorAll('input[type="password"]');
-  fireEvent.change(inputs[0], { target: { value: current } });
-  fireEvent.change(inputs[1], { target: { value: newPwd } });
-  fireEvent.change(inputs[2], { target: { value: confirm } });
-};
-
 describe('ChangePassword', () => {
   beforeEach(() => {
     vi.clearAllMocks();

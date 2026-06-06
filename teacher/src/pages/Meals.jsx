@@ -83,7 +83,7 @@ const Meals = () => {
         setFormData(prev => prev.childId ? prev : { ...prev, childId: allChildren[0].id });
       }
     } catch (error) { showError(error.response?.data?.error || t('common.networkError', { defaultValue: 'Tarmoq xatosi yuz berdi. Qayta urinib ko\'ring.' })); }
-  }, [showError]);
+  }, [showError, t]);
 
   const loadMeals = useCallback(async (bust = false, signal) => {
     const cached = !bust && cache.get('teacher:meals');

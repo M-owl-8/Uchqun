@@ -26,7 +26,7 @@ const Sidebar = ({ onClose }) => {
   const location = useLocation();
   const { user, logout } = useAuth();
   const { on, off } = useSocket();
-  const { i18n, t } = useTranslation();
+  const { t } = useTranslation();
 
   const navSections = [
     {
