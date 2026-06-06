@@ -7,30 +7,33 @@ import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 
+// S2b: TABS labels resolved at render time via t() (module scope can't call hooks).
 const TABS = [
-  { key: 'iep',       label: 'IEP Maqsadlar' },
-  { key: 'obs',       label: 'Kuzatuvlar' },
-  { key: 'docs',      label: 'Hujjatlar' },
-  { key: 'messages',  label: 'Xabarlar' },
-  { key: 'gallery',   label: 'Galereya' },
+  { key: 'iep',      labelKey: 'childDetail.tab.iep' },
+  { key: 'obs',      labelKey: 'childDetail.tab.obs' },
+  { key: 'docs',     labelKey: 'childDetail.tab.docs' },
+  { key: 'messages', labelKey: 'childDetail.tab.messages' },
+  { key: 'gallery',  labelKey: 'childDetail.tab.gallery' },
 ];
 
+// S2b: colors stay hardcoded; labels resolved at render via t().
 const OUTCOME_CONFIG = {
-  mastered:    { label: 'Mahorat erishildi', bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
-  independent: { label: 'Mustaqil',          bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
-  assisted:    { label: 'Yordam bilan',      bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
-  emerging:    { label: 'Yangi',             bg: '#F6F3FB', color: '#5F567F', border: '#D8CFE5' },
-  struggling:  { label: 'Qiynalmoqda',      bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
+  mastered:    { labelKey: 'childDetail.badge.mastered', bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
+  independent: { labelKey: 'quickObs.outcomes.independent', bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
+  assisted:    { labelKey: 'quickObs.outcomes.assisted', bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
+  emerging:    { labelKey: 'quickObs.outcomes.emerging', bg: '#F6F3FB', color: '#5F567F', border: '#D8CFE5' },
+  struggling:  { labelKey: 'quickObs.outcomes.struggling', bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
 };
 
 function OutcomeChip({ outcome }) {
+  const { t } = useTranslation();
   const o = OUTCOME_CONFIG[outcome] || OUTCOME_CONFIG.emerging;
   return (
     <span
       className="px-2 py-0.5 rounded-full text-[11px] font-medium"
       style={{ background: o.bg, color: o.color, border: `1px solid ${o.border}` }}
     >
-      {o.label}
+      {t(o.labelKey)}
     </span>
   );
 }
@@ -68,8 +71,8 @@ function IEPTab({ child, goals }) {
         <div className="w-12 h-12 rounded-full bg-brand-50 grid place-items-center mx-auto">
           <Plus className="w-5 h-5 text-brand-600" strokeWidth={1.75} />
         </div>
-        <div className="mt-3 text-[15px] font-semibold text-slate-900">Hozircha maqsad yo&apos;q</div>
-        <p className="mt-1 text-[13px] text-slate-500">Birinchi IEP maqsadini qo&apos;shing</p>
+        <div className="mt-3 text-[15px] font-semibold text-slate-900">{t('childDetail.empty.noGoalsTitle')}</div>
+        <p className="mt-1 text-[13px] text-slate-500">{t('childDetail.empty.noGoalsBody')}</p>
       </div>
     );
   }
@@ -94,16 +97,16 @@ function IEPTab({ child, goals }) {
               <div className="flex-1">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span className="text-[11px] uppercase tracking-[.14em] text-slate-500 font-medium">
-                    {goal.category || 'Maqsad'}
+                    {goal.category || t('childDetail.label.goalDefault')}
                   </span>
                   {isMastered && (
                     <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-mint-100 text-mint-700">
-                      Mahorat erishildi
+                      {t('childDetail.badge.mastered')}
                     </span>
                   )}
                   {isStruggling && !isMastered && (
                     <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-warning-50 text-warning-700">
-                      Yordam kerak
+                      {t('childDetail.badge.assistNeeded')}
                     </span>
                   )}
                 </div>
@@ -117,7 +120,7 @@ function IEPTab({ child, goals }) {
 
             {/* Heatmap */}
             <div className="mt-3">
-              <div className="text-[11px] text-slate-500 mb-1">So&apos;nggi 12 kuzatuv</div>
+              <div className="text-[11px] text-slate-500 mb-1">{t('childDetail.heatmap.last12')}</div>
               <GoalHeatmap records={goal.recentObservations || []} />
             </div>
 
@@ -126,7 +129,7 @@ function IEPTab({ child, goals }) {
                 to={`/teacher/activities?childId=${child?.id}&goalId=${goal.id}`}
                 className="h-8 px-3 rounded-md border border-slate-200 bg-surface text-[12px] font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
               >
-                <Plus className="w-3.5 h-3.5" strokeWidth={2} /> Yangi kuzatuv
+                <Plus className="w-3.5 h-3.5" strokeWidth={2} /> {t('childDetail.button.newObservation')}
               </Link>
             </div>
           </div>
@@ -166,7 +169,7 @@ const ChildDetail = () => {
         if (irrRes.status === 'fulfilled') {
           setIrr(irrRes.value.data?.data || null);
         } else if (irrRes.reason?.response?.status !== 404) {
-          showError(t('childDetail.errorIrrLoad', { defaultValue: 'IRR ma\'lumotlari yuklanmadi' }));
+          showError(t('childDetail.errorIrrLoad'));
         }
       } catch {
         // graceful fallback
@@ -190,7 +193,7 @@ const ChildDetail = () => {
   if (!child) {
     return (
       <div className="text-center py-16">
-        <div className="text-[15px] text-slate-500">Bola topilmadi</div>
+        <div className="text-[15px] text-slate-500">{t('childDetail.empty.noChild')}</div>
         <Link to="/teacher/parents" className="mt-3 text-[13px] text-brand-700 font-medium hover:underline">
           ← Ro&apos;yxatga qaytish
         </Link>
@@ -208,7 +211,7 @@ const ChildDetail = () => {
         to="/teacher/parents"
         className="inline-flex items-center gap-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors"
       >
-        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> Guruh ro&apos;yxati
+        <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> {t('childDetail.button.parentList')}
       </Link>
 
       {/* Hero card */}
@@ -240,7 +243,7 @@ const ChildDetail = () => {
             )}
             {child.medicalNote && (
               <span className="px-2 py-0.5 rounded-full bg-warning-50 text-warning-700 text-[11px] font-medium">
-                Tibbiy eslatma
+                {t('childDetail.label.medicalNote')}
               </span>
             )}
           </div>
@@ -271,7 +274,7 @@ const ChildDetail = () => {
               to={`/teacher/activities?childId=${id}`}
               className="h-9 px-3.5 rounded-md bg-brand-600 hover:bg-brand-700 text-surface text-[13px] font-medium flex items-center gap-1.5 transition-colors"
             >
-              <Plus className="w-4 h-4" strokeWidth={2} /> Yangi kuzatuv
+              <Plus className="w-4 h-4" strokeWidth={2} /> {t('childDetail.button.newObservation')}
             </Link>
             <Link
               to={`/teacher/chat?parentId=${child.parentId}`}
@@ -284,7 +287,7 @@ const ChildDetail = () => {
               className="h-9 px-3.5 rounded-md border border-slate-200 bg-surface hover:bg-slate-50 text-[13px] font-medium text-slate-700 flex items-center gap-1.5 transition-colors"
             >
               <FileText className="w-4 h-4" strokeWidth={1.75} />
-              {irr ? 'ИРРни кўриш' : 'ИРР тузиш'}
+              {irr ? t('childDetail.button.viewIrr') : t('childDetail.button.createIrr')}
             </Link>
           </div>
         </div>
@@ -296,7 +299,7 @@ const ChildDetail = () => {
           className="rounded-lg border p-4 text-[13px] text-slate-800"
           style={{ background: '#FBF3E4', borderColor: '#F0DBA8' }}
         >
-          <div className="text-[11px] uppercase tracking-[.14em] text-warning-700 font-medium mb-1">Tibbiy eslatma</div>
+          <div className="text-[11px] uppercase tracking-[.14em] text-warning-700 font-medium mb-1">{t('childDetail.label.medicalNote')}</div>
           {child.medicalNote}
         </div>
       )}
@@ -304,20 +307,20 @@ const ChildDetail = () => {
       {/* Tabs */}
       <div>
         <div className="flex items-center gap-1 border-b border-slate-200 overflow-x-auto">
-          {TABS.map(t => (
+          {TABS.map(tab_ => (
             <button
-              key={t.key}
+              key={tab_.key}
               type="button"
-              onClick={() => setTab(t.key)}
+              onClick={() => setTab(tab_.key)}
               className="px-3 pb-3 text-[13px] font-medium relative whitespace-nowrap transition-colors"
               style={
-                tab === t.key
+                tab === tab_.key
                   ? { color: '#5F567F' }
                   : { color: '#6F7585' }
               }
             >
-              {t.label}
-              {tab === t.key && (
+              {t(tab_.labelKey)}
+              {tab === tab_.key && (
                 <span
                   className="absolute left-0 right-0 -bottom-px h-[2px] rounded-full"
                   style={{ background: '#7A6FA8' }}
@@ -336,7 +339,7 @@ const ChildDetail = () => {
         )}
         {tab === 'docs' && (
           <div className="py-8 text-center text-[13px] text-slate-500">
-            Hujjatlar tez orada qo&apos;shiladi
+            {t('childDetail.empty.docsComingSoon')}
           </div>
         )}
         {tab === 'messages' && (
@@ -349,7 +352,7 @@ const ChildDetail = () => {
         {tab === 'gallery' && (
           <div className="py-8 text-center">
             <Link to="/teacher/media" className="text-[13px] text-brand-700 font-medium hover:underline">
-              Galereya sahifasiga o&apos;tish →
+              {t('childDetail.empty.galleryRedirect')}
             </Link>
           </div>
         )}

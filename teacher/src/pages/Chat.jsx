@@ -198,7 +198,7 @@ const Chat = () => {
         textareaRef.current.style.height = 'auto';
       }
     } catch {
-      showError(t('chat.sendFailed', { defaultValue: 'Xabar yuborishda xatolik' }));
+      showError(t('chat.sendFailed'));
     } finally {
       setSending(false);
     }
@@ -233,10 +233,10 @@ const Chat = () => {
         {/* Panel header */}
         <div className="px-4 py-3 border-b border-slate-100 shrink-0">
           <div className="text-[15px] font-semibold text-slate-900">
-            {t('chat.title', { defaultValue: 'Ota-onalar bilan muloqot' })}
+            {t('chat.title')}
           </div>
           <div className="text-[11px] text-slate-500 mt-0.5">
-            {t('chat.subtitle', { defaultValue: "Guruhingiz ota-onalari bilan yozishmalar" })}
+            {t('chat.subtitle')}
           </div>
         </div>
 
@@ -248,7 +248,7 @@ const Chat = () => {
               type="text"
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder={t('chat.searchParents', { defaultValue: "Ota-ona qidirish..." })}
+              placeholder={t('chat.searchParents')}
               className="w-full pl-8 pr-3 h-8 rounded-lg border border-slate-200 text-[12px] bg-paper focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
@@ -268,7 +268,7 @@ const Chat = () => {
             ))
           ) : filteredConvos.length === 0 ? (
             <div className="py-14 text-center text-[12px] text-slate-400">
-              {t('chat.noConversations', { defaultValue: "Suhbatlar yo'q" })}
+              {t('chat.noConversations')}
             </div>
           ) : (
             filteredConvos.map(convo => {
@@ -301,7 +301,7 @@ const Chat = () => {
                     </div>
                     <div className="flex items-center justify-between gap-1 mt-0.5">
                       <span className="text-[11px] text-slate-500 truncate">
-                        {lastText || t('chat.noMessages', { defaultValue: "Xabar yo'q" })}
+                        {lastText || t('chat.noMessages')}
                       </span>
                       {convo.unreadCount > 0 && (
                         <span
@@ -325,7 +325,7 @@ const Chat = () => {
         <div className="hidden md:flex flex-1 flex-col items-center justify-center gap-3 text-slate-400 bg-paper">
           <MessageSquare className="w-10 h-10 opacity-25" strokeWidth={1.5} />
           <span className="text-[14px]">
-            {t('chat.selectConversation', { defaultValue: "Suhbat tanlang" })}
+            {t('chat.selectConversation')}
           </span>
         </div>
       ) : (
@@ -340,7 +340,7 @@ const Chat = () => {
               type="button"
               className="md:hidden mr-1 text-brand-600 flex items-center gap-1 text-[13px]"
               onClick={() => setSelectedParentId(null)}
-              aria-label={t('chat.back', { defaultValue: 'Orqaga' })}
+              aria-label={t('chat.back')}
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -379,7 +379,7 @@ const Chat = () => {
               </div>
             ) : sorted.length === 0 ? (
               <div className="h-full flex items-center justify-center text-[13px] text-slate-400">
-                {t('chat.empty', { defaultValue: "Hozircha xabarlar yo'q" })}
+                {t('chat.empty')}
               </div>
             ) : (
               sorted.map((msg, idx) => {
@@ -431,7 +431,7 @@ const Chat = () => {
               ref={textareaRef}
               value={input}
               onChange={handleInputChange}
-              placeholder={t('chat.placeholder', { defaultValue: 'Xabar yozing...' })}
+              placeholder={t('chat.placeholder')}
               rows={1}
               className="flex-1 resize-none rounded-xl border border-slate-200 px-3 py-2.5 text-[13px] focus:ring-2 focus:ring-brand-500 focus:border-transparent bg-surface leading-5"
               style={{ maxHeight: 120, overflowY: 'auto', minHeight: 40 }}
@@ -447,7 +447,7 @@ const Chat = () => {
               onClick={handleSend}
               disabled={!input.trim() || sending}
               className="w-10 h-10 rounded-xl grid place-items-center bg-brand-600 text-white hover:bg-brand-700 transition-colors disabled:opacity-40 shrink-0"
-              aria-label={t('chat.send', { defaultValue: 'Yuborish' })}
+              aria-label={t('chat.send')}
             >
               <Send className="w-4 h-4" />
             </button>

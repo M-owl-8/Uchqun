@@ -22,12 +22,12 @@ const AvatarUpload = ({ user }) => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      showError(t('profile.invalidImage', { defaultValue: 'Faqat rasm fayllari qabul qilinadi' }));
+      showError(t('profile.invalidImage'));
       return;
     }
 
     if (file.size > 5 * 1024 * 1024) {
-      showError(t('profile.imageTooLarge', { defaultValue: 'Rasm hajmi 5MB dan katta bo\'lmasligi kerak' }));
+      showError(t('profile.imageTooLarge'));
       return;
     }
 
@@ -39,9 +39,9 @@ const AvatarUpload = ({ user }) => {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
       if (setUser) setUser(response.data);
-      success(t('profile.avatarUpdated', { defaultValue: 'Rasm muvaffaqiyatli yuklandi' }));
+      success(t('profile.avatarUpdated'));
     } catch (err) {
-      showError(err.response?.data?.error || t('profile.uploadError', { defaultValue: 'Rasm yuklashda xatolik yuz berdi' }));
+      showError(err.response?.data?.error || t('profile.uploadError'));
     } finally {
       setUploadingAvatar(false);
       event.target.value = '';
@@ -74,7 +74,7 @@ const AvatarUpload = ({ user }) => {
           type="button"
           onClick={handleAvatarClick}
           className="absolute -bottom-1 -right-1 w-7 h-7 bg-brand-600 text-white rounded-full flex items-center justify-center hover:bg-brand-700 transition-colors shadow-md"
-          title={t('profile.changeAvatar', { defaultValue: 'Rasmni o\'zgartirish' })}
+          title={t('profile.changeAvatar')}
         >
           <Camera className="w-4 h-4" />
         </button>
@@ -87,8 +87,8 @@ const AvatarUpload = ({ user }) => {
         />
       </div>
       <div>
-        <p className="text-sm font-medium text-slate-700">{t('profile.profilePicture', { defaultValue: 'Profil rasmi' })}</p>
-        <p className="text-xs text-slate-500">{t('profile.clickToChange', { defaultValue: 'Rasmni o\'zgartirish uchun bosing' })}</p>
+        <p className="text-sm font-medium text-slate-700">{t('profile.profilePicture')}</p>
+        <p className="text-xs text-slate-500">{t('profile.clickToChange')}</p>
       </div>
     </div>
   );

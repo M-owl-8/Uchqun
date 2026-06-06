@@ -60,7 +60,8 @@
       "emerging": "Emerging",
       "assisted": "Assisted",
       "independent": "Independent",
-      "mastered": "Mastered"
+      "mastered": "Mastered",
+      "struggling": "Struggling"
     }
   },
   "login": {
@@ -298,6 +299,11 @@
       "toastError": "Error saving meal",
       "toastLoadError": "Error loading meals",
       "toastChildrenEmpty": "No children found. Please create a parent with child information first."
+    },
+    "portion": {
+      "full": "Full portion",
+      "half": "Half portion",
+      "small": "Small portion"
     }
   },
   "mediaPage": {
@@ -575,12 +581,56 @@
     "confirmDeleteLtg": "Delete this long-term goal?",
     "confirmDeleteLtgWarning": "This cannot be undone. All related short-term goals will also be removed.",
     "confirmDeleteStg": "Delete this short-term goal?",
-    "errorPeriodRequired": "Enter the period start and end dates"
+    "errorPeriodRequired": "Enter the period start and end dates",
+    "placeholder": {
+      "ptpkNotes": "PTPK additional notes…",
+      "goalText": "Goal text (at least 5 characters)…",
+      "goalTextShort": "Goal text…",
+      "taskDate": "Task date",
+      "goalDeadline": "Goal deadline",
+      "tasks": "Tasks…",
+      "methods": "Methods…",
+      "results": "Results…",
+      "observations": "Observations…",
+      "extraInfo": "Additional information…"
+    },
+    "form": {
+      "newAssessment": "New assessment",
+      "assessmentType": "Assessment type",
+      "assessmentDate": "Assessment date",
+      "noteOptional": "Note (optional)",
+      "note": "Note",
+      "saving": "Saving…",
+      "saveResults": "Save results",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "addGoal": "Add goal",
+      "periodStart": "Period start",
+      "periodEnd": "Period end",
+      "addPeriod": "Add period",
+      "statusActive": "Active",
+      "statusCompleted": "Completed",
+      "overallReview": "Overall review",
+      "planChanges": "Plan changes",
+      "parentRecommendations": "Parent recommendations",
+      "nextReview": "Next review",
+      "nextAssessment": "Next assessment",
+      "parentCommunication": "Parent communication",
+      "savePeriodReview": "Save quarter review",
+      "signing": "Signing…",
+      "teacherSignature": "Teacher signature",
+      "date": "Date",
+      "saveDailyMonitoring": "Save daily monitoring",
+      "weekStartLabel": "Week start date (Monday)",
+      "saveWeeklyMonitoring": "Save weekly monitoring"
+    }
   },
   "common": {
     "networkError": "Network error. Please try again.",
     "timeoutError": "Request timed out.",
-    "save": "Save"
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "attendance": {
     "errorLoadChildren": "Error loading children list",
@@ -607,7 +657,38 @@
     "group": "Group"
   },
   "childDetail": {
-    "errorIrrLoad": "Failed to load IDP data"
+    "errorIrrLoad": "Failed to load IDP data",
+    "tab": {
+      "iep": "IEP goals",
+      "obs": "Observations",
+      "docs": "Documents",
+      "messages": "Messages",
+      "gallery": "Gallery"
+    },
+    "empty": {
+      "noGoalsTitle": "No goals yet",
+      "noGoalsBody": "Add the first IEP goal",
+      "noChild": "Child not found",
+      "docsComingSoon": "Documents will be added soon",
+      "galleryRedirect": "Go to the gallery →"
+    },
+    "heatmap": {
+      "last12": "Last 12 observations"
+    },
+    "button": {
+      "newObservation": "New observation",
+      "parentList": "Group roster",
+      "viewIrr": "View IRR",
+      "createIrr": "Create IRR"
+    },
+    "label": {
+      "goalDefault": "Goal",
+      "medicalNote": "Medical note"
+    },
+    "badge": {
+      "mastered": "Mastered",
+      "assistNeeded": "Needs help"
+    }
   },
   "errors": {
     "NETWORK_ERROR": "Network error",

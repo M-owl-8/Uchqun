@@ -14,7 +14,7 @@ const LogoutModal = ({ show, onClose }) => {
 
   const confirmLogout = () => {
     onClose();
-    toastSuccess(t('profile.logoutSuccess', { defaultValue: 'Muvaffaqiyatli chiqildi' }));
+    toastSuccess(t('profile.logoutSuccess'));
     setTimeout(() => {
       logout();
       navigate('/login');
@@ -36,7 +36,7 @@ const LogoutModal = ({ show, onClose }) => {
               <AlertCircle className="w-6 h-6 text-error-600" />
             </div>
             <h2 className="text-2xl font-bold text-slate-900">
-              {t('profile.logoutTitle', { defaultValue: 'Chiqish' })}
+              {t('profile.logoutTitle')}
             </h2>
           </div>
           <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
@@ -45,7 +45,7 @@ const LogoutModal = ({ show, onClose }) => {
         </div>
 
         <p className="text-slate-600 mb-8 text-lg">
-          {t('profile.confirmLogout', { defaultValue: 'Chiqishni xohlaysizmi?' })}
+          {t('profile.confirmLogout')}
         </p>
 
         <div className="flex gap-3">
@@ -53,13 +53,13 @@ const LogoutModal = ({ show, onClose }) => {
             onClick={onClose}
             className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
           >
-            {t('profile.cancel', { defaultValue: 'Yo\'q' })}
+            {t('profile.cancel')}
           </button>
           <button
             onClick={confirmLogout}
             className="flex-1 px-6 py-3 bg-error-600 hover:bg-error-700 text-white rounded-xl font-semibold transition-colors shadow-md"
           >
-            {t('profile.yes', { defaultValue: 'Ha' })}
+            {t('profile.yes')}
           </button>
         </div>
       </div>

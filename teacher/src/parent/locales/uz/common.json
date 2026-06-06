@@ -308,5 +308,20 @@
     "contactTeacher": "Kirish ma'lumotlari uchun tarbiyachiga murojaat qiling",
     "showPassword": "Parolni ko'rsatish",
     "hidePassword": "Parolni yashirish"
+  },
+  "irr": {
+    "scoreNote": "Eng yuqori ko'rsatkich: {{maxScore}} ball. Ball ortishi — rivojlanish belgisi."
+  },
+  "message": {
+    "levelOwner": "O'qituvchiga",
+    "levelOwnerDesc": "Bog'cha o'qituvchisi",
+    "levelRegion": "Tuman bo'limiga",
+    "levelRegionDesc": "Mahalliy ta'lim bo'limi",
+    "levelRepublic": "Respublika boshqarmasiga",
+    "levelRepublicDesc": "Markaziy ta'lim vazirligi",
+    "level_owner": "O'qituvchi",
+    "level_region": "Tuman bo'limi",
+    "level_republic": "Respublika",
+    "levelHint": "Tanlangan: {{level}}"
   }
 }

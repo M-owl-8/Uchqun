@@ -120,7 +120,7 @@ const Media = () => {
     e?.stopPropagation();
     setConfirmDialog({
       message: t('mediaPage.confirmDelete'),
-      warning: t('mediaPage.confirmDeleteWarning', { defaultValue: "Rasm/video yumshoq o'chiriladi, lekin bu portalda tiklash imkoniyati yo'q." }),
+      warning: t('mediaPage.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

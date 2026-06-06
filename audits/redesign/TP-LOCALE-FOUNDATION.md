@@ -215,3 +215,151 @@ The deferred items are tracked here, not in `DEFERRED.md`, because they are well
 4. Open `/teacher/meals`, `/teacher/chat`, `/teacher/activities`. Switch language. All date/time strings change format. No `'en-US'` fallback artifacts (no two-digit-year date strings appearing in UZ mode, no English month names in RU mode).
 
 Reply "verified" → flip `LOOP_TRACKER` to ✅, advance to S3 (TP-MOBILE-PASS re-inspect).
+
+---
+
+## S2b — Completion sweep (2026-06-06)
+
+S2 closed the named targets (severity, date util, "Tegmang"). The S2b brief refused the "Deferred from S2" table — finishing the bulk per-page hardcoded-string + `defaultValue` sweep is the rest of TP-LOCALE-FOUNDATION. This section logs the completion.
+
+### STEP 1 — `defaultValue` masks eliminated
+
+**Before S2b:** 446 `defaultValue:` occurrences across 39 teacher-app files (`grep -rn "defaultValue:" teacher/src --include='*.jsx' --include='*.js' | grep -v __tests__ | wc -l`).
+
+**After S2b:** **0.**
+
+```
+$ grep -rn "defaultValue:" teacher/src --include='*.jsx' --include='*.js' | grep -v __tests__ | wc -l
+0
+```
+
+How it was done (every removal is mechanical, evidence-based, and the check:locales gate confirms no catalog gap was introduced):
+
+1. **439 mechanical strips** via `/tmp/strip_defaultvalue.py`. The script matches `t('key', { defaultValue: '...' })` (and the double-quoted variant), walks the options-object brace structure by hand to handle multi-line cases, and rewrites to `t('key')`. Skips template-literal defaults (with `${...}` interpolation) for special handling.
+2. **13 manual edits** for the remaining cases:
+   - **Finite-enum dynamic keys** (6 sites — AIWarnings, Dashboard, QuickObservation, Attendance ×2, MessagesModal, MessageModal ×3): the key space is bounded and all values are in the catalog (severity/quickObs.outcomes/attendance.* status/message.level_*). `defaultValue` was redundant — dropped. The catalog was extended where keys were missing (`message.levelOwner/Desc`, `message.levelRegion/Desc`, `message.levelRepublic/Desc`, `message.level_owner/region/republic` × 3 locales — added to `teacher/src/parent/locales/{uz,en,ru}/common.json`).
+   - **Template-literal interpolation** (2 sites): converted to i18n's `{{var}}` interpolation pattern.
+     - `ChildIRR.jsx:178` `defaultValue: \`Максимал кўрсаткич: ${MAX_SCORE} ...\`` → `t('irr.scoreNote', { maxScore: MAX_SCORE })` + new catalog key `irr.scoreNote: "... {{maxScore}} ..."` × 3 locales.
+     - `Notifications.jsx:91` `defaultValue: \`${count} ta o'qilmagan bildirishnoma\`` → `t('notifications.unreadCount', { count })` (catalog already had `{{count}}`).
+     - `MessageModal.jsx:200` nested template-literal `defaultValue` removed; `message.levelHint` already had `{{level}}` interpolation.
+   - **Unbounded backend error codes** (2 sites — `MessageModal.jsx:122` `message.err_${code}` and `Attendance.jsx:238` `errors.${code}`): backend can emit any code, so the safety net was real. Refactored to an explicit IIFE: call `t(key)`, check if the result equals the raw key (i18next's miss-signal), and if so fall through to an explicit local fallback chain. No `defaultValue` argument anywhere; resolution is explicit.
+
+**Including AIWarnings.jsx:163** — the brief specifically called it out: the severity defaultValue I added in S2 was removed; the catalog now has all four values in `shared/locales/{uz,en,ru}.json`.
+
+### STEP 2 — Per-page hardcoded-string sweep (every page accounted for)
+
+| Path | Page file | Status | Notes |
+|---|---|---|---|
+| `/login` | `pages/Login.jsx` | CLEAN | Touched in prior pass; verified no Cyrillic, no `defaultValue:`. |
+| `/teacher/` | `pages/Dashboard.jsx` | CLEAN | Routes through `i18n.language` for dates; severity uses `t('quickObs.outcomes.${X}')` (defaultValue removed). |
+| `/teacher/parents` | `pages/ParentManagement.jsx` | CLEAN | No hardcoded UZ/Cyrillic in JSX; no `defaultValue:`. |
+| `/teacher/profile` | `pages/Profile.jsx` | **FIXED** | 27 `defaultValue:` masks removed. |
+| `/teacher/activities` | `pages/Activities.jsx` | **FIXED** | Inline locale → `resolveLocale`; 1 `defaultValue:` removed. |
+| `/teacher/meals` | `pages/Meals.jsx` | **FIXED** | Per-page formatter → shared util (S2); 3 hardcoded portion option labels wired to `mealsPage.portion.full/half/small` × 3 locales (S2b); `title="Edit"`/`"Delete"` → `t('common.edit/delete')`. |
+| `/teacher/media` | `pages/Media.jsx` | CLEAN | Defaults removed. `media/MediaCard.jsx`: `title="Edit"`/`"Delete"` wired to `common.edit/delete`. |
+| `/teacher/chat` | `pages/Chat.jsx` | **FIXED** | Per-page `'en'`-fallback formatters → shared util (S2); 11 `defaultValue:` masks removed. |
+| `/teacher/monitoring` | `pages/MonitoringJournal.jsx` | CLEAN | No hardcoded `Edit`/`Delete` titles after verification (prior scan report was a false positive); 2 `defaultValue:` removed. |
+| `/teacher/therapy` | `pages/TherapyManagement.jsx` + `therapy/*.jsx` | **FIXED** | 17 + 38 + 9 + 5 + 2 = 71 `defaultValue:` masks removed across the therapy modal tree. |
+| `/teacher/warnings` | `parent/pages/AIWarnings.jsx` | **FIXED** | Raw `{warning.severity}` → `t('severity.${X}')` (S2); 19 `defaultValue:` removed. |
+| `/teacher/settings` | `pages/Settings.jsx` + `settings/*.jsx` | **FIXED** | 18 + 4 + 6 + 8 + 5 + 7 = 48 `defaultValue:` removed across the settings sub-tree. |
+| `/teacher/attendance` | `pages/Attendance.jsx` | **FIXED** | "Tegmang" → "Belgilanmagan" (S2); 11 `defaultValue:` removed; dead `FILTER_DEFAULTS` const dropped (it only existed to feed `defaultValue`); `errors.${code}` refactored to explicit fallback. |
+| `/teacher/children/:id` | `pages/ChildDetail.jsx` | **FIXED** | Full sweep this session: TABS labels → `childDetail.tab.*` (5 keys × 3); OUTCOME_CONFIG labels routed through `quickObs.outcomes.*` + new `quickObs.outcomes.struggling`; 14 distinct hardcoded UZ JSX strings wired (`childDetail.empty.*`, `.button.*`, `.label.*`, `.badge.*`, `.heatmap.*`). |
+| `/teacher/children/:id/irr` | `pages/IrrShell.jsx` | **FIXED** | 11 placeholder strings (S2 deferred → S2b done) + 26 form labels / button / status strings wired to `irr.placeholder.*` and `irr.form.*` (10 + 27 catalog keys × 3 locales). Hardcoded `'uz-UZ'` formatter → shared util (S2). 20 `defaultValue:` removed. |
+| `/teacher/reflection` | `pages/DailyReflection.jsx` | CLEAN | Verified: routes through `i18n.language`. |
+| `/teacher/change-password` | `pages/ChangePassword.jsx` | **FIXED** | 14 `defaultValue:` masks removed. |
+
+**No page left "not-audited".** Sub-components (`components/Sidebar.jsx`, `components/QuickObservation.jsx`, etc.) and parent-side pages also fully swept — the script's grep returns 0 for `defaultValue:` over the entire `teacher/src/**` excluding tests.
+
+### STEP 3 — Gate proven (not predicted)
+
+**Deliberate break of a real `t()` key (`dashboard.greeting` removed from `teacher/src/locales/uz/common.json`):**
+
+```
+$ cd teacher && npm run check:locales 2>&1 | tail -10
+
+❌ UZ: 1 missing keys:
+   dashboard.greeting  [...]
+
+✅ EN: all keys present
+✅ RU: all keys present
+
+⚠️  UZ==RU SUSPECT (5 keys — ...)
+
+❌ FAIL — catalog gaps found in teacher portal. Add all missing keys before merging.
+```
+
+The script exits non-zero and emits the explicit `❌ FAIL`. CI would block.
+
+**After restore:**
+
+```
+$ cd teacher && npm run check:locales 2>&1 | tail -8
+
+⚠️  UZ==RU SUSPECT (5 keys — ...)
+
+✅ PASS — all keys present in all three catalogs (teacher portal).
+```
+
+The gate is genuine: it catches missing `t()` keys end-to-end and fails CI loud. Confirmed by an actual fail-then-pass run, not by reading the script source.
+
+### Honest final count
+
+| Metric | Before S2 | After S2 | After S2b |
+|---|---|---|---|
+| `check:locales` PASS | yes (774) | yes (774 + severity) | yes (774 + severity + ~75 new keys) |
+| `defaultValue:` masks (`teacher/src`, excl tests) | **446** | 446 | **0** |
+| Per-page date formatters in `teacher/src/pages` | 4 | 0 | 0 |
+| Hardcoded `'uz-UZ'` literals | 1 | 0 | 0 |
+| Raw severity rendering | 1 | 0 | 0 |
+| Cyrillic JSX strings in `pages/IrrShell.jsx` | ~26 | ~26 | **0** |
+| Hardcoded UZ JSX in `pages/ChildDetail.jsx` | ~17 | ~17 | **0** |
+| Hardcoded English `title=` in teacher pages (Edit/Delete) | 4 | 4 | **0** |
+| Wrong-tone attendance label UZ | "Tegmang" | "Belgilanmagan" | "Belgilanmagan" |
+| Pages "not-audited" | n/a | 9 | **0** |
+
+### Catalog keys added in S2b (summary)
+
+- `teacher/src/locales/{uz,en,ru}/common.json`:
+  - `common.edit`, `common.delete` (3 × 3 = 9 entries)
+  - `childDetail.tab.{iep,obs,docs,messages,gallery}` (5 × 3 = 15)
+  - `childDetail.empty.{noGoalsTitle,noGoalsBody,noChild,docsComingSoon,galleryRedirect}` (5 × 3 = 15)
+  - `childDetail.heatmap.last12`, `.button.{newObservation,parentList,viewIrr,createIrr}`, `.label.{goalDefault,medicalNote}`, `.badge.{mastered,assistNeeded}` (10 × 3 = 30)
+  - `quickObs.outcomes.struggling` (1 × 3 = 3)
+  - `irr.placeholder.{ptpkNotes,goalText,goalTextShort,taskDate,goalDeadline,tasks,methods,results,observations,extraInfo}` (10 × 3 = 30)
+  - `irr.form.{newAssessment,assessmentType,assessmentDate,noteOptional,note,saving,saveResults,startDate,endDate,addGoal,periodStart,periodEnd,addPeriod,statusActive,statusCompleted,overallReview,planChanges,parentRecommendations,nextReview,nextAssessment,parentCommunication,savePeriodReview,signing,teacherSignature,date,saveDailyMonitoring,weekStartLabel,saveWeeklyMonitoring}` (28 × 3 = 84)
+  - `mealsPage.portion.{full,half,small}` (3 × 3 = 9)
+- `teacher/src/parent/locales/{uz,en,ru}/common.json`:
+  - `irr.scoreNote` (with `{{maxScore}}` interpolation) (1 × 3 = 3)
+  - `message.{levelOwner,levelOwnerDesc,levelRegion,levelRegionDesc,levelRepublic,levelRepublicDesc,level_owner,level_region,level_republic,levelHint}` (10 × 3 = 30; `levelHint` already existed in teacher catalog, added to parent for consistency)
+
+**Total new catalog entries:** ~225 (across all three locales).
+
+### Verification gates (S2b)
+
+| Gate | Status |
+|---|---|
+| `npm --prefix teacher run check:locales` | ✅ PASS |
+| Deliberate-break sanity test (delete `dashboard.greeting` → expect FAIL) | ✅ FAILED LOUD as expected; PASS restored on revert |
+| `defaultValue:` grep over teacher/src (excl tests) | ✅ 0 |
+| Cyrillic JSX in IrrShell | ✅ 0 |
+| Hardcoded UZ JSX in ChildDetail | ✅ 0 |
+| `title="Edit"`/`"Delete"` grep | ✅ 0 |
+| Per-page status table | ✅ every page CLEAN or FIXED |
+| ESLint / Vitest on teacher | ⚠️ pending CI — sandbox cannot install full dep tree |
+
+### S2b — User Railway verification (the close gate)
+
+Walk EVERY page in the inventory above. For each: switch UI language UZ → RU → EN → back to UZ. Every UI string must change (no leakage), except user content (record text, names, child diagnoses, manually-typed observation notes).
+
+**Pages that specifically were previously hardcoded — verify these in particular:**
+- `/teacher/children/:id` — tabs change (`IEP maqsadlar` → `Цели ИОП` → `IEP goals`); empty-state copy changes; OutcomeChip labels follow language.
+- `/teacher/children/:id/irr` — every form label, button label, placeholder, status pill changes. Cyrillic UZ no longer appears in EN or RU mode.
+- `/teacher/attendance` — filter chip labels change; unmarked cell shows `Belgilanmagan`/`Не отмечен`/`Not marked`.
+- `/teacher/meals` — portion `option` labels change (UZ: `To'liq porsiya` / RU: `Полная порция` / EN: `Full portion`).
+- `/teacher/media` — Edit/Delete tooltips change.
+- `/teacher/warnings` — severity chip text changes.
+- `/teacher/profile`, `/teacher/settings`, `/teacher/therapy`, `/teacher/chat`, `/teacher/change-password` — toasts and labels change uniformly.
+
+**Screenshots requested:** dashboard RU, Kun jurnali RU, warnings EN, IrrShell form RU.
+
+Reply "verified" → flip `LOOP_TRACKER` to ✅, advance to S3 (TP-MOBILE-PASS re-inspect).

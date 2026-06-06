@@ -9,7 +9,7 @@ const NotificationPreferences = ({ profileForm, setProfileForm, saving, onSubmit
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <Bell className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('settings.notifications', { defaultValue: 'Bildirishnomalar' })}</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.notifications')}</h2>
         </div>
 
         <div className="space-y-4">
@@ -27,8 +27,8 @@ const NotificationPreferences = ({ profileForm, setProfileForm, saving, onSubmit
               className="w-5 h-5 text-brand-600 border-slate-300 rounded focus:ring-brand-500"
             />
             <div>
-              <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications', { defaultValue: 'Email bildirishnomalari' })}</span>
-              <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc', { defaultValue: 'Email orqali yangiliklar olish' })}</p>
+              <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications')}</span>
+              <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc')}</p>
             </div>
           </label>
         </div>
@@ -40,7 +40,7 @@ const NotificationPreferences = ({ profileForm, setProfileForm, saving, onSubmit
             className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm disabled:opacity-50"
           >
             <Save className="w-5 h-5" />
-            {t('settings.savePreferences', { defaultValue: 'Saqlash' })}
+            {t('settings.savePreferences')}
           </button>
         </div>
       </Card>

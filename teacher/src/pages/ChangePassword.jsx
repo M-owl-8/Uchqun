@@ -22,15 +22,15 @@ const ChangePassword = () => {
     setError('');
 
     if (form.newPassword !== form.confirmPassword) {
-      setError(t('changePasswordForced.mismatch', { defaultValue: 'New passwords do not match' }));
+      setError(t('changePasswordForced.mismatch'));
       return;
     }
     if (form.newPassword.length < 8) {
-      setError(t('changePasswordForced.tooShort', { defaultValue: 'Password must be at least 8 characters' }));
+      setError(t('changePasswordForced.tooShort'));
       return;
     }
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(form.newPassword)) {
-      setError(t('changePasswordForced.weakPassword', { defaultValue: 'Password must contain uppercase, lowercase, and a number' }));
+      setError(t('changePasswordForced.weakPassword'));
       return;
     }
 
@@ -44,9 +44,9 @@ const ChangePassword = () => {
       navigate('/teacher', { replace: true });
     } catch (err) {
       if (err.response?.status === 401) {
-        setError(t('changePasswordForced.incorrect', { defaultValue: 'Current password is incorrect' }));
+        setError(t('changePasswordForced.incorrect'));
       } else {
-        setError(t('changePasswordForced.error', { defaultValue: 'Failed to change password' }));
+        setError(t('changePasswordForced.error'));
       }
     } finally {
       setSaving(false);
@@ -64,10 +64,10 @@ const ChangePassword = () => {
           </div>
 
           <h1 className="text-xl font-semibold text-slate-900 text-center mb-1">
-            {t('changePasswordForced.title', { defaultValue: 'Change Password' })}
+            {t('changePasswordForced.title')}
           </h1>
           <p className="text-sm text-slate-500 text-center mb-6">
-            {t('changePasswordForced.subtitle', { defaultValue: 'You must set a new password before continuing.' })}
+            {t('changePasswordForced.subtitle')}
           </p>
 
           {error && (
@@ -78,9 +78,9 @@ const ChangePassword = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4">
             {[
-              { key: 'currentPassword', label: t('changePasswordForced.current', { defaultValue: 'Current Password' }), field: 'current' },
-              { key: 'newPassword',     label: t('changePasswordForced.new',     { defaultValue: 'New Password' }),     field: 'new' },
-              { key: 'confirmPassword', label: t('changePasswordForced.confirm', { defaultValue: 'Confirm New Password' }), field: 'confirm' },
+              { key: 'currentPassword', label: t('changePasswordForced.current'), field: 'current' },
+              { key: 'newPassword',     label: t('changePasswordForced.new'),     field: 'new' },
+              { key: 'confirmPassword', label: t('changePasswordForced.confirm'), field: 'confirm' },
             ].map(({ key, label, field }) => (
               <div key={key}>
                 <label className="block text-xs font-medium text-slate-800 mb-1">{label}</label>
@@ -98,7 +98,7 @@ const ChangePassword = () => {
                     onClick={() => toggle(field)}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 hover:text-slate-800 p-1"
                     tabIndex={-1}
-                    aria-label={show[field] ? t('login.hidePassword', { defaultValue: 'Hide password' }) : t('login.showPassword', { defaultValue: 'Show password' })}
+                    aria-label={show[field] ? t('login.hidePassword') : t('login.showPassword')}
                   >
                     {show[field] ? <EyeOff className="w-4 h-4" strokeWidth={1.75} /> : <Eye className="w-4 h-4" strokeWidth={1.75} />}
                   </button>
@@ -112,8 +112,8 @@ const ChangePassword = () => {
               className="w-full inline-flex items-center justify-center h-11 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 disabled:opacity-50 text-white rounded-md shadow-xs transition-colors"
             >
               {saving
-                ? t('common.loading', { defaultValue: 'Loading...' })
-                : t('changePasswordForced.button', { defaultValue: 'Change Password' })}
+                ? t('common.loading')
+                : t('changePasswordForced.button')}
             </button>
           </form>
         </div>

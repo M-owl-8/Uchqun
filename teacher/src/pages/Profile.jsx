@@ -58,13 +58,13 @@ const Profile = () => {
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
-      showError(t('profile.invalidImage', { defaultValue: 'Faqat rasm fayllari qabul qilinadi' }));
+      showError(t('profile.invalidImage'));
       return;
     }
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      showError(t('profile.imageTooLarge', { defaultValue: 'Rasm hajmi 5MB dan katta bo\'lmasligi kerak' }));
+      showError(t('profile.imageTooLarge'));
       return;
     }
 
@@ -87,9 +87,9 @@ const Profile = () => {
         setUser(response.data);
       }
       
-      success(t('profile.avatarUpdated', { defaultValue: 'Rasm muvaffaqiyatli yuklandi' }));
+      success(t('profile.avatarUpdated'));
     } catch (err) {
-      showError(err.response?.data?.error || t('profile.uploadError', { defaultValue: 'Rasm yuklashda xatolik yuz berdi' }));
+      showError(err.response?.data?.error || t('profile.uploadError'));
     } finally {
       setUploadingAvatar(false);
       // Reset file input
@@ -99,7 +99,7 @@ const Profile = () => {
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {
-      showError(t('profile.messageRequired', { defaultValue: 'Subject va xabar to\'ldirilishi kerak' }));
+      showError(t('profile.messageRequired'));
       return;
     }
 
@@ -109,14 +109,14 @@ const Profile = () => {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
-      success(t('profile.messageSent', { defaultValue: 'Xabar muvaffaqiyatli yuborildi' }));
+      success(t('profile.messageSent'));
       setMessageSubject('');
       setMessageText('');
       setShowMessageModal(false);
       // Reload messages
       await loadMessages();
     } catch (error) {
-      showError(error.response?.data?.error || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
+      showError(error.response?.data?.error || t('profile.messageError'));
     } finally {
       setSendingMessage(false);
     }
@@ -126,8 +126,8 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">{t('profile.title', { defaultValue: 'Profil' })}</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">{t('profile.subtitle', { defaultValue: 'Hisob ma\'lumotlarini boshqarish' })}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('profile.title')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('profile.subtitle')}</p>
         </div>
         <button
           onClick={handleLogout}
@@ -156,7 +156,7 @@ const Profile = () => {
             <button
               onClick={handleAvatarClick}
               className="absolute -bottom-1 -right-1 w-6 h-6 bg-brand-600 text-white rounded-full flex items-center justify-center hover:bg-brand-700 transition-colors shadow-md"
-              title={t('profile.changeAvatar', { defaultValue: 'Rasmni o\'zgartirish' })}
+              title={t('profile.changeAvatar')}
             >
               <Camera className="w-3 h-3" />
             </button>
@@ -191,10 +191,10 @@ const Profile = () => {
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-4">
           <MessageSquare className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('profile.contactGovernment', { defaultValue: 'Contact Government' })}</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t('profile.contactGovernment')}</h2>
         </div>
         <p className="text-sm text-slate-600 mb-4">
-          {t('profile.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
+          {t('profile.contactDescription')}
         </p>
         <div className="flex gap-3">
           <button
@@ -202,7 +202,7 @@ const Profile = () => {
             className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
-            {t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}
+            {t('profile.sendMessage')}
           </button>
           {myMessages.length > 0 && (
             <button
@@ -210,7 +210,7 @@ const Profile = () => {
               className="flex items-center gap-2 px-6 py-3 bg-success-600 text-white rounded-xl font-bold hover:bg-success-700 transition-colors shadow-sm relative"
             >
               <MessageSquare className="w-5 h-5" />
-              {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
+              {t('profile.myMessages')}
               {myMessages.some(m => m.reply) && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center">
                   {myMessages.filter(m => m.reply).length}
@@ -230,7 +230,7 @@ const Profile = () => {
                 <div className="p-3 bg-brand-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-brand-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">{t('profile.sendMessage', { defaultValue: 'Davlatga xabar yuborish' })}</h2>
+                <h2 className="text-2xl font-bold text-slate-900">{t('profile.sendMessage')}</h2>
               </div>
               <button
                 onClick={() => setShowMessageModal(false)}
@@ -242,22 +242,22 @@ const Profile = () => {
             
             <div className="space-y-4 mb-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.subject', { defaultValue: 'Mavzu' })}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.subject')}</label>
                 <input
                   type="text"
                   value={messageSubject}
                   onChange={(e) => setMessageSubject(e.target.value)}
-                  placeholder={t('profile.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
+                  placeholder={t('profile.subjectPlaceholder')}
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.message', { defaultValue: 'Xabar' })}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('profile.message')}</label>
                 <textarea
                   value={messageText}
                   onChange={(e) => setMessageText(e.target.value)}
                   rows={6}
-                  placeholder={t('profile.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
+                  placeholder={t('profile.messagePlaceholder')}
                   className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                 />
               </div>
@@ -269,7 +269,7 @@ const Profile = () => {
                 className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
                 disabled={sendingMessage}
               >
-                {t('profile.cancel', { defaultValue: 'Bekor qilish' })}
+                {t('profile.cancel')}
               </button>
               <button
                 onClick={handleSendMessage}
@@ -279,12 +279,12 @@ const Profile = () => {
                 {sendingMessage ? (
                   <>
                     <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    <span>{t('profile.sending', { defaultValue: 'Yuborilmoqda...' })}</span>
+                    <span>{t('profile.sending')}</span>
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>{t('profile.send', { defaultValue: 'Yuborish' })}</span>
+                    <span>{t('profile.send')}</span>
                   </>
                 )}
               </button>
@@ -302,7 +302,7 @@ const Profile = () => {
                 <div className="p-3 bg-success-100 rounded-full">
                   <MessageSquare className="w-6 h-6 text-success-600" />
                 </div>
-                <h2 className="text-2xl font-bold text-slate-900">{t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}</h2>
+                <h2 className="text-2xl font-bold text-slate-900">{t('profile.myMessages')}</h2>
               </div>
               <button
                 onClick={() => setShowMessagesModal(false)}
@@ -319,7 +319,7 @@ const Profile = () => {
             ) : myMessages.length === 0 ? (
               <div className="text-center py-12">
                 <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-500">{t('profile.noMessages', { defaultValue: 'Hozircha xabarlar yo\'q' })}</p>
+                <p className="text-slate-500">{t('profile.noMessages')}</p>
               </div>
             ) : (
               <div className="space-y-4">
@@ -340,13 +340,13 @@ const Profile = () => {
                       </div>
                       {msg.reply && (
                         <span className="px-3 py-1 bg-success-100 text-success-700 rounded-full text-xs font-semibold">
-                          {t('profile.replied', { defaultValue: 'Javob berildi' })}
+                          {t('profile.replied')}
                         </span>
                       )}
                     </div>
                     
                     <div className="mb-4">
-                      <p className="text-sm font-medium text-slate-700 mb-2">{t('profile.yourMessage', { defaultValue: 'Sizning xabaringiz' })}:</p>
+                      <p className="text-sm font-medium text-slate-700 mb-2">{t('profile.yourMessage')}:</p>
                       <p className="text-slate-800 bg-slate-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                     </div>
 
@@ -356,7 +356,7 @@ const Profile = () => {
                           <div className="p-2 bg-brand-100 rounded-full">
                             <MessageSquare className="w-4 h-4 text-brand-600" />
                           </div>
-                          <p className="text-sm font-medium text-brand-700">{t('profile.governmentReply', { defaultValue: 'Davlat javobi' })}</p>
+                          <p className="text-sm font-medium text-brand-700">{t('profile.governmentReply')}</p>
                           <span className="text-xs text-slate-500 ml-auto">
                             {new Date(msg.repliedAt).toLocaleDateString(i18n.language, { 
                               year: 'numeric', 

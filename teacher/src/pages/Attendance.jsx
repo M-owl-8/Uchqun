@@ -24,11 +24,6 @@ const FILTER_LABEL_KEYS = {
   absent:       'attendance.statusAbsent',
 };
 
-const FILTER_DEFAULTS = {
-  all: 'Hammasi', present: 'Bor', home_leave: 'Uyda',
-  sick: 'Kasal', hospitalized: 'Shifoxonada', absent: "Yo'q",
-};
-
 const STATUS_COLORS = {
   present:      '#7AB89A',
   home_leave:   '#C58A1F',
@@ -161,7 +156,7 @@ const Attendance = () => {
         setChildren(Array.isArray(list) ? list : []);
       } catch {
         setChildren([]);
-        showError(t('attendance.errorLoadChildren', { defaultValue: "Bolalar ro'yxatini yuklashda xatolik" }));
+        showError(t('attendance.errorLoadChildren'));
       } finally {
         setLoading(false);
       }
@@ -229,14 +224,20 @@ const Attendance = () => {
         status: states[c.id] || 'unset',
       }));
       await api.post('/attendance', { records });
-      success(t('attendance.saved', { defaultValue: 'Davomat saqlandi' }));
+      success(t('attendance.saved'));
       navigate('/teacher');
     } catch (err) {
       const code = err.response?.data?.error?.code;
       const detail = err.response?.data?.error?.detail;
       const msg = code
-        ? t(`errors.${code}`, { defaultValue: detail || t('attendance.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }) })
-        : t('attendance.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' });
+        ? ((() => {
+            // S2b: backend codes are unbounded — explicit resolution, no
+            // defaultValue mask.
+            const k = `errors.${code}`;
+            const tr = t(k);
+            return tr !== k ? tr : (detail || t('attendance.errorSave'));
+          })())
+        : t('attendance.errorSave');
       showError(msg);
     } finally {
       setSaving(false);
@@ -352,7 +353,7 @@ const Attendance = () => {
         <>
           <div className="px-1 pb-3">
             <div className="text-[12px] text-slate-500">
-              {children[0]?.groupName || t('attendance.group')} · {total} {t('attendance.children', { defaultValue: 'bola' })}
+              {children[0]?.groupName || t('attendance.group')} · {total} {t('attendance.children')}
             </div>
             {!isFuture && (
               <button
@@ -361,7 +362,7 @@ const Attendance = () => {
                 className="mt-2 h-9 px-3 rounded-full bg-brand-50 text-brand-700 text-[13px] font-medium flex items-center gap-1.5 hover:bg-brand-100 transition-colors"
               >
                 <CheckCheck className="w-4 h-4" strokeWidth={1.75} />
-                {t('attendance.markAll', { defaultValue: 'Hammasi keldi' })}
+                {t('attendance.markAll')}
               </button>
             )}
           </div>
@@ -384,7 +385,7 @@ const Attendance = () => {
                         : { background: '#FFFFFE', border: '1px solid #DDE0E6', color: '#3D424F' }
                     }
                   >
-                    {t(FILTER_LABEL_KEYS[opt.key], { defaultValue: FILTER_DEFAULTS[opt.key] })} · {count}
+                    {t(FILTER_LABEL_KEYS[opt.key])} · {count}
                   </button>
                 );
               })}
@@ -395,7 +396,7 @@ const Attendance = () => {
           <div className="mt-1">
             {filtered.length === 0 ? (
               <div className="text-center py-12 text-[13px] text-slate-500">
-                {t('attendance.noChildren', { defaultValue: "Bu filtr bo'yicha bola yo'q" })}
+                {t('attendance.noChildren')}
               </div>
             ) : (
               <AttendanceGrid
@@ -442,7 +443,7 @@ const Attendance = () => {
             </div>
           ) : children.length === 0 ? (
             <div className="text-center py-12 text-[13px] text-slate-500">
-              {t('attendance.noChildren', { defaultValue: "Bolalar yo'q" })}
+              {t('attendance.noChildren')}
             </div>
           ) : (
             <>
@@ -451,14 +452,14 @@ const Attendance = () => {
                 {Object.entries(STATUS_COLORS).map(([s, color]) => (
                   <span key={s} className="flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full" style={{ background: color }} />
-                    {t(FILTER_LABEL_KEYS[s], { defaultValue: FILTER_DEFAULTS[s] })}
+                    {t(FILTER_LABEL_KEYS[s])}
                   </span>
                 ))}
               </div>
               <HistoryGrid childList={children} records={historyRecords} dates={historyDates} />
               {historyRecords.length === 0 && (
                 <div className="text-center pt-6 text-[13px] text-slate-400">
-                  {t('attendance.noHistory', { defaultValue: "Davomat ma'lumotlari yo'q" })}
+                  {t('attendance.noHistory')}
                 </div>
               )}
             </>

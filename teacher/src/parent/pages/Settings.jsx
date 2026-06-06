@@ -69,12 +69,12 @@ const Settings = () => {
         phone: profileForm.phone,
         notificationPreferences: profileForm.notificationPreferences,
       });
-      success(t('settings.profileUpdated', { defaultValue: 'Profil muvaffaqiyatli yangilandi' }));
+      success(t('settings.profileUpdated'));
       if (setUser) {
         setUser(response.data.data ?? response.data);
       }
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
+      showError(error.response?.data?.error || t('settings.profileError'));
     } finally {
       setSaving(false);
     }
@@ -84,12 +84,12 @@ const Settings = () => {
     e.preventDefault();
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      showError(t('settings.passwordMismatch', { defaultValue: 'Yangi parollar mos kelmadi' }));
+      showError(t('settings.passwordMismatch'));
       return;
     }
 
     if (passwordForm.newPassword.length < 8) {
-      showError(t('settings.passwordTooShort', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' }));
+      showError(t('settings.passwordTooShort'));
       return;
     }
 
@@ -99,14 +99,14 @@ const Settings = () => {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
-      success(t('settings.passwordChanged', { defaultValue: 'Parol muvaffaqiyatli o\'zgartirildi' }));
+      success(t('settings.passwordChanged'));
       setPasswordForm({
         currentPassword: '',
         newPassword: '',
         confirmPassword: '',
       });
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+      showError(error.response?.data?.error || t('settings.passwordError'));
     } finally {
       setSavingPassword(false);
     }
@@ -121,8 +121,8 @@ const Settings = () => {
     <div className="max-w-4xl mx-auto space-y-8 pb-24">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-slate-900">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
-          <p className="text-slate-500 font-medium mt-1">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
+          <h1 className="text-3xl font-black text-slate-900">{t('settings.title')}</h1>
+          <p className="text-slate-500 font-medium mt-1">{t('settings.subtitle')}</p>
         </div>
       </div>
 
@@ -131,7 +131,7 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <User className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.profileInfo', { defaultValue: 'Profil ma\'lumotlari' })}</h2>
+            <h2 className="text-xl font-bold text-slate-900">{t('settings.profileInfo')}</h2>
           </div>
 
           {/* Avatar Display */}
@@ -144,15 +144,15 @@ const Settings = () => {
               )}
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-700">{t('profile.profilePicture', { defaultValue: 'Profil rasmi' })}</p>
-              <p className="text-xs text-slate-500">{t('profile.changeInProfile', { defaultValue: 'Rasmni profil sahifasida o\'zgartirishingiz mumkin' })}</p>
+              <p className="text-sm font-medium text-slate-700">{t('profile.profilePicture')}</p>
+              <p className="text-xs text-slate-500">{t('profile.changeInProfile')}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.firstName', { defaultValue: 'Ism' })}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.firstName')}</label>
                 <input
                   type="text"
                   value={profileForm.firstName}
@@ -163,7 +163,7 @@ const Settings = () => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.lastName', { defaultValue: 'Familiya' })}</label>
+                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.lastName')}</label>
                 <input
                   type="text"
                   value={profileForm.lastName}
@@ -177,7 +177,7 @@ const Settings = () => {
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 <Mail className="w-4 h-4 inline mr-2" />
-                {t('settings.email', { defaultValue: 'Email' })}
+                {t('settings.email')}
               </label>
               <input
                 type="email"
@@ -185,13 +185,13 @@ const Settings = () => {
                 disabled
                 className="w-full px-4 py-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange', { defaultValue: 'Email o\'zgartirib bo\'lmaydi' })}</p>
+              <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange')}</p>
             </div>
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
                 <Phone className="w-4 h-4 inline mr-2" />
-                {t('settings.phone', { defaultValue: 'Telefon' })}
+                {t('settings.phone')}
               </label>
               <input
                 type="tel"
@@ -214,7 +214,7 @@ const Settings = () => {
               ) : (
                 <Save className="w-5 h-5" />
               )}
-              {t('settings.saveProfile', { defaultValue: 'Profilni saqlash' })}
+              {t('settings.saveProfile')}
             </button>
           </div>
         </Card>
@@ -225,7 +225,7 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <Bell className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.notifications', { defaultValue: 'Bildirishnomalar' })}</h2>
+            <h2 className="text-xl font-bold text-slate-900">{t('settings.notifications')}</h2>
           </div>
 
           <div className="space-y-4">
@@ -243,8 +243,8 @@ const Settings = () => {
                 className="w-5 h-5 text-p-brand-600 border-slate-300 rounded focus:ring-p-brand-500"
               />
               <div>
-                <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications', { defaultValue: 'Email bildirishnomalari' })}</span>
-                <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc', { defaultValue: 'Email orqali yangiliklar olish' })}</p>
+                <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications')}</span>
+                <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc')}</p>
               </div>
             </label>
 
@@ -257,7 +257,7 @@ const Settings = () => {
               className="flex items-center gap-2 px-6 py-3 bg-p-brand-600 text-white rounded-xl font-bold hover:bg-p-brand-700 transition-colors shadow-sm disabled:opacity-50"
             >
               <Save className="w-5 h-5" />
-              {t('settings.savePreferences', { defaultValue: 'Saqlash' })}
+              {t('settings.savePreferences')}
             </button>
           </div>
         </Card>
@@ -268,12 +268,12 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <Lock className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.changePassword', { defaultValue: 'Parolni o\'zgartirish' })}</h2>
+            <h2 className="text-xl font-bold text-slate-900">{t('settings.changePassword')}</h2>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.currentPassword', { defaultValue: 'Joriy parol' })}</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.currentPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.current ? 'text' : 'password'}
@@ -293,7 +293,7 @@ const Settings = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.newPassword', { defaultValue: 'Yangi parol' })}</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.newPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.new ? 'text' : 'password'}
@@ -311,11 +311,11 @@ const Settings = () => {
                   {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-1">{t('settings.passwordRequirements', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' })}</p>
+              <p className="text-xs text-slate-500 mt-1">{t('settings.passwordRequirements')}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.confirmPassword', { defaultValue: 'Yangi parolni tasdiqlash' })}</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.confirmPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.confirm ? 'text' : 'password'}
@@ -347,7 +347,7 @@ const Settings = () => {
               ) : (
                 <Save className="w-5 h-5" />
               )}
-              {t('settings.updatePassword', { defaultValue: 'Parolni yangilash' })}
+              {t('settings.updatePassword')}
             </button>
           </div>
         </Card>
@@ -360,7 +360,7 @@ const Settings = () => {
           className="flex items-center justify-center gap-2 px-6 py-3 bg-error-600 text-white rounded-xl font-bold hover:bg-error-700 transition-colors shadow-sm w-full"
         >
           <LogOut className="w-5 h-5" />
-          {t('logout', { defaultValue: 'Chiqish' })}
+          {t('logout')}
         </button>
       </Card>
     </div>

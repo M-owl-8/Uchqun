@@ -199,7 +199,7 @@ export default function IrrShell() {
       if (data) setForm(irrToForm(data));
     } catch (err) {
       if (err.response?.status !== 404) {
-        showError(t('irr.errorLoad', { defaultValue: "IRR yuklanmadi. Qayta urinib ko'ring." }));
+        showError(t('irr.errorLoad'));
       }
       setIrr(null);
     } finally {
@@ -303,7 +303,7 @@ export default function IrrShell() {
       setLongTermGoals(prev => [...prev, res.data.data]);
       setLtgForm({ goalText: '', targetPeriodStart: '', targetPeriodEnd: '' });
     } catch {
-      showError(t('irr.errorSaveLtg', { defaultValue: 'Maqsadni saqlashda xatolik' }));
+      showError(t('irr.errorSaveLtg'));
     } finally {
       setSavingLtg(false);
     }
@@ -321,7 +321,7 @@ export default function IrrShell() {
       setLongTermGoals(prev => prev.map(g => g.id === ltgEditId ? res.data.data : g));
       setLtgEditId(null);
     } catch {
-      showError(t('irr.errorUpdateGoal', { defaultValue: 'Maqsadni yangilashda xatolik' }));
+      showError(t('irr.errorUpdateGoal'));
     } finally {
       setSavingLtg(false);
     }
@@ -337,7 +337,7 @@ export default function IrrShell() {
           await api.delete(`/teacher/long-term-goals/${id}`);
           setLongTermGoals(prev => prev.filter(g => g.id !== id));
         } catch {
-          showError(t('irr.errorDeleteGoal', { defaultValue: "Maqsadni o'chirishda xatolik" }));
+          showError(t('irr.errorDeleteGoal'));
         }
       },
     });
@@ -356,7 +356,7 @@ export default function IrrShell() {
       setGoalPeriods(prev => [...prev, res.data.data]);
       setPeriodForm({ periodStart: '', periodEnd: '' });
     } catch {
-      setPeriodError(t('irr.errorSavePeriod', { defaultValue: 'Davrni saqlashda xatolik' }));
+      setPeriodError(t('irr.errorSavePeriod'));
     } finally {
       setSavingPeriod(false);
     }
@@ -403,7 +403,7 @@ export default function IrrShell() {
       }));
       setStgForms(prev => ({ ...prev, [periodId]: {} }));
     } catch {
-      showError(t('irr.errorSaveStg', { defaultValue: 'Qisqa muddatli maqsadni saqlashda xatolik' }));
+      showError(t('irr.errorSaveStg'));
     } finally {
       setSavingStg(null);
     }
@@ -421,7 +421,7 @@ export default function IrrShell() {
       setStgEditId(null);
       setStgEditForm({});
     } catch {
-      showError(t('irr.errorUpdateGoal', { defaultValue: 'Maqsadni yangilashda xatolik' }));
+      showError(t('irr.errorUpdateGoal'));
     } finally {
       setSavingStg(null);
     }
@@ -440,7 +440,7 @@ export default function IrrShell() {
             [periodId]: (prev[periodId] || []).filter(g => g.id !== id),
           }));
         } catch {
-          showError(t('irr.errorDeleteGoal', { defaultValue: "Maqsadni o'chirishda xatolik" }));
+          showError(t('irr.errorDeleteGoal'));
         }
       },
     });
@@ -455,7 +455,7 @@ export default function IrrShell() {
       setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
       success(t('irr.toastReviewSaved'));
     } catch {
-      showError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
+      showError(t('irr.errorSave'));
     } finally {
       setSavingReview(null);
     }
@@ -466,9 +466,9 @@ export default function IrrShell() {
     try {
       const res = await api.post(`/teacher/goal-periods/${periodId}/sign`);
       setGoalPeriods(prev => prev.map(p => p.id === periodId ? res.data.data : p));
-      success(t('irr.successSign', { defaultValue: "Imzo qo'yildi" }));
+      success(t('irr.successSign'));
     } catch {
-      showError(t('irr.errorSign', { defaultValue: "Imzo qo'yishda xatolik" }));
+      showError(t('irr.errorSign'));
     } finally {
       setSigningPeriod(null);
     }
@@ -500,7 +500,7 @@ export default function IrrShell() {
       setDailyEntries(prev => [res.data.data, ...prev]);
       setDailyChecks({});
       setDailyNotes('');
-      success(t('irr.successDailySaved', { defaultValue: 'Kundalik monitoring saqlandi' }));
+      success(t('irr.successDailySaved'));
     } catch (err) {
       const errData = err?.response?.data?.error;
       const code = errData?.code || errData;
@@ -535,7 +535,7 @@ export default function IrrShell() {
       setWeeklyEntries(prev => [res.data.data, ...prev]);
       setWeeklyChecks({});
       setWeeklyNotes('');
-      success(t('irr.successWeeklySaved', { defaultValue: 'Haftalik monitoring saqlandi' }));
+      success(t('irr.successWeeklySaved'));
     } catch (err) {
       const errData = err?.response?.data?.error;
       const code = errData?.code || errData;
@@ -577,14 +577,14 @@ export default function IrrShell() {
         const created = res.data?.data;
         setIrr(created);
         if (created) setForm(irrToForm(created));
-        success(t('irr.successCreated', { defaultValue: 'IRR yaratildi' }));
+        success(t('irr.successCreated'));
       } else {
         await api.patch(`/teacher/irr/${irr.id}`, form);
-        success(t('irr.successSaved', { defaultValue: 'IRR saqlandi' }));
+        success(t('irr.successSaved'));
         await load();
       }
     } catch {
-      showError(t('irr.errorSave', { defaultValue: 'Saqlashda xatolik yuz berdi' }));
+      showError(t('irr.errorSave'));
     } finally {
       setSaving(false);
     }
@@ -596,7 +596,7 @@ export default function IrrShell() {
     setActivateError(null);
     try {
       await api.post(`/teacher/irr/${irr.id}/activate`);
-      success(t('irr.successActivated', { defaultValue: 'IRR faollashtirildi!' }));
+      success(t('irr.successActivated'));
       await load();
     } catch (err) {
       const errData = err?.response?.data?.error;
@@ -819,7 +819,7 @@ export default function IrrShell() {
               className={textareaCls}
               value={form.ptpkNotes}
               onChange={handleChange('ptpkNotes')}
-              placeholder="ПТПК qo'shimcha izohlari..."
+              placeholder={t('irr.placeholder.ptpkNotes')}
               disabled={isReadOnly}
             />
           </FieldRow>
@@ -971,18 +971,18 @@ export default function IrrShell() {
 
           {!loadingSessions && sessions.length === 0 && (
             <div className="px-5 py-6 text-center text-[13px] text-slate-400">
-              {t('irr.noSessions', { defaultValue: "Hali baholash sessiyalari o'tkazilmagan. Yangi sessiya yaratish uchun quyidagi formdan foydalaning." })}
+              {t('irr.noSessions')}
             </div>
           )}
 
           {/* New session form */}
           {!isReadOnly && (
             <div className="px-5 py-5 space-y-5">
-              <h3 className="text-[14px] font-semibold text-slate-800">Yangi baholash</h3>
+              <h3 className="text-[14px] font-semibold text-slate-800">{t('irr.form.newAssessment')}</h3>
 
               {/* Session meta */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <FieldRow label="Баҳолаш тури" required>
+                <FieldRow label={t('irr.form.assessmentType')} required>
                   <select
                     className={inputCls}
                     value={sessionType}
@@ -994,7 +994,7 @@ export default function IrrShell() {
                     ))}
                   </select>
                 </FieldRow>
-                <FieldRow label="Баҳолаш санаси" required>
+                <FieldRow label={t('irr.form.assessmentDate')} required>
                   <input
                     type="date"
                     className={inputCls}
@@ -1095,7 +1095,7 @@ export default function IrrShell() {
               )}
 
               {/* Notes */}
-              <FieldRow label="Изоҳ (ихтиёрий)">
+              <FieldRow label={t('irr.form.noteOptional')}>
                 <textarea
                   rows={2}
                   className={textareaCls}
@@ -1113,7 +1113,7 @@ export default function IrrShell() {
                 className="h-9 px-4 rounded-md text-[13px] font-medium transition-colors disabled:opacity-50"
                 style={{ background: '#4F46E5', color: '#FFFFFF' }}
               >
-                {submittingSession ? 'Сақланмоқда...' : 'Натижаларни сақлаш'}
+                {submittingSession ? t('irr.form.saving') : t('irr.form.saveResults')}
               </button>
             </div>
           )}
@@ -1203,18 +1203,18 @@ export default function IrrShell() {
               <textarea
                 rows={2}
                 className={textareaCls}
-                placeholder="Мақсад матни (камида 5 та белги)..."
+                placeholder={t('irr.placeholder.goalText')}
                 value={ltgForm.goalText}
                 onChange={e => setLtgForm(f => ({ ...f, goalText: e.target.value }))}
                 data-testid="ltg-text-input"
               />
               <div className="grid grid-cols-2 gap-2">
-                <FieldRow label="Бошланиш санаси">
+                <FieldRow label={t('irr.form.startDate')}>
                   <input type="date" className={inputCls} value={ltgForm.targetPeriodStart}
                     onChange={e => setLtgForm(f => ({ ...f, targetPeriodStart: e.target.value }))}
                     data-testid="ltg-start-input" />
                 </FieldRow>
-                <FieldRow label="Тугаш санаси">
+                <FieldRow label={t('irr.form.endDate')}>
                   <input type="date" className={inputCls} value={ltgForm.targetPeriodEnd}
                     onChange={e => setLtgForm(f => ({ ...f, targetPeriodEnd: e.target.value }))}
                     data-testid="ltg-end-input" />
@@ -1226,7 +1226,7 @@ export default function IrrShell() {
                 className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
                 data-testid="ltg-save-btn"
               >
-                {savingLtg ? 'Сақланмоқда...' : 'Мақсад қўшиш'}
+                {savingLtg ? t('irr.form.saving') : t('irr.form.addGoal')}
               </button>
             </div>
           )}
@@ -1251,12 +1251,12 @@ export default function IrrShell() {
             <div className="px-5 py-4 space-y-3" data-testid="period-create-form">
               <h3 className="text-[13px] font-medium text-slate-700">Янги давр қўшиш</h3>
               <div className="grid grid-cols-2 gap-3">
-                <FieldRow label="Давр бошланиши" required>
+                <FieldRow label={t('irr.form.periodStart')} required>
                   <input type="date" className={inputCls} value={periodForm.periodStart}
                     onChange={e => { setPeriodForm(f => ({ ...f, periodStart: e.target.value })); setPeriodError(null); }}
                     data-testid="period-start-input" />
                 </FieldRow>
-                <FieldRow label="Давр тугаши" required>
+                <FieldRow label={t('irr.form.periodEnd')} required>
                   <input type="date" className={inputCls} value={periodForm.periodEnd}
                     onChange={e => { setPeriodForm(f => ({ ...f, periodEnd: e.target.value })); setPeriodError(null); }}
                     data-testid="period-end-input" />
@@ -1271,7 +1271,7 @@ export default function IrrShell() {
                 className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
                 data-testid="period-create-btn"
               >
-                {savingPeriod ? 'Сақланмоқда...' : 'Давр қўшиш'}
+                {savingPeriod ? t('irr.form.saving') : t('irr.form.addPeriod')}
               </button>
             </div>
           )}
@@ -1303,7 +1303,7 @@ export default function IrrShell() {
                     </span>
                     <span className="px-2 py-0.5 rounded-full text-[11px] font-medium"
                       style={{ background: period.status === 'active' ? '#E2F0E8' : '#F1F2F4', color: period.status === 'active' ? '#4F8C72' : '#6F7585' }}>
-                      {period.status === 'active' ? 'Фаол' : period.status === 'completed' ? 'Якунланган' : period.status}
+                      {period.status === 'active' ? t('irr.form.statusActive') : period.status === 'completed' ? t('irr.form.statusCompleted') : period.status}
                     </span>
                   </div>
                   <span className="text-[12px] text-slate-400">{isExpanded ? '▲' : '▼'}</span>
@@ -1388,40 +1388,40 @@ export default function IrrShell() {
                             {SKILL_AREAS.map(sa => <option key={sa.code} value={sa.code}>{sa.textUz}</option>)}
                           </select>
                           <textarea rows={2} className={textareaCls}
-                            placeholder="Мақсад матни..."
+                            placeholder={t('irr.placeholder.goalTextShort')}
                             value={stgForm.goalText || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), goalText: e.target.value } }))}
                             data-testid={`stg-text-${period.id}`} />
                           <div className="grid grid-cols-2 gap-2">
-                            <input type="date" className={inputCls} placeholder="Вазифа санаси"
+                            <input type="date" className={inputCls} placeholder={t('irr.placeholder.taskDate')}
                               value={stgForm.taskSetDate || ''}
                               onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), taskSetDate: e.target.value } }))}
                               data-testid={`stg-task-date-${period.id}`} />
-                            <input type="date" className={inputCls} placeholder="Мақсад муддати"
+                            <input type="date" className={inputCls} placeholder={t('irr.placeholder.goalDeadline')}
                               value={stgForm.targetDate || ''}
                               onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), targetDate: e.target.value } }))}
                               data-testid={`stg-target-date-${period.id}`} />
                           </div>
-                          <textarea rows={1} className={textareaCls} placeholder="Вазифалар..."
+                          <textarea rows={1} className={textareaCls} placeholder={t('irr.placeholder.tasks')}
                             value={stgForm.tasks || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), tasks: e.target.value } }))}
                             data-testid={`stg-tasks-${period.id}`} />
-                          <textarea rows={1} className={textareaCls} placeholder="Усуллар..."
+                          <textarea rows={1} className={textareaCls} placeholder={t('irr.placeholder.methods')}
                             value={stgForm.methods || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), methods: e.target.value } }))}
                             data-testid={`stg-methods-${period.id}`} />
-                          <textarea rows={1} className={textareaCls} placeholder="Натижалар..."
+                          <textarea rows={1} className={textareaCls} placeholder={t('irr.placeholder.results')}
                             value={stgForm.progress || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), progress: e.target.value } }))}
                             data-testid={`stg-progress-${period.id}`} />
-                          <textarea rows={1} className={textareaCls} placeholder="Кузатувлар..."
+                          <textarea rows={1} className={textareaCls} placeholder={t('irr.placeholder.observations')}
                             value={stgForm.observations || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), observations: e.target.value } }))}
                             data-testid={`stg-observations-${period.id}`} />
                           <button onClick={() => handleCreateStg(period.id)} disabled={savingStg === period.id || !stgForm.goalText?.trim()}
                             className="h-7 px-3 rounded-md bg-brand-600 text-surface text-[11px] font-medium disabled:opacity-50"
                             data-testid={`stg-add-btn-${period.id}`}>
-                            {savingStg === period.id ? 'Сақланмоқда...' : 'Мақсад қўшиш'}
+                            {savingStg === period.id ? t('irr.form.saving') : t('irr.form.addGoal')}
                           </button>
                         </div>
                       )}
@@ -1430,21 +1430,21 @@ export default function IrrShell() {
                     {/* Quarterly review */}
                     <div className="px-5 py-4 space-y-3" data-testid={`review-section-${period.id}`}>
                       <h3 className="text-[13px] font-semibold text-slate-800">Чорак якуни</h3>
-                      <FieldRow label="Умумий баҳолаш">
+                      <FieldRow label={t('irr.form.overallReview')}>
                         <textarea rows={2} className={textareaCls}
                           value={reviewForm.overallAssessment ?? (period.overallAssessment || '')}
                           onChange={e => initReview('overallAssessment', e.target.value)}
                           disabled={isReadOnly}
                           data-testid={`review-overall-${period.id}`} />
                       </FieldRow>
-                      <FieldRow label="Режа ўзгаришлари">
+                      <FieldRow label={t('irr.form.planChanges')}>
                         <textarea rows={2} className={textareaCls}
                           value={reviewForm.planChanges ?? (period.planChanges || '')}
                           onChange={e => initReview('planChanges', e.target.value)}
                           disabled={isReadOnly}
                           data-testid={`review-changes-${period.id}`} />
                       </FieldRow>
-                      <FieldRow label="Ота-она тавсиялари">
+                      <FieldRow label={t('irr.form.parentRecommendations')}>
                         <textarea rows={2} className={textareaCls}
                           value={reviewForm.parentRecommendations ?? (period.parentRecommendations || '')}
                           onChange={e => initReview('parentRecommendations', e.target.value)}
@@ -1452,21 +1452,21 @@ export default function IrrShell() {
                           data-testid={`review-parent-rec-${period.id}`} />
                       </FieldRow>
                       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                        <FieldRow label="Кейинги кўриб чиқиш">
+                        <FieldRow label={t('irr.form.nextReview')}>
                           <input type="date" className={inputCls}
                             value={reviewForm.nextReviewDate ?? (period.nextReviewDate || '')}
                             onChange={e => initReview('nextReviewDate', e.target.value)}
                             disabled={isReadOnly}
                             data-testid={`review-next-date-${period.id}`} />
                         </FieldRow>
-                        <FieldRow label="Кейинги баҳолаш">
+                        <FieldRow label={t('irr.form.nextAssessment')}>
                           <input type="date" className={inputCls}
                             value={reviewForm.nextAssessmentDate ?? (period.nextAssessmentDate || '')}
                             onChange={e => initReview('nextAssessmentDate', e.target.value)}
                             disabled={isReadOnly}
                             data-testid={`review-next-assess-${period.id}`} />
                         </FieldRow>
-                        <FieldRow label="Ота-она билан мулоқот">
+                        <FieldRow label={t('irr.form.parentCommunication')}>
                           <input type="date" className={inputCls}
                             value={reviewForm.parentDiscussionDate ?? (period.parentDiscussionDate || '')}
                             onChange={e => initReview('parentDiscussionDate', e.target.value)}
@@ -1483,7 +1483,7 @@ export default function IrrShell() {
                             className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
                             data-testid={`review-save-${period.id}`}
                           >
-                            {savingReview === period.id ? 'Сақланмоқда...' : 'Чорак якунини сақлаш'}
+                            {savingReview === period.id ? t('irr.form.saving') : t('irr.form.savePeriodReview')}
                           </button>
 
                           <button
@@ -1495,7 +1495,7 @@ export default function IrrShell() {
                           >
                             {period.teacherSignedAt
                               ? `Имзоланган: ${formatDate(period.teacherSignedAt)}`
-                              : signingPeriod === period.id ? 'Имзоланмоқда...' : 'Ўқитувчи имзоси'}
+                              : signingPeriod === period.id ? t('irr.form.signing') : t('irr.form.teacherSignature')}
                           </button>
 
                           {period.teacherSignedAt && (
@@ -1529,7 +1529,7 @@ export default function IrrShell() {
         </div>
 
         <div className="px-5 py-4 space-y-4">
-          <FieldRow label="Сана">
+          <FieldRow label={t('irr.form.date')}>
             <input
               type="date"
               className={inputCls}
@@ -1599,13 +1599,13 @@ export default function IrrShell() {
             </div>
           </div>
 
-          <FieldRow label="Изоҳ">
+          <FieldRow label={t('irr.form.note')}>
             <textarea
               rows={2}
               className={textareaCls}
               value={dailyNotes}
               onChange={e => setDailyNotes(e.target.value)}
-              placeholder="Қўшимча маълумотлар..."
+              placeholder={t('irr.placeholder.extraInfo')}
               data-testid="daily-notes"
             />
           </FieldRow>
@@ -1625,13 +1625,13 @@ export default function IrrShell() {
             className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium disabled:opacity-50"
             data-testid="daily-submit-btn"
           >
-            {savingDaily ? 'Сақланмоқда...' : 'Кундалик мониторингни сақлаш'}
+            {savingDaily ? t('irr.form.saving') : t('irr.form.saveDailyMonitoring')}
           </button>
         </div>
 
         {dailyEntries.length === 0 && (
           <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
-            {t('irr.noDailyEntries', { defaultValue: "Hali kundalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi." })}
+            {t('irr.noDailyEntries')}
           </div>
         )}
 
@@ -1671,7 +1671,7 @@ export default function IrrShell() {
         </div>
 
         <div className="px-5 py-4 space-y-4">
-          <FieldRow label="Ҳафта бошланиш санаси (душанба)">
+          <FieldRow label={t('irr.form.weekStartLabel')}>
             <input
               type="date"
               className={inputCls}
@@ -1721,13 +1721,13 @@ export default function IrrShell() {
             </div>
           </div>
 
-          <FieldRow label="Изоҳ">
+          <FieldRow label={t('irr.form.note')}>
             <textarea
               rows={2}
               className={textareaCls}
               value={weeklyNotes}
               onChange={e => setWeeklyNotes(e.target.value)}
-              placeholder="Қўшимча маълумотлар..."
+              placeholder={t('irr.placeholder.extraInfo')}
               data-testid="weekly-notes"
             />
           </FieldRow>
@@ -1747,13 +1747,13 @@ export default function IrrShell() {
             className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium disabled:opacity-50"
             data-testid="weekly-submit-btn"
           >
-            {savingWeekly ? 'Сақланмоқда...' : 'Ҳафталик мониторингни сақлаш'}
+            {savingWeekly ? t('irr.form.saving') : t('irr.form.saveWeeklyMonitoring')}
           </button>
         </div>
 
         {weeklyEntries.length === 0 && (
           <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
-            {t('irr.noWeeklyEntries', { defaultValue: "Hali haftalik yozuvlar yo'q — birinchi yozuvni yuborgandan so'ng bu yerda ko'rinadi." })}
+            {t('irr.noWeeklyEntries')}
           </div>
         )}
 

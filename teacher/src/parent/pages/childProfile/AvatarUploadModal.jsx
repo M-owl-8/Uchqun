@@ -17,12 +17,12 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
     if (!file) return;
 
     if (!file.type.startsWith('image/')) {
-      toastError(t('profile.invalidImage', { defaultValue: 'Faqat rasm fayllari qabul qilinadi' }));
+      toastError(t('profile.invalidImage'));
       event.target.value = '';
       return;
     }
     if (file.size > 5 * 1024 * 1024) {
-      toastError(t('profile.imageTooLarge', { defaultValue: 'Rasm hajmi 5MB dan katta bo\'lmasligi kerak' }));
+      toastError(t('profile.imageTooLarge'));
       event.target.value = '';
       return;
     }
@@ -43,7 +43,7 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
         headers: { 'Content-Type': 'application/json' },
       });
 
-      toastSuccess(t('profile.avatarUpdated', { defaultValue: 'Rasm muvaffaqiyatli yuklandi' }));
+      toastSuccess(t('profile.avatarUpdated'));
 
       try {
         const childResponse = await api.get(`/child/${childId}`);
@@ -53,7 +53,7 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
       }
       onClose();
     } catch (err) {
-      let errorMessage = t('profile.uploadError', { defaultValue: 'Rasm yuklashda xatolik yuz berdi' });
+      let errorMessage = t('profile.uploadError');
       if (err.response) {
         if (err.response.status === 403) {
           const serverError = err.response.data?.error || '';
@@ -118,7 +118,7 @@ const AvatarUploadModal = ({ show, childId, onClose, onUploadSuccess }) => {
           disabled={uploading}
           className="mt-6 w-full py-3 bg-slate-100 hover:bg-slate-200 rounded-xl font-semibold transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {t('profile.cancel', { defaultValue: 'Bekor qilish' })}
+          {t('profile.cancel')}
         </button>
       </div>
     </div>

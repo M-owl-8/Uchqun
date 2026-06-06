@@ -77,7 +77,7 @@ const ChildProfile = () => {
       } catch (error) {
         if (error.code === 'ERR_CANCELED') return;
         setMyMessages([]);
-        setMessagesError(t('profile.messageError', { defaultValue: 'Xabarlarni yuklab bo\'lmadi' }));
+        setMessagesError(t('profile.messageError'));
       } finally {
         setLoadingMessages(false);
       }
@@ -241,7 +241,7 @@ const ChildProfile = () => {
         <div className="page-card rounded-lg px-4 py-3 flex items-center gap-3">
           <Users className="w-4 h-4 text-p-sepia-400 shrink-0" />
           <label className="text-[13px] font-medium text-p-sepia-600 shrink-0">
-            {t('child.selectLabel', { defaultValue: 'Farzand' })}
+            {t('child.selectLabel')}
           </label>
           <select
             value={selectedChildId || ''}
@@ -310,7 +310,7 @@ const ChildProfile = () => {
       {/* Account section */}
       <section className="page-card rounded-xl p-5">
         <h3 className="text-[15px] font-semibold text-p-ink mb-4">
-          {t('profile.account', { defaultValue: 'Account' })}
+          {t('profile.account')}
         </h3>
         <div className="stitch mb-3" />
         <div className="space-y-2">
@@ -319,26 +319,26 @@ const ChildProfile = () => {
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
           >
             <TrendingUp className="w-4 h-4" />
-            {t('irr.title', { defaultValue: 'Ривожланиш режаси (ИРР)' })}
+            {t('irr.title')}
           </Link>
           <Link
             to="/settings"
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-sepia-50 text-p-sepia-700 border border-p-sepia-200 hover:bg-p-sepia-100 transition-colors text-[13px] font-medium"
           >
             <Settings className="w-4 h-4" />
-            {t('settings.title', { defaultValue: 'Sozlamalar' })}
+            {t('settings.title')}
           </Link>
           <button
             onClick={() => setShowMessageModal(true)}
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
           >
             <MessageSquare className="w-4 h-4" />
-            {t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
+            {t('profile.contactGovernment')}
           </button>
           <button
             onClick={() => myMessages.length > 0 && setShowMessagesModal(true)}
             disabled={myMessages.length === 0}
-            title={myMessages.length === 0 ? t('profile.noMessagesSent', { defaultValue: "Hali yuborilgan xabar yo'q" }) : undefined}
+            title={myMessages.length === 0 ? t('profile.noMessagesSent') : undefined}
             className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-colors text-[13px] font-medium relative ${
               myMessages.length > 0
                 ? 'bg-p-sepia-50 text-p-sepia-700 border-p-sepia-200 hover:bg-p-sepia-100 cursor-pointer'
@@ -346,7 +346,7 @@ const ChildProfile = () => {
             }`}
           >
             <MessageSquare className="w-4 h-4" />
-            {t('profile.myMessages', { defaultValue: 'Mening xabarlarim' })}
+            {t('profile.myMessages')}
             {myMessages.some((m) => m.reply) && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-p-brand-600 text-white text-[10px] rounded-full flex items-center justify-center">
                 {myMessages.filter((m) => m.reply).length}
@@ -358,7 +358,7 @@ const ChildProfile = () => {
             className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-error-50 text-error-600 border border-error-200 hover:bg-error-100 transition-colors text-[13px] font-medium"
           >
             <LogOut className="w-4 h-4" />
-            {t('nav.exit', { defaultValue: 'Exit' })}
+            {t('nav.exit')}
           </button>
         </div>
       </section>

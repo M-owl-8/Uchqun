@@ -60,7 +60,8 @@
       "emerging": "Формируется",
       "assisted": "С помощью",
       "independent": "Самостоятельно",
-      "mastered": "Освоено"
+      "mastered": "Освоено",
+      "struggling": "Затрудняется"
     }
   },
   "login": {
@@ -298,6 +299,11 @@
       "toastError": "Ошибка сохранения приёма пищи",
       "toastLoadError": "Ошибка загрузки данных о питании",
       "toastChildrenEmpty": "Дети не найдены. Сначала создайте родителя с данными ребёнка."
+    },
+    "portion": {
+      "full": "Полная порция",
+      "half": "Половина порции",
+      "small": "Маленькая порция"
     }
   },
   "mediaPage": {
@@ -575,12 +581,56 @@
     "confirmDeleteLtg": "Удалить эту долгосрочную цель?",
     "confirmDeleteLtgWarning": "Это действие нельзя отменить. Все связанные краткосрочные цели также будут удалены.",
     "confirmDeleteStg": "Удалить эту краткосрочную цель?",
-    "errorPeriodRequired": "Введите даты начала и окончания периода"
+    "errorPeriodRequired": "Введите даты начала и окончания периода",
+    "placeholder": {
+      "ptpkNotes": "Дополнительные примечания ПТПК…",
+      "goalText": "Текст цели (минимум 5 символов)…",
+      "goalTextShort": "Текст цели…",
+      "taskDate": "Дата задачи",
+      "goalDeadline": "Срок цели",
+      "tasks": "Задачи…",
+      "methods": "Методы…",
+      "results": "Результаты…",
+      "observations": "Наблюдения…",
+      "extraInfo": "Дополнительная информация…"
+    },
+    "form": {
+      "newAssessment": "Новая оценка",
+      "assessmentType": "Тип оценки",
+      "assessmentDate": "Дата оценки",
+      "noteOptional": "Примечание (по желанию)",
+      "note": "Примечание",
+      "saving": "Сохранение…",
+      "saveResults": "Сохранить результаты",
+      "startDate": "Дата начала",
+      "endDate": "Дата окончания",
+      "addGoal": "Добавить цель",
+      "periodStart": "Начало периода",
+      "periodEnd": "Конец периода",
+      "addPeriod": "Добавить период",
+      "statusActive": "Активный",
+      "statusCompleted": "Завершён",
+      "overallReview": "Общая оценка",
+      "planChanges": "Изменения плана",
+      "parentRecommendations": "Рекомендации родителям",
+      "nextReview": "Следующий пересмотр",
+      "nextAssessment": "Следующая оценка",
+      "parentCommunication": "Общение с родителями",
+      "savePeriodReview": "Сохранить итоги четверти",
+      "signing": "Подписывается…",
+      "teacherSignature": "Подпись учителя",
+      "date": "Дата",
+      "saveDailyMonitoring": "Сохранить ежедневный мониторинг",
+      "weekStartLabel": "Дата начала недели (понедельник)",
+      "saveWeeklyMonitoring": "Сохранить недельный мониторинг"
+    }
   },
   "common": {
     "networkError": "Ошибка сети. Попробуйте снова.",
     "timeoutError": "Время запроса истекло.",
-    "save": "Сохранить"
+    "save": "Сохранить",
+    "edit": "Редактировать",
+    "delete": "Удалить"
   },
   "attendance": {
     "errorLoadChildren": "Ошибка загрузки списка детей",
@@ -607,7 +657,38 @@
     "group": "Группа"
   },
   "childDetail": {
-    "errorIrrLoad": "Не удалось загрузить данные ИРП"
+    "errorIrrLoad": "Не удалось загрузить данные ИРП",
+    "tab": {
+      "iep": "Цели ИОП",
+      "obs": "Наблюдения",
+      "docs": "Документы",
+      "messages": "Сообщения",
+      "gallery": "Галерея"
+    },
+    "empty": {
+      "noGoalsTitle": "Целей пока нет",
+      "noGoalsBody": "Добавьте первую цель ИОП",
+      "noChild": "Ребёнок не найден",
+      "docsComingSoon": "Документы будут добавлены скоро",
+      "galleryRedirect": "Перейти в галерею →"
+    },
+    "heatmap": {
+      "last12": "Последние 12 наблюдений"
+    },
+    "button": {
+      "newObservation": "Новое наблюдение",
+      "parentList": "Список группы",
+      "viewIrr": "Открыть ИРП",
+      "createIrr": "Создать ИРП"
+    },
+    "label": {
+      "goalDefault": "Цель",
+      "medicalNote": "Медицинская заметка"
+    },
+    "badge": {
+      "mastered": "Освоено",
+      "assistNeeded": "Нужна помощь"
+    }
   },
   "errors": {
     "NETWORK_ERROR": "Ошибка сети",

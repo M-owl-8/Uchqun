@@ -57,7 +57,7 @@ const Therapy = () => {
       setActiveSession(response.data.data);
       setSelectedTherapy(therapies.find(t => t.id === therapyId));
     } catch (error) {
-      showError(error.response?.data?.error || t('therapy.startError', { defaultValue: 'Failed to start therapy' }));
+      showError(error.response?.data?.error || t('therapy.startError'));
     }
   };
 
@@ -120,10 +120,10 @@ const Therapy = () => {
     <div className="space-y-6">
       <div className="bg-p-brand-700 rounded-xl p-6 text-white mb-2">
         <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">
-          {t('therapy.subtitle', { defaultValue: 'Musiqa, video va tavsiya bo\'limi' })}
+          {t('therapy.subtitle')}
         </p>
         <h1 className="font-serif text-[22px] font-semibold">
-          {t('therapy.title', { defaultValue: 'Foydali' })}
+          {t('therapy.title')}
         </h1>
       </div>
 
@@ -133,7 +133,7 @@ const Therapy = () => {
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
             type="text"
-            placeholder={t('therapy.search', { defaultValue: 'Qidirish...' })}
+            placeholder={t('therapy.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
@@ -148,7 +148,7 @@ const Therapy = () => {
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            {t('therapy.all', { defaultValue: 'Barchasi' })}
+            {t('therapy.all')}
           </button>
           <button
             onClick={() => setFilter('music')}
@@ -158,7 +158,7 @@ const Therapy = () => {
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            {t('therapy.music', { defaultValue: 'Musiqa' })}
+            {t('therapy.music')}
           </button>
           <button
             onClick={() => setFilter('video')}
@@ -168,7 +168,7 @@ const Therapy = () => {
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            {t('therapy.video', { defaultValue: 'Video' })}
+            {t('therapy.video')}
           </button>
           <button
             onClick={() => setFilter('content')}
@@ -178,7 +178,7 @@ const Therapy = () => {
                 : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            {t('therapy.content', { defaultValue: 'Tavsiya' })}
+            {t('therapy.content')}
           </button>
         </div>
       </div>
@@ -190,14 +190,14 @@ const Therapy = () => {
             <div>
               <h3 className="text-lg font-bold mb-1">{selectedTherapy.title}</h3>
               <p className="text-white/80 text-sm">
-                {t('therapy.activeSession', { defaultValue: 'Faol sessiya' })}
+                {t('therapy.activeSession')}
               </p>
             </div>
             <button
               onClick={() => endTherapy(activeSession.id)}
               className="px-4 py-2 bg-p-surface text-p-brand-600 rounded-lg font-semibold hover:bg-p-sepia-50 transition-colors"
             >
-              {t('therapy.end', { defaultValue: 'Yakunlash' })}
+              {t('therapy.end')}
             </button>
           </div>
         </Card>
@@ -224,7 +224,7 @@ const Therapy = () => {
                 {therapy.duration && (
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
-                    <span>{therapy.duration} {t('therapy.min', { defaultValue: 'min' })}</span>
+                    <span>{therapy.duration} {t('therapy.min')}</span>
                   </div>
                 )}
                 {therapy.rating != null && !isNaN(Number(therapy.rating)) && (
@@ -257,7 +257,7 @@ const Therapy = () => {
                     : 'bg-p-brand-600 text-white hover:bg-p-brand-700'
                 }`}
               >
-                {t('therapy.start', { defaultValue: 'Boshlash' })}
+                {t('therapy.start')}
               </button>
             </Card>
           );
@@ -268,10 +268,10 @@ const Therapy = () => {
         <Card className="p-12 text-center">
           <Play className="w-16 h-16 text-slate-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-900 mb-2">
-            {t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}
+            {t('therapy.noTherapies')}
           </h3>
           <p className="text-slate-600">
-            {t('therapy.noTherapiesDesc', { defaultValue: 'Qidiruv natijalari bo\'sh' })}
+            {t('therapy.noTherapiesDesc')}
           </p>
         </Card>
       )}

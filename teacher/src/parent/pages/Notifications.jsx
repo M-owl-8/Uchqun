@@ -85,11 +85,11 @@ const Notifications = () => {
       <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('notifications.title', { defaultValue: 'Bildirishnomalar' })}</h1>
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('notifications.title')}</h1>
             <p className="text-white/90 text-sm md:text-base">
               {count > 0
-                ? t('notifications.unreadCount', { count, defaultValue: `${count} ta o'qilmagan bildirishnoma` })
-                : t('notifications.allRead', { defaultValue: 'Barcha bildirishnomalar o\'qilgan' })}
+                ? t('notifications.unreadCount', { count })
+                : t('notifications.allRead')}
             </p>
           </div>
 
@@ -99,7 +99,7 @@ const Notifications = () => {
               className="flex items-center gap-2 px-4 py-2 bg-p-surface/20 hover:bg-p-surface/30 backdrop-blur-sm text-white rounded-xl font-bold transition-colors border border-white/30"
             >
               <CheckCheck className="w-4 h-4" />
-              {t('notifications.markAllRead', { defaultValue: 'Barchasini o\'qilgan deb belgilash' })}
+              {t('notifications.markAllRead')}
             </button>
           )}
         </div>
@@ -115,7 +115,7 @@ const Notifications = () => {
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
-          {t('notifications.filterAll', { defaultValue: 'Hammasi' })} ({notifications.length})
+          {t('notifications.filterAll')} ({notifications.length})
         </button>
         <button
           onClick={() => setFilter('unread')}
@@ -125,7 +125,7 @@ const Notifications = () => {
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
-          {t('notifications.filterUnread', { defaultValue: 'O\'qilmagan' })} ({count})
+          {t('notifications.filterUnread')} ({count})
         </button>
         <button
           onClick={() => setFilter('read')}
@@ -135,7 +135,7 @@ const Notifications = () => {
               : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
           }`}
         >
-          {t('notifications.filterRead', { defaultValue: 'O\'qilgan' })} ({notifications.length - count})
+          {t('notifications.filterRead')} ({notifications.length - count})
         </button>
       </div>
 
@@ -186,7 +186,7 @@ const Notifications = () => {
 
                       {!notification.isRead && (
                         <span className="px-2 py-1 bg-p-brand-600 text-white text-xs font-bold rounded-full">
-                          {t('notifications.new', { defaultValue: 'Yangi' })}
+                          {t('notifications.new')}
                         </span>
                       )}
                     </div>
@@ -198,7 +198,7 @@ const Notifications = () => {
                           className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
                         >
                           <CheckCircle2 className="w-4 h-4" />
-                          {t('notifications.markAsRead', { defaultValue: 'O\'qilgan deb belgilash' })}
+                          {t('notifications.markAsRead')}
                         </button>
                       )}
                       <button
@@ -206,7 +206,7 @@ const Notifications = () => {
                         className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-error-200 rounded-lg text-sm font-medium text-error-600 hover:bg-error-50 transition-colors"
                       >
                         <Trash2 className="w-4 h-4" />
-                        {t('notifications.delete', { defaultValue: 'O\'chirish' })}
+                        {t('notifications.delete')}
                       </button>
                     </div>
                   </div>
@@ -220,10 +220,10 @@ const Notifications = () => {
           <Bell className="w-16 h-16 text-slate-300 mx-auto mb-4" />
           <p className="text-slate-500 font-bold text-lg">
             {filter === 'all'
-              ? t('notifications.empty', { defaultValue: 'Hozircha bildirishnomalar yo\'q' })
+              ? t('notifications.empty')
               : filter === 'unread'
-              ? t('notifications.emptyUnread', { defaultValue: 'O\'qilmagan bildirishnomalar yo\'q' })
-              : t('notifications.emptyRead', { defaultValue: 'O\'qilgan bildirishnomalar yo\'q' })}
+              ? t('notifications.emptyUnread')
+              : t('notifications.emptyRead')}
           </p>
         </Card>
       )}

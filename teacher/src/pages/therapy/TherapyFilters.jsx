@@ -11,7 +11,7 @@ const TherapyFilters = ({ searchQuery, setSearchQuery, filterType, setFilterType
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
           <input
             type="text"
-            placeholder={t('therapy.search', { defaultValue: 'Qidirish...' })}
+            placeholder={t('therapy.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full pl-10 pr-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
@@ -24,7 +24,7 @@ const TherapyFilters = ({ searchQuery, setSearchQuery, filterType, setFilterType
               filterType === 'all' ? 'bg-brand-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
             }`}
           >
-            {t('therapy.all', { defaultValue: 'Barchasi' })}
+            {t('therapy.all')}
           </button>
           <button
             onClick={() => setFilterType('music')}
@@ -33,7 +33,7 @@ const TherapyFilters = ({ searchQuery, setSearchQuery, filterType, setFilterType
             }`}
           >
             <Music className="w-4 h-4 inline mr-1" />
-            {t('therapy.music', { defaultValue: 'Musiqa' })}
+            {t('therapy.music')}
           </button>
           <button
             onClick={() => setFilterType('video')}
@@ -42,7 +42,7 @@ const TherapyFilters = ({ searchQuery, setSearchQuery, filterType, setFilterType
             }`}
           >
             <Video className="w-4 h-4 inline mr-1" />
-            {t('therapy.video', { defaultValue: 'Video' })}
+            {t('therapy.video')}
           </button>
           <button
             onClick={() => setFilterType('content')}
@@ -51,7 +51,7 @@ const TherapyFilters = ({ searchQuery, setSearchQuery, filterType, setFilterType
             }`}
           >
             <FileText className="w-4 h-4 inline mr-1" />
-            {t('therapy.content', { defaultValue: 'Content' })}
+            {t('therapy.content')}
           </button>
         </div>
       </div>

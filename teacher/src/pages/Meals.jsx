@@ -70,7 +70,7 @@ const Meals = () => {
       if (allChildren.length > 0) {
         setFormData(prev => prev.childId ? prev : { ...prev, childId: allChildren[0].id });
       }
-    } catch (error) { showError(error.response?.data?.error || t('common.networkError', { defaultValue: 'Tarmoq xatosi yuz berdi. Qayta urinib ko\'ring.' })); }
+    } catch (error) { showError(error.response?.data?.error || t('common.networkError')); }
   }, [showError, t]);
 
   const loadMeals = useCallback(async (bust = false, signal) => {
@@ -135,7 +135,7 @@ const Meals = () => {
   const handleDelete = (mealId) => {
     setConfirmDialog({
       message: t('mealsPage.form.confirmDelete'),
-      warning: t('mealsPage.form.confirmDeleteWarning', { defaultValue: "Ovqat yumshoq o'chiriladi, lekin bu portalda tiklash imkoniyati yo'q." }),
+      warning: t('mealsPage.form.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -290,14 +290,14 @@ const Meals = () => {
                       <button
                         onClick={() => handleEdit(meal)}
                         className="p-2 bg-brand-50 text-brand-600 rounded-lg hover:bg-brand-100 transition-colors"
-                        title="Edit"
+                        title={t('common.edit')}
                       >
                         <Edit2 className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(meal.id)}
                         className="p-2 bg-error-50 text-error-600 rounded-lg hover:bg-error-100 transition-colors"
-                        title="Delete"
+                        title={t('common.delete')}
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -470,9 +470,9 @@ const Meals = () => {
                     onChange={(e) => setFormData({ ...formData, quantity: e.target.value })}
                     className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-brand-500 focus:border-transparent"
                   >
-                    <option value="Full portion">Full portion</option>
-                    <option value="Half portion">Half portion</option>
-                    <option value="Small portion">Small portion</option>
+                    <option value="Full portion">{t('mealsPage.portion.full')}</option>
+                    <option value="Half portion">{t('mealsPage.portion.half')}</option>
+                    <option value="Small portion">{t('mealsPage.portion.small')}</option>
                   </select>
                 </div>
               </div>

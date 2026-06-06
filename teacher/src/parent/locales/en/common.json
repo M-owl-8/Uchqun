@@ -303,5 +303,20 @@
     "contactTeacher": "Please contact your teacher for login credentials",
     "showPassword": "Show password",
     "hidePassword": "Hide password"
+  },
+  "irr": {
+    "scoreNote": "Maximum score: {{maxScore}} points. A rising score is a sign of progress."
+  },
+  "message": {
+    "levelOwner": "Teacher",
+    "levelOwnerDesc": "Kindergarten teacher",
+    "levelRegion": "District office",
+    "levelRegionDesc": "Local education office",
+    "levelRepublic": "Central administration",
+    "levelRepublicDesc": "Central Ministry of Education",
+    "level_owner": "Teacher",
+    "level_region": "District office",
+    "level_republic": "Republic",
+    "levelHint": "Selected: {{level}}"
   }
 }

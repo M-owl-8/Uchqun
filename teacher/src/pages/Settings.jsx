@@ -80,7 +80,7 @@ const Settings = () => {
 
   const handleSendMessage = async () => {
     if (!messageSubject.trim() || !messageText.trim()) {
-      showError(t('settings.messageRequired', { defaultValue: 'Mavzu va xabar to\'ldirilishi kerak' }));
+      showError(t('settings.messageRequired'));
       return;
     }
 
@@ -90,13 +90,13 @@ const Settings = () => {
         subject: messageSubject.trim(),
         message: messageText.trim(),
       });
-      success(t('settings.messageSent', { defaultValue: 'Xabar muvaffaqiyatli yuborildi' }));
+      success(t('settings.messageSent'));
       setMessageSubject('');
       setMessageText('');
       setShowMessageModal(false);
       await loadMessages();
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
+      showError(error.response?.data?.error || t('settings.messageError'));
     } finally {
       setSendingMessage(false);
     }
@@ -113,12 +113,12 @@ const Settings = () => {
         phone: profileForm.phone,
         notificationPreferences: profileForm.notificationPreferences,
       });
-      success(t('settings.profileUpdated', { defaultValue: 'Profil muvaffaqiyatli yangilandi' }));
+      success(t('settings.profileUpdated'));
       if (setUser) {
         setUser(response.data.data ?? response.data);
       }
     } catch (error) {
-      showError(error.response?.data?.error || t('settings.profileError', { defaultValue: 'Profilni yangilashda xatolik' }));
+      showError(error.response?.data?.error || t('settings.profileError'));
     } finally {
       setSaving(false);
     }
@@ -128,16 +128,16 @@ const Settings = () => {
     e.preventDefault();
 
     if (passwordForm.newPassword !== passwordForm.confirmPassword) {
-      showError(t('settings.passwordMismatch', { defaultValue: 'Yangi parollar mos kelmadi' }));
+      showError(t('settings.passwordMismatch'));
       return;
     }
 
     if (passwordForm.newPassword.length < 8) {
-      showError(t('settings.passwordTooShort', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' }));
+      showError(t('settings.passwordTooShort'));
       return;
     }
     if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(passwordForm.newPassword)) {
-      showError(t('settings.passwordWeak', { defaultValue: 'Parol katta va kichik harflar hamda raqamdan iborat bo\'lishi kerak' }));
+      showError(t('settings.passwordWeak'));
       return;
     }
 
@@ -147,7 +147,7 @@ const Settings = () => {
         currentPassword: passwordForm.currentPassword,
         newPassword: passwordForm.newPassword,
       });
-      success(t('settings.passwordChanged', { defaultValue: 'Parol muvaffaqiyatli o\'zgartirildi' }));
+      success(t('settings.passwordChanged'));
       setPasswordForm({
         currentPassword: '',
         newPassword: '',
@@ -155,9 +155,9 @@ const Settings = () => {
       });
     } catch (error) {
       if (error.response?.status === 401) {
-        showError(t('settings.passwordIncorrect', { defaultValue: 'Joriy parol noto\'g\'ri' }));
+        showError(t('settings.passwordIncorrect'));
       } else {
-        showError(t('settings.passwordError', { defaultValue: 'Parolni o\'zgartirishda xatolik' }));
+        showError(t('settings.passwordError'));
       }
     } finally {
       setSavingPassword(false);
@@ -173,8 +173,8 @@ const Settings = () => {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('settings.title')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('settings.subtitle')}</p>
         </div>
       </div>
 
@@ -209,10 +209,10 @@ const Settings = () => {
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <MessageSquare className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('settings.contactGovernment', { defaultValue: 'Davlat bilan bog\'lanish' })}</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.contactGovernment')}</h2>
         </div>
         <p className="text-sm text-slate-600 mb-4">
-          {t('settings.contactDescription', { defaultValue: 'Davlatga xabar yuborish uchun quyidagi tugmani bosing' })}
+          {t('settings.contactDescription')}
         </p>
         <div className="flex flex-wrap gap-3">
           <button
@@ -220,7 +220,7 @@ const Settings = () => {
             className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
           >
             <MessageSquare className="w-5 h-5" />
-            {t('settings.sendMessage', { defaultValue: 'Xabar yuborish' })}
+            {t('settings.sendMessage')}
           </button>
           {myMessages.length > 0 && (
             <button
@@ -228,7 +228,7 @@ const Settings = () => {
               className="flex items-center gap-2 px-6 py-3 bg-success-600 text-white rounded-xl font-bold hover:bg-success-700 transition-colors shadow-sm relative"
             >
               <MessageSquare className="w-5 h-5" />
-              {t('settings.myMessages', { defaultValue: 'Mening xabarlarim' })}
+              {t('settings.myMessages')}
               {myMessages.some(m => m.reply) && (
                 <span className="absolute -top-1 -right-1 w-5 h-5 bg-error-500 text-white text-xs rounded-full flex items-center justify-center">
                   {myMessages.filter(m => m.reply).length}
@@ -246,7 +246,7 @@ const Settings = () => {
           className="flex items-center justify-center gap-2 px-6 py-3 bg-error-600 text-white rounded-xl font-bold hover:bg-error-700 transition-colors shadow-sm w-full"
         >
           <LogOut className="w-5 h-5" />
-          {t('logout', { defaultValue: 'Chiqish' })}
+          {t('logout')}
         </button>
       </Card>
 

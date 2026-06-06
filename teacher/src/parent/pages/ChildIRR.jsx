@@ -73,7 +73,7 @@ const ChildIRR = () => {
       setGoals(goalsRes.data.data || null);
     } catch (err) {
       if (err.code === 'ERR_CANCELED') return;
-      showError(t('irr.loadError', { defaultValue: 'Маълумот юкланмади. Яна уриниб кўринг.' }));
+      showError(t('irr.loadError'));
       setLoadError(true);
     } finally {
       setPageLoading(false);
@@ -114,10 +114,10 @@ const ChildIRR = () => {
         <div className="page-card rounded-xl p-10">
           <TrendingUp className="w-12 h-12 text-p-brand-300 mx-auto mb-5" />
           <h2 className="font-serif text-[18px] font-semibold text-p-ink mb-2">
-            {t('irr.notFoundTitle', { defaultValue: 'Ривожланиш режаси ҳали тузилмаган' })}
+            {t('irr.notFoundTitle')}
           </h2>
           <p className="text-[14px] text-p-sepia-500 leading-relaxed">
-            {t('irr.notFoundDesc', { defaultValue: 'Ўқитувчи режани тузгач, сиз бу ерда фарзандингизнинг ривожланишини кузата оласиз.' })}
+            {t('irr.notFoundDesc')}
           </p>
         </div>
       </div>
@@ -129,14 +129,14 @@ const ChildIRR = () => {
       <div data-testid="irr-load-error" className="py-16 text-center">
         <div className="page-card rounded-xl p-10">
           <p className="text-[14px] text-p-sepia-600 mb-5">
-            {t('irr.loadError', { defaultValue: 'Маълумот юкланмади. Яна уриниб кўринг.' })}
+            {t('irr.loadError')}
           </p>
           {selectedChildId && (
             <button
               onClick={() => load(selectedChildId)}
               className="px-5 py-2 rounded-lg bg-p-brand-600 text-white text-[14px] font-medium hover:bg-p-brand-700 transition-colors"
             >
-              {t('irr.retry', { defaultValue: 'Яна уриниш' })}
+              {t('irr.retry')}
             </button>
           )}
         </div>
@@ -154,10 +154,10 @@ const ChildIRR = () => {
       {/* Header card */}
       <div className="bg-p-brand-700 rounded-xl p-6 text-white">
         <p className="text-[11px] uppercase tracking-[.12em] font-medium text-p-brand-200 mb-1">
-          {t('irr.subtitle', { defaultValue: 'Фарзандингизнинг ривожланиш йўли' })}
+          {t('irr.subtitle')}
         </p>
         <h1 className="font-serif text-[22px] font-semibold">
-          {t('irr.title', { defaultValue: 'Ривожланиш режаси (ИРР)' })}
+          {t('irr.title')}
         </h1>
         {latestSession && (
           <div className="mt-5">
@@ -165,7 +165,7 @@ const ChildIRR = () => {
               <span className="text-[36px] font-bold tnum">{latestSession.totalScore}</span>
               <span className="text-p-brand-200 text-[15px] mb-1">/ {latestSession.maxPossibleScore || MAX_SCORE}</span>
               <span className="ml-1 text-p-brand-100 text-[12px] mb-1">
-                {t('irr.progressLabel', { defaultValue: 'кўникмалар кўрсаткичи' })}
+                {t('irr.progressLabel')}
               </span>
             </div>
             <div className="w-full bg-white/20 rounded-full h-2">
@@ -175,7 +175,7 @@ const ChildIRR = () => {
               />
             </div>
             <p className="text-p-brand-200 text-[11px] mt-1.5">
-              {t('irr.scoreNote', { defaultValue: `Максимал кўрсаткич: ${MAX_SCORE} балл. Балл ошиши — ривожланишнинг белгиси.` })}
+              {t('irr.scoreNote', { maxScore: MAX_SCORE })}
             </p>
           </div>
         )}
@@ -186,10 +186,10 @@ const ChildIRR = () => {
         <section data-testid="progression-empty" className="page-card rounded-xl p-5 text-center py-8">
           <TrendingUp className="w-8 h-8 text-p-brand-200 mx-auto mb-3" />
           <p className="text-[14px] font-medium text-p-ink mb-1">
-            {t('irr.noSessionsParent', { defaultValue: "Hali baholash o'tkazilmagan." })}
+            {t('irr.noSessionsParent')}
           </p>
           <p className="text-[13px] text-p-sepia-400">
-            {t('irr.noSessionsParentDesc', { defaultValue: "Tarbiyachi birinchi baholashdan keyin bu yerda ko'rinadi." })}
+            {t('irr.noSessionsParentDesc')}
           </p>
         </section>
       )}
@@ -197,7 +197,7 @@ const ChildIRR = () => {
         <section data-testid="progression-section" className="page-card rounded-xl p-5">
           <h2 className="font-serif text-[16px] font-semibold text-p-ink mb-4 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-p-brand-600" />
-            {t('irr.progressionTitle', { defaultValue: 'Ривожланиш динамикаси' })}
+            {t('irr.progressionTitle')}
           </h2>
           <div className="space-y-5">
             {sessions.map((s, idx) => {
@@ -241,14 +241,14 @@ const ChildIRR = () => {
       {goals && goals.longTermGoals?.length === 0 && (
         <section data-testid="ltg-empty" className="page-card rounded-xl p-5 text-center py-8">
           <p className="text-[14px] text-p-sepia-400">
-            {t('irr.noGoalsParent', { defaultValue: "Hali uzoq muddatli maqsadlar belgilanmagan. Tarbiyachi IRR ni faollashtirgandan so'ng bu yerda ko'rinadi." })}
+            {t('irr.noGoalsParent')}
           </p>
         </section>
       )}
       {goals?.longTermGoals?.length > 0 && (
         <section data-testid="ltg-section" className="page-card rounded-xl p-5">
           <h2 className="text-lg font-bold text-slate-900 mb-6">
-            {t('irr.ltgTitle', { defaultValue: 'Узоқ муддатли мақсадлар' })}
+            {t('irr.ltgTitle')}
           </h2>
           <div className="space-y-3">
             {goals.longTermGoals.map((ltg) => (
@@ -271,14 +271,14 @@ const ChildIRR = () => {
       {goals && goals.periods?.length === 0 && (
         <section data-testid="periods-empty" className="page-card rounded-xl p-5 text-center py-8">
           <p className="text-[14px] text-p-sepia-400">
-            {t('irr.noPeriodsParent', { defaultValue: "Hali maqsad davrlari yaratilmagan." })}
+            {t('irr.noPeriodsParent')}
           </p>
         </section>
       )}
       {goals?.periods?.length > 0 && (
         <section data-testid="periods-section" className="space-y-6">
           <h2 className="text-lg font-bold text-slate-900">
-            {t('irr.periodsTitle', { defaultValue: 'Ривожланиш даврлари' })}
+            {t('irr.periodsTitle')}
           </h2>
           {goals.periods.map((period) => {
             const periodStgs = (goals.shortTermGoals || []).filter(
@@ -294,7 +294,7 @@ const ChildIRR = () => {
                   <h3 className="font-bold text-slate-800">{period.periodLabel}</h3>
                   {period.signedAt && (
                     <span className="text-xs text-p-honey-700 font-semibold bg-p-honey-100 px-2 py-1 rounded-lg">
-                      {t('irr.signed', { defaultValue: 'Тасдиқланган' })}
+                      {t('irr.signed')}
                     </span>
                   )}
                 </div>
@@ -328,7 +328,7 @@ const ChildIRR = () => {
                             className="mt-3 bg-amber-50 border border-amber-100 rounded-xl p-4"
                           >
                             <p className="text-xs font-bold text-amber-700 mb-1.5">
-                              {t('irr.parentRec', { defaultValue: 'Уйда бажариш учун тавсия:' })}
+                              {t('irr.parentRec')}
                             </p>
                             <p className="text-sm font-medium text-amber-900">{stg.parentRecommendations}</p>
                           </div>
@@ -338,7 +338,7 @@ const ChildIRR = () => {
                             data-testid={`discussion-date-${stg.id}`}
                             className="text-xs text-slate-400 mt-2"
                           >
-                            {t('irr.discussion', { defaultValue: 'Муҳокама:' })}{' '}
+                            {t('irr.discussion')}{' '}
                             {new Date(stg.discussionDate).toLocaleDateString()}
                           </p>
                         )}
@@ -347,7 +347,7 @@ const ChildIRR = () => {
                   </div>
                 ) : (
                   <p className="text-sm text-slate-400 italic">
-                    {t('irr.noStgs', { defaultValue: 'Мақсадлар ҳали тузилмаган' })}
+                    {t('irr.noStgs')}
                   </p>
                 )}
               </div>
@@ -360,7 +360,7 @@ const ChildIRR = () => {
       {irr && sessions.length === 0 && !goals?.longTermGoals?.length && !goals?.periods?.length && (
         <div className="bg-p-surface rounded-[2rem] p-10 text-center shadow-sm border border-p-sepia-100">
           <p className="text-slate-500 font-medium">
-            {t('irr.noData', { defaultValue: 'Режа тузилган, аммо ҳали баҳолаш ўтказилмаган.' })}
+            {t('irr.noData')}
           </p>
         </div>
       )}

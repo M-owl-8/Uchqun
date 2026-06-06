@@ -30,34 +30,34 @@ const Sidebar = ({ onClose }) => {
 
   const navSections = [
     {
-      label: t('sidebar.section.today', { defaultValue: 'Bugun' }),
+      label: t('sidebar.section.today'),
       items: [
-        { key: 'dashboard',  href: '/teacher',            icon: LayoutDashboard, label: t('sidebar.dashboard',  { defaultValue: 'Bosh sahifa' }) },
-        { key: 'attendance', href: '/teacher/attendance',  icon: CalendarCheck,   label: t('sidebar.attendance', { defaultValue: 'Davomat' }) },
+        { key: 'dashboard',  href: '/teacher',            icon: LayoutDashboard, label: t('sidebar.dashboard') },
+        { key: 'attendance', href: '/teacher/attendance',  icon: CalendarCheck,   label: t('sidebar.attendance') },
       ],
     },
     {
-      label: t('sidebar.section.children', { defaultValue: 'Bolalar' }),
+      label: t('sidebar.section.children'),
       items: [
-        { key: 'parents', href: '/teacher/parents', icon: Users,           label: t('sidebar.childrenList', { defaultValue: "Ota-onalar ro'yxati" }) },
-        { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: t('sidebar.gallery',      { defaultValue: 'Galereya' }) },
-        { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: t('sidebar.meals',        { defaultValue: 'Ovqatlanish' }) },
+        { key: 'parents', href: '/teacher/parents', icon: Users,           label: t('sidebar.childrenList') },
+        { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: t('sidebar.gallery') },
+        { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: t('sidebar.meals') },
       ],
     },
     {
-      label: t('sidebar.section.iep', { defaultValue: 'IEP' }),
+      label: t('sidebar.section.iep'),
       items: [
-        { key: 'monitoring',  href: '/teacher/monitoring',  icon: Target,        label: t('sidebar.goals',       { defaultValue: 'Maqsadlar' }) },
-        { key: 'activities',  href: '/teacher/activities',  icon: ClipboardList, label: t('sidebar.observations', { defaultValue: 'Kuzatuvlar' }) },
-        { key: 'therapy',     href: '/teacher/therapy',     icon: Stethoscope,   label: t('sidebar.therapy',     { defaultValue: 'Terapiya' }) },
-        { key: 'warnings', href: '/teacher/warnings', icon: ShieldAlert,   label: t('sidebar.warnings',  { defaultValue: 'Ogohlantirishlar' }) },
+        { key: 'monitoring',  href: '/teacher/monitoring',  icon: Target,        label: t('sidebar.goals') },
+        { key: 'activities',  href: '/teacher/activities',  icon: ClipboardList, label: t('sidebar.observations') },
+        { key: 'therapy',     href: '/teacher/therapy',     icon: Stethoscope,   label: t('sidebar.therapy') },
+        { key: 'warnings', href: '/teacher/warnings', icon: ShieldAlert,   label: t('sidebar.warnings') },
       ],
     },
     {
-      label: t('sidebar.section.communication', { defaultValue: 'Aloqa' }),
+      label: t('sidebar.section.communication'),
       items: [
-        { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: t('sidebar.chat',       { defaultValue: 'Muloqot' }), badgeKey: 'chat' },
-        { key: 'reflection', href: '/teacher/reflection', icon: FileText,      label: t('sidebar.reflection', { defaultValue: 'Kun jurnali' }) },
+        { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: t('sidebar.chat'), badgeKey: 'chat' },
+        { key: 'reflection', href: '/teacher/reflection', icon: FileText,      label: t('sidebar.reflection') },
       ],
     },
   ];

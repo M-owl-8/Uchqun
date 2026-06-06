@@ -60,7 +60,8 @@
       "emerging": "Yangi",
       "assisted": "Yordam bilan",
       "independent": "Mustaqil",
-      "mastered": "Mahorat"
+      "mastered": "Mahorat",
+      "struggling": "Qiynalmoqda"
     }
   },
   "login": {
@@ -298,6 +299,11 @@
       "toastError": "Taomni saqlashda xatolik",
       "toastLoadError": "Taomlarni yuklashda xatolik",
       "toastChildrenEmpty": "Bolalar topilmadi. Avval bola ma'lumotlari bilan ota-ona yarating."
+    },
+    "portion": {
+      "full": "To'liq porsiya",
+      "half": "Yarim porsiya",
+      "small": "Kichik porsiya"
     }
   },
   "mediaPage": {
@@ -575,12 +581,56 @@
     "confirmDeleteLtg": "Uzoq muddatli maqsadni o'chirishni tasdiqlaysizmi?",
     "confirmDeleteLtgWarning": "Bu amalni qaytarib bo'lmaydi. Barcha bog'liq qisqa muddatli maqsadlar ham o'chib ketadi.",
     "confirmDeleteStg": "Qisqa muddatli maqsadni o'chirishni tasdiqlaysizmi?",
-    "errorPeriodRequired": "Davr boshlanish va tugash sanasini kiriting"
+    "errorPeriodRequired": "Davr boshlanish va tugash sanasini kiriting",
+    "placeholder": {
+      "ptpkNotes": "PTPK qo'shimcha izohlari…",
+      "goalText": "Maqsad matni (kamida 5 ta belgi)…",
+      "goalTextShort": "Maqsad matni…",
+      "taskDate": "Vazifa sanasi",
+      "goalDeadline": "Maqsad muddati",
+      "tasks": "Vazifalar…",
+      "methods": "Usullar…",
+      "results": "Natijalar…",
+      "observations": "Kuzatuvlar…",
+      "extraInfo": "Qo'shimcha ma'lumotlar…"
+    },
+    "form": {
+      "newAssessment": "Yangi baholash",
+      "assessmentType": "Baholash turi",
+      "assessmentDate": "Baholash sanasi",
+      "noteOptional": "Izoh (ixtiyoriy)",
+      "note": "Izoh",
+      "saving": "Saqlanmoqda…",
+      "saveResults": "Natijalarni saqlash",
+      "startDate": "Boshlanish sanasi",
+      "endDate": "Tugash sanasi",
+      "addGoal": "Maqsad qo'shish",
+      "periodStart": "Davr boshlanishi",
+      "periodEnd": "Davr tugashi",
+      "addPeriod": "Davr qo'shish",
+      "statusActive": "Faol",
+      "statusCompleted": "Yakunlangan",
+      "overallReview": "Umumiy baholash",
+      "planChanges": "Reja o'zgarishlari",
+      "parentRecommendations": "Ota-ona tavsiyalari",
+      "nextReview": "Keyingi ko'rib chiqish",
+      "nextAssessment": "Keyingi baholash",
+      "parentCommunication": "Ota-ona bilan muloqot",
+      "savePeriodReview": "Chorak yakunini saqlash",
+      "signing": "Imzolanmoqda…",
+      "teacherSignature": "O'qituvchi imzosi",
+      "date": "Sana",
+      "saveDailyMonitoring": "Kundalik monitoringni saqlash",
+      "weekStartLabel": "Hafta boshlanish sanasi (dushanba)",
+      "saveWeeklyMonitoring": "Haftalik monitoringni saqlash"
+    }
   },
   "common": {
     "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
     "timeoutError": "So'rov vaqti tugadi.",
-    "save": "Saqlash"
+    "save": "Saqlash",
+    "edit": "Tahrirlash",
+    "delete": "O'chirish"
   },
   "attendance": {
     "errorLoadChildren": "Bolalar ro'yxatini yuklashda xatolik",
@@ -607,7 +657,38 @@
     "group": "Guruh"
   },
   "childDetail": {
-    "errorIrrLoad": "IRR ma'lumotlari yuklanmadi"
+    "errorIrrLoad": "IRR ma'lumotlari yuklanmadi",
+    "tab": {
+      "iep": "IEP maqsadlar",
+      "obs": "Kuzatuvlar",
+      "docs": "Hujjatlar",
+      "messages": "Xabarlar",
+      "gallery": "Galereya"
+    },
+    "empty": {
+      "noGoalsTitle": "Hozircha maqsad yo'q",
+      "noGoalsBody": "Birinchi IEP maqsadini qo'shing",
+      "noChild": "Bola topilmadi",
+      "docsComingSoon": "Hujjatlar tez orada qo'shiladi",
+      "galleryRedirect": "Galereya sahifasiga o'tish →"
+    },
+    "heatmap": {
+      "last12": "So'nggi 12 kuzatuv"
+    },
+    "button": {
+      "newObservation": "Yangi kuzatuv",
+      "parentList": "Guruh ro'yxati",
+      "viewIrr": "ИРРни кўриш",
+      "createIrr": "ИРР тузиш"
+    },
+    "label": {
+      "goalDefault": "Maqsad",
+      "medicalNote": "Tibbiy eslatma"
+    },
+    "badge": {
+      "mastered": "Mahorat erishildi",
+      "assistNeeded": "Yordam kerak"
+    }
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",

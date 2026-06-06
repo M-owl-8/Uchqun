@@ -50,15 +50,15 @@ const Sidebar = ({ onClose }) => {
 
   const navigation = [
     { name: t('nav.profile'), href: '/child', icon: UserCircle },
-    { name: t('nav.irr', { defaultValue: 'Ривожланиш режаси' }), href: '/irr', icon: TrendingUp },
+    { name: t('nav.irr'), href: '/irr', icon: TrendingUp },
     { name: t('nav.activities'), href: '/activities', icon: CheckCircle },
     { name: t('nav.meals'), href: '/meals', icon: Utensils },
     { name: t('nav.media'), href: '/media', icon: ImageIcon },
     { name: t('nav.rating'), href: '/rating', icon: Star },
-    { name: t('nav.therapy', { defaultValue: 'Foydali' }), href: '/therapy', icon: Lightbulb },
+    { name: t('nav.therapy'), href: '/therapy', icon: Lightbulb },
     { name: t('nav.chat'), href: '/chat', icon: MessageCircle, badge: unreadChat },
-    { name: t('nav.notifications', { defaultValue: 'Notifications' }), href: '/notifications', icon: Bell, badge: count },
-    { name: t('nav.settings', { defaultValue: 'Sozlamalar' }), href: '/settings', icon: Settings },
+    { name: t('nav.notifications'), href: '/notifications', icon: Bell, badge: count },
+    { name: t('nav.settings'), href: '/settings', icon: Settings },
   ];
 
   const isActive = (path) => location.pathname === path;
@@ -70,7 +70,7 @@ const Sidebar = ({ onClose }) => {
           <span className="text-white font-bold text-xl">U</span>
         </div>
         <h1 className="text-lg font-bold text-white tracking-tight">
-          {t('parentSidebar.title', { defaultValue: 'Uchqun Parent' })}
+          {t('parentSidebar.title')}
         </h1>
       </div>
 

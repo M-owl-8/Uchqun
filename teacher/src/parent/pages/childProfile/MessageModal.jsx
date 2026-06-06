@@ -95,11 +95,11 @@ const MessageModal = ({
 
   const handleSend = async () => {
     if (!subject.trim()) {
-      toastError(t('message.errorSubjectRequired', { defaultValue: 'Mavzu kiritilishi shart.' }));
+      toastError(t('message.errorSubjectRequired'));
       return;
     }
     if (!text.trim()) {
-      toastError(t('message.errorBodyRequired', { defaultValue: 'Xabar matni kiritilishi shart.' }));
+      toastError(t('message.errorBodyRequired'));
       return;
     }
     setSending(true);
@@ -110,7 +110,7 @@ const MessageModal = ({
         recipientLevel,
         ...(escalatedFromId ? { escalatedFromId } : {}),
       });
-      toastSuccess(t('profile.messageSent', { defaultValue: 'Xabar muvaffaqiyatli yuborildi' }));
+      toastSuccess(t('profile.messageSent'));
       setSubject('');
       setText('');
       onClose();
@@ -119,8 +119,15 @@ const MessageModal = ({
     } catch (error) {
       const code = error?.response?.data?.error;
       const msg = code
-        ? (t(`message.err_${code}`, { defaultValue: ERROR_CODES[code] || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }) }))
-        : (error.response?.data?.message || t('profile.messageError', { defaultValue: 'Xabar yuborishda xatolik' }));
+        ? ((() => {
+            // S2b: explicit resolution — backend codes are unbounded, but no
+            // defaultValue mask. If the key isn't in the catalog the explicit
+            // fallback chain handles it.
+            const k = `message.err_${code}`;
+            const tr = t(k);
+            return tr !== k ? tr : (ERROR_CODES[code] || t('profile.messageError'));
+          })())
+        : (error.response?.data?.message || t('profile.messageError'));
       toastError(msg);
     } finally {
       setSending(false);
@@ -146,8 +153,8 @@ const MessageModal = ({
             </div>
             <h2 className="text-2xl font-bold text-slate-900">
               {escalatedFromId
-                ? t('message.escalateTitle', { defaultValue: 'Xabarni ko\'tarish' })
-                : t('profile.contactGovernment', { defaultValue: 'Davlatga xabar yuborish' })}
+                ? t('message.escalateTitle')
+                : t('profile.contactGovernment')}
             </h2>
           </div>
           <button onClick={handleClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
@@ -161,7 +168,7 @@ const MessageModal = ({
             <AlertTriangle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
             <div>
               <p className="text-xs font-semibold text-amber-800">
-                {t('message.escalatingFrom', { defaultValue: 'Ko\'tarilayotgan xabar:' })}
+                {t('message.escalatingFrom')}
               </p>
               <p className="text-xs text-amber-700 truncate">{escalatedFromSubject}</p>
             </div>
@@ -171,7 +178,7 @@ const MessageModal = ({
         {/* recipientLevel selector */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-slate-700 mb-2">
-            {t('message.recipientLevel', { defaultValue: 'Kimga yuborilsin?' })}
+            {t('message.recipientLevel')}
           </label>
           <div className="grid grid-cols-3 gap-2" data-testid="level-selector">
             {LEVELS.map((level) => (
@@ -185,10 +192,10 @@ const MessageModal = ({
                 }`}
               >
                 <span className="block text-sm font-bold">
-                  {t(level.labelKey, { defaultValue: level.label })}
+                  {t(level.labelKey)}
                 </span>
                 <span className="block text-xs mt-0.5 opacity-75">
-                  {t(level.descKey, { defaultValue: level.desc })}
+                  {t(level.descKey)}
                 </span>
               </button>
             ))}
@@ -196,8 +203,7 @@ const MessageModal = ({
           {selectedLevel && (
             <p className="mt-2 text-xs text-slate-500">
               {t('message.levelHint', {
-                level: t(selectedLevel.labelKey, { defaultValue: selectedLevel.label }),
-                defaultValue: `Tanlangan: ${selectedLevel.desc}`,
+                level: t(selectedLevel.labelKey),
               })}
             </p>
           )}
@@ -207,25 +213,25 @@ const MessageModal = ({
         <div className="space-y-4 mb-6">
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              {t('profile.subject', { defaultValue: 'Mavzu' })}
+              {t('profile.subject')}
             </label>
             <input
               type="text"
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
-              placeholder={t('profile.subjectPlaceholder', { defaultValue: 'Xabar mavzusi...' })}
+              placeholder={t('profile.subjectPlaceholder')}
               className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
-              {t('profile.message', { defaultValue: 'Xabar' })}
+              {t('profile.message')}
             </label>
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
               rows={5}
-              placeholder={t('profile.messagePlaceholder', { defaultValue: 'Xabaringizni yozing...' })}
+              placeholder={t('profile.messagePlaceholder')}
               className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
             />
           </div>
@@ -238,7 +244,7 @@ const MessageModal = ({
             className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
             disabled={sending}
           >
-            {t('profile.cancel', { defaultValue: 'Bekor qilish' })}
+            {t('profile.cancel')}
           </button>
           <button
             onClick={handleSend}
@@ -249,12 +255,12 @@ const MessageModal = ({
             {sending ? (
               <>
                 <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                <span>{t('profile.sending', { defaultValue: 'Yuborilmoqda...' })}</span>
+                <span>{t('profile.sending')}</span>
               </>
             ) : (
               <>
                 <Send className="w-4 h-4" />
-                <span>{t('profile.send', { defaultValue: 'Yuborish' })}</span>
+                <span>{t('profile.send')}</span>
               </>
             )}
           </button>

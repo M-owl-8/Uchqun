@@ -9,12 +9,12 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <Lock className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('settings.changePassword', { defaultValue: 'Parolni o\'zgartirish' })}</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.changePassword')}</h2>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.currentPassword', { defaultValue: 'Joriy parol' })}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.currentPassword')}</label>
             <div className="relative">
               <input
                 type={showPasswords.current ? 'text' : 'password'}
@@ -34,7 +34,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.newPassword', { defaultValue: 'Yangi parol' })}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.newPassword')}</label>
             <div className="relative">
               <input
                 type={showPasswords.new ? 'text' : 'password'}
@@ -52,11 +52,11 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
                 {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
               </button>
             </div>
-            <p className="text-xs text-slate-500 mt-1">{t('settings.passwordRequirements', { defaultValue: 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak' })}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('settings.passwordRequirements')}</p>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.confirmPassword', { defaultValue: 'Yangi parolni tasdiqlash' })}</label>
+            <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.confirmPassword')}</label>
             <div className="relative">
               <input
                 type={showPasswords.confirm ? 'text' : 'password'}
@@ -88,7 +88,7 @@ const PasswordForm = ({ passwordForm, setPasswordForm, showPasswords, setShowPas
             ) : (
               <Save className="w-5 h-5" />
             )}
-            {t('settings.updatePassword', { defaultValue: 'Parolni yangilash' })}
+            {t('settings.updatePassword')}
           </button>
         </div>
       </Card>

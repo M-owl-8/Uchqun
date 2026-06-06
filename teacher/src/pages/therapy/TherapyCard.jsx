@@ -22,7 +22,7 @@ const TherapyCard = ({ therapy, getTherapyIcon, getTherapyColor, onAssign, onEdi
         {therapy.duration && (
           <div className="flex items-center gap-1">
             <Clock className="w-4 h-4" />
-            <span>{therapy.duration} {t('therapy.min', { defaultValue: 'min' })}</span>
+            <span>{therapy.duration} {t('therapy.min')}</span>
           </div>
         )}
         {therapy.rating != null && !isNaN(Number(therapy.rating)) && (
@@ -55,7 +55,7 @@ const TherapyCard = ({ therapy, getTherapyIcon, getTherapyColor, onAssign, onEdi
           className="flex-1 px-4 py-2 bg-success-50 text-success-600 rounded-lg font-medium hover:bg-success-100 transition-colors flex items-center justify-center gap-2"
         >
           <User className="w-4 h-4" />
-          {t('therapy.assign', { defaultValue: 'Tayinlash' })}
+          {t('therapy.assign')}
         </button>
         <button
           onClick={() => onEdit(therapy)}

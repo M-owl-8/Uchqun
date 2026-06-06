@@ -34,7 +34,7 @@ function OutcomePill({ outcome }) {
       className="px-1.5 py-0.5 rounded-full text-[10px] font-medium"
       style={{ background: c.bg, color: c.color }}
     >
-      {t(`quickObs.outcomes.${outcome}`, { defaultValue: outcome })}
+      {t(`quickObs.outcomes.${outcome}`)}
     </span>
   );
 }

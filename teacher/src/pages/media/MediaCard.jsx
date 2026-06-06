@@ -64,14 +64,14 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
             <button
               onClick={(e) => onEdit(item, e)}
               className="bg-brand-500/90 hover:bg-brand-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
-              title="Edit"
+              title={t('common.edit')}
             >
               <Edit2 className="w-4 h-4" />
             </button>
             <button
               onClick={(e) => onDelete(item.id, e)}
               className="bg-error-500/90 hover:bg-error-600 backdrop-blur-md p-2 rounded-xl text-white transition-colors"
-              title="Delete"
+              title={t('common.delete')}
             >
               <Trash2 className="w-4 h-4" />
             </button>

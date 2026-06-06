@@ -6,7 +6,7 @@
     "media": "Медиа",
     "meals": "Питание",
     "profile": "Профиль",
-    "chat":"Чат",
+    "chat": "Чат",
     "rating": "Обратная связь",
     "schoolRating": "Оценка школы",
     "notifications": "Уведомления",
@@ -303,5 +303,20 @@
     "contactTeacher": "Обратитесь к воспитателю для получения учётных данных",
     "showPassword": "Показать пароль",
     "hidePassword": "Скрыть пароль"
+  },
+  "irr": {
+    "scoreNote": "Максимальный показатель: {{maxScore}} баллов. Рост балла — признак развития."
+  },
+  "message": {
+    "levelOwner": "Воспитателю",
+    "levelOwnerDesc": "Воспитатель детского сада",
+    "levelRegion": "В районное управление",
+    "levelRegionDesc": "Местное управление образования",
+    "levelRepublic": "В республиканское управление",
+    "levelRepublicDesc": "Центральное министерство образования",
+    "level_owner": "Воспитатель",
+    "level_region": "Район",
+    "level_republic": "Республика",
+    "levelHint": "Выбрано: {{level}}"
   }
 }

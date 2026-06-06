@@ -10,7 +10,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
       <Card className="p-6">
         <div className="flex items-center gap-3 mb-6">
           <User className="w-6 h-6 text-brand-600" />
-          <h2 className="text-xl font-bold text-slate-900">{t('settings.profileInfo', { defaultValue: 'Profil ma\'lumotlari' })}</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t('settings.profileInfo')}</h2>
         </div>
 
         {/* Avatar Upload */}
@@ -19,7 +19,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
         <div className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.firstName', { defaultValue: 'Ism' })}</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.firstName')}</label>
               <input
                 type="text"
                 value={profileForm.firstName}
@@ -30,7 +30,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.lastName', { defaultValue: 'Familiya' })}</label>
+              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.lastName')}</label>
               <input
                 type="text"
                 value={profileForm.lastName}
@@ -44,7 +44,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               <Mail className="w-4 h-4 inline mr-2" />
-              {t('settings.email', { defaultValue: 'Email' })}
+              {t('settings.email')}
             </label>
             <input
               type="email"
@@ -52,13 +52,13 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
               disabled
               className="w-full px-4 py-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
             />
-            <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange', { defaultValue: 'Email o\'zgartirib bo\'lmaydi' })}</p>
+            <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange')}</p>
           </div>
 
           <div>
             <label className="block text-sm font-medium text-slate-700 mb-2">
               <Phone className="w-4 h-4 inline mr-2" />
-              {t('settings.phone', { defaultValue: 'Telefon' })}
+              {t('settings.phone')}
             </label>
             <input
               type="tel"
@@ -81,7 +81,7 @@ const ProfileForm = ({ profileForm, setProfileForm, saving, onSubmit, user }) =>
             ) : (
               <Save className="w-5 h-5" />
             )}
-            {t('settings.saveProfile', { defaultValue: 'Profilni saqlash' })}
+            {t('settings.saveProfile')}
           </button>
         </div>
       </Card>

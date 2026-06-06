@@ -165,7 +165,7 @@ const TeacherRating = () => {
     }
 
     if (!schoolComment.trim()) {
-      toast.error(t('schoolRatingPage.commentRequired', { defaultValue: 'Izoh majburiy' }));
+      toast.error(t('schoolRatingPage.commentRequired'));
       return;
     }
 
@@ -174,7 +174,7 @@ const TeacherRating = () => {
       return Number.isInteger(v) && v >= 1 && v <= 5;
     });
     if (!allValid) {
-      toast.error(t('schoolRatingPage.indicatorsRequired', { defaultValue: "Barcha ko'rsatkichlarni to'ldiring" }));
+      toast.error(t('schoolRatingPage.indicatorsRequired'));
       return;
     }
 
@@ -204,10 +204,10 @@ const TeacherRating = () => {
     } catch (err) {
       const code = err?.response?.data?.error;
       const errMap = {
-        RATING_COMMENT_REQUIRED: t('schoolRatingPage.commentRequired', { defaultValue: 'Izoh majburiy' }),
-        RATING_INDICATORS_REQUIRED: t('schoolRatingPage.indicatorsRequired', { defaultValue: "Barcha ko'rsatkichlarni to'ldiring" }),
-        RATING_INDICATOR_INVALID: t('schoolRatingPage.indicatorInvalid', { defaultValue: "Har bir ko'rsatkich 1-5 oralig'ida bo'lishi kerak" }),
-        RATING_SCHOOL_FORBIDDEN: t('schoolRatingPage.schoolForbidden', { defaultValue: "Bu maktabni baholash huquqingiz yo'q" }),
+        RATING_COMMENT_REQUIRED: t('schoolRatingPage.commentRequired'),
+        RATING_INDICATORS_REQUIRED: t('schoolRatingPage.indicatorsRequired'),
+        RATING_INDICATOR_INVALID: t('schoolRatingPage.indicatorInvalid'),
+        RATING_SCHOOL_FORBIDDEN: t('schoolRatingPage.schoolForbidden'),
         RATING_SCHOOL_NOT_FOUND: t('schoolRatingPage.noSchool'),
       };
       toast.error(errMap[code] || t('schoolRatingPage.errorSave'));
@@ -445,7 +445,7 @@ const TeacherRating = () => {
                   {schoolRatingAgg?.cumulativeAvg != null ? (
                     <>
                       <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
-                        {t('schoolRatingPage.cumulative', { defaultValue: 'Umumiy' })}
+                        {t('schoolRatingPage.cumulative')}
                       </p>
                       <div className="flex items-center gap-1 text-p-honey-700 font-bold text-xl">
                         <Star className="w-5 h-5 fill-p-honey-500 text-p-honey-500" />
@@ -453,20 +453,20 @@ const TeacherRating = () => {
                       </div>
                     </>
                   ) : (
-                    <span className="text-xs text-slate-400 italic">{t('schoolRatingPage.noRating', { defaultValue: "Reyting yo'q" })}</span>
+                    <span className="text-xs text-slate-400 italic">{t('schoolRatingPage.noRating')}</span>
                   )}
                   {/* Parent + Gov breakdown */}
                   {schoolRatingAgg && (
                     <div className="mt-1.5 space-y-0.5 text-right">
                       <p className="text-xs text-slate-500">
-                        {t('schoolRatingPage.parentAvg', { defaultValue: 'Ota-onalar:' })}{' '}
+                        {t('schoolRatingPage.parentAvg')}{' '}
                         <span className="font-semibold text-slate-700">
                           {schoolRatingAgg.parentAvg != null ? schoolRatingAgg.parentAvg.toFixed(1) : '—'}
                         </span>
                         {schoolRatingAgg.parentCount > 0 && <span className="text-slate-400"> ({schoolRatingAgg.parentCount})</span>}
                       </p>
                       <p className="text-xs text-slate-500">
-                        {t('schoolRatingPage.govAvg', { defaultValue: 'Davlat:' })}{' '}
+                        {t('schoolRatingPage.govAvg')}{' '}
                         <span className="font-semibold text-slate-700">
                           {schoolRatingAgg.govAvg != null ? schoolRatingAgg.govAvg.toFixed(1) : '—'}
                         </span>
@@ -481,7 +481,7 @@ const TeacherRating = () => {
               <div className="space-y-5">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
                   <BarChart3 className="w-4 h-4 text-p-honey-700" />
-                  {t('schoolRatingPage.indicatorsLabel', { defaultValue: "Ko'rsatkichlar bo'yicha baho" })}
+                  {t('schoolRatingPage.indicatorsLabel')}
                 </div>
                 {PARENT_INDICATORS.map((ind) => (
                   <div key={ind.key} className="space-y-1" data-testid={`indicator-row-${ind.key}`}>
@@ -523,7 +523,7 @@ const TeacherRating = () => {
                 <div className="flex items-center justify-between mb-2">
                   <p className="text-sm font-semibold text-slate-700">{t('schoolRatingPage.commentLabel')}</p>
                   <span className="text-xs font-medium text-error-500">
-                    * {t('schoolRatingPage.required', { defaultValue: 'Majburiy' })}
+                    * {t('schoolRatingPage.required')}
                   </span>
                 </div>
                 <textarea
@@ -541,9 +541,7 @@ const TeacherRating = () => {
               <div className="flex items-center justify-between">
                 <div className="text-xs text-slate-500">
                   {schoolRating?.updatedAt &&
-                    t('schoolRatingPage.lastUpdated', {
-                      date: new Date(schoolRating.updatedAt).toLocaleString(locale),
-                    })}
+                    t('schoolRatingPage.lastUpdated', { date: new Date(schoolRating.updatedAt).toLocaleString(locale) })}
                 </div>
                 <button
                   type="button"

@@ -188,8 +188,8 @@ const MonitoringJournal = () => {
 
   const handleDelete = (id) => {
     setConfirmDialog({
-      message: t('monitoring.confirmDelete', { defaultValue: "Bu monitoring yozuvini o'chirmoqchimisiz?" }),
-      warning: t('monitoring.confirmDeleteWarning', { defaultValue: "Yozuv yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q." }),
+      message: t('monitoring.confirmDelete'),
+      warning: t('monitoring.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

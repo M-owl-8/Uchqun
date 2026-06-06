@@ -48,7 +48,7 @@ const AIWarnings = () => {
       await api.put(`/ai-warnings/${warningId}/resolve`);
       loadWarnings();
     } catch (error) {
-      showError(error.response?.data?.error || t('warnings.resolveError', { defaultValue: 'Failed to resolve warning' }));
+      showError(error.response?.data?.error || t('warnings.resolveError'));
     }
   };
 
@@ -80,13 +80,13 @@ const AIWarnings = () => {
 
   const getWarningTypeLabel = (type) => {
     const labels = {
-      low_rating: t('warnings.lowRating', { defaultValue: 'Past reyting' }),
-      declining_rating: t('warnings.decliningRating', { defaultValue: 'Reyting pasayishi' }),
-      negative_feedback: t('warnings.negativeFeedback', { defaultValue: 'Salbiy fikr' }),
-      complaint: t('warnings.complaint', { defaultValue: 'Shikoyat' }),
-      safety_concern: t('warnings.safetyConcern', { defaultValue: 'Xavfsizlik muammosi' }),
-      quality_issue: t('warnings.qualityIssue', { defaultValue: 'Sifat muammosi' }),
-      other: t('warnings.other', { defaultValue: 'Boshqa' }),
+      low_rating: t('warnings.lowRating'),
+      declining_rating: t('warnings.decliningRating'),
+      negative_feedback: t('warnings.negativeFeedback'),
+      complaint: t('warnings.complaint'),
+      safety_concern: t('warnings.safetyConcern'),
+      quality_issue: t('warnings.qualityIssue'),
+      other: t('warnings.other'),
     };
     return labels[type] || type;
   };
@@ -103,11 +103,11 @@ const AIWarnings = () => {
     <div className="space-y-6">
       <div>
         <h1 className="text-[22px] font-semibold text-slate-900">
-          {t('warnings.title', { defaultValue: 'Ogohlantirishlar' })}
+          {t('warnings.title')}
           {unresolvedCount !== null && ` (${unresolvedCount})`}
         </h1>
         <p className="text-[13px] text-slate-500 mt-0.5">
-          {t('warnings.subtitle', { defaultValue: "Guruhingiz bolalari bo'yicha ogohlantirishlar" })}
+          {t('warnings.subtitle')}
         </p>
       </div>
 
@@ -121,7 +121,7 @@ const AIWarnings = () => {
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
-          {t('warnings.all', { defaultValue: 'Barchasi' })}
+          {t('warnings.all')}
         </button>
         <button
           onClick={() => setFilter('unresolved')}
@@ -131,7 +131,7 @@ const AIWarnings = () => {
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
-          {t('warnings.unresolved', { defaultValue: 'Yechilmagan' })}
+          {t('warnings.unresolved')}
         </button>
         <button
           onClick={() => setFilter('resolved')}
@@ -141,7 +141,7 @@ const AIWarnings = () => {
               : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
           }`}
         >
-          {t('warnings.resolved', { defaultValue: 'Yechilgan' })}
+          {t('warnings.resolved')}
         </button>
       </div>
 
@@ -160,7 +160,7 @@ const AIWarnings = () => {
                   <div className="flex items-center gap-2 mb-2">
                     <h3 className="font-bold text-slate-900">{warning.title}</h3>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${colorClass}`}>
-                      {t(`severity.${warning.severity}`, { defaultValue: warning.severity })}
+                      {t(`severity.${warning.severity}`)}
                     </span>
                     <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">
                       {getWarningTypeLabel(warning.warningType)}
@@ -170,7 +170,7 @@ const AIWarnings = () => {
                   {warning.aiAnalysis && (
                     <div className="p-3 bg-slate-50 rounded-lg mb-3">
                       <p className="text-sm text-slate-700">
-                        <strong>{t('warnings.aiAnalysis', { defaultValue: 'AI Tahlil' })}:</strong>{' '}
+                        <strong>{t('warnings.aiAnalysis')}:</strong>{' '}
                         {warning.aiAnalysis}
                       </p>
                     </div>
@@ -185,13 +185,13 @@ const AIWarnings = () => {
                         className="px-4 py-2 bg-success-600 text-white rounded-lg font-semibold hover:bg-success-700 transition-colors flex items-center gap-2"
                       >
                         <CheckCircle className="w-4 h-4" />
-                        {t('warnings.resolve', { defaultValue: 'Yechildi deb belgilash' })}
+                        {t('warnings.resolve')}
                       </button>
                     )}
                     {warning.isResolved && (
                       <span className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold flex items-center gap-2">
                         <CheckCircle className="w-4 h-4" />
-                        {t('warnings.resolved', { defaultValue: 'Yechilgan' })}
+                        {t('warnings.resolved')}
                       </span>
                     )}
                   </div>
@@ -206,10 +206,10 @@ const AIWarnings = () => {
         <Card className="p-12 text-center">
           <CheckCircle className="w-16 h-16 text-success-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-900 mb-2">
-            {t('warnings.noWarnings', { defaultValue: 'Ogohlantirishlar yo\'q' })}
+            {t('warnings.noWarnings')}
           </h3>
           <p className="text-slate-600">
-            {t('warnings.noWarningsDesc', { defaultValue: 'Hozircha ogohlantirishlar mavjud emas' })}
+            {t('warnings.noWarningsDesc')}
           </p>
         </Card>
       )}

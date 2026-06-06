@@ -72,7 +72,7 @@ const Chat = () => {
     if (!conversationId) return;
     const result = await addMessage('parent', trimmed, conversationId);
     if (!result) {
-      toastError(t('chat.sendFailed', { defaultValue: 'Xabar yuborilmadi. Qaytadan urining.' }));
+      toastError(t('chat.sendFailed'));
       return;
     }
     justSentRef.current = true;
@@ -92,9 +92,9 @@ const Chat = () => {
 
     const updated = await updateMessage(msgId, trimmed);
     if (!updated) {
-      toastError(t('chat.updateFailed', { defaultValue: 'Failed to update message' }));
+      toastError(t('chat.updateFailed'));
     } else {
-      toastSuccess(t('chat.updated', { defaultValue: 'Message updated' }));
+      toastSuccess(t('chat.updated'));
     }
     if (conversationId) {
       const msgs = await loadMessages(conversationId);
@@ -112,9 +112,9 @@ const Chat = () => {
 
     const res = await deleteMessage(msgId);
     if (!res?.success) {
-      toastError(t('chat.deleteFailed', { defaultValue: 'Failed to delete message' }));
+      toastError(t('chat.deleteFailed'));
     } else {
-      toastSuccess(t('chat.deleted', { defaultValue: 'Message deleted' }));
+      toastSuccess(t('chat.deleted'));
     }
     if (conversationId) {
       const msgs = await loadMessages(conversationId);
@@ -178,8 +178,8 @@ const Chat = () => {
                         <button
                           type="button"
                           className="p-1 rounded-md hover:bg-black/5"
-                          aria-label={t('chat.edit', { defaultValue: 'Edit' })}
-                          title={t('chat.edit', { defaultValue: 'Edit' })}
+                          aria-label={t('chat.edit')}
+                          title={t('chat.edit')}
                           disabled={busyId === msg.id}
                           onClick={() => {
                             setEditingId(msg.id);
@@ -191,8 +191,8 @@ const Chat = () => {
                         <button
                           type="button"
                           className="p-1 rounded-md hover:bg-black/5 text-error-600"
-                          aria-label={t('chat.delete', { defaultValue: 'Delete' })}
-                          title={t('chat.delete', { defaultValue: 'Delete' })}
+                          aria-label={t('chat.delete')}
+                          title={t('chat.delete')}
                           disabled={busyId === msg.id}
                           onClick={() => setConfirmDeleteId(msg.id)}
                         >
@@ -221,7 +221,7 @@ const Chat = () => {
                           disabled={busyId === msg.id}
                         >
                           <X className="w-4 h-4" />
-                          {t('cancel', { defaultValue: 'Cancel' })}
+                          {t('cancel')}
                         </button>
                         <button
                           type="button"
@@ -230,7 +230,7 @@ const Chat = () => {
                           disabled={busyId === msg.id || !editValue.trim()}
                         >
                           <Send className="w-4 h-4" />
-                          {t('save', { defaultValue: 'Save' })}
+                          {t('save')}
                         </button>
                       </div>
                     </div>
@@ -248,8 +248,8 @@ const Chat = () => {
           <button
             type="button"
             className="absolute bottom-16 right-4 w-11 h-11 rounded-full bg-p-surface border border-slate-200 shadow-lg flex items-center justify-center hover:bg-slate-50"
-            aria-label={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
-            title={t('chat.scrollToBottom', { defaultValue: 'Scroll to bottom' })}
+            aria-label={t('chat.scrollToBottom')}
+            title={t('chat.scrollToBottom')}
             onClick={() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })}
           >
             <ArrowDown className="w-5 h-5 text-slate-700" />
@@ -285,10 +285,10 @@ const Chat = () => {
         <div className="fixed inset-0 z-[9999] bg-black/40 flex items-center justify-center p-4">
           <div className="w-full max-w-sm bg-p-surface rounded-2xl shadow-xl border border-slate-200 p-5">
             <div className="text-lg font-bold text-slate-900">
-              {t('chat.delete', { defaultValue: 'Delete' })}
+              {t('chat.delete')}
             </div>
             <div className="text-sm text-slate-600 mt-1">
-              {t('chat.confirmDelete', { defaultValue: 'Delete this message?' })}
+              {t('chat.confirmDelete')}
             </div>
             <div className="mt-4 flex items-center justify-end gap-2">
               <button
@@ -296,7 +296,7 @@ const Chat = () => {
                 className="px-4 py-2 rounded-xl border border-slate-200 text-slate-700 hover:bg-slate-50"
                 onClick={() => setConfirmDeleteId(null)}
               >
-                {t('cancel', { defaultValue: 'Cancel' })}
+                {t('cancel')}
               </button>
               <button
                 type="button"
@@ -308,7 +308,7 @@ const Chat = () => {
                 }}
                 disabled={busyId === confirmDeleteId}
               >
-                {t('chat.delete', { defaultValue: 'Delete' })}
+                {t('chat.delete')}
               </button>
             </div>
           </div>

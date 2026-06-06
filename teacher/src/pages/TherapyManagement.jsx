@@ -80,7 +80,7 @@ const TherapyManagement = () => {
       setTherapies(data);
     } catch (error) {
       if (error.code === 'ERR_CANCELED') return;
-      showError(t('therapy.loadError', { defaultValue: 'Terapiyalarni yuklashda xatolik' }));
+      showError(t('therapy.loadError'));
       setTherapies([]);
     } finally {
       setLoading(false);
@@ -164,7 +164,7 @@ const TherapyManagement = () => {
 
   const handleSave = async () => {
     if (!formData.title || !formData.therapyType) {
-      showError(t('therapy.validation.required', { defaultValue: 'Sarlavha va tur majburiy' }));
+      showError(t('therapy.validation.required'));
       return;
     }
 
@@ -179,17 +179,17 @@ const TherapyManagement = () => {
 
       if (editingTherapy) {
         await api.put(`/therapy/${editingTherapy.id}`, therapyData);
-        success(t('therapy.updateSuccess', { defaultValue: 'Terapiya yangilandi' }));
+        success(t('therapy.updateSuccess'));
       } else {
         await api.post('/therapy', therapyData);
-        success(t('therapy.createSuccess', { defaultValue: 'Terapiya yaratildi' }));
+        success(t('therapy.createSuccess'));
       }
 
       setShowModal(false);
       cache.invalidatePrefix('teacher:therapy');
       fetchTherapies(true);
     } catch (error) {
-      showError(error.response?.data?.error || t('therapy.saveError', { defaultValue: 'Saqlashda xatolik' }));
+      showError(error.response?.data?.error || t('therapy.saveError'));
     } finally {
       setSaving(false);
     }
@@ -197,7 +197,7 @@ const TherapyManagement = () => {
 
   const handleAssignSave = async () => {
     if (!assignFormData.childId) {
-      showError(t('therapy.selectChild', { defaultValue: 'Bolani tanlang' }));
+      showError(t('therapy.selectChild'));
       return;
     }
 
@@ -208,12 +208,12 @@ const TherapyManagement = () => {
       await api.post(`/therapy/${assigningTherapy.id}/start`, {
         childId: assignFormData.childId,
       });
-      success(t('therapy.assignSuccess', { defaultValue: 'Terapiya bolaga tayinlandi' }));
+      success(t('therapy.assignSuccess'));
       setShowAssignModal(false);
       cache.invalidatePrefix('teacher:therapy');
       fetchTherapies(true);
     } catch (error) {
-      showError(error.response?.data?.error || t('therapy.assignError', { defaultValue: 'Tayinlashda xatolik' }));
+      showError(error.response?.data?.error || t('therapy.assignError'));
     } finally {
       setAssigning(false);
     }
@@ -221,17 +221,17 @@ const TherapyManagement = () => {
 
   const handleDelete = (id) => {
     setConfirmDialog({
-      message: t('therapy.confirmDelete', { defaultValue: "Bu terapiyani o'chirmoqchimisiz?" }),
-      warning: t('therapy.confirmDeleteWarning', { defaultValue: "Terapiya yumshoq o'chiriladi, lekin hozirda tiklash imkoniyati yo'q." }),
+      message: t('therapy.confirmDelete'),
+      warning: t('therapy.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
           await api.delete(`/therapy/${id}`);
-          success(t('therapy.deleteSuccess', { defaultValue: 'Terapiya o\'chirildi' }));
+          success(t('therapy.deleteSuccess'));
           cache.invalidatePrefix('teacher:therapy');
           fetchTherapies(true);
         } catch (error) {
-          showError(error.response?.data?.error || t('therapy.deleteError', { defaultValue: 'O\'chirishda xatolik' }));
+          showError(error.response?.data?.error || t('therapy.deleteError'));
         }
       },
     });
@@ -277,15 +277,15 @@ const TherapyManagement = () => {
     <div className="max-w-7xl mx-auto space-y-8 pb-12 md:pb-20 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">{t('therapy.management', { defaultValue: 'Terapiya Boshqaruvi' })}</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">{t('therapy.managementDesc', { defaultValue: 'Musiqa, video va content terapiyalarni boshqaring va bolalarga tayinlang' })}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('therapy.management')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('therapy.managementDesc')}</p>
         </div>
         <button
           onClick={handleCreate}
           className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm w-full md:w-auto"
         >
           <Plus className="w-5 h-5" />
-          {t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
+          {t('therapy.create')}
         </button>
       </div>
 
@@ -314,10 +314,10 @@ const TherapyManagement = () => {
         <Card className="p-6 md:p-12 text-center">
           <Play className="w-16 h-16 text-slate-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-900 mb-2">
-            {t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}
+            {t('therapy.noTherapies')}
           </h3>
           <p className="text-slate-600">
-            {t('therapy.noTherapiesDesc', { defaultValue: 'Qidiruv natijalari bo\'sh' })}
+            {t('therapy.noTherapiesDesc')}
           </p>
         </Card>
       )}
