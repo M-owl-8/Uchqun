@@ -495,6 +495,19 @@ Added 2026-05-27. Introduced by `parentSendMessage` (parent route), `getAllMessa
 
 ---
 
+## Parent Privacy Consent (G4 of BETA-LAUNCH-PLAN)
+
+Added 2026-06-06. Introduced by `controllers/parent/parentPrivacyConsentController.js` (GET + POST `/parent/privacy-consent`). Modal-on-first-login gate that records the parent's acceptance of group-wide media visibility (PL-001 / C-02) and AI-translated UI disclosure (CP-019 / PL-009).
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `PRIVACY_CONSENT_PARENT_ONLY` | 403 | Non-parent role hit the consent endpoint (defense-in-depth — route already guards). | "This action is only available to parents." |
+| `PRIVACY_CONSENT_USER_NOT_FOUND` | 404 | User record missing for `req.user.id` (token valid but row gone). | "Account not found. Please sign in again." |
+| `PRIVACY_CONSENT_READ_FAILED` | 500 | DB error reading consent state. | "Could not load consent state. Please try again." |
+| `PRIVACY_CONSENT_WRITE_FAILED` | 500 | DB error recording consent. | "Could not save consent. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

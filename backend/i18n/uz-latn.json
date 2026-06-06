@@ -248,5 +248,11 @@
   "RECEPTION_NOT_APPROVED": "Sizning hisobingiz administrator tomonidan tasdiqlanishini kutmoqda.",
   "ATTENDANCE_PARENT_ONLY": "Faqat ota-onalar oʻz farzandining davomatini koʻra oladi.",
   "ATTENDANCE_CHILD_NOT_ACCESSIBLE": "Bu bola sizning farzandingiz emas — davomatga ruxsat yoʻq.",
-  "ATTENDANCE_FETCH_FAILED": "Davomat maʼlumotlarini yuklashda xatolik. Qaytadan urinib koʻring."
+  "ATTENDANCE_FETCH_FAILED": "Davomat maʼlumotlarini yuklashda xatolik. Qaytadan urinib koʻring.",
+  "PRIVACY_CONSENT_PARENT_ONLY": "Bu amal faqat ota-onalar uchun.",
+  "PRIVACY_CONSENT_USER_NOT_FOUND": "Hisob topilmadi. Iltimos, qaytadan kiring.",
+  "PRIVACY_CONSENT_READ_FAILED": "Maxfiylik holatini yuklab boʻlmadi. Qaytadan urinib koʻring.",
+  "PRIVACY_CONSENT_WRITE_FAILED": "Maxfiylik tasdigʻini saqlab boʻlmadi. Qaytadan urinib koʻring.",
+  "MEDIA_STORAGE_NOT_CONFIGURED": "Media yuklash sozlanmagan. Iltimos, administrator bilan bog'laning.",
+  "MEDIA_UPLOAD_STORAGE_FAILED": "Faylni yuklab boʻlmadi. Qaytadan urinib koʻring."
 }

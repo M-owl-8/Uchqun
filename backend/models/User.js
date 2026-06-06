@@ -148,6 +148,14 @@ const User = sequelize.define('User', {
     allowNull: true,
     defaultValue: 0,
   },
+  // G4 of BETA-LAUNCH-PLAN — when the user accepted the platform's privacy
+  // disclosure (group-wide media + AI-translated UI). NULL = never consented,
+  // so the parent portal forces the modal on first login. See migration
+  // 20260606000002 and docs/PRIVACY_POSTURE.md.
+  privacyConsentedAt: {
+    type: DataTypes.DATE,
+    allowNull: true,
+  },
 }, {
   tableName: 'users',
   timestamps: true,

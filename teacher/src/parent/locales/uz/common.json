@@ -374,5 +374,19 @@
   "common": {
     "today": "Bugun",
     "viewAll": "Barchasini ko'rish"
+  },
+  "privacyConsent": {
+    "title": "Maxfiylik tasdiqlash",
+    "intro": "Uchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'rsatilishini tushunishingiz uchun zarur.",
+    "mediaTitle": "Suratlar va videolar guruh bo'yicha ko'rinadi",
+    "mediaBody": "Tarbiyachi yuklagan suratlar va videolar — bola guruhidagi barcha ota-onalarga ko'rinadi. Bu maktabning birgalikdagi mashg'ulot va o'yin ko'nikmalarini ulashish uchun amal qiladi. Boshqa bolalarning suratlari sizning ekraningizda chiqishi mumkin, va sizning farzandingizning suratlari boshqa ota-onalarga ko'rinadi.",
+    "mediaAck": "Tushundim va roziman.",
+    "i18nTitle": "Tarjima xatolari bo'lishi mumkin",
+    "i18nBody": "Platformaning o'zbek va rus tilidagi matnlari avtomatik tarzda tayyorlangan va hozircha mutaxassis tomonidan tekshirilmagan. Ba'zi joylarda noqulay yoki noaniq tarjimalar uchrashi mumkin. Yangilanishlar mutaxassis tekshiruvidan o'tgach beriladi.",
+    "i18nAck": "Tushundim.",
+    "accept": "Roziman, davom etish",
+    "decline": "Roziman emasman, chiqish",
+    "footnote": "Ushbu tasdiqlash sizning hisobingizga bog'lab saqlanadi. Qaror qabul qilinganidan keyin uni sozlamalar bo'limidan ko'rishingiz mumkin.",
+    "errorGeneric": "Tasdiqlashda xatolik. Qaytadan urinib ko'ring."
   }
 }

@@ -374,5 +374,19 @@
   "common": {
     "today": "Today",
     "viewAll": "View all"
+  },
+  "privacyConsent": {
+    "title": "Privacy acknowledgement",
+    "intro": "Before you continue, please read and acknowledge two things about how your child's data appears in the Uchqun parent portal.",
+    "mediaTitle": "Photos and videos are visible group-wide",
+    "mediaBody": "Photos and videos uploaded by the teacher are visible to all parents whose children are in the same group as yours — not only to you. This reflects how group childcare works: shared activities, peer interaction, group photos. You will see photos of other children, and other parents will see photos of your child.",
+    "mediaAck": "I understand and accept this.",
+    "i18nTitle": "Translations may contain errors",
+    "i18nBody": "The Russian and Uzbek text in this platform is currently AI-generated and not yet reviewed by a native speaker. You may encounter awkward or incorrect phrasing. A reviewed version is planned before public launch.",
+    "i18nAck": "I understand.",
+    "accept": "I agree, continue",
+    "decline": "I don't agree, sign out",
+    "footnote": "This acknowledgement is recorded against your account. You can view it later in your account settings.",
+    "errorGeneric": "Could not save your acknowledgement. Please try again."
   }
 }
