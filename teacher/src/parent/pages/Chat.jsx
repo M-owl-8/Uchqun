@@ -251,10 +251,12 @@ const Chat = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="whitespace-pre-wrap break-words">{msg.content || msg.text}</div>
-                    <div className={`text-[10px] mt-1 ${isYou ? 'text-p-sepia-500 text-right' : 'text-slate-500'}`}>
-                      {formatTime(msg.createdAt || msg.time, i18n.language)}
-                    </div>
+                    <>
+                      <div className="whitespace-pre-wrap break-words">{msg.content || msg.text}</div>
+                      <div className={`text-[10px] mt-1 ${isYou ? 'text-p-sepia-500 text-right' : 'text-slate-500'}`}>
+                        {formatTime(msg.createdAt || msg.time, i18n.language)}
+                      </div>
+                    </>
                   )}
                 </div>
                 </div>
