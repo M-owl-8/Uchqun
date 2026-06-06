@@ -1,11 +1,12 @@
 import { useState, useEffect, useRef } from 'react';
 import { Send, Cloud, Camera, X } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { ChildAvatar } from './ChildAvatar';
 
-const MOMENT_CHIPS = [
-  { key: 'first',   label: 'Birinchi marta', style: { background: '#E2F0E8', color: '#4F8C72', border: '1px solid #A8D2BC' } },
-  { key: 'success', label: 'Yaxshi natija',   style: { background: '#F6F3FB', color: '#5F567F', border: '1px solid #D8CFE5' } },
-  { key: 'help',    label: 'Yordam kerak',    style: { background: '#FBF3E4', color: '#8E6314', border: '1px solid #F0DBA8' } },
+const MOMENT_KEYS = [
+  { key: 'first',   tKey: 'journal.momentFirst', style: { background: '#E2F0E8', color: '#4F8C72', border: '1px solid #A8D2BC' } },
+  { key: 'success', tKey: 'journal.momentSuccess', style: { background: '#F6F3FB', color: '#5F567F', border: '1px solid #D8CFE5' } },
+  { key: 'help',    tKey: 'journal.momentHelp',    style: { background: '#FBF3E4', color: '#8E6314', border: '1px solid #F0DBA8' } },
 ];
 
 const getDraftKey = () => {
@@ -20,7 +21,8 @@ const getDraftKey = () => {
  * Auto-saves to localStorage every 5s
  */
 export function ParentJournalComposer({ childList = [], onSend }) {
-  const today  = new Date().toLocaleDateString('uz-UZ', { day: 'numeric', month: 'long', year: 'numeric' });
+  const { t, i18n } = useTranslation();
+  const today  = new Date().toLocaleDateString(i18n.language, { day: 'numeric', month: 'long', year: 'numeric' });
   const draftKey = getDraftKey();
 
   const [selectedIds, setSelectedIds] = useState(() => {
@@ -40,10 +42,10 @@ export function ParentJournalComposer({ childList = [], onSend }) {
       localStorage.setItem(draftKey + ':subject', subject);
       localStorage.setItem(draftKey + ':body',    body);
       localStorage.setItem(draftKey + ':ids',     JSON.stringify(selectedIds));
-      setLastSaved(new Date().toLocaleTimeString('uz-UZ', { hour: '2-digit', minute: '2-digit' }));
+      setLastSaved(new Date().toLocaleTimeString(i18n.language, { hour: '2-digit', minute: '2-digit' }));
     }, 5000);
     return () => clearInterval(timer);
-  }, [subject, body, selectedIds, draftKey]);
+  }, [subject, body, selectedIds, draftKey, i18n.language]);
 
   const toggleChild = (id) => {
     setSelectedIds(prev =>
@@ -86,8 +88,8 @@ export function ParentJournalComposer({ childList = [], onSend }) {
     }
   };
 
-  const insertMoment = (chip) => {
-    const marker = `\n\n[${chip.label}] `;
+  const insertMoment = (label) => {
+    const marker = `\n\n[${label}] `;
     setBody(prev => prev + marker);
   };
 
@@ -96,7 +98,7 @@ export function ParentJournalComposer({ childList = [], onSend }) {
       <div className="flex flex-1 overflow-hidden">
         {/* Left rail — children */}
         <aside className="shrink-0 border-r border-slate-200 bg-paper p-5 overflow-y-auto" style={{ width: 180 }}>
-          <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">Bolalar</div>
+          <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('journal.children')}</div>
           <label className="mt-3 flex items-center gap-2 text-[12px] font-medium text-slate-700 cursor-pointer">
             <input
               type="checkbox"
@@ -104,7 +106,7 @@ export function ParentJournalComposer({ childList = [], onSend }) {
               onChange={toggleAll}
               className="rounded accent-brand-600"
             />
-            Hammasiga jo&apos;natish
+            {t('journal.sendAll')}
           </label>
           <div className="mt-3 space-y-1.5">
             {childList.map(child => {
@@ -131,20 +133,20 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           </div>
           {selectedIds.length > 0 && (
             <div className="mt-4 text-[11px] text-brand-700 font-medium">
-              {selectedIds.length} ta tanlandi
+              {t('journal.selectedCount', { count: selectedIds.length })}
             </div>
           )}
         </aside>
 
         {/* Composer */}
-        <div className="flex-1 flex flex-col overflow-hidden p-7">
+        <div className="flex-1 flex flex-col overflow-hidden p-4 md:p-7">
           <div className="flex items-center justify-between mb-1">
             <div className="text-[12px] text-slate-500 tnum">{today}</div>
             <div className="flex items-center gap-1.5">
               {lastSaved && (
                 <span className="text-[11px] text-slate-400 flex items-center gap-1">
                   <Cloud className="w-3.5 h-3.5" strokeWidth={1.75} />
-                  {lastSaved} da saqlandi
+                  {t('journal.savedAt', { time: lastSaved })}
                 </span>
               )}
             </div>
@@ -154,7 +156,7 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           <input
             value={subject}
             onChange={e => setSubject(e.target.value)}
-            placeholder="Mavzu..."
+            placeholder={t('journal.subjectPlaceholder')}
             className="w-full text-[20px] font-semibold text-slate-900 placeholder:text-slate-400 outline-none border-0 border-b border-transparent focus:border-brand-300 pb-2 bg-transparent transition-colors"
           />
 
@@ -162,31 +164,34 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           <textarea
             value={body}
             onChange={e => setBody(e.target.value)}
-            placeholder="Bugungi kun haqida ota-onaga yozing..."
+            placeholder={t('journal.bodyPlaceholder')}
             className="flex-1 mt-5 text-[15px] text-slate-800 leading-[1.7] placeholder:text-slate-400 outline-none resize-none bg-transparent"
             style={{ minHeight: 120 }}
           />
 
           {/* Moment chips */}
           <div className="mt-4 flex items-center gap-2 flex-wrap">
-            {MOMENT_CHIPS.map(chip => (
-              <button
-                key={chip.key}
-                type="button"
-                onClick={() => insertMoment(chip)}
-                className="h-7 px-3 rounded-full text-[12px] font-medium transition-opacity hover:opacity-80"
-                style={chip.style}
-              >
-                + {chip.label}
-              </button>
-            ))}
+            {MOMENT_KEYS.map(chip => {
+              const label = t(chip.tKey);
+              return (
+                <button
+                  key={chip.key}
+                  type="button"
+                  onClick={() => insertMoment(label)}
+                  className="h-7 px-3 rounded-full text-[12px] font-medium transition-opacity hover:opacity-80"
+                  style={chip.style}
+                >
+                  + {label}
+                </button>
+              );
+            })}
             <button
               type="button"
               ref={fileRef}
               onClick={() => fileRef.current?.click()}
               className="h-7 px-3 rounded-full text-[12px] font-medium border border-dashed border-slate-300 text-slate-500 flex items-center gap-1 hover:bg-slate-50 transition-colors"
             >
-              <Camera className="w-3.5 h-3.5" strokeWidth={1.75} /> Lavha
+              <Camera className="w-3.5 h-3.5" strokeWidth={1.75} /> {t('journal.photo')}
             </button>
             <input
               type="file"
@@ -203,7 +208,7 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           {/* Photo persistence warning */}
           {photos.length > 0 && (
             <p className="mt-2 text-[11px] text-amber-700 bg-amber-50 border border-amber-100 rounded px-2 py-1">
-              Suratlar faqat shu sahifada saqlanadi — boshqa sahifaga o&apos;tsangiz yo&apos;qoladi. Avval xabarni yuboring.
+              {t('journal.photoWarning')}
             </p>
           )}
 
@@ -233,15 +238,15 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between">
             <div className="text-[12px] text-slate-500">
               {selectedIds.length === 0
-                ? 'Qabul qiluvchi tanlanmagan'
-                : `${selectedIds.length} ota-onaga`}
+                ? t('journal.noRecipient')
+                : t('journal.recipientCount', { count: selectedIds.length })}
             </div>
             <div className="flex items-center gap-2">
               <button
                 type="button"
                 className="h-9 px-3.5 rounded-md bg-surface border border-slate-200 text-[13px] font-medium text-slate-700 hover:bg-slate-50 transition-colors"
               >
-                Qoralama
+                {t('journal.draft')}
               </button>
               <button
                 type="button"
@@ -250,7 +255,7 @@ export function ParentJournalComposer({ childList = [], onSend }) {
                 className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium flex items-center gap-1.5 hover:bg-brand-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 <Send className="w-4 h-4" strokeWidth={1.75} />
-                Jo&apos;natish · {selectedIds.length}
+                {t('journal.send', { count: selectedIds.length })}
               </button>
             </div>
           </div>

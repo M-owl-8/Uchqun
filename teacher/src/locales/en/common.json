@@ -34,7 +34,12 @@
     "therapy": "Therapy",
     "warnings": "Warnings",
     "chat": "Messages",
-    "reflection": "Daily Journal"
+    "reflection": "Daily Journal",
+    "profile": "Profile",
+    "settings": "Settings",
+    "portalSubtitle": "Teacher Portal",
+    "roleTeacher": "Teacher",
+    "logout": "Log out"
   },
   "quickObs": {
     "title": "New observation",
@@ -114,7 +119,38 @@
     "teacherRating": "Rating",
     "irr": "IRR — Development Plan",
     "therapy": "Useful Materials",
-    "help": "Help"
+    "help": "Help",
+    "today": "Today",
+    "greeting": "Welcome, {{name}}.",
+    "greetingMobile": "Today, {{name}}",
+    "newEntry": "New Entry",
+    "classAtGlance": "Class at a Glance",
+    "presentCount": "present",
+    "attendanceStat": "Attendance",
+    "normal": "normal",
+    "observationsToday": "Observations today",
+    "vsYesterday": "vs yesterday",
+    "newMessages": "New messages",
+    "fromParents": "from parents",
+    "viewMessages": "View messages",
+    "focusToday": "Today's Focus",
+    "focusCount": "{{count}} · pending",
+    "recentObservations": "Recent Observations",
+    "noObservations": "No observations written today",
+    "noObservationsMobile": "No observations yet",
+    "viewAll": "View all",
+    "quickLinks": "Quick Links",
+    "groupLabel": "Group",
+    "observationStat": "Observations",
+    "messageStat": "Messages",
+    "messageAction": "Message",
+    "linkAttendance": "Mark Attendance",
+    "linkChildren": "Children List",
+    "linkChat": "Chat with Parents",
+    "linkReflection": "Daily Journal",
+    "absent": "{{name}} is absent today",
+    "needsAttention": "{{name}} · needs attention",
+    "contactParent": "Send parent a message asking for reason"
   },
   "parentsPage": {
     "title": "Parent list",
@@ -124,7 +160,8 @@
     "children_plural": "{{count}} children",
     "noChildInfo": "No child information",
     "noParents": "No parents yet",
-    "noParentsFound": "No matching parents found"
+    "noParentsFound": "No matching parents found",
+    "childrenLabel": "Children:"
   },
   "activitiesPage": {
     "title": "Individual Plan",
@@ -378,7 +415,9 @@
     "logoutSuccess": "Signed out successfully",
     "logoutTitle": "Sign Out",
     "confirmLogout": "Are you sure you want to sign out?",
-    "yes": "Yes"
+    "yes": "Yes",
+    "roleLabel": "Role",
+    "idLabel": "ID"
   },
   "monitoring": {
     "title": "Weekly Monitoring Journal",
@@ -531,11 +570,17 @@
     "parentRec": "Home practice recommendation:",
     "discussion": "Discussion:",
     "noStgs": "No goals set yet",
-    "noData": "Plan created, but no assessments conducted yet."
+    "noData": "Plan created, but no assessments conducted yet.",
+    "toastReviewSaved": "Quarter review saved",
+    "confirmDeleteLtg": "Delete this long-term goal?",
+    "confirmDeleteLtgWarning": "This cannot be undone. All related short-term goals will also be removed.",
+    "confirmDeleteStg": "Delete this short-term goal?",
+    "errorPeriodRequired": "Enter the period start and end dates"
   },
   "common": {
     "networkError": "Network error. Please try again.",
-    "timeoutError": "Request timed out."
+    "timeoutError": "Request timed out.",
+    "save": "Save"
   },
   "attendance": {
     "errorLoadChildren": "Error loading children list",
@@ -555,7 +600,11 @@
     "children": "children",
     "noChildren": "No children match this filter",
     "noHistory": "No attendance records",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "historyName": "Name",
+    "historyPresent": "Present",
+    "saveProgress": "{{marked}} of {{total}} marked",
+    "group": "Group"
   },
   "childDetail": {
     "errorIrrLoad": "Failed to load IDP data"
@@ -752,5 +801,56 @@
     "email": "Email",
     "emailValue": "support@uchqun.uz",
     "phoneValue": "+998 71 200 00 00"
+  },
+  "reflection": {
+    "title": "Daily Journal",
+    "private": "Private",
+    "privateNote": "Only I can see this",
+    "placeholder": "Write your personal thoughts about today...",
+    "autoSave": "Auto-saved",
+    "saving": "Saving...",
+    "observationsToday": "Today's Observations",
+    "noObservations": "No observations recorded today",
+    "parentJournal": "Parent Journal",
+    "positive": "Good outcome",
+    "needsHelp": "Needs support"
+  },
+  "journal": {
+    "children": "Children",
+    "sendAll": "Send to all",
+    "selectedCount": "{{count}} selected",
+    "savedAt": "Saved at {{time}}",
+    "subjectPlaceholder": "Subject...",
+    "bodyPlaceholder": "Write to parents about today...",
+    "photo": "Photo",
+    "photoWarning": "Photos are only visible to selected parents",
+    "noRecipient": "No recipient selected",
+    "recipientCount": "{{count}} parents",
+    "draft": "Draft",
+    "send": "Send · {{count}}",
+    "momentFirst": "First time",
+    "momentSuccess": "Good outcome",
+    "momentHelp": "Needs support"
+  },
+  "layout": {
+    "pageToday": "Today",
+    "pageAttendance": "Attendance",
+    "pageParents": "Parents",
+    "pageGallery": "Gallery",
+    "pageGoals": "Goals",
+    "pageObservations": "Observations",
+    "pageChat": "Chat",
+    "pageReflection": "Daily Journal",
+    "pageJournal": "Journal",
+    "pageProfile": "Profile",
+    "pageSettings": "Settings",
+    "pageMeals": "Meals",
+    "pageTherapy": "Therapy",
+    "pageWarnings": "Warnings",
+    "pageChildProfile": "Child Profile",
+    "pageDefault": "Uchqun",
+    "menuOpen": "Open menu",
+    "notifications": "Notifications",
+    "newObservation": "New observation"
   }
 }

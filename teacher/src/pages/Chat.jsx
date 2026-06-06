@@ -9,19 +9,19 @@ import * as cache from '../../../shared/utils/cache';
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatTime(dateStr) {
+function formatTime(dateStr, lang) {
   if (!dateStr) return '';
   try {
-    return new Date(dateStr).toLocaleTimeString('default', {
+    return new Date(dateStr).toLocaleTimeString(lang || 'en', {
       hour: '2-digit', minute: '2-digit', hour12: false,
     });
   } catch { return ''; }
 }
 
-function formatDate(dateStr) {
+function formatDate(dateStr, lang) {
   if (!dateStr) return '';
   try {
-    return new Date(dateStr).toLocaleDateString('default', {
+    return new Date(dateStr).toLocaleDateString(lang || 'en', {
       day: 'numeric', month: 'short',
     });
   } catch { return ''; }
@@ -42,7 +42,7 @@ const AVATAR_BG = { background: '#7A6FA8', color: '#fff' };
 // ── Component ─────────────────────────────────────────────────────────────────
 
 const Chat = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { on, off } = useSocket();
   const { error: showError } = useToast();
@@ -234,7 +234,7 @@ const Chat = () => {
   return (
     // Bust out of Layout padding to fill the full content area
     <div
-      className="-mx-4 sm:-mx-6 -mt-6 -mb-24 md:-mb-8 flex overflow-hidden border-t border-slate-200"
+      className="-mx-4 sm:-mx-6 -mt-6 -mb-8 flex overflow-hidden border-t border-slate-200"
       style={{ height: 'calc(100vh - 56px)' }}
     >
       {/* ── LEFT PANEL: conversation list ───────────────────────────────── */}
@@ -289,7 +289,7 @@ const Chat = () => {
               const p = parentMap[pid];
               const isActive = pid === String(selectedParentId);
               const lastText = convo.lastMessage?.content || '';
-              const lastTime = convo.updatedAt ? formatTime(convo.updatedAt) : '';
+              const lastTime = convo.updatedAt ? formatTime(convo.updatedAt, i18n.language) : '';
 
               return (
                 <button
@@ -406,7 +406,7 @@ const Chat = () => {
                       <div className="flex items-center gap-2 my-4">
                         <div className="flex-1 h-px bg-slate-200" />
                         <span className="text-[10px] text-slate-400 shrink-0">
-                          {formatDate(msg.createdAt)}
+                          {formatDate(msg.createdAt, i18n.language)}
                         </span>
                         <div className="flex-1 h-px bg-slate-200" />
                       </div>
@@ -427,7 +427,7 @@ const Chat = () => {
                             isYou ? 'text-white/60 text-right' : 'text-slate-400'
                           }`}
                         >
-                          {formatTime(msg.createdAt)}
+                          {formatTime(msg.createdAt, i18n.language)}
                         </div>
                       </div>
                     </div>

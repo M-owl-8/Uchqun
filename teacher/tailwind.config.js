@@ -122,6 +122,7 @@ export default {
           50:  '#F7EBE7',
           200: '#E8C7BE',
           500: '#9A5045', // softer Bordeaux — intentionally distinct from bright red
+          600: '#7E3C35',
           700: '#6F362E',
         },
         info: {

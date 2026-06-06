@@ -34,7 +34,12 @@
     "therapy": "Terapiya",
     "warnings": "Ogohlantirishlar",
     "chat": "Muloqot",
-    "reflection": "Kun jurnali"
+    "reflection": "Kun jurnali",
+    "profile": "Profil",
+    "settings": "Sozlamalar",
+    "portalSubtitle": "O'qituvchi portali",
+    "roleTeacher": "O'qituvchi",
+    "logout": "Chiqish"
   },
   "quickObs": {
     "title": "Yangi kuzatuv",
@@ -114,7 +119,38 @@
     "teacherRating": "Baholash",
     "irr": "IRR — Rivojlanish rejasi",
     "therapy": "Foydali materiallar",
-    "help": "Yordam"
+    "help": "Yordam",
+    "today": "Bugun",
+    "greeting": "Xush kelibsiz, {{name}} opa/aka.",
+    "greetingMobile": "Bugun, {{name}} opa/aka",
+    "newEntry": "Yangi yozuv",
+    "classAtGlance": "Sinf bir qarashda",
+    "presentCount": "keldi",
+    "attendanceStat": "Davomat",
+    "normal": "normal",
+    "observationsToday": "Kuzatuvlar bugun",
+    "vsYesterday": "vs kecha",
+    "newMessages": "Yangi xabarlar",
+    "fromParents": "ota-onadan",
+    "viewMessages": "Xabarlarni ko'rish",
+    "focusToday": "Bugungi diqqat",
+    "focusCount": "{{count}} ta · javob kutmoqda",
+    "recentObservations": "So'nggi kuzatuvlar",
+    "noObservations": "Bugun hali kuzatuv yozilmadi",
+    "noObservationsMobile": "Hali kuzatuv yozilmadi",
+    "viewAll": "Hammasini ko'rish",
+    "quickLinks": "Tezkor havolalar",
+    "groupLabel": "Guruh",
+    "observationStat": "Kuzatuv",
+    "messageStat": "Xabar",
+    "messageAction": "Xabar",
+    "linkAttendance": "Davomat belgilash",
+    "linkChildren": "Bolalar ro'yxati",
+    "linkChat": "Ota-onalar bilan chat",
+    "linkReflection": "Kun jurnali",
+    "absent": "{{name}} bugun yo'q",
+    "needsAttention": "{{name}} · diqqat kerak",
+    "contactParent": "Ota-onaga sabab so'rab xabar yo'llang"
   },
   "parentsPage": {
     "title": "Ota-onalar ro'yxati",
@@ -124,7 +160,8 @@
     "children_plural": "{{count}} bola",
     "noChildInfo": "Bola haqida ma'lumot yo'q",
     "noParents": "Hozircha ota-onalar yo'q",
-    "noParentsFound": "Mos ota-onalar topilmadi"
+    "noParentsFound": "Mos ota-onalar topilmadi",
+    "childrenLabel": "Bolalar:"
   },
   "activitiesPage": {
     "title": "Individual reja",
@@ -378,7 +415,9 @@
     "logoutSuccess": "Muvaffaqiyatli chiqildi",
     "logoutTitle": "Chiqish",
     "confirmLogout": "Chiqishni xohlaysizmi?",
-    "yes": "Ha"
+    "yes": "Ha",
+    "roleLabel": "Rol",
+    "idLabel": "ID"
   },
   "monitoring": {
     "title": "Haftalik monitoring jurnali",
@@ -531,11 +570,17 @@
     "parentRec": "Uyda bajarish uchun tavsiya:",
     "discussion": "Muhokama:",
     "noStgs": "Maqsadlar hali tuzilmagan",
-    "noData": "Reja tuzilgan, ammo hali baholash o'tkazilmagan."
+    "noData": "Reja tuzilgan, ammo hali baholash o'tkazilmagan.",
+    "toastReviewSaved": "Chorak yakun saqlandi",
+    "confirmDeleteLtg": "Uzoq muddatli maqsadni o'chirishni tasdiqlaysizmi?",
+    "confirmDeleteLtgWarning": "Bu amalni qaytarib bo'lmaydi. Barcha bog'liq qisqa muddatli maqsadlar ham o'chib ketadi.",
+    "confirmDeleteStg": "Qisqa muddatli maqsadni o'chirishni tasdiqlaysizmi?",
+    "errorPeriodRequired": "Davr boshlanish va tugash sanasini kiriting"
   },
   "common": {
     "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
-    "timeoutError": "So'rov vaqti tugadi."
+    "timeoutError": "So'rov vaqti tugadi.",
+    "save": "Saqlash"
   },
   "attendance": {
     "errorLoadChildren": "Bolalar ro'yxatini yuklashda xatolik",
@@ -555,7 +600,11 @@
     "children": "bola",
     "noChildren": "Bu filtr bo'yicha bola yo'q",
     "noHistory": "Davomat ma'lumotlari yo'q",
-    "saving": "Saqlanmoqda..."
+    "saving": "Saqlanmoqda...",
+    "historyName": "Ism",
+    "historyPresent": "Bor",
+    "saveProgress": "{{total}} dan {{marked}} ta belgilangan",
+    "group": "Guruh"
   },
   "childDetail": {
     "errorIrrLoad": "IRR ma'lumotlari yuklanmadi"
@@ -752,5 +801,56 @@
     "email": "Email",
     "emailValue": "support@uchqun.uz",
     "phoneValue": "+998 71 200 00 00"
+  },
+  "reflection": {
+    "title": "Kun jurnali",
+    "private": "Shaxsiy",
+    "privateNote": "Faqat men ko'raman",
+    "placeholder": "Bugungi kun haqida shaxsiy fikrlaringizni yozing...",
+    "autoSave": "Avtomatik saqlanadi",
+    "saving": "Saqlanmoqda...",
+    "observationsToday": "Bugungi kuzatuvlar",
+    "noObservations": "Bugun hali kuzatuv yozilmadi",
+    "parentJournal": "Ota-onaga jurnal",
+    "positive": "Yaxshi natija",
+    "needsHelp": "Yordam kerak"
+  },
+  "journal": {
+    "children": "Bolalar",
+    "sendAll": "Hammasiga jo'natish",
+    "selectedCount": "{{count}} ta tanlandi",
+    "savedAt": "{{time}} da saqlandi",
+    "subjectPlaceholder": "Mavzu...",
+    "bodyPlaceholder": "Bugungi kun haqida ota-onaga yozing...",
+    "photo": "Lavha",
+    "photoWarning": "Rasmlar faqat tanlangan ota-onaga ko'rinadi",
+    "noRecipient": "Qabul qiluvchi tanlanmagan",
+    "recipientCount": "{{count}} ota-onaga",
+    "draft": "Qoralama",
+    "send": "Jo'natish · {{count}}",
+    "momentFirst": "Birinchi marta",
+    "momentSuccess": "Yaxshi natija",
+    "momentHelp": "Yordam kerak"
+  },
+  "layout": {
+    "pageToday": "Bugun",
+    "pageAttendance": "Davomat",
+    "pageParents": "Ota-onalar",
+    "pageGallery": "Galereya",
+    "pageGoals": "Maqsadlar",
+    "pageObservations": "Kuzatuvlar",
+    "pageChat": "Chat",
+    "pageReflection": "Kun jurnali",
+    "pageJournal": "Jurnal",
+    "pageProfile": "Profil",
+    "pageSettings": "Sozlamalar",
+    "pageMeals": "Taomlar",
+    "pageTherapy": "Terapiya",
+    "pageWarnings": "Ogohlantirishlar",
+    "pageChildProfile": "Bola profili",
+    "pageDefault": "Uchqun",
+    "menuOpen": "Menyuni ochish",
+    "notifications": "Bildirishnomalar",
+    "newObservation": "Yangi kuzatuv"
   }
 }

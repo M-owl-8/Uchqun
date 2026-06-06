@@ -34,7 +34,12 @@
     "therapy": "Терапия",
     "warnings": "Предупреждения",
     "chat": "Сообщения",
-    "reflection": "Дневник дня"
+    "reflection": "Дневник дня",
+    "profile": "Профиль",
+    "settings": "Настройки",
+    "portalSubtitle": "Портал учителя",
+    "roleTeacher": "Учитель",
+    "logout": "Выйти"
   },
   "quickObs": {
     "title": "Новое наблюдение",
@@ -114,7 +119,38 @@
     "teacherRating": "Оценка",
     "irr": "ИРП — План развития",
     "therapy": "Полезные материалы",
-    "help": "Помощь"
+    "help": "Помощь",
+    "today": "Сегодня",
+    "greeting": "Добро пожаловать, {{name}}.",
+    "greetingMobile": "Сегодня, {{name}}",
+    "newEntry": "Новая запись",
+    "classAtGlance": "Класс с первого взгляда",
+    "presentCount": "присутствует",
+    "attendanceStat": "Посещаемость",
+    "normal": "норма",
+    "observationsToday": "Наблюдения сегодня",
+    "vsYesterday": "vs вчера",
+    "newMessages": "Новые сообщения",
+    "fromParents": "от родителей",
+    "viewMessages": "Просмотреть сообщения",
+    "focusToday": "Фокус дня",
+    "focusCount": "{{count}} · ожидает ответа",
+    "recentObservations": "Последние наблюдения",
+    "noObservations": "Сегодня наблюдений ещё нет",
+    "noObservationsMobile": "Наблюдений пока нет",
+    "viewAll": "Просмотреть все",
+    "quickLinks": "Быстрые ссылки",
+    "groupLabel": "Группа",
+    "observationStat": "Наблюдения",
+    "messageStat": "Сообщения",
+    "messageAction": "Сообщение",
+    "linkAttendance": "Отметить посещаемость",
+    "linkChildren": "Список детей",
+    "linkChat": "Чат с родителями",
+    "linkReflection": "Дневной журнал",
+    "absent": "{{name}} сегодня отсутствует",
+    "needsAttention": "{{name}} · требует внимания",
+    "contactParent": "Отправьте родителю сообщение с запросом причины"
   },
   "parentsPage": {
     "title": "Список родителей",
@@ -124,7 +160,8 @@
     "children_plural": "{{count}} детей",
     "noChildInfo": "Нет информации о ребёнке",
     "noParents": "Пока нет родителей",
-    "noParentsFound": "Подходящих родителей не найдено"
+    "noParentsFound": "Подходящих родителей не найдено",
+    "childrenLabel": "Дети:"
   },
   "activitiesPage": {
     "title": "Индивидуальный план",
@@ -378,7 +415,9 @@
     "logoutSuccess": "Выход выполнен успешно",
     "logoutTitle": "Выход",
     "confirmLogout": "Вы уверены, что хотите выйти?",
-    "yes": "Да"
+    "yes": "Да",
+    "roleLabel": "Роль",
+    "idLabel": "ID"
   },
   "monitoring": {
     "title": "Еженедельный журнал мониторинга",
@@ -531,11 +570,17 @@
     "parentRec": "Рекомендация для занятий дома:",
     "discussion": "Обсуждение:",
     "noStgs": "Цели пока не заданы",
-    "noData": "План создан, но оценок пока не проводилось."
+    "noData": "План создан, но оценок пока не проводилось.",
+    "toastReviewSaved": "Итоги четверти сохранены",
+    "confirmDeleteLtg": "Удалить эту долгосрочную цель?",
+    "confirmDeleteLtgWarning": "Это действие нельзя отменить. Все связанные краткосрочные цели также будут удалены.",
+    "confirmDeleteStg": "Удалить эту краткосрочную цель?",
+    "errorPeriodRequired": "Введите даты начала и окончания периода"
   },
   "common": {
     "networkError": "Ошибка сети. Попробуйте снова.",
-    "timeoutError": "Время запроса истекло."
+    "timeoutError": "Время запроса истекло.",
+    "save": "Сохранить"
   },
   "attendance": {
     "errorLoadChildren": "Ошибка загрузки списка детей",
@@ -555,7 +600,11 @@
     "children": "детей",
     "noChildren": "Нет детей по этому фильтру",
     "noHistory": "Нет данных о посещаемости",
-    "saving": "Сохранение..."
+    "saving": "Сохранение...",
+    "historyName": "Имя",
+    "historyPresent": "Присут.",
+    "saveProgress": "{{marked}} из {{total}} отмечено",
+    "group": "Группа"
   },
   "childDetail": {
     "errorIrrLoad": "Не удалось загрузить данные ИРП"
@@ -752,5 +801,56 @@
     "email": "Электронная почта",
     "emailValue": "support@uchqun.uz",
     "phoneValue": "+998 71 200 00 00"
+  },
+  "reflection": {
+    "title": "Дневник дня",
+    "private": "Личное",
+    "privateNote": "Вижу только я",
+    "placeholder": "Напишите личные мысли о сегодняшнем дне...",
+    "autoSave": "Сохраняется автоматически",
+    "saving": "Сохранение...",
+    "observationsToday": "Наблюдения за сегодня",
+    "noObservations": "Наблюдения сегодня не записаны",
+    "parentJournal": "Журнал для родителей",
+    "positive": "Хороший результат",
+    "needsHelp": "Нужна помощь"
+  },
+  "journal": {
+    "children": "Дети",
+    "sendAll": "Отправить всем",
+    "selectedCount": "Выбрано: {{count}}",
+    "savedAt": "Сохранено в {{time}}",
+    "subjectPlaceholder": "Тема...",
+    "bodyPlaceholder": "Напишите родителям о сегодняшнем дне...",
+    "photo": "Фото",
+    "photoWarning": "Фотографии видны только выбранным родителям",
+    "noRecipient": "Получатель не выбран",
+    "recipientCount": "{{count}} родителям",
+    "draft": "Черновик",
+    "send": "Отправить · {{count}}",
+    "momentFirst": "Впервые",
+    "momentSuccess": "Хороший результат",
+    "momentHelp": "Нужна помощь"
+  },
+  "layout": {
+    "pageToday": "Сегодня",
+    "pageAttendance": "Посещаемость",
+    "pageParents": "Родители",
+    "pageGallery": "Галерея",
+    "pageGoals": "Цели",
+    "pageObservations": "Наблюдения",
+    "pageChat": "Чат",
+    "pageReflection": "Дневник дня",
+    "pageJournal": "Журнал",
+    "pageProfile": "Профиль",
+    "pageSettings": "Настройки",
+    "pageMeals": "Питание",
+    "pageTherapy": "Терапия",
+    "pageWarnings": "Предупреждения",
+    "pageChildProfile": "Профиль ребёнка",
+    "pageDefault": "Uchqun",
+    "menuOpen": "Открыть меню",
+    "notifications": "Уведомления",
+    "newObservation": "Новое наблюдение"
   }
 }

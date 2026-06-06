@@ -274,7 +274,7 @@ const TherapyManagement = () => {
 
   return (
     <>
-    <div className="max-w-7xl mx-auto space-y-8 pb-20 animate-in fade-in duration-700">
+    <div className="max-w-7xl mx-auto space-y-8 pb-12 md:pb-20 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
           <h1 className="text-[22px] font-semibold text-slate-900">{t('therapy.management', { defaultValue: 'Terapiya Boshqaruvi' })}</h1>
@@ -282,7 +282,7 @@ const TherapyManagement = () => {
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm"
+          className="flex items-center justify-center gap-2 px-6 py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors shadow-sm w-full md:w-auto"
         >
           <Plus className="w-5 h-5" />
           {t('therapy.create', { defaultValue: 'Yangi Terapiya' })}
@@ -311,7 +311,7 @@ const TherapyManagement = () => {
       </div>
 
       {filteredTherapies.length === 0 && (
-        <Card className="p-12 text-center">
+        <Card className="p-6 md:p-12 text-center">
           <Play className="w-16 h-16 text-slate-400 mx-auto mb-4" />
           <h3 className="text-lg font-semibold text-slate-900 mb-2">
             {t('therapy.noTherapies', { defaultValue: 'Terapiyalar topilmadi' })}

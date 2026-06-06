@@ -108,7 +108,7 @@ When `status === 'absent'`, `attendanceController.js` emits `logger.warn('ATTEND
 - ✅ Backend tests: 21/21 pass
 - ✅ check:locales: 657 keys, 0 missing  
 - ✅ Build: green
-- ⬜ Railway migration: pending deploy confirmation
+- ✅ Railway migration: `20260606000001` in SequelizeMeta; enum confirmed `present|absent|home_leave|sick|hospitalized`
 - ⬜ User verification (6 steps)
 
 ---

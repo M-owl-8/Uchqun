@@ -102,6 +102,8 @@ Walkthrough checklist:
 - [ ] Dashboard — date/time shows in Russian format; pending docs list has no stray "Ko'rish" button
 - [ ] Parent Management — empty state shows Russian text; search-empty shows clear-search button
 - [ ] Add Parent Wizard — step labels in Russian; draft banner is warning-* colors
+- [ ] Wizard Step 1 (Parent info) — every field label, hint, and dropdown option in Russian (Сведения о родителе, Имя, Фамилия, Email, Телефон, Адрес, Серия и номер паспорта, Родной язык, Пароль; language dropdown: Узбекский / Русский / Таджикский)
+- [ ] Wizard Step 2 (Child info) — every label, placeholder, and dropdown option in Russian (Сведения о ребёнке, Пол: Мужской/Женский, Тип диагноза: all 5 options in Russian, Степень диагноза: Лёгкая/Средняя/Тяжёлая; age hint shows "N год/года/лет, N месяц/месяца/месяцев")
 - [ ] Wizard Complete — credentials box is warning-* colors; no amber anywhere
 - [ ] Teacher Management — count shows in header; filter-empty shows clear-search
 - [ ] Group Management — count shows in header; filter-empty shows clear-search

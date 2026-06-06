@@ -175,7 +175,7 @@ const AIWarnings = () => {
                       </p>
                     </div>
                   )}
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-sm text-slate-500">
                       {new Date(warning.createdAt).toLocaleString()}
                     </span>

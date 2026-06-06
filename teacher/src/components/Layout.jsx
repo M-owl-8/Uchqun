@@ -1,37 +1,39 @@
 import { useState } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
-import { Bell, Menu } from 'lucide-react';
+import { Bell, Menu, Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import Sidebar from './Sidebar';
-import MobileTabBar from './MobileTabBar';
+import QuickObservation from './QuickObservation';
 
-// Page name mapping for top bar
-const PAGE_NAMES = {
-  '/teacher':            'Bugun',
-  '/teacher/attendance': 'Davomat',
-  '/teacher/parents':    "Guruh ro'yxati",
-  '/teacher/media':      'Galereya',
-  '/teacher/monitoring': 'Maqsadlar',
-  '/teacher/activities': 'Kuzatuvlar',
-  '/teacher/chat':       'Ota-onalar',
-  '/teacher/reflection': 'Kun jurnali',
-  '/teacher/journal':    'Jurnal',
-  '/teacher/profile':    'Profil',
-  '/teacher/settings':   'Sozlamalar',
-  '/teacher/meals':      'Ovqatlanish',
-  '/teacher/therapy':    'Terapiya',
-  '/teacher/warnings':   'Ogohlantirishlar',
+const PAGE_NAME_KEYS = {
+  '/teacher':            'layout.pageToday',
+  '/teacher/attendance': 'layout.pageAttendance',
+  '/teacher/parents':    'layout.pageParents',
+  '/teacher/media':      'layout.pageGallery',
+  '/teacher/monitoring': 'layout.pageGoals',
+  '/teacher/activities': 'layout.pageObservations',
+  '/teacher/chat':       'layout.pageChat',
+  '/teacher/reflection': 'layout.pageReflection',
+  '/teacher/journal':    'layout.pageJournal',
+  '/teacher/profile':    'layout.pageProfile',
+  '/teacher/settings':   'layout.pageSettings',
+  '/teacher/meals':      'layout.pageMeals',
+  '/teacher/therapy':    'layout.pageTherapy',
+  '/teacher/warnings':   'layout.pageWarnings',
 };
 
-const getPageName = (pathname) => {
-  if (PAGE_NAMES[pathname]) return PAGE_NAMES[pathname];
-  if (pathname.startsWith('/teacher/children/')) return 'Bola profili';
-  return 'Uchqun';
+const getPageNameKey = (pathname) => {
+  if (PAGE_NAME_KEYS[pathname]) return PAGE_NAME_KEYS[pathname];
+  if (pathname.startsWith('/teacher/children/')) return 'layout.pageChildProfile';
+  return 'layout.pageDefault';
 };
 
 const Layout = () => {
+  const { t } = useTranslation();
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const pageName = getPageName(location.pathname);
+  const [fabOpen, setFabOpen] = useState(false);
+  const pageName = t(getPageNameKey(location.pathname));
 
   return (
     <div className="min-h-screen bg-paper">
@@ -69,7 +71,7 @@ const Layout = () => {
           <button
             className="md:hidden w-8 h-8 -ml-1 grid place-items-center"
             onClick={() => setSidebarOpen(true)}
-            aria-label="Menyuni ochish"
+            aria-label={t('layout.menuOpen')}
           >
             <Menu className="w-5 h-5 text-slate-700" strokeWidth={1.75} />
           </button>
@@ -77,9 +79,17 @@ const Layout = () => {
           <span className="text-[15px] font-semibold text-slate-900">{pageName}</span>
 
           <div className="ml-auto flex items-center gap-2">
+            {/* Quick observation FAB — mobile only (replaces removed bottom nav) */}
+            <button
+              className="md:hidden w-8 h-8 grid place-items-center rounded-md bg-brand-600 text-surface hover:bg-brand-700 transition-colors"
+              onClick={() => setFabOpen(true)}
+              aria-label={t('layout.newObservation')}
+            >
+              <Plus className="w-4 h-4" strokeWidth={2} />
+            </button>
             <button
               className="w-8 h-8 grid place-items-center rounded-md border border-slate-200 bg-surface relative hover:bg-slate-50 transition-colors"
-              aria-label="Bildirishnomalar"
+              aria-label={t('layout.notifications')}
             >
               <Bell className="w-4 h-4 text-slate-600" strokeWidth={1.75} />
             </button>
@@ -89,16 +99,13 @@ const Layout = () => {
         {/* Page content */}
         <main
           key={location.pathname}
-          className="page-fade flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 pb-24 md:pb-8"
+          className="page-fade flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 py-6 pb-8"
         >
           <Outlet />
         </main>
       </div>
 
-      {/* Mobile tab bar */}
-      <div className="md:hidden">
-        <MobileTabBar />
-      </div>
+      {fabOpen && <QuickObservation onClose={() => setFabOpen(false)} />}
     </div>
   );
 };
