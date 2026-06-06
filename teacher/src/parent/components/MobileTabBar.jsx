@@ -1,17 +1,18 @@
 import { Link, useLocation } from 'react-router-dom';
-import { Home, BookOpen, MessageCircle, User } from 'lucide-react';
-import { useNotification } from '../context/NotificationContext';
-
-const TABS = [
-  { key: 'home',     label: 'Bugun',    href: '/',             icon: Home          },
-  { key: 'journal',  label: 'Kundalik', href: '/activities',   icon: BookOpen      },
-  { key: 'messages', label: 'Xabarlar', href: '/chat',         icon: MessageCircle },
-  { key: 'profile',  label: 'Profil',   href: '/child',        icon: User          },
-];
+import { Home, NotebookPen, Image as ImageIcon, MessageCircle, User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const MobileTabBar = () => {
   const location = useLocation();
-  const { count = 0 } = useNotification();
+  const { t } = useTranslation();
+
+  const TABS = [
+    { key: 'today',    labelKey: 'nav.today',    href: '/',         icon: Home         },
+    { key: 'diary',    labelKey: 'nav.diary',    href: '/journal',  icon: NotebookPen  },
+    { key: 'gallery',  labelKey: 'nav.gallery',  href: '/media',    icon: ImageIcon    },
+    { key: 'messages', labelKey: 'nav.messages', href: '/chat',     icon: MessageCircle },
+    { key: 'child',    labelKey: 'nav.child',    href: '/child',    icon: User         },
+  ];
 
   const isActive = (href) =>
     href === '/' ? location.pathname === '/' : location.pathname.startsWith(href);
@@ -21,7 +22,6 @@ const MobileTabBar = () => {
       <nav className="flex justify-around items-center h-16">
         {TABS.map((tab) => {
           const active = isActive(tab.href);
-          const showBadge = tab.key === 'home' && count > 0;
           return (
             <Link
               key={tab.key}
@@ -30,15 +30,8 @@ const MobileTabBar = () => {
                 active ? 'text-p-brand-600' : 'text-p-sepia-400'
               }`}
             >
-              <div className="relative">
-                <tab.icon className="w-5 h-5" strokeWidth={active ? 2 : 1.75} />
-                {showBadge && (
-                  <span className="absolute -top-2 -right-2 bg-p-honey-500 text-white text-[10px] leading-none font-bold rounded-full px-1.5 py-0.5 border-2 border-p-surface">
-                    {count > 9 ? '9+' : count}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] font-medium">{tab.label}</span>
+              <tab.icon className="w-5 h-5" strokeWidth={active ? 2 : 1.75} />
+              <span className="text-[10px] font-medium">{t(tab.labelKey)}</span>
             </Link>
           );
         })}

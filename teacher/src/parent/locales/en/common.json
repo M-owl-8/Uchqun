@@ -13,7 +13,13 @@
     "exit": "Exit",
     "menu": "Main menu",
     "therapy": "Useful",
-    "settings": "Settings"
+    "settings": "Settings",
+    "today": "Today",
+    "diary": "Diary",
+    "gallery": "Gallery",
+    "messages": "Messages",
+    "child": "Child",
+    "toToday": "To today"
   },
   "sidebar": {
     "title": "Uchqun Parent",
@@ -80,7 +86,25 @@
       "stableMood": "Mood remains stable throughout the day",
       "trustingRelationship": "Trusting relationship with the teacher"
     },
-    "diagnosis": "Diagnosis"
+    "diagnosis": "Diagnosis",
+    "section": {
+      "plan": "Plan & progress",
+      "school": "School",
+      "account": "Account"
+    },
+    "row": {
+      "individualPlan": "Individual plan",
+      "irr": "IRR — rehabilitation plan",
+      "therapy": "Therapy",
+      "attendance": "Attendance",
+      "meals": "Meals",
+      "rating": "Rate teacher & school",
+      "contactGovt": "Contact government",
+      "myMessages": "My escalations",
+      "settings": "Settings",
+      "language": "Language",
+      "logout": "Sign out"
+    }
   },
   "dashboard": {
     "role": "My Role: Parent",
@@ -94,7 +118,16 @@
     "meals": "Meals",
     "media": "Media",
     "viewAll": "View all",
-    "journal": "Daily journal"
+    "journal": "Daily journal",
+    "snapshot": "Today's overview",
+    "latestJournalEyebrow": "Today's entry",
+    "noJournalToday": "No journal entry for today yet.",
+    "quickAccess": "Quick links",
+    "todayAttendance": "Attendance",
+    "todayMeals": "Meals",
+    "todayMedia": "Photos",
+    "todayActivities": "Activities",
+    "attendanceUnknown": "—"
   },
   "activities": {
     "title": "Individual Plan",
@@ -155,7 +188,10 @@
     "totalMeals": "Total meals",
     "skipped": "Skipped",
     "quality": "Quality",
-    "excellent": "Excellent"
+    "excellent": "Excellent",
+    "todayChip": "Today",
+    "allDays": "All days",
+    "jumpToToday": "Today"
   },
   "media": {
     "title": "Media Gallery",
@@ -175,7 +211,9 @@
       "unsupportedTitle": "Video URL not supported",
       "unsupportedDesc": "Please use YouTube, Vimeo, or direct video file URLs (.mp4, .webm, etc.)",
       "openNewTab": "Open in New Tab"
-    }
+    },
+    "filterToday": "Today",
+    "filterAllTime": "All time"
   },
   "parentChat": {
     "title": "Chat with Teacher",
@@ -344,5 +382,13 @@
     "loadError": "Failed to load the journal. Please try again.",
     "noChild": "Select your child",
     "author": "Teacher"
+  },
+  "brand": {
+    "appName": "Uchqun",
+    "role": "Parent"
+  },
+  "common": {
+    "today": "Today",
+    "viewAll": "View all"
   }
 }

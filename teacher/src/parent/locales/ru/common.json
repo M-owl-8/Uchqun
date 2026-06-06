@@ -13,7 +13,13 @@
     "exit": "Выход",
     "menu": "Главное меню",
     "therapy": "Полезное",
-    "settings": "Настройки"
+    "settings": "Настройки",
+    "today": "Сегодня",
+    "diary": "Дневник",
+    "gallery": "Галерея",
+    "messages": "Сообщения",
+    "child": "Ребёнок",
+    "toToday": "К сегодня"
   },
   "sidebar": {
     "title": "Uchqun Родитель",
@@ -80,7 +86,25 @@
       "stableMood": "Настроение стабильно на протяжении дня",
       "trustingRelationship": "Доверительные отношения с воспитателем"
     },
-    "diagnosis": "Диагноз"
+    "diagnosis": "Диагноз",
+    "section": {
+      "plan": "План и развитие",
+      "school": "Школа",
+      "account": "Учётная запись"
+    },
+    "row": {
+      "individualPlan": "Индивидуальный план",
+      "irr": "ИРР — план реабилитации",
+      "therapy": "Терапия",
+      "attendance": "Посещаемость",
+      "meals": "Питание",
+      "rating": "Оценить педагога и школу",
+      "contactGovt": "Обращение в гос. орган",
+      "myMessages": "Мои обращения",
+      "settings": "Настройки",
+      "language": "Язык",
+      "logout": "Выйти"
+    }
   },
   "dashboard": {
     "role": "Моя роль: Родитель",
@@ -94,7 +118,16 @@
     "meals": "Питание",
     "media": "Медиа",
     "viewAll": "Показать все",
-    "journal": "Дневник"
+    "journal": "Дневник",
+    "snapshot": "Сводка за сегодня",
+    "latestJournalEyebrow": "Запись на сегодня",
+    "noJournalToday": "Записи на сегодня пока нет.",
+    "quickAccess": "Быстрые ссылки",
+    "todayAttendance": "Посещаемость",
+    "todayMeals": "Питание",
+    "todayMedia": "Фото",
+    "todayActivities": "Занятия",
+    "attendanceUnknown": "—"
   },
   "activities": {
     "title": "Индивидуальный план",
@@ -155,7 +188,10 @@
     "totalMeals": "Всего приемов пищи",
     "skipped": "Пропущено",
     "quality": "Качество",
-    "excellent": "Отлично"
+    "excellent": "Отлично",
+    "todayChip": "Сегодня",
+    "allDays": "Все дни",
+    "jumpToToday": "К сегодня"
   },
   "media": {
     "title": "Медиа-галерея",
@@ -175,7 +211,9 @@
       "unsupportedTitle": "Ссылка на видео не поддерживается",
       "unsupportedDesc": "Используйте ссылки YouTube, Vimeo или прямые видеофайлы (.mp4, .webm и т.д.)",
       "openNewTab": "Открыть в новой вкладке"
-    }
+    },
+    "filterToday": "Сегодня",
+    "filterAllTime": "Все время"
   },
   "parentChat": {
     "title": "Чат с воспитателем",
@@ -344,5 +382,13 @@
     "loadError": "Не удалось загрузить дневник. Попробуйте ещё раз.",
     "noChild": "Выберите ребёнка",
     "author": "Учитель"
+  },
+  "brand": {
+    "appName": "Uchqun",
+    "role": "Родитель"
+  },
+  "common": {
+    "today": "Сегодня",
+    "viewAll": "Показать все"
   }
 }

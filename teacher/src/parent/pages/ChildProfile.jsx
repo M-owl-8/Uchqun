@@ -3,7 +3,7 @@ import { useChild } from '../context/ChildContext';
 import { useSocket } from '../../shared/context/SocketContext';
 import api from '../services/api';
 import LoadingSpinner from '../components/LoadingSpinner';
-import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users, TrendingUp, Settings } from 'lucide-react';
+import { User, Calendar, Heart, ShieldAlert, Award, LogOut, MessageSquare, Users, TrendingUp, Settings, Activity, Dumbbell, CalendarCheck, UtensilsCrossed, Star, ChevronRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { formatDateMedium } from '@shared/utils/formatDate';
@@ -16,6 +16,44 @@ import EmotionalMonitoringSection from './childProfile/EmotionalMonitoringSectio
 import { InfoItem, StatRow } from './childProfile/childProfileUtils';
 
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
+
+// Grouped section wrapper used by the Bola hub layout.
+const HubSection = ({ title, children }) => (
+  <section className="page-card rounded-xl p-5">
+    <h3 className="text-[11px] uppercase tracking-[.12em] font-semibold text-p-sepia-500 mb-3">
+      {title}
+    </h3>
+    <div className="stitch mb-2" />
+    <div className="divide-y divide-p-sepia-100">{children}</div>
+  </section>
+);
+
+// One navigation row — link or button — with optional badge / danger / disabled state.
+const HubRow = ({ icon: Icon, label, to, onClick, disabled, danger, badge }) => {
+  const base = `w-full flex items-center gap-3 py-3 text-left transition-colors ${
+    disabled ? 'opacity-40 cursor-not-allowed' : 'hover:bg-p-sepia-50/60'
+  }`;
+  const iconWrap = `w-8 h-8 rounded-md grid place-items-center shrink-0 ${
+    danger ? 'bg-error-50 text-error-600' : 'bg-p-brand-50 text-p-brand-600'
+  }`;
+  const labelClass = `flex-1 text-[14px] font-medium ${danger ? 'text-error-600' : 'text-p-ink'}`;
+
+  const inner = (
+    <>
+      <span className={iconWrap}><Icon className="w-4 h-4" /></span>
+      <span className={labelClass}>{label}</span>
+      {badge ? (
+        <span className="px-2 py-0.5 rounded-full bg-p-brand-600 text-white text-[10px] font-bold">
+          {badge}
+        </span>
+      ) : null}
+      <ChevronRight className="w-4 h-4 text-p-sepia-400" />
+    </>
+  );
+
+  if (to) return <Link to={to} className={base}>{inner}</Link>;
+  return <button type="button" onClick={onClick} disabled={disabled} className={base}>{inner}</button>;
+};
 
 const ChildProfile = () => {
   const { children, selectedChildId, selectChild, loading: childrenLoading } = useChild();
@@ -308,61 +346,33 @@ const ChildProfile = () => {
         </div>
       </section>
 
+      {/* Plan & progress section */}
+      <HubSection title={t('child.section.plan')}>
+        <HubRow icon={TrendingUp}    label={t('child.row.irr')}            to="/irr" />
+        <HubRow icon={Activity}      label={t('child.row.individualPlan')} to="/activities" />
+        <HubRow icon={Dumbbell}      label={t('child.row.therapy')}        to="/therapy" />
+        <HubRow icon={CalendarCheck} label={t('child.row.attendance')}     to="/attendance" />
+        <HubRow icon={UtensilsCrossed} label={t('child.row.meals')}        to="/meals" />
+      </HubSection>
+
+      {/* School relations section */}
+      <HubSection title={t('child.section.school')}>
+        <HubRow icon={Star}          label={t('child.row.rating')}         to="/rating" />
+        <HubRow icon={MessageSquare} label={t('child.row.contactGovt')}    onClick={() => setShowMessageModal(true)} />
+        <HubRow
+          icon={MessageSquare}
+          label={t('child.row.myMessages')}
+          onClick={() => myMessages.length > 0 && setShowMessagesModal(true)}
+          disabled={myMessages.length === 0}
+          badge={myMessages.filter((m) => m.reply).length || null}
+        />
+      </HubSection>
+
       {/* Account section */}
-      <section className="page-card rounded-xl p-5">
-        <h3 className="text-[15px] font-semibold text-p-ink mb-4">
-          {t('profile.account')}
-        </h3>
-        <div className="stitch mb-3" />
-        <div className="space-y-2">
-          <Link
-            to="/irr"
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
-          >
-            <TrendingUp className="w-4 h-4" />
-            {t('irr.title')}
-          </Link>
-          <Link
-            to="/settings"
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-sepia-50 text-p-sepia-700 border border-p-sepia-200 hover:bg-p-sepia-100 transition-colors text-[13px] font-medium"
-          >
-            <Settings className="w-4 h-4" />
-            {t('settings.title')}
-          </Link>
-          <button
-            onClick={() => setShowMessageModal(true)}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 transition-colors text-[13px] font-medium"
-          >
-            <MessageSquare className="w-4 h-4" />
-            {t('profile.contactGovernment')}
-          </button>
-          <button
-            onClick={() => myMessages.length > 0 && setShowMessagesModal(true)}
-            disabled={myMessages.length === 0}
-            title={myMessages.length === 0 ? t('profile.noMessagesSent') : undefined}
-            className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-colors text-[13px] font-medium relative ${
-              myMessages.length > 0
-                ? 'bg-p-sepia-50 text-p-sepia-700 border-p-sepia-200 hover:bg-p-sepia-100 cursor-pointer'
-                : 'bg-p-sepia-50 text-p-sepia-400 border-p-sepia-100 cursor-not-allowed'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4" />
-            {t('profile.myMessages')}
-            {myMessages.some((m) => m.reply) && (
-              <span className="absolute -top-1 -right-1 w-5 h-5 bg-p-brand-600 text-white text-[10px] rounded-full flex items-center justify-center">
-                {myMessages.filter((m) => m.reply).length}
-              </span>
-            )}
-          </button>
-          <button
-            onClick={() => setShowLogoutModal(true)}
-            className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg bg-error-50 text-error-600 border border-error-200 hover:bg-error-100 transition-colors text-[13px] font-medium"
-          >
-            <LogOut className="w-4 h-4" />
-            {t('nav.exit')}
-          </button>
-        </div>
-      </section>
+      <HubSection title={t('child.section.account')}>
+        <HubRow icon={Settings} label={t('child.row.settings')} to="/settings" />
+        <HubRow icon={LogOut}   label={t('child.row.logout')}   onClick={() => setShowLogoutModal(true)} danger />
+      </HubSection>
 
       <AvatarUploadModal
         show={showAvatarSelector}

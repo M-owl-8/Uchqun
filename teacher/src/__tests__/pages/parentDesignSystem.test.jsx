@@ -42,11 +42,11 @@ vi.mock('../../parent/context/NotificationContext', () => ({
 // MobileTabBar
 // ─────────────────────────────────────────────────────────────────────
 describe('MobileTabBar', () => {
-  it('renders 4 navigation tabs', async () => {
+  it('renders 5 navigation tabs', async () => {
     const { default: MobileTabBar } = await import('../../parent/components/MobileTabBar');
     const { container } = render(React.createElement(MobileTabBar));
     const links = container.querySelectorAll('a');
-    expect(links.length).toBe(4);
+    expect(links.length).toBe(5);
   });
 
   it('marks / as active at root path', async () => {
@@ -57,22 +57,29 @@ describe('MobileTabBar', () => {
     expect(homeLink.className).toContain('text-p-brand-600');
   });
 
-  it('shows unread badge on Xabarlar tab when count > 0', async () => {
+  it('routes match the 5-tab IA: today / journal / media / chat / child', async () => {
     const { default: MobileTabBar } = await import('../../parent/components/MobileTabBar');
     const { container } = render(React.createElement(MobileTabBar));
-    // The badge span is positioned absolutely (absolute class) on the messages tab icon
-    const allSpans = Array.from(container.querySelectorAll('span'));
-    const badge = allSpans.find((s) => s.textContent === '3');
-    expect(badge).toBeTruthy();
+    const hrefs = Array.from(container.querySelectorAll('a')).map((a) => a.getAttribute('href'));
+    expect(hrefs).toEqual(['/', '/journal', '/media', '/chat', '/child']);
   });
 
-  it('has tab labels', async () => {
+  it('emits no badge — notifications moved to top-bar bell', async () => {
+    const { default: MobileTabBar } = await import('../../parent/components/MobileTabBar');
+    const { container } = render(React.createElement(MobileTabBar));
+    const allSpans = Array.from(container.querySelectorAll('span'));
+    const badge = allSpans.find((s) => s.textContent === '3');
+    expect(badge).toBeFalsy();
+  });
+
+  it('renders the i18n label keys verbatim (mock returns the key)', async () => {
     const { default: MobileTabBar } = await import('../../parent/components/MobileTabBar');
     render(React.createElement(MobileTabBar));
-    expect(screen.getByText('Bugun')).toBeTruthy();
-    expect(screen.getByText('Kundalik')).toBeTruthy();
-    expect(screen.getByText('Xabarlar')).toBeTruthy();
-    expect(screen.getByText('Profil')).toBeTruthy();
+    expect(screen.getByText('nav.today')).toBeTruthy();
+    expect(screen.getByText('nav.diary')).toBeTruthy();
+    expect(screen.getByText('nav.gallery')).toBeTruthy();
+    expect(screen.getByText('nav.messages')).toBeTruthy();
+    expect(screen.getByText('nav.child')).toBeTruthy();
   });
 });
 

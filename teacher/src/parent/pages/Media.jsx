@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
@@ -446,12 +447,16 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
   );
 };
 
+const todayIso = () => new Date().toISOString().slice(0, 10);
+
 const Media = () => {
   const { selectedChildId } = useChild();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedMedia, setSelectedMedia] = useState(null);
   const [filter, setFilter] = useState('all');
+  const [range, setRange] = useState(searchParams.get('range') === 'today' ? 'today' : 'all');
   const { t, i18n } = useTranslation();
 
   
@@ -489,7 +494,18 @@ const Media = () => {
     return () => controller.abort();
   }, [selectedChildId]);
 
-  const filteredMedia = filter === 'all' ? media : media.filter((item) => item.type === filter);
+  const today = todayIso();
+  const filteredMedia = media
+    .filter((item) => filter === 'all' || item.type === filter)
+    .filter((item) => range === 'all' || (item.date || '').slice(0, 10) === today);
+
+  const updateRange = (next) => {
+    setRange(next);
+    const params = Object.fromEntries(searchParams);
+    if (next === 'today') params.range = 'today';
+    else delete params.range;
+    setSearchParams(params);
+  };
 
   if (loading) return <div className="flex justify-center items-center h-96"><LoadingSpinner size="lg" /></div>;
 
@@ -500,29 +516,49 @@ const Media = () => {
         title={t('media.title')}
         subtitle={t('media.subtitle')}
       />
-      {/* Filter chips */}
+      {/* Filter chips — time range + media type, orthogonal */}
       <Card className="p-3 mb-6">
-        <div className="flex items-center justify-end">
+        <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex items-center gap-1 bg-p-sepia-50 p-1 rounded-xl border border-p-sepia-100">
-          {[
-            { id: 'all', label: t('media.filterAll'), icon: LayoutGrid },
-            { id: 'photo', label: t('media.filterPhoto'), icon: ImageIcon },
-            { id: 'video', label: t('media.filterVideo'), icon: Film },
-          ].map((option) => (
-            <button
-              key={option.id}
-              onClick={() => setFilter(option.id)}
-              className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-all ${
-                filter === option.id 
-                ? 'bg-p-surface text-p-brand-600 shadow-md scale-105'
-                : 'text-white/80 hover:text-white hover:bg-surface/20'
-              }`}
-            >
-              <option.icon className="w-4 h-4" />
-              <span className="hidden sm:inline">{option.label}</span>
-            </button>
-          ))}
-        </div>
+            {[
+              { id: 'all',   label: t('media.filterAllTime'), icon: Calendar },
+              { id: 'today', label: t('media.filterToday'),   icon: Calendar },
+            ].map((option) => (
+              <button
+                key={option.id}
+                onClick={() => updateRange(option.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                  range === option.id
+                    ? 'bg-p-surface text-p-brand-600 shadow-sm'
+                    : 'text-p-sepia-600 hover:text-p-ink'
+                }`}
+              >
+                <option.icon className="w-4 h-4" />
+                <span>{option.label}</span>
+              </button>
+            ))}
+          </div>
+
+          <div className="flex items-center gap-1 bg-p-sepia-50 p-1 rounded-xl border border-p-sepia-100">
+            {[
+              { id: 'all',   label: t('media.filterAll'),   icon: LayoutGrid },
+              { id: 'photo', label: t('media.filterPhoto'), icon: ImageIcon  },
+              { id: 'video', label: t('media.filterVideo'), icon: Film       },
+            ].map((option) => (
+              <button
+                key={option.id}
+                onClick={() => setFilter(option.id)}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
+                  filter === option.id
+                    ? 'bg-p-surface text-p-brand-600 shadow-sm'
+                    : 'text-p-sepia-600 hover:text-p-ink'
+                }`}
+              >
+                <option.icon className="w-4 h-4" />
+                <span className="hidden sm:inline">{option.label}</span>
+              </button>
+            ))}
+          </div>
         </div>
       </Card>
 

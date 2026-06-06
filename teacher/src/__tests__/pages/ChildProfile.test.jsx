@@ -178,9 +178,10 @@ describe('CL-013c ChildProfile integration', () => {
     await waitFor(() => expect(screen.getAllByText('Bobur Karimov').length).toBeGreaterThan(0));
 
     // Find button by text content (icon + text in same button)
+    // PP-IA-REDESIGN: logout row lives in the Account HubSection now, keyed by child.row.logout
     const logoutBtn = await waitFor(() => {
       const btn = screen.getAllByRole('button').find(
-        (b) => b.textContent.includes('Exit') || b.textContent.includes('nav.exit')
+        (b) => b.textContent.includes('child.row.logout')
       );
       expect(btn).toBeTruthy();
       return btn;
@@ -189,8 +190,8 @@ describe('CL-013c ChildProfile integration', () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText('Chiqishni xohlaysizmi?') ||
-        screen.queryByText('profile.confirmLogout')
+        screen.queryByText('profile.confirmLogout') ||
+        screen.queryByText('profile.logoutTitle')
       ).toBeTruthy();
     });
   });
@@ -204,7 +205,7 @@ describe('CL-013c ChildProfile integration', () => {
 
     const contactBtn = await waitFor(() => {
       const btn = screen.getAllByRole('button').find(
-        (b) => b.textContent.includes('Davlatga xabar yuborish') || b.textContent.includes('profile.contactGovernment')
+        (b) => b.textContent.includes('child.row.contactGovt')
       );
       expect(btn).toBeTruthy();
       return btn;
@@ -212,8 +213,7 @@ describe('CL-013c ChildProfile integration', () => {
     fireEvent.click(contactBtn);
 
     await waitFor(() => {
-      expect(screen.getByPlaceholderText('Xabar mavzusi...') ||
-        screen.queryByPlaceholderText('profile.subjectPlaceholder')).toBeTruthy();
+      expect(screen.queryByPlaceholderText('profile.subjectPlaceholder')).toBeTruthy();
     });
   });
 
@@ -227,7 +227,7 @@ describe('CL-013c ChildProfile integration', () => {
 
     const contactBtn = await waitFor(() => {
       const btn = screen.getAllByRole('button').find(
-        (b) => b.textContent.includes('Davlatga xabar yuborish') || b.textContent.includes('profile.contactGovernment')
+        (b) => b.textContent.includes('child.row.contactGovt')
       );
       expect(btn).toBeTruthy();
       return btn;
@@ -269,7 +269,7 @@ describe('CL-013c ChildProfile integration', () => {
 
     const messagesBtn = await waitFor(() => {
       const btn = screen.getAllByRole('button').find(
-        (b) => b.textContent.includes('Mening xabarlarim') || b.textContent.includes('profile.myMessages')
+        (b) => b.textContent.includes('child.row.myMessages')
       );
       expect(btn).toBeTruthy();
       return btn;

@@ -1,5 +1,9 @@
 {
   "language": "Til",
+  "brand": {
+    "appName": "Uchqun",
+    "role": "Ota-ona"
+  },
   "nav": {
     "home": "Bosh sahifa",
     "activities": "Individual reja",
@@ -13,7 +17,13 @@
     "exit": "Chiqish",
     "menu": "Asosiy menyu",
     "therapy": "Foydali",
-    "settings": "Sozlamalar"
+    "settings": "Sozlamalar",
+    "today": "Bugun",
+    "diary": "Kundalik",
+    "gallery": "Galereya",
+    "messages": "Xabar",
+    "child": "Bola",
+    "toToday": "Bugunga"
   },
   "sidebar": {
     "title": "Uchqun Ota-ona",
@@ -80,6 +90,24 @@
       "quickRecovery": "Стрессли вазиятдан кейин тезда ўзини ўнглаб олади",
       "stableMood": "Кайфияти кун давомида барқарор туради",
       "trustingRelationship": "Тарбиячи билан муносабати ишончли"
+    },
+    "section": {
+      "plan": "Reja va rivojlanish",
+      "school": "Maktab bilan",
+      "account": "Hisob"
+    },
+    "row": {
+      "individualPlan": "Individual reja",
+      "irr": "IRR — Reabilitatsiya rejasi",
+      "therapy": "Terapiya",
+      "attendance": "Davomat",
+      "meals": "Taomlar",
+      "rating": "O'qituvchi va maktabni baholash",
+      "contactGovt": "Hukumatga murojaat",
+      "myMessages": "Mening murojaatlarim",
+      "settings": "Sozlamalar",
+      "language": "Til",
+      "logout": "Chiqish"
     }
   },
   "dashboard": {
@@ -94,7 +122,16 @@
     "meals": "Ovqatlar",
     "media": "Media",
     "viewAll": "Barchasini ko'rish",
-    "journal": "Kun jurnali"
+    "journal": "Kun jurnali",
+    "snapshot": "Bugungi xulosa",
+    "latestJournalEyebrow": "Bugungi yozuv",
+    "noJournalToday": "Bugun uchun hali yozuv yo'q.",
+    "quickAccess": "Tezkor o'tish",
+    "todayAttendance": "Davomat",
+    "todayMeals": "Taomlar",
+    "todayMedia": "Suratlar",
+    "todayActivities": "Faoliyatlar",
+    "attendanceUnknown": "—"
   },
   "activities": {
     "title": "Individual reja",
@@ -155,7 +192,10 @@
     "totalMeals": "Jami taomlar",
     "skipped": "Qoldirildi",
     "quality": "Sifat",
-    "excellent": "A'lo"
+    "excellent": "A'lo",
+    "todayChip": "Bugun",
+    "allDays": "Barcha kunlar",
+    "jumpToToday": "Bugunga"
   },
   "media": {
     "title": "Media galereya",
@@ -175,7 +215,9 @@
       "unsupportedTitle": "Video manzili qo'llab-quvvatlanmaydi",
       "unsupportedDesc": "YouTube, Vimeo yoki to'g'ridan-to'g'ri video fayl (mp4, webm va h.k.) manzillaridan foydalaning",
       "openNewTab": "Yangi oynada ochish"
-    }
+    },
+    "filterToday": "Bugun",
+    "filterAllTime": "Barchasi"
   },
   "parentChat": {
     "title": "Tarbiyachi bilan chat",
@@ -344,5 +386,9 @@
     "loadError": "Jurnalni yuklashda xatolik. Qaytadan urinib koʻring.",
     "noChild": "Farzandingizni tanlang",
     "author": "Tarbiyachi"
+  },
+  "common": {
+    "today": "Bugun",
+    "viewAll": "Barchasini ko'rish"
   }
 }

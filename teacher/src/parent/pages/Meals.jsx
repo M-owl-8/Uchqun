@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
@@ -20,11 +21,17 @@ import {
 import { useTranslation } from 'react-i18next';
 import { formatDateWeekdayMonth, formatDateMonthLong } from '@shared/utils/formatDate';
 
+const todayIso = () => new Date().toISOString().slice(0, 10);
+
 const Meals = () => {
   const { selectedChildId } = useChild();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const initialDate = searchParams.get('date') === 'today' || !searchParams.get('date')
+    ? todayIso()
+    : searchParams.get('date');
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(initialDate);
   const { t, i18n } = useTranslation();
 
 
@@ -85,7 +92,7 @@ const Meals = () => {
         subtitle={t('meals.subtitle')}
         count={meals.length}
       />
-      {/* Date picker */}
+      {/* Date picker + jump-to-today */}
       <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6">
         <div className="relative">
           <label className="flex items-center gap-2 text-[11px] font-semibold text-p-sepia-500 uppercase tracking-[.12em] mb-2 ml-1">
@@ -93,7 +100,10 @@ const Meals = () => {
           </label>
           <select
             value={selectedDate}
-            onChange={(e) => setSelectedDate(e.target.value)}
+            onChange={(e) => {
+              setSelectedDate(e.target.value);
+              setSearchParams({ date: e.target.value });
+            }}
             className="appearance-none bg-slate-50 border-none text-slate-900 font-bold rounded-2xl px-6 py-3 pr-12 focus:ring-2 focus:ring-p-brand-500 shadow-inner cursor-pointer"
           >
             {dates.map((date) => (
@@ -106,6 +116,18 @@ const Meals = () => {
             <Utensils className="w-4 h-4" />
           </div>
         </div>
+        {selectedDate !== todayIso() && dates.includes(todayIso()) && (
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedDate(todayIso());
+              setSearchParams({ date: todayIso() });
+            }}
+            className="self-start md:self-end inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-p-brand-50 text-p-brand-700 border border-p-brand-200 hover:bg-p-brand-100 text-[13px] font-medium"
+          >
+            → {t('meals.jumpToToday')}
+          </button>
+        )}
       </Card>
 
       {/* --- Meals List --- */}

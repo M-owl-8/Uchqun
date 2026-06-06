@@ -15,13 +15,7 @@ describe('#04-002 #08-001 teacher Sidebar uses unread-count endpoint', () => {
     expect(src.default).toContain('/chat/unread-count');
   });
 
-  it('parent Sidebar.jsx does not import getUnreadCount from chatStore', async () => {
-    const src = await import('../../parent/components/Sidebar?raw');
-    expect(src.default).not.toContain("from '../../shared/services/chatStore'");
-  });
-
-  it('parent Sidebar.jsx polls /chat/unread-count endpoint', async () => {
-    const src = await import('../../parent/components/Sidebar?raw');
-    expect(src.default).toContain('/chat/unread-count');
-  });
+  // PP-IA-REDESIGN: parent Sidebar removed (legacy nav). Mobile uses MobileTabBar,
+  // desktop uses DesktopTopNav. The 2 parent-Sidebar checks below are intentionally
+  // dropped — the file no longer exists.
 });
