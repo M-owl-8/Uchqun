@@ -6,7 +6,9 @@ Anything listed here is **not lost** — it's intentionally paused because somet
 
 ---
 
-## TP-PARENT-ASSIGNMENT ⏸ DEFERRED (2026-06-06)
+## TP-PARENT-ASSIGNMENT ⏸ DEFERRED — **G1 of beta-launch plan** (2026-06-06)
+
+> **🚀 BETA PRIORITY:** This is **Gate 1** of `audits/BETA-LAUNCH-PLAN.md`. It is the first action of the 2–3 week beta countdown. It unblocks the four PP-* phase-2 walks (PP-ATTENDANCE-SURFACE, PP-DASHBOARD-CARDS, PP-CHAT-INTEGRITY, PP-JOURNAL-FEATURE). Day 1 of the plan.
 
 **Status:** STEP 1 complete and on `main` (`df8df86`); STEP 2 and STEP 3 deferred.
 **Audit file:** `audits/redesign/TP-PARENT-ASSIGNMENT.md`

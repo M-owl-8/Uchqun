@@ -4,8 +4,52 @@ Items that MUST be resolved before the platform goes live with real users.
 Items without an owner or ETA are blocking unless explicitly deprioritised by the product owner.
 
 **Created:** 2026-05-20 (Backend S8 Final Verification)
-**Last updated:** 2026-05-27 (Database Loop CLOSED — PL-021 resolved; UzCloud PL-UZ-01→05 as cutover/procurement items)
+**Last updated:** 2026-06-06 (Beta-launch reclassification — see banner)
 **Status legend:** ⬜ Not started · 🟡 In progress · ✅ Done · ⚠️ Needs sign-off
+
+---
+
+## 🚀 BETA vs PRODUCTION RECLASSIFICATION (2026-06-06)
+
+Plan: `audits/BETA-LAUNCH-PLAN.md`. Two-stage launch:
+
+**Stage 1 — Beta (2–3 weeks)** ships with on-screen disclaimer. The only beta-blockers below are the items wired to the 5 gates G1–G5 of the beta-launch plan.
+
+**Stage 2 — Production (6–8 weeks)** unblocks the rest. Mark items below as either:
+- 🟢 **BETA-OK** — required for beta
+- 🟡 **PROD-ONLY** — deferred, beta ships with disclaimer
+- ⚫ **OUT-OF-LOOP** — post-launch polish
+
+| ID | Reclassification |
+|---|---|
+| PL-001 (C-02 group-wide media) | 🟢 BETA-OK — consent UI is G4, consent text is G5 |
+| PL-002 (CORS) | 🟢 ✅ Already resolved |
+| PL-003 (npm audit) | 🟢 ✅ Already resolved |
+| PL-004 (Parent isActive bypass) | 🟢 ✅ Already resolved |
+| PL-005 (Sentry) | 🟢 BETA-OK — Murodbek to set DSN before day 14 |
+| PL-006 (DB backup) | 🟢 ✅ Already resolved |
+| PL-007 (REDIS_URL) | 🟢 ✅ Already resolved |
+| PL-008 (FRONTEND_URL) | 🟢 ✅ Already resolved |
+| PL-009 (i18n shipped UNVERIFIED) | 🟢 ✅ Already resolved (AI-labeled) |
+| PL-009-VERIFY (i18n native review) | 🟡 PROD-ONLY — commission in week 1, beta ships with disclaimer |
+| PL-010 (legacy STRING fields) | ⚫ OUT-OF-LOOP — post-launch tech debt |
+| PL-011 (avatar URL migration) | ⚫ OUT-OF-LOOP |
+| PL-012 (response shape migration) | ⚫ OUT-OF-LOOP |
+| PL-013 (Tier 3 features) | ⚫ OUT-OF-LOOP |
+| PL-014 (directory PII sign-off) | 🟡 PROD-ONLY — beta restricts directory visibility |
+| PL-015 (partner regions/indicators) | 🟡 PROD-ONLY — beta uses placeholder seed; CP-020 form remains gated |
+| PL-016..PL-020 (IRR partner sign-offs) | 🟡 PROD-ONLY — beta ships with DRAFT acknowledgment |
+| PL-021 (Railway migration promote) | 🟢 ✅ Already resolved |
+| PL-022 (legacy POST /government/messages) | 🟢 BETA-OK — close in G2 IDOR sweep |
+| PL-023 (IRR terminology translations) | 🟡 PROD-ONLY — part of PL-009-VERIFY |
+| PL-024 (childless parent login loop) | 🟢 BETA-OK — one-line fix during G4 |
+| PL-025 (forgot-password UX) | ⚫ OUT-OF-LOOP — beta uses contact-admin instruction |
+| PL-UZ-01..05 (UzCloud cutover) | 🟡 PROD-ONLY — beta stays on Railway |
+| PL-026..PL-030 (5 critical flows) | 🟢 BETA-OK — dress rehearsal on day 13 |
+
+**Beta = green items closed. Production = green + yellow items closed.**
+
+---
 
 ---
 
