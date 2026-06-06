@@ -237,8 +237,8 @@ const Activities = () => {
       {/* Header */}
       <div className="mb-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div className="text-center md:text-left">
-          <h1 className="text-4xl font-black text-white mb-2 tracking-tight drop-shadow-sm">{t('activitiesPage.title')}</h1>
-          <p className="text-white/90 font-medium drop-shadow-sm">{t('activitiesPage.subtitle')}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900 mb-0.5">{t('activitiesPage.title')}</h1>
+          <p className="text-[13px] text-slate-500">{t('activitiesPage.subtitle')}</p>
         </div>
 
         {isTeacher && (

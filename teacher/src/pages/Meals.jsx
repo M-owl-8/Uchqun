@@ -210,8 +210,8 @@ const Meals = () => {
       {/* --- Header & Date Picker --- */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">{t('mealsPage.title')}</h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('mealsPage.subtitle')}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('mealsPage.title')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('mealsPage.subtitle')}</p>
         </div>
 
         <div className="flex items-end gap-3">
@@ -226,7 +226,7 @@ const Meals = () => {
           )}
 
           <div className="relative">
-            <label className="flex items-center gap-2 text-xs font-bold text-white/70 uppercase tracking-widest mb-2 ml-1 drop-shadow-sm">
+            <label className="flex items-center gap-2 text-[11px] font-medium text-slate-500 uppercase tracking-widest mb-2 ml-1">
               <CalendarDays className="w-3.5 h-3.5" /> {t('mealsPage.selectDay')}
             </label>
             <select

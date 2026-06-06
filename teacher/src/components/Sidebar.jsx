@@ -39,7 +39,7 @@ const Sidebar = ({ onClose }) => {
     {
       label: t('sidebar.section.children', { defaultValue: 'Bolalar' }),
       items: [
-        { key: 'parents', href: '/teacher/parents', icon: Users,           label: t('sidebar.childrenList', { defaultValue: "Guruh ro'yxati" }) },
+        { key: 'parents', href: '/teacher/parents', icon: Users,           label: t('sidebar.childrenList', { defaultValue: "Ota-onalar ro'yxati" }) },
         { key: 'media',   href: '/teacher/media',   icon: ImageIcon,       label: t('sidebar.gallery',      { defaultValue: 'Galereya' }) },
         { key: 'meals',   href: '/teacher/meals',   icon: UtensilsCrossed, label: t('sidebar.meals',        { defaultValue: 'Ovqatlanish' }) },
       ],
@@ -56,7 +56,7 @@ const Sidebar = ({ onClose }) => {
     {
       label: t('sidebar.section.communication', { defaultValue: 'Aloqa' }),
       items: [
-        { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: t('sidebar.chat',       { defaultValue: 'Ota-onalar' }), badgeKey: 'chat' },
+        { key: 'chat',       href: '/teacher/chat',       icon: MessageSquare, label: t('sidebar.chat',       { defaultValue: 'Muloqot' }), badgeKey: 'chat' },
         { key: 'reflection', href: '/teacher/reflection', icon: FileText,      label: t('sidebar.reflection', { defaultValue: 'Kun jurnali' }) },
       ],
     },

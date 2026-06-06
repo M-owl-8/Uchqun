@@ -26,14 +26,14 @@
     },
     "dashboard": "Главная",
     "attendance": "Посещаемость",
-    "childrenList": "Список группы",
+    "childrenList": "Список родителей",
     "gallery": "Галерея",
     "meals": "Питание",
     "goals": "Цели",
     "observations": "Занятия",
     "therapy": "Терапия",
     "aiWarnings": "Предупреждения",
-    "chat": "Родители",
+    "chat": "Сообщения",
     "reflection": "Дневник дня"
   },
   "quickObs": {
@@ -117,8 +117,8 @@
     "help": "Помощь"
   },
   "parentsPage": {
-    "title": "Управление родителями",
-    "subtitle": "Просмотр аккаунтов родителей",
+    "title": "Список родителей",
+    "subtitle": "Родители вашей группы",
     "search": "Поиск родителей...",
     "children": "{{count}} ребёнок",
     "children_plural": "{{count}} детей",

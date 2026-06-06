@@ -126,8 +126,8 @@ const Profile = () => {
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-black text-white drop-shadow-sm">{t('profile.title', { defaultValue: 'Profile' })}</h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('profile.subtitle', { defaultValue: 'Manage your account' })}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('profile.title', { defaultValue: 'Profil' })}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('profile.subtitle', { defaultValue: 'Hisob ma\'lumotlarini boshqarish' })}</p>
         </div>
         <button
           onClick={handleLogout}

@@ -173,8 +173,8 @@ const Settings = () => {
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-black text-white drop-shadow-sm">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('settings.title', { defaultValue: 'Sozlamalar' })}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('settings.subtitle', { defaultValue: 'Profil va hisob sozlamalarini boshqarish' })}</p>
         </div>
       </div>
 

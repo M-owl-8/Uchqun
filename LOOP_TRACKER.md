@@ -17,6 +17,7 @@
 | 7. Database | ✅ | ✅ CLOSED — 85 migrations, zero drift, PL-021 resolved, UzCloud flags logged | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ | ⬜ |
 
 **Residual tasks:** DG-001 and other deal-gated / post-loop items are tracked here.
+> **TP-PAGE-CHROME 🟡 In progress:** Letterhead headers (text-white ghost → text-slate-900 on all 8 teacher pages), attendance month grid full-width, container discipline, sidebar/page label reconciliation. `audits/redesign/TP-PAGE-CHROME.md`.
 > **TP-DAVOMAT-REWORK 🟡 In progress:** Fix save 400 (batch API + upsert), care-model presence taxonomy (present/home_leave/sick/hospitalized/absent), week/month history grid. Migration 20260606000001. `audits/redesign/TP-DAVOMAT-REWORK.md`.
 > **TP-SIDEBAR-RESTRUCTURE ✅ CLOSED:** 13-item inventory produced. 4 overlap hypotheses all refuted — zero merges needed. Renamed "AI Ogohlantirishlar" → "Ogohlantirishlar" in sidebar + page title + uz/en/ru locale files (5 files). `audits/redesign/TP-SIDEBAR-RESTRUCTURE.md`.
 > **TP-NOTIF-POLL-LOOP ✅ CLOSED:** isAuthenticated guard + 429 backoff in both teacher+parent NotificationContexts. Auth paths skipped in apiLimiter. 6/6 tests. Commit 2bd9678. `audits/redesign/TP-NOTIF-POLL-LOOP.md`.

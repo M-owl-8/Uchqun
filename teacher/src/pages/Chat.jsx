@@ -173,8 +173,8 @@ const Chat = () => {
     <div className="max-w-4xl mx-auto space-y-4 animate-in fade-in duration-500">
       <div className="flex items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">{t('chat.title')}</h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('chat.subtitle')}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('chat.title')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('chat.subtitle')}</p>
         </div>
       </div>
 

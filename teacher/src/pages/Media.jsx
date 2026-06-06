@@ -191,8 +191,8 @@ const Media = () => {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">{t('mediaPage.title')}</h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">{t('mediaPage.subtitle')}</p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('mediaPage.title')} ({media.length})</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('mediaPage.subtitle')}</p>
         </div>
 
         <div className="flex items-center gap-3">

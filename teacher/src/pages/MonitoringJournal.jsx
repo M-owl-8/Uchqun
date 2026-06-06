@@ -243,12 +243,8 @@ const MonitoringJournal = () => {
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
         <div>
-          <h1 className="text-4xl font-black text-white tracking-tight drop-shadow-sm">
-            {t('monitoring.title')}
-          </h1>
-          <p className="text-white/90 font-medium mt-1 drop-shadow-sm">
-            {t('monitoring.subtitle')}
-          </p>
+          <h1 className="text-[22px] font-semibold text-slate-900">{t('monitoring.title')}</h1>
+          <p className="text-[13px] text-slate-500 mt-0.5">{t('monitoring.subtitle')}</p>
         </div>
       </div>
 

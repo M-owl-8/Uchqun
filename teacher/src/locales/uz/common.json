@@ -26,14 +26,14 @@
     },
     "dashboard": "Bosh sahifa",
     "attendance": "Davomat",
-    "childrenList": "Guruh ro'yxati",
+    "childrenList": "Ota-onalar ro'yxati",
     "gallery": "Galereya",
     "meals": "Ovqatlanish",
     "goals": "Maqsadlar",
     "observations": "Kuzatuvlar",
     "therapy": "Terapiya",
     "aiWarnings": "Ogohlantirishlar",
-    "chat": "Ota-onalar",
+    "chat": "Muloqot",
     "reflection": "Kun jurnali"
   },
   "quickObs": {
@@ -117,8 +117,8 @@
     "help": "Yordam"
   },
   "parentsPage": {
-    "title": "Ota-onalarni boshqarish",
-    "subtitle": "Ota-ona akkauntlarini ko'rish",
+    "title": "Ota-onalar ro'yxati",
+    "subtitle": "Guruh ota-onalari",
     "search": "Ota-onalarni qidirish...",
     "children": "{{count}} bola",
     "children_plural": "{{count}} bola",

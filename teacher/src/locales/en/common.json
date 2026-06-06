@@ -26,14 +26,14 @@
     },
     "dashboard": "Dashboard",
     "attendance": "Attendance",
-    "childrenList": "Group List",
+    "childrenList": "Parent List",
     "gallery": "Gallery",
     "meals": "Meals",
     "goals": "Goals",
     "observations": "Activities",
     "therapy": "Therapy",
     "aiWarnings": "Warnings",
-    "chat": "Parents",
+    "chat": "Messages",
     "reflection": "Daily Journal"
   },
   "quickObs": {
@@ -117,8 +117,8 @@
     "help": "Help"
   },
   "parentsPage": {
-    "title": "Parent Management",
-    "subtitle": "View parent accounts",
+    "title": "Parent list",
+    "subtitle": "Your group's parents",
     "search": "Search parents...",
     "children": "{{count}} child",
     "children_plural": "{{count}} children",

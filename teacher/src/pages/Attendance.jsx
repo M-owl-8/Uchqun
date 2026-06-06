@@ -83,14 +83,14 @@ function StatusDot({ status }) {
   return <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: color }} />;
 }
 
-function HistoryGrid({ children, records, dates }) {
+function HistoryGrid({ childList, records, dates }) {
   const lookup = {};
   for (const r of records) {
     lookup[`${r.childId}-${r.date?.split('T')[0] || r.date}`] = r.status;
   }
 
   return (
-    <div className="overflow-x-auto -mx-1">
+    <div className="overflow-x-auto">
       <table className="w-full text-[11px]" style={{ borderCollapse: 'separate', borderSpacing: 0, minWidth: `${140 + dates.length * 32}px` }}>
         <thead>
           <tr>
@@ -104,7 +104,7 @@ function HistoryGrid({ children, records, dates }) {
           </tr>
         </thead>
         <tbody>
-          {children.map(child => {
+          {childList.map(child => {
             let presentCount = 0;
             const dayCount = dates.length;
             return (
@@ -299,7 +299,8 @@ const Attendance = () => {
       : [];
 
   return (
-    <div className="max-w-lg mx-auto pb-32">
+    <div className="pb-32">
+      <div className="max-w-lg mx-auto">
       {/* View tabs */}
       <div className="flex items-center gap-1 mb-3 pt-2">
         {VIEW_TABS.map(tab => (
@@ -429,6 +430,8 @@ const Attendance = () => {
         </>
       )}
 
+      </div>
+
       {/* Week / Month history view */}
       {(viewMode === 'week' || viewMode === 'month') && (
         <div className="mt-1">
@@ -451,7 +454,7 @@ const Attendance = () => {
                   </span>
                 ))}
               </div>
-              <HistoryGrid children={children} records={historyRecords} dates={historyDates} />
+              <HistoryGrid childList={children} records={historyRecords} dates={historyDates} />
               {historyRecords.length === 0 && (
                 <div className="text-center pt-6 text-[13px] text-slate-400">
                   {t('attendance.noHistory', { defaultValue: "Davomat ma'lumotlari yo'q" })}
