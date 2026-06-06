@@ -45,7 +45,10 @@ const MediaCard = ({ item, isTeacher, onSelect, onEdit, onDelete }) => {
             src={getProxyUrl(item.url || item.imageUrl || item.photoUrl, item.id)}
             alt={item.title}
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-            onError={(e) => { e.target.style.display = 'none'; }}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='500' viewBox='0 0 400 500'%3E%3Crect width='400' height='500' fill='%23f1f5f9'/%3E%3C/svg%3E";
+            }}
           />
         )}
 

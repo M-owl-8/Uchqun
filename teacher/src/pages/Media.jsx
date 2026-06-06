@@ -161,6 +161,12 @@ const Media = () => {
           return;
         }
 
+        const MAX_BYTES = 50 * 1024 * 1024;
+        if (file.size > MAX_BYTES) {
+          showError(t('mediaPage.modal.fileTooLarge'));
+          return;
+        }
+
         const payload = new FormData();
         payload.append('childId', formData.childId);
         payload.append('title', formData.title.trim());
@@ -177,8 +183,7 @@ const Media = () => {
       setShowModal(false);
       loadMedia(true);
     } catch (error) {
-      const errorMessage = error.response?.data?.error || error.response?.data?.details?.join(', ') || t('mediaPage.toastError');
-      showError(errorMessage);
+      showError(editingMedia ? t('mediaPage.toastError') : t('mediaPage.toastUploadFailed'));
     }
   };
 

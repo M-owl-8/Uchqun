@@ -10,7 +10,10 @@ let appwriteBucketId;
 let appwriteProjectId;
 const fileBaseUrl = (process.env.FILE_BASE_URL || process.env.PUBLIC_API_URL || '').replace(/\/+$/, '');
 const localUploadsRoot = process.env.LOCAL_UPLOADS_DIR || path.join(process.cwd(), 'uploads');
-const fallbackEnabled = process.env.LOCAL_STORAGE_FALLBACK === 'true' && process.env.NODE_ENV !== 'production';
+// When LOCAL_STORAGE_FALLBACK is explicitly set, trust the operator has attached a
+// persistent volume (Railway Volume at /app/uploads). The old production guard prevented
+// this opt-in from working in prod, which blocked the interim local-disk path.
+const fallbackEnabled = process.env.LOCAL_STORAGE_FALLBACK === 'true';
 const localMediaDir = path.join(localUploadsRoot, 'media');
 
 function ensureDir(dir) {
@@ -163,9 +166,9 @@ export async function uploadFile(file, filename, mimetype) {
     }
   }
 
-  // Local disk fallback. Writing to the container filesystem on Railway is
-  // ephemeral (files are lost on restart), but it keeps uploads working in
-  // local dev. Set LOCAL_STORAGE_FALLBACK=true (non-production only) to enable.
+  // Local disk fallback. In production, attach a Railway persistent volume at
+  // /app/uploads and set LOCAL_STORAGE_FALLBACK=true — files survive restarts.
+  // Without a volume, files are ephemeral (lost on container restart).
   if (process.env.NODE_ENV === 'production' && !appwriteConfigured) {
     if (!fallbackEnabled) {
       throw new Error(

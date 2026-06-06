@@ -289,8 +289,9 @@
       "date": "Date",
       "url": "Media URL",
       "file": "Media file",
-      "fileHelp": "Upload an image or video file",
+      "fileHelp": "Upload an image or video file (max 50 MB)",
       "fileRequired": "Please select a file",
+      "fileTooLarge": "File size must not exceed 50 MB",
       "videoUrlHelp": "Use YouTube, Vimeo or direct video URLs (.mp4, .webm, etc.)",
       "cancel": "Cancel",
       "save": "Save",
@@ -311,6 +312,7 @@
     "toastUpdate": "Media updated successfully",
     "toastDelete": "Media deleted",
     "toastError": "Error saving media",
+    "toastUploadFailed": "File upload failed. Please try again.",
     "toastLoadError": "Error loading media",
     "toastChildrenEmpty": "No children found. Please create a parent with child information first."
   },

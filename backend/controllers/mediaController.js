@@ -300,21 +300,25 @@ export const uploadMedia = async (req, res) => {
       process.env.APPWRITE_API_KEY &&
       process.env.APPWRITE_BUCKET_ID
     );
+    const fallbackEnabled = process.env.LOCAL_STORAGE_FALLBACK === 'true';
 
-    // In production, require Appwrite (not local storage)
-    if (process.env.NODE_ENV === 'production' && !appwriteConfigured) {
+    // In production, require Appwrite OR an explicit local-disk fallback (with persistent volume).
+    if (process.env.NODE_ENV === 'production' && !appwriteConfigured && !fallbackEnabled) {
       logger.error('Media upload attempted without storage configuration in production', {
-        hasAppwrite: !!appwriteConfigured,
+        hasAppwrite: false,
+        hasFallback: false,
       });
       return res.status(503).json({
-        error: 'Storage not configured',
-        message: 'Appwrite is required for media uploads in production. Please configure APPWRITE_* environment variables.',
+        success: false,
+        error: {
+          code: 'MEDIA_STORAGE_NOT_CONFIGURED',
+          detail: 'Set APPWRITE_* env vars or LOCAL_STORAGE_FALLBACK=true with a persistent volume.',
+        },
       });
     }
 
-    // In development, warn but allow local storage fallback
-    if (!appwriteConfigured && process.env.NODE_ENV !== 'production') {
-      logger.warn('Appwrite not configured, will use local storage fallback (files may not persist)');
+    if (!appwriteConfigured && !fallbackEnabled) {
+      logger.warn('Appwrite not configured and no fallback — uploads will fail unless storage is set up');
     }
 
     if (req.user.role !== 'teacher' && req.user.role !== 'admin' && req.user.role !== 'reception') {
@@ -429,9 +433,11 @@ export const uploadMedia = async (req, res) => {
         mimetype: req.file.mimetype,
       });
       return res.status(502).json({
-        error: 'Storage upload failed',
-        message: 'Failed to upload file to Appwrite storage. Check Appwrite credentials, bucket permissions, and endpoint connectivity.',
-        details: err.message,
+        success: false,
+        error: {
+          code: 'MEDIA_UPLOAD_STORAGE_FAILED',
+          detail: err.message,
+        },
       });
     }
 

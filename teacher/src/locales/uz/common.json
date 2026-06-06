@@ -289,8 +289,9 @@
       "date": "Sana",
       "url": "Media manzili",
       "file": "Media fayl",
-      "fileHelp": "Rasm yoki video fayl yuklang",
+      "fileHelp": "Rasm yoki video fayl yuklang (max 50 MB)",
       "fileRequired": "Fayl tanlash majburiy",
+      "fileTooLarge": "Fayl hajmi 50 MB dan oshmasligi kerak",
       "videoUrlHelp": "YouTube, Vimeo yoki to'g'ridan-to'g'ri video manzillaridan foydalaning (.mp4, .webm va h.k.)",
       "cancel": "Bekor qilish",
       "save": "Saqlash",
@@ -311,6 +312,7 @@
     "toastUpdate": "Media muvaffaqiyatli yangilandi",
     "toastDelete": "Media o'chirildi",
     "toastError": "Mediani saqlashda xatolik",
+    "toastUploadFailed": "Fayl yuklanmadi. Qayta urinib ko'ring.",
     "toastLoadError": "MedianI yuklashda xatolik",
     "toastChildrenEmpty": "Bolalar topilmadi. Avval bola ma'lumotlari bilan ota-ona yarating."
   },

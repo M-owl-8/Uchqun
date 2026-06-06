@@ -482,6 +482,13 @@ Added 2026-05-27. Introduced by `parentSendMessage` (parent route), `getAllMessa
 
 **Role restriction note:** Admin, teacher, and reception roles retain their own dedicated send routes (`POST /admin/message-to-government`, `/teacher/message-to-government`, `/reception/message-to-government`) using the flat `sendMessage` handler (no routing). CP-022 routing features (`recipientLevel`, `escalatedFromId`) are parent-only by design.
 
+## Media (`controllers/mediaController.js`)
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `MEDIA_STORAGE_NOT_CONFIGURED` | 503 | Production upload attempted with no Appwrite and no `LOCAL_STORAGE_FALLBACK=true` | "Media uploads are not available. Contact your administrator." |
+| `MEDIA_UPLOAD_STORAGE_FAILED` | 502 | Appwrite SDK threw during file upload (bad credentials, non-existent bucket, network issue) | "File upload failed. Please try again." |
+
 ---
 
 ## Notes
