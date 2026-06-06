@@ -1,5 +1,6 @@
 import { Op } from 'sequelize';
 import ChildAttendance from '../models/ChildAttendance.js';
+import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 
@@ -109,6 +110,91 @@ export const listAttendance = async (req, res) => {
   } catch (error) {
     logger.error('listAttendance error', { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, error: 'Failed to fetch attendance records' });
+  }
+};
+
+/**
+ * PP-ATTENDANCE-SURFACE — parent read of their own child's attendance.
+ *
+ * Scoping (CRITICAL — this is a privacy boundary on minors' records):
+ *   Resolve childIds from `Child.findAll({ where: { parentId: req.user.id } })`
+ *   — the canonical chain (children.parentId → users.id). Anything not in that
+ *   set is denied. If the caller passes ?childId=X and X is not in the parent's
+ *   own children, the response is 403 ATTENDANCE_CHILD_NOT_ACCESSIBLE.
+ *
+ * The chain itself is the same one TP-PARENT-ASSIGNMENT (S4) repairs; in
+ * production today, only Hulkar→Bobur is linked. Full multi-parent verification
+ * waits on S4 + a terminal/postgres-MCP walk. See PP-ATTENDANCE-SURFACE.md
+ * §verification.
+ *
+ * Query params: childId (optional — defaults to all of parent's children),
+ *               startDate / endDate (optional, both required together for range),
+ *               date (optional — single day).
+ */
+export const getMyChildAttendance = async (req, res) => {
+  try {
+    if (req.user.role !== 'parent') {
+      return res.status(403).json({
+        success: false,
+        error: { code: 'ATTENDANCE_PARENT_ONLY' },
+      });
+    }
+
+    // Resolve THIS parent's child IDs from the canonical chain — never trust
+    // the client to tell us which children belong to the caller.
+    const myChildren = await Child.findAll({
+      where: { parentId: req.user.id },
+      attributes: ['id', 'firstName', 'lastName', 'dateOfBirth'],
+    });
+    const myChildIds = myChildren.map(c => c.id);
+
+    if (myChildIds.length === 0) {
+      return res.json({ success: true, data: { records: [], children: [] } });
+    }
+
+    const where = { childId: { [Op.in]: myChildIds } };
+
+    // Optional child filter — must be in the parent's set
+    if (req.query.childId) {
+      if (!myChildIds.includes(req.query.childId)) {
+        return res.status(403).json({
+          success: false,
+          error: { code: 'ATTENDANCE_CHILD_NOT_ACCESSIBLE' },
+        });
+      }
+      where.childId = req.query.childId;
+    }
+
+    if (req.query.date) {
+      where.date = req.query.date;
+    } else if (req.query.startDate && req.query.endDate) {
+      where.date = { [Op.between]: [req.query.startDate, req.query.endDate] };
+    }
+
+    const records = await ChildAttendance.findAll({
+      where,
+      attributes: ['id', 'childId', 'date', 'status', 'note', 'createdAt'],
+      order: [['date', 'DESC'], ['createdAt', 'DESC']],
+    });
+
+    return res.json({
+      success: true,
+      data: {
+        records,
+        children: myChildren.map(c => ({
+          id: c.id,
+          firstName: c.firstName,
+          lastName: c.lastName,
+          dateOfBirth: c.dateOfBirth,
+        })),
+      },
+    });
+  } catch (error) {
+    logger.error('getMyChildAttendance error', { error: error.message, stack: error.stack });
+    return res.status(500).json({
+      success: false,
+      error: { code: 'ATTENDANCE_FETCH_FAILED' },
+    });
   }
 };
 

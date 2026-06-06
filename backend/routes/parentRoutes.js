@@ -21,6 +21,7 @@ import {
   getMyRating,
 } from '../controllers/parentController.js';
 import { parentSendMessage, getMyMessages } from '../controllers/parent/parentMessageController.js';
+import { getMyChildAttendance } from '../controllers/attendanceController.js';
 import {
   getMonitoringByChild,
   getMonitoringById,
@@ -52,6 +53,9 @@ const router = express.Router();
 
 // Parent's own data routes (require Parent authentication)
 router.get('/children', authenticate, requireParent, getMyChildren);
+// PP-ATTENDANCE-SURFACE — parent read of own child's attendance.
+// Scoping is enforced inside the controller via Child.parentId.
+router.get('/attendance', authenticate, requireParent, getMyChildAttendance);
 router.get('/activities', authenticate, requireParent, getMyActivities);
 router.get('/activities/:id', authenticate, requireParent, getActivityById);
 router.get('/meals', authenticate, requireParent, getMyMeals);

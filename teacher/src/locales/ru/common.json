@@ -933,5 +933,24 @@
     "menuOpen": "Открыть меню",
     "notifications": "Уведомления",
     "newObservation": "Новое наблюдение"
+  },
+  "parentAttendance": {
+    "title": "Посещаемость",
+    "subtitle": "Ежедневная посещаемость вашего ребёнка",
+    "viewDay": "День",
+    "viewWeek": "Неделя",
+    "viewMonth": "Месяц",
+    "today": "Сегодня",
+    "previousDay": "Предыдущий день",
+    "nextDay": "Следующий день",
+    "previousWeek": "Предыдущая неделя",
+    "nextWeek": "Следующая неделя",
+    "previousMonth": "Предыдущий месяц",
+    "nextMonth": "Следующий месяц",
+    "noRecord": "Нет записи за этот день",
+    "noChildSelected": "Выберите ребёнка",
+    "loadError": "Не удалось загрузить посещаемость",
+    "teacherNote": "Заметка учителя",
+    "summary": "Сводка за неделю"
   }
 }

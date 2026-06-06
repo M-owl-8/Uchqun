@@ -245,5 +245,8 @@
   "ATTENDANCE_INVALID_STATUS": "Iltimos, to'g'ri holat tanlang.",
   "ATTENDANCE_ACCESS_DENIED": "Siz bu bolaning yozuviga kira olmaysiz.",
   "ATTENDANCE_SAVE_FAILED": "Davomat saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",
-  "RECEPTION_NOT_APPROVED": "Sizning hisobingiz administrator tomonidan tasdiqlanishini kutmoqda."
+  "RECEPTION_NOT_APPROVED": "Sizning hisobingiz administrator tomonidan tasdiqlanishini kutmoqda.",
+  "ATTENDANCE_PARENT_ONLY": "Faqat ota-onalar oʻz farzandining davomatini koʻra oladi.",
+  "ATTENDANCE_CHILD_NOT_ACCESSIBLE": "Bu bola sizning farzandingiz emas — davomatga ruxsat yoʻq.",
+  "ATTENDANCE_FETCH_FAILED": "Davomat maʼlumotlarini yuklashda xatolik. Qaytadan urinib koʻring."
 }

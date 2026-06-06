@@ -933,5 +933,24 @@
     "menuOpen": "Open menu",
     "notifications": "Notifications",
     "newObservation": "New observation"
+  },
+  "parentAttendance": {
+    "title": "Attendance",
+    "subtitle": "Your child's daily attendance",
+    "viewDay": "Day",
+    "viewWeek": "Week",
+    "viewMonth": "Month",
+    "today": "Today",
+    "previousDay": "Previous day",
+    "nextDay": "Next day",
+    "previousWeek": "Previous week",
+    "nextWeek": "Next week",
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month",
+    "noRecord": "No record for this day",
+    "noChildSelected": "Select your child",
+    "loadError": "Failed to load attendance",
+    "teacherNote": "Teacher note",
+    "summary": "Weekly summary"
   }
 }

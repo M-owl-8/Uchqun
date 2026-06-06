@@ -933,5 +933,24 @@
     "menuOpen": "Menyuni ochish",
     "notifications": "Bildirishnomalar",
     "newObservation": "Yangi kuzatuv"
+  },
+  "parentAttendance": {
+    "title": "Davomat",
+    "subtitle": "Farzandingizning kunlik davomati",
+    "viewDay": "Kun",
+    "viewWeek": "Hafta",
+    "viewMonth": "Oy",
+    "today": "Bugun",
+    "previousDay": "Oldingi kun",
+    "nextDay": "Keyingi kun",
+    "previousWeek": "Oldingi hafta",
+    "nextWeek": "Keyingi hafta",
+    "previousMonth": "Oldingi oy",
+    "nextMonth": "Keyingi oy",
+    "noRecord": "Bu kun uchun yozuv yo'q",
+    "noChildSelected": "Farzandingizni tanlang",
+    "loadError": "Davomatni yuklashda xatolik",
+    "teacherNote": "O'qituvchi izohi",
+    "summary": "Haftalik xulosa"
   }
 }

@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const I18N_DIR = join(process.cwd(), 'i18n');
 const LANG_FILES = ['ru.json', 'uz-latn.json', 'uz-cyrl.json'];
-const EXPECTED_CODE_COUNT = 227; // 226 + RECEPTION_NOT_APPROVED (TP-AUTH-ZOMBIE S1)
+const EXPECTED_CODE_COUNT = 230; // +3 ATTENDANCE_* (PP-ATTENDANCE-SURFACE) // 226 + RECEPTION_NOT_APPROVED (TP-AUTH-ZOMBIE S1)
 
 function loadFile(filename) {
   return JSON.parse(readFileSync(join(I18N_DIR, filename), 'utf-8'));
