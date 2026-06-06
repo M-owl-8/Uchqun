@@ -6,9 +6,19 @@ import { useAuth } from '../context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
 import { useSocket } from '../../shared/context/SocketContext';
 import Card from '../components/Card';
+// PP-CHAT-INTEGRITY: layout parity with teacher messenger — date separators
+// + bubble timestamps via the shared locale-aware formatter (PP-DATE-LOCALE).
+import { formatTime, formatDateShort } from '@shared/utils/formatDate';
+import ParentPageHeader from '../components/ParentPageHeader';
+
+// Same-day check for date-separator gating.
+const isSameDay = (a, b) => {
+  if (!a || !b) return false;
+  return new Date(a).toDateString() === new Date(b).toDateString();
+};
 
 const Chat = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { user } = useAuth();
   const { success: toastSuccess, error: toastError } = useToast();
   const { on, off } = useSocket();
@@ -154,13 +164,22 @@ const Chat = () => {
               {t('chat.empty')}
             </div>
           )}
-          {sorted.map((msg) => {
+          {sorted.map((msg, idx) => {
             const isYou = msg.senderRole === 'parent';
+            const prev = sorted[idx - 1];
+            const showSep = !prev || !isSameDay(prev.createdAt || prev.time, msg.createdAt || msg.time);
             return (
-              <div
-                key={msg.id}
-                className={`flex ${isYou ? 'justify-end' : 'justify-start'}`}
-              >
+              <div key={msg.id}>
+                {showSep && (
+                  <div className="flex items-center gap-2 my-4" aria-hidden="true">
+                    <div className="flex-1 h-px bg-p-sepia-100" />
+                    <span className="text-[10px] uppercase tracking-[.12em] text-p-sepia-500 shrink-0">
+                      {formatDateShort(msg.createdAt || msg.time, i18n.language)}
+                    </span>
+                    <div className="flex-1 h-px bg-p-sepia-100" />
+                  </div>
+                )}
+                <div className={`flex ${isYou ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[85%] rounded-2xl px-4 py-2 text-sm shadow-sm border ${
                   isYou
                     ? 'bg-p-sepia-50 text-p-ink border-p-sepia-200'
@@ -233,7 +252,11 @@ const Chat = () => {
                     </div>
                   ) : (
                     <div className="whitespace-pre-wrap break-words">{msg.content || msg.text}</div>
+                    <div className={`text-[10px] mt-1 ${isYou ? 'text-p-sepia-500 text-right' : 'text-slate-500'}`}>
+                      {formatTime(msg.createdAt || msg.time, i18n.language)}
+                    </div>
                   )}
+                </div>
                 </div>
               </div>
             );
