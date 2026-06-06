@@ -25,10 +25,6 @@
     "child": "Bola",
     "toToday": "Bugunga"
   },
-  "sidebar": {
-    "title": "Uchqun Ota-ona",
-    "menu": "Asosiy menyu"
-  },
   "profile": {
     "contactGovernment": "Davlatga xabar yuborish",
     "myMessages": "Mening xabarlarim",
@@ -111,18 +107,6 @@
     }
   },
   "dashboard": {
-    "role": "Mening rolim: Ota-ona",
-    "welcome": "Xush kelibsiz",
-    "overview": "Umumiy ko'rinish",
-    "activities": "Individual reja",
-    "mealsTracked": "Ovqatlar",
-    "photos": "Rasmlar",
-    "notifications": "Bildirishnomalar",
-    "individualPlan": "Individual reja",
-    "meals": "Ovqatlar",
-    "media": "Media",
-    "viewAll": "Barchasini ko'rish",
-    "journal": "Kun jurnali",
     "snapshot": "Bugungi xulosa",
     "latestJournalEyebrow": "Bugungi yozuv",
     "noJournalToday": "Bugun uchun hali yozuv yo'q.",

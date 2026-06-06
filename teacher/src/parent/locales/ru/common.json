@@ -21,10 +21,6 @@
     "child": "Ребёнок",
     "toToday": "К сегодня"
   },
-  "sidebar": {
-    "title": "Uchqun Родитель",
-    "menu": "Главное меню"
-  },
   "profile": {
     "contactGovernment": "Отправить сообщение государствоу",
     "myMessages": "Мои сообщения",
@@ -107,18 +103,6 @@
     }
   },
   "dashboard": {
-    "role": "Моя роль: Родитель",
-    "welcome": "С возвращением",
-    "overview": "Обзор",
-    "activities": "Индивидуальный план",
-    "mealsTracked": "Питание",
-    "photos": "Фото",
-    "notifications": "Уведомления",
-    "individualPlan": "Индивидуальный план",
-    "meals": "Питание",
-    "media": "Медиа",
-    "viewAll": "Показать все",
-    "journal": "Дневник",
     "snapshot": "Сводка за сегодня",
     "latestJournalEyebrow": "Запись на сегодня",
     "noJournalToday": "Записи на сегодня пока нет.",

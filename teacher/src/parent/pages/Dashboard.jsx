@@ -39,7 +39,7 @@ const ATTENDANCE_TONE = {
   home_leave:   'text-warning-700 bg-warning-50  border-warning-200',
   sick:         'text-error-700   bg-error-50    border-error-200',
   hospitalized: 'text-error-700   bg-error-50    border-error-200',
-  absent:       'text-slate-700   bg-slate-50    border-slate-200',
+  absent:       'text-p-sepia-700 bg-p-sepia-50  border-p-sepia-200',
 };
 
 const Dashboard = () => {

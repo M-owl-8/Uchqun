@@ -21,10 +21,6 @@
     "child": "Child",
     "toToday": "To today"
   },
-  "sidebar": {
-    "title": "Uchqun Parent",
-    "menu": "Main menu"
-  },
   "profile": {
     "contactGovernment": "Send message to the Government",
     "myMessages": "My messages",
@@ -107,18 +103,6 @@
     }
   },
   "dashboard": {
-    "role": "My Role: Parent",
-    "welcome": "Welcome back",
-    "overview": "Overview",
-    "activities": "Individual Plan",
-    "mealsTracked": "Meals Tracked",
-    "photos": "Photos",
-    "notifications": "Notifications",
-    "individualPlan": "Individual Plan",
-    "meals": "Meals",
-    "media": "Media",
-    "viewAll": "View all",
-    "journal": "Daily journal",
     "snapshot": "Today's overview",
     "latestJournalEyebrow": "Today's entry",
     "noJournalToday": "No journal entry for today yet.",
