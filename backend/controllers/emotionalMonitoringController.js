@@ -2,6 +2,7 @@ import EmotionalMonitoring from '../models/EmotionalMonitoring.js';
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
 import User from '../models/User.js';
+import School from '../models/School.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 import { validateChildAccess } from '../utils/schoolValidation.js';
@@ -27,7 +28,7 @@ export const createOrUpdateMonitoring = async (req, res) => {
     // If PUT request with ID, update existing record
     if (req.method === 'PUT' && recordId) {
       const existingRecord = await EmotionalMonitoring.findByPk(recordId);
-      
+
       if (!existingRecord) {
         return res.status(404).json({ error: 'Monitoring record not found' });
       }
@@ -35,6 +36,17 @@ export const createOrUpdateMonitoring = async (req, res) => {
       // Check authorization
       if (existingRecord.teacherId !== teacherId && req.user.role !== 'admin') {
         return res.status(403).json({ error: 'You do not have permission to update this record' });
+      }
+
+      // BACKEND-040 fix: when an admin updates a record, verify the record's child
+      // belongs to the admin's school. Previously the admin bypass above ALSO skipped
+      // the school-scope check, so an admin could update records belonging to
+      // children in other schools.
+      if (req.user.role === 'admin' && req.user.schoolId) {
+        const recordChild = await Child.findByPk(existingRecord.childId);
+        if (!recordChild || recordChild.schoolId !== req.user.schoolId) {
+          return res.status(403).json({ error: 'You do not have access to this child' });
+        }
       }
 
       // Update fields
@@ -87,6 +99,21 @@ export const createOrUpdateMonitoring = async (req, res) => {
     // School scope check for admin (admin is school-scoped, not platform-wide)
     if (req.user.role === 'admin' && req.user.schoolId && child.schoolId !== req.user.schoolId) {
       return res.status(403).json({ error: 'You do not have access to this child' });
+    }
+
+    // IDOR-11-003 fix: region-scope check for government.
+    // Republic government accounts (govRegionId === null) intentionally have
+    // platform-wide write access — they oversee the whole country and may
+    // log safeguarding records anywhere. Region-scoped accounts MUST be
+    // restricted to children whose school is in their region; otherwise a
+    // region account could write into another region's safeguarding history.
+    if (req.user.role === 'government' && req.user.govRegionId) {
+      const school = await School.findOne({
+        where: { id: child.schoolId, regionId: req.user.govRegionId },
+      });
+      if (!school) {
+        return res.status(403).json({ error: 'You do not have access to this child' });
+      }
     }
 
     // Check if teacher has access to this child:
