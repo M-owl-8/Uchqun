@@ -6,7 +6,7 @@ Monorepo: 1 Express backend + 4 React dashboards. Active dev, Phase 2–4 of 7.
 > **Detailed reference:** see `docs/internal/PROJECT_GUIDE.md` for full architecture, model schemas, and historical context. This file is the operating manual.
 
 ## Critical Rules
-- Always work on `main` branch (or feature branches off main)
+- **Work on `main` only — no feature branches, no pull requests.** Commit and push directly to `main`. Hard-enforced by `.claude/hooks/enforce-main-only.sh` (PreToolUse Bash + `mcp__github__create_pull_request`).
 - Never set `FORCE_SYNC=true` — drops all tables
 - Never commit `.env` files or seed data with real PII
 - All routes prefixed `/api/`; all frontend HTTP via `shared/services/api.js` (Axios, `withCredentials: true`)
