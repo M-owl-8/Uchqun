@@ -176,12 +176,14 @@
       "openNewTab": "Yangi oynada ochish"
     }
   },
-  "chat": {
+  "parentChat": {
     "title": "Tarbiyachi bilan chat",
     "subtitle": "Farzandingiz tarbiyachisiga xabar yuboring",
-    "placeholder": "Tarbiyachiga xabar yozing...",
+    "placeholder": "Tarbiyachiga xabar yozing..."
+  },
+  "chat": {
     "send": "Yuborish",
-    "empty": "Hozircha xabarlar yo‘q",
+    "empty": "Hozircha xabarlar yo’q",
     "you": "Siz",
     "parent": "Ota-ona",
     "teacher": "Tarbiyachi",

@@ -171,10 +171,12 @@
       "openNewTab": "Open in New Tab"
     }
   },
-  "chat": {
+  "parentChat": {
     "title": "Chat with Teacher",
     "subtitle": "Send a message to your child's teacher",
-    "placeholder": "Write a message to the teacher...",
+    "placeholder": "Write a message to the teacher..."
+  },
+  "chat": {
     "send": "Send",
     "empty": "No messages yet",
     "you": "You",

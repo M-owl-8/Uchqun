@@ -74,9 +74,30 @@ const Chat = () => {
         const convoList = Array.isArray(convosRes.data) ? convosRes.data : [];
         cache.set('teacher:parents', parentList);
         setParents(parentList);
-        setConversations(convoList);
-        if (convoList.length > 0) {
-          const firstId = convoList[0].conversationId.replace('parent:', '');
+        // Left panel: all assigned parents, conversation data overlaid where available
+        const convoMap = {};
+        convoList.forEach(c => {
+          const pid = c.conversationId?.replace('parent:', '');
+          if (pid) convoMap[pid] = c;
+        });
+        const merged = parentList.map(p => ({
+          conversationId: `parent:${p.id}`,
+          lastMessage: convoMap[String(p.id)]?.lastMessage || null,
+          unreadCount: convoMap[String(p.id)]?.unreadCount || 0,
+          updatedAt: convoMap[String(p.id)]?.updatedAt || null,
+        }));
+        // Sort: recent conversations first, then alphabetically by name
+        merged.sort((a, b) => {
+          if (a.updatedAt && b.updatedAt) return new Date(b.updatedAt) - new Date(a.updatedAt);
+          if (a.updatedAt) return -1;
+          if (b.updatedAt) return 1;
+          const pa = parentList.find(p => String(p.id) === a.conversationId.replace('parent:', ''));
+          const pb = parentList.find(p => String(p.id) === b.conversationId.replace('parent:', ''));
+          return `${pa?.firstName} ${pa?.lastName}`.localeCompare(`${pb?.firstName} ${pb?.lastName}`);
+        });
+        setConversations(merged);
+        if (merged.length > 0) {
+          const firstId = merged[0].conversationId.replace('parent:', '');
           setSelectedParentId(prev => prev ?? firstId);
         }
       } catch {

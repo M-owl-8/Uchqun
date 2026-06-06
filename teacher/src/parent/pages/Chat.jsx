@@ -128,9 +128,9 @@ const Chat = () => {
       <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-4">
         <div className="flex items-center gap-3 mb-2">
           <MessageCircle className="w-6 h-6 text-white" />
-          <h1 className="text-2xl md:text-3xl font-bold text-white">{t('chat.title')}</h1>
+          <h1 className="text-2xl md:text-3xl font-bold text-white">{t('parentChat.title')}</h1>
         </div>
-        <p className="text-white/90 text-sm md:text-base">{t('chat.subtitle')}</p>
+        <p className="text-white/90 text-sm md:text-base">{t('parentChat.subtitle')}</p>
       </Card>
 
       <Card className="bg-p-surface/95 backdrop-blur-sm h-[calc(100vh-220px)] min-h-[420px] lg:h-[60vh] flex flex-col relative shadow-xl">
@@ -261,7 +261,7 @@ const Chat = () => {
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder={t('chat.placeholder')}
+            placeholder={t('parentChat.placeholder')}
             className="flex-1 h-12 rounded-xl border border-slate-200 px-4 focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
