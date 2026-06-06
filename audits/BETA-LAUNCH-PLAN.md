@@ -23,10 +23,10 @@ We are **not** shipping production. The 6–8 week production launch is gated on
 | # | Gate | What | Effort | Status |
 |---|---|---|---|---|
 | **G1** | TP-PARENT-ASSIGNMENT classified + fixed | Resolve the dual-chain parent-child linkage (denormalized vs canonical). Unblocks every phase-2 parent verification. | 1 session (1 day) | ⛔ Deferred — terminal Claude with postgres-uchqun MCP required |
-| **G2** | 11-IDOR-RESWEEP across all 4 portals | Apply `audits/backend/10-idor-sweep.md` pattern to admin / government / reception / teacher/parent. Government S1 missed 3 region-scope leaks found only at CLOSEOUT — others likely hide the same pattern. | 1–2 sessions (2–3 days) | ⬜ Not started |
-| **G3** | Live E2E walks of pending items | Walk the 17 LOOP_TRACKER items marked "pending user Railway verification" + the 5 critical flows PL-026..PL-030 + the PP-* phase-2 walks (unblocked by G1). | 3–5 sessions of human time (1 week wall-clock) | ⬜ Not started |
-| **G4** | Privacy consent UI built | Modal-on-first-login for parents affirming C-02 group-wide media visibility. New `users.privacyConsentedAt` column + endpoint. | 1 session (1 day) | ⬜ Not started |
-| **G5** | Privacy consent text written + signed off | One paragraph × UZ/RU/EN: data collected, who can see it, how to withdraw, complaints contact. **Owner: product + legal.** | 2–3 days of partner time (outside engineering) | ⬜ Not started |
+| **G2** | 11-IDOR-RESWEEP across all 4 portals | Apply `audits/backend/10-idor-sweep.md` pattern to admin / government / reception / teacher/parent. Government S1 missed 3 region-scope leaks found only at CLOSEOUT — others likely hide the same pattern. | 1–2 sessions (2–3 days) | ✅ CLOSED 2026-06-06 — `audits/backend/11-idor-resweep.md`. 5/7 findings verified already-scoped; 2 production fixes shipped + 15 regression-lock tests. |
+| **G3** | Live E2E walks of pending items | Walk the 17 LOOP_TRACKER items marked "pending user Railway verification" + the 5 critical flows PL-026..PL-030 + the PP-* phase-2 walks (unblocked by G1). | 3–5 sessions of human time (1 week wall-clock) | ⬜ Not started (human-walk gate, awaits scheduling) |
+| **G4** | Privacy consent UI built | Modal-on-first-login for parents affirming C-02 group-wide media visibility. New `users.privacyConsentedAt` column + endpoint. | 1 session (1 day) | ✅ CLOSED 2026-06-06 — `audits/gates/G4-PRIVACY-CONSENT.md`. Backend migration + endpoint + modal + 10 controller tests + 12 locale keys × 3 langs. |
+| **G5** | Privacy consent text written + signed off | One paragraph × UZ/RU/EN: data collected, who can see it, how to withdraw, complaints contact. **Owner: product + legal.** | 2–3 days of partner time (outside engineering) | 🟡 Engineering placeholder drafted (UZ/RU/EN) in G4 commit. Final partner/legal sign-off still owed before production; beta ships with placeholder + on-screen "beta" disclaimer. |
 
 ---
 

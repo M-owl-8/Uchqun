@@ -9,10 +9,10 @@
 > | Gate | Item | Status |
 > |---|---|---|
 > | **G1** | TP-PARENT-ASSIGNMENT — resume from Claude Code terminal + postgres-uchqun MCP. STEP 2 (DB classify) + STEP 3 (fix). | ⛔ Deferred (DEFERRED.md) |
-> | **G2** | 11-IDOR-RESWEEP across all 4 portals (admin / government / reception / teacher+parent). Same pattern as `audits/backend/10-idor-sweep.md`. Failing-then-passing commit pair per finding. | ⬜ Not started |
-> | **G3** | Live E2E walks of all "pending user Railway verification" items + PL-026..PL-030 + post-G1 phase-2 PP-* walks. | ⬜ Not started |
-> | **G4** | Privacy consent UI (modal-on-first-login for parents, `users.privacyConsentedAt`). | ⬜ Not started |
-> | **G5** | Privacy consent text written + signed off (product + legal). | ⬜ Not started |
+> | **G2** | 11-IDOR-RESWEEP across all 4 portals — 5 of 7 findings were already-scoped (verified post-scan); 2 production-code fixes shipped + 15 regression-lock tests. | ✅ CLOSED (900d968) — `audits/backend/11-idor-resweep.md` |
+> | **G3** | Live E2E walks of all "pending user Railway verification" items + PL-026..PL-030 + post-G1 phase-2 PP-* walks. | ⬜ Not started (human-walk gate) |
+> | **G4** | Privacy consent UI (modal-on-first-login for parents, `users.privacyConsentedAt`). | ✅ CLOSED (e97006d) — `audits/gates/G4-PRIVACY-CONSENT.md`. Engineering complete; G5 owns the final consent text sign-off. |
+> | **G5** | Privacy consent text written + signed off (product + legal). | 🟡 Engineering placeholder drafted in G4 commit; PROD-ONLY sign-off still owed. Beta ships with placeholder. |
 >
 > **Out of scope for beta** (production-only): PL-009-VERIFY · PL-015 · PL-014 · PL-UZ-01..05 · Tier 3 · perf · a11y · incident-response runbooks.
 >
