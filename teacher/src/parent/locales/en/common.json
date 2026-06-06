@@ -202,7 +202,8 @@
     "delete": "Delete",
     "empty": "No notifications yet",
     "emptyUnread": "No unread notifications",
-    "emptyRead": "No read notifications"
+    "emptyRead": "No read notifications",
+    "subtitle": "Latest updates about your child"
   },
   "ratingPage": {
     "title": "Teacher feedback",

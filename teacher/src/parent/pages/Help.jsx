@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import ParentPageHeader from '../components/ParentPageHeader';
 import { Mail, Phone, MessageCircle, BookOpen } from 'lucide-react';
 import Card from '../components/Card';
 import { Link } from 'react-router-dom';
@@ -15,10 +16,10 @@ const Help = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-6">
-      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('help.title')}</h1>
-        <p className="text-white/90 text-sm md:text-base">{t('help.subtitle')}</p>
-      </Card>
+      <ParentPageHeader
+        title={t('help.title')}
+        subtitle={t('help.subtitle')}
+      />
 
       <Card className="p-6">
         <h2 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">

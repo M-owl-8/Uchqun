@@ -4,6 +4,7 @@ import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ParentPageHeader from '../components/ParentPageHeader';
 import {
   Utensils,
   Clock,
@@ -79,15 +80,15 @@ const Meals = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-8 animate-in fade-in duration-500">
       
-      {/* --- Header & Date Picker --- */}
-      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6 md:p-8 bg-p-brand-700 rounded-2xl shadow-xl border-0">
-        <div className="space-y-1">
-          <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('meals.title')}</h1>
-          <p className="text-white/90 text-sm md:text-base">{t('meals.subtitle')}</p>
-        </div>
-        
+      <ParentPageHeader
+        title={t('meals.title')}
+        subtitle={t('meals.subtitle')}
+        count={meals.length}
+      />
+      {/* Date picker */}
+      <Card className="flex flex-col md:flex-row md:items-end justify-between gap-6 p-6">
         <div className="relative">
-          <label className="flex items-center gap-2 text-xs font-bold text-slate-400 uppercase tracking-widest mb-2 ml-1">
+          <label className="flex items-center gap-2 text-[11px] font-semibold text-p-sepia-500 uppercase tracking-[.12em] mb-2 ml-1">
             <CalendarDays className="w-3.5 h-3.5" /> {t('meals.selectDay')}
           </label>
           <select

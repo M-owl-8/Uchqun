@@ -4,6 +4,7 @@ import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ParentPageHeader from '../components/ParentPageHeader';
 import {
   Image as ImageIcon,
   Play,
@@ -495,16 +496,14 @@ const Media = () => {
   return (
     <div className="max-w-7xl mx-auto space-y-8 animate-in fade-in duration-700 pb-24">
       
-      {/* --- Dynamic Header --- */}
-      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div>
-            <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">{t('media.title')}</h1>
-            <p className="text-white/90 text-sm md:text-base">{t('media.subtitle')}</p>
-          </div>
-
-          {/* --- Glassmorphism Filters --- */}
-          <div className="flex items-center gap-1 bg-surface/20 backdrop-blur-sm p-1.5 rounded-2xl border border-white/30">
+      <ParentPageHeader
+        title={t('media.title')}
+        subtitle={t('media.subtitle')}
+      />
+      {/* Filter chips */}
+      <Card className="p-3 mb-6">
+        <div className="flex items-center justify-end">
+          <div className="flex items-center gap-1 bg-p-sepia-50 p-1 rounded-xl border border-p-sepia-100">
           {[
             { id: 'all', label: t('media.filterAll'), icon: LayoutGrid },
             { id: 'photo', label: t('media.filterPhoto'), icon: ImageIcon },

@@ -125,13 +125,10 @@ const Chat = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-4 -mb-16 lg:mb-0">
-      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-4">
-        <div className="flex items-center gap-3 mb-2">
-          <MessageCircle className="w-6 h-6 text-white" />
-          <h1 className="text-2xl md:text-3xl font-bold text-white">{t('parentChat.title')}</h1>
-        </div>
-        <p className="text-white/90 text-sm md:text-base">{t('parentChat.subtitle')}</p>
-      </Card>
+      <ParentPageHeader
+        title={t('parentChat.title')}
+        subtitle={t('parentChat.subtitle')}
+      />
 
       <Card className="bg-p-surface/95 backdrop-blur-sm h-[calc(100vh-220px)] min-h-[420px] lg:h-[60vh] flex flex-col relative shadow-xl">
         <div

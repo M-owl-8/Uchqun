@@ -343,7 +343,7 @@ const ChildProfile = () => {
             className={`w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg border transition-colors text-[13px] font-medium relative ${
               myMessages.length > 0
                 ? 'bg-p-sepia-50 text-p-sepia-700 border-p-sepia-200 hover:bg-p-sepia-100 cursor-pointer'
-                : 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed'
+                : 'bg-p-sepia-50 text-p-sepia-400 border-p-sepia-100 cursor-not-allowed'
             }`}
           >
             <MessageSquare className="w-4 h-4" />

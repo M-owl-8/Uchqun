@@ -207,7 +207,8 @@
     "delete": "O'chirish",
     "empty": "Hozircha bildirishnomalar yo'q",
     "emptyUnread": "O'qilmagan bildirishnomalar yo'q",
-    "emptyRead": "O'qilgan bildirishnomalar yo'q"
+    "emptyRead": "O'qilgan bildirishnomalar yo'q",
+    "subtitle": "Sizning farzandingiz bo'yicha so'nggi yangiliklar"
   },
   "ratingPage": {
     "title": "Tarbiyachini baholash",

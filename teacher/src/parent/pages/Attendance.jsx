@@ -15,6 +15,7 @@ import { useChild } from '../context/ChildContext';
 import ChildSwitcher from '../components/ChildSwitcher';
 import LoadingSpinner from '../components/LoadingSpinner';
 import Card from '../components/Card';
+import ParentPageHeader from '../components/ParentPageHeader';
 import { useToast } from '../../shared/context/ToastContext';
 import {
   formatDateWeekdayMonth,
@@ -157,15 +158,10 @@ const Attendance = () => {
 
   return (
     <div className="max-w-2xl mx-auto space-y-5 animate-in fade-in duration-300">
-      {/* Header */}
-      <div>
-        <h1 className="text-[22px] font-semibold text-slate-900">
-          {t('parentAttendance.title')}
-        </h1>
-        <p className="text-[13px] text-slate-500 mt-0.5">
-          {t('parentAttendance.subtitle')}
-        </p>
-      </div>
+      <ParentPageHeader
+        title={t('parentAttendance.title')}
+        subtitle={t('parentAttendance.subtitle')}
+      />
 
       {/* Child switcher (only renders if multiple) */}
       {children?.length > 1 && (

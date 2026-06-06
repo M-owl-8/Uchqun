@@ -4,6 +4,7 @@ import { useToast } from '../../shared/context/ToastContext';
 import api from '../services/api';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ParentPageHeader from '../components/ParentPageHeader';
 import { useTranslation } from 'react-i18next';
 import { formatDateTime } from '@shared/utils/formatDate';
 import {
@@ -102,15 +103,11 @@ const AIWarnings = () => {
 
   return (
     <div className="space-y-6">
-      <div>
-        <h1 className="text-[22px] font-semibold text-slate-900">
-          {t('warnings.title')}
-          {unresolvedCount !== null && ` (${unresolvedCount})`}
-        </h1>
-        <p className="text-[13px] text-slate-500 mt-0.5">
-          {t('warnings.subtitle')}
-        </p>
-      </div>
+      <ParentPageHeader
+        title={t('warnings.title')}
+        subtitle={t('warnings.subtitle')}
+        count={unresolvedCount !== null ? unresolvedCount : undefined}
+      />
 
       {/* Filters */}
       <div className="flex gap-2">

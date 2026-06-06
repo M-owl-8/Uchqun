@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import ParentPageHeader from '../components/ParentPageHeader';
 import api from '../../shared/services/api';
 import Card from '../components/Card';
 import { useToast } from '../../shared/context/ToastContext';
@@ -119,12 +120,7 @@ const Settings = () => {
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 pb-24">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-black text-slate-900">{t('settings.title')}</h1>
-          <p className="text-slate-500 font-medium mt-1">{t('settings.subtitle')}</p>
-        </div>
-      </div>
+      <ParentPageHeader title={t('settings.title')} subtitle={t('settings.subtitle')} />
 
       {/* Profile Settings */}
       <form onSubmit={handleProfileSubmit} className="space-y-6">

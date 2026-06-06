@@ -4,6 +4,7 @@ import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
+import ParentPageHeader from '../components/ParentPageHeader';
 import {
   Calendar,
   CheckCircle2,
@@ -68,15 +69,11 @@ const Activities = () => {
 
   return (
     <div className="max-w-5xl mx-auto pb-20 animate-in fade-in duration-500">
-      {/* Header */}
-      <Card className="bg-p-brand-700 rounded-2xl p-6 md:p-8 shadow-xl border-0 mb-8">
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-          {t('activities.title') || 'Individual reja'}
-        </h1>
-        <p className="text-white/90 text-sm md:text-base">
-          {t('activities.subtitle') || 'Farzandingiz uchun individual rejalarni ko\'ring'}
-        </p>
-      </Card>
+      <ParentPageHeader
+        title={t('activities.title')}
+        subtitle={t('activities.subtitle')}
+        count={activities.length}
+      />
 
       {/* Activities Cards Grid */}
       {activities.length > 0 ? (

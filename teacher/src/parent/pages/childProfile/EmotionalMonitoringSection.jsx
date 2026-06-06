@@ -19,7 +19,7 @@ const EmotionalMonitoringSection = ({ records }) => {
         </h3>
         <div className="flex flex-col items-center justify-center py-8 text-center">
           <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-4">
-            <Activity className="w-7 h-7 text-gray-400" strokeWidth={1.5} />
+            <Activity className="w-7 h-7 text-p-sepia-400" strokeWidth={1.5} />
           </div>
           <p className="text-[15px] font-medium text-slate-700 mb-1">
             {t('profile.emotionalEmpty')}
