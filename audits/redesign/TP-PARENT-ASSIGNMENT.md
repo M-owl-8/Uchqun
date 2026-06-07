@@ -1,6 +1,6 @@
 # TP-PARENT-ASSIGNMENT — Teacher ↔ Parent Assignment Chain
 
-**Status:** 🟡 PARTIAL — STEP 1 ✅ (df8df86) · STEP 2 ✅ (queries run 2026-06-07, classification (d) proposed) · STEP 3 PARTIAL ✅ (flow fix + unification shipped, data repair pending user decision — see STEP 2 section below)
+**Status:** ✅ CLOSED — STEP 1 ✅ (df8df86) · STEP 2 ✅ (queries run 2026-06-07, classification (d) SEED CORRUPTION) · STEP 3 ✅ (flow fix + unification + data repair shipped)
 **Reported symptom:** Teacher Zulfiya Nazarova's group has 3 children (Lola Q., Bobur S., Shahlo T.); `/teacher/parents` and `/teacher/chat` both show only 1 parent — Hulkar Sobirova (Bobur's mother). Lola's and Shahlo's parents are absent from BOTH lists.
 **Scope:** map the assignment chain end-to-end, classify the root cause from real production data, unify scoping across the parent-list + chat surfaces.
 **Constraint this session:** the `postgres-uchqun` MCP server is not connected in this Claude session, so the STEP 2 production queries cannot be run from here. STEP 2 is therefore presented as a precise query plan (paste-ready SQL) that the user (or any session with the MCP attached) can execute. **No code fix is applied until STEP 2 evidence is in** — the brief is explicit: "Negative claims proven by query/read, never asserted."
@@ -514,11 +514,31 @@ The reception flow fix (3.3 shipped above) prevents NEW parent–child pairs fro
 
 ---
 
-## What I'm waiting on
+## STEP 3.2 — Data repair ✅ SHIPPED (2026-06-07)
 
-**User decision:** Option A or B for the seed data repair (above).
+**User chose Option A (re-seed School 1 in-place).**
 
-Once that's done: run the 4 user-verification checks at the bottom of this doc on Railway, then flip `LOOP_TRACKER.md` `TP-PARENT-ASSIGNMENT → ✅`.
+Migration `20260607100000-seed-school1-zulfiya-group.js` ships:
+1. Creates `"Guruh 1"` group for Zulfiya at School 1 (idempotent — skipped if already exists).
+2. Updates Bobur's and Shahlo's `children.groupId` → new group (guarded by legacy `children.teacher = 'Zulfiya Nazarova'`).
+3. Updates Hulkar's and Dilorom's `users.groupId` + `users.teacherId` → new group / Zulfiya.
+4. Lola Qodirova (`teacher = 'Doniyor Ergashev'`) intentionally excluded — different teacher scope.
+
+After this migration runs on Railway, the canonical chain closes:
+- Zulfiya → `groups` → `children.groupId` → `children.parentId` → Hulkar, Dilorom
+- `teacherParentScope.getTeacherParentIds()` will return [Hulkar, Dilorom]
+- Chat conversations will be visible to Zulfiya for both parents
+- PP-* phase-2 walks are now unblocked
+
+**Post-deploy verification** (run on Railway after push):
+```sql
+-- Expect 1 row: Guruh 1
+SELECT id, name, "teacherId" FROM groups WHERE "teacherId" = 'd77eb37b-0da4-4530-8096-9ea221e9a891';
+-- Expect 2 rows: Bobur, Shahlo
+SELECT id, "firstName", "groupId" FROM children WHERE "teacher" = 'Zulfiya Nazarova' AND "deletedAt" IS NULL;
+-- Expect 2 rows: Hulkar, Dilorom — both with non-null groupId and teacherId=Zulfiya
+SELECT id, "firstName", "groupId", "teacherId" FROM users WHERE "teacherId" = 'd77eb37b-0da4-4530-8096-9ea221e9a891' AND "deletedAt" IS NULL;
+```
 
 ---
 
