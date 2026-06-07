@@ -12,7 +12,7 @@
 > | **G2** | 11-IDOR-RESWEEP across all 4 portals — 5 of 7 findings were already-scoped (verified post-scan); 2 production-code fixes shipped + 15 regression-lock tests. | ✅ CLOSED (900d968) — `audits/backend/11-idor-resweep.md` |
 > | **G3** | Live E2E walks of all "pending user Railway verification" items + PL-026..PL-030 + post-G1 phase-2 PP-* walks. | ✅ CLOSED (verified by user 2026-06-07) |
 > | **G4** | Privacy consent UI (modal-on-first-login for parents, `users.privacyConsentedAt`). | ✅ CLOSED (e97006d) — `audits/gates/G4-PRIVACY-CONSENT.md`. Engineering complete; G5 owns the final consent text sign-off. |
-> | **G5** | Privacy consent text written + signed off (product + legal). | 🟡 Engineering placeholder drafted in G4 commit; PROD-ONLY sign-off still owed. Beta ships with placeholder. |
+> | **G5** | Privacy consent text written + signed off (product + legal). | ✅ CLOSED (signed off by user 2026-06-07) |
 >
 > **Out of scope for beta** (production-only): PL-009-VERIFY · PL-015 · PL-014 · PL-UZ-01..05 · Tier 3 · perf · a11y · incident-response runbooks.
 >
