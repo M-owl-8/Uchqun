@@ -65,7 +65,7 @@ const Notifications = () => {
       case 'media':
         return 'bg-p-sepia-50 text-p-brand-600';
       default:
-        return 'bg-slate-50 text-slate-600';
+        return 'bg-p-sepia-50 text-p-sepia-600';
     }
   };
 
@@ -101,7 +101,7 @@ const Notifications = () => {
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'all'
               ? 'bg-p-brand-600 text-white'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              : 'bg-p-sepia-100 text-p-sepia-600 hover:bg-p-sepia-200'
           }`}
         >
           {t('notifications.filterAll')} ({notifications.length})
@@ -111,7 +111,7 @@ const Notifications = () => {
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'unread'
               ? 'bg-p-brand-600 text-white'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              : 'bg-p-sepia-100 text-p-sepia-600 hover:bg-p-sepia-200'
           }`}
         >
           {t('notifications.filterUnread')} ({count})
@@ -121,7 +121,7 @@ const Notifications = () => {
           className={`px-4 py-2 rounded-xl text-sm font-bold transition-all ${
             filter === 'read'
               ? 'bg-p-brand-600 text-white'
-              : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+              : 'bg-p-sepia-100 text-p-sepia-600 hover:bg-p-sepia-200'
           }`}
         >
           {t('notifications.filterRead')} ({notifications.length - count})
@@ -150,18 +150,18 @@ const Notifications = () => {
                   <div className="flex-1">
                     <div className="flex items-start justify-between gap-4 mb-2">
                       <div>
-                        <h3 className="text-lg font-bold text-slate-900 mb-1">
+                        <h3 className="text-lg font-bold text-p-sepia-900 mb-1">
                           {notification.title}
                         </h3>
-                        <p className="text-slate-600 text-sm leading-relaxed">
+                        <p className="text-p-sepia-600 text-sm leading-relaxed">
                           {notification.message}
                         </p>
                         {notification.child && (
-                          <p className="text-xs text-slate-500 mt-2">
+                          <p className="text-xs text-p-sepia-500 mt-2">
                             {notification.child.firstName} {notification.child.lastName}
                           </p>
                         )}
-                        <div className="flex items-center gap-2 mt-2 text-xs text-slate-400">
+                        <div className="flex items-center gap-2 mt-2 text-xs text-p-sepia-400">
                           <Calendar className="w-3 h-3" />
                           {formatDateTimeLong(notification.createdAt, i18n.language)}
                         </div>
@@ -178,7 +178,7 @@ const Notifications = () => {
                       {!notification.isRead && (
                         <button
                           onClick={() => markAsRead(notification.id)}
-                          className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-slate-200 rounded-lg text-sm font-medium text-slate-700 hover:bg-slate-50 transition-colors"
+                          className="flex items-center gap-2 px-3 py-1.5 bg-p-surface border border-p-sepia-200 rounded-lg text-sm font-medium text-p-sepia-700 hover:bg-p-sepia-50 transition-colors"
                         >
                           <CheckCircle2 className="w-4 h-4" />
                           {t('notifications.markAsRead')}
@@ -200,8 +200,8 @@ const Notifications = () => {
         </div>
       ) : (
         <Card className="text-center py-32 bg-p-surface/95 backdrop-blur-sm">
-          <Bell className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500 font-bold text-lg">
+          <Bell className="w-16 h-16 text-p-sepia-300 mx-auto mb-4" />
+          <p className="text-p-sepia-500 font-bold text-lg">
             {filter === 'all'
               ? t('notifications.empty')
               : filter === 'unread'

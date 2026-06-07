@@ -11,6 +11,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useChild } from '../context/ChildContext';
 import { useToast } from '../../shared/context/ToastContext';
 import { PARENT_INDICATORS } from '@shared/config/ratingIndicators.js';
+import StarRating from '@shared/components/StarRating';
 
 const DEFAULT_INDICATORS = Object.fromEntries(PARENT_INDICATORS.map((ind) => [ind.key, 3]));
 
@@ -256,15 +257,15 @@ const TeacherRating = () => {
                     <p className="text-xs font-semibold text-p-brand-600 uppercase tracking-wide">
                       {t('ratingPage.yourTeacher')}
                     </p>
-                    <h2 className="text-xl font-bold text-slate-900">
+                    <h2 className="text-xl font-bold text-p-sepia-900">
                       {teacher.firstName} {teacher.lastName}
                     </h2>
-                    <p className="text-sm text-slate-500">{teacher.email}</p>
+                    <p className="text-sm text-p-sepia-500">{teacher.email}</p>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end text-right">
-                  <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                  <p className="text-xs font-semibold text-p-sepia-500 uppercase tracking-wide">
                     {t('ratingPage.average')}
                   </p>
                   <div className="flex items-center gap-2">
@@ -272,7 +273,7 @@ const TeacherRating = () => {
                       <Star className="w-5 h-5 fill-p-brand-500 text-p-brand-500" />
                       {summary.average?.toFixed(1) || '0.0'}
                     </div>
-                    <span className="text-xs text-slate-500">
+                    <span className="text-xs text-p-sepia-500">
                       {t('ratingPage.ratingsCount', { count: summary.count || 0 })}
                     </span>
                   </div>
@@ -280,52 +281,38 @@ const TeacherRating = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <Mail className="w-4 h-4 text-slate-500" />
-                  <span className="text-sm text-slate-700">{teacher.email || '—'}</span>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-p-sepia-50 border border-p-sepia-200">
+                  <Mail className="w-4 h-4 text-p-sepia-500" />
+                  <span className="text-sm text-p-sepia-700">{teacher.email || '—'}</span>
                 </div>
-                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-slate-50 border border-slate-200">
-                  <Phone className="w-4 h-4 text-slate-500" />
-                  <span className="text-sm text-slate-700">{teacher.phone || t('ratingPage.noPhone')}</span>
+                <div className="flex items-center gap-3 px-4 py-3 rounded-xl bg-p-sepia-50 border border-p-sepia-200">
+                  <Phone className="w-4 h-4 text-p-sepia-500" />
+                  <span className="text-sm text-p-sepia-700">{teacher.phone || t('ratingPage.noPhone')}</span>
                 </div>
               </div>
 
               <div className="space-y-4">
                 <div>
-                  <p className="text-sm font-semibold text-slate-700 mb-2">{t('ratingPage.starsLabel')}</p>
-                  <div className="flex items-center gap-2">
-                    {starButtons.map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        onClick={() => setStars(value)}
-                        className={`p-3 rounded-2xl border transition-colors ${
-                          stars >= value
-                            ? 'bg-p-brand-50 border-p-brand-200 text-p-brand-600'
-                            : 'bg-p-surface border-slate-200 text-slate-400 hover:border-p-brand-200 hover:text-p-brand-500'
-                        }`}
-                      >
-                        <Star
-                          className="w-6 h-6"
-                          fill={stars >= value ? '#f97316' : 'none'}
-                          stroke={stars >= value ? '#ea580c' : 'currentColor'}
-                        />
-                      </button>
-                    ))}
-                  </div>
+                  <p className="text-sm font-semibold text-p-sepia-700 mb-2">{t('ratingPage.starsLabel')}</p>
+                  <StarRating
+                    name={t('ratingPage.starsLabel')}
+                    value={stars}
+                    onChange={setStars}
+                    size="lg"
+                  />
                 </div>
 
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <p className="text-sm font-semibold text-slate-700">{t('ratingPage.commentLabel')}</p>
-                    <span className="text-xs text-slate-400">{t('ratingPage.optional')}</span>
+                    <p className="text-sm font-semibold text-p-sepia-700">{t('ratingPage.commentLabel')}</p>
+                    <span className="text-xs text-p-sepia-400">{t('ratingPage.optional')}</span>
                   </div>
                   <textarea
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     rows={4}
                     placeholder={t('ratingPage.commentPlaceholder')}
-                    className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                    className="w-full rounded-xl border border-p-sepia-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   />
                 </div>
 
@@ -344,7 +331,7 @@ const TeacherRating = () => {
                 )}
 
                 <div className="flex items-center justify-between">
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-p-sepia-500">
                     {lastUpdated && t('ratingPage.lastUpdated', { date: lastUpdated })}
                   </div>
                   <button
@@ -367,39 +354,40 @@ const TeacherRating = () => {
                     <MessageSquare className="w-5 h-5" />
                   </div>
                   <div>
-                    <p className="text-sm font-semibold text-slate-900">{t('ratingPage.yourRating')}</p>
+                    <p className="text-sm font-semibold text-p-sepia-900">{t('ratingPage.yourRating')}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {starButtons.map((value) => (
-                    <Star
-                      key={value}
-                      className="w-5 h-5"
-                      fill={(rating?.stars || stars) >= value ? '#f97316' : 'none'}
-                      stroke={(rating?.stars || stars) >= value ? '#ea580c' : '#9ca3af'}
-                    />
-                  ))}
+                <div className="flex items-center gap-0.5">
+                  {starButtons.map((value) => {
+                    const filled = (rating?.stars || stars) >= value;
+                    return (
+                      <Star
+                        key={value}
+                        className={`w-5 h-5 ${filled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                      />
+                    );
+                  })}
                 </div>
 
-                <div className="text-sm text-slate-600">
+                <div className="text-sm text-p-sepia-600">
                   {rating?.comment ? `"${rating.comment}"` : t('ratingPage.noComment')}
                 </div>
               </Card>
 
               <Card className="space-y-3">
-                <p className="text-sm font-semibold text-slate-900">{t('ratingPage.summaryTitle')}</p>
+                <p className="text-sm font-semibold text-p-sepia-900">{t('ratingPage.summaryTitle')}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 text-p-brand-500 fill-p-brand-500" />
                     <div>
-                      <p className="text-xl font-bold text-slate-900">{summary.average?.toFixed(1) || '0.0'}</p>
-                      <p className="text-xs text-slate-500">{t('ratingPage.average')}</p>
+                      <p className="text-xl font-bold text-p-sepia-900">{summary.average?.toFixed(1) || '0.0'}</p>
+                      <p className="text-xs text-p-sepia-500">{t('ratingPage.average')}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold text-slate-900">{summary.count || 0}</p>
-                    <p className="text-xs text-slate-500">{t('ratingPage.ratingsCount', { count: summary.count || 0 })}</p>
+                    <p className="text-xl font-bold text-p-sepia-900">{summary.count || 0}</p>
+                    <p className="text-xs text-p-sepia-500">{t('ratingPage.ratingsCount', { count: summary.count || 0 })}</p>
                   </div>
                 </div>
               </Card>
@@ -428,15 +416,15 @@ const TeacherRating = () => {
                     <p className="text-xs font-semibold text-p-honey-700 uppercase tracking-wide">
                       {t('schoolRatingPage.yourSchool')}
                     </p>
-                    <h2 className="text-xl font-bold text-slate-900">{school.name}</h2>
-                    {school.address && <p className="text-sm text-slate-500">{school.address}</p>}
+                    <h2 className="text-xl font-bold text-p-sepia-900">{school.name}</h2>
+                    {school.address && <p className="text-sm text-p-sepia-500">{school.address}</p>}
                   </div>
                 </div>
                 <div className="flex flex-col items-end text-right min-w-[120px]">
                   {/* Cumulative headline */}
                   {schoolRatingAgg?.cumulativeAvg != null ? (
                     <>
-                      <p className="text-xs font-semibold text-slate-500 uppercase tracking-wide">
+                      <p className="text-xs font-semibold text-p-sepia-500 uppercase tracking-wide">
                         {t('schoolRatingPage.cumulative')}
                       </p>
                       <div className="flex items-center gap-1 text-p-honey-700 font-bold text-xl">
@@ -445,66 +433,59 @@ const TeacherRating = () => {
                       </div>
                     </>
                   ) : (
-                    <span className="text-xs text-slate-400 italic">{t('schoolRatingPage.noRating')}</span>
+                    <span className="text-xs text-p-sepia-400 italic">{t('schoolRatingPage.noRating')}</span>
                   )}
                   {/* Parent + Gov breakdown */}
                   {schoolRatingAgg && (
                     <div className="mt-1.5 space-y-0.5 text-right">
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-p-sepia-500">
                         {t('schoolRatingPage.parentAvg')}{' '}
-                        <span className="font-semibold text-slate-700">
+                        <span className="font-semibold text-p-sepia-700">
                           {schoolRatingAgg.parentAvg != null ? schoolRatingAgg.parentAvg.toFixed(1) : '—'}
                         </span>
-                        {schoolRatingAgg.parentCount > 0 && <span className="text-slate-400"> ({schoolRatingAgg.parentCount})</span>}
+                        {schoolRatingAgg.parentCount > 0 && <span className="text-p-sepia-400"> ({schoolRatingAgg.parentCount})</span>}
                       </p>
-                      <p className="text-xs text-slate-500">
+                      <p className="text-xs text-p-sepia-500">
                         {t('schoolRatingPage.govAvg')}{' '}
-                        <span className="font-semibold text-slate-700">
+                        <span className="font-semibold text-p-sepia-700">
                           {schoolRatingAgg.govAvg != null ? schoolRatingAgg.govAvg.toFixed(1) : '—'}
                         </span>
-                        {schoolRatingAgg.govPeriod && <span className="text-slate-400"> {schoolRatingAgg.govPeriod}</span>}
+                        {schoolRatingAgg.govPeriod && <span className="text-p-sepia-400"> {schoolRatingAgg.govPeriod}</span>}
                       </p>
                     </div>
                   )}
                 </div>
               </div>
 
-              {/* 5-indicator sliders — PL-015 GATE: labels are placeholders */}
-              <div className="space-y-5">
-                <div className="flex items-center gap-2 text-sm font-semibold text-slate-700">
+              {/* 5-indicator star rows — PL-015 GATE: labels are placeholders */}
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-sm font-semibold text-p-sepia-700">
                   <BarChart3 className="w-4 h-4 text-p-honey-700" />
                   {t('schoolRatingPage.indicatorsLabel')}
                 </div>
                 {PARENT_INDICATORS.map((ind) => (
-                  <div key={ind.key} className="space-y-1" data-testid={`indicator-row-${ind.key}`}>
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-slate-700">
-                        {ind[i18n.language] || ind.en}
-                      </label>
+                  <div
+                    key={ind.key}
+                    className="flex items-center justify-between gap-3 py-1.5"
+                    data-testid={`indicator-row-${ind.key}`}
+                  >
+                    <label className="text-sm font-medium text-p-sepia-700 flex-1 min-w-0 truncate">
+                      {ind[i18n.language] || ind.en}
+                    </label>
+                    <div className="flex items-center gap-3 shrink-0">
                       <span
-                        className="text-sm font-bold text-p-honey-700 min-w-[3rem] text-right"
+                        className="text-xs font-semibold text-p-sepia-500 min-w-[2.5rem] text-right tnum"
                         data-testid={`score-${ind.key}`}
                       >
                         {schoolIndicators[ind.key]} / 5
                       </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="5"
-                      step="1"
-                      value={schoolIndicators[ind.key]}
-                      onChange={(e) =>
-                        setSchoolIndicators((prev) => ({ ...prev, [ind.key]: Number(e.target.value) }))
-                      }
-                      className="w-full accent-p-honey-700 cursor-pointer"
-                      data-testid={`slider-${ind.key}`}
-                      aria-label={ind[i18n.language] || ind.en}
-                    />
-                    <div className="flex justify-between text-xs text-slate-400 px-0.5">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <span key={n}>{n}</span>
-                      ))}
+                      <StarRating
+                        name={ind[i18n.language] || ind.en}
+                        value={schoolIndicators[ind.key]}
+                        onChange={(v) =>
+                          setSchoolIndicators((prev) => ({ ...prev, [ind.key]: v }))
+                        }
+                      />
                     </div>
                   </div>
                 ))}
@@ -513,7 +494,7 @@ const TeacherRating = () => {
               {/* Mandatory comment */}
               <div>
                 <div className="flex items-center justify-between mb-2">
-                  <p className="text-sm font-semibold text-slate-700">{t('schoolRatingPage.commentLabel')}</p>
+                  <p className="text-sm font-semibold text-p-sepia-700">{t('schoolRatingPage.commentLabel')}</p>
                   <span className="text-xs font-medium text-error-500">
                     * {t('schoolRatingPage.required')}
                   </span>
@@ -524,14 +505,14 @@ const TeacherRating = () => {
                   rows={4}
                   required
                   placeholder={t('schoolRatingPage.commentPlaceholder')}
-                  className="w-full rounded-xl border border-slate-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-honey-500 focus:border-transparent"
+                  className="w-full rounded-xl border border-p-sepia-200 px-4 py-3 text-sm focus:ring-2 focus:ring-p-honey-500 focus:border-transparent"
                   data-testid="school-comment"
                 />
               </div>
 
               {/* Submit */}
               <div className="flex items-center justify-between">
-                <div className="text-xs text-slate-500">
+                <div className="text-xs text-p-sepia-500">
                   {schoolRating?.updatedAt &&
                     t('schoolRatingPage.lastUpdated', { date: formatDateTime(schoolRating.updatedAt, i18n.language) })}
                 </div>
@@ -555,14 +536,14 @@ const TeacherRating = () => {
                   <div className="p-2 rounded-xl bg-p-honey-100 text-p-honey-700">
                     <CheckCircle2 className="w-5 h-5" />
                   </div>
-                  <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.yourRating')}</p>
+                  <p className="text-sm font-semibold text-p-sepia-900">{t('schoolRatingPage.yourRating')}</p>
                 </div>
 
                 {schoolRating?.indicators ? (
                   <div className="space-y-2 pt-1">
                     {PARENT_INDICATORS.map((ind) => (
                       <div key={ind.key} className="flex items-center justify-between text-sm">
-                        <span className="text-slate-600 truncate max-w-[70%]">{ind[i18n.language] || ind.en}</span>
+                        <span className="text-p-sepia-600 truncate max-w-[70%]">{ind[i18n.language] || ind.en}</span>
                         <span className="font-semibold text-p-honey-700">
                           {schoolRating.indicators[ind.key] ?? '—'} / 5
                         </span>
@@ -570,29 +551,29 @@ const TeacherRating = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-400">{t('schoolRatingPage.noComment')}</p>
+                  <p className="text-sm text-p-sepia-400">{t('schoolRatingPage.noComment')}</p>
                 )}
 
                 {schoolRating?.comment && (
-                  <div className="text-sm text-slate-600 pt-2 border-t border-slate-200">
+                  <div className="text-sm text-p-sepia-600 pt-2 border-t border-p-sepia-200">
                     {`"${schoolRating.comment}"`}
                   </div>
                 )}
               </Card>
 
               <Card className="space-y-3">
-                <p className="text-sm font-semibold text-slate-900">{t('schoolRatingPage.summaryTitle')}</p>
+                <p className="text-sm font-semibold text-p-sepia-900">{t('schoolRatingPage.summaryTitle')}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <Star className="w-5 h-5 text-p-honey-500 fill-p-honey-500" />
                     <div>
-                      <p className="text-xl font-bold text-slate-900">{schoolSummary.average?.toFixed(1) || '0.0'}</p>
-                      <p className="text-xs text-slate-500">{t('schoolRatingPage.average')}</p>
+                      <p className="text-xl font-bold text-p-sepia-900">{schoolSummary.average?.toFixed(1) || '0.0'}</p>
+                      <p className="text-xs text-p-sepia-500">{t('schoolRatingPage.average')}</p>
                     </div>
                   </div>
                   <div className="text-right">
-                    <p className="text-xl font-bold text-slate-900">{schoolSummary.count || 0}</p>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xl font-bold text-p-sepia-900">{schoolSummary.count || 0}</p>
+                    <p className="text-xs text-p-sepia-500">
                       {t('schoolRatingPage.ratingsCount', { count: schoolSummary.count || 0 })}
                     </p>
                   </div>
@@ -607,8 +588,8 @@ const TeacherRating = () => {
             <Building2 className="w-5 h-5" />
           </div>
           <div>
-            <h2 className="text-lg font-bold text-slate-900">{t('schoolRatingPage.title')}</h2>
-            <p className="text-slate-600">{t('schoolRatingPage.noSchool')}</p>
+            <h2 className="text-lg font-bold text-p-sepia-900">{t('schoolRatingPage.title')}</h2>
+            <p className="text-p-sepia-600">{t('schoolRatingPage.noSchool')}</p>
           </div>
         </Card>
       )}

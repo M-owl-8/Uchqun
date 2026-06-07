@@ -20,18 +20,17 @@ import { useToast } from '../../shared/context/ToastContext';
 import {
   formatDateWeekdayMonth,
   formatDateShort,
-  formatDateMedium,
-} from '@shared/utils/formatDate';
+  formatDateMedium, todayLocal} from '@shared/utils/formatDate';
 
 const STATUS_META = {
   present:      { color: 'bg-success-100 text-success-800 border-success-300', dot: 'bg-success-500', labelKey: 'attendance.statusPresent' },
   home_leave:   { color: 'bg-warning-100 text-warning-800 border-warning-300', dot: 'bg-warning-500', labelKey: 'attendance.statusHomeLeave' },
   sick:         { color: 'bg-error-50 text-error-700 border-error-200',         dot: 'bg-error-400',   labelKey: 'attendance.statusSick' },
   hospitalized: { color: 'bg-error-100 text-error-800 border-error-300',        dot: 'bg-error-500',   labelKey: 'attendance.statusHospitalized' },
-  absent:       { color: 'bg-slate-100 text-slate-700 border-slate-300',        dot: 'bg-slate-400',   labelKey: 'attendance.statusAbsent' },
+  absent:       { color: 'bg-p-sepia-100 text-p-sepia-700 border-p-sepia-300',        dot: 'bg-p-sepia-400',   labelKey: 'attendance.statusAbsent' },
 };
 
-const todayIsoDate = () => new Date().toISOString().slice(0, 10);
+const todayIsoDate = () => todayLocal();
 
 // Anchor of week = Monday of the given date
 const mondayOf = (d) => {
@@ -149,8 +148,8 @@ const Attendance = () => {
     return (
       <div className="max-w-2xl mx-auto py-12">
         <Card className="p-8 text-center">
-          <CalendarDays className="w-12 h-12 mx-auto mb-3 text-slate-300" />
-          <p className="text-slate-600">{t('parentAttendance.noChildSelected')}</p>
+          <CalendarDays className="w-12 h-12 mx-auto mb-3 text-p-sepia-300" />
+          <p className="text-p-sepia-600">{t('parentAttendance.noChildSelected')}</p>
         </Card>
       </div>
     );
@@ -171,13 +170,13 @@ const Attendance = () => {
       )}
 
       {/* View toggle */}
-      <div className="inline-flex rounded-lg border border-slate-200 overflow-hidden">
+      <div className="inline-flex rounded-lg border border-p-sepia-200 overflow-hidden">
         {['day', 'week'].map(v => (
           <button
             key={v}
             onClick={() => setView(v)}
             className={`px-4 py-2 text-[13px] font-medium ${
-              view === v ? 'bg-brand-600 text-white' : 'bg-surface text-slate-700 hover:bg-slate-50'
+              view === v ? 'bg-p-brand-600 text-white' : 'bg-p-surface text-p-sepia-700 hover:bg-p-sepia-50'
             }`}
             type="button"
           >
@@ -191,12 +190,12 @@ const Attendance = () => {
         <button
           onClick={goPrev}
           aria-label={view === 'day' ? t('parentAttendance.previousDay') : t('parentAttendance.previousWeek')}
-          className="w-9 h-9 grid place-items-center rounded-md border border-slate-200 bg-surface hover:bg-slate-50"
+          className="w-9 h-9 grid place-items-center rounded-md border border-p-sepia-200 bg-p-surface hover:bg-p-sepia-50"
           type="button"
         >
           <ChevronLeft className="w-4 h-4" />
         </button>
-        <div className="text-[14px] font-semibold text-slate-900 text-center flex-1">
+        <div className="text-[14px] font-semibold text-p-sepia-900 text-center flex-1">
           {view === 'day'
             ? formatDateWeekdayMonth(anchorDate, i18n.language) || anchorDate
             : `${formatDateMedium(range.start, i18n.language)} – ${formatDateMedium(range.end, i18n.language)}`}
@@ -205,7 +204,7 @@ const Attendance = () => {
           onClick={goNext}
           disabled={nextDisabled}
           aria-label={view === 'day' ? t('parentAttendance.nextDay') : t('parentAttendance.nextWeek')}
-          className="w-9 h-9 grid place-items-center rounded-md border border-slate-200 bg-surface hover:bg-slate-50 disabled:opacity-40 disabled:cursor-not-allowed"
+          className="w-9 h-9 grid place-items-center rounded-md border border-p-sepia-200 bg-p-surface hover:bg-p-sepia-50 disabled:opacity-40 disabled:cursor-not-allowed"
           type="button"
         >
           <ChevronRight className="w-4 h-4" />
@@ -216,7 +215,7 @@ const Attendance = () => {
         <button
           onClick={goToday}
           type="button"
-          className="text-[12px] font-medium text-brand-600 hover:text-brand-700 underline-offset-2 hover:underline"
+          className="text-[12px] font-medium text-p-brand-600 hover:text-p-brand-700 underline-offset-2 hover:underline"
         >
           → {t('parentAttendance.today')}
         </button>
@@ -240,8 +239,8 @@ const DayView = ({ record, t }) => {
   if (!record) {
     return (
       <Card className="p-6 text-center">
-        <CalendarDays className="w-10 h-10 mx-auto mb-3 text-slate-300" />
-        <p className="text-[13px] text-slate-500">{t('parentAttendance.noRecord')}</p>
+        <CalendarDays className="w-10 h-10 mx-auto mb-3 text-p-sepia-300" />
+        <p className="text-[13px] text-p-sepia-500">{t('parentAttendance.noRecord')}</p>
       </Card>
     );
   }
@@ -256,11 +255,11 @@ const DayView = ({ record, t }) => {
         </span>
       </div>
       {record.note && (
-        <div className="mt-4 p-3 bg-slate-50 rounded-lg">
-          <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-slate-500 mb-1">
+        <div className="mt-4 p-3 bg-p-sepia-50 rounded-lg">
+          <div className="flex items-center gap-2 text-[11px] uppercase tracking-wide text-p-sepia-500 mb-1">
             <Info className="w-3.5 h-3.5" /> {t('parentAttendance.teacherNote')}
           </div>
-          <p className="text-[13px] text-slate-800 whitespace-pre-wrap">{record.note}</p>
+          <p className="text-[13px] text-p-sepia-800 whitespace-pre-wrap">{record.note}</p>
         </div>
       )}
     </Card>
@@ -277,19 +276,19 @@ const WeekGrid = ({ days, t, lang, todayIso, isFuture }) => (
         <div
           key={iso}
           className={`rounded-lg border p-2 min-h-[78px] flex flex-col gap-1 ${
-            isToday ? 'border-brand-400 bg-brand-50' : 'border-slate-200 bg-surface'
+            isToday ? 'border-p-brand-400 bg-p-brand-50' : 'border-p-sepia-200 bg-p-surface'
           } ${future ? 'opacity-40' : ''}`}
         >
-          <div className="text-[10px] uppercase tracking-wide text-slate-500">
+          <div className="text-[10px] uppercase tracking-wide text-p-sepia-500">
             {formatDateShort(date, lang)}
           </div>
           {meta ? (
             <div className="flex items-center gap-1.5">
               <span className={`w-2 h-2 rounded-full ${meta.dot}`} aria-hidden="true" />
-              <span className="hidden sm:inline text-[10px] font-medium text-slate-700 truncate">{t(meta.labelKey)}</span>
+              <span className="hidden sm:inline text-[10px] font-medium text-p-sepia-700 truncate">{t(meta.labelKey)}</span>
             </div>
           ) : !future ? (
-            <span className="hidden sm:inline text-[10px] text-slate-400">{t('attendance.statusUnset')}</span>
+            <span className="hidden sm:inline text-[10px] text-p-sepia-400">{t('attendance.statusUnset')}</span>
           ) : null}
         </div>
       );

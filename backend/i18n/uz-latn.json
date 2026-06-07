@@ -254,5 +254,9 @@
   "PRIVACY_CONSENT_READ_FAILED": "Maxfiylik holatini yuklab boʻlmadi. Qaytadan urinib koʻring.",
   "PRIVACY_CONSENT_WRITE_FAILED": "Maxfiylik tasdigʻini saqlab boʻlmadi. Qaytadan urinib koʻring.",
   "MEDIA_STORAGE_NOT_CONFIGURED": "Media yuklash sozlanmagan. Iltimos, administrator bilan bog'laning.",
-  "MEDIA_UPLOAD_STORAGE_FAILED": "Faylni yuklab boʻlmadi. Qaytadan urinib koʻring."
+  "MEDIA_UPLOAD_STORAGE_FAILED": "Faylni yuklab boʻlmadi. Qaytadan urinib koʻring.",
+  "CHILD_NOT_ACCESSIBLE": "Bola sizning hududingizdagi maktab bolasi emas.",
+  "CHILD_FETCH_FAILED": "Bola maʼlumotini yuklab boʻlmadi. Qaytadan urinib koʻring.",
+  "SCHOOL_NOT_ACCESSIBLE": "Maktab sizning hududingizda emas.",
+  "STUDENT_LIST_FAILED": "Bolalar roʻyxatini yuklab boʻlmadi."
 }

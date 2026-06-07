@@ -10,11 +10,11 @@ import { QUARTERLY_JOURNAL_ITEMS } from '@shared/config/quarterlyJournalItems';
 // configKey → key in QUARTERLY_JOURNAL_ITEMS
 
 const SECTION_MAP = [
-  { formKey: 'infoSystemData',    configKey: 'infoSystem',    labelKey: 'managerIrr.sectionInfoSystem' },
-  { formKey: 'parentWorkData',    configKey: 'parentWork',    labelKey: 'managerIrr.sectionParentWork' },
-  { formKey: 'documentationData', configKey: 'documentation', labelKey: 'managerIrr.sectionDocumentation' },
-  { formKey: 'careQualityData',   configKey: 'careQuality',   labelKey: 'managerIrr.sectionCareQuality' },
-  { formKey: 'conditionsData',    configKey: 'conditions',    labelKey: 'managerIrr.sectionConditions' },
+  { formKey: 'infoSystemData',    configKey: 'infoSystem',    labelKey: 'directorIrr.sectionInfoSystem' },
+  { formKey: 'parentWorkData',    configKey: 'parentWork',    labelKey: 'directorIrr.sectionParentWork' },
+  { formKey: 'documentationData', configKey: 'documentation', labelKey: 'directorIrr.sectionDocumentation' },
+  { formKey: 'careQualityData',   configKey: 'careQuality',   labelKey: 'directorIrr.sectionCareQuality' },
+  { formKey: 'conditionsData',    configKey: 'conditions',    labelKey: 'directorIrr.sectionConditions' },
 ];
 
 const buildEmptySectionChecks = (items) =>
@@ -65,7 +65,7 @@ const ChildPeriodRow = ({ child, onSigned }) => {
       setPeriods(periodsRes.data?.data ?? []);
       setLoaded(true);
     } catch {
-      showError(t('managerIrr.loadPeriodsError', { defaultValue: 'Даврлар юкланмади' }));
+      showError(t('directorIrr.loadPeriodsError', { defaultValue: 'Даврлар юкланмади' }));
     } finally {
       setLoading(false);
     }
@@ -82,10 +82,10 @@ const ChildPeriodRow = ({ child, onSigned }) => {
       const res = await api.post(`/teacher/goal-periods/${periodId}/sign`);
       const updated = res.data?.data;
       setPeriods((prev) => prev.map((p) => (p.id === periodId ? updated : p)));
-      showSuccess(t('managerIrr.signSuccess', { defaultValue: 'Имзоланди' }));
+      showSuccess(t('directorIrr.signSuccess', { defaultValue: 'Имзоланди' }));
       if (onSigned) onSigned(periodId);
     } catch {
-      showError(t('managerIrr.signError', { defaultValue: 'Имзолашда хатолик' }));
+      showError(t('directorIrr.signError', { defaultValue: 'Имзолашда хатолик' }));
     } finally {
       setSigning(null);
     }
@@ -119,12 +119,12 @@ const ChildPeriodRow = ({ child, onSigned }) => {
           )}
           {!loading && noIrr && (
             <p data-testid={`no-irr-${child.id}`} className="text-sm text-warm-500 italic">
-              {t('managerIrr.noIrr', { defaultValue: 'ИРР ҳали яратилмаган' })}
+              {t('directorIrr.noIrr', { defaultValue: 'ИРР ҳали яратилмаган' })}
             </p>
           )}
           {!loading && !noIrr && loaded && periods.length === 0 && (
             <p className="text-sm text-warm-500 italic">
-              {t('managerIrr.noPeriods', { defaultValue: 'Мақсадли даврлар йўқ' })}
+              {t('directorIrr.noPeriods', { defaultValue: 'Мақсадли даврлар йўқ' })}
             </p>
           )}
           {!loading && periods.map((period) => {
@@ -143,16 +143,16 @@ const ChildPeriodRow = ({ child, onSigned }) => {
                   <div className="flex gap-4 mt-0.5">
                     <span className={`text-xs flex items-center gap-1 ${teacherSigned ? 'text-success-600' : 'text-warm-400'}`}>
                       <CheckCircle2 className="w-3 h-3" strokeWidth={2} />
-                      {t('managerIrr.teacherSign', { defaultValue: 'Ўқитувчи' })}
-                      {teacherSigned ? '' : ` — ${t('managerIrr.pending', { defaultValue: 'кутилмоқда' })}`}
+                      {t('directorIrr.teacherSign', { defaultValue: 'Ўқитувчи' })}
+                      {teacherSigned ? '' : ` — ${t('directorIrr.pending', { defaultValue: 'кутилмоқда' })}`}
                     </span>
                     <span
                       data-testid={`manager-sign-status-${period.id}`}
                       className={`text-xs flex items-center gap-1 ${managerSigned ? 'text-success-600' : 'text-warning-600'}`}
                     >
                       <CheckCircle2 className="w-3 h-3" strokeWidth={2} />
-                      {t('managerIrr.managerSign', { defaultValue: 'Раҳбар' })}
-                      {managerSigned ? '' : ` — ${t('managerIrr.pending', { defaultValue: 'кутилмоқда' })}`}
+                      {t('directorIrr.managerSign', { defaultValue: 'Раҳбар' })}
+                      {managerSigned ? '' : ` — ${t('directorIrr.pending', { defaultValue: 'кутилмоқда' })}`}
                     </span>
                   </div>
                 </div>
@@ -166,13 +166,13 @@ const ChildPeriodRow = ({ child, onSigned }) => {
                     <PenLine className="w-3.5 h-3.5" strokeWidth={2} />
                     {signing === period.id
                       ? t('common.saving', { defaultValue: '…' })
-                      : t('managerIrr.sign', { defaultValue: 'Имзолаш' })}
+                      : t('directorIrr.sign', { defaultValue: 'Имзолаш' })}
                   </button>
                 )}
                 {managerSigned && (
                   <span data-testid={`signed-badge-${period.id}`} className="flex items-center gap-1 text-xs text-success-600 font-medium">
                     <CheckCircle2 className="w-4 h-4" strokeWidth={2} />
-                    {t('managerIrr.signed', { defaultValue: 'Имзоланган' })}
+                    {t('directorIrr.signed', { defaultValue: 'Имзоланган' })}
                   </span>
                 )}
               </div>
@@ -200,7 +200,7 @@ const QuarterlyTab = () => {
       const res = await api.get('/admin/irr/quarterly-entries');
       setEntries(res.data?.data ?? []);
     } catch {
-      showError(t('managerIrr.quarterlyLoadError', { defaultValue: 'Чоракли ёзувлар юкланмади' }));
+      showError(t('directorIrr.quarterlyLoadError', { defaultValue: 'Чоракли ёзувлар юкланмади' }));
     } finally {
       setLoadingEntries(false);
     }
@@ -236,7 +236,7 @@ const QuarterlyTab = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!form.quarterStart || !form.quarterEnd) {
-      showError(t('managerIrr.quarterlyDatesRequired', { defaultValue: 'Бошланиш ва тугаш санасини киритинг' }));
+      showError(t('directorIrr.quarterlyDatesRequired', { defaultValue: 'Бошланиш ва тугаш санасини киритинг' }));
       return;
     }
     setSubmitting(true);
@@ -252,14 +252,14 @@ const QuarterlyTab = () => {
         departures: form.departures,
         notes:      form.notes || null,
       });
-      showSuccess(t('managerIrr.quarterlySubmitSuccess', { defaultValue: 'Чоракли ҳисобот сақланди' }));
+      showSuccess(t('directorIrr.quarterlySubmitSuccess', { defaultValue: 'Чоракли ҳисобот сақланди' }));
       setForm(EMPTY_QUARTERLY);
       fetchEntries();
     } catch (err) {
       if (err.response?.status === 409) {
-        showError(t('managerIrr.quarterlyDuplicate', { defaultValue: 'Бу чорак учун ёзув аллақачон мавжуд' }));
+        showError(t('directorIrr.quarterlyDuplicate', { defaultValue: 'Бу чорак учун ёзув аллақачон мавжуд' }));
       } else {
-        showError(t('managerIrr.quarterlySubmitError', { defaultValue: 'Хатолик юз берди' }));
+        showError(t('directorIrr.quarterlySubmitError', { defaultValue: 'Хатолик юз берди' }));
       }
     } finally {
       setSubmitting(false);
@@ -273,7 +273,7 @@ const QuarterlyTab = () => {
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-warm-700 mb-1">
-              {t('managerIrr.quarterStart', { defaultValue: 'Чорак бошланиши' })}
+              {t('directorIrr.quarterStart', { defaultValue: 'Чорак бошланиши' })}
             </label>
             <input
               type="date"
@@ -286,7 +286,7 @@ const QuarterlyTab = () => {
           </div>
           <div>
             <label className="block text-sm font-medium text-warm-700 mb-1">
-              {t('managerIrr.quarterEnd', { defaultValue: 'Чорак тугаши' })}
+              {t('directorIrr.quarterEnd', { defaultValue: 'Чорак тугаши' })}
             </label>
             <input
               type="date"
@@ -326,7 +326,7 @@ const QuarterlyTab = () => {
         <div>
           <div className="flex items-center justify-between mb-2">
             <label className="text-sm font-semibold text-warm-800">
-              {t('managerIrr.departures', { defaultValue: 'Чиқиб кетганлар' })}
+              {t('directorIrr.departures', { defaultValue: 'Чиқиб кетганлар' })}
             </label>
             <button
               type="button"
@@ -335,19 +335,19 @@ const QuarterlyTab = () => {
               className="flex items-center gap-1 text-xs text-brand-600 hover:text-brand-700 font-medium"
             >
               <PlusCircle className="w-4 h-4" strokeWidth={2} />
-              {t('managerIrr.addDeparture', { defaultValue: 'Қўшиш' })}
+              {t('directorIrr.addDeparture', { defaultValue: 'Қўшиш' })}
             </button>
           </div>
           {form.departures.length === 0 && (
             <p className="text-xs text-warm-400 italic">
-              {t('managerIrr.noDepartures', { defaultValue: 'Чиқиб кетганлар йўқ' })}
+              {t('directorIrr.noDepartures', { defaultValue: 'Чиқиб кетганлар йўқ' })}
             </p>
           )}
           {form.departures.map((dep, idx) => (
             <div key={idx} data-testid={`departure-row-${idx}`} className="grid grid-cols-4 gap-2 mb-2 items-center">
               <input
                 type="text"
-                placeholder={t('managerIrr.departureName', { defaultValue: 'Исм' })}
+                placeholder={t('directorIrr.departureName', { defaultValue: 'Исм' })}
                 value={dep.name}
                 onChange={(e) => updateDeparture(idx, 'name', e.target.value)}
                 className="border border-warm-300 rounded px-2 py-1.5 text-sm"
@@ -367,7 +367,7 @@ const QuarterlyTab = () => {
               <div className="flex gap-1">
                 <input
                   type="text"
-                  placeholder={t('managerIrr.departureReason', { defaultValue: 'Сабаб' })}
+                  placeholder={t('directorIrr.departureReason', { defaultValue: 'Сабаб' })}
                   value={dep.reason}
                   onChange={(e) => updateDeparture(idx, 'reason', e.target.value)}
                   className="flex-1 border border-warm-300 rounded px-2 py-1.5 text-sm"
@@ -387,7 +387,7 @@ const QuarterlyTab = () => {
         {/* General notes */}
         <div>
           <label className="block text-sm font-medium text-warm-700 mb-1">
-            {t('managerIrr.generalNotes', { defaultValue: 'Умумий эзгу' })}
+            {t('directorIrr.generalNotes', { defaultValue: 'Умумий эзгу' })}
           </label>
           <textarea
             data-testid="quarterly-notes"
@@ -406,14 +406,14 @@ const QuarterlyTab = () => {
         >
           {submitting
             ? t('common.saving', { defaultValue: 'Сақланмоқда…' })
-            : t('managerIrr.quarterlySubmit', { defaultValue: 'Ҳисоботни сақлаш' })}
+            : t('directorIrr.quarterlySubmit', { defaultValue: 'Ҳисоботни сақлаш' })}
         </button>
       </form>
 
       {/* History */}
       <div className="mt-8">
         <h3 className="text-sm font-semibold text-warm-800 mb-3">
-          {t('managerIrr.quarterlyHistory', { defaultValue: 'Олдинги ҳисоботлар' })}
+          {t('directorIrr.quarterlyHistory', { defaultValue: 'Олдинги ҳисоботлар' })}
         </h3>
         {loadingEntries && (
           <p className="text-sm text-warm-400 animate-pulse">
@@ -422,7 +422,7 @@ const QuarterlyTab = () => {
         )}
         {!loadingEntries && entries.length === 0 && (
           <p data-testid="quarterly-empty" className="text-sm text-warm-400 italic">
-            {t('managerIrr.quarterlyNoEntries', { defaultValue: 'Ҳисоботлар мавжуд эмас' })}
+            {t('directorIrr.quarterlyNoEntries', { defaultValue: 'Ҳисоботлар мавжуд эмас' })}
           </p>
         )}
         {!loadingEntries && entries.map((entry) => (
@@ -460,7 +460,7 @@ const ManagerIRR = () => {
         if (!cancelled) setChildren(res.data?.data ?? []);
       })
       .catch(() => {
-        if (!cancelled) showError(t('managerIrr.childrenLoadError', { defaultValue: 'Болалар рўйхати юкланмади' }));
+        if (!cancelled) showError(t('directorIrr.childrenLoadError', { defaultValue: 'Болалар рўйхати юкланмади' }));
       })
       .finally(() => {
         if (!cancelled) setChildrenLoading(false);
@@ -472,21 +472,21 @@ const ManagerIRR = () => {
     <div data-testid="manager-irr-page" className="max-w-4xl mx-auto px-4 py-6">
       <div className="letterhead pt-4 mb-6">
         <p className="text-xs font-medium uppercase tracking-wider text-brand-700">
-          {t('managerIrr.eyebrow', { defaultValue: 'Hisobotlar' })}
+          {t('directorIrr.eyebrow', { defaultValue: 'Hisobotlar' })}
         </p>
         <h1 className="mt-1 text-3xl font-semibold tracking-tight text-warm-900">
-          {t('managerIrr.title', { defaultValue: 'IRR boshqaruvi — Rahbar' })}
+          {t('directorIrr.title', { defaultValue: 'IRR boshqaruvi — Rahbar' })}
         </h1>
         <p className="text-sm text-warm-600 mt-1">
-          {t('managerIrr.subtitle', { defaultValue: 'Maqsadli davrlarni imzolash va chorakli monitoring' })}
+          {t('directorIrr.subtitle', { defaultValue: 'Maqsadli davrlarni imzolash va chorakli monitoring' })}
         </p>
       </div>
 
       {/* Tabs */}
       <div className="flex gap-1 border-b border-warm-200 mb-6">
         {[
-          { key: 'periods',   label: t('managerIrr.tabPeriods',   { defaultValue: 'Мақсадли даврлар' }) },
-          { key: 'quarterly', label: t('managerIrr.tabQuarterly', { defaultValue: 'Чоракли мониторинг' }) },
+          { key: 'periods',   label: t('directorIrr.tabPeriods',   { defaultValue: 'Мақсадли даврлар' }) },
+          { key: 'quarterly', label: t('directorIrr.tabQuarterly', { defaultValue: 'Чоракли мониторинг' }) },
         ].map(({ key, label }) => (
           <button
             key={key}
@@ -514,7 +514,7 @@ const ManagerIRR = () => {
           {!childrenLoading && children.length === 0 && (
             <div data-testid="no-children" className="flex items-center gap-2 text-sm text-warm-500">
               <AlertCircle className="w-4 h-4" strokeWidth={1.75} />
-              {t('managerIrr.noChildren', { defaultValue: 'Болалар рўйхати бўш' })}
+              {t('directorIrr.noChildren', { defaultValue: 'Болалар рўйхати бўш' })}
             </div>
           )}
           <div className="space-y-2">

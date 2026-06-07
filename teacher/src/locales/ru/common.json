@@ -959,5 +959,51 @@
     "loadError": "Не удалось загрузить посещаемость",
     "teacherNote": "Заметка учителя",
     "summary": "Сводка за неделю"
+  },
+  "brand": {
+    "appName": "Uchqun",
+    "roleTeacher": "Воспитатель"
+  },
+  "teacherNav": {
+    "bugun": "Сегодня",
+    "bolalar": "Дети",
+    "reja": "План",
+    "xabar": "Сообщения",
+    "men": "Я",
+    "settings": "Настройки"
+  },
+  "bolalar": {
+    "title": "Дети",
+    "subtitle": "Дети вашей группы и состояние на сегодня",
+    "searchPlaceholder": "Поиск по имени...",
+    "empty": "Пока нет детей",
+    "emptyHint": "Новые поступления появятся здесь",
+    "loadError": "Не удалось загрузить список детей",
+    "attendanceUnmarked": "Посещаемость не отмечена"
+  },
+  "reja": {
+    "tabActivities": "Индивидуальный план",
+    "tabTherapy": "Терапия"
+  },
+  "xabar": {
+    "tabChat": "Чат",
+    "tabWarnings": "Предупреждения"
+  },
+  "men": {
+    "tabProfile": "Профиль",
+    "tabSettings": "Настройки",
+    "tabReflection": "Дневник дня",
+    "signOutHint": "Выйти"
+  },
+  "bulkMonitoring": {
+    "title": "Ежедневный мониторинг — все дети",
+    "openButton": "Заполнить всех сразу",
+    "date": "Дата",
+    "criteriaCount": "{{count}} критериев × {{childrenCount}} детей",
+    "saveAll": "Сохранить всё",
+    "selectAll": "Выбрать все",
+    "unselectAll": "Снять все",
+    "allSaved": "Всё сохранено",
+    "partialFail": "{{ok}} сохранено, {{fail}} не сохранено"
   }
 }

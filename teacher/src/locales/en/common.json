@@ -959,5 +959,51 @@
     "loadError": "Failed to load attendance",
     "teacherNote": "Teacher note",
     "summary": "Weekly summary"
+  },
+  "brand": {
+    "appName": "Uchqun",
+    "roleTeacher": "Teacher"
+  },
+  "teacherNav": {
+    "bugun": "Today",
+    "bolalar": "Children",
+    "reja": "Plan",
+    "xabar": "Messages",
+    "men": "Me",
+    "settings": "Settings"
+  },
+  "bolalar": {
+    "title": "Children",
+    "subtitle": "Your group's children and today's status",
+    "searchPlaceholder": "Search by name...",
+    "empty": "No children yet",
+    "emptyHint": "New enrollments will appear here",
+    "loadError": "Could not load children",
+    "attendanceUnmarked": "Attendance not marked"
+  },
+  "reja": {
+    "tabActivities": "Individual plan",
+    "tabTherapy": "Therapy"
+  },
+  "xabar": {
+    "tabChat": "Chat",
+    "tabWarnings": "Warnings"
+  },
+  "men": {
+    "tabProfile": "Profile",
+    "tabSettings": "Settings",
+    "tabReflection": "Daily reflection",
+    "signOutHint": "Sign out"
+  },
+  "bulkMonitoring": {
+    "title": "Daily monitoring — all children",
+    "openButton": "Fill all together",
+    "date": "Date",
+    "criteriaCount": "{{count}} criteria × {{childrenCount}} children",
+    "saveAll": "Save all",
+    "selectAll": "Select all",
+    "unselectAll": "Unselect all",
+    "allSaved": "All saved",
+    "partialFail": "{{ok}} saved, {{fail}} failed"
   }
 }

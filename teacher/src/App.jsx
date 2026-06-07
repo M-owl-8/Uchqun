@@ -35,20 +35,20 @@ function ForceLogoutHandler() {
 }
 import Layout from './components/Layout';
 import Dashboard from './pages/Dashboard';
-import ParentManagement from './pages/ParentManagement';
-import Activities from './pages/Activities';
 import Meals from './pages/Meals';
 import Media from './pages/Media';
-import Chat from './pages/Chat';
-import Profile from './pages/Profile';
-import Settings from './pages/Settings';
 import MonitoringJournal from './pages/MonitoringJournal';
-import TherapyManagement from './pages/TherapyManagement';
-import AIWarnings from './parent/pages/AIWarnings';
+// TP-IA-REDESIGN: 5-tab shell pages — these wrap the page components
+// that used to be reached directly (Activities/Chat/AIWarnings/Profile/
+// Settings/DailyReflection/TherapyManagement). Those imports moved
+// into the shells (Reja, Xabar, Men). App.jsx now only knows the shell.
+import Bolalar from './pages/Bolalar';
+import Reja from './pages/Reja';
+import Xabar from './pages/Xabar';
+import Men from './pages/Men';
 import Attendance from './pages/Attendance';
 import ChildDetail from './pages/ChildDetail';
 import IrrShell from './pages/IrrShell';
-import DailyReflection from './pages/DailyReflection';
 import ParentApp from './parent/ParentApp';
 import ParentDashboard from './parent/pages/Dashboard';
 import ChildProfile from './parent/pages/ChildProfile';
@@ -132,22 +132,31 @@ function App() {
                       </ProtectedRoute>
                     }
                   >
+                    {/* TP-IA-REDESIGN — 5-tab IA */}
                     <Route index element={<ErrorBoundary><Dashboard /></ErrorBoundary>} />
-                    <Route path="parents" element={<ErrorBoundary><ParentManagement /></ErrorBoundary>} />
-                    <Route path="profile" element={<ErrorBoundary><Profile /></ErrorBoundary>} />
-                    <Route path="activities" element={<ErrorBoundary><Activities /></ErrorBoundary>} />
+                    <Route path="bolalar" element={<ErrorBoundary><Bolalar /></ErrorBoundary>} />
+                    <Route path="reja" element={<ErrorBoundary><Reja /></ErrorBoundary>} />
+                    <Route path="xabar" element={<ErrorBoundary><Xabar /></ErrorBoundary>} />
+                    <Route path="men" element={<ErrorBoundary><Men /></ErrorBoundary>} />
+
+                    {/* Deep-link compatibility — old sidebar URLs still work */}
+                    <Route path="parents" element={<Navigate to="/teacher/bolalar" replace />} />
+                    <Route path="profile" element={<Navigate to="/teacher/men?tab=profile" replace />} />
+                    <Route path="settings" element={<Navigate to="/teacher/men?tab=settings" replace />} />
+                    <Route path="reflection" element={<Navigate to="/teacher/men?tab=reflection" replace />} />
+                    <Route path="activities" element={<Navigate to="/teacher/reja?tab=activities" replace />} />
+                    <Route path="therapy" element={<Navigate to="/teacher/reja?tab=therapy" replace />} />
+                    <Route path="chat" element={<Navigate to="/teacher/xabar?tab=chat" replace />} />
+                    <Route path="warnings" element={<Navigate to="/teacher/xabar?tab=warnings" replace />} />
+                    <Route path="ai-warnings" element={<Navigate to="/teacher/xabar?tab=warnings" replace />} />
+
+                    {/* Per-child + per-feature pages remain as deep-link routes */}
+                    <Route path="attendance" element={<ErrorBoundary><Attendance /></ErrorBoundary>} />
                     <Route path="meals" element={<ErrorBoundary><Meals /></ErrorBoundary>} />
                     <Route path="media" element={<ErrorBoundary><Media /></ErrorBoundary>} />
-                    <Route path="chat" element={<ErrorBoundary><Chat /></ErrorBoundary>} />
                     <Route path="monitoring" element={<ErrorBoundary><MonitoringJournal /></ErrorBoundary>} />
-                    <Route path="therapy" element={<ErrorBoundary><TherapyManagement /></ErrorBoundary>} />
-                    <Route path="warnings" element={<ErrorBoundary><AIWarnings /></ErrorBoundary>} />
-                    <Route path="ai-warnings" element={<Navigate to="/teacher/warnings" replace />} />
-                    <Route path="settings" element={<ErrorBoundary><Settings /></ErrorBoundary>} />
-                    <Route path="attendance" element={<ErrorBoundary><Attendance /></ErrorBoundary>} />
                     <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
                     <Route path="children/:id/irr" element={<ErrorBoundary><IrrShell /></ErrorBoundary>} />
-                    <Route path="reflection" element={<ErrorBoundary><DailyReflection /></ErrorBoundary>} />
                   </Route>
 
                   <Route path="*" element={<NotFound />} />

@@ -959,5 +959,51 @@
     "loadError": "Davomatni yuklashda xatolik",
     "teacherNote": "O'qituvchi izohi",
     "summary": "Haftalik xulosa"
+  },
+  "brand": {
+    "appName": "Uchqun",
+    "roleTeacher": "Tarbiyachi"
+  },
+  "teacherNav": {
+    "bugun": "Bugun",
+    "bolalar": "Bolalar",
+    "reja": "Reja",
+    "xabar": "Xabar",
+    "men": "Men",
+    "settings": "Sozlamalar"
+  },
+  "bolalar": {
+    "title": "Bolalar",
+    "subtitle": "Sizning guruhingiz bolalari va bugungi holati",
+    "searchPlaceholder": "Bolani qidirish...",
+    "empty": "Hozircha bolalar yo'q",
+    "emptyHint": "Yangi bola qabul kelganda shu yerda ko'rinadi",
+    "loadError": "Bolalar ro'yxatini yuklab bo'lmadi",
+    "attendanceUnmarked": "Davomat belgilanmagan"
+  },
+  "reja": {
+    "tabActivities": "Individual reja",
+    "tabTherapy": "Terapiya"
+  },
+  "xabar": {
+    "tabChat": "Suhbat",
+    "tabWarnings": "Ogohlantirishlar"
+  },
+  "men": {
+    "tabProfile": "Profil",
+    "tabSettings": "Sozlamalar",
+    "tabReflection": "Kunlik mulohaza",
+    "signOutHint": "Tizimdan chiqish"
+  },
+  "bulkMonitoring": {
+    "title": "Kunlik kuzatuv — barcha bolalar",
+    "openButton": "Hammasini birga to'ldirish",
+    "date": "Sana",
+    "criteriaCount": "{{count}} ta mezon × {{childrenCount}} ta bola",
+    "saveAll": "Hammasini saqlash",
+    "selectAll": "Hammasini belgilash",
+    "unselectAll": "Hammasini olib tashlash",
+    "allSaved": "Hammasi saqlandi",
+    "partialFail": "{{ok}} ta saqlandi, {{fail}} ta saqlanmadi"
   }
 }

@@ -208,7 +208,7 @@ const Dashboard = () => {
             <div className="text-[13px] text-slate-500">{today}</div>
           </div>
           <Link
-            to="/teacher/activities"
+            to="/teacher/reja?tab=activities"
             className="h-9 px-3.5 rounded-md bg-brand-600 hover:bg-brand-700 text-surface text-[13px] font-medium flex items-center gap-1.5 transition-colors shrink-0"
           >
             <Plus className="w-4 h-4" strokeWidth={2} /> {t('dashboard.newEntry')}
@@ -289,7 +289,7 @@ const Dashboard = () => {
               <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.parents || 0}</span>
               <span className="text-[13px] text-slate-500">{t('dashboard.fromParents')}</span>
             </div>
-            <Link to="/teacher/chat" className="mt-3 text-[12px] text-brand-700 font-medium flex items-center gap-1 hover:underline">
+            <Link to="/teacher/xabar?tab=chat" className="mt-3 text-[12px] text-brand-700 font-medium flex items-center gap-1 hover:underline">
               {t('dashboard.viewMessages')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
@@ -323,7 +323,7 @@ const Dashboard = () => {
                 {obs.slice(0, 6).map((o, i) => <ObservationRow key={i} obs={o} />)}
               </div>
             )}
-            <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium hover:underline">
+            <Link to="/teacher/reja?tab=activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium hover:underline">
               {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
             </Link>
           </div>
@@ -435,7 +435,7 @@ const Dashboard = () => {
               {obs.slice(0, 5).map((o, i) => <ObservationRow key={i} obs={o} />)}
             </div>
           )}
-          <Link to="/teacher/activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">
+          <Link to="/teacher/reja?tab=activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">
             {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
           </Link>
         </div>

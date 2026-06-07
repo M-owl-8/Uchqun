@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { FileX, Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 // TP-LOCALE-FOUNDATION S2: shared locale-aware formatter (replaces inline locale mapping).
-import { resolveLocale } from '@shared/utils/formatDate';
+import { resolveLocale, todayLocal} from '@shared/utils/formatDate';
 
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useAuth } from '../shared/context/AuthContext';
@@ -29,7 +29,7 @@ const Activities = () => {
     teacher: user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : 'Teacher',
     skill: '',
     goal: '',
-    startDate: new Date().toISOString().split('T')[0],
+    startDate: todayLocal(),
     endDate: '',
     tasks: [''],
     methods: '',
@@ -126,7 +126,7 @@ const Activities = () => {
     const firstChild = firstParent && firstParent.children && firstParent.children.length > 0
       ? firstParent.children[0].id : '';
 
-    const today = new Date().toISOString().split('T')[0];
+    const today = todayLocal();
     const threeMonthsLater = new Date();
     threeMonthsLater.setMonth(threeMonthsLater.getMonth() + 3);
     const endDateDefault = threeMonthsLater.toISOString().split('T')[0];
@@ -173,7 +173,7 @@ const Activities = () => {
       teacher: activity.teacher || (user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : 'Teacher'),
       skill: activity.skill || '',
       goal: activity.goal || '',
-      startDate: activity.startDate ? activity.startDate.split('T')[0] : new Date().toISOString().split('T')[0],
+      startDate: activity.startDate ? activity.startDate.split('T')[0] : todayLocal(),
       endDate: activity.endDate ? activity.endDate.split('T')[0] : '',
       tasks: Array.isArray(activity.tasks) && activity.tasks.length > 0 ? activity.tasks : [''],
       methods: activity.methods || '',
@@ -297,7 +297,7 @@ const Activities = () => {
             setFormData({
               parentId: '', childId: '',
               teacher: user?.firstName && user?.lastName ? `${user.firstName} ${user.lastName}` : 'Teacher',
-              skill: '', goal: '', startDate: new Date().toISOString().split('T')[0], endDate: '',
+              skill: '', goal: '', startDate: todayLocal(), endDate: '',
               tasks: [''], methods: '', progress: '', observation: '', services: [],
             });
           }}

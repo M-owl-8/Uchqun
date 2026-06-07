@@ -14,6 +14,7 @@ import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
 import Schools from './pages/Schools';
 import Students from './pages/Students';
+import ChildDetail from './pages/ChildDetail';
 import Teachers from './pages/Teachers';
 import Parents from './pages/Parents';
 import Ratings from './pages/Ratings';
@@ -67,6 +68,7 @@ export const AppRoutes = () => {
         <Route path="schools" element={<ErrorBoundary><Schools /></ErrorBoundary>} />
         <Route path="schools/:id" element={<ErrorBoundary><SchoolDetail /></ErrorBoundary>} />
         <Route path="students" element={<ErrorBoundary><Students /></ErrorBoundary>} />
+        <Route path="children/:id" element={<ErrorBoundary><ChildDetail /></ErrorBoundary>} />
         <Route path="teachers" element={<ErrorBoundary><Teachers /></ErrorBoundary>} />
         <Route path="parents" element={<ErrorBoundary><Parents /></ErrorBoundary>} />
         <Route path="ratings" element={<ErrorBoundary><Ratings /></ErrorBoundary>} />

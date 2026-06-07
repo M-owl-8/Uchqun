@@ -70,7 +70,7 @@ function stubDefault(api) {
 
 // ── Tests ─────────────────────────────────────────────────────────────────────
 
-describe('ManagerIRR', () => {
+describe('AdminIRR', () => {
   beforeEach(() => {
     vi.resetModules();
     mockToastError.mockReset();
@@ -80,8 +80,8 @@ describe('ManagerIRR', () => {
   it('renders children list after load', async () => {
     const api = (await import('../../services/api')).default;
     stubDefault(api);
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('manager-irr-page')).toBeTruthy());
     expect(screen.getByTestId('child-row-c1')).toBeTruthy();
@@ -97,8 +97,8 @@ describe('ManagerIRR', () => {
       if (url.includes('/irr/quarterly-entries'))  return Promise.resolve({ data: { data: [] } });
       return Promise.reject(new Error('Unexpected GET: ' + url));
     });
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('child-row-c1')).toBeTruthy());
 
@@ -124,8 +124,8 @@ describe('ManagerIRR', () => {
       return Promise.reject(new Error('Unexpected POST: ' + url));
     });
 
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('child-row-c1')).toBeTruthy());
     const rowBtn = screen.getByTestId('child-row-c1').querySelector('button');
@@ -148,8 +148,8 @@ describe('ManagerIRR', () => {
       return Promise.reject(new Error('Unexpected GET: ' + url));
     });
 
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('child-row-c1')).toBeTruthy());
     const rowBtn = screen.getByTestId('child-row-c1').querySelector('button');
@@ -167,8 +167,8 @@ describe('ManagerIRR', () => {
     });
     api.post.mockResolvedValue({ data: { data: { id: 'newQ' } } });
 
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('manager-irr-page')).toBeTruthy());
 
@@ -212,8 +212,8 @@ describe('ManagerIRR', () => {
     });
     api.post.mockRejectedValue({ response: { status: 409 } });
 
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     await waitFor(() => expect(screen.getByTestId('manager-irr-page')).toBeTruthy());
     fireEvent.click(screen.getByTestId('tab-quarterly'));
@@ -234,8 +234,8 @@ describe('ManagerIRR', () => {
       return Promise.reject(new Error('Unexpected GET: ' + url));
     });
 
-    const { default: ManagerIRR } = await import('../../pages/ManagerIRR');
-    render(React.createElement(ManagerIRR));
+    const { default: AdminIRR } = await import('../../pages/AdminIRR');
+    render(React.createElement(AdminIRR));
 
     fireEvent.click(screen.getByTestId('tab-quarterly'));
     await waitFor(() => expect(screen.getByTestId('quarterly-entry-q1')).toBeTruthy());

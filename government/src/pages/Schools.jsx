@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useToast } from '@shared/context/ToastContext';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const Schools = () => {
   const { t } = useTranslation();
@@ -43,7 +44,7 @@ const Schools = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `schools-${new Date().toISOString().slice(0, 10)}.csv`;
+    a.download = `schools-${todayLocal()}.csv`;
     a.click();
     URL.revokeObjectURL(url);
   };

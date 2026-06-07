@@ -3,6 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useFetch } from '@shared/hooks/useFetch';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
+import StarRating from '@shared/components/StarRating';
 import { useToast } from '@shared/context/ToastContext';
 import {
   Building2, ChevronRight, Star, Users, UserCheck, FileText,
@@ -13,58 +14,9 @@ import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 import { GOV_INDICATORS } from '@shared/config/ratingIndicators';
 
-// ── StarRating ────────────────────────────────────────────────────────────────
-// Interactive 5-star input. Each star is a radio button for a11y.
-// Hover previews the value; click commits it; arrows navigate within the group.
-
-const StarRating = ({ value, onChange, name, disabled }) => {
-  const [hoverVal, setHoverVal] = useState(0);
-  const display = hoverVal || value;
-
-  return (
-    <div
-      role="radiogroup"
-      aria-label={name}
-      className="flex items-center gap-0.5"
-    >
-      {[1, 2, 3, 4, 5].map((s) => (
-        <button
-          key={s}
-          type="button"
-          role="radio"
-          aria-checked={value === s}
-          aria-label={String(s)}
-          disabled={disabled}
-          onClick={() => !disabled && onChange(s)}
-          onMouseEnter={() => !disabled && setHoverVal(s)}
-          onMouseLeave={() => setHoverVal(0)}
-          onKeyDown={(e) => {
-            if (disabled) return;
-            if (e.key === 'ArrowRight' || e.key === 'ArrowUp') {
-              e.preventDefault(); onChange(Math.min(5, value + 1));
-            }
-            if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') {
-              e.preventDefault(); onChange(Math.max(1, value - 1));
-            }
-          }}
-          className="focus:outline-none focus-visible:ring-2 focus-visible:ring-yellow-400 rounded-sm disabled:cursor-not-allowed"
-        >
-          <Star
-            className={`w-6 h-6 transition-colors duration-100 ${
-              s <= display
-                ? hoverVal
-                  ? 'fill-yellow-300 text-yellow-300'
-                  : 'fill-yellow-400 text-yellow-400'
-                : disabled
-                  ? 'text-gray-200'
-                  : 'text-gray-300 hover:text-yellow-200'
-            }`}
-          />
-        </button>
-      ))}
-    </div>
-  );
-};
+// StarRating moved to @shared/components/StarRating (extracted 2026-06-07
+// so parent + gov + any future portal can share one rater implementation
+// instead of inlining the radio + svg pattern in each file).
 
 // ── helpers ──────────────────────────────────────────────────────────────────
 

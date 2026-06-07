@@ -17,6 +17,8 @@ import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
 import * as cache from '../../../shared/utils/cache';
+import { todayLocal } from '@shared/utils/formatDate';
+import MonitoringBulkFill from '../components/MonitoringBulkFill';
 
 const MonitoringJournal = () => {
   const { user } = useAuth();
@@ -29,7 +31,7 @@ const MonitoringJournal = () => {
   const [selectedChild, setSelectedChild] = useState(null);
   const [formData, setFormData] = useState({
     childId: '',
-    date: new Date().toISOString().split('T')[0],
+    date: todayLocal(),
     emotionalState: {
       stable: false,
       positiveEmotions: false,
@@ -46,6 +48,7 @@ const MonitoringJournal = () => {
   });
   const [children, setChildren] = useState([]);
   const [confirmDialog, setConfirmDialog] = useState(null);
+  const [showBulkFill, setShowBulkFill] = useState(false);
 
   const buildChildrenFromParents = (parentsList) => {
     const all = [];
@@ -137,7 +140,7 @@ const MonitoringJournal = () => {
       setSelectedChild(child);
       setFormData({
         childId: child?.id || '',
-        date: new Date().toISOString().split('T')[0],
+        date: todayLocal(),
         emotionalState: {
           stable: false,
           positiveEmotions: false,
@@ -246,12 +249,20 @@ const MonitoringJournal = () => {
           <h1 className="text-[22px] font-semibold text-slate-900">{t('monitoring.title')}</h1>
           <p className="text-[13px] text-slate-500 mt-0.5">{t('monitoring.subtitle')}</p>
         </div>
+        <button
+          type="button"
+          onClick={() => setShowBulkFill(true)}
+          className="self-start inline-flex items-center gap-2 px-4 py-2 rounded-md text-[13px] font-medium bg-brand-600 text-white hover:bg-brand-700 transition-colors"
+        >
+          <Plus className="w-4 h-4" />
+          {t('bulkMonitoring.openButton', { defaultValue: 'Hammasini birga to\'ldirish' })}
+        </button>
       </div>
 
       {/* Children List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {children.map((child) => {
-          const todayRecord = getRecordForChild(child.id, new Date().toISOString().split('T')[0]);
+          const todayRecord = getRecordForChild(child.id, todayLocal());
           return (
             <Card key={child.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">
@@ -431,6 +442,13 @@ const MonitoringJournal = () => {
     </div>
 
     <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
+
+    <MonitoringBulkFill
+      open={showBulkFill}
+      onClose={() => setShowBulkFill(false)}
+      children={children}
+      onSaved={() => { loadMonitoringRecords(true); }}
+    />
     </>
   );
 };

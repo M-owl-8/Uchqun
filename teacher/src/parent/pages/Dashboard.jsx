@@ -22,9 +22,9 @@ import {
   Activity, UtensilsCrossed, Camera, Star,
   ChevronRight, TrendingUp, Dumbbell, Settings, CalendarCheck, NotebookPen,
 } from 'lucide-react';
-import { formatDateWeekdayMonth } from '@shared/utils/formatDate';
+import { formatDateWeekdayMonth, todayLocal} from '@shared/utils/formatDate';
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const todayIso = () => todayLocal();
 
 // Statuses come from the shared TP-DAVOMAT-REWORK taxonomy.
 const ATTENDANCE_LABEL_KEY = {

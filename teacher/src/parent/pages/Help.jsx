@@ -22,7 +22,7 @@ const Help = () => {
       />
 
       <Card className="p-6">
-        <h2 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-p-sepia-900 mb-4 flex items-center gap-2">
           <MessageCircle className="w-5 h-5 text-p-brand-600" />
           {t('help.contactUs')}
         </h2>
@@ -32,8 +32,8 @@ const Help = () => {
               <Mail className="w-5 h-5 text-p-brand-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-600">{t('help.email')}</p>
-              <a href={`mailto:${t('help.emailValue')}`} className="font-medium text-slate-900 hover:text-p-brand-600">
+              <p className="text-sm text-p-sepia-600">{t('help.email')}</p>
+              <a href={`mailto:${t('help.emailValue')}`} className="font-medium text-p-sepia-900 hover:text-p-brand-600">
                 {t('help.emailValue')}
               </a>
             </div>
@@ -43,8 +43,8 @@ const Help = () => {
               <Phone className="w-5 h-5 text-p-brand-600" />
             </div>
             <div>
-              <p className="text-sm text-slate-600">{t('help.phone')}</p>
-              <a href={`tel:${t('help.phoneValue').replace(/\s/g, '')}`} className="font-medium text-slate-900 hover:text-p-brand-600">
+              <p className="text-sm text-p-sepia-600">{t('help.phone')}</p>
+              <a href={`tel:${t('help.phoneValue').replace(/\s/g, '')}`} className="font-medium text-p-sepia-900 hover:text-p-brand-600">
                 {t('help.phoneValue')}
               </a>
             </div>
@@ -53,22 +53,22 @@ const Help = () => {
       </Card>
 
       <div>
-        <h2 className="text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+        <h2 className="text-xl font-semibold text-p-sepia-900 mb-4 flex items-center gap-2">
           <BookOpen className="w-5 h-5 text-p-brand-600" />
           {t('help.faq')}
         </h2>
         <div className="space-y-4">
           {faqs.map((faq, index) => (
             <Card key={index} className="p-6">
-              <h3 className="font-semibold text-slate-900 mb-2">{faq.question}</h3>
-              <p className="text-slate-600 text-sm">{faq.answer}</p>
+              <h3 className="font-semibold text-p-sepia-900 mb-2">{faq.question}</h3>
+              <p className="text-p-sepia-600 text-sm">{faq.answer}</p>
             </Card>
           ))}
         </div>
       </div>
 
       <Card className="p-6 bg-p-sepia-50 border-p-sepia-200 shadow-lg">
-        <h2 className="text-lg font-semibold text-slate-900 mb-4">{t('help.quickLinks')}</h2>
+        <h2 className="text-lg font-semibold text-p-sepia-900 mb-4">{t('help.quickLinks')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Link to="/activities" className="text-p-brand-600 hover:text-p-brand-700 font-medium text-sm">
             {t('help.linkActivities')}

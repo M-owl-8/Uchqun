@@ -15,7 +15,7 @@ const LEVELS = [
     descKey: 'message.levelOwnerDesc',
     color: 'amber',
     selectedClass: 'bg-amber-100 border-amber-400 text-amber-800',
-    idleClass: 'bg-white border-slate-200 text-slate-600 hover:border-amber-300',
+    idleClass: 'bg-white border-p-sepia-200 text-p-sepia-600 hover:border-amber-300',
   },
   {
     key: 'region',
@@ -25,7 +25,7 @@ const LEVELS = [
     descKey: 'message.levelRegionDesc',
     color: 'blue',
     selectedClass: 'bg-blue-100 border-blue-400 text-blue-800',
-    idleClass: 'bg-white border-slate-200 text-slate-600 hover:border-blue-300',
+    idleClass: 'bg-white border-p-sepia-200 text-p-sepia-600 hover:border-blue-300',
   },
   {
     key: 'republic',
@@ -35,7 +35,7 @@ const LEVELS = [
     descKey: 'message.levelRepublicDesc',
     color: 'indigo',
     selectedClass: 'bg-indigo-100 border-indigo-400 text-indigo-800',
-    idleClass: 'bg-white border-slate-200 text-slate-600 hover:border-indigo-300',
+    idleClass: 'bg-white border-p-sepia-200 text-p-sepia-600 hover:border-indigo-300',
   },
 ];
 
@@ -142,23 +142,23 @@ const MessageModal = ({
       onClick={handleClose}
     >
       <div
-        className="bg-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-p-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
-            <div className="p-3 bg-brand-100 rounded-full">
-              <MessageSquare className="w-6 h-6 text-brand-600" />
+            <div className="p-3 bg-p-brand-100 rounded-full">
+              <MessageSquare className="w-6 h-6 text-p-brand-600" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-p-sepia-900">
               {escalatedFromId
                 ? t('message.escalateTitle')
                 : t('profile.contactGovernment')}
             </h2>
           </div>
-          <button onClick={handleClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-slate-500" />
+          <button onClick={handleClose} className="p-2 hover:bg-p-sepia-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-p-sepia-500" />
           </button>
         </div>
 
@@ -177,7 +177,7 @@ const MessageModal = ({
 
         {/* recipientLevel selector */}
         <div className="mb-4">
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-p-sepia-700 mb-2">
             {t('message.recipientLevel')}
           </label>
           <div className="grid grid-cols-3 gap-2" data-testid="level-selector">
@@ -201,7 +201,7 @@ const MessageModal = ({
             ))}
           </div>
           {selectedLevel && (
-            <p className="mt-2 text-xs text-slate-500">
+            <p className="mt-2 text-xs text-p-sepia-500">
               {t('message.levelHint', {
                 level: t(selectedLevel.labelKey),
               })}
@@ -212,7 +212,7 @@ const MessageModal = ({
         {/* Subject + message */}
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-p-sepia-700 mb-2">
               {t('profile.subject')}
             </label>
             <input
@@ -220,11 +220,11 @@ const MessageModal = ({
               value={subject}
               onChange={(e) => setSubject(e.target.value)}
               placeholder={t('profile.subjectPlaceholder')}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-p-sepia-200 rounded-xl focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-p-sepia-700 mb-2">
               {t('profile.message')}
             </label>
             <textarea
@@ -232,7 +232,7 @@ const MessageModal = ({
               onChange={(e) => setText(e.target.value)}
               rows={5}
               placeholder={t('profile.messagePlaceholder')}
-              className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-brand-500 focus:border-transparent"
+              className="w-full px-4 py-3 border border-p-sepia-200 rounded-xl focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
             />
           </div>
         </div>
@@ -241,7 +241,7 @@ const MessageModal = ({
         <div className="flex gap-3">
           <button
             onClick={handleClose}
-            className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
+            className="flex-1 px-6 py-3 bg-p-sepia-100 hover:bg-p-sepia-200 text-p-sepia-700 rounded-xl font-semibold transition-colors"
             disabled={sending}
           >
             {t('profile.cancel')}
@@ -250,7 +250,7 @@ const MessageModal = ({
             onClick={handleSend}
             disabled={sending || !subject.trim() || !text.trim()}
             data-testid="send-button"
-            className="flex-1 px-6 py-3 bg-brand-600 hover:bg-brand-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+            className="flex-1 px-6 py-3 bg-p-brand-600 hover:bg-p-brand-700 text-white rounded-xl font-semibold transition-colors shadow-md disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
           >
             {sending ? (
               <>

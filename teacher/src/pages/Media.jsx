@@ -10,6 +10,7 @@ import ConfirmDialog from '../shared/components/ConfirmDialog';
 import MediaCard from './media/MediaCard';
 import MediaViewModal from './media/MediaViewModal';
 import MediaFormModal from './media/MediaFormModal';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const Media = () => {
   const { isTeacher } = useAuth();
@@ -25,7 +26,7 @@ const Media = () => {
     title: '',
     description: '',
     type: 'photo',
-    date: new Date().toISOString().split('T')[0],
+    date: todayLocal(),
   });
   const [childList, setChildList] = useState([]);
   const { t } = useTranslation();
@@ -96,7 +97,7 @@ const Media = () => {
       title: '',
       description: '',
       type: 'photo',
-      date: new Date().toISOString().split('T')[0],
+      date: todayLocal(),
     });
     setShowModal(true);
     setFile(null);
@@ -110,7 +111,7 @@ const Media = () => {
       title: mediaItem.title || '',
       description: mediaItem.description || '',
       type: mediaItem.type || 'photo',
-      date: mediaItem.date ? mediaItem.date.split('T')[0] : new Date().toISOString().split('T')[0],
+      date: mediaItem.date ? mediaItem.date.split('T')[0] : todayLocal(),
     });
     setShowModal(true);
     setFile(null);
@@ -275,7 +276,7 @@ const Media = () => {
             setShowModal(false);
             setEditingMedia(null);
             setFile(null);
-            setFormData({ childId: '', title: '', description: '', type: 'photo', date: new Date().toISOString().split('T')[0] });
+            setFormData({ childId: '', title: '', description: '', type: 'photo', date: todayLocal() });
           }}
         />
       )}

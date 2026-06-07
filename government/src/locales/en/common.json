@@ -154,6 +154,15 @@
     "gender": "Gender",
     "loadMore": "Load more"
   },
+  "childDetail": {
+    "back": "Back to students",
+    "basicInfo": "Basic information",
+    "diagnosis": "Diagnosis",
+    "parent": "Parent",
+    "group": "Group",
+    "notFoundTitle": "Child not found",
+    "notFoundHint": "This child is not available in your region's school."
+  },
   "teachersPage": {
     "title": "All Teachers",
     "subtitle": "All teachers registered in the system",

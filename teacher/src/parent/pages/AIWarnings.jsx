@@ -63,7 +63,7 @@ const AIWarnings = () => {
       case 'medium':
         return 'bg-warning-100 text-warning-800 border-yellow-300';
       default:
-        return 'bg-slate-100 text-slate-600 border-slate-300';
+        return 'bg-p-sepia-100 text-p-sepia-600 border-p-sepia-300';
     }
   };
 
@@ -115,8 +115,8 @@ const AIWarnings = () => {
           onClick={() => setFilter('all')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'all'
-              ? 'bg-brand-600 text-white'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              ? 'bg-p-brand-600 text-white'
+              : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
           }`}
         >
           {t('warnings.all')}
@@ -125,8 +125,8 @@ const AIWarnings = () => {
           onClick={() => setFilter('unresolved')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'unresolved'
-              ? 'bg-brand-600 text-white'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              ? 'bg-p-brand-600 text-white'
+              : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
           }`}
         >
           {t('warnings.unresolved')}
@@ -135,8 +135,8 @@ const AIWarnings = () => {
           onClick={() => setFilter('resolved')}
           className={`px-4 py-2 rounded-lg font-medium transition-colors ${
             filter === 'resolved'
-              ? 'bg-brand-600 text-white'
-              : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+              ? 'bg-p-brand-600 text-white'
+              : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
           }`}
         >
           {t('warnings.resolved')}
@@ -156,25 +156,25 @@ const AIWarnings = () => {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 mb-2">
-                    <h3 className="font-bold text-slate-900">{warning.title}</h3>
+                    <h3 className="font-bold text-p-sepia-900">{warning.title}</h3>
                     <span className={`px-2 py-1 rounded text-xs font-semibold ${colorClass}`}>
                       {t(`severity.${warning.severity}`)}
                     </span>
-                    <span className="px-2 py-1 bg-slate-100 text-slate-600 rounded text-xs">
+                    <span className="px-2 py-1 bg-p-sepia-100 text-p-sepia-600 rounded text-xs">
                       {getWarningTypeLabel(warning.warningType)}
                     </span>
                   </div>
-                  <p className="text-slate-700 mb-3">{warning.message}</p>
+                  <p className="text-p-sepia-700 mb-3">{warning.message}</p>
                   {warning.aiAnalysis && (
-                    <div className="p-3 bg-slate-50 rounded-lg mb-3">
-                      <p className="text-sm text-slate-700">
+                    <div className="p-3 bg-p-sepia-50 rounded-lg mb-3">
+                      <p className="text-sm text-p-sepia-700">
                         <strong>{t('warnings.aiAnalysis')}:</strong>{' '}
                         {warning.aiAnalysis}
                       </p>
                     </div>
                   )}
                   <div className="flex flex-wrap items-center justify-between gap-2">
-                    <span className="text-sm text-slate-500">
+                    <span className="text-sm text-p-sepia-500">
                       {formatDateTime(warning.createdAt, i18n.language)}
                     </span>
                     {!warning.isResolved && user?.role !== 'parent' && (
@@ -187,7 +187,7 @@ const AIWarnings = () => {
                       </button>
                     )}
                     {warning.isResolved && (
-                      <span className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg font-semibold flex items-center gap-2">
+                      <span className="px-4 py-2 bg-p-sepia-100 text-p-sepia-600 rounded-lg font-semibold flex items-center gap-2">
                         <CheckCircle className="w-4 h-4" />
                         {t('warnings.resolved')}
                       </span>
@@ -203,10 +203,10 @@ const AIWarnings = () => {
       {warnings.length === 0 && (
         <Card className="p-12 text-center">
           <CheckCircle className="w-16 h-16 text-success-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-slate-900 mb-2">
+          <h3 className="text-lg font-semibold text-p-sepia-900 mb-2">
             {t('warnings.noWarnings')}
           </h3>
-          <p className="text-slate-600">
+          <p className="text-p-sepia-600">
             {t('warnings.noWarningsDesc')}
           </p>
         </Card>
