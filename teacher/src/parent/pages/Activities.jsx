@@ -93,7 +93,7 @@ const Activities = () => {
             return (
               <div
                 key={activity.id}
-                className="bg-p-surface rounded-2xl shadow-lg border border-slate-200 hover:shadow-2xl transition-all duration-300 overflow-hidden group"
+                className="bg-p-surface rounded-2xl shadow-lg border border-p-sepia-200 hover:shadow-2xl transition-all duration-300 overflow-hidden group"
               >
                 {/* Card Header */}
                 <div className="bg-p-brand-700 p-5">
@@ -120,7 +120,7 @@ const Activities = () => {
                         <Calendar className="w-4 h-4 text-p-brand-600 flex-shrink-0" />
                         <div className="min-w-0">
                           <p className="text-xs text-p-brand-600 font-semibold mb-0.5">{t('activities.startDate') || 'Boshlanish'}</p>
-                          <p className="text-sm font-bold text-slate-900 truncate">
+                          <p className="text-sm font-bold text-p-sepia-900 truncate">
                             {formatDateMedium(activity.startDate, i18n.language)}
                           </p>
                         </div>
@@ -131,7 +131,7 @@ const Activities = () => {
                         <Calendar className="w-4 h-4 text-p-brand-600 flex-shrink-0" />
                         <div className="min-w-0">
                           <p className="text-xs text-p-brand-600 font-semibold mb-0.5">{t('activities.endDate') || 'Tugash'}</p>
-                          <p className="text-sm font-bold text-slate-900 truncate">
+                          <p className="text-sm font-bold text-p-sepia-900 truncate">
                             {formatDateMedium(activity.endDate, i18n.language)}
                           </p>
                         </div>
@@ -141,13 +141,13 @@ const Activities = () => {
 
                   {/* Teacher */}
                   {activity.teacher && (
-                    <div className="flex items-center gap-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
+                    <div className="flex items-center gap-3 p-3 bg-p-sepia-50 rounded-xl border border-p-sepia-200">
                       <div className="p-2 bg-p-sepia-50 rounded-lg border border-p-sepia-300">
                         <User className="w-5 h-5 text-p-brand-600" />
                       </div>
                       <div className="min-w-0 flex-1">
-                        <p className="text-xs text-slate-500 font-semibold mb-0.5">{t('activities.teacher') || 'O\'qituvchi'}</p>
-                        <p className="text-sm font-bold text-slate-900 truncate">{activity.teacher}</p>
+                        <p className="text-xs text-p-sepia-500 font-semibold mb-0.5">{t('activities.teacher') || 'O\'qituvchi'}</p>
+                        <p className="text-sm font-bold text-p-sepia-900 truncate">{activity.teacher}</p>
                       </div>
                     </div>
                   )}
@@ -155,7 +155,7 @@ const Activities = () => {
                   {/* Services */}
                   {activity.services && Array.isArray(activity.services) && activity.services.length > 0 && (
                     <div>
-                      <p className="text-xs font-semibold text-slate-600 mb-2">{t('activities.services') || 'Xizmatlar'}</p>
+                      <p className="text-xs font-semibold text-p-sepia-600 mb-2">{t('activities.services') || 'Xizmatlar'}</p>
                       <div className="flex flex-wrap gap-2">
                         {activity.services.slice(0, 3).map((service, idx) => (
                           <span
@@ -166,7 +166,7 @@ const Activities = () => {
                           </span>
                         ))}
                         {activity.services.length > 3 && (
-                          <span className="px-2.5 py-1 bg-slate-100 text-slate-600 rounded-lg text-xs font-semibold border border-slate-200">
+                          <span className="px-2.5 py-1 bg-p-sepia-100 text-p-sepia-600 rounded-lg text-xs font-semibold border border-p-sepia-200">
                             +{activity.services.length - 3}
                           </span>
                         )}
@@ -189,8 +189,8 @@ const Activities = () => {
         </div>
       ) : (
         <Card className="text-center py-20 bg-p-surface/95 backdrop-blur-sm">
-          <FileX className="w-12 h-12 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500 font-medium text-lg">{t('activities.empty')}</p>
+          <FileX className="w-12 h-12 text-p-sepia-300 mx-auto mb-4" />
+          <p className="text-p-sepia-500 font-medium text-lg">{t('activities.empty')}</p>
         </Card>
       )}
 
@@ -215,7 +215,7 @@ const Activities = () => {
               {selectedActivity.goal && (
                 <div className="bg-p-sepia-50 rounded-xl p-5 border border-p-sepia-200">
                   <p className="text-sm font-bold text-p-brand-700 mb-2">{t('activities.goal') || 'Maqsad'}</p>
-                  <p className="text-base text-slate-800 leading-relaxed">{selectedActivity.goal}</p>
+                  <p className="text-base text-p-sepia-800 leading-relaxed">{selectedActivity.goal}</p>
                 </div>
               )}
 
@@ -226,7 +226,7 @@ const Activities = () => {
                     <Calendar className="w-5 h-5 text-p-brand-600 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-p-brand-600 font-semibold mb-1">{t('activities.startDate') || 'Boshlanish'}</p>
-                      <p className="text-sm font-bold text-slate-900">
+                      <p className="text-sm font-bold text-p-sepia-900">
                         {formatDateMedium(selectedActivity.startDate, i18n.language)}
                       </p>
                     </div>
@@ -237,20 +237,20 @@ const Activities = () => {
                     <Calendar className="w-5 h-5 text-p-brand-600 flex-shrink-0" />
                     <div>
                       <p className="text-xs text-p-brand-600 font-semibold mb-1">{t('activities.endDate') || 'Tugash'}</p>
-                      <p className="text-sm font-bold text-slate-900">
+                      <p className="text-sm font-bold text-p-sepia-900">
                         {formatDateMedium(selectedActivity.endDate, i18n.language)}
                       </p>
                     </div>
                   </div>
                 )}
                 {selectedActivity.teacher && (
-                  <div className="flex items-center gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200">
+                  <div className="flex items-center gap-3 p-4 bg-p-sepia-50 rounded-xl border border-p-sepia-200">
                     <div className="p-2 bg-p-sepia-50 rounded-lg border border-p-sepia-300">
                       <User className="w-5 h-5 text-p-brand-600" />
                     </div>
                     <div className="min-w-0 flex-1">
-                      <p className="text-xs text-slate-500 font-semibold mb-1">{t('activities.teacher') || 'O\'qituvchi'}</p>
-                      <p className="text-sm font-bold text-slate-900 truncate">{selectedActivity.teacher}</p>
+                      <p className="text-xs text-p-sepia-500 font-semibold mb-1">{t('activities.teacher') || 'O\'qituvchi'}</p>
+                      <p className="text-sm font-bold text-p-sepia-900 truncate">{selectedActivity.teacher}</p>
                     </div>
                   </div>
                 )}
@@ -258,12 +258,12 @@ const Activities = () => {
 
               {/* Tasks */}
               {selectedActivity.tasks && Array.isArray(selectedActivity.tasks) && selectedActivity.tasks.length > 0 && (
-                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-slate-200">
-                  <p className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-p-sepia-200">
+                  <p className="text-base font-bold text-p-sepia-800 mb-4 flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-p-brand-500" />
                     {t('activities.tasks') || 'Vazifalar'}
                   </p>
-                  <ul className="list-disc list-inside space-y-2 text-sm text-slate-700">
+                  <ul className="list-disc list-inside space-y-2 text-sm text-p-sepia-700">
                     {selectedActivity.tasks.map((task, idx) => task && (
                       <li key={idx} className="leading-relaxed">{task}</li>
                     ))}
@@ -273,41 +273,41 @@ const Activities = () => {
 
               {/* Methods */}
               {selectedActivity.methods && (
-                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-slate-200">
-                  <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-p-sepia-200">
+                  <p className="text-base font-bold text-p-sepia-800 mb-3 flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-p-brand-500" />
                     {t('activities.methods') || 'Usullar'}
                   </p>
-                  <p className="text-sm text-slate-700 leading-relaxed">{selectedActivity.methods}</p>
+                  <p className="text-sm text-p-sepia-700 leading-relaxed">{selectedActivity.methods}</p>
                 </div>
               )}
 
               {/* Progress */}
               {selectedActivity.progress && (
-                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-slate-200">
-                  <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-p-sepia-200">
+                  <p className="text-base font-bold text-p-sepia-800 mb-3 flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-p-brand-500" />
                     {t('activities.progress') || 'Jarayon/Taraqqiyot'}
                   </p>
-                  <p className="text-sm text-slate-700 leading-relaxed">{selectedActivity.progress}</p>
+                  <p className="text-sm text-p-sepia-700 leading-relaxed">{selectedActivity.progress}</p>
                 </div>
               )}
 
               {/* Observation */}
               {selectedActivity.observation && (
-                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-slate-200">
-                  <p className="text-base font-bold text-slate-800 mb-3 flex items-center gap-2">
+                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-p-sepia-200">
+                  <p className="text-base font-bold text-p-sepia-800 mb-3 flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-p-brand-500" />
                     {t('activities.observation') || 'Kuzatish'}
                   </p>
-                  <p className="text-sm text-slate-700 leading-relaxed">{selectedActivity.observation}</p>
+                  <p className="text-sm text-p-sepia-700 leading-relaxed">{selectedActivity.observation}</p>
                 </div>
               )}
 
               {/* Services */}
               {selectedActivity.services && Array.isArray(selectedActivity.services) && selectedActivity.services.length > 0 && (
-                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-slate-200">
-                  <p className="text-base font-bold text-slate-800 mb-4 flex items-center gap-2">
+                <div className="bg-p-surface rounded-xl p-5 shadow-md border border-p-sepia-200">
+                  <p className="text-base font-bold text-p-sepia-800 mb-4 flex items-center gap-2">
                     <CheckCircle2 className="w-5 h-5 text-p-brand-500" />
                     {t('activities.services') || 'Xizmatlar'}
                   </p>
@@ -325,7 +325,7 @@ const Activities = () => {
               )}
 
               {/* Close Button */}
-              <div className="flex justify-end pt-4 border-t border-slate-200">
+              <div className="flex justify-end pt-4 border-t border-p-sepia-200">
                 <button
                   onClick={closeDetailsModal}
                   className="px-6 py-3 bg-p-brand-600 hover:bg-p-brand-700 text-white rounded-xl font-semibold transition-colors shadow-md"

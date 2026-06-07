@@ -27,7 +27,7 @@ const LogoutModal = ({ show, onClose }) => {
       onClick={onClose}
     >
       <div
-        className="bg-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-p-surface rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -35,23 +35,23 @@ const LogoutModal = ({ show, onClose }) => {
             <div className="p-3 bg-error-100 rounded-full">
               <AlertCircle className="w-6 h-6 text-error-600" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-p-sepia-900">
               {t('profile.logoutTitle')}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-slate-500" />
+          <button onClick={onClose} className="p-2 hover:bg-p-sepia-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-p-sepia-500" />
           </button>
         </div>
 
-        <p className="text-slate-600 mb-8 text-lg">
+        <p className="text-p-sepia-600 mb-8 text-lg">
           {t('profile.confirmLogout')}
         </p>
 
         <div className="flex gap-3">
           <button
             onClick={onClose}
-            className="flex-1 px-6 py-3 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold transition-colors"
+            className="flex-1 px-6 py-3 bg-p-sepia-100 hover:bg-p-sepia-200 text-p-sepia-700 rounded-xl font-semibold transition-colors"
           >
             {t('profile.cancel')}
           </button>

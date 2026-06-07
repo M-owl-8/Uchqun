@@ -92,7 +92,7 @@ const Therapy = () => {
       case 'content':
         return 'bg-success-50 text-success-600';
       default:
-        return 'bg-slate-50 text-slate-600';
+        return 'bg-p-sepia-50 text-p-sepia-600';
     }
   };
 
@@ -130,13 +130,13 @@ const Therapy = () => {
       {/* Filters */}
       <div className="flex flex-col md:flex-row gap-4">
         <div className="flex-1 relative">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-p-sepia-400 w-5 h-5" />
           <input
             type="text"
             placeholder={t('therapy.search')}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-10 pr-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+            className="w-full pl-10 pr-4 py-2 border border-p-sepia-300 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
           />
         </div>
         <div className="flex gap-2">
@@ -145,7 +145,7 @@ const Therapy = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'all'
                 ? 'bg-p-brand-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
             }`}
           >
             {t('therapy.all')}
@@ -155,7 +155,7 @@ const Therapy = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'music'
                 ? 'bg-p-brand-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
             }`}
           >
             {t('therapy.music')}
@@ -165,7 +165,7 @@ const Therapy = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'video'
                 ? 'bg-p-brand-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
             }`}
           >
             {t('therapy.video')}
@@ -175,7 +175,7 @@ const Therapy = () => {
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${
               filter === 'content'
                 ? 'bg-p-brand-600 text-white'
-                : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                : 'bg-p-sepia-100 text-p-sepia-700 hover:bg-p-sepia-200'
             }`}
           >
             {t('therapy.content')}
@@ -215,12 +215,12 @@ const Therapy = () => {
                   <Icon className="w-6 h-6" />
                 </div>
                 <div className="flex-1">
-                  <h3 className="font-bold text-slate-900 mb-1">{therapy.title}</h3>
-                  <p className="text-sm text-slate-600 line-clamp-2">{therapy.description}</p>
+                  <h3 className="font-bold text-p-sepia-900 mb-1">{therapy.title}</h3>
+                  <p className="text-sm text-p-sepia-600 line-clamp-2">{therapy.description}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-4 text-sm text-slate-600 mb-4">
+              <div className="flex items-center gap-4 text-sm text-p-sepia-600 mb-4">
                 {therapy.duration && (
                   <div className="flex items-center gap-1">
                     <Clock className="w-4 h-4" />
@@ -240,7 +240,7 @@ const Therapy = () => {
                   {therapy.tags.slice(0, 3).map((tag, idx) => (
                     <span
                       key={idx}
-                      className="px-2 py-1 bg-slate-100 text-slate-600 text-xs rounded"
+                      className="px-2 py-1 bg-p-sepia-100 text-p-sepia-600 text-xs rounded"
                     >
                       {tag}
                     </span>
@@ -253,7 +253,7 @@ const Therapy = () => {
                 disabled={!!activeSession}
                 className={`w-full py-2 rounded-lg font-semibold transition-colors ${
                   activeSession
-                    ? 'bg-slate-300 text-slate-500 cursor-not-allowed'
+                    ? 'bg-p-sepia-300 text-p-sepia-500 cursor-not-allowed'
                     : 'bg-p-brand-600 text-white hover:bg-p-brand-700'
                 }`}
               >
@@ -266,11 +266,11 @@ const Therapy = () => {
 
       {filteredTherapies.length === 0 && (
         <Card className="p-12 text-center">
-          <Play className="w-16 h-16 text-slate-400 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold text-slate-900 mb-2">
+          <Play className="w-16 h-16 text-p-sepia-400 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-p-sepia-900 mb-2">
             {t('therapy.noTherapies')}
           </h3>
-          <p className="text-slate-600">
+          <p className="text-p-sepia-600">
             {t('therapy.noTherapiesDesc')}
           </p>
         </Card>

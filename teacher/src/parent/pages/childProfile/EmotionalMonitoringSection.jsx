@@ -12,8 +12,8 @@ const EmotionalMonitoringSection = ({ records }) => {
 
   if (!records || records.length === 0) {
     return (
-      <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
-        <h3 className="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+      <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-p-sepia-100">
+        <h3 className="text-xl font-bold text-p-sepia-900 mb-4 flex items-center gap-2">
           <Heart className="w-6 h-6 text-pink-600" />
           {t('profile.monitoringJournal')}
         </h3>
@@ -21,10 +21,10 @@ const EmotionalMonitoringSection = ({ records }) => {
           <div className="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mb-4">
             <Activity className="w-7 h-7 text-p-sepia-400" strokeWidth={1.5} />
           </div>
-          <p className="text-[15px] font-medium text-slate-700 mb-1">
+          <p className="text-[15px] font-medium text-p-sepia-700 mb-1">
             {t('profile.emotionalEmpty')}
           </p>
-          <p className="text-[13px] text-slate-400 max-w-xs">
+          <p className="text-[13px] text-p-sepia-400 max-w-xs">
             {t('profile.emotionalEmptyDesc')}
           </p>
         </div>
@@ -33,8 +33,8 @@ const EmotionalMonitoringSection = ({ records }) => {
   }
 
   return (
-    <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-slate-100">
-      <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-2">
+    <section className="bg-p-surface rounded-[2rem] p-8 shadow-sm border border-p-sepia-100">
+      <h3 className="text-xl font-bold text-p-sepia-900 mb-6 flex items-center gap-2">
         <Heart className="w-6 h-6 text-pink-600" />
         {t('profile.monitoringJournal')}
       </h3>
@@ -46,28 +46,28 @@ const EmotionalMonitoringSection = ({ records }) => {
           const percentage = totalCount > 0 ? Math.round((checkedCount / totalCount) * 100) : 0;
 
           return (
-            <div key={record.id} className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+            <div key={record.id} className="border border-p-sepia-200 rounded-xl p-6 hover:shadow-md transition-shadow">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <p className="font-semibold text-slate-900">
+                  <p className="font-semibold text-p-sepia-900">
                     {formatDateMonthLong(record.date, i18n.language)}
                   </p>
                   {record.teacher && (
-                    <p className="text-sm text-slate-500 mt-1">
+                    <p className="text-sm text-p-sepia-500 mt-1">
                       {t('childProfile.teacher')}: {record.teacher.firstName} {record.teacher.lastName}
                     </p>
                   )}
                 </div>
                 <div className="text-right">
                   <div className="text-2xl font-bold text-p-brand-600">{percentage}%</div>
-                  <div className="text-xs text-slate-500">{checkedCount} / {totalCount}</div>
+                  <div className="text-xs text-p-sepia-500">{checkedCount} / {totalCount}</div>
                 </div>
               </div>
 
               <div className="space-y-2 mb-4">
                 {EMOTIONAL_KEYS.map((key) =>
                   emotionalState[key] ? (
-                    <div key={key} className="flex items-center gap-2 text-sm text-slate-700">
+                    <div key={key} className="flex items-center gap-2 text-sm text-p-sepia-700">
                       <div className="w-2 h-2 rounded-full bg-success-500" />
                       <span>{t(`child.emotionalCriteria.${key}`)}</span>
                     </div>
@@ -76,22 +76,22 @@ const EmotionalMonitoringSection = ({ records }) => {
               </div>
 
               {record.notes && (
-                <div className="mt-4 pt-4 border-t border-slate-200">
-                  <p className="text-sm font-medium text-slate-700 mb-1">
+                <div className="mt-4 pt-4 border-t border-p-sepia-200">
+                  <p className="text-sm font-medium text-p-sepia-700 mb-1">
                     {t('child.emotionalCriteria.notes')}
                   </p>
-                  <p className="text-sm text-slate-600">{record.notes}</p>
+                  <p className="text-sm text-p-sepia-600">{record.notes}</p>
                 </div>
               )}
               {record.teacherSignature && (
-                <div className="mt-2 text-xs text-slate-500">Имзо: {record.teacherSignature}</div>
+                <div className="mt-2 text-xs text-p-sepia-500">Имзо: {record.teacherSignature}</div>
               )}
             </div>
           );
         })}
       </div>
       {records.length > 5 && (
-        <p className="text-sm text-slate-500 mt-4 text-center">
+        <p className="text-sm text-p-sepia-500 mt-4 text-center">
           +{records.length - 5} та яна жумла
         </p>
       )}

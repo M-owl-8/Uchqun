@@ -53,7 +53,7 @@ const MessagesModal = ({
       onClick={onClose}
     >
       <div
-        className="bg-surface rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300"
+        className="bg-p-surface rounded-3xl p-8 max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 duration-300"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex items-center justify-between mb-6">
@@ -61,12 +61,12 @@ const MessagesModal = ({
             <div className="p-3 bg-success-100 rounded-full">
               <MessageSquare className="w-6 h-6 text-success-600" />
             </div>
-            <h2 className="text-2xl font-bold text-slate-900">
+            <h2 className="text-2xl font-bold text-p-sepia-900">
               {t('profile.myMessages')}
             </h2>
           </div>
-          <button onClick={onClose} className="p-2 hover:bg-slate-100 rounded-lg transition-colors">
-            <X className="w-5 h-5 text-slate-500" />
+          <button onClick={onClose} className="p-2 hover:bg-p-sepia-100 rounded-lg transition-colors">
+            <X className="w-5 h-5 text-p-sepia-500" />
           </button>
         </div>
 
@@ -87,22 +87,22 @@ const MessagesModal = ({
           </div>
         ) : messages.length === 0 ? (
           <div className="text-center py-12">
-            <MessageSquare className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-            <p className="text-slate-500">{t('profile.noMessages')}</p>
+            <MessageSquare className="w-16 h-16 text-p-sepia-300 mx-auto mb-4" />
+            <p className="text-p-sepia-500">{t('profile.noMessages')}</p>
           </div>
         ) : (
           <div className="space-y-4">
             {messages.map((msg) => (
-              <div key={msg.id} className="border border-slate-200 rounded-xl p-6 hover:shadow-md transition-shadow">
+              <div key={msg.id} className="border border-p-sepia-200 rounded-xl p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-3 gap-3">
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center gap-2 flex-wrap mb-1">
-                      <h3 className="font-bold text-slate-900 text-lg leading-tight truncate">{msg.subject}</h3>
+                      <h3 className="font-bold text-p-sepia-900 text-lg leading-tight truncate">{msg.subject}</h3>
                       {msg.recipientLevel && (
                         <LevelBadge level={msg.recipientLevel} t={t} />
                       )}
                     </div>
-                    <p className="text-sm text-slate-500">
+                    <p className="text-sm text-p-sepia-500">
                       {formatDateTimeLong(msg.createdAt, i18n.language)}
                     </p>
                   </div>
@@ -133,27 +133,27 @@ const MessagesModal = ({
 
                 {/* Message body */}
                 <div className="mb-4">
-                  <p className="text-sm font-medium text-slate-700 mb-2">
+                  <p className="text-sm font-medium text-p-sepia-700 mb-2">
                     {t('profile.yourMessage')}:
                   </p>
-                  <p className="text-slate-800 bg-slate-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
+                  <p className="text-p-sepia-800 bg-p-sepia-50 rounded-lg p-4 whitespace-pre-wrap">{msg.message}</p>
                 </div>
 
                 {/* Government reply */}
                 {msg.reply && (
-                  <div className="border-t border-slate-200 pt-4 mt-4">
+                  <div className="border-t border-p-sepia-200 pt-4 mt-4">
                     <div className="flex items-center gap-2 mb-2">
-                      <div className="p-2 bg-brand-100 rounded-full">
-                        <MessageSquare className="w-4 h-4 text-brand-600" />
+                      <div className="p-2 bg-p-brand-100 rounded-full">
+                        <MessageSquare className="w-4 h-4 text-p-brand-600" />
                       </div>
-                      <p className="text-sm font-medium text-brand-700">
+                      <p className="text-sm font-medium text-p-brand-700">
                         {t('profile.governmentReply')}
                       </p>
-                      <span className="text-xs text-slate-500 ml-auto">
+                      <span className="text-xs text-p-sepia-500 ml-auto">
                         {formatDateTimeLong(msg.repliedAt, i18n.language)}
                       </span>
                     </div>
-                    <p className="text-slate-800 bg-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
+                    <p className="text-p-sepia-800 bg-p-brand-50 rounded-lg p-4 whitespace-pre-wrap">{msg.reply}</p>
                   </div>
                 )}
 

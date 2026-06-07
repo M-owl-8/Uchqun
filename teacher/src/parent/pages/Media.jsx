@@ -327,7 +327,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
               max={duration || 0}
               value={currentTime}
               onChange={handleProgressChange}
-              className="w-full h-2 bg-slate-700 rounded-lg appearance-none cursor-pointer slider"
+              className="w-full h-2 bg-p-sepia-700 rounded-lg appearance-none cursor-pointer slider"
               style={{
                 background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(currentTime / duration) * 100}%, #4b5563 ${(currentTime / duration) * 100}%, #4b5563 100%)`
               }}
@@ -391,7 +391,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
                   step="0.01"
                   value={isMuted ? 0 : volume}
                   onChange={handleVolumeChange}
-                  className="w-20 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer"
+                  className="w-20 h-1 bg-p-sepia-700 rounded-lg appearance-none cursor-pointer"
                   style={{
                     background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${(isMuted ? 0 : volume) * 100}%, #4b5563 ${(isMuted ? 0 : volume) * 100}%, #4b5563 100%)`
                   }}
@@ -580,7 +580,7 @@ const Media = () => {
             <div
               key={item.id}
               onClick={() => setSelectedMedia(item)}
-              className="group relative bg-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-slate-100"
+              className="group relative bg-p-surface rounded-[2rem] overflow-hidden shadow-sm hover:shadow-2xl transition-all duration-500 cursor-pointer border border-p-sepia-100"
             >
               {/* Image/Video Container */}
               <div className="relative aspect-[4/5] overflow-hidden">
@@ -610,7 +610,7 @@ const Media = () => {
                     />
                     {/* Video Play Icon - Always visible */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                      <div className="w-16 h-16 bg-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
+                      <div className="w-16 h-16 bg-p-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30 shadow-lg">
                         <Play className="w-8 h-8 text-white fill-current" />
                       </div>
                     </div>
@@ -639,20 +639,20 @@ const Media = () => {
                 {/* Video Play Icon */}
                 {item.type === 'video' && (
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="w-16 h-16 bg-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
+                    <div className="w-16 h-16 bg-p-surface/20 backdrop-blur-md rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 border border-white/30">
                       <Play className="w-8 h-8 text-white fill-current" />
                     </div>
                   </div>
                 )}
 
-                <div className="absolute top-4 right-4 bg-surface/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
+                <div className="absolute top-4 right-4 bg-p-surface/10 backdrop-blur-md p-2 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity">
                     <Maximize2 className="w-4 h-4 text-white" />
                 </div>
               </div>
 
               {/* Bottom Info (Always visible or not, depending on preference) */}
               <div className="p-5">
-                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-slate-400">
+                <div className="flex items-center justify-between text-[10px] font-black uppercase tracking-widest text-p-sepia-400">
                   <span className="flex items-center gap-1">
                     <Calendar className="w-3 h-3" /> {formatDateMedium(item.date, i18n.language)}
                   </span>
@@ -662,9 +662,9 @@ const Media = () => {
           ))}
         </div>
       ) : (
-        <Card className="text-center py-32 bg-surface/95 backdrop-blur-sm">
-          <ImageIcon className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-          <p className="text-slate-500 font-bold text-lg">{t('media.empty')}</p>
+        <Card className="text-center py-32 bg-p-surface/95 backdrop-blur-sm">
+          <ImageIcon className="w-16 h-16 text-p-sepia-300 mx-auto mb-4" />
+          <p className="text-p-sepia-500 font-bold text-lg">{t('media.empty')}</p>
         </Card>
       )}
 
@@ -673,11 +673,11 @@ const Media = () => {
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-8 animate-in fade-in duration-300">
           {/* Backdrop */}
           <div 
-            className="absolute inset-0 bg-slate-900/95 backdrop-blur-xl"
+            className="absolute inset-0 bg-p-sepia-900/95 backdrop-blur-xl"
             onClick={() => setSelectedMedia(null)}
           />
           
-          <div className="relative w-full max-w-6xl bg-surface rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh] h-[90vh]">
+          <div className="relative w-full max-w-6xl bg-p-surface rounded-[2.5rem] overflow-hidden shadow-2xl flex flex-col lg:flex-row max-h-[90vh] h-[90vh]">
             
             {/* Close Button Mobile */}
             <button 
@@ -712,7 +712,7 @@ const Media = () => {
             <div className="flex-1 p-8 lg:p-12 overflow-y-auto bg-p-surface">
               <button
                 onClick={() => setSelectedMedia(null)}
-                className="hidden lg:flex items-center gap-2 text-slate-400 hover:text-p-brand-600 font-bold text-sm mb-10 transition-colors"
+                className="hidden lg:flex items-center gap-2 text-p-sepia-400 hover:text-p-brand-600 font-bold text-sm mb-10 transition-colors"
               >
                 <ChevronLeft className="w-5 h-5" /> {t('media.back')}
               </button>
@@ -722,23 +722,23 @@ const Media = () => {
                   <span className="px-4 py-1.5 bg-p-sepia-50 text-p-brand-600 rounded-full text-[10px] font-black uppercase tracking-widest">
                     {selectedMedia.type === 'video' ? t('media.videoLabel') : t('media.photoLabel')}
                   </span>
-                  <h3 className="text-3xl font-black text-slate-900 mt-4 leading-tight">
+                  <h3 className="text-3xl font-black text-p-sepia-900 mt-4 leading-tight">
                     {selectedMedia.title}
                   </h3>
                 </div>
 
-                <p className="text-slate-600 leading-relaxed text-lg">
+                <p className="text-p-sepia-600 leading-relaxed text-lg">
                   {selectedMedia.description}
                 </p>
 
-                <div className="pt-8 border-t border-slate-100">
+                <div className="pt-8 border-t border-p-sepia-100">
                   <div className="flex items-center gap-3">
-                    <div className="bg-slate-100 p-3 rounded-2xl">
-                        <Calendar className="w-6 h-6 text-slate-400" />
+                    <div className="bg-p-sepia-100 p-3 rounded-2xl">
+                        <Calendar className="w-6 h-6 text-p-sepia-400" />
                     </div>
                     <div>
-                        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">{t('media.date')}</p>
-                        <p className="text-slate-900 font-bold">
+                        <p className="text-xs font-bold text-p-sepia-400 uppercase tracking-widest">{t('media.date')}</p>
+                        <p className="text-p-sepia-900 font-bold">
                             {formatDateLong(selectedMedia.date, i18n.language)}
                         </p>
                     </div>

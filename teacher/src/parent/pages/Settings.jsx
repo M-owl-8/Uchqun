@@ -150,7 +150,7 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <User className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.profileInfo')}</h2>
+            <h2 className="text-xl font-bold text-p-sepia-900">{t('settings.profileInfo')}</h2>
           </div>
 
           {/* Avatar Display */}
@@ -163,38 +163,38 @@ const Settings = () => {
               )}
             </div>
             <div>
-              <p className="text-sm font-medium text-slate-700">{t('profile.profilePicture')}</p>
-              <p className="text-xs text-slate-500">{t('profile.changeInProfile')}</p>
+              <p className="text-sm font-medium text-p-sepia-700">{t('profile.profilePicture')}</p>
+              <p className="text-xs text-p-sepia-500">{t('profile.changeInProfile')}</p>
             </div>
           </div>
 
           <div className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.firstName')}</label>
+                <label className="block text-sm font-medium text-p-sepia-700 mb-2">{t('settings.firstName')}</label>
                 <input
                   type="text"
                   value={profileForm.firstName}
                   onChange={(e) => setProfileForm({ ...profileForm, firstName: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.lastName')}</label>
+                <label className="block text-sm font-medium text-p-sepia-700 mb-2">{t('settings.lastName')}</label>
                 <input
                   type="text"
                   value={profileForm.lastName}
                   onChange={(e) => setProfileForm({ ...profileForm, lastName: e.target.value })}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   required
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-p-sepia-700 mb-2">
                 <Mail className="w-4 h-4 inline mr-2" />
                 {t('settings.email')}
               </label>
@@ -202,13 +202,13 @@ const Settings = () => {
                 type="email"
                 value={profileForm.email}
                 disabled
-                className="w-full px-4 py-3 border border-slate-200 rounded-lg bg-slate-50 text-slate-500 cursor-not-allowed"
+                className="w-full px-4 py-3 border border-p-sepia-200 rounded-lg bg-p-sepia-50 text-p-sepia-500 cursor-not-allowed"
               />
-              <p className="text-xs text-slate-500 mt-1">{t('settings.emailCannotChange')}</p>
+              <p className="text-xs text-p-sepia-500 mt-1">{t('settings.emailCannotChange')}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">
+              <label className="block text-sm font-medium text-p-sepia-700 mb-2">
                 <Phone className="w-4 h-4 inline mr-2" />
                 {t('settings.phone')}
               </label>
@@ -216,7 +216,7 @@ const Settings = () => {
                 type="tel"
                 value={profileForm.phone}
                 onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })}
-                className="w-full px-4 py-3 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                className="w-full px-4 py-3 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                 placeholder="+998 90 123 45 67"
               />
             </div>
@@ -244,7 +244,7 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <Bell className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.notifications')}</h2>
+            <h2 className="text-xl font-bold text-p-sepia-900">{t('settings.notifications')}</h2>
           </div>
 
           <div className="space-y-4">
@@ -259,11 +259,11 @@ const Settings = () => {
                     email: e.target.checked,
                   },
                 })}
-                className="w-5 h-5 text-p-brand-600 border-slate-300 rounded focus:ring-p-brand-500"
+                className="w-5 h-5 text-p-brand-600 border-p-sepia-300 rounded focus:ring-p-brand-500"
               />
               <div>
-                <span className="text-sm font-medium text-slate-700">{t('settings.emailNotifications')}</span>
-                <p className="text-xs text-slate-500">{t('settings.emailNotificationsDesc')}</p>
+                <span className="text-sm font-medium text-p-sepia-700">{t('settings.emailNotifications')}</span>
+                <p className="text-xs text-p-sepia-500">{t('settings.emailNotificationsDesc')}</p>
               </div>
             </label>
 
@@ -287,24 +287,24 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-6">
             <Lock className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.changePassword')}</h2>
+            <h2 className="text-xl font-bold text-p-sepia-900">{t('settings.changePassword')}</h2>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.currentPassword')}</label>
+              <label className="block text-sm font-medium text-p-sepia-700 mb-2">{t('settings.currentPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.current ? 'text' : 'password'}
                   value={passwordForm.currentPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, currentPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   required
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({ ...showPasswords, current: !showPasswords.current })}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 hover:text-slate-700"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-p-sepia-500 hover:text-p-sepia-700"
                 >
                   {showPasswords.current ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -312,42 +312,42 @@ const Settings = () => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.newPassword')}</label>
+              <label className="block text-sm font-medium text-p-sepia-700 mb-2">{t('settings.newPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.new ? 'text' : 'password'}
                   value={passwordForm.newPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, newPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   required
                   minLength={8}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({ ...showPasswords, new: !showPasswords.new })}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 hover:text-slate-700"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-p-sepia-500 hover:text-p-sepia-700"
                 >
                   {showPasswords.new ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
               </div>
-              <p className="text-xs text-slate-500 mt-1">{t('settings.passwordRequirements')}</p>
+              <p className="text-xs text-p-sepia-500 mt-1">{t('settings.passwordRequirements')}</p>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">{t('settings.confirmPassword')}</label>
+              <label className="block text-sm font-medium text-p-sepia-700 mb-2">{t('settings.confirmPassword')}</label>
               <div className="relative">
                 <input
                   type={showPasswords.confirm ? 'text' : 'password'}
                   value={passwordForm.confirmPassword}
                   onChange={(e) => setPasswordForm({ ...passwordForm, confirmPassword: e.target.value })}
-                  className="w-full px-4 py-3 pr-12 border border-slate-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
+                  className="w-full px-4 py-3 pr-12 border border-p-sepia-200 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
                   required
                   minLength={8}
                 />
                 <button
                   type="button"
                   onClick={() => setShowPasswords({ ...showPasswords, confirm: !showPasswords.confirm })}
-                  className="absolute inset-y-0 right-0 flex items-center px-3 text-slate-500 hover:text-slate-700"
+                  className="absolute inset-y-0 right-0 flex items-center px-3 text-p-sepia-500 hover:text-p-sepia-700"
                 >
                   {showPasswords.confirm ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
                 </button>
@@ -377,16 +377,16 @@ const Settings = () => {
         <Card className="p-6">
           <div className="flex items-center gap-3 mb-4">
             <ShieldOff className="w-6 h-6 text-p-brand-600" />
-            <h2 className="text-xl font-bold text-slate-900">{t('settings.privacyConsentSection')}</h2>
+            <h2 className="text-xl font-bold text-p-sepia-900">{t('settings.privacyConsentSection')}</h2>
           </div>
-          <p className="text-sm text-slate-600 mb-1">
+          <p className="text-sm text-p-sepia-600 mb-1">
             {consentedAt
               ? t('settings.consentedAt', { date: new Date(consentedAt).toLocaleDateString() })
               : t('settings.notConsented')}
           </p>
           {consentedAt && (
             <>
-              <p className="text-xs text-slate-500 mb-4">{t('settings.withdrawConsentDesc')}</p>
+              <p className="text-xs text-p-sepia-500 mb-4">{t('settings.withdrawConsentDesc')}</p>
               <button
                 onClick={handleWithdrawConsent}
                 disabled={withdrawing}

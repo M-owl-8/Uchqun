@@ -219,7 +219,7 @@ const ChildIRR = () => {
                       <span className="text-xs text-p-sepia-400">/ {s.maxPossibleScore || MAX_SCORE}</span>
                       {trend === 'up' && <TrendingUp className="w-4 h-4 text-p-honey-700" aria-label={t('irr.trend.increased')} />}
                       {trend === 'down' && <TrendingDown className="w-4 h-4 text-p-sepia-400" aria-label={t('irr.trend.decreased')} />}
-                      {trend === 'stable' && <Minus className="w-4 h-4 text-slate-400" aria-label={t('irr.trend.unchanged')} />}
+                      {trend === 'stable' && <Minus className="w-4 h-4 text-p-sepia-400" aria-label={t('irr.trend.unchanged')} />}
                     </div>
                     <div className="w-full bg-p-sepia-100 rounded-full h-2">
                       <div
@@ -247,7 +247,7 @@ const ChildIRR = () => {
       )}
       {goals?.longTermGoals?.length > 0 && (
         <section data-testid="ltg-section" className="page-card rounded-xl p-5">
-          <h2 className="text-lg font-bold text-slate-900 mb-6">
+          <h2 className="text-lg font-bold text-p-sepia-900 mb-6">
             {t('irr.ltgTitle')}
           </h2>
           <div className="space-y-3">
@@ -260,7 +260,7 @@ const ChildIRR = () => {
                 <p className="text-xs font-semibold text-p-brand-500 uppercase tracking-wide mb-1">
                   {skillLabel(ltg.skillArea, i18n.language)}
                 </p>
-                <p className="text-sm font-medium text-slate-800">{ltg.goalText}</p>
+                <p className="text-sm font-medium text-p-sepia-800">{ltg.goalText}</p>
               </div>
             ))}
           </div>
@@ -277,7 +277,7 @@ const ChildIRR = () => {
       )}
       {goals?.periods?.length > 0 && (
         <section data-testid="periods-section" className="space-y-6">
-          <h2 className="text-lg font-bold text-slate-900">
+          <h2 className="text-lg font-bold text-p-sepia-900">
             {t('irr.periodsTitle')}
           </h2>
           {goals.periods.map((period) => {
@@ -291,7 +291,7 @@ const ChildIRR = () => {
                 className="page-card rounded-xl p-5"
               >
                 <div className="flex items-center justify-between mb-3">
-                  <h3 className="font-bold text-slate-800">{period.periodLabel}</h3>
+                  <h3 className="font-bold text-p-sepia-800">{period.periodLabel}</h3>
                   {period.signedAt && (
                     <span className="text-xs text-p-honey-700 font-semibold bg-p-honey-100 px-2 py-1 rounded-lg">
                       {t('irr.signed')}
@@ -299,7 +299,7 @@ const ChildIRR = () => {
                   )}
                 </div>
                 {(period.startDate || period.endDate) && (
-                  <p className="text-xs text-slate-400 mb-4">
+                  <p className="text-xs text-p-sepia-400 mb-4">
                     {period.startDate && formatDateMedium(period.startDate, i18next.language)}
                     {period.startDate && period.endDate && ' — '}
                     {period.endDate && formatDateMedium(period.endDate, i18next.language)}
@@ -313,13 +313,13 @@ const ChildIRR = () => {
                         data-testid={`stg-row-${stg.id}`}
                         className="border-l-2 border-p-brand-200 pl-4"
                       >
-                        <p className="text-sm font-medium text-slate-800 mb-2">{stg.stgText}</p>
+                        <p className="text-sm font-medium text-p-sepia-800 mb-2">{stg.stgText}</p>
                         {stg.review && (
                           <div
                             data-testid={`review-card-${stg.id}`}
-                            className="mt-2 bg-slate-50 rounded-xl p-3"
+                            className="mt-2 bg-p-sepia-50 rounded-xl p-3"
                           >
-                            <p className="text-xs text-slate-500">{stg.review}</p>
+                            <p className="text-xs text-p-sepia-500">{stg.review}</p>
                           </div>
                         )}
                         {stg.parentRecommendations && (
@@ -336,7 +336,7 @@ const ChildIRR = () => {
                         {stg.discussionDate && (
                           <p
                             data-testid={`discussion-date-${stg.id}`}
-                            className="text-xs text-slate-400 mt-2"
+                            className="text-xs text-p-sepia-400 mt-2"
                           >
                             {t('irr.discussion')}{' '}
                             {formatDateMedium(stg.discussionDate, i18next.language)}
@@ -346,7 +346,7 @@ const ChildIRR = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-sm text-slate-400 italic">
+                  <p className="text-sm text-p-sepia-400 italic">
                     {t('irr.noStgs')}
                   </p>
                 )}
@@ -359,7 +359,7 @@ const ChildIRR = () => {
       {/* Empty data state (IRR exists but no sessions and no goals yet) */}
       {irr && sessions.length === 0 && !goals?.longTermGoals?.length && !goals?.periods?.length && (
         <div className="bg-p-surface rounded-[2rem] p-10 text-center shadow-sm border border-p-sepia-100">
-          <p className="text-slate-500 font-medium">
+          <p className="text-p-sepia-500 font-medium">
             {t('irr.noData')}
           </p>
         </div>
