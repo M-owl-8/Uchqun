@@ -9,10 +9,10 @@
 
 | Item | Value |
 |---|---|
-| Government portal | https://uchqun-government.netlify.app |
-| Admin portal | https://uchqun-admin.netlify.app |
-| Reception portal | https://uchqun-reception.netlify.app |
-| Teacher / Parent portal | https://uchqun-teacher.netlify.app |
+| Government portal | https://government-production.up.railway.app |
+| Admin portal | https://admin-production-536f.up.railway.app |
+| Reception portal | https://reception-production-ba41.up.railway.app |
+| Teacher / Parent portal | https://teacher-production-0647.up.railway.app |
 | Backend API | https://uchqun-production-b484.up.railway.app |
 | Credentials source | `credentials.md` (never printed here) |
 | Browser | Playwright Chromium — real headed browser |

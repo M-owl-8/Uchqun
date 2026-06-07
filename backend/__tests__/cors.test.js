@@ -95,7 +95,7 @@ function makeFrontendUrlCorsApp({ isProduction = true, frontendUrl = '' } = {}) 
 }
 
 describe('PL-002 — FRONTEND_URL explicit allowlist', () => {
-  const PROD_URL = 'https://uchqun-admin.netlify.app';
+  const PROD_URL = 'https://admin-production-536f.up.railway.app';
 
   it('allows an origin that exactly matches FRONTEND_URL', async () => {
     const res = await supertest(makeFrontendUrlCorsApp({ frontendUrl: PROD_URL }))
@@ -105,7 +105,7 @@ describe('PL-002 — FRONTEND_URL explicit allowlist', () => {
   });
 
   it('blocks an evil subdomain that shares the host substring (revert-test: no substring matching)', async () => {
-    const evilOrigin = 'https://evil.uchqun-admin.netlify.app';
+    const evilOrigin = 'https://evil.admin-production-536f.up.railway.app';
     const res = await supertest(makeFrontendUrlCorsApp({ frontendUrl: PROD_URL }))
       .get('/ping')
       .set('Origin', evilOrigin);
@@ -126,8 +126,8 @@ describe('PL-002 — FRONTEND_URL explicit allowlist', () => {
   });
 
   it('allows multiple origins from comma-separated FRONTEND_URL', async () => {
-    const url1 = 'https://uchqun-admin.netlify.app';
-    const url2 = 'https://uchqun-teacher.netlify.app';
+    const url1 = 'https://admin-production-536f.up.railway.app';
+    const url2 = 'https://teacher-production-0647.up.railway.app';
     const app = makeFrontendUrlCorsApp({ frontendUrl: `${url1}, ${url2}` });
 
     const res1 = await supertest(app).get('/ping').set('Origin', url1);
@@ -154,12 +154,12 @@ describe('CORS configuration', () => {
     expect(content).toContain('5177');
   });
 
-  test('#02-006 socket.js CORS includes production Netlify domains', () => {
+  test('#02-006 socket.js CORS includes production Railway domains', () => {
     const content = readFileSync(join(process.cwd(), 'config/socket.js'), 'utf8');
-    expect(content).toContain('uchqun-reception.netlify.app');
-    expect(content).toContain('uchqun-admin.netlify.app');
-    expect(content).toContain('uchqun-teacher.netlify.app');
-    expect(content).toContain('uchqun-government.netlify.app');
+    expect(content).toContain('reception-production-ba41.up.railway.app');
+    expect(content).toContain('admin-production-536f.up.railway.app');
+    expect(content).toContain('teacher-production-0647.up.railway.app');
+    expect(content).toContain('government-production.up.railway.app');
   });
 
   test('#02-006 socket.js CORS respects FRONTEND_URL env variable', () => {

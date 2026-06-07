@@ -18,11 +18,9 @@ const SOCKET_DEFAULT_ORIGINS = [
   'http://localhost:5175',
   'http://localhost:5177',
   'https://teacher-production-0647.up.railway.app',
-  'https://uchqun-reception.netlify.app',
-  'https://uchqun-admin.netlify.app',
-  'https://uchqun-teacher.netlify.app',
-  'https://uchqun-government.netlify.app',
-  'https://uchqun-platform.vercel.app',
+  'https://reception-production-ba41.up.railway.app',
+  'https://admin-production-536f.up.railway.app',
+  'https://government-production.up.railway.app',
 ];
 
 export const initializeSocket = (server) => {

@@ -30,7 +30,7 @@ platform goes live with real users. All items marked **REQUIRED** are blocking f
 ### CORS (PL-002 / PL-008) — REQUIRED
 
 ```
-FRONTEND_URL=https://uchqun-admin.netlify.app,https://uchqun-teacher.netlify.app,https://uchqun-reception.netlify.app,https://uchqun-government.netlify.app
+FRONTEND_URL=https://admin-production-536f.up.railway.app,https://teacher-production-0647.up.railway.app,https://reception-production-ba41.up.railway.app,https://government-production.up.railway.app
 ```
 
 - Comma-separated list of exact origins (protocol + host, no trailing slash).
