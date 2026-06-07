@@ -11,6 +11,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 import { useChild } from '../context/ChildContext';
 import { useToast } from '../../shared/context/ToastContext';
 import { PARENT_INDICATORS } from '@shared/config/ratingIndicators.js';
+import StarRating from '@shared/components/StarRating';
 
 const DEFAULT_INDICATORS = Object.fromEntries(PARENT_INDICATORS.map((ind) => [ind.key, 3]));
 
@@ -293,26 +294,12 @@ const TeacherRating = () => {
               <div className="space-y-4">
                 <div>
                   <p className="text-sm font-semibold text-p-sepia-700 mb-2">{t('ratingPage.starsLabel')}</p>
-                  <div className="flex items-center gap-2">
-                    {starButtons.map((value) => (
-                      <button
-                        key={value}
-                        type="button"
-                        onClick={() => setStars(value)}
-                        className={`p-3 rounded-2xl border transition-colors ${
-                          stars >= value
-                            ? 'bg-p-brand-50 border-p-brand-200 text-p-brand-600'
-                            : 'bg-p-surface border-p-sepia-200 text-p-sepia-400 hover:border-p-brand-200 hover:text-p-brand-500'
-                        }`}
-                      >
-                        <Star
-                          className="w-6 h-6"
-                          fill={stars >= value ? '#f97316' : 'none'}
-                          stroke={stars >= value ? '#ea580c' : 'currentColor'}
-                        />
-                      </button>
-                    ))}
-                  </div>
+                  <StarRating
+                    name={t('ratingPage.starsLabel')}
+                    value={stars}
+                    onChange={setStars}
+                    size="lg"
+                  />
                 </div>
 
                 <div>
@@ -371,15 +358,16 @@ const TeacherRating = () => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2">
-                  {starButtons.map((value) => (
-                    <Star
-                      key={value}
-                      className="w-5 h-5"
-                      fill={(rating?.stars || stars) >= value ? '#f97316' : 'none'}
-                      stroke={(rating?.stars || stars) >= value ? '#ea580c' : '#9ca3af'}
-                    />
-                  ))}
+                <div className="flex items-center gap-0.5">
+                  {starButtons.map((value) => {
+                    const filled = (rating?.stars || stars) >= value;
+                    return (
+                      <Star
+                        key={value}
+                        className={`w-5 h-5 ${filled ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`}
+                      />
+                    );
+                  })}
                 </div>
 
                 <div className="text-sm text-p-sepia-600">
@@ -469,42 +457,35 @@ const TeacherRating = () => {
                 </div>
               </div>
 
-              {/* 5-indicator sliders — PL-015 GATE: labels are placeholders */}
-              <div className="space-y-5">
+              {/* 5-indicator star rows — PL-015 GATE: labels are placeholders */}
+              <div className="space-y-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-p-sepia-700">
                   <BarChart3 className="w-4 h-4 text-p-honey-700" />
                   {t('schoolRatingPage.indicatorsLabel')}
                 </div>
                 {PARENT_INDICATORS.map((ind) => (
-                  <div key={ind.key} className="space-y-1" data-testid={`indicator-row-${ind.key}`}>
-                    <div className="flex items-center justify-between">
-                      <label className="text-sm font-medium text-p-sepia-700">
-                        {ind[i18n.language] || ind.en}
-                      </label>
+                  <div
+                    key={ind.key}
+                    className="flex items-center justify-between gap-3 py-1.5"
+                    data-testid={`indicator-row-${ind.key}`}
+                  >
+                    <label className="text-sm font-medium text-p-sepia-700 flex-1 min-w-0 truncate">
+                      {ind[i18n.language] || ind.en}
+                    </label>
+                    <div className="flex items-center gap-3 shrink-0">
                       <span
-                        className="text-sm font-bold text-p-honey-700 min-w-[3rem] text-right"
+                        className="text-xs font-semibold text-p-sepia-500 min-w-[2.5rem] text-right tnum"
                         data-testid={`score-${ind.key}`}
                       >
                         {schoolIndicators[ind.key]} / 5
                       </span>
-                    </div>
-                    <input
-                      type="range"
-                      min="1"
-                      max="5"
-                      step="1"
-                      value={schoolIndicators[ind.key]}
-                      onChange={(e) =>
-                        setSchoolIndicators((prev) => ({ ...prev, [ind.key]: Number(e.target.value) }))
-                      }
-                      className="w-full accent-p-honey-700 cursor-pointer"
-                      data-testid={`slider-${ind.key}`}
-                      aria-label={ind[i18n.language] || ind.en}
-                    />
-                    <div className="flex justify-between text-xs text-p-sepia-400 px-0.5">
-                      {[1, 2, 3, 4, 5].map((n) => (
-                        <span key={n}>{n}</span>
-                      ))}
+                      <StarRating
+                        name={ind[i18n.language] || ind.en}
+                        value={schoolIndicators[ind.key]}
+                        onChange={(v) =>
+                          setSchoolIndicators((prev) => ({ ...prev, [ind.key]: v }))
+                        }
+                      />
                     </div>
                   </div>
                 ))}

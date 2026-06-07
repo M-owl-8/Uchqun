@@ -80,20 +80,22 @@ describe('CP-020 TeacherRating — school rating section', () => {
     vi.resetAllMocks();
   });
 
-  it('renders 5 sliders from PARENT_INDICATORS config (data-driven)', async () => {
+  it('renders 5 star rows from PARENT_INDICATORS config (data-driven)', async () => {
     const api = (await import('../../parent/services/api')).default;
     stubApiLoad(api);
     const { default: TeacherRating } = await import('../../parent/pages/TeacherRating');
     render(React.createElement(TeacherRating));
 
-    await waitFor(() => expect(screen.getByTestId('slider-parent_indicator_1')).toBeTruthy());
-    expect(screen.getByTestId('slider-parent_indicator_2')).toBeTruthy();
-    expect(screen.getByTestId('slider-parent_indicator_3')).toBeTruthy();
-    expect(screen.getByTestId('slider-parent_indicator_4')).toBeTruthy();
-    expect(screen.getByTestId('slider-parent_indicator_5')).toBeTruthy();
+    // The row wrapper still uses indicator-row-{key}; the slider/stars are
+    // inside. Verify all 5 indicator rows are present.
+    await waitFor(() => expect(screen.getByTestId('indicator-row-parent_indicator_1')).toBeTruthy());
+    expect(screen.getByTestId('indicator-row-parent_indicator_2')).toBeTruthy();
+    expect(screen.getByTestId('indicator-row-parent_indicator_3')).toBeTruthy();
+    expect(screen.getByTestId('indicator-row-parent_indicator_4')).toBeTruthy();
+    expect(screen.getByTestId('indicator-row-parent_indicator_5')).toBeTruthy();
   });
 
-  it('pre-fills sliders from saved rating indicators on load (edit mode)', async () => {
+  it('pre-fills star score from saved rating indicators on load (edit mode)', async () => {
     const api = (await import('../../parent/services/api')).default;
     const savedRating = {
       id: 'r1',
@@ -111,12 +113,12 @@ describe('CP-020 TeacherRating — school rating section', () => {
     const { default: TeacherRating } = await import('../../parent/pages/TeacherRating');
     render(React.createElement(TeacherRating));
 
+    // The new score display lives in `score-{key}` and reads "<n> / 5".
     await waitFor(() => {
-      const slider1 = screen.getByTestId('slider-parent_indicator_1');
-      expect(slider1.value).toBe('4');
+      expect(screen.getByTestId('score-parent_indicator_1').textContent).toContain('4 / 5');
     });
-    expect(screen.getByTestId('slider-parent_indicator_3').value).toBe('5');
-    expect(screen.getByTestId('slider-parent_indicator_4').value).toBe('2');
+    expect(screen.getByTestId('score-parent_indicator_3').textContent).toContain('5 / 5');
+    expect(screen.getByTestId('score-parent_indicator_4').textContent).toContain('2 / 5');
   });
 
   it('blocks submit and calls toast.error when comment is empty', async () => {
@@ -140,11 +142,14 @@ describe('CP-020 TeacherRating — school rating section', () => {
     const { default: TeacherRating } = await import('../../parent/pages/TeacherRating');
     render(React.createElement(TeacherRating));
 
-    await waitFor(() => expect(screen.getByTestId('slider-parent_indicator_1')).toBeTruthy());
+    await waitFor(() => expect(screen.getByTestId('indicator-row-parent_indicator_1')).toBeTruthy());
 
-    // Set all 5 sliders to value 4
+    // Set all 5 indicators to 4 by clicking the 4th star (role=radio, aria-label="4")
+    // inside each row.
     ['parent_indicator_1', 'parent_indicator_2', 'parent_indicator_3', 'parent_indicator_4', 'parent_indicator_5'].forEach((key) => {
-      fireEvent.change(screen.getByTestId(`slider-${key}`), { target: { value: '4' } });
+      const row = screen.getByTestId(`indicator-row-${key}`);
+      const fourthStar = row.querySelectorAll('[role="radio"]')[3];
+      fireEvent.click(fourthStar);
     });
 
     const textarea = screen.getByTestId('school-comment');
