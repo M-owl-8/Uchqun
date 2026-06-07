@@ -17,6 +17,7 @@ import { useToast } from '../shared/context/ToastContext';
 import api from '../shared/services/api';
 import { useTranslation } from 'react-i18next';
 import * as cache from '../../../shared/utils/cache';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const MonitoringJournal = () => {
   const { user } = useAuth();
@@ -29,7 +30,7 @@ const MonitoringJournal = () => {
   const [selectedChild, setSelectedChild] = useState(null);
   const [formData, setFormData] = useState({
     childId: '',
-    date: new Date().toISOString().split('T')[0],
+    date: todayLocal(),
     emotionalState: {
       stable: false,
       positiveEmotions: false,
@@ -137,7 +138,7 @@ const MonitoringJournal = () => {
       setSelectedChild(child);
       setFormData({
         childId: child?.id || '',
-        date: new Date().toISOString().split('T')[0],
+        date: todayLocal(),
         emotionalState: {
           stable: false,
           positiveEmotions: false,
@@ -251,7 +252,7 @@ const MonitoringJournal = () => {
       {/* Children List */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {children.map((child) => {
-          const todayRecord = getRecordForChild(child.id, new Date().toISOString().split('T')[0]);
+          const todayRecord = getRecordForChild(child.id, todayLocal());
           return (
             <Card key={child.id} className="p-6 hover:shadow-lg transition-shadow">
               <div className="flex items-start justify-between mb-4">

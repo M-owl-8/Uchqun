@@ -11,7 +11,7 @@ import { SKILL_AREAS } from '@shared/config/skillAreas';
 import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
 import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
-import { formatDateMedium } from '@shared/utils/formatDate';
+import { formatDateMedium, todayLocal} from '@shared/utils/formatDate';
 
 // Maps backend field names (from IRR_HEADER_INCOMPLETE detail) to i18n keys
 const FIELD_LABEL_KEYS = {
@@ -61,7 +61,7 @@ function formatDate(iso) {
 }
 
 function todayIso() {
-  return new Date().toISOString().slice(0, 10);
+  return todayLocal();
 }
 
 function getMondayIso(date = new Date()) {

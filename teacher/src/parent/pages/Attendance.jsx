@@ -20,8 +20,7 @@ import { useToast } from '../../shared/context/ToastContext';
 import {
   formatDateWeekdayMonth,
   formatDateShort,
-  formatDateMedium,
-} from '@shared/utils/formatDate';
+  formatDateMedium, todayLocal} from '@shared/utils/formatDate';
 
 const STATUS_META = {
   present:      { color: 'bg-success-100 text-success-800 border-success-300', dot: 'bg-success-500', labelKey: 'attendance.statusPresent' },
@@ -31,7 +30,7 @@ const STATUS_META = {
   absent:       { color: 'bg-p-sepia-100 text-p-sepia-700 border-p-sepia-300',        dot: 'bg-p-sepia-400',   labelKey: 'attendance.statusAbsent' },
 };
 
-const todayIsoDate = () => new Date().toISOString().slice(0, 10);
+const todayIsoDate = () => todayLocal();
 
 // Anchor of week = Monday of the given date
 const mondayOf = (d) => {

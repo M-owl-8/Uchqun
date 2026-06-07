@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import ParentFormModal from './parents/ParentFormModal';
 import ChildFormModal from './parents/ChildFormModal';
 import { EmptyDesk } from '../components/motifs/EmptyDesk';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const PAGE_SIZE = 25;
 
@@ -490,7 +491,7 @@ const ParentManagement = () => {
               const url = URL.createObjectURL(blob);
               const a = document.createElement('a');
               a.href = url;
-              a.download = `ota-onalar-${new Date().toISOString().slice(0, 10)}.csv`;
+              a.download = `ota-onalar-${todayLocal()}.csv`;
               a.click();
               URL.revokeObjectURL(url);
             }}

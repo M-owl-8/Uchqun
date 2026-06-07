@@ -5,9 +5,10 @@ import { ChildAvatar } from '../components/ChildAvatar';
 import { ParentJournalComposer } from '../components/ParentJournalComposer';
 import { useChildRibbon } from '../hooks/useChildRibbon';
 import api from '../shared/services/api';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const getReflectionKey = () => {
-  const d = new Date().toISOString().split('T')[0];
+  const d = todayLocal();
   return `teacher:reflection:${d}`;
 };
 
@@ -103,7 +104,7 @@ const DailyReflection = () => {
     setSaving(true);
     try {
       await api.post('/teacher/reflections', {
-        date:      new Date().toISOString().split('T')[0],
+        date:      todayLocal(),
         content:   reflection,
         isPrivate: true,
       });

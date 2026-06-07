@@ -24,7 +24,7 @@ import api from '../shared/services/api';
 import * as cache from '../../../shared/utils/cache';
 import { useTranslation } from 'react-i18next';
 // TP-LOCALE-FOUNDATION S2: single shared date util; per-page formatters removed.
-import { formatDateLong, formatDateShort } from '@shared/utils/formatDate';
+import { formatDateLong, formatDateShort, todayLocal} from '@shared/utils/formatDate';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 
 const Meals = () => {
@@ -34,7 +34,7 @@ const Meals = () => {
   const [meals, setMeals] = useState([]);
   const [loading, setLoading] = useState(true);
   const [confirmDialog, setConfirmDialog] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+  const [selectedDate, setSelectedDate] = useState(todayLocal());
   const [showModal, setShowModal] = useState(false);
   const [editingMeal, setEditingMeal] = useState(null);
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const Meals = () => {
     specialNotes: '',
     time: '08:30',
     eaten: true,
-    date: new Date().toISOString().split('T')[0],
+    date: todayLocal(),
   });
   const [children, setChildren] = useState([]);
 

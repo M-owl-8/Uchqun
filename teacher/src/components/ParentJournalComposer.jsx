@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Send, Cloud, Camera, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ChildAvatar } from './ChildAvatar';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const MOMENT_KEYS = [
   { key: 'first',   tKey: 'journal.momentFirst', style: { background: '#E2F0E8', color: '#4F8C72', border: '1px solid #A8D2BC' } },
@@ -10,7 +11,7 @@ const MOMENT_KEYS = [
 ];
 
 const getDraftKey = () => {
-  const d = new Date().toISOString().split('T')[0];
+  const d = todayLocal();
   return `teacher:journal:draft:${d}`;
 };
 

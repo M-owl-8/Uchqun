@@ -24,7 +24,7 @@ import {
   Volume1,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { formatDateMedium, formatDateLong } from '@shared/utils/formatDate';
+import { formatDateMedium, formatDateLong, todayLocal} from '@shared/utils/formatDate';
 
 // Helper function to convert Appwrite URL to proxy URL
 const getProxyUrl = (url, mediaId) => {
@@ -448,7 +448,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
   );
 };
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const todayIso = () => todayLocal();
 
 const Media = () => {
   const { selectedChildId } = useChild();

@@ -5,6 +5,7 @@ import { AttendanceGrid } from '../components/AttendanceGrid';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
+import { todayLocal } from '@shared/utils/formatDate';
 
 const FILTER_OPTIONS = [
   { key: 'all' },
@@ -32,7 +33,7 @@ const STATUS_COLORS = {
   absent:       '#E55A4E',
 };
 
-const todayStr = () => new Date().toISOString().split('T')[0];
+const todayStr = () => todayLocal();
 
 function addDays(dateStr, n) {
   const d = new Date(dateStr + 'T12:00:00');

@@ -20,9 +20,9 @@ import {
   Moon,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { formatDateWeekdayMonth, formatDateMonthLong } from '@shared/utils/formatDate';
+import { formatDateWeekdayMonth, formatDateMonthLong, todayLocal} from '@shared/utils/formatDate';
 
-const todayIso = () => new Date().toISOString().slice(0, 10);
+const todayIso = () => todayLocal();
 
 const Meals = () => {
   const { selectedChildId } = useChild();

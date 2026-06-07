@@ -115,3 +115,41 @@ export function formatDateTimeLong(input, language) {
     });
   } catch { return ''; }
 }
+
+/**
+ * Returns YYYY-MM-DD for the BROWSER's LOCAL timezone.
+ *
+ * Do NOT use `new Date().toISOString().slice(0, 10)` or
+ * `new Date().toISOString().split('T')[0]` — those return UTC, which is
+ * wrong for any user not at UTC+00:00. A parent in Uzbekistan (UTC+5)
+ * looking at the platform at 02:30 local sees the UTC version showing
+ * "yesterday" because UTC is still on the prior calendar day.
+ *
+ * Use this anywhere you need "what is today for the user reading the
+ * screen". Forms, dashboard tiles, attendance default-dates, filenames —
+ * anything user-facing.
+ *
+ * Backend storage stays UTC (correct). This helper is for DISPLAY layer.
+ */
+export const todayLocal = () => {
+  const d = new Date();
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
+
+/**
+ * Same as todayLocal() but for an arbitrary Date | string | number input.
+ * Useful when normalizing a backend timestamp to "the local calendar day
+ * the user perceives this happened on".
+ */
+export const isoLocal = (input) => {
+  if (input == null || input === '') return '';
+  const d = input instanceof Date ? input : new Date(input);
+  if (Number.isNaN(d.getTime())) return '';
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  return `${yyyy}-${mm}-${dd}`;
+};
