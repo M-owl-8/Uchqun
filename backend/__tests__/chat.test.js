@@ -4,18 +4,24 @@ const mockChatFindAll = jest.fn();
 const mockChildCount = jest.fn();
 const mockGroupFindAll = jest.fn();
 const mockUserFindOne = jest.fn();
+const mockGetTeacherParentIds = jest.fn();
 
 jest.unstable_mockModule('../models/ChatMessage.js', () => ({
   default: { findAll: mockChatFindAll, create: jest.fn(), findByPk: jest.fn() },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({
-  default: { count: mockChildCount },
+  default: { count: mockChildCount, findAll: jest.fn().mockResolvedValue([]) },
 }));
 jest.unstable_mockModule('../models/Group.js', () => ({
   default: { findAll: mockGroupFindAll },
 }));
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findOne: mockUserFindOne, findByPk: jest.fn() },
+}));
+jest.unstable_mockModule('../services/teacherParentScope.js', () => ({
+  getTeacherParentIds: mockGetTeacherParentIds,
+  getTeacherGroupIds: jest.fn().mockResolvedValue([]),
+  listTeacherParents: jest.fn().mockResolvedValue({ rows: [], count: 0 }),
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
@@ -77,17 +83,16 @@ describe('chatController.listMessages — canAccessConversation', () => {
     expect(res.status).not.toHaveBeenCalledWith(403);
   });
 
-  it('teacher denied when no groups', async () => {
-    mockGroupFindAll.mockResolvedValue([]);
+  it('teacher denied when service returns no parent IDs', async () => {
+    mockGetTeacherParentIds.mockResolvedValue([]);
     const req = { user: { id: 't1', role: 'teacher' }, query: { conversationId: 'parent:p1' } };
     const res = mkRes();
     await listMessages(req, res);
     expect(res.status).toHaveBeenCalledWith(403);
   });
 
-  it('teacher allowed when child of parent is in their group', async () => {
-    mockGroupFindAll.mockResolvedValue([{ id: 'g1' }, { id: 'g2' }]);
-    mockChildCount.mockResolvedValue(1);
+  it('teacher allowed when service includes parent in accessible list', async () => {
+    mockGetTeacherParentIds.mockResolvedValue(['p1', 'p2']);
     mockChatFindAll.mockResolvedValue([]);
     const req = { user: { id: 't1', role: 'teacher' }, query: { conversationId: 'parent:p1' } };
     const res = mkRes();
@@ -95,9 +100,8 @@ describe('chatController.listMessages — canAccessConversation', () => {
     expect(res.status).not.toHaveBeenCalledWith(403);
   });
 
-  it('teacher denied when no child of parent is in their group', async () => {
-    mockGroupFindAll.mockResolvedValue([{ id: 'g1' }]);
-    mockChildCount.mockResolvedValue(0);
+  it('teacher denied when parent not in service result', async () => {
+    mockGetTeacherParentIds.mockResolvedValue(['OTHER_PARENT']);
     const req = { user: { id: 't1', role: 'teacher' }, query: { conversationId: 'parent:p1' } };
     const res = mkRes();
     await listMessages(req, res);

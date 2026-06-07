@@ -140,7 +140,7 @@ export const createParent = async (req, res) => {
           medicalDiagnosis: child.medicalDiagnosis || null, specialNeeds: child.specialNeeds || null,
           photo: childPhotoUrl, schoolId,
           class: child.class || '', teacher: child.teacher || '',
-          groupId: null, emergencyContact: {},
+          groupId: groupId || null, emergencyContact: {},
         }, { transaction: t });
       }
     });

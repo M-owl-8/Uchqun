@@ -8,7 +8,7 @@
 >
 > | Gate | Item | Status |
 > |---|---|---|
-> | **G1** | TP-PARENT-ASSIGNMENT — resume from Claude Code terminal + postgres-uchqun MCP. STEP 2 (DB classify) + STEP 3 (fix). | ⛔ Deferred (DEFERRED.md) |
+> | **G1** | TP-PARENT-ASSIGNMENT — STEP 2 queries run 2026-06-07, classification (d) SEED CORRUPTION proposed. Flow fix + canonical chain unification shipped (teacherParentScope.js). Data repair pending user decision (Option A re-seed / Option B targeted migration). PP-* phase-2 walks blocked until data repaired. | 🟡 Partial (data repair pending) |
 > | **G2** | 11-IDOR-RESWEEP across all 4 portals — 5 of 7 findings were already-scoped (verified post-scan); 2 production-code fixes shipped + 15 regression-lock tests. | ✅ CLOSED (900d968) — `audits/backend/11-idor-resweep.md` |
 > | **G3** | Live E2E walks of all "pending user Railway verification" items + PL-026..PL-030 + post-G1 phase-2 PP-* walks. | ⬜ Not started (human-walk gate) |
 > | **G4** | Privacy consent UI (modal-on-first-login for parents, `users.privacyConsentedAt`). | ✅ CLOSED (e97006d) — `audits/gates/G4-PRIVACY-CONSENT.md`. Engineering complete; G5 owns the final consent text sign-off. |

@@ -5,6 +5,7 @@ const mockUserFindAll = jest.fn();
 const mockUserFindAndCount = jest.fn();
 const mockTaskFindOne = jest.fn();
 const mockGroupFindAll = jest.fn();
+const mockListTeacherParents = jest.fn();
 
 jest.unstable_mockModule('../models/User.js', () => ({
   default: {
@@ -16,6 +17,11 @@ jest.unstable_mockModule('../models/User.js', () => ({
 jest.unstable_mockModule('../models/Child.js', () => ({ default: { findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/Group.js', () => ({
   default: { findAll: mockGroupFindAll },
+}));
+jest.unstable_mockModule('../services/teacherParentScope.js', () => ({
+  listTeacherParents: mockListTeacherParents,
+  getTeacherParentIds: jest.fn().mockResolvedValue([]),
+  getTeacherGroupIds: jest.fn().mockResolvedValue([]),
 }));
 jest.unstable_mockModule('../models/TeacherResponsibility.js', () => ({
   default: { findAll: jest.fn() },
@@ -125,25 +131,24 @@ describe('teacherController', () => {
       expect(where.schoolId).toBe('s2');
     });
 
-    it('teacher: empty result when no groups and no direct assignments', async () => {
-      mockGroupFindAll.mockResolvedValue([]);
-      mockUserFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+    it('teacher: delegates to canonical chain service, returns empty when no parents', async () => {
+      mockListTeacherParents.mockResolvedValue({ rows: [], count: 0 });
       const req = { user: { id: 't1', role: 'teacher' }, query: {} };
       const res = mkRes();
       await getParents(req, res);
-      const where = mockUserFindAndCount.mock.calls[0][0].where;
-      expect(where.teacherId).toBe('t1');
+      expect(mockListTeacherParents).toHaveBeenCalledWith('t1', expect.objectContaining({}));
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ total: 0 }));
     });
 
-    it('teacher: filters by groups and direct teacherId via OR', async () => {
-      mockGroupFindAll.mockResolvedValue([{ id: 'g1' }, { id: 'g2' }]);
-      mockUserFindAndCount.mockResolvedValue({ rows: [], count: 0 });
+    it('teacher: returns parents from service without consulting denormalized columns', async () => {
+      const fakeParent = { id: 'p1', toJSON: () => ({ id: 'p1' }) };
+      mockListTeacherParents.mockResolvedValue({ rows: [fakeParent], count: 1 });
       const req = { user: { id: 't1', role: 'teacher' }, query: {} };
       const res = mkRes();
       await getParents(req, res);
-      const where = mockUserFindAndCount.mock.calls[0][0].where;
-      const orKey = Object.getOwnPropertySymbols(where).find(s => s.toString() === 'Symbol(or)');
-      expect(orKey).toBeDefined();
+      // User.findAndCountAll must NOT be called for the teacher path (service handles it)
+      expect(mockUserFindAndCount).not.toHaveBeenCalled();
+      expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ total: 1 }));
     });
   });
 });

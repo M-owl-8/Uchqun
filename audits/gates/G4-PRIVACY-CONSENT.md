@@ -72,6 +72,29 @@ Full text in `teacher/src/parent/locales/{uz,en,ru}/common.json` under the `priv
 - ✅ Frontend locale: `check:locales` green (859 keys × 3 lang files)
 - ✅ Frontend build: 1925 modules, 4.36s clean
 
+## Production verification (2026-06-07)
+
+Live API test against `https://uchqun-production-b484.up.railway.app` using `parent4@uchqun.uz` (Test@2026).
+
+**GET before consent:**
+```json
+{"success":true,"data":{"consentedAt":null,"required":true}}
+```
+
+**POST (record consent):**
+```json
+{"success":true,"data":{"consentedAt":"2026-06-07T04:01:04.863Z","alreadyConsented":false}}
+```
+
+**GET after consent:**
+```json
+{"success":true,"data":{"consentedAt":"2026-06-07T04:01:04.863Z","required":false}}
+```
+
+- ✅ `users.privacyConsentedAt` column confirmed present in Railway DB (via postgres-uchqun MCP schema inspection)
+- ✅ Full consent cycle verified live: null → timestamp → idempotent read
+- ✅ `required` flag flips correctly on second GET
+
 ## What's left for the gate to be fully closed
 
 1. **Product + legal sign-off on the consent text (G5).** Engineering placeholder ships with beta; production needs reviewed text.

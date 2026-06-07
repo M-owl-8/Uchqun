@@ -26,16 +26,9 @@ const canAccessConversation = async (req, conversationId) => {
     const parentId = conversationId.replace('parent:', '');
     if (!parentId) return false;
     if (req.user.role === 'teacher') {
-      const { default: Group } = await import('../models/Group.js');
-      const groups = await Group.findAll({
-        attributes: ['id'],
-        where: { teacherId: req.user.id },
-        raw: true,
-      });
-      const groupIds = groups.map((g) => g.id);
-      if (groupIds.length === 0) return false;
-      const childCount = await Child.count({ where: { parentId, groupId: { [Op.in]: groupIds } } });
-      return childCount > 0;
+      const { getTeacherParentIds } = await import('../services/teacherParentScope.js');
+      const parentIds = await getTeacherParentIds(req.user.id);
+      return parentIds.includes(parentId);
     }
     // reception: scope by parents they themselves created
     const { default: User } = await import('../models/User.js');
@@ -217,25 +210,17 @@ const getAccessibleConversationIds = async (req, prefix) => {
     return prefix ? ids.filter(id => id.startsWith(prefix)) : ids;
   }
 
-  // teacher: derive from children in groups they own (Child has no teacherId
-  // column — link goes Group.teacherId -> Group -> Child.groupId)
-  let where;
   if (req.user.role === 'teacher') {
-    const { default: Group } = await import('../models/Group.js');
-    const groups = await Group.findAll({
-      attributes: ['id'],
-      where: { teacherId: req.user.id },
-      raw: true,
-    });
-    const groupIds = groups.map((g) => g.id);
-    if (groupIds.length === 0) return [];
-    where = { groupId: { [Op.in]: groupIds } };
-  } else {
-    where = { createdBy: req.user.id };
+    const { getTeacherParentIds } = await import('../services/teacherParentScope.js');
+    const parentIds = await getTeacherParentIds(req.user.id);
+    const ids = parentIds.map((id) => `parent:${id}`);
+    return prefix ? ids.filter((id) => id.startsWith(prefix)) : ids;
   }
+
+  // reception: scope by parents they themselves created
   const children = await Child.findAll({
     attributes: ['parentId'],
-    where,
+    where: { createdBy: req.user.id },
     group: ['parentId'],
     raw: true,
   });

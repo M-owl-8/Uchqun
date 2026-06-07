@@ -116,37 +116,25 @@ export const getDashboardCounts = async (req, res) => {
 export const getParents = async (req, res) => {
   try {
     const { search, limit = 100, offset = 0 } = req.query;
-    const where = { role: 'parent' };
 
-    if (req.user.role === 'admin' || req.user.role === 'reception') {
-      where.schoolId = req.user.schoolId;
-    }
-
+    // Teacher path — canonical chain only (Teacher→Group→Child→Parent).
+    // Denormalized users.groupId / users.teacherId are NOT used for scoping.
     if (req.user.role === 'teacher') {
-      const teacherGroups = await Group.findAll({ where: { teacherId: req.user.id }, attributes: ['id'] });
-      const groupIds = teacherGroups.map(g => g.id);
-      if (groupIds.length > 0) {
-        where[Op.or] = [{ groupId: { [Op.in]: groupIds } }, { teacherId: req.user.id }];
-      } else {
-        where.teacherId = req.user.id;
-      }
+      const { listTeacherParents } = await import('../services/teacherParentScope.js');
+      const { rows: parents, count } = await listTeacherParents(req.user.id, { search, limit, offset });
+      return res.json({ parents: parents.map(p => p.toJSON()), total: count, limit: parseInt(limit), offset: parseInt(offset) });
     }
+
+    // Admin / reception path — school-scoped.
+    const where = { role: 'parent', schoolId: req.user.schoolId };
 
     if (search) {
-      const searchCondition = {
-        [Op.or]: [
-          { firstName: { [Op.iLike]: `%${search}%` } },
-          { lastName: { [Op.iLike]: `%${search}%` } },
-          { email: { [Op.iLike]: `%${search}%` } },
-          { phone: { [Op.iLike]: `%${search}%` } },
-        ],
-      };
-      if (where[Op.or]) {
-        where[Op.and] = [{ [Op.or]: where[Op.or] }, searchCondition];
-        delete where[Op.or];
-      } else {
-        Object.assign(where, searchCondition);
-      }
+      where[Op.or] = [
+        { firstName: { [Op.iLike]: `%${search}%` } },
+        { lastName:  { [Op.iLike]: `%${search}%` } },
+        { email:     { [Op.iLike]: `%${search}%` } },
+        { phone:     { [Op.iLike]: `%${search}%` } },
+      ];
     }
 
     const { count, rows: parents } = await User.findAndCountAll({

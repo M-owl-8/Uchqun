@@ -120,7 +120,11 @@ const mockAttCreate  = jest.fn().mockResolvedValue({ id: 'att-1' });
 const mockAttFindAll = jest.fn().mockResolvedValue([]);
 
 jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({
-  default: { create: mockAttCreate, findAll: mockAttFindAll, afterDestroy: jest.fn(), belongsTo: jest.fn(), hasMany: jest.fn() },
+  default: {
+    create: mockAttCreate, findAll: mockAttFindAll,
+    findOne: jest.fn().mockResolvedValue(null), // upsert check in createAttendance
+    afterDestroy: jest.fn(), belongsTo: jest.fn(), hasMany: jest.fn(),
+  },
 }));
 
 // Activity
@@ -289,12 +293,18 @@ describe('journalController — within-school cross-teacher IDOR', () => {
 describe('attendanceController — within-school cross-teacher IDOR', () => {
   const TODAY = new Date().toISOString().split('T')[0];
 
-  it('Teacher B cannot create attendance for Child A1', async () => {
+  it('Teacher B cannot create attendance for Child A1 (access denied, no record saved)', async () => {
+    // createAttendance uses batch format: body.records = [{childId, date, status}]
+    // Access-denied records produce 400 ATTENDANCE_ACCESS_DENIED (batch error accumulation).
     const res = mkRes();
     await createAttendance(reqTeacherB({
-      body: { childId: CHILD_A1, date: TODAY, status: 'present' },
+      body: { records: [{ childId: CHILD_A1, date: TODAY, status: 'present' }] },
     }), res);
-    expect(res.status).toHaveBeenCalledWith(403);
+    // Batch: all records denied → 400 with ATTENDANCE_ACCESS_DENIED
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'ATTENDANCE_ACCESS_DENIED' }),
+    }));
     expect(mockAttCreate).not.toHaveBeenCalled();
   });
 
@@ -302,7 +312,7 @@ describe('attendanceController — within-school cross-teacher IDOR', () => {
     mockAttCreate.mockResolvedValueOnce({ id: 'att-ok' });
     const res = mkRes();
     await createAttendance(reqTeacherA({
-      body: { childId: CHILD_A1, date: TODAY, status: 'present' },
+      body: { records: [{ childId: CHILD_A1, date: TODAY, status: 'present' }] },
     }), res);
     expect(res.status).toHaveBeenCalledWith(201);
   });

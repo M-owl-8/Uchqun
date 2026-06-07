@@ -76,7 +76,9 @@ describe('Faoliyat (Activities) — parent dashboard card contract', () => {
     const res = makeRes();
     await getActivities(req, res);
     const call = mockActivityFindAll.mock.calls[0][0];
-    const inSet = Object.values(call.where.childId)[0];
+    // childId uses Op.in (Symbol key) — Object.values() skips Symbols, use getOwnPropertySymbols
+    const symKey = Object.getOwnPropertySymbols(call.where.childId)[0];
+    const inSet = call.where.childId[symKey];
     expect(inSet).toEqual(expect.arrayContaining(['child-A1', 'child-A2']));
   });
 
@@ -112,7 +114,8 @@ describe('Ovqat (Meals) — parent dashboard card contract', () => {
     const res = makeRes();
     await getMeals(req, res);
     const call = mockMealFindAll.mock.calls[0][0];
-    const inSet = Object.values(call.where.childId)[0];
+    const symKey = Object.getOwnPropertySymbols(call.where.childId)[0];
+    const inSet = call.where.childId[symKey];
     expect(inSet).toEqual(expect.arrayContaining(['child-A1', 'child-A2']));
   });
 
@@ -152,7 +155,8 @@ describe('Media (Rasm) — parent dashboard card contract', () => {
     await getMedia(req, res);
     const call = mockMediaFindAll.mock.calls[0][0];
     expect(call.where.childId).toBeDefined();
-    const inSet = Object.values(call.where.childId)[0];
+    const symKey = Object.getOwnPropertySymbols(call.where.childId)[0];
+    const inSet = call.where.childId[symKey];
     expect(inSet).toEqual(expect.arrayContaining(['child-A1']));
   });
 

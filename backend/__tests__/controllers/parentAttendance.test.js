@@ -74,16 +74,11 @@ describe('getMyChildAttendance — parent scoping', () => {
     const req = { user: { id: 'parent-A', role: 'parent' }, query: {} };
     const res = makeRes();
     await getMyChildAttendance(req, res);
-    expect(mockChildAttendanceFindAll).toHaveBeenCalledWith(expect.objectContaining({
-      where: expect.objectContaining({
-        childId: expect.objectContaining({ [Symbol.for('eq.in') === undefined ? expect.anything() : expect.anything()]: expect.anything() }),
-      }),
-    }));
-    // tightening: directly inspect call args
     const callArgs = mockChildAttendanceFindAll.mock.calls[0][0];
     expect(callArgs.where.childId).toBeDefined();
-    // childId where clause uses Op.in with parent's child ids
-    const inValues = Object.values(callArgs.where.childId)[0];
+    // childId uses Op.in (a Symbol key) — Object.values() skips Symbol keys, use getOwnPropertySymbols
+    const childIdSymKey = Object.getOwnPropertySymbols(callArgs.where.childId)[0];
+    const inValues = callArgs.where.childId[childIdSymKey];
     expect(inValues).toEqual(expect.arrayContaining(['child-A1', 'child-A2']));
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       success: true,
@@ -143,7 +138,9 @@ describe('getMyChildAttendance — parent scoping', () => {
     const callArgs = mockChildAttendanceFindAll.mock.calls[0][0];
     const dateClause = callArgs.where.date;
     expect(dateClause).toBeDefined();
-    const between = Object.values(dateClause)[0];
+    // date uses Op.between (Symbol key) — use getOwnPropertySymbols to read it
+    const dateSymKey = Object.getOwnPropertySymbols(dateClause)[0];
+    const between = dateClause[dateSymKey];
     expect(between).toEqual(['2026-06-01', '2026-06-07']);
   });
 

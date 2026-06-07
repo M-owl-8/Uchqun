@@ -1,8 +1,6 @@
 # TP-PARENT-ASSIGNMENT — Teacher ↔ Parent Assignment Chain
 
-> ⏸ **DEFERRED 2026-06-06** — STEP 1 done; STEP 2 + STEP 3 paused until resumed from Claude Code terminal where `postgres-uchqun` MCP is attached. Full resume checklist in [`/DEFERRED.md`](../../DEFERRED.md). Do **not** restart this audit from scratch — pick up at STEP 2.
-
-**Status:** ⏸ DEFERRED (STEP 1 complete on `main`; STEP 2 query plan ready; STEP 3 staged but NOT applied)
+**Status:** 🟡 PARTIAL — STEP 1 ✅ (df8df86) · STEP 2 ✅ (queries run 2026-06-07, classification (d) proposed) · STEP 3 PARTIAL ✅ (flow fix + unification shipped, data repair pending user decision — see STEP 2 section below)
 **Reported symptom:** Teacher Zulfiya Nazarova's group has 3 children (Lola Q., Bobur S., Shahlo T.); `/teacher/parents` and `/teacher/chat` both show only 1 parent — Hulkar Sobirova (Bobur's mother). Lola's and Shahlo's parents are absent from BOTH lists.
 **Scope:** map the assignment chain end-to-end, classify the root cause from real production data, unify scoping across the parent-list + chat surfaces.
 **Constraint this session:** the `postgres-uchqun` MCP server is not connected in this Claude session, so the STEP 2 production queries cannot be run from here. STEP 2 is therefore presented as a precise query plan (paste-ready SQL) that the user (or any session with the MCP attached) can execute. **No code fix is applied until STEP 2 evidence is in** — the brief is explicit: "Negative claims proven by query/read, never asserted."
@@ -375,14 +373,152 @@ Regardless of (a)/(b)/(c): introduce `services/teacherParentScope.js` per 3.1 an
 
 ---
 
-## What I'm waiting on (to apply STEP 3 here)
+## STEP 2 — Live results (2026-06-07)
 
-To progress to "STEP 3 applied, pushed to main, Railway verifying", I need one of:
+Queries run via `postgres-uchqun` MCP (READ-ONLY) in Claude Code terminal session.
 
-1. **Re-attach `postgres-uchqun` MCP** so I can run the STEP 2 queries from this session and classify with confidence.
-2. **Paste the STEP 2 query results** (2.1–2.4 against production) and I'll classify and apply the matching STEP 3 branch in the same turn.
+### 2.1 Zulfiya's teacher.id and groups
 
-I have intentionally not pushed any controller/migration change. Pushing a fix without STEP 2 evidence would violate the brief's "evidence not assertion" rule and risks shipping the wrong branch (e.g. backfilling data when the real bug is a query, or vice versa).
+**Query: Resolve teacher identity**
+```
+teacher_id                           firstName  lastName  schoolId
+d77eb37b-0da4-4530-8096-9ea221e9a891 Zulfiya    Nazarova  eec19bb5-36ae-4006-a330-031d07654c40
+```
+
+**Query: Zulfiya's groups (teacherId = d77eb37b)**
+```
+[]   ← EMPTY — Zulfiya has zero rows in the groups table
+```
+
+### 2.2 The 3 children — groupId and parentId
+
+**Query: children at school eec19bb5 with names matching Lola / Bobur / Shahlo**
+
+```
+id          firstName  lastName   parentId    groupId     schoolId    class          teacher           deletedAt
+08b49ab0    Bobur      Sobirov    e67cf25b    11c55e67    eec19bb5    Maktabgacha    Zulfiya Nazarova  NULL
+cac33a77    Shahlo     Tursunova  a297d236    11c55e67    eec19bb5    1-sinf         Zulfiya Nazarova  NULL
+365a0608    Lola       Qodirova   2ce225a6    858467d6    eec19bb5    5-sinf         Doniyor Ergashev  NULL
+```
+
+**Immediate observations:**
+- Bobur and Shahlo both reference `groupId = 11c55e67` (legacy string field `teacher` = 'Zulfiya Nazarova').
+- Lola references `groupId = 858467d6` with `teacher = 'Doniyor Ergashev'` — she is NOT in Zulfiya's scope at all.
+- All three `deletedAt = NULL` — no soft-delete issue.
+- All three have non-null `parentId` — FK not violated.
+
+**Query: Do groups 11c55e67 and 858467d6 exist?**
+```
+[]   ← EMPTY — neither group exists in the groups table
+```
+
+**Query: All groups at school eec19bb5**
+```
+id          name  teacherId   schoolId
+d487bbf1    kh    4ffa3e08    eec19bb5
+```
+
+Only **one** group exists at this school, and it belongs to teacher `4ffa3e08` (not Zulfiya).
+
+### 2.3 The parent User rows
+
+**Query: parents for parentIds e67cf25b, a297d236, 2ce225a6**
+
+```
+id          email            firstName  lastName    role    groupId     teacherId   isActive  status   deletedAt
+e67cf25b    parent1@...      Hulkar     Sobirova    parent  11c55e67*   d77eb37b†  true      active   NULL
+a297d236    parent2@...      Dilorom    Tursunova   parent  NULL        NULL        true      active   NULL
+2ce225a6    parent3@...      Jasur      Qodirov     parent  NULL        NULL        true      active   NULL
+```
+
+\* Hulkar's `groupId = 11c55e67` — an **orphaned** reference (that group doesn't exist).
+† Hulkar's `teacherId = d77eb37b` — points to Zulfiya. **This is why Hulkar alone appears in `/teacher/parents`** (the denormalized fallback path: `where.teacherId = req.user.id` is triggered because `groupIds = []`, and only Hulkar has `teacherId=Zulfiya`).
+
+Dilorom (Shahlo's mother) and Jasur (Lola's father) have NULL on both denormalized columns → invisible to BOTH chains.
+
+### 2.4 Verbatim surface query reproductions
+
+**`/teacher/parents` (denormalized chain)**
+```sql
+-- teacherGroups = [] (no groups for Zulfiya)
+-- falls through to: WHERE users.teacherId = 'd77eb37b'
+-- result: [Hulkar]   (1 row — Dilorom and Jasur have teacherId=NULL)
+```
+
+**`chat getAccessibleConversationIds` (canonical chain)**
+```sql
+-- groupIds = [] (no groups for Zulfiya)
+-- returns []   (early exit)
+-- Hulkar is invisible to chat even though she appears in /teacher/parents
+```
+
+### 2.5 Classification — (d) SEED CORRUPTION
+
+**This result does not cleanly fit the (a)/(b)/(c) matrix.** Applying stop condition: classification is ambiguous.
+
+| Matrix scenario | Match? |
+|---|---|
+| (c) QUERY: both groupIds point to Zulfiya's group, denorm fields set | ❌ No — groups don't exist at all |
+| (b) DATA partial: children.groupId NULL, parent.groupId set correctly | ❌ No — children.groupId IS set, but to non-existent groups |
+| (a) DATA: children.groupId NULL, parent.groupId NULL | ❌ No — children.groupId is non-null (just orphaned) |
+| (b) broken FK: parentId non-existent / soft-deleted | ❌ No — all parents exist and are active |
+
+**Proposed (d) SEED CORRUPTION:** The demo seed (`create-demo-accounts.js`) created children with `groupId` values that reference groups that no longer exist in the `groups` table. Zulfiya herself has no entry in `groups` at all. The only existing group (`d487bbf1 / kh`) belongs to a different teacher entirely.
+
+**Consequences:**
+- Canonical chain (chat): completely broken for all 3 children — `Child.groupId IN (groups WHERE teacherId=Zulfiya)` → empty (Zulfiya has no groups).
+- Denormalized chain (/teacher/parents): finds Hulkar only, via `users.teacherId=Zulfiya` — because Hulkar is the only parent whose denormalized teacherId field was set (to Zulfiya) even though her `groupId` is also orphaned.
+- Lola is not in Zulfiya's scope at all (different legacy teacher string, different orphaned groupId, Jasur has NULL denorm fields).
+
+**⛔ STOP — User decision required for the data repair branch (see below).**
+
+---
+
+## STEP 3 — What was applied (2026-06-07)
+
+### 3.3 Unification ✅ SHIPPED
+
+Regardless of classification, `backend/services/teacherParentScope.js` is now the single source of truth:
+
+- **`getTeacherGroupIds(teacherId)`** — returns IDs of groups owned by teacher.
+- **`getTeacherParentIds(teacherId)`** — canonical chain: groups → children → distinct parentIds. Does NOT use `users.groupId` / `users.teacherId`.
+- **`listTeacherParents(teacherId, opts)`** — full paginated parent list with search.
+
+Refactored callers:
+- `teacherController.getParents` (teacher path) → calls `listTeacherParents`
+- `chatController.canAccessConversation` (teacher branch) → calls `getTeacherParentIds`
+- `chatController.getAccessibleConversationIds` (teacher branch) → calls `getTeacherParentIds`
+
+Tests: `backend/__tests__/services/teacherParentScope.test.js` (8 cases: getTeacherParentIds × 3 + listTeacherParents × 5). All green.
+Regression tests updated: `chat.test.js` (3 teacher tests updated to mock service), `teacher.test.js` (2 teacher tests updated).
+
+### Flow fix ✅ SHIPPED
+
+`receptionParentController.js:143` changed from `groupId: null` to `groupId: groupId || null`.
+
+Children created via reception's `POST /reception/parents` now inherit the parent's `groupId` at creation, so the canonical chain (chat) works immediately for newly created parent–child pairs. Idempotent for the null case (no `groupId` supplied → stays null).
+
+### Data repair ⚠️ PENDING USER DECISION
+
+The 3.2 backfill migration (from the draft) assumes children have `groupId=NULL` but parent has `groupId` set. **Our actual data is different:**
+- Children have non-null orphaned `groupId` values (references to deleted/non-existent groups).
+- The backfill UPDATE would not touch these rows (the `AND c."groupId" IS NULL` filter excludes them).
+
+**Two options — need your decision:**
+
+**Option A — Re-seed (simplest for demo data):** Drop the seeded children/parents for this school and re-run `create-demo-accounts.js` after first creating a group for Zulfiya via the admin UI. This fixes the data without a migration.
+
+**Option B — Manual group creation + child reassignment migration:** Create a real group for Zulfiya in the groups table, then run a targeted UPDATE to point Bobur and Shahlo's `groupId` to her new group. Lola stays as-is (she's in a different teacher's scope).
+
+The reception flow fix (3.3 shipped above) prevents NEW parent–child pairs from having this problem going forward. The seed data is broken independently.
+
+---
+
+## What I'm waiting on
+
+**User decision:** Option A or B for the seed data repair (above).
+
+Once that's done: run the 4 user-verification checks at the bottom of this doc on Railway, then flip `LOOP_TRACKER.md` `TP-PARENT-ASSIGNMENT → ✅`.
 
 ---
 
