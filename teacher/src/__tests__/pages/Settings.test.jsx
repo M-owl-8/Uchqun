@@ -125,8 +125,8 @@ describe('CL-014b Settings (teacher)', () => {
 
     const pwdInputs = container.querySelectorAll('input[type="password"]');
     fireEvent.change(pwdInputs[0], { target: { value: 'current123' } });
-    fireEvent.change(pwdInputs[1], { target: { value: 'newpass123' } });
-    fireEvent.change(pwdInputs[2], { target: { value: 'newpass123' } });
+    fireEvent.change(pwdInputs[1], { target: { value: 'Newpass123' } });
+    fireEvent.change(pwdInputs[2], { target: { value: 'Newpass123' } });
 
     const passwordForm = container.querySelectorAll('form')[2];
     fireEvent.submit(passwordForm);
@@ -134,7 +134,7 @@ describe('CL-014b Settings (teacher)', () => {
     await waitFor(() => {
       expect(api.put).toHaveBeenCalledWith('/user/password', {
         currentPassword: 'current123',
-        newPassword: 'newpass123',
+        newPassword: 'Newpass123',
       });
     });
   });
