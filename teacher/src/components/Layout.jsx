@@ -4,8 +4,8 @@
 // Mobile:  TeacherMobileTopBar at top (brand + bell + FAB), TeacherMobileTabBar pinned to bottom.
 //
 // The old left sidebar is gone — its 11 destinations now live across the 5 tabs.
-// Existing page components (Dashboard / ParentManagement / Activities / etc.) are
-// mounted unchanged inside the new shell. The IA shifts; page content does not.
+// Existing page components (Dashboard / Activities / Chat / etc.) are mounted
+// unchanged inside the new shell. The IA shifts; page content does not.
 
 import { Outlet, useLocation } from 'react-router-dom';
 import TeacherTopNav from './TeacherTopNav';

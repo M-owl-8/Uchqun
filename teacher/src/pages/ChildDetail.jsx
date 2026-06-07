@@ -194,7 +194,7 @@ const ChildDetail = () => {
     return (
       <div className="text-center py-16">
         <div className="text-[15px] text-slate-500">{t('childDetail.empty.noChild')}</div>
-        <Link to="/teacher/parents" className="mt-3 text-[13px] text-brand-700 font-medium hover:underline">
+        <Link to="/teacher/bolalar" className="mt-3 text-[13px] text-brand-700 font-medium hover:underline">
           ← Ro&apos;yxatga qaytish
         </Link>
       </div>
@@ -208,7 +208,7 @@ const ChildDetail = () => {
     <div className="max-w-3xl mx-auto space-y-5">
       {/* Back */}
       <Link
-        to="/teacher/parents"
+        to="/teacher/bolalar"
         className="inline-flex items-center gap-1.5 text-[13px] text-slate-600 hover:text-slate-900 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" strokeWidth={1.75} /> {t('childDetail.button.parentList')}
@@ -344,7 +344,7 @@ const ChildDetail = () => {
         )}
         {tab === 'messages' && (
           <div className="py-8 text-center">
-            <Link to="/teacher/chat" className="text-[13px] text-brand-700 font-medium hover:underline">
+            <Link to="/teacher/xabar?tab=chat" className="text-[13px] text-brand-700 font-medium hover:underline">
               Chat sahifasiga o&apos;tish →
             </Link>
           </div>

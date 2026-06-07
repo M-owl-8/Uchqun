@@ -994,5 +994,16 @@
     "tabSettings": "Sozlamalar",
     "tabReflection": "Kunlik mulohaza",
     "signOutHint": "Tizimdan chiqish"
+  },
+  "bulkMonitoring": {
+    "title": "Kunlik kuzatuv — barcha bolalar",
+    "openButton": "Hammasini birga to'ldirish",
+    "date": "Sana",
+    "criteriaCount": "{{count}} ta mezon × {{childrenCount}} ta bola",
+    "saveAll": "Hammasini saqlash",
+    "selectAll": "Hammasini belgilash",
+    "unselectAll": "Hammasini olib tashlash",
+    "allSaved": "Hammasi saqlandi",
+    "partialFail": "{{ok}} ta saqlandi, {{fail}} ta saqlanmadi"
   }
 }

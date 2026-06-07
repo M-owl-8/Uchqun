@@ -10,7 +10,7 @@
 // failed to save.
 
 import { useState } from 'react';
-import { X, Save, Loader2, CheckCircle2 } from 'lucide-react';
+import { X, Save, Loader2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';

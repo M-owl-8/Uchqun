@@ -994,5 +994,16 @@
     "tabSettings": "Settings",
     "tabReflection": "Daily reflection",
     "signOutHint": "Sign out"
+  },
+  "bulkMonitoring": {
+    "title": "Daily monitoring — all children",
+    "openButton": "Fill all together",
+    "date": "Date",
+    "criteriaCount": "{{count}} criteria × {{childrenCount}} children",
+    "saveAll": "Save all",
+    "selectAll": "Select all",
+    "unselectAll": "Unselect all",
+    "allSaved": "All saved",
+    "partialFail": "{{ok}} saved, {{fail}} failed"
   }
 }

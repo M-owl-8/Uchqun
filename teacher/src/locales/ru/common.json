@@ -994,5 +994,16 @@
     "tabSettings": "Настройки",
     "tabReflection": "Дневник дня",
     "signOutHint": "Выйти"
+  },
+  "bulkMonitoring": {
+    "title": "Ежедневный мониторинг — все дети",
+    "openButton": "Заполнить всех сразу",
+    "date": "Дата",
+    "criteriaCount": "{{count}} критериев × {{childrenCount}} детей",
+    "saveAll": "Сохранить всё",
+    "selectAll": "Выбрать все",
+    "unselectAll": "Снять все",
+    "allSaved": "Всё сохранено",
+    "partialFail": "{{ok}} сохранено, {{fail}} не сохранено"
   }
 }
