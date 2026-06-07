@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 import { ArrowLeft } from 'lucide-react';
+import IRRSummary from '@shared/components/IRRSummary';
 
 const DOMAIN_COLORS = {
   cognitive:  'bg-purple-50 text-purple-700',
@@ -114,7 +115,36 @@ const ChildDetail = () => {
         >
           {t('childDetail.goals', { defaultValue: 'Goals' })}
         </button>
+        <button
+          onClick={() => setActiveTab('irr')}
+          className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors ${
+            activeTab === 'irr'
+              ? 'border-brand-600 text-brand-700'
+              : 'border-transparent text-warm-500 hover:text-warm-800'
+          }`}
+        >
+          {t('childDetail.irr', { defaultValue: 'IRR' })}
+        </button>
       </div>
+
+      {/* IRR Tab — CROSS-IRR-VISIBILITY (Q1: inline counter-sign) */}
+      {activeTab === 'irr' && (
+        <IRRSummary
+          api={api}
+          childId={id}
+          endpointBase="/admin/children"
+          onSignPeriod={async (period) => {
+            try {
+              await api.post(`/admin/goal-periods/${period.id}/sign`);
+            } catch (err) {
+              const code = err?.response?.data?.error?.code;
+              toastError(t(`error.${code}`, { defaultValue: t('childDetail.signFailed', { defaultValue: 'Imzo qoʻyib boʻlmadi' }) }));
+              throw err;
+            }
+          }}
+          t={t}
+        />
+      )}
 
       {/* Observations Tab */}
       {activeTab === 'observations' && (

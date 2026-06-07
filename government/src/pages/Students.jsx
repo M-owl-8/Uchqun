@@ -1,7 +1,8 @@
 import { useState, useCallback, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { GraduationCap, Search, Globe, MapPin } from 'lucide-react';
+import { GraduationCap, Search, Globe, MapPin, ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
@@ -12,6 +13,7 @@ const Students = () => {
   const { t } = useTranslation();
   const { isRepublic, isRegionAccount } = useAuth();
   const regionName = useRegionName();
+  const navigate = useNavigate();
 
   const [students, setStudents] = useState([]);
   const [total, setTotal] = useState(0);
@@ -131,7 +133,11 @@ const Students = () => {
             </thead>
             <tbody>
               {filtered.map((s, i) => (
-                <tr key={s.id} className="border-b border-gray-50 last:border-0 hover:bg-brand-50 transition-colors">
+                <tr
+                  key={s.id}
+                  onClick={() => navigate(`/government/children/${s.id}`)}
+                  className="border-b border-gray-50 last:border-0 hover:bg-brand-50 transition-colors cursor-pointer"
+                >
                   <td className="px-5 py-3 text-gray-400 tabular-nums">{i + 1}</td>
                   <td className="px-5 py-3 font-medium text-gray-900">
                     {s.firstName} {s.lastName}

@@ -495,6 +495,24 @@ Added 2026-05-27. Introduced by `parentSendMessage` (parent route), `getAllMessa
 
 ---
 
+## Cross-IRR-Visibility — admin + government child / IRR reads
+
+Added 2026-06-07. New endpoints exposing read-only child + IRR surfaces
+to admin (school-scoped) and government (region-scoped) roles. Same
+shape as the parent IRR endpoints; per-role controllers for explicit
+scope auditing.
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `CHILD_NOT_ACCESSIBLE` | 404 | Child does not exist, or is not in the caller's school (admin) / region (government). Same 404 opacity rule as the rest of the child-scoped surfaces. | "This child is not accessible." |
+| `SCHOOL_NOT_ACCESSIBLE` | 404 | School does not exist or is outside the government caller's region scope. | "This school is not accessible." |
+| `CHILD_FETCH_FAILED` | 500 | Unexpected error fetching child profile. | "Could not load child. Try again." |
+| `STUDENT_LIST_FAILED` | 500 | Unexpected error listing children at a school. | "Could not load student list. Try again." |
+
+Existing IRR codes (`IRR_CHILD_NOT_ACCESSIBLE`, `IRR_NOT_FOUND`, `IRR_FETCH_FAILED`, `ASSESSMENT_LIST_FAILED`, `LONG_TERM_GOAL_LIST_FAILED`) are reused by both admin and government controllers.
+
+---
+
 ## Parent Privacy Consent (G4 of BETA-LAUNCH-PLAN)
 
 Added 2026-06-06. Introduced by `controllers/parent/parentPrivacyConsentController.js` (GET + POST `/parent/privacy-consent`). Modal-on-first-login gate that records the parent's acceptance of group-wide media visibility (PL-001 / C-02) and AI-translated UI disclosure (CP-019 / PL-009).

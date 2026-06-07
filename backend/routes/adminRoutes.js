@@ -39,7 +39,15 @@ import { getOwnerMessages } from '../controllers/admin/adminMessageController.js
 import { handleValidationErrors } from '../middleware/validation.js';
 import { createReceptionValidator, rejectDocumentValidator, adminIdParamValidator } from '../validators/adminValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
-import { createQuarterlyEntry, listQuarterlyEntries } from '../controllers/teacher/irrController.js';
+import { createQuarterlyEntry, listQuarterlyEntries, signGoalPeriod as irrSignGoalPeriod } from '../controllers/teacher/irrController.js';
+// CROSS-IRR-VISIBILITY (Q4) — admin read-only IRR endpoints mounted under
+// /admin/* so the route boundary is explicit per role. Same controller
+// pattern as parent/government; separate file to keep scope audits clean.
+import {
+  getChildIRR as adminGetChildIRR,
+  getAssessmentProgression as adminGetAssessmentProgression,
+  getGoals as adminGetGoals,
+} from '../controllers/admin/adminIrrController.js';
 
 const router = express.Router();
 
@@ -127,6 +135,18 @@ router.get('/school-rating-summary', getAdminSchoolRatingSummary); // Three-rati
 // Quarterly monitoring (ИРР — manager/admin only, facility-scoped, no childId, OQ-3)
 router.post('/irr/quarterly-entries', createQuarterlyEntry);
 router.get('/irr/quarterly-entries', listQuarterlyEntries);
+
+// CROSS-IRR-VISIBILITY — admin read-only IRR (school-scoped)
+router.get('/children/:childId/irr', adminGetChildIRR);
+router.get('/children/:childId/irr/assessment', adminGetAssessmentProgression);
+router.get('/children/:childId/irr/goals', adminGetGoals);
+
+// CROSS-IRR-VISIBILITY (Q1) — admin counter-signs a goal period as Direktor.
+// signGoalPeriod's existing controller already handles the admin role:
+//   - school-scope via resolvePeriodAccess
+//   - sets managerSignedAt/By (the "manager" DB column = Director's signature)
+// We mount under /admin/ so the route boundary is explicit.
+router.post('/goal-periods/:id/sign', irrSignGoalPeriod);
 
 export default router;
 

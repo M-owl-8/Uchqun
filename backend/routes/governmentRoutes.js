@@ -112,4 +112,21 @@ router.get('/audit-log', requireGovAccess('canViewAuditLog'), getAuditLog);
 // Regions list (for provisioning UI dropdowns — no extra capability gate, all gov users need this)
 router.get('/regions', getRegions);
 
+// CROSS-IRR-VISIBILITY — government read-only child + IRR (region-scoped).
+// Mounted under /government/* with explicit per-role route boundary (Q4).
+// Capability gates ensure secondary accounts need canViewStudents grant.
+import {
+  listSchoolStudents as govListSchoolStudents,
+  getChild as govGetChild,
+  getChildIRR as govGetChildIRR,
+  getAssessmentProgression as govGetAssessmentProgression,
+  getGoals as govGetGoals,
+} from '../controllers/government/governmentChildController.js';
+
+router.get('/schools/:schoolId/students', requireGovAccess('canViewStudents'), govListSchoolStudents);
+router.get('/children/:childId', requireGovAccess('canViewStudents'), govGetChild);
+router.get('/children/:childId/irr', requireGovAccess('canViewStudents'), govGetChildIRR);
+router.get('/children/:childId/irr/assessment', requireGovAccess('canViewStudents'), govGetAssessmentProgression);
+router.get('/children/:childId/irr/goals', requireGovAccess('canViewStudents'), govGetGoals);
+
 export default router;

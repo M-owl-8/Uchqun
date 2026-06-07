@@ -1,6 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom';
+
+const renderWithRouter = (ui) => render(<MemoryRouter>{ui}</MemoryRouter>);
 
 const mockApi = { get: vi.fn() };
 vi.mock('../services/api', () => ({ default: mockApi }));
@@ -42,14 +45,14 @@ describe('Students directory page', () => {
   it('shows loading spinner on first fetch', () => {
     makeRepublic();
     mockApi.get.mockReturnValue(new Promise(() => {}));
-    render(<Students />);
+    renderWithRouter(<Students />);
     expect(screen.getByTestId('spinner')).toBeInTheDocument();
   });
 
   it('republic: shows "All regions" scope label', async () => {
     makeRepublic();
     mockApi.get.mockResolvedValue({ data: { data: { students: [], total: 0 } } });
-    render(<Students />);
+    renderWithRouter(<Students />);
     await waitFor(() => expect(screen.queryByTestId('spinner')).not.toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('All regions');
   });
@@ -58,7 +61,7 @@ describe('Students directory page', () => {
     makeRegion();
     useRegionName.mockReturnValue('Andijan');
     mockApi.get.mockResolvedValue({ data: { data: { students: [], total: 0 } } });
-    render(<Students />);
+    renderWithRouter(<Students />);
     await waitFor(() => expect(screen.queryByTestId('spinner')).not.toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('Andijan');
   });
@@ -67,7 +70,7 @@ describe('Students directory page', () => {
     makeRegion();
     useRegionName.mockReturnValue('Andijan');
     mockApi.get.mockResolvedValue({ data: { data: { students: [], total: 0 } } });
-    render(<Students />);
+    renderWithRouter(<Students />);
     await waitFor(() => expect(screen.getByTestId('empty')).toBeInTheDocument());
     expect(screen.getByText('No students in Andijan yet')).toBeInTheDocument();
   });
@@ -82,7 +85,7 @@ describe('Students directory page', () => {
         },
       },
     });
-    render(<Students />);
+    renderWithRouter(<Students />);
     await waitFor(() => expect(screen.getByText('Ali Valiyev')).toBeInTheDocument());
     expect(screen.getByText('School A')).toBeInTheDocument();
   });
@@ -101,7 +104,7 @@ describe('Teachers directory page', () => {
   it('republic: shows "All regions" scope label', async () => {
     makeRepublic();
     mockApi.get.mockResolvedValue({ data: { data: { teachers: [], total: 0 } } });
-    render(<Teachers />);
+    renderWithRouter(<Teachers />);
     await waitFor(() => expect(screen.queryByTestId('spinner')).not.toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('All regions');
   });
@@ -110,7 +113,7 @@ describe('Teachers directory page', () => {
     makeRegion();
     useRegionName.mockReturnValue('Fergana');
     mockApi.get.mockResolvedValue({ data: { data: { teachers: [], total: 0 } } });
-    render(<Teachers />);
+    renderWithRouter(<Teachers />);
     await waitFor(() => expect(screen.getByTestId('empty')).toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('Fergana');
     expect(screen.getByText('No teachers in Fergana yet')).toBeInTheDocument();
@@ -126,7 +129,7 @@ describe('Teachers directory page', () => {
         },
       },
     });
-    render(<Teachers />);
+    renderWithRouter(<Teachers />);
     await waitFor(() => expect(screen.getByText('Aziz Karimov')).toBeInTheDocument());
     expect(screen.getByText('aziz@school.uz')).toBeInTheDocument();
   });
@@ -145,7 +148,7 @@ describe('Parents directory page', () => {
   it('republic: shows "All regions" scope label', async () => {
     makeRepublic();
     mockApi.get.mockResolvedValue({ data: { data: { parents: [], total: 0 } } });
-    render(<Parents />);
+    renderWithRouter(<Parents />);
     await waitFor(() => expect(screen.queryByTestId('spinner')).not.toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('All regions');
   });
@@ -154,7 +157,7 @@ describe('Parents directory page', () => {
     makeRegion();
     useRegionName.mockReturnValue('Bukhara');
     mockApi.get.mockResolvedValue({ data: { data: { parents: [], total: 0 } } });
-    render(<Parents />);
+    renderWithRouter(<Parents />);
     await waitFor(() => expect(screen.getByTestId('empty')).toBeInTheDocument());
     expect(screen.getByTestId('scope-label')).toHaveTextContent('Bukhara');
     expect(screen.getByText('No parents in Bukhara yet')).toBeInTheDocument();
@@ -170,7 +173,7 @@ describe('Parents directory page', () => {
         },
       },
     });
-    render(<Parents />);
+    renderWithRouter(<Parents />);
     await waitFor(() => expect(screen.getByText('Sara Toshmatova')).toBeInTheDocument());
     expect(screen.getByText('sara@mail.uz')).toBeInTheDocument();
   });

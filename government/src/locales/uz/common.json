@@ -154,6 +154,15 @@
     "gender": "Jinsi",
     "loadMore": "Ko'proq yuklash"
   },
+  "childDetail": {
+    "back": "Bolalar ro'yxatiga qaytish",
+    "basicInfo": "Asosiy ma'lumotlar",
+    "diagnosis": "Tashxis",
+    "parent": "Ota-ona",
+    "group": "Guruh",
+    "notFoundTitle": "Bola topilmadi",
+    "notFoundHint": "Ushbu bola sizning hududingizdagi maktab bo'yicha mavjud emas."
+  },
   "teachersPage": {
     "title": "Barcha tarbiyachilar",
     "subtitle": "Tizimdagi barcha tarbiyachilar ro'yxati",
