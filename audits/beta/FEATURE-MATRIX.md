@@ -14,6 +14,7 @@
 | Reception portal | https://reception-production-ba41.up.railway.app |
 | Teacher / Parent portal | https://teacher-production-0647.up.railway.app |
 | Backend API | https://uchqun-production-b484.up.railway.app |
+| ⚠ URL note | Original STEP 0 draft listed stale Netlify URLs (uchqun-*.netlify.app). Corrected to Railway before testing started (commit 557f3147). All waves run against Railway URLs only. |
 | Credentials source | `credentials.md` (never printed here) |
 | Browser | Playwright Chromium — real headed browser |
 | Staff viewport | 1280×800 desktop |
@@ -239,7 +240,7 @@
 | R-086 | DELETE /reception/documents/:id | reception1 | Covered by R-058 (delete pending doc) | — | | |
 | R-087 | GET /reception/messages | reception1 | Covered by R-063 (view gov replies) | — | | |
 | R-088 | POST /reception/message-to-government | reception1 | Covered by R-062 (send message to gov) | — | | |
-| R-089 | Teacher-scoped routes via requireTeacher | reception1 | W1: verify GET /teacher/children returns 200 using reception1 cookie | — | | |
+| R-089 | Teacher-scoped route must reject reception role | reception1 | W1: attempt GET /teacher/children as reception1 in browser — 403 = PASS (correct rejection); 200 = FAIL → log P0 in BETA-DEFECTS + ISOLATION-REPORT | — | | |
 
 ---
 
@@ -296,10 +297,10 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| T-026 | Mark child present | teacher1–8 (all) | W2: mark at least 1 child present per teacher | — | | |
-| T-027 | Mark child absent | teacher1 | W2: mark 1 child absent | — | | |
-| T-028 | Mark child late | teacher1 | W2: mark 1 child late | — | | |
-| T-029 | Mark child sick | teacher1 | W2: mark 1 child sick | — | | |
+| T-026 | Mark present (Bor) | teacher1–8 (all) | W2: mark ≥1 child status=present (Bor) per teacher | — | | |
+| T-027 | Mark home_leave (Uyda) | teacher1 | W2: mark 1 child status=home_leave (Uyda) | — | | |
+| T-028 | Mark sick (Kasal) | teacher1 | W2: mark 1 child status=sick (Kasal) | — | | |
+| T-029 | Mark hospitalized (Shifoxonada) + absent (Yo'q) | teacher1 | W2: mark 1 child Shifoxonada, 1 child absent/Yo'q (care-model enum — no "late" status exists) | — | | |
 | T-030 | Mark all children present (bulk) | teacher3 (S2, has group) | W2: bulk present button | — | | |
 | T-031 | Select date for attendance | teacher1 | W2: change date picker to yesterday | — | | |
 | T-032 | Save attendance to backend | teacher1–8 (all) | W2: submit attendance, expect success | — | | |
