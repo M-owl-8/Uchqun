@@ -3,6 +3,7 @@ import ChildJournalEntry from '../models/ChildJournalEntry.js';
 import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { emitToUser } from '../config/socket.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -58,6 +59,10 @@ export const create = async (req, res) => {
         dateOfBirth: child.dateOfBirth,
       },
     });
+
+    if (visible && child.parentId) {
+      emitToUser(child.parentId, 'journal:created', { childId, date, timestamp: new Date().toISOString() });
+    }
 
     return res.status(201).json({ success: true, data: entry });
   } catch (error) {

@@ -1,8 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
+import { useSocket } from '../../shared/context/SocketContext';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ParentPageHeader from '../components/ParentPageHeader';
@@ -25,6 +26,7 @@ const todayIso = () => new Date().toISOString().slice(0, 10);
 
 const Meals = () => {
   const { selectedChildId } = useChild();
+  const { on, off, connected } = useSocket();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialDate = searchParams.get('date') === 'today' || !searchParams.get('date')
     ? todayIso()
@@ -34,35 +36,44 @@ const Meals = () => {
   const [selectedDate, setSelectedDate] = useState(initialDate);
   const { t, i18n } = useTranslation();
 
-
+  const fetchMeals = useCallback(async (childId, signal) => {
+    const key = `parent:meals:${childId}`;
+    const cached = cache.get(key);
+    if (cached) { setMeals(cached); setLoading(false); return; }
+    try {
+      const response = await api.get(`/meals?childId=${childId}`, { signal });
+      const mealsData = response.data?.meals || response.data || [];
+      const data = Array.isArray(mealsData) ? mealsData : [];
+      cache.set(key, data);
+      setMeals(data);
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
+      setMeals([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!selectedChildId) {
       setLoading(false);
       return;
     }
-
     const controller = new AbortController();
-    const loadMeals = async () => {
-      const key = `parent:meals:${selectedChildId}`;
-      const cached = cache.get(key);
-      if (cached) { setMeals(cached); setLoading(false); return; }
-      try {
-        const response = await api.get(`/meals?childId=${selectedChildId}`, { signal: controller.signal });
-        const mealsData = response.data?.meals || response.data || [];
-        const data = Array.isArray(mealsData) ? mealsData : [];
-        cache.set(key, data);
-        setMeals(data);
-      } catch (error) {
-        if (error.code === 'ERR_CANCELED') return;
-        setMeals([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadMeals();
+    fetchMeals(selectedChildId, controller.signal);
     return () => controller.abort();
-  }, [selectedChildId]);
+  }, [selectedChildId, fetchMeals]);
+
+  useEffect(() => {
+    if (!connected || !selectedChildId) return;
+    const bust = () => {
+      cache.invalidate(`parent:meals:${selectedChildId}`);
+      fetchMeals(selectedChildId);
+    };
+    const events = ['meal:created', 'meal:updated', 'meal:deleted'];
+    events.forEach(ev => on(ev, bust));
+    return () => events.forEach(ev => off(ev, bust));
+  }, [connected, selectedChildId, on, off, fetchMeals]);
 
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
   const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();

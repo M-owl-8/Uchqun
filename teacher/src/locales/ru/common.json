@@ -841,7 +841,14 @@
     "noMessages": "Сообщений пока нет",
     "replied": "Отвечено",
     "yourMessage": "Ваше сообщение",
-    "governmentReply": "Ответ правительства"
+    "governmentReply": "Ответ правительства",
+    "privacyConsentSection": "Согласие на обработку данных",
+    "consentedAt": "Согласие дано {{date}}",
+    "notConsented": "Согласие не получено",
+    "withdrawConsent": "Отозвать согласие",
+    "withdrawConsentDesc": "Отзыв согласия завершит текущий сеанс. При следующем входе потребуется повторное подтверждение.",
+    "withdrawConsentSuccess": "Согласие отозвано. Выход из системы...",
+    "withdrawConsentError": "Ошибка при отзыве согласия"
   },
   "message": {
     "errorSubjectRequired": "Тема обязательна.",

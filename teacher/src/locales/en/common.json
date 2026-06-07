@@ -841,7 +841,14 @@
     "noMessages": "No messages yet",
     "replied": "Replied",
     "yourMessage": "Your Message",
-    "governmentReply": "Government Reply"
+    "governmentReply": "Government Reply",
+    "privacyConsentSection": "Privacy Consent",
+    "consentedAt": "Consented on {{date}}",
+    "notConsented": "No consent recorded",
+    "withdrawConsent": "Withdraw consent",
+    "withdrawConsentDesc": "Withdrawing consent will sign you out. The consent modal will appear on your next login.",
+    "withdrawConsentSuccess": "Consent withdrawn. Signing you out...",
+    "withdrawConsentError": "Error withdrawing consent"
   },
   "message": {
     "errorSubjectRequired": "Subject is required.",

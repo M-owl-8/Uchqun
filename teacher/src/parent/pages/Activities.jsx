@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
+import { useSocket } from '../../shared/context/SocketContext';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ParentPageHeader from '../components/ParentPageHeader';
@@ -18,39 +19,49 @@ import { formatDateMedium } from '@shared/utils/formatDate';
 
 const Activities = () => {
   const { selectedChildId } = useChild();
+  const { on, off, connected } = useSocket();
   const [activities, setActivities] = useState([]);
   const [loading, setLoading] = useState(true);
   const { t, i18n } = useTranslation();
 
-  
+  const fetchActivities = useCallback(async (childId, signal) => {
+    const key = `parent:activities:${childId}`;
+    const cached = cache.get(key);
+    if (cached) { setActivities(cached); setLoading(false); return; }
+    try {
+      const response = await api.get(`/activities?childId=${childId}`, { signal });
+      const activitiesData = response.data?.activities || response.data || [];
+      const data = Array.isArray(activitiesData) ? activitiesData : [];
+      cache.set(key, data);
+      setActivities(data);
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
+      setActivities([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!selectedChildId) {
       setLoading(false);
       return;
     }
-
     const controller = new AbortController();
-    const loadActivities = async () => {
-      const key = `parent:activities:${selectedChildId}`;
-      const cached = cache.get(key);
-      if (cached) { setActivities(cached); setLoading(false); return; }
-      try {
-        const response = await api.get(`/activities?childId=${selectedChildId}`, { signal: controller.signal });
-        const activitiesData = response.data?.activities || response.data || [];
-        const data = Array.isArray(activitiesData) ? activitiesData : [];
-        cache.set(key, data);
-        setActivities(data);
-      } catch (error) {
-        if (error.code === 'ERR_CANCELED') return;
-        setActivities([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadActivities();
+    fetchActivities(selectedChildId, controller.signal);
     return () => controller.abort();
-  }, [selectedChildId]);
+  }, [selectedChildId, fetchActivities]);
+
+  useEffect(() => {
+    if (!connected || !selectedChildId) return;
+    const bust = () => {
+      cache.invalidate(`parent:activities:${selectedChildId}`);
+      fetchActivities(selectedChildId);
+    };
+    const events = ['activity:created', 'activity:updated', 'activity:deleted'];
+    events.forEach(ev => on(ev, bust));
+    return () => events.forEach(ev => off(ev, bust));
+  }, [connected, selectedChildId, on, off, fetchActivities]);
 
   const [selectedActivity, setSelectedActivity] = useState(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);

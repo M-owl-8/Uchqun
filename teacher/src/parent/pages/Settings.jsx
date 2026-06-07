@@ -15,6 +15,7 @@ import {
   Eye,
   EyeOff,
   LogOut,
+  ShieldOff,
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,6 +26,9 @@ const Settings = () => {
   const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
   const [saving, setSaving] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
+  const [consentedAt, setConsentedAt] = useState(null);
+  const [consentLoaded, setConsentLoaded] = useState(false);
+  const [withdrawing, setWithdrawing] = useState(false);
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: '',
     newPassword: '',
@@ -58,6 +62,12 @@ const Settings = () => {
       });
     }
   }, [user]);
+
+  useEffect(() => {
+    api.get('/parent/privacy-consent')
+      .then(r => { setConsentedAt(r.data?.data?.consentedAt ?? null); setConsentLoaded(true); })
+      .catch(() => setConsentLoaded(true));
+  }, []);
 
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
@@ -116,6 +126,19 @@ const Settings = () => {
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleWithdrawConsent = async () => {
+    if (!window.confirm(t('settings.withdrawConsentDesc'))) return;
+    setWithdrawing(true);
+    try {
+      await api.delete('/parent/privacy-consent');
+      success(t('settings.withdrawConsentSuccess'));
+      setTimeout(() => { logout(); navigate('/login'); }, 1500);
+    } catch {
+      showError(t('settings.withdrawConsentError'));
+      setWithdrawing(false);
+    }
   };
 
   return (
@@ -348,6 +371,38 @@ const Settings = () => {
           </div>
         </Card>
       </form>
+
+      {/* Privacy Consent */}
+      {consentLoaded && (
+        <Card className="p-6">
+          <div className="flex items-center gap-3 mb-4">
+            <ShieldOff className="w-6 h-6 text-p-brand-600" />
+            <h2 className="text-xl font-bold text-slate-900">{t('settings.privacyConsentSection')}</h2>
+          </div>
+          <p className="text-sm text-slate-600 mb-1">
+            {consentedAt
+              ? t('settings.consentedAt', { date: new Date(consentedAt).toLocaleDateString() })
+              : t('settings.notConsented')}
+          </p>
+          {consentedAt && (
+            <>
+              <p className="text-xs text-slate-500 mb-4">{t('settings.withdrawConsentDesc')}</p>
+              <button
+                onClick={handleWithdrawConsent}
+                disabled={withdrawing}
+                className="flex items-center gap-2 px-5 py-2.5 border border-error-300 text-error-700 rounded-xl font-semibold hover:bg-error-50 transition-colors disabled:opacity-50"
+              >
+                {withdrawing ? (
+                  <div className="w-4 h-4 border-2 border-error-500 border-t-transparent rounded-full animate-spin" />
+                ) : (
+                  <ShieldOff className="w-4 h-4" />
+                )}
+                {t('settings.withdrawConsent')}
+              </button>
+            </>
+          )}
+        </Card>
+      )}
 
       {/* Logout */}
       <Card className="p-6">

@@ -21,7 +21,7 @@ import {
   getMyRating,
 } from '../controllers/parentController.js';
 import { parentSendMessage, getMyMessages } from '../controllers/parent/parentMessageController.js';
-import { getPrivacyConsent, setPrivacyConsent } from '../controllers/parent/parentPrivacyConsentController.js';
+import { getPrivacyConsent, setPrivacyConsent, withdrawPrivacyConsent } from '../controllers/parent/parentPrivacyConsentController.js';
 import { getMyChildAttendance } from '../controllers/attendanceController.js';
 import {
   getMonitoringByChild,
@@ -85,6 +85,7 @@ router.get('/me/export', authenticate, requireParent, dataExportLimiter, exportM
 // G4 — Privacy consent (group-wide media + AI-translated UI). Modal-on-first-login.
 router.get('/privacy-consent', authenticate, requireParent, getPrivacyConsent);
 router.post('/privacy-consent', authenticate, requireParent, setPrivacyConsent);
+router.delete('/privacy-consent', authenticate, requireParent, withdrawPrivacyConsent);
 
 // Child journal (parent read — visible entries only)
 router.get('/children/:id/journal', authenticate, requireParent, getChildJournal);

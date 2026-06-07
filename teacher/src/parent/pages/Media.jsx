@@ -1,8 +1,9 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useChild } from '../context/ChildContext';
 import api from '../services/api';
 import * as cache from '../../../../shared/utils/cache';
+import { useSocket } from '../../shared/context/SocketContext';
 import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ParentPageHeader from '../components/ParentPageHeader';
@@ -451,6 +452,7 @@ const todayIso = () => new Date().toISOString().slice(0, 10);
 
 const Media = () => {
   const { selectedChildId } = useChild();
+  const { on, off, connected } = useSocket();
   const [searchParams, setSearchParams] = useSearchParams();
   const [media, setMedia] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -459,40 +461,49 @@ const Media = () => {
   const [range, setRange] = useState(searchParams.get('range') === 'today' ? 'today' : 'all');
   const { t, i18n } = useTranslation();
 
-  
-
   const typeLabels = {
     photo: t('media.photoLabel'),
     video: t('media.videoLabel'),
   };
+
+  const fetchMedia = useCallback(async (childId, signal) => {
+    const key = `parent:media:${childId}`;
+    const cached = cache.get(key);
+    if (cached) { setMedia(cached); setLoading(false); return; }
+    try {
+      const response = await api.get(`/media?childId=${childId}`, { signal });
+      const mediaData = response.data?.media || response.data || [];
+      const data = Array.isArray(mediaData) ? mediaData : [];
+      cache.set(key, data);
+      setMedia(data);
+    } catch (error) {
+      if (error.code === 'ERR_CANCELED') return;
+      setMedia([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     if (!selectedChildId) {
       setLoading(false);
       return;
     }
-
     const controller = new AbortController();
-    const loadMedia = async () => {
-      const key = `parent:media:${selectedChildId}`;
-      const cached = cache.get(key);
-      if (cached) { setMedia(cached); setLoading(false); return; }
-      try {
-        const response = await api.get(`/media?childId=${selectedChildId}`, { signal: controller.signal });
-        const mediaData = response.data?.media || response.data || [];
-        const data = Array.isArray(mediaData) ? mediaData : [];
-        cache.set(key, data);
-        setMedia(data);
-      } catch (error) {
-        if (error.code === 'ERR_CANCELED') return;
-        setMedia([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadMedia();
+    fetchMedia(selectedChildId, controller.signal);
     return () => controller.abort();
-  }, [selectedChildId]);
+  }, [selectedChildId, fetchMedia]);
+
+  useEffect(() => {
+    if (!connected || !selectedChildId) return;
+    const bust = () => {
+      cache.invalidate(`parent:media:${selectedChildId}`);
+      fetchMedia(selectedChildId);
+    };
+    const events = ['media:created', 'media:updated', 'media:deleted'];
+    events.forEach(ev => on(ev, bust));
+    return () => events.forEach(ev => off(ev, bust));
+  }, [connected, selectedChildId, on, off, fetchMedia]);
 
   const today = todayIso();
   const filteredMedia = media

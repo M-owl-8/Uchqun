@@ -1,12 +1,14 @@
 // G4 of BETA-LAUNCH-PLAN — parent privacy consent endpoints.
 //
-// Two endpoints, both parent-scoped:
-//   GET  /parent/privacy-consent  → returns { consentedAt, required }
-//   POST /parent/privacy-consent  → records consent (sets users.privacyConsentedAt = NOW)
+// Three endpoints, all parent-scoped:
+//   GET    /parent/privacy-consent  → returns { consentedAt, required }
+//   POST   /parent/privacy-consent  → records consent (sets users.privacyConsentedAt = NOW)
+//   DELETE /parent/privacy-consent  → withdraws consent (sets users.privacyConsentedAt = NULL)
 //
 // The parent portal calls GET on every mount of the layout shell and forces
 // a modal when `required === true`. POST is idempotent — second call is a
-// no-op (timestamp already set).
+// no-op (timestamp already set). DELETE is exposed in Settings for GDPR-style
+// withdrawal; the caller should log the user out immediately after.
 
 import User from '../../models/User.js';
 import logger from '../../utils/logger.js';
@@ -80,6 +82,30 @@ export const setPrivacyConsent = async (req, res) => {
     });
   } catch (err) {
     logger.error('setPrivacyConsent failed', { error: err.message, stack: err.stack });
+    return res.status(500).json(errorPayload('PRIVACY_CONSENT_WRITE_FAILED', err.message));
+  }
+};
+
+/**
+ * DELETE /api/v1/parent/privacy-consent
+ *
+ * Withdraws the parent's consent (GDPR right-to-withdraw). Sets
+ * privacyConsentedAt back to NULL. The caller must log the user out
+ * immediately — the consent modal will block re-entry on next login.
+ */
+export const withdrawPrivacyConsent = async (req, res) => {
+  try {
+    if (req.user.role !== 'parent') {
+      return res.status(403).json(errorPayload('PRIVACY_CONSENT_PARENT_ONLY'));
+    }
+    const user = await User.findByPk(req.user.id);
+    if (!user) {
+      return res.status(404).json(errorPayload('PRIVACY_CONSENT_USER_NOT_FOUND'));
+    }
+    await user.update({ privacyConsentedAt: null });
+    return res.json({ success: true, data: { withdrawn: true } });
+  } catch (err) {
+    logger.error('withdrawPrivacyConsent failed', { error: err.message, stack: err.stack });
     return res.status(500).json(errorPayload('PRIVACY_CONSENT_WRITE_FAILED', err.message));
   }
 };

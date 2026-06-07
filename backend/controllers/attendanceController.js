@@ -3,6 +3,7 @@ import ChildAttendance from '../models/ChildAttendance.js';
 import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { emitToUser } from '../config/socket.js';
 
 const VALID_STATUSES = ['present', 'absent', 'home_leave', 'sick', 'hospitalized'];
 
@@ -68,6 +69,9 @@ export const createAttendance = async (req, res) => {
 
         if (status === 'absent') {
           logger.warn('ATTENDANCE_ABSENT safeguarding marker', { childId, date, teacherId: req.user.id });
+        }
+        if (child.parentId) {
+          emitToUser(child.parentId, 'attendance:updated', { childId, date, status, timestamp: new Date().toISOString() });
         }
         results.saved++;
       } catch (err) {

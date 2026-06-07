@@ -841,7 +841,14 @@
     "noMessages": "Hozircha xabarlar yo'q",
     "replied": "Javob berildi",
     "yourMessage": "Sizning xabaringiz",
-    "governmentReply": "Davlat javobi"
+    "governmentReply": "Davlat javobi",
+    "privacyConsentSection": "Maxfiylik roziligi",
+    "consentedAt": "Rozi bo'lingan sana: {{date}}",
+    "notConsented": "Rozi bo'linmagan",
+    "withdrawConsent": "Rozilikni bekor qilish",
+    "withdrawConsentDesc": "Rozilikni bekor qilsangiz, tizimdan chiqarilasiz. Keyingi kirishda rozi bo'lish so'raladi.",
+    "withdrawConsentSuccess": "Roziligi bekor qilindi. Tizimdan chiqilmoqda...",
+    "withdrawConsentError": "Rozilikni bekor qilishda xatolik"
   },
   "message": {
     "errorSubjectRequired": "Mavzu kiritilishi shart.",

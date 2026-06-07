@@ -1,8 +1,9 @@
 // G4 of BETA-LAUNCH-PLAN — parent privacy consent controller tests.
 //
-// Two endpoints:
-//   GET  /parent/privacy-consent  → { consentedAt, required }
-//   POST /parent/privacy-consent  → records consent (sets users.privacyConsentedAt = NOW)
+// Three endpoints:
+//   GET    /parent/privacy-consent  → { consentedAt, required }
+//   POST   /parent/privacy-consent  → records consent (sets users.privacyConsentedAt = NOW)
+//   DELETE /parent/privacy-consent  → withdraws consent (sets users.privacyConsentedAt = NULL)
 //
 // Test discipline: each test exercises ONE behavior. The role-gate test is the
 // safety net — if a future refactor mounts these handlers behind a more
@@ -20,7 +21,7 @@ jest.unstable_mockModule('../../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },
 }));
 
-const { getPrivacyConsent, setPrivacyConsent } = await import(
+const { getPrivacyConsent, setPrivacyConsent, withdrawPrivacyConsent } = await import(
   '../../controllers/parent/parentPrivacyConsentController.js'
 );
 
@@ -151,6 +152,51 @@ describe('POST /parent/privacy-consent — setPrivacyConsent', () => {
     mockUpdate.mockRejectedValue(new Error('write failed'));
     const res = mkRes();
     await setPrivacyConsent(parentReq(), res);
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'PRIVACY_CONSENT_WRITE_FAILED' }),
+    }));
+  });
+});
+
+describe('DELETE /parent/privacy-consent — withdrawPrivacyConsent', () => {
+  it('200 — sets privacyConsentedAt to null and returns withdrawn:true', async () => {
+    const fakeUser = { id: 'p1', privacyConsentedAt: new Date(), update: mockUpdate };
+    mockUserFindByPk.mockResolvedValue(fakeUser);
+    mockUpdate.mockResolvedValue(fakeUser);
+    const res = mkRes();
+    await withdrawPrivacyConsent(parentReq(), res);
+    expect(mockUpdate).toHaveBeenCalledWith({ privacyConsentedAt: null });
+    expect(res.json).toHaveBeenCalledWith({ success: true, data: { withdrawn: true } });
+  });
+
+  it('403 PRIVACY_CONSENT_PARENT_ONLY when caller is not parent', async () => {
+    const req = { user: { id: 'a1', role: 'admin' } };
+    const res = mkRes();
+    await withdrawPrivacyConsent(req, res);
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'PRIVACY_CONSENT_PARENT_ONLY' }),
+    }));
+    expect(mockUserFindByPk).not.toHaveBeenCalled();
+  });
+
+  it('404 PRIVACY_CONSENT_USER_NOT_FOUND when user record is missing', async () => {
+    mockUserFindByPk.mockResolvedValue(null);
+    const res = mkRes();
+    await withdrawPrivacyConsent(parentReq(), res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
+      error: expect.objectContaining({ code: 'PRIVACY_CONSENT_USER_NOT_FOUND' }),
+    }));
+  });
+
+  it('500 PRIVACY_CONSENT_WRITE_FAILED on DB error during withdrawal', async () => {
+    const fakeUser = { id: 'p1', privacyConsentedAt: new Date(), update: mockUpdate };
+    mockUserFindByPk.mockResolvedValue(fakeUser);
+    mockUpdate.mockRejectedValue(new Error('write failed'));
+    const res = mkRes();
+    await withdrawPrivacyConsent(parentReq(), res);
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       error: expect.objectContaining({ code: 'PRIVACY_CONSENT_WRITE_FAILED' }),
