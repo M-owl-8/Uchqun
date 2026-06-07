@@ -1,6 +1,5 @@
 import { Navigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import LoadingSpinner from './LoadingSpinner';
 
 const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   const { isAuthenticated, loading, isTeacher, isParent, user } = useAuth();
@@ -10,9 +9,23 @@ const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   // a stale user, the full authenticated layout mounted immediately and fired all
   // page API requests before auth/me validated the session (request storm on 401).
   if (loading) {
+    // Palette-aware loading state so the auth spinner blends seamlessly into the
+    // target portal's identity. Parent routes use the warm p-* palette so the
+    // user perceives ONE continuous load (auth → content) instead of two
+    // visually distinct ones (purple auth → warm content) which felt like a
+    // double reload.
+    const isParentRoute = requireRole === 'parent';
+    const bg = isParentRoute ? 'bg-p-paper' : 'bg-surface';
+    const ring = isParentRoute
+      ? 'border-p-sepia-200 border-t-p-brand-600'
+      : 'border-brand-200 border-t-brand-600';
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <LoadingSpinner size="lg" />
+      <div className={`flex items-center justify-center min-h-screen ${bg}`}>
+        <div
+          role="status"
+          aria-label="Loading"
+          className={`h-12 w-12 ${ring} border-4 rounded-full animate-spin`}
+        />
       </div>
     );
   }
