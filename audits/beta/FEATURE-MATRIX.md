@@ -100,7 +100,7 @@
 ## Wave 1 — Reception Portal (R-001 – R-089)
 
 **Accounts:** reception1 (S1), reception2 (S2), reception3 (S3), reception4 (S4)
-**URL:** https://uchqun-reception.netlify.app
+**URL:** https://reception-production-ba41.up.railway.app
 **Scenario per school:** login → dashboard → create group (S1 only) → create child+parent via wizard → confirm new parent can log in → verify child appears in teacher's group
 
 ### Auth & Navigation (R-001 – R-011)
@@ -248,7 +248,7 @@
 
 **Accounts:** teacher1–teacher8 (all run full day)
 **390px repeat:** teacher1 (S1) and teacher3 (S2) repeat full day at mobile viewport
-**URL:** https://uchqun-teacher.netlify.app
+**URL:** https://teacher-production-0647.up.railway.app
 **Full day scenario:** login → dashboard → attendance (mixed statuses) → private reflection → journal per child with tag → 2 photo uploads (1 normal, 1 >5MB → error) → observation → warnings → chat to each parent → switch RU → logout
 
 **Note:** "Other 8 teachers" sub-wave (attendance + one action) is BLOCKED per F-001.
@@ -460,7 +460,7 @@
 ## Wave 3 — Parent Portal (P-001 – P-106)
 
 **Accounts:** parent1–parent12 (all accounts)
-**URL:** https://uchqun-teacher.netlify.app (shared portal, parent role)
+**URL:** https://teacher-production-0647.up.railway.app (shared portal, parent role)
 **Viewport:** 390×844 mobile
 **Scenario:** login → dashboard reflects Wave-2 writes → journal → attendance → media gallery → chat (read + reply) → rate teacher → switch RU → settings → logout
 
@@ -660,7 +660,7 @@
 ## Wave 4 — Admin Portal (A-001 – A-094 + A-082a/b)
 
 **Accounts:** admin1 (S1), admin2 (S2), admin3 (S3), admin4 (S4)
-**URL:** https://uchqun-admin.netlify.app
+**URL:** https://admin-production-536f.up.railway.app
 **Scenario:** login → verify Wave-1 registrations visible → communications reflect Wave-2/3 chat → reports → audit log shows only own school's actions
 
 ### Auth & Onboarding (A-001 – A-005)
@@ -810,7 +810,7 @@
 
 **Wave 5 accounts:** gov.toshkent (Region 01), gov.samarqand (Region 02)
 **Wave 6 account:** gov.republic (all regions)
-**URL:** https://uchqun-government.netlify.app
+**URL:** https://government-production.up.railway.app
 **Scenario Wave 5:** login → dashboard (own region only) → schools list (2 schools) → ratings reflect Wave-3 → audit log (own region) → messages (Wave-2/3 teacher messages) → tenant-isolation probes
 **Scenario Wave 6:** aggregate view — all 4 schools; three-rating model; government-rate schools; provision users; registrations
 
