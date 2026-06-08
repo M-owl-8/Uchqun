@@ -114,11 +114,13 @@
 - **Console errors:** none (i18next silently falls back to key name)
 - **Network:** none
 - **Suspected layer:** Frontend — `teacher/public/locales/uz/common.json` uses old keys (`statePresent`/`stateLate`) while attendance component uses `statusPresent`/`statusHomeLeave`; no `quickObs` section (component uses `quickObs.*`, i18n has `observation.*`)
-- **Status:** ✅ FIXED (S15) — root cause was misidentified at beta time
-- **Actual root cause:** `teacher/public/locales/` is NOT loaded at runtime. `teacher/src/i18n.js` uses bundled imports (`import portalUz from './locales/uz/common.json'`). The src locale files (`teacher/src/locales/{uz,ru,en}/common.json`) have had all correct keys since commit 6b8daf02. The raw keys seen during the beta run were a stale browser/CDN cache artifact — the browser was serving an older JS bundle. Hard refresh fetched the current build, resolving the issue.
-- **Verification:** `node scripts/check-locale-completeness.mjs --portal=teacher` → ✅ PASS — 866 keys, all present in UZ, RU, EN. Keys confirmed: `attendance.statusPresent`/`statusHomeLeave`/`statusSick`/`statusHospitalized`/`statusAbsent`/`statusUnset` and `quickObs.title`/`quickObs.outcomes.*` all resolve to human-readable strings in all three locales.
-- **Code change:** None required — locale source files were already correct. No PR needed.
-- **Fix commit:** See BETA-DEFECTS.md update commit (DEF-007 close-out)
+- **Status:** ✅ CLOSED (S15)
+- **Corrected root cause:** The suspected layer description was wrong. `teacher/public/locales/` is NEVER loaded at runtime — no `i18next-http-backend`, no `loadPath`, no HTTP fetch in `teacher/src/i18n.js`. The runtime path is bundled static imports (`import portalUz from './locales/uz/common.json'` at line 9). The `teacher/src/locales/{uz,ru,en}/common.json` files have had all correct keys since commit `6b8daf02`. The raw keys seen during the beta run were a stale browser cache serving an older JS bundle; hard refresh loaded the current bundle.
+- **Locale verification:** `node scripts/check-locale-completeness.mjs --portal=teacher` → ✅ PASS — 866 keys, all present in UZ, RU, EN. Confirmed values: `attendance.statusPresent` → "Bor"/"Присутствует"/"Present"; `quickObs.title` → "Yangi kuzatuv"/"Новое наблюдение"/"New observation".
+- **Cold-load proof (S15):** Playwright test `tests/def007-cold-load-proof.spec.js` ran against production (`https://teacher-production-0647.up.railway.app`) on a fresh incognito context (no cookies, no cached JS). 3/3 PASS. Screenshots: `audits/beta/screens/DEF-007-attendance-cold.png` (filter chips: Bor·2 / Uyda·0 / Kasal·0 / Shifoxonada·0 / Yo'q·0) and `audits/beta/screens/DEF-007-quickobs-modal-cold.png` (modal: Yangi kuzatuv / Maqsad tanlang / Yangi / Yordam bilan / Mustaqil / Mahorat / Bekor / Saqlash). Zero raw keys in either screenshot.
+- **Cache-bust guarantee:** Vite builds produce content-hashed JS/CSS filenames (`index-CGsAwfX9.css`, `index-CZzkUnzp.js`). `index.html` references hashed filenames; a build change always produces a new filename. `netlify.toml` and `vercel.json` updated to serve `index.html` with `Cache-Control: no-cache, no-store, must-revalidate` (explicit, not reliant on host default). `/assets/*` retains `immutable, max-age=31536000`. A cold browser on demo day will always get the current bundle.
+- **Stale public tree deleted:** `teacher/public/locales/` (contained old keys `statePresent`/`stateLate`, no `quickObs.*` section) was never loaded but was a latent reintroduction risk. Deleted in this commit.
+- **Fix commit:** see commit message referencing DEF-007
 
 ### DEF-008 — Intermittent session loss after T-001→T-003 re-login chain
 - **Severity:** P2

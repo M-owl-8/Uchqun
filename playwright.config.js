@@ -22,6 +22,15 @@ module.exports = defineConfig({
   },
   projects: [
     {
+      name: 'def007',
+      testMatch: '**/def007-cold-load-proof.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://teacher-production-0647.up.railway.app',
+        viewport: { width: 1280, height: 800 },
+      },
+    },
+    {
       name: 'wave1',
       testMatch: '**/wave1-reception.spec.js',
       use: {
