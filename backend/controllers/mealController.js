@@ -2,6 +2,7 @@ import { Op } from 'sequelize';
 import Meal from '../models/Meal.js';
 import Child from '../models/Child.js';
 import User from '../models/User.js';
+import Group from '../models/Group.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
@@ -15,40 +16,39 @@ export const getMeals = async (req, res) => {
 
     const where = {};
     
-    // If user is teacher, show only meals for children of assigned parents
+    // If user is teacher, show only meals for children in their groups or assigned via legacy path
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
+      // Modern path: children in groups where teacherId = this teacher
+      const teacherGroups = await Group.findAll({
         where: { teacherId: req.user.id },
         attributes: ['id'],
       });
-      
-      if (assignedParents.length === 0) {
-        return res.json([]);
-      }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
+      const groupIds = teacherGroups.map(g => g.id);
+      const groupChildIds = groupIds.length > 0
+        ? (await Child.findAll({ where: { groupId: { [Op.in]: groupIds } }, attributes: ['id'] })).map(c => c.id)
+        : [];
+
+      // Legacy path: children whose parent has teacherId = this teacher
+      const legacyParents = await User.findAll({
+        where: { teacherId: req.user.id },
         attributes: ['id'],
       });
-      
-      if (children.length === 0) {
+      const legacyChildIds = legacyParents.length > 0
+        ? (await Child.findAll({ where: { parentId: { [Op.in]: legacyParents.map(p => p.id) } }, attributes: ['id'] })).map(c => c.id)
+        : [];
+
+      const childIds = [...new Set([...groupChildIds, ...legacyChildIds])];
+
+      if (childIds.length === 0) {
         return res.json([]);
       }
-      
-      const childIds = children.map(c => c.id);
-      
+
       if (childId) {
-        // If childId is specified, verify it belongs to assigned parents
         if (!childIds.includes(childId)) {
           return res.status(403).json({ error: 'Access denied to this child' });
         }
         where.childId = childId;
       } else {
-        // Show meals for all assigned children
         where.childId = { [Op.in]: childIds };
       }
     } else if (req.user.role === 'admin') {

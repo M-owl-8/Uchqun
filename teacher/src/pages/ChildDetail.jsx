@@ -65,6 +65,7 @@ function GoalHeatmap({ records = [] }) {
 }
 
 function IEPTab({ child, goals }) {
+  const { t } = useTranslation();
   if (!goals || goals.length === 0) {
     return (
       <div className="py-12 text-center">

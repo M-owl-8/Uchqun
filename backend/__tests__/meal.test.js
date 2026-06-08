@@ -7,6 +7,7 @@ const mockMealCreate = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockChildFindOne = jest.fn();
 const mockUserFindAll = jest.fn();
+const mockGroupFindAll = jest.fn();
 const mockValidateChildAccess = jest.fn();
 const mockCreateNotification = jest.fn();
 const mockEmitToUser = jest.fn();
@@ -24,6 +25,9 @@ jest.unstable_mockModule('../models/Child.js', () => ({
 }));
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findAll: mockUserFindAll },
+}));
+jest.unstable_mockModule('../models/Group.js', () => ({
+  default: { findAll: mockGroupFindAll },
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
   validateChildAccess: mockValidateChildAccess,
@@ -63,7 +67,8 @@ describe('mealController', () => {
       expect(res.status).toHaveBeenCalledWith(403);
     });
 
-    it('teacher: empty array when no assigned parents', async () => {
+    it('teacher: empty array when no groups and no legacy parents', async () => {
+      mockGroupFindAll.mockResolvedValue([]);
       mockUserFindAll.mockResolvedValue([]);
       const req = { user: { id: 't1', role: 'teacher' }, query: {} };
       const res = mkRes();
@@ -71,13 +76,25 @@ describe('mealController', () => {
       expect(res.json).toHaveBeenCalledWith([]);
     });
 
-    it('teacher: 403 when childId not in assigned children', async () => {
-      mockUserFindAll.mockResolvedValue([{ id: 'p1' }]);
-      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]);
+    it('teacher: 403 when childId not in group-assigned or legacy children', async () => {
+      mockGroupFindAll.mockResolvedValue([{ id: 'g1' }]);
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]); // group children
+      mockUserFindAll.mockResolvedValue([]); // no legacy parents
       const req = { user: { id: 't1', role: 'teacher' }, query: { childId: 'OTHER' } };
       const res = mkRes();
       await getMeals(req, res);
       expect(res.status).toHaveBeenCalledWith(403);
+    });
+
+    it('teacher: returns meals for child in assigned group (modern path)', async () => {
+      mockGroupFindAll.mockResolvedValue([{ id: 'g1' }]);
+      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]); // group children
+      mockUserFindAll.mockResolvedValue([]); // no legacy parents
+      mockMealFindAll.mockResolvedValue([{ id: 'm1', childId: 'c1' }]);
+      const req = { user: { id: 't1', role: 'teacher' }, query: { childId: 'c1' } };
+      const res = mkRes();
+      await getMeals(req, res);
+      expect(res.json).toHaveBeenCalledWith(expect.arrayContaining([expect.objectContaining({ id: 'm1' })]));
     });
 
     it('admin: returns all meals when no schoolId (global access)', async () => {
