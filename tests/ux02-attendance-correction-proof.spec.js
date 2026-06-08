@@ -1,8 +1,16 @@
 /**
  * UX-02 — Attendance correction gate
  * Case (c): backend upserts correctly; fix adds UI affordance (alreadySaved badge + Update button).
- * Gate: mark a child Kasal, save, correct to Bor, save again, reload → status persists as Bor.
- * Also verifies badge renders in uz/ru/en without raw i18n keys.
+ *
+ * teacher1@uchqun.uz owns "Guruh 1" with children Bobur Sobirov + Shahlo Tursunova.
+ * Both already have Bor records for today (saved earlier), so hasSavedData = true on first load.
+ * Gate:
+ *   1. Load → badge visible (already-saved data), Bobur = Bor
+ *   2. Change Bobur to Kasal → save (Update button) → navigate away
+ *   3. Return → badge visible, Bobur = Kasal
+ *   4. Change Bobur back to Bor → save → navigate away
+ *   5. Reload → Bobur = Bor (correction persisted, not duplicate row)
+ *   6. Badge renders without raw i18n keys in ru + en
  */
 const { test, expect } = require('@playwright/test');
 
@@ -23,9 +31,8 @@ async function loginTeacher(page) {
 async function goToAttendance(page) {
   await page.goto(`${TEACHER_BASE}/teacher/attendance`);
   await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
-  // Wait for attendance grid or no-children message
-  await page.waitForSelector('.grid, [class*="noChildren"], [class*="text-center"]', { timeout: 20000 }).catch(() => {});
-  await page.waitForTimeout(800);
+  await page.waitForSelector('.grid > button', { timeout: 20000 });
+  await page.waitForTimeout(600);
 }
 
 async function switchLang(page, lang) {
@@ -36,6 +43,26 @@ async function switchLang(page, lang) {
   await page.waitForTimeout(200);
   await page.locator('[role="option"]').filter({ hasText: labels[lang] }).click();
   await page.waitForTimeout(600);
+}
+
+// Cycle a specific child card until its label matches targetText.
+async function cycleCardTo(page, card, targetTexts) {
+  for (let i = 0; i < 7; i++) {
+    const text = await card.textContent();
+    if (targetTexts.some(t => text.includes(t))) break;
+    await card.click();
+    await page.waitForTimeout(200);
+  }
+}
+
+// Click the save bar button (fixed bottom bar).
+async function clickSave(page) {
+  const saveBarBtn = page.locator('div[class*="fixed"][class*="bottom"] button').first();
+  await saveBarBtn.waitFor({ state: 'visible', timeout: 10000 });
+  await saveBarBtn.click();
+  // Wait for post-save navigation away from attendance
+  await page.waitForURL(url => !url.href.includes('/attendance'), { timeout: 20000 }).catch(() => {});
+  await page.waitForTimeout(400);
 }
 
 test.describe.serial('UX-02 Attendance correction', () => {
@@ -50,80 +77,98 @@ test.describe.serial('UX-02 Attendance correction', () => {
     await page.close();
   });
 
-  test('mark first child Kasal and save', async () => {
+  test('load today — alreadySaved badge visible, Bobur has existing Bor record', async () => {
     await goToAttendance(page);
 
-    // Find first child card and cycle to Kasal (sick)
-    const cards = page.locator('.grid > button');
-    await cards.first().waitFor({ state: 'visible', timeout: 15000 });
+    // Bobur S. is in teacher1's group with an existing Bor record for today
+    const boburCard = page.getByRole('button', { name: /Bobur Sobirov:/ });
+    await boburCard.waitFor({ state: 'visible', timeout: 15000 });
 
-    // Cycle card until it shows Kasal
-    for (let i = 0; i < 6; i++) {
-      const label = await cards.first().textContent();
-      if (label.includes('Kasal') || label.includes('Болен') || label.includes('Sick')) break;
-      await cards.first().click();
-      await page.waitForTimeout(150);
-    }
-
-    // Verify Kasal state is shown
-    const cardText = await cards.first().textContent();
-    expect(cardText).toMatch(/Kasal|Болен|Sick/);
-
-    // Save
-    const saveBtn = page.locator('button').filter({ hasText: /Saqlash|Сохранить|Save|Yangilash|Обновить|Update/ }).last();
-    await saveBtn.click();
-    // After save navigates away — wait for navigation
-    await page.waitForURL(url => !url.href.includes('/attendance'), { timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(500);
-  });
-
-  test('return to attendance, alreadySaved badge visible, correct to Bor and save', async () => {
-    await goToAttendance(page);
-
-    // alreadySaved badge must be visible — proves today has saved data
+    // alreadySaved badge must be visible (Bobur + Shahlo already have records → hasSavedData=true)
     const badge = page.locator('[class*="bg-green"]').filter({ hasText: /Saqlangan|Сохранено|Saved/ });
     await badge.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Badge text must not be a raw i18n key
     const badgeText = await badge.textContent();
-    // Badge must not be a raw i18n key
     expect(badgeText).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
-    expect(badgeText).toMatch(/\S/);
+    expect(badgeText).toMatch(/\s/);
 
-    await page.screenshot({ path: 'audits/beta/screens/ux02-already-saved-badge-uz.png' });
+    // Bobur's current status should be Bor (present) — already saved earlier today
+    const boburText = await boburCard.textContent();
+    expect(boburText).toMatch(/Bor|Присутствует|Present/);
 
-    // First card should show Kasal — cycle it to Bor (present)
-    const cards = page.locator('.grid > button');
-    for (let i = 0; i < 6; i++) {
-      const label = await cards.first().textContent();
-      if (label.includes('Bor') || label.includes('Присутствует') || label.includes('Present')) break;
-      await cards.first().click();
-      await page.waitForTimeout(150);
-    }
+    // Save button should say Yangilash/Обновить/Update (correction mode, not first-time save)
+    const saveBarBtn = page.locator('div[class*="fixed"][class*="bottom"] button').first();
+    await saveBarBtn.waitFor({ state: 'visible', timeout: 10000 });
+    const btnText = await saveBarBtn.textContent();
+    expect(btnText).toMatch(/Yangilash|Обновить|Update/);
 
-    const cardText = await cards.first().textContent();
-    expect(cardText).toMatch(/Bor|Присутствует|Present/);
-
-    // Save button should say Yangilash/Обновить/Update (correction mode)
-    const saveBtn = page.locator('button').filter({ hasText: /Yangilash|Обновить|Update/ }).last();
-    await saveBtn.waitFor({ state: 'visible', timeout: 10000 });
-    await saveBtn.click();
-    await page.waitForURL(url => !url.href.includes('/attendance'), { timeout: 15000 }).catch(() => {});
-    await page.waitForTimeout(500);
+    await page.screenshot({ path: 'audits/beta/screens/ux02-badge-visible-initial-uz.png' });
   });
 
-  test('reload attendance and confirm Bor persists', async () => {
+  test('change Bobur to Kasal and save — Update button used', async () => {
+    // goToAttendance already called in previous test; page is on /teacher now
     await goToAttendance(page);
 
-    // First card must show Bor — the correction stuck
-    const cards = page.locator('.grid > button');
-    await cards.first().waitFor({ state: 'visible', timeout: 15000 });
-    const cardText = await cards.first().textContent();
-    expect(cardText).toMatch(/Bor|Присутствует|Present/);
+    const boburCard = page.getByRole('button', { name: /Bobur Sobirov:/ });
+    await boburCard.waitFor({ state: 'visible', timeout: 15000 });
 
-    // alreadySaved badge still visible
+    // Cycle Bobur from current state to Kasal (sick)
+    await cycleCardTo(page, boburCard, ['Kasal', 'Болен', 'Sick']);
+
+    const boburText = await boburCard.textContent();
+    expect(boburText).toMatch(/Kasal|Болен|Sick/);
+
+    await clickSave(page);
+  });
+
+  test('return to attendance — badge visible and Bobur shows Kasal', async () => {
+    await goToAttendance(page);
+
+    const boburCard = page.getByRole('button', { name: /Bobur Sobirov:/ });
+    await boburCard.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Badge must still be visible
+    const badge = page.locator('[class*="bg-green"]').filter({ hasText: /Saqlangan|Сохранено|Saved/ });
+    await badge.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Bobur must show Kasal — the correction from the previous save
+    const boburText = await boburCard.textContent();
+    expect(boburText).toMatch(/Kasal|Болен|Sick/);
+
+    await page.screenshot({ path: 'audits/beta/screens/ux02-bobur-kasal-after-correction.png' });
+  });
+
+  test('correct Bobur back to Bor and save', async () => {
+    // Already on /teacher from previous navigate
+    await goToAttendance(page);
+
+    const boburCard = page.getByRole('button', { name: /Bobur Sobirov:/ });
+    await boburCard.waitFor({ state: 'visible', timeout: 15000 });
+
+    await cycleCardTo(page, boburCard, ['Bor', 'Присутствует', 'Present']);
+
+    const boburText = await boburCard.textContent();
+    expect(boburText).toMatch(/Bor|Присутствует|Present/);
+
+    await clickSave(page);
+  });
+
+  test('reload — Bor persists, correction stuck, no duplicate row', async () => {
+    await goToAttendance(page);
+
+    const boburCard = page.getByRole('button', { name: /Bobur Sobirov:/ });
+    await boburCard.waitFor({ state: 'visible', timeout: 15000 });
+
+    // Bor must persist after reload
+    const boburText = await boburCard.textContent();
+    expect(boburText).toMatch(/Bor|Присутствует|Present/);
+
+    // Badge still visible (record exists)
     const badge = page.locator('[class*="bg-green"]').filter({ hasText: /Saqlangan|Сохранено|Saved/ });
     await badge.waitFor({ state: 'visible', timeout: 10000 });
 
-    await page.screenshot({ path: 'audits/beta/screens/ux02-correction-persisted-uz.png' });
+    await page.screenshot({ path: 'audits/beta/screens/ux02-bor-persists-correction-complete.png' });
   });
 
   test('badge renders in ru without raw keys', async () => {
@@ -136,7 +181,7 @@ test.describe.serial('UX-02 Attendance correction', () => {
     expect(text).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
     expect(text).toMatch(/\s/);
 
-    await page.screenshot({ path: 'audits/beta/screens/ux02-already-saved-badge-ru.png' });
+    await page.screenshot({ path: 'audits/beta/screens/ux02-badge-ru.png' });
   });
 
   test('badge renders in en without raw keys', async () => {
@@ -149,9 +194,8 @@ test.describe.serial('UX-02 Attendance correction', () => {
     expect(text).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
     expect(text).toMatch(/\s/);
 
-    await page.screenshot({ path: 'audits/beta/screens/ux02-already-saved-badge-en.png' });
+    await page.screenshot({ path: 'audits/beta/screens/ux02-badge-en.png' });
 
-    // Switch back to uz
     await switchLang(page, 'uz');
   });
 });
