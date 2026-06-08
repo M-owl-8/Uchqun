@@ -63,13 +63,19 @@ const PrivacyConsentModal = () => {
 
   return (
     <div
-      className="fixed inset-0 z-[60] bg-p-ink/60 backdrop-blur-sm flex items-center justify-center p-4"
+      className="fixed inset-0 z-[60] bg-p-ink/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4"
       role="dialog"
       aria-modal="true"
       aria-labelledby="privacy-consent-title"
     >
-      <div className="bg-p-paper rounded-2xl shadow-2xl max-w-lg w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-6 sm:p-8">
+      {/* flex-col so the scrollable body + pinned footer stack vertically.
+          On mobile the sheet slides up from the bottom edge (items-end above);
+          on sm+ it centres as a card. max-h caps the total height so the
+          pinned footer is always on-screen regardless of policy text length. */}
+      <div className="bg-p-paper sm:rounded-2xl rounded-t-2xl shadow-2xl max-w-lg w-full flex flex-col max-h-[92vh] max-h-[92dvh]">
+
+        {/* ── Scrollable policy body ── */}
+        <div className="flex-1 overflow-y-auto p-6 sm:p-8 pb-4 sm:pb-4">
           <div className="flex items-center gap-3 mb-4">
             <span className="w-10 h-10 rounded-lg bg-p-brand-50 grid place-items-center">
               <ShieldCheck className="w-5 h-5 text-p-brand-600" />
@@ -106,7 +112,7 @@ const PrivacyConsentModal = () => {
             </label>
           </section>
 
-          <section className="border border-p-sepia-200 rounded-xl p-4 mb-5">
+          <section className="border border-p-sepia-200 rounded-xl p-4">
             <div className="flex items-start gap-3 mb-2">
               <Languages className="w-4 h-4 text-p-brand-500 mt-0.5 shrink-0" />
               <h3 className="font-semibold text-[14px] text-p-ink">
@@ -128,9 +134,12 @@ const PrivacyConsentModal = () => {
               </span>
             </label>
           </section>
+        </div>
 
+        {/* ── Pinned action footer — never scrolls off screen ── */}
+        <div className="shrink-0 border-t border-p-sepia-100 px-6 sm:px-8 pt-4 pb-6 sm:pb-8">
           {error && (
-            <div className="mb-4 px-3 py-2 rounded-lg bg-error-50 border border-error-200 text-error-700 text-[13px]">
+            <div className="mb-3 px-3 py-2 rounded-lg bg-error-50 border border-error-200 text-error-700 text-[13px]">
               {error}
             </div>
           )}
@@ -154,7 +163,7 @@ const PrivacyConsentModal = () => {
             </button>
           </div>
 
-          <p className="text-[11px] text-p-sepia-500 mt-4 leading-relaxed">
+          <p className="text-[11px] text-p-sepia-500 mt-3 leading-relaxed">
             {t('privacyConsent.footnote')}
           </p>
         </div>
