@@ -294,5 +294,49 @@
 
 **Status:** ✅ FIXED (S20, closed S20-close) — fix commit `13129a92`; proof commits `87709e0e`, `HEAD`
 
+### UX-02 — Attendance correction: no UI affordance to signal that saved records are editable
+
+- **Severity:** P1
+- **Portals affected:** Teacher
+- **Wave:** 2 (T-026–T-032)
+
+**Case:** (b/c) — Backend correctly upserts (findOne → update or create) when saving attendance for a date that already has records. Returning to a saved date loaded the prior statuses into state. However, the UI showed no badge or label change to indicate the data was already saved, leaving teachers uncertain whether a second save would overwrite or duplicate, and with no clear signal that correction is possible.
+
+**What was changed:**
+
+*`teacher/src/pages/Attendance.jsx`* (commit `f5f18500`):
+- Added `hasSavedData` state; set `true` when `GET /attendance` returns ≥ 1 record for the selected date.
+- Badge rendered below the group label when `hasSavedData && !isFuture`:
+  `<CheckCheck /> {t('attendance.alreadySaved')}` — green-50 background, green-200 border.
+- Save button label changes to `{t('attendance.saveUpdate')}` ("Yangilash") in correction mode.
+
+*Locale keys added to uz/ru/en `teacher/src/locales/*/common.json`* (commit `f5f18500`):
+- `attendance.alreadySaved`: "Saqlangan — tahrirlash mumkin" / "Сохранено — можно изменить" / "Saved — you can edit"
+- `attendance.saveUpdate`: "Yangilash" / "Обновить" / "Update"
+
+*`backend/migrations/20260608000001-fix-attendance-status-enum-column.js`* (commit `ce49ff93`):
+- Migration `20260606000001` created `enum_child_attendance_status` but the `ALTER COLUMN` step never ran. The column stayed on `enum_child_attendance_status_old` (`present/absent/late/excused`), causing all saves with statuses `sick/home_leave/hospitalized` to fail with `ATTENDANCE_SAVE_FAILED`.
+- Prior fix attempt (`35ef1e19`) crashed because `SET status = 'sick'::text` is invalid on an enum-typed column (no `text → enum` assignment cast in PostgreSQL for custom enums).
+- Final fix uses a `CASE` expression in the `ALTER COLUMN USING` clause to remap `late → present` and `excused → sick` atomically. No pre-UPDATEs needed.
+
+**Gate (Playwright 7/7 PASS — `tests/ux02-attendance-correction-proof.spec.js`, commit `ce49ff93`):**
+1. Load today → `[class*="bg-green"]` badge shows "Saqlangan — tahrirlash mumkin"; Bobur = Bor; button = Yangilash ✅
+2. Cycle Bobur to Kasal → save → POST `/api/v1/attendance` returns 201; navigates away ✅
+3. Return → badge visible; Bobur = Kasal (correction persisted in DB) ✅
+4. Cycle Bobur back to Bor → save → 201 ✅
+5. Reload → Bobur = Bor (round-trip complete; no duplicate row) ✅
+6. Badge text in ru = "Сохранено — можно изменить"; no raw i18n keys ✅
+7. Badge text in en = "Saved — you can edit"; no raw i18n keys ✅
+
+**Screenshots:**
+- `screens/ux02-badge-visible-initial-uz.png` — badge and Yangilash button on first load (uz)
+- `screens/ux02-bobur-kasal-after-correction.png` — badge visible; Bobur shows Kasal after save
+- `screens/ux02-bor-persists-round-trip.png` — Bobur shows Bor on reload (round-trip confirmed)
+- (ru/en badge screenshots captured as test artifacts)
+
+**Matrix rows:** T-026–T-032 NOT flipped to PASS — re-verification in next phase.
+
+**Status:** ✅ FIXED (S21) — frontend + locale commit `f5f18500`; migration commit `ce49ff93`
+
 ## Tenant Isolation Defects (Step 3)
 <!-- Any isolation breach found during hostile probes -->

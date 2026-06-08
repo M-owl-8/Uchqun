@@ -38,6 +38,22 @@
         "metadata": {
           "actualWorkers": 1
         },
+        "id": "ux02",
+        "name": "ux02",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/ux02-attendance-correction-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "def004",
         "name": "def004",
         "testDir": "C:/work/Uchqun/tests",
@@ -203,20 +219,20 @@
   },
   "suites": [
     {
-      "title": "ux01-confirm-dialogs-proof.spec.js",
-      "file": "ux01-confirm-dialogs-proof.spec.js",
+      "title": "ux02-attendance-correction-proof.spec.js",
+      "file": "ux02-attendance-correction-proof.spec.js",
       "column": 0,
       "line": 0,
       "specs": [],
       "suites": [
         {
-          "title": "UX-01 Admin — delete-reception confirmation",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 49,
+          "title": "UX-02 Attendance correction",
+          "file": "ux02-attendance-correction-proof.spec.js",
+          "line": 87,
           "column": 15,
           "specs": [
             {
-              "title": "delete-reception: modal appears with name and warning; Cancel leaves row intact",
+              "title": "load today — alreadySaved badge visible, Bobur = Bor, button says Yangilash",
               "ok": true,
               "tags": [],
               "tests": [
@@ -224,19 +240,19 @@
                   "timeout": 45000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
                   "results": [
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 3425,
+                      "duration": 2326,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:57:44.982Z",
+                      "startTime": "2026-06-08T13:45:10.541Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -244,223 +260,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-e0daecf4a46e32ed0d1f",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 60,
+              "id": "8f94cd8e82c0210c319c-9c2de0d53cda1e89a1d8",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 99,
               "column": 3
-            }
-          ]
-        },
-        {
-          "title": "UX-01 Reception — delete-teacher confirmation",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 98,
-          "column": 15,
-          "specs": [
-            {
-              "title": "delete-teacher: modal appears with name and warning; Cancel leaves card intact",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3788,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T05:57:56.528Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c2512dbb600478247314-464d44b12048a1c2e91a",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 109,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "UX-01 Reception — delete-parent confirmation",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 160,
-          "column": 15,
-          "specs": [
-            {
-              "title": "delete-parent: shared ConfirmDialog appears; Cancel leaves row intact",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4557,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T05:58:05.538Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c2512dbb600478247314-472aebbc181d50b2762e",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 171,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "UX-01 Reception — bulk-delete-parent confirmation",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 212,
-          "column": 15,
-          "specs": [
-            {
-              "title": "bulk-delete parents: modal with count + warning; Cancel leaves row intact",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4449,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T05:58:14.361Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c2512dbb600478247314-f2bc0570c64b766cde77",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 223,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "UX-01 Reception — delete-group confirmation",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 267,
-          "column": 15,
-          "specs": [
-            {
-              "title": "delete-group: modal with group name + warning; Cancel leaves card intact",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4198,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T05:58:23.489Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c2512dbb600478247314-59662d8cef8182da4bfd",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 278,
-              "column": 3
-            }
-          ]
-        },
-        {
-          "title": "UX-01 Reception — locale renders (ru + en)",
-          "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 328,
-          "column": 15,
-          "specs": [
-            {
-              "title": "delete-teacher modal renders in ru (no raw keys)",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4361,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T05:58:32.703Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "c2512dbb600478247314-32a5f47b3975002dc736",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 340,
-              "column": 5
             },
             {
-              "title": "bulk-delete parents modal renders in ru (no raw keys)",
+              "title": "change Bobur to Kasal and save",
               "ok": true,
               "tags": [],
               "tests": [
@@ -468,19 +274,19 @@
                   "timeout": 45000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
                   "results": [
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 8287,
+                      "duration": 3451,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:58:41.589Z",
+                      "startTime": "2026-06-08T13:45:20.580Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -488,13 +294,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-77d555b5104c8f670a90",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 377,
-              "column": 5
+              "id": "8f94cd8e82c0210c319c-8ed7a29b86d8d3823ed3",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 121,
+              "column": 3
             },
             {
-              "title": "delete-teacher modal renders in en (no raw keys)",
+              "title": "return — badge visible, Bobur shows Kasal (correction persisted)",
               "ok": true,
               "tags": [],
               "tests": [
@@ -502,19 +308,19 @@
                   "timeout": 45000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
                   "results": [
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4714,
+                      "duration": 2097,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:58:49.908Z",
+                      "startTime": "2026-06-08T13:45:24.058Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -522,13 +328,13 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-56bd5b71911784610392",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 340,
-              "column": 5
+              "id": "8f94cd8e82c0210c319c-61dff8a4a967cbbd976c",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 137,
+              "column": 3
             },
             {
-              "title": "bulk-delete parents modal renders in en (no raw keys)",
+              "title": "correct Bobur back to Bor and save",
               "ok": true,
               "tags": [],
               "tests": [
@@ -536,19 +342,19 @@
                   "timeout": 45000,
                   "annotations": [],
                   "expectedStatus": "passed",
-                  "projectId": "ux01",
-                  "projectName": "ux01",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
                   "results": [
                     {
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 8419,
+                      "duration": 3812,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:58:54.656Z",
+                      "startTime": "2026-06-08T13:45:26.182Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -556,10 +362,112 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-380e241ac9595cd011f0",
-              "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 377,
-              "column": 5
+              "id": "8f94cd8e82c0210c319c-0159d81e5cc8d6cf249d",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 149,
+              "column": 3
+            },
+            {
+              "title": "reload — Bor persists, round-trip complete",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2080,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T13:45:30.024Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8f94cd8e82c0210c319c-fda43661ccc09e045482",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 163,
+              "column": 3
+            },
+            {
+              "title": "badge renders in ru without raw keys",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 3504,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T13:45:32.136Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8f94cd8e82c0210c319c-1bc531752effeb6d363d",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 175,
+              "column": 3
+            },
+            {
+              "title": "badge renders in en without raw keys",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux02",
+                  "projectName": "ux02",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4962,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T13:45:35.654Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "8f94cd8e82c0210c319c-5a90500e003e4220b791",
+              "file": "ux02-attendance-correction-proof.spec.js",
+              "line": 187,
+              "column": 3
             }
           ]
         }
@@ -568,9 +476,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-06-08T05:57:43.543Z",
-    "duration": 80001.352,
-    "expected": 9,
+    "startTime": "2026-06-08T13:45:09.208Z",
+    "duration": 31667.681000000004,
+    "expected": 7,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0
