@@ -98,6 +98,19 @@
 - **Console errors:** none
 - **Network:** POST /api/auth/login returns `{ mustChangePassword: true }`
 - **Suspected layer:** Data — migration `20260608000001` reset `password` column but not `mustChangePassword` flag for teacher2
+- **Status:** ✅ FIXED (S17) — migration commit `58ac80a6`
+- **Root cause (verified):** Migration `20260608000001` that reset teacher2's password to `Test@2026` did not include a `mustChangePassword = false` clause. The CP-021 gate in `middleware/auth.js:120-130` correctly checks `user.mustChangePassword` and returns 403 `PASSWORD_CHANGE_REQUIRED` for any non-allowed path. Gate logic was correct; the stale flag was a data issue only.
+- **Fix:** Idempotent migration `20260608000002-clear-teacher2-must-change-password.js` — UPDATE scoped exactly to `teacher2@uchqun.uz WHERE mustChangePassword = true`. Ran on Railway on auto-deploy of commit `58ac80a6`.
+- **Before (DB query, 2026-06-08):** `teacher2@uchqun.uz` → `mustChangePassword: True`
+- **After (DB query, 2026-06-08):** `teacher2@uchqun.uz` → `mustChangePassword: False` ✅
+- **Gate code unchanged:** `middleware/auth.js:120-130` — checks `user.mustChangePassword`, returns 403 `PASSWORD_CHANGE_REQUIRED` for non-allowed paths. Confirmed present by Playwright test 4.
+- **Flagged accounts not cleared:** `testr077.s9@uchqun.uz` and `testwizard3.s8@uchqun.uz` retain `mustChangePassword: True` — they are sprint test accounts, not beta fleet.
+- **Proof (Playwright 4/4 PASS — `tests/def006-must-change-password-proof.spec.js`):**
+  - Test 1: teacher2 login URL → `/teacher` (not `/change-password`) ✅
+  - Test 2: post-login screenshot shows teacher dashboard (Doniyor opa/aka · 3/3 keldi) ✅
+  - Test 3: POST `/api/v1/auth/login` for teacher2 returns `{ success: true, user: { mustChangePassword: false } }` ✅
+  - Test 4: `middleware/auth.js` contains `user.mustChangePassword`, `PASSWORD_CHANGE_REQUIRED`, and `ALLOWED_PATHS` — gate is intact ✅
+- **Cold-login screenshot:** `screens/DEF-006-teacher2-dashboard.png` — teacher portal dashboard, nav visible (Bugun · Bolalar · Reja · Xabar · Men · Sozlamalar), no change-password redirect
 
 ### DEF-007 — i18n: attendance status keys and quickObs keys missing from teacher locale
 - **Severity:** P1
