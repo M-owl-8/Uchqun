@@ -66,6 +66,25 @@
 - **Feature ID:** P-011
 - **Detail:** Sidebar.jsx is implemented with 10 items, badges, and footer but is NOT imported in Layout.jsx. It is dead code that will never render.
 - **Suspected layer:** Frontend
+- **Status:** ✅ FIXED (S18) — deleted by PP-IA-REDESIGN commit `4b01e1af` (2026-06-06)
+- **Decision: DELETE** — chosen because every Sidebar destination is reachable through the current live navigation. No parent destination was lost.
+- **Side-by-side (12 Sidebar routes vs live nav):**
+  - `/child` — MobileTabBar "Child" tab + DesktopTopNav ✅
+  - `/irr` — `/child` Bola hub → "Plan & progress" section (HubRow → TrendingUp) ✅
+  - `/activities` — `/child` Bola hub → "Plan & progress" section ✅
+  - `/attendance` — `/child` Bola hub → "Plan & progress" section ✅
+  - `/journal` — MobileTabBar "Diary" tab + DesktopTopNav ✅
+  - `/meals` — `/child` Bola hub → "Plan & progress" section ✅
+  - `/media` — MobileTabBar "Gallery" tab + DesktopTopNav ✅
+  - `/rating` — DesktopTopNav secondary + `/child` hub "School relations" section ✅
+  - `/therapy` — `/child` Bola hub → "Plan & progress" section ✅
+  - `/chat` — MobileTabBar "Messages" tab + DesktopTopNav ✅
+  - `/notifications` — MobileTopBar Bell icon (mobile) + DesktopTopNav Bell icon (lg+) ✅
+  - `/settings` — DesktopTopNav secondary + `/child` hub "Account" section ✅
+  - Note: `/` (Dashboard/Today) was NOT in the old Sidebar but IS in MobileTabBar ✅
+- **Residual import check:** `grep -r "import.*Sidebar" teacher/src/parent/` → zero results. Only inline JSX comments `{/* Sidebar */}` remain in Media.jsx:711 and TeacherRating.jsx:532 (describing layout regions, not the deleted component).
+- **Context:** The feature catalog (compiled 2026-05-30, commit `6c34f4faba`) captured Sidebar.jsx in its dead-code state. PP-IA-REDESIGN (2026-06-06) deleted it and restructured the parent IA: 5-tab bottom bar (MobileTabBar) + horizontal top nav (DesktopTopNav) + deep links consolidated into the /child Bola hub page (ChildProfile.jsx). DEF-003 filed during beta audit reflected a state that had already been fixed by the time S18 ran.
+- **Matrix row:** P-011 NOT flipped to PASS — re-verification is a separate phase.
 
 ### DEF-004 — G-050: canRateSchools i18n key missing
 - **Severity:** P1
