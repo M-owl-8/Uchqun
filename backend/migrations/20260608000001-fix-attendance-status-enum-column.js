@@ -1,43 +1,36 @@
 /**
  * Migration 20260606000001 created the new enum type but never completed the
- * ALTER COLUMN step. The column still uses enum_child_attendance_status_old
- * (values: present, absent, late, excused), blocking saves for sick/home_leave/
- * hospitalized.  This migration finishes the job.
+ * ALTER COLUMN step. It crashed trying to SET status='sick' on a column still
+ * typed as enum_child_attendance_status_old (which only has present/absent/
+ * late/excused). This migration completes the column swap using a CASE expression
+ * in the USING clause to remap legacy values atomically in one statement.
  */
 
 export async function up(queryInterface) {
-  // Migrate any legacy values that slipped through (none expected in prod)
-  await queryInterface.sequelize.query(
-    `UPDATE child_attendance SET status = 'present'::text WHERE status = 'late'`,
-  );
-  await queryInterface.sequelize.query(
-    `UPDATE child_attendance SET status = 'sick'::text WHERE status = 'excused'`,
-  );
-
-  // Swap the column to the new enum type
   await queryInterface.sequelize.query(`
     ALTER TABLE child_attendance
       ALTER COLUMN status TYPE "enum_child_attendance_status"
-      USING status::text::"enum_child_attendance_status"
+      USING CASE status::text
+        WHEN 'late'    THEN 'present'::"enum_child_attendance_status"
+        WHEN 'excused' THEN 'sick'::"enum_child_attendance_status"
+        ELSE status::text::"enum_child_attendance_status"
+      END
   `);
 
-  // Drop the now-unused old type (ignore if already gone)
   await queryInterface.sequelize.query(
     `DROP TYPE IF EXISTS "enum_child_attendance_status_old"`,
   );
 }
 
 export async function down(queryInterface) {
-  // Re-add old type
   await queryInterface.sequelize.query(
     `CREATE TYPE "enum_child_attendance_status_old" AS ENUM ('present', 'absent', 'late', 'excused')`,
   );
-  // Map new values back (best-effort; sick→excused, others→absent)
   await queryInterface.sequelize.query(
-    `UPDATE child_attendance SET status = 'excused'::text WHERE status = 'sick'`,
+    `UPDATE child_attendance SET status = 'excused' WHERE status::text = 'sick'`,
   );
   await queryInterface.sequelize.query(
-    `UPDATE child_attendance SET status = 'absent'::text WHERE status IN ('home_leave', 'hospitalized')`,
+    `UPDATE child_attendance SET status = 'absent' WHERE status::text IN ('home_leave', 'hospitalized')`,
   );
   await queryInterface.sequelize.query(`
     ALTER TABLE child_attendance
