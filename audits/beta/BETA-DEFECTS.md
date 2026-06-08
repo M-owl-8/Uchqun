@@ -243,7 +243,46 @@
 <!-- Populated during testing -->
 
 ## Cross-Cutting Defects (Step 2)
-<!-- Language, session, refresh, double-submit, empty-state, upload error -->
+
+### UX-01 — Destructive actions execute without confirmation modal
+
+- **Severity:** P2
+- **Portals affected:** Admin (Reception Management), Reception (Teacher / Parent / Group Management)
+- **Wave:** Cross-cutting (discovered during pre-S20 audit)
+
+**Pre-fix inventory (S20 audit results):**
+
+| Portal    | Page                | Action                    | Pre-fix state                                      |
+|-----------|---------------------|---------------------------|----------------------------------------------------|
+| Admin     | Reception Mgmt      | Delete receptionist       | ⚠️ Shared ConfirmDialog used but **name missing** — message showed generic text, no entity name |
+| Reception | Teacher Mgmt        | Delete teacher            | ⚠️ Shared ConfirmDialog used but **name missing**, **no group-unassignment warning** |
+| Reception | Parent Mgmt (indiv) | Delete parent             | ❌ Hand-rolled inline modal — **silently dropped `warning` field**, had no `role="dialog"` |
+| Reception | Parent Mgmt (child) | Delete child              | ⚠️ Shared ConfirmDialog but **name missing** |
+| Reception | Parent Mgmt (bulk)  | Bulk delete parents       | ⚠️ Shared ConfirmDialog but **no `warning` field** set |
+| Reception | Group Mgmt          | Delete group              | ⚠️ Shared ConfirmDialog used but **name missing**, **no children-reassignment warning** |
+
+**Fix (commit `13129a92`, S20):**
+- Admin → ReceptionManagement: `handleDeleteReception` now looks up name from state and passes `{{name}}` to i18n message.
+- Reception → TeacherManagement: `handleDelete` now looks up name; `warning` field added with group-unassignment note.
+- Reception → ParentManagement (individual): replaced hand-rolled inline modal with `<ConfirmDialog>` (gains `role="dialog"` + `warning` rendering); `handleDelete` now looks up name; `handleDeleteChild` looks up child name + adds warning.
+- Reception → ParentManagement (bulk): `warning: t('parentsPage.bulkDeleteWarning')` now passed.
+- Reception → GroupManagement: `handleDelete` now looks up group name; `warning` field added with children-reassignment note.
+- Locale keys added to uz/ru/en for all 6 new message strings (confirmDelete, confirmDeleteWarning per action).
+
+**Proof (Playwright, 5/5 PASS, cold production, S20):** `tests/ux01-confirm-dialogs-proof.spec.js`
+- `UX-01-admin-reception-delete-modal.png` — admin portal: dialog shows "Iroda Abdullayeva" + red warning; Cancel closes it
+- `UX-01-admin-reception-after-cancel.png` — row still present after Cancel
+- `UX-01-reception-teacher-delete-modal.png` — reception portal: teacher name + group warning in red
+- `UX-01-reception-teacher-after-cancel.png` — teacher card still present
+- `UX-01-reception-parent-delete-modal.png` — `role="dialog"` confirmed (shared ConfirmDialog, not old inline); parent name + warning
+- `UX-01-reception-parent-bulk-delete-modal.png` — count "1" in message; red soft-delete warning visible
+- `UX-01-reception-parent-bulk-after-cancel.png` — row still present after Cancel
+- `UX-01-reception-group-delete-modal.png` — group name in message + children-reassignment warning in red
+- `UX-01-reception-group-after-cancel.png` — group card still present
+
+**Matrix rows:** NOT flipped to PASS — re-verification in next verification-rebuild phase.
+
+**Status:** ✅ FIXED (S20) — commit `13129a92`
 
 ## Tenant Isolation Defects (Step 3)
 <!-- Any isolation breach found during hostile probes -->

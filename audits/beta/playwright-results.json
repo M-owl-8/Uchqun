@@ -1,0 +1,434 @@
+{
+  "config": {
+    "configFile": "C:\\work\\Uchqun\\playwright.config.js",
+    "rootDir": "C:/work/Uchqun/tests",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": null,
+    "globalTeardown": null,
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "ux01",
+        "name": "ux01",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/ux01-confirm-dialogs-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "def004",
+        "name": "def004",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/def004-provision-grants-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "def006",
+        "name": "def006",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/def006-must-change-password-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "def007",
+        "name": "def007",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/def007-cold-load-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "def010",
+        "name": "def010",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/def010-modal-layout-proof.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "wave1",
+        "name": "wave1",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/wave1-reception.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "wave2",
+        "name": "wave2",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/wave2-teacher.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "wave3-mobile",
+        "name": "wave3-mobile",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/wave3-parent.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "wave4",
+        "name": "wave4",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/wave4-admin.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "wave5-6",
+        "name": "wave5-6",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/wave5-6-government.spec.js"
+        ],
+        "timeout": 45000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "list",
+        null
+      ],
+      [
+        "json",
+        {
+          "outputFile": "audits/beta/playwright-results.json"
+        }
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.60.0",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "ux01-confirm-dialogs-proof.spec.js",
+      "file": "ux01-confirm-dialogs-proof.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "UX-01 Admin — delete-reception confirmation",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 35,
+          "column": 15,
+          "specs": [
+            {
+              "title": "delete-reception: modal appears with name and warning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 2888,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:46:09.280Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-27b95e0d1fe59d7369c1",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 46,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UX-01 Reception — delete-teacher confirmation",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 80,
+          "column": 15,
+          "specs": [
+            {
+              "title": "delete-teacher: modal appears with name and warning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4018,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:46:17.557Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-1b5215478783a3f2e706",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 91,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UX-01 Reception — delete-parent confirmation",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 127,
+          "column": 15,
+          "specs": [
+            {
+              "title": "delete-parent: shared ConfirmDialog appears with warning (not bare inline modal)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4253,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:46:27.017Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-eb0d4189c15754e6394d",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 138,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UX-01 Reception — bulk-delete-parent confirmation",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 178,
+          "column": 15,
+          "specs": [
+            {
+              "title": "bulk-delete parents: modal appears with count and warning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:46:36.270Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-f8291aeb802dd0554e7b",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 189,
+              "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UX-01 Reception — delete-group confirmation",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 230,
+          "column": 15,
+          "specs": [
+            {
+              "title": "delete-group: modal appears with group name and children warning",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4555,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:46:44.956Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-c1e4236d763f566b8a50",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 241,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-08T05:46:07.776Z",
+    "duration": 46541.3,
+    "expected": 5,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}
