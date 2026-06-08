@@ -114,6 +114,11 @@
 - **Console errors:** none (i18next silently falls back to key name)
 - **Network:** none
 - **Suspected layer:** Frontend — `teacher/public/locales/uz/common.json` uses old keys (`statePresent`/`stateLate`) while attendance component uses `statusPresent`/`statusHomeLeave`; no `quickObs` section (component uses `quickObs.*`, i18n has `observation.*`)
+- **Status:** ✅ FIXED (S15) — root cause was misidentified at beta time
+- **Actual root cause:** `teacher/public/locales/` is NOT loaded at runtime. `teacher/src/i18n.js` uses bundled imports (`import portalUz from './locales/uz/common.json'`). The src locale files (`teacher/src/locales/{uz,ru,en}/common.json`) have had all correct keys since commit 6b8daf02. The raw keys seen during the beta run were a stale browser/CDN cache artifact — the browser was serving an older JS bundle. Hard refresh fetched the current build, resolving the issue.
+- **Verification:** `node scripts/check-locale-completeness.mjs --portal=teacher` → ✅ PASS — 866 keys, all present in UZ, RU, EN. Keys confirmed: `attendance.statusPresent`/`statusHomeLeave`/`statusSick`/`statusHospitalized`/`statusAbsent`/`statusUnset` and `quickObs.title`/`quickObs.outcomes.*` all resolve to human-readable strings in all three locales.
+- **Code change:** None required — locale source files were already correct. No PR needed.
+- **Fix commit:** See BETA-DEFECTS.md update commit (DEF-007 close-out)
 
 ### DEF-008 — Intermittent session loss after T-001→T-003 re-login chain
 - **Severity:** P2
