@@ -22,6 +22,15 @@ module.exports = defineConfig({
   },
   projects: [
     {
+      name: 'def004',
+      testMatch: '**/def004-provision-grants-proof.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://government-production.up.railway.app',
+        viewport: { width: 1280, height: 800 },
+      },
+    },
+    {
       name: 'def006',
       testMatch: '**/def006-must-change-password-proof.spec.js',
       use: {

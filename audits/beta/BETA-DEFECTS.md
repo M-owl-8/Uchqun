@@ -93,6 +93,24 @@
 - **Feature ID:** G-050
 - **Detail:** `provision.grants.canRateSchools` is missing from UZ/RU/EN locale files. The capability checkbox label renders as the raw key string.
 - **Suspected layer:** Frontend (i18n)
+- **Status:** ✅ FIXED (S19) — already resolved by commit `7b1a39b9` (2026-06-06), before S19 ran
+- **Root cause (verified):** All 12 `provision.grants.*` keys were absent from `government/src/locales/{uz,ru,en}/common.json`. Commit `7b1a39b9` added all 12 keys to all three locales. No stale `government/public/locales/` tree was found — `government/src/i18n.js` uses bundled static imports (no HTTP fetch, no `i18next-http-backend`), so there was no stale public tree to delete.
+- **All 12 keys confirmed present post-fix (Node.js read of locale files, 2026-06-08):**
+  - UZ: `canRateSchools` → "Maktablarni Baholash"; `canArchiveSchools` → "Maktablarni Arxivlash"; `canManageAdmins` → "Direktorlarni Boshqarish"; `canViewAuditLog` → "Audit Jurnalini Ko'rish"; (+ 8 others) ✅
+  - RU: `canRateSchools` → "Оценивать Школы" ✅
+  - EN: `canRateSchools` → "Rate Schools" ✅
+- **Proof (Playwright 4/4 PASS — `tests/def004-provision-grants-proof.spec.js`):**
+  - Test 1: `gov.republic@uchqun.uz` cold login (no cookies) → leaves `/login` ✅
+  - Test 2: Navigate to Platform → "Davlat foydalanuvchilari" tab → visible ✅
+  - Test 3: Select `secondary` account type — 12 grant checkboxes render translated labels; zero raw camelCase keys (`canRateSchools`, etc.) in form text; UZ spot-checks pass ("Baholash", "Arxivlash", "Boshqarish", "Jurnalini"); `canRateSchools` label "Maktablarni Baholash" is visible ✅
+  - Test 4: Switch to RU — zero raw keys in form text ✅
+- **Cold-load screenshots:**
+  - `screens/DEF-004-gov-republic-login.png` — cold login at government portal
+  - `screens/DEF-004-gov-users-tab.png` — "Davlat foydalanuvchilari" tab active, showing Davlat Hisoblar (4) list
+  - `screens/DEF-004-grants-checkboxes.png` — "Ikkinchi darajali" selected; "Maktablarni Baholash" and "Maktablarni Ko'rish" visible as translated labels
+  - `screens/DEF-004-canRateSchools-translated.png` — canRateSchools label confirmed visible as translated text (not raw key)
+  - `screens/DEF-004-grants-ru.png` / `DEF-004-grants-ru-nokeys.png` — RU locale, no raw keys
+- **Matrix row:** G-050 NOT flipped to PASS — re-verification is a separate phase.
 
 ---
 
