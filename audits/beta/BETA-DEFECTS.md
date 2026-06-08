@@ -269,20 +269,30 @@
 - Reception → GroupManagement: `handleDelete` now looks up group name; `warning` field added with children-reassignment note.
 - Locale keys added to uz/ru/en for all 6 new message strings (confirmDelete, confirmDeleteWarning per action).
 
-**Proof (Playwright, 5/5 PASS, cold production, S20):** `tests/ux01-confirm-dialogs-proof.spec.js`
+**Proof (Playwright, 9/9 PASS, cold production, S20 + S20-close):** `tests/ux01-confirm-dialogs-proof.spec.js`
+
+*uz (default locale):*
 - `UX-01-admin-reception-delete-modal.png` — admin portal: dialog shows "Iroda Abdullayeva" + red warning; Cancel closes it
-- `UX-01-admin-reception-after-cancel.png` — row still present after Cancel
-- `UX-01-reception-teacher-delete-modal.png` — reception portal: teacher name + group warning in red
-- `UX-01-reception-teacher-after-cancel.png` — teacher card still present
-- `UX-01-reception-parent-delete-modal.png` — `role="dialog"` confirmed (shared ConfirmDialog, not old inline); parent name + warning
+- `UX-01-admin-reception-after-cancel.png` — **row count unchanged + first row still visible** after Cancel (asserted)
+- `UX-01-reception-teacher-delete-modal.png` — teacher name + group-unassignment warning in red
+- `UX-01-reception-teacher-after-cancel.png` — **card count unchanged + teacher card still visible** (asserted)
+- `UX-01-reception-parent-delete-modal.png` — `role="dialog"` confirmed (shared ConfirmDialog, not old inline); name + warning
 - `UX-01-reception-parent-bulk-delete-modal.png` — count "1" in message; red soft-delete warning visible
-- `UX-01-reception-parent-bulk-after-cancel.png` — row still present after Cancel
+- `UX-01-reception-parent-bulk-after-cancel.png` — **row count unchanged + first row still visible** after bulk Cancel (asserted)
 - `UX-01-reception-group-delete-modal.png` — group name in message + children-reassignment warning in red
-- `UX-01-reception-group-after-cancel.png` — group card still present
+- `UX-01-reception-group-after-cancel.png` — **card count unchanged + group card still visible** (asserted)
+
+*Non-default locales (DEF-004 lesson — keys hide in non-default locales):*
+- `UX-01-reception-teacher-delete-modal-ru.png` — ru: "Удалить аккаунт воспитателя «Shahnoza Ergasheva»?" + Russian warning with group note; no raw keys
+- `UX-01-reception-teacher-delete-modal-en.png` — en: "Delete teacher account \"Shahnoza Ergasheva\"?" + English warning with group note; no raw keys
+- `UX-01-reception-parent-bulk-delete-modal-ru.png` — ru bulk: translated message + Russian soft-delete warning; no raw keys
+- `UX-01-reception-parent-bulk-delete-modal-en.png` — en bulk: translated message + English soft-delete warning; no raw keys
+
+*Confirm path (actual deletion):* DEFERRED to verification-rebuild phase against disposable test data — no mutations on production.
 
 **Matrix rows:** NOT flipped to PASS — re-verification in next verification-rebuild phase.
 
-**Status:** ✅ FIXED (S20) — commit `13129a92`
+**Status:** ✅ FIXED (S20, closed S20-close) — fix commit `13129a92`; proof commits `87709e0e`, `HEAD`
 
 ## Tenant Isolation Defects (Step 3)
 <!-- Any isolation breach found during hostile probes -->

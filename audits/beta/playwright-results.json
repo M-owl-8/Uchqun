@@ -212,11 +212,11 @@
         {
           "title": "UX-01 Admin — delete-reception confirmation",
           "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 35,
+          "line": 49,
           "column": 15,
           "specs": [
             {
-              "title": "delete-reception: modal appears with name and warning",
+              "title": "delete-reception: modal appears with name and warning; Cancel leaves row intact",
               "ok": true,
               "tags": [],
               "tests": [
@@ -231,12 +231,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 2888,
+                      "duration": 3425,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:46:09.280Z",
+                      "startTime": "2026-06-08T05:57:44.982Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -244,9 +244,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-27b95e0d1fe59d7369c1",
+              "id": "c2512dbb600478247314-e0daecf4a46e32ed0d1f",
               "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 46,
+              "line": 60,
               "column": 3
             }
           ]
@@ -254,11 +254,11 @@
         {
           "title": "UX-01 Reception — delete-teacher confirmation",
           "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 80,
+          "line": 98,
           "column": 15,
           "specs": [
             {
-              "title": "delete-teacher: modal appears with name and warning",
+              "title": "delete-teacher: modal appears with name and warning; Cancel leaves card intact",
               "ok": true,
               "tags": [],
               "tests": [
@@ -273,12 +273,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4018,
+                      "duration": 3788,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:46:17.557Z",
+                      "startTime": "2026-06-08T05:57:56.528Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -286,9 +286,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-1b5215478783a3f2e706",
+              "id": "c2512dbb600478247314-464d44b12048a1c2e91a",
               "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 91,
+              "line": 109,
               "column": 3
             }
           ]
@@ -296,11 +296,11 @@
         {
           "title": "UX-01 Reception — delete-parent confirmation",
           "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 127,
+          "line": 160,
           "column": 15,
           "specs": [
             {
-              "title": "delete-parent: shared ConfirmDialog appears with warning (not bare inline modal)",
+              "title": "delete-parent: shared ConfirmDialog appears; Cancel leaves row intact",
               "ok": true,
               "tags": [],
               "tests": [
@@ -315,12 +315,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4253,
+                      "duration": 4557,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:46:27.017Z",
+                      "startTime": "2026-06-08T05:58:05.538Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -328,9 +328,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-eb0d4189c15754e6394d",
+              "id": "c2512dbb600478247314-472aebbc181d50b2762e",
               "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 138,
+              "line": 171,
               "column": 3
             }
           ]
@@ -338,11 +338,11 @@
         {
           "title": "UX-01 Reception — bulk-delete-parent confirmation",
           "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 178,
+          "line": 212,
           "column": 15,
           "specs": [
             {
-              "title": "bulk-delete parents: modal appears with count and warning",
+              "title": "bulk-delete parents: modal with count + warning; Cancel leaves row intact",
               "ok": true,
               "tags": [],
               "tests": [
@@ -357,12 +357,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4213,
+                      "duration": 4449,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:46:36.270Z",
+                      "startTime": "2026-06-08T05:58:14.361Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -370,9 +370,9 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-f8291aeb802dd0554e7b",
+              "id": "c2512dbb600478247314-f2bc0570c64b766cde77",
               "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 189,
+              "line": 223,
               "column": 3
             }
           ]
@@ -380,11 +380,11 @@
         {
           "title": "UX-01 Reception — delete-group confirmation",
           "file": "ux01-confirm-dialogs-proof.spec.js",
-          "line": 230,
+          "line": 267,
           "column": 15,
           "specs": [
             {
-              "title": "delete-group: modal appears with group name and children warning",
+              "title": "delete-group: modal with group name + warning; Cancel leaves card intact",
               "ok": true,
               "tags": [],
               "tests": [
@@ -399,12 +399,12 @@
                       "workerIndex": 0,
                       "parallelIndex": 0,
                       "status": "passed",
-                      "duration": 4555,
+                      "duration": 4198,
                       "errors": [],
                       "stdout": [],
                       "stderr": [],
                       "retry": 0,
-                      "startTime": "2026-06-08T05:46:44.956Z",
+                      "startTime": "2026-06-08T05:58:23.489Z",
                       "annotations": [],
                       "attachments": []
                     }
@@ -412,10 +412,154 @@
                   "status": "expected"
                 }
               ],
-              "id": "c2512dbb600478247314-c1e4236d763f566b8a50",
+              "id": "c2512dbb600478247314-59662d8cef8182da4bfd",
               "file": "ux01-confirm-dialogs-proof.spec.js",
-              "line": 241,
+              "line": 278,
               "column": 3
+            }
+          ]
+        },
+        {
+          "title": "UX-01 Reception — locale renders (ru + en)",
+          "file": "ux01-confirm-dialogs-proof.spec.js",
+          "line": 328,
+          "column": 15,
+          "specs": [
+            {
+              "title": "delete-teacher modal renders in ru (no raw keys)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4361,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:58:32.703Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-32a5f47b3975002dc736",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 340,
+              "column": 5
+            },
+            {
+              "title": "bulk-delete parents modal renders in ru (no raw keys)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8287,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:58:41.589Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-77d555b5104c8f670a90",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 377,
+              "column": 5
+            },
+            {
+              "title": "delete-teacher modal renders in en (no raw keys)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 4714,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:58:49.908Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-56bd5b71911784610392",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 340,
+              "column": 5
+            },
+            {
+              "title": "bulk-delete parents modal renders in en (no raw keys)",
+              "ok": true,
+              "tags": [],
+              "tests": [
+                {
+                  "timeout": 45000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "ux01",
+                  "projectName": "ux01",
+                  "results": [
+                    {
+                      "workerIndex": 0,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8419,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "startTime": "2026-06-08T05:58:54.656Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "c2512dbb600478247314-380e241ac9595cd011f0",
+              "file": "ux01-confirm-dialogs-proof.spec.js",
+              "line": 377,
+              "column": 5
             }
           ]
         }
@@ -424,9 +568,9 @@
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-06-08T05:46:07.776Z",
-    "duration": 46541.3,
-    "expected": 5,
+    "startTime": "2026-06-08T05:57:43.543Z",
+    "duration": 80001.352,
+    "expected": 9,
     "skipped": 0,
     "unexpected": 0,
     "flaky": 0

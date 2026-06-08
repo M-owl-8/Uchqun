@@ -3,11 +3,13 @@
 // Verifies that every guarded destructive action in the admin and reception
 // portals shows a confirmation modal BEFORE executing and that:
 //   1. The modal appears (not immediate execution)
-//   2. Cancel aborts the action (item still present after cancel)
+//   2. Cancel aborts AND the item is STILL PRESENT in the list afterward
 //   3. The entity name appears in the modal text
 //   4. A warning about side effects is visible in red
+//   5. (ru/en) Non-default locales render translated strings, not raw i18n keys
 //
-// Cold production run. No mutations performed — Cancel is always chosen.
+// Confirm path (actual deletion) is DEFERRED to verification-rebuild phase
+// against disposable test data. No mutations on production in this suite.
 
 const { test, expect } = require('@playwright/test');
 
@@ -31,6 +33,18 @@ async function loginAs(page, base, email, pw) {
   await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 }
 
+// Switch the portal language via the sidebar LanguageSwitcher
+// (button[aria-haspopup="listbox"] → [role="option"] with the target label)
+async function switchLang(page, lang) {
+  const labels = { uz: "O'zbekcha", ru: 'Русский', en: 'English' };
+  const trigger = page.locator('button[aria-haspopup="listbox"]').first();
+  await trigger.waitFor({ state: 'visible', timeout: 10000 });
+  await trigger.click();
+  await page.waitForTimeout(200);
+  await page.locator('[role="option"]').filter({ hasText: labels[lang] }).click();
+  await page.waitForTimeout(600); // allow i18n re-render
+}
+
 // ─── Admin: delete reception ──────────────────────────────────────────────────
 test.describe.serial('UX-01 Admin — delete-reception confirmation', () => {
   let page;
@@ -43,19 +57,18 @@ test.describe.serial('UX-01 Admin — delete-reception confirmation', () => {
   });
   test.afterAll(async () => page.context().close().catch(() => {}));
 
-  test('delete-reception: modal appears with name and warning', async () => {
+  test('delete-reception: modal appears with name and warning; Cancel leaves row intact', async () => {
     await page.goto(`${ADMIN_BASE}/admin/receptions`);
     await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
-    // Wait for table rows to load
-    await page.locator('table tbody tr').first().waitFor({ state: 'visible', timeout: 15000 });
+    // Wait for table rows to load and capture count before any action
+    const firstRow = page.locator('table tbody tr').first();
+    await firstRow.waitFor({ state: 'visible', timeout: 15000 });
+    const rowCountBefore = await page.locator('table tbody tr').count();
 
-    // Delete button is the one with error classes (hover:text-error-700 hover:bg-error-50)
-    // Edit and View buttons use warm classes — only delete has "error" in its className
-    const trashBtn = page.locator('table tbody tr').first()
-      .locator('button[class*="error"]').first();
+    // Delete button has error classes (hover:text-error-700 hover:bg-error-50)
+    const trashBtn = firstRow.locator('button[class*="error"]').first();
     await trashBtn.waitFor({ state: 'visible', timeout: 10000 });
-
     await trashBtn.click();
     await page.waitForTimeout(400);
     await ss(page, 'UX-01-admin-reception-delete-modal');
@@ -69,8 +82,13 @@ test.describe.serial('UX-01 Admin — delete-reception confirmation', () => {
     const cancelBtn = dialog.getByRole('button', { name: /cancel|bekor|отмена/i });
     await expect(cancelBtn, 'Cancel button must be present').toBeVisible();
     await cancelBtn.click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     await expect(dialog, 'Dialog must close after Cancel').not.toBeVisible();
+
+    // Item-still-present: row count unchanged and first row still visible
+    const rowCountAfter = await page.locator('table tbody tr').count();
+    expect(rowCountAfter, 'Table row count must be unchanged after Cancel').toBe(rowCountBefore);
+    await expect(firstRow, 'First reception row must still be visible after Cancel').toBeVisible();
 
     await ss(page, 'UX-01-admin-reception-after-cancel');
   });
@@ -88,7 +106,7 @@ test.describe.serial('UX-01 Reception — delete-teacher confirmation', () => {
   });
   test.afterAll(async () => page.context().close().catch(() => {}));
 
-  test('delete-teacher: modal appears with name and warning', async () => {
+  test('delete-teacher: modal appears with name and warning; Cancel leaves card intact', async () => {
     await page.goto(`${RECEPTION_BASE}/reception/teachers`);
     await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
@@ -97,10 +115,14 @@ test.describe.serial('UX-01 Reception — delete-teacher confirmation', () => {
     await firstCard.waitFor({ state: 'visible', timeout: 15000 });
     await page.waitForTimeout(500);
 
+    // Capture teacher name from card before triggering delete
+    const teacherName = await firstCard.locator('[class*="font-semibold"], [class*="font-medium"]')
+      .first().textContent().catch(() => '');
+    const cardCountBefore = await page.locator('.grid > div').count();
+
     // Delete button in each teacher card has bg-error-50 in its className
     const deleteBtn = firstCard.locator('button[class*="bg-error"]').first();
     await deleteBtn.waitFor({ state: 'visible', timeout: 10000 });
-
     await deleteBtn.click();
     await page.waitForTimeout(400);
     await ss(page, 'UX-01-reception-teacher-delete-modal');
@@ -116,8 +138,19 @@ test.describe.serial('UX-01 Reception — delete-teacher confirmation', () => {
 
     const cancelBtn = dialog.getByRole('button', { name: /cancel|bekor|отмена/i });
     await cancelBtn.click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     await expect(dialog, 'Dialog must close after Cancel').not.toBeVisible();
+
+    // Item-still-present: card count unchanged, first card still visible with same name
+    const cardCountAfter = await page.locator('.grid > div').count();
+    expect(cardCountAfter, 'Teacher card count must be unchanged after Cancel').toBe(cardCountBefore);
+    await expect(firstCard, 'First teacher card must still be visible after Cancel').toBeVisible();
+    if (teacherName.trim()) {
+      await expect(
+        page.locator('.grid > div').filter({ hasText: teacherName.trim() }).first(),
+        `Teacher "${teacherName.trim()}" must still appear in grid after Cancel`
+      ).toBeVisible();
+    }
 
     await ss(page, 'UX-01-reception-teacher-after-cancel');
   });
@@ -135,28 +168,25 @@ test.describe.serial('UX-01 Reception — delete-parent confirmation', () => {
   });
   test.afterAll(async () => page.context().close().catch(() => {}));
 
-  test('delete-parent: shared ConfirmDialog appears with warning (not bare inline modal)', async () => {
+  test('delete-parent: shared ConfirmDialog appears; Cancel leaves row intact', async () => {
     await page.goto(`${RECEPTION_BASE}/reception/parents`);
     await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
-    // Wait for first data row
     const firstRow = page.locator('table tbody tr').first();
     await firstRow.waitFor({ state: 'visible', timeout: 15000 });
     await page.waitForTimeout(600);
+    const rowCountBefore = await page.locator('table tbody tr').count();
 
-    // The MoreHorizontal kebab is inside <div class="relative group"> in the last td.
-    // Hovering the container triggers the CSS group-hover:block rule on the dropdown.
+    // Hover the MoreHorizontal kebab — CSS group-hover:block reveals dropdown
     const menuContainer = firstRow.locator('.relative.group');
     await menuContainer.waitFor({ state: 'visible', timeout: 10000 });
     await menuContainer.hover();
     await page.waitForTimeout(400);
 
-    // Delete option in dropdown has text-error-700 class
     const deleteItem = firstRow.locator('button[class*="text-error-700"]').first();
     await deleteItem.waitFor({ state: 'visible', timeout: 5000 });
     await deleteItem.click();
     await page.waitForTimeout(400);
-
     await ss(page, 'UX-01-reception-parent-delete-modal');
 
     // Shared ConfirmDialog renders role="dialog"; old inline did not
@@ -167,14 +197,18 @@ test.describe.serial('UX-01 Reception — delete-parent confirmation', () => {
     await expect(warning, 'Side-effect warning must be visible').toBeVisible();
 
     await dialog.getByRole('button', { name: /cancel|bekor|отмена/i }).click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     await expect(dialog).not.toBeVisible();
+
+    // Item-still-present: row count unchanged and first row still visible
+    const rowCountAfter = await page.locator('table tbody tr').count();
+    expect(rowCountAfter, 'Parent row count must be unchanged after Cancel').toBe(rowCountBefore);
+    await expect(firstRow, 'First parent row must still be visible after Cancel').toBeVisible();
   });
 });
 
 // ─── Reception: bulk-delete parents ──────────────────────────────────────────
-// Separate describe block with its own fresh login to avoid session state bleed
-// from the individual-delete test that hovered the kebab menu.
+// Separate describe block — fresh login avoids state bleed from the kebab hover above.
 test.describe.serial('UX-01 Reception — bulk-delete-parent confirmation', () => {
   let page;
 
@@ -186,27 +220,25 @@ test.describe.serial('UX-01 Reception — bulk-delete-parent confirmation', () =
   });
   test.afterAll(async () => page.context().close().catch(() => {}));
 
-  test('bulk-delete parents: modal appears with count and warning', async () => {
+  test('bulk-delete parents: modal with count + warning; Cancel leaves row intact', async () => {
     await page.goto(`${RECEPTION_BASE}/reception/parents`);
     await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
     const firstRow = page.locator('table tbody tr').first();
     await firstRow.waitFor({ state: 'visible', timeout: 15000 });
     await page.waitForTimeout(600);
+    const rowCountBefore = await page.locator('table tbody tr').count();
 
-    // Check first row checkbox to trigger bulk toolbar
     const firstCheckbox = page.locator('table tbody tr input[type="checkbox"]').first();
     await firstCheckbox.waitFor({ state: 'visible', timeout: 10000 });
     await firstCheckbox.click();
     await page.waitForTimeout(500);
 
-    // The bulk delete button uniquely uses text-error-50 (light text on dark toolbar).
-    // Individual row-delete options use text-error-700 (dark red). This makes it unambiguous.
+    // Bulk delete button uniquely uses text-error-50 (row-level deletes use text-error-700)
     const bulkDelete = page.locator('button[class*="text-error-50"]').first();
     await bulkDelete.waitFor({ state: 'visible', timeout: 10000 });
     await bulkDelete.click();
     await page.waitForTimeout(400);
-
     await ss(page, 'UX-01-reception-parent-bulk-delete-modal');
 
     const dialog = page.locator('[role="dialog"]');
@@ -219,8 +251,13 @@ test.describe.serial('UX-01 Reception — bulk-delete-parent confirmation', () =
     await expect(warning, 'Side-effect warning must appear for bulk delete').toBeVisible();
 
     await dialog.getByRole('button', { name: /cancel|bekor|отмена/i }).click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     await expect(dialog).not.toBeVisible();
+
+    // Item-still-present: row count unchanged (selected parent not removed)
+    const rowCountAfter = await page.locator('table tbody tr').count();
+    expect(rowCountAfter, 'Parent row count must be unchanged after bulk Cancel').toBe(rowCountBefore);
+    await expect(firstRow, 'First parent row must still be visible after bulk Cancel').toBeVisible();
 
     await ss(page, 'UX-01-reception-parent-bulk-after-cancel');
   });
@@ -238,22 +275,19 @@ test.describe.serial('UX-01 Reception — delete-group confirmation', () => {
   });
   test.afterAll(async () => page.context().close().catch(() => {}));
 
-  test('delete-group: modal appears with group name and children warning', async () => {
+  test('delete-group: modal with group name + warning; Cancel leaves card intact', async () => {
     await page.goto(`${RECEPTION_BASE}/reception/groups`);
     await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
 
-    // Wait for first group card in the grid
     const firstCard = page.locator('.grid > div').first();
     await firstCard.waitFor({ state: 'visible', timeout: 15000 });
     await page.waitForTimeout(500);
+    const cardCountBefore = await page.locator('.grid > div').count();
 
-    // Get group name from card heading (for assertion after dialog opens)
     const groupName = await firstCard.locator('h3').first().textContent().catch(() => '');
 
-    // Delete button in each group card has bg-error-50 in its className
     const deleteBtn = firstCard.locator('button[class*="bg-error"]').first();
     await deleteBtn.waitFor({ state: 'visible', timeout: 10000 });
-
     await deleteBtn.click();
     await page.waitForTimeout(400);
     await ss(page, 'UX-01-reception-group-delete-modal');
@@ -270,9 +304,119 @@ test.describe.serial('UX-01 Reception — delete-group confirmation', () => {
     await expect(warning, 'Warning about children reassignment must appear').toBeVisible();
 
     await dialog.getByRole('button', { name: /cancel|bekor|отмена/i }).click();
-    await page.waitForTimeout(300);
+    await page.waitForTimeout(400);
     await expect(dialog).not.toBeVisible();
+
+    // Item-still-present: card count unchanged and the specific group card still visible
+    const cardCountAfter = await page.locator('.grid > div').count();
+    expect(cardCountAfter, 'Group card count must be unchanged after Cancel').toBe(cardCountBefore);
+    await expect(firstCard, 'First group card must still be visible after Cancel').toBeVisible();
+    if (groupName.trim()) {
+      await expect(
+        page.locator('.grid > div').filter({ hasText: groupName.trim() }).first(),
+        `Group "${groupName.trim()}" must still appear in grid after Cancel`
+      ).toBeVisible();
+    }
 
     await ss(page, 'UX-01-reception-group-after-cancel');
   });
+});
+
+// ─── Locale renders: ru and en for delete-teacher + bulk-delete ───────────────
+// Proves non-default locales render translated strings, not raw i18n keys.
+// DEF-004 lesson: missing keys appear only in non-default locales.
+test.describe.serial('UX-01 Reception — locale renders (ru + en)', () => {
+  let page;
+
+  test.beforeAll(async ({ browser }) => {
+    const ctx = await browser.newContext({ ignoreHTTPSErrors: true, storageState: undefined });
+    page = await ctx.newPage();
+    page.setDefaultTimeout(30000);
+    await loginAs(page, RECEPTION_BASE, 'reception3@uchqun.uz', PW);
+  });
+  test.afterAll(async () => page.context().close().catch(() => {}));
+
+  for (const lang of ['ru', 'en']) {
+    test(`delete-teacher modal renders in ${lang} (no raw keys)`, async () => {
+      await page.goto(`${RECEPTION_BASE}/reception/teachers`);
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+
+      // Switch language via sidebar LanguageSwitcher
+      await switchLang(page, lang);
+
+      const firstCard = page.locator('.grid > div').first();
+      await firstCard.waitFor({ state: 'visible', timeout: 15000 });
+      await page.waitForTimeout(500);
+
+      const deleteBtn = firstCard.locator('button[class*="bg-error"]').first();
+      await deleteBtn.waitFor({ state: 'visible', timeout: 10000 });
+      await deleteBtn.click();
+      await page.waitForTimeout(400);
+      await ss(page, `UX-01-reception-teacher-delete-modal-${lang}`);
+
+      const dialog = page.locator('[role="dialog"]');
+      await expect(dialog, `Confirmation dialog must appear in ${lang}`).toBeVisible();
+
+      // Message must be a translated sentence — not a raw i18n key
+      const msgText = await dialog.locator('p').first().textContent().catch(() => '');
+      expect(msgText.trim(), `Message must not be a raw i18n key in ${lang}`).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
+      expect(msgText.trim(), `Message must contain at least one space (sentence, not key) in ${lang}`).toMatch(/\s/);
+
+      // Warning must also be a translated sentence
+      const warning = dialog.locator('.text-red-600');
+      await expect(warning, `Red warning must appear in ${lang}`).toBeVisible();
+      const warnText = await warning.textContent().catch(() => '');
+      expect(warnText.trim(), `Warning must not be a raw i18n key in ${lang}`).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
+      expect(warnText.trim(), `Warning must contain at least one space (sentence) in ${lang}`).toMatch(/\s/);
+
+      await dialog.getByRole('button', { name: /cancel|bekor|отмена|отмен/i }).click();
+      await page.waitForTimeout(400);
+      await expect(dialog).not.toBeVisible();
+    });
+
+    test(`bulk-delete parents modal renders in ${lang} (no raw keys)`, async () => {
+      await page.goto(`${RECEPTION_BASE}/reception/parents`);
+      await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+
+      // Ensure language is correct (may persist from previous test in this session)
+      await switchLang(page, lang);
+
+      const firstRow = page.locator('table tbody tr').first();
+      await firstRow.waitFor({ state: 'visible', timeout: 15000 });
+      await page.waitForTimeout(600);
+
+      const firstCheckbox = page.locator('table tbody tr input[type="checkbox"]').first();
+      await firstCheckbox.waitFor({ state: 'visible', timeout: 10000 });
+      await firstCheckbox.click();
+      await page.waitForTimeout(500);
+
+      const bulkDelete = page.locator('button[class*="text-error-50"]').first();
+      await bulkDelete.waitFor({ state: 'visible', timeout: 10000 });
+      await bulkDelete.click();
+      await page.waitForTimeout(400);
+      await ss(page, `UX-01-reception-parent-bulk-delete-modal-${lang}`);
+
+      const dialog = page.locator('[role="dialog"]');
+      await expect(dialog, `Bulk delete dialog must appear in ${lang}`).toBeVisible();
+
+      const msgText = await dialog.locator('p').first().textContent().catch(() => '');
+      expect(msgText.trim(), `Bulk message must not be raw key in ${lang}`).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
+      expect(msgText.trim(), `Bulk message must contain space in ${lang}`).toMatch(/\s/);
+
+      const warning = dialog.locator('.text-red-600');
+      await expect(warning, `Red warning must appear in ${lang}`).toBeVisible();
+      const warnText = await warning.textContent().catch(() => '');
+      expect(warnText.trim(), `Bulk warning must not be raw key in ${lang}`).not.toMatch(/^[a-z][a-zA-Z]*\.[a-z]/);
+      expect(warnText.trim(), `Bulk warning must contain space in ${lang}`).toMatch(/\s/);
+
+      await dialog.getByRole('button', { name: /cancel|bekor|отмена/i }).click();
+      await page.waitForTimeout(400);
+      await expect(dialog).not.toBeVisible();
+
+      // Reset to uz so portal is clean for any subsequent test runs
+      await page.goto(`${RECEPTION_BASE}/reception/teachers`);
+      await page.waitForLoadState('networkidle', { timeout: 10000 }).catch(() => {});
+      await switchLang(page, 'uz').catch(() => {});
+    });
+  }
 });
