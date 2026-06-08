@@ -22,6 +22,14 @@ module.exports = defineConfig({
   },
   projects: [
     {
+      name: 'ux01',
+      testMatch: '**/ux01-confirm-dialogs-proof.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+      },
+    },
+    {
       name: 'def004',
       testMatch: '**/def004-provision-grants-proof.spec.js',
       use: {

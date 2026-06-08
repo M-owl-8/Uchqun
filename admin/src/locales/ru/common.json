@@ -205,7 +205,7 @@
     "createSubmitting": "Создание...",
     "updateSubmit": "Обновить прием",
     "updateSubmitting": "Обновление...",
-    "deleteConfirm": "Удалить этот аккаунт приема? Это действие необратимо.",
+    "deleteConfirm": "Удалить сотрудника приёмной «{{name}}»?",
     "rejectionPrompt": "Введите причину отклонения:",
     "docStatus": {
       "approved": "Утвержден",

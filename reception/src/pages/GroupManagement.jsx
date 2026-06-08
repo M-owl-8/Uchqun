@@ -80,9 +80,11 @@ const GroupManagement = () => {
   };
 
   const handleDelete = (groupId) => {
+    const group = groups.find(g => g.id === groupId);
+    const name = group?.name ?? '';
     setConfirmDialog({
-      message: t('groupsPage.confirmDelete'),
-      warning: t('groupsPage.confirmDeleteWarning', { defaultValue: "Bu amal qaytarib bo'lmaydi — guruh ma'lumotlari tiklanmaydi. Guruh bolalari qayta tayinlanishi kerak bo'ladi." }),
+      message: t('groupsPage.confirmDelete', { name }),
+      warning: t('groupsPage.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

@@ -298,9 +298,11 @@ const ReceptionManagement = () => {
   };
 
   const handleDeleteReception = (receptionId) => {
+    const rec = receptions.find(r => r.id === receptionId);
+    const name = rec ? `${rec.firstName} ${rec.lastName}` : '';
     setConfirmDialog({
-      message: t('receptionsPage.deleteConfirm'),
-      warning: t('receptionsPage.deleteConfirmWarning', { defaultValue: "Qabulxona xodimi yumshoq o'chiriladi. Tiklash uchun \"Savat\" bo'limini ishlatish mumkin." }),
+      message: t('receptionsPage.deleteConfirm', { name }),
+      warning: t('receptionsPage.deleteConfirmWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

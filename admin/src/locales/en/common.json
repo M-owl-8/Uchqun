@@ -204,7 +204,7 @@
     "createSubmitting": "Creating...",
     "updateSubmit": "Update Reception",
     "updateSubmitting": "Updating...",
-    "deleteConfirm": " you sure you want to delete this Reception account? This action cannot be undone.",
+    "deleteConfirm": "Delete receptionist \"{{name}}\"?",
     "rejectionPrompt": "Enter rejection reason:",
     "docStatus": {
       "approved": "Approved",

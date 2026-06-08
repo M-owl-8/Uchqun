@@ -155,9 +155,11 @@ const TeacherManagement = () => {
   };
 
   const handleDelete = (teacherId) => {
+    const teacher = teachers.find(t => t.id === teacherId);
+    const name = teacher ? `${teacher.firstName} ${teacher.lastName}` : '';
     setConfirmDialog({
-      message: t('teachersPage.confirmDelete'),
-      warning: t('teachersPage.confirmDeleteWarning', { defaultValue: "Tarbiyachi yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
+      message: t('teachersPage.confirmDelete', { name }),
+      warning: t('teachersPage.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {

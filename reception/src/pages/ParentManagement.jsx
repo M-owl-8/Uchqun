@@ -8,6 +8,7 @@ import {
   Plus, Search, ChevronLeft, ChevronRight,
   MoreHorizontal, CheckCircle, Download, Trash2, Pencil, Copy,
 } from 'lucide-react';
+import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useTranslation } from 'react-i18next';
 import ParentFormModal from './parents/ParentFormModal';
 import ChildFormModal from './parents/ChildFormModal';
@@ -155,9 +156,11 @@ const ParentManagement = () => {
   };
 
   const handleDelete = (parentId) => {
+    const parent = parents.find(p => p.id === parentId);
+    const name = parent ? `${parent.firstName} ${parent.lastName}` : '';
     setConfirmDialog({
-      message: t('parentsPage.confirmDelete'),
-      warning: t('parentsPage.confirmDeleteWarning', { defaultValue: "Ota-ona yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
+      message: t('parentsPage.confirmDelete', { name }),
+      warning: t('parentsPage.confirmDeleteWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -185,9 +188,12 @@ const ParentManagement = () => {
   };
 
   const handleDeleteChild = (parentId, childId) => {
+    const parentObj = parents.find(p => p.id === parentId);
+    const childObj = parentObj?.children?.find(c => c.id === childId);
+    const name = childObj ? `${childObj.firstName} ${childObj.lastName}` : '';
     setConfirmDialog({
-      message: t('parentsPage.confirmDeleteChild'),
-      warning: t('parentsPage.confirmDeleteChildWarning', { defaultValue: "Bola yumshoq o'chiriladi. Bu portalda tiklash imkoniyati yo'q (admin portali orqali tiklanishi mumkin)." }),
+      message: t('parentsPage.confirmDeleteChild', { name }),
+      warning: t('parentsPage.confirmDeleteChildWarning'),
       onConfirm: async () => {
         setConfirmDialog(null);
         try {
@@ -503,6 +509,7 @@ const ParentManagement = () => {
             onClick={() => {
               setConfirmDialog({
                 message: t('parentsPage.bulkDeleteConfirm', { count: selectedRows.size }),
+                warning: t('parentsPage.bulkDeleteWarning'),
                 onConfirm: async () => {
                   setConfirmDialog(null);
                   let failed = 0;
@@ -770,27 +777,7 @@ const ParentManagement = () => {
           }}
         />
       )}
-      {confirmDialog && (
-        <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-surface rounded-lg p-6 max-w-sm w-full shadow-xl border border-slate-200">
-            <p className="text-slate-800 mb-6">{confirmDialog.message}</p>
-            <div className="flex gap-3">
-              <button
-                onClick={() => setConfirmDialog(null)}
-                className="flex-1 h-9 px-4 rounded-md border border-slate-300 hover:bg-slate-50 text-slate-700 text-[13px] font-medium transition-colors"
-              >
-                {t('common.cancel', { defaultValue: 'Bekor qilish' })}
-              </button>
-              <button
-                onClick={confirmDialog.onConfirm}
-                className="flex-1 h-9 px-4 rounded-md bg-error-600 hover:bg-error-700 text-white text-[13px] font-medium transition-colors"
-              >
-                {t('common.confirm', { defaultValue: 'Tasdiqlash' })}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />
 
       {tempPassword && (
         <div className="fixed inset-0 bg-slate-900/50 z-50 flex items-center justify-center p-4">

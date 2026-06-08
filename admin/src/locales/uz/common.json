@@ -205,7 +205,7 @@
     "createSubmitting": "Yaratilmoqda...",
     "updateSubmit": "Qabulni yangilash",
     "updateSubmitting": "Yangilanmoqda...",
-    "deleteConfirm": "Ushbu qabul akkauntini o‘chirasizmi? Amalni ortga qaytarib bo‘lmaydi.",
+    "deleteConfirm": "\"{{name}}\" qabul xodimini o'chirmoqchimisiz?",
     "rejectionPrompt": "Rad etish sababini kiriting:",
     "docStatus": {
       "approved": "Tasdiqlangan",
