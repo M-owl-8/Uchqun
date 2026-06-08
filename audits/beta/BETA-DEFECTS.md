@@ -174,6 +174,14 @@
 - **Console errors:** none
 - **Network:** POST /api/parent/privacy-consent (or similar) fires when accepted
 - **Suspected layer:** Frontend — expected UX for first-login consent, but P0 because automation and naive users cannot interact with the app until modal is dismissed; no "dismiss" affordance other than the accept button
+- **Status:** ✅ FIXED (S16) — commit 5b0098ab
+- **Root cause (verified):** `PrivacyConsentModal.jsx` used a single flat `overflow-y-auto` container for all content (header + policy sections + action buttons). The entire modal scrolled as one unit. At short viewports (360×640, 90vh = 576px), the long policy text pushed the accept button below the fold. No visible scroll indicator on mobile means most users never discover the button.
+- **Fix:** Restructured to `flex flex-col` with two zones: (1) `flex-1 overflow-y-auto` scrollable policy body (header, intro, both consent sections) and (2) `shrink-0` pinned footer (accept/decline buttons + footnote) that never scrolls off screen. On mobile, the sheet anchors to the bottom edge (`items-end`) so the footer is the first element visible above the keyboard. On `sm+` viewpoints it centres as a card. Consent logic (POST, checkbox gates, error display) unchanged.
+- **Proof (Playwright, route-intercepted — forced re-show, noted per S16 spec):** `tests/def010-modal-layout-proof.spec.js`, 7/7 PASS
+  - `DEF-010-390-button-visible.png`: 390×844 — accept button bounding box confirmed within viewport; policy text visible and scrollable above pinned footer
+  - `DEF-010-640-button-visible.png`: 360×640 — accept button bounding box confirmed within 640px viewport even with truncated (scrollable) policy body
+  - `DEF-010-390-dashboard-after-accept.png`: after clicking accept the modal dismissed and parent dashboard ("Bugungi xulosa") rendered fully interactive
+- **Matrix rows:** P-001 and downstream parent rows NOT flipped to PASS — re-verification in the next verification-rebuild phase.
 
 ## Wave 4 Defects (Admin)
 <!-- Populated during testing -->

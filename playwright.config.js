@@ -31,6 +31,14 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 'def010',
+      testMatch: '**/def010-modal-layout-proof.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://teacher-production-0647.up.railway.app',
+      },
+    },
+    {
       name: 'wave1',
       testMatch: '**/wave1-reception.spec.js',
       use: {
