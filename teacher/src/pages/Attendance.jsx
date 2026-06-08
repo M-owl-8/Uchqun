@@ -144,6 +144,7 @@ const Attendance = () => {
   const [loading, setLoading] = useState(true);
   const [historyRecords, setHistoryRecords] = useState([]);
   const [historyLoading, setHistoryLoading] = useState(false);
+  const [hasSavedData, setHasSavedData] = useState(false);
 
   const today = todayStr();
   const isFuture = selectedDate > today;
@@ -168,6 +169,7 @@ const Attendance = () => {
   // Load attendance records for the selected date (daily view)
   useEffect(() => {
     if (viewMode !== 'daily' || children.length === 0) return;
+    setHasSavedData(false);
     const load = async () => {
       try {
         const res = await api.get('/attendance', { params: { startDate: selectedDate, endDate: selectedDate } });
@@ -179,6 +181,7 @@ const Attendance = () => {
           if (date === selectedDate) newStates[r.childId] = r.status;
         });
         setStates(newStates);
+        setHasSavedData(records.length > 0);
       } catch {
         const newStates = {};
         children.forEach(c => { newStates[c.id] = 'unset'; });
@@ -356,6 +359,12 @@ const Attendance = () => {
             <div className="text-[12px] text-slate-500">
               {children[0]?.groupName || t('attendance.group')} · {total} {t('attendance.children')}
             </div>
+            {hasSavedData && !isFuture && (
+              <div className="mt-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-green-50 border border-green-200 rounded-lg text-[11px] text-green-700 w-fit">
+                <CheckCheck className="w-3 h-3 flex-shrink-0" strokeWidth={2.5} />
+                {t('attendance.alreadySaved')}
+              </div>
+            )}
             {!isFuture && (
               <button
                 type="button"
@@ -425,7 +434,7 @@ const Attendance = () => {
                 <span className="relative">
                   {saving
                     ? t('attendance.saving')
-                    : `${t('attendance.saveProgress', { total, marked: markedCount })} · ${t('common.save')}`}
+                    : `${t('attendance.saveProgress', { total, marked: markedCount })} · ${hasSavedData ? t('attendance.saveUpdate') : t('common.save')}`}
                 </span>
               </button>
             </div>

@@ -654,7 +654,9 @@
     "historyName": "Ism",
     "historyPresent": "Bor",
     "saveProgress": "{{total}} dan {{marked}} ta belgilangan",
-    "group": "Guruh"
+    "group": "Guruh",
+    "alreadySaved": "Saqlangan — tahrirlash mumkin",
+    "saveUpdate": "Yangilash"
   },
   "childDetail": {
     "errorIrrLoad": "IRR ma'lumotlari yuklanmadi",

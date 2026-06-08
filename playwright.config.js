@@ -30,6 +30,16 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 'ux02',
+      testMatch: '**/ux02-attendance-correction-proof.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        baseURL: 'https://teacher-production-0647.up.railway.app',
+        viewport: { width: 390, height: 844 },
+        isMobile: true,
+      },
+    },
+    {
       name: 'def004',
       testMatch: '**/def004-provision-grants-proof.spec.js',
       use: {

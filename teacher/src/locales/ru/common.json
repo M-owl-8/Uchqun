@@ -654,7 +654,9 @@
     "historyName": "Имя",
     "historyPresent": "Присут.",
     "saveProgress": "{{marked}} из {{total}} отмечено",
-    "group": "Группа"
+    "group": "Группа",
+    "alreadySaved": "Сохранено — можно изменить",
+    "saveUpdate": "Обновить"
   },
   "childDetail": {
     "errorIrrLoad": "Не удалось загрузить данные ИРП",

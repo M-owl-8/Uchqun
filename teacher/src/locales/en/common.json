@@ -654,7 +654,9 @@
     "historyName": "Name",
     "historyPresent": "Present",
     "saveProgress": "{{marked}} of {{total}} marked",
-    "group": "Group"
+    "group": "Group",
+    "alreadySaved": "Saved — you can edit",
+    "saveUpdate": "Update"
   },
   "childDetail": {
     "errorIrrLoad": "Failed to load IDP data",
