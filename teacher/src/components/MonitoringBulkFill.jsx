@@ -6,7 +6,7 @@
 // record per child in parallel.
 //
 // Backend has no batch endpoint — we Promise.all the POSTs. Per-row failures
-// are surfaced in the toast summary so the teacher knows which children
+// are surfaced in the toast summary so the teacher knows which childrenList
 // failed to save.
 
 import { useState } from 'react';
@@ -21,7 +21,7 @@ const CRITERIA = [
   'showsEmpathy', 'quickRecovery', 'stableMood', 'trustingRelationship',
 ];
 
-const MonitoringBulkFill = ({ open, onClose, children, onSaved }) => {
+const MonitoringBulkFill = ({ open, onClose, childrenList, onSaved }) => {
   const { t } = useTranslation();
   const { success: toastOk, error: toastError } = useToast();
   const [date, setDate] = useState(todayLocal());
@@ -47,7 +47,7 @@ const MonitoringBulkFill = ({ open, onClose, children, onSaved }) => {
   const handleSave = async () => {
     setSaving(true);
     const results = await Promise.allSettled(
-      children.map((c) => {
+      childrenList.map((c) => {
         const emotionalState = CRITERIA.reduce(
           (acc, k) => ({ ...acc, [k]: !!grid[c.id]?.[k] }),
           {},
@@ -109,19 +109,19 @@ const MonitoringBulkFill = ({ open, onClose, children, onSaved }) => {
             className="px-3 py-1.5 rounded-md border border-slate-200 text-[13px] focus:ring-2 focus:ring-brand-500 focus:border-transparent"
           />
           <span className="text-[12px] text-slate-500 ml-auto">
-            {t('bulkMonitoring.criteriaCount', { count: CRITERIA.length, defaultValue: `${CRITERIA.length} ta mezon × ${children.length} ta bola` })}
+            {t('bulkMonitoring.criteriaCount', { count: CRITERIA.length, defaultValue: `${CRITERIA.length} ta mezon × ${childrenList.length} ta bola` })}
           </span>
         </div>
 
         {/* Grid — scrolls vertically */}
         <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-3">
-          {children.length === 0 ? (
+          {childrenList.length === 0 ? (
             <p className="text-center text-slate-500 py-8 text-[13px]">
               {t('bolalar.empty', { defaultValue: "Bolalar yo'q" })}
             </p>
           ) : (
             <div className="space-y-2">
-              {children.map((c) => {
+              {childrenList.map((c) => {
                 const initials = `${(c.firstName || '').charAt(0)}${(c.lastName || '').charAt(0)}`.toUpperCase();
                 const rowState = grid[c.id] || {};
                 const allChecked = CRITERIA.every((k) => rowState[k]);
@@ -190,12 +190,12 @@ const MonitoringBulkFill = ({ open, onClose, children, onSaved }) => {
           <button
             type="button"
             onClick={handleSave}
-            disabled={saving || children.length === 0}
+            disabled={saving || childrenList.length === 0}
             className="inline-flex items-center gap-2 px-5 py-2 rounded-md text-[13px] font-medium bg-brand-600 text-white hover:bg-brand-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Save className="w-4 h-4" />}
             {t('bulkMonitoring.saveAll', { defaultValue: 'Hammasini saqlash' })}
-            {children.length > 0 && <span className="text-white/70">({children.length})</span>}
+            {childrenList.length > 0 && <span className="text-white/70">({childrenList.length})</span>}
           </button>
         </div>
       </div>

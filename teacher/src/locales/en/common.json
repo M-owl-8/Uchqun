@@ -396,8 +396,35 @@
     "idLabel": "ID"
   },
   "monitoring": {
-    "title": "Weekly Monitoring Journal",
-    "subtitle": "Monitor children's emotional state",
+    "title": "Monitoring journal",
+    "subtitle": "Track children's daily and weekly state",
+    "tabEmotional": "Emotional",
+    "tabDaily": "Daily",
+    "tabWeekly": "Weekly",
+    "child": "Child",
+    "selectChild": "Select…",
+    "selectChildFirst": "Select a child first",
+    "recent": "Recent entries",
+    "saveDaily": "Save daily monitoring",
+    "saveWeekly": "Save weekly monitoring",
+    "weekStart": "Week start",
+    "daily": {
+      "title": "Daily monitoring",
+      "subtitle": "Children's daily intake / handover journal (27 indicators)",
+      "hygiene": "Hygiene indicators",
+      "health": "Health indicators",
+      "gi": "GI indicators",
+      "duplicate": "An entry for this date already exists",
+      "saveFailed": "Failed to save"
+    },
+    "weekly": {
+      "title": "Weekly monitoring",
+      "subtitle": "Weekly monitoring (18 indicators)",
+      "emotional": "Emotional & psychological state",
+      "environment": "Environment",
+      "duplicate": "An entry for this week already exists",
+      "saveFailed": "Failed to save"
+    },
     "assessedToday": "Assessed today",
     "notAssessedToday": "Not assessed today",
     "edit": "Edit",
@@ -442,6 +469,11 @@
   "irr": {
     "pageTitle": "Individual Development Plan",
     "back": "Child's page",
+    "monitoringLink": {
+      "title": "Daily and weekly monitoring journal",
+      "subtitle": "Fill out the child's daily (27 indicators) and weekly (18 indicators) entries on a dedicated page.",
+      "open": "Open →"
+    },
     "newIrr": "Create IDP",
     "viewIrr": "View IDP",
     "statusDraft": "Draft",
@@ -944,7 +976,8 @@
   },
   "reja": {
     "tabActivities": "Individual plan",
-    "tabTherapy": "Therapy"
+    "tabTherapy": "Therapy",
+    "tabMonitoring": "Monitoring"
   },
   "xabar": {
     "tabChat": "Chat",

@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, FileText } from 'lucide-react';
+import { ArrowLeft, FileText, ClipboardCheck } from 'lucide-react';
 import ConfirmDialog from '../shared/components/ConfirmDialog';
 import { useTranslation } from 'react-i18next';
 import i18next from 'i18next';
@@ -8,8 +8,6 @@ import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
 import { SKILL_AREAS } from '@shared/config/skillAreas';
-import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
-import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
 import { formatDateMedium, todayLocal} from '@shared/utils/formatDate';
 
@@ -62,14 +60,6 @@ function formatDate(iso) {
 
 function todayIso() {
   return todayLocal();
-}
-
-function getMondayIso(date = new Date()) {
-  const d = new Date(date);
-  const day = d.getDay();
-  const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-  d.setDate(diff);
-  return d.toISOString().slice(0, 10);
 }
 
 function StatusBadge({ status }) {
@@ -162,23 +152,6 @@ export default function IrrShell() {
   const [savingReview, setSavingReview]     = useState(null);
   const [signingPeriod, setSigningPeriod]   = useState(null);
 
-  // ── Monitoring journal state (Phase 3d) ──────────────────────────────────
-  const [dailyEntries, setDailyEntries]   = useState([]);
-  const [_loadingDaily, setLoadingDaily]   = useState(false);
-  const [dailyDate, setDailyDate]         = useState(todayIso);
-  const [dailyChecks, setDailyChecks]     = useState({});
-  const [dailyNotes, setDailyNotes]       = useState('');
-  const [savingDaily, setSavingDaily]     = useState(false);
-  const [dailyError, setDailyError]       = useState(null);
-
-  const [weeklyEntries, setWeeklyEntries] = useState([]);
-  const [_loadingWeekly, setLoadingWeekly] = useState(false);
-  const [weekStart, setWeekStart]         = useState(getMondayIso);
-  const [weeklyChecks, setWeeklyChecks]   = useState({});
-  const [weeklyNotes, setWeeklyNotes]     = useState('');
-  const [savingWeekly, setSavingWeekly]   = useState(false);
-  const [weeklyError, setWeeklyError]     = useState(null);
-
   // ── Assessment session state (Phase 3b) ──────────────────────────────────
   const [sessions, setSessions]           = useState([]);
   const [loadingSessions, setLoadingSessions] = useState(false);
@@ -260,33 +233,6 @@ export default function IrrShell() {
       }));
     } catch {
       setStgByPeriod(prev => ({ ...prev, [periodId]: [] }));
-    }
-  }, []);
-
-  // ── Phase 3d loaders ─────────────────────────────────────────────────────
-  const loadDailyEntries = useCallback(async (childId) => {
-    if (!childId) return;
-    setLoadingDaily(true);
-    try {
-      const res = await api.get(`/teacher/children/${childId}/daily-entries?limit=30`);
-      setDailyEntries(Array.isArray(res.data?.data) ? res.data.data : []);
-    } catch {
-      setDailyEntries([]);
-    } finally {
-      setLoadingDaily(false);
-    }
-  }, []);
-
-  const loadWeeklyEntries = useCallback(async (childId) => {
-    if (!childId) return;
-    setLoadingWeekly(true);
-    try {
-      const res = await api.get(`/teacher/children/${childId}/weekly-entries?limit=12`);
-      setWeeklyEntries(Array.isArray(res.data?.data) ? res.data.data : []);
-    } catch {
-      setWeeklyEntries([]);
-    } finally {
-      setLoadingWeekly(false);
     }
   }, []);
 
@@ -473,86 +419,6 @@ export default function IrrShell() {
       setSigningPeriod(null);
     }
   }, [success, showError, t]);
-
-  // ── Phase 3d handlers ────────────────────────────────────────────────────
-  const handleSubmitDaily = useCallback(async () => {
-    if (!dailyDate) return;
-    setDailyError(null);
-    setSavingDaily(true);
-    try {
-      const hygieneData = Object.fromEntries(
-        DAILY_JOURNAL_ITEMS.hygiene.map(item => [item.code, dailyChecks[item.code] || false])
-      );
-      const healthData  = Object.fromEntries(
-        DAILY_JOURNAL_ITEMS.health.map(item => [item.code, dailyChecks[item.code] || false])
-      );
-      const giData      = Object.fromEntries(
-        DAILY_JOURNAL_ITEMS.gi.map(item => [item.code, dailyChecks[item.code] || false])
-      );
-      const res = await api.post(`/teacher/children/${id}/daily-entries`, {
-        entryDate:   dailyDate,
-        hygieneData,
-        healthData,
-        giData,
-        irrId:       irr?.id || null,
-        notes:       dailyNotes,
-      });
-      setDailyEntries(prev => [res.data.data, ...prev]);
-      setDailyChecks({});
-      setDailyNotes('');
-      success(t('irr.successDailySaved'));
-    } catch (err) {
-      const errData = err?.response?.data?.error;
-      const code = errData?.code || errData;
-      if (code === 'DAILY_ENTRY_DUPLICATE') {
-        setDailyError(t('irr.errorDuplicateDailyEntry'));
-      } else {
-        setDailyError(t('irr.errorSave'));
-      }
-    } finally {
-      setSavingDaily(false);
-    }
-  }, [dailyDate, dailyChecks, dailyNotes, id, irr, success, t]);
-
-  const handleSubmitWeekly = useCallback(async () => {
-    if (!weekStart) return;
-    setWeeklyError(null);
-    setSavingWeekly(true);
-    try {
-      const emotionalData   = Object.fromEntries(
-        WEEKLY_JOURNAL_ITEMS.emotional.map(item => [item.code, weeklyChecks[item.code] || false])
-      );
-      const environmentData = Object.fromEntries(
-        WEEKLY_JOURNAL_ITEMS.environment.map(item => [item.code, weeklyChecks[item.code] || false])
-      );
-      const res = await api.post(`/teacher/children/${id}/weekly-entries`, {
-        weekStart,
-        emotionalData,
-        environmentData,
-        irrId: irr?.id || null,
-        notes: weeklyNotes,
-      });
-      setWeeklyEntries(prev => [res.data.data, ...prev]);
-      setWeeklyChecks({});
-      setWeeklyNotes('');
-      success(t('irr.successWeeklySaved'));
-    } catch (err) {
-      const errData = err?.response?.data?.error;
-      const code = errData?.code || errData;
-      if (code === 'WEEKLY_ENTRY_DUPLICATE') {
-        setWeeklyError(t('irr.errorDuplicateWeeklyEntry'));
-      } else {
-        setWeeklyError(t('irr.errorSave'));
-      }
-    } finally {
-      setSavingWeekly(false);
-    }
-  }, [weekStart, weeklyChecks, weeklyNotes, id, irr, success, t]);
-
-  useEffect(() => {
-    loadDailyEntries(id);
-    loadWeeklyEntries(id);
-  }, [id, loadDailyEntries, loadWeeklyEntries]);
 
   const irrId = irr?.id;
   useEffect(() => {
@@ -1514,269 +1380,25 @@ export default function IrrShell() {
         </div>
       )}
 
-      {/* ─── Daily monitoring journal (Phase 3d) ────────────────────────── */}
-      <div
-        className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100"
-        data-testid="daily-section"
+      {/* ─── Monitoring moved out (TP-MONITORING-SEPARATION) ─────────────── */}
+      <Link
+        to={`/teacher/monitoring?childId=${id}`}
+        className="block rounded-xl border border-slate-200 bg-surface hover:bg-slate-50 transition-colors p-5"
+        data-testid="monitoring-link"
       >
-        <div className="px-5 py-4">
-          <h2 className="text-[15px] font-semibold text-slate-900">
-            Кундалик мониторинг журнали
-          </h2>
-          <p className="text-[12px] text-slate-500 mt-0.5">
-            Болаларни кундузги хизматга қабул қилиш / топшириш журнали ({DAILY_ITEM_COUNT} кўрсаткич)
-          </p>
+        <div className="flex items-center gap-3">
+          <ClipboardCheck className="w-5 h-5 text-brand-600 shrink-0" />
+          <div className="flex-1 min-w-0">
+            <h3 className="text-[15px] font-semibold text-slate-900">
+              {t('irr.monitoringLink.title', { defaultValue: "Kunlik va haftalik kuzatuv jurnali" })}
+            </h3>
+            <p className="text-[12px] text-slate-500 mt-0.5">
+              {t('irr.monitoringLink.subtitle', { defaultValue: 'Bola uchun kunlik (27 koʻrsatkich) va haftalik (18 koʻrsatkich) yozuvlarni alohida sahifada toʻldiring.' })}
+            </p>
+          </div>
+          <span className="text-[13px] text-brand-700 font-medium shrink-0">{t('irr.monitoringLink.open', { defaultValue: "Ochish →" })}</span>
         </div>
-
-        <div className="px-5 py-4 space-y-4">
-          <FieldRow label={t('irr.form.date')}>
-            <input
-              type="date"
-              className={inputCls}
-              value={dailyDate}
-              onChange={e => { setDailyDate(e.target.value); setDailyError(null); }}
-              data-testid="daily-date-input"
-            />
-          </FieldRow>
-
-          <div data-testid="daily-hygiene-section">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">
-              Гигиена кўрсаткичлари (9 та)
-            </h3>
-            <div className="space-y-1.5">
-              {DAILY_JOURNAL_ITEMS.hygiene.map(item => (
-                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-brand-600"
-                    checked={dailyChecks[item.code] || false}
-                    onChange={e => setDailyChecks(prev => ({ ...prev, [item.code]: e.target.checked }))}
-                    data-testid={`daily-check-${item.code}`}
-                  />
-                  <span className="text-[13px] text-slate-800">{item.textUz}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div data-testid="daily-health-section">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">
-              Соғлиқ кўрсаткичлари (11 та)
-            </h3>
-            <div className="space-y-1.5">
-              {DAILY_JOURNAL_ITEMS.health.map(item => (
-                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-brand-600"
-                    checked={dailyChecks[item.code] || false}
-                    onChange={e => setDailyChecks(prev => ({ ...prev, [item.code]: e.target.checked }))}
-                    data-testid={`daily-check-${item.code}`}
-                  />
-                  <span className="text-[13px] text-slate-800">{item.textUz}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div data-testid="daily-gi-section">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">
-              Меъда-ичак кўрсаткичлари (7 та)
-            </h3>
-            <div className="space-y-1.5">
-              {DAILY_JOURNAL_ITEMS.gi.map(item => (
-                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-brand-600"
-                    checked={dailyChecks[item.code] || false}
-                    onChange={e => setDailyChecks(prev => ({ ...prev, [item.code]: e.target.checked }))}
-                    data-testid={`daily-check-${item.code}`}
-                  />
-                  <span className="text-[13px] text-slate-800">{item.textUz}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <FieldRow label={t('irr.form.note')}>
-            <textarea
-              rows={2}
-              className={textareaCls}
-              value={dailyNotes}
-              onChange={e => setDailyNotes(e.target.value)}
-              placeholder={t('irr.placeholder.extraInfo')}
-              data-testid="daily-notes"
-            />
-          </FieldRow>
-
-          {dailyError && (
-            <div
-              className="text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2"
-              data-testid="daily-error-banner"
-            >
-              {dailyError}
-            </div>
-          )}
-
-          <button
-            onClick={handleSubmitDaily}
-            disabled={savingDaily || !dailyDate}
-            className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium disabled:opacity-50"
-            data-testid="daily-submit-btn"
-          >
-            {savingDaily ? t('irr.form.saving') : t('irr.form.saveDailyMonitoring')}
-          </button>
-        </div>
-
-        {dailyEntries.length === 0 && (
-          <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
-            {t('irr.noDailyEntries')}
-          </div>
-        )}
-
-        {dailyEntries.length > 0 && (
-          <div className="px-5 py-3">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">Сўнгги ёзувлар</h3>
-            <div className="space-y-0.5">
-              {dailyEntries.slice(0, 10).map(entry => (
-                <div
-                  key={entry.id}
-                  className="flex justify-between items-center text-[12px] py-1.5 border-b border-slate-100 last:border-0"
-                  data-testid={`daily-entry-row-${entry.id}`}
-                >
-                  <span className="text-slate-600">{formatDate(entry.entryDate)}</span>
-                  {entry.notes && (
-                    <span className="text-slate-400 truncate ml-2 max-w-[60%]">{entry.notes}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-
-      {/* ─── Weekly monitoring journal (Phase 3d) ───────────────────────── */}
-      <div
-        className="rounded-xl border border-slate-200 bg-surface shadow-sm divide-y divide-slate-100"
-        data-testid="weekly-section"
-      >
-        <div className="px-5 py-4">
-          <h2 className="text-[15px] font-semibold text-slate-900">
-            Ҳафталик мониторинг журнали
-          </h2>
-          <p className="text-[12px] text-slate-500 mt-0.5">
-            Ҳафталик мониторинг ({WEEKLY_ITEM_COUNT} кўрсаткич)
-          </p>
-        </div>
-
-        <div className="px-5 py-4 space-y-4">
-          <FieldRow label={t('irr.form.weekStartLabel')}>
-            <input
-              type="date"
-              className={inputCls}
-              value={weekStart}
-              onChange={e => { setWeekStart(e.target.value); setWeeklyError(null); }}
-              data-testid="weekly-date-input"
-            />
-          </FieldRow>
-
-          <div data-testid="weekly-emotional-section">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">
-              Ҳиссий-руҳий ҳолат (9 та)
-            </h3>
-            <div className="space-y-1.5">
-              {WEEKLY_JOURNAL_ITEMS.emotional.map(item => (
-                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-brand-600"
-                    checked={weeklyChecks[item.code] || false}
-                    onChange={e => setWeeklyChecks(prev => ({ ...prev, [item.code]: e.target.checked }))}
-                    data-testid={`weekly-check-${item.code}`}
-                  />
-                  <span className="text-[13px] text-slate-800">{item.textUz}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <div data-testid="weekly-environment-section">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">
-              Атроф-муҳит (9 та)
-            </h3>
-            <div className="space-y-1.5">
-              {WEEKLY_JOURNAL_ITEMS.environment.map(item => (
-                <label key={item.code} className="flex items-start gap-2 cursor-pointer">
-                  <input
-                    type="checkbox"
-                    className="mt-0.5 accent-brand-600"
-                    checked={weeklyChecks[item.code] || false}
-                    onChange={e => setWeeklyChecks(prev => ({ ...prev, [item.code]: e.target.checked }))}
-                    data-testid={`weekly-check-${item.code}`}
-                  />
-                  <span className="text-[13px] text-slate-800">{item.textUz}</span>
-                </label>
-              ))}
-            </div>
-          </div>
-
-          <FieldRow label={t('irr.form.note')}>
-            <textarea
-              rows={2}
-              className={textareaCls}
-              value={weeklyNotes}
-              onChange={e => setWeeklyNotes(e.target.value)}
-              placeholder={t('irr.placeholder.extraInfo')}
-              data-testid="weekly-notes"
-            />
-          </FieldRow>
-
-          {weeklyError && (
-            <div
-              className="text-[12px] text-red-600 bg-red-50 border border-red-200 rounded-md px-3 py-2"
-              data-testid="weekly-error-banner"
-            >
-              {weeklyError}
-            </div>
-          )}
-
-          <button
-            onClick={handleSubmitWeekly}
-            disabled={savingWeekly || !weekStart}
-            className="h-9 px-4 rounded-md bg-brand-600 text-surface text-[13px] font-medium disabled:opacity-50"
-            data-testid="weekly-submit-btn"
-          >
-            {savingWeekly ? t('irr.form.saving') : t('irr.form.saveWeeklyMonitoring')}
-          </button>
-        </div>
-
-        {weeklyEntries.length === 0 && (
-          <div className="px-5 py-4 text-[12px] text-slate-400 text-center">
-            {t('irr.noWeeklyEntries')}
-          </div>
-        )}
-
-        {weeklyEntries.length > 0 && (
-          <div className="px-5 py-3">
-            <h3 className="text-[13px] font-semibold text-slate-700 mb-2">Сўнгги ёзувлар</h3>
-            <div className="space-y-0.5">
-              {weeklyEntries.slice(0, 8).map(entry => (
-                <div
-                  key={entry.id}
-                  className="flex justify-between items-center text-[12px] py-1.5 border-b border-slate-100 last:border-0"
-                  data-testid={`weekly-entry-row-${entry.id}`}
-                >
-                  <span className="text-slate-600">{formatDate(entry.weekStart)}</span>
-                  {entry.notes && (
-                    <span className="text-slate-400 truncate ml-2 max-w-[60%]">{entry.notes}</span>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      </Link>
     </div>
 
     <ConfirmDialog dialog={confirmDialog} onCancel={() => setConfirmDialog(null)} />

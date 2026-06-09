@@ -1,21 +1,23 @@
 // TP-IA-REDESIGN — Reja tab.
+// TP-MONITORING-SEPARATION — added "Kuzatuv" sub-tab linking to the
+// dedicated monitoring hub at /teacher/monitoring.
 //
-// Two sub-tabs:
+// Three sub-tabs:
 //   - Individual reja  → existing Activities.jsx (the curriculum plan)
 //   - Terapiya         → existing TherapyManagement.jsx (therapy library + sessions)
-//
-// Sub-tab state lives in ?tab=activities|therapy so it's deep-linkable and
-// the DesktopTopNav can land on a specific sub-tab from elsewhere.
+//   - Kuzatuv          → MonitoringJournal (emotional + daily + weekly tabs)
 
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ClipboardList, Stethoscope } from 'lucide-react';
+import { ClipboardList, Stethoscope, Activity } from 'lucide-react';
 import Activities from './Activities';
 import TherapyManagement from './TherapyManagement';
+import MonitoringJournal from './MonitoringJournal';
 
 const SUB_TABS = [
   { key: 'activities', labelKey: 'reja.tabActivities', icon: ClipboardList, Component: Activities },
   { key: 'therapy',    labelKey: 'reja.tabTherapy',    icon: Stethoscope,   Component: TherapyManagement },
+  { key: 'monitoring', labelKey: 'reja.tabMonitoring', icon: Activity,      Component: MonitoringJournal },
 ];
 
 const Reja = () => {

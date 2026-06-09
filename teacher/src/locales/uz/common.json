@@ -396,8 +396,35 @@
     "idLabel": "ID"
   },
   "monitoring": {
-    "title": "Haftalik monitoring jurnali",
-    "subtitle": "Bolalarning emotsional holatini monitoring qilish",
+    "title": "Kuzatuv jurnali",
+    "subtitle": "Bolalarning kunlik va haftalik holatini kuzatish",
+    "tabEmotional": "Emotsional",
+    "tabDaily": "Kunlik",
+    "tabWeekly": "Haftalik",
+    "child": "Bola",
+    "selectChild": "Tanlang…",
+    "selectChildFirst": "Avval bolani tanlang",
+    "recent": "Soʻnggi yozuvlar",
+    "saveDaily": "Kunlik kuzatuvni saqlash",
+    "saveWeekly": "Haftalik kuzatuvni saqlash",
+    "weekStart": "Hafta boshi",
+    "daily": {
+      "title": "Kunlik kuzatuv",
+      "subtitle": "Bolalarni kunduzgi xizmatga qabul qilish / topshirish jurnali (27 koʻrsatkich)",
+      "hygiene": "Gigiena koʻrsatkichlari",
+      "health": "Sogʻliq koʻrsatkichlari",
+      "gi": "Meʼda-ichak koʻrsatkichlari",
+      "duplicate": "Bu sana uchun yozuv allaqachon mavjud",
+      "saveFailed": "Saqlab boʻlmadi"
+    },
+    "weekly": {
+      "title": "Haftalik kuzatuv",
+      "subtitle": "Haftalik kuzatuv (18 koʻrsatkich)",
+      "emotional": "Hissiy-ruhiy holat",
+      "environment": "Atrof-muhit",
+      "duplicate": "Bu hafta uchun yozuv allaqachon mavjud",
+      "saveFailed": "Saqlab boʻlmadi"
+    },
     "assessedToday": "Bugun uchun baholandi",
     "notAssessedToday": "Bugun uchun baholanmadi",
     "edit": "Tahrirlash",
@@ -442,6 +469,11 @@
   "irr": {
     "pageTitle": "Индивидуал Ривожланиш Режаси",
     "back": "Bolaning sahifasi",
+    "monitoringLink": {
+      "title": "Kunlik va haftalik kuzatuv jurnali",
+      "subtitle": "Bola uchun kunlik (27 koʻrsatkich) va haftalik (18 koʻrsatkich) yozuvlarni alohida sahifada toʻldiring.",
+      "open": "Ochish →"
+    },
     "newIrr": "ИРР тузиш",
     "viewIrr": "ИРРни кўриш",
     "statusDraft": "Qoralama",
@@ -944,7 +976,8 @@
   },
   "reja": {
     "tabActivities": "Individual reja",
-    "tabTherapy": "Terapiya"
+    "tabTherapy": "Terapiya",
+    "tabMonitoring": "Kuzatuv"
   },
   "xabar": {
     "tabChat": "Suhbat",
