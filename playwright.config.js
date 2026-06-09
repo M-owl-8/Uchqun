@@ -30,6 +30,14 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 'iso22',
+      testMatch: '**/iso22-v1-isolation-probes.spec.js',
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+      },
+    },
+    {
       name: 'ux02',
       testMatch: '**/ux02-attendance-correction-proof.spec.js',
       use: {
