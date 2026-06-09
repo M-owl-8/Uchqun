@@ -391,4 +391,25 @@ All 15 rows in `child_attendance` at migration time:
 **Status:** ✅ FIXED (S21) — frontend + locale commit `f5f18500`; migration commit `ce49ff93`
 
 ## Tenant Isolation Defects (Step 3)
-<!-- Any isolation breach found during hostile probes -->
+
+### DEF-012 — P3: Parent media endpoint ignores `childId` query param (group-scoped by design; param silently unused)
+
+- **Severity:** P3 (cosmetic / behavioural gap — no data exposure)
+- **Persona:** parent1 / any authenticated parent
+- **Portal:** Parent (API endpoint)
+- **Wave:** 3 (ISO-P03 probe, S22-V1)
+- **Feature ID:** P-045 (media gallery)
+
+**Behaviour:** `GET /api/v1/parent/media?childId=<uuid>` accepts a `childId` query parameter but the controller (`parentMediaController.js: getMyMedia`) never reads it. The endpoint scopes media by `{ groupId: parentGroupId, parentId: req.user.id }` at the Sequelize JOIN level. Any `childId` value — including a cross-tenant UUID — is silently ignored; the response returns the parent's own group's media regardless.
+
+**Why this is not a security breach:** The JOIN clause enforces `parentId = req.user.id` as a hard constraint. No cross-tenant data can appear in the response regardless of what `childId` is passed. Confirmed by hostile probe ISO-P03: passing an S2 child UUID returns 200 with only the caller's own media; the S2 child UUID does not appear anywhere in the response body.
+
+**Why it is still a finding:** The parameter is accepted in the query string (no 400/403 on invalid childId) and silently dropped. A caller expecting child-level filtering (e.g. a multi-child parent filtering the gallery by a specific child) would receive all group media with no indication that the filter had no effect.
+
+**Root cause:** `getMyMedia` was written to implement group-wide media visibility (C-02 design intent). No `childId` filter was added; the parameter is simply unused.
+
+**Fix (deferred, low priority):** Either document `childId` as unsupported and return 400 if provided, or implement the filter: if `childId` is provided, validate it belongs to `req.user.id` and narrow the JOIN to that child.
+
+**Evidence:** ISO-P03 assertion in `tests/iso22-v1-isolation-probes.spec.js` (PASS — 200, S2 UUID absent from body; screenshot `audits/beta/screens/iso-p03-parent1-s2-media.png`).
+
+**Status:** OPEN (P3, not blocking launch)
