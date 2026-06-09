@@ -413,3 +413,41 @@ All 15 rows in `child_attendance` at migration time:
 **Evidence:** ISO-P03 assertion in `tests/iso22-v1-isolation-probes.spec.js` (PASS — 200, S2 UUID absent from body; screenshot `audits/beta/screens/iso-p03-parent1-s2-media.png`).
 
 **Status:** OPEN (P3, not blocking launch)
+
+---
+
+## S22-V3 Defects (Blocked-Row Verification)
+
+### DEF-013 — P1: Realtime chat teacher→parent delivery broken — parseInt(UUID) corrupts socket room target
+
+- **Severity:** P1 (messages saved to DB; parent must reload to see them — real-time delivery silently dropped)
+- **Persona:** teacher1 (sender), parent1 (receiver)
+- **Portal:** Teacher (sender side) + Parent (receiver side)
+- **Wave:** 2 (T-043), Wave 3 (P-051)
+- **Feature ID:** T-043, P-051
+- **Repro:**
+  1. Teacher navigates to chat, opens a parent conversation, sends a message
+  2. Parent has `/chat` open in the same browser session with socket listener active
+  3. Parent page does NOT update in real-time — the message never appears without a page reload
+- **Expected:** Message appears in parent view within ~1 s via socket event `chat:message`
+- **Actual:** Message is persisted to DB but parent real-time delivery is silently dropped; parent must reload to see it
+- **Screenshot:** (captured during S22-V3 T-043 run — parent page ARIA snapshot shows no new message)
+- **Console errors:** none (the socket emit silently targets the wrong room)
+- **Network:** POST `/api/v1/chat/messages` → 201 (message persisted); no socket event reaches parent
+- **Suspected layer:** Backend — `chatController.js:92`
+- **Root cause:**
+  ```js
+  // chatController.js line 92
+  emitToUser(parseInt(parentId, 10), 'chat:message', msg.toJSON());
+  ```
+  `parentId` is extracted from `msg.conversationId.replace('parent:', '')` — a UUID string (e.g. `"08b49ab0-c2f8-4921-b1d0-32554bc2b4ab"`).
+  `User.id` is `DataTypes.UUID`; socket middleware sets `socket.userId = user.id` (UUID string); parent joins room `user:${uuid}`.
+  `parseInt("08b49ab0-...", 10)` returns `8` (parseInt stops at first non-decimal char `b`).
+  `emitToUser(8, ...)` → `io.to("user:8").emit(...)` — room `user:8` has no connected sockets.
+  Parent is in room `user:08b49ab0-...`. Rooms never match.
+- **Scope:** Teacher→parent direction only. Parent→teacher direction (line 101) iterates `teacherIds` directly from DB (UUID strings, no parseInt) and is unaffected.
+- **Fix (DEFERRED — do not apply this session):** Remove `parseInt` on line 92:
+  ```js
+  emitToUser(parentId, 'chat:message', msg.toJSON());
+  ```
+- **Status:** OPEN — logged S22-V3 (2026-06-09)
