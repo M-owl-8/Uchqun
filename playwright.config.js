@@ -22,6 +22,18 @@ module.exports = defineConfig({
   },
   projects: [
     {
+      name: 'def013',
+      testMatch: '**/def013-chat-fix-proof.spec.js',
+      timeout: 120000,
+      use: {
+        ...devices['Desktop Chrome'],
+        headless: false,
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60000,
+        actionTimeout: 30000,
+      },
+    },
+    {
       name: 'ux01',
       testMatch: '**/ux01-confirm-dialogs-proof.spec.js',
       use: {
@@ -35,6 +47,17 @@ module.exports = defineConfig({
       use: {
         ...devices['Desktop Chrome'],
         viewport: { width: 1280, height: 800 },
+      },
+    },
+    {
+      name: 's22v3',
+      testMatch: '**/s22v3-blocked-rows.spec.js',
+      timeout: 90000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60000,
+        actionTimeout: 30000,
       },
     },
     {

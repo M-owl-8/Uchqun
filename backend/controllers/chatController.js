@@ -89,7 +89,7 @@ export const createMessage = async (req, res) => {
     try {
       const parentId = msg.conversationId.replace('parent:', '');
       if (senderRole === 'teacher') {
-        emitToUser(parseInt(parentId, 10), 'chat:message', msg.toJSON());
+        emitToUser(parentId, 'chat:message', msg.toJSON());
       } else {
         const { default: Child } = await import('../models/Child.js');
         const { default: Group } = await import('../models/Group.js');
