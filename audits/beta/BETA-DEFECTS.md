@@ -294,6 +294,58 @@
 
 **Status:** ✅ FIXED (S20, closed S20-close) — fix commit `13129a92`; proof commits `87709e0e`, `HEAD`
 
+### DEF-011 — P0: child_attendance.status column stuck on old enum; sick/home_leave/hospitalized saves silently fail
+
+- **Severity:** P0
+- **Persona:** All teachers (any status other than present/absent/late/excused)
+- **Portal:** Teacher
+- **Wave:** 2 (T-026–T-032)
+- **Feature ID:** T-026–T-032
+
+**Root cause:** Migration `20260606000001-update-attendance-status-enum.js` (2026-06-06) failed partway through. It successfully:
+- renamed the old enum to `enum_child_attendance_status_old` (`present/absent/late/excused`)
+- created the new enum `enum_child_attendance_status` (`present/absent/home_leave/sick/hospitalized`)
+
+but crashed before the `ALTER COLUMN` step because it tried `UPDATE child_attendance SET status = 'sick' WHERE status = 'excused'` — an invalid assignment: `sick` is not a member of `enum_child_attendance_status_old`. Because migrate.js silently swallows errors matching "already exists" (the second deploy attempt hit that pattern on the RENAME step), the migration was marked complete in `SequelizeMeta` without having altered the column. The column stayed on `enum_child_attendance_status_old`, blocking DB-level saves for `sick`, `home_leave`, and `hospitalized`.
+
+The attendanceController validated statuses against `VALID_STATUSES = ['present', 'absent', 'home_leave', 'sick', 'hospitalized']`, so the application layer correctly accepted these values — but the DB rejected them with a constraint violation. The per-row `catch` in `createAttendance` converted this to `ATTENDANCE_SAVE_FAILED` error codes returned in the response body (HTTP 201, partial save). No 500 was raised, making the failure invisible without inspecting the response body.
+
+**Impact:** Any teacher marking a child as Kasal (sick), Uyda (home_leave), or Shifoxonada (hospitalized) got a silent partial failure — 201 returned, no error shown in UI, but the child's status was never persisted. The wave-2 beta tests that exercised those statuses would have produced false-positive "saved" UI feedback while the DB retained whatever prior status existed.
+
+**Fix:** Migration `20260608000001-fix-attendance-status-enum-column.js` (commit `ce49ff93`, 2026-06-08). Used a `CASE` expression in the `ALTER COLUMN USING` clause to remap legacy values atomically, avoiding any pre-UPDATE step:
+```sql
+ALTER TABLE child_attendance
+  ALTER COLUMN status TYPE "enum_child_attendance_status"
+  USING CASE status::text
+    WHEN 'late'    THEN 'present'::"enum_child_attendance_status"
+    WHEN 'excused' THEN 'sick'::"enum_child_attendance_status"
+    ELSE status::text::"enum_child_attendance_status"
+  END
+```
+
+**Data impact analysis (queried 2026-06-09):**
+
+All 15 rows in `child_attendance` at migration time:
+
+| Pre-migration status | Count | Post-migration status | Source |
+|---|---|---|---|
+| `present` | 3 | `present` | 3 seed/sprint rows from 2026-05-31 |
+| `absent` | 1 | `absent` | 1 seed/sprint row from 2026-05-31 |
+| `excused` | 1 | `sick` | 1 seed/sprint row from 2026-05-31 03:20 UTC |
+| `present` | 11 | `present` | 11 beta-test rows from 2026-06-08 (wave-2 testing) |
+| `late` | 0 | — | No `late` rows existed — controller `VALID_STATUSES` never included `late`, preventing any app-layer save |
+
+**`late → present` remapping: 0 rows.** Confirmed zero — `late` was blocked by controller validation and never reached the DB.
+
+**`excused → sick` remapping: 1 row.** The row (2026-05-31 03:20 UTC) is sprint-testing/seed data, not a real child's clinical record. No real users have used this Railway environment. Data-owner sign-off is not required for this specific row.
+
+**Standing pre-launch concern (not blocking beta):** The `excused → sick` mapping is semantically incorrect for any future real-data migration. `excused` means absence with permission; `sick` asserts a medical state. If production ever contains real `excused` rows, the correct mapping is `excused → absent`, not `excused → sick`. The `down()` migration should be reviewed before any rollback on a live deployment.
+
+**Status:** ✅ FIXED (S21) — migration commit `ce49ff93`
+**Matrix rows:** T-026–T-032 NOT flipped to PASS — re-verification in next phase.
+
+---
+
 ### UX-02 — Attendance correction: no UI affordance to signal that saved records are editable
 
 - **Severity:** P1
