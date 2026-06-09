@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
-import { Lock, TrendingUp } from 'lucide-react';
+import { Lock } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { ChildAvatar } from '../components/ChildAvatar';
 import { ParentJournalComposer } from '../components/ParentJournalComposer';
-import { useChildRibbon } from '../hooks/useChildRibbon';
 import api from '../shared/services/api';
 import { todayLocal } from '@shared/utils/formatDate';
 
@@ -12,62 +10,14 @@ const getReflectionKey = () => {
   return `teacher:reflection:${d}`;
 };
 
-function ObservationItem({ obs }) {
-  const { t } = useTranslation();
-  const ribbon = useChildRibbon(obs.child);
-  const isPositive = obs.outcome === 'mastered' || obs.outcome === 'independent';
-  const isStruggling = obs.outcome === 'assisted' || obs.outcome === 'struggling';
-
-  return (
-    <div
-      className="rounded-lg border border-slate-200 p-4"
-      style={{ borderLeft: `4px solid ${ribbon.hex}` }}
-    >
-      <div className="flex items-start gap-3">
-        <ChildAvatar child={obs.child} size="xs" />
-        <div className="flex-1">
-          <div className="text-[13px] font-medium text-slate-900">
-            {obs.child?.firstName} {obs.child?.lastName?.charAt(0)}. · {obs.goalLabel}
-          </div>
-          {obs.note && (
-            <p className="mt-1 text-[12px] text-slate-600">{obs.note}</p>
-          )}
-          {isPositive && (
-            <div
-              className="mt-2 rounded-md px-3 py-2 text-[12px]"
-              style={{ background: '#E2F0E8', borderLeft: '3px solid #4F8C72' }}
-            >
-              <div className="flex items-center gap-1 text-mint-700 font-medium">
-                <TrendingUp className="w-3.5 h-3.5" strokeWidth={1.75} />
-                {t('reflection.positive')}
-              </div>
-            </div>
-          )}
-          {isStruggling && (
-            <div
-              className="mt-2 rounded-md px-3 py-2 text-[12px]"
-              style={{ background: '#FBF3E4', borderLeft: '3px solid #C58A1F' }}
-            >
-              <span className="text-warning-700 font-medium">{t('reflection.needsHelp')}</span>
-            </div>
-          )}
-        </div>
-        <span className="text-[10px] text-slate-400 tnum shrink-0">{obs.time}</span>
-      </div>
-    </div>
-  );
-}
-
 const DailyReflection = () => {
   const { t, i18n } = useTranslation();
   const reflKey = getReflectionKey();
   const [reflection, setReflection] = useState(
     () => localStorage.getItem(reflKey) || ''
   );
-  const [observations, setObservations] = useState([]);
-  const [children, setChildren]         = useState([]);
-  const [saving, setSaving]             = useState(false);
-  const [loading, setLoading]           = useState(true);
+  const [children, setChildren] = useState([]);
+  const [saving, setSaving]     = useState(false);
   const autoSaveTimer = useRef(null);
 
   const today = new Date().toLocaleDateString(i18n.language, {
@@ -75,19 +25,12 @@ const DailyReflection = () => {
   });
 
   useEffect(() => {
-    Promise.allSettled([
-      api.get('/teacher/children'),
-      api.get('/teacher/observations/recent?limit=20'),
-    ]).then(([childRes, obsRes]) => {
-      if (childRes.status === 'fulfilled') {
-        const list = childRes.value.data?.data || childRes.value.data || [];
+    api.get('/teacher/children')
+      .then((res) => {
+        const list = res.data?.data || res.data || [];
         setChildren(Array.isArray(list) ? list : []);
-      }
-      if (obsRes.status === 'fulfilled') {
-        const list = obsRes.value.data?.data || obsRes.value.data || [];
-        setObservations(Array.isArray(list) ? list : []);
-      }
-    }).finally(() => setLoading(false));
+      })
+      .catch(() => { /* parent journal composer still usable */ });
   }, []);
 
   // Auto-save reflection to localStorage
@@ -132,54 +75,26 @@ const DailyReflection = () => {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-[1.2fr_1.4fr] gap-6">
-        {/* LEFT: Private reflection + observations */}
-        <div className="space-y-5">
-          {/* Private reflection textarea */}
-          <div className="rounded-xl border border-slate-200 bg-surface p-5">
-            <div className="flex items-center gap-2 mb-3">
-              <Lock className="w-4 h-4 text-slate-500" strokeWidth={1.75} />
-              <span className="text-[12px] font-medium text-slate-700 uppercase tracking-[.1em]">{t('reflection.private')}</span>
-              <span className="ml-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px]">
-                {t('reflection.privateNote')}
-              </span>
-            </div>
-            <textarea
-              value={reflection}
-              onChange={e => setReflection(e.target.value)}
-              onBlur={handleSaveReflection}
-              placeholder={t('reflection.placeholder')}
-              className="w-full text-[15px] text-slate-800 leading-[1.7] placeholder:text-slate-400 outline-none resize-none bg-transparent"
-              rows={6}
-            />
-            <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
-              <span>{t('reflection.autoSave')}</span>
-              {saving && <span className="text-brand-700">{t('reflection.saving')}</span>}
-            </div>
+        {/* LEFT: Private reflection */}
+        <div className="rounded-xl border border-slate-200 bg-surface p-5">
+          <div className="flex items-center gap-2 mb-3">
+            <Lock className="w-4 h-4 text-slate-500" strokeWidth={1.75} />
+            <span className="text-[12px] font-medium text-slate-700 uppercase tracking-[.1em]">{t('reflection.private')}</span>
+            <span className="ml-1 px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 text-[11px]">
+              {t('reflection.privateNote')}
+            </span>
           </div>
-
-          {/* Today's observations by child */}
-          <div>
-            <div className="flex items-center gap-2 mb-3">
-              <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[16px] font-semibold text-slate-900">{t('reflection.observationsToday')}</h2>
-              <span className="ml-auto text-[12px] text-slate-500">{observations.length} ta</span>
-            </div>
-
-            {loading ? (
-              <div className="space-y-2">
-                {[1,2,3].map(i => <div key={i} className="h-16 bg-slate-200 animate-pulse rounded-xl" />)}
-              </div>
-            ) : observations.length === 0 ? (
-              <div className="rounded-xl border border-slate-200 bg-surface p-8 text-center text-[13px] text-slate-500">
-                {t('reflection.noObservations')}
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {observations.map((obs, i) => (
-                  <ObservationItem key={i} obs={obs} />
-                ))}
-              </div>
-            )}
+          <textarea
+            value={reflection}
+            onChange={e => setReflection(e.target.value)}
+            onBlur={handleSaveReflection}
+            placeholder={t('reflection.placeholder')}
+            className="w-full text-[15px] text-slate-800 leading-[1.7] placeholder:text-slate-400 outline-none resize-none bg-transparent"
+            rows={10}
+          />
+          <div className="mt-2 flex items-center justify-between text-[11px] text-slate-400">
+            <span>{t('reflection.autoSave')}</span>
+            {saving && <span className="text-brand-700">{t('reflection.saving')}</span>}
           </div>
         </div>
 

@@ -30,7 +30,6 @@
     "gallery": "Галерея",
     "meals": "Питание",
     "goals": "Цели",
-    "observations": "Занятия",
     "therapy": "Терапия",
     "warnings": "Предупреждения",
     "chat": "Сообщения",
@@ -40,29 +39,6 @@
     "portalSubtitle": "Портал учителя",
     "roleTeacher": "Учитель",
     "logout": "Выйти"
-  },
-  "quickObs": {
-    "title": "Новое наблюдение",
-    "child": "Ребёнок",
-    "goal": "Цель",
-    "selectGoal": "Выбрать цель",
-    "goalHint": "Последняя записанная цель",
-    "outcome": "Результат",
-    "note": "Заметка",
-    "noteOptional": "(необязательно)",
-    "notePlaceholder": "Краткое наблюдение...",
-    "photo": "Фото",
-    "cancel": "Отмена",
-    "save": "Сохранить",
-    "saving": "Сохранение...",
-    "loadError": "Ошибка загрузки списка детей",
-    "outcomes": {
-      "emerging": "Формируется",
-      "assisted": "С помощью",
-      "independent": "Самостоятельно",
-      "mastered": "Освоено",
-      "struggling": "Затрудняется"
-    }
   },
   "login": {
     "title": "Uchqun Портал",
@@ -129,20 +105,14 @@
     "presentCount": "присутствует",
     "attendanceStat": "Посещаемость",
     "normal": "норма",
-    "observationsToday": "Наблюдения сегодня",
-    "vsYesterday": "vs вчера",
     "newMessages": "Новые сообщения",
     "fromParents": "от родителей",
     "viewMessages": "Просмотреть сообщения",
     "focusToday": "Фокус дня",
     "focusCount": "{{count}} · ожидает ответа",
-    "recentObservations": "Последние наблюдения",
-    "noObservations": "Сегодня наблюдений ещё нет",
-    "noObservationsMobile": "Наблюдений пока нет",
     "viewAll": "Просмотреть все",
     "quickLinks": "Быстрые ссылки",
     "groupLabel": "Группа",
-    "observationStat": "Наблюдения",
     "messageStat": "Сообщения",
     "messageAction": "Сообщение",
     "linkAttendance": "Отметить посещаемость",
@@ -662,7 +632,6 @@
     "errorIrrLoad": "Не удалось загрузить данные ИРП",
     "tab": {
       "iep": "Цели ИОП",
-      "obs": "Наблюдения",
       "docs": "Документы",
       "messages": "Сообщения",
       "gallery": "Галерея"
@@ -674,11 +643,7 @@
       "docsComingSoon": "Документы будут добавлены скоро",
       "galleryRedirect": "Перейти в галерею →"
     },
-    "heatmap": {
-      "last12": "Последние 12 наблюдений"
-    },
     "button": {
-      "newObservation": "Новое наблюдение",
       "parentList": "Список группы",
       "viewIrr": "Открыть ИРП",
       "createIrr": "Создать ИРП"
@@ -688,8 +653,7 @@
       "medicalNote": "Медицинская заметка"
     },
     "badge": {
-      "mastered": "Освоено",
-      "assistNeeded": "Нужна помощь"
+      "mastered": "Освоено"
     }
   },
   "errors": {
@@ -899,11 +863,7 @@
     "placeholder": "Напишите личные мысли о сегодняшнем дне...",
     "autoSave": "Сохраняется автоматически",
     "saving": "Сохранение...",
-    "observationsToday": "Наблюдения за сегодня",
-    "noObservations": "Наблюдения сегодня не записаны",
-    "parentJournal": "Журнал для родителей",
-    "positive": "Хороший результат",
-    "needsHelp": "Нужна помощь"
+    "parentJournal": "Журнал для родителей"
   },
   "journal": {
     "children": "Дети",
@@ -940,8 +900,7 @@
     "pageChildProfile": "Профиль ребёнка",
     "pageDefault": "Uchqun",
     "menuOpen": "Открыть меню",
-    "notifications": "Уведомления",
-    "newObservation": "Новое наблюдение"
+    "notifications": "Уведомления"
   },
   "parentAttendance": {
     "title": "Посещаемость",

@@ -7,64 +7,14 @@ import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 
-// S2b: TABS labels resolved at render time via t() (module scope can't call hooks).
 const TABS = [
   { key: 'iep',      labelKey: 'childDetail.tab.iep' },
-  { key: 'obs',      labelKey: 'childDetail.tab.obs' },
   { key: 'docs',     labelKey: 'childDetail.tab.docs' },
   { key: 'messages', labelKey: 'childDetail.tab.messages' },
   { key: 'gallery',  labelKey: 'childDetail.tab.gallery' },
 ];
 
-// S2b: colors stay hardcoded; labels resolved at render via t().
-const OUTCOME_CONFIG = {
-  mastered:    { labelKey: 'childDetail.badge.mastered', bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
-  independent: { labelKey: 'quickObs.outcomes.independent', bg: '#E2F0E8', color: '#4F8C72', border: '#A8D2BC' },
-  assisted:    { labelKey: 'quickObs.outcomes.assisted', bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
-  emerging:    { labelKey: 'quickObs.outcomes.emerging', bg: '#F6F3FB', color: '#5F567F', border: '#D8CFE5' },
-  struggling:  { labelKey: 'quickObs.outcomes.struggling', bg: '#FBF3E4', color: '#8E6314', border: '#F0DBA8' },
-};
-
-function OutcomeChip({ outcome }) {
-  const { t } = useTranslation();
-  const o = OUTCOME_CONFIG[outcome] || OUTCOME_CONFIG.emerging;
-  return (
-    <span
-      className="px-2 py-0.5 rounded-full text-[11px] font-medium"
-      style={{ background: o.bg, color: o.color, border: `1px solid ${o.border}` }}
-    >
-      {t(o.labelKey)}
-    </span>
-  );
-}
-
-// 12-square heatmap for goal progress
-function GoalHeatmap({ records = [] }) {
-  const last12 = records.slice(-12);
-  return (
-    <div className="flex gap-1">
-      {[...Array(12)].map((_, i) => {
-        const r = last12[i];
-        let bg = '#EDEFF2'; // empty
-        if (r) {
-          if (r.outcome === 'mastered' || r.outcome === 'independent') bg = '#7AB89A';
-          else if (r.outcome === 'assisted') bg = '#C58A1F';
-          else bg = '#BFB2D3';
-        }
-        return (
-          <span
-            key={i}
-            className="w-4 h-4 rounded-sm"
-            style={{ background: bg }}
-            title={r ? `${r.date}: ${r.outcome}` : 'Ma\'lumot yo\'q'}
-          />
-        );
-      })}
-    </div>
-  );
-}
-
-function IEPTab({ child, goals }) {
+function IEPTab({ goals }) {
   const { t } = useTranslation();
   if (!goals || goals.length === 0) {
     return (
@@ -81,9 +31,7 @@ function IEPTab({ child, goals }) {
   return (
     <div className="space-y-4 mt-4">
       {goals.map(goal => {
-        const isMastered  = goal.status === 'mastered';
-        const isStruggling = goal.lastOutcome === 'struggling' || goal.lastOutcome === 'assisted';
-
+        const isMastered = goal.status === 'mastered';
         return (
           <div
             key={goal.id}
@@ -105,33 +53,12 @@ function IEPTab({ child, goals }) {
                       {t('childDetail.badge.mastered')}
                     </span>
                   )}
-                  {isStruggling && !isMastered && (
-                    <span className="px-2 py-0.5 rounded-full text-[11px] font-medium bg-warning-50 text-warning-700">
-                      {t('childDetail.badge.assistNeeded')}
-                    </span>
-                  )}
                 </div>
                 <div className="mt-1 text-[15px] font-semibold text-slate-900">{goal.title}</div>
                 {goal.description && (
                   <p className="mt-1 text-[13px] text-slate-600">{goal.description}</p>
                 )}
               </div>
-              <OutcomeChip outcome={goal.lastOutcome || 'emerging'} />
-            </div>
-
-            {/* Heatmap */}
-            <div className="mt-3">
-              <div className="text-[11px] text-slate-500 mb-1">{t('childDetail.heatmap.last12')}</div>
-              <GoalHeatmap records={goal.recentObservations || []} />
-            </div>
-
-            <div className="mt-3 flex items-center gap-2">
-              <Link
-                to={`/teacher/activities?childId=${child?.id}&goalId=${goal.id}`}
-                className="h-8 px-3 rounded-md border border-slate-200 bg-surface text-[12px] font-medium text-slate-700 hover:bg-slate-50 transition-colors flex items-center gap-1.5"
-              >
-                <Plus className="w-3.5 h-3.5" strokeWidth={2} /> {t('childDetail.button.newObservation')}
-              </Link>
             </div>
           </div>
         );
@@ -272,12 +199,6 @@ const ChildDetail = () => {
           {/* CTA buttons */}
           <div className="mt-4 flex flex-wrap gap-2">
             <Link
-              to={`/teacher/activities?childId=${id}`}
-              className="h-9 px-3.5 rounded-md bg-brand-600 hover:bg-brand-700 text-surface text-[13px] font-medium flex items-center gap-1.5 transition-colors"
-            >
-              <Plus className="w-4 h-4" strokeWidth={2} /> {t('childDetail.button.newObservation')}
-            </Link>
-            <Link
               to={`/teacher/chat?parentId=${child.parentId}`}
               className="h-9 px-3.5 rounded-md border border-slate-200 bg-surface hover:bg-slate-50 text-[13px] font-medium text-slate-700 flex items-center gap-1.5 transition-colors"
             >
@@ -332,12 +253,7 @@ const ChildDetail = () => {
         </div>
 
         {/* Tab content */}
-        {tab === 'iep' && <IEPTab child={child} goals={goals} />}
-        {tab === 'obs' && (
-          <div className="py-8 text-center text-[13px] text-slate-500">
-            Kuzatuvlar tez orada qo&apos;shiladi
-          </div>
-        )}
+        {tab === 'iep' && <IEPTab goals={goals} />}
         {tab === 'docs' && (
           <div className="py-8 text-center text-[13px] text-slate-500">
             {t('childDetail.empty.docsComingSoon')}

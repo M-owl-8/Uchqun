@@ -407,9 +407,7 @@
   },
   "childDetail": {
     "back": "Back",
-    "observations": "Observations",
     "goals": "Goals",
-    "noObservations": "No observations recorded",
     "noGoals": "No goals recorded",
     "domain": "Domain",
     "severity": "Severity",

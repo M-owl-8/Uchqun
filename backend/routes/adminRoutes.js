@@ -24,9 +24,8 @@ import {
   suspendParent,
   activateParent,
 } from '../controllers/adminController.js';
-import { listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { listByChildAsAdmin } from '../controllers/admin/adminGoalController.js';
-import { restoreChild, restoreUser, restoreObservation, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
+import { restoreChild, restoreUser, restoreAttendance } from '../controllers/admin/adminRestoreController.js';
 import { getAdminAuditLog } from '../controllers/admin/adminAuditController.js';
 import { getAdminSchool, patchAdminSchool } from '../controllers/admin/adminSchoolController.js';
 import { getTeacherById } from '../controllers/admin/adminTeacherController.js';
@@ -91,15 +90,13 @@ router.get('/receptions/:id/documents', getReceptionDocuments);
 router.put('/documents/:id/approve', adminIdParamValidator, handleValidationErrors, approveDocument);
 router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErrors, rejectDocument);
 
-// Children observations and goals (admin read)
-router.get('/children/:id/observations', listObservationsByChild);
+// Children goals (admin read)
 router.get('/children/:id/goals', listByChildAsAdmin);
 router.put('/children/:id/transfer', transferChild);
 
 // Restore endpoints (soft-delete recovery)
 router.put('/children/:id/restore', restoreChild);
 router.put('/users/:id/restore', restoreUser);
-router.put('/observations/:id/restore', restoreObservation);
 router.put('/attendance/:id/restore', restoreAttendance);
 
 // Bulk import

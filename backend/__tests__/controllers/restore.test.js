@@ -3,7 +3,6 @@ import { jest } from '@jest/globals';
 const mockChildFindOne = jest.fn();
 const mockChildRestore = jest.fn();
 const mockUserFindOne = jest.fn();
-const mockObsFindOne = jest.fn();
 const mockAttFindOne = jest.fn();
 const mockLogAudit = jest.fn();
 
@@ -12,9 +11,6 @@ jest.unstable_mockModule('../../models/Child.js', () => ({
 }));
 jest.unstable_mockModule('../../models/User.js', () => ({
   default: { findOne: mockUserFindOne },
-}));
-jest.unstable_mockModule('../../models/ChildObservation.js', () => ({
-  default: { findOne: mockObsFindOne },
 }));
 jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({
   default: { findOne: mockAttFindOne },
@@ -26,7 +22,7 @@ jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
   logAudit: mockLogAudit,
 }));
 
-const { restoreChild, restoreUser, restoreObservation, restoreAttendance } =
+const { restoreChild, restoreUser, restoreAttendance } =
   await import('../../controllers/admin/adminRestoreController.js');
 
 const mkRes = () => {
@@ -115,20 +111,6 @@ describe('restoreChild', () => {
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       error: expect.objectContaining({ code: 'RESTORE_FAILED' }),
     }));
-  });
-});
-
-describe('restoreObservation', () => {
-  beforeEach(() => jest.clearAllMocks());
-
-  it('200 restores a soft-deleted observation', async () => {
-    const restore = jest.fn().mockResolvedValue();
-    mockObsFindOne.mockResolvedValue({ ...deletedRecord('s1'), restore });
-    const res = mkRes();
-    await restoreObservation(adminReq(RECORD_ID), res);
-    expect(restore).toHaveBeenCalled();
-    expect(mockLogAudit).toHaveBeenCalledWith(expect.objectContaining({ entity: 'child_observations' }));
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
   });
 });
 

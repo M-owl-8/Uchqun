@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { TrendingUp, ArrowRight, Plus, MessageSquare, Users } from 'lucide-react';
+import { ArrowRight, Plus, MessageSquare, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ChildAvatar } from '../components/ChildAvatar';
 import { useChildRibbon } from '../hooks/useChildRibbon';
@@ -19,52 +19,12 @@ const STATE_COLORS = {
   sick:    '#4D6584',
 };
 
-const OUTCOME_COLORS = {
-  independent: { bg: '#E2F0E8', color: '#4F8C72' },
-  assisted:    { bg: '#FBF3E4', color: '#8E6314' },
-  emerging:    { bg: '#F6F3FB', color: '#5F567F' },
-  mastered:    { bg: '#E2F0E8', color: '#4F8C72' },
-};
-
-function OutcomePill({ outcome }) {
-  const { t } = useTranslation();
-  const c = OUTCOME_COLORS[outcome] || OUTCOME_COLORS.emerging;
-  return (
-    <span
-      className="px-1.5 py-0.5 rounded-full text-[10px] font-medium"
-      style={{ background: c.bg, color: c.color }}
-    >
-      {t(`quickObs.outcomes.${outcome}`)}
-    </span>
-  );
-}
-
 function ChildStateDot({ state }) {
   return (
     <span
       className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-surface"
       style={{ background: STATE_COLORS[state] || STATE_COLORS.absent }}
     />
-  );
-}
-
-function ObservationRow({ obs }) {
-  const ribbon = useChildRibbon(obs.child);
-  return (
-    <div
-      className="rounded-md flex items-center gap-2.5 p-2 hover:bg-slate-50 transition-colors"
-      style={{ borderLeft: `3px solid ${ribbon.hex}` }}
-    >
-      <ChildAvatar child={obs.child} size="xs" />
-      <div className="flex-1 min-w-0">
-        <div className="text-[12px] font-medium text-slate-900 truncate">
-          {obs.child?.firstName} {obs.child?.lastName?.charAt(0)}. · {obs.goalLabel}
-        </div>
-        <div className="text-[10px] text-slate-500">{obs.note}</div>
-      </div>
-      <OutcomePill outcome={obs.outcome} />
-      <span className="text-[10px] text-slate-400 tnum ml-1">{obs.time}</span>
-    </div>
   );
 }
 
@@ -93,28 +53,23 @@ function AttentionCard({ item }) {
   );
 }
 
-function buildData(statsRes, childrenRes, obsRes) {
+function buildData(statsRes, childrenRes) {
   const rawStats    = statsRes.status    === 'fulfilled' ? (statsRes.value.data?.data    || statsRes.value.data    || {}) : {};
   const rawChildren = childrenRes.status === 'fulfilled' ? (childrenRes.value.data?.data || childrenRes.value.data || []) : [];
-  const rawObs      = obsRes.status      === 'fulfilled' ? (obsRes.value.data?.data      || obsRes.value.data      || []) : [];
 
   return {
     stats: {
-      present:         rawStats.present         || rawChildren.filter(c => c.attendanceState === 'present').length || rawChildren.length,
-      total:           rawStats.total            || rawChildren.length,
-      parents:         rawStats.parents          || rawStats.unreadMessages || 0,
-      activities:      rawStats.activities       || rawObs.length || 0,
-      activitiesDelta: rawStats.activitiesDelta  || 0,
+      present: rawStats.present || rawChildren.filter(c => c.attendanceState === 'present').length || rawChildren.length,
+      total:   rawStats.total   || rawChildren.length,
+      parents: rawStats.parents || rawStats.unreadMessages || 0,
     },
     children: Array.isArray(rawChildren) ? rawChildren : [],
-    observations: Array.isArray(rawObs) ? rawObs : [],
   };
 }
 
 const FALLBACK_DATA = {
-  stats:        { present: 0, total: 0, parents: 0, activities: 0, activitiesDelta: 0 },
-  children:     [],
-  observations: [],
+  stats:    { present: 0, total: 0, parents: 0 },
+  children: [],
 };
 
 const Dashboard = () => {
@@ -132,12 +87,11 @@ const Dashboard = () => {
         setData(cached);
         setLoading(false);
         try {
-          const [s, c, o] = await Promise.allSettled([
-            api.get('/teacher/dashboard/counts',         { signal: controller.signal }),
-            api.get('/teacher/children',                 { signal: controller.signal }),
-            api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }),
+          const [s, c] = await Promise.allSettled([
+            api.get('/teacher/dashboard/counts', { signal: controller.signal }),
+            api.get('/teacher/children',         { signal: controller.signal }),
           ]);
-          const fresh = buildData(s, c, o);
+          const fresh = buildData(s, c);
           cache.set(CACHE_KEY, fresh, CACHE_TTL);
           setData(fresh);
         } catch { /* stale data stays visible */ }
@@ -145,12 +99,11 @@ const Dashboard = () => {
       }
 
       try {
-        const [s, c, o] = await Promise.allSettled([
-          api.get('/teacher/dashboard/counts',         { signal: controller.signal }),
-          api.get('/teacher/children',                 { signal: controller.signal }),
-          api.get('/teacher/observations/recent?limit=8', { signal: controller.signal }),
+        const [s, c] = await Promise.allSettled([
+          api.get('/teacher/dashboard/counts', { signal: controller.signal }),
+          api.get('/teacher/children',         { signal: controller.signal }),
         ]);
-        const fresh = buildData(s, c, o);
+        const fresh = buildData(s, c);
         cache.set(CACHE_KEY, fresh, CACHE_TTL);
         setData(fresh);
       } catch (err) {
@@ -167,9 +120,8 @@ const Dashboard = () => {
 
   if (loading) return <SkeletonDashboard stats={3} cards={3} />;
 
-  const stats    = data?.stats        || {};
-  const children = data?.children     || [];
-  const obs      = data?.observations || [];
+  const stats    = data?.stats    || {};
+  const children = data?.children || [];
 
   const attention = children
     .filter(c => c.attendanceState === 'absent' || c.needsAttention)
@@ -250,8 +202,8 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* 3-col stats */}
-        <div className="mt-5 grid grid-cols-3 gap-4">
+        {/* 2-col stats */}
+        <div className="mt-5 grid grid-cols-2 gap-4">
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
             <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.attendanceStat')}</div>
             <div className="mt-2 flex items-baseline gap-2">
@@ -268,19 +220,6 @@ const Dashboard = () => {
                 </div>
               </>
             )}
-          </div>
-
-          <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
-            <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.observationsToday')}</div>
-            <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.activities || 0}</span>
-              {stats.activitiesDelta > 0 && (
-                <span className="text-[11px] text-mint-700 font-medium flex items-center gap-0.5">
-                  <TrendingUp className="w-3 h-3" strokeWidth={2} />
-                  +{stats.activitiesDelta} {t('dashboard.vsYesterday')}
-                </span>
-              )}
-            </div>
           </div>
 
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
@@ -309,46 +248,27 @@ const Dashboard = () => {
           </div>
         )}
 
-        {/* Bottom 2-col */}
-        <div className="mt-7 grid grid-cols-[1.2fr_1fr] gap-4">
-          <div className="rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[18px] font-semibold text-slate-900">{t('dashboard.recentObservations')}</h2>
-            </div>
-            {obs.length === 0 ? (
-              <div className="py-8 text-center text-[13px] text-slate-500">{t('dashboard.noObservations')}</div>
-            ) : (
-              <div className="space-y-1.5">
-                {obs.slice(0, 6).map((o, i) => <ObservationRow key={i} obs={o} />)}
-              </div>
-            )}
-            <Link to="/teacher/reja?tab=activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium hover:underline">
-              {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
-            </Link>
+        {/* Quick links */}
+        <div className="mt-7 rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
+          <div className="flex items-center gap-3 mb-3">
+            <span className="w-[3px] h-4 bg-brand-600 rounded" />
+            <h2 className="text-[18px] font-semibold text-slate-900">{t('dashboard.quickLinks')}</h2>
           </div>
-
-          <div className="rounded-xl border border-slate-200 bg-surface shadow-xs p-5">
-            <div className="flex items-center gap-3 mb-3">
-              <span className="w-[3px] h-4 bg-brand-600 rounded" />
-              <h2 className="text-[18px] font-semibold text-slate-900">{t('dashboard.quickLinks')}</h2>
-            </div>
-            <div className="space-y-2">
-              {[
-                { to: '/teacher/attendance', label: t('dashboard.linkAttendance') },
-                { to: '/teacher/parents',    label: t('dashboard.linkChildren') },
-                { to: '/teacher/chat',       label: t('dashboard.linkChat'), badge: stats.parents },
-                { to: '/teacher/reflection', label: t('dashboard.linkReflection') },
-              ].map(link => (
-                <Link key={link.to} to={link.to} className="flex items-center gap-3 p-3 rounded-lg bg-paper hover:bg-brand-50 transition-colors">
-                  <span className="text-[13px] font-medium text-slate-900">{link.label}</span>
-                  {link.badge > 0 && (
-                    <span className="px-1.5 py-0.5 rounded-full bg-error-500 text-surface text-[10px] font-medium">{link.badge}</span>
-                  )}
-                  <ArrowRight className="w-4 h-4 text-slate-400 ml-auto" strokeWidth={1.75} />
-                </Link>
-              ))}
-            </div>
+          <div className="grid grid-cols-2 gap-2">
+            {[
+              { to: '/teacher/attendance', label: t('dashboard.linkAttendance') },
+              { to: '/teacher/parents',    label: t('dashboard.linkChildren') },
+              { to: '/teacher/chat',       label: t('dashboard.linkChat'), badge: stats.parents },
+              { to: '/teacher/reflection', label: t('dashboard.linkReflection') },
+            ].map(link => (
+              <Link key={link.to} to={link.to} className="flex items-center gap-3 p-3 rounded-lg bg-paper hover:bg-brand-50 transition-colors">
+                <span className="text-[13px] font-medium text-slate-900">{link.label}</span>
+                {link.badge > 0 && (
+                  <span className="px-1.5 py-0.5 rounded-full bg-error-500 text-surface text-[10px] font-medium">{link.badge}</span>
+                )}
+                <ArrowRight className="w-4 h-4 text-slate-400 ml-auto" strokeWidth={1.75} />
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -391,17 +311,13 @@ const Dashboard = () => {
           </div>
         )}
 
-        <div className="grid grid-cols-3 gap-2">
+        <div className="grid grid-cols-2 gap-2">
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
             <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.attendanceStat')}</div>
             <div className="mt-1 flex items-baseline gap-0.5">
               <span className="text-[20px] font-semibold text-slate-900 tnum">{stats.present || 0}</span>
               <span className="text-[11px] text-slate-500">/{children.length || 0}</span>
             </div>
-          </div>
-          <div className="rounded-lg bg-surface border border-slate-200 p-3">
-            <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.observationStat')}</div>
-            <div className="mt-1"><span className="text-[20px] font-semibold text-slate-900 tnum">{stats.activities || 0}</span></div>
           </div>
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
             <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.messageStat')}</div>
@@ -424,21 +340,6 @@ const Dashboard = () => {
           </div>
         )}
 
-        <div className="rounded-xl border border-slate-200 bg-surface p-4">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[13px] font-medium text-slate-900">{t('dashboard.recentObservations')}</span>
-          </div>
-          {obs.length === 0 ? (
-            <p className="text-[12px] text-slate-500 text-center py-4">{t('dashboard.noObservationsMobile')}</p>
-          ) : (
-            <div className="space-y-1.5">
-              {obs.slice(0, 5).map((o, i) => <ObservationRow key={i} obs={o} />)}
-            </div>
-          )}
-          <Link to="/teacher/reja?tab=activities" className="mt-3 inline-flex items-center gap-1 text-[12px] text-brand-700 font-medium">
-            {t('dashboard.viewAll')} <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.75} />
-          </Link>
-        </div>
       </div>
     </div>
   );

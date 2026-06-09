@@ -349,62 +349,6 @@ test.describe.serial('W2-S1 teacher1 full day', () => {
     expect(body.length).toBeGreaterThan(100);
   });
 
-  test('T-046 create activity via QuickObservation FAB', async () => {
-    await page.goto('/teacher');
-    await page.waitForLoadState('networkidle');
-
-    // FAB is in the top nav: aria-label="Yangi kuzatish", has Plus icon
-    const fabBtn = page.locator('[aria-label*="kuzatish"], [aria-label*="observation"]').first()
-      .or(page.locator('button').filter({ hasText: /kuzatish/i }).first());
-    if (await fabBtn.isVisible().catch(() => false)) {
-      await fabBtn.click();
-      await page.waitForTimeout(800);
-      await ss(page, 'T-046-quickobs-modal-open');
-
-      // Modal: .fixed.inset-x-0.bottom-0.md:inset-0
-      const modal = page.locator('.fixed.inset-x-0');
-
-      // Step 1: select first child chip (inside the overflow-x-auto strip)
-      const childChip = modal.locator('.overflow-x-auto button').first();
-      if (await childChip.isVisible().catch(() => false)) {
-        await childChip.click();
-        await page.waitForTimeout(300);
-      }
-
-      // Step 2: click first outcome button (grid-cols-2 with 4 options)
-      // Outcome buttons are after the goal dropdown button
-      // Use text patterns: "Yangi", "Yordam bilan", "Mustaqil", "Mahorat"
-      // Or find the grid container and click first button
-      const outcomeGrid = modal.locator('.grid-cols-2').first();
-      const firstOutcome = outcomeGrid.locator('button').first();
-      if (await firstOutcome.isVisible().catch(() => false)) {
-        await firstOutcome.click();
-        await page.waitForTimeout(200);
-      }
-
-      // Step 3: fill note textarea (optional but adds content)
-      const noteArea = modal.locator('textarea').first();
-      if (await noteArea.isVisible().catch(() => false)) {
-        await noteArea.fill(`Beta kuzatuv ${RUN} — Кириллча матн`);
-      }
-
-      await ss(page, 'T-046-quickobs-filled');
-
-      // Step 4: save — button is now enabled (child + outcome selected)
-      const saveBtn = modal.locator('button').filter({ hasText: /saqlash|save/i }).last();
-      if (await saveBtn.isVisible().catch(() => false)) {
-        await saveBtn.click({ timeout: 5000 }).catch(() => {});
-        await page.waitForTimeout(2000);
-        await ss(page, 'T-046-activity-created');
-      } else {
-        await ss(page, 'T-046-no-save-btn');
-      }
-    } else {
-      await ss(page, 'T-046-no-fab-btn');
-      console.log('T-046 BLOCKED: FAB button not found');
-    }
-  });
-
   test('T-047 edit activity', async () => {
     await page.goto('/teacher/reja?tab=activities');
     await page.waitForLoadState('networkidle');

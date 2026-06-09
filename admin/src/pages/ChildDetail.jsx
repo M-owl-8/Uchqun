@@ -1,29 +1,10 @@
-import { useEffect, useState, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 import { ArrowLeft } from 'lucide-react';
 import IRRSummary from '@shared/components/IRRSummary';
-
-const DOMAIN_COLORS = {
-  cognitive:  'bg-purple-50 text-purple-700',
-  social:     'bg-blue-50 text-blue-700',
-  emotional:  'bg-pink-50 text-pink-700',
-  physical:   'bg-green-50 text-green-700',
-  language:   'bg-yellow-50 text-yellow-700',
-};
-
-const domainClass = (d) => DOMAIN_COLORS[d?.toLowerCase()] ?? 'bg-warm-50 text-warm-700';
-
-const SEVERITY_COLORS = {
-  critical: 'text-error-700 bg-error-50',
-  high:     'text-warning-700 bg-warning-50',
-  medium:   'text-info-700 bg-info-50',
-  low:      'text-warm-600 bg-warm-50',
-};
-
-const severityClass = (s) => SEVERITY_COLORS[s?.toLowerCase()] ?? 'text-warm-600 bg-warm-50';
 
 const ChildDetail = () => {
   const { id } = useParams();
@@ -36,25 +17,9 @@ const ChildDetail = () => {
 
   const child = location.state?.child ?? null;
 
-  const [activeTab, setActiveTab] = useState('observations');
-  const [observations, setObservations] = useState([]);
+  const [activeTab, setActiveTab] = useState('irr');
   const [goals, setGoals] = useState([]);
-  const [loadingObs, setLoadingObs] = useState(true);
   const [loadingGoals, setLoadingGoals] = useState(false);
-
-  useEffect(() => {
-    const controller = new AbortController();
-
-    api.get(`/admin/children/${id}/observations`, { signal: controller.signal })
-      .then((res) => setObservations(Array.isArray(res.data) ? res.data : []))
-      .catch((err) => {
-        if (err.code === 'ERR_CANCELED') return;
-        toastErrorRef.current(t('childDetail.loadError', { defaultValue: 'Failed to load data' }));
-      })
-      .finally(() => setLoadingObs(false));
-
-    return () => controller.abort();
-  }, [id, t]);
 
   const handleGoalsTab = () => {
     setActiveTab('goals');
@@ -96,14 +61,14 @@ const ChildDetail = () => {
       {/* Tabs */}
       <div className="flex border-b border-warm-200">
         <button
-          onClick={() => setActiveTab('observations')}
+          onClick={() => setActiveTab('irr')}
           className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'observations'
+            activeTab === 'irr'
               ? 'border-brand-600 text-brand-700'
               : 'border-transparent text-warm-500 hover:text-warm-800'
           }`}
         >
-          {t('childDetail.observations', { defaultValue: 'Observations' })}
+          {t('childDetail.irr', { defaultValue: 'IRR' })}
         </button>
         <button
           onClick={handleGoalsTab}
@@ -114,16 +79,6 @@ const ChildDetail = () => {
           }`}
         >
           {t('childDetail.goals', { defaultValue: 'Goals' })}
-        </button>
-        <button
-          onClick={() => setActiveTab('irr')}
-          className={`px-5 py-2.5 text-sm font-medium border-b-2 transition-colors ${
-            activeTab === 'irr'
-              ? 'border-brand-600 text-brand-700'
-              : 'border-transparent text-warm-500 hover:text-warm-800'
-          }`}
-        >
-          {t('childDetail.irr', { defaultValue: 'IRR' })}
         </button>
       </div>
 
@@ -144,40 +99,6 @@ const ChildDetail = () => {
           }}
           t={t}
         />
-      )}
-
-      {/* Observations Tab */}
-      {activeTab === 'observations' && (
-        <div>
-          {loadingObs ? (
-            <div className="space-y-3 animate-pulse">
-              {[1,2,3].map((i) => <div key={i} className="skel h-16 w-full" />)}
-            </div>
-          ) : observations.length === 0 ? (
-            <div className="text-center py-10 text-warm-400">
-              <p className="font-medium">{t('childDetail.noObservations', { defaultValue: 'No observations recorded' })}</p>
-            </div>
-          ) : (
-            <div className="space-y-3">
-              {[...observations].sort((a, b) => new Date(b.observationDate) - new Date(a.observationDate)).map((obs) => (
-                <div key={obs.id} className="bg-surface border border-warm-200 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2 flex-wrap">
-                    <span className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full ${domainClass(obs.domain)}`}>
-                      {obs.domain}
-                    </span>
-                    <span className={`inline-flex items-center px-2 py-0.5 text-xs font-medium rounded-full ${severityClass(obs.severity)}`}>
-                      {obs.severity}
-                    </span>
-                    <span className="text-xs text-warm-400 ml-auto num">
-                      {obs.observationDate ? new Date(obs.observationDate).toLocaleDateString() : ''}
-                    </span>
-                  </div>
-                  <p className="text-sm text-warm-800">{obs.note}</p>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
       )}
 
       {/* Goals Tab */}

@@ -4,18 +4,16 @@
 
 import { Link, useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { Home, Users, ClipboardList, MessageCircle, User, Bell, Plus, Settings } from 'lucide-react';
+import { Home, Users, ClipboardList, MessageCircle, User, Bell, Settings } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useSocket } from '../shared/context/SocketContext';
 import api from '../shared/services/api';
-import QuickObservation from './QuickObservation';
 
 const TeacherTopNav = () => {
   const location = useLocation();
   const { t } = useTranslation();
   const { on, off } = useSocket();
   const [warningsCount, setWarningsCount] = useState(0);
-  const [fabOpen, setFabOpen] = useState(false);
 
   useEffect(() => {
     let alive = true;
@@ -95,15 +93,6 @@ const TeacherTopNav = () => {
           </nav>
 
           <div className="ml-auto flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setFabOpen(true)}
-              aria-label={t('layout.newObservation', { defaultValue: 'Yangi kuzatish' })}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md bg-brand-600 text-white hover:bg-brand-700 transition-colors text-[13px] font-medium"
-            >
-              <Plus className="w-3.5 h-3.5" />
-              <span className="hidden lg:inline">{t('layout.newObservation', { defaultValue: 'Kuzatish' })}</span>
-            </button>
             <Link
               to="/teacher/xabar?tab=warnings"
               className="relative p-2 rounded-md text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition-colors"
@@ -119,7 +108,6 @@ const TeacherTopNav = () => {
           </div>
         </div>
       </header>
-      {fabOpen && <QuickObservation onClose={() => setFabOpen(false)} />}
     </>
   );
 };

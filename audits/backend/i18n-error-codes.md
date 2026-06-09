@@ -9,24 +9,6 @@
 
 ---
 
-## Observations (`observationController.js`)
-
-| Code | HTTP | Meaning | Frontend translation guidance |
-|---|---|---|---|
-| `OBSERVATION_CHILD_ID_REQUIRED` | 400 | `childId` field missing or not a valid UUID v4 | "Please select a valid child." |
-| `OBSERVATION_INVALID_DATE` | 400 | `observationDate` is missing, not a valid date string, or not parseable | "Please enter a valid date." |
-| `OBSERVATION_DATE_IN_FUTURE` | 400 | `observationDate` is after today | "Observation date cannot be in the future." |
-| `OBSERVATION_INVALID_DOMAIN` | 400 | `domain` value is not one of `communication`, `motor`, `social`, `cognitive`, `self_care` | "Please select a valid development area." |
-| `OBSERVATION_NOTE_TOO_SHORT` | 400 | `note` is fewer than 10 characters after trimming | "Note must be at least 10 characters." |
-| `OBSERVATION_NOTE_TOO_LONG` | 400 | `note` exceeds 2000 characters | "Note must be 2000 characters or fewer." |
-| `OBSERVATION_INVALID_SEVERITY` | 400 | `severity` value is not one of `routine`, `concern`, `urgent` | "Please select a valid severity level." |
-| `OBSERVATION_CHILD_NOT_ACCESSIBLE` | 404 | Child does not belong to the teacher's school, or does not exist | "This child is not in your group." |
-| `OBSERVATION_DAYS_OUT_OF_RANGE` | 400 | `?days` query param is not an integer between 1 and 30 | "Please choose between 1 and 30 days." |
-| `OBSERVATION_CREATE_FAILED` | 500 | Unexpected server error while saving the observation | "Failed to save observation. Please try again." |
-| `OBSERVATION_LIST_FAILED` | 500 | Unexpected server error while fetching observations | "Failed to load observations. Please try again." |
-
----
-
 ## Reflections (`reflectionController.js`)
 
 | Code | HTTP | Meaning | Frontend translation guidance |

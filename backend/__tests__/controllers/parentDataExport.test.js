@@ -3,7 +3,6 @@ import { jest } from '@jest/globals';
 const mockUserFindByPk = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockAttFindAll = jest.fn();
-const mockObsFindAll = jest.fn();
 const mockJournalFindAll = jest.fn();
 const mockGoalFindAll = jest.fn();
 const mockGoalReviewFindAll = jest.fn();
@@ -23,9 +22,6 @@ jest.unstable_mockModule('../../models/Child.js', () => ({
 }));
 jest.unstable_mockModule('../../models/ChildAttendance.js', () => ({
   default: { findAll: mockAttFindAll },
-}));
-jest.unstable_mockModule('../../models/ChildObservation.js', () => ({
-  default: { findAll: mockObsFindAll },
 }));
 jest.unstable_mockModule('../../models/ChildJournalEntry.js', () => ({
   default: { findAll: mockJournalFindAll },
@@ -87,7 +83,6 @@ function setupHappyPath() {
   mockUserFindByPk.mockResolvedValue(fakeParent);
   mockChildFindAll.mockResolvedValue([fakeChild]);
   mockAttFindAll.mockResolvedValue([]);
-  mockObsFindAll.mockResolvedValue([]);
   mockJournalFindAll.mockResolvedValue([]);
   mockGoalFindAll.mockResolvedValue([]);
   mockGoalReviewFindAll.mockResolvedValue([]);
@@ -146,17 +141,6 @@ describe('exportMyData', () => {
     }));
     // Revert-check: removing isVisibleToParent filter would include drafts.
     // With filter: only visible entries in the where clause confirmed above.
-  });
-
-  it('observations are filtered to severity=routine only', async () => {
-    setupHappyPath();
-    const res = mkRes();
-    await exportMyData(parentReq(), res);
-    expect(mockObsFindAll).toHaveBeenCalledWith(expect.objectContaining({
-      where: expect.objectContaining({ severity: 'routine' }),
-    }));
-    // Revert-check: without severity filter, concern/urgent observations would be included.
-    // With filter: severity='routine' confirmed in where clause above.
   });
 
   it('emotional monitoring is returned as aggregate summary, not raw entries', async () => {

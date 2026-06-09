@@ -2,8 +2,8 @@
  * Behavioral within-school cross-teacher IDOR tests — wider class
  *
  * LOAD-BEARING TEST SUITE — second-axis (teacher→child assignment) isolation
- * for the full teacher portal wider class (observation/journal/attendance/
- * activity/meal/media). The mock-based suites (attendance.test.js etc.) stub
+ * for the full teacher portal wider class (journal/attendance/activity/meal/
+ * media). The mock-based suites (attendance.test.js etc.) stub
  * isTeacherAssignedToChild to `true` and do NOT prove the primitive works
  * through a real child load. Do not delete or weaken without replacing this
  * coverage. See also: goalController.withinSchool.test.js (goals class).
@@ -18,8 +18,6 @@
  *   Group G1 → Teacher A (TEACHER_A)
  *   Group G2 → Teacher B (TEACHER_B, same school)
  *   Child A1  → schoolId=S, groupId=G1 (Teacher A's child via modern path)
- *   Child L1  → schoolId=S, parentId=PARENT_L, no groupId (legacy-assigned)
- *   PARENT_L  → User with teacherId=TEACHER_L (legacy assignment record)
  *
  * For each controller, Teacher B tries to mutate Child A1's data → must get 4xx.
  * schoolValidation.js is NOT mocked — real primitive runs against real SQLite.
@@ -58,10 +56,6 @@ const TEACHER_B  = 'aa000003-0000-4000-a000-000000000003';
 const GROUP_G1   = 'aa000004-0000-4000-a000-000000000004';
 const GROUP_G2   = 'aa000005-0000-4000-a000-000000000005';
 const CHILD_A1   = 'aa000006-0000-4000-a000-000000000006';
-// Legacy-path fixture: TEACHER_L assigned to CHILD_L1 via parent.teacherId (no group)
-const TEACHER_L  = 'aa000007-0000-4000-a000-000000000007';
-const PARENT_L   = 'aa000008-0000-4000-a000-000000000008';
-const CHILD_L1   = 'aa000009-0000-4000-a000-000000000009';
 
 // ── Mock helpers ──────────────────────────────────────────────────────────────
 
@@ -89,23 +83,7 @@ const reqTeacherA = (extra = {}) => ({
   ...extra,
 });
 
-const reqTeacherL = (extra = {}) => ({
-  user: { id: TEACHER_L, role: 'teacher', schoolId: SCHOOL_S },
-  body: {},
-  params: {},
-  query: {},
-  ...extra,
-});
-
 // ── Model mocks (controller-specific models, not Child/Group/User) ────────────
-
-// ChildObservation
-const mockObsCreate  = jest.fn().mockResolvedValue({ id: 'obs-1' });
-const mockObsFindAll = jest.fn().mockResolvedValue([]);
-
-jest.unstable_mockModule('../../models/ChildObservation.js', () => ({
-  default: { create: mockObsCreate, findAll: mockObsFindAll, afterDestroy: jest.fn(), belongsTo: jest.fn(), hasMany: jest.fn() },
-}));
 
 // ChildJournalEntry
 const mockJournalCreate  = jest.fn().mockResolvedValue({ id: 'j-1' });
@@ -176,8 +154,6 @@ jest.unstable_mockModule('../../controllers/notificationController.js', () => ({
 }));
 
 // Import controllers after all mocks registered
-const { create: obsCreate, listByChild: obsListByChild } =
-  await import('../../controllers/observationController.js');
 const { create: journalCreate, listByChild: journalListByChild } =
   await import('../../controllers/journalController.js');
 const { createAttendance } =
@@ -198,62 +174,11 @@ beforeAll(async () => {
     { id: GROUP_G2, schoolId: SCHOOL_S, teacherId: TEACHER_B },
   ]);
   await ChildModel.create({ id: CHILD_A1, schoolId: SCHOOL_S, groupId: GROUP_G1 });
-  // Legacy-path fixture: parent user whose teacherId points to TEACHER_L; child has no group
-  await UserModel.create({ id: PARENT_L, teacherId: TEACHER_L });
-  await ChildModel.create({ id: CHILD_L1, schoolId: SCHOOL_S, parentId: PARENT_L, groupId: null });
 });
 
 afterAll(() => sqlite.close());
 
 beforeEach(() => jest.clearAllMocks());
-
-// ── observationController ─────────────────────────────────────────────────────
-
-describe('observationController — within-school cross-teacher IDOR', () => {
-  const TODAY = new Date().toISOString().split('T')[0];
-
-  it('Teacher B cannot create observation on Child A1', async () => {
-    const res = mkRes();
-    await obsCreate(reqTeacherB({
-      body: { childId: CHILD_A1, observationDate: TODAY, domain: 'communication',
-              note: 'This is a long enough note to pass validation.', severity: 'routine' },
-    }), res);
-    expect(res.status).toHaveBeenCalledWith(404);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
-      error: expect.objectContaining({ code: 'OBSERVATION_CHILD_NOT_ACCESSIBLE' }),
-    }));
-    expect(mockObsCreate).not.toHaveBeenCalled();
-  });
-
-  it('Teacher B cannot list observations for Child A1', async () => {
-    const res = mkRes();
-    await obsListByChild(reqTeacherB({ params: { id: CHILD_A1 } }), res);
-    expect(res.status).toHaveBeenCalledWith(404);
-  });
-
-  it('Teacher A can create observation on own child (positive)', async () => {
-    mockObsCreate.mockResolvedValueOnce({ id: 'obs-ok' });
-    const res = mkRes();
-    await obsCreate(reqTeacherA({
-      body: { childId: CHILD_A1, observationDate: TODAY, domain: 'communication',
-              note: 'This is a long enough note to pass validation.', severity: 'routine' },
-    }), res);
-    expect(res.status).toHaveBeenCalledWith(201);
-  });
-
-  it('Teacher L (legacy-assigned via parent.teacherId, no group) can create observation (positive)', async () => {
-    // Proves the legacy path works through the controller's actual child-load
-    // (Child.findByPk returns parentId; User.findOne by teacherId finds PARENT_L).
-    // CHILD_L1 has no groupId → modern path returns false → legacy path must succeed.
-    mockObsCreate.mockResolvedValueOnce({ id: 'obs-legacy' });
-    const res = mkRes();
-    await obsCreate(reqTeacherL({
-      body: { childId: CHILD_L1, observationDate: TODAY, domain: 'communication',
-              note: 'This is a long enough note to pass validation.', severity: 'routine' },
-    }), res);
-    expect(res.status).toHaveBeenCalledWith(201);
-  });
-});
 
 // ── journalController ─────────────────────────────────────────────────────────
 

@@ -1,5 +1,5 @@
 // DEF-007 Cold-load proof — S15
-// Verifies attendance status labels and QuickObservation modal render
+// Verifies attendance status labels render as words, not raw keys
 // real Uzbek words (not raw i18n keys) on a fresh incognito context
 // with no prior browser cache or cookies.
 //
@@ -76,42 +76,4 @@ test.describe('DEF-007 cold-load proof', () => {
     ).toBeGreaterThanOrEqual(2);
   });
 
-  test('QuickObservation modal — labels are words not raw keys', async () => {
-    await page.goto(`${BASE}/teacher/attendance`);
-    await page.waitForLoadState('networkidle', { timeout: 20000 }).catch(() => {});
-
-    // Open the QuickObservation FAB (floating "+" button)
-    const fab = page.locator('button').filter({ hasText: /^\+$/ }).first();
-    const fabVisible = await fab.isVisible().catch(() => false);
-    if (!fabVisible) {
-      // Try alternative selectors for the FAB
-      const altFab = page.locator('[class*="fab"], [aria-label*="observation"], [aria-label*="kuzatuv"]').first();
-      await altFab.click({ timeout: 5000 }).catch(async () => {
-        // Last resort: screenshot and skip assertion
-        await ss(page, 'DEF-007-quickobs-fab-not-found');
-        test.skip();
-      });
-    } else {
-      await fab.click();
-    }
-
-    // Wait for the modal
-    await page.waitForSelector('[role="dialog"], [class*="modal"], [class*="Modal"]', { timeout: 8000 }).catch(() => {});
-    await ss(page, 'DEF-007-quickobs-modal-cold');
-
-    const bodyText = await page.locator('body').innerText();
-
-    const rawQuickObsKeys = [
-      'quickObs.title',
-      'quickObs.child',
-      'quickObs.goal',
-      'quickObs.selectGoal',
-      'quickObs.outcome',
-      'quickObs.save',
-      'quickObs.cancel',
-    ];
-    for (const rawKey of rawQuickObsKeys) {
-      expect(bodyText, `Raw key "${rawKey}" must NOT appear in QuickObs modal`).not.toContain(rawKey);
-    }
-  });
 });

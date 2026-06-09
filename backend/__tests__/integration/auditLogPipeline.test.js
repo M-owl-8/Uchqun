@@ -66,12 +66,6 @@ function buildAuditedModel(modelName, tableName, entity, extraFields = {}, metaB
 
 const Child = buildAuditedModel('AuditChild', 'audit_children', 'children');
 
-const ChildObservation = buildAuditedModel(
-  'AuditChildObservation', 'audit_child_observations', 'child_observations',
-  { childId: { type: DataTypes.UUID, allowNull: true }, severity: { type: DataTypes.STRING } },
-  (i) => ({ childId: i.childId, severity: i.severity }),
-);
-
 const ChildGoal = buildAuditedModel(
   'AuditChildGoal', 'audit_child_goals', 'child_goals',
   {
@@ -124,18 +118,6 @@ describe('Audit log pipeline — end-to-end (destroy → hook → logAudit → A
     expect(entry.actorRole).toBe('admin');
     expect(entry.schoolId).toBe('school-1');
     expect(entry.meta.reason).toBe('test_cleanup');
-  });
-
-  it('deleting a ChildObservation writes audit entry with meta.childId and meta.severity', async () => {
-    const obs = await ChildObservation.create({ schoolId: 'school-2', childId: 'child-1', severity: 'concern' });
-    await obs.destroy({ actorId: 'teacher-uuid', actorRole: 'teacher', reason: 'duplicate_entry' });
-
-    expect(mockAuditCreate).toHaveBeenCalledTimes(1);
-    const entry = mockAuditCreate.mock.calls[0][0];
-    expect(entry.entity).toBe('child_observations');
-    expect(entry.entityId).toBe(obs.id);
-    expect(entry.actorId).toBe('teacher-uuid');
-    expect(entry.meta).toMatchObject({ childId: 'child-1', severity: 'concern', reason: 'duplicate_entry' });
   });
 
   it('deleting a ChildGoal writes audit entry with meta.category, title, currentProgress', async () => {

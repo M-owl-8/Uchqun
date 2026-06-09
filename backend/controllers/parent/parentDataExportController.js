@@ -2,7 +2,6 @@ import { Op } from 'sequelize';
 import User from '../../models/User.js';
 import Child from '../../models/Child.js';
 import ChildAttendance from '../../models/ChildAttendance.js';
-import ChildObservation from '../../models/ChildObservation.js';
 import ChildJournalEntry from '../../models/ChildJournalEntry.js';
 import ChildGoal from '../../models/ChildGoal.js';
 import ChildGoalReview from '../../models/ChildGoalReview.js';
@@ -58,11 +57,6 @@ export const exportMyData = async (req, res) => {
       where: { ...childWhere, date: { [Op.gte]: twoYearsAgo } },
     }).catch(() => []);
 
-    // Observations — routine only (concerns/urgent are clinical and stay with staff)
-    const observations = await ChildObservation.findAll({
-      where: { ...childWhere, severity: 'routine', observationDate: { [Op.gte]: twoYearsAgo } },
-    }).catch(() => []);
-
     // Journal entries — only entries visible to parents
     const journalEntries = await ChildJournalEntry.findAll({
       where: { ...childWhere, isVisibleToParent: true },
@@ -93,7 +87,6 @@ export const exportMyData = async (req, res) => {
     for (const child of children) {
       childData[child.id] = {
         attendance: attendance.filter(a => a.childId === child.id),
-        observations: observations.filter(o => o.childId === child.id),
         journalEntries: journalEntries.filter(j => j.childId === child.id),
         goals: goals.filter(g => g.childId === child.id).map(goal => ({
           ...goal.toJSON(),

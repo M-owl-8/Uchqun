@@ -34,18 +34,6 @@ vi.mock('@shared/context/ToastContext', () => ({
 import api from '../../services/api';
 import ChildDetail from '../../pages/ChildDetail';
 
-const OBSERVATIONS = [
-  {
-    id: 'obs-1',
-    childId: 'child-1',
-    observationDate: '2026-05-10',
-    domain: 'cognitive',
-    note: 'Good progress',
-    severity: 'low',
-    teacherId: 't-1',
-  },
-];
-
 const GOALS = [
   {
     id: 'goal-1',
@@ -64,26 +52,14 @@ describe('ChildDetail (FE-3)', () => {
   });
 
   it('renders child name from route state', async () => {
-    api.get.mockResolvedValue({ data: OBSERVATIONS });
+    api.get.mockResolvedValue({ data: [] });
     render(<MemoryRouter><ChildDetail /></MemoryRouter>);
     await waitFor(() => screen.getByText('Amin Aliyev'));
     expect(screen.getByText('Amin Aliyev')).toBeTruthy();
   });
 
-  it('observations tab loads and shows domain badge', async () => {
-    api.get.mockResolvedValue({ data: OBSERVATIONS });
-    render(<MemoryRouter><ChildDetail /></MemoryRouter>);
-    await waitFor(() => screen.getByText('cognitive'));
-    expect(screen.getByText('Good progress')).toBeTruthy();
-    expect(screen.getByText('low')).toBeTruthy();
-  });
-
   it('goals tab loads and shows status badge', async () => {
-    api.get.mockImplementation((url) => {
-      if (url.includes('/goals')) return Promise.resolve({ data: GOALS });
-      return Promise.resolve({ data: OBSERVATIONS });
-    });
-
+    api.get.mockResolvedValue({ data: GOALS });
     render(<MemoryRouter><ChildDetail /></MemoryRouter>);
     await waitFor(() => screen.getByText('Amin Aliyev'));
 
@@ -93,18 +69,8 @@ describe('ChildDetail (FE-3)', () => {
     expect(screen.getAllByText('active').length).toBeGreaterThan(0);
   });
 
-  it('shows "No observations" empty state when list is empty', async () => {
-    api.get.mockResolvedValue({ data: [] });
-    render(<MemoryRouter><ChildDetail /></MemoryRouter>);
-    await waitFor(() => screen.getByText('No observations recorded'));
-    expect(screen.getByText('No observations recorded')).toBeTruthy();
-  });
-
   it('shows "No goals" empty state when goals list is empty', async () => {
-    api.get
-      .mockResolvedValueOnce({ data: [] })
-      .mockResolvedValueOnce({ data: [] });
-
+    api.get.mockResolvedValue({ data: [] });
     render(<MemoryRouter><ChildDetail /></MemoryRouter>);
     await waitFor(() => screen.getByText('Amin Aliyev'));
 

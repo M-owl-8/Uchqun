@@ -378,22 +378,15 @@ test.describe.serial('W4-S1 admin1 full day', () => {
   });
 
   // ── Child Detail (via parent → child link) ───────────────────────
-  test('A-056 A-057 A-058 child detail + observations + goals', async () => {
+  test('A-056 A-058 child detail + goals', async () => {
     await page.goto('/admin/parents');
     await page.waitForLoadState('networkidle');
-    // Try to navigate to a child via parents page
     const childLink = page.locator('a[href*="/admin/children/"]').first()
       .or(page.locator('[class*="child"], [href*="children"]').first());
     if (await childLink.isVisible().catch(() => false)) {
       await childLink.click();
       await page.waitForLoadState('networkidle');
       await ss(page, 'A-056-child-detail');
-      const obsTab = page.locator('[role="tab"], button').filter({ hasText: /kuzatuv|observ/i }).first();
-      if (await obsTab.isVisible().catch(() => false)) {
-        await obsTab.click();
-        await page.waitForTimeout(500);
-        await ss(page, 'A-057-child-observations');
-      }
       const goalsTab = page.locator('[role="tab"], button').filter({ hasText: /maqsad|goal/i }).first();
       if (await goalsTab.isVisible().catch(() => false)) {
         await goalsTab.click();

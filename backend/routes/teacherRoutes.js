@@ -4,7 +4,6 @@ import { handleValidationErrors } from '../middleware/validation.js';
 import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEmotionalMonitoringValidator } from '../validators/teacherTaskValidator.js';
 import { messageToGovValidator } from '../validators/messageValidator.js';
 import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings, getChildren, getChildById } from '../controllers/teacherController.js';
-import { create as createObservation, listRecent as listRecentObservations, listByChild as listObservationsByChild } from '../controllers/observationController.js';
 import { create as createReflection, list as listReflections } from '../controllers/reflectionController.js';
 import { create as createJournalEntry, listByChild as listJournalByChild } from '../controllers/journalController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
@@ -89,7 +88,6 @@ router.get('/messages', getMyMessages);
 // Children (school-scoped read-only access for teacher, reception, admin)
 router.get('/children', getChildren);
 router.get('/children/:id', getChildById);
-router.get('/children/:id/observations', listObservationsByChild);
 // Child goals
 router.get('/children/:childId/goals', listGoalsByChild);
 router.post('/children/:childId/goals', requireRole('teacher'), createGoal);
@@ -98,10 +96,6 @@ router.patch('/goals/:id', requireRole('teacher'), updateGoal);
 router.delete('/goals/:id', requireRole('teacher'), deleteGoal);
 router.post('/goals/:id/reviews', requireRole('teacher'), createGoalReview);
 router.get('/goals/:id/reviews', listGoalReviews);
-
-// Observations — specific routes before general
-router.get('/observations/recent', listRecentObservations);
-router.post('/observations', createObservation);
 
 // Reflections — teacher-only (requireRole('teacher') strictly, NOT requireTeacher)
 router.post('/reflections', requireRole('teacher'), createReflection);

@@ -1,6 +1,5 @@
 import Child from '../../models/Child.js';
 import User from '../../models/User.js';
-import ChildObservation from '../../models/ChildObservation.js';
 import ChildAttendance from '../../models/ChildAttendance.js';
 import logger from '../../utils/logger.js';
 import { logAudit } from '../../utils/auditLogger.js';
@@ -46,9 +45,6 @@ export const restoreChild = (req, res) =>
 
 export const restoreUser = (req, res) =>
   doRestore({ Model: User, entity: 'users', id: req.params.id, req, res });
-
-export const restoreObservation = (req, res) =>
-  doRestore({ Model: ChildObservation, entity: 'child_observations', id: req.params.id, req, res });
 
 export const restoreAttendance = (req, res) =>
   doRestore({ Model: ChildAttendance, entity: 'child_attendance', id: req.params.id, req, res });

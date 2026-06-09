@@ -30,7 +30,6 @@
     "gallery": "Galereya",
     "meals": "Ovqatlanish",
     "goals": "Maqsadlar",
-    "observations": "Kuzatuvlar",
     "therapy": "Terapiya",
     "warnings": "Ogohlantirishlar",
     "chat": "Muloqot",
@@ -40,29 +39,6 @@
     "portalSubtitle": "O'qituvchi portali",
     "roleTeacher": "O'qituvchi",
     "logout": "Chiqish"
-  },
-  "quickObs": {
-    "title": "Yangi kuzatuv",
-    "child": "Bola",
-    "goal": "Maqsad",
-    "selectGoal": "Maqsad tanlang",
-    "goalHint": "Eng so'nggi yozilgan maqsad",
-    "outcome": "Natija",
-    "note": "Izoh",
-    "noteOptional": "(ixtiyoriy)",
-    "notePlaceholder": "Qisqacha kuzatuv...",
-    "photo": "Rasm",
-    "cancel": "Bekor",
-    "save": "Saqlash",
-    "saving": "Saqlanmoqda...",
-    "loadError": "Bolalar ro'yxatini yuklashda xatolik",
-    "outcomes": {
-      "emerging": "Yangi",
-      "assisted": "Yordam bilan",
-      "independent": "Mustaqil",
-      "mastered": "Mahorat",
-      "struggling": "Qiynalmoqda"
-    }
   },
   "login": {
     "title": "Uchqun Portal",
@@ -129,20 +105,14 @@
     "presentCount": "keldi",
     "attendanceStat": "Davomat",
     "normal": "normal",
-    "observationsToday": "Kuzatuvlar bugun",
-    "vsYesterday": "vs kecha",
     "newMessages": "Yangi xabarlar",
     "fromParents": "ota-onadan",
     "viewMessages": "Xabarlarni ko'rish",
     "focusToday": "Bugungi diqqat",
     "focusCount": "{{count}} ta · javob kutmoqda",
-    "recentObservations": "So'nggi kuzatuvlar",
-    "noObservations": "Bugun hali kuzatuv yozilmadi",
-    "noObservationsMobile": "Hali kuzatuv yozilmadi",
     "viewAll": "Hammasini ko'rish",
     "quickLinks": "Tezkor havolalar",
     "groupLabel": "Guruh",
-    "observationStat": "Kuzatuv",
     "messageStat": "Xabar",
     "messageAction": "Xabar",
     "linkAttendance": "Davomat belgilash",
@@ -662,7 +632,6 @@
     "errorIrrLoad": "IRR ma'lumotlari yuklanmadi",
     "tab": {
       "iep": "IEP maqsadlar",
-      "obs": "Kuzatuvlar",
       "docs": "Hujjatlar",
       "messages": "Xabarlar",
       "gallery": "Galereya"
@@ -674,11 +643,7 @@
       "docsComingSoon": "Hujjatlar tez orada qo'shiladi",
       "galleryRedirect": "Galereya sahifasiga o'tish →"
     },
-    "heatmap": {
-      "last12": "So'nggi 12 kuzatuv"
-    },
     "button": {
-      "newObservation": "Yangi kuzatuv",
       "parentList": "Guruh ro'yxati",
       "viewIrr": "ИРРни кўриш",
       "createIrr": "ИРР тузиш"
@@ -688,8 +653,7 @@
       "medicalNote": "Tibbiy eslatma"
     },
     "badge": {
-      "mastered": "Mahorat erishildi",
-      "assistNeeded": "Yordam kerak"
+      "mastered": "Mahorat erishildi"
     }
   },
   "errors": {
@@ -899,11 +863,7 @@
     "placeholder": "Bugungi kun haqida shaxsiy fikrlaringizni yozing...",
     "autoSave": "Avtomatik saqlanadi",
     "saving": "Saqlanmoqda...",
-    "observationsToday": "Bugungi kuzatuvlar",
-    "noObservations": "Bugun hali kuzatuv yozilmadi",
-    "parentJournal": "Ota-onaga jurnal",
-    "positive": "Yaxshi natija",
-    "needsHelp": "Yordam kerak"
+    "parentJournal": "Ota-onaga jurnal"
   },
   "journal": {
     "children": "Bolalar",
@@ -940,8 +900,7 @@
     "pageChildProfile": "Bola profili",
     "pageDefault": "Uchqun",
     "menuOpen": "Menyuni ochish",
-    "notifications": "Bildirishnomalar",
-    "newObservation": "Yangi kuzatuv"
+    "notifications": "Bildirishnomalar"
   },
   "parentAttendance": {
     "title": "Davomat",

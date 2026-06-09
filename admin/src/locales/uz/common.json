@@ -408,9 +408,7 @@
   },
   "childDetail": {
     "back": "Orqaga",
-    "observations": "Kuzatuvlar",
     "goals": "Maqsadlar",
-    "noObservations": "Kuzatuvlar qayd etilmagan",
     "noGoals": "Maqsadlar qayd etilmagan",
     "domain": "Soha",
     "severity": "Darajasi",

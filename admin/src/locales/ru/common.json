@@ -408,9 +408,7 @@
   },
   "childDetail": {
     "back": "Назад",
-    "observations": "Наблюдения",
     "goals": "Цели",
-    "noObservations": "Наблюдения не записаны",
     "noGoals": "Цели не записаны",
     "domain": "Область",
     "severity": "Серьёзность",

@@ -30,7 +30,6 @@
     "gallery": "Gallery",
     "meals": "Meals",
     "goals": "Goals",
-    "observations": "Activities",
     "therapy": "Therapy",
     "warnings": "Warnings",
     "chat": "Messages",
@@ -40,29 +39,6 @@
     "portalSubtitle": "Teacher Portal",
     "roleTeacher": "Teacher",
     "logout": "Log out"
-  },
-  "quickObs": {
-    "title": "New observation",
-    "child": "Child",
-    "goal": "Goal",
-    "selectGoal": "Select goal",
-    "goalHint": "Most recently logged goal",
-    "outcome": "Outcome",
-    "note": "Note",
-    "noteOptional": "(optional)",
-    "notePlaceholder": "Brief observation...",
-    "photo": "Photo",
-    "cancel": "Cancel",
-    "save": "Save",
-    "saving": "Saving...",
-    "loadError": "Error loading children list",
-    "outcomes": {
-      "emerging": "Emerging",
-      "assisted": "Assisted",
-      "independent": "Independent",
-      "mastered": "Mastered",
-      "struggling": "Struggling"
-    }
   },
   "login": {
     "title": "Uchqun Portal",
@@ -129,20 +105,14 @@
     "presentCount": "present",
     "attendanceStat": "Attendance",
     "normal": "normal",
-    "observationsToday": "Observations today",
-    "vsYesterday": "vs yesterday",
     "newMessages": "New messages",
     "fromParents": "from parents",
     "viewMessages": "View messages",
     "focusToday": "Today's Focus",
     "focusCount": "{{count}} · pending",
-    "recentObservations": "Recent Observations",
-    "noObservations": "No observations written today",
-    "noObservationsMobile": "No observations yet",
     "viewAll": "View all",
     "quickLinks": "Quick Links",
     "groupLabel": "Group",
-    "observationStat": "Observations",
     "messageStat": "Messages",
     "messageAction": "Message",
     "linkAttendance": "Mark Attendance",
@@ -662,7 +632,6 @@
     "errorIrrLoad": "Failed to load IDP data",
     "tab": {
       "iep": "IEP goals",
-      "obs": "Observations",
       "docs": "Documents",
       "messages": "Messages",
       "gallery": "Gallery"
@@ -674,11 +643,7 @@
       "docsComingSoon": "Documents will be added soon",
       "galleryRedirect": "Go to the gallery →"
     },
-    "heatmap": {
-      "last12": "Last 12 observations"
-    },
     "button": {
-      "newObservation": "New observation",
       "parentList": "Group roster",
       "viewIrr": "View IRR",
       "createIrr": "Create IRR"
@@ -688,8 +653,7 @@
       "medicalNote": "Medical note"
     },
     "badge": {
-      "mastered": "Mastered",
-      "assistNeeded": "Needs help"
+      "mastered": "Mastered"
     }
   },
   "errors": {
@@ -899,11 +863,7 @@
     "placeholder": "Write your personal thoughts about today...",
     "autoSave": "Auto-saved",
     "saving": "Saving...",
-    "observationsToday": "Today's Observations",
-    "noObservations": "No observations recorded today",
-    "parentJournal": "Parent Journal",
-    "positive": "Good outcome",
-    "needsHelp": "Needs support"
+    "parentJournal": "Parent Journal"
   },
   "journal": {
     "children": "Children",
@@ -940,8 +900,7 @@
     "pageChildProfile": "Child Profile",
     "pageDefault": "Uchqun",
     "menuOpen": "Open menu",
-    "notifications": "Notifications",
-    "newObservation": "New observation"
+    "notifications": "Notifications"
   },
   "parentAttendance": {
     "title": "Attendance",
