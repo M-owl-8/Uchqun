@@ -57,3 +57,6 @@ temp/
 /TEST_CREDENTIALS.md
 /TEST_CREDENTIALS_V2.md
 /TEST_CREDENTIALS_V3.md
+
+# Playwright auth state (JWT cookies)
+.auth/

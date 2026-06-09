@@ -38,6 +38,17 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 'recon22',
+      testMatch: '**/recon22-v2-reconciliation-probes.spec.js',
+      timeout: 90000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60000,
+        actionTimeout: 30000,
+      },
+    },
+    {
       name: 'ux02',
       testMatch: '**/ux02-attendance-correction-proof.spec.js',
       use: {
