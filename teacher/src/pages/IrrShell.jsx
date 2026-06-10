@@ -10,6 +10,7 @@ import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteri
 import { SKILL_AREAS } from '@shared/config/skillAreas';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
 import { formatDateMedium, todayLocal} from '@shared/utils/formatDate';
+import MonthlyMilestones from './irr/MonthlyMilestones';
 
 // Maps backend field names (from IRR_HEADER_INCOMPLETE detail) to i18n keys
 const FIELD_LABEL_KEYS = {
@@ -1059,6 +1060,9 @@ export default function IrrShell() {
                     </div>
                   )}
                 </div>
+              )}
+              {ltgEditId !== goal.id && (
+                <MonthlyMilestones longTermGoalId={goal.id} isReadOnly={isReadOnly} />
               )}
             </div>
           ))}

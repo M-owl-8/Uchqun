@@ -508,6 +508,30 @@ Added 2026-06-06. Introduced by `controllers/parent/parentPrivacyConsentControll
 
 ---
 
+## Monthly Milestones (`monthlyMilestoneController.js`)
+
+Added 2026-06-09. IRR-MONTHLY-MILESTONES (Option B) — per-month projected milestones attached to long-term goals (12 per LTG per IRR).
+
+| Code | HTTP | Meaning | Frontend translation guidance |
+|---|---|---|---|
+| `MONTHLY_MILESTONE_FORBIDDEN` | 403 | Caller's role is not `teacher`. | "Only teachers can edit monthly milestones." |
+| `MONTHLY_MILESTONE_IRR_NOT_ACCESSIBLE` | 404 | IRR does not exist or is outside the teacher's school / group assignment. | "This plan is not accessible." |
+| `MONTHLY_MILESTONE_LTG_NOT_ACCESSIBLE` | 404 | Long-term goal does not exist or is outside scope. | "This goal is not accessible." |
+| `MONTHLY_MILESTONE_NOT_ACCESSIBLE` | 404 | Milestone does not exist or is outside scope. | "This milestone is not accessible." |
+| `MONTHLY_MILESTONE_INVALID_MONTH` | 400 | `monthNumber` is missing or not an integer between 1 and 12. | "Month must be 1–12." |
+| `MONTHLY_MILESTONE_TARGET_REQUIRED` | 400 | `targetText` is missing, empty, or exceeds 2000 characters. | "Target text is required (≤ 2000 chars)." |
+| `MONTHLY_MILESTONE_INVALID_STATUS` | 400 | `status` is not one of `planned`, `achieved`, `partial`, `missed`. | "Please pick a valid status." |
+| `MONTHLY_MILESTONE_TEXT_TOO_LONG` | 400 | `actualText` or `notes` exceeds 2000 characters. | "Text exceeds 2000 characters." |
+| `MONTHLY_MILESTONE_INVALID_PAYLOAD` | 400 | Bulk endpoint received non-array `milestones`. | "Invalid payload." |
+| `MONTHLY_MILESTONE_DUPLICATE_MONTH` | 400 | Bulk endpoint payload contains the same month twice. | "Each month can only appear once." |
+| `MONTHLY_MILESTONE_LIST_FAILED` | 500 | DB error listing milestones. | "Could not load milestones. Please try again." |
+| `MONTHLY_MILESTONE_CREATE_FAILED` | 500 | DB error creating a milestone. | "Could not save milestone. Please try again." |
+| `MONTHLY_MILESTONE_UPDATE_FAILED` | 500 | DB error updating a milestone. | "Could not save milestone. Please try again." |
+| `MONTHLY_MILESTONE_BULK_FAILED` | 500 | DB error during bulk replace. | "Could not save milestones. Please try again." |
+| `MONTHLY_MILESTONE_DELETE_FAILED` | 500 | DB error deleting a milestone. | "Could not delete milestone. Please try again." |
+
+---
+
 ## Notes
 
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."

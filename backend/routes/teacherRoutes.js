@@ -33,6 +33,14 @@ import {
   createDailyEntry, listDailyEntries,
   createWeeklyEntry, listWeeklyEntries,
 } from '../controllers/teacher/irrController.js';
+import {
+  listByIRR as listMonthlyMilestonesByIRR,
+  listByLTG as listMonthlyMilestonesByLTG,
+  create as createMonthlyMilestone,
+  replaceAll as replaceMonthlyMilestones,
+  update as updateMonthlyMilestone,
+  remove as deleteMonthlyMilestone,
+} from '../controllers/teacher/monthlyMilestoneController.js';
 
 const router = express.Router();
 
@@ -149,5 +157,12 @@ router.post('/goal-periods/:id/short-term-goals', requireRole('teacher'), create
 router.get('/goal-periods/:id/short-term-goals', listShortTermGoals);
 router.patch('/short-term-goals/:id', requireRole('teacher'), updateShortTermGoal);
 router.delete('/short-term-goals/:id', requireRole('teacher'), deleteShortTermGoal);
+// Monthly milestones (IRR-MONTHLY-MILESTONES) — 12-month projection per LTG
+router.get('/irr/:irrId/monthly-milestones', listMonthlyMilestonesByIRR);
+router.get('/long-term-goals/:ltgId/monthly-milestones', listMonthlyMilestonesByLTG);
+router.post('/long-term-goals/:ltgId/monthly-milestones', requireRole('teacher'), createMonthlyMilestone);
+router.put('/long-term-goals/:ltgId/monthly-milestones/bulk', requireRole('teacher'), replaceMonthlyMilestones);
+router.patch('/monthly-milestones/:id', requireRole('teacher'), updateMonthlyMilestone);
+router.delete('/monthly-milestones/:id', requireRole('teacher'), deleteMonthlyMilestone);
 
 export default router;

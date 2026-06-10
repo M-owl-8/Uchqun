@@ -247,5 +247,20 @@
   "CHILD_NOT_ACCESSIBLE": "Bola sizning hududingizdagi maktab bolasi emas.",
   "CHILD_FETCH_FAILED": "Bola maʼlumotini yuklab boʻlmadi. Qaytadan urinib koʻring.",
   "SCHOOL_NOT_ACCESSIBLE": "Maktab sizning hududingizda emas.",
-  "STUDENT_LIST_FAILED": "Bolalar roʻyxatini yuklab boʻlmadi."
+  "STUDENT_LIST_FAILED": "Bolalar roʻyxatini yuklab boʻlmadi.",
+  "MONTHLY_MILESTONE_FORBIDDEN": "Faqat tarbiyachi oylik maqsadlarni tahrirlay oladi.",
+  "MONTHLY_MILESTONE_IRR_NOT_ACCESSIBLE": "Bu reja mavjud emas.",
+  "MONTHLY_MILESTONE_LTG_NOT_ACCESSIBLE": "Bu uzoq muddatli maqsad mavjud emas.",
+  "MONTHLY_MILESTONE_NOT_ACCESSIBLE": "Bu maqsad mavjud emas.",
+  "MONTHLY_MILESTONE_INVALID_MONTH": "Oy raqami 1 dan 12 gacha boʻlishi kerak.",
+  "MONTHLY_MILESTONE_TARGET_REQUIRED": "Maqsad matni kerak (2000 belgigacha).",
+  "MONTHLY_MILESTONE_INVALID_STATUS": "Yaroqli holatni tanlang.",
+  "MONTHLY_MILESTONE_TEXT_TOO_LONG": "Matn 2000 belgidan oshib ketdi.",
+  "MONTHLY_MILESTONE_INVALID_PAYLOAD": "Notoʻgʻri maʼlumot.",
+  "MONTHLY_MILESTONE_DUPLICATE_MONTH": "Bitta oy ikki marta uchradi.",
+  "MONTHLY_MILESTONE_LIST_FAILED": "Maqsadlarni yuklab boʻlmadi. Qaytadan urinib koʻring.",
+  "MONTHLY_MILESTONE_CREATE_FAILED": "Maqsadni saqlab boʻlmadi. Qaytadan urinib koʻring.",
+  "MONTHLY_MILESTONE_UPDATE_FAILED": "Maqsadni saqlab boʻlmadi. Qaytadan urinib koʻring.",
+  "MONTHLY_MILESTONE_BULK_FAILED": "Maqsadlarni saqlab boʻlmadi. Qaytadan urinib koʻring.",
+  "MONTHLY_MILESTONE_DELETE_FAILED": "Maqsadni oʻchirib boʻlmadi. Qaytadan urinib koʻring."
 }

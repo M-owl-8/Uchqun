@@ -469,10 +469,32 @@
   "irr": {
     "pageTitle": "Individual Development Plan",
     "back": "Child's page",
+    "loading": "Loading…",
     "monitoringLink": {
       "title": "Daily and weekly monitoring journal",
       "subtitle": "Fill out the child's daily (27 indicators) and weekly (18 indicators) entries on a dedicated page.",
       "open": "Open →"
+    },
+    "monthlyMilestones": {
+      "toggle": "Monthly milestones (12 months)",
+      "monthLabel": "Month {{count}}",
+      "empty": "Not set",
+      "actualLabel": "Outcome",
+      "edit": "Edit",
+      "editHint": "Describe what the child should be like at each month. Empty months will not be saved.",
+      "targetPlaceholder": "By this month, the child should…",
+      "actualPlaceholder": "What actually happened?",
+      "saveAll": "Save all",
+      "cancel": "Cancel",
+      "loadFailed": "Could not load monthly milestones",
+      "saveFailed": "Failed to save",
+      "notAccessible": "This long-term goal is not accessible.",
+      "status": {
+        "planned": "Planned",
+        "achieved": "Achieved",
+        "partial": "Partial",
+        "missed": "Missed"
+      }
     },
     "newIrr": "Create IDP",
     "viewIrr": "View IDP",

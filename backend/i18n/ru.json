@@ -247,5 +247,20 @@
   "CHILD_NOT_ACCESSIBLE": "Ребёнок не относится к школе вашего региона.",
   "CHILD_FETCH_FAILED": "Не удалось загрузить данные ребёнка. Попробуйте ещё раз.",
   "SCHOOL_NOT_ACCESSIBLE": "Школа не относится к вашему региону.",
-  "STUDENT_LIST_FAILED": "Не удалось загрузить список детей."
+  "STUDENT_LIST_FAILED": "Не удалось загрузить список детей.",
+  "MONTHLY_MILESTONE_FORBIDDEN": "Только учителя могут редактировать ежемесячные вехи.",
+  "MONTHLY_MILESTONE_IRR_NOT_ACCESSIBLE": "Этот план недоступен.",
+  "MONTHLY_MILESTONE_LTG_NOT_ACCESSIBLE": "Эта долгосрочная цель недоступна.",
+  "MONTHLY_MILESTONE_NOT_ACCESSIBLE": "Эта веха недоступна.",
+  "MONTHLY_MILESTONE_INVALID_MONTH": "Месяц должен быть от 1 до 12.",
+  "MONTHLY_MILESTONE_TARGET_REQUIRED": "Текст цели обязателен (до 2000 символов).",
+  "MONTHLY_MILESTONE_INVALID_STATUS": "Выберите допустимый статус.",
+  "MONTHLY_MILESTONE_TEXT_TOO_LONG": "Текст превышает 2000 символов.",
+  "MONTHLY_MILESTONE_INVALID_PAYLOAD": "Неверные данные.",
+  "MONTHLY_MILESTONE_DUPLICATE_MONTH": "Один и тот же месяц встречается дважды.",
+  "MONTHLY_MILESTONE_LIST_FAILED": "Не удалось загрузить вехи. Попробуйте ещё раз.",
+  "MONTHLY_MILESTONE_CREATE_FAILED": "Не удалось сохранить веху. Попробуйте ещё раз.",
+  "MONTHLY_MILESTONE_UPDATE_FAILED": "Не удалось сохранить веху. Попробуйте ещё раз.",
+  "MONTHLY_MILESTONE_BULK_FAILED": "Не удалось сохранить вехи. Попробуйте ещё раз.",
+  "MONTHLY_MILESTONE_DELETE_FAILED": "Не удалось удалить веху. Попробуйте ещё раз."
 }

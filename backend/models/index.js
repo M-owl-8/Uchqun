@@ -55,6 +55,7 @@ import ShortTermGoal from './ShortTermGoal.js';
 import DailyMonitoringEntry from './DailyMonitoringEntry.js';
 import WeeklyMonitoringEntry from './WeeklyMonitoringEntry.js';
 import QuarterlyMonitoringEntry from './QuarterlyMonitoringEntry.js';
+import MonthlyMilestone from './MonthlyMilestone.js';
 import { logAudit } from '../utils/auditLogger.js';
 
 const models = {
@@ -113,6 +114,7 @@ const models = {
   DailyMonitoringEntry,
   WeeklyMonitoringEntry,
   QuarterlyMonitoringEntry,
+  MonthlyMilestone,
   sequelize,
 };
 
@@ -449,6 +451,18 @@ School.hasMany(QuarterlyMonitoringEntry, { foreignKey: 'schoolId', as: 'quarterl
 QuarterlyMonitoringEntry.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
 User.hasMany(QuarterlyMonitoringEntry, { foreignKey: 'recordedBy', as: 'quarterlyMonitoringEntries' });
 QuarterlyMonitoringEntry.belongsTo(User, { foreignKey: 'recordedBy', as: 'recorder' });
+
+// MonthlyMilestone
+IRR.hasMany(MonthlyMilestone, { foreignKey: 'irrId', as: 'monthlyMilestones' });
+MonthlyMilestone.belongsTo(IRR, { foreignKey: 'irrId', as: 'irr' });
+LongTermGoal.hasMany(MonthlyMilestone, { foreignKey: 'longTermGoalId', as: 'monthlyMilestones' });
+MonthlyMilestone.belongsTo(LongTermGoal, { foreignKey: 'longTermGoalId', as: 'longTermGoal' });
+Child.hasMany(MonthlyMilestone, { foreignKey: 'childId', as: 'monthlyMilestones' });
+MonthlyMilestone.belongsTo(Child, { foreignKey: 'childId', as: 'child' });
+School.hasMany(MonthlyMilestone, { foreignKey: 'schoolId', as: 'monthlyMilestones' });
+MonthlyMilestone.belongsTo(School, { foreignKey: 'schoolId', as: 'school' });
+User.hasMany(MonthlyMilestone, { foreignKey: 'assessedBy', as: 'assessedMonthlyMilestones' });
+MonthlyMilestone.belongsTo(User, { foreignKey: 'assessedBy', as: 'assessor' });
 
 // ─── AuditLog associations ────────────────────────────────────────────────────
 AuditLog.belongsTo(User, { foreignKey: 'actorId', as: 'actor', constraints: false });
@@ -1007,6 +1021,28 @@ QuarterlyMonitoringEntry.afterDestroy(async (instance, options) => {
   }
 });
 
+MonthlyMilestone.afterDestroy(async (instance, options) => {
+  try {
+    await logAudit({
+      actorId: options?.actorId ?? null,
+      actorRole: options?.actorRole ?? 'unknown',
+      action: 'delete',
+      entity: 'monthly_milestones',
+      entityId: instance.id,
+      schoolId: instance.schoolId,
+      meta: {
+        reason: options?.reason ?? null,
+        irrId: instance.irrId,
+        longTermGoalId: instance.longTermGoalId,
+        monthNumber: instance.monthNumber,
+        status: instance.status,
+      },
+    });
+  } catch {
+    // intentionally swallowed
+  }
+});
+
 // ─── School-scoped named scopes ───────────────────────────────────────────────
 Child.addScope('bySchool', (schoolId) => ({ where: { schoolId } }));
 Activity.addScope('byChild', (childId) => ({ where: { childId } }));
@@ -1102,5 +1138,6 @@ export {
   DailyMonitoringEntry,
   WeeklyMonitoringEntry,
   QuarterlyMonitoringEntry,
+  MonthlyMilestone,
   sequelize,
 };

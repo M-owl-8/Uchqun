@@ -247,5 +247,20 @@
   "CHILD_NOT_ACCESSIBLE": "Бола сизнинг ҳудудингиздаги мактаб боласи эмас.",
   "CHILD_FETCH_FAILED": "Бола маълумотини юклаб бўлмади. Қайтадан уриниб кўринг.",
   "SCHOOL_NOT_ACCESSIBLE": "Мактаб сизнинг ҳудудингизда эмас.",
-  "STUDENT_LIST_FAILED": "Болалар рўйхатини юклаб бўлмади."
+  "STUDENT_LIST_FAILED": "Болалар рўйхатини юклаб бўлмади.",
+  "MONTHLY_MILESTONE_FORBIDDEN": "Фақат тарбиячи ойлик мақсадларни таҳрирлай олади.",
+  "MONTHLY_MILESTONE_IRR_NOT_ACCESSIBLE": "Бу режа мавжуд эмас.",
+  "MONTHLY_MILESTONE_LTG_NOT_ACCESSIBLE": "Бу узоқ муддатли мақсад мавжуд эмас.",
+  "MONTHLY_MILESTONE_NOT_ACCESSIBLE": "Бу мақсад мавжуд эмас.",
+  "MONTHLY_MILESTONE_INVALID_MONTH": "Ой рақами 1 дан 12 гача бўлиши керак.",
+  "MONTHLY_MILESTONE_TARGET_REQUIRED": "Мақсад матни керак (2000 белгигача).",
+  "MONTHLY_MILESTONE_INVALID_STATUS": "Ярокли ҳолатни танланг.",
+  "MONTHLY_MILESTONE_TEXT_TOO_LONG": "Матн 2000 белгидан ошиб кетди.",
+  "MONTHLY_MILESTONE_INVALID_PAYLOAD": "Нотўғри маълумот.",
+  "MONTHLY_MILESTONE_DUPLICATE_MONTH": "Битта ой икки марта учради.",
+  "MONTHLY_MILESTONE_LIST_FAILED": "Мақсадларни юклаб бўлмади. Қайтадан уриниб кўринг.",
+  "MONTHLY_MILESTONE_CREATE_FAILED": "Мақсадни сақлаб бўлмади. Қайтадан уриниб кўринг.",
+  "MONTHLY_MILESTONE_UPDATE_FAILED": "Мақсадни сақлаб бўлмади. Қайтадан уриниб кўринг.",
+  "MONTHLY_MILESTONE_BULK_FAILED": "Мақсадларни сақлаб бўлмади. Қайтадан уриниб кўринг.",
+  "MONTHLY_MILESTONE_DELETE_FAILED": "Мақсадни ўчириб бўлмади. Қайтадан уриниб кўринг."
 }

@@ -469,10 +469,32 @@
   "irr": {
     "pageTitle": "Индивидуал Ривожланиш Режаси",
     "back": "Bolaning sahifasi",
+    "loading": "Yuklanmoqda…",
     "monitoringLink": {
       "title": "Kunlik va haftalik kuzatuv jurnali",
       "subtitle": "Bola uchun kunlik (27 koʻrsatkich) va haftalik (18 koʻrsatkich) yozuvlarni alohida sahifada toʻldiring.",
       "open": "Ochish →"
+    },
+    "monthlyMilestones": {
+      "toggle": "Oylik nishonlar (12 oy)",
+      "monthLabel": "{{count}}-oy",
+      "empty": "Belgilanmagan",
+      "actualLabel": "Natija",
+      "edit": "Tahrirlash",
+      "editHint": "Har bir oy uchun bola qanday holatda boʻlishini yozing. Boʻsh qoldirilgan oylar saqlanmaydi.",
+      "targetPlaceholder": "Bola shu oyda qanday holatda boʻladi…",
+      "actualPlaceholder": "Aslida nima yuz berdi?",
+      "saveAll": "Hammasini saqlash",
+      "cancel": "Bekor",
+      "loadFailed": "Oylik nishonlarni yuklab boʻlmadi",
+      "saveFailed": "Saqlab boʻlmadi",
+      "notAccessible": "Bu uzoq muddatli maqsad mavjud emas.",
+      "status": {
+        "planned": "Rejalashtirilgan",
+        "achieved": "Erishildi",
+        "partial": "Qisman",
+        "missed": "Bajarilmadi"
+      }
     },
     "newIrr": "ИРР тузиш",
     "viewIrr": "ИРРни кўриш",
