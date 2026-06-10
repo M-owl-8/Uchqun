@@ -517,7 +517,8 @@
   },
   "common": {
     "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
-    "saving": "Saqlanmoqda…"
+    "saving": "Saqlanmoqda…",
+    "loading": "Yuklanmoqda…"
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",

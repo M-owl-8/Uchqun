@@ -516,7 +516,8 @@
   },
   "common": {
     "networkError": "Network error. Please try again.",
-    "saving": "Saving…"
+    "saving": "Saving…",
+    "loading": "Loading…"
   },
   "errors": {
     "NETWORK_ERROR": "Network error",
