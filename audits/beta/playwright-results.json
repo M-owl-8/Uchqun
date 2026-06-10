@@ -22,6 +22,22 @@
         "metadata": {
           "actualWorkers": 1
         },
+        "id": "def013",
+        "name": "def013",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/def013-chat-fix-proof.spec.js"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
         "id": "ux01",
         "name": "ux01",
         "testDir": "C:/work/Uchqun/tests",
@@ -30,6 +46,54 @@
           "**/ux01-confirm-dialogs-proof.spec.js"
         ],
         "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "iso22",
+        "name": "iso22",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/iso22-v1-isolation-probes.spec.js"
+        ],
+        "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v3",
+        "name": "s22v3",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v3-blocked-rows.spec.js"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "recon22",
+        "name": "recon22",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/recon22-v2-reconciliation-probes.spec.js"
+        ],
+        "timeout": 90000
       },
       {
         "outputDir": "C:/work/Uchqun/audits/beta/screens",
@@ -190,6 +254,86 @@
           "**/wave5-6-government.spec.js"
         ],
         "timeout": 45000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v4-reception",
+        "name": "s22v4-reception",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v4-reception.spec.js"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v4-teacher",
+        "name": "s22v4-teacher",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v4-teacher.spec.js"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v4-parent",
+        "name": "s22v4-parent",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v4-parent.spec.js"
+        ],
+        "timeout": 90000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v4-admin",
+        "name": "s22v4-admin",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v4-admin.spec.js"
+        ],
+        "timeout": 120000
+      },
+      {
+        "outputDir": "C:/work/Uchqun/audits/beta/screens",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "s22v4-government",
+        "name": "s22v4-government",
+        "testDir": "C:/work/Uchqun/tests",
+        "testIgnore": [],
+        "testMatch": [
+          "**/s22v4-government.spec.js"
+        ],
+        "timeout": 120000
       }
     ],
     "quiet": false,
@@ -219,268 +363,1128 @@
   },
   "suites": [
     {
-      "title": "ux02-attendance-correction-proof.spec.js",
-      "file": "ux02-attendance-correction-proof.spec.js",
+      "title": "s22v4-government.spec.js",
+      "file": "s22v4-government.spec.js",
       "column": 0,
       "line": 0,
-      "specs": [],
-      "suites": [
+      "specs": [
         {
-          "title": "UX-02 Attendance correction",
-          "file": "ux02-attendance-correction-proof.spec.js",
-          "line": 87,
-          "column": 15,
-          "specs": [
+          "title": "G-002 | password toggle → type=text",
+          "ok": false,
+          "tags": [],
+          "tests": [
             {
-              "title": "load today — alreadySaved badge visible, Bobur = Bor, button says Yangilash",
-              "ok": true,
-              "tags": [],
-              "tests": [
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
                 {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "failed",
+                  "duration": 3528,
+                  "error": {
+                    "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"text\"\u001b[39m\nReceived: \u001b[31m\"password\"\u001b[39m",
+                    "stack": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"text\"\u001b[39m\nReceived: \u001b[31m\"password\"\u001b[39m\n    at C:\\work\\Uchqun\\tests\\s22v4-government.spec.js:107:48",
+                    "location": {
+                      "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                      "column": 48,
+                      "line": 107
+                    },
+                    "snippet": "\u001b[0m \u001b[90m 105 |\u001b[39m     \u001b[36mawait\u001b[39m toggle\u001b[33m.\u001b[39mclick()\u001b[33m;\u001b[39m\n \u001b[90m 106 |\u001b[39m     \u001b[36mawait\u001b[39m pg\u001b[33m.\u001b[39mwaitForTimeout(\u001b[35m300\u001b[39m)\u001b[33m;\u001b[39m\n\u001b[31m\u001b[1m>\u001b[22m\u001b[39m\u001b[90m 107 |\u001b[39m     expect(\u001b[36mawait\u001b[39m pwInput\u001b[33m.\u001b[39mgetAttribute(\u001b[32m'type'\u001b[39m))\u001b[33m.\u001b[39mtoBe(\u001b[32m'text'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m     |\u001b[39m                                                \u001b[31m\u001b[1m^\u001b[22m\u001b[39m\n \u001b[90m 108 |\u001b[39m     console\u001b[33m.\u001b[39mlog(\u001b[32m'[G-002] PASS'\u001b[39m)\u001b[33m;\u001b[39m\n \u001b[90m 109 |\u001b[39m   } \u001b[36mfinally\u001b[39m {\n \u001b[90m 110 |\u001b[39m     \u001b[36mawait\u001b[39m ctx\u001b[33m.\u001b[39mclose()\u001b[33m;\u001b[39m\u001b[0m"
+                  },
+                  "errors": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2326,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:10.541Z",
-                      "annotations": [],
-                      "attachments": []
+                      "location": {
+                        "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                        "column": 48,
+                        "line": 107
+                      },
+                      "message": "Error: \u001b[2mexpect(\u001b[22m\u001b[31mreceived\u001b[39m\u001b[2m).\u001b[22mtoBe\u001b[2m(\u001b[22m\u001b[32mexpected\u001b[39m\u001b[2m) // Object.is equality\u001b[22m\n\nExpected: \u001b[32m\"text\"\u001b[39m\nReceived: \u001b[31m\"password\"\u001b[39m\n\n  105 |     await toggle.click();\n  106 |     await pg.waitForTimeout(300);\n> 107 |     expect(await pwInput.getAttribute('type')).toBe('text');\n      |                                                ^\n  108 |     console.log('[G-002] PASS');\n  109 |   } finally {\n  110 |     await ctx.close();\n    at C:\\work\\Uchqun\\tests\\s22v4-government.spec.js:107:48"
                     }
                   ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-9c2de0d53cda1e89a1d8",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 99,
-              "column": 3
-            },
-            {
-              "title": "change Bobur to Kasal and save",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:25.296Z",
                   "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
+                  "attachments": [
                     {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3451,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:20.580Z",
-                      "annotations": [],
-                      "attachments": []
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\test-failed-1.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\test-failed-3.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\test-failed-2.png"
+                    },
+                    {
+                      "name": "screenshot",
+                      "contentType": "image/png",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\test-failed-1.png"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\error-context.md"
+                    },
+                    {
+                      "name": "error-context",
+                      "contentType": "text/markdown",
+                      "path": "C:\\work\\Uchqun\\audits\\beta\\screens\\s22v4-government-G-002-password-toggle-→-type-text-s22v4-government\\error-context.md"
                     }
                   ],
-                  "status": "expected"
+                  "errorLocation": {
+                    "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                    "column": 48,
+                    "line": 107
+                  }
                 }
               ],
-              "id": "8f94cd8e82c0210c319c-8ed7a29b86d8d3823ed3",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 121,
-              "column": 3
-            },
-            {
-              "title": "return — badge visible, Bobur shows Kasal (correction persisted)",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2097,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:24.058Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-61dff8a4a967cbbd976c",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 137,
-              "column": 3
-            },
-            {
-              "title": "correct Bobur back to Bor and save",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3812,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:26.182Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-0159d81e5cc8d6cf249d",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 149,
-              "column": 3
-            },
-            {
-              "title": "reload — Bor persists, round-trip complete",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 2080,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:30.024Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-fda43661ccc09e045482",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 163,
-              "column": 3
-            },
-            {
-              "title": "badge renders in ru without raw keys",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 3504,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:32.136Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-1bc531752effeb6d363d",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 175,
-              "column": 3
-            },
-            {
-              "title": "badge renders in en without raw keys",
-              "ok": true,
-              "tags": [],
-              "tests": [
-                {
-                  "timeout": 45000,
-                  "annotations": [],
-                  "expectedStatus": "passed",
-                  "projectId": "ux02",
-                  "projectName": "ux02",
-                  "results": [
-                    {
-                      "workerIndex": 0,
-                      "parallelIndex": 0,
-                      "status": "passed",
-                      "duration": 4962,
-                      "errors": [],
-                      "stdout": [],
-                      "stderr": [],
-                      "retry": 0,
-                      "startTime": "2026-06-08T13:45:35.654Z",
-                      "annotations": [],
-                      "attachments": []
-                    }
-                  ],
-                  "status": "expected"
-                }
-              ],
-              "id": "8f94cd8e82c0210c319c-5a90500e003e4220b791",
-              "file": "ux02-attendance-correction-proof.spec.js",
-              "line": 187,
-              "column": 3
+              "status": "unexpected"
             }
-          ]
+          ],
+          "id": "fedf2d97fc4e01ed9156-ee399b2cd56a0ad69676",
+          "file": "s22v4-government.spec.js",
+          "line": 91,
+          "column": 1
+        },
+        {
+          "title": "G-004/G-070 | logout → redirect to login",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Logout button not found (Chiqish)",
+                  "location": {
+                    "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                    "line": 127,
+                    "column": 12
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 2246,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:31.995Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Logout button not found (Chiqish)",
+                      "location": {
+                        "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                        "line": 127,
+                        "column": 12
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-c1bfa5713a435206c912",
+          "file": "s22v4-government.spec.js",
+          "line": 117,
+          "column": 1
+        },
+        {
+          "title": "G-006-G-011 | dashboard: 4 stat cards + scope label + regional table + refresh",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4773,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-006] stat cards with numbers: \u001b[33m6\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-006] PASS: stat cards visible\n"
+                    },
+                    {
+                      "text": "[G-007] scope label visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-007] PASS, text: Respublika\n"
+                    },
+                    {
+                      "text": "[G-008] pending registrations section visible: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-009] school ratings section visible: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-010] regional breakdown table visible (republic): \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-010] regional breakdown visible for Toshkent (should be false): \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-011] PASS: refresh clicked\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:35.952Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-95e15197884f7a9576c2",
+          "file": "s22v4-government.spec.js",
+          "line": 147,
+          "column": 1
+        },
+        {
+          "title": "G-013-G-015 | schools list region-scoped + search + type filter",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3325,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-013] Toshkent school count: \u001b[33m4\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-013] PASS: schools list for region scope\n"
+                    },
+                    {
+                      "text": "[G-014] after search: \u001b[33m4\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-014] PASS: search filter applied\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:40.747Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-752a1e7f0d02392504f3",
+          "file": "s22v4-government.spec.js",
+          "line": 205,
+          "column": 1
+        },
+        {
+          "title": "G-017 | export CSV button present on schools page",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2435,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-017] export button visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-017] PASS: export button present\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:44.098Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-8bf0ad0a1482456d545a",
+          "file": "s22v4-government.spec.js",
+          "line": 246,
+          "column": 1
+        },
+        {
+          "title": "G-018-G-021 | school detail: basic info + stats + rating display",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 11273,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-018] school detail heading visible: \u001b[33mtrue\u001b[39m Toshkent Maxsus Maktab 1\n"
+                    },
+                    {
+                      "text": "[G-018] PASS: school detail page loaded\n"
+                    },
+                    {
+                      "text": "[G-019] basic info section: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-020] stats section: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-021] rating section: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-018-G-021] PASS: school detail sections visible\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:46.559Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-bc881d390b8a055390b5",
+          "file": "s22v4-government.spec.js",
+          "line": 264,
+          "column": 1
+        },
+        {
+          "title": "G-022/G-023 | archive confirm dialog exists (cancel path — safe)",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Archive button not found — may already be archived or not visible",
+                  "location": {
+                    "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                    "line": 323,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 2178,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-022] WON'T-AUTOMATE: archive button not found in school detail\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:21:57.860Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Archive button not found — may already be archived or not visible",
+                      "location": {
+                        "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                        "line": 323,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-4b16866adc53883c86a6",
+          "file": "s22v4-government.spec.js",
+          "line": 308,
+          "column": 1
+        },
+        {
+          "title": "G-024/G-025 | ratings parent direction visible; expand school card",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1969,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-024] parent direction section: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-025] school rating cards: \u001b[33m4\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-025] reviews visible after expand: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-024/G-025] PASS\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:00.057Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-0617cb69e8e40d82a989",
+          "file": "s22v4-government.spec.js",
+          "line": 349,
+          "column": 1
+        },
+        {
+          "title": "G-027/G-028 | rate school 5 indicators; toggle gov direction",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2280,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-028] PASS: gov direction toggle clicked\n"
+                    },
+                    {
+                      "text": "[G-027] WON'T-AUTOMATE: rate school button not found\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:02.045Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-66acfad3dcdcef9ceae4",
+          "file": "s22v4-government.spec.js",
+          "line": 386,
+          "column": 1
+        },
+        {
+          "title": "G-029/G-030 | students list region-scoped + search",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2802,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-029] Toshkent student count: \u001b[33m7\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-029] PASS: students visible for Toshkent region\n"
+                    },
+                    {
+                      "text": "[G-030] PASS: student search applied, rows: \u001b[33m7\u001b[39m\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:04.349Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-5e62d2205c49f11ec6af",
+          "file": "s22v4-government.spec.js",
+          "line": 451,
+          "column": 1
+        },
+        {
+          "title": "G-032/G-033 | teachers list + search",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 2955,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-032] Toshkent teacher count: \u001b[33m5\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-032] PASS: teachers visible\n"
+                    },
+                    {
+                      "text": "[G-033] PASS: teacher search applied\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:07.180Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-f11990f9f751821a9203",
+          "file": "s22v4-government.spec.js",
+          "line": 474,
+          "column": 1
+        },
+        {
+          "title": "G-035 | parents list region-scoped",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1995,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-035] Toshkent parent count: \u001b[33m22\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-035] PASS: parents list visible for region scope\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:10.163Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-ff9984280768835e7ea5",
+          "file": "s22v4-government.spec.js",
+          "line": 495,
+          "column": 1
+        },
+        {
+          "title": "G-037-G-040 | messages: list visible; search; mark read; reply sent",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "No messages in government platform inbox",
+                  "location": {
+                    "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                    "line": 526,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 2149,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-037] messages visible: \u001b[33m0\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-037] WON'T-AUTOMATE: no messages in platform inbox\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:12.171Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "No messages in government platform inbox",
+                      "location": {
+                        "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                        "line": 526,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-aeeb53b9f7b9949d1783",
+          "file": "s22v4-government.spec.js",
+          "line": 509,
+          "column": 1
+        },
+        {
+          "title": "G-043/G-044 | admins list visible; create admin flow starts",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 3399,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-043] admin count: \u001b[33m0\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-043] PASS: admins tab/list accessible\n"
+                    },
+                    {
+                      "text": "[G-044] create admin modal: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-044] WON'T-AUTOMATE: create modal did not open\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:14.339Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-1188af3e7217a11625ab",
+          "file": "s22v4-government.spec.js",
+          "line": 567,
+          "column": 1
+        },
+        {
+          "title": "G-047/G-048 | gov users list + provision modal opens",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1931,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-047] gov users count: \u001b[33m0\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-047] PASS: gov users section accessible\n"
+                    },
+                    {
+                      "text": "[G-048] provision modal: \u001b[33mfalse\u001b[39m\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:17.756Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-36dcfaf71088a5d96656",
+          "file": "s22v4-government.spec.js",
+          "line": 631,
+          "column": 1
+        },
+        {
+          "title": "G-053/G-054 | registrations list visible; approve if pending",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1827,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-053] pending registrations: \u001b[33m0\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-053] PASS: registrations section accessible, count: \u001b[33m0\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-054] WON'T-AUTOMATE: no pending registrations to approve\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:19.704Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-5359c3c713d6082a1872",
+          "file": "s22v4-government.spec.js",
+          "line": 662,
+          "column": 1
+        },
+        {
+          "title": "G-057/G-058/G-061 | audit log region-scoped; filter by action; pagination",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4624,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-057] Toshkent audit log rows: \u001b[33m13\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-057] PASS: audit log visible with \u001b[33m13\u001b[39m rows\n"
+                    },
+                    {
+                      "text": "[G-061] PASS: pagination clicked\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:21.554Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-d0bd2f695248cda2339c",
+          "file": "s22v4-government.spec.js",
+          "line": 701,
+          "column": 1
+        },
+        {
+          "title": "G-062-G-065 | warnings list; filter severity; resolve; resolved visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4080,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-062] warnings count: \u001b[33m2\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-062] PASS: warnings list visible\n"
+                    },
+                    {
+                      "text": "[G-064/G-065] resolved indicator visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-064] PASS: warning resolved\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:26.195Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-db10b871325ca5dab511",
+          "file": "s22v4-government.spec.js",
+          "line": 746,
+          "column": 1
+        },
+        {
+          "title": "G-067-G-071 | sidebar: scope indicator; active link; user card; lang switch",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 5012,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-067] scope indicator (republic): \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-067] Toshkent scope shows region name: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-068] active link styling: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-069] user card: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-071] lang switcher visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-071] PASS: Cyrillic after RU select: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-067-G-071] PASS: sidebar nav elements verified\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:30.285Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-eec51058d4c63b7ad9de",
+          "file": "s22v4-government.spec.js",
+          "line": 797,
+          "column": 1
+        },
+        {
+          "title": "G-073 | toast visible on profile save action",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [
+                {
+                  "type": "skip",
+                  "description": "Save button not found",
+                  "location": {
+                    "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                    "line": 865,
+                    "column": 10
+                  }
+                }
+              ],
+              "expectedStatus": "skipped",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "skipped",
+                  "duration": 1270,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-073] WON'T-AUTOMATE: no save button on profile page\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:35.300Z",
+                  "annotations": [
+                    {
+                      "type": "skip",
+                      "description": "Save button not found",
+                      "location": {
+                        "file": "C:\\work\\Uchqun\\tests\\s22v4-government.spec.js",
+                        "line": 865,
+                        "column": 10
+                      }
+                    }
+                  ],
+                  "attachments": []
+                }
+              ],
+              "status": "skipped"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-31ec413b966d3ded551f",
+          "file": "s22v4-government.spec.js",
+          "line": 847,
+          "column": 1
+        },
+        {
+          "title": "G-074/G-075 | profile page loads; edit name persists after reload",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1276,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-074] profile name field visible: \u001b[33mfalse\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-074] PASS: profile page loaded with heading\n"
+                    },
+                    {
+                      "text": "[G-075] WON'T-AUTOMATE: phone input not found for edit test\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:36.584Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-54e2282d50544eacf834",
+          "file": "s22v4-government.spec.js",
+          "line": 878,
+          "column": 1
+        },
+        {
+          "title": "G-076 | settings/password page loads with form visible",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 120000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "s22v4-government",
+              "projectName": "s22v4-government",
+              "results": [
+                {
+                  "workerIndex": 1,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 1234,
+                  "errors": [],
+                  "stdout": [
+                    {
+                      "text": "[G-076] settings/password section visible: \u001b[33mtrue\u001b[39m\n"
+                    },
+                    {
+                      "text": "[G-076] PASS: settings page loaded\n"
+                    }
+                  ],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-10T16:22:37.872Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "fedf2d97fc4e01ed9156-7e37f1dc853ea3b8f32d",
+          "file": "s22v4-government.spec.js",
+          "line": 928,
+          "column": 1
         }
       ]
     }
   ],
   "errors": [],
   "stats": {
-    "startTime": "2026-06-08T13:45:09.208Z",
-    "duration": 31667.681000000004,
-    "expected": 7,
-    "skipped": 0,
-    "unexpected": 0,
+    "startTime": "2026-06-10T16:21:24.594Z",
+    "duration": 74625.59999999999,
+    "expected": 17,
+    "skipped": 4,
+    "unexpected": 1,
     "flaky": 0
   }
 }

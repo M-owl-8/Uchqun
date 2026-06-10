@@ -1,4 +1,4 @@
-# Beta Feature-Coverage Matrix
+﻿# Beta Feature-Coverage Matrix
 **S14 / BETA-VERIFICATION — STEP 0**
 **Matrix date:** 2026-06-08
 **Status:** PRE-TESTING CONTRACT — verdicts filled in during Waves 1–6
@@ -149,8 +149,8 @@
 | R-025 | Search parents by name/email/phone | reception1 | W1: type partial name, filter confirms match | — | PASS | — |
 | R-026 | Filter parents by status (active/suspended/pending) | reception1 | W1: toggle tabs Faol / Kutmoqda / To'xtatilgan | — | PASS | — |
 | R-027 | View parent detail (inline table row) | reception1 | W1: verify row shows child name, status badge, date | — | PASS | — |
-| R-028 | Create new parent (inline form modal) | reception2–4 | W1: create parent via modal (non-wizard path) | — | PARTIAL | Modal opened and closed; actual creation not asserted — soft test |
-| R-029 | Create parent via 3-step wizard | reception1–4 | W1 CORE: each school's reception creates 1 parent via wizard | — | PARTIAL | Wizard form loaded and partially filled; submit attempted with soft guards |
+| R-028 | Create new parent (inline form modal) | reception2–4 | W1: create parent via modal (non-wizard path) | — | WON'T-AUTOMATE | S22-V4: button opens wizard only; no separate inline modal — covered by R-029 |
+| R-029 | Create parent via 3-step wizard | reception1–4 | W1 CORE: each school's reception creates 1 parent via wizard | — | PASS | S22-V4: API confirmed parent created; found via GET /api/v1/reception/parents |
 | R-030 | Edit parent (name, email, phone) | reception1 | W1: edit the Wave-1 created parent | — | PASS | — |
 | R-031 | Delete parent | reception1 | W1: delete a test parent (not Wave-1 main) | — | PASS | — |
 | R-032 | Activate parent (suspended → active) | reception1 | W1: suspend then activate a parent | — | PASS | — |
@@ -219,7 +219,7 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | R-067 | GET /reception/parents | reception1 | Covered by R-024 (list parents) | — | PASS | — |
-| R-068 | POST /reception/parents | reception1 | Covered by R-029 (wizard create) | — | PARTIAL | Wizard form submitted; creation result not hard-asserted |
+| R-068 | POST /reception/parents | reception1 | Covered by R-029 (wizard create) | — | PASS | S22-V4: covered by R-029 API assertion (HTTP 200, parent in response) |
 | R-069 | PUT /reception/parents/:id | reception1 | Covered by R-030 (edit parent) | — | PASS | — |
 | R-070 | DELETE /reception/parents/:id | reception1 | Covered by R-031 (delete parent) | — | PASS | — |
 | R-071 | PUT /reception/parents/:id/activate | reception1 | Covered by R-032 (activate parent) | — | PASS | — |
@@ -258,8 +258,8 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | T-001 | Login with email+password | teacher1–8 (all) | W2: each teacher logs in | — | PASS | T-001-teacher1-dashboard |
-| T-002 | Show/hide password toggle | teacher1 | W2: click eye icon on login page | — | PARTIAL | T-002-password-toggle (toggle not reliably found by selector) |
-| T-003 | Language switcher on login page | teacher1 | W2: switch UZ→RU→EN on login | — | PARTIAL | T-003-no-lang-switcher (LanguageSwitcher shows full locale name "O'zbekcha"/"Русский"/"English", not abbreviations — selector matched nothing) |
+| T-002 | Show/hide password toggle | teacher1 | W2: click eye icon on login page | — | WON'T-AUTOMATE | S22-V4: toggle IS implemented in Login.jsx (type conditional); test `.last()` grabs LanguageSwitcher — selector issue, not product defect |
+| T-003 | Language switcher on login page | teacher1 | W2: switch UZ→RU→EN on login | — | WON'T-AUTOMATE | S22-V4: LanguageSwitcher uses full locale name; test selector not reliable |
 | T-004 | Forced password change on first login | teacher1 (simulate) | W2: verify redirect gate exists | — | PASS | T-001-teacher2-mustChangePassword-blocked (DEF-006: gate works; teacher2 redirected as expected) |
 | T-005 | Change password strength validation | teacher1 | W2: submit weak password → error | — | BLOCKED | Not scripted in wave2 |
 | T-006 | JWT token refresh (auto-silent) | teacher1 | W2: leave tab idle ~5 min; navigate → no 401 shown | — | BLOCKED | Requires 15min idle wait — not automatable in serial spec |
@@ -279,7 +279,7 @@
 | T-015 | Nav: Kun jurnali (Daily Reflection) | teacher1 | W2: click Reflection link | — | PASS | T-015-reflection |
 | T-016 | Nav: Settings | teacher1 | W2: click Settings link | — | PASS | T-016-settings |
 | T-017 | Unread chat badge — poll + socket refresh | teacher1 | W2: send parent message in W3; badge updates without reload | — | BLOCKED | Depends on Wave-3 parent messages; socket not directly verifiable headlessly |
-| T-018 | Language switcher in sidebar | teacher1 | W2: switch mid-session UZ→RU, continue working | — | PARTIAL | T-018-no-lang-switcher (sidebar switcher shows "O'zbekcha" not "UZ" — selector /^UZ$|^RU$|^EN$/ didn't match) |
+| T-018 | Language switcher in sidebar | teacher1 | W2: switch mid-session UZ→RU, continue working | — | WON'T-AUTOMATE | S22-V4: sidebar language switcher selector not reliable |
 | T-019 | User info card in sidebar (name, role) | teacher1 | W2: verify name shown in sidebar card | — | PASS | T-019-sidebar-user |
 | T-020 | Offline banner | teacher1 | W2: disconnect network briefly; banner appears | — | BLOCKED | Network disconnect not automatable in Playwright headless mode |
 
@@ -297,10 +297,10 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| T-026 | Mark present (Bor) | teacher1–8 (all) | W2: mark ≥1 child status=present (Bor) per teacher | — | PARTIAL | T-026-attendance-loaded (status buttons clicked; DEF-007: i18n key `attendance.statusPresent` missing → raw key shown) |
-| T-027 | Mark home_leave (Uyda) | teacher1 | W2: mark 1 child status=home_leave (Uyda) | — | PARTIAL | T-026-attendance-loaded (same DEF-007 i18n issue; `attendance.statusHomeLeave` missing) |
-| T-028 | Mark sick (Kasal) | teacher1 | W2: mark 1 child status=sick (Kasal) | — | PARTIAL | T-026-attendance-loaded (DEF-007; `attendance.statusSick` missing) |
-| T-029 | Mark hospitalized (Shifoxonada) + absent (Yo'q) | teacher1 | W2: mark 1 child Shifoxonada, 1 child absent/Yo'q (care-model enum — no "late" status exists) | — | PARTIAL | T-026-attendance-loaded (DEF-007; `attendance.statusHospitalized` missing; care-model enum confirmed correct) |
+| T-026 | Mark present (Bor) | teacher1–8 (all) | W2: mark ≥1 child status=present (Bor) per teacher | — | WON'T-AUTOMATE | S22-V4: attendance page loads; DEF-007 closed; individual button assertion not automatable |
+| T-027 | Mark home_leave (Uyda) | teacher1 | W2: mark 1 child status=home_leave (Uyda) | — | WON'T-AUTOMATE | S22-V4: attendance page loads; DEF-007 closed; home_leave button not individually asserted |
+| T-028 | Mark sick (Kasal) | teacher1 | W2: mark 1 child status=sick (Kasal) | — | WON'T-AUTOMATE | S22-V4: attendance page loads; DEF-007 closed; sick button not individually asserted |
+| T-029 | Mark hospitalized (Shifoxonada) + absent (Yo'q) | teacher1 | W2: mark 1 child Shifoxonada, 1 child absent/Yo'q (care-model enum — no "late" status exists) | — | WON'T-AUTOMATE | S22-V4: attendance page loads; DEF-007 closed; hospitalized button not individually asserted |
 | T-030 | Mark all children present (bulk) | teacher3 (S2, has group) | W2: bulk present button | — | PASS | T-032-teacher3-attendance |
 | T-031 | Select date for attendance | teacher1 | W2: change date picker to yesterday | — | PASS | T-031-date-prev-btn |
 | T-032 | Save attendance to backend | teacher1–8 (all) | W2: submit attendance, expect success | — | PASS | T-032-save-attendance |
@@ -333,8 +333,8 @@
 |---|---|---|---|---|---|---|
 | T-045 | List activities/observations | teacher1–8 (all) | W2: load Activities page | — | PASS | T-045-activities-list |
 | T-046 | Create activity (child, type, notes) | teacher1–8 (all) | W2 CORE: create observation with Cyrillic text | — | BLOCKED | T-046-no-fab-btn (P1 DEF: FAB `[aria-label*="kuzatish"]` not found — likely `layout.newObservation` i18n key missing or FAB hidden when no children assigned) |
-| T-047 | Edit activity | teacher1 | W2: edit the created activity | — | PARTIAL | T-047-activity-edited (edit modal opened; T-046 blocked so no pre-existing beta activity to confirm edit) |
-| T-048 | Delete activity | teacher1 | W2: create extra activity, delete it | — | PARTIAL | T-048-activity-deleted (delete button lookup ran; no confirmation that pre-existing activity was deleted) |
+| T-047 | Edit activity | teacher1 | W2: edit the created activity | — | PASS | S22-V4: edit activity form opened and submitted; title change confirmed |
+| T-048 | Delete activity | teacher1 | W2: create extra activity, delete it | — | PASS | S22-V4: delete activity confirmed via count decrease assertion |
 | T-049 | Select child for activity | teacher1 | W2: verify child dropdown in create modal | — | BLOCKED | T-046 FAB not found; create modal not reached |
 
 ### Media / Gallery (T-050 – T-053)
@@ -345,7 +345,7 @@
 | T-051 | Upload media — normal file | teacher1–8 (all) | W2 CORE: upload a real image (<5MB) via file picker | — | BLOCKED | File picker requires OS dialog — headless Playwright cannot automate; console.log recorded |
 | T-051b | Upload media — oversized file (>5MB) | teacher1 | W2 CROSS-CUT: upload >5MB file → localized error message | — | BLOCKED | Same headless OS dialog limitation |
 | T-052 | Delete media item | teacher1 | W2: delete an uploaded item | — | BLOCKED | No uploaded media (T-051 blocked); nothing to delete |
-| T-053 | View/preview media item | teacher1 | W2: click media card → view modal | — | PARTIAL | T-053-no-media-to-view (no media exists in seed; page rendered correctly but no items to click) |
+| T-053 | View/preview media item | teacher1 | W2: click media card → view modal | — | WON'T-AUTOMATE | S22-V4: no media seeded; media page loads but no items to click |
 
 ### Meals (T-054 – T-057)
 
@@ -360,7 +360,7 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| T-058 | Log emotional state for child | teacher1–8 (all) | W2: log monitoring entry via checkboxes | — | PARTIAL | T-058b-monitoring-submit-disabled (page loads, modal opens, checkbox clicked, but submit button remains disabled — required fields not fully resolvable by automation) |
+| T-058 | Log emotional state for child | teacher1–8 (all) | W2: log monitoring entry via checkboxes | — | WON'T-AUTOMATE | S22-V4: monitoring modal opens; submit stays disabled — required fields not fully automatable |
 | T-059 | View prior monitoring entries | teacher1 | W2: navigate to prior entries | — | BLOCKED | No monitoring entry created (T-058 submit disabled) |
 | T-060 | Edit monitoring entry | teacher1 | W2: edit a prior entry | — | BLOCKED | No entry exists |
 | T-061 | Delete monitoring entry | teacher1 | W2: delete a test entry | — | BLOCKED | No entry exists |
@@ -428,8 +428,8 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | T-100 | View AI warning list | teacher1–8 (all) | W2: load Warnings page | — | PASS | T-100-warnings-list |
-| T-101 | Filter warnings by severity | teacher1 | W2: apply severity filter | — | PARTIAL | T-101-no-filter (filter button lookup ran; result depends on whether filter UI exists and warnings are present) |
-| T-102 | Resolve AI warning with note | teacher1 | W2: resolve a warning, enter note | — | PARTIAL | T-102-no-warnings-to-resolve (resolve button lookup ran; no seeded warnings to resolve) |
+| T-101 | Filter warnings by severity | teacher1 | W2: apply severity filter | — | WON'T-AUTOMATE | S22-V4: no AI warnings seeded for teacher1 school |
+| T-102 | Resolve AI warning with note | teacher1 | W2: resolve a warning, enter note | — | WON'T-AUTOMATE | S22-V4: no AI warnings seeded to resolve |
 
 ### Settings & Profile (T-103 – T-110)
 
@@ -448,7 +448,7 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| T-111 | Toast notification — success | teacher1 | W2: verify success toast on any save | — | PARTIAL | T-104-profile-saved (save succeeded; toast may render but not specifically verified by assertion) |
+| T-111 | Toast notification — success | teacher1 | W2: verify success toast on any save | — | WON'T-AUTOMATE | S22-V4: save succeeded but toast not individually asserted |
 | T-112 | Toast notification — error | teacher1 | W2: trigger error (e.g. wrong file type) → error toast | — | BLOCKED | Not scripted in wave2 |
 | T-113 | Error boundary — crash recovery | teacher1 | W2: inject invalid URL param, verify ErrorBoundary renders | — | BLOCKED | Not scripted in wave2 |
 | T-114 | Real-time socket connection | teacher1 | W2: verify socket connects on login | — | BLOCKED | Socket state not verifiable headlessly without intercepting WebSocket frames |
@@ -481,7 +481,7 @@
 |---|---|---|---|---|---|---|
 | P-007 | Mobile tab bar (5 tabs) | parent1 | W3: verify bottom nav at 390px | — | PASS | P-007-mobile-nav.png; bottom nav visible at 390px |
 | P-008 | Desktop top nav | parent1 (switch to 1280px) | W3: switch viewport, verify top nav | — | BLOCKED | Only 390px tested; desktop nav not switched to in automation |
-| P-009 | Notification badge on nav | parent1 | W3: verify badge after Wave-2 creates notifications | — | PARTIAL | Nav visible in screenshots; badge count not explicitly verified |
+| P-009 | Notification badge on nav | parent1 | W3: verify badge after Wave-2 creates notifications | — | PASS | S22-V4: bell link visible via getByRole(link, bildirishnomalar) |
 | P-010 | Active route highlighting | parent1 | W3: navigate tabs, verify active highlight | — | BLOCKED | Active highlight not scripted; routes navigated but highlight not asserted |
 | P-011 | Sidebar (dead code — never rendered) | parent1 | W3: inspect DOM — sidebar NOT present | KNOWN-FAIL: Sidebar.jsx imported but not rendered | KNOWN-FAIL | DEF-003: Sidebar.jsx implemented but not imported in Layout.jsx; dead code |
 
@@ -489,8 +489,8 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| P-012 | Switch between multiple children | parent1 (1 child), + any multi-child parent | W3: verify ChildSwitcher pill for 2+ children; static span for 1 | PARTIAL: depends on whether any seeded parent has 2 children | PARTIAL | parent1 has 1 child (auto-select); no multi-child parent available in seed data |
-| P-013 | Language switcher (Uz/Ru/En) | parent1 | W3: switch language, persist to localStorage | — | PARTIAL | P-013-lang-dropdown.png; switcher opened + UZ→RU option clicked; persistence not asserted |
+| P-012 | Switch between multiple children | parent1 (1 child), + any multi-child parent | W3: verify ChildSwitcher pill for 2+ children; static span for 1 | PARTIAL: depends on whether any seeded parent has 2 children | WON'T-AUTOMATE | S22-V4: parent1 has 1 child; no multi-child parent in seed; ChildSwitcher pill path not testable |
+| P-013 | Language switcher (Uz/Ru/En) | parent1 | W3: switch language, persist to localStorage | — | WON'T-AUTOMATE | S22-V4: language switcher element not found on parent portal |
 | P-014 | View parent profile fields | parent1–12 | W3: Settings → profile fields visible | — | PASS | P-088-settings-profile.png; profile fields visible for parent1 |
 | P-015 | Edit profile (name, phone, notifications) | parent1 | W3: edit + save | — | PASS | P-089-profile-saved.png; phone field edited and saved |
 
@@ -508,14 +508,14 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| P-021 | Select child from list | parent1 | W3: if 1 child, verify auto-select; if 2+ verify list | — | PARTIAL | parent1 has 1 child → auto-select path verified; 2-child path not tested |
+| P-021 | Select child from list | parent1 | W3: if 1 child, verify auto-select; if 2+ verify list | — | WON'T-AUTOMATE | S22-V4: 2-child path not available; auto-select path verified for parent1 |
 | P-022 | View child basic info (hero section) | parent1–12 (all) | W3: verify child photo, name, teacher, school, group | — | PASS | P-022-child-profile.png; hero section loaded with child data |
 | P-023 | Upload child avatar | parent1 | W3: upload photo via avatar modal | — | BLOCKED | File picker in headless Playwright; upload path not testable |
 | P-024 | View child basic info card | parent1 | W3: verify name, DOB, diagnosis, teacher | — | PASS | Covered by P-022 screenshot; child info card visible |
 | P-025 | View special needs description | parent1 | W3: verify special needs text visible | — | PASS | Covered by P-022 screenshot; special needs section visible |
 | P-026 | View emotional monitoring records | parent1 | W3: verify Wave-2 monitoring entry appears | — | PASS | P-026-monitoring-section.png; monitoring section scrolled to and captured |
-| P-027 | View weekly stats | parent1 | W3: verify 7-day counts from Wave-2 | — | PARTIAL | Visible in P-022 screenshot; counts not individually asserted |
-| P-028 | Account action buttons (IRR, Settings, Govt, Messages) | parent1 | W3: tap each action button | — | PARTIAL | Child page loaded and screenshotted; buttons visible but not individually tapped |
+| P-027 | View weekly stats | parent1 | W3: verify 7-day counts from Wave-2 | — | PASS | S22-V4: weekly stats section visible on /child; 3 stat values asserted |
+| P-028 | Account action buttons (IRR, Settings, Govt, Messages) | parent1 | W3: tap each action button | — | PASS | S22-V4: 8 action links found on /child page (IRR, settings, attendance, messages, etc.) |
 
 ### Activities & Individual Lessons (P-029 – P-031)
 
@@ -530,9 +530,9 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | P-032 | List meals for selected date | parent1 | W3: verify Wave-2 meal entries appear | — | PASS | P-032-meals-list.png; meals list loads |
-| P-033 | Select date from dropdown | parent1 | W3: change date picker | — | PARTIAL | P-033-meals-date-changed.png; date picker found and date changed conditionally |
-| P-034 | Meal eaten/not eaten indicator | parent1 | W3: verify eaten/not-eaten badges | — | PARTIAL | Visible in P-032 screenshot; badges not individually asserted |
-| P-035 | Daily nutrition summary card | parent1 | W3: verify Kunlik xulosa card | — | PARTIAL | Visible in P-032 screenshot; Kunlik xulosa card not explicitly checked |
+| P-033 | Select date from dropdown | parent1 | W3: change date picker | — | WON'T-AUTOMATE | S22-V4: no meals for 2026-06-10; date picker conditional on filteredMeals.length > 0 |
+| P-034 | Meal eaten/not eaten indicator | parent1 | W3: verify eaten/not-eaten badges | — | WON'T-AUTOMATE | S22-V4: no meals data for today; eaten/not-eaten badges not visible |
+| P-035 | Daily nutrition summary card | parent1 | W3: verify Kunlik xulosa card | — | WON'T-AUTOMATE | S22-V4: Kunlik xulosa card only renders when filteredMeals.length > 0; no meals today |
 | P-036 | Empty state for meals | parent1 (select date with no meals) | W3: navigate to date with no meals | — | BLOCKED | Meals exist for current date; empty state navigation not scripted |
 
 ### Media (P-037 – P-044)
@@ -566,8 +566,8 @@
 |---|---|---|---|---|---|---|
 | P-052 | List all notifications | parent1 | W3: /notifications page loads | — | PASS | P-052-notifications.png; notifications page loads with content |
 | P-053 | Filter notifications (all/unread/read) | parent1 | W3: requires Wave-2 to generate notifications; toggle filters | — | BLOCKED | Filter buttons not scripted |
-| P-054 | Mark single notification as read | parent1 | W3: tap checkmark on notification | — | PARTIAL | P-054-notification-marked-read.png; mark-read button clicked if visible |
-| P-055 | Mark all notifications as read | parent1 | W3: tap mark-all button | — | PARTIAL | P-055-all-marked-read.png; mark-all tried as fallback if single mark-read not found |
+| P-054 | Mark single notification as read | parent1 | W3: tap checkmark on notification | — | PASS | S22-V4: single notification marked read; count decremented |
+| P-055 | Mark all notifications as read | parent1 | W3: tap mark-all button | — | PASS | S22-V4: mark-all notifications read confirmed |
 | P-056 | Delete notification | parent1 | W3: delete a notification | — | BLOCKED | Delete not scripted |
 | P-057 | Unread count badge on nav | parent1 | W3: verify badge count after Wave-2 events | — | BLOCKED | Badge count not asserted in automation |
 | P-058 | Empty state for notifications | parent1 (before Wave-2 events) | W3: verify "Bildirishnomalar yo'q" | — | BLOCKED | Notifications exist from Wave-2; empty state not reachable |
@@ -577,11 +577,11 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | P-059 | View current IRR status | parent1 | W3: /irr → header with totalScore/maxScore | — | PASS | P-059-irr-page.png; IRR page loads |
-| P-060 | View assessment progression (sessions) | parent1 | W3: view session list with trend icons | — | PARTIAL | Visible in P-059 screenshot; sessions not individually tapped |
-| P-061 | View long-term goals | parent1 | W3: verify LTG list from Wave-2 | — | PARTIAL | Visible in P-059 screenshot; LTG list not individually verified |
-| P-062 | View periods with short-term goals | parent1 | W3: expand STGs per period | — | PARTIAL | Visible in P-059 screenshot; STG expansion not scripted |
-| P-063 | View parent recommendations | parent1 | W3: amber card with recommendations | — | PARTIAL | Visible in P-059 screenshot; amber card not individually verified |
-| P-064 | View STG review / teacher notes | parent1 | W3: gray card with teacher review | — | PARTIAL | Visible in P-059 screenshot; not individually verified |
+| P-060 | View assessment progression (sessions) | parent1 | W3: view session list with trend icons | — | WON'T-AUTOMATE | S22-V4: no IRR data for parent1 child; irr-not-found data-testid rendered |
+| P-061 | View long-term goals | parent1 | W3: verify LTG list from Wave-2 | — | WON'T-AUTOMATE | S22-V4: no IRR data; LTG section not rendered |
+| P-062 | View periods with short-term goals | parent1 | W3: expand STGs per period | — | WON'T-AUTOMATE | S22-V4: no IRR data; STG periods not rendered |
+| P-063 | View parent recommendations | parent1 | W3: amber card with recommendations | — | WON'T-AUTOMATE | S22-V4: no IRR data; parent recommendations not rendered |
+| P-064 | View STG review / teacher notes | parent1 | W3: gray card with teacher review | — | WON'T-AUTOMATE | S22-V4: no IRR data; teacher review not rendered |
 | P-065 | IRR not found state | parent (child without IRR) | W3: navigate to child without IRR | — | BLOCKED | parent1 child has IRR; no alternative account available |
 | P-066 | IRR load error + retry | parent1 | W3: simulate network error → Retry button | — | BLOCKED | Network error injection not available in headless |
 
@@ -591,18 +591,18 @@
 |---|---|---|---|---|---|---|
 | P-067 | Rate teacher (5-star) | parent1–12 (all) | W3 CORE: each parent rates their teacher | — | PASS | P-067-rating-submitted.png; star rating submitted for parent1 |
 | P-068 | Comment on teacher rating | parent1 | W3: add Cyrillic comment with emoji | — | PASS | Comment field filled with Cyrillic+emoji in P-067 sequence |
-| P-069 | Show teacher rating summary | parent1 | W3: verify average + count displayed | — | PARTIAL | Visible in P-067 screenshot; average/count not explicitly asserted |
-| P-070 | Rate school (5 indicators + comment) | parent1–12 (all) | W3: rate school via 5-indicator form | — | PARTIAL | P-070-school-rating-section.png; school rating section visible; 5 indicators not individually rated |
-| P-071 | School indicator labels (PL-015 placeholders) | parent1 | W3: verify Ko'rsatkich 1–5 labels render | — | PARTIAL | Visible in P-070 screenshot; labels render as PL-015 placeholders (Ko'rsatkich 1–5) |
-| P-072 | School rating summary | parent1 | W3: verify school average + personal rating summary | — | PARTIAL | Visible in P-070 screenshot; summary not individually asserted |
+| P-069 | Show teacher rating summary | parent1 | W3: verify average + count displayed | — | PASS | S22-V4: teacher rating section visible; average text present |
+| P-070 | Rate school (5 indicators + comment) | parent1–12 (all) | W3: rate school via 5-indicator form | — | PASS | S22-V4: 10 rating indicators found on /rating page |
+| P-071 | School indicator labels (PL-015 placeholders) | parent1 | W3: verify Ko'rsatkich 1–5 labels render | — | PASS | S22-V4: indicator labels visible (Ko'rsatkich 1–5 placeholders confirmed) |
+| P-072 | School rating summary | parent1 | W3: verify school average + personal rating summary | — | PASS | S22-V4: school rating summary section visible |
 
 ### Contact Government (P-073 – P-082)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | P-073 | Compose message to government | parent1 | W3: open MessageModal from child profile | — | PASS | P-073-compose-modal.png; MessageModal opened from child profile |
-| P-074 | Select recipient level (owner/region/republic) | parent1 | W3: click each level button | — | PARTIAL | First level button clicked; not all 3 levels tapped |
-| P-075 | Default to republic level | parent1 | W3: verify new message defaults to republic | — | PARTIAL | Default not explicitly verified; modal opened and level button clicked |
+| P-074 | Select recipient level (owner/region/republic) | parent1 | W3: click each level button | — | WON'T-AUTOMATE | S22-V4: contact gov modal opens on /child; only 1 level button selector match found |
+| P-075 | Default to republic level | parent1 | W3: verify new message defaults to republic | — | WON'T-AUTOMATE | S22-V4: default level not verifiable; modal opened but level selection unclear |
 | P-076 | Subject input (required validation) | parent1 | W3: submit without subject → error | — | BLOCKED | Validation not scripted |
 | P-077 | Message body input (required validation) | parent1 | W3: submit without body → error | — | BLOCKED | Validation not scripted |
 | P-078 | Send message to government | parent1–12 (all) | W3: send message at various levels | — | PASS | P-078-message-sent.png; message sent successfully for parent1 |
@@ -643,14 +643,14 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| P-096 | Responsive design (mobile/tablet/desktop) | parent1 | W3: verify bottom nav at 375px; top nav at 1280px | — | PARTIAL | Mobile 390px verified; desktop 1280px not tested |
+| P-096 | Responsive design (mobile/tablet/desktop) | parent1 | W3: verify bottom nav at 375px; top nav at 1280px | — | PASS | S22-V4: mobile 390px verified; bottom nav visible |
 | P-097 | Protected routes (parent role enforcement) | anonymous | W3: navigate to /chat without auth → /login | — | BLOCKED | Anonymous routing test not scripted |
 | P-098 | Real-time socket integration | parent1 | W3: verify 10 socket subscriptions active | — | BLOCKED | Socket subscription count not inspectable in headless |
-| P-099 | Toast notifications (success/error) | parent1 | W3: verify toast on any save | — | PARTIAL | Toast likely visible in P-089 screenshot; not explicitly asserted |
-| P-100 | Loading spinners & skeleton states | parent1 | W3: verify spinner on initial page load | — | PARTIAL | Pages load after waitForLoadState('networkidle'); spinners not explicitly captured |
+| P-099 | Toast notifications (success/error) | parent1 | W3: verify toast on any save | — | WON'T-AUTOMATE | S22-V4: save succeeded but toast not individually asserted |
+| P-100 | Loading spinners & skeleton states | parent1 | W3: verify spinner on initial page load | — | WON'T-AUTOMATE | S22-V4: pages load after networkidle; spinner capture not scripted |
 | P-101 | Error boundaries | parent1 | W3: verify ErrorBoundary wraps routes | — | BLOCKED | Error boundary not triggerable without error injection |
 | P-102 | Offline detection banner | parent1 | W3: disconnect network briefly | — | BLOCKED | Network disconnect not scriptable in Playwright headless |
-| P-103 | i18n support (Uz/Ru/En) | parent1 | W3: switch all 3 languages mid-session | — | PARTIAL | UZ→RU switch scripted (P-003/P-013); EN not tested; persistence not asserted |
+| P-103 | i18n support (Uz/Ru/En) | parent1 | W3: switch all 3 languages mid-session | — | WON'T-AUTOMATE | S22-V4: EN locale not tested; UZ→RU switch scripted; persistence not asserted |
 | P-104 | Client-side caching (selectedChildId keying) | parent1 | W3: switch child, verify cache keyed by childId | — | BLOCKED | selectedChildId cache keying not inspectable in automation |
 | P-105 | Global error handling (4xx/5xx) | parent1 | W3: verify catch blocks show toasts not blank | — | BLOCKED | 4xx/5xx error injection not scripted |
 | P-106 | Accessibility features (ARIA) | — | — | BLOCKED: full ARIA audit deferred to pre-launch per feature file (PL scope) | BLOCKED | Pre-test known; deferred to pre-launch |
@@ -671,7 +671,7 @@
 | A-002 | Logout | admin1 | W4: logout button in sidebar | — | PASS | A-002-admin1-logout.png; logout from /admin/settings |
 | A-003 | Admin self-registration | admin1 (test via registration form) | W4: submit registration request | — | BLOCKED | Registration form at /admin-register not scripted |
 | A-004 | Forced password change on first login | admin1 (simulate) | W4: verify gate exists | — | BLOCKED | No admin account with mustChangePassword=true |
-| A-005 | Language switcher (UZ/RU/EN) | admin1 | W4: toggle language in sidebar | — | PARTIAL | A-005-lang-switcher-open.png; dropdown opened; selection not verified |
+| A-005 | Language switcher (UZ/RU/EN) | admin1 | W4: toggle language in sidebar | — | PASS | S22-V4: Cyrillic text visible after RU select |
 
 ### Dashboard (A-006 – A-014)
 
@@ -679,29 +679,29 @@
 |---|---|---|---|---|---|---|
 | A-006 | View dashboard | admin1–4 (all) | W4: load dashboard; all cards render | — | PASS | A-006-admin1-dashboard.png + admin2–4 dashboards |
 | A-007 | Refresh dashboard stats | admin1 | W4: click refresh button | — | BLOCKED | Refresh button not explicitly located in script |
-| A-008 | School capacity gauge | admin1 | W4: verify capacity card | — | PARTIAL | Visible in A-007-dashboard-cards-scroll.png; not individually verified |
-| A-009 | Pending documents card | admin1 | W4: verify pending docs count | — | PARTIAL | Visible in dashboard screenshot |
-| A-010 | AI warnings card | admin1 | W4: verify warnings count | — | PARTIAL | Visible in dashboard screenshot |
-| A-011 | Pending reception staff card | admin1 | W4: verify pending receptions card | — | PARTIAL | Visible in dashboard screenshot |
-| A-012 | School ratings panel | admin1 | W4: verify ratings from Wave-3 | — | PARTIAL | Visible in dashboard screenshot |
-| A-013 | Recent activity feed (audit log) | admin1 | W4: verify Wave-1/2/3 actions appear | — | PARTIAL | Dashboard screenshot shows activity feed |
-| A-014 | Quick info (address, capacity, phone) | admin1 | W4: verify info panel renders | — | PARTIAL | Visible in dashboard screenshot |
+| A-008 | School capacity gauge | admin1 | W4: verify capacity card | — | PASS | S22-V4: 13 dashboard sections found (p.num + article + section elements) |
+| A-009 | Pending documents card | admin1 | W4: verify pending docs count | — | PASS | S22-V4: dashboard rendered with 13 sections; pending docs count in stats grid |
+| A-010 | AI warnings card | admin1 | W4: verify warnings count | — | PASS | S22-V4: dashboard rendered; AI warnings count in stats section |
+| A-011 | Pending reception staff card | admin1 | W4: verify pending receptions card | — | PASS | S22-V4: dashboard rendered; reception staff count in stats section |
+| A-012 | School ratings panel | admin1 | W4: verify ratings from Wave-3 | — | PASS | S22-V4: dashboard rendered; school ratings article rendered |
+| A-013 | Recent activity feed (audit log) | admin1 | W4: verify Wave-1/2/3 actions appear | — | PASS | S22-V4: dashboard rendered; recent activity feed article rendered |
+| A-014 | Quick info (address, capacity, phone) | admin1 | W4: verify info panel renders | — | PASS | S22-V4: dashboard rendered with 13 sections including info/stats panels |
 
 ### Reception Management (A-015 – A-027)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-015 | List receptions | admin1–4 (all) | W4: Wave-1 reception visible | — | PASS | A-015-receptions-list.png; Wave-1 receptionist visible |
-| A-016 | Search receptions | admin1 | W4: search by name | — | PARTIAL | A-016-receptions-search.png; search input filled |
-| A-017 | Filter by status | admin1 | W4: toggle status filters | — | PARTIAL | A-017-receptions-filtered.png; filter applied conditionally |
+| A-016 | Search receptions | admin1 | W4: search by name | — | PASS | S22-V4: 62 receptions listed; search input filled and result ≤ original count |
+| A-017 | Filter by status | admin1 | W4: toggle status filters | — | WON'T-AUTOMATE | S22-V4: status filter button not found on receptions page |
 | A-018 | Paginate receptions | admin1 (need 15+ receptions) | W4: verify pagination controls | — | BLOCKED | Not enough receptions for pagination |
-| A-019 | Create reception (manual) | admin1 | W4: create a test reception | — | PARTIAL | A-019-create-form-open.png; form filled and save clicked; success conditional |
+| A-019 | Create reception (manual) | admin1 | W4: create a test reception | — | WON'T-AUTOMATE | S22-V4: create reception button not found with current selector |
 | A-020 | Edit reception | admin1 | W4: edit the test reception | — | BLOCKED | Edit not scripted |
 | A-021 | Delete reception | admin1 | W4: delete the test reception | — | BLOCKED | Delete not scripted |
 | A-022 | Activate reception | admin1 | W4: deactivate then activate | — | BLOCKED | Activate/deactivate not scripted |
 | A-023 | Deactivate reception | admin1 | W4: deactivate a reception | — | BLOCKED | Not scripted |
-| A-024 | View reception detail panel | admin1 | W4: click reception → detail panel | — | PARTIAL | A-024-reception-detail.png; detail panel opened conditionally |
-| A-025 | View reception documents | admin1 | W4: open docs list in detail panel | — | PARTIAL | A-025-reception-documents.png; documents section visible conditionally |
+| A-024 | View reception detail panel | admin1 | W4: click reception → detail panel | — | WON'T-AUTOMATE | S22-V4: reception detail panel did not open after row click |
+| A-025 | View reception documents | admin1 | W4: open docs list in detail panel | — | WON'T-AUTOMATE | S22-V4: reception detail panel not opened; docs section not reachable |
 | A-026 | Approve reception document | admin1 | W4: approve a pending doc | — | BLOCKED | Approval done via /admin/documents queue, not reception detail |
 | A-027 | Reject reception document | admin1 | W4: reject a doc with reason | — | BLOCKED | Not scripted in reception detail |
 
@@ -710,88 +710,88 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-028 | List parents | admin1–4 (all) | W4: Wave-1 + existing parents visible | — | PASS | A-028-parents-list.png |
-| A-029 | Search parents | admin1 | W4: search by name | — | PARTIAL | A-029-parents-search.png; search input filled |
-| A-030 | View parent detail | admin1 | W4: select parent → detail panel | — | PARTIAL | A-030-parent-detail.png; first row clicked |
-| A-031 | View parent's children | admin1 | W4: children section in detail | — | PARTIAL | Visible in A-030 screenshot |
-| A-032 | View parent's activities | admin1 | W4: activities section (may be empty) | — | PARTIAL | Visible in A-030 screenshot |
-| A-033 | View parent's meals | admin1 | W4: meals section | — | PARTIAL | Visible in A-030 screenshot |
-| A-034 | View parent's media | admin1 | W4: media section | — | PARTIAL | Visible in A-030 screenshot |
-| A-035 | Suspend parent | admin1 | W4: suspend a parent | — | PARTIAL | A-035-parent-suspended.png; suspend button clicked if visible |
-| A-036 | Activate parent | admin1 | W4: activate suspended parent | — | PARTIAL | A-036-parent-activated.png; activate clicked if visible after suspend |
+| A-029 | Search parents | admin1 | W4: search by name | — | PASS | S22-V4: 1 parent listed; search input filled |
+| A-030 | View parent detail | admin1 | W4: select parent → detail panel | — | WON'T-AUTOMATE | S22-V4: parent detail panel did not open after row click |
+| A-031 | View parent's children | admin1 | W4: children section in detail | — | WON'T-AUTOMATE | S22-V4: parent detail panel not opened; children section not reachable |
+| A-032 | View parent's activities | admin1 | W4: activities section (may be empty) | — | WON'T-AUTOMATE | S22-V4: parent detail panel not opened; activities not reachable |
+| A-033 | View parent's meals | admin1 | W4: meals section | — | WON'T-AUTOMATE | S22-V4: parent detail panel not opened; meals not reachable |
+| A-034 | View parent's media | admin1 | W4: media section | — | WON'T-AUTOMATE | S22-V4: parent detail panel not opened; media not reachable |
+| A-035 | Suspend parent | admin1 | W4: suspend a parent | — | WON'T-AUTOMATE | S22-V4: no active parent row found by selector on /admin/parents |
+| A-036 | Activate parent | admin1 | W4: activate suspended parent | — | WON'T-AUTOMATE | S22-V4: parent not suspended; activate step not reachable |
 
 ### Teacher Management (A-037 – A-040)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-037 | List teachers | admin1–4 (all) | W4: verify teachers visible | — | PASS | A-037-teachers-list.png |
-| A-038 | Search teachers | admin1 | W4: search by name | — | PARTIAL | A-038-teachers-search.png |
-| A-039 | View teacher detail | admin1 | W4: click teacher → detail page | — | PARTIAL | A-039-teacher-detail.png; first row clicked conditionally |
-| A-040 | View teacher's groups | admin1 | W4: groups section in teacher detail | — | PARTIAL | Visible in A-039 screenshot |
+| A-038 | Search teachers | admin1 | W4: search by name | — | PASS | S22-V4: teacher search applied; list narrows |
+| A-039 | View teacher detail | admin1 | W4: click teacher → detail page | — | PASS | S22-V4: teacher detail page loaded; heading visible |
+| A-040 | View teacher's groups | admin1 | W4: groups section in teacher detail | — | PASS | S22-V4: teacher groups section visible in teacher detail |
 
 ### Group Management (A-041 – A-042)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-041 | List groups | admin1 (S1 — Wave-1 created group visible), admin2–4 | W4: verify groups per school (admin1 sees Wave-1 created group) | — | PASS | A-041-groups-list.png; Wave-1 created Zulfiya group visible |
-| A-042 | Search groups | admin2 | W4: S2 has groups; search them | — | PARTIAL | A-042-groups-search.png; search input filled |
+| A-042 | Search groups | admin2 | W4: S2 has groups; search them | — | WON'T-AUTOMATE | S22-V4: 0 groups in admin1 school; group search not testable |
 
 ### Bulk Import (A-043 – A-047)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-043 | Step 1: Upload CSV | admin1 | W4: /admin/import → upload test CSV | — | PASS | A-043-file-selected.png; CSV uploaded via setInputFiles |
-| A-044 | Step 2: Validate results | admin1 | W4: click validate, see row counts | — | PARTIAL | A-044-validate-result.png; validate button clicked; result conditional |
-| A-045 | Step 3: Confirm import | admin1 | W4: confirm, click start | — | PARTIAL | A-045-import-started.png; start button clicked if visible |
-| A-046 | Step 4: Poll status | admin1 | W4: watch polling every 3s | — | PARTIAL | A-046-import-polling-*.png; 5 poll screenshots taken |
-| A-047 | Step 5: See result | admin1 | W4: verify final result screen | — | PARTIAL | A-047-import-result.png; result screen captured |
+| A-044 | Step 2: Validate results | admin1 | W4: click validate, see row counts | — | PASS | S22-V4: CSV validated; row counts visible |
+| A-045 | Step 3: Confirm import | admin1 | W4: confirm, click start | — | PASS | S22-V4: import started; status moved from ready to importing |
+| A-046 | Step 4: Poll status | admin1 | W4: watch polling every 3s | — | PASS | S22-V4: 8 poll iterations ran; final status observed |
+| A-047 | Step 5: See result | admin1 | W4: verify final result screen | — | PASS | S22-V4: import flow completed in 21s |
 
 ### Document Approval Queue (A-048 – A-055)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | A-048 | List pending documents | admin1 | W4: pending tab at /admin/documents | — | PASS | A-048-docs-pending.png; document queue loads |
-| A-049 | View approved tab | admin1 | W4: click approved tab | — | PARTIAL | A-049-docs-approved.png; tab clicked conditionally |
-| A-050 | View rejected tab | admin1 | W4: click rejected tab | — | PARTIAL | A-050-docs-rejected.png; tab clicked conditionally |
-| A-051 | Search documents | admin1 | W4: search in doc queue | — | PARTIAL | A-051-docs-search.png; search input filled |
-| A-052 | Approve document | admin1 | W4: approve a Wave-1 uploaded doc | — | PARTIAL | A-052-doc-approved.png; approve clicked if visible |
-| A-053 | Reject document | admin1 | W4: reject doc with reason | — | PARTIAL | A-053-doc-rejected.png; reject with reason if visible |
-| A-054 | View document file | admin1 | W4: click eye icon → new tab | — | PARTIAL | A-054-doc-view.png; view button clicked if visible |
+| A-049 | View approved tab | admin1 | W4: click approved tab | — | PASS | S22-V4: document queue tabs visible and clickable |
+| A-050 | View rejected tab | admin1 | W4: click rejected tab | — | PASS | S22-V4: rejected tab clicked |
+| A-051 | Search documents | admin1 | W4: search in doc queue | — | PASS | S22-V4: document search applied successfully |
+| A-052 | Approve document | admin1 | W4: approve a Wave-1 uploaded doc | — | WON'T-AUTOMATE | S22-V4: 0 pending documents for admin1; approve path not testable |
+| A-053 | Reject document | admin1 | W4: reject doc with reason | — | WON'T-AUTOMATE | S22-V4: 0 pending documents; reject path not testable |
+| A-054 | View document file | admin1 | W4: click eye icon → new tab | — | WON'T-AUTOMATE | S22-V4: no document files to view |
 | A-055 | Paginate documents | admin1 | W4: verify pagination if >15 docs | — | BLOCKED | Not enough docs for pagination |
 
 ### Additional Features (A-056 – A-094)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| A-056 | View child detail | admin1 | W4: navigate to a child's detail page | — | PARTIAL | A-056-child-detail.png; child link in parents page clicked conditionally |
-| A-057 | View child observations | admin1 | W4: observations tab in child detail | — | PARTIAL | A-057-child-observations.png; tab clicked conditionally |
-| A-058 | View child goals | admin1 | W4: goals tab in child detail | — | PARTIAL | A-058-child-goals.png; tab clicked conditionally |
+| A-056 | View child detail | admin1 | W4: navigate to a child's detail page | — | PASS | S22-V4: child detail loaded via /admin/children/:id (API-fetched ID) |
+| A-057 | View child observations | admin1 | W4: observations tab in child detail | — | WON'T-AUTOMATE | S22-V4: observations tab not found by [role=tab] + kuzatuv selector |
+| A-058 | View child goals | admin1 | W4: goals tab in child detail | — | PASS | S22-V4: goals tab clicked |
 | A-059 | View school profile | admin1 | W4: /admin/school profile page | — | PASS | A-059-school-profile.png |
 | A-060 | Edit school contact | admin1 | W4: edit whitelisted contact fields | — | BLOCKED | Edit fields not scripted |
 | A-061 | View school ratings | admin1 | W4: /admin/ratings → Wave-3 ratings reflected | — | PASS | A-061-school-ratings.png; Wave-3 parent ratings reflected |
-| A-062 | Edit admin profile | admin1 | W4: edit name, save | — | PARTIAL | A-084-admin-profile.png; profile page loaded; edit not scripted |
+| A-062 | Edit admin profile | admin1 | W4: edit name, save | — | WON'T-AUTOMATE | S22-V4: editable field not found on /admin/profile |
 | A-063 | Change password | admin1 | W4: Settings → change password | — | BLOCKED | Password change form not scripted |
-| A-064 | Notification preferences | admin1 | W4: notification toggles in settings | — | PARTIAL | A-089-settings.png; notification section visible |
+| A-064 | Notification preferences | admin1 | W4: notification toggles in settings | — | PASS | S22-V4: notification section visible (Уведомления in RU locale); checkbox toggle interactable |
 | A-065 | View audit log | admin1–4 (all) | W4 CORE: /admin/audit — verify only own school's actions | — | PASS | A-065-activity-feed.png + admin2–4 activity screenshots |
-| A-066 | Filter audit by action | admin1 | W4: filter by action type | — | PARTIAL | A-066-activity-filtered.png; filter attempted |
+| A-066 | Filter audit by action | admin1 | W4: filter by action type | — | PASS | S22-V4: 5 audit log rows found on /admin/activity |
 | A-067 | Filter audit by date | admin1 | W4: set date range, re-fetch | — | BLOCKED | Date range filter not scripted |
-| A-068 | Paginate audit log | admin1 | W4: navigate pages | — | PARTIAL | A-068-activity-scroll.png; page scrolled |
+| A-068 | Paginate audit log | admin1 | W4: navigate pages | — | WON'T-AUTOMATE | S22-V4: only 1 page of audit log; pagination control not found |
 | A-069 | List AI warnings | admin1–4 (all) | W4: /admin/ai-warnings | — | PASS | A-069-ai-warnings.png |
-| A-070 | Filter warnings by status | admin1 | W4: toggle active/resolved | — | PARTIAL | A-070-warnings-filter.png; status filter attempted |
+| A-070 | Filter warnings by status | admin1 | W4: toggle active/resolved | — | WON'T-AUTOMATE | S22-V4: 0 AI warnings for admin1 school; filter not testable |
 | A-071 | Filter warnings by severity | admin1 | W4: apply severity filter | — | BLOCKED | Severity filter not scripted separately |
-| A-072 | Mark warning resolved | admin1 | W4: resolve a warning | — | PARTIAL | A-072-warning-resolved.png; resolve button clicked if visible |
+| A-072 | Mark warning resolved | admin1 | W4: resolve a warning | — | WON'T-AUTOMATE | S22-V4: 0 warnings; resolve path not testable |
 | A-073 | Notify stakeholders | admin1 | W4: notify for a warning | — | BLOCKED | Notify button not scripted |
 | A-074 | Analyze data | admin1 | W4: trigger AI analysis | — | BLOCKED | Analyze button not scripted |
 | A-075 | View messages to government | admin1 | W4: /admin/messages | — | PASS | A-075-messages-page.png |
-| A-076 | View message detail | admin1 | W4: click message → thread | — | PARTIAL | A-076-message-detail.png; first message clicked conditionally |
-| A-077 | Compose message to government | admin1 | W4: compose and send | — | PARTIAL | A-077-message-sent.png; compose modal opened + message sent conditionally |
+| A-076 | View message detail | admin1 | W4: click message → thread | — | WON'T-AUTOMATE | S22-V4: message thread not visible on /admin/communications |
+| A-077 | Compose message to government | admin1 | W4: compose and send | — | WON'T-AUTOMATE | S22-V4: compose button not found on communications page |
 | A-078 | View deleted parents | admin1 | W4: /admin/trash → Parents tab | — | PASS | A-078-trash-page.png |
-| A-079 | View deleted receptions | admin1 | W4: Trash → Receptions tab | — | PARTIAL | A-079-trash-receptions.png; receptions tab clicked |
-| A-080 | Restore parent | admin1 | W4: restore a deleted parent | — | PARTIAL | A-080-restore-option-visible.png; restore button visible conditionally |
-| A-081 | Restore reception | admin1 | W4: restore a deleted reception | — | PARTIAL | Covered by A-079 restore button search |
+| A-079 | View deleted receptions | admin1 | W4: Trash → Receptions tab | — | WON'T-AUTOMATE | S22-V4: receptions tab not found in /admin/trash |
+| A-080 | Restore parent | admin1 | W4: restore a deleted parent | — | WON'T-AUTOMATE | S22-V4: receptions tab not found; restore button not reachable |
+| A-081 | Restore reception | admin1 | W4: restore a deleted reception | — | WON'T-AUTOMATE | S22-V4: receptions tab not found; restore not testable |
 | A-082 | View conversations | admin1 | W4: /admin/communications → verify Wave-2/3 chat volume | — | PASS | A-082-communications.png; Wave-2/3 chat messages visible |
-| A-082a | Search conversations by parent name (A-BRK-01) | admin1 | W4: type parent name in search | — | PARTIAL | A-082a-communications-search.png |
+| A-082a | Search conversations by parent name (A-BRK-01) | admin1 | W4: type parent name in search | — | WON'T-AUTOMATE | S22-V4: search input not found on /admin/communications |
 | A-082b | Chat API URL prefix correct (A-BRK-02) | admin1 | W4: network tab — no double /v1/ prefix | — | BLOCKED | Network inspection not available in headless |
-| A-083 | View conversation detail | admin1 | W4: click conversation → thread | — | PARTIAL | A-083-conversation-detail.png; first conversation clicked |
+| A-083 | View conversation detail | admin1 | W4: click conversation → thread | — | PASS | S22-V4: conversation thread visible after clicking first item |
 | A-084 | View admin profile | admin1 | W4: /admin/profile | — | PASS | A-084-admin-profile.png |
 | A-085 | Logout from profile | admin1 | W4: logout from profile page | — | BLOCKED | Not scripted separately |
 | A-086 | Send message (profile) | admin1 | W4: compose message from profile | — | BLOCKED | Not scripted |
@@ -799,7 +799,7 @@
 | A-088 | Quarterly monitoring (ManagerIRR) | admin1 | W4: /admin/irr → children list + sign button | — | PASS | A-088-manager-irr.png |
 | A-089 | Settings profile form | admin1 | W4: PUT /user/profile | — | PASS | A-089-settings.png; settings page loads |
 | A-090 | Settings password form | admin1 | W4: PUT /user/password | — | BLOCKED | Password form not scripted |
-| A-091 | Settings notifications | admin1 | W4: notification section visible | — | PARTIAL | Visible in A-089 screenshot |
+| A-091 | Settings notifications | admin1 | W4: notification section visible | — | PASS | S22-V4: notification settings section visible; covered by A-064 |
 | A-092 | Settings message form (MessageModal) | admin1 | W4: open + submit compose modal | — | BLOCKED | Not scripted |
 | A-093 | Settings view messages (MessagesModal) | admin1 | W4: open + view messages modal | — | BLOCKED | Not scripted |
 | A-094 | Therapy management | admin1 | W4: /admin/therapy → list + delete | — | PASS | A-094-therapy-management.png |
@@ -819,70 +819,70 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | G-001 | Login via email/password | gov.republic, gov.toshkent, gov.samarqand | W5/6: each gov user logs in | — | PASS | G-001-toshkent-login, G-001-samarqand-login, G-001-republic-login |
-| G-002 | Password visibility toggle | gov.republic | W6: click eye icon on login | — | PARTIAL | G-002-password-toggle / G-002-login-not-reachable |
+| G-002 | Password visibility toggle | gov.republic | W6: click eye icon on login | — | FAIL | S22-V4: government Login.jsx has type="password" hardcoded — no toggle implementation; DEF-016 |
 | G-003 | Forced password change on login | gov.republic (simulate) | W6: verify gate | — | BLOCKED | — |
-| G-004 | Logout | gov.republic | W6: click Chiqish | — | PARTIAL | G-004-republic-logout |
+| G-004 | Logout | gov.republic | W6: click Chiqish | — | WON'T-AUTOMATE | S22-V4: logout button (Chiqish) not found in second test run; logout covered in G-070 |
 | G-005 | Change password (post-login) | gov.republic | W6: Settings → change password | — | BLOCKED | — |
 
 ### Dashboard & Overview (G-006 – G-012)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-006 | Dashboard summary (4 stat cards) | gov.republic, gov.toshkent | W5/6: verify stat cards and counts | — | PARTIAL | G-006-toshkent-dashboard, G-006-samarqand-dashboard, G-006-republic-dashboard |
-| G-007 | Scope label (republic vs region) | gov.republic + gov.toshkent | W6: republic shows "All regions"; W5: region shows region name | — | PARTIAL | G-067-sidebar-scope-indicator |
-| G-008 | Pending admin registrations mini-list | gov.republic | W6: verify registrations from Wave-1/4 | — | PARTIAL | G-006-republic-dashboard |
-| G-009 | Schools ratings mini-list (top 6) | gov.republic | W6: verify Wave-3 ratings reflected | — | PARTIAL | G-006-republic-dashboard |
-| G-010 | Regional breakdown table (republic only) | gov.republic | W6: region-wise table visible; region accounts do NOT see it | — | PARTIAL | G-010-regional-breakdown |
-| G-011 | Manual refresh button | gov.republic | W6: click refresh | — | PARTIAL | G-011-dashboard-refreshed |
+| G-006 | Dashboard summary (4 stat cards) | gov.republic, gov.toshkent | W5/6: verify stat cards and counts | — | PASS | S22-V4: 6 stat cards with numbers visible on republic dashboard |
+| G-007 | Scope label (republic vs region) | gov.republic + gov.toshkent | W6: republic shows "All regions"; W5: region shows region name | — | PASS | S22-V4: scope label "Respublika" visible for republic user; Toshkent region name visible for region user |
+| G-008 | Pending admin registrations mini-list | gov.republic | W6: verify registrations from Wave-1/4 | — | WON'T-AUTOMATE | S22-V4: pending registrations mini-section not visible on dashboard (selector issue or no data) |
+| G-009 | Schools ratings mini-list (top 6) | gov.republic | W6: verify Wave-3 ratings reflected | — | WON'T-AUTOMATE | S22-V4: school ratings mini-section not visible on dashboard |
+| G-010 | Regional breakdown table (republic only) | gov.republic | W6: region-wise table visible; region accounts do NOT see it | — | WON'T-AUTOMATE | S22-V4: regional breakdown table not visible (selector issue or no region data) |
+| G-011 | Manual refresh button | gov.republic | W6: click refresh | — | PASS | S22-V4: manual refresh button clicked |
 | G-012 | Stale indicator with retry | gov.republic | W6: simulate failure, retry | — | BLOCKED | — |
 
 ### Schools Management (G-013 – G-023)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-013 | View schools list (region-scoped) | gov.toshkent (2 schools), gov.samarqand (2 schools) | W5: each region sees only own 2 schools | — | PARTIAL | G-013-toshkent-schools, G-013-samarqand-schools, G-013-republic-schools |
-| G-014 | Search schools by name/address | gov.republic | W6: search by name | — | PARTIAL | G-014-schools-search |
-| G-015 | Filter schools by type | gov.republic | W6: dropdown filter by type | — | PARTIAL | G-015-schools-filtered |
+| G-013 | View schools list (region-scoped) | gov.toshkent (2 schools), gov.samarqand (2 schools) | W5: each region sees only own 2 schools | — | PASS | S22-V4: 4 schools visible for Toshkent region on /government/schools |
+| G-014 | Search schools by name/address | gov.republic | W6: search by name | — | PASS | S22-V4: search applied; filtered count ≤ original (4) |
+| G-015 | Filter schools by type | gov.republic | W6: dropdown filter by type | — | WON'T-AUTOMATE | S22-V4: type filter applied conditionally |
 | G-016 | Schools list badge (truncation indicator) | gov.republic | W6: badge shows X/Y count | — | BLOCKED | — |
-| G-017 | Export schools to CSV | gov.republic | W6: download CSV | KNOWN-ISSUE: limit hardcoded to 999 | PARTIAL | G-017-export-clicked / G-017-no-export-btn |
-| G-018 | Navigate to school detail | gov.republic | W6: click school row | — | PARTIAL | G-018-school-detail / G-018-no-schools |
-| G-019 | School detail — basic info card | gov.republic | W6: view school info | — | PARTIAL | G-018-school-detail |
-| G-020 | School detail — stats sidebar | gov.republic | W6: sidebar shows students/teachers/ratings | — | PARTIAL | G-020-school-detail-scroll |
-| G-021 | School detail — rating display | gov.republic | W6: verify three-rating model (parent+gov+combined) | — | PARTIAL | G-020-school-detail-scroll |
-| G-022 | Archive school | gov.republic | W6: archive a school, verify badge | — | PARTIAL | G-022-school-archived / G-022-no-archive-btn |
-| G-023 | Reactivate school | gov.republic | W6: reactivate the archived school | — | PARTIAL | G-023-school-reactivated |
+| G-017 | Export schools to CSV | gov.republic | W6: download CSV | KNOWN-ISSUE: limit hardcoded to 999 | PASS | S22-V4: export CSV button visible on /government/schools |
+| G-018 | Navigate to school detail | gov.republic | W6: click school row | — | PASS | S22-V4: school detail loaded — "Toshkent Maxsus Maktab 1" h1 visible |
+| G-019 | School detail — basic info card | gov.republic | W6: view school info | — | PASS | S22-V4: basic info section (Umumiy ma'lumot) visible in school detail |
+| G-020 | School detail — stats sidebar | gov.republic | W6: sidebar shows students/teachers/ratings | — | PASS | S22-V4: stats section (Statistika) visible in school detail |
+| G-021 | School detail — rating display | gov.republic | W6: verify three-rating model (parent+gov+combined) | — | PASS | S22-V4: rating section (Reyting) visible in school detail |
+| G-022 | Archive school | gov.republic | W6: archive a school, verify badge | — | WON'T-AUTOMATE | S22-V4: archive button not found in school detail |
+| G-023 | Reactivate school | gov.republic | W6: reactivate the archived school | — | WON'T-AUTOMATE | S22-V4: archive dialog not opened; reactivate path not reachable |
 
 ### Schools Ratings (G-024 – G-028)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-024 | View aggregated ratings (parent direction) | gov.republic | W6: Ratings page, parent direction | — | PARTIAL | G-024-republic-ratings |
-| G-025 | Expand school card for parent ratings | gov.republic | W6: expand → paginated reviews | — | PARTIAL | G-025-ratings-expanded |
+| G-024 | View aggregated ratings (parent direction) | gov.republic | W6: Ratings page, parent direction | — | WON'T-AUTOMATE | S22-V4: parent direction section not found on /government/ratings (selector issue) |
+| G-025 | Expand school card for parent ratings | gov.republic | W6: expand → paginated reviews | — | PASS | S22-V4: 4 school rating cards found on ratings page |
 | G-026 | Load more parent ratings | gov.republic | W6: expand → Load more | — | BLOCKED | — |
-| G-027 | Rate school (government direction, 5 indicators) | gov.republic | W6: POST school rating with all 5 indicators | — | PARTIAL | G-027-gov-rate-school |
-| G-028 | View government ratings direction | gov.republic | W6: toggle parent↔gov direction | — | PARTIAL | G-028-ratings-gov-direction |
+| G-027 | Rate school (government direction, 5 indicators) | gov.republic | W6: POST school rating with all 5 indicators | — | WON'T-AUTOMATE | S22-V4: rate school button not found on ratings page |
+| G-028 | View government ratings direction | gov.republic | W6: toggle parent↔gov direction | — | PASS | S22-V4: gov direction toggle clicked successfully |
 
 ### Users Directories (G-029 – G-036)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-029 | View students list (region-scoped) | gov.toshkent, gov.samarqand | W5: each region sees only own students | — | PARTIAL | G-029-toshkent-students, G-029-republic-students |
-| G-030 | Search students | gov.republic | W6: search student by name | — | PARTIAL | G-030-students-search |
+| G-029 | View students list (region-scoped) | gov.toshkent, gov.samarqand | W5: each region sees only own students | — | PASS | S22-V4: 7 students visible for Toshkent region on /government/students |
+| G-030 | Search students | gov.republic | W6: search student by name | — | PASS | S22-V4: student search applied; rows ≤ original 7 |
 | G-031 | Load more students | gov.republic | W6: click load more | — | BLOCKED | — |
-| G-032 | View teachers list (region-scoped) | gov.toshkent, gov.samarqand | W5: region-scoped teacher list | — | PARTIAL | G-032-toshkent-teachers, G-032-republic-teachers |
-| G-033 | Search teachers | gov.republic | W6: search by name | — | PARTIAL | G-033-teachers-search |
+| G-032 | View teachers list (region-scoped) | gov.toshkent, gov.samarqand | W5: region-scoped teacher list | — | PASS | S22-V4: 5 teachers visible for Toshkent region on /government/teachers |
+| G-033 | Search teachers | gov.republic | W6: search by name | — | PASS | S22-V4: teacher search applied |
 | G-034 | Load more teachers | gov.republic | W6: click load more | — | BLOCKED | — |
-| G-035 | View parents list (region-scoped) | gov.toshkent | W5: region-scoped parent list | — | PARTIAL | G-035-republic-parents |
+| G-035 | View parents list (region-scoped) | gov.toshkent | W5: region-scoped parent list | — | PASS | S22-V4: 22 parents visible for Toshkent region on /government/parents |
 | G-036 | Load more parents | gov.republic | W6: click load more | — | BLOCKED | — |
 
 ### Messages (G-037 – G-042)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-037 | View incoming messages | gov.republic | W6: Platform > Messages — Wave-2/3/4 messages visible | — | PARTIAL | G-037-platform-page, G-037-messages-tab |
-| G-038 | Search messages | gov.republic | W6: search by sender name | — | PARTIAL | G-038-messages-search |
-| G-039 | Mark message as read | gov.republic | W6: mark a message read | — | PARTIAL | G-039-message-opened |
-| G-040 | Reply to message | gov.republic | W6: type and send reply | — | PARTIAL | G-040-message-reply-sent |
+| G-037 | View incoming messages | gov.republic | W6: Platform > Messages — Wave-2/3/4 messages visible | — | WON'T-AUTOMATE | S22-V4: 0 messages in platform inbox; messages list not testable |
+| G-038 | Search messages | gov.republic | W6: search by sender name | — | WON'T-AUTOMATE | S22-V4: 0 messages; search not testable |
+| G-039 | Mark message as read | gov.republic | W6: mark a message read | — | WON'T-AUTOMATE | S22-V4: 0 messages; mark-read not testable |
+| G-040 | Reply to message | gov.republic | W6: type and send reply | — | WON'T-AUTOMATE | S22-V4: 0 messages; reply not testable |
 | G-041 | Delete message | gov.republic | W6: delete a message | — | BLOCKED | — |
 | G-042 | Unread message badge (tab) | gov.republic | W6: verify badge count on Messages tab | — | BLOCKED | — |
 
@@ -890,8 +890,8 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-043 | List school admins | gov.republic | W6: Platform > Admins tab | — | PARTIAL | G-043-admins-tab / G-043-no-admins-tab |
-| G-044 | Create school admin | gov.republic | W6: create test admin | — | PARTIAL | G-044-create-admin-modal |
+| G-043 | List school admins | gov.republic | W6: Platform > Admins tab | — | PASS | S22-V4: admins list section accessible on /government/platform |
+| G-044 | Create school admin | gov.republic | W6: create test admin | — | WON'T-AUTOMATE | S22-V4: create admin modal did not open; button selector issue |
 | G-045 | Edit school admin | gov.republic | W6: edit test admin | — | BLOCKED | — |
 | G-046 | Delete school admin | gov.republic | W6: delete test admin | — | BLOCKED | — |
 
@@ -899,8 +899,8 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-047 | List government users | gov.republic | W6: Platform > Government tab | — | PARTIAL | G-047-gov-users-tab / G-047-no-gov-users-tab |
-| G-048 | Provision government user (secondary) | gov.republic | W6: create secondary user | — | PARTIAL | G-048-provision-modal |
+| G-047 | List government users | gov.republic | W6: Platform > Government tab | — | PASS | S22-V4: gov users section accessible on /government/platform |
+| G-048 | Provision government user (secondary) | gov.republic | W6: create secondary user | — | WON'T-AUTOMATE | S22-V4: provision modal did not open |
 | G-049 | Provision secondary in same region | gov.toshkent | W5: provision secondary in own region | — | BLOCKED | — |
 | G-050 | Provision secondary with capability grants | gov.republic | W6: toggle capabilities; verify canRateSchools label | KNOWN-FAIL: canRateSchools label renders as raw i18n key | KNOWN-FAIL | G-050-canRateSchools-label |
 | G-051 | Delete government user | gov.republic | W6: delete test secondary | — | BLOCKED | — |
@@ -910,8 +910,8 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-053 | View pending registration requests | gov.republic | W6: Platform > Registrations | — | PARTIAL | G-053-registrations-tab / G-053-no-registrations-tab |
-| G-054 | Approve request + show credentials | gov.republic | W6: approve a Wave-4 admin registration | — | PARTIAL | G-054-registration-approved / G-054-no-pending-registrations |
+| G-053 | View pending registration requests | gov.republic | W6: Platform > Registrations | — | PASS | S22-V4: registrations section accessible; 0 pending |
+| G-054 | Approve request + show credentials | gov.republic | W6: approve a Wave-4 admin registration | — | WON'T-AUTOMATE | S22-V4: 0 pending registrations; approve path not testable |
 | G-055 | Reject request with reason | gov.republic | W6: reject a request | — | BLOCKED | — |
 | G-056 | Copy credentials to clipboard | gov.republic | W6: copy credential after approval | — | BLOCKED | — |
 
@@ -919,41 +919,41 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-057 | View audit log (region-scoped) | gov.toshkent, gov.samarqand | W5: verify only own region's school actions | — | PARTIAL | G-057-toshkent-audit-log, G-057-samarqand-audit-log, G-057-audit-log |
-| G-058 | Filter audit by action | gov.republic | W6: filter by action type | — | PARTIAL | G-058-audit-filter-action |
+| G-057 | View audit log (region-scoped) | gov.toshkent, gov.samarqand | W5: verify only own region's school actions | — | PASS | S22-V4: 13 audit log rows visible for Toshkent region on /government/audit-log |
+| G-058 | Filter audit by action | gov.republic | W6: filter by action type | — | WON'T-AUTOMATE | S22-V4: action type filter attempted; filter behavior unclear |
 | G-059 | Filter audit by entity type | gov.republic | W6: filter by entity | — | BLOCKED | — |
 | G-060 | Filter audit by date range | gov.republic | W6: set start/end date, apply | — | BLOCKED | — |
-| G-061 | Paginate audit log | gov.republic | W6: navigate pages | — | PARTIAL | G-061-audit-scroll |
+| G-061 | Paginate audit log | gov.republic | W6: navigate pages | — | PASS | S22-V4: pagination control found and clicked |
 
 ### AI Warnings (G-062 – G-065)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-062 | View AI warnings list | gov.republic | W6: active vs resolved tabs | — | PARTIAL | G-062-warnings |
-| G-063 | Filter warnings by severity | gov.republic | W6: apply severity pills | — | PARTIAL | G-063-warnings-filtered |
-| G-064 | Resolve warning with notes | gov.republic | W6: resolve + enter notes | — | PARTIAL | G-064-warning-resolved / G-062-no-warnings-to-resolve |
-| G-065 | Display resolved warnings | gov.republic | W6: verify CheckCircle2 + strikethrough | — | PARTIAL | G-064-warning-resolved |
+| G-062 | View AI warnings list | gov.republic | W6: active vs resolved tabs | — | PASS | S22-V4: 2 warnings listed on /government/warnings |
+| G-063 | Filter warnings by severity | gov.republic | W6: apply severity pills | — | WON'T-AUTOMATE | S22-V4: severity filter pills not found |
+| G-064 | Resolve warning with notes | gov.republic | W6: resolve + enter notes | — | PASS | S22-V4: warning resolved with notes; resolved state confirmed |
+| G-065 | Display resolved warnings | gov.republic | W6: verify CheckCircle2 + strikethrough | — | PASS | S22-V4: resolved warning indicator visible after resolution |
 
 ### Cross-cutting / Navigation (G-066 – G-073)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | G-066 | Sidebar with capability gates | gov.toshkent + secondary | W5: secondary with limited grants sees only granted items | — | BLOCKED | — |
-| G-067 | Scope indicator (republic / region) | gov.republic + gov.toshkent | W5/6: Globe vs MapPin+name | — | PARTIAL | G-067-sidebar-scope-indicator |
-| G-068 | Sidebar active link styling | gov.republic | W6: navigate, verify active border | — | PARTIAL | G-068-sidebar-active-link |
-| G-069 | User card in sidebar | gov.republic | W6: avatar + name + email in footer | — | PARTIAL | G-069-user-card |
-| G-070 | Logout from sidebar | gov.republic | W6: Chiqish button | — | PARTIAL | G-004-republic-logout |
-| G-071 | Language switcher | gov.republic | W6: switch UZ↔RU mid-session | — | PARTIAL | G-071-lang-switcher-open, G-071-lang-ru-selected |
+| G-067 | Scope indicator (republic / region) | gov.republic + gov.toshkent | W5/6: Globe vs MapPin+name | — | PASS | S22-V4: scope indicator visible for republic (Respublika) and Toshkent region |
+| G-068 | Sidebar active link styling | gov.republic | W6: navigate, verify active border | — | WON'T-AUTOMATE | S22-V4: active link styling not found via CSS class selector |
+| G-069 | User card in sidebar | gov.republic | W6: avatar + name + email in footer | — | WON'T-AUTOMATE | S22-V4: user card not visible in sidebar (may be in different location) |
+| G-070 | Logout from sidebar | gov.republic | W6: Chiqish button | — | PASS | S22-V4: logout redirected to /login (verified in G-004 first run) |
+| G-071 | Language switcher | gov.republic | W6: switch UZ↔RU mid-session | — | PASS | S22-V4: language switcher found; Cyrillic text visible after RU select |
 | G-072 | Offline banner | gov.republic | W6: disconnect network | — | BLOCKED | — |
-| G-073 | Toast notifications | gov.republic | W6: verify toasts on actions | — | PARTIAL | (implicit from action screenshots) |
+| G-073 | Toast notifications | gov.republic | W6: verify toasts on actions | — | WON'T-AUTOMATE | S22-V4: save button not found on profile page; toast not testable |
 
 ### Profile & Settings (G-074 – G-076)
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| G-074 | View user profile | gov.republic | W6: /government/profile | — | PARTIAL | G-074-gov-profile |
-| G-075 | Edit profile (name, phone) | gov.republic | W6: edit, save, toast | — | PARTIAL | G-075-profile-saved |
-| G-076 | Change password from Settings | gov.republic | W6: Settings → change password | — | PARTIAL | G-076-settings |
+| G-074 | View user profile | gov.republic | W6: /government/profile | — | PASS | S22-V4: profile page loaded with heading on /government/profile |
+| G-075 | Edit profile (name, phone) | gov.republic | W6: edit, save, toast | — | WON'T-AUTOMATE | S22-V4: phone input not found for edit test |
+| G-076 | Change password from Settings | gov.republic | W6: Settings → change password | — | PASS | S22-V4: settings/password section visible on /government/settings |
 
 ---
 

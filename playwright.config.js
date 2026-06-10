@@ -162,6 +162,63 @@ module.exports = defineConfig({
         viewport: { width: 1280, height: 800 },
       },
     },
+    // ── S22-V4 hard-assert PARTIAL rows ──────────────────────────────────
+    {
+      name: 's22v4-reception',
+      testMatch: '**/s22v4-reception.spec.js',
+      timeout: 90_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
+      name: 's22v4-teacher',
+      testMatch: '**/s22v4-teacher.spec.js',
+      timeout: 90_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
+      name: 's22v4-parent',
+      testMatch: '**/s22v4-parent.spec.js',
+      timeout: 90_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 390, height: 844 },
+        isMobile: true,
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
+      name: 's22v4-admin',
+      testMatch: '**/s22v4-admin.spec.js',
+      timeout: 120_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
+      name: 's22v4-government',
+      testMatch: '**/s22v4-government.spec.js',
+      timeout: 120_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
   ],
   outputDir: SCREENS,
 });
