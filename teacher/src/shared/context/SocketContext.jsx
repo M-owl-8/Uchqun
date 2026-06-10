@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { io } from 'socket.io-client';
 import { useAuth } from './AuthContext';
+import { API_HOST } from '@shared/services/config';
 
 const SocketContext = createContext(null);
 
@@ -17,10 +18,7 @@ export function SocketProvider({ children }) {
   const reconnectTimerRef = useRef(null);
   const eventHandlersRef = useRef(new Map());
 
-  const getSocketUrl = () => {
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    return apiUrl.replace(/\/api\/?$/, '');
-  };
+  const getSocketUrl = () => API_HOST;
 
   const disconnect = useCallback(() => {
     if (reconnectTimerRef.current) { clearTimeout(reconnectTimerRef.current); reconnectTimerRef.current = null; }
