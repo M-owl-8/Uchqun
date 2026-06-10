@@ -1386,7 +1386,7 @@ export default function IrrShell() {
 
       {/* ─── Monitoring moved out (TP-MONITORING-SEPARATION) ─────────────── */}
       <Link
-        to={`/teacher/monitoring?childId=${id}`}
+        to={`/teacher/monitoring?mchildId=${id}`}
         className="block rounded-xl border border-slate-200 bg-surface hover:bg-slate-50 transition-colors p-5"
         data-testid="monitoring-link"
       >

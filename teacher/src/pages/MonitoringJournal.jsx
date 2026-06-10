@@ -45,8 +45,11 @@ const MonitoringJournal = () => {
   const { t } = useTranslation();
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const activeTab = searchParams.get('tab') || 'emotional';
-  const initialChildId = searchParams.get('childId') || '';
+  // URL params namespaced (`mtab`, `mchildId`) so they don't collide with
+  // the parent Reja tab's `?tab=` param when this component is rendered as
+  // a Reja sub-tab.
+  const activeTab = searchParams.get('mtab') || 'emotional';
+  const initialChildId = searchParams.get('mchildId') || '';
 
   // ── Shared state: children list ──────────────────────────────────────────
   const [children, setChildren] = useState([]);
@@ -70,14 +73,14 @@ const MonitoringJournal = () => {
 
   const setActiveTab = (key) => {
     const next = new URLSearchParams(searchParams);
-    next.set('tab', key);
+    next.set('mtab', key);
     setSearchParams(next);
   };
 
   const setActiveChild = (id) => {
     setSelectedChildId(id);
     const next = new URLSearchParams(searchParams);
-    if (id) next.set('childId', id); else next.delete('childId');
+    if (id) next.set('mchildId', id); else next.delete('mchildId');
     setSearchParams(next);
   };
 
