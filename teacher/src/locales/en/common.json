@@ -1024,8 +1024,7 @@
   "men": {
     "tabProfile": "Profile",
     "tabSettings": "Settings",
-    "tabReflection": "Daily reflection",
-    "signOutHint": "Sign out"
+    "tabReflection": "Daily reflection"
   },
   "bulkMonitoring": {
     "title": "Daily monitoring — all children",

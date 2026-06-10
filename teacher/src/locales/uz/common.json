@@ -1024,8 +1024,7 @@
   "men": {
     "tabProfile": "Profil",
     "tabSettings": "Sozlamalar",
-    "tabReflection": "Kunlik mulohaza",
-    "signOutHint": "Tizimdan chiqish"
+    "tabReflection": "Kunlik mulohaza"
   },
   "bulkMonitoring": {
     "title": "Kunlik kuzatuv — barcha bolalar",

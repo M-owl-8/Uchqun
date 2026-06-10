@@ -9,7 +9,7 @@
 
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { UserCircle2, Settings as SettingsIcon, FileText, LogOut, ChevronRight } from 'lucide-react';
+import { UserCircle2, Settings as SettingsIcon, FileText } from 'lucide-react';
 import Profile from './Profile';
 import Settings from './Settings';
 import DailyReflection from './DailyReflection';
@@ -76,13 +76,8 @@ const Men = () => {
         <ActiveComponent />
       </div>
 
-      {/* Logout row — visible on every Men sub-tab so it's always one tap */}
-      <div className="pt-4 border-t border-slate-200 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[13px] text-slate-500">
-          <LogOut className="w-4 h-4 text-slate-400" />
-          {t('men.signOutHint', { defaultValue: 'Tizimdan chiqish' })}
-          <ChevronRight className="w-4 h-4 text-slate-300" />
-        </div>
+      {/* Logout — visible on every Men sub-tab so it's always one tap */}
+      <div className="pt-4 border-t border-slate-200 flex justify-end">
         <LogoutButton onLogout={logout} label={t('nav.exit', { defaultValue: 'Chiqish' })} variant="inline" />
       </div>
     </div>

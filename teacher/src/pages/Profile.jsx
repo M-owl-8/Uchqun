@@ -1,17 +1,15 @@
-import { LogOut, MessageSquare, Send, X, Camera } from 'lucide-react';
+import { MessageSquare, Send, X, Camera } from 'lucide-react';
 import { useAuth } from '../shared/context/AuthContext';
 import Card from '../shared/components/Card';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { useState, useEffect, useRef } from 'react';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 
 const Profile = () => {
-  const { user, logout, setUser } = useAuth();
+  const { user, setUser } = useAuth();
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const { success, error: showError } = useToast();
   const [showMessageModal, setShowMessageModal] = useState(false);
   const [messageSubject, setMessageSubject] = useState('');
@@ -41,11 +39,6 @@ const Profile = () => {
     } finally {
       setLoadingMessages(false);
     }
-  };
-
-  const handleLogout = () => {
-    logout();
-    navigate('/login');
   };
 
   const handleAvatarClick = () => {
@@ -124,18 +117,9 @@ const Profile = () => {
 
   return (
     <div className="max-w-3xl mx-auto space-y-6 animate-in fade-in duration-700">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-[22px] font-semibold text-slate-900">{t('profile.title')}</h1>
-          <p className="text-[13px] text-slate-500 mt-0.5">{t('profile.subtitle')}</p>
-        </div>
-        <button
-          onClick={handleLogout}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-error-50 text-error-600 border border-error-100 hover:bg-error-100 transition-colors"
-        >
-          <LogOut className="w-4 h-4" />
-          {t('nav.logout')}
-        </button>
+      <div>
+        <h1 className="text-[22px] font-semibold text-slate-900">{t('profile.title')}</h1>
+        <p className="text-[13px] text-slate-500 mt-0.5">{t('profile.subtitle')}</p>
       </div>
 
       <Card className="p-6">

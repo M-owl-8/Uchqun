@@ -1024,8 +1024,7 @@
   "men": {
     "tabProfile": "Профиль",
     "tabSettings": "Настройки",
-    "tabReflection": "Дневник дня",
-    "signOutHint": "Выйти"
+    "tabReflection": "Дневник дня"
   },
   "bulkMonitoring": {
     "title": "Ежедневный мониторинг — все дети",
