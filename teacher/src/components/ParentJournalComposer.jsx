@@ -3,6 +3,7 @@ import { Send, Cloud, Camera, X } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { ChildAvatar } from './ChildAvatar';
 import { todayLocal } from '@shared/utils/formatDate';
+import { useToast } from '../shared/context/ToastContext';
 
 const MOMENT_KEYS = [
   { key: 'first',   tKey: 'journal.momentFirst', style: { background: '#E2F0E8', color: '#4F8C72', border: '1px solid #A8D2BC' } },
@@ -23,6 +24,7 @@ const getDraftKey = () => {
  */
 export function ParentJournalComposer({ childList = [], onSend }) {
   const { t, i18n } = useTranslation();
+  const { success: toastOk, error: toastError } = useToast();
   const today  = new Date().toLocaleDateString(i18n.language, { day: 'numeric', month: 'long', year: 'numeric' });
   const draftKey = getDraftKey();
 
@@ -76,14 +78,31 @@ export function ParentJournalComposer({ childList = [], onSend }) {
     if (!subject || !body || selectedIds.length === 0) return;
     setSending(true);
     try {
-      await onSend?.({ subject, body, recipientIds: selectedIds, photos });
-      // Clear draft
+      const result = await onSend?.({ subject, body, recipientIds: selectedIds, photos });
+      // Bulk endpoint returns { success, data: { created, failed } }.
+      const createdCount = result?.data?.created?.length ?? selectedIds.length;
+      const failedCount  = result?.data?.failed?.length  ?? 0;
+      if (failedCount === 0) {
+        toastOk(t('journal.toastSent', { count: createdCount, defaultValue: `${createdCount} ta yuborildi` }));
+      } else {
+        toastError(t('journal.toastPartial', {
+          ok: createdCount,
+          fail: failedCount,
+          defaultValue: `${createdCount} ta yuborildi, ${failedCount} ta xato`,
+        }));
+      }
+      // Clear draft on success (any created)
       localStorage.removeItem(draftKey + ':subject');
       localStorage.removeItem(draftKey + ':body');
       localStorage.removeItem(draftKey + ':ids');
       setSubject(''); setBody(''); setSelectedIds([]); setPhotos([]);
-    } catch {
-      // TODO: toast
+    } catch (err) {
+      const code = err?.response?.data?.error?.code;
+      toastError(
+        code
+          ? t(`error.${code}`, { defaultValue: t('journal.toastError', { defaultValue: 'Yuborib boʻlmadi' }) })
+          : t('journal.toastError', { defaultValue: 'Yuborib boʻlmadi' })
+      );
     } finally {
       setSending(false);
     }

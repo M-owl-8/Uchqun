@@ -94,6 +94,11 @@ const Journal = () => {
                     <span aria-hidden="true">·</span>
                     <span>{authorName}</span>
                   </div>
+                  {e.subject && (
+                    <h3 className="text-[15px] font-semibold text-p-ink mb-1.5 break-words">
+                      {e.subject}
+                    </h3>
+                  )}
                   <p className="text-[14px] leading-relaxed text-p-ink whitespace-pre-wrap break-words">
                     {e.content}
                   </p>

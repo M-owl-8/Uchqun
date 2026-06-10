@@ -23,6 +23,10 @@ const ChildJournalEntry = sequelize.define('ChildJournalEntry', {
     type: DataTypes.DATEONLY,
     allowNull: false,
   },
+  subject: {
+    type: DataTypes.STRING(200),
+    allowNull: true,
+  },
   content: {
     type: DataTypes.TEXT,
     allowNull: false,

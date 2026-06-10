@@ -950,7 +950,10 @@
     "send": "Jo'natish · {{count}}",
     "momentFirst": "Birinchi marta",
     "momentSuccess": "Yaxshi natija",
-    "momentHelp": "Yordam kerak"
+    "momentHelp": "Yordam kerak",
+    "toastSent": "{{count}} ta yuborildi",
+    "toastPartial": "{{ok}} ta yuborildi, {{fail}} ta xato",
+    "toastError": "Yuborib boʻlmadi"
   },
   "layout": {
     "pageToday": "Bugun",

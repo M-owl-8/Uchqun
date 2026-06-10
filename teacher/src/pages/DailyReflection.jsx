@@ -58,8 +58,20 @@ const DailyReflection = () => {
     }
   };
 
-  const handleJournalSend = async (payload) => {
-    await api.post('/teacher/journal', payload);
+  // PP-JOURNAL-BULK — composer sends {subject, body, recipientIds, photos};
+  // we translate to the backend's bulk shape and drop photos (a follow-up;
+  // composer keeps showing the "not persisted" warning when photos are
+  // attached). Returns the server response so the composer can surface
+  // per-recipient failures.
+  const handleJournalSend = async ({ subject, body, recipientIds }) => {
+    const res = await api.post('/teacher/journal/bulk', {
+      subject,
+      body,
+      recipientIds,
+      date: todayLocal(),
+      isVisibleToParent: true,
+    });
+    return res.data;
   };
 
   return (

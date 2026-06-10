@@ -36,6 +36,11 @@
 | `JOURNAL_NOT_FOUND_FOR_PARENT` | 404 | Child does not belong to the requesting parent, or child does not exist | "This child's journal is not available." |
 | `JOURNAL_CREATE_FAILED` | 500 | Unexpected server error while saving the journal entry | "Failed to save journal entry. Please try again." |
 | `JOURNAL_LIST_FAILED` | 500 | Unexpected server error while fetching journal entries | "Failed to load journal entries. Please try again." |
+| `JOURNAL_SUBJECT_TOO_LONG` | 400 | (PP-JOURNAL-BULK) `subject` exceeds 200 characters | "Subject must be 200 characters or fewer." |
+| `JOURNAL_BULK_NO_RECIPIENTS` | 400 | (PP-JOURNAL-BULK) `recipientIds` empty or not an array | "Please select at least one child." |
+| `JOURNAL_BULK_TOO_MANY_RECIPIENTS` | 400 | (PP-JOURNAL-BULK) more than 50 recipients in one request | "Maximum 50 recipients per send." |
+| `JOURNAL_BULK_ALL_FAILED` | 400 | (PP-JOURNAL-BULK) every recipient failed validation; nothing was written. Response body still includes `data.failed` with per-row codes. | "No entries saved. Check your recipient list." |
+| `JOURNAL_BULK_FAILED` | 500 | (PP-JOURNAL-BULK) unexpected server error during the bulk loop | "Could not save entries. Please try again." |
 
 ---
 

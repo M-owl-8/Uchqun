@@ -5,7 +5,7 @@ import { updateTaskStatusValidator, createEmotionalMonitoringValidator, updateEm
 import { messageToGovValidator } from '../validators/messageValidator.js';
 import { getMyProfile, getDashboard, getDashboardCounts, getParents, getParentById, getMyMessages, getMyGroups, getTeacherRatings, getChildren, getChildById } from '../controllers/teacherController.js';
 import { create as createReflection, list as listReflections } from '../controllers/reflectionController.js';
-import { create as createJournalEntry, listByChild as listJournalByChild } from '../controllers/journalController.js';
+import { create as createJournalEntry, createBulk as createJournalBulk, listByChild as listJournalByChild } from '../controllers/journalController.js';
 import { getMyResponsibilities, getResponsibilityById, getMyTasks, getTaskById, updateTaskStatus, getMyWorkHistory, getWorkHistoryById, updateWorkHistoryStatus } from '../controllers/teacherTaskController.js';
 import { sendMessage } from '../controllers/governmentMessageController.js';
 import {
@@ -111,6 +111,7 @@ router.get('/reflections', requireRole('teacher'), listReflections);
 
 // Journal (teacher: create + read; reception/admin allowed via requireTeacher)
 router.post('/journal', createJournalEntry);
+router.post('/journal/bulk', createJournalBulk);
 router.get('/journal/:childId', listJournalByChild);
 
 // Emotional Monitoring

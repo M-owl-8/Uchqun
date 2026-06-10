@@ -71,6 +71,111 @@ export const create = async (req, res) => {
   }
 };
 
+/**
+ * PP-JOURNAL-BULK — broadcast a single (subject, body) note to N children
+ * in one request. The composer needs this because the user picks multiple
+ * children in the left rail and expects one click to land an entry per
+ * child.
+ *
+ * Per-child failures don't fail the whole request: returns { created,
+ * failed: [{ childId, code }] }. Status is 201 if at least one entry was
+ * created, otherwise 400.
+ */
+export const createBulk = async (req, res) => {
+  try {
+    const { recipientIds, date, subject, body, isVisibleToParent } = req.body;
+
+    if (!Array.isArray(recipientIds) || recipientIds.length === 0) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_BULK_NO_RECIPIENTS' } });
+    }
+    if (recipientIds.length > 50) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_BULK_TOO_MANY_RECIPIENTS' } });
+    }
+    if (!date || !/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_INVALID_DATE' } });
+    }
+    const parsedDate = new Date(date);
+    if (isNaN(parsedDate.getTime())) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_INVALID_DATE' } });
+    }
+    const todayStart = new Date();
+    todayStart.setHours(23, 59, 59, 999);
+    if (parsedDate > todayStart) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_DATE_IN_FUTURE' } });
+    }
+
+    const trimmedSubject = subject ? String(subject).trim() : '';
+    if (trimmedSubject.length > 200) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_SUBJECT_TOO_LONG' } });
+    }
+
+    const trimmedBody = body ? String(body).trim() : '';
+    if (trimmedBody.length < 10) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_CONTENT_TOO_SHORT' } });
+    }
+    if (trimmedBody.length > 2000) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_CONTENT_TOO_LONG' } });
+    }
+
+    const visible = isVisibleToParent === false ? false : true;
+
+    const created = [];
+    const failed = [];
+
+    for (const childId of recipientIds) {
+      if (!childId || !UUID_RE.test(childId)) {
+        failed.push({ childId, code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' });
+        continue;
+      }
+      const child = await validateChildAccess(childId, req);
+      if (!child) {
+        failed.push({ childId, code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' });
+        continue;
+      }
+      if (!await isTeacherAssignedToChild(child, req)) {
+        failed.push({ childId, code: 'JOURNAL_CHILD_NOT_ACCESSIBLE' });
+        continue;
+      }
+
+      try {
+        const entry = await ChildJournalEntry.create({
+          childId,
+          teacherId: req.user.id,
+          schoolId: req.user.schoolId,
+          date,
+          subject: trimmedSubject || null,
+          content: trimmedBody,
+          isVisibleToParent: visible,
+          childSnapshot: {
+            firstName: child.firstName,
+            lastName: child.lastName,
+            schoolId: child.schoolId,
+            dateOfBirth: child.dateOfBirth,
+          },
+        });
+
+        if (visible && child.parentId) {
+          emitToUser(child.parentId, 'journal:created', { childId, date, timestamp: new Date().toISOString() });
+        }
+
+        created.push(entry);
+      } catch (err) {
+        logger.warn('createBulk per-row failed', { childId, error: err.message });
+        failed.push({ childId, code: 'JOURNAL_CREATE_FAILED' });
+      }
+    }
+
+    if (created.length === 0) {
+      return res.status(400).json({ success: false, error: { code: 'JOURNAL_BULK_ALL_FAILED' }, data: { created: [], failed } });
+    }
+
+    return res.status(201).json({ success: true, data: { created, failed } });
+  } catch (error) {
+    logger.error('createBulk journal error', { error: error.message, stack: error.stack });
+    return res.status(500).json({ success: false, error: { code: 'JOURNAL_BULK_FAILED' } });
+  }
+};
+
 export const listByChild = async (req, res) => {
   try {
     const child = await validateChildAccess(req.params.childId, req);
@@ -114,6 +219,7 @@ export const getChildJournal = async (req, res) => {
     const data = entries.map(e => ({
       id: e.id,
       date: e.date,
+      subject: e.subject ?? null,
       content: e.content,
       teacherFirstName: e.author?.firstName ?? null,
       teacherLastName: e.author?.lastName ?? null,

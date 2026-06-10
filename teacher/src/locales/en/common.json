@@ -950,7 +950,10 @@
     "send": "Send · {{count}}",
     "momentFirst": "First time",
     "momentSuccess": "Good outcome",
-    "momentHelp": "Needs support"
+    "momentHelp": "Needs support",
+    "toastSent": "{{count}} sent",
+    "toastPartial": "{{ok}} sent, {{fail}} failed",
+    "toastError": "Could not send"
   },
   "layout": {
     "pageToday": "Today",

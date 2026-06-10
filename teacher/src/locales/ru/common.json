@@ -950,7 +950,10 @@
     "send": "Отправить · {{count}}",
     "momentFirst": "Впервые",
     "momentSuccess": "Хороший результат",
-    "momentHelp": "Нужна помощь"
+    "momentHelp": "Нужна помощь",
+    "toastSent": "Отправлено: {{count}}",
+    "toastPartial": "Отправлено: {{ok}}, ошибок: {{fail}}",
+    "toastError": "Не удалось отправить"
   },
   "layout": {
     "pageToday": "Сегодня",

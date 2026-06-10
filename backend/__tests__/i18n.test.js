@@ -3,7 +3,7 @@ import { join } from 'path';
 
 const I18N_DIR = join(process.cwd(), 'i18n');
 const LANG_FILES = ['ru.json', 'uz-latn.json', 'uz-cyrl.json'];
-const EXPECTED_CODE_COUNT = 244; // +15 IRR-MONTHLY-MILESTONES. Prior: 229 = -11 OBSERVATIONS-REMOVAL. 240 = +4 CROSS-IRR-VISIBILITY. 236 = +4 PRIVACY_CONSENT_* + 2 MEDIA_STORAGE_*
+const EXPECTED_CODE_COUNT = 249; // +5 PP-JOURNAL-BULK. Prior: 244 = +15 IRR-MONTHLY-MILESTONES. 229 = -11 OBSERVATIONS-REMOVAL. 240 = +4 CROSS-IRR-VISIBILITY.
 
 function loadFile(filename) {
   return JSON.parse(readFileSync(join(I18N_DIR, filename), 'utf-8'));
