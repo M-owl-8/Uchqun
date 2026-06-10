@@ -456,8 +456,8 @@ All 15 rows in `child_attendance` at migration time:
   - Context B: parent1 socket connected to default namespace (`https://uchqun-production-b484.up.railway.app`) → received `chat:message` event
   - Output: `✅ PASS — socket delivered the message! content: "DEF013-PROBE-1781067500793", conversationId: parent:e67cf25b-e129-4f3d-89b3-eef89b77c2b0, senderRole: teacher`
   - Regression (parent→teacher): unaffected — line 101 was always correct (direct UUIDs from DB, no parseInt)
-  - Note: Playwright browser test blocked by separate DEF-015 (`getSocketUrl()` regex bug); backend delivery confirmed correct via Node.js probe
-- **Status:** ✅ FIXED (S22-FIX-DEF013, 2026-06-10) — commit `bb4ba3d2`, deployed to Railway
+  - Note: Playwright browser test was blocked by DEF-015 (`getSocketUrl()` regex bug). DEF-015 fixed in S22-FIX-DEF015 (commit `21ac5ebf`) — browser test now fully passes (T1 + T2 both green, see DEF-015 close-out).
+- **Status:** ✅ FIXED (S22-FIX-DEF013, 2026-06-10) — commit `bb4ba3d2`, deployed to Railway. Browser proof via S22-FIX-DEF015 Playwright run.
 
 ---
 
@@ -493,23 +493,24 @@ All 15 rows in `child_attendance` at migration time:
   4. No real-time events ever delivered (chat messages, unread counts)
 - **Root cause:**
   ```js
-  // teacher/src/shared/context/SocketContext.jsx
+  // teacher/src/shared/context/SocketContext.jsx (before fix)
   const getSocketUrl = () => {
     const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     return apiUrl.replace(/\/api\/?$/, '');   // BUG: regex only matches /api or /api/ at end
   };
   ```
   When `VITE_API_URL` ends in `/api/v1`, the regex `/\/api\/?$/` does NOT match (it requires the string to end with `/api` or `/api/`). The full URL including `/api/v1` is returned. Socket.IO client interprets the path component `/api/v1` as a namespace — the backend only registers the default namespace `/`, so the connection is rejected with "Invalid namespace".
-- **Contrast with correct pattern** in `shared/services/config.js`:
+- **Sibling check:** `socket.io-client` is imported in exactly one browser-facing file (`teacher/src/shared/context/SocketContext.jsx`). No other portals (admin, reception, government) have socket clients. No other socket-URL construction sites affected.
+- **Fix applied (S22-FIX-DEF015, commit `21ac5ebf`):**
   ```js
-  export const API_HOST = API_BASE.replace(/\/api(?:\/v\d+)?\/?$/, '');
-  ```
-  This regex correctly strips both `/api` and `/api/v1` (and `/api/v2` etc.).
-- **Proof:** Node.js socket probe (`tests/def013-socket-probe.cjs`) confirmed the server ONLY accepts connections to the base URL (default namespace `/`). Connecting to `https://backend/api/v1` → "Invalid namespace" (logged in probe output). Browser Playwright test (DEF-013-T1) failed for this reason — parent page socket never connected.
-- **Fix (not applied this session):** In `SocketContext.jsx`, replace the manual regex strip with:
-  ```js
-  import { API_HOST } from '../services/config.js';
+  // SocketContext.jsx — import API_HOST from shared config (single source of truth)
+  import { API_HOST } from '@shared/services/config';
   const getSocketUrl = () => API_HOST;
   ```
-  Or fix the regex inline: `apiUrl.replace(/\/api(?:\/v\d+)?\/?$/, '')`.
-- **Status:** OPEN (logged S22-FIX-DEF013, 2026-06-10) — P1, blocks all browser real-time delivery; requires separate fix session
+  `API_HOST` uses `/\/api(?:\/v\d+)?\/?$/` which correctly strips both `/api` and `/api/v1`.
+- **Proof (Playwright browser two-context test — `tests/def013-chat-fix-proof.spec.js`):**
+  - **DEF-013-T1 PASS** — teacher1 (context A) sent `DEF013-T1-1781069820547` → appeared in parent1 (context B) browser DOM live within 5.2 s without reload. WS frame delivered. Screenshot: `audits/beta/screens/DEF-013-T1-parent-received.png`
+  - **DEF-013-T2 PASS** — parent1 sent `DEF013-T2-1781069825815` → appeared in teacher1 browser DOM live within 1.5 s (conversation list preview + message bubble, both in DOM). Screenshot: `audits/beta/screens/DEF-013-T2-teacher-received.png`
+  - Both directions work live — proves namespace fix restored realtime broadly (chat delivery in both directions, WS frames flowing)
+  - Full suite: **2 passed (18.2 s)**
+- **Status:** ✅ FIXED (S22-FIX-DEF015, 2026-06-10) — commit `21ac5ebf`, deployed to Railway. DEF-013-T1 (previously blocked) now passes.

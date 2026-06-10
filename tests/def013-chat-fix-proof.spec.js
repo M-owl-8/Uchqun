@@ -234,7 +234,8 @@ test('DEF-013-T2 | parent sends → teacher receives live without reload (regres
   console.log('[T2] parent sent:', MSG);
 
   // Teacher should receive via socket (parent→teacher was never broken)
-  await expect(teacherPage.getByText(MSG)).toBeVisible({ timeout: 20_000 });
+  // .first() — message appears in both conversation-list preview AND message bubble
+  await expect(teacherPage.getByText(MSG).first()).toBeVisible({ timeout: 20_000 });
   console.log('[T2] PASS — parent message appeared in teacher view live');
 
   await teacherPage.screenshot({
