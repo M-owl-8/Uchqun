@@ -798,9 +798,9 @@ export default function IrrShell() {
         >
           {/* Section header */}
           <div className="px-5 py-4">
-            <h2 className="text-[15px] font-semibold text-slate-900">Баҳолаш натижалари</h2>
+            <h2 className="text-[15px] font-semibold text-slate-900">{t('irr.assessment.sectionTitle')}</h2>
             <p className="text-[12px] text-slate-500 mt-0.5">
-              17 та мезон бўйича баҳолаш (максимум {MAX_SCORE} балл)
+              {t('irr.assessment.sectionNote', { max: MAX_SCORE })}
             </p>
           </div>
 
@@ -810,9 +810,9 @@ export default function IrrShell() {
               <table className="w-full text-[13px]" data-testid="progression-table">
                 <thead>
                   <tr className="text-left text-slate-500">
-                    <th className="pb-2 pr-4 font-medium">Вақти</th>
-                    <th className="pb-2 pr-4 font-medium">Баллар</th>
-                    <th className="pb-2 font-medium">Сана</th>
+                    <th className="pb-2 pr-4 font-medium">{t('irr.assessment.colTime')}</th>
+                    <th className="pb-2 pr-4 font-medium">{t('irr.assessment.colScore')}</th>
+                    <th className="pb-2 font-medium">{t('irr.assessment.colDate')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
@@ -882,7 +882,7 @@ export default function IrrShell() {
                   className="w-4 h-4 rounded"
                 />
                 <label htmlFor="hearing-impaired-check" className="text-[13px] text-slate-700 cursor-pointer">
-                  Бола эшитиш қобилияти чекланган
+                  {t('irr.assessment.hearingImpaired')}
                 </label>
               </div>
 
@@ -892,10 +892,10 @@ export default function IrrShell() {
                 style={{ background: '#EEF2FF', border: '1px solid #C7D2FE' }}
               >
                 <span className="text-[13px] text-slate-700">
-                  Жорий баллар
+                  {t('irr.assessment.liveScore')}
                   {!allScored && (
                     <span className="ml-2 text-[11px] text-slate-400">
-                      ({scores.filter(s => s !== null).length} / 17 та мезон баҳоланди)
+                      ({t('irr.assessment.scored', { n: scores.filter(s => s !== null).length })})
                     </span>
                   )}
                 </span>
@@ -919,7 +919,7 @@ export default function IrrShell() {
                       {criterion.textUz}
                       {criterion.isHearingSpecific && (
                         <span className="ml-1.5 text-[11px] text-amber-600 font-normal">
-                          (ОQ-1: барча болалар учун)
+                          {t('irr.assessment.oq1Note')}
                         </span>
                       )}
                     </div>
@@ -994,9 +994,9 @@ export default function IrrShell() {
           data-testid="ltg-section"
         >
           <div className="px-5 py-4">
-            <h2 className="text-[15px] font-semibold text-slate-900">Узоқ муддатли мақсадлар</h2>
+            <h2 className="text-[15px] font-semibold text-slate-900">{t('irr.ltgTitle')}</h2>
             <p className="text-[12px] text-slate-500 mt-0.5">
-              ПТПК амал қилиш муддатига мос равишда, жами 5 тагача (OQ-11: кўникма соҳаси белгиланмайди)
+              {t('irr.ltgSubtitle')}
             </p>
           </div>
 
@@ -1025,11 +1025,11 @@ export default function IrrShell() {
                     <button onClick={handleUpdateLtg} disabled={savingLtg}
                       className="h-8 px-3 rounded-md bg-brand-600 text-surface text-[12px] font-medium disabled:opacity-50"
                       data-testid={`ltg-edit-save-${goal.id}`}>
-                      Сақлаш
+                      {t('irr.actionSave')}
                     </button>
                     <button onClick={() => setLtgEditId(null)}
                       className="h-8 px-3 rounded-md border border-slate-200 text-[12px] text-slate-600">
-                      Бекор
+                      {t('irr.actionCancel')}
                     </button>
                   </div>
                 </div>
@@ -1050,7 +1050,7 @@ export default function IrrShell() {
                         onClick={() => { setLtgEditId(goal.id); setLtgEditForm({ goalText: goal.goalText, targetPeriodStart: goal.targetPeriodStart || '', targetPeriodEnd: goal.targetPeriodEnd || '' }); }}
                         className="h-7 px-2 rounded border border-slate-200 text-[11px] text-slate-500 hover:text-slate-800"
                         data-testid={`ltg-edit-btn-${goal.id}`}
-                      >Тах.</button>
+                      >{t('irr.actionEditShort')}</button>
                       <button
                         onClick={() => handleDeleteLtg(goal.id)}
                         className="h-7 px-2 rounded border text-[11px]"
@@ -1069,7 +1069,7 @@ export default function IrrShell() {
 
           {!isReadOnly && longTermGoals.length < 5 && (
             <div className="px-5 py-4 space-y-3" data-testid="ltg-add-form">
-              <h3 className="text-[13px] font-medium text-slate-700">Янги мақсад қўшиш</h3>
+              <h3 className="text-[13px] font-medium text-slate-700">{t('irr.ltgAddNew')}</h3>
               <textarea
                 rows={2}
                 className={textareaCls}
@@ -1110,16 +1110,16 @@ export default function IrrShell() {
           data-testid="periods-section"
         >
           <div className="px-5 py-4">
-            <h2 className="text-[15px] font-semibold text-slate-900">Ривожланиш даврлари</h2>
+            <h2 className="text-[15px] font-semibold text-slate-900">{t('irr.periodsTitle')}</h2>
             <p className="text-[12px] text-slate-500 mt-0.5">
-              Ҳар бир давр учун 3–5 та қисқа муддатли мақсад белгиланади (3 ойлик давр)
+              {t('irr.periodsSubtitle')}
             </p>
           </div>
 
           {/* Create period form */}
           {!isReadOnly && (
             <div className="px-5 py-4 space-y-3" data-testid="period-create-form">
-              <h3 className="text-[13px] font-medium text-slate-700">Янги давр қўшиш</h3>
+              <h3 className="text-[13px] font-medium text-slate-700">{t('irr.periodsAddNew')}</h3>
               <div className="grid grid-cols-2 gap-3">
                 <FieldRow label={t('irr.form.periodStart')} required>
                   <input type="date" className={inputCls} value={periodForm.periodStart}
@@ -1184,15 +1184,15 @@ export default function IrrShell() {
                     {/* Short-term goals */}
                     <div className="px-5 py-4 space-y-3" data-testid={`stg-section-${period.id}`}>
                       <div className="flex items-center justify-between">
-                        <h3 className="text-[13px] font-semibold text-slate-800">Қисқа муддатли мақсадлар</h3>
+                        <h3 className="text-[13px] font-semibold text-slate-800">{t('irr.stgTitle')}</h3>
                         {stgs.length > 0 && stgs.length < 3 && (
                           <span className="text-[11px] text-amber-600" data-testid={`stg-guidance-${period.id}`}>
-                            Тавсия: {3 - stgs.length} та яна мақсад қўшинг (камида 3 та)
+                            {t('irr.stgRecommend', { count: 3 - stgs.length })}
                           </span>
                         )}
                         {stgs.length === 0 && !isReadOnly && (
                           <span className="text-[11px] text-amber-600" data-testid={`stg-guidance-${period.id}`}>
-                            Тавсия: 3–5 та мақсад белгиланг
+                            {t('irr.stgRecommendAll')}
                           </span>
                         )}
                       </div>
@@ -1203,7 +1203,7 @@ export default function IrrShell() {
                             <div className="space-y-2">
                               <select className={inputCls} value={stgEditForm.skillAreaCode || ''}
                                 onChange={e => setStgEditForm(f => ({ ...f, skillAreaCode: e.target.value }))}>
-                                <option value="">— Соҳа танланмаган —</option>
+                                <option value="">{t('irr.stgNoSkillArea')}</option>
                                 {SKILL_AREAS.map(sa => <option key={sa.code} value={sa.code}>{sa.textUz}</option>)}
                               </select>
                               <textarea rows={2} className={textareaCls} value={stgEditForm.goalText || ''}
@@ -1211,9 +1211,9 @@ export default function IrrShell() {
                               <div className="flex gap-2">
                                 <button onClick={() => handleUpdateStg(period.id)} disabled={savingStg === stgEditId}
                                   className="h-7 px-2 rounded-md bg-brand-600 text-surface text-[11px] disabled:opacity-50"
-                                  data-testid={`stg-edit-save-${stg.id}`}>Сақлаш</button>
+                                  data-testid={`stg-edit-save-${stg.id}`}>{t('irr.actionSave')}</button>
                                 <button onClick={() => { setStgEditId(null); setStgEditForm({}); }}
-                                  className="h-7 px-2 rounded border border-slate-200 text-[11px] text-slate-600">Бекор</button>
+                                  className="h-7 px-2 rounded border border-slate-200 text-[11px] text-slate-600">{t('irr.actionCancel')}</button>
                               </div>
                             </div>
                           ) : (
@@ -1228,14 +1228,14 @@ export default function IrrShell() {
                                 )}
                                 <p className="text-[13px] text-slate-800">{stg.goalText}</p>
                                 {stg.targetDate && (
-                                  <p className="text-[11px] text-slate-400 mt-0.5">Муддат: {formatDate(stg.targetDate)}</p>
+                                  <p className="text-[11px] text-slate-400 mt-0.5">{t('irr.stgDeadline', { date: formatDate(stg.targetDate) })}</p>
                                 )}
                               </div>
                               {!isReadOnly && (
                                 <div className="flex gap-1 shrink-0">
                                   <button onClick={() => { setStgEditId(stg.id); setStgEditForm({ skillAreaCode: stg.skillAreaCode || '', goalText: stg.goalText || '', targetDate: stg.targetDate || '' }); }}
                                     className="h-6 px-2 rounded border border-slate-200 text-[10px] text-slate-500"
-                                    data-testid={`stg-edit-btn-${stg.id}`}>Тах.</button>
+                                    data-testid={`stg-edit-btn-${stg.id}`}>{t('irr.actionEditShort')}</button>
                                   <button onClick={() => handleDeleteStg(stg.id, period.id)}
                                     className="h-6 px-2 rounded border text-[10px]"
                                     style={{ borderColor: '#FECACA', color: '#DC2626' }}
@@ -1249,12 +1249,12 @@ export default function IrrShell() {
 
                       {!isReadOnly && (
                         <div className="rounded-lg border border-dashed border-slate-300 p-3 space-y-2" data-testid={`stg-add-form-${period.id}`}>
-                          <h4 className="text-[12px] font-medium text-slate-600">Янги мақсад</h4>
+                          <h4 className="text-[12px] font-medium text-slate-600">{t('irr.stgAddNew')}</h4>
                           <select className={inputCls}
                             value={stgForm.skillAreaCode || ''}
                             onChange={e => setStgForms(prev => ({ ...prev, [period.id]: { ...getStgForm(period.id), skillAreaCode: e.target.value } }))}
                             data-testid={`stg-skill-area-${period.id}`}>
-                            <option value="">— Соҳа танланмаган —</option>
+                            <option value="">{t('irr.stgNoSkillArea')}</option>
                             {SKILL_AREAS.map(sa => <option key={sa.code} value={sa.code}>{sa.textUz}</option>)}
                           </select>
                           <textarea rows={2} className={textareaCls}
@@ -1299,7 +1299,7 @@ export default function IrrShell() {
 
                     {/* Quarterly review */}
                     <div className="px-5 py-4 space-y-3" data-testid={`review-section-${period.id}`}>
-                      <h3 className="text-[13px] font-semibold text-slate-800">Чорак якуни</h3>
+                      <h3 className="text-[13px] font-semibold text-slate-800">{t('irr.reviewTitle')}</h3>
                       <FieldRow label={t('irr.form.overallReview')}>
                         <textarea rows={2} className={textareaCls}
                           value={reviewForm.overallAssessment ?? (period.overallAssessment || '')}
@@ -1364,7 +1364,7 @@ export default function IrrShell() {
                             data-testid={`sign-teacher-${period.id}`}
                           >
                             {period.teacherSignedAt
-                              ? `Имзоланган: ${formatDate(period.teacherSignedAt)}`
+                              ? t('irr.signedAt', { date: formatDate(period.teacherSignedAt) })
                               : signingPeriod === period.id ? t('irr.form.signing') : t('irr.form.teacherSignature')}
                           </button>
 
