@@ -446,8 +446,70 @@ All 15 rows in `child_attendance` at migration time:
   `emitToUser(8, ...)` → `io.to("user:8").emit(...)` — room `user:8` has no connected sockets.
   Parent is in room `user:08b49ab0-...`. Rooms never match.
 - **Scope:** Teacher→parent direction only. Parent→teacher direction (line 101) iterates `teacherIds` directly from DB (UUID strings, no parseInt) and is unaffected.
-- **Fix (DEFERRED — do not apply this session):** Remove `parseInt` on line 92:
+- **Fix:** Removed `parseInt` on line 92 — pass UUID string directly:
   ```js
   emitToUser(parentId, 'chat:message', msg.toJSON());
   ```
-- **Status:** OPEN — logged S22-V3 (2026-06-09)
+  Commit `bb4ba3d2` (`fix(chat): DEF-013 — remove parseInt(parentId,10) before emitToUser`).
+- **Proof (Node.js two-context probe — `tests/def013-socket-probe.cjs`):**
+  - Context A: teacher1 logged in, sent `DEF013-PROBE-1781067500793` via `POST /api/v1/chat/messages` → HTTP 201
+  - Context B: parent1 socket connected to default namespace (`https://uchqun-production-b484.up.railway.app`) → received `chat:message` event
+  - Output: `✅ PASS — socket delivered the message! content: "DEF013-PROBE-1781067500793", conversationId: parent:e67cf25b-e129-4f3d-89b3-eef89b77c2b0, senderRole: teacher`
+  - Regression (parent→teacher): unaffected — line 101 was always correct (direct UUIDs from DB, no parseInt)
+  - Note: Playwright browser test blocked by separate DEF-015 (`getSocketUrl()` regex bug); backend delivery confirmed correct via Node.js probe
+- **Status:** ✅ FIXED (S22-FIX-DEF013, 2026-06-10) — commit `bb4ba3d2`, deployed to Railway
+
+---
+
+## S22-FIX-DEF013 New Findings (FIND AND RECORD ONLY — not fixed this session)
+
+### DEF-014 — P3: Government portal period sort uses string order — Q4-2025 ranks above Q2-2026
+
+- **Severity:** P3 (data quality risk at scale; not blocking against current seed data)
+- **Persona:** gov.toshkent, gov.republic (any government user viewing school ratings)
+- **Portal:** Government
+- **Feature:** School rating detail / period selector — `ORDER BY period DESC, createdAt DESC`
+- **Repro:**
+  1. Create school ratings for Q1-2026, Q2-2026, Q3-2025, Q4-2025 in that sequence
+  2. Government portal displays or selects the "latest" period
+  3. Q4-2025 is selected as latest instead of Q2-2026
+- **Root cause:** `period` column stores strings in the format `Q{N}-{YYYY}` (e.g. `Q4-2025`, `Q2-2026`). `ORDER BY period DESC` performs a lexicographic sort: `'Q4' > 'Q3' > 'Q2' > 'Q1'` regardless of year. String character at position 1 (`'4'` vs `'2'`) determines order, so `Q4-2025` sorts above `Q2-2026` even though 2026 is chronologically later.
+- **Evidence:** RECONCILIATION.md note — gov.toshkent school detail: `Q4-2025` ranks higher than `Q2-2026` under string sort; DB ground truth and API agree (no numeric mismatch) but the wrong period is "latest". Test seed has only Q1-2026 and earlier quarters so the bug is masked.
+- **Fix (not applied this session):** Change the sort to use parsed year+quarter: `ORDER BY CAST(SPLIT_PART(period, '-', 2) AS INT) DESC, CAST(SPLIT_PART(period, 'Q', 2) AS INT) DESC, createdAt DESC` or store period as a sortable integer/date.
+- **Status:** OPEN (logged S22-FIX-DEF013, 2026-06-10) — data-quality risk, not blocking launch against current seed
+
+---
+
+### DEF-015 — P1: SocketContext.jsx `getSocketUrl()` regex fails to strip `/v1` — browser socket connects to wrong namespace
+
+- **Severity:** P1 (all real-time features broken in browser — chat, unread badge, notifications)
+- **Persona:** Any user in Teacher or Parent portal
+- **Portal:** Teacher (parent-side view embedded) + Parent portal
+- **Feature ID:** T-043, P-051 (same features as DEF-013)
+- **Repro:**
+  1. Deploy teacher/parent portal with `VITE_API_URL = 'https://uchqun-production-b484.up.railway.app/api/v1'`
+  2. Open browser, log in as parent or teacher
+  3. Socket.IO in browser attempts to connect — receives "Invalid namespace" error
+  4. No real-time events ever delivered (chat messages, unread counts)
+- **Root cause:**
+  ```js
+  // teacher/src/shared/context/SocketContext.jsx
+  const getSocketUrl = () => {
+    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    return apiUrl.replace(/\/api\/?$/, '');   // BUG: regex only matches /api or /api/ at end
+  };
+  ```
+  When `VITE_API_URL` ends in `/api/v1`, the regex `/\/api\/?$/` does NOT match (it requires the string to end with `/api` or `/api/`). The full URL including `/api/v1` is returned. Socket.IO client interprets the path component `/api/v1` as a namespace — the backend only registers the default namespace `/`, so the connection is rejected with "Invalid namespace".
+- **Contrast with correct pattern** in `shared/services/config.js`:
+  ```js
+  export const API_HOST = API_BASE.replace(/\/api(?:\/v\d+)?\/?$/, '');
+  ```
+  This regex correctly strips both `/api` and `/api/v1` (and `/api/v2` etc.).
+- **Proof:** Node.js socket probe (`tests/def013-socket-probe.cjs`) confirmed the server ONLY accepts connections to the base URL (default namespace `/`). Connecting to `https://backend/api/v1` → "Invalid namespace" (logged in probe output). Browser Playwright test (DEF-013-T1) failed for this reason — parent page socket never connected.
+- **Fix (not applied this session):** In `SocketContext.jsx`, replace the manual regex strip with:
+  ```js
+  import { API_HOST } from '../services/config.js';
+  const getSocketUrl = () => API_HOST;
+  ```
+  Or fix the regex inline: `apiUrl.replace(/\/api(?:\/v\d+)?\/?$/, '')`.
+- **Status:** OPEN (logged S22-FIX-DEF013, 2026-06-10) — P1, blocks all browser real-time delivery; requires separate fix session

@@ -1,13 +1,16 @@
 /**
  * DEF-013 fix proof — realtime chat teacher→parent delivery
  *
- * Before fix: chatController.js:92 called emitToUser(parseInt(parentId,10), ...)
- *   parseInt(uuid, 10) → small int → emits to wrong room → parent never receives.
- * After fix: emitToUser(parentId, ...) — UUID passed directly → rooms match → delivered.
+ * Root cause: chatController.js:92 called emitToUser(parseInt(parentId,10), ...)
+ *   parseInt(uuid, 10) → small int → wrong socket room → parent never received.
+ * Fix: pass parentId (UUID string) directly, removing parseInt.
  *
- * Two-context test (teacher1 + parent1, both live, no reload):
- *   T1. teacher1 sends → parent1 receives live (primary fix proof)
- *   T2. parent1 sends → teacher1 receives live (regression — was already working)
+ * Auth pattern mirrors s22v3-blocked-rows.spec.js exactly:
+ *   try refresh → save state → return; if 401 → fresh login → save state → return.
+ *
+ * Tests:
+ *   T1 — teacher → parent  (the broken direction, now fixed)
+ *   T2 — parent  → teacher (regression — was always working)
  */
 
 const { test, expect, chromium } = require('@playwright/test');
@@ -15,154 +18,226 @@ const path = require('path');
 const fs   = require('fs');
 
 const PORTAL  = 'https://teacher-production-0647.up.railway.app';
-const API     = 'https://uchqun-backend-production.up.railway.app';
+const API     = 'https://uchqun-production-b484.up.railway.app';
 const AUTH_DIR = path.join(__dirname, '..', '.auth');
+const PW      = 'Test@2026';
 
 function authFile(name) {
   for (const prefix of ['recon22-', 's22v3-', '']) {
     const f = path.join(AUTH_DIR, `${prefix}${name}.json`);
     if (fs.existsSync(f)) return f;
   }
-  return null;
+  return path.join(AUTH_DIR, `recon22-${name}.json`);
 }
 
-async function getPage(browser, name) {
+// Exact same auth helper as s22v3 spec
+async function getAuthPage(browser, name, email) {
   const file = authFile(name);
-  const ctx  = file
-    ? await browser.newContext({ storageState: file, ignoreHTTPSErrors: true })
-    : await browser.newContext({ ignoreHTTPSErrors: true });
-  const page = await ctx.newPage();
-  // Refresh session so cookies are live
+  if (fs.existsSync(file)) {
+    try {
+      const ctx  = await browser.newContext({ ignoreHTTPSErrors: true, storageState: file });
+      const page = await ctx.newPage();
+      await page.goto('about:blank');
+      const rr = await page.request.post(`${API}/api/v1/auth/refresh`);
+      if (rr.status() === 200) {
+        await ctx.storageState({ path: file });
+        console.log(`[auth] ${name}: cache hit + refreshed`);
+        return page;
+      }
+      await ctx.close();
+      console.log(`[auth] ${name}: refresh expired (${rr.status()}), re-logging in`);
+    } catch (e) {
+      console.log(`[auth] ${name}: cache error — ${e.message}`);
+    }
+  }
   try {
-    await page.goto(`${API}/api/v1/auth/refresh`, { waitUntil: 'commit', timeout: 15_000 });
-  } catch { /* ignore */ }
-  return page;
+    const ctx  = await browser.newContext({ ignoreHTTPSErrors: true });
+    const page = await ctx.newPage();
+    const resp = await page.request.post(`${API}/api/v1/auth/login`, {
+      data: { email, password: PW },
+      headers: { 'Content-Type': 'application/json' },
+    });
+    if (resp.status() !== 200) {
+      const body = await resp.json().catch(() => null);
+      console.error(`[auth] ${name}: login HTTP ${resp.status()} — ${JSON.stringify(body)}`);
+      await ctx.close();
+      return null;
+    }
+    fs.mkdirSync(AUTH_DIR, { recursive: true });
+    await ctx.storageState({ path: file });
+    await page.goto('about:blank');
+    console.log(`[auth] ${name}: fresh login → saved`);
+    return page;
+  } catch (e) {
+    console.error(`[auth] ${name}: login error — ${e.message}`);
+    return null;
+  }
 }
 
-async function dismissConsent(page) {
+async function portalGoto(page, url) {
+  if (!page) throw new Error('page is null — auth failed');
+  await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 40_000 });
+  // Dismiss PrivacyConsentModal if it appears (parent portal, first-visit consent)
   try {
-    const btn = page.locator('[role="dialog"] button').filter({ hasText: /qabul|accept|agree/i }).first();
-    if (await btn.isVisible({ timeout: 4_000 })) await btn.click();
+    const btn = page.locator('[role="dialog"] button').filter({
+      hasText: /qabul|accept|agree|roziman/i,
+    }).first();
+    if (await btn.isVisible({ timeout: 5_000 })) {
+      await btn.click();
+      await page.waitForTimeout(500);
+    }
   } catch { /* no modal */ }
 }
 
-// ─── shared browser (both contexts in same headful run) ──────────────────────
+// WebSocket frame capture — returns hasPayload(needle) to check if string appeared in WS frames
+function attachWsCapture(page) {
+  const frames = [];
+  page.on('websocket', (ws) => {
+    ws.on('framereceived', (frame) => {
+      if (frame.payload) frames.push(String(frame.payload));
+    });
+  });
+  return {
+    hasPayload: (needle) => frames.some((f) => f.includes(needle)),
+    dump: () => frames.slice(-10),
+  };
+}
+
+// ─── Shared state ─────────────────────────────────────────────────────────────
 let browser;
+const p = {};  // { teacher1, parent1 } — pages reused across tests
+
 test.beforeAll(async () => {
   browser = await chromium.launch({ headless: false });
+  // Sequential logins — avoid simultaneous API hits
+  p.teacher1 = await getAuthPage(browser, 'teacher1', 'teacher1@uchqun.uz');
+  p.parent1  = await getAuthPage(browser, 'parent1',  'parent1@uchqun.uz');
 });
+
 test.afterAll(async () => {
   await browser.close();
 });
 
 // ═══════════════════════════════════════════════════════════════════════
-// T1 — teacher → parent  (the broken direction, now fixed)
+// T1 — teacher → parent  (the previously broken direction)
+// Before fix: parseInt(uuid) → wrong room → parent never received
+// After fix:  UUID passed directly → rooms match → delivered
 // ═══════════════════════════════════════════════════════════════════════
-test('DEF-013-T1 | teacher1 sends → parent1 receives without reload', async () => {
-  const MSG = `DEF013-FIX-T1-${Date.now()}`;
+test('DEF-013-T1 | teacher sends → parent receives live without reload', async () => {
+  const MSG = `DEF013-T1-${Date.now()}`;
+  const teacherPage = p.teacher1;
+  const parentPage  = p.parent1;
 
-  const teacherPage = await getPage(browser, 'teacher1');
-  const parentPage  = await getPage(browser, 'parent1');
+  // ── Parent: open /chat FIRST to establish socket before teacher sends ──
+  await portalGoto(parentPage, `${PORTAL}/chat`);
+  // Wait for the chat page to render the message textarea (proves auth + page load)
+  await parentPage.waitForSelector('textarea', { timeout: 20_000 });
+  console.log('[T1] parent chat loaded');
 
-  // ── Parent: open /chat first so socket is established ──
-  await parentPage.goto(`${PORTAL}/chat`, { waitUntil: 'networkidle', timeout: 30_000 });
-  await dismissConsent(parentPage);
-  await parentPage.waitForLoadState('networkidle');
+  // Attach WS capture AFTER page is loaded (catches future frames)
+  const wsCapture = attachWsCapture(parentPage);
 
-  // Verify parent is on chat page
-  const parentHeading = await parentPage.locator('h1, h2').first().innerText({ timeout: 5_000 }).catch(() => '');
-  console.log('[DEF013] parent heading:', parentHeading);
+  // ── Teacher: navigate to chat tab ──
+  await portalGoto(teacherPage, `${PORTAL}/teacher/xabar?tab=chat`);
+  await teacherPage.waitForSelector('.overflow-y-auto button', { timeout: 15_000 }).catch(() => {});
 
-  // ── Teacher: open chat page ──
-  await teacherPage.goto(`${PORTAL}/teacher/xabar?tab=chat`, { waitUntil: 'networkidle', timeout: 30_000 });
-  await teacherPage.waitForLoadState('networkidle');
-
-  // Get parent1's first name to locate conversation
+  // Get parent1's first name to identify conversation
   const meResp = await parentPage.request.get(`${API}/api/v1/auth/me`);
   const meBody = await meResp.json().catch(() => ({}));
   const parentFirstName = meBody.data?.firstName || meBody.firstName || 'Hulkar';
-  console.log('[DEF013] parent1 first name:', parentFirstName);
+  console.log('[T1] parent1 name:', parentFirstName);
 
-  // Wait for conversation list buttons
-  await teacherPage.waitForSelector('.overflow-y-auto button', { timeout: 12_000 }).catch(() => {});
-
-  // Click parent1's conversation
+  // Click the conversation for parent1
   const conv = teacherPage.locator('.overflow-y-auto button').filter({ hasText: parentFirstName }).first();
   if (await conv.isVisible({ timeout: 5_000 }).catch(() => false)) {
     await conv.scrollIntoViewIfNeeded();
     await conv.click();
-    console.log('[DEF013] teacher opened conversation for:', parentFirstName);
+    console.log('[T1] opened conversation for:', parentFirstName);
   } else {
-    console.log('[DEF013] WARNING: conversation not found by name, falling back to first');
+    console.log('[T1] name not found — using first conversation');
     const first = teacherPage.locator('.overflow-y-auto button').first();
     if (await first.isVisible({ timeout: 5_000 }).catch(() => false)) await first.click();
   }
-  await teacherPage.waitForLoadState('networkidle').catch(() => {});
 
-  // Type and send message
-  const textarea = teacherPage.locator('textarea').last();
-  await textarea.waitFor({ state: 'visible', timeout: 10_000 });
-  await textarea.fill(MSG);
-  await textarea.press('Enter');
-  console.log('[DEF013] teacher sent:', MSG);
+  // Type and send
+  const teacherTextarea = teacherPage.locator('textarea').last();
+  await teacherTextarea.waitFor({ state: 'visible', timeout: 12_000 });
+  await teacherTextarea.fill(MSG);
+  await teacherTextarea.press('Enter');
+  console.log('[T1] teacher sent:', MSG);
 
-  // Screenshot: teacher side immediately after send
-  await teacherPage.screenshot({ path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-teacher-sent.png') });
+  await teacherPage.screenshot({
+    path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-T1-teacher-sent.png'),
+  });
 
-  // ── Assert parent receives without reload ──
-  // Allow up to 15 s for network round-trip + socket delivery + React update
-  await expect(parentPage.getByText(MSG)).toBeVisible({ timeout: 15_000 });
-  console.log('[DEF013-T1] PASS — message appeared in parent view live');
+  // ── Primary assertion: message appears in parent DOM without reload ──
+  // Parent Chat.jsx: socket event 'chat:message' → handleMessage → load() → setMessages
+  // Allow 20 s for: HTTP response + socket emit + React re-render + GET /chat/messages
+  try {
+    await expect(parentPage.getByText(MSG)).toBeVisible({ timeout: 20_000 });
+    console.log('[T1] PASS — message appeared in parent DOM live');
+    await parentPage.screenshot({
+      path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-T1-parent-received.png'),
+    });
+  } catch (err) {
+    // DOM timed out — dump WS frames for diagnosis
+    console.log('[T1] WS frames (last 10):', wsCapture.dump());
+    console.log('[T1] socket delivered MSG:', wsCapture.hasPayload(MSG));
+    await parentPage.screenshot({
+      path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-T1-parent-timeout.png'),
+    });
+    throw err;
+  }
 
-  // Screenshot: parent side showing the received message
-  await parentPage.screenshot({ path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-parent-received.png') });
+  // ── Secondary: verify socket WS frame also arrived (belt-and-suspenders) ──
+  const socketDelivered = wsCapture.hasPayload(MSG);
+  console.log('[T1] socket WS frame check:', socketDelivered);
 });
 
 // ═══════════════════════════════════════════════════════════════════════
-// T2 — parent → teacher  (regression — was already working, must still work)
+// T2 — parent → teacher  (regression: was working before, must still work)
 // ═══════════════════════════════════════════════════════════════════════
-test('DEF-013-T2 | parent1 sends → teacher1 receives without reload (regression)', async () => {
-  const MSG = `DEF013-FIX-T2-${Date.now()}`;
+test('DEF-013-T2 | parent sends → teacher receives live without reload (regression)', async () => {
+  const MSG = `DEF013-T2-${Date.now()}`;
+  const teacherPage = p.teacher1;
+  const parentPage  = p.parent1;
 
-  const teacherPage = await getPage(browser, 'teacher1');
-  const parentPage  = await getPage(browser, 'parent1');
-
-  // ── Teacher: open chat and find parent1's conversation ──
-  await teacherPage.goto(`${PORTAL}/teacher/xabar?tab=chat`, { waitUntil: 'networkidle', timeout: 30_000 });
-  await teacherPage.waitForLoadState('networkidle');
-
+  // Teacher: re-open conversation (may have navigated away during T1 teardown)
   const meResp = await parentPage.request.get(`${API}/api/v1/auth/me`);
   const meBody = await meResp.json().catch(() => ({}));
   const parentFirstName = meBody.data?.firstName || meBody.firstName || 'Hulkar';
 
-  await teacherPage.waitForSelector('.overflow-y-auto button', { timeout: 12_000 }).catch(() => {});
+  // If teacher isn't on chat tab, navigate there
+  if (!teacherPage.url().includes('xabar')) {
+    await portalGoto(teacherPage, `${PORTAL}/teacher/xabar?tab=chat`);
+    await teacherPage.waitForSelector('.overflow-y-auto button', { timeout: 15_000 }).catch(() => {});
+  }
   const conv = teacherPage.locator('.overflow-y-auto button').filter({ hasText: parentFirstName }).first();
-  if (await conv.isVisible({ timeout: 5_000 }).catch(() => false)) {
+  if (await conv.isVisible({ timeout: 3_000 }).catch(() => false)) {
     await conv.scrollIntoViewIfNeeded();
     await conv.click();
-  } else {
-    const first = teacherPage.locator('.overflow-y-auto button').first();
-    if (await first.isVisible({ timeout: 5_000 }).catch(() => false)) await first.click();
   }
-  await teacherPage.waitForLoadState('networkidle').catch(() => {});
+  // Wait for teacher's message panel textarea
+  await teacherPage.locator('textarea').last().waitFor({ state: 'visible', timeout: 12_000 });
 
-  // ── Parent: open /chat (socket established) ──
-  await parentPage.goto(`${PORTAL}/chat`, { waitUntil: 'networkidle', timeout: 30_000 });
-  await dismissConsent(parentPage);
-  await parentPage.waitForLoadState('networkidle');
+  // Parent: navigate back to /chat if needed
+  if (!parentPage.url().endsWith('/chat')) {
+    await portalGoto(parentPage, `${PORTAL}/chat`);
+    await parentPage.waitForSelector('textarea', { timeout: 15_000 });
+  }
 
-  // Parent sends a message
+  // Parent sends message
   const parentTextarea = parentPage.locator('textarea').last();
   await parentTextarea.waitFor({ state: 'visible', timeout: 10_000 });
   await parentTextarea.fill(MSG);
   await parentTextarea.press('Enter');
-  console.log('[DEF013] parent sent:', MSG);
+  console.log('[T2] parent sent:', MSG);
 
-  // Wait a moment for socket delivery
-  // Teacher chat: conversation list updates — look for the message text in the page
-  // After parent sends, teacher's open conversation panel should update
-  await expect(teacherPage.getByText(MSG)).toBeVisible({ timeout: 15_000 });
-  console.log('[DEF013-T2] PASS — parent message appeared in teacher view live');
+  // Teacher should receive via socket (parent→teacher was never broken)
+  await expect(teacherPage.getByText(MSG)).toBeVisible({ timeout: 20_000 });
+  console.log('[T2] PASS — parent message appeared in teacher view live');
 
-  await teacherPage.screenshot({ path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-teacher-received-parent-msg.png') });
+  await teacherPage.screenshot({
+    path: path.join(__dirname, '..', 'audits', 'beta', 'screens', 'DEF-013-T2-teacher-received.png'),
+  });
 });
