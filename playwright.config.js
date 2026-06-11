@@ -235,6 +235,17 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 's26-recon',
+      testMatch: '**/s26-knownfail-recon.spec.js',
+      timeout: 90_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
       name: 's22v4-probe',
       testMatch: '**/s22v4-probe*.spec.js',
       timeout: 180_000,

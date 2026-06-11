@@ -77,9 +77,9 @@
 ### F-003 — Known Pre-existing Issues
 | Code | Description | Expected verdict |
 |---|---|---|
-| G-050 | `canRateSchools` i18n label renders as raw key in secondary-user form | FAIL |
+| G-050 | `canRateSchools` i18n label renders as raw key in secondary-user form | FAIL → RESOLVED S26 (DEF-004 added all 12 grant keys; cold-load proof in uz/ru/en) |
 | G-017 | CSV school export hard-coded limit=999 | KNOWN-ISSUE (informational, not a task blocker) |
-| P-011 | Parent Sidebar.jsx imported but never rendered (dead code) | FAIL |
+| P-011 | Parent Sidebar.jsx imported but never rendered (dead code) | FAIL → RESOLVED S26 (Sidebar.jsx deleted by PP-IA-REDESIGN; zero references remain) |
 | C-02 | Group-wide media visibility (documented intentional; needs legal sign-off) | BLOCKED-LEGAL |
 
 ---
@@ -483,7 +483,7 @@
 | P-008 | Desktop top nav | parent1 (switch to 1280px) | W3: switch viewport, verify top nav | — | BLOCKED | Only 390px tested; desktop nav not switched to in automation |
 | P-009 | Notification badge on nav | parent1 | W3: verify badge after Wave-2 creates notifications | — | PASS | S22-V4: bell link visible via getByRole(link, bildirishnomalar) |
 | P-010 | Active route highlighting | parent1 | W3: navigate tabs, verify active highlight | — | BLOCKED | Active highlight not scripted; routes navigated but highlight not asserted |
-| P-011 | Sidebar (dead code — never rendered) | parent1 | W3: inspect DOM — sidebar NOT present | KNOWN-FAIL: Sidebar.jsx imported but not rendered | KNOWN-FAIL | DEF-003: Sidebar.jsx implemented but not imported in Layout.jsx; dead code |
+| P-011 | Sidebar (dead code — never rendered) | parent1 | W3: inspect DOM — sidebar NOT present | KNOWN-FAIL: Sidebar.jsx imported but not rendered | PASS | S26 recon: Sidebar.jsx deleted (PP-IA-REDESIGN, commit 4b01e1af); grep shows zero component/import references (only an orphaned parentSidebar locale block + 2 unrelated layout comments); current IA = DesktopTopNav + MobileTopBar + MobileTabBar in Layout.jsx, nav destinations verified in S22-V4 (P-027/P-028/P-096 PASS). Dead code no longer exists |
 
 ### Account & Child Management (P-012 – P-015)
 
@@ -902,7 +902,7 @@
 | G-047 | List government users | gov.republic | W6: Platform > Government tab | — | PASS | S22-V4: gov users section accessible on /government/platform |
 | G-048 | Provision government user (secondary) | gov.republic | W6: create secondary user | — | WON'T-AUTOMATE | S22-V4: provision modal did not open |
 | G-049 | Provision secondary in same region | gov.toshkent | W5: provision secondary in own region | — | BLOCKED | — |
-| G-050 | Provision secondary with capability grants | gov.republic | W6: toggle capabilities; verify canRateSchools label | KNOWN-FAIL: canRateSchools label renders as raw i18n key | KNOWN-FAIL | G-050-canRateSchools-label |
+| G-050 | Provision secondary with capability grants | gov.republic | W6: toggle capabilities; verify canRateSchools label | KNOWN-FAIL: canRateSchools label renders as raw i18n key | PASS | S26 recon: DEF-004 added all 12 provision.grants keys to uz/ru/en catalogs. Cold-load proof on production, fresh context per locale: "Maktablarni Baholash" / "Оценивать Школы" / "Rate Schools" render in the secondary-type create form AND in existing-user grant chips; no raw keys (S26-G-050-grants-{uz,ru,en}.png, tests/s26-knownfail-recon.spec.js 3/3) |
 | G-051 | Delete government user | gov.republic | W6: delete test secondary | — | BLOCKED | — |
 | G-052 | Reset government user password | gov.republic | W6: reset password via modal | — | BLOCKED | — |
 
@@ -965,10 +965,12 @@
 |---|---|---|---|---|---|---|---|
 | Reception (W1) | 89 | 70 | 0 | 18 | 1 | 0 | 0 |
 | Teacher (W2) | 117* | 41 | 0 | 64 | 12 | 0 | 0 |
-| Parent (W3) | 106 | 41 | 0 | 48 | 16 | 1 (P-011) | 0 |
+| Parent (W3) | 106 | 42 | 0 | 48 | 16 | 0 | 0 |
 | Admin (W4) | 96 | 46 | 0 | 24 | 26 | 0 | 0 |
-| Government (W5+6) | 76 | 32 | 0 | 21 | 22 | 1 (G-050) | 0 |
-| **TOTAL** | **484** | **230** | **0** | **175** | **77** | **2** | **0** |
+| Government (W5+6) | 76 | 33 | 0 | 21 | 22 | 0 | 0 |
+| **TOTAL** | **484** | **232** | **0** | **175** | **77** | **0** | **0** |
+
+*S26 reconciliation (2026-06-11): the 2 standing KNOWN-FAILs were stale labels — P-011's dead Sidebar.jsx was deleted by PP-IA-REDESIGN and G-050's grant keys were added by DEF-004; both re-verified against current production (grep + 3-locale cold-load) and moved to PASS.
 
 *T-051 split into T-051 (normal upload) + T-051b (>5MB error) for coverage granularity.
 
@@ -979,7 +981,7 @@
 - Remaining PARTIAL: **0**
 - Bonus BLOCKED → PASS: **2** (T-043 live badge increment, P-051 two-context chat proof — both unlocked by the DEF-015 socket fix)
 
-**Hard-PASS rate (PASS / Total):** 230/484 = **48%** — every PASS now has an asserted outcome (readback, count change, persisted value)
+**Hard-PASS rate (PASS / Total):** 232/484 = **48%** — every PASS now has an asserted outcome (readback, count change, persisted value)
 **Blocked rate:** 175/484 = **36%** — primarily file-upload OS dialogs, load-more pagination, and features requiring second test accounts
 
 **Key blocked clusters:**

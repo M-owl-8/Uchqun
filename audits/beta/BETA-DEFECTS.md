@@ -84,7 +84,7 @@
   - Note: `/` (Dashboard/Today) was NOT in the old Sidebar but IS in MobileTabBar ✅
 - **Residual import check:** `grep -r "import.*Sidebar" teacher/src/parent/` → zero results. Only inline JSX comments `{/* Sidebar */}` remain in Media.jsx:711 and TeacherRating.jsx:532 (describing layout regions, not the deleted component).
 - **Context:** The feature catalog (compiled 2026-05-30, commit `6c34f4faba`) captured Sidebar.jsx in its dead-code state. PP-IA-REDESIGN (2026-06-06) deleted it and restructured the parent IA: 5-tab bottom bar (MobileTabBar) + horizontal top nav (DesktopTopNav) + deep links consolidated into the /child Bola hub page (ChildProfile.jsx). DEF-003 filed during beta audit reflected a state that had already been fixed by the time S18 ran.
-- **Matrix row:** P-011 NOT flipped to PASS — re-verification is a separate phase.
+- **Matrix row:** ✅ P-011 flipped KNOWN-FAIL → PASS in S26 reconciliation (2026-06-11). Re-verified: `Glob teacher/src/parent/**/Sidebar*` → no files; `Grep Sidebar teacher/src` → zero component/import references (only the orphaned `parentSidebar` locale block in 3 catalogs and the 2 layout comments noted above); Layout.jsx renders DesktopTopNav + MobileTopBar + MobileTabBar; nav destinations independently verified PASS in S22-V4 (P-027/P-028/P-096).
 
 ### DEF-004 — G-050: canRateSchools i18n key missing
 - **Severity:** P1
@@ -110,7 +110,7 @@
   - `screens/DEF-004-grants-checkboxes.png` — "Ikkinchi darajali" selected; "Maktablarni Baholash" and "Maktablarni Ko'rish" visible as translated labels
   - `screens/DEF-004-canRateSchools-translated.png` — canRateSchools label confirmed visible as translated text (not raw key)
   - `screens/DEF-004-grants-ru.png` / `DEF-004-grants-ru-nokeys.png` — RU locale, no raw keys
-- **Matrix row:** G-050 NOT flipped to PASS — re-verification is a separate phase.
+- **Matrix row:** ✅ G-050 flipped KNOWN-FAIL → PASS in S26 reconciliation (2026-06-11). Re-verified cold-load on production, fresh context per locale with `dnp:lang` set pre-load (`tests/s26-knownfail-recon.spec.js`, 3/3 PASS): secondary-type create form renders "Maktablarni Baholash" / "Оценивать Школы" / "Rate Schools"; existing secondary user's grant chips also render translated; zero raw `provision.grants.*` / camelCase keys in page text. Screenshots: `screens/S26-G-050-grants-{uz,ru,en}.png`.
 
 ---
 
