@@ -110,6 +110,24 @@ describe('mediaController.getMedia', () => {
     expect(where.childId).toBeUndefined();
   });
 
+  // DEF-017: admin without schoolId must fail closed — never honor childId,
+  // never fall through to an unscoped platform-wide query.
+  it('admin WITHOUT schoolId: 403 on any childId (DEF-017)', async () => {
+    const req = { user: { id: 'a0', role: 'admin', schoolId: null }, query: { childId: 'ANY-CHILD' } };
+    const res = mkRes();
+    await getMedia(req, res);
+    expect(res.status).toHaveBeenCalledWith(403);
+    expect(mockMediaFindAll).not.toHaveBeenCalled();
+  });
+
+  it('admin WITHOUT schoolId: empty list, no unscoped query (DEF-017)', async () => {
+    const req = { user: { id: 'a0', role: 'admin', schoolId: null }, query: {} };
+    const res = mkRes();
+    await getMedia(req, res);
+    expect(res.json).toHaveBeenCalledWith([]);
+    expect(mockMediaFindAll).not.toHaveBeenCalled();
+  });
+
   it('applies type and date filters', async () => {
     mockChildFindAll.mockResolvedValue([{ id: 'c1' }]);
     mockMediaFindAll.mockResolvedValue([]);
@@ -152,6 +170,14 @@ describe('mediaController.getMediaItem — school scoping', () => {
     const res = mkRes();
     await getMediaItem(req, res);
     expect(res.status).toHaveBeenCalledWith(404);
+  });
+
+  it('admin WITHOUT schoolId: 404, no unscoped findOne (DEF-017)', async () => {
+    const req = { user: { id: 'a0', role: 'admin', schoolId: null }, params: { id: 'm1' } };
+    const res = mkRes();
+    await getMediaItem(req, res);
+    expect(res.status).toHaveBeenCalledWith(404);
+    expect(mockMediaFindOne).not.toHaveBeenCalled();
   });
 
   it('government: no childId filter — can access any media item', async () => {

@@ -95,8 +95,16 @@ export const getMedia = async (req, res) => {
         } else {
           where.childId = { [Op.in]: schoolChildIds };
         }
-      } else if (childId) {
-        where.childId = childId;
+      } else {
+        // DEF-017: an admin without a schoolId has no legitimate child scope.
+        // Provisioning enforces schoolId for admins (resolveEmailDomain throws
+        // ACCOUNT_CREATE_FORBIDDEN_HIERARCHY without one), so this state can
+        // only arise from direct DB manipulation. Fail closed: never honor an
+        // arbitrary childId, never fall through to an unscoped query.
+        if (childId) {
+          return res.status(403).json({ error: 'Access denied to this child' });
+        }
+        return res.json([]);
       }
     } else if (req.user.role === 'government') {
       if (childId) {
@@ -204,6 +212,10 @@ export const getMediaItem = async (req, res) => {
           return res.status(404).json({ error: 'Media not found' });
         }
         where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+      } else {
+        // DEF-017: NULL-schoolId admin — fail closed (same rationale as getMedia);
+        // without this, the unscoped where:{id} would fetch any media item.
+        return res.status(404).json({ error: 'Media not found' });
       }
     } else if (req.user.role === 'government') {
       // Full access — no schoolId filter
