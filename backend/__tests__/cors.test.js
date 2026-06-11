@@ -146,16 +146,16 @@ describe('PL-002 — FRONTEND_URL explicit allowlist', () => {
 });
 
 describe('CORS configuration', () => {
-  test('#02-006 socket.js CORS includes all 4 localhost ports', () => {
-    const content = readFileSync(join(process.cwd(), 'config/socket.js'), 'utf8');
+  test('#02-006 socketOrigins includes all 4 localhost ports (dev list)', () => {
+    const content = readFileSync(join(process.cwd(), 'config/socketOrigins.js'), 'utf8');
     expect(content).toContain('5173');
     expect(content).toContain('5174');
     expect(content).toContain('5175');
     expect(content).toContain('5177');
   });
 
-  test('#02-006 socket.js CORS includes production Railway domains', () => {
-    const content = readFileSync(join(process.cwd(), 'config/socket.js'), 'utf8');
+  test('#02-006 socketOrigins includes production Railway domains', () => {
+    const content = readFileSync(join(process.cwd(), 'config/socketOrigins.js'), 'utf8');
     expect(content).toContain('reception-production-ba41.up.railway.app');
     expect(content).toContain('admin-production-536f.up.railway.app');
     expect(content).toContain('teacher-production-0647.up.railway.app');
@@ -165,5 +165,47 @@ describe('CORS configuration', () => {
   test('#02-006 socket.js CORS respects FRONTEND_URL env variable', () => {
     const content = readFileSync(join(process.cwd(), 'config/socket.js'), 'utf8');
     expect(content).toContain('FRONTEND_URL');
+  });
+});
+
+// C-07 — Socket.IO CORS: behavioral tests of the real origin-list builder.
+describe('C-07 — computeSocketOrigins', () => {
+  let computeSocketOrigins, SOCKET_PRODUCTION_ORIGINS;
+  beforeAll(async () => {
+    ({ computeSocketOrigins, SOCKET_PRODUCTION_ORIGINS } = await import('../config/socketOrigins.js'));
+  });
+
+  test('production + FRONTEND_URL set → exactly the env origins, no localhost', () => {
+    const origins = computeSocketOrigins({
+      nodeEnv: 'production',
+      frontendUrl: 'https://teacher-production-0647.up.railway.app, https://government-production.up.railway.app',
+    });
+    expect(origins).toEqual([
+      'https://teacher-production-0647.up.railway.app',
+      'https://government-production.up.railway.app',
+    ]);
+    expect(origins.some((o) => o.includes('localhost'))).toBe(false);
+  });
+
+  test('production + FRONTEND_URL unset → safe default = 4 production portals, no localhost, no wildcard', () => {
+    const origins = computeSocketOrigins({ nodeEnv: 'production', frontendUrl: '' });
+    expect(origins).toEqual(SOCKET_PRODUCTION_ORIGINS);
+    expect(origins.some((o) => o.includes('localhost'))).toBe(false);
+    expect(origins).not.toContain('*');
+  });
+
+  test('non-production → localhost dev ports are included', () => {
+    const origins = computeSocketOrigins({ nodeEnv: 'development', frontendUrl: '' });
+    expect(origins).toContain('http://localhost:5173');
+    expect(origins).toContain('http://localhost:5177');
+  });
+
+  test("env value '*' cannot open the list — it stays a literal string matched exactly", () => {
+    const origins = computeSocketOrigins({ nodeEnv: 'production', frontendUrl: '*' });
+    // The array form is matched exactly per-origin by the cors layer, so a
+    // literal '*' entry matches no real Origin header — misconfiguration
+    // fails closed rather than becoming a wildcard.
+    expect(origins).toEqual(['*']);
+    expect(origins).toHaveLength(1);
   });
 });
