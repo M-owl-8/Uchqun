@@ -12,7 +12,6 @@ import {
   Utensils,
   Image as ImageIcon,
   CheckCircle2,
-  CheckCheck,
   Trash2,
   Calendar,
 } from 'lucide-react';

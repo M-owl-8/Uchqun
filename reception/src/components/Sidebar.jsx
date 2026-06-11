@@ -7,7 +7,6 @@ import {
   UsersRound,
   FolderOpen,
   Settings,
-  LogOut,
   User,
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

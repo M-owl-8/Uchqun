@@ -91,6 +91,7 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     expect(redirect).not.toBeNull();
     expect(redirect.getAttribute('data-to')).toBe('/login');
     expect(queryByTestId('protected-child')).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull(); // no spinner once resolved
   });
 
   it('renders children when loading=false and teacher is authenticated', async () => {
@@ -153,6 +154,7 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     expect(redirect).not.toBeNull();
     expect(redirect.getAttribute('data-to')).toBe('/login');
     expect(queryByTestId('protected-child')).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull(); // no spinner once resolved
   });
 
   it('parent route: renders children when authenticated parent has loading=false', async () => {

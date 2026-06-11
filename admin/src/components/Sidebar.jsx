@@ -12,7 +12,6 @@ import {
   BarChart3,
   Settings,
   ShieldCheck,
-  LogOut,
   Brain,
   MessageSquare,
   Mail,

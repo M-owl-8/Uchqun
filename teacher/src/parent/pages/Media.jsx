@@ -604,9 +604,7 @@ const Media = () => {
                         e.target.pause();
                         e.target.currentTime = 0; // Reset to beginning
                       }}
-                      onError={(_e) => {
-                        const originalUrl = item.url;
-                      }}
+                      onError={() => {}}
                     />
                     {/* Video Play Icon - Always visible */}
                     <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -622,7 +620,6 @@ const Media = () => {
                     alt={item.title}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                     onError={(e) => {
-                      const originalUrl = item.url || item.imageUrl || item.photoUrl;
                       e.target.style.display = 'none';
                     }}
                   />
@@ -701,7 +698,6 @@ const Media = () => {
                   alt={selectedMedia.title}
                   className="max-w-full max-h-full object-contain"
                   onError={(e) => {
-                    const originalUrl = selectedMedia.url || selectedMedia.imageUrl || selectedMedia.photoUrl;
                     e.target.style.display = 'none';
                   }}
                 />

@@ -1,12 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { readFileSync } from 'fs';
-import { join } from 'path';
 import React from 'react';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
 import { SKILL_AREAS } from '@shared/config/skillAreas';
-import { DAILY_JOURNAL_ITEMS, DAILY_ITEM_COUNT } from '@shared/config/dailyJournalItems';
-import { WEEKLY_JOURNAL_ITEMS, WEEKLY_ITEM_COUNT } from '@shared/config/weeklyJournalItems';
 
 // ---- stable mock handles ----
 const mockSuccess = vi.fn();
@@ -552,9 +549,9 @@ describe('IrrShell page — goals section (Phase 3c)', () => {
     // Mocked t returns the key, so assert the key in the DOM and the 3-5
     // contract against the real uz catalog string.
     expect(screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`).textContent).toContain('irr.stgRecommendAll');
-    const uz = JSON.parse(
-      readFileSync(join(__dirname, '../../locales/uz/common.json'), 'utf8'),
-    );
+    // Relative to vitest cwd (the app root, teacher/) — import.meta.url is not
+    // a file: URL under the vite transform and __dirname doesn't exist in ESM.
+    const uz = JSON.parse(readFileSync('src/locales/uz/common.json', 'utf8'));
     expect(uz.irr.stgRecommendAll).toMatch(/3\s*[-–]\s*5/);
   });
 
