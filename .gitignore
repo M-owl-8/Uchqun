@@ -60,3 +60,7 @@ temp/
 
 # Playwright auth state (JWT cookies)
 .auth/
+
+# Playwright disposable run artifacts (outputDir — cleaned at every run start;
+# committed evidence lives in audits/beta/screens, which the runner never touches)
+.playwright-artifacts/

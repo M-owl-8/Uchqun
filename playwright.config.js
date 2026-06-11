@@ -1,6 +1,11 @@
 const { defineConfig, devices } = require('@playwright/test');
 
-const SCREENS = 'audits/beta/screens';
+// outputDir is CLEANED by Playwright at every run start. It must NEVER point at
+// audits/beta/screens — that directory holds committed audit evidence (S23
+// lesson: a proof run deleted four committed PNGs mid-session). Failure
+// artifacts go to the disposable, git-ignored dir below; specs that save
+// evidence screenshots write explicitly into audits/beta/screens themselves.
+const ARTIFACTS = '.playwright-artifacts';
 
 module.exports = defineConfig({
   testDir: './tests',
@@ -241,5 +246,5 @@ module.exports = defineConfig({
       },
     },
   ],
-  outputDir: SCREENS,
+  outputDir: ARTIFACTS,
 });
