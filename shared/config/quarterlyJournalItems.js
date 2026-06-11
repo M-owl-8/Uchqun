@@ -3,7 +3,8 @@
 // Facility-level checklist — completed by manager (раҳбар) once per quarter.
 // Per OQ-3 decision: manager/admin role ONLY. Teachers cannot write quarterly entries.
 // ~55 items: 2 info + 14 parent + 9 doc + 17 care + 10 conditions
-// OQ-10 pending: parent section count unconfirmed (14 visible in source; one may be obscured).
+// OQ-10 / PL-020 CONFIRMED (owner, 2026-06-11): the parentWork section is
+// complete at 14 items — no 15th item exists in the source standard.
 
 export const QUARTERLY_JOURNAL_ITEMS = {
   infoSystem: [
