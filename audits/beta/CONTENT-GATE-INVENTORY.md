@@ -1,5 +1,18 @@
 # CONTENT-GATE INVENTORY — every open/deferred/placeholder item, all five portals
 
+> ## S29 EXECUTION UPDATE (2026-06-11) — owner questionnaire applied
+> Statuses below in the original tables are superseded as follows:
+> - **PL-015 → ✅ CLOSED** — real indicator names landed (owner Q1/Q2), ship gate ENFORCED in code (Q3, `containsFillerIndicators` + tests). Residual: INV-007 below.
+> - **PL-009-VERIFY / PL-023 → UNCHANGED BY DESIGN** — translation review is government-owned pre-prod (Q13); catalogs untouched.
+> - **C-02/PL-001 → ✅ CLOSED** (signed 2026-06-11, Q6) · **PL-014 → ✅ CLOSED** (signed, Q12) · **PL-016 → ✅ CLOSED** (ministry ack, Q7) · **PL-017 → ✅ CLOSED** (coexistence + UX note shipped, Q8) · **PL-018 → ✅ CLOSED** (draft = beta standard, Q11) · **PL-019 → ✅ CLOSED** (12 months, implemented + tested, Q9) · **PL-020 → ✅ CLOSED** (14 confirmed, Q10)
+> - **PL-025/INV-001 → ✅ CLOSED for beta** (Q15) — help toggles on teacher/parent + reception; zero dead links.
+> - **PL-022 → ✅ CLOSED** (Q16) — legacy route deleted, zero callers, suite green.
+> - **PL-005 → ⏸ DEFERRED-DOCUMENTED** (Q19, owner=Max) · **CP-019 → OWNER-DECISION: show-as-is for demo** (Q21, no rollout performed) · **PL-UZ-01/02 → still OPEN, not yet surfaced to partner** (Q20).
+> - **INV-002/004/005 → ✅ CLOSED** (Q18 + pre-approved hygiene).
+> - **PL-024 → verified this session** (see S29 close-out for outcome).
+> - **NEW — INV-007 (owner content decision):** `school_categories` table has 4 rows while the `schools.type` enum has 5 values (no `early_intervention`/"Erta aralashuv" row), and all 4 production schools have `categoryId = NULL`. Which taxonomy is canonical + assignments needed. Severity: latent.
+> - **NEW — INV-006 (CODE):** `teacher/src/__tests__/pages/IrrShell.test.jsx` carries 16 stale tests for the daily/weekly journal forms that TP-MONITORING-SEPARATION moved out of IrrShell — pre-existing failures (verified identical on HEAD); icon-mock rot fixed in S29 (31→16).
+
 **Session:** S28 (2026-06-11) · **Mode:** inventory only — NOTHING was changed, no placeholder was filled
 **Sources swept:** repo-wide tag greps (TODO/FIXME/PLACEHOLDER/TBD/AI-DRAFT/draft/filler-label patterns), `LOOP_PRE_LAUNCH_CHECKLIST.md` (PL-001…PL-030, PL-UZ-01…05), `LOOP_CROSS_PORTAL.md` (CP-019…CP-025), `DEFERRED.md` (empty), per-portal stub/orphan sweep (routes, no-op buttons, sample data, dead nav), locale-catalog quantification.
 
