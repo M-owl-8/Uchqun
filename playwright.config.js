@@ -220,6 +220,16 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 's23-def009',
+      testMatch: '**/s23-def009-proof.spec.js',
+      timeout: 120_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
       name: 's22v4-probe',
       testMatch: '**/s22v4-probe*.spec.js',
       timeout: 180_000,

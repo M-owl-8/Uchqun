@@ -468,7 +468,7 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| P-001 | Login with email+password | parent1–12 (all) | W3: each parent logs in at 390px | — | FAIL | S22-V4 probe: backend solid — 36/36 API logins HTTP 200 + /auth/me role=parent across 3 sweeps. But UI form login bounced back to /login within 5s in 2 of 3 attempts (S22V4-P-001-def009-bounce-to-login.png) — DEF-009 (P1) reproduces reliably; root cause revised to frontend auth race, see BETA-DEFECTS |
+| P-001 | Login with email+password | parent1–12 (all) | W3: each parent logs in at 390px | — | PASS | S23: DEF-009 FIXED (commits 4df1cf67 + d472766f — login-epoch guards in api.js interceptor + AuthProvider bootstrap). Proof: 20/20 consecutive cold UI logins at 390px, fresh context each, rotating the originally-affected accounts (parent3/6/7/10/12/1), all stable through 5s window on production. Regression: invalid session still redirects to /login |
 | P-002 | Refresh JWT token | parent1 | W3: idle, navigate → silent refresh | — | PASS | S22-V4 probe: accessToken cookie deleted mid-session (refreshToken kept) → reload → interceptor silently refreshed, no redirect to /login, new accessToken cookie re-issued (S22V4-P-002-silent-refresh-recovered.png) |
 | P-003 | Logout | parent1–12 (all) | W3: click Chiqish, verify redirect | — | PASS | P-003b-logout.png; redirect confirmed for parent1 |
 | P-004 | Change password (first login) | parent1 (simulate) | W3: verify forced change gate | — | BLOCKED | No fresh account with mustChangePassword=true; cannot simulate without DB reset |
@@ -965,21 +965,21 @@
 |---|---|---|---|---|---|---|---|
 | Reception (W1) | 89 | 70 | 0 | 18 | 1 | 0 | 0 |
 | Teacher (W2) | 117* | 41 | 0 | 64 | 12 | 0 | 0 |
-| Parent (W3) | 106 | 40 | 0 | 48 | 16 | 1 (P-011) | 1 (P-001) |
+| Parent (W3) | 106 | 41 | 0 | 48 | 16 | 1 (P-011) | 0 |
 | Admin (W4) | 96 | 46 | 0 | 24 | 26 | 0 | 0 |
 | Government (W5+6) | 76 | 32 | 0 | 21 | 22 | 1 (G-050) | 0 |
-| **TOTAL** | **484** | **229** | **0** | **175** | **77** | **2** | **1** |
+| **TOTAL** | **484** | **230** | **0** | **175** | **77** | **2** | **0** |
 
 *T-051 split into T-051 (normal upload) + T-051b (>5MB error) for coverage granularity.
 
 **S22-V4 movement (from the S14 baseline of 150 PARTIAL):**
 - PARTIAL → PASS: **72** (70 in the five portal suites; P-002 and G-002 in the close-out probe)
 - PARTIAL → WON'T-AUTOMATE: **77** (each with a stated reason in its row — selector/seed-data/OS-dialog limits, not product defects)
-- PARTIAL → FAIL: **1** (P-001 — UI login bounce reproduces 2/3, DEF-009 P1 open with revised frontend-race root cause. G-002's initial FAIL was retracted as a test-selector artifact, see DEF-016; re-tested to PASS)
+- PARTIAL → FAIL: **1** (P-001 — UI login bounce reproduces 2/3, DEF-009 P1 with revised frontend-race root cause. G-002's initial FAIL was retracted as a test-selector artifact, see DEF-016; re-tested to PASS) — **subsequently fixed in S23** (commits 4df1cf67 + d472766f) and P-001 moved to PASS on a 20/20 cold-login streak
 - Remaining PARTIAL: **0**
 - Bonus BLOCKED → PASS: **2** (T-043 live badge increment, P-051 two-context chat proof — both unlocked by the DEF-015 socket fix)
 
-**Hard-PASS rate (PASS / Total):** 229/484 = **47%** — every PASS now has an asserted outcome (readback, count change, persisted value)
+**Hard-PASS rate (PASS / Total):** 230/484 = **48%** — every PASS now has an asserted outcome (readback, count change, persisted value)
 **Blocked rate:** 175/484 = **36%** — primarily file-upload OS dialogs, load-more pagination, and features requiring second test accounts
 
 **Key blocked clusters:**
