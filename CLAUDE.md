@@ -58,7 +58,7 @@ Reception additionally requires `documentsApproved && isActive`.
 - ✅ C-03: Resolved — ALLOWED_FIELDS whitelist in progressController (commit 9b2994c)
 - ✅ C-05: Resolved — ALLOWED_ACTIVITY_FIELDS + schoolId guard in activityController (commits 9b2994c, 10df6d0)
 - ✅ C-06: Resolved — payment routes/controller deleted entirely (commit ca2039b)
-- ⚠️ C-07: Partial — regex replaces substring CORS check; PRE-LAUNCH TODO: replace with explicit env-driven allowlist (commit c1bd08d)
+- ✅ C-07: Resolved — explicit env-driven allowlist locked (S27, commit c8af1a20): Express CORS = FRONTEND_URL allowlist, fail-closed; Socket.IO CORS no longer merges localhost in production (config/socketOrigins.js); Railway FRONTEND_URL = exactly the 4 production portal origins (stale super-admin origin removed). Proofs in BETA-DEFECTS.md C-07 entry.
 
 ## Credential Reset (admin/government accounts)
 If admin or government passwords need resetting, deploy a one-off migration:

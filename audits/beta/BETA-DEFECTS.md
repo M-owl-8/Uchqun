@@ -567,3 +567,19 @@ All 15 rows in `child_attendance` at migration time:
 - **Legitimate-path gate (production, post-deploy):** admin1 `GET /media?childId=<in-school child>` → HTTP 200 (4 items); `GET /media?childId=<cross-school child>` → HTTP 403 (`backend/scripts/def017-admin-gate.cjs`).
 - **Isolation regression:** ISO-P03 (parent → S2 child media) and ISO-T05 (teacher media, no S2 child IDs) re-run — **2 passed**.
 - **Status:** ✅ FIXED (S25, 2026-06-11) — commit `dff64571`, deployed to Railway.
+
+---
+
+### C-07 — CLOSED: production CORS allowlist locked (launch gate, S27)
+
+- **Scope:** pre-launch security item from the original audit ("replace regex/substring CORS with explicit env-driven allowlist").
+- **State found (verify-first):**
+  - Express CORS (`server.js:77-129`) was already compliant: `FRONTEND_URL` comma-separated explicit allowlist, **fail-closed** when unset in production, `credentials: true` paired only with checked reflection (`allowedOrigins.includes(origin)`), deploy-preview regex gated to non-production, dev wildcard requires explicit `CORS_DEV_OPEN=true` opt-in. No wildcard anywhere.
+  - **Finding 1 — stale origin in Railway env:** `FRONTEND_URL` contained a 5th origin `https://super-admin-production-c327.up.railway.app` — the service returns 404 and no such portal exists in the repo. A dead Railway subdomain in a credentialed allowlist is a takeover-adjacent exposure. **Removed**; env now lists exactly the 4 production portal origins.
+  - **Finding 2 — Socket.IO allowed localhost in production:** `config/socket.js` unconditionally merged 4 `http://localhost:*` origins into the socket CORS list with `credentials: true`. **Fixed** (commit `c8af1a20`): new `config/socketOrigins.js` builder — production = `FRONTEND_URL` origins with the 4 production portal origins as safe fallback (never wildcard, never localhost); localhost merged only outside production. Behavioral unit tests on the real builder; cors suite 17/17.
+- **Positive proof (curl preflight, production, post-deploy):** all four portal origins receive exact echo + credentials — e.g. `Origin: https://teacher-production-0647.up.railway.app` → `204`, `access-control-allow-origin: https://teacher-production-0647.up.railway.app`, `access-control-allow-credentials: true` (same for government, admin, reception).
+- **Negative proof:** `Origin: https://evil.example.com` → no `access-control-allow-origin` header (no reflection). `Origin: https://super-admin-production-c327.up.railway.app` (the removed stale origin) → no `access-control-allow-origin` header — removal confirmed live.
+- **Regression:** all 4 portals cold-load UI login + authenticated redirect clean post-change (s23-def009 PORTALS, 2 passed); live socket delivery from the teacher origin still works (RT-NONCHAT badge 0→1, 1 passed) — the socket CORS tightening broke nothing.
+- **credentials+wildcard check:** `credentials: true` exists at both CORS surfaces (Express, Socket.IO); neither has a wildcard or unconditional reflection — both validate against the explicit allowlist.
+- **Configuration:** allowlist driven by `FRONTEND_URL` on Railway (changeable without code deploy); code fallback is the explicit 4-origin production list, never `*`.
+- **Status:** ✅ CLOSED (S27, 2026-06-11) — commit `c8af1a20`, deployed to Railway.
