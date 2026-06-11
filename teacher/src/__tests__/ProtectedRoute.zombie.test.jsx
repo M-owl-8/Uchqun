@@ -45,12 +45,12 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'teacher' }, React.createElement(Child))
     );
 
     // Spinner must block, child must NOT mount (no API requests fire)
-    expect(queryByTestId('spinner')).not.toBeNull();
+    expect(container.querySelector('[role="status"]')).not.toBeNull(); // inline palette-aware spinner (replaced LoadingSpinner)
     expect(queryByTestId('protected-child')).toBeNull();
   });
 
@@ -64,11 +64,11 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'teacher' }, React.createElement(Child))
     );
 
-    expect(queryByTestId('spinner')).not.toBeNull();
+    expect(container.querySelector('[role="status"]')).not.toBeNull(); // inline palette-aware spinner (replaced LoadingSpinner)
     expect(queryByTestId('protected-child')).toBeNull();
   });
 
@@ -83,7 +83,7 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'teacher' }, React.createElement(Child))
     );
 
@@ -103,12 +103,12 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'teacher' }, React.createElement(Child))
     );
 
     expect(queryByTestId('protected-child')).not.toBeNull();
-    expect(queryByTestId('spinner')).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull();
     expect(queryByTestId('redirect')).toBeNull();
   });
 
@@ -127,11 +127,11 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
     );
 
-    expect(queryByTestId('spinner')).not.toBeNull();
+    expect(container.querySelector('[role="status"]')).not.toBeNull(); // inline palette-aware spinner (replaced LoadingSpinner)
     expect(queryByTestId('protected-child')).toBeNull();
   });
 
@@ -145,7 +145,7 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
     );
 
@@ -165,12 +165,12 @@ describe('ProtectedRoute — zombie session guard (TP-AUTH-ZOMBIE)', () => {
     });
 
     const { default: ProtectedRoute } = await import('../shared/components/ProtectedRoute');
-    const { queryByTestId } = render(
+    const { queryByTestId, container } = render(
       React.createElement(ProtectedRoute, { requireRole: 'parent' }, React.createElement(Child))
     );
 
     expect(queryByTestId('protected-child')).not.toBeNull();
-    expect(queryByTestId('spinner')).toBeNull();
+    expect(container.querySelector('[role="status"]')).toBeNull();
     expect(queryByTestId('redirect')).toBeNull();
   });
 });

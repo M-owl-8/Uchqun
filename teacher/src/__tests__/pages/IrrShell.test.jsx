@@ -1,5 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 import React from 'react';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
 import { SKILL_AREAS } from '@shared/config/skillAreas';
@@ -96,8 +98,6 @@ describe('IrrShell page — header form (Phase 3a)', () => {
   it('renders draft IRR with activate button and status badge', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
       .mockResolvedValueOnce({ data: { data: [] } });          // periods load
@@ -110,8 +110,6 @@ describe('IrrShell page — header form (Phase 3a)', () => {
   it('calls POST to create new IRR when none exists', async () => {
     mockApi.get
       .mockRejectedValueOnce({ response: { status: 404 } })   // irr load → null
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries (mount)
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries (mount)
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load after creation
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
       .mockResolvedValueOnce({ data: { data: [] } });          // periods load
@@ -133,8 +131,6 @@ describe('IrrShell page — header form (Phase 3a)', () => {
   it('calls PATCH on save when IRR already exists', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
       .mockResolvedValueOnce({ data: { data: [] } })           // periods load
@@ -183,8 +179,6 @@ describe('IrrShell page — header form (Phase 3a)', () => {
     const activeIrr = { ...DRAFT_IRR, status: 'active' };
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr load
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions load
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs load
       .mockResolvedValueOnce({ data: { data: [] } })           // periods load
@@ -206,8 +200,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('renders assessment section when IRR exists', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })   // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })   // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })   // sessions
       .mockResolvedValueOnce({ data: { data: [] } })   // LTGs
       .mockResolvedValueOnce({ data: { data: [] } });  // periods
@@ -221,8 +213,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('renders all 17 criteria from config (data-driven, not hardcoded)', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })   // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })   // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
@@ -238,8 +228,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('selecting best option (score btn 4) stores software score 4 — explicit scoring direction test', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })   // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })   // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
@@ -271,8 +259,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('submit session button disabled until all 17 criteria are scored', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })   // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })   // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
@@ -298,8 +284,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
     const submittedSession = { id: 'sess-1', sessionType: 'intake', totalScore: 68, completedAt: '2026-05-26T00:00:00.000Z' };
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs
       .mockResolvedValueOnce({ data: { data: [] } })           // periods
@@ -332,8 +316,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('shows ASSESSMENT_SESSION_EXISTS error on 409', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })   // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })   // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
@@ -372,8 +354,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
     };
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries
       .mockResolvedValueOnce({ data: { data: [] } })           // sessions
       .mockResolvedValueOnce({ data: { data: [] } })           // LTGs
       .mockResolvedValueOnce({ data: { data: [] } })           // periods
@@ -416,8 +396,6 @@ describe('IrrShell page — assessment section (Phase 3b)', () => {
   it('renders progression table when sessions exist', async () => {
     mockApi.get
       .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })
-      .mockResolvedValueOnce({ data: { data: [] } })            // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } })            // weekly entries
       .mockResolvedValueOnce({ data: { data: [SAMPLE_SESSION] } })
       .mockResolvedValueOnce({ data: { data: [] } })
       .mockResolvedValueOnce({ data: { data: [] } });
@@ -460,8 +438,6 @@ const SAMPLE_STG = {
 function mockIrrLoad(ltgs = [], periods = []) {
   return mockApi.get
     .mockResolvedValueOnce({ data: { data: DRAFT_IRR } })   // irr
-    .mockResolvedValueOnce({ data: { data: [] } })           // daily entries (mount)
-    .mockResolvedValueOnce({ data: { data: [] } })           // weekly entries (mount)
     .mockResolvedValueOnce({ data: { data: [] } })           // sessions
     .mockResolvedValueOnce({ data: { data: ltgs } })         // LTGs
     .mockResolvedValueOnce({ data: { data: periods } });     // periods
@@ -572,7 +548,14 @@ describe('IrrShell page — goals section (Phase 3c)', () => {
     await waitFor(() => screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
     fireEvent.click(screen.getByTestId(`period-toggle-${SAMPLE_PERIOD.id}`));
     await waitFor(() => screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`));
-    expect(screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`).textContent).toContain('3–5');
+    // The literal moved into i18n: 0 STGs renders t('irr.stgRecommendAll').
+    // Mocked t returns the key, so assert the key in the DOM and the 3-5
+    // contract against the real uz catalog string.
+    expect(screen.getByTestId(`stg-guidance-${SAMPLE_PERIOD.id}`).textContent).toContain('irr.stgRecommendAll');
+    const uz = JSON.parse(
+      readFileSync(join(__dirname, '../../locales/uz/common.json'), 'utf8'),
+    );
+    expect(uz.irr.stgRecommendAll).toMatch(/3\s*[-–]\s*5/);
   });
 
   it('creates STG via POST with skill area', async () => {
@@ -650,148 +633,11 @@ describe('IrrShell page — goals section (Phase 3c)', () => {
   });
 });
 
-// ─── Phase 3d: Monitoring journal tests ──────────────────────────────────────
-
-describe('IrrShell page — monitoring journals (Phase 3d)', () => {
-  it('renders daily-section with 27 checkboxes data-driven from DAILY_JOURNAL_ITEMS', async () => {
-    mockIrrLoad();
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => expect(screen.getByTestId('daily-section')).toBeTruthy());
-    expect(screen.getByTestId('daily-hygiene-section')).toBeTruthy();
-    expect(screen.getByTestId('daily-health-section')).toBeTruthy();
-    expect(screen.getByTestId('daily-gi-section')).toBeTruthy();
-
-    const allItems = [
-      ...DAILY_JOURNAL_ITEMS.hygiene,
-      ...DAILY_JOURNAL_ITEMS.health,
-      ...DAILY_JOURNAL_ITEMS.gi,
-    ];
-    expect(allItems).toHaveLength(DAILY_ITEM_COUNT); // 27
-    for (const item of allItems) {
-      expect(screen.getByTestId(`daily-check-${item.code}`)).toBeTruthy();
-    }
-  });
-
-  it('submits daily entry via POST with correct JSONB shape (hygieneData/healthData/giData)', async () => {
-    mockIrrLoad();
-    const newEntry = { id: 'daily-1', entryDate: '2026-05-26', notes: '' };
-    mockApi.post.mockResolvedValue({ data: { data: newEntry } });
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => screen.getByTestId('daily-submit-btn'));
-
-    // Toggle one hygiene item
-    const firstHyg = DAILY_JOURNAL_ITEMS.hygiene[0];
-    fireEvent.click(screen.getByTestId(`daily-check-${firstHyg.code}`));
-
-    fireEvent.click(screen.getByTestId('daily-submit-btn'));
-
-    await waitFor(() =>
-      expect(mockApi.post).toHaveBeenCalledWith(
-        '/teacher/children/child-123/daily-entries',
-        expect.objectContaining({
-          hygieneData: expect.objectContaining({ [firstHyg.code]: true }),
-          healthData:  expect.any(Object),
-          giData:      expect.any(Object),
-        })
-      )
-    );
-    await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
-  });
-
-  it('shows DAILY_ENTRY_DUPLICATE error legibly on 409', async () => {
-    mockIrrLoad();
-    mockApi.post.mockRejectedValue({
-      response: {
-        status: 409,
-        data: { success: false, error: { code: 'DAILY_ENTRY_DUPLICATE' } },
-      },
-    });
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => screen.getByTestId('daily-submit-btn'));
-
-    fireEvent.click(screen.getByTestId('daily-submit-btn'));
-
-    await waitFor(() => expect(screen.getByTestId('daily-error-banner')).toBeTruthy());
-    expect(screen.getByTestId('daily-error-banner').textContent).toContain('irr.errorDuplicateDailyEntry');
-  });
-
-  it('renders weekly-section with 18 checkboxes data-driven from WEEKLY_JOURNAL_ITEMS', async () => {
-    mockIrrLoad();
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => expect(screen.getByTestId('weekly-section')).toBeTruthy());
-    expect(screen.getByTestId('weekly-emotional-section')).toBeTruthy();
-    expect(screen.getByTestId('weekly-environment-section')).toBeTruthy();
-
-    const allItems = [
-      ...WEEKLY_JOURNAL_ITEMS.emotional,
-      ...WEEKLY_JOURNAL_ITEMS.environment,
-    ];
-    expect(allItems).toHaveLength(WEEKLY_ITEM_COUNT); // 18
-    for (const item of allItems) {
-      expect(screen.getByTestId(`weekly-check-${item.code}`)).toBeTruthy();
-    }
-  });
-
-  it('submits weekly entry via POST with correct JSONB shape (emotionalData/environmentData)', async () => {
-    mockIrrLoad();
-    const newEntry = { id: 'weekly-1', weekStart: '2026-05-25', notes: '' };
-    mockApi.post.mockResolvedValue({ data: { data: newEntry } });
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => screen.getByTestId('weekly-submit-btn'));
-
-    // Toggle one emotional item
-    const firstEmo = WEEKLY_JOURNAL_ITEMS.emotional[0];
-    fireEvent.click(screen.getByTestId(`weekly-check-${firstEmo.code}`));
-
-    fireEvent.click(screen.getByTestId('weekly-submit-btn'));
-
-    await waitFor(() =>
-      expect(mockApi.post).toHaveBeenCalledWith(
-        '/teacher/children/child-123/weekly-entries',
-        expect.objectContaining({
-          emotionalData:   expect.objectContaining({ [firstEmo.code]: true }),
-          environmentData: expect.any(Object),
-        })
-      )
-    );
-    await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
-  });
-
-  it('shows WEEKLY_ENTRY_DUPLICATE error legibly on 409', async () => {
-    mockIrrLoad();
-    mockApi.post.mockRejectedValue({
-      response: {
-        status: 409,
-        data: { success: false, error: { code: 'WEEKLY_ENTRY_DUPLICATE' } },
-      },
-    });
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => screen.getByTestId('weekly-submit-btn'));
-
-    fireEvent.click(screen.getByTestId('weekly-submit-btn'));
-
-    await waitFor(() => expect(screen.getByTestId('weekly-error-banner')).toBeTruthy());
-    expect(screen.getByTestId('weekly-error-banner').textContent).toContain('irr.errorDuplicateWeeklyEntry');
-  });
-
-  it('daily and weekly sections render without an active ИРР (irrId nullable)', async () => {
-    // No IRR for this child — journals still visible (irrId sent as null)
-    mockApi.get
-      .mockRejectedValueOnce({ response: { status: 404 } })   // irr load → null
-      .mockResolvedValueOnce({ data: { data: [] } })           // daily entries
-      .mockResolvedValueOnce({ data: { data: [] } });          // weekly entries
-    const { default: IrrShell } = await import('../../pages/IrrShell');
-    render(React.createElement(IrrShell));
-    await waitFor(() => expect(screen.getByTestId('irr-shell')).toBeTruthy());
-    expect(screen.getByTestId('daily-section')).toBeTruthy();
-    expect(screen.getByTestId('weekly-section')).toBeTruthy();
-    expect(screen.getByTestId('daily-submit-btn')).toBeTruthy();
-    expect(screen.getByTestId('weekly-submit-btn')).toBeTruthy();
-  });
-});
+// ─── Phase 3d REMOVED (S30 / INV-006) ────────────────────────────────────────
+// The daily/weekly journal sections were moved OUT of IrrShell by
+// TP-MONITORING-SEPARATION (IrrShell now renders only a link to
+// /teacher/monitoring). Their 7 tests asserted testids (daily-section,
+// daily-submit-btn, weekly-section, …) that no longer exist in this
+// component, so they are deleted rather than rewritten as tautologies.
+// Coverage gap for the new MonitoringJournal/DailyMonitoringTab surface is
+// recorded as INV-008 in CONTENT-GATE-INVENTORY.md.

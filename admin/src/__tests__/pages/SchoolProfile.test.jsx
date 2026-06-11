@@ -26,7 +26,9 @@ const SCHOOL = {
   director: 'John Doe',
   regionId: 'r-1',
   categoryId: 'c-1',
-  region: { id: 'r-1', name: 'Toshkent', code: 'TAS' },
+  // S29/Q4: the API includes the Region relation as `regionRef` (the bare
+  // `region` property is the legacy NULL string column) — mock the real shape.
+  regionRef: { id: 'r-1', name: 'Toshkent', code: 'TAS' },
   category: { id: 'c-1', name: 'Special', code: 'SP' },
 };
 
