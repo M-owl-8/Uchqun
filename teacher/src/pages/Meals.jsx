@@ -175,7 +175,7 @@ const Meals = () => {
   const filteredMeals = meals.filter((meal) => meal.date === selectedDate);
   const dates = [...new Set(meals.map((meal) => meal.date))].sort().reverse();
 
-  // TODO(phase-1): data color palette decision needed — Lunch/Dinner use blue-* as semantic meal-type colors; confirm these should stay blue (not brand-*) or define a dedicated food-color token
+  // Meal-type colors confirmed as-is (S29/Q18): Lunch/Dinner stay blue-* as semantic meal colors.
   const mealConfigs = {
     Breakfast: { color: 'text-amber-600', bg: 'bg-amber-50', icon: Coffee, border: 'border-amber-100' },
     Lunch: { color: 'text-blue-600', bg: 'bg-blue-50', icon: Sun, border: 'border-blue-100' },

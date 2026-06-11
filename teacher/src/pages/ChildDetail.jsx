@@ -84,7 +84,7 @@ const ChildDetail = () => {
       try {
         const [childRes, goalsRes, irrRes] = await Promise.allSettled([
           api.get(`/teacher/children/${id}`),
-          api.get(`/teacher/children/${id}/goals`), // TODO(phase-2)
+          api.get(`/teacher/children/${id}/goals`), // final endpoint (teacherRoutes.js — confirmed S29)
           api.get(`/teacher/children/${id}/irr`),
         ]);
         if (childRes.status === 'fulfilled') {

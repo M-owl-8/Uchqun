@@ -165,7 +165,7 @@ const TherapyManagement = () => {
     }
   };
 
-  // TODO(phase-1): therapy type color palette — video=primary, music=purple, content=green; confirm whether all types should use primary or keep distinct category colors
+  // Therapy type colors confirmed as-is (S29/Q18): video=primary, music=purple, content=green.
   const getTherapyColor = (type) => {
     switch (type) {
       case 'music':

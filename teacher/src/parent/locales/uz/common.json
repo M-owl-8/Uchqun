@@ -71,9 +71,7 @@
     "media": "Media",
     "gender": {
       "male": "Erkak",
-      "female": "Ayol",
-      "MALE": "Erkak",
-      "FEMALE": "Ayol"
+      "female": "Ayol"
     },
     "emotionalCriteria": {
       "notes": "Izoh:",

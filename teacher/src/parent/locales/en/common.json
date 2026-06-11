@@ -66,9 +66,7 @@
     "media": "Media",
     "gender": {
       "male": "Male",
-      "female": "Female",
-      "MALE": "Male",
-      "FEMALE": "Female"
+      "female": "Female"
     },
     "emotionalCriteria": {
       "notes": "Notes:",

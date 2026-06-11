@@ -66,9 +66,7 @@
     "media": "Медиа",
     "gender": {
       "male": "Мужской",
-      "female": "Женский",
-      "MALE": "Мужской",
-      "FEMALE": "Женский"
+      "female": "Женский"
     },
     "emotionalCriteria": {
       "notes": "Примечание:",
