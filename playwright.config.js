@@ -235,6 +235,16 @@ module.exports = defineConfig({
       },
     },
     {
+      name: 's29-gates',
+      testMatch: '**/s29-content-gates.spec.js',
+      timeout: 120_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
+    {
       name: 's26-recon',
       testMatch: '**/s26-knownfail-recon.spec.js',
       timeout: 90_000,

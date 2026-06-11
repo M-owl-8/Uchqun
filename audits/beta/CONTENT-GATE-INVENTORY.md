@@ -9,7 +9,7 @@
 > - **PL-022 → ✅ CLOSED** (Q16) — legacy route deleted, zero callers, suite green.
 > - **PL-005 → ⏸ DEFERRED-DOCUMENTED** (Q19, owner=Max) · **CP-019 → OWNER-DECISION: show-as-is for demo** (Q21, no rollout performed) · **PL-UZ-01/02 → still OPEN, not yet surfaced to partner** (Q20).
 > - **INV-002/004/005 → ✅ CLOSED** (Q18 + pre-approved hygiene).
-> - **PL-024 → verified this session** (see S29 close-out for outcome).
+> - **PL-024 → ✅ CLOSED, verified PASS** — childless.test@uchqun.uz cold login lands and stays on `/`; loop mooted by the S23 DEF-009 fix; no code change.
 > - **NEW — INV-007 (owner content decision):** `school_categories` table has 4 rows while the `schools.type` enum has 5 values (no `early_intervention`/"Erta aralashuv" row), and all 4 production schools have `categoryId = NULL`. Which taxonomy is canonical + assignments needed. Severity: latent.
 > - **NEW — INV-006 (CODE):** `teacher/src/__tests__/pages/IrrShell.test.jsx` carries 16 stale tests for the daily/weekly journal forms that TP-MONITORING-SEPARATION moved out of IrrShell — pre-existing failures (verified identical on HEAD); icon-mock rot fixed in S29 (31→16).
 
