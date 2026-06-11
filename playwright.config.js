@@ -219,6 +219,17 @@ module.exports = defineConfig({
         actionTimeout: 30_000,
       },
     },
+    {
+      name: 's22v4-probe',
+      testMatch: '**/s22v4-probe*.spec.js',
+      timeout: 180_000,
+      use: {
+        ...devices['Desktop Chrome'],
+        viewport: { width: 1280, height: 800 },
+        navigationTimeout: 60_000,
+        actionTimeout: 30_000,
+      },
+    },
   ],
   outputDir: SCREENS,
 });

@@ -207,6 +207,7 @@
 - **Console errors:** none observed
 - **Network:** POST /api/auth/login likely returned an error response — but DB shows account is active, `isActive=true`, `mustChangePassword=false`, `status=active`; no DB-level block. Suspected Railway cold-start or transient 500 on the backend.
 - **Suspected layer:** Backend (intermittent Railway cold-start or transient DB error during login for this account)
+- **S22-V4 update (2026-06-11):** Backend theory **refuted** — 36/36 parent API logins hard-pass across three sweeps (12 accounts × 3 runs, HTTP 200 + `/auth/me` role=parent, `tests/s22v4-probe.spec.js`). The defect is a **client-side race** and it reproduces reliably: parent3's UI form login succeeded (login 200, navigated to `/`) but the app bounced back to `/login` within ~1–5 s in **2 of 3** attempts (evidence: `screens/S22V4-P-001-def009-bounce-to-login.png`). Debug trace shows the login page fires `/auth/me` → 401 → interceptor `/auth/refresh` → 401 **before** login; when that chain resolves after the successful login navigation, the unauthenticated handler clears auth and redirects — explaining the intermittent "stays at /login" symptom across different parent accounts (originally parent3/6/7/10/12). Suspected layer revised: **Frontend** — `shared/services/api.js` onUnauthenticated handler racing a concurrent successful login. Severity stays **P1**; matrix P-001 set to FAIL. Still OPEN (find-and-record only this session).
 
 ### DEF-010 — PrivacyConsentModal blocks all parent interactions on first login
 - **Severity:** P0
@@ -514,3 +515,14 @@ All 15 rows in `child_attendance` at migration time:
   - Both directions work live — proves namespace fix restored realtime broadly (chat delivery in both directions, WS frames flowing)
   - Full suite: **2 passed (18.2 s)**
 - **Status:** ✅ FIXED (S22-FIX-DEF015, 2026-06-10) — commit `21ac5ebf`, deployed to Railway. DEF-013-T1 (previously blocked) now passes.
+
+---
+
+### DEF-016 — RETRACTED: government password toggle reported missing — false finding (test artifact)
+
+- **Severity:** — (retracted, never a product defect)
+- **Portal:** Government
+- **Feature ID:** G-002
+- **What happened:** The S22-V4 government suite marked G-002 FAIL claiming "Login.jsx has type=\"password\" hardcoded — no toggle implementation". Code review shows `government/src/pages/Login.jsx` renders the password input via `components/dnp/Field.jsx`, which implements a full show/hide toggle (eye button with `aria-label="Show password"`, switches input type password↔text). The test's selector `pg.locator('button').filter({ has: svg }).last()` clicked the **language switcher** (the last svg-button on the page), so the input type never changed and the assertion failed.
+- **Verification (S22-V4 probe, 2026-06-11):** corrected selector (`button[aria-label="Show password"]`) on the live portal — toggle switches type to `text` and back to `password` both directions. Screenshot: `screens/S22V4-G-002-toggle-type-text.png`. Selector fixed in `tests/s22v4-government.spec.js`.
+- **Status:** ❌ RETRACTED (2026-06-11) — G-002 verdict corrected to PASS. Number DEF-016 is consumed; do not reuse.

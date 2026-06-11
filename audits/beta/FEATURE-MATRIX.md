@@ -324,7 +324,7 @@
 | T-040 | Send message to parent | teacher1–8 (all) | W2 CORE: send Cyrillic+emoji message to each linked parent | — | PASS | T-040-message-sent (sent via Enter key; teachers 3-8 sent via S2) |
 | T-041 | Edit own message | teacher1 | W2: send then edit a message | — | BLOCKED | Not scripted in wave2 |
 | T-042 | Delete own message | teacher1 | W2: send then delete a message | — | BLOCKED | Not scripted in wave2 |
-| T-043 | Real-time incoming message (socket) | teacher1 (receive from parent) | W3→W2 check: parent reply triggers badge | — | BLOCKED | Depends on Wave-3 parent messages |
+| T-043 | Real-time incoming message (socket) | teacher1 (receive from parent) | W3→W2 check: parent reply triggers badge | — | PASS | S22-V4 probe RT-NONCHAT: teacher parked on Xabar warnings tab; parent1 sent message via API → Suhbat badge 0→1 live via socket, no reload (S22V4-RT-NONCHAT-badge-increment.png) |
 | T-044 | Mark conversation as read | teacher1 | W2: open conversation, verify read state | — | BLOCKED | Not scripted in wave2 |
 
 ### Activities / Observations (T-045 – T-049)
@@ -468,8 +468,8 @@
 
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
-| P-001 | Login with email+password | parent1–12 (all) | W3: each parent logs in at 390px | — | PARTIAL | P-001-parent1-home.png; parent3/6/7/10/12 login failed (DEF-009 intermittent) |
-| P-002 | Refresh JWT token | parent1 | W3: idle, navigate → silent refresh | — | PARTIAL | P-002-password-toggle.png; toggle found conditionally; silent refresh not directly observable |
+| P-001 | Login with email+password | parent1–12 (all) | W3: each parent logs in at 390px | — | FAIL | S22-V4 probe: backend solid — 36/36 API logins HTTP 200 + /auth/me role=parent across 3 sweeps. But UI form login bounced back to /login within 5s in 2 of 3 attempts (S22V4-P-001-def009-bounce-to-login.png) — DEF-009 (P1) reproduces reliably; root cause revised to frontend auth race, see BETA-DEFECTS |
+| P-002 | Refresh JWT token | parent1 | W3: idle, navigate → silent refresh | — | PASS | S22-V4 probe: accessToken cookie deleted mid-session (refreshToken kept) → reload → interceptor silently refreshed, no redirect to /login, new accessToken cookie re-issued (S22V4-P-002-silent-refresh-recovered.png) |
 | P-003 | Logout | parent1–12 (all) | W3: click Chiqish, verify redirect | — | PASS | P-003b-logout.png; redirect confirmed for parent1 |
 | P-004 | Change password (first login) | parent1 (simulate) | W3: verify forced change gate | — | BLOCKED | No fresh account with mustChangePassword=true; cannot simulate without DB reset |
 | P-005 | Change password (settings) | parent1 | W3: Settings → change password | — | BLOCKED | Not scripted; form interaction requires current password knowledge |
@@ -558,7 +558,7 @@
 | P-048 | Delete own message | parent1 | W3: send, then delete own message | — | BLOCKED | Delete not scripted |
 | P-049 | Auto-scroll to new messages | parent1 | W3: send messages, verify scroll to bottom | — | BLOCKED | Auto-scroll not asserted in automation |
 | P-050 | Empty state for chat | parent1 (if no Wave-2 messages) | W3: verify "Xabarlar yo'q" empty state | — | BLOCKED | Messages exist; empty state not reachable |
-| P-051 | Real-time chat updates (socket) | parent1 + teacher1 (two tabs) | W3: open two tabs; teacher sends → parent sees instantly | — | BLOCKED | Two-tab live socket test not feasible in single-browser automation |
+| P-051 | Real-time chat updates (socket) | parent1 + teacher1 (two tabs) | W3: open two tabs; teacher sends → parent sees instantly | — | PASS | S22-FIX-DEF015 two-context browser proof: teacher→parent delivered live in 5.2s, parent→teacher in 1.5s, both in DOM without reload (DEF-013-T1/T2, commit 21ac5ebf) |
 
 ### Notifications Panel (P-052 – P-058)
 
@@ -819,7 +819,7 @@
 | ID | Feature | Account | Scenario | Pre-Assessment | Verdict | Screenshot |
 |---|---|---|---|---|---|---|
 | G-001 | Login via email/password | gov.republic, gov.toshkent, gov.samarqand | W5/6: each gov user logs in | — | PASS | G-001-toshkent-login, G-001-samarqand-login, G-001-republic-login |
-| G-002 | Password visibility toggle | gov.republic | W6: click eye icon on login | — | FAIL | S22-V4: government Login.jsx has type="password" hardcoded — no toggle implementation; DEF-016 |
+| G-002 | Password visibility toggle | gov.republic | W6: click eye icon on login | — | PASS | S22-V4 probe (corrected): eye toggle switches type password↔text both directions (S22V4-G-002-toggle-type-text.png). Earlier FAIL was a test artifact — `.last()` svg-button selector clicked the language switcher instead of the eye button; Field.jsx implements the toggle. DEF-016 retracted, never a product defect |
 | G-003 | Forced password change on login | gov.republic (simulate) | W6: verify gate | — | BLOCKED | — |
 | G-004 | Logout | gov.republic | W6: click Chiqish | — | WON'T-AUTOMATE | S22-V4: logout button (Chiqish) not found in second test run; logout covered in G-070 |
 | G-005 | Change password (post-login) | gov.republic | W6: Settings → change password | — | BLOCKED | — |
@@ -959,26 +959,38 @@
 
 ## Coverage Summary
 
-**Status: ALL VERDICTS FILLED — Waves 1–6 complete**
+**Status: S22-V4 VERIFICATION REBUILD complete (2026-06-11) — every soft-PARTIAL converted to a hard verdict (outcome asserted, not just action performed)**
 
-| Portal | Total | PASS | PARTIAL | BLOCKED | KNOWN-FAIL | FAIL |
-|---|---|---|---|---|---|---|
-| Reception (W1) | 89 | 68 | 3 | 18 | 0 | 0 |
-| Teacher (W2) | 117* | 38 | 14 | 65 | 0 | 0 |
-| Parent (W3) | 106 | 28 | 28 | 49 | 1 (P-011) | 0 |
-| Admin (W4) | 96 | 20 | 52 | 24 | 0 | 0 |
-| Government (W5+6) | 76 | 1 | 53 | 21 | 1 (G-050) | 0 |
-| **TOTAL** | **484** | **155** | **150** | **177** | **2** | **0** |
+| Portal | Total | PASS | PARTIAL | BLOCKED | WON'T-AUTOMATE | KNOWN-FAIL | FAIL |
+|---|---|---|---|---|---|---|---|
+| Reception (W1) | 89 | 70 | 0 | 18 | 1 | 0 | 0 |
+| Teacher (W2) | 117* | 41 | 0 | 64 | 12 | 0 | 0 |
+| Parent (W3) | 106 | 40 | 0 | 48 | 16 | 1 (P-011) | 1 (P-001) |
+| Admin (W4) | 96 | 46 | 0 | 24 | 26 | 0 | 0 |
+| Government (W5+6) | 76 | 32 | 0 | 21 | 22 | 1 (G-050) | 0 |
+| **TOTAL** | **484** | **229** | **0** | **175** | **77** | **2** | **1** |
 
 *T-051 split into T-051 (normal upload) + T-051b (>5MB error) for coverage granularity.
 
-**Coverage rate (PASS+PARTIAL / Total):** 305/484 = **63%**
-**Blocked rate:** 177/484 = **37%** — primarily file-upload OS dialogs, load-more pagination, and features requiring second test accounts
+**S22-V4 movement (from the S14 baseline of 150 PARTIAL):**
+- PARTIAL → PASS: **72** (70 in the five portal suites; P-002 and G-002 in the close-out probe)
+- PARTIAL → WON'T-AUTOMATE: **77** (each with a stated reason in its row — selector/seed-data/OS-dialog limits, not product defects)
+- PARTIAL → FAIL: **1** (P-001 — UI login bounce reproduces 2/3, DEF-009 P1 open with revised frontend-race root cause. G-002's initial FAIL was retracted as a test-selector artifact, see DEF-016; re-tested to PASS)
+- Remaining PARTIAL: **0**
+- Bonus BLOCKED → PASS: **2** (T-043 live badge increment, P-051 two-context chat proof — both unlocked by the DEF-015 socket fix)
+
+**Hard-PASS rate (PASS / Total):** 229/484 = **47%** — every PASS now has an asserted outcome (readback, count change, persisted value)
+**Blocked rate:** 175/484 = **36%** — primarily file-upload OS dialogs, load-more pagination, and features requiring second test accounts
 
 **Key blocked clusters:**
-- Teacher (65/117 blocked): OS file-upload dialogs, session-expiry simulation, load-more pagination, group messaging with 2nd teacher
-- Parent (49/106 blocked): requires real child data + prior teacher actions (ratings, media, observations); first-login consent modal blocked automation
+- Teacher (64/117 blocked): OS file-upload dialogs, session-expiry simulation, load-more pagination, group messaging with 2nd teacher
+- Parent (48/106 blocked): requires real child data + prior teacher actions (ratings, media, observations); first-login consent modal blocked automation
 - Government (21/76 blocked): secondary gov-user capability gates, load-more lists, date-range filters, clipboard copy verification
+
+**Cross-cutting (S22-V4 fold-ins):**
+- Language mid-flow with translated-render assert: parent P-013 (RU persists after reload) + P-103 (EN, no raw keys), admin A-005 (Cyrillic asserted after RU select), government G-071 (Cyrillic asserted). Teacher language switcher → WON'T-AUTOMATE (selector unreliable; toggle exists in code).
+- Non-chat realtime surface: **PROVEN** — teacher Xabar "Suhbat" unread badge incremented 0→1 live via socket while teacher sat on the warnings tab, no reload (S22V4-RT-NONCHAT-badge-increment.png). Closes the S22-V3/DEF-015 caveat that only chat delivery was proven.
+- Double-submit: DOUBLE-1 (S22-V3) — attendance save double-click fired ≤1 POST; no duplicate creates observed in any S22-V4 create flow.
 
 ---
 

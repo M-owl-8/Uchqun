@@ -97,7 +97,7 @@ test('G-002 | password toggle → type=text', async () => {
     await expect(pwInput).toBeVisible({ timeout: 8_000 });
     expect(await pwInput.getAttribute('type')).toBe('password');
 
-    const toggle = pg.locator('button').filter({ has: pg.locator('svg') }).last();
+    const toggle = pg.locator('button[aria-label="Show password"]');
     if (!(await toggle.isVisible({ timeout: 3_000 }).catch(() => false))) {
       test.skip(true, 'Password toggle not found on government login page');
       return;
