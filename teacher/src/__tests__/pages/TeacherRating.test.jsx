@@ -46,15 +46,9 @@ vi.mock('../../parent/components/LoadingSpinner', () => ({
     React.createElement('div', { 'data-testid': 'loading-spinner', 'data-size': size }),
 }));
 
-vi.mock('@shared/config/ratingIndicators.js', () => ({
-  PARENT_INDICATORS: [
-    { key: 'parent_indicator_1', en: 'Indicator 1', uz: "Ko'rsatkich 1", ru: 'Показатель 1' },
-    { key: 'parent_indicator_2', en: 'Indicator 2', uz: "Ko'rsatkich 2", ru: 'Показатель 2' },
-    { key: 'parent_indicator_3', en: 'Indicator 3', uz: "Ko'rsatkich 3", ru: 'Показатель 3' },
-    { key: 'parent_indicator_4', en: 'Indicator 4', uz: "Ko'rsatkich 4", ru: 'Показатель 4' },
-    { key: 'parent_indicator_5', en: 'Indicator 5', uz: "Ko'rsatkich 5", ru: 'Показатель 5' },
-  ],
-}));
+// PL-015: use the REAL config — real owner-provided names must keep the form
+// renderable (containsFillerIndicators gate). Filler behavior is covered in
+// TeacherRating.gate.test.jsx.
 
 vi.mock('../../parent/services/api', () => ({
   default: { get: vi.fn(), post: vi.fn() },

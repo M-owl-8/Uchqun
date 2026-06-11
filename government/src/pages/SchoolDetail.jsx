@@ -12,7 +12,7 @@ import {
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
-import { GOV_INDICATORS } from '@shared/config/ratingIndicators';
+import { GOV_INDICATORS, containsFillerIndicators } from '@shared/config/ratingIndicators';
 
 // StarRating moved to @shared/components/StarRating (extracted 2026-06-07
 // so parent + gov + any future portal can share one rater implementation
@@ -89,6 +89,9 @@ const GovRatingForm = ({ schoolId, onSuccess }) => {
     } finally { setSubmitting(false); }
   };
 
+  // PL-015 ship gate (Q3): never render the rating form over positional filler labels.
+  if (containsFillerIndicators(GOV_INDICATORS)) return null;
+
   return (
     <div className="bg-paper-card border border-brand-200 rounded-lg">
       <div className="px-5 py-4 border-b border-brand-100 flex items-center gap-2">
@@ -96,9 +99,6 @@ const GovRatingForm = ({ schoolId, onSuccess }) => {
         <h2 className="text-sm font-semibold text-gray-900">
           {existing ? t('govRating.editTitle', { defaultValue: "Davlat bahosini tahrirlash" }) : t('govRating.addTitle', { defaultValue: "Davlat bahosi qo'shish" })}
         </h2>
-        <span className="ml-auto text-xs text-amber-600 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5">
-          {t('govRating.pl015Notice', { defaultValue: "Ko'rsatkich nomlari: PL-015 pending" })}
-        </span>
       </div>
       <form onSubmit={handleSubmit} className="px-5 py-4 space-y-4">
         <div>

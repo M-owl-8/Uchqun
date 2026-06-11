@@ -1,6 +1,6 @@
-// PL-015 GATE: Indicator labels in the school rating form are PLACEHOLDERS from
-// shared/config/ratingIndicators.js. DO NOT ship this form to beta users until the
-// partner provides real indicator names via PL-015 and ratingIndicators.js is updated.
+// PL-015 ship gate (Q3): the school-rating block hides itself if positional
+// filler indicator labels ever reappear in shared/config/ratingIndicators.js —
+// see containsFillerIndicators() there. Real names landed 2026-06-11.
 import { useEffect, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { formatDateTime } from '@shared/utils/formatDate';
@@ -10,10 +10,12 @@ import Card from '../components/Card';
 import LoadingSpinner from '../components/LoadingSpinner';
 import { useChild } from '../context/ChildContext';
 import { useToast } from '../../shared/context/ToastContext';
-import { PARENT_INDICATORS } from '@shared/config/ratingIndicators.js';
+import { PARENT_INDICATORS, containsFillerIndicators } from '@shared/config/ratingIndicators.js';
 import StarRating from '@shared/components/StarRating';
 
 const DEFAULT_INDICATORS = Object.fromEntries(PARENT_INDICATORS.map((ind) => [ind.key, 3]));
+// PL-015 ship gate: never render the rating form over positional filler labels.
+const INDICATORS_GATED = containsFillerIndicators(PARENT_INDICATORS);
 
 const TeacherRating = () => {
   const { t, i18n } = useTranslation();
@@ -397,7 +399,7 @@ const TeacherRating = () => {
       )}
 
       {/* School Rating Section — 5-indicator form (CP-020) */}
-      {school ? (
+      {school && !INDICATORS_GATED ? (
         <>
           <Card className="bg-p-honey-500 rounded-2xl p-6 md:p-8 shadow-xl border-0">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">{t('schoolRatingPage.title')}</h2>
@@ -457,7 +459,7 @@ const TeacherRating = () => {
                 </div>
               </div>
 
-              {/* 5-indicator star rows — PL-015 GATE: labels are placeholders */}
+              {/* 5-indicator star rows (PL-015 real names; gated by INDICATORS_GATED) */}
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-sm font-semibold text-p-sepia-700">
                   <BarChart3 className="w-4 h-4 text-p-honey-700" />
