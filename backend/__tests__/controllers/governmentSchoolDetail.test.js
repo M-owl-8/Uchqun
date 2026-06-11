@@ -80,7 +80,11 @@ describe('governmentController.getSchoolById', () => {
     const res = mkRes();
     await getSchoolById(govReq(SCHOOL_ID), res);
 
-    expect(mockSchoolFindOne).toHaveBeenCalledWith({ where: { id: SCHOOL_ID } });
+    // S29/Q4: getSchoolById now also passes an include (regionRef) — the
+    // assertions target the WHERE intent: scoped by id, no isActive filter.
+    expect(mockSchoolFindOne).toHaveBeenCalledWith(
+      expect.objectContaining({ where: { id: SCHOOL_ID } }),
+    );
     expect(mockSchoolFindOne.mock.calls[0][0].where).not.toHaveProperty('isActive');
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
     const payload = res.json.mock.calls[0][0];

@@ -300,7 +300,12 @@ export const getSchoolById = async (req, res) => {
       return res.status(400).json({ error: 'Invalid school ID' });
     }
 
-    const school = await School.findOne({ where: { id, ...regionWhere(req) } });
+    const school = await School.findOne({
+      where: { id, ...regionWhere(req) },
+      // S29/Q4: the legacy schools.region STRING is NULL in production — the
+      // Region relation is the canonical display source.
+      include: [{ model: Region, as: 'regionRef', attributes: ['id', 'name', 'code'], required: false }],
+    });
     if (!school) {
       return res.status(404).json({ error: 'School not found' });
     }

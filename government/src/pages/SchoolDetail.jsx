@@ -176,7 +176,8 @@ const OverviewTab = ({ school, canRate, onRefresh }) => {
                 };
                 return typeMap[school.type] || school.type || '—';
               })() },
-              { label: t('schoolDetail.region', { defaultValue: 'Viloyat' }), value: school.region || '—' },
+              {/* S29/Q4: prefer the Region relation — the legacy string column is NULL */}
+              { label: t('schoolDetail.region', { defaultValue: 'Viloyat' }), value: school.regionRef?.name || school.region || '—' },
               { label: t('schoolDetail.city', { defaultValue: 'Shahar' }), value: school.city || '—' },
               { label: t('schoolDetail.phone', { defaultValue: 'Telefon' }), value: school.phone || '—' },
               { label: t('schoolDetail.email', { defaultValue: 'Email' }), value: school.email || '—' },

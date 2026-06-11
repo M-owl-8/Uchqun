@@ -136,7 +136,9 @@ const SchoolProfile = () => {
         <dl className="grid sm:grid-cols-3 gap-4 text-sm">
           <div>
             <dt className="text-warm-500 mb-0.5">{t('schoolProfile.region', { defaultValue: 'Region' })}</dt>
-            <dd className="font-medium text-warm-900">{school?.region?.name ?? '—'}</dd>
+            {/* S29/Q4: API includes the Region relation as regionRef — the legacy
+                school.region string column is NULL and was rendering '—' here. */}
+            <dd className="font-medium text-warm-900">{school?.regionRef?.name ?? '—'}</dd>
           </div>
           <div>
             <dt className="text-warm-500 mb-0.5">{t('schoolProfile.category', { defaultValue: 'Category' })}</dt>
