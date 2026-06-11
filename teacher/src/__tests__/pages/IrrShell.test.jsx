@@ -29,9 +29,14 @@ vi.mock('../../shared/context/ToastContext', () => ({
 const mockApi = { get: vi.fn(), post: vi.fn(), patch: vi.fn(), delete: vi.fn() };
 vi.mock('../../shared/services/api', () => ({ default: mockApi }));
 
-vi.mock('lucide-react', () => ({
-  ArrowLeft: () => React.createElement('span', null, '←'),
-  FileText: () => React.createElement('span', null, 'doc'),
+// Stub EVERY icon — IrrShell pulls many lucide icons and listing them one by
+// one rots (ClipboardCheck/ChevronDown were missing and failed 17 tests).
+vi.mock('lucide-react', () => new Proxy({}, {
+  has: () => true,
+  get: (_target, prop) => {
+    if (prop === 'then' || prop === '__esModule') return undefined;
+    return () => React.createElement('span', { 'data-icon': String(prop) });
+  },
 }));
 
 const DRAFT_IRR = {
