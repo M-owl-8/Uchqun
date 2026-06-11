@@ -307,6 +307,14 @@ const MonitoringJournal = () => {
           })}
         </div>
 
+        {/* PL-017 (Q8): physical journals coexist with the platform — small
+            regulatory note at the ИРР journal data-entry surface. */}
+        <p className="text-[12px] text-slate-400">
+          {t('monitoring.physicalJournalNote', {
+            defaultValue: "Yozuvlar rasmiy muhrlangan jismoniy jurnalda ham yuritiladi — bu platforma uni to'ldiradi, o'rnini bosmaydi.",
+          })}
+        </p>
+
         {/* Emotional tab */}
         {activeTab === 'emotional' && (
           <div className="space-y-6">
