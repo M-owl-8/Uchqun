@@ -19,12 +19,14 @@ vi.mock('../../shared/context/AuthContext', () => ({
   }),
 }));
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (k) => k,
-    i18n: { language: 'en' },
-  }),
-}));
+vi.mock('react-i18next', () => {
+  // S30: stable identities — returning a fresh t per useTranslation() call
+  // retriggers useCallback/useEffect chains and caused the Activities
+  // infinite-render loop that hung the whole suite.
+  const stable = { t: (k) => k,
+    i18n: { language: 'en' } };
+  return { useTranslation: () => stable };
+});
 
 vi.mock('../../shared/components/LoadingSpinner', () => ({
   default: () => React.createElement('div', { 'data-testid': 'spinner' }),
@@ -138,7 +140,7 @@ describe('CL-013b Media page', () => {
     render(React.createElement(Media));
     await waitFor(() => screen.getByText('Class Photo'));
 
-    const editBtn = document.querySelector('button[title="Edit"]');
+    const editBtn = document.querySelector('button[title="common.edit"]');
     fireEvent.click(editBtn);
     await waitFor(() => expect(screen.getByText('mediaPage.modal.editTitle')).toBeTruthy());
     expect(document.querySelector('input[value="Class Photo"]')).toBeTruthy();
@@ -151,7 +153,7 @@ describe('CL-013b Media page', () => {
     render(React.createElement(Media));
     await waitFor(() => screen.getByText('Class Photo'));
 
-    const deleteBtn = document.querySelector('button[title="Delete"]');
+    const deleteBtn = document.querySelector('button[title="common.delete"]');
     fireEvent.click(deleteBtn);
     expect(screen.getByTestId('confirm-dialog')).toBeTruthy();
 
@@ -168,7 +170,7 @@ describe('CL-013b Media page', () => {
     render(React.createElement(Media));
     await waitFor(() => screen.getByText('Class Photo'));
 
-    const editBtn = document.querySelector('button[title="Edit"]');
+    const editBtn = document.querySelector('button[title="common.edit"]');
     fireEvent.click(editBtn);
     await waitFor(() => screen.getByText('mediaPage.modal.editTitle'));
 

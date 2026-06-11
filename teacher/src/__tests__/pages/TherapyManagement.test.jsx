@@ -13,14 +13,26 @@ vi.mock('../../shared/context/ToastContext', () => ({
   }),
 }));
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (k, opts) => opts?.defaultValue ?? k,
-  }),
-}));
+vi.mock('react-i18next', () => {
+  // S30: stable identities — returning a fresh t per useTranslation() call
+  // retriggers useCallback/useEffect chains and caused the Activities
+  // infinite-render loop that hung the whole suite.
+  const stable = { t: (k, opts) => opts?.defaultValue ?? k };
+  return { useTranslation: () => stable };
+});
 
 vi.mock('../../shared/components/LoadingSpinner', () => ({
   default: () => React.createElement('div', { 'data-testid': 'spinner' }),
+}));
+
+vi.mock('../../shared/components/ConfirmDialog', () => ({
+  default: ({ dialog, onCancel }) =>
+    dialog
+      ? React.createElement('div', { 'data-testid': 'confirm-dialog' },
+          React.createElement('button', { onClick: dialog.onConfirm, 'data-testid': 'confirm-ok' }, 'OK'),
+          React.createElement('button', { onClick: onCancel, 'data-testid': 'confirm-cancel' }, 'Cancel'),
+        )
+      : null,
 }));
 
 vi.mock('../../shared/components/Card', () => ({
@@ -92,7 +104,7 @@ describe('CL-014d TherapyManagement page', () => {
     stubLoad([], []);
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
     render(React.createElement(TherapyManagement));
-    await waitFor(() => expect(screen.getByText('Terapiyalar topilmadi')).toBeTruthy());
+    await waitFor(() => expect(screen.getByText('therapy.noTherapies')).toBeTruthy());
   });
 
   it('filters therapies by search query', async () => {
@@ -113,10 +125,10 @@ describe('CL-014d TherapyManagement page', () => {
     stubLoad([], []);
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
     render(React.createElement(TherapyManagement));
-    await waitFor(() => screen.getByText('Terapiyalar topilmadi'));
-    fireEvent.click(screen.getByText('Yangi Terapiya'));
+    await waitFor(() => screen.getByText('therapy.noTherapies'));
+    fireEvent.click(screen.getByText('therapy.create'));
     // Modal cancel button only appears when modal is open
-    expect(screen.getByText('Bekor qilish')).toBeTruthy();
+    expect(screen.getByText('therapy.cancel')).toBeTruthy();
   });
 
   it('submits create form via handleSave and reloads', async () => {
@@ -124,15 +136,15 @@ describe('CL-014d TherapyManagement page', () => {
     mockApi.post.mockResolvedValue({ data: { id: 'th-new' } });
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
     render(React.createElement(TherapyManagement));
-    await waitFor(() => screen.getByText('Terapiyalar topilmadi'));
-    fireEvent.click(screen.getByText('Yangi Terapiya'));
+    await waitFor(() => screen.getByText('therapy.noTherapies'));
+    fireEvent.click(screen.getByText('therapy.create'));
 
     // Fill title via placeholder (modal input, not the search bar)
-    const titleInput = screen.getByPlaceholderText('Terapiya nomi');
+    const titleInput = screen.getByPlaceholderText('therapy.titlePlaceholder');
     fireEvent.change(titleInput, { target: { value: 'New Music' } });
 
     stubLoad([{ ...therapy1, id: 'th-new', title: 'New Music' }], [parent1]);
-    fireEvent.click(screen.getByText('Saqlash'));
+    fireEvent.click(screen.getByText('therapy.save'));
     await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
     await waitFor(() => expect(mockApi.post).toHaveBeenCalledWith('/therapy', expect.any(Object)));
   });
@@ -142,8 +154,8 @@ describe('CL-014d TherapyManagement page', () => {
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
     render(React.createElement(TherapyManagement));
     await waitFor(() => screen.getByText('Music Therapy'));
-    fireEvent.click(screen.getByText('Tayinlash'));
-    await waitFor(() => expect(screen.getByText('Bolaga Terapiya Tayinlash')).toBeTruthy());
+    fireEvent.click(screen.getByText('therapy.assign'));
+    await waitFor(() => expect(screen.getByText('therapy.assignToChild')).toBeTruthy());
     expect(screen.getByText('Zafar Yusupov (Bobur Xasanov)')).toBeTruthy();
   });
 
@@ -152,20 +164,22 @@ describe('CL-014d TherapyManagement page', () => {
     mockApi.post.mockResolvedValue({});
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
     render(React.createElement(TherapyManagement));
-    await waitFor(() => screen.getByText('Tayinlash'));
-    fireEvent.click(screen.getByText('Tayinlash'));
-    await waitFor(() => screen.getByText('Bolaga Terapiya Tayinlash'));
+    await waitFor(() => screen.getByText('therapy.assign'));
+    fireEvent.click(screen.getByText('therapy.assign'));
+    await waitFor(() => screen.getByText('therapy.assignToChild'));
 
     const childSelect = document.querySelector('select');
     fireEvent.change(childSelect, { target: { value: 'child-1' } });
 
-    const assignBtns = screen.getAllByText('Tayinlash');
+    const assignBtns = screen.getAllByText('therapy.assign');
     fireEvent.click(assignBtns[assignBtns.length - 1]);
     await waitFor(() => expect(mockApi.post).toHaveBeenCalledWith('/therapy/th-1/start', { childId: 'child-1' }));
     await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
   });
 
-  it('requires double-click to delete (pendingDeleteId guard)', async () => {
+  // The old pendingDeleteId double-click guard was replaced by the UX-01
+  // ConfirmDialog pattern — assert the CURRENT contract: dialog gates delete.
+  it('delete is gated by ConfirmDialog: cancel aborts, confirm calls DELETE', async () => {
     stubLoad([therapy1], [parent1]);
     mockApi.delete.mockResolvedValue({});
     const { default: TherapyManagement } = await import('../../pages/TherapyManagement');
@@ -174,16 +188,23 @@ describe('CL-014d TherapyManagement page', () => {
 
     const deleteBtns = document.querySelectorAll('button');
     const deleteBtn = Array.from(deleteBtns).find(b =>
-      b.querySelector('svg') && b.className.includes('red')
+      b.querySelector('svg') && b.className.includes('error')
     );
-    // First click — shows warning
+    // Click delete — confirm dialog appears, nothing deleted yet
     fireEvent.click(deleteBtn);
-    expect(mockToastError).toHaveBeenCalled();
+    await waitFor(() => screen.getByTestId('confirm-dialog'));
     expect(mockApi.delete).not.toHaveBeenCalled();
 
-    // Second click — confirms delete
+    // Cancel — dialog closes, still nothing deleted
+    fireEvent.click(screen.getByTestId('confirm-cancel'));
+    await waitFor(() => expect(screen.queryByTestId('confirm-dialog')).toBeFalsy());
+    expect(mockApi.delete).not.toHaveBeenCalled();
+
+    // Re-open and confirm — DELETE fires and success toast shows
     stubLoad([], []);
     fireEvent.click(deleteBtn);
+    await waitFor(() => screen.getByTestId('confirm-ok'));
+    fireEvent.click(screen.getByTestId('confirm-ok'));
     await waitFor(() => expect(mockApi.delete).toHaveBeenCalledWith('/therapy/th-1'));
     await waitFor(() => expect(mockSuccess).toHaveBeenCalled());
   });

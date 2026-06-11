@@ -21,15 +21,15 @@ vi.mock('react-router-dom', () => {
 });
 
 vi.mock('../../context/AuthContext', () => {
-  const logout = vi.fn();
-  const updateUser = vi.fn();
-  return {
-    useAuth: () => ({
-      user: { id: '1', firstName: 'Test', lastName: 'User', email: 'reception@school.uz', role: 'reception' },
-      logout,
-      updateUser,
-    }),
+  // S30: the whole auth object (incl. user) must be identity-stable — a fresh
+  // user object per call retriggers Settings' useEffect([user]) → setState →
+  // infinite render loop that hung the reception suite in CI (6h timeout).
+  const auth = {
+    user: { id: '1', firstName: 'Test', lastName: 'User', email: 'reception@school.uz', role: 'reception' },
+    logout: vi.fn(),
+    updateUser: vi.fn(),
   };
+  return { useAuth: () => auth };
 });
 
 vi.mock('@shared/context/ToastContext', () => {
@@ -127,16 +127,18 @@ describe('CL-014c Settings comprehensive', () => {
 
     const pwdInputs = container.querySelectorAll('input[type="password"]');
     fireEvent.change(pwdInputs[0], { target: { value: 'current123' } });
-    fireEvent.change(pwdInputs[1], { target: { value: 'newpass123' } });
-    fireEvent.change(pwdInputs[2], { target: { value: 'newpass123' } });
+    fireEvent.change(pwdInputs[1], { target: { value: 'Newpass123' } });
+    fireEvent.change(pwdInputs[2], { target: { value: 'Newpass123' } });
 
-    const passwordForm = container.querySelectorAll('form')[2];
+    // Select the form that actually owns the password inputs — the page's
+    // form count/order changed when PasswordForm was extracted.
+    const passwordForm = pwdInputs[0].closest('form');
     fireEvent.submit(passwordForm);
 
     await waitFor(() => {
       expect(api.put).toHaveBeenCalledWith('/user/password', {
         currentPassword: 'current123',
-        newPassword: 'newpass123',
+        newPassword: 'Newpass123',
       });
     });
   });

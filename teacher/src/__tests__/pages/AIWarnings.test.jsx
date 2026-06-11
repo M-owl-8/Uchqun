@@ -3,9 +3,13 @@ import { describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import React from 'react';
 
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({ t: (k, opts) => opts?.defaultValue ?? k }),
-}));
+vi.mock('react-i18next', () => {
+  // S30: stable identities — returning a fresh t per useTranslation() call
+  // retriggers useCallback/useEffect chains and caused the Activities
+  // infinite-render loop that hung the whole suite.
+  const stable = { t: (k, opts) => opts?.defaultValue ?? k, i18n: { language: 'en' } };
+  return { useTranslation: () => stable };
+});
 
 vi.mock('../../parent/services/api', () => ({
   default: {

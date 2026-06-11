@@ -12,12 +12,14 @@ vi.mock('react-router-dom', () => ({
 }));
 
 // ── i18n mock ────────────────────────────────────────────────────────
-vi.mock('react-i18next', () => ({
-  useTranslation: () => ({
-    t: (k, opts) => opts?.defaultValue ?? k,
-    i18n: { language: 'uz' },
-  }),
-}));
+vi.mock('react-i18next', () => {
+  // S30: stable identities — returning a fresh t per useTranslation() call
+  // retriggers useCallback/useEffect chains and caused the Activities
+  // infinite-render loop that hung the whole suite.
+  const stable = { t: (k, opts) => opts?.defaultValue ?? k,
+    i18n: { language: 'uz' } };
+  return { useTranslation: () => stable };
+});
 
 // ── ChildContext mock ─────────────────────────────────────────────────
 const mockSelectChild = vi.fn();

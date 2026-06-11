@@ -27,12 +27,11 @@ export default defineConfig(({ mode }) => {
       globals: true,
       environment: 'jsdom',
       setupFiles: './src/setupTests.js',
+      // S30: vitest 4 removed test.poolOptions (the execArgv memory flag was
+      // already being ignored at runtime). The 4 GB headroom existed for the
+      // settings suite's infinite-render loop — now fixed at the source
+      // (stable useAuth mock identity in settings.test.jsx).
       pool: 'forks',
-      poolOptions: {
-        forks: {
-          execArgv: ['--max-old-space-size=4096'],
-        },
-      },
     },
   };
 });
