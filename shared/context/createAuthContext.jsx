@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect } from 'react';
+import { createContext, useContext, useState, useEffect, useRef } from 'react';
 import { createApi } from '../services/api';
 
 export function createAuthContext({ userStorageKey, tokenKey, requiredRole = null, api: sharedApi = null } = {}) {
@@ -25,6 +25,15 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
     });
     const [loading, setLoading] = useState(true);
 
+    // DEF-009 — second half of the login-race fix (the api.js interceptor guard
+    // is the first half). The bootstrap /auth/me below 401s on the login page
+    // and its rejection propagates here AFTER the interceptor's refresh attempt
+    // fails (~1 network round trip). If the user's login succeeds inside that
+    // window, the catch block would wipe the just-established session and
+    // ProtectedRoute bounces back to /login. Track a login epoch: state writes
+    // from a bootstrap that started before the login are stale and skipped.
+    const loginEpochRef = useRef(0);
+
     // Wire clearAuth → SPA logout instead of window.location.replace.
     // The hard-reload path has a race: replace() fires before the new cookies
     // from a concurrent successful refresh are written to the browser jar,
@@ -43,10 +52,12 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
 
     useEffect(() => {
       (async () => {
+        const epochAtStart = loginEpochRef.current;
         try {
           // The api interceptor transparently refreshes an expired access token
           // and retries this call — no manual refresh logic needed here.
           const res = await api.get('/auth/me');
+          if (loginEpochRef.current !== epochAtStart) return; // login won the race — don't overwrite
           const userData = res.data.data ?? res.data;
           if (requiredRole && userData.role !== requiredRole) {
             localStorage.removeItem(storageKey);
@@ -56,6 +67,7 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
             setUser(userData);
           }
         } catch {
+          if (loginEpochRef.current !== epochAtStart) return; // stale pre-login 401 — keep the new session
           localStorage.removeItem(storageKey);
           setUser(null);
         } finally {
@@ -73,6 +85,7 @@ export function createAuthContext({ userStorageKey, tokenKey, requiredRole = nul
         if (requiredRole && userData.role !== requiredRole) {
           return { success: false, error: `Access denied. Required role: ${requiredRole}`, status: 403 };
         }
+        loginEpochRef.current += 1; // invalidate any in-flight pre-login bootstrap
         try { localStorage.setItem(storageKey, JSON.stringify(userData)); } catch { /* quota */ }
         setUser(userData);
         return res.data;
