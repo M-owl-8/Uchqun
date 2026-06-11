@@ -348,7 +348,14 @@ All 15 rows in `child_attendance` at migration time:
 
 **Standing pre-launch concern (not blocking beta):** The `excused → sick` mapping is semantically incorrect for any future real-data migration. `excused` means absence with permission; `sick` asserts a medical state. If production ever contains real `excused` rows, the correct mapping is `excused → absent`, not `excused → sick`. The `down()` migration should be reviewed before any rollback on a live deployment.
 
-**Status:** ✅ FIXED (S21) — migration commit `ce49ff93`
+**S24 resolution of the standing concern (commit `d01a919c`, 2026-06-11):**
+- `20260608000001` up() CASE corrected to `excused → absent`; down() corrected to map `sick/home_leave/hospitalized → absent` (the old down() also had a latent crash — `SET status = 'excused'` is not a member of the new enum type). Editing the applied migration is safe: production has it completed in SequelizeMeta and never re-runs it; fresh environments now get the correct mapping directly.
+- NEW corrective migration `20260611000001-def011-excused-remap-correction.js` fixes already-migrated production data: `sick` rows predating 2026-06-08 are exactly the remapped legacy `excused` rows ('sick' did not exist in the old enum). down() is a documented no-op.
+- **Production before (2026-06-11, pre-deploy):** absent 1 · present 15 · sick 1 (the sick row: createdAt 2026-05-31 03:20 UTC = the remapped excused seed row)
+- **Production after (post-migration):** absent 2 · present 15 · sick 0 — exactly 1 row corrected, no other rows touched
+- **Live-save gate (`backend/scripts/def011-livesave-gate.cjs`):** teacher1 POST status=sick for Bobur Sobirov today → HTTP 201, saved=1, errors=[] → readback status=sick → restored to present (readback confirms). The UX-02 enum fix is not re-broken; no real attendance record is misclassified (0 rows in any medical state that originated as excused).
+
+**Status:** ✅ FIXED (S21 column swap `ce49ff93`; S24 mapping correction `d01a919c`)
 **Matrix rows:** T-026–T-032 NOT flipped to PASS — re-verification in next phase.
 
 ---
@@ -419,7 +426,12 @@ All 15 rows in `child_attendance` at migration time:
 
 **Evidence:** ISO-P03 assertion in `tests/iso22-v1-isolation-probes.spec.js` (PASS — 200, S2 UUID absent from body; screenshot `audits/beta/screens/iso-p03-parent1-s2-media.png`).
 
-**Status:** OPEN (P3, not blocking launch)
+**S24 disposition (2026-06-11) — CLOSED, works-as-designed:**
+- Grep proof: `parentMediaController.js` never reads `childId` — every query is hard-scoped `{ parentId: req.user.id }` (lines 25, 58, 95, 105), with `groupId` from `getParentGroupId(req.user.id)`. Group-wide media visibility is the C-02 design intent (group media has no single-child attribution), so a child-level filter has nothing meaningful to filter on this endpoint.
+- Cross-check of every other media path (`mediaController.getMedia`): `childId` IS honored there, but **with per-role ownership validation** — parent → 403 unless the child is their own (lines 118–123); teacher → 403 unless assigned (73–78); admin with schoolId → 403 unless in school (90–94); government unrestricted by design. Covered by `backend/__tests__/media.test.js` (403 assertions).
+- One latent edge found during the sweep → logged as DEF-017 (below), not fixed this session.
+
+**Status:** ❌ CLOSED — WON'T-FIX by design (S24, 2026-06-11). The ignored param on `/parent/media` is intended group-scoping; no media path honors `childId` without ownership validation except the unreachable DEF-017 edge.
 
 ---
 
@@ -532,3 +544,21 @@ All 15 rows in `child_attendance` at migration time:
 - **What happened:** The S22-V4 government suite marked G-002 FAIL claiming "Login.jsx has type=\"password\" hardcoded — no toggle implementation". Code review shows `government/src/pages/Login.jsx` renders the password input via `components/dnp/Field.jsx`, which implements a full show/hide toggle (eye button with `aria-label="Show password"`, switches input type password↔text). The test's selector `pg.locator('button').filter({ has: svg }).last()` clicked the **language switcher** (the last svg-button on the page), so the input type never changed and the assertion failed.
 - **Verification (S22-V4 probe, 2026-06-11):** corrected selector (`button[aria-label="Show password"]`) on the live portal — toggle switches type to `text` and back to `password` both directions. Screenshot: `screens/S22V4-G-002-toggle-type-text.png`. Selector fixed in `tests/s22v4-government.spec.js`.
 - **Status:** ❌ RETRACTED (2026-06-11) — G-002 verdict corrected to PASS. Number DEF-016 is consumed; do not reuse.
+
+---
+
+### DEF-017 — P2 (latent, currently unreachable): admin with NULL schoolId gets unvalidated childId media filter
+
+- **Severity:** P2 — latent tenant-isolation gap; **no reachable exposure today**
+- **Found:** S24 (2026-06-11), during the DEF-012 media-path childId sweep. FIND AND RECORD ONLY — not fixed.
+- **Portal:** Backend — `GET /api/v1/media`
+- **Code:** `backend/controllers/mediaController.js` `getMedia`, admin branch:
+  ```js
+  } else if (childId) {        // admin WITHOUT schoolId
+    where.childId = childId;   // ← honored with NO ownership/scope validation
+  }
+  ```
+  Every other role branch validates `childId` ownership (parent/teacher/admin-with-school → 403; government unrestricted by design). The admin-without-schoolId branch alone passes an arbitrary `childId` straight into the query — an account of that shape could read any child's media metadata across all schools.
+- **Why P2, not P1:** the branch is unreachable with current data — production has exactly 4 admin accounts, all with `schoolId` set (verified read-only 2026-06-11, `backend/scripts/def012-admin-check.cjs`). Creating a NULL-schoolId admin requires DB-level action; no registration path produces one. It is a defense-in-depth gap, not a live exposure.
+- **Fix direction (next fix session):** treat NULL-schoolId admins as having no child scope (403 on any `childId`, empty list otherwise), or require `schoolId` for the admin role at the model layer.
+- **Status:** OPEN (P2, latent) — candidate for the next hardening session.
