@@ -16,7 +16,15 @@ const School = sequelize.define('School', {
     allowNull: false,
     unique: true,
     validate: {
-      is: /^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$/,
+      // Same contract as the old /^[a-z0-9]([a-z0-9-]{0,30}[a-z0-9])?$/ but
+      // written without the nested optional group that eslint
+      // security/detect-unsafe-regex flagged: single bounded class + an
+      // explicit trailing-hyphen check is linear-time by construction.
+      isSlug(value) {
+        if (!/^[a-z0-9][a-z0-9-]{0,31}$/.test(value) || value.endsWith('-')) {
+          throw new Error('slug must be 1-32 lowercase alphanumeric/hyphen chars, starting and ending alphanumeric');
+        }
+      },
     },
   },
   type: {

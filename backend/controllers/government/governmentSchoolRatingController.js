@@ -188,7 +188,6 @@ export const getRatingsAggregated = async (req, res) => {
 
       const ranked = schools.map(school => {
         const agg = ratingsBatch[school.id] || { parent: { avg: null, count: 0 }, government: null, cumulative: { avg: null, isPartial: false } };
-        const distStars = [];
         return {
           id: school.id,
           name: school.name,

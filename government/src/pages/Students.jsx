@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
-import { GraduationCap, Search, Globe, MapPin, ChevronRight } from 'lucide-react';
+import { GraduationCap, Search, Globe, MapPin } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../context/AuthContext';
 import { useRegionName } from '../hooks/useRegionName';
