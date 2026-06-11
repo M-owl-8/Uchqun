@@ -18,6 +18,7 @@ jest.unstable_mockModule('../../models/GovernmentSchoolRating.js', () => ({
 // Batch service also uses findAll on GovernmentSchoolRating
 jest.unstable_mockModule('sequelize', () => ({
   Op: { in: Symbol('in') },
+  literal: (sql) => ({ val: sql }),
 }));
 
 const { getSchoolRatingAggregated } = await import('../../services/schoolRatingService.js');
@@ -88,20 +89,22 @@ describe('getSchoolRatingAggregated — single school', () => {
     expect(result.cumulative.isPartial).toBe(false);
   });
 
-  // ── 5. Latest quarter selected ───────────────────────────────────────────────
-  test('findOne ORDER BY period DESC returns only the latest quarter', async () => {
+  // ── 5. Latest quarter selected (DEF-014: chronological, not lexicographic) ──
+  test('findOne orders by parsed year then quarter, not raw period string', async () => {
     mockSchoolRatingFindAll.mockResolvedValue([{ stars: 3 }]);
-    // The service uses ORDER BY period DESC LIMIT 1 → model returns single record
     mockGovRatingFindOne.mockResolvedValue({ stars: 4, period: 'Q3-2026' });
 
     const result = await getSchoolRatingAggregated(SCHOOL);
 
     expect(result.government.period).toBe('Q3-2026');
     expect(result.government.avg).toBe(4);
-    // Verify that findOne was called with period DESC ordering
+    // DEF-014: plain ORDER BY period DESC is lexicographic ('Q4-2025' would
+    // outrank 'Q2-2026'). The order must parse year first, then quarter,
+    // with createdAt as the final tie-breaker.
     const call = mockGovRatingFindOne.mock.calls[0][0];
-    expect(call.order[0][0]).toBe('period');
-    expect(call.order[0][1]).toBe('DESC');
+    expect(call.order[0].val).toMatch(/SPLIT_PART\("period", '-', 2\) AS INT\) DESC/); // year
+    expect(call.order[1].val).toMatch(/SUBSTRING\(SPLIT_PART\("period", '-', 1\) FROM 2\) AS INT\) DESC/); // quarter
+    expect(call.order[2]).toEqual(['createdAt', 'DESC']);
   });
 
   // ── 6. Parent count exactly 0 → avg = null, not 0.0 ─────────────────────────

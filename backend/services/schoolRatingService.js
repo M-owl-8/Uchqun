@@ -8,9 +8,18 @@
  * Computed on read — never stored — guarantees correctness without sync complexity.
  */
 
-import { Op } from 'sequelize';
+import { Op, literal } from 'sequelize';
 import SchoolRating from '../models/SchoolRating.js';
 import GovernmentSchoolRating from '../models/GovernmentSchoolRating.js';
+
+// DEF-014: period stores strings like 'Q2-2026'. Plain ORDER BY period DESC is
+// lexicographic — 'Q4-2025' would outrank 'Q2-2026'. Sort chronologically by
+// parsed year, then quarter number, then createdAt as the tie-breaker.
+const PERIOD_CHRONO_DESC = [
+  literal(`CAST(SPLIT_PART("period", '-', 2) AS INT) DESC`),
+  literal(`CAST(SUBSTRING(SPLIT_PART("period", '-', 1) FROM 2) AS INT) DESC`),
+  ['createdAt', 'DESC'],
+];
 
 /**
  * Compute cumulative from parent and gov averages.
@@ -38,7 +47,7 @@ export async function getSchoolRatingAggregated(schoolId) {
     SchoolRating.findAll({ where: { schoolId }, attributes: ['stars'] }),
     GovernmentSchoolRating.findOne({
       where: { schoolId },
-      order: [['period', 'DESC'], ['createdAt', 'DESC']],
+      order: PERIOD_CHRONO_DESC,
     }),
   ]);
 
@@ -73,7 +82,7 @@ export async function getSchoolRatingsBatch(schoolIds) {
     GovernmentSchoolRating.findAll({
       where: { schoolId: { [Op.in]: schoolIds } },
       attributes: ['schoolId', 'stars', 'period', 'createdAt'],
-      order: [['period', 'DESC'], ['createdAt', 'DESC']],
+      order: PERIOD_CHRONO_DESC,
     }),
   ]);
 
