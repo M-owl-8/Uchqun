@@ -33,7 +33,6 @@ import {
   resetGovernmentPassword,
 } from '../controllers/adminController.js';
 import {
-  sendMessage,
   getAllMessages,
   replyToMessage,
   markMessageRead,
@@ -51,14 +50,15 @@ import {
   updateGovernmentValidator,
 } from '../validators/governmentUserValidator.js';
 import { handleValidationErrors } from '../middleware/validation.js';
-import { authenticate, requireGovernment, requireRole } from '../middleware/auth.js';
+import { authenticate, requireGovernment } from '../middleware/auth.js';
 import { requireRegionScope, requireGovAccess } from '../middleware/regionScope.js';
 
 const router = express.Router();
 
-// Anyone authenticated may send a message to government — only the
-// government user views/replies. Mount before the requireGovernment guard.
-router.post('/messages', authenticate, requireRole('parent', 'teacher', 'reception', 'admin', 'business', 'government'), sendMessage);
+// PL-022 (Q16): the legacy flat POST /government/messages route is DELETED.
+// Every sender has a dedicated, validated route: /admin|/teacher|/reception|
+// /user/message-to-government and the parent route (parentSendMessage with
+// recipientLevel). Zero frontend callers confirmed before removal (S29).
 
 router.use(authenticate);
 router.use(requireGovernment);
