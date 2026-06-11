@@ -10,6 +10,7 @@ const Login = () => {
   const [email, setEmail]                   = useState('');
   const [password, setPassword]             = useState('');
   const [showPassword, setShowPassword]     = useState(false);
+  const [forgotHelpOpen, setForgotHelpOpen] = useState(false); // PL-025 (Q15)
   const [rememberDevice, setRememberDevice] = useState(false);
   const [activeRole, setActiveRole]         = useState('teacher'); // visual-only — does not gate auth
   const [error, setError]                   = useState('');
@@ -196,10 +197,23 @@ const Login = () => {
                 <label htmlFor="password" className="block text-[13px] font-medium text-slate-800">
                   {t('login.passwordLabel')}
                 </label>
-                <a href="#" className="text-[12px] text-brand-700 hover:text-brand-800 font-medium">
+                {/* PL-025 (Q15): contact-admin help toggle replaces the dead href="#" link */}
+                <button
+                  type="button"
+                  onClick={() => setForgotHelpOpen((o) => !o)}
+                  className="text-[12px] text-brand-700 hover:text-brand-800 font-medium"
+                >
                   {t('login.forgotPassword')}
-                </a>
+                </button>
               </div>
+              {forgotHelpOpen && (
+                <p
+                  data-testid="forgot-password-help"
+                  className="mb-2 px-3 py-2 rounded-md bg-brand-50 border border-brand-200 text-[12.5px] text-slate-700 leading-relaxed"
+                >
+                  {t('login.forgotPasswordHelp')}
+                </p>
+              )}
               <div className="relative">
                 <input
                   id="password"

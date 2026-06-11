@@ -25,6 +25,7 @@
     "email": "Email адрес",
     "password": "Пароль",
     "forgotPassword": "Забыли пароль?",
+    "forgotPasswordHelp": "Для сброса пароля обратитесь к администратору вашего учреждения.",
     "submit": "Войти",
     "loading": "Вход...",
     "showPassword": "Показать пароль",

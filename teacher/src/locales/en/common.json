@@ -71,6 +71,7 @@
     "parentEmailPlaceholder": "parent@school.uz",
     "passwordLabel": "Password",
     "forgotPassword": "Forgot password?",
+    "forgotPasswordHelp": "To reset your password, please contact your school administrator.",
     "rememberDevice": "Remember this device",
     "footerLeft": "IHMA · Republic of Uzbekistan",
     "showPassword": "Show password",

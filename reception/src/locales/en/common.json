@@ -25,6 +25,7 @@
     "email": "Email Address",
     "password": "Password",
     "forgotPassword": "Forgot password?",
+    "forgotPasswordHelp": "To reset your password, please contact your school administrator.",
     "submit": "Login",
     "loading": "Logging in...",
     "showPassword": "Show password",

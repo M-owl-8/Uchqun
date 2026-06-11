@@ -25,6 +25,7 @@
     "email": "Email manzil",
     "password": "Parol",
     "forgotPassword": "Parolni unutdingizmi?",
+    "forgotPasswordHelp": "Parolni tiklash uchun muassasa administratoriga murojaat qiling.",
     "submit": "Kirish",
     "loading": "Kirish...",
     "showPassword": "Parolni ko'rsatish",

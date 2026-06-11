@@ -71,6 +71,7 @@
     "parentEmailPlaceholder": "родитель@школа.уз",
     "passwordLabel": "Пароль",
     "forgotPassword": "Забыли пароль?",
+    "forgotPasswordHelp": "Для сброса пароля обратитесь к администратору вашего учреждения.",
     "rememberDevice": "Запомнить это устройство",
     "footerLeft": "ИХМА · Республика Узбекистан",
     "showPassword": "Показать пароль",

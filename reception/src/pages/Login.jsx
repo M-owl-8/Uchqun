@@ -10,6 +10,7 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [forgotHelpOpen, setForgotHelpOpen] = useState(false); // PL-025 (Q15)
   const [rememberDevice, setRememberDevice] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -150,11 +151,27 @@ const Login = () => {
 
             {/* Password */}
             <div>
-              <div className="mb-1.5">
+              <div className="flex items-center justify-between mb-1.5">
                 <label htmlFor="password" className="block text-[13px] font-medium text-slate-800">
                   {t('login.password')}
                 </label>
+                {/* PL-025 (Q15): contact-admin help toggle — reception previously had no affordance */}
+                <button
+                  type="button"
+                  onClick={() => setForgotHelpOpen((o) => !o)}
+                  className="text-[12px] text-brand-700 hover:text-brand-800 font-medium"
+                >
+                  {t('login.forgotPassword', { defaultValue: 'Parolni unutdingizmi?' })}
+                </button>
               </div>
+              {forgotHelpOpen && (
+                <p
+                  data-testid="forgot-password-help"
+                  className="mb-2 px-3 py-2 rounded-md bg-brand-50 border border-brand-200 text-[12.5px] text-slate-700 leading-relaxed"
+                >
+                  {t('login.forgotPasswordHelp', { defaultValue: 'Parolni tiklash uchun muassasa administratoriga murojaat qiling.' })}
+                </p>
+              )}
               <div className="relative">
                 <input
                   id="password"

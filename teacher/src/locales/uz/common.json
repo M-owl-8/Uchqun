@@ -71,6 +71,7 @@
     "parentEmailPlaceholder": "ota-ona@maktab.uz",
     "passwordLabel": "Parol",
     "forgotPassword": "Parolni unutdingizmi?",
+    "forgotPasswordHelp": "Parolni tiklash uchun muassasa administratoriga murojaat qiling.",
     "rememberDevice": "Bu qurilmani eslab qolish",
     "footerLeft": "IHMA · O'zbekiston Respublikasi",
     "showPassword": "Parolni ko'rsatish",
