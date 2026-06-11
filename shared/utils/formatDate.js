@@ -153,3 +153,19 @@ export const isoLocal = (input) => {
   const dd = String(d.getDate()).padStart(2, '0');
   return `${yyyy}-${mm}-${dd}`;
 };
+
+/**
+ * PL-019 (Q9): add calendar months to an ISO date string (YYYY-MM-DD …),
+ * clamping to the last day of the target month (e.g. 2024-02-29 +12 → 2025-02-28).
+ * Used to auto-populate ИРР goal-period end dates from irrStartDate with the
+ * confirmed 12-month ПТПК conclusion validity.
+ */
+export const addMonthsIso = (isoDate, months) => {
+  if (!isoDate) return '';
+  const [y, m, d] = String(isoDate).slice(0, 10).split('-').map(Number);
+  if (!y || !m || !d) return '';
+  const target = new Date(Date.UTC(y, m - 1 + months, 1));
+  const lastDay = new Date(Date.UTC(target.getUTCFullYear(), target.getUTCMonth() + 1, 0)).getUTCDate();
+  target.setUTCDate(Math.min(d, lastDay));
+  return target.toISOString().slice(0, 10);
+};

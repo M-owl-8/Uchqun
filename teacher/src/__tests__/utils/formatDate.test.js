@@ -8,7 +8,33 @@
 // can't reintroduce the UTC pattern silently.
 
 import { describe, it, expect } from 'vitest';
-import { todayLocal, isoLocal } from '@shared/utils/formatDate';
+import { todayLocal, isoLocal, addMonthsIso } from '@shared/utils/formatDate';
+
+// PL-019 (Q9): ПТПК conclusion validity = 12 months — locks the goal-period
+// auto-population calculation (irrStartDate → periodEnd).
+describe('addMonthsIso (PL-019 — 12-month ПТПК validity)', () => {
+  it('adds exactly 12 months: 2026-06-11 → 2027-06-11', () => {
+    expect(addMonthsIso('2026-06-11', 12)).toBe('2027-06-11');
+  });
+
+  it('clamps leap-day to end of target month: 2024-02-29 +12 → 2025-02-28', () => {
+    expect(addMonthsIso('2024-02-29', 12)).toBe('2025-02-28');
+  });
+
+  it('handles month-end across year boundary: 2026-01-31 +12 → 2027-01-31', () => {
+    expect(addMonthsIso('2026-01-31', 12)).toBe('2027-01-31');
+  });
+
+  it('accepts full ISO timestamps and returns date-only', () => {
+    expect(addMonthsIso('2026-06-11T00:00:00.000Z', 12)).toBe('2027-06-11');
+  });
+
+  it('returns empty string for empty/invalid input', () => {
+    expect(addMonthsIso('', 12)).toBe('');
+    expect(addMonthsIso(null, 12)).toBe('');
+    expect(addMonthsIso('not-a-date', 12)).toBe('');
+  });
+});
 
 describe('todayLocal', () => {
   it('returns YYYY-MM-DD format', () => {

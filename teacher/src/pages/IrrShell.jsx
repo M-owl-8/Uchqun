@@ -9,7 +9,7 @@ import { useToast } from '../shared/context/ToastContext';
 import { ASSESSMENT_CRITERIA, MAX_SCORE } from '@shared/config/assessmentCriteria';
 import { SKILL_AREAS } from '@shared/config/skillAreas';
 import useFormPersistence from '@shared/hooks/useFormPersistence';
-import { formatDateMedium, todayLocal} from '@shared/utils/formatDate';
+import { formatDateMedium, todayLocal, addMonthsIso } from '@shared/utils/formatDate';
 import MonthlyMilestones from './irr/MonthlyMilestones';
 
 // Maps backend field names (from IRR_HEADER_INCOMPLETE detail) to i18n keys
@@ -139,6 +139,17 @@ export default function IrrShell() {
   const [goalPeriods, setGoalPeriods]       = useState([]);
   const [loadingPeriods, setLoadingPeriods] = useState(false);
   const [periodForm, setPeriodForm]         = useState({ periodStart: '', periodEnd: '' });
+
+  // PL-019 (Q9): ПТПК conclusion validity confirmed as 12 months — prefill the
+  // goal-period dates from irrStartDate (+12mo); the teacher can still edit them.
+  useEffect(() => {
+    const start = irr?.irrStartDate;
+    if (!start) return;
+    setPeriodForm((f) => (f.periodStart || f.periodEnd) ? f : {
+      periodStart: String(start).slice(0, 10),
+      periodEnd: addMonthsIso(start, 12),
+    });
+  }, [irr?.irrStartDate]);
   const [savingPeriod, setSavingPeriod]     = useState(false);
   const [periodError, setPeriodError]       = useState(null);
   const [expandedPeriods, setExpandedPeriods] = useState(new Set());
