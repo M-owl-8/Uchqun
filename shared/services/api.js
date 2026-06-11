@@ -25,6 +25,15 @@ export function createApi({
   // Mutex: single in-flight refresh at a time
   let refreshPromise = null;
 
+  // DEF-009 — login epoch. Bumped on every successful /auth/login through this
+  // instance. A 401 captured before a login must not clear the auth state that
+  // login just established: the pre-login bootstrap /auth/me 401s, kicks off a
+  // refresh that is still in flight when the user's login succeeds, then the
+  // refresh fails (no refresh cookie existed) and clearAuth() wiped the fresh
+  // session. Guarding clearAuth on an unchanged epoch removes that race while
+  // leaving genuine session-expiry (no intervening login) untouched.
+  let authEpoch = 0;
+
   const doRefresh = async () => {
     // Cookie-based refresh — backend reads refreshToken from HTTP-only cookie
     await axios.post(`${BASE_URL}/auth/refresh`, {}, { withCredentials: true, timeout: 10000 });
@@ -51,8 +60,12 @@ export function createApi({
   });
 
   api.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      if ((response.config?.url || '').includes('/auth/login')) authEpoch += 1;
+      return response;
+    },
     async (error) => {
+      const epochAtError = authEpoch;
       // Network-level failures (no server response): create a synthetic response so
       // every component's `err.response?.data?.error` receives a translatable code
       // string instead of Axios's always-English "Network Error" / "timeout" message.
@@ -102,12 +115,14 @@ export function createApi({
           await refreshPromise;
           return api(originalRequest);
         } catch {
-          clearAuth();
+          // Stale failure: a login succeeded while this refresh was in flight —
+          // the 401 belongs to the pre-login world; don't clear the new session.
+          if (epochAtError === authEpoch) clearAuth();
           return Promise.reject(error);
         }
       }
       if (error.response?.status === 401) {
-        clearAuth();
+        if (epochAtError === authEpoch) clearAuth();
       }
       return Promise.reject(error);
     }
