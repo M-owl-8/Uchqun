@@ -13,8 +13,12 @@
     "check:locales": "node ../scripts/check-locale-completeness.mjs --portal=teacher",
     "check:locales:all": "node ../scripts/check-locale-completeness.mjs --all"
   },
-  "engines": { "node": ">=20.0.0", "npm": ">=9.0.0" },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=9.0.0"
+  },
   "dependencies": {
+    "@sentry/browser": "^10.57.0",
     "axios": "^1.13.2",
     "i18next": "^23.10.1",
     "i18next-http-backend": "^2.5.2",

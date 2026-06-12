@@ -4,6 +4,9 @@ import { I18nextProvider } from 'react-i18next'
 import App from './App.jsx'
 import './index.css'
 import i18n from './i18n'
+import { initSentry } from '@shared/services/sentry'
+
+initSentry()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

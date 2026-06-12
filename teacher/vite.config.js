@@ -1,4 +1,4 @@
-/* eslint-env node */
+﻿/* eslint-env node */
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     base: '/',
-    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios'), 'lucide-react': path.resolve(__dirname, 'node_modules/lucide-react'), 'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'), 'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom') } },
+    resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios'), '@sentry/browser': path.resolve(__dirname, 'node_modules/@sentry/browser'), 'lucide-react': path.resolve(__dirname, 'node_modules/lucide-react'), 'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'), 'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom') } },
     build: { outDir: 'dist' },
     server: {
       port: 5174,
@@ -46,7 +46,7 @@ export default defineConfig(({ mode }) => {
       setupFiles: './src/setupTests.js',
       // Cap workers to prevent resource-exhaustion timeouts in parallel suite runs.
       // Without this cap the full 13-file suite had 12 flaky timeouts on resource-constrained hosts.
-      // Tradeoff: ~2× slower full run; deterministic green baseline is worth it.
+      // Tradeoff: ~2Г— slower full run; deterministic green baseline is worth it.
       pool: 'threads',
       poolOptions: { threads: { maxThreads: 2, minThreads: 1 } },
     },
