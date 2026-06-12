@@ -26,8 +26,8 @@ Plan: `audits/BETA-LAUNCH-PLAN.md`. Two-stage launch:
 | PL-002 (CORS) | 🟢 ✅ Already resolved |
 | PL-003 (npm audit) | 🟢 ✅ Already resolved |
 | PL-004 (Parent isActive bypass) | 🟢 ✅ Already resolved |
-| PL-005 (Sentry) | 🟢 BETA-OK — Murodbek to set DSN before day 14 |
-| PL-006 (DB backup) | 🟢 ✅ Already resolved |
+| PL-005 (Sentry) | 🟡 Code-ready both tiers (S31) — awaiting Max: DSNs + alert rule (MAX-ACTIONS in `docs/OPERATIONS.md`) |
+| PL-006 (DB backup) | 🟢 ✅ Resolved + restore drill PROVEN 2026-06-12 (`docs/BACKUP_RUNBOOK.md`) |
 | PL-007 (REDIS_URL) | 🟢 ✅ Already resolved |
 | PL-008 (FRONTEND_URL) | 🟢 ✅ Already resolved |
 | PL-009 (i18n shipped UNVERIFIED) | 🟢 ✅ Already resolved (AI-labeled) |
@@ -70,8 +70,8 @@ Plan: `audits/BETA-LAUNCH-PLAN.md`. Two-stage launch:
 
 | ID | Item | Status | Notes |
 |---|---|---|---|
-| PL-005 | **Production monitoring** — Sentry error tracking code complete: `utils/errorTracker.js` initializes Sentry when `SENTRY_DSN` is set; `Sentry.setupExpressErrorHandler(app)` registered in `server.js`; `captureException` called for all 5xx in errorHandler; 4 tests cover init/no-op/captureException paths. | ⏸ DEFERRED (owner decision Q19, 2026-06-11) | **Deferral documented per S29 Q19 — owner = Max.** Backend degrades gracefully without DSN (no-op). Steps when resumed: (1) create Sentry project; (2) `railway variables --set "SENTRY_DSN=…"`; (3) Slack alert rule. Runbook: `docs/OPERATIONS.md`. |
-| PL-006 | **Database backup strategy** — Daily automated backups enabled on Railway Postgres volume instance (`fa4a3b7f-e165-43b3-9353-33d8fed15190`). Schedule: `41 9 * * *` UTC, retention 6 days (518400 s). Verified via Railway GraphQL `volumeInstanceBackupScheduleList`. Ops runbook at `docs/OPERATIONS.md`. | ✅ Verified | Backup schedule confirmed active 2026-05-20. Volume instance `fa4a3b7f`. Retention = 6 days; upgrade to Pro plan if longer retention needed before launch. |
+| PL-005 | **Production monitoring** — Sentry code complete on BOTH tiers (S31, 2026-06-12): backend `utils/errorTracker.js` with mandatory PII scrubbing (`beforeSend: scrubEvent`, `sendDefaultPii: false`, release = Railway commit SHA), 12 tests; frontend shared layer `shared/services/sentry.js` + `shared/utils/piiScrub.js` wired into all 4 portals' `main.jsx` (no-DSN no-op, SDK not even downloaded), 4 tests. | 🟡 REVOKED-DEFERRAL (S31, 2026-06-12) — code-ready, awaiting Max DSN | **Deferral revoked by owner decision 2026-06-12.** Everything provable without a DSN is proven (unit tests: no-op without DSN, init+scrub with mock DSN). The "events arrive in Sentry" gate requires Max: MAX-ACTIONS checklist in `docs/OPERATIONS.md` (create 2 projects, set `SENTRY_DSN` in Railway + `VITE_SENTRY_DSN` in Netlify/Vercel, alert rule, smoke event). |
+| PL-006 | **Database backup strategy** — Daily automated backups enabled on Railway Postgres volume instance (`fa4a3b7f-e165-43b3-9353-33d8fed15190`). Schedule: `41 9 * * *` UTC, retention 6 days (518400 s). Verified via Railway GraphQL `volumeInstanceBackupScheduleList`. **Restore drill PROVEN 2026-06-12 (S31):** pg_dump (467 KB / 33 s) → restore to `uchqun_restore_test` (2.2 s, zero warnings) → 57=57 tables, 7/7 row counts match, 3 app queries sane, SequelizeMeta identical at `20260611000001`. Full runbook incl. break-glass restore-to-prod: `docs/BACKUP_RUNBOOK.md`. Nightly external pg_dump assets ready but disabled (`scripts/backup-db.sh`, `.github/workflows/db-backup.yml`). | ✅ Verified + restore PROVEN 2026-06-12 | Re-run drill quarterly or after major schema change. Production server is PostgreSQL 18.3 — pg_dump client must be ≥18. |
 | PL-007 | **Redis URL for multi-instance** — `REDIS_URL` confirmed set in Railway Uchqun backend service production environment. Login lockout and JTI revocation are Redis-backed in production. | ✅ Verified | `REDIS_URL` confirmed present in Railway env 2026-05-20. No action needed. |
 | PL-008 | **FRONTEND_URL env var** — `FRONTEND_URL` confirmed set in Railway Uchqun backend service production environment: all 5 portal domains (admin, teacher, reception, super-admin, government). | ✅ Verified | `FRONTEND_URL` confirmed present in Railway env 2026-05-20. CORS allowlist is live and correct. No action needed. |
 
