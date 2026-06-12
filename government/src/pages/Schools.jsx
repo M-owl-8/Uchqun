@@ -34,7 +34,7 @@ const Schools = () => {
     const rows = [
       ['#', 'Name', 'Address', 'Type', 'Region', 'Students', 'Teachers', 'Rating', 'Ratings Count'],
       ...filtered.map((s, i) => [
-        i + 1, s.name || '', s.address || '', s.type || '', s.region || '',
+        i + 1, s.name || '', s.address || '', s.type || '', s.regionRef?.name || s.region || '',
         s.studentsCount || 0, s.teachersCount || 0,
         (s.averageRating || 0).toFixed(2), s.ratingsCount || 0,
       ]),

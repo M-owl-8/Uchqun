@@ -138,6 +138,42 @@ describe('getSchoolsStats — region scoping', () => {
   });
 });
 
+// ── getSchoolsStats — regionRef pass-through (S32, S29 bug class) ────────────
+
+describe('getSchoolsStats — regionRef include (S32)', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    mockSchoolRatingFindAll.mockResolvedValue([]);
+  });
+
+  it('query includes the Region relation as regionRef', async () => {
+    mockSchoolFindAndCountAll.mockResolvedValue({ count: 0, rows: [] });
+    await getSchoolsStats(republicReq(), mkRes());
+    const include = mockSchoolFindAndCountAll.mock.calls[0][0].include;
+    expect(include).toEqual(expect.arrayContaining([
+      expect.objectContaining({ as: 'regionRef' }),
+    ]));
+  });
+
+  it('response schools carry regionRef through (dashboard groups by it)', async () => {
+    const school = {
+      id: SCHOOL_A_ID,
+      ratings: [],
+      schoolChildren: [],
+      toJSON: () => ({
+        id: SCHOOL_A_ID, name: 'School A', regionId: REGION_A,
+        region: null, // legacy STRING is NULL in production
+        regionRef: { id: REGION_A, name: 'Toshkent', code: 'TAS' },
+      }),
+    };
+    mockSchoolFindAndCountAll.mockResolvedValue({ count: 1, rows: [school] });
+    const res = mkRes();
+    await getSchoolsStats(republicReq(), res);
+    const payload = res.json.mock.calls[0][0];
+    expect(payload.data.schools[0].regionRef).toEqual({ id: REGION_A, name: 'Toshkent', code: 'TAS' });
+  });
+});
+
 // ── getSchoolById ────────────────────────────────────────────────────────────
 
 describe('getSchoolById — region IDOR isolation', () => {

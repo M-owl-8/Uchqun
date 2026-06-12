@@ -89,7 +89,8 @@ const Dashboard = () => {
 
   const regionBreakdown = Object.values(
     schools.reduce((acc, s) => {
-      const r = s.region || t('dashboard.unknownRegion', { defaultValue: "Noma'lum" });
+      // S29 bug class: legacy schools.region STRING is NULL in production — regionRef is canonical
+      const r = s.regionRef?.name || s.region || t('dashboard.unknownRegion', { defaultValue: "Noma'lum" });
       if (!acc[r]) acc[r] = { region: r, count: 0, totalRating: 0, rated: 0 };
       acc[r].count++;
       if (s.averageRating > 0) { acc[r].totalRating += s.averageRating; acc[r].rated++; }

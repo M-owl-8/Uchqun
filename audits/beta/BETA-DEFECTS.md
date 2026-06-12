@@ -583,3 +583,30 @@ All 15 rows in `child_attendance` at migration time:
 - **credentials+wildcard check:** `credentials: true` exists at both CORS surfaces (Express, Socket.IO); neither has a wildcard or unconditional reflection — both validate against the explicit allowlist.
 - **Configuration:** allowlist driven by `FRONTEND_URL` on Railway (changeable without code deploy); code fallback is the explicit 4-origin production list, never `*`.
 - **Status:** ✅ CLOSED (S27, 2026-06-11) — commit `c8af1a20`, deployed to Railway.
+
+---
+
+### DEF-018 — P1: Republic dashboard regional breakdown groups all schools under "Noma'lum mintaqa"
+
+- **Severity:** P1 — republic account proceeds with wrong information (no per-region school counts)
+- **Found:** S32 (2026-06-12), during human demo walk. Fixed same session.
+- **Persona:** gov.republic
+- **Portal:** Government — republic dashboard, "Mintaqalar bo'yicha" table
+- **Feature ID:** G-level dashboard regional breakdown
+- **Repro:**
+  1. Login as gov.republic@uchqun.uz
+  2. Dashboard → scroll to the regional breakdown table
+- **Expected:** schools grouped under real regions — Toshkent shahri (2), Samarqand viloyati (2)
+- **Actual:** all 4 schools under a single "Noma'lum mintaqa" row
+- **Root cause:** S29 bug class, **third surface**. `GET /api/v1/government/schools` (`getSchoolsStats`, `backend/controllers/governmentController.js`) never included the `regionRef` association and its response mapping returned only `regionId` — no region name. The dashboard (`government/src/pages/Dashboard.jsx:92`) grouped on `s.region`, the legacy STRING column that is NULL for every production school (verified read-only 2026-06-12), so every school fell into the unknown-region bucket.
+- **Fix (same session):** S29 pattern — `getSchoolsStats` now includes `{ model: Region, as: 'regionRef', required: false }` and passes `region` + `regionRef` through; dashboard groups on `s.regionRef?.name || s.region || unknown`.
+- **Sweep (fourth-surface check), every site reading legacy region:**
+  - `government/src/pages/Dashboard.jsx:92` — THE bug, fixed.
+  - `government/src/pages/Schools.jsx:37` — **fourth surface confirmed**: CSV export wrote `s.region` (always empty). Fixed to `s.regionRef?.name || s.region || ''`.
+  - `government/src/pages/SchoolDetail.jsx:180` — already fixed in S29 (`regionRef?.name` first). No change.
+  - `admin/src/pages/SchoolProfile.jsx:141` — already fixed in S29. No change.
+  - `government/src/components/tabs/RegistrationsTab.jsx:51` — reads `request.region` from admin_registration_requests (free-text typed by registrant, different table/feature) — not this bug class. No change.
+  - `backend/controllers/governmentController.js:38,735` (`getOverview`/`getSavedStats` optional `?region=` query filters) and `adminRegistrationController.js:412-415` — legacy free-text filter/copy paths, not display surfaces; unused by the dashboard. Left as-is (grandfather clause).
+- **Scoping re-assert (S22-V1):** region scoping untouched — `regionWhere` filters on `regionId`; the new include is `required: false` (LEFT JOIN, no row filtering). Backend suite `governmentSchoolScoping.test.js` 18/18 pass (16 existing scoping tests + 2 new regionRef regression tests). The breakdown table renders only for `isRepublic`; region accounts (gov.toshkent/gov.samarqand) still see only their own region's schools.
+- **Suspected layer:** Backend (missing include) + Frontend (legacy field read)
+- **Status:** ✅ FIXED (S32, 2026-06-12)

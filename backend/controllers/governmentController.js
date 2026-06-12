@@ -171,6 +171,14 @@ export const getSchoolsStats = async (req, res) => {
             attributes: ['id'],
             required: false,
           },
+          // S29 bug class (S32/third surface): the legacy schools.region STRING is
+          // NULL in production — the Region relation is the canonical display source.
+          {
+            model: Region,
+            as: 'regionRef',
+            attributes: ['id', 'name', 'code'],
+            required: false,
+          },
         ],
         order: [['name', 'ASC']],
       });
@@ -235,10 +243,10 @@ export const getSchoolsStats = async (req, res) => {
         ? computeAverageRating(fallbackRatings)
         : { average: parentAvg ?? 0, count: parentCount };
 
-      const { id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId } = school.toJSON();
+      const { id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId, region, regionRef } = school.toJSON();
 
       return {
-        id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId,
+        id, name, type, address, phone, email, description, isActive, createdAt, slug, regionId, region, regionRef,
         // Legacy fields (backward compat)
         averageRating: fallbackResult.average,
         ratingsCount: fallbackResult.count,
