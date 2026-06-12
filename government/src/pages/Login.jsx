@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AGENCY_CONFIG } from '../config/agency.js';
-import { Emblem } from '../components/identity/Emblem';
 import { LockIcon } from '../components/icons/LockIcon';
+import ihmaLogo from '@shared/assets/ihma-logo.png';
 import { Field } from '../components/dnp/Field';
 import { PrimaryButton } from '../components/dnp/PrimaryButton';
 import { Checkbox } from '../components/dnp/Checkbox';
@@ -153,7 +153,12 @@ const Login = () => {
         {/* Top: glass crest tile + agency identity */}
         <div className="relative flex items-center gap-4">
           <div className="flex-shrink-0 w-[68px] h-[68px] rounded-2xl flex items-center justify-center bg-white/[.08] border border-white/[.14]">
-            <Emblem size={52} />
+            <img
+              src={ihmaLogo}
+              alt="IHMA"
+              className="w-[52px] h-[52px]"
+              style={{ filter: 'brightness(0) invert(1)' }}
+            />
           </div>
           <div>
             <div className="text-[15px] font-medium leading-snug text-panel-ink">
