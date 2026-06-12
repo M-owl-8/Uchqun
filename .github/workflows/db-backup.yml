@@ -1,0 +1,50 @@
+# Nightly external pg_dump of the production database to S3-compatible storage.
+#
+# ── DISABLED BY DEFAULT ──────────────────────────────────────────────────────
+# Two switches must be flipped to enable:
+#   1. Set the repository VARIABLE  DB_BACKUP_ENABLED = true   (Settings → Variables)
+#   2. Uncomment the `schedule:` block below for nightly runs (manual runs work
+#      via workflow_dispatch once the variable is set).
+#
+# Required repository SECRETS (Settings → Secrets and variables → Actions):
+#   PROD_DATABASE_URL            Railway Postgres connection string
+#   BACKUP_S3_ENDPOINT           S3-compatible endpoint URL (e.g. Cloudflare R2)
+#   BACKUP_S3_BUCKET             bucket name — must have encryption + 30-day lifecycle rule
+#   BACKUP_S3_ACCESS_KEY_ID
+#   BACKUP_S3_SECRET_ACCESS_KEY
+#
+# The dump contains children's personal data: the bucket MUST be private,
+# encrypted at rest, with automatic deletion (lifecycle) — do not skip these.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: DB Backup
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '30 22 * * *'   # 22:30 UTC = 03:30 Tashkent, nightly
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    if: vars.DB_BACKUP_ENABLED == 'true'
+    steps:
+      - uses: actions/checkout@v4
+
+      # Production server is PostgreSQL 18 (verified 2026-06-12) — pg_dump must be >= 18,
+      # which needs the PGDG repo (ubuntu-latest ships an older client).
+      - name: Install PostgreSQL client 18
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y postgresql-common
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y
+          sudo apt-get install -y postgresql-client-18
+
+      - name: Dump and upload
+        env:
+          PROD_DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+          BACKUP_S3_ENDPOINT: ${{ secrets.BACKUP_S3_ENDPOINT }}
+          BACKUP_S3_BUCKET: ${{ secrets.BACKUP_S3_BUCKET }}
+          BACKUP_S3_ACCESS_KEY_ID: ${{ secrets.BACKUP_S3_ACCESS_KEY_ID }}
+          BACKUP_S3_SECRET_ACCESS_KEY: ${{ secrets.BACKUP_S3_SECRET_ACCESS_KEY }}
+        run: bash scripts/backup-db.sh
