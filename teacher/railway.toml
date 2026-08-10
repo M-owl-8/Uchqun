@@ -2,7 +2,10 @@
 builder = "NIXPACKS"
 
 [deploy]
-startCommand = "npx serve dist -s -l $PORT"
+# MOBILE-AUTH-FIX: proxy-server.mjs serves dist AND reverse-proxies
+# /api, /uploads, /socket.io to the backend so auth cookies are first-party
+# (third-party cookies are blocked in Samsung Internet / iOS PWAs / TWA apps).
+startCommand = "node proxy-server.mjs"
 healthcheckPath = "/"
 healthcheckTimeout = 60
 restartPolicyType = "ON_FAILURE"

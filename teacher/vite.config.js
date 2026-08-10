@@ -13,6 +13,16 @@ export default defineConfig(({ mode }) => {
   return {
     plugins: [react()],
     base: '/',
+    // MOBILE-AUTH-FIX: the teacher/parent portal ALWAYS calls the API
+    // same-origin ('/api/v1'); proxy-server.mjs forwards it to the backend in
+    // production, and the dev-server proxy below forwards it in dev. This is a
+    // `define` (not env) on purpose: Railway rebuilds this app with its own
+    // VITE_API_URL env var, and a cross-origin API URL breaks login in every
+    // engine that blocks third-party cookies (Samsung Internet, iOS PWAs, the
+    // installed TWA/PWA apps) — up.railway.app is on the Public Suffix List,
+    // so the two subdomains are different sites and the auth cookies were
+    // third-party. Same-origin makes them first-party everywhere.
+    define: { 'import.meta.env.VITE_API_URL': JSON.stringify('/api/v1') },
     resolve: { alias: { '@shared': path.resolve(__dirname, '../shared'), 'axios': path.resolve(__dirname, 'node_modules/axios'), '@sentry/browser': path.resolve(__dirname, 'node_modules/@sentry/browser'), 'lucide-react': path.resolve(__dirname, 'node_modules/lucide-react'), 'react-i18next': path.resolve(__dirname, 'node_modules/react-i18next'), 'react-router-dom': path.resolve(__dirname, 'node_modules/react-router-dom') } },
     build: { outDir: 'dist' },
     server: {
