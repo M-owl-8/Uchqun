@@ -105,6 +105,20 @@ them safe**: Android only accepts updates signed by the same key. If a
 keystore is lost, users must uninstall/reinstall under a new package or new
 key, and `assetlinks.json` must be updated with the new fingerprint.
 
+## Same-origin API (MOBILE-AUTH-FIX — do not regress)
+
+The teacher/parent portal calls the API **same-origin** (`/api/v1`), proxied to
+the backend by `teacher/proxy-server.mjs` (the Railway service's
+startCommand). This is what makes login work inside the installed apps:
+`up.railway.app` is on the Public Suffix List, so frontend and backend
+subdomains are *different sites* and cookies sent cross-origin are
+third-party — blocked by Samsung Internet (default), iOS Safari PWAs, and
+Chrome tracking protection, which broke login in the TWA/PWA with an instant
+bounce back to `/login`. The API base is pinned with a Vite `define` in
+`teacher/vite.config.js` because Railway rebuilds the app with its own
+`VITE_API_URL` env var — env alone cannot hold this invariant. Never point
+this portal back at an absolute backend URL.
+
 ## Notes & gotchas
 
 - `express.static` ignores dotfiles, so `server.js` mounts
