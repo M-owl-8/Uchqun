@@ -1,0 +1,19 @@
+{
+  "id": "uchqun-parent",
+  "name": "Uchqun Ota-ona",
+  "short_name": "Uchqun",
+  "description": "Uchqun — ota-onalar uchun farzand rivoji va maktab hayoti portali",
+  "lang": "uz",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#F7F2E8",
+  "theme_color": "#2D5377",
+  "icons": [
+    { "src": "/icons/parent/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/parent/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/parent/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/parent/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

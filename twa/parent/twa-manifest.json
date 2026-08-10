@@ -1,0 +1,42 @@
+{
+  "packageId": "uz.uchqun.parent",
+  "host": "teacher-production-0647.up.railway.app",
+  "name": "Uchqun Ota-ona",
+  "launcherName": "Uchqun",
+  "display": "standalone",
+  "themeColor": "#2D5377",
+  "themeColorDark": "#2D5377",
+  "navigationColor": "#2D5377",
+  "navigationColorDark": "#11243A",
+  "navigationDividerColor": "#2D5377",
+  "navigationDividerColorDark": "#11243A",
+  "backgroundColor": "#F7F2E8",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://teacher-production-0647.up.railway.app/icons/parent/icon-512.png",
+  "maskableIconUrl": "https://teacher-production-0647.up.railway.app/icons/parent/maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "uchqun-parent"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://teacher-production-0647.up.railway.app/manifest-parent.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://teacher-production-0647.up.railway.app/",
+  "minSdkVersion": 21,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": []
+}

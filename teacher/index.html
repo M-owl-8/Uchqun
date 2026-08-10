@@ -2,8 +2,31 @@
 <html lang="uz">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <!-- PWA identity is per-portal: parent app lives at "/", teacher app at "/teacher".
+         The manifest/icons/theme-color must match the portal being visited, so they are
+         injected by route instead of hardcoded. Both manifests share scope "/" but have
+         distinct "id" values, so Android/Chrome treats them as two installable apps. -->
+    <script>
+      (function () {
+        var isTeacher = location.pathname === '/teacher' || location.pathname.indexOf('/teacher/') === 0;
+        var portal = isTeacher ? 'teacher' : 'parent';
+        var head = document.head;
+        function add(tag, attrs) {
+          var el = document.createElement(tag);
+          for (var k in attrs) el.setAttribute(k, attrs[k]);
+          head.appendChild(el);
+        }
+        add('link', { rel: 'icon', type: 'image/svg+xml', href: isTeacher ? '/favicon.svg' : '/favicon-parent.svg' });
+        add('link', { rel: 'manifest', href: '/manifest-' + portal + '.webmanifest' });
+        add('link', { rel: 'apple-touch-icon', sizes: '180x180', href: '/icons/' + portal + '/apple-touch-icon.png' });
+        add('meta', { name: 'theme-color', content: isTeacher ? '#7A6FA8' : '#2D5377' });
+        add('meta', { name: 'mobile-web-app-capable', content: 'yes' });
+        add('meta', { name: 'apple-mobile-web-app-capable', content: 'yes' });
+        add('meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' });
+        add('meta', { name: 'apple-mobile-web-app-title', content: isTeacher ? "O'qituvchi" : 'Uchqun' });
+      })();
+    </script>
     <!-- Discourage in-app WebView caches (Telegram, Instagram) from holding a stale
          bundle reference. Hashed JS/CSS in /assets/ are still immutable cached. -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
