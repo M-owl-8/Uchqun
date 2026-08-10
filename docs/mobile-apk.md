@@ -26,7 +26,9 @@ icon, theme color, and launch URL — because the two manifests have distinct
 - `teacher/public/sw.js` — conservative service worker (network-first navigations,
   cache-first only for hashed `/assets/`; never touches `/api`, `/uploads`, `/socket.io`)
 - `teacher/src/main.jsx` — registers the worker in production builds only
-- `teacher/public/.well-known/assetlinks.json` — TWA domain-verification template
+- `teacher/public/.well-known/assetlinks.json` — TWA domain verification, already
+  filled with the SHA-256 fingerprints of the keystores that signed the
+  2026-08-10 APK builds (`uz.uchqun.teacher` v1.0.0, `uz.uchqun.parent` v1.0.0)
 - `teacher/public/serve.json` — `sw.js` no-cache + manifest content-type headers
 - `twa/{teacher,parent}/twa-manifest.json` — ready-made Bubblewrap configs
 
@@ -93,6 +95,15 @@ The signed APK can be shared directly (Telegram, download link, USB). Android
 asks the user to allow "install from unknown sources" once. For Play Store
 distribution, upload the AAB instead (one-time $25 developer account,
 review typically 1–3 days).
+
+## Keystore custody (IMPORTANT)
+
+The first signed APKs (2026-08-10) were built with per-app keystores generated
+outside the repo (deliberately NOT committed — a committed keystore lets anyone
+publish updates as you). **Whoever holds those `.keystore` files must keep
+them safe**: Android only accepts updates signed by the same key. If a
+keystore is lost, users must uninstall/reinstall under a new package or new
+key, and `assetlinks.json` must be updated with the new fingerprint.
 
 ## Notes & gotchas
 
