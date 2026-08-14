@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-58.
+**Numbering:** ids are permanent and never reused. New defects continue from D-59.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -62,6 +62,7 @@ repository is historical and must not be treated as current.
 | D-55 | degrades-use | **OPEN** | a deep link is discarded on login in all four portals | `deep2/P5-UI.md` §3 |
 | D-56 | blocks-use | **FIXED** `9f7c78ba` | `/child` rendered 720px wide on a 390px phone — a `<select>` sized by option text carrying the school name | `deep2/P5-UI.md` §2 |
 | D-57 | cosmetic | **FIXED** `af07912c` | the teacher's name truncated on every activity card at 1440px | `deep2/P5-UI.md` §2 |
+| D-58 | degrades-use | **FIXED** `92d16c82` | `admin/src/i18n.js:30` fell back to English while the three other portals fell back to Uzbek | `deep2/P6-I18N.md` §3 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused

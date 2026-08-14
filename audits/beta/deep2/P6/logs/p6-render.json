@@ -1,0 +1,143 @@
+{
+  "reception-uz": {
+    "rawKeys": [
+      "t.abandon"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 2692,
+    "sample": "jatlarim | TIZIM | Profil | Sozlamalar | GT | Gulbahor Tojiyeva | Qabulxona xodimi | Chiqish | O'zbekcha | Ota-onalar | Tezkor qidiruv… | ⌘ "
+  },
+  "reception-ru": {
+    "rawKeys": [
+      "t.abandon"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 2782,
+    "sample": "ЕМА | Профиль | Настройки | GT | Gulbahor Tojiyeva | Сотрудник ресепшен | Выход | Русский | Родители | Быстрый поиск… | ⌘ K | Управление род"
+  },
+  "reception-en": {
+    "rawKeys": [
+      "t.abandon"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 2661,
+    "sample": " Profile | Settings | GT | Gulbahor Tojiyeva | Reception staff | Logout | English | Parents | Quick search… | ⌘ K | Parent Management63 |  |"
+  },
+  "teacher-uz": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1382,
+    "sample": "alari va bugungi holati |  | GE | Gulnoza Ergasheva | Umid | Davomat belgilanmagan | 2/3 | GE | Gulnoza Ergasheva | Umid | Davomat belgilanm"
+  },
+  "teacher-ru": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1447,
+    "sample": "ояние на сегодня |  | GE | Gulnoza Ergasheva | Umid | Посещаемость не отмечена | 2/3 | GE | Gulnoza Ergasheva | Umid | Посещаемость не отмеч"
+  },
+  "teacher-en": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1376,
+    "sample": "nd today's status |  | GE | Gulnoza Ergasheva | Umid | Attendance not marked | 2/3 | GE | Gulnoza Ergasheva | Umid | Attendance not marked |"
+  },
+  "parent-uz": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1039,
+    "sample": " |  | FARZANDINGIZ TARBIYACHISIGA BAHO BERING VA FIKR QOLDIRING |  | Tarbiyachini baholash | ZA |  | BIRIKTIRILGAN TARBIYACHI |  | Zebo Ashu"
+  },
+  "parent-ru": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1048,
+    "sample": "-Nodira |  | ПОСТАВЬТЕ ОЦЕНКУ ВОСПИТАТЕЛЮ ВАШЕГО РЕБЕНКА И ПОДЕЛИТЕСЬ МНЕНИЕМ |  | Оценка воспитателя | ZA |  | ЗАКРЕПЛЁННЫЙ ВОСПИТАТЕЛЬ |  "
+  },
+  "parent-en": {
+    "rawKeys": [],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 973,
+    "sample": "E YOUR CHILD'S TEACHER AND SHARE SUGGESTIONS |  | Teacher feedback | ZA |  | ASSIGNED TEACHER |  | Zebo Ashurova |  | tarbiyachi1@tmm3.uz | "
+  },
+  "admin-uz": {
+    "rawKeys": [
+      "sh.umarova",
+      "k.yusupova"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 965,
+    "sample": "navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA "
+  },
+  "admin-ru": {
+    "rawKeys": [
+      "sh.umarova",
+      "k.yusupova"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 936,
+    "sample": "ВЯЗЬ |  | Коммуникации | Сообщения |  | ОТЧЁТЫ |  | Предупреждения | Оценки учреждений | Управление терапиями |  | УЧРЕЖДЕНИЕ |  | Профиль у"
+  },
+  "admin-en": {
+    "rawKeys": [
+      "sh.umarova",
+      "k.yusupova"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 902,
+    "sample": "ue |  | COMMUNICATIONS |  | Communications | Messages |  | REPORTS |  | Warnings | Institution Ratings | Therapy Management |  | INSTITUTION"
+  },
+  "government-uz": {
+    "rawKeys": [
+      "gov.republic"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1373,
+    "sample": "lar | Reytinglar | Ogohlantirishlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.repub"
+  },
+  "government-ru": {
+    "rawKeys": [
+      "gov.republic"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1353,
+    "sample": "ители | Рейтинги | Предупреждения | Журнал аудита | Платформа | Профиль | Настройки | Русский | HM |  | Hamidjon Mirzayev |  | gov.republic@"
+  },
+  "government-en": {
+    "rawKeys": [
+      "gov.republic"
+    ],
+    "scrollWidth": 1440,
+    "clientWidth": 1440,
+    "overflows": false,
+    "chars": 1302,
+    "sample": " Warnings | Audit Log | Platform | Profile | Settings | English | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Logout | School"
+  }
+}
