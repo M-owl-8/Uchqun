@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { groupSummary } from '../utils/groupSummary';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Plus, MessageSquare, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -172,8 +173,11 @@ const Dashboard = () => {
             {/* D-12: rendered as literal empty quotes — `"" Guruh · 3 bola.` — because
                 /teacher/children never returned groupName. It does now; the quotes are
                 only drawn when there is actually a name to put in them. */}
-            {children.length > 0 && (children[0]?.groupName
-              ? ` "${children[0].groupName}" ${t('dashboard.groupLabel')} · ${children.length} bola.`
+            {/* D-29: this read children[0]?.groupName and printed it over the whole
+                roll, so a teacher owning two groups was told one of them held all
+                21 children and never saw the other named at all. */}
+            {children.length > 0 && (groupSummary(children, t)
+              ? ` "${groupSummary(children, t)}" ${t('dashboard.groupLabel')} · ${children.length} bola.`
               : ` ${children.length} bola.`)}
           </p>
           <div className="ml-auto text-right shrink-0">

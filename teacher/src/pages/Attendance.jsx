@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CheckCheck, ChevronLeft, ChevronRight } from 'lucide-react';
 import { AttendanceGrid } from '../components/AttendanceGrid';
+import { groupSummary } from '../utils/groupSummary';
 import { useTranslation } from 'react-i18next';
 import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
@@ -374,7 +375,8 @@ const Attendance = () => {
         <>
           <div className="px-1 pb-3">
             <div className="text-[12px] text-slate-500">
-              {children[0]?.groupName || t('attendance.group')} · {total} {t('attendance.children')}
+              {/* D-29: was children[0]?.groupName — one group's name over every group's children */}
+              {groupSummary(children, t) || t('attendance.group')} · {total} {t('attendance.children')}
             </div>
             {hasSavedData && !isFuture && (
               <div className="mt-2 flex items-center gap-1.5 px-2.5 py-1.5 bg-green-50 border border-green-200 rounded-lg text-[11px] text-green-700 w-fit">

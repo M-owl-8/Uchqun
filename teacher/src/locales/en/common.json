@@ -123,7 +123,8 @@
     "absent": "{{name}} is absent today",
     "needsAttention": "{{name}} · needs attention",
     "contactParent": "Send parent a message asking for reason",
-    "notRecorded": "Attendance not yet recorded"
+    "notRecorded": "Attendance not yet recorded",
+    "groupCount": "{{count}} groups"
   },
   "parentsPage": {
     "title": "Parent list",
