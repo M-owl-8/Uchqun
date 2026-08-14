@@ -1,0 +1,68 @@
+{
+  "badheaders": {
+    "chosen": "023_admin-tmm3_import-badheaders-file-chosen.png",
+    "actionLabels": [
+      "Tekshirish"
+    ],
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"IMPORT_MISSING_HEADERS\",\"detail\":\"Missing: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail\"}}"
+      }
+    ],
+    "validated": "024_admin-tmm3_import-badheaders-validated.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | CSV yuklash |  | Majburiy ustunlar: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail |  | CSV faylni tanlang |  | import-badheaders.csv |  | Tekshirish"
+  },
+  "notcsv": {
+    "chosen": "026_admin-tmm3_import-notcsv-file-chosen.png",
+    "actionLabels": [
+      "Tekshirish"
+    ],
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"IMPORT_FILE_INVALID_TYPE\"}}"
+      }
+    ],
+    "validated": "027_admin-tmm3_import-notcsv-validated.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | CSV yuklash |  | Majburiy ustunlar: firstName, lastName, dateOfBirth, gender, disabilityType, class, teacher, parentEmail |  | CSV faylni tanlang |  | import-notcsv.txt |  | Tekshirish"
+  },
+  "malformed": {
+    "chosen": "029_admin-tmm3_import-malformed-file-chosen.png",
+    "actionLabels": [
+      "Tekshirish"
+    ],
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"importJobId\":\"2113056b-8d90-40c7-9a06-7842a6a54437\",\"filename\":\"import-malformed.csv\",\"totalRows\":9,\"validRows\":2,\"invalidRows\":7,\"errors\":[{\"row\":2,\"code\":\"IMPORT_ROW_FIRST_NAME_REQUIRED\",\"field\":\"firstName\"},{\"row\":3,\"code\":\"IMPORT_ROW_DOB_INVALID\",\"field\":\"dateOfBirth\"},{\"row\":4,\"code\":\"IMPORT_ROW_DOB_IN_FUTURE\",\"field\":\"dateOfBirth\"},{\"row\":5,\"code\":\"IMPORT_ROW_GENDER_INVALID\",\"field\":\"gender\"},{\"row\":6,\"code\":\"IMPORT_ROW_PARENT_EMAIL_INVALID\",\"field\":\"parentEmail\"},{\"row\":7,\"code\":\"IMPORT_ROW_PARENT_NOT_FOUND\",\"field\":\"parentEmail\"},{\"row\":9,\"code\":\"IMPORT_ROW_DUPLICATE\",\"field\":null}]}}"
+      }
+    ],
+    "validated": "030_admin-tmm3_import-malformed-validated.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Tekshirish natijalari |  | 9 |  | Jami qatorlar: 9 |  | 2 |  | To'g'ri qatorlar: 2 |  | 7 |  | Noto'g'ri qatorlar: 7 |  | Show 7 errors | Orqaga | To'g'ri qatorlar bilan davom etish"
+  },
+  "malformed-start-offered": [],
+  "valid-validate": {
+    "error": "no file input"
+  },
+  "valid-start": {
+    "startLabels": [],
+    "net": [],
+    "started": "032_admin-tmm3_import-valid-started.png",
+    "polls": [
+      "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirish",
+      "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirish"
+    ],
+    "final": "033_admin-tmm3_import-valid-completed.png"
+  },
+  "import-idor-probe": {
+    "s": 200,
+    "b": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+  }
+}

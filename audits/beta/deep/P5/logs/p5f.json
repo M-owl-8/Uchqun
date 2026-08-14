@@ -1,0 +1,84 @@
+{
+  "imported-children-visible": {
+    "listed": "061_admin-tmm3_parents-filtered.png",
+    "detail": "062_admin-tmm3_parent-detail-with-children.png",
+    "childLinks": [
+      {
+        "href": "/admin/children/5eedb32d-981a-4499-8008-e419be6270cb",
+        "text": "Sarvinoz Tursunova\n\nUmid"
+      }
+    ],
+    "simFound": [],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Ota-onalar (4) |  | "
+  },
+  "child-detail": {
+    "href": "/admin/children/5eedb32d-981a-4499-8008-e419be6270cb",
+    "shot": "063_admin-tmm3_admin-child-detail.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil |"
+  },
+  "trash-scope": {
+    "tabs": [
+      "O'zbekcha",
+      "Chiqish",
+      "Ota-onalar",
+      "Qabulxonalar"
+    ],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | ",
+    "shot": "065_admin-tmm3_trash-tabs.png"
+  },
+  "receptions-controls": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Qabul yaratish",
+      "Tahrirlash",
+      "O'chirish",
+      "Tafsilotlar",
+      "Tahrirlash",
+      "O'chirish",
+      "Tafsilotlar",
+      "Tahrirlash",
+      "O'chirish",
+      "Tafsilotlar",
+      "Tahrirlash",
+      "O'chirish",
+      "Tafsilotlar",
+      "submit"
+    ],
+    "inputs": [
+      "INPUT:search:Ism, email yoki telefon...",
+      "SELECT:select-one:Hammasi · 4 Faol · 3 Tasdiqlash kutilmoqda · 0 F",
+      "INPUT:checkbox:checkbox",
+      "INPUT:checkbox:checkbox",
+      "INPUT:checkbox:checkbox",
+      "INPUT:checkbox:checkbox",
+      "INPUT:checkbox:checkbox"
+    ]
+  },
+  "reception-create": {
+    "modal": "067_admin-tmm3_reception-create-modal.png",
+    "filled": "068_admin-tmm3_reception-create-filled.png",
+    "net": [],
+    "after": "069_admin-tmm3_reception-create-result.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import |"
+  },
+  "reception-delete": {
+    "present": false,
+    "selected": "071_admin-tmm3_reception-selected.png",
+    "delLabels": [],
+    "confirmShot": "072_admin-tmm3_reception-delete-confirm.png",
+    "net": [],
+    "after": "073_admin-tmm3_reception-after-delete.png"
+  },
+  "trash-restore": {
+    "inTrash": false,
+    "trashBody": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | ",
+    "restoreLabels": [],
+    "net": [],
+    "shot": "075_admin-tmm3_trash-restore-clicked.png"
+  },
+  "restore-verified": {
+    "backInList": false,
+    "shot": "077_admin-tmm3_reception-restored.png"
+  }
+}

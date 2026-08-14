@@ -1,0 +1,46 @@
+{
+  "imported-children": {
+    "rows": [
+      "RI /  / Rayhona Ismoilova /  / otaona31@tmm3.uz /  / +998961",
+      "RS /  / Rayhona Sharipova /  / otaona24@tmm3.uz /  / +998958",
+      "RE /  / Rayhona Ergasheva /  / otaona11@tmm3.uz /  / +998936"
+    ],
+    "childLinks": [
+      {
+        "href": "/admin/children/0047fff7-b7f2-400c-aacc-f380a4b4dd31",
+        "t": "SIM-Nodira Tekshiruvova Umid guruhi"
+      },
+      {
+        "href": "/admin/children/5eed0c9a-fe3e-4031-8f5c-aac195c36b31",
+        "t": "Gulnoza Ergasheva Umid"
+      }
+    ],
+    "simFound": [
+      "SIM-Nodira"
+    ],
+    "shot": "079_admin-tmm3_D-41-D-41-parent-detail-imported-children.png",
+    "body": " Rayhona Sharipova |  | otaona24@tmm3.uz |  | +998958119399 | RE |  | Rayhona Ergasheva |  | otaona11@tmm3.uz |  | +998936753399 |  | Rayhona Ergasheva |  | otaona11@tmm3.uz |  | To’xtatish |  | Bolalar (2) |  | SIM-Nodira Tekshiruvova |  | Umid guruhi |  | Gulnoza Ergasheva |  | Umid |  | Faoliyatlar (0) |  | Faoliyatlar yo’q |  | Ovqatlanish (0) |  | Ovqatlanish ma’lumoti yo’q |  | Media (0) |  | Media fayllar yo’q"
+  },
+  "child-delete-surface": {
+    "shot": "080_admin-tmm3_imported-child-detail.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Orqaga",
+      "IRR",
+      "Maqsadlar"
+    ],
+    "body": "OBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Orqaga | Child 0047fff7-b7f2-400c-aacc-f380a4b4dd31 | IRR | Maqsadlar | IRR'ni yuklab bo'lmadi"
+  },
+  "receptions-before": {
+    "deleteButtons": 0,
+    "names": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "082_admin-tmm3_receptions-with-delete.png"
+  },
+  "trash-cycle-ERR": "locator.click: Timeout 30000ms exceeded."
+}

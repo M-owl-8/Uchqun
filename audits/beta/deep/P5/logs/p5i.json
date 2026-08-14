@@ -1,0 +1,79 @@
+{
+  "before": {
+    "buttonTitles": [
+      "Chiqish",
+      "Tahrirlash",
+      "O'chirish"
+    ],
+    "namesBefore": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "095_admin-tmm3_receptions-before-delete.png"
+  },
+  "deleted": {
+    "dialogs": [],
+    "dlgShot": "096_admin-tmm3_reception-delete-confirm.png",
+    "modalBtns": [
+      "O'zbekcha",
+      "Chiqish",
+      "Qabul yaratish",
+      "1",
+      "Bekor qilish",
+      "Tasdiqlash"
+    ],
+    "net": [
+      {
+        "m": "DELETE",
+        "u": "/api/v1/admin/receptions/b10facdf-f447-4b57-9e4b-e16b2b7e8455",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Reception account deleted successfully\"}"
+      }
+    ],
+    "namesAfter": [
+      "Nodira Ismoilova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "097_admin-tmm3_receptions-after-delete.png"
+  },
+  "trash-listing": {
+    "buttonTitles": [
+      "Chiqish"
+    ],
+    "buttonTexts": [
+      "O'zbekcha",
+      "Chiqish",
+      "Ota-onalar",
+      "Qabulxonalar",
+      "Tiklash"
+    ],
+    "empty": false,
+    "tail": " |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Savatcha | Ota-onalar | Qabulxonalar | Ism\tEmail\tO'chirilgan\t | Shahnoza Umarova\tsh.umarova@tmm3.uz\t2026-08-14\tTiklash",
+    "shot": "099_admin-tmm3_trash-receptions-tab.png"
+  },
+  "restore": {
+    "clicked": "Tiklash",
+    "dialogs": [],
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/admin/users/b10facdf-f447-4b57-9e4b-e16b2b7e8455/restore",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"id\":\"b10facdf-f447-4b57-9e4b-e16b2b7e8455\",\"email\":\"sh.umarova@tmm3.uz\",\"firstName\":\"Shahnoza\",\"lastName\":\"Umarova\",\"phone\":\"+998901239911\",\"role\":\"reception\",\"isVerified\":false,\"documentsApproved\":false,\"isActive\":false,\"status\":\"acti"
+      }
+    ],
+    "shot": "100_admin-tmm3_trash-after-restore.png"
+  },
+  "verified": {
+    "namesAfter": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "102_admin-tmm3_receptions-restored.png"
+  }
+}

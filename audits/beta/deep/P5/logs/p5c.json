@@ -1,0 +1,64 @@
+{
+  "cold-visit": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Tekshirish"
+    ],
+    "links": [
+      "/admin",
+      "/admin/receptions",
+      "/admin/teachers",
+      "/admin/parents",
+      "/admin/documents",
+      "/admin/communications",
+      "/admin/messages",
+      "/admin/ai-warnings",
+      "/admin/school-ratings",
+      "/admin/therapy",
+      "/admin/school",
+      "/admin/import",
+      "/admin/trash",
+      "/admin/profile",
+      "/admin/settings"
+    ],
+    "inputs": [
+      "INPUT:file:file"
+    ],
+    "tabs": [],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | "
+  },
+  "file-input-present-on-cold-visit": 1,
+  "valid-validate": {
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"importJobId\":\"55a0ab2c-b63d-4241-8a6e-100cbf16500e\",\"filename\":\"import-valid.csv\",\"totalRows\":3,\"validRows\":3,\"invalidRows\":0,\"errors\":[]}}"
+      }
+    ],
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Orqaga",
+      "To'g'ri qatorlar bilan davom etish"
+    ],
+    "shot": "035_admin-tmm3_import-valid-validated.png",
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | "
+  },
+  "valid-start": {
+    "startLabels": [],
+    "net": [],
+    "polls": [
+      "rqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Tekshirish natijalari |  | 3 |  | Jami qatorlar: 3 |  | 3 |  | To'g'ri qatorlar: 3 |  | 0 |  | Noto'g'ri qatorlar: 0 |  | Orqaga | To'g'ri qatorlar bilan davom etish",
+      "rqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Tekshirish natijalari |  | 3 |  | Jami qatorlar: 3 |  | 3 |  | To'g'ri qatorlar: 3 |  | 0 |  | Noto'g'ri qatorlar: 0 |  | Orqaga | To'g'ri qatorlar bilan davom etish"
+    ],
+    "shot": "036_admin-tmm3_import-valid-finished.png"
+  },
+  "file-input-present-after-a-completed-import": 0,
+  "import-idor-probe": {
+    "s": 404,
+    "b": "{\"success\":false,\"error\":{\"code\":\"IMPORT_JOB_NOT_FOUND\"}}"
+  }
+}

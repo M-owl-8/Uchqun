@@ -1,0 +1,207 @@
+{
+  "therapy": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Try Again"
+    ],
+    "modal": null,
+    "net": null,
+    "after": "124_admin-tmm3_therapy-admin-result.png",
+    "toast": null
+  },
+  "irr": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Maqsadli davrlar",
+      "Chorakli monitoring",
+      "Abdullayev Diyorbek Chinor",
+      "Abdullayeva Shahzoda Chinor",
+      "Ergashev Doston Chinor",
+      "Ergashev Muhammadali Nur",
+      "Ergasheva Gulnoza Umid",
+      "Ergasheva Gulnoza Umid",
+      "Ismoilov Islom Nur",
+      "Ismoilov Sirojiddin Nur"
+    ],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import |",
+    "opened": null
+  },
+  "documents": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Kutilmoqda1",
+      "Tasdiqlangan1",
+      "Rad etilgan0",
+      "Tasdiqlash",
+      "Rad etish"
+    ],
+    "inputs": [
+      "INPUT:search:Xodim yoki hujjat turi..."
+    ],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbek",
+    "shot": "127_admin-tmm3_documents-queue-state.png"
+  },
+  "gov-messages": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Yangi xabar",
+      "Terapiya mashg‘ulotlari uchun qo‘shimcha mutaxas"
+    ],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbek",
+    "opened": "129_admin-tmm3_gov-message-opened.png",
+    "threadBody": "Javob berildi |  | Sizning xabaringiz |  | Muassasamizda nutq nuqsoni bo‘lgan bolalar soni ortdi. Qo‘shimcha logoped shtati ajratilishini so‘raymiz. |  | Hukumat javobi· Nodira Yusupova· 2026-08-14 12:30:07 |  | So‘rov qabul qilindi. Viloyat bo‘yicha logoped shtati kelgusi chorakda ko‘rib chiqiladi."
+  },
+  "profile": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Davlatga xabar yuborish",
+      "Mening xabarlarim",
+      "Chiqish"
+    ],
+    "inputs": [],
+    "shot": "131_admin-tmm3_admin-profile-state.png"
+  },
+  "settings": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Profilni saqlash",
+      "Saqlash",
+      "button",
+      "button",
+      "button",
+      "Parolni yangilash",
+      "Chiqish"
+    ],
+    "inputs": [
+      "INPUT:text:text",
+      "INPUT:text:text",
+      "INPUT:email:email",
+      "INPUT:tel:+998 90 123 45 67",
+      "INPUT:checkbox:checkbox",
+      "INPUT:password:password",
+      "INPUT:password:password",
+      "INPUT:password:password"
+    ],
+    "passwordNet": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/password",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"CURRENT_PASSWORD_INCORRECT\",\"detail\":\"Current password is incorrect\"}}"
+      }
+    ],
+    "shot": "133_admin-tmm3_admin-settings-password-rejected.png"
+  },
+  "activity-feed": {
+    "shot": "134_admin-tmm3_activity-feed.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish"
+    ],
+    "inputs": [
+      "SELECT:select-one:Barcha amallar Hujjat tasdiqlandi Hujjat rad eti",
+      "INPUT:date:date",
+      "INPUT:date:date"
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | HISOBOTLAR |  | Faoliyat tarixchasi |  | Maktabingizdagi barcha amallar audit jurnali |  | Amal bo'yicha filtrlash | "
+  },
+  "communications": {
+    "shot": "135_admin-tmm3_communications.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "RE Rayhona Ergasheva 1 14:53 QA-P4B: rahmat, uyd",
+      "ZU Zebo Umarova 21:27 Ko‘rdim, juda foydali. Rah",
+      "MS Madina Sharipova 21:27 Ko‘rdim, juda foydali.",
+      "ZS Zaynab Sultonova",
+      "MR Mavluda Rahimova",
+      "NM Nozima Mirzayeva",
+      "ZI Zuhra Ibragimova",
+      "NE Nozima Ergasheva",
+      "RS Rayhona Sharipova",
+      "OI Oysha Ismoilova",
+      "ZS Zilola Sobirova",
+      "DT Dilnoza Toshmatova"
+    ],
+    "inputs": [
+      "INPUT:text:Ota-onani qidirish…"
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | ALOQA |  | Muloqotlar (63) |  | Maktabingizdagi xodim-ota-ona suhbatlarini faqat ko'rish |  | Faqat o'qish — direktor"
+  },
+  "school-profile": {
+    "shot": "136_admin-tmm3_school-profile.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "O'zgarishlarni saqlash"
+    ],
+    "inputs": [
+      "INPUT:text:text",
+      "INPUT:email:email",
+      "INPUT:text:text",
+      "INPUT:text:text",
+      "TEXTAREA:textarea:textarea"
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi |  | Maktabingizning aloqa ma'lumotlarini ko'ring"
+  },
+  "school-ratings": {
+    "shot": "137_admin-tmm3_school-ratings.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish"
+    ],
+    "inputs": [],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | HISOBOTLAR |  | Muassasa baholari (1) |  | Ota-onalar tomonidan muassasa va bog'chalarga berilgan baholarni ko'ring |"
+  },
+  "groups": {
+    "shot": "138_admin-tmm3_groups.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish"
+    ],
+    "inputs": [
+      "INPUT:text:Guruhlarni qidirish..."
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | BOSHQARUV |  | Guruhlar (6) |  | Guruhlarni ko’rish (faqat o’qish) |  | Bahor guruhi |  | Bahor guruhi — kunlik rejim"
+  },
+  "ai-warnings": {
+    "shot": "139_admin-tmm3_ai-warnings.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Tahlil qilish",
+      "Yangilash"
+    ],
+    "inputs": [
+      "SELECT:select-one:Hammasi · 4 Hal qilinmagan · 0 Hal qilingan · 4",
+      "SELECT:select-one:Hamma darajalar Past O'rta Yuqori Kritik"
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | HISOBOTLAR |  | Ogohlantirishlar (4) |  | Tizim aniqlagan e'tibor talab qiluvchi naqshlar va voqealar. |  | Hammasi ·"
+  },
+  "teachers": {
+    "shot": "140_admin-tmm3_teachers.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "JT Jasur Turgunov tarbiyachi8@tmm3.uz +998901000",
+      "OR Ozoda Rasulova tarbiyachi7@tmm3.uz +998901000",
+      "FN Farrux Ne’matov tarbiyachi6@tmm3.uz +99890100",
+      "SY Sitora Yo‘ldosheva tarbiyachi5@tmm3.uz +99890",
+      "BE Bahodir Eshonov tarbiyachi4@tmm3.uz +99890100",
+      "NS Nigora Sultonova tarbiyachi3@tmm3.uz +9989010",
+      "GS Gulnora Saidova g.saidova@tmm3.uz +9989012345",
+      "AQ Anvar Qosimov tarbiyachi2@tmm3.uz +9989010000",
+      "ZA Zebo Ashurova tarbiyachi1@tmm3.uz +9989010000"
+    ],
+    "inputs": [
+      "INPUT:text:Tarbiyachilarni qidirish..."
+    ],
+    "body": "lar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Tarbiyachilar (9) |  | Tarbiyachi akkauntlarini ko’rish (faqat o’qish) |  | JT |  | Jasur Turgunov |  | tarbiyachi8@tmm3"
+  }
+}

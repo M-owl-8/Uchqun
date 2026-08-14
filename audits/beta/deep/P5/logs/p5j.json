@@ -1,0 +1,58 @@
+{
+  "before": {
+    "state": {
+      "id": "5eedd81f-c17c-49a0-8061-24267c18dae7",
+      "email": "qabul2@tmm3.uz",
+      "isActive": true,
+      "isVerified": true,
+      "documentsApproved": true,
+      "status": "active"
+    },
+    "shot": "104_admin-tmm3_restore-fidelity-before.png"
+  },
+  "deleted": {
+    "clicked": "O'chirish",
+    "net": [
+      {
+        "m": "DELETE",
+        "u": "/api/v1/admin/receptions/b10facdf-f447-4b57-9e4b-e16b2b7e8455",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Reception account deleted successfully\"}"
+      }
+    ],
+    "shot": "105_admin-tmm3_restore-fidelity-deleted.png"
+  },
+  "restored": {
+    "listedInTrash": false,
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/admin/users/b10facdf-f447-4b57-9e4b-e16b2b7e8455/restore",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"id\":\"b10facdf-f447-4b57-9e4b-e16b2b7e8455\",\"email\":\"sh.umarova@tmm3.uz\",\"firstName\":\"Shahnoza\",\"lastName\":\"Umarova\",\"phone\":\"+998901239911\",\"role\":\"reception\",\"isVerified\":false,\"documentsApproved\":false,\"isActive\":false,\"status\":\"active\",\"avatar\":null,\"notificationPreferences\":{\"push\":false,\"email\":true},\"teacherId\":null,\"groupId\":null,\"createdBy\":\"5eedb47c-c1a7-4d89-861a"
+      }
+    ],
+    "shot": "107_admin-tmm3_restore-fidelity-restored.png"
+  },
+  "comparison": {
+    "before": {
+      "id": "5eedd81f-c17c-49a0-8061-24267c18dae7",
+      "email": "qabul2@tmm3.uz",
+      "isActive": true,
+      "isVerified": true,
+      "documentsApproved": true,
+      "status": "active"
+    },
+    "after": {
+      "id": "5eedd81f-c17c-49a0-8061-24267c18dae7",
+      "email": "qabul2@tmm3.uz",
+      "isActive": true,
+      "isVerified": true,
+      "documentsApproved": true,
+      "status": "active"
+    },
+    "identical": true,
+    "changed": [],
+    "shot": "109_admin-tmm3_restore-fidelity-after.png"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "therapy-crash": {
+    "shot": "141_admin-tmm3_D-43-D-43-admin-therapy-crash.png",
+    "body": " Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | Something went wrong |  | Please try again or refresh the page. |  | Try Again",
+    "consoleErrors": [
+      "TypeError: L.rating.toFixed is not a function\n    at https://admin-production-536f.up.railway.app/assets/index-354kTjRt.js:462:31692\n    at Array.map (<anonymous>)\n    at pk (https://admin-production-536f.up.railway.app/assets/index-354kTjRt.js:462:30765)\n    at pc (https://admin-production-536f.up."
+    ],
+    "api": [
+      {
+        "m": "GET",
+        "u": "/api/v1/therapy?isActive=true",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"therapies\":[{\"id\":\"5eedc892-bd9c-4737-8bc3-8fb527995079\",\"title\":\"Rangli terapiya mashg‘ulotlari\",\"description\":\"Rang va shakl orqali hissiy ifoda mashqlari.\",\"therapyType\":\"art\",\"contentUrl\":null,\"contentType\":\"image\",\"duration\":20,\"a"
+      }
+    ]
+  },
+  "after-try-again": {
+    "body": " |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | Something went wrong |  | Please try again or refresh the page. |  | Try Again",
+    "errors": [
+      "TypeError: L.rating.toFixed is not a function\n    at https://admin-production-536f.up.railway.app/assets/index-354kTjRt.js:462:31692\n    at Array.map (<anonymous>)\n    at pk (https://admin-production-536f.up.railway.app/assets/index-354kTjRt.js:462:30765)\n    at pc (https://admin-production-536f.up."
+    ],
+    "shot": "142_admin-tmm3_D-43-D-43-admin-therapy-after-retry.png"
+  },
+  "therapy-api-direct": {
+    "s": 200,
+    "len": 12643,
+    "head": "{\"success\":true,\"data\":{\"therapies\":[{\"id\":\"5eedc892-bd9c-4737-8bc3-8fb527995079\",\"title\":\"Rangli terapiya mashg‘ulotlari\",\"description\":\"Rang va shakl orqali hissiy ifoda mashqlari.\",\"therapyType\":\"a"
+  }
+}

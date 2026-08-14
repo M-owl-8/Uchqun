@@ -1,0 +1,21 @@
+{
+  "admin-export-scan": {
+    "/admin": [],
+    "/admin/receptions": [],
+    "/admin/parents": [],
+    "/admin/teachers": [],
+    "/admin/school-ratings": [],
+    "/admin/activity": [],
+    "/admin/settings": [
+      "Ommaviy import\n\nCSV orqa"
+    ],
+    "/admin/irr": []
+  },
+  "reception-export-controls": [],
+  "reception-csv-export": {
+    "err": "page.waitForEvent: Timeout 25000ms exceeded while waiting for event \"download\"",
+    "file": null,
+    "content": null,
+    "shot": "119_reception-tmm3_reception-export-clicked.png"
+  }
+}

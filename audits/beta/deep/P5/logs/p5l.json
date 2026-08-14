@@ -1,0 +1,41 @@
+{
+  "checkboxes": 26,
+  "bulk-bar": {
+    "picked": 26,
+    "buttons": [
+      "Chiqish",
+      "O'zbekcha",
+      "Tezkor qidiruv…\n⌘ K",
+      "Ota-ona qo'shish",
+      "Barchasi",
+      "Faol",
+      "Kutmoqda",
+      "To'xtatilgan",
+      "Faollashtirish",
+      "Eksport",
+      "O'chirish",
+      "1",
+      "2",
+      "3"
+    ],
+    "shot": "121_reception-tmm3_reception-rows-selected.png"
+  },
+  "csv": {
+    "err": null,
+    "file": "ota-onalar-2026-08-14.csv",
+    "content": {
+      "bytes": 234,
+      "lines": 4,
+      "hasBom": true,
+      "header": "﻿\"Ism\",\"Familiya\",\"Email\",\"Telefon\",\"Status\"",
+      "rows": [
+        "\"Zuhra\",\"Ibragimova\",\"t.abandon@tmm3.uz\",\"+998901239900\",\"Faol\"",
+        "\"Nozima\",\"Umarova\",\"otaona69@tmm3.uz\",\"+998937843299\",\"Faol\"",
+        "\"Sevinch\",\"Qodirova\",\"otaona68@tmm3.uz\",\"+998940957299\",\"Faol\""
+      ],
+      "headerCols": 5,
+      "ragged": 0
+    },
+    "shot": "122_reception-tmm3_reception-export-done.png"
+  }
+}

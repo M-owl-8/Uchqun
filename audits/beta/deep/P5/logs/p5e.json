@@ -1,0 +1,52 @@
+{
+  "import-finish": {
+    "confirmShot": "047_admin-tmm3_import-confirm-step.png",
+    "confirmText": " |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Importni tasdiqlash |  | 3 ta bolani import qilish? |  | Bekor qilish | Boshlash",
+    "startNet": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/32995cac-9cce-4aa1-841a-b833f59c7ba1/start",
+        "s": 202,
+        "b": "{\"success\":true,\"data\":{\"importJobId\":\"32995cac-9cce-4aa1-841a-b833f59c7ba1\",\"status\":\"importing\"}}"
+      }
+    ],
+    "polls": [
+      "Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Import tugadi |  | 3 ta bola muvaffaqiyatli import qilindi. |  | Yangi import",
+      "Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Import tugadi |  | 3 ta bola muvaffaqiyatli import qilindi. |  | Yangi import"
+    ],
+    "final": "048_admin-tmm3_import-completed.png"
+  },
+  "verify-imported": {
+    "shot": "050_admin-tmm3_parents-search-SIM.png",
+    "simMentions": [],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | "
+  },
+  "trash-before": {
+    "shot": "052_admin-tmm3_trash-initial-state.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Ota-onalar",
+      "Qabulxonalar"
+    ],
+    "body": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil |"
+  },
+  "delete-attempt": {
+    "found": false,
+    "clicked": null,
+    "confirmShot": "054_admin-tmm3_trash-delete-confirm.png",
+    "net": [],
+    "after": "055_admin-tmm3_trash-after-delete.png"
+  },
+  "trash-and-restore": {
+    "trashListed": false,
+    "trashBody": "U |  | Uchqun |  | Muassasa |  | BOSHQARUV |  | Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | ",
+    "restoreButtons": 0,
+    "net": [],
+    "afterRestore": "057_admin-tmm3_trash-after-restore.png"
+  },
+  "verify-restored": {
+    "visible": false,
+    "shot": "059_admin-tmm3_restored-child-visible.png"
+  }
+}

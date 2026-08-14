@@ -1,0 +1,21 @@
+{
+  "login": {
+    "ok": true,
+    "landing": "https://admin-production-536f.up.railway.app/admin"
+  },
+  "detail-routes": {},
+  "admin-register": {
+    "shot": "021_anon_A23-admin-register.png",
+    "buttons": [
+      "Yuborish"
+    ],
+    "inputs": [
+      "INPUT:text:Ismingiz",
+      "INPUT:text:Familiyangiz",
+      "INPUT:email:email@example.com",
+      "INPUT:tel:+998901234567",
+      "INPUT:text:username (yoki @username)"
+    ],
+    "head": "Admin Ro'yxatdan O'tish\n\nMa'lumotlaringizni kiriting va hujjatlarni yuklang\n\nIsm *\nFamiliya *\nEmail *\nTelefon raqami *\nTelegram username *\n\nLogin ma'lumotlari Telegram orqali yuboriladi\n\nGuvohnoma (Certificate) *\nGuvohno"
+  }
+}

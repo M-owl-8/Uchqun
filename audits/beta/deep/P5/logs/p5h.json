@@ -1,0 +1,115 @@
+{
+  "child-detail-imported": {
+    "shot": "083_admin-tmm3_D-41-D-41-child-detail-imported.png",
+    "heading": "Child 0047fff7-b7f2-400c-aacc-f380a4b4dd31",
+    "showsRawUuid": true,
+    "irrError": true,
+    "net": [
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/0047fff7-b7f2-400c-aacc-f380a4b4dd31/irr",
+        "s": 404,
+        "b": "{\"success\":false,\"error\":{\"code\":\"IRR_NOT_FOUND\"}}"
+      },
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/0047fff7-b7f2-400c-aacc-f380a4b4dd31/irr/assessment",
+        "s": 404,
+        "b": "{\"success\":false,\"error\":{\"code\":\"IRR_NOT_FOUND\"}}"
+      },
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/0047fff7-b7f2-400c-aacc-f380a4b4dd31/irr/goals",
+        "s": 404,
+        "b": "{\"success\":false,\"error\":{\"code\":\"IRR_NOT_FOUND\"}}"
+      }
+    ],
+    "tail": " boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Orqaga | Child 0047fff7-b7f2-400c-aacc-f380a4b4dd31 | IRR | Maqsadlar | IRR'ni yuklab bo'lmadi"
+  },
+  "child-detail-seed": {
+    "shot": "084_admin-tmm3_D-41-D-41-child-detail-seed.png",
+    "heading": "Child 5eed0c9a-fe3e-4031-8f5c-aac195c36b31",
+    "showsRawUuid": true,
+    "irrError": false,
+    "net": [
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/5eed0c9a-fe3e-4031-8f5c-aac195c36b31/irr",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"id\":\"5eedf307-681f-48a5-8d31-857cadd4a9d6\",\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"schoolId\":\"5eedd253-e422-44d5-82a8-a37d03df93dd\",\"parentId\":\"5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"createdBy\":\"5eedf422-4935-4657-8"
+      },
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/5eed0c9a-fe3e-4031-8f5c-aac195c36b31/irr/goals",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"longTermGoals\":[],\"periods\":[],\"shortTermGoals\":[]}}"
+      },
+      {
+        "m": "GET",
+        "u": "/api/v1/admin/children/5eed0c9a-fe3e-4031-8f5c-aac195c36b31/irr/assessment",
+        "s": 500,
+        "b": "{\"success\":false,\"error\":{\"code\":\"ASSESSMENT_LIST_FAILED\"}}"
+      }
+    ],
+    "tail": "l | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Orqaga | Child 5eed0c9a-fe3e-4031-8f5c-aac195c36b31 | IRR | Maqsadlar | IRR — Reabilitatsiya rejasi | Faol |  | 12 oylik klinik reja. Tarbiyachi yuritadi, Direktor imzo qo'yadi."
+  },
+  "receptions-before": {
+    "deleteButtons": [],
+    "rows": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "086_admin-tmm3_receptions-before-delete.png"
+  },
+  "deleted": {
+    "dlg": "087_admin-tmm3_reception-delete-dialog.png",
+    "dlgBtns": [
+      "O'zbekcha",
+      "Chiqish",
+      "Qabul yaratish",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "1",
+      ""
+    ],
+    "net": [],
+    "after": "088_admin-tmm3_receptions-after-delete.png",
+    "rowsAfter": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ]
+  },
+  "trash-listing": {
+    "restoreButtons": [],
+    "shot": "090_admin-tmm3_trash-listing.png",
+    "tail": " Bosh sahifa | Qabul boshqaruvi | Tarbiyachilar | Ota-onalar | Hujjatlar navbati |  | ALOQA |  | Muloqotlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish | Savatcha | Ota-onalar | Qabulxonalar |  | O'chirilgan yozuvlar yo'q"
+  },
+  "restored": {
+    "net": [],
+    "shot": "091_admin-tmm3_trash-after-restore.png"
+  },
+  "restore-verified": {
+    "rows": [
+      "Nodira Ismoilova",
+      "Shahnoza Umarova",
+      "Dilrabo Qosimova",
+      "Kamola Yusupova"
+    ],
+    "shot": "093_admin-tmm3_receptions-restored.png"
+  }
+}

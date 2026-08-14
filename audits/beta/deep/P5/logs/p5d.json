@@ -1,0 +1,74 @@
+{
+  "valid-run": {
+    "validateNet": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"importJobId\":\"844eb936-362a-4a92-b765-6097d619440f\",\"filename\":\"import-valid.csv\",\"totalRows\":3,\"validRows\":3,\"invalidRows\":0,\"errors\":[]}}"
+      }
+    ],
+    "buttons": [
+      {
+        "t": "O'zbekcha",
+        "disabled": false
+      },
+      {
+        "t": "Chiqish",
+        "disabled": false
+      },
+      {
+        "t": "Orqaga",
+        "disabled": false
+      },
+      {
+        "t": "To'g'ri qatorlar bilan davom etish",
+        "disabled": false
+      }
+    ],
+    "continueOffered": 1,
+    "step2": "039_admin-tmm3_wiz-valid-validated.png",
+    "startNet": [],
+    "step3": "040_admin-tmm3_wiz-valid-started.png",
+    "lastPoll": "lamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Importni tasdiqlash |  | 3 ta bolani import qilish? |  | Bekor qilish | Boshlash",
+    "final": "041_admin-tmm3_wiz-valid-final.png"
+  },
+  "malformed-run": {
+    "validateNet": [
+      {
+        "m": "POST",
+        "u": "/api/v1/admin/import/children/validate",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"importJobId\":\"10e40c20-7a88-449b-8da8-fe612e580c7b\",\"filename\":\"import-malformed.csv\",\"totalRows\":9,\"validRows\":2,\"invalidRows\":7,\"errors\":[{\"row\":2,\"code\":\"IMPORT_ROW_FIRST_NAME_REQUIRED\",\"field\":\"firstName\"},{\"row\":3,\"code\":\"IMPORT_ROW_DOB_INVALID\",\"field\":\"dateOfBirth\"},{\"row\":4,\"code\":\"IMPORT_ROW_DOB_IN_FUTURE\",\"field\":\"dateOfBirth\"},{\"row\":5,\"code\":\"IMPORT_ROW_GENDER_INVALID\",\"field\":\"gender\"},{\"row\":6,\"code\":\"IMPORT_ROW_PARENT_EMAIL_INVALID\",\"field\":\"parentEmail\"},"
+      }
+    ],
+    "buttons": [
+      {
+        "t": "O'zbekcha",
+        "disabled": false
+      },
+      {
+        "t": "Chiqish",
+        "disabled": false
+      },
+      {
+        "t": "Show 7 errors",
+        "disabled": false
+      },
+      {
+        "t": "Orqaga",
+        "disabled": false
+      },
+      {
+        "t": "To'g'ri qatorlar bilan davom etish",
+        "disabled": false
+      }
+    ],
+    "continueOffered": 1,
+    "step2": "043_admin-tmm3_wiz-malformed-validated.png",
+    "startNet": [],
+    "step3": "044_admin-tmm3_wiz-malformed-started.png",
+    "lastPoll": " Chiqish |  | SOZLAMALAR |  | Ommaviy import |  | CSV fayl orqali bolalarni import qilish |  | 1 | 2 | 3 | 4 | 5 | Importni tasdiqlash |  | 2 ta bolani import qilish? |  | 7 ta qator tekshirish xatolari sababli o'tkazib yuboriladi. |  | Bekor qilish | Boshlash",
+    "final": "045_admin-tmm3_wiz-malformed-final.png"
+  }
+}
