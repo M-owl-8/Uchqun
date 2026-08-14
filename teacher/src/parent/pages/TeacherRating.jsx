@@ -409,8 +409,13 @@ const TeacherRating = () => {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <Card className="lg:col-span-2 space-y-6">
               {/* School header */}
-              <div className="flex items-start justify-between gap-4">
-                <div className="flex items-center gap-3">
+              {/* D-32: the school name ("Toshkent shahar 3-sonli ixtisoslashtirilgan
+                  maktabi") sat in a non-shrinking left group beside a
+                  min-w-[120px] score column, pushing the page to 411px on a 390px
+                  viewport and clipping UMUMIY / Q3-2026 off the right edge.
+                  Stack below sm and let the left group shrink. */}
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                <div className="flex items-center gap-3 min-w-0">
                   <div className="w-12 h-12 rounded-2xl bg-p-honey-100 text-p-honey-700 font-black flex items-center justify-center text-xl">
                     <Building2 className="w-6 h-6" />
                   </div>
@@ -422,7 +427,7 @@ const TeacherRating = () => {
                     {school.address && <p className="text-sm text-p-sepia-500">{school.address}</p>}
                   </div>
                 </div>
-                <div className="flex flex-col items-end text-right min-w-[120px]">
+                <div className="flex flex-col items-start text-left sm:items-end sm:text-right sm:min-w-[120px]">
                   {/* Cumulative headline */}
                   {schoolRatingAgg?.cumulativeAvg != null ? (
                     <>
