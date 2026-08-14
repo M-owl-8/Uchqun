@@ -320,19 +320,31 @@ export const rejectDocument = async (req, res) => {
       return res.status(403).json({ error: 'Access denied to this document' });
     }
 
-    if (document.status !== 'pending') {
+    // D-60: the mirror of D-52, and the more dangerous direction. This gate was
+    // `status !== 'pending'`, so an APPROVED document could never be rejected —
+    // a reception approved on a wrong, expired or forged identification kept
+    // full access permanently, with no revocation path in the product. Found
+    // while verifying the D-52 fix on production: having approved a document, I
+    // could not undo it.
+    //
+    // An approved document may now be rejected on re-review. Re-rejecting an
+    // already-rejected one stays a no-op.
+    const wasApproved = document.status === 'approved';
+    if (document.status !== 'pending' && !wasApproved) {
       return res.status(400).json({ error: 'Document is not pending approval' });
     }
 
-    // Audit before mutation
+    // Audit before mutation. Revoking an approval is its own action: it is the
+    // moment a reception lost access, and it must not read as a routine
+    // rejection of something that was never approved.
     logAudit({
       actorId: req.user.id,
       actorRole: req.user.role,
-      action: 'reject',
+      action: wasApproved ? 'reject_after_approval' : 'reject',
       entity: 'documents',
       entityId: document.id,
       schoolId: req.user.schoolId,
-      meta: { userId: document.userId, rejectionReason },
+      meta: { userId: document.userId, rejectionReason, ...(wasApproved ? { revokedApproval: true } : {}) },
     });
 
     // Update document status

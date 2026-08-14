@@ -22,8 +22,9 @@ const mockEmitToUser = jest.fn();
 jest.unstable_mockModule('../../models/Document.js', () => ({
   default: { findByPk: mockDocumentFindByPk, findAll: mockDocumentFindAll },
 }));
+const mockUserFindByPk = jest.fn();
 jest.unstable_mockModule('../../models/User.js', () => ({
-  default: { update: mockUserUpdate, findByPk: jest.fn(), findAll: jest.fn(), findOne: jest.fn() },
+  default: { update: mockUserUpdate, findByPk: mockUserFindByPk, findAll: jest.fn(), findOne: jest.fn() },
 }));
 jest.unstable_mockModule('../../utils/auditLogger.js', () => ({
   logAudit: mockLogAudit, getAuditHealth: jest.fn(), __resetAuditHealth: jest.fn(),
@@ -53,7 +54,7 @@ const mkDoc = (status, extra = {}) => ({
 const req = { params: { id: 'doc-1' }, user: { id: 'admin-1', role: 'admin', schoolId: 's-1' } };
 
 beforeEach(() => {
-  [mockDocumentFindByPk, mockDocumentFindAll, mockUserUpdate, mockLogAudit, mockEmitToUser]
+  [mockDocumentFindByPk, mockDocumentFindAll, mockUserUpdate, mockLogAudit, mockEmitToUser, mockUserFindByPk]
     .forEach((m) => m.mockReset());
   mockDocumentFindAll.mockResolvedValue([]);
 });
@@ -128,6 +129,102 @@ describe('D-52 — a rejected document can be approved on review', () => {
 
     expect(res.status).toHaveBeenCalledWith(403);
     expect(doc.save).not.toHaveBeenCalled();
+    expect(mockLogAudit).not.toHaveBeenCalled();
+  });
+});
+
+/**
+ * D-60 — the mirror defect, found while verifying D-52 on production.
+ *
+ * rejectDocument gated on `status !== 'pending'` too, so an APPROVED document
+ * could never be rejected. A reception approved on a wrong, expired or forged
+ * identification kept full access permanently, with no revocation path in the
+ * product at all. That is the more dangerous direction of the same one-way
+ * door: D-52 wrongly denied access, D-60 wrongly grants it.
+ */
+const { rejectDocument } = await import('../../controllers/admin/adminReceptionController.js');
+
+describe('D-60 — an approved document can be rejected on re-review', () => {
+  const rreq = {
+    params: { id: 'doc-1' },
+    body: { rejectionReason: 'Hujjat muddati tugagan' },
+    user: { id: 'admin-1', role: 'admin', schoolId: 's-1' },
+  };
+
+  const reception = () => ({
+    id: 'rec-1', documentsApproved: true, isActive: true,
+    save: jest.fn().mockResolvedValue(true),
+  });
+
+  it('rejects an approved document instead of refusing with 400', async () => {
+    const doc = mkDoc('approved');
+    mockDocumentFindByPk.mockResolvedValueOnce(doc).mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(Object.assign(reception(), { createdBy: 'admin-1' }));
+    const res = mkRes();
+
+    await rejectDocument(rreq, res);
+
+    expect(res.status).not.toHaveBeenCalledWith(400);
+    expect(doc.status).toBe('rejected');
+  });
+
+  it('revoking an approval is audited as its own action', async () => {
+    const doc = mkDoc('approved');
+    mockDocumentFindByPk.mockResolvedValueOnce(doc).mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(Object.assign(reception(), { createdBy: 'admin-1' }));
+
+    await rejectDocument(rreq, mkRes());
+
+    expect(mockLogAudit).toHaveBeenCalledWith(expect.objectContaining({
+      action: 'reject_after_approval',
+      meta: expect.objectContaining({ revokedApproval: true }),
+    }));
+  });
+
+  it('revocation actually removes the access the approval granted', async () => {
+    const doc = mkDoc('approved');
+    const rec = Object.assign(reception(), { createdBy: 'admin-1' });
+    mockDocumentFindByPk.mockResolvedValueOnce(doc).mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(rec);
+
+    await rejectDocument(rreq, mkRes());
+
+    // the point of the fix: not just a status string, but the access itself
+    expect(rec.documentsApproved).toBe(false);
+    expect(rec.isActive).toBe(false);
+  });
+
+  it('a plain pending rejection is still audited as a plain rejection', async () => {
+    const doc = mkDoc('pending');
+    mockDocumentFindByPk.mockResolvedValueOnce(doc).mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(Object.assign(reception(), { createdBy: 'admin-1' }));
+
+    await rejectDocument(rreq, mkRes());
+
+    expect(mockLogAudit).toHaveBeenCalledWith(expect.objectContaining({ action: 'reject' }));
+  });
+
+  it('an already-rejected document is still refused', async () => {
+    const doc = mkDoc('rejected');
+    mockDocumentFindByPk.mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(Object.assign(reception(), { createdBy: 'admin-1' }));
+    const res = mkRes();
+
+    await rejectDocument(rreq, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(doc.save).not.toHaveBeenCalled();
+  });
+
+  it('the ownership boundary still holds on the revocation path', async () => {
+    const doc = mkDoc('approved');
+    mockDocumentFindByPk.mockResolvedValue(doc);
+    mockUserFindByPk.mockResolvedValue(Object.assign(reception(), { createdBy: 'another-admin' }));
+    const res = mkRes();
+
+    await rejectDocument(rreq, res);
+
+    expect(res.status).toHaveBeenCalledWith(403);
     expect(mockLogAudit).not.toHaveBeenCalled();
   });
 });
