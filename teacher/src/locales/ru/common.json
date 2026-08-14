@@ -698,7 +698,9 @@
     "saveProgress": "{{marked}} из {{total}} отмечено",
     "group": "Группа",
     "alreadySaved": "Сохранено — можно изменить",
-    "saveUpdate": "Обновить"
+    "saveUpdate": "Обновить",
+    "partialSaveNamed": "Не сохранено: {{names}}. Эти дети не входят в вашу группу.",
+    "partialSave": "Не сохранено записей: {{count}}."
   },
   "childDetail": {
     "errorIrrLoad": "Не удалось загрузить данные ИРП",

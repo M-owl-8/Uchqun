@@ -234,6 +234,30 @@ export const getChildren = async (req, res) => {
   try {
     const where = { schoolId: req.user.schoolId };
 
+    // D-01: a teacher must only be offered the children they are actually allowed to
+    // record against. This mirrors isTeacherAssignedToChild() (utils/schoolValidation.js:45)
+    // — group ownership, plus the legacy parent.teacherId path. Returning the whole
+    // school here is what let the attendance grid show children whose records the
+    // write path then silently refused.
+    // requireTeacher also admits reception and admin (CLAUDE.md); they keep school scope.
+    if (req.user.role === 'teacher') {
+      const ownGroups = await Group.findAll({
+        where: { teacherId: req.user.id },
+        attributes: ['id'],
+      });
+      const ownParents = await User.findAll({
+        where: { teacherId: req.user.id, role: 'parent' },
+        attributes: ['id'],
+      });
+      const groupIds = ownGroups.map(g => g.id);
+      const parentIds = ownParents.map(u => u.id);
+      const or = [];
+      if (groupIds.length) or.push({ groupId: { [Op.in]: groupIds } });
+      if (parentIds.length) or.push({ parentId: { [Op.in]: parentIds } });
+      // No group and no legacy parent link → no children, not the whole school.
+      where[Op.or] = or.length ? or : [{ id: null }];
+    }
+
     const children = await Child.findAll({
       where,
       attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'schoolId', 'groupId', 'class'],

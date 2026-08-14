@@ -698,7 +698,9 @@
     "saveProgress": "{{marked}} of {{total}} marked",
     "group": "Group",
     "alreadySaved": "Saved — you can edit",
-    "saveUpdate": "Update"
+    "saveUpdate": "Update",
+    "partialSaveNamed": "Not saved: {{names}}. These children are not in your group.",
+    "partialSave": "{{count}} record(s) were not saved."
   },
   "childDetail": {
     "errorIrrLoad": "Failed to load IDP data",

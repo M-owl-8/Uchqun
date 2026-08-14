@@ -267,5 +267,6 @@
   "MONTHLY_MILESTONE_CREATE_FAILED": "Maqsadni saqlab boʻlmadi. Qaytadan urinib koʻring.",
   "MONTHLY_MILESTONE_UPDATE_FAILED": "Maqsadni saqlab boʻlmadi. Qaytadan urinib koʻring.",
   "MONTHLY_MILESTONE_BULK_FAILED": "Maqsadlarni saqlab boʻlmadi. Qaytadan urinib koʻring.",
-  "MONTHLY_MILESTONE_DELETE_FAILED": "Maqsadni oʻchirib boʻlmadi. Qaytadan urinib koʻring."
+  "MONTHLY_MILESTONE_DELETE_FAILED": "Maqsadni oʻchirib boʻlmadi. Qaytadan urinib koʻring.",
+  "ATTENDANCE_PARTIALLY_SAVED": "Ba'zi bolalar saqlanmadi. Ro'yxatni tekshirib, qayta urinib ko'ring."
 }

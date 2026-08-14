@@ -698,7 +698,9 @@
     "saveProgress": "{{total}} dan {{marked}} ta belgilangan",
     "group": "Guruh",
     "alreadySaved": "Saqlangan — tahrirlash mumkin",
-    "saveUpdate": "Yangilash"
+    "saveUpdate": "Yangilash",
+    "partialSaveNamed": "Saqlanmadi: {{names}}. Bu bolalar sizning guruhingizga tegishli emas.",
+    "partialSave": "{{count}} ta yozuv saqlanmadi."
   },
   "childDetail": {
     "errorIrrLoad": "IRR ma'lumotlari yuklanmadi",

@@ -58,6 +58,7 @@ Introduced: TP-DAVOMAT-REWORK (2026-06-06)
 | `ATTENDANCE_INVALID_STATUS` | 400 | `status` is not one of `present`, `absent`, `home_leave`, `sick`, `hospitalized` | "Please select a valid presence status." |
 | `ATTENDANCE_ACCESS_DENIED` | 400 (per-record) | Child does not belong to this school, or teacher is not assigned to the child | "You do not have access to this child's record." |
 | `ATTENDANCE_SAVE_FAILED` | 400/500 | Database error while saving a record | "Failed to save attendance. Please try again." |
+| `ATTENDANCE_PARTIALLY_SAVED` | 207 | D-01: some records in the batch were saved and at least one was refused (usually `ATTENDANCE_ACCESS_DENIED`). `data.errors[]` names the childIds that were not saved. | "Some children were not saved. Check the list and try again." |
 
 ---
 

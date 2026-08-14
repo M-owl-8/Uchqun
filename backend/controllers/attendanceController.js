@@ -80,10 +80,18 @@ export const createAttendance = async (req, res) => {
       }
     }
 
-    if (results.errors.length > 0 && results.saved === 0 && toSave.length > 0) {
-      return res.status(400).json({
+    // D-01: any rejected record makes this a failed save, not a partial success.
+    // Previously only an all-rows failure returned non-2xx, so a save where one
+    // child was refused (ATTENDANCE_ACCESS_DENIED) came back 201 success:true and
+    // the UI showed "Davomat saqlandi" while discarding that child's record —
+    // including absences.
+    if (results.errors.length > 0 && toSave.length > 0) {
+      return res.status(results.saved === 0 ? 400 : 207).json({
         success: false,
-        error: { code: results.errors[0].code, detail: `${results.errors.length} record(s) failed to save` },
+        error: {
+          code: results.saved === 0 ? results.errors[0].code : 'ATTENDANCE_PARTIALLY_SAVED',
+          detail: `${results.errors.length} of ${toSave.length} record(s) were not saved`,
+        },
         data: results,
       });
     }

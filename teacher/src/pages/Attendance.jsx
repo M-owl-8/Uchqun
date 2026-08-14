@@ -227,7 +227,24 @@ const Attendance = () => {
         date: selectedDate,
         status: states[c.id] || 'unset',
       }));
-      await api.post('/attendance', { records });
+      const res = await api.post('/attendance', { records });
+      // D-01: the backend returns 207 (a 2xx, so axios does NOT throw) when some
+      // records were refused. Treating that as success is what silently discarded
+      // children — including their absences — while showing "Davomat saqlandi".
+      const payload = res.data ?? {};
+      const failed = payload.data?.errors ?? [];
+      if (payload.success === false || failed.length > 0) {
+        const names = failed
+          .map(e => children.find(c => c.id === e.childId))
+          .filter(Boolean)
+          .map(c => `${c.firstName} ${c.lastName ?? ''}`.trim());
+        showError(
+          names.length
+            ? t('attendance.partialSaveNamed', { names: names.join(', ') })
+            : t('attendance.partialSave', { count: failed.length })
+        );
+        return; // stay on the page so the teacher can see and correct the grid
+      }
       success(t('attendance.saved'));
       navigate('/teacher');
     } catch (err) {

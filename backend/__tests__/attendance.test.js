@@ -135,7 +135,11 @@ describe('attendanceController — createAttendance (batch)', () => {
     expect(res.json.mock.calls[0][0].data.saved).toBe(1);
   });
 
-  it('partial success: saved=1 error=1 → 201 (not 400)', async () => {
+  // D-01: this test previously asserted 201 for a partial save. That contract is
+  // what let the teacher UI report "Davomat saqlandi" while discarding a refused
+  // child's record. A partial save is now 207 with success:false and the refused
+  // childIds in data.errors, so the client cannot mistake it for a clean save.
+  it('partial save: saved=1 error=1 → 207, success:false, errors listed', async () => {
     const child = { id: 'child-1', firstName: 'A', lastName: 'B', schoolId: 'school-1' };
     mockValidateChildAccess
       .mockResolvedValueOnce(child)  // first record OK
@@ -155,10 +159,13 @@ describe('attendanceController — createAttendance (batch)', () => {
     const res = mkRes();
     await createAttendance(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(201);
-    const data = res.json.mock.calls[0][0].data;
-    expect(data.saved).toBe(1);
-    expect(data.errors.length).toBe(1);
+    expect(res.status).toHaveBeenCalledWith(207);
+    const payload = res.json.mock.calls[0][0];
+    expect(payload.success).toBe(false);
+    expect(payload.error.code).toBe('ATTENDANCE_PARTIALLY_SAVED');
+    expect(payload.data.saved).toBe(1);
+    expect(payload.data.errors.length).toBe(1);
+    expect(payload.data.errors[0].childId).toBe('child-2');
   });
 
   it('400 when DB throws on findOne (per-record catch)', async () => {
