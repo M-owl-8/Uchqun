@@ -1,0 +1,8 @@
+{
+  "request": {
+    "status": 500,
+    "correlationHeader": "3e9aedf3-4a1c-491b-8d0e-74cf9e715a3e",
+    "body": "{\"success\":false,\"error\":{\"code\":\"DATA_EXPORT_FAILED\"}}"
+  },
+  "shot": "002_parent_D-51-500-with-correlation-id.png"
+}

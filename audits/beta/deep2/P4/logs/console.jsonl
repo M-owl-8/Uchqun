@@ -1,0 +1,5 @@
+{"t":"2026-08-14T13:16:54.704Z","role":"parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T13:16:54.928Z","role":"parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T13:16:58.080Z","role":"parent","type":"error","url":"https://teacher-production-0647.up.railway.app/","text":"Failed to load resource: the server responded with a status of 404 ()"}
+{"t":"2026-08-14T13:17:05.372Z","role":"parent","type":"error","url":"https://teacher-production-0647.up.railway.app/settings","text":"Failed to load resource: the server responded with a status of 404 ()"}
+{"t":"2026-08-14T13:17:09.158Z","role":"parent","type":"error","url":"https://teacher-production-0647.up.railway.app/settings","text":"Failed to load resource: the server responded with a status of 500 ()"}

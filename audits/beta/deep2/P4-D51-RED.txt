@@ -1,0 +1,3 @@
+    × the controller does not select telegramUsername (26 ms)
+    × every attribute the export selects from User exists on the model (21 ms)
+Tests:       2 failed, 2 total

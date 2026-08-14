@@ -32,8 +32,14 @@ export const exportMyData = async (req, res) => {
 
     // Parent record — explicitly exclude password and internal fields
     const parentRecord = await User.findByPk(parentId, {
+      // D-51: 'telegramUsername' is not a column on users and not a field on
+      // models/User.js — the only mention of it in the whole backend was this
+      // list. Sequelize passed it through to SQL and every request to this
+      // endpoint died with `column "telegramUsername" does not exist`, which is
+      // why audit_log holds zero data_export rows for the platform's entire
+      // history. Guard added by __tests__/controllers/parentDataExport.test.js.
       attributes: ['id', 'firstName', 'lastName', 'email', 'phone', 'status',
-        'telegramUsername', 'createdAt'],
+        'createdAt'],
     });
 
     // Linked children

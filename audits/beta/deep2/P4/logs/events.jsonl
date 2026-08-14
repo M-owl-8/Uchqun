@@ -1,0 +1,4 @@
+{"t":"2026-08-14T13:17:04.424Z","kind":"login","portal":"parent","email":"otaona14@tmm3.uz","role":"parent","ok":true,"landing":"https://teacher-production-0647.up.railway.app/"}
+{"t":"2026-08-14T13:17:08.946Z","kind":"shot","file":"001_parent_trace-context.png","role":"parent","action":"trace-context","defect":null,"vp":"desktop","url":"https://teacher-production-0647.up.railway.app/settings"}
+{"t":"2026-08-14T13:17:09.310Z","kind":"shot","file":"002_parent_D-51-500-with-correlation-id.png","role":"parent","action":"D-51-500-with-correlation-id","defect":null,"vp":"desktop","url":"https://teacher-production-0647.up.railway.app/settings"}
+{"t":"2026-08-14T13:17:09.313Z","kind":"p4","step":"trigger-500","v":{"status":500,"correlationHeader":"3e9aedf3-4a1c-491b-8d0e-74cf9e715a3e","body":"{\"success\":false,\"error\":{\"code\":\"DATA_EXPORT_FAILED\"}}"}}
