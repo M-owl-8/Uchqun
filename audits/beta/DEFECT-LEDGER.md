@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-53.
+**Numbering:** ids are permanent and never reused. New defects continue from D-55.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -57,6 +57,8 @@ repository is historical and must not be treated as current.
 | D-50 | degrades-use | **PARTIAL** `5c52885d` | CI red on every commit; deploys ungated. Stale test fixed; dependency vulns and the missing gate remain | `deep/P8-CLOSEOUT.md` §2 |
 | D-51 | blocks-use | **OPEN** | `GET /parent/me/export` returns 500 on every parent tested; the right-of-access export has never succeeded in production | `deep2/P2-AUDIT-INTEGRITY.md` §4 |
 | D-52 | degrades-use | **OPEN** | document rejection is irreversible; a mis-rejected document blocks a reception permanently | `deep2/P2-AUDIT-INTEGRITY.md` §5 |
+| D-53 | blocks-use | **FIXED** `fdc57107` | `/service-plans` had no access check; `/therapy/usage` let childId overwrite the school scope and left `where` empty for reception and government | `deep2/P3-ISOLATION.md` §4 |
+| D-54 | blocks-use | **FIXED** `fd5c2aee` | `validateChildAccess` skipped its scope check for any user without a schoolId, admitting every government account to every child in the country | `deep2/P3-ISOLATION.md` §5 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused

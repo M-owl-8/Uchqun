@@ -1,0 +1,22 @@
+| File | Defect | Viewport | Role | Action | Path |
+|---|---|---|---|---|---|
+| 001_iso-teacher_isolation-teacher-context.png | — | desktop | iso-teacher | isolation-teacher-context | /teacher |
+| 002_iso-parent_isolation-parent-context.png | — | desktop | iso-parent | isolation-parent-context | / |
+| 003_iso-admin_isolation-admin-context.png | — | desktop | iso-admin | isolation-admin-context | /admin |
+| 004_iso-reception_isolation-reception-context.png | — | desktop | iso-reception | isolation-reception-context | /reception |
+| 005_iso-gov-region_isolation-gov-region-context.png | — | desktop | iso-gov-region | isolation-gov-region-context | /government |
+| 006_iso-teacher_isolation-teacher-context.png | — | desktop | iso-teacher | isolation-teacher-context | /teacher |
+| 007_iso-parent_isolation-parent-context.png | — | desktop | iso-parent | isolation-parent-context | / |
+| 008_iso-admin_isolation-admin-context.png | — | desktop | iso-admin | isolation-admin-context | /admin |
+| 009_iso-reception_isolation-reception-context.png | — | desktop | iso-reception | isolation-reception-context | /reception |
+| 010_iso-gov-region_isolation-gov-region-context.png | — | desktop | iso-gov-region | isolation-gov-region-context | /government |
+| 011_iso-teacher_isolation-teacher-context.png | — | desktop | iso-teacher | isolation-teacher-context | /teacher |
+| 012_iso-parent_isolation-parent-context.png | — | desktop | iso-parent | isolation-parent-context | / |
+| 013_iso-admin_isolation-admin-context.png | — | desktop | iso-admin | isolation-admin-context | /admin |
+| 014_iso-reception_isolation-reception-context.png | — | desktop | iso-reception | isolation-reception-context | /reception |
+| 015_iso-gov-region_isolation-gov-region-context.png | — | desktop | iso-gov-region | isolation-gov-region-context | /government |
+| 016_iso-teacher_isolation-teacher-context.png | — | desktop | iso-teacher | isolation-teacher-context | /teacher |
+| 017_iso-parent_isolation-parent-context.png | — | desktop | iso-parent | isolation-parent-context | / |
+| 018_iso-admin_isolation-admin-context.png | — | desktop | iso-admin | isolation-admin-context | /admin |
+| 019_iso-reception_isolation-reception-context.png | — | desktop | iso-reception | isolation-reception-context | /reception |
+| 020_iso-gov-region_isolation-gov-region-context.png | — | desktop | iso-gov-region | isolation-gov-region-context | /government |
