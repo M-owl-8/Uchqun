@@ -9,42 +9,29 @@ export async function up(queryInterface) {
     `CREATE TYPE "enum_child_attendance_status" AS ENUM ('present', 'absent', 'home_leave', 'sick', 'hospitalized')`,
   );
 
-  // Step 3: migrate existing data before altering the column.
+  // Steps 3+4 combined. D-65: the original did the remap as UPDATEs BEFORE the
+  // type change, which cannot work — at that point the column still has the OLD
+  // type, and 'sick' is not one of its values, so
+  //   UPDATE child_attendance SET status = 'sick' WHERE status = 'excused'
+  // fails with `invalid input value for enum enum_child_attendance_status_old:
+  // "sick"`. Postgres rejects the literal on the way in; it never gets as far as
+  // matching rows. (On an empty database there are no rows to remap at all, and
+  // it still fails — the error is about the literal, not the data.)
   //
-  // D-65: on an EMPTY database the creating migration
-  // (20260519100001-create-child-attendance) already declares the modern value
-  // set, so 'late' and 'excused' are not members of the renamed type and these
-  // UPDATEs fail with `invalid input value for enum
-  // enum_child_attendance_status_old: "late"`. Comparing a column to a literal
-  // that is not in its enum is an ERROR in postgres, not an empty result. Only
-  // remap a value the type actually has.
-  const hasLabel = async (label) => {
-    const [[row]] = await queryInterface.sequelize.query(`
-      SELECT EXISTS (
-        SELECT 1 FROM pg_enum e JOIN pg_type t ON t.oid = e.enumtypid
-        WHERE t.typname = 'enum_child_attendance_status_old' AND e.enumlabel = '${label}'
-      ) AS present;`);
-    return Boolean(row.present);
-  };
-
-  // late (arrived late, still present) → present
-  if (await hasLabel('late')) {
-    await queryInterface.sequelize.query(
-      `UPDATE child_attendance SET status = 'present' WHERE status = 'late'`,
-    );
-  }
-  // excused (excused absence) → sick (closest care-model equivalent)
-  if (await hasLabel('excused')) {
-    await queryInterface.sequelize.query(
-      `UPDATE child_attendance SET status = 'sick' WHERE status = 'excused'`,
-    );
-  }
-
-  // Step 4: alter the column to use the new type
+  // Mapping inside the USING clause converts and remaps in one atomic step, so
+  // every value is only ever written as a member of the type it is being written
+  // to. Same result on production, where the old values exist; correct on a
+  // fresh database, where they do not.
   await queryInterface.sequelize.query(
     `ALTER TABLE child_attendance
        ALTER COLUMN status TYPE "enum_child_attendance_status"
-       USING status::text::"enum_child_attendance_status"`,
+       USING (
+         CASE status::text
+           WHEN 'late'    THEN 'present'
+           WHEN 'excused' THEN 'sick'
+           ELSE status::text
+         END
+       )::"enum_child_attendance_status"`,
   );
 
   // Step 5: drop old enum
