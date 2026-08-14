@@ -89,7 +89,23 @@
     "colRating": "Reyting",
     "shown": "ko'rsatilmoqda",
     "exportCSV": "CSV yuklab olish",
-    "exportTruncated": "Diqqat: faqat {{count}} ta maktab yuklab olindi (jami {{total}} ta). To'liq ro'yxat uchun keyingi versiyani kuting."
+    "exportTruncated": "Diqqat: faqat {{count}} ta maktab yuklab olindi (jami {{total}} ta). To'liq ro'yxat uchun keyingi versiyani kuting.",
+    "csv": {
+      "index": "#",
+      "name": "Nomi",
+      "address": "Manzil",
+      "type": "Turi",
+      "region": "Hudud",
+      "students": "O'quvchilar",
+      "teachers": "Tarbiyachilar",
+      "rating": "Baho",
+      "ratingsCount": "Baholar soni"
+    },
+    "type": {
+      "support": "Madad maktabi",
+      "special": "Maxsus maktab",
+      "inclusive": "Inklyuziv maktab"
+    }
   },
   "schoolDetail": {
     "notFound": "Muassasa topilmadi",

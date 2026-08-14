@@ -89,7 +89,23 @@
     "colRating": "Rating",
     "shown": "shown",
     "exportCSV": "Export CSV",
-    "exportTruncated": "Warning: only {{count}} of {{total}} schools exported. For the full list, pagination is coming soon."
+    "exportTruncated": "Warning: only {{count}} of {{total}} schools exported. For the full list, pagination is coming soon.",
+    "csv": {
+      "index": "#",
+      "name": "Name",
+      "address": "Address",
+      "type": "Type",
+      "region": "Region",
+      "students": "Students",
+      "teachers": "Teachers",
+      "rating": "Rating",
+      "ratingsCount": "Ratings Count"
+    },
+    "type": {
+      "support": "Support school",
+      "special": "Special school",
+      "inclusive": "Inclusive school"
+    }
   },
   "schoolDetail": {
     "notFound": "School not found",

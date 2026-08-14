@@ -32,9 +32,24 @@ const Schools = () => {
       }));
     }
     const rows = [
-      ['#', 'Name', 'Address', 'Type', 'Region', 'Students', 'Teachers', 'Rating', 'Ratings Count'],
+      // D-45: this header was a hardcoded English array, so the one artefact a
+      // ministry official takes out of the system and puts in front of someone
+      // else was in the wrong language, with the raw model enum in the Type
+      // column. reception/src/pages/ParentManagement.jsx:484 already builds its
+      // header from t(); this now does the same.
+      [
+        t('schools.csv.index', { defaultValue: '#' }),
+        t('schools.csv.name', { defaultValue: 'Nomi' }),
+        t('schools.csv.address', { defaultValue: 'Manzil' }),
+        t('schools.csv.type', { defaultValue: 'Turi' }),
+        t('schools.csv.region', { defaultValue: 'Hudud' }),
+        t('schools.csv.students', { defaultValue: "O'quvchilar" }),
+        t('schools.csv.teachers', { defaultValue: 'Tarbiyachilar' }),
+        t('schools.csv.rating', { defaultValue: 'Baho' }),
+        t('schools.csv.ratingsCount', { defaultValue: 'Baholar soni' }),
+      ],
       ...filtered.map((s, i) => [
-        i + 1, s.name || '', s.address || '', s.type || '', s.regionRef?.name || s.region || '',
+        i + 1, s.name || '', s.address || '', t(`schools.type.${s.type}`, { defaultValue: s.type || '' }), s.regionRef?.name || s.region || '',
         s.studentsCount || 0, s.teachersCount || 0,
         (s.averageRating || 0).toFixed(2), s.ratingsCount || 0,
       ]),
