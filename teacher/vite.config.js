@@ -55,10 +55,18 @@ export default defineConfig(({ mode }) => {
       environment: 'jsdom',
       setupFiles: './src/setupTests.js',
       // Cap workers to prevent resource-exhaustion timeouts in parallel suite runs.
-      // Without this cap the full 13-file suite had 12 flaky timeouts on resource-constrained hosts.
-      // Tradeoff: ~2Г— slower full run; deterministic green baseline is worth it.
+      // Without this cap the full suite had flaky timeouts on resource-constrained hosts.
+      //
+      // D-59: vitest 4 REMOVED `test.poolOptions` (reception hit this in S30 and
+      // migrated; this file did not). The cap below was therefore ignored at
+      // runtime, workers over-subscribed, and 7-8 of the 19 test files failed to
+      // start with "[vitest-pool]: Failed to start threads worker" — while the
+      // run still EXITED 0 and reported the survivors as "passed". Three
+      // consecutive runs collected 11, 12, 11 of 19 files, all green.
+      // The cap is expressed as vitest 4 top-level options so it is honoured.
       pool: 'threads',
-      poolOptions: { threads: { maxThreads: 2, minThreads: 1 } },
+      maxWorkers: 2,
+      minWorkers: 1,
     },
   };
 });
