@@ -103,7 +103,8 @@
     "viewDetails": "Details →",
     "noRatings": "No ratings yet.",
     "irrSub": "Once per quarter",
-    "groupsSub": "Group list"
+    "groupsSub": "Group list",
+    "parentsCard": "Parents"
   },
   "parentsPage": {
     "title": "Parents",

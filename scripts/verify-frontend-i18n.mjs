@@ -34,11 +34,20 @@ const STRICT = process.argv.includes('--strict');
 // Each portal maps to every catalogue its i18n.js actually merges.
 // teacher/src/i18n.js:59-62 merges the portal and parent catalogues — missing
 // that is what made the first P7 analysis over-report by a factor of 27.
+// The merge chain, read from the code rather than assumed
+// (Campaign II P6.1 — the first version of this gate omitted shared/, and its
+// counts were therefore computed against an incomplete catalogue):
+//
+//   shared/utils/mergeLocales.js:11    mergeLocales(shared, portal)
+//   admin/src/i18n.js:11-15            mergeLocales(shared<L>, portal<L>)
+//   reception, government              same shape
+//   teacher/src/i18n.js:18-20          const <L> = mergeLocales(shared<L>, portal<L>)
+//   teacher/src/i18n.js:59-62          mergeDeep(<L>, <L>Parent)   <- THREE catalogues
 const PORTALS = {
-  teacher: (l) => [`teacher/src/locales/${l}/common.json`, `teacher/src/parent/locales/${l}/common.json`],
-  admin: (l) => [`admin/src/locales/${l}/common.json`],
-  reception: (l) => [`reception/src/locales/${l}/common.json`],
-  government: (l) => [`government/src/locales/${l}/common.json`],
+  teacher: (l) => [`shared/locales/${l}.json`, `teacher/src/locales/${l}/common.json`, `teacher/src/parent/locales/${l}/common.json`],
+  admin: (l) => [`shared/locales/${l}.json`, `admin/src/locales/${l}/common.json`],
+  reception: (l) => [`shared/locales/${l}.json`, `reception/src/locales/${l}/common.json`],
+  government: (l) => [`shared/locales/${l}.json`, `government/src/locales/${l}/common.json`],
 };
 const LOCALES = ['uz', 'ru', 'en'];
 

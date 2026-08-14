@@ -27,7 +27,10 @@ i18n
   .init({
     resources,
     lng: savedLang,
-    fallbackLng: 'en',
+    // D-58: admin was the only portal falling back to English. teacher,
+    // reception and government all fall back to 'uz'. A missing key in a
+    // product whose users are Uzbek should degrade to Uzbek, not to English.
+    fallbackLng: 'uz',
     supportedLngs: ['uz', 'ru', 'en'],
     interpolation: {
       escapeValue: false,

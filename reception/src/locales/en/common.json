@@ -217,7 +217,9 @@
     "confirmDeleteChild": "Delete child \"{{name}}\"?",
     "failedAddChild": "Failed to add child",
     "failedUpdateChild": "Failed to update child",
-    "bulkDeleteWarning": "Selected parents will be soft-deleted. Restoration is not available in this portal (can be done via admin portal)."
+    "bulkDeleteWarning": "Selected parents will be soft-deleted. Restoration is not available in this portal (can be done via admin portal).",
+    "bulkActivateConfirm": "Activate {{count}} parents?",
+    "bulkDeleteConfirm": "Delete {{count}} parents?"
   },
   "teachersPage": {
     "title": "Teacher Management",
@@ -264,7 +266,8 @@
       "save": "Save",
       "cancel": "Cancel",
       "create": "Create",
-      "update": "Update"
+      "update": "Update",
+      "delete": "Delete"
     },
     "buttons": {
       "edit": "Update",
@@ -454,7 +457,9 @@
       "certificate": "Certificate",
       "identification": "Identification Document",
       "other": "Other"
-    }
+    },
+    "pendingCountLabel": "{{count}} documents awaiting approval",
+    "rejectedCountLabel": "{{count}} rejected"
   },
   "changePasswordForced": {
     "title": "Change Password",

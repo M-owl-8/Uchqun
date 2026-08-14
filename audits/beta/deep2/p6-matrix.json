@@ -1,0 +1,92 @@
+{
+ "teacher": {
+  "counts": {
+   "uz": 1311,
+   "ru": 1311,
+   "en": 1311
+  },
+  "missingRu": [],
+  "missingEn": [],
+  "extraRu": [],
+  "extraEn": []
+ },
+ "admin": {
+  "counts": {
+   "uz": 789,
+   "ru": 789,
+   "en": 789
+  },
+  "missingRu": [],
+  "missingEn": [],
+  "extraRu": [],
+  "extraEn": []
+ },
+ "reception": {
+  "counts": {
+   "uz": 595,
+   "ru": 623,
+   "en": 603
+  },
+  "missingRu": [],
+  "missingEn": [],
+  "extraRu": [
+   "parentsPage.children_one",
+   "parentsPage.children_few",
+   "parentsPage.children_many",
+   "parentsPage.children_other",
+   "parentsPage.bulkActivateConfirm_one",
+   "parentsPage.bulkActivateConfirm_few",
+   "parentsPage.bulkActivateConfirm_many",
+   "parentsPage.bulkActivateConfirm_other",
+   "parentsPage.bulkDeleteConfirm_one",
+   "parentsPage.bulkDeleteConfirm_few",
+   "parentsPage.bulkDeleteConfirm_many",
+   "parentsPage.bulkDeleteConfirm_other",
+   "parentsPage.form.groupRequiredHint",
+   "parentsPage.gender.male",
+   "parentsPage.gender.female",
+   "parentsPage.gender.other",
+   "documents.pendingCountLabel_one",
+   "documents.pendingCountLabel_few",
+   "documents.pendingCountLabel_many",
+   "documents.pendingCountLabel_other",
+   "documents.rejectedCountLabel_one",
+   "documents.rejectedCountLabel_few",
+   "documents.rejectedCountLabel_many",
+   "documents.rejectedCountLabel_other",
+   "childStep.years_few",
+   "childStep.years_many",
+   "childStep.months_few",
+   "childStep.months_many"
+  ],
+  "extraEn": [
+   "parentsPage.bulkActivateConfirm_one",
+   "parentsPage.bulkActivateConfirm_other",
+   "parentsPage.bulkDeleteConfirm_one",
+   "parentsPage.bulkDeleteConfirm_other",
+   "documents.pendingCountLabel_one",
+   "documents.pendingCountLabel_other",
+   "documents.rejectedCountLabel_one",
+   "documents.rejectedCountLabel_other"
+  ]
+ },
+ "government": {
+  "counts": {
+   "uz": 644,
+   "ru": 647,
+   "en": 641
+  },
+  "missingRu": [],
+  "missingEn": [
+   "provision._note",
+   "scope._note",
+   "changePasswordForced._note"
+  ],
+  "extraRu": [
+   "_metadata.verification_status",
+   "_metadata.generated_by",
+   "_metadata.review_note"
+  ],
+  "extraEn": []
+ }
+}
