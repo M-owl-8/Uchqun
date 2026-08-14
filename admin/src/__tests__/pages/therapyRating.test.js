@@ -22,12 +22,10 @@
 //
 // FAIL-FIRST: fails against the pre-fix TherapyManagement.jsx.
 
-import fs from 'fs';
-import path from 'path';
 import { describe, test, expect } from 'vitest';
-
-const SRC = path.resolve(__dirname, '../../pages/TherapyManagement.jsx');
-const src = fs.readFileSync(SRC, 'utf8');
+// Vite's ?raw import gives the file's source with no Node globals — __dirname
+// and process are both rejected by the admin ESLint config (browser env).
+import src from '../../pages/TherapyManagement.jsx?raw';
 
 describe('D-43 — therapy rating must survive a DECIMAL-as-string payload', () => {
   test('the source never calls .toFixed() directly on therapy.rating', () => {
