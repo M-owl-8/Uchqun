@@ -5,10 +5,21 @@ import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import { emitToUser } from '../config/socket.js';
 import { logAudit } from '../utils/auditLogger.js';
+import { createNotification } from './notificationController.js';
 
 const VALID_STATUSES = ['present', 'absent', 'home_leave', 'sick', 'hospitalized'];
 // D-26: how far back attendance may be recorded or corrected.
 const MAX_BACKDATE_DAYS = parseInt(process.env.ATTENDANCE_MAX_BACKDATE_DAYS, 10) || 365;
+
+// D-35: statuses worth telling a parent about. 'present' is deliberately absent
+// — see the call site.
+const NOTIFY_STATUSES = new Set(['absent', 'sick', 'hospitalized', 'home_leave']);
+const ATTENDANCE_TITLE = {
+  absent: "Bolangiz bugun kelmadi",
+  sick: "Bolangiz kasal deb belgilandi",
+  hospitalized: "Bolangiz shifoxonada deb belgilandi",
+  home_leave: "Bolangiz uyga ruxsat oldi",
+};
 
 export const createAttendance = async (req, res) => {
   try {
@@ -111,6 +122,29 @@ export const createAttendance = async (req, res) => {
         }
         if (child.parentId) {
           emitToUser(child.parentId, 'attendance:updated', { childId, date, status, timestamp: new Date().toISOString() });
+
+          // D-35: the parent notification centre was never fed by attendance —
+          // on a day with three attendance changes the parent's page still read
+          // Bildirishnomalar(0).
+          //
+          // Only EXCEPTIONAL statuses notify. Attendance is marked in bulk for
+          // every child every day, so notifying on 'present' would produce one
+          // notification per child per day and bury the one that matters. A
+          // parent needs to know their child was marked absent, sick,
+          // hospitalized or on home leave; they do not need a daily message
+          // saying nothing happened.
+          if (NOTIFY_STATUSES.has(status)) {
+            createNotification(
+              child.parentId,
+              childId,
+              'attendance',
+              ATTENDANCE_TITLE[status],
+              `${child.firstName}: ${date}`,
+              null,
+              'attendance',
+              child.schoolId
+            ).catch((err) => logger.error('Error creating attendance notification', { error: err.message, childId }));
+          }
         }
         results.saved++;
       } catch (err) {

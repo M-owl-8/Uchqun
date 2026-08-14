@@ -14,6 +14,8 @@ import {
   CheckCircle2,
   Trash2,
   Calendar,
+  CalendarCheck,
+  BookOpen,
 } from 'lucide-react';
 
 const Notifications = () => {
@@ -50,6 +52,13 @@ const Notifications = () => {
         return Utensils;
       case 'media':
         return ImageIcon;
+      // D-35: attendance and journal notifications now exist; without these
+      // cases they would all render as the generic bell, which is how a parent
+      // fails to notice their child was marked absent.
+      case 'attendance':
+        return CalendarCheck;
+      case 'journal':
+        return BookOpen;
       default:
         return Bell;
     }
@@ -63,6 +72,11 @@ const Notifications = () => {
         return 'bg-success-50 text-success-600';
       case 'media':
         return 'bg-p-sepia-50 text-p-brand-600';
+      case 'attendance':
+        // the only type that can carry bad news — it must not look routine
+        return 'bg-warning-50 text-warning-700';
+      case 'journal':
+        return 'bg-info-50 text-info-600';
       default:
         return 'bg-p-sepia-50 text-p-sepia-600';
     }

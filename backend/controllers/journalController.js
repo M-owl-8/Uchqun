@@ -4,6 +4,7 @@ import User from '../models/User.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import { emitToUser } from '../config/socket.js';
+import { createNotification } from './notificationController.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
@@ -62,6 +63,19 @@ export const create = async (req, res) => {
 
     if (visible && child.parentId) {
       emitToUser(child.parentId, 'journal:created', { childId, date, timestamp: new Date().toISOString() });
+      // D-35: the notification centre was never fed by the journal. Gated on the
+      // SAME `visible` flag as the socket emit — a parent must never be notified
+      // about an entry they are not allowed to open.
+      createNotification(
+        child.parentId,
+        childId,
+        'journal',
+        "Kundalikka yangi yozuv qo'shildi",
+        `${child.firstName}: ${date}`,
+        null,
+        'journal',
+        child.schoolId
+      ).catch((err) => logger.error('Error creating journal notification', { error: err.message, childId }));
     }
 
     return res.status(201).json({ success: true, data: entry });
@@ -156,6 +170,19 @@ export const createBulk = async (req, res) => {
 
         if (visible && child.parentId) {
           emitToUser(child.parentId, 'journal:created', { childId, date, timestamp: new Date().toISOString() });
+          // D-35: the notification centre was never fed by the journal. Gated on the
+          // SAME `visible` flag as the socket emit — a parent must never be notified
+          // about an entry they are not allowed to open.
+          createNotification(
+            child.parentId,
+            childId,
+            'journal',
+            "Kundalikka yangi yozuv qo'shildi",
+            `${child.firstName}: ${date}`,
+            null,
+            'journal',
+            child.schoolId
+          ).catch((err) => logger.error('Error creating journal notification', { error: err.message, childId }));
         }
 
         created.push(entry);

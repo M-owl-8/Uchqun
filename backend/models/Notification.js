@@ -26,7 +26,10 @@ const Notification = sequelize.define('Notification', {
     onDelete: 'CASCADE',
   },
   type: {
-    type: DataTypes.ENUM('activity', 'meal', 'media', 'progress', 'general'),
+    // D-35: attendance and journal added — the notification centre was never fed
+    // by either, so a parent saw Bildirishnomalar(0) on a day their child had a
+    // journal entry and three attendance changes.
+    type: DataTypes.ENUM('activity', 'meal', 'media', 'progress', 'general', 'attendance', 'journal'),
     allowNull: false,
   },
   title: {
@@ -42,7 +45,9 @@ const Notification = sequelize.define('Notification', {
     allowNull: true,
   },
   relatedType: {
-    type: DataTypes.ENUM('activity', 'meal', 'media', 'progress'),
+    // D-35: kept in step with enum_notifications_type. This column is a SEPARATE
+    // postgres enum; leaving it behind would make every new-type insert fail.
+    type: DataTypes.ENUM('activity', 'meal', 'media', 'progress', 'attendance', 'journal'),
     allowNull: true,
   },
   isRead: {
