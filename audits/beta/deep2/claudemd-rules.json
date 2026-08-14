@@ -1,0 +1,179 @@
+[
+ {
+  "id": "R01",
+  "text": "Work on main only — no feature branches",
+  "enforced": true,
+  "by": [
+   ".claude/hooks/enforce-main-only.sh (PreToolUse hook)"
+  ]
+ },
+ {
+  "id": "R02",
+  "text": "Read DEFERRED.md at session start",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R03",
+  "text": "Never set FORCE_SYNC=true",
+  "enforced": true,
+  "by": [
+   "backend/config/env.js",
+   "backend/env.example",
+   "backend/server.js"
+  ]
+ },
+ {
+  "id": "R04",
+  "text": "Never commit .env files or seed data with real PII",
+  "enforced": true,
+  "by": [
+   ".gitignore",
+   ".github/workflows/ci.yml (gitleaks)"
+  ]
+ },
+ {
+  "id": "R05",
+  "text": "All routes prefixed /api/",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R06",
+  "text": "All frontend HTTP via shared/services/api.js",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R07",
+  "text": "ES Modules only in backend — no require()",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R08",
+  "text": "Sequelize migrations only — never sync schema in production",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R09",
+  "text": "New controllers MUST ship with tests",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R10",
+  "text": "Error-path fixes MUST include a test that triggers the failure",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R11",
+  "text": "ALL catch branches must return error-appropriate status codes",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R12",
+  "text": "Response shape {success,data} / {success,error:{code,detail}}",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R13",
+  "text": "Any PR introducing a new error code MUST add a catalog row",
+  "enforced": true,
+  "by": [
+   "backend/scripts/verify-i18n.js (CI job i18n)"
+  ]
+ },
+ {
+  "id": "R14",
+  "text": "Defense-in-depth role checks at route AND controller",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R15",
+  "text": "Child-scoped resources MUST call validateChildAccess",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R16",
+  "text": "Never call AuditLog.create() directly from controllers",
+  "enforced": true,
+  "by": [
+   "backend/models/AuditLog.js"
+  ]
+ },
+ {
+  "id": "R17",
+  "text": "audit_log is append-only (3 layers)",
+  "enforced": true,
+  "by": [
+   "backend/models/AuditLog.js",
+   "backend/migrations/20260520100000-audit-log-revoke-mutations.js"
+  ]
+ },
+ {
+  "id": "R18",
+  "text": "Destroy on paranoid models passes {actorId, actorRole, reason}",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R19",
+  "text": "Bulk import two-phase, per-row atomicity",
+  "enforced": true,
+  "by": [
+   "backend/__tests__/controllers/adminImportController.start.test.js",
+   "backend/__tests__/controllers/adminImportController.test.js"
+  ]
+ },
+ {
+  "id": "R20",
+  "text": "PascalCase components, camelCase services/utils",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R21",
+  "text": "Conventional commits",
+  "enforced": false,
+  "by": []
+ },
+ {
+  "id": "R22",
+  "text": "Pre-commit: Husky -> lint-staged -> ESLint",
+  "enforced": true,
+  "by": [
+   ".husky/pre-commit"
+  ]
+ },
+ {
+  "id": "R23",
+  "text": "Run full suite before any PR",
+  "enforced": true,
+  "by": [
+   ".github/workflows/ci.yml"
+  ]
+ },
+ {
+  "id": "R24",
+  "text": "Frontend: CI fails if no test files in an app",
+  "enforced": true,
+  "by": [
+   ".github/workflows/ci.yml"
+  ]
+ },
+ {
+  "id": "R25",
+  "text": "i18n verify: all catalog codes in every language file",
+  "enforced": true,
+  "by": [
+   ".github/workflows/ci.yml"
+  ]
+ }
+]

@@ -4,7 +4,7 @@ import { chromium } from 'playwright';
 import fs from 'fs';
 import path from 'path';
 
-export const ROOT = 'C:/work/Uchqun/audits/beta/deep';
+export const ROOT = 'audits/beta/deep2';
 
 export const PORTALS = {
   government: 'https://government-production.up.railway.app',

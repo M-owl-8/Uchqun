@@ -1,0 +1,57 @@
+{
+ "scanned": 649,
+ "unref": [
+  "backend/migrations/20260520110000-add-paranoid-to-emotional-monitoring.js",
+  "backend/migrations/20260520110001-add-paranoid-to-progress.js",
+  "backend/scripts/_qa-reparent.mjs",
+  "reception/src/components/ReceptionBackground.jsx",
+  "reception/src/components/motifs/EmptyFolders.jsx",
+  "reception/src/components/motifs/EmptyInbox.jsx",
+  "teacher/src/shared/components/TeacherBackground.jsx"
+ ],
+ "undocumented": [
+  "ADMIN_EMAIL",
+  "ADMIN_PANEL_URL",
+  "ADMIN_PASSWORD",
+  "ALLOW_DB_RESET",
+  "ATTENDANCE_MAX_BACKDATE_DAYS",
+  "AUTH_LIMIT_MAX",
+  "AUTH_LIMIT_WINDOW_MS",
+  "DATABASE_PUBLIC_URL",
+  "DB_POOL_MAX",
+  "FILE_BASE_URL",
+  "GMAIL_CLIENT_ID",
+  "GMAIL_CLIENT_SECRET",
+  "GMAIL_REFRESH_TOKEN",
+  "GMAIL_USER",
+  "GOVERNMENT_EMAIL",
+  "GOVERNMENT_PASSWORD",
+  "LOCAL_STORAGE_FALLBACK",
+  "LOCAL_UPLOADS_DIR",
+  "LOGIN_LOCKOUT_SECS",
+  "LOGIN_MAX_ATTEMPTS",
+  "PARENT_EMAIL",
+  "PARENT_PASSWORD",
+  "PUBLIC_API_URL",
+  "RAILWAY_GIT_COMMIT_SHA",
+  "RECEPTION_EMAIL",
+  "RECEPTION_PASSWORD",
+  "RUN_MIGRATIONS",
+  "SENTRY_TRACES_SAMPLE_RATE",
+  "SMTP_SECURE",
+  "SUPER_ADMIN_EMAIL",
+  "TEACHER_EMAIL",
+  "TEACHER_PASSWORD",
+  "UPLOAD_LIMIT_MAX",
+  "UPLOAD_LIMIT_WINDOW_MS"
+ ],
+ "dupStamps": [
+  [
+   "20260608000001",
+   [
+    "20260608000001-fix-attendance-status-enum-column.js",
+    "20260608000001-reset-beta-test-account-passwords.js"
+   ]
+  ]
+ ]
+}

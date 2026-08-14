@@ -1,0 +1,32 @@
+[
+  {
+    "email": "gov.republic@uchqun.uz",
+    "password": "Test@2026",
+    "status": 200,
+    "body": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"e64efc66-4767-4abf-ba87-b822b440c425\",\"email\":\"gov.republic@uchqun.uz\",\"firstName\":\"Hamidjon\",\"lastName\":\"Mirzayev\",\"phone"
+  },
+  {
+    "email": "gov.toshkent@uchqun.uz",
+    "password": "Test@2026",
+    "status": 200,
+    "body": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"a5e497f8-1015-4405-92f2-a9119eca8246\",\"email\":\"gov.toshkent@uchqun.uz\",\"firstName\":\"Nodira\",\"lastName\":\"Yusupova\",\"phone\":"
+  },
+  {
+    "email": "gov.samarqand@uchqun.uz",
+    "password": "Test@2026",
+    "status": 200,
+    "body": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"e7916c76-ff93-4a46-9b14-81482e441355\",\"email\":\"gov.samarqand@uchqun.uz\",\"firstName\":\"Sherzod\",\"lastName\":\"Raximov\",\"phone\""
+  },
+  {
+    "email": "men@davlat.uz",
+    "password": "Test@2026",
+    "status": 200,
+    "body": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"a8235635-42d5-4734-bb2c-2d509a0f294e\",\"email\":\"men@davlat.uz\",\"firstName\":\"Men\",\"lastName\":\"Sen\",\"phone\":null,\"role\":\"gove"
+  },
+  {
+    "email": "direktor@tmm3.uz",
+    "password": "Uchqun@2026",
+    "status": 200,
+    "body": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"5eedb47c-c1a7-4d89-861a-adb60319a9e1\",\"email\":\"direktor@tmm3.uz\",\"firstName\":\"Nodira\",\"lastName\":\"Ismoilova\",\"phone\":\"+998"
+  }
+]

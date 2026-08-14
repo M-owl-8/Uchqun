@@ -1,3 +1,25 @@
+> ## ⚠ THIS REPORT'S VERDICT IS FALSE
+>
+> **Superseded:** 2026-08-14, Campaign II P1 (`audits/beta/deep2/P1-CONSOLIDATION.md`).
+> **Rebuilt by:** `audits/beta/deep2/P3-ISOLATION.md`.
+>
+> The "29/29 PASS — No isolation breaches detected" verdict below coexisted with a
+> live cross-tenant read in three controllers, found on 2026-08-14 and recorded as
+> **D-47** (`audits/beta/deep/P7-CROSS-CUTTING.md` §2): an admin at one school
+> could read another school's child activity and meal records — including health
+> notes — by supplying that child's id.
+>
+> **Why this report missed it.** Every Part A probe supplies a foreign id on an
+> endpoint whose role-branch already validated (`/parent/...`, `/teacher/children/...`,
+> `/admin/teachers/...`). The one probe against `/activities` (ISO-T02) supplies
+> **no** `childId` at all — precisely the branch that was safe. No probe in the
+> suite supplies a `childId` as an **admin** or **reception** account, which is the
+> exact evasion D-47 used. The suite also contains **zero reception probes** and
+> **zero write or delete probes**.
+>
+> This document is retained unedited below because a suite that passed while a
+> breach was live is itself evidence. Do not cite its verdict.
+
 # Tenant Isolation Report
 **S22-V1 — Hard-verdict rebuild**
 **Probe spec:** `tests/iso22-v1-isolation-probes.spec.js`

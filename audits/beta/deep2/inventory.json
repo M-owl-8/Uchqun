@@ -1,0 +1,2306 @@
+[
+ {
+  "f": "audits/backend/i18n-error-codes.md",
+  "sha": "6727bc27",
+  "date": "2026-08-14",
+  "subject": "fix(D-47,D-43,D-31,D-28,D-27,D-26): DEEP HARDE",
+  "head": "Backend i18n Error Code Catalog",
+  "status": "",
+  "claim": "Canonical"
+ },
+ {
+  "f": "audits/beta/deep/P1-SEED.md",
+  "sha": "960a7771",
+  "date": "2026-08-14",
+  "subject": "chore(seed): P1 expansion — 6 schools, 3 regio",
+  "head": "P1 — SEED EXPANSION",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P2-RECEPTION.md",
+  "sha": "d214e280",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P2 — reception portal deep audit",
+  "head": "P2 — RECEPTION PORTAL DEEP AUDIT",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P2-coverage-table.md",
+  "sha": "d214e280",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P2 — reception portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P2/screenshot-index.md",
+  "sha": "d214e280",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P2 — reception portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P3-TEACHER.md",
+  "sha": "62d5214f",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P3 — teacher portal deep audit",
+  "head": "P3 — Teacher portal, deep audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P3-coverage-table.md",
+  "sha": "62d5214f",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P3 — teacher portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P3/screenshot-index.md",
+  "sha": "62d5214f",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P3 — teacher portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P4-PARENT.md",
+  "sha": "26a977dd",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P4 — parent portal deep audit, de",
+  "head": "P4 — Parent portal, deep audit (desktop and 390×844)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P4-coverage-table.md",
+  "sha": "26a977dd",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P4 — parent portal deep audit, de",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P4/screenshot-index.md",
+  "sha": "26a977dd",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P4 — parent portal deep audit, de",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P5-ADMIN.md",
+  "sha": "93d7202a",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P5 — admin portal deep audit",
+  "head": "P5 — Admin portal, deep audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P5-coverage-table.md",
+  "sha": "93d7202a",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P5 — admin portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P5/screenshot-index.md",
+  "sha": "93d7202a",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P5 — admin portal deep audit",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P6-GOVERNMENT.md",
+  "sha": "ab86509c",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P6 — government portal, four vari",
+  "head": "P6 — Government portal, deep audit (four variants, thr",
+  "status": "",
+  "claim": "complete — all ten schools, all three regions, zero ragged r"
+ },
+ {
+  "f": "audits/beta/deep/P6-coverage-table.md",
+  "sha": "ab86509c",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P6 — government portal, four vari",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P6/screenshot-index.md",
+  "sha": "ab86509c",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P6 — government portal, four vari",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P7-CROSS-CUTTING.md",
+  "sha": "9f8c364b",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P7 — cross-cutting hardening; cro",
+  "head": "P7 — Cross-cutting hardening",
+  "status": "",
+  "claim": "COMPLETE — 29/29 PASS, 0 PARTIAL, 0 BLOCKED"
+ },
+ {
+  "f": "audits/beta/deep/P7/screenshot-index.md",
+  "sha": "9f8c364b",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P7 — cross-cutting hardening; cro",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/deep/P8-CLOSEOUT.md",
+  "sha": "3d780e33",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P8 — closeout, rescore, verifier ",
+  "head": "P8 — Fix, prove, gate, re-derive, rescore",
+  "status": "",
+  "claim": "29/29 PASS"
+ },
+ {
+  "f": "audits/beta/deep/P8/screenshot-index.md",
+  "sha": "3d780e33",
+  "date": "2026-08-14",
+  "subject": "docs(audit): P8 — closeout, rescore, verifier ",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/fullrun-2026-08-14/FULL-COVERAGE-RUN-2026-08-14.md",
+  "sha": "296713a4",
+  "date": "2026-08-14",
+  "subject": "docs(audit): fix/seed/deploy/re-witness run — ",
+  "head": "Uchqun — full-coverage single-run report",
+  "status": "",
+  "claim": "source of truth"
+ },
+ {
+  "f": "audits/beta/fullrun-2026-08-14/screenshot-index.md",
+  "sha": "296713a4",
+  "date": "2026-08-14",
+  "subject": "docs(audit): fix/seed/deploy/re-witness run — ",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/rerun-2026-08-14/FIX-SEED-REWITNESS-2026-08-14.md",
+  "sha": "296713a4",
+  "date": "2026-08-14",
+  "subject": "docs(audit): fix/seed/deploy/re-witness run — ",
+  "head": "Uchqun — fix / seed / deploy / re-witness run",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/rerun-2026-08-14/screenshot-index.md",
+  "sha": "296713a4",
+  "date": "2026-08-14",
+  "subject": "docs(audit): fix/seed/deploy/re-witness run — ",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/mobile-apk.md",
+  "sha": "c3e0a6fb",
+  "date": "2026-08-10",
+  "subject": "docs(mobile): document same-origin API require",
+  "head": "Mobile apps for Teacher & Parent portals (PWA + APK)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "LOOP_PRE_LAUNCH_CHECKLIST.md",
+  "sha": "38fafa03",
+  "date": "2026-06-12",
+  "subject": "docs(ops): S31 close-out — health/uptime alert",
+  "head": "Uchqun Platform — Pre-Launch Checklist",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/beta/BETA-DEFECTS.md",
+  "sha": "009a8004",
+  "date": "2026-06-12",
+  "subject": "fix(government): S32/DEF-018 — regional breakd",
+  "head": "Beta Defect Log",
+  "status": "✅ FIXED (S20, closed S20-close) — fix co",
+  "claim": "4/4 PASS"
+ },
+ {
+  "f": "docs/BACKUP_RUNBOOK.md",
+  "sha": "0e94bce7",
+  "date": "2026-06-12",
+  "subject": "docs(ops): S31 — backup restore drill PROVEN +",
+  "head": "Database Backup & Restore Runbook",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/OPERATIONS.md",
+  "sha": "38fafa03",
+  "date": "2026-06-12",
+  "subject": "docs(ops): S31 close-out — health/uptime alert",
+  "head": "Uchqun Platform — Operations Runbook",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "CLAUDE.md",
+  "sha": "d628479f",
+  "date": "2026-06-11",
+  "subject": "chore(audit): C-07 closed — CORS allowlist pro",
+  "head": "Uchqun Platform",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/beta/CONTENT-GATE-INVENTORY.md",
+  "sha": "712fcb40",
+  "date": "2026-06-11",
+  "subject": "docs(audit): S30 close-out — CI green record, ",
+  "head": "CONTENT-GATE INVENTORY — every open/deferred/placehold",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/beta/FEATURE-MATRIX.md",
+  "sha": "0e588bc4",
+  "date": "2026-06-11",
+  "subject": "chore(audit): S26 — reconcile stale KNOWN-FAIL",
+  "head": "",
+  "status": "PRE-TESTING CONTRACT — verdicts filled i",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/S22-V4-REPORT.md",
+  "sha": "f3020b68",
+  "date": "2026-06-11",
+  "subject": "chore(audit): S22-V4 close-out — 0 PARTIAL rem",
+  "head": "S22-V4 — VERIFICATION REBUILD: soft-PARTIAL → hard ver",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/IRR-MONTHLY-MILESTONES.md",
+  "sha": "a63a3078",
+  "date": "2026-06-10",
+  "subject": "feat(irr): IRR-MONTHLY-MILESTONES — 12-month p",
+  "head": "IRR-MONTHLY-MILESTONES (Option B)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/PP-JOURNAL-BULK.md",
+  "sha": "7a096867",
+  "date": "2026-06-10",
+  "subject": "feat(journal): PP-JOURNAL-BULK — fix parent-jo",
+  "head": "PP-JOURNAL-BULK",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/ISOLATION-REPORT.md",
+  "sha": "5e1a88ef",
+  "date": "2026-06-09",
+  "subject": "chore(isolation): rewrite ISOLATION-REPORT to ",
+  "head": "Tenant Isolation Report",
+  "status": "COMPLETE — 29/29 PASS, 0 PARTIAL, 0 BLOC",
+  "claim": "COMPLETE — 29/29 PASS, 0 PARTIAL, 0 BLOCKED"
+ },
+ {
+  "f": "audits/beta/RECONCILIATION.md",
+  "sha": "c7ea971b",
+  "date": "2026-06-09",
+  "subject": "test(audit): S22-V2 data reconciliation — 13/1",
+  "head": "Data Reconciliation Report",
+  "status": "COMPLETE — 13/13 PASS, 0 MISMATCH, 0 PAR",
+  "claim": "COMPLETE — 13/13 PASS, 0 MISMATCH, 0 PARTIAL"
+ },
+ {
+  "f": "audits/beta/S22-V3-REPORT.md",
+  "sha": "be830318",
+  "date": "2026-06-09",
+  "subject": "audit(s22v3): S22-V3 complete — 11 PASS, 1 FAI",
+  "head": "S22-V3 Verification Report",
+  "status": "COMPLETE — 11 PASS, 1 FAIL",
+  "claim": "COMPLETE — 11 PASS, 1 FAIL"
+ },
+ {
+  "f": "audits/redesign/OBSERVATIONS-REMOVAL.md",
+  "sha": "d69a2195",
+  "date": "2026-06-09",
+  "subject": "chore(observations): remove kuzatuv / ChildObs",
+  "head": "OBSERVATIONS-REMOVAL",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-MONITORING-SEPARATION.md",
+  "sha": "b56c038f",
+  "date": "2026-06-09",
+  "subject": "feat(teacher): TP-MONITORING-SEPARATION — moni",
+  "head": "TP-MONITORING-SEPARATION",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/beta/BETA-UX-OPINIONS.md",
+  "sha": "fb5e7c19",
+  "date": "2026-06-08",
+  "subject": "audit(s14): complete BETA-VERIFICATION Waves 1",
+  "head": "Beta UX Opinions",
+  "status": "COMPLETE — all roles populated after Wav",
+  "claim": "COMPLETE — all roles populated after Waves 1–6"
+ },
+ {
+  "f": "docs/RAILWAY_SETUP.md",
+  "sha": "557f3147",
+  "date": "2026-06-08",
+  "subject": "chore(config): replace stale Netlify URLs with",
+  "head": "Railway Production Setup Guide",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "DEFERRED.md",
+  "sha": "13450904",
+  "date": "2026-06-07",
+  "subject": "chore(deferred): clear stale TP-PARENT-ASSIGNM",
+  "head": "DEFERRED — open work parked for later",
+  "status": "what's done so far + commit SHA",
+  "claim": ""
+ },
+ {
+  "f": "LOOP_TRACKER.md",
+  "sha": "6f24f88f",
+  "date": "2026-06-07",
+  "subject": "chore(tracker): close G5 — privacy consent tex",
+  "head": "Uchqun Refinement Loop — Master Tracker",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/BETA-LAUNCH-PLAN.md",
+  "sha": "2ae1d0b7",
+  "date": "2026-06-07",
+  "subject": "chore(docs): flip G1 to CLOSED in BETA-LAUNCH-",
+  "head": "Uchqun Beta Launch Plan",
+  "status": "✅ Plan locked. Execution open.",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/backend/12-pre-existing-test-fixes.md",
+  "sha": "ce2ef6c5",
+  "date": "2026-06-07",
+  "subject": "fix(teacher/chat/test): G1 TP-PARENT-ASSIGNMEN",
+  "head": "Audit 12 — Pre-existing test-suite failures fixed (STE",
+  "status": "✅ CLOSED — all 3 suites pass; 0 pre-exis",
+  "claim": ""
+ },
+ {
+  "f": "audits/gates/G4-PRIVACY-CONSENT.md",
+  "sha": "ce2ef6c5",
+  "date": "2026-06-07",
+  "subject": "fix(teacher/chat/test): G1 TP-PARENT-ASSIGNMEN",
+  "head": "G4 — Privacy consent UI",
+  "status": "✅ CLOSED (engineering); G5 placeholder t",
+  "claim": "10/10 pass"
+ },
+ {
+  "f": "audits/gates/SECURITY-DB-CRED-ROTATION.md",
+  "sha": "ce2ef6c5",
+  "date": "2026-06-07",
+  "subject": "fix(teacher/chat/test): G1 TP-PARENT-ASSIGNMEN",
+  "head": "SECURITY — Railway DB Credential Rotation",
+  "status": "⚠️ ENGINEERING PROMPT — rotation is a hu",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CROSS-DATE-UTC-FIX.md",
+  "sha": "635a5eb5",
+  "date": "2026-06-07",
+  "subject": "fix(cross-portal): UTC date bug — local-time t",
+  "head": "CROSS-DATE-UTC-FIX — local-time date helper across all",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CROSS-IRR-VISIBILITY.md",
+  "sha": "35fef6fb",
+  "date": "2026-06-07",
+  "subject": "feat(cross-irr-visibility): admin + government",
+  "head": "CROSS-IRR-VISIBILITY",
+  "status": "",
+  "claim": "1510/1510 pass"
+ },
+ {
+  "f": "audits/redesign/TP-IA-REDESIGN.md",
+  "sha": "d997ec2c",
+  "date": "2026-06-07",
+  "subject": "feat(teacher): TP-IA-REDESIGN — 5-tab IA mirro",
+  "head": "TP-IA-REDESIGN — teacher portal 5-tab reshape",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-PARENT-ASSIGNMENT.md",
+  "sha": "9655fb92",
+  "date": "2026-06-07",
+  "subject": "fix(data): G1 seed repair — create Zulfiya gro",
+  "head": "TP-PARENT-ASSIGNMENT — Teacher ↔ Parent Assignment Cha",
+  "status": "✅ CLOSED — STEP 1 ✅ (df8df86) · STEP 2 ✅",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/backend/11-idor-resweep.md",
+  "sha": "900d968d",
+  "date": "2026-06-06",
+  "subject": "docs(g2): close 11-IDOR-RESWEEP — gate G2 ✅ ve",
+  "head": "Backend Batch 11: IDOR Resweep (All Portals + Governme",
+  "status": "⚠️ Flagged as IDOR-11-002 but needs expl",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/PP-ATTENDANCE-SURFACE.md",
+  "sha": "6b8daf02",
+  "date": "2026-06-06",
+  "subject": "feat(parent): PP-ATTENDANCE-SURFACE S7 — paren",
+  "head": "PP-ATTENDANCE-SURFACE — Parent view of child's daily p",
+  "status": "🟡 S7 **phase-1 done** (pending Railway ",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/PP-AUDIT.md",
+  "sha": "32900d5a",
+  "date": "2026-06-06",
+  "subject": "docs(audit): PP-AUDIT deliverable — parent por",
+  "head": "PP-AUDIT — Parent Portal Full Audit",
+  "status": "🟡 In progress (pending user verificatio",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/PP-AUTH-ZOMBIE.md",
+  "sha": "97860a37",
+  "date": "2026-06-06",
+  "subject": "docs(audit): PP-AUTH-ZOMBIE S5 — parent-side c",
+  "head": "PP-AUTH-ZOMBIE — Parent portal auth-zombie closure ver",
+  "status": "🟡 S5 confirm in progress (pending user ",
+  "claim": "source of truth"
+ },
+ {
+  "f": "audits/redesign/PP-CHAT-INTEGRITY.md",
+  "sha": "b1c54d0a",
+  "date": "2026-06-06",
+  "subject": "fix(parent): PP-CHAT-INTEGRITY S9 — shared mod",
+  "head": "PP-CHAT-INTEGRITY — Parent chat confirmed on the share",
+  "status": "🟡 S9 phase-1 in progress (pending Railw",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/PP-CHROME-LAYOUT.md",
+  "sha": "d7d900ae",
+  "date": "2026-06-06",
+  "subject": "fix(parent): PP-CHROME-LAYOUT S8 — letterhead ",
+  "head": "PP-CHROME-LAYOUT — Parent portal page chrome & layout ",
+  "status": "🟡 S8 in progress (pending user Railway ",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/PP-CRUFT-SWEEP.md",
+  "sha": "4cc7955d",
+  "date": "2026-06-06",
+  "subject": "docs(beta): lock 2–3 week beta-launch plan — 5",
+  "head": "PP-CRUFT-SWEEP — post-IA archaeology pass",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/PP-DASHBOARD-CARDS.md",
+  "sha": "21d7cd61",
+  "date": "2026-06-06",
+  "subject": "docs(audit): PP-DASHBOARD-CARDS S10 — every ca",
+  "head": "PP-DASHBOARD-CARDS — Parent dashboard cards: contracts",
+  "status": "🟡 S10 (contracts CONFIRMED at code leve",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/PP-DATE-LOCALE.md",
+  "sha": "772ac30e",
+  "date": "2026-06-06",
+  "subject": "docs(audit): PP-DATE-LOCALE S6 deliverable doc",
+  "head": "PP-DATE-LOCALE — Parent portal date rendering migrated",
+  "status": "🟡 S6 in progress (pending user Railway ",
+  "claim": "source of truth"
+ },
+ {
+  "f": "audits/redesign/PP-FEATURE-FIXES.md",
+  "sha": "c2beb37a",
+  "date": "2026-06-06",
+  "subject": "fix(parent): PP-FEATURE-FIXES S11 — clear rema",
+  "head": "PP-FEATURE-FIXES — Parent portal: discrete PP-AUDIT fl",
+  "status": "🟡 S11 in progress (pending Railway walk",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/redesign/PP-IA-REDESIGN.md",
+  "sha": "4b01e1af",
+  "date": "2026-06-06",
+  "subject": "feat(parent): PP-IA-REDESIGN — 5-tab IA, top-b",
+  "head": "PP-IA-REDESIGN — parent portal navigation + page restr",
+  "status": "",
+  "claim": "50/50 pass"
+ },
+ {
+  "f": "audits/redesign/PP-JOURNAL-FEATURE.md",
+  "sha": "440e2424",
+  "date": "2026-06-06",
+  "subject": "feat(parent): PP-JOURNAL-FEATURE S13 — parent ",
+  "head": "PP-JOURNAL-FEATURE — Parent reads the teacher's daily ",
+  "status": "🟡 S13 phase-1 in progress (pending Rail",
+  "claim": "Canonical"
+ },
+ {
+  "f": "audits/redesign/PP-MOBILE-PASS.md",
+  "sha": "5f10f6e7",
+  "date": "2026-06-06",
+  "subject": "fix(parent): PP-MOBILE-PASS S12 — chat compose",
+  "head": "PP-MOBILE-PASS — Parent portal mobile responsiveness",
+  "status": "🟡 S12 in progress (pending Railway mobi",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/PP-NOTIFICATION-LOOP-FIX.md",
+  "sha": "4cc7955d",
+  "date": "2026-06-06",
+  "subject": "docs(beta): lock 2–3 week beta-launch plan — 5",
+  "head": "PP-NOTIFICATION-LOOP-FIX — Dashboard infinite re-rende",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/RECEPTION-FINAL-SWEEP.md",
+  "sha": "a9334b22",
+  "date": "2026-06-06",
+  "subject": "fix(teacher): mobile pass — remove bottom nav,",
+  "head": "RECEPTION-FINAL-SWEEP",
+  "status": "",
+  "claim": "Complete — credentials box is warning-* colors; no amber any"
+ },
+ {
+  "f": "audits/redesign/TP-AUTH-SPLIT.md",
+  "sha": "9af12520",
+  "date": "2026-06-06",
+  "subject": "chore(tracker): TP-AUTH-SPLIT deliverable + 🟡",
+  "head": "TP-AUTH-SPLIT — Teacher/Parent Portal Split-Layout Aut",
+  "status": "✅ Built + pushed — awaiting user Railway",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-AUTH-STAR-REMOVE.md",
+  "sha": "2bd96788",
+  "date": "2026-06-06",
+  "subject": "fix(teacher-parent): gate notification polling",
+  "head": "TP-AUTH-STAR-REMOVE — Remove Star Glyph from Teacher/P",
+  "status": "✅ Built + pushed — awaiting user Railway",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-AUTH-ZOMBIE.md",
+  "sha": "66898d47",
+  "date": "2026-06-06",
+  "subject": "fix(platform): TP-AUTH-ZOMBIE S1 — account-sta",
+  "head": "TP-AUTH-ZOMBIE: Expired session renders authenticated ",
+  "status": "🟡 In progress (pending user Railway ver",
+  "claim": "4/4 pass"
+ },
+ {
+  "f": "audits/redesign/TP-CHAT-MESSENGER.md",
+  "sha": "f22fd79c",
+  "date": "2026-06-06",
+  "subject": "chore(tracker): TP-CHAT-MESSENGER closed pendi",
+  "head": "TP-CHAT-MESSENGER — Teacher portal full-page messenger",
+  "status": "✅ CLOSED (pending user verification) — c",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-DAVOMAT-REWORK.md",
+  "sha": "a9334b22",
+  "date": "2026-06-06",
+  "subject": "fix(teacher): mobile pass — remove bottom nav,",
+  "head": "TP-DAVOMAT-REWORK — Davomat (Attendance) Three-Part Re",
+  "status": "🟡 In progress — awaiting user verificat",
+  "claim": "21/21 pass"
+ },
+ {
+  "f": "audits/redesign/TP-LOCALE-FOUNDATION.md",
+  "sha": "2044c455",
+  "date": "2026-06-06",
+  "subject": "fix(platform): TP-LOCALE-FOUNDATION S2b — full",
+  "head": "TP-LOCALE-FOUNDATION — Teacher Portal Locale Completen",
+  "status": "🟡 S2 in progress (pending user Railway ",
+  "claim": "32/32 pass"
+ },
+ {
+  "f": "audits/redesign/TP-MEDIA-STORAGE.md",
+  "sha": "2695d3ee",
+  "date": "2026-06-06",
+  "subject": "fix(media): local-disk fallback for production",
+  "head": "TP-MEDIA-STORAGE: Media pipeline broken end-to-end",
+  "status": "🟡 In progress (pending Railway env + vo",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-MOBILE-PASS.md",
+  "sha": "4ccd195f",
+  "date": "2026-06-06",
+  "subject": "fix(platform): TP-MOBILE-PASS S3 — conversatio",
+  "head": "TP-MOBILE-PASS — Teacher portal mobile + shared logout",
+  "status": "🟡 S3 in progress (pending user Railway ",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/TP-NOTIF-POLL-LOOP.md",
+  "sha": "2ea64d8a",
+  "date": "2026-06-06",
+  "subject": "chore(audits): add TP-NOTIF-POLL-LOOP delivera",
+  "head": "TP-NOTIF-POLL-LOOP — Runaway Notification Polling on L",
+  "status": "✅ Built + pushed — awaiting user Railway",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-PAGE-CHROME.md",
+  "sha": "9a825d7a",
+  "date": "2026-06-06",
+  "subject": "chore(tracker): TP-PAGE-CHROME closed — final ",
+  "head": "TP-PAGE-CHROME — Teacher portal page chrome",
+  "status": "✅ CLOSED — commit fb7a75a  ",
+  "claim": "40/40 pass"
+ },
+ {
+  "f": "audits/redesign/TP-SIDEBAR-RESTRUCTURE.md",
+  "sha": "62225907",
+  "date": "2026-06-06",
+  "subject": "chore(teacher): TP-SIDEBAR-RESTRUCTURE — sideb",
+  "head": "TP-SIDEBAR-RESTRUCTURE — Teacher Sidebar Audit",
+  "status": "✅ Closed  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/TP-WARNINGS-CHROME.md",
+  "sha": "53a027f5",
+  "date": "2026-06-06",
+  "subject": "fix(teacher): warnings page chrome — letterhea",
+  "head": "TP-WARNINGS-CHROME: Ogohlantirishlar page — chrome con",
+  "status": "🟡 In progress (pending user verify)",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/RECEPTION-AUTH-FINISH.md",
+  "sha": "c2c374d4",
+  "date": "2026-06-05",
+  "subject": "fix(reception): login -- remove star glyph, un",
+  "head": "RECEPTION-AUTH-FINISH",
+  "status": "🟡 In progress (pending user Railway ver",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/RECEPTION-LOCALE-FOUNDATION.md",
+  "sha": "04d18cb8",
+  "date": "2026-06-05",
+  "subject": "chore(audits): add RECEPTION-LOCALE-FOUNDATION",
+  "head": "RECEPTION-LOCALE-FOUNDATION — Locale Completeness Enfo",
+  "status": "🟡 In progress (pending user Railway ver",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/ADMIN-LOCALE-FINAL.md",
+  "sha": "06e1d2b7",
+  "date": "2026-06-04",
+  "subject": "chore(tracker): ADMIN-LOCALE-FINAL closed — ad",
+  "head": "ADMIN-LOCALE-FINAL — Locale Completeness Enforcement",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/ADMIN-LOCALE-HYGIENE.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "ADMIN-LOCALE-HYGIENE — Comprehensive Locale Drift Audi",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/ADMIN-OGOHLANTIRISHLAR-CRASH.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "ADMIN-OGOHLANTIRISHLAR-CRASH — TypeError: e.filter is ",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/ADMIN-RATING-STAR-COLOR.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "ADMIN-RATING-STAR-COLOR — Green Stars Fix: yellow/gold",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-04-LANGUAGE-SWITCHER.md",
+  "sha": "2b124a3d",
+  "date": "2026-06-04",
+  "subject": "feat(i18n): unify language switcher on sidebar",
+  "head": "CLEANUP-04-LANGUAGE-SWITCHER",
+  "status": "🟡 Code complete — awaiting user Railway",
+  "claim": "complete — awaiting user Railway verification  "
+ },
+ {
+  "f": "audits/redesign/CLEANUP-05-SIDEBAR-CONSOLIDATION.md",
+  "sha": "a4284f88",
+  "date": "2026-06-04",
+  "subject": "chore: complete CLEANUP-05 deliverable + track",
+  "head": "CLEANUP-05-SIDEBAR-CONSOLIDATION",
+  "status": "🟡 STEP 3 — awaiting user decisions befo",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-06-SIDEBAR-SCROLL.md",
+  "sha": "04989760",
+  "date": "2026-06-04",
+  "subject": "chore: CLEANUP-06 deliverable + tracker update",
+  "head": "CLEANUP-06-SIDEBAR-SCROLL",
+  "status": "🟡 Code complete — awaiting user Railway",
+  "claim": "complete — awaiting user Railway verification  "
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07a-DASHBOARD.md",
+  "sha": "113a429f",
+  "date": "2026-06-04",
+  "subject": "chore: CLEANUP-07a deliverable + tracker updat",
+  "head": "CLEANUP-07a-DASHBOARD",
+  "status": "🟡 STEP 2 — awaiting user layout approva",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07b-TARBIYACHILAR.md",
+  "sha": "65d6a5c0",
+  "date": "2026-06-04",
+  "subject": "chore: CLEANUP-07b deliverable + tracker updat",
+  "head": "CLEANUP-07b-TARBIYACHILAR",
+  "status": "🟡 Code complete — awaiting user Railway",
+  "claim": "complete — awaiting user Railway verification  "
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07c-OTA-ONALAR.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "CLEANUP-07c-OTA-ONALAR",
+  "status": "🟡 Code complete — awaiting user Railway",
+  "claim": "complete — awaiting user Railway verification  "
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07d-HUJJATLAR-NAVBATI.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "CLEANUP-07d-HUJJATLAR-NAVBATI — Document Approval Queu",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07e-QABUL-BOSHQARUVI.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "CLEANUP-07e-QABUL-BOSHQARUVI — Reception Management Co",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07f-COMMUNICATIONS.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "CLEANUP-07f-COMMUNICATIONS — Muloqotlar + Xabarlar Pag",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07g-REPORTS.md",
+  "sha": "3e18890c",
+  "date": "2026-06-04",
+  "subject": "chore(audits): add missing redesign audit docs",
+  "head": "CLEANUP-07g-REPORTS — Reports Cluster: Muassasa bahola",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-07i-SUBPAGES.md",
+  "sha": "385b6803",
+  "date": "2026-06-04",
+  "subject": "chore(tracker): CLEANUP-07i closed -- admin po",
+  "head": "CLEANUP-07i-SUBPAGES — IRR + Guruhlar + Audit jurnali ",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CROSS-LANG-SWITCHER.md",
+  "sha": "6e81d441",
+  "date": "2026-06-04",
+  "subject": "chore(tracker): CROSS-LANG-SWITCHER closed",
+  "head": "CROSS-LANG-SWITCHER + ADMIN-LOGIN-CLEAN",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": "Canonical"
+ },
+ {
+  "f": "audits/redesign/CLEANUP-01-AI-BANNER.md",
+  "sha": "c6d4aeba",
+  "date": "2026-06-03",
+  "subject": "chore: CLEANUP-01 + CLEANUP-02 — AI banner del",
+  "head": "CLEANUP-01-AI-BANNER — AI Translation Banner Removal",
+  "status": "🟡 In progress — pending user Railway vi",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-02-SPOT-COLORS.md",
+  "sha": "c6d4aeba",
+  "date": "2026-06-03",
+  "subject": "chore: CLEANUP-01 + CLEANUP-02 — AI banner del",
+  "head": "CLEANUP-02-SPOT-COLORS — Remove Decorative Accent Colo",
+  "status": "🟡 In progress — pending user Railway vi",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/CLEANUP-03-DIREKTOR-RENAME.md",
+  "sha": "cc327bb9",
+  "date": "2026-06-03",
+  "subject": "feat(rename): Admin -> Direktor across all use",
+  "head": "CLEANUP-03-DIREKTOR-RENAME — Admin → Direktor Rename A",
+  "status": "🟡 In progress — pending user Railway vi",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/redesign/ADMIN-AUTH-REDESIGN.md",
+  "sha": "6edd4d74",
+  "date": "2026-06-02",
+  "subject": "feat(admin): new Login page redesign - Direkto",
+  "head": "ADMIN-AUTH-REDESIGN — Admin Login Page Redesign",
+  "status": "🟡 In progress — pending user Railway vi",
+  "claim": "160/162 pass"
+ },
+ {
+  "f": "audits/redesign/ADMIN-PORTAL-FOUNDATION.md",
+  "sha": "fe4f05f3",
+  "date": "2026-06-02",
+  "subject": "feat(admin): ADMIN-PORTAL-FOUNDATION - 7-phase",
+  "head": "ADMIN-PORTAL-FOUNDATION — 7-Phase Foundational Cleanup",
+  "status": "🟡 In progress — pending user Railway vi",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-ACCOUNT-AUDIT-FIX.md",
+  "sha": "f5cf6146",
+  "date": "2026-06-02",
+  "subject": "feat(accounts): close latent items + comprehen",
+  "head": "GOV-ACCOUNT-AUDIT-FIX — Comprehensive Audit + 3 Latent",
+  "status": "✅ CLOSED  ",
+  "claim": "9/9 pass"
+ },
+ {
+  "f": "audits/redesign/GOV-ACCOUNT-DOMAINS.md",
+  "sha": "a0723db1",
+  "date": "2026-06-02",
+  "subject": "feat(accounts): strict email domain discipline",
+  "head": "GOV-ACCOUNT-DOMAINS — Strict Email Domain Discipline b",
+  "status": "✅",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/redesign/GOV-ACCOUNT-FORM-AUDIT-2.md",
+  "sha": "7b1a39b9",
+  "date": "2026-06-02",
+  "subject": "fix(government): add canRateSchools to provisi",
+  "head": "GOV-ACCOUNT-FORM-AUDIT-2 — Government Account Creation",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-FORCE-PASSWORD-FLOW.md",
+  "sha": "f056979c",
+  "date": "2026-06-02",
+  "subject": "fix(auth): force-password-change — wrong curre",
+  "head": "GOV-FORCE-PASSWORD-FLOW — Force-Password-Change Flow B",
+  "status": "✅ CLOSED (pending user Railway verificat",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-INSTITUTION-TYPES.md",
+  "sha": "5f923a4a",
+  "date": "2026-06-02",
+  "subject": "feat(platform): institution type taxonomy + Ta",
+  "head": "GOV-INSTITUTION-TYPES — Institution Type Taxonomy + Ta",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-LOCALE-HYGIENE.md",
+  "sha": "df2494ff",
+  "date": "2026-06-02",
+  "subject": "fix(government): pervasive locale drift audit ",
+  "head": "GOV-LOCALE-HYGIENE — Government Portal Locale Drift Au",
+  "status": "✅ CLOSED  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-PROD-VERIFY.md",
+  "sha": "6b0ff57b",
+  "date": "2026-06-02",
+  "subject": "fix(government): close ACCOUNT-DOMAINS drift —",
+  "head": "GOV-PROD-VERIFY — Production Verification of Governmen",
+  "status": "✅ CLOSED (HIGH-severity drift fixed; res",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-RATING-CUMULATIVE.md",
+  "sha": "3a1803c4",
+  "date": "2026-06-02",
+  "subject": "feat(ratings): three-rating model — parent + g",
+  "head": "GOV-RATING-CUMULATIVE — Three-Rating Model: Parent + G",
+  "status": "✅ CLOSED",
+  "claim": "8/8 pass"
+ },
+ {
+  "f": "audits/redesign/GOV-RATING-STARS.md",
+  "sha": "e25cb286",
+  "date": "2026-06-02",
+  "subject": "fix(government): replace bar-based indicator r",
+  "head": "GOV-RATING-STARS — Interactive 5-Star Rating Input",
+  "status": "✅",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-RATINGS-POLISH.md",
+  "sha": "750db615",
+  "date": "2026-06-02",
+  "subject": "fix(government): unified color palette on rati",
+  "head": "GOV-RATINGS-POLISH — Single-color discipline + persist",
+  "status": "✅",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-REGIONS-NAME.md",
+  "sha": "79102ff3",
+  "date": "2026-06-02",
+  "subject": "chore(regions): add GOV-REGIONS-NAME deliverab",
+  "head": "GOV-REGIONS-NAME — Uzbekistan Administrative Division ",
+  "status": "✅",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-03-error-messages.md",
+  "sha": "980419e0",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): error messages — 11 EM it",
+  "head": "PROD-FIX-03 — Error Messages (11 EM Items Closed)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-04-empty-states.md",
+  "sha": "42ec9ffd",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): empty states — 11 ES item",
+  "head": "PROD-FIX-04 — Empty States (11 ES Items Closed)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-05-form-state-loss.md",
+  "sha": "9e06293e",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): form state loss — 9 FSL i",
+  "head": "PROD-FIX-05 — Form State Loss (9 FSL Items Closed)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-06-cross-portal-orphans.md",
+  "sha": "6a9f97f2",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): cross-portal delivery + o",
+  "head": "PROD-FIX-06 — Cross-Portal Delivery + Orphan Routes (1",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-07-loading-and-rate-limits.md",
+  "sha": "c5b5977c",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): loading states + rate lim",
+  "head": "PROD-FIX-07 — Loading States + Rate Limit Residuals (1",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-08-i18n-completion.md",
+  "sha": "095fe83a",
+  "date": "2026-06-01",
+  "subject": "fix(prod-readiness): i18n completeness — 5 I18",
+  "head": "PROD-FIX-08 — i18n Completeness (5 I18N Items Closed)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-REDESIGN-01-foundation.md",
+  "sha": "a010dae9",
+  "date": "2026-06-01",
+  "subject": "feat(government): design system foundation — D",
+  "head": "GOV-REDESIGN-01 — DNP Design System Foundation",
+  "status": "✅ Complete  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/redesign/GOV-REDESIGN-DIAG.md",
+  "sha": "cab23b8d",
+  "date": "2026-06-01",
+  "subject": "feat(government): implement Davlat Nazorat Pan",
+  "head": "GOV-REDESIGN-DIAG: Diagnostic Report",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S10-admin-fix.md",
+  "sha": "f89f8836",
+  "date": "2026-05-31",
+  "subject": "fix(admin): close A-BRK-01 + A-BRK-02 + resolv",
+  "head": "PROD-READINESS-05-S10 — Admin surface fix before verif",
+  "status": "",
+  "claim": "7/7 pass"
+ },
+ {
+  "f": "audits/prod-readiness/05-S11-admin-s1.md",
+  "sha": "63d339f1",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): admin portal session 1",
+  "head": "PROD-READINESS-05-S11 — Admin verification session 1 (",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S12-admin-close.md",
+  "sha": "65761274",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): admin portal close (S1",
+  "head": "PROD-READINESS-05-S12 — Admin portal close (A-031 to A",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S13-teacher-s1.md",
+  "sha": "e415ea94",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): teacher portal CLOSED ",
+  "head": "PROD-READINESS-05-S13 — Teacher portal verification (S",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S14-hardest-evidence-promotion.md",
+  "sha": "e8fcf34d",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): hardest-evidence promo",
+  "head": "PROD-READINESS-05-S14 — Hardest-evidence promotion pas",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S4-content-seed.md",
+  "sha": "0fd696ad",
+  "date": "2026-05-31",
+  "subject": "chore(prod-readiness): content seed for Bobur ",
+  "head": "PROD-READINESS-05-S4 — Bobur Content Seed + Parent Por",
+  "status": "✅ COMPLETE — 8 data-blocked items unbloc",
+  "claim": "COMPLETE — 8 data-blocked items unblocked · 8 ✅ · 0 ❌  "
+ },
+ {
+  "f": "audits/prod-readiness/05-S6-reception-fix.md",
+  "sha": "83a19ba9",
+  "date": "2026-05-31",
+  "subject": "fix(reception): close BRK-001 bulk actions + v",
+  "head": "PROD-READINESS-05 S6 — Reception Fix: BRK-001 + BRK-00",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S7-reception-s1.md",
+  "sha": "3c019369",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): reception portal sessi",
+  "head": "PROD-READINESS-05 S7 — Reception Portal Verification S",
+  "status": "✅ COMPLETE — 9 items upgraded to ✅ · 1 L",
+  "claim": "COMPLETE — 9 items upgraded to ✅ · 1 LAT-001 fix applied and"
+ },
+ {
+  "f": "audits/prod-readiness/05-S8-reception-s2.md",
+  "sha": "69623785",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): reception portal sessi",
+  "head": "PROD-READINESS-05 S8 — Reception Portal Verification S",
+  "status": "✅ COMPLETE — 26 items verified ✅ · LAT-0",
+  "claim": "COMPLETE — 26 items verified ✅ · LAT-002 found · wizard-logi"
+ },
+ {
+  "f": "audits/prod-readiness/05-S9-reception-close.md",
+  "sha": "ea11e56c",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): reception portal sessi",
+  "head": "PROD-READINESS-05 S9 — Reception Portal Close (R-061 t",
+  "status": "✅ COMPLETE — RECEPTION PORTAL CLOSED 89/",
+  "claim": "COMPLETE — RECEPTION PORTAL CLOSED 89/89"
+ },
+ {
+  "f": "audits/prod-readiness/06-S5-verification.md",
+  "sha": "d0291639",
+  "date": "2026-05-31",
+  "subject": "chore(prod-readiness): S5 parent portal verifi",
+  "head": "PROD-READINESS-06-S5 — Parent Portal Verification Pass",
+  "status": "✅ COMPLETE — 33 items verified · 1 bug f",
+  "claim": "COMPLETE — 33 items verified · 1 bug found + fixed · 20 🟡 d"
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-01-blockers.md",
+  "sha": "80de68a2",
+  "date": "2026-05-31",
+  "subject": "fix(prod-readiness): close 5 audit blockers — ",
+  "head": "PROD-FIX-01 — 5 Audit Blockers Closed",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-FIX-02-destructive-actions.md",
+  "sha": "238bbce5",
+  "date": "2026-05-31",
+  "subject": "fix(prod-readiness): destructive action safety",
+  "head": "PROD-FIX-02 — Destructive Action Safety (11 DS Items C",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-ISSUE-AUDIT-01.md",
+  "sha": "238bbce5",
+  "date": "2026-05-31",
+  "subject": "fix(prod-readiness): destructive action safety",
+  "head": "PROD-ISSUE-AUDIT-01 — Uchqun Platform Production Quali",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/PROD-ISSUE-RATE-LIMIT.md",
+  "sha": "61ae4bff",
+  "date": "2026-05-31",
+  "subject": "fix(auth): rate limit — key by user/email, rai",
+  "head": "PROD-ISSUE-RATE-LIMIT — Login Rate Limit Fix",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/features-INDEX.md",
+  "sha": "e415ea94",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): teacher portal CLOSED ",
+  "head": "Feature Inventory — Master Index",
+  "status": "",
+  "claim": "COMPLETE — corrected |"
+ },
+ {
+  "f": "audits/prod-readiness/features-admin.md",
+  "sha": "65761274",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): admin portal close (S1",
+  "head": "Admin Portal — Feature Inventory",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/features-parent.md",
+  "sha": "d0291639",
+  "date": "2026-05-31",
+  "subject": "chore(prod-readiness): S5 parent portal verifi",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/features-reception.md",
+  "sha": "ea11e56c",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): reception portal sessi",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/features-teacher.md",
+  "sha": "e415ea94",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): teacher portal CLOSED ",
+  "head": "Teacher Portal — Feature Inventory",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "credentials.md",
+  "sha": "65761274",
+  "date": "2026-05-31",
+  "subject": "verify(prod-readiness): admin portal close (S1",
+  "head": "Uchqun — Test Credentials (PROD-READINESS-02)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "demo-profile.md",
+  "sha": "0fd696ad",
+  "date": "2026-05-31",
+  "subject": "chore(prod-readiness): content seed for Bobur ",
+  "head": "Uchqun — Demo Profiles",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/01-account-wipe.md",
+  "sha": "11b78fef",
+  "date": "2026-05-30",
+  "subject": "chore(prod-readiness): wipe all accounts (loca",
+  "head": "PROD-READINESS-01 — Account Wipe",
+  "status": "✅ COMPLETE  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/02-account-seed.md",
+  "sha": "aecd278e",
+  "date": "2026-05-30",
+  "subject": "chore(prod-readiness): seed dependency-correct",
+  "head": "PROD-READINESS-02 — Seed Dependency-Correct Test Accou",
+  "status": "✅ COMPLETE  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/03-demo-profiles.md",
+  "sha": "416dea65",
+  "date": "2026-05-30",
+  "subject": "chore(prod-readiness): shape 31 demo profiles ",
+  "head": "PROD-READINESS-03 — Shape Demo Profiles",
+  "status": "✅ COMPLETE  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/04-feature-inventory.md",
+  "sha": "1cd32166",
+  "date": "2026-05-30",
+  "subject": "docs(prod-readiness): complete feature invento",
+  "head": "PROD-READINESS-04 — Complete Feature Inventory",
+  "status": "✅ COMPLETE  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S1-government.md",
+  "sha": "2d4cdb95",
+  "date": "2026-05-30",
+  "subject": "verify(prod-readiness): government portal sess",
+  "head": "PROD-READINESS-05-S1 — Government Portal Verification",
+  "status": "✅ COMPLETE  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/prod-readiness/05-S1B-government-close.md",
+  "sha": "c0b95118",
+  "date": "2026-05-30",
+  "subject": "chore(docs): PROD-READINESS-05-S1B ✅ — governm",
+  "head": "PROD-READINESS-05-S1B — Government Portal Close to 100",
+  "status": "✅ COMPLETE — 72/72 features verified (wa",
+  "claim": "COMPLETE — 72/72 features verified (was 67/72 after S1)  "
+ },
+ {
+  "f": "audits/prod-readiness/05-S2-parent.md",
+  "sha": "4bc373b8",
+  "date": "2026-05-30",
+  "subject": "verify(prod-readiness): parent portal session ",
+  "head": "PROD-READINESS-05-S2 — Parent Portal Session 1: Auth/N",
+  "status": "✅ COMPLETE — 18 verified · 1 broken · 0 ",
+  "claim": "COMPLETE — 18 verified · 1 broken · 0 planned · 1 blocked (o"
+ },
+ {
+  "f": "audits/prod-readiness/05-S3-parent.md",
+  "sha": "c021f046",
+  "date": "2026-05-30",
+  "subject": "verify(prod-readiness): parent portal session ",
+  "head": "PROD-READINESS-05-S3 — Parent Portal Session 2: Child ",
+  "status": "✅ COMPLETE — 12 verified · 0 broken · 0 ",
+  "claim": "COMPLETE — 12 verified · 0 broken · 0 not-built · 8 data-blo"
+ },
+ {
+  "f": "audits/prod-readiness/features-government.md",
+  "sha": "c0b95118",
+  "date": "2026-05-30",
+  "subject": "chore(docs): PROD-READINESS-05-S1B ✅ — governm",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/13-cp024-closeout.md",
+  "sha": "37b12d74",
+  "date": "2026-05-29",
+  "subject": "fix(teacher-parent): parent portal — chat send",
+  "head": "Loop 5 — Consolidation / Hardening Pass (full)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/18-cp022-backend.md",
+  "sha": "37b12d74",
+  "date": "2026-05-29",
+  "subject": "fix(teacher-parent): parent portal — chat send",
+  "head": "",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/PARENT-FIX.md",
+  "sha": "37b12d74",
+  "date": "2026-05-29",
+  "subject": "fix(teacher-parent): parent portal — chat send",
+  "head": "PARENT-FIX — Parent Portal Targeted Fix",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/teacher-parent/PARENT-TEACHER-GROUND-TRUTH.md",
+  "sha": "571e112d",
+  "date": "2026-05-28",
+  "subject": "docs: parent+teacher ground-truth investigatio",
+  "head": "Parent + Teacher Portal: Ground-Truth Investigation",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/database/00-live-state-audit.md",
+  "sha": "87ea4db2",
+  "date": "2026-05-27",
+  "subject": "chore(database): promote CP-020 + CP-022 migra",
+  "head": "Database Loop S0 — Live State Audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/database/01-promote.md",
+  "sha": "87ea4db2",
+  "date": "2026-05-27",
+  "subject": "chore(database): promote CP-020 + CP-022 migra",
+  "head": "Database Loop PROMOTE — PL-021 Migration Promotion",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/database/02-loop-close.md",
+  "sha": "4412d612",
+  "date": "2026-05-27",
+  "subject": "docs(database): Database loop close — Railway ",
+  "head": "Database Loop Close",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/database/LOOP-DATABASE-SUMMARY.md",
+  "sha": "4412d612",
+  "date": "2026-05-27",
+  "subject": "docs(database): Database loop close — Railway ",
+  "head": "Database Loop Summary",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/14-consolidation.md",
+  "sha": "52abcb2a",
+  "date": "2026-05-27",
+  "subject": "chore(teacher-parent): consolidation — clean t",
+  "head": "Loop 5 — Consolidation / Hardening Pass",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/15-consolidation-followup.md",
+  "sha": "09a00757",
+  "date": "2026-05-27",
+  "subject": "fix(teacher-parent): close F-004 cross-school ",
+  "head": "Consolidation Follow-Up",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/16-cp020-022-reground.md",
+  "sha": "28b5658d",
+  "date": "2026-05-27",
+  "subject": "docs(tracker): CP-020/022-REGROUND ✅ — read-on",
+  "head": "CP-020 / CP-022 Re-Grounding Audit",
+  "status": "",
+  "claim": "Authoritative"
+ },
+ {
+  "f": "audits/teacher-parent/17-cp020-backend.md",
+  "sha": "101c14c5",
+  "date": "2026-05-27",
+  "subject": "feat: CP-020 backend — two-direction school ra",
+  "head": "CP-020 Backend Audit — Two-Direction School Rating",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/19-cp022-frontend.md",
+  "sha": "e5ea34a4",
+  "date": "2026-05-27",
+  "subject": "feat(teacher-parent): CP-022 parent compose — ",
+  "head": "CP-022 Frontend Audit — Parent Compose: recipientLevel",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/20-cp020-frontend.md",
+  "sha": "aad61ab5",
+  "date": "2026-05-27",
+  "subject": "feat(teacher-parent): CP-020 parent rating for",
+  "head": "CP-020 Frontend Audit — Parent School Rating: 5-Indica",
+  "status": "",
+  "claim": "7/7 pass"
+ },
+ {
+  "f": "audits/teacher-parent/21-loop5-close.md",
+  "sha": "b4ca1456",
+  "date": "2026-05-27",
+  "subject": "docs(teacher-parent): Loop 5 close — final ver",
+  "head": "Loop 5 Close — Teacher + Parent Portal",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/teacher-parent/IRR-DECISIONS.md",
+  "sha": "0199ae32",
+  "date": "2026-05-27",
+  "subject": "feat(teacher-parent): full structured quarterl",
+  "head": "ИРР Build-Phase Decisions — Source of Truth",
+  "status": "Decisions of record for S5–S7 build phas",
+  "claim": "Source of Truth"
+ },
+ {
+  "f": "audits/teacher-parent/IRR-WALKTHROUGH.md",
+  "sha": "09a00757",
+  "date": "2026-05-27",
+  "subject": "fix(teacher-parent): close F-004 cross-school ",
+  "head": "ИРР End-to-End Walkthrough",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/LOOP5-SUMMARY.md",
+  "sha": "b4ca1456",
+  "date": "2026-05-27",
+  "subject": "docs(teacher-parent): Loop 5 close — final ver",
+  "head": "Loop 5 Summary — Teacher + Parent Portal",
+  "status": "✅ CLOSED",
+  "claim": "Canonical"
+ },
+ {
+  "f": "audits/teacher-parent/PARENT-DESIGN-implementation.md",
+  "sha": "1d2c6350",
+  "date": "2026-05-27",
+  "subject": "feat(teacher-parent): Parent portal design sys",
+  "head": "Parent Portal — Design System Implementation",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/PL-009-REVIEW.md",
+  "sha": "52abcb2a",
+  "date": "2026-05-27",
+  "subject": "chore(teacher-parent): consolidation — clean t",
+  "head": "PL-009 Translation Review — ИРР Scope",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "LOOP_CROSS_PORTAL.md",
+  "sha": "3b2a029d",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): backfill SHA 79cc9bf for CP-02",
+  "head": "Uchqun Refinement Loop — Cross-Portal Handoffs",
+  "status": "PLANNED-NOT-BUILT  ",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/teacher-parent/06-phase1-irr-models.md",
+  "sha": "e0d1b323",
+  "date": "2026-05-26",
+  "subject": "feat(teacher-parent): ИРР data models + data-d",
+  "head": "S5 PHASE 1 — ИРР Backend Models, Seed Config, Migratio",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/06b-phase1-correction.md",
+  "sha": "352b5d58",
+  "date": "2026-05-26",
+  "subject": "fix(teacher-parent): denormalize schoolId onto",
+  "head": "S5 PHASE 1 CORRECTION — schoolId denormalization + iso",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/07-phase2-irr-controllers.md",
+  "sha": "ebb644ba",
+  "date": "2026-05-26",
+  "subject": "test(teacher-parent): real-DB isolation on ИРР",
+  "head": "S5 PHASE 2 — ИРР Scoring Engine + Controllers + Endpoi",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/08-phase3a-irr-shell.md",
+  "sha": "c1964b89",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): S5-PHASE3a ✅ log #75 (6b08a96)",
+  "head": "S5 PHASE 3a — ИРР Shell + Entry Point + Header Form + ",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/09-phase3b-assessment.md",
+  "sha": "feea1e01",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): CLASS-CONFIRM ✅ log #76 (6be93",
+  "head": "S5 PHASE 3b — ИРР Assessment Screen + Live Scoring + P",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/10-phase3c-goals.md",
+  "sha": "8005c7ca",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): CLASS-CONFIRM log #77 (0458433",
+  "head": "S5 PHASE 3c — ИРР Goals (Long-term + Periods + Short-t",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/11-phase3d-journals.md",
+  "sha": "ebdea64d",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): backfill SHA 967b3ce for S5 PH",
+  "head": "S5 PHASE 3d — ИРР Daily + Weekly Monitoring Journals",
+  "status": "✅ COMPLETE",
+  "claim": "source of truth"
+ },
+ {
+  "f": "audits/teacher-parent/12-phase3e-parent-irr.md",
+  "sha": "c22f7268",
+  "date": "2026-05-26",
+  "subject": "feat(teacher-parent): parent ИРР view-only sur",
+  "head": "S5 PHASE 3e — Parent ИРР View-Only Surface (CP-025)",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/13-cp024-manager-irr.md",
+  "sha": "3b2a029d",
+  "date": "2026-05-26",
+  "subject": "chore(tracker): backfill SHA 79cc9bf for CP-02",
+  "head": "CP-024 — Manager ИРР Surface (Admin portal)",
+  "status": "✅ COMPLETE",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/01-audit.md",
+  "sha": "3167078c",
+  "date": "2026-05-25",
+  "subject": "fix(teacher-parent): close within-school cross",
+  "head": "Teacher+Parent Portal — S1 Deep Audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/04b-v1-remediation.md",
+  "sha": "3167078c",
+  "date": "2026-05-25",
+  "subject": "fix(teacher-parent): close within-school cross",
+  "head": "Teacher+Parent Portal — V1 Remediation: Within-School ",
+  "status": "✅ CLOSED",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/04c-class-closure.md",
+  "sha": "b050379a",
+  "date": "2026-05-25",
+  "subject": "docs(teacher-parent): 04c-class-closure.md — f",
+  "head": "Teacher+Parent — Class Closure: Within-School Cross-Te",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/04d-class-confirm.md",
+  "sha": "0eba5fde",
+  "date": "2026-05-25",
+  "subject": "test(teacher-parent): confirm second-axis lega",
+  "head": "Teacher+Parent — Whole-Class Confirm + Legacy-parentId",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/05-phase0-aichat-teardown.md",
+  "sha": "bd1dbcd4",
+  "date": "2026-05-25",
+  "subject": "feat(teacher-parent)!: remove parent AIChat (g",
+  "head": "Teacher+Parent — S5 Phase 0: Parent AIChat Teardown (G",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/reception/06-lifecycle-and-finish-execution.md",
+  "sha": "cdd51055",
+  "date": "2026-05-24",
+  "subject": "test(backend): behavioral cross-school isolati",
+  "head": "Reception Portal — S6/S7: Lifecycle + Finish Execution",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/reception/08-final-verify.md",
+  "sha": "05f3540d",
+  "date": "2026-05-24",
+  "subject": "docs(reception): step 8 final verify — portal ",
+  "head": "Reception Portal — Step 8: Final Verification",
+  "status": "Cannot be confirmed from local environme",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/teacher-parent/00-understanding.md",
+  "sha": "59dcf217",
+  "date": "2026-05-24",
+  "subject": "docs(teacher-parent): step 0 deep understandin",
+  "head": "Teacher + Parent Portal — S0: Deep Understanding",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/teacher-parent/02-cleanup-plan.md",
+  "sha": "c1ae455b",
+  "date": "2026-05-24",
+  "subject": "docs(teacher-parent): extend AI removal to tea",
+  "head": "Teacher+Parent Portal — S2 Cleanup Plan",
+  "status": "PLAN ONLY — no code changes applied here",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/03-cleanup-execution.md",
+  "sha": "33410f3c",
+  "date": "2026-05-24",
+  "subject": "feat(teacher): UNIT 4+5+6 — mustChangePassword",
+  "head": "Teacher+Parent Portal — S3 Cleanup Execution Log",
+  "status": "COMPLETE (all 6 units executed and verif",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/04-confirm-clean.md",
+  "sha": "61f52e34",
+  "date": "2026-05-24",
+  "subject": "docs(teacher-parent): S4 confirm-clean",
+  "head": "Teacher+Parent Portal — S4 Confirm-Clean",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/teacher-parent/IRR-SPECIFICATION.md",
+  "sha": "a3ffe00e",
+  "date": "2026-05-24",
+  "subject": "docs(teacher-parent): ИРР specification from g",
+  "head": "ИРР (Индивидуал Ривожланиш Режаси) — Feature Specifica",
+  "status": "SPEC ONLY — no implementation. Review be",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/08-final-verify.md",
+  "sha": "03a0a4b0",
+  "date": "2026-05-23",
+  "subject": "docs(admin): step 8 final verify — portal clos",
+  "head": "Admin Portal — S8 Final Verify (Closeout)",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/reception/00-understanding.md",
+  "sha": "7c71359e",
+  "date": "2026-05-23",
+  "subject": "docs(reception): step 1 audit",
+  "head": "Reception Portal — Step 0: Understanding",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/reception/01-audit.md",
+  "sha": "7c71359e",
+  "date": "2026-05-23",
+  "subject": "docs(reception): step 1 audit",
+  "head": "Reception Portal — Step 1: Deep Audit",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/reception/02-cleanup-plan.md",
+  "sha": "0dec1a79",
+  "date": "2026-05-23",
+  "subject": "docs(reception): step 2 cleanup plan",
+  "head": "Reception Portal — Step 2: Cleanup Plan",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/reception/03-cleanup-execution.md",
+  "sha": "21a8cbe6",
+  "date": "2026-05-23",
+  "subject": "docs(reception): S3 follow-up — backfill count",
+  "head": "Reception Portal — Step 3: Cleanup Execution",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/reception/04-confirm-clean.md",
+  "sha": "0f5408dc",
+  "date": "2026-05-23",
+  "subject": "fix(backend): close third null-schoolId IDOR o",
+  "head": "Reception Portal — Step 4: Confirm Clean",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/reception/05-gap-research.md",
+  "sha": "325e11f9",
+  "date": "2026-05-23",
+  "subject": "docs(reception): step 5 gap research",
+  "head": "Reception Portal — Step 5: Gap Research",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/03-cleanup-execution.md",
+  "sha": "22135cac",
+  "date": "2026-05-22",
+  "subject": "fix(admin): resolve Dashboard lint + confirm A",
+  "head": "Admin Portal — S3 Cleanup Execution Log",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/04-confirm-clean.md",
+  "sha": "c841d0c4",
+  "date": "2026-05-22",
+  "subject": "docs(admin): step 4 confirm-clean + ToastConte",
+  "head": "Admin Portal — S4 Confirm Clean",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/05-gap-research.md",
+  "sha": "c8b4236b",
+  "date": "2026-05-22",
+  "subject": "docs(admin): step 5 gap research",
+  "head": "Admin Portal — S5 Gap Research",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/06-feature-plan.md",
+  "sha": "0d04b57d",
+  "date": "2026-05-22",
+  "subject": "docs(admin): step 6 feature plan — owner-cockp",
+  "head": "Admin Portal — S6 Feature Plan (Owner-Cockpit Scope)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/07-phase1-backend-execution.md",
+  "sha": "d33e05eb",
+  "date": "2026-05-22",
+  "subject": "docs(admin): S7 phase 1 backend sub-sprint exe",
+  "head": "Admin Portal — S7 Phase 1 Backend Sub-Sprint Execution",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/07-phase2-frontend-execution.md",
+  "sha": "436dd03f",
+  "date": "2026-05-22",
+  "subject": "docs(admin): S7 phase 2 demo-critical frontend",
+  "head": "Admin Portal — S7 Phase 2 Demo-Critical Frontend Execu",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/07-phase3-frontend-execution.md",
+  "sha": "e0fc141a",
+  "date": "2026-05-22",
+  "subject": "docs(admin): Phase 3 execution audit — post-cr",
+  "head": "Admin Portal — S7 Phase 3 Cockpit-Visibility Frontend ",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/07-phase4-frontend-execution.md",
+  "sha": "36aac08d",
+  "date": "2026-05-22",
+  "subject": "docs(admin): S7 phase 4 trash + gov-message in",
+  "head": "Admin Portal — S7 Phase 4 Frontend Execution",
+  "status": "",
+  "claim": "Complete — All 4 Phases"
+ },
+ {
+  "f": "audits/admin/00-understanding.md",
+  "sha": "f925db61",
+  "date": "2026-05-21",
+  "subject": "docs(admin): step 0 understanding",
+  "head": "Admin Portal — Step 0: Understanding",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/01-audit.md",
+  "sha": "3047ca49",
+  "date": "2026-05-21",
+  "subject": "docs(admin): step 1 audit — 18 findings (2 Cri",
+  "head": "Admin Portal — Step 1: Audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/admin/02-cleanup-plan.md",
+  "sha": "e34b085d",
+  "date": "2026-05-21",
+  "subject": "docs(admin): step 2 cleanup plan — 10 units, 1",
+  "head": "Admin Portal — Step 2: Cleanup Plan",
+  "status": "",
+  "claim": "complete — it needs a route, nav item, i18n pass, and one te"
+ },
+ {
+  "f": "audits/backend/pre-launch-sprint-execution.md",
+  "sha": "a99e39b1",
+  "date": "2026-05-21",
+  "subject": "ops(infra): verify Railway prod env — PL-006/0",
+  "head": "Pre-Launch Sprint Execution Log (Step 7.5)",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/00-understanding.md",
+  "sha": "ace62354",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 0 understanding",
+  "head": "Government Portal — Step 0: Understanding",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/01-audit.md",
+  "sha": "570a537a",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 1 deep audit — 14 findi",
+  "head": "Government Portal — Step 1 Deep Audit",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/02-cleanup-plan.md",
+  "sha": "8572342c",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 2 cleanup plan — 6 batc",
+  "head": "Government Portal — Step 2 Cleanup Plan",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/government/03-cleanup-execution.md",
+  "sha": "2c761708",
+  "date": "2026-05-21",
+  "subject": "docs(government): S3 cleanup execution deliver",
+  "head": "Government Portal — Step 3: Cleanup Execution",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/04-cleanup-verification.md",
+  "sha": "874d0ab4",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 4 cleanup verification ",
+  "head": "Government Portal — Step 4: Cleanup Verification",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/05-gap-research.md",
+  "sha": "2b1c056f",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 5 gap research — 18 gap",
+  "head": "Government Portal — Step 5: Gap Research",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/06-feature-plan.md",
+  "sha": "3eb3f8eb",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 6 feature plan — 12 ite",
+  "head": "Government Portal — Step 6: Feature Plan",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/government/07-sprint-1-execution.md",
+  "sha": "6107699b",
+  "date": "2026-05-21",
+  "subject": "docs(government): step 7 sprint 1 execution — ",
+  "head": "Government Portal — Step 7 Sprint 1 Execution Log",
+  "status": "",
+  "claim": "8/8 PASS"
+ },
+ {
+  "f": "audits/government/CLOSEOUT.md",
+  "sha": "098a9136",
+  "date": "2026-05-21",
+  "subject": "docs(government): reconcile E3 manual-gate sta",
+  "head": "Government Portal — Closeout Ledger",
+  "status": "",
+  "claim": "Authoritative"
+ },
+ {
+  "f": "audits/government/region-model-design.md",
+  "sha": "cd9cfb13",
+  "date": "2026-05-21",
+  "subject": "docs(government): region model design APPROVED",
+  "head": "Region/Hierarchy Authorization Model — Design Document",
+  "status": "APPROVED (2026-05-21) — all §7 questions",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/government/region-sprint-A-execution.md",
+  "sha": "dadd323d",
+  "date": "2026-05-21",
+  "subject": "chore: close Region Sprint A — 94 suites / 967",
+  "head": "Region Sprint A — Execution Log",
+  "status": "✅ Complete",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/region-sprint-B-execution.md",
+  "sha": "4f227109",
+  "date": "2026-05-21",
+  "subject": "chore: close Region Sprint B — 97 suites / 102",
+  "head": "Region Model — Sprint B Execution Log",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/government/region-sprint-C-execution.md",
+  "sha": "84c39e47",
+  "date": "2026-05-21",
+  "subject": "docs: update Sprint C execution log and tracke",
+  "head": "Region Model — Sprint C Execution Log",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/government/region-sprint-D-execution.md",
+  "sha": "14fd82c1",
+  "date": "2026-05-21",
+  "subject": "docs(government): region sprint D execution — ",
+  "head": "Region Model — Sprint D Execution Log",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/government/region-sprint-E1-execution.md",
+  "sha": "3cd94e35",
+  "date": "2026-05-21",
+  "subject": "docs(government): close E1 binding yellow — no",
+  "head": "Region Model — Sprint E1 Execution Log",
+  "status": "",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/government/region-sprint-E2-execution.md",
+  "sha": "bbf8a3ae",
+  "date": "2026-05-21",
+  "subject": "test(government): capability-set drift guard b",
+  "head": "Region Model — Sprint E2 Execution Log",
+  "status": "",
+  "claim": "source of truth"
+ },
+ {
+  "f": "audits/government/region-sprint-E3-execution.md",
+  "sha": "098a9136",
+  "date": "2026-05-21",
+  "subject": "docs(government): reconcile E3 manual-gate sta",
+  "head": "Region Model — Sprint E3 Execution Log",
+  "status": "COMPLETED by Max on 2026-05-21 — all 11 ",
+  "claim": ""
+ },
+ {
+  "f": "docs/region-category-data-update.md",
+  "sha": "50deb9c1",
+  "date": "2026-05-21",
+  "subject": "docs(backend): region/category real-data swap ",
+  "head": "Region & Category Real-Data Swap Instructions",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "LOOP_QUESTIONS.md",
+  "sha": "eb186511",
+  "date": "2026-05-20",
+  "subject": "docs(backend): step 8 final verification — Bac",
+  "head": "Loop Questions — Decisions Needed",
+  "status": "CLOSED — decision implemented  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/07-sprint-A-execution.md",
+  "sha": "8615a32c",
+  "date": "2026-05-20",
+  "subject": "fix(backend): T2-1 immutability remediation — ",
+  "head": "Backend S7 — Sprint A Execution Report",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/07-sprint-B-execution.md",
+  "sha": "1e5876a9",
+  "date": "2026-05-20",
+  "subject": "chore: Sprint B close-out — tracker, CP-006/00",
+  "head": "Backend S7 Sprint B Execution Log",
+  "status": "",
+  "claim": "18/18 pass"
+ },
+ {
+  "f": "audits/backend/07-sprint-C-execution.md",
+  "sha": "56f8d907",
+  "date": "2026-05-20",
+  "subject": "feat(import): T1-7b — bulk import start/status",
+  "head": "Backend S7 Sprint C Execution Log",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/07-sprint-D-execution.md",
+  "sha": "e1b364ab",
+  "date": "2026-05-20",
+  "subject": "chore: close Sprint D in tracker — 84 suites /",
+  "head": "Backend S7 — Sprint D Execution",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/07-sprint-E-execution.md",
+  "sha": "eb186511",
+  "date": "2026-05-20",
+  "subject": "docs(backend): step 8 final verification — Bac",
+  "head": "Backend S7 — Sprint E Execution Log",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/08-final-verification.md",
+  "sha": "eb186511",
+  "date": "2026-05-20",
+  "subject": "docs(backend): step 8 final verification — Bac",
+  "head": "Backend S8 — Final Verification",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "backend/SECURITY.md",
+  "sha": "aabf24fb",
+  "date": "2026-05-20",
+  "subject": "fix(security): PL-002/003/007/008 CORS tests, ",
+  "head": "Security Policy",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "backend/i18n/README.md",
+  "sha": "f75b8d63",
+  "date": "2026-05-20",
+  "subject": "docs(pre-launch): pre-launch sprint closed — a",
+  "head": "Uchqun i18n Translations",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "docs/PRIVACY_POSTURE.md",
+  "sha": "f75b8d63",
+  "date": "2026-05-20",
+  "subject": "docs(pre-launch): pre-launch sprint closed — a",
+  "head": "Uchqun Platform — Privacy Posture",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/csv-templates/README.md",
+  "sha": "bbd1396d",
+  "date": "2026-05-20",
+  "subject": "feat(import): T1-7a — bulk import validate end",
+  "head": "Children Import CSV Template",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "README.md",
+  "sha": "39d7e0d3",
+  "date": "2026-05-19",
+  "subject": "docs: expand README with setup, env vars, comm",
+  "head": "Uchqun Platform",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/00-understanding.md",
+  "sha": "c29a3259",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 0 understanding",
+  "head": "Backend S0: Understanding",
+  "status": "Complete (7/7 sections)  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/01-audit.md",
+  "sha": "c64af196",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 3 batch 15 — test debt rem",
+  "head": "Backend S1: Deep Audit",
+  "status": "Complete (6 sections)  ",
+  "claim": "canonical"
+ },
+ {
+  "f": "audits/backend/02-cleanup-plan-extension.md",
+  "sha": "6a7be142",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 2 extension — 7 new findin",
+  "head": "Backend S2: Cleanup Plan Extension (Recovery Pass)",
+  "status": "Plan only — no code changes in this step",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/02-cleanup-plan.md",
+  "sha": "3a6633d5",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 2 cleanup plan — 10 batche",
+  "head": "Backend S2: Cleanup Plan",
+  "status": "Complete (6 sections)  ",
+  "claim": "complete — 38 findings, no gaps)"
+ },
+ {
+  "f": "audits/backend/03-cleanup-verification.md",
+  "sha": "8fe59368",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 4 final re-verification — ",
+  "head": "Backend S4: Cleanup Verification",
+  "status": "🔴 Incomplete — 1 new High IDOR + npm vu",
+  "claim": "complete — 1 new High IDOR + npm vulnerabilities; loop retur"
+ },
+ {
+  "f": "audits/backend/04-gap-research.md",
+  "sha": "2337f715",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 5 gap research — 25 gaps i",
+  "head": "Backend S5: Gap Research",
+  "status": "✅ Complete",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/05-cleanup-execution.md",
+  "sha": "c64af196",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 3 batch 15 — test debt rem",
+  "head": "Backend S3: Cleanup Execution Log",
+  "status": "✅ Complete  ",
+  "claim": ""
+ },
+ {
+  "f": "audits/backend/06-feature-plan.md",
+  "sha": "81e5b849",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 6.1 plan amendments — effo",
+  "head": "Backend S6 Feature Plan",
+  "status": "",
+  "claim": "authoritative"
+ },
+ {
+  "f": "audits/backend/10-idor-sweep.md",
+  "sha": "6a7be142",
+  "date": "2026-05-19",
+  "subject": "docs(backend): step 2 extension — 7 new findin",
+  "head": "Backend Batch 10: IDOR Completeness Sweep",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/audit/closures/V5-CRIT-01.md",
+  "sha": "2b979420",
+  "date": "2026-05-18",
+  "subject": "chore: close V5-CRIT-01 in tracker — prod veri",
+  "head": "V5-CRIT-01 — Chat send broken (validator/controller fo",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/audit/closures/V5-CRIT-02.md",
+  "sha": "58bb3e58",
+  "date": "2026-05-18",
+  "subject": "chore: close V5-CRIT-02 in tracker — prod veri",
+  "head": "V5-CRIT-02 — Cross-school group leak in getGroups() — ",
+  "status": "",
+  "claim": ""
+ },
+ {
+  "f": "docs/audit/closures/V5-CRIT-03.md",
+  "sha": "42cf8b08",
+  "date": "2026-05-18",
+  "subject": "chore: close V5-CRIT-03 in tracker — prod veri",
+  "head": "V5-CRIT-03 — schoolWhere() null schoolId returns {} (g",
+  "status": "",
+  "claim": ""
+ }
+]

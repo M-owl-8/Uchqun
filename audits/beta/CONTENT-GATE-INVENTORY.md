@@ -15,6 +15,7 @@
 >
 > ## S30 CI-RESTORATION RECORD (2026-06-11) — for future sessions
 > - **CI green on main: run 27366773717, all 16 jobs success, 2m19s total** (was 6h timeouts). Deploy-to-Railway workflow green (27366773884).
+>   - **[STALE as of 2026-08-14 — Campaign II P1]** This was true when written (2026-06-11) and is written in the present tense with no expiry. CI was subsequently red on `main` on every commit from at least 2026-08-10 to 2026-08-14 (**D-50**, `audits/beta/deep/P8-CLOSEOUT.md` §2). Current CI state lives on the run page, not here.
 > - **Hang root cause #1 (teacher, 6h CI timeout):** `vi.mock('react-i18next')` factories returned a FRESH `t` function per `useTranslation()` call → components with `useCallback`/`useEffect` chains depending on `t` re-created callbacks every render → effect refired → setState → infinite render loop ("Maximum update depth exceeded" forever) → vitest never exits. Pattern to remember: **every mock factory must return identity-stable objects/functions** (hoist to factory scope). 8 files fixed.
 > - **Hang root cause #2 (reception, 6h CI timeout):** same disease via `useAuth` mock returning a fresh `user` OBJECT per call → `useEffect([user])` loop in Settings. Plus the vitest-4-removed `test.poolOptions` block (dead config) cleaned from reception's vite config.
 > - Production was never affected — real react-i18next/ToastContext identities are stable; this was test-environment-only.
