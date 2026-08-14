@@ -1,3 +1,4 @@
+import { safeAddIndex } from './_guards.js';
 // Corrective migration: assessment_scores was created without schoolId in 000004.
 // All child-scoped ИРР tables carry schoolId for direct-row tenant enforcement —
 // without it a Phase-2 findByPk on a score row cannot enforce tenant boundary
@@ -11,7 +12,7 @@ export const up = async (queryInterface, Sequelize) => {
   await queryInterface.sequelize.query(
     `ALTER TABLE assessment_scores ADD COLUMN IF NOT EXISTS "schoolId" UUID NOT NULL REFERENCES schools(id) ON DELETE RESTRICT`
   );
-  await queryInterface.addIndex('assessment_scores', ['schoolId'], {
+  await safeAddIndex(queryInterface, 'assessment_scores', ['schoolId'], {
     name: 'idx_assessment_scores_school_id',
   });
 };

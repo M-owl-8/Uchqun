@@ -11,6 +11,8 @@
  *   kindergarten → daycare       (preschool/childcare institutions)
  *   both         → support       (mixed-age special schools; all 4 seed schools)
  */
+import { safeAddIndex } from './_guards.js';
+
 
 const NEW_VALUES = ['daycare', 'early_preschool', 'support', 'early_intervention', 'home_care'];
 const OLD_VALUES = ['school', 'kindergarten', 'both'];
@@ -53,7 +55,7 @@ export async function up(queryInterface, Sequelize) {
   await queryInterface.renameColumn('schools', 'type_new', 'type');
 
   // 6. Re-create index on type
-  await queryInterface.addIndex('schools', ['type'], { name: 'schools_type' });
+  await safeAddIndex(queryInterface, 'schools', ['type'], { name: 'schools_type' });
 }
 
 export async function down(queryInterface, Sequelize) {
@@ -103,5 +105,5 @@ export async function down(queryInterface, Sequelize) {
   await queryInterface.renameColumn('schools', 'type_old', 'type');
 
   // 7. Re-create index
-  await queryInterface.addIndex('schools', ['type'], { name: 'schools_type' });
+  await safeAddIndex(queryInterface, 'schools', ['type'], { name: 'schools_type' });
 }

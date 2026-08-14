@@ -1,3 +1,4 @@
+import { safeAddIndex } from './_guards.js';
 export async function up(queryInterface, Sequelize) {
   await queryInterface.addColumn('government_messages', 'parentMessageId', {
     type: Sequelize.UUID,
@@ -6,7 +7,7 @@ export async function up(queryInterface, Sequelize) {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   });
-  await queryInterface.addIndex('government_messages', ['parentMessageId'], {
+  await safeAddIndex(queryInterface, 'government_messages', ['parentMessageId'], {
     name: 'government_messages_parent_message_id',
   });
 }

@@ -1,3 +1,4 @@
+import { safeAddIndex } from './_guards.js';
 export async function up(queryInterface, Sequelize) {
   await queryInterface.addColumn('schools', 'region', {
     type: Sequelize.STRING(255),
@@ -11,8 +12,8 @@ export async function up(queryInterface, Sequelize) {
     type: Sequelize.STRING(255),
     allowNull: true,
   });
-  await queryInterface.addIndex('schools', ['region'], { name: 'schools_region' });
-  await queryInterface.addIndex('schools', ['city'], { name: 'schools_city' });
+  await safeAddIndex(queryInterface, 'schools', ['region'], { name: 'schools_region' });
+  await safeAddIndex(queryInterface, 'schools', ['city'], { name: 'schools_city' });
 }
 
 export async function down(queryInterface) {

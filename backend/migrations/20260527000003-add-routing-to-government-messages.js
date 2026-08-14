@@ -1,3 +1,4 @@
+import { safeAddIndex } from './_guards.js';
 export async function up(queryInterface, Sequelize) {
   // Create ENUM type for recipientLevel (Postgres-safe: idempotent)
   await queryInterface.sequelize.query(`
@@ -28,10 +29,10 @@ export async function up(queryInterface, Sequelize) {
     onUpdate: 'CASCADE',
   });
 
-  await queryInterface.addIndex('government_messages', ['recipientLevel'], {
+  await safeAddIndex(queryInterface, 'government_messages', ['recipientLevel'], {
     name: 'government_messages_recipient_level_idx',
   });
-  await queryInterface.addIndex('government_messages', ['escalatedFromId'], {
+  await safeAddIndex(queryInterface, 'government_messages', ['escalatedFromId'], {
     name: 'government_messages_escalated_from_idx',
   });
 }

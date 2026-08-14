@@ -1,3 +1,4 @@
+import { safeAddIndex } from './_guards.js';
 export const up = async (queryInterface, Sequelize) => {
   await queryInterface.addColumn('news', 'schoolId', {
     type: Sequelize.DataTypes.UUID,
@@ -6,7 +7,7 @@ export const up = async (queryInterface, Sequelize) => {
     onDelete: 'SET NULL',
     onUpdate: 'CASCADE',
   });
-  await queryInterface.addIndex('news', ['schoolId']);
+  await safeAddIndex(queryInterface, 'news', ['schoolId']);
 };
 
 export const down = async (queryInterface) => {

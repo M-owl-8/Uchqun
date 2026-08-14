@@ -3,6 +3,8 @@
  * Every user and group belongs to a school. This enables proper data isolation
  * so School A's data never leaks to School B.
  */
+import { safeAddIndex } from './_guards.js';
+
 export async function up(queryInterface, Sequelize) {
   // Add schoolId to users
   try {
@@ -12,7 +14,7 @@ export async function up(queryInterface, Sequelize) {
       references: { model: 'schools', key: 'id' },
       onDelete: 'SET NULL',
     });
-    await queryInterface.addIndex('users', ['schoolId'], { name: 'idx_users_school_id' });
+    await safeAddIndex(queryInterface, 'users', ['schoolId'], { name: 'idx_users_school_id' });
   } catch (err) {
     if (!err.message?.includes('already exists')) throw err;
   }
@@ -25,7 +27,7 @@ export async function up(queryInterface, Sequelize) {
       references: { model: 'schools', key: 'id' },
       onDelete: 'SET NULL',
     });
-    await queryInterface.addIndex('groups', ['schoolId'], { name: 'idx_groups_school_id' });
+    await safeAddIndex(queryInterface, 'groups', ['schoolId'], { name: 'idx_groups_school_id' });
   } catch (err) {
     if (!err.message?.includes('already exists')) throw err;
   }
