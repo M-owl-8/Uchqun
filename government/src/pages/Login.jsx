@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { AGENCY_CONFIG } from '../config/agency.js';
 import { LockIcon } from '../components/icons/LockIcon';
@@ -92,6 +92,8 @@ const STRINGS = {
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  // D-55: send the user where they were going, not to the portal root.
+  const location = useLocation();
 
   const [lang, setLang] = useState(() => {
     const saved = localStorage.getItem('dnp:lang');
@@ -126,7 +128,7 @@ const Login = () => {
 
     if (result.success) {
       setDone(true);
-      setTimeout(() => navigate('/government'), 500);
+      setTimeout(() => navigate(location.state?.from?.pathname ?? '/government'), 500);
     } else {
       const errorCode = typeof result.error === 'object' ? result.error?.code : result.error;
       if (result.status === 429) setFormError(t.rateLimited);

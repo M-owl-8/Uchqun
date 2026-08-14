@@ -1,0 +1,8 @@
+{
+  "result": {
+    "status": 502,
+    "correlationId": null,
+    "body": "{\"success\":false,\"error\":{\"code\":\"DOCUMENT_UPLOAD_STORAGE_FAILED\",\"detail\":\"Appwrite upload failed (403): Project is paused due to inactivity. Please restore it from the console to resume operations.. Check Appwrite credentials, bucket permissions, and endpoint connectivity.\"}}"
+  },
+  "shot": "010_d06b_D-06-direct-probe-result.png"
+}

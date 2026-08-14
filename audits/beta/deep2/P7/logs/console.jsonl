@@ -1,0 +1,12 @@
+{"t":"2026-08-14T14:43:07.920Z","role":"x01","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:43:08.124Z","role":"x01","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:43:26.867Z","role":"x01","type":"error","url":"https://teacher-production-0647.up.railway.app/teacher/media","text":"Failed to load resource: the server responded with a status of 502 ()"}
+{"t":"2026-08-14T14:44:09.345Z","role":"d06","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:44:09.654Z","role":"d06","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:44:23.798Z","role":"d06","type":"error","url":"https://reception-production-ba41.up.railway.app/reception/documents","text":"Failed to load resource: the server responded with a status of 502 ()"}
+{"t":"2026-08-14T14:45:01.149Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:45:01.461Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:45:15.413Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/reception/documents","text":"Failed to load resource: the server responded with a status of 404 ()"}
+{"t":"2026-08-14T14:46:25.512Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:46:26.050Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T14:46:42.772Z","role":"d06b","type":"error","url":"https://reception-production-ba41.up.railway.app/reception/documents","text":"Failed to load resource: the server responded with a status of 502 ()"}

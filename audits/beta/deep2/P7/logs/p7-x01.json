@@ -1,0 +1,17 @@
+{
+  "file-input": 1,
+  "upload": {
+    "filled": "003_x01_X-01-upload-filled.png",
+    "modal": "002_x01_X-01-upload-modal.png",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/media/upload",
+        "s": 502,
+        "b": "{\"success\":false,\"error\":{\"code\":\"MEDIA_UPLOAD_STORAGE_FAILED\",\"detail\":\"Appwrite upload failed (403): Project is paused due to inactivity. Please restore it from the console to resume operations.. Check Appwrite credent"
+      }
+    ],
+    "after": "004_x01_X-01-upload-result.png",
+    "toast": null
+  }
+}

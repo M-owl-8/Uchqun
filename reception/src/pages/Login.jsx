@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import LoadingSpinner from '@shared/components/LoadingSpinner';
 import { Eye, EyeOff, AlertTriangle, DoorOpen, Shield } from 'lucide-react';
@@ -16,6 +16,8 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  // D-55: send the user where they were going, not to the portal root.
+  const location = useLocation();
   const { t } = useTranslation();
 
   const handleSubmit = async (e) => {
@@ -26,7 +28,7 @@ const Login = () => {
     const result = await login(email, password);
 
     if (result.success) {
-      navigate('/reception');
+      navigate(location.state?.from?.pathname ?? '/reception');
     } else {
       if (result.status === 429) setError(t('login.accountLocked'));
       else if (result.status === 403 && result.error === 'ACCOUNT_NOT_ACTIVE') setError(t('login.accountSuspended', { defaultValue: "Hisobingiz to'xtatilgan. Maktab administratori bilan bog'laning." }));

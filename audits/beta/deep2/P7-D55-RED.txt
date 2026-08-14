@@ -1,0 +1,5 @@
+     × ProtectedRoute records where the user was going 232ms
+     × Login sends the user back to it 25ms
+     × Login still has a fallback for a direct visit 19ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 3 ⎯⎯⎯⎯⎯⎯⎯
+      Tests  3 failed (3)
