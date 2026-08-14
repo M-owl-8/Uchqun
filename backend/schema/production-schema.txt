@@ -1232,6 +1232,7 @@ CON goal_periods|goal_periods_schoolId_not_null|n|NOT NULL "schoolId"
 CON goal_periods|goal_periods_status_not_null|n|NOT NULL status
 CON goal_periods|goal_periods_teacherSignedBy_fkey|f|FOREIGN KEY ("teacherSignedBy") REFERENCES users(id) ON DELETE SET NULL
 CON goal_periods|goal_periods_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON government_messages|fk_super_admin_messages_senderId|f|FOREIGN KEY ("senderId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON government_messages|government_messages_escalatedFromId_fkey|f|FOREIGN KEY ("escalatedFromId") REFERENCES government_messages(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON government_messages|government_messages_parentMessageId_fkey|f|FOREIGN KEY ("parentMessageId") REFERENCES government_messages(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON government_messages|government_messages_recipientLevel_not_null|n|NOT NULL "recipientLevel"
@@ -1240,7 +1241,6 @@ CON government_messages|super_admin_messages_id_not_null|n|NOT NULL id
 CON government_messages|super_admin_messages_isRead_not_null|n|NOT NULL "isRead"
 CON government_messages|super_admin_messages_message_not_null|n|NOT NULL message
 CON government_messages|super_admin_messages_pkey|p|PRIMARY KEY (id)
-CON government_messages|super_admin_messages_senderId_fkey|f|FOREIGN KEY ("senderId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 CON government_messages|super_admin_messages_subject_not_null|n|NOT NULL subject
 CON government_messages|super_admin_messages_updatedAt_not_null|n|NOT NULL "updatedAt"
 CON government_school_ratings|government_school_ratings_comment_not_null|n|NOT NULL comment
