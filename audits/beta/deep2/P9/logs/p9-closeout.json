@@ -1,0 +1,70 @@
+{
+  "avoid-list-parent-mobile": {
+    "routesChecked": 13,
+    "breaks": [],
+    "ratingPage": {
+      "width": 390,
+      "viewport": 390,
+      "truncatedLabels": 0,
+      "labels": [
+        {
+          "t": "Muassasa tozaligi",
+          "truncated": false
+        },
+        {
+          "t": "Xizmat sifati",
+          "truncated": false
+        },
+        {
+          "t": "Muassasa tarbiyachisi",
+          "truncated": false
+        },
+        {
+          "t": "Bolaning o'sishi",
+          "truncated": false
+        },
+        {
+          "t": "Muassasaga ishonch",
+          "truncated": false
+        }
+      ]
+    },
+    "shot": "015_p9-parent-mobile_p9-avoid-list-rating-mobile.png"
+  },
+  "clickpath-government": {
+    "loggedIn": true,
+    "route": "/government/schools",
+    "contentPresent": true,
+    "bodyChars": 1373,
+    "serverErrors": [],
+    "consoleErrors": 2,
+    "shot": "017_p9-government_p9-government-clickpath.png"
+  },
+  "clickpath-admin": {
+    "loggedIn": true,
+    "route": "/admin/parents",
+    "contentPresent": true,
+    "bodyChars": 3836,
+    "serverErrors": [],
+    "consoleErrors": 2,
+    "shot": "019_p9-admin_p9-admin-clickpath.png"
+  },
+  "clickpath-reception": {
+    "loggedIn": true,
+    "route": "/reception/parents",
+    "contentPresent": true,
+    "bodyChars": 2692,
+    "serverErrors": [],
+    "consoleErrors": 2,
+    "shot": "021_p9-reception_p9-reception-clickpath.png"
+  },
+  "clickpath-teacher": {
+    "loggedIn": true,
+    "route": "/teacher/bolalar",
+    "contentPresent": true,
+    "bodyChars": 1298,
+    "serverErrors": [],
+    "consoleErrors": 16,
+    "shot": "023_p9-teacher_p9-teacher-clickpath.png"
+  }
+}

@@ -4,7 +4,9 @@
 (`audits/beta/deep2/P1-CONSOLIDATION.md`). Any other list of defects in this
 repository is historical and must not be treated as current.
 
-**Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
+**Last re-derived:** 2026-08-15 · Campaign II P9 · from HEAD `028ef934`
+**Score:** 7.4 / 10 at close of CONSOLIDATION II — see `deep2/P9-CLOSEOUT.md` §3 (5.5 at start).
+
 **Numbering:** ids are permanent and never reused. New defects continue from D-67.
 
 | id | severity | status | one line | authoritative artifact |
@@ -24,9 +26,9 @@ repository is historical and must not be treated as current.
 | D-13 | cosmetic | **FIXED** | change-password copy | `deep/P3-TEACHER.md` §5 |
 | D-14 | cosmetic | **WITHDRAWN** | no longer reproduces on any portal; the retired Google font file was corrected upstream — not fixed by this repository | `deep2/P7-FIXES.md` §6 |
 | D-15 | cosmetic | **FIXED** | teacher-form domain chip | `rerun-2026-08-14/` |
-| D-16 | — | confirmed | reception portal finding | `deep/P2-RECEPTION.md` |
-| D-17 | — | corrected | reception portal finding | `deep/P2-RECEPTION.md` |
-| D-18 | — | see artifact | | `deep/P2-RECEPTION.md` |
+| D-16 | degrades-use | **OPEN** | reception cannot create a reception peer — four routes enumerated at runtime, `anyControl: 0`. May be intentional under the role hierarchy; never decided | `deep/P2-RECEPTION.md` |
+| D-17 | degrades-use | **OPEN** | creating a reception says `Qabul akkaunti yaratildi` and nothing about the account being unable to log in; the new user's first login then fails with no indication of who must act | `deep/P2-RECEPTION.md` |
+| D-18 | — | **VOID** | no artifact in either campaign defines this id; carried forward as a row with no content, and recorded as void rather than left as "see artifact" | — |
 | D-19 | — | **UNREPRESENTABLE** | one guardian per child — `children.parentId` is a single `NOT NULL` uuid | `deep/P4-PARENT.md` §7 |
 | D-20 | — | **UNREPRESENTABLE** | one teacher per group — single `groups.teacherId` column | `deep/P1-SEED.md` |
 | D-21 | degrades-use | **FIXED** `b9f52a01` | create-teacher showed a bare "Validation failed" and discarded details[] | `deep2/P7-FIXES.md` §1 |
