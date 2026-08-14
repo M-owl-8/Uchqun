@@ -1,6 +1,7 @@
 import express from 'express';
 import sequelize from '../config/database.js';
 import logger from '../utils/logger.js';
+import { getAuditHealth } from '../utils/auditLogger.js';
 
 const router = express.Router();
 
@@ -40,12 +41,27 @@ router.get('/readiness', async (req, res) => {
   try {
     // Check database connection
     await sequelize.authenticate();
-    
-    res.json({
-      status: 'ready',
+
+    // P2: audit writes are swallowed by design so they never break a feature.
+    // That made a silent, months-long failure possible (D-27). Surface it here,
+    // on the probe docs/OPERATIONS.md:112 calls "the canonical monitor".
+    // Railway health-checks /health (railway.toml:8), not this path, so a
+    // degraded audit trail alerts an operator without pulling the service.
+    const audit = getAuditHealth();
+
+    res.status(audit.healthy ? 200 : 503).json({
+      status: audit.healthy ? 'ready' : 'degraded',
       timestamp: new Date().toISOString(),
       checks: {
         database: 'healthy',
+        auditLog: audit.healthy ? 'healthy' : 'degraded',
+      },
+      audit: {
+        writes: audit.writes,
+        failures: audit.failures,
+        lastAction: audit.lastAction,
+        lastFailureAt: audit.lastFailureAt,
+        lastError: process.env.NODE_ENV === 'production' ? undefined : audit.lastError,
       },
     });
   } catch (error) {

@@ -1,0 +1,6 @@
+    √ a healthy logger reports healthy with zero failures (13 ms)
+    √ a rejected write is counted, and the reason is retained (24 ms)
+    √ the failure still does not cascade — logAudit resolves, it does not throw (6 ms)
+    √ failures accumulate across calls rather than overwriting (4 ms)
+    √ a uuid-shaped entityId and a non-uuid one are distinguishable before the write (3 ms)
+Tests:       5 passed, 5 total

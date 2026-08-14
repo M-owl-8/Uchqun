@@ -1,0 +1,602 @@
+[
+ {
+  "file": "backend/controllers/admin/adminImportController.js",
+  "line": 239,
+  "action": "'bulk_import'",
+  "entity": "'children'",
+  "entityId": "child.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminParentController.js",
+  "line": 175,
+  "action": "'suspend'",
+  "entity": "'users'",
+  "entityId": "parent.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminParentController.js",
+  "line": 221,
+  "action": "'activate'",
+  "entity": "'users'",
+  "entityId": "parent.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 212,
+  "action": "'approve'",
+  "entity": "'documents'",
+  "entityId": "document.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 310,
+  "action": "'reject'",
+  "entity": "'documents'",
+  "entityId": "document.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 378,
+  "action": "'activate'",
+  "entity": "'receptions'",
+  "entityId": "reception.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 426,
+  "action": "'deactivate'",
+  "entity": "'receptions'",
+  "entityId": "reception.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 496,
+  "action": "'create'",
+  "entity": "'receptions'",
+  "entityId": "null",
+  "risk": "not obviously a uuid expression — verify"
+ },
+ {
+  "file": "backend/controllers/admin/adminReceptionController.js",
+  "line": 597,
+  "action": "'delete'",
+  "entity": "'receptions'",
+  "entityId": "reception.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminRestoreController.js",
+  "line": 29,
+  "action": "'restore'",
+  "entity": "'children'",
+  "entityId": "record.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminSchoolController.js",
+  "line": 52,
+  "action": "'update'",
+  "entity": "'schools'",
+  "entityId": "school.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 61,
+  "action": "'update'",
+  "entity": "'admins'",
+  "entityId": "admin.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 109,
+  "action": "'delete'",
+  "entity": "'admins'",
+  "entityId": "admin.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 192,
+  "action": "'create'",
+  "entity": "'admins'",
+  "entityId": "admin.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 362,
+  "action": "'create'",
+  "entity": "'government_users'",
+  "entityId": "government.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 452,
+  "action": "'update'",
+  "entity": "'government_users'",
+  "entityId": "government.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 520,
+  "action": "'delete'",
+  "entity": "'government_users'",
+  "entityId": "target.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/admin/adminUserController.js",
+  "line": 591,
+  "action": "'reset_password'",
+  "entity": "'government_users'",
+  "entityId": "target.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/adminRegistrationController.js",
+  "line": 435,
+  "action": "'approve_registration'",
+  "entity": "'admin_registrations'",
+  "entityId": "id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/adminRegistrationController.js",
+  "line": 513,
+  "action": "'reject_registration'",
+  "entity": "'admin_registrations'",
+  "entityId": "id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/attendanceController.js",
+  "line": 76,
+  "action": "'attendance_overwrite'",
+  "entity": "'child_attendance'",
+  "entityId": "childId",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/childController.js",
+  "line": 433,
+  "action": "'transfer'",
+  "entity": "'children'",
+  "entityId": "child.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/goalController.js",
+  "line": 126,
+  "action": "'create'",
+  "entity": "'child_goals'",
+  "entityId": "goal.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/goalController.js",
+  "line": 214,
+  "action": "'update'",
+  "entity": "'child_goals'",
+  "entityId": "goal.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/goalController.js",
+  "line": 296,
+  "action": "'create'",
+  "entity": "'child_goal_reviews'",
+  "entityId": "review.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/governmentController.js",
+  "line": 1073,
+  "action": "'archive'",
+  "entity": "'schools'",
+  "entityId": "id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/governmentController.js",
+  "line": 1119,
+  "action": "'reactivate'",
+  "entity": "'schools'",
+  "entityId": "id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/governmentController.js",
+  "line": 1172,
+  "action": "'change_category'",
+  "entity": "'schools'",
+  "entityId": "id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/parent/parentDataExportController.js",
+  "line": 144,
+  "action": "'data_export'",
+  "entity": "'users'",
+  "entityId": "user.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionParentController.js",
+  "line": 430,
+  "action": "'activate'",
+  "entity": "'parents'",
+  "entityId": "parent.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionParentController.js",
+  "line": 453,
+  "action": "'suspend'",
+  "entity": "'parents'",
+  "entityId": "parent.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionParentController.js",
+  "line": 476,
+  "action": "'reset_credentials'",
+  "entity": "'parents'",
+  "entityId": "parent.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionTeacherController.js",
+  "line": 175,
+  "action": "'activate'",
+  "entity": "'teachers'",
+  "entityId": "teacher.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionTeacherController.js",
+  "line": 198,
+  "action": "'suspend'",
+  "entity": "'teachers'",
+  "entityId": "teacher.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/receptionTeacherController.js",
+  "line": 221,
+  "action": "'reset_credentials'",
+  "entity": "'teachers'",
+  "entityId": "teacher.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 104,
+  "action": "'create'",
+  "entity": "'irrs'",
+  "entityId": "irr.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 194,
+  "action": "'update'",
+  "entity": "'irrs'",
+  "entityId": "irr.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 217,
+  "action": "'update'",
+  "entity": "'irrs'",
+  "entityId": "irr.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 293,
+  "action": "'create'",
+  "entity": "'assessment_sessions'",
+  "entityId": "session.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 372,
+  "action": "'create'",
+  "entity": "'long_term_goals'",
+  "entityId": "goal.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/controllers/teacher/irrController.js",
+  "line": 741,
+  "action": "'create'",
+  "entity": "'quarterly_monitoring_entries'",
+  "entityId": "entry.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/AuditLog.js",
+  "line": 56,
+  "action": null,
+  "entity": null,
+  "entityId": null,
+  "risk": "entityId omitted (defaults null — allowed)"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 479,
+  "action": "'delete'",
+  "entity": "'children'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 495,
+  "action": "'delete'",
+  "entity": "'teacher_reflections'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 513,
+  "action": "'delete'",
+  "entity": "'child_journal_entries'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 531,
+  "action": "'delete'",
+  "entity": "'users'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 548,
+  "action": "'delete'",
+  "entity": "'child_attendance'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 565,
+  "action": "'delete'",
+  "entity": "'emotional_monitoring'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 582,
+  "action": "'delete'",
+  "entity": "'progress'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 599,
+  "action": "'delete'",
+  "entity": "'import_jobs'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 616,
+  "action": "'delete'",
+  "entity": "'activities'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 633,
+  "action": "'delete'",
+  "entity": "'meals'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 650,
+  "action": "'delete'",
+  "entity": "'meal_plans'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 667,
+  "action": "'delete'",
+  "entity": "'media'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 684,
+  "action": "'delete'",
+  "entity": "'documents'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 701,
+  "action": "'delete'",
+  "entity": "'chat_messages'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 718,
+  "action": "'delete'",
+  "entity": "'child_assessments'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 735,
+  "action": "'delete'",
+  "entity": "'service_plans'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 752,
+  "action": "'delete'",
+  "entity": "'therapy_usages'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 769,
+  "action": "'delete'",
+  "entity": "'therapies'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 786,
+  "action": "'delete'",
+  "entity": "'school_ratings'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 803,
+  "action": "'delete'",
+  "entity": "'government_school_ratings'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 820,
+  "action": "'delete'",
+  "entity": "'teacher_ratings'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 838,
+  "action": "'delete'",
+  "entity": "'child_goals'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 866,
+  "action": "'delete'",
+  "entity": "'irrs'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 882,
+  "action": "'delete'",
+  "entity": "'assessment_criteria'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 898,
+  "action": "'delete'",
+  "entity": "'assessment_sessions'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 914,
+  "action": "'delete'",
+  "entity": "'assessment_scores'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 930,
+  "action": "'delete'",
+  "entity": "'long_term_goals'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 946,
+  "action": "'delete'",
+  "entity": "'goal_periods'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 962,
+  "action": "'delete'",
+  "entity": "'short_term_goals'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 978,
+  "action": "'delete'",
+  "entity": "'daily_monitoring_entries'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 994,
+  "action": "'delete'",
+  "entity": "'weekly_monitoring_entries'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 1010,
+  "action": "'delete'",
+  "entity": "'quarterly_monitoring_entries'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ },
+ {
+  "file": "backend/models/index.js",
+  "line": 1026,
+  "action": "'delete'",
+  "entity": "'monthly_milestones'",
+  "entityId": "instance.id",
+  "risk": "ok"
+ }
+]
