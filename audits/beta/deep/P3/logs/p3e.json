@@ -1,0 +1,95 @@
+{
+  "C7-collision-witness": {
+    "date": "2026-08-11",
+    "ariaOnTeacherScreen": "Gulnoza Ergasheva: Bor",
+    "shot": "067_teacher-tmm3_D-27-D-27-teacher-sees-receptions-value.png",
+    "note": "teacher set sick, then absent; reception then POSTed present. DB status=present, markedBy still tarbiyachi1@tmm3.uz"
+  },
+  "create-activity": {
+    "before": "069_teacher-tmm3_create-activity-modal.png",
+    "filled": "070_teacher-tmm3_create-activity-filled.png",
+    "after": "071_teacher-tmm3_create-activity-result.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nTaomlar\nIndividual reja\n\nO'quvchilaringiz uchun individual rejalar yarating va boshqaring\n\nIndividual reja qo'shish\nErtalabki doira — kengaytirilgan\n\nGuruh"
+  },
+  "create-meal": {
+    "filled": "073_teacher-tmm3_create-meal-filled.png",
+    "after": "074_teacher-tmm3_create-meal-result.png"
+  },
+  "monitoring": {
+    "controls": [
+      "Emotsional",
+      "Kunlik",
+      "Haftalik",
+      "Hammasini birga to'ldirish",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash",
+      "Baholash"
+    ],
+    "acted": null
+  },
+  "reflection": {
+    "filled": "077_teacher-tmm3_reflection-filled.png",
+    "after": "078_teacher-tmm3_reflection-result.png"
+  },
+  "irr": {
+    "controls": [
+      "Saqlash",
+      "4 Мустақил бажаради",
+      "3 Деярли ҳеч қандай ёрдамсиз",
+      "2 Бироз ёрдам билан ёки баъзан",
+      "1 Бошқалар ёрдамида бажаради",
+      "0 Бажара олмайди",
+      "4 Мустақил бажаради",
+      "3 Деярли ҳеч қандай ёрдамсиз",
+      "2 Бироз ёрдам билан ёки баъзан",
+      "1 Бошқалар ёрдамида бажаради",
+      "0 Бажара олмайди",
+      "4 Мустақил бажаради"
+    ],
+    "inputs": 21,
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBolaning sahifasi\nIndividual Rivojlanish Rejasi\nFaol\nAsosiy ma'lumotlar\n\n* * belgilangan maydonlar faollashtirish uchun majburiy\n\nBolaning familiyasi, ismi*\nTugʻilgan sanasi*\nTekshiruv boshlangan va"
+  },
+  "chat-thread": {
+    "conversations": 23,
+    "opened": "081_teacher-tmm3_chat-thread-top.png",
+    "visibleMessageBlocks": 40,
+    "timestamps": [
+      "13:10",
+      "14:11",
+      "15:12",
+      "14:20",
+      "15:20",
+      "16:13",
+      "16:20",
+      "17:14",
+      "18:15",
+      "19:16",
+      "20:17",
+      "21:18",
+      "13:19",
+      "14:20",
+      "15:21",
+      "16:22",
+      "17:23",
+      "18:24",
+      "19:25",
+      "20:26",
+      "21:27"
+    ]
+  },
+  "chat-live-delivery": {
+    "msg": "Kuzatuv: bugun 09:16 da yangi mashq boshlandi.",
+    "teacherSent": "083_teacher-tmm3_chat-teacher-sent-while-parent-online.png",
+    "parentLive": "084_parent-live_parent-chat-live-no-reload.png",
+    "arrivedLive": true,
+    "parentReloaded": "085_parent-live_parent-chat-after-reload.png",
+    "arrivedAfterReload": true
+  }
+}

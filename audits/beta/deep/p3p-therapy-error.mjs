@@ -1,0 +1,28 @@
+import { phase, newBrowser, ctx, login, goto, shot, text, save, ev, PORTALS, PW } from './lib.mjs';
+const P = phase('P3'); const B = PORTALS.teacher; const TAG = 'teacher-tmm3'; const out = {};
+const browser = await newBrowser(true); const { c, p } = await ctx(P, browser, TAG);
+const net = []; p.on('response', async (r) => { if (!/\/api\/v1\/therapy/.test(r.url()) || r.request().method() === 'GET') return; let b = ''; try { b = (await r.text()).slice(0, 220); } catch {} net.push({ m: r.request().method(), s: r.status(), b }); });
+await login(P, p, 'teacher', 'tarbiyachi1@tmm3.uz', PW, TAG);
+await goto(P, p, `${B}/teacher/reja?tab=therapy`, TAG, 'therapy-err-open');
+await p.locator('button', { hasText: /^Yaratish$/ }).first().click();
+await p.waitForTimeout(2600);
+out.typeOptions = await p.evaluate(() => { const s = [...document.querySelectorAll('select')].filter((e) => e.offsetParent); return s.map((e) => ({ label: (e.previousElementSibling?.innerText || '').trim().slice(0, 20), values: [...e.options].map((o) => `${o.value}=${o.text}`) })); });
+// fill only what is required, leaving therapyType at "music" (the UI default)
+await p.evaluate(() => { const set = (el, v) => { const pr = el.tagName === 'TEXTAREA' ? HTMLTextAreaElement : HTMLInputElement; Object.getOwnPropertyDescriptor(pr.prototype, 'value').set.call(el, v); el.dispatchEvent(new Event('input', { bubbles: true })); }; const m=[...document.querySelectorAll('input')].filter((e)=>e.offsetParent&&e.type!=='file'&&e.closest('div')&&/Sarlavha/.test(e.parentElement?.parentElement?.innerText||'')); if(m[0]) set(m[0],'QA-P3P musiqa terapiyasi'); });
+await p.waitForTimeout(700);
+out.selectedType = await p.evaluate(() => { const s = [...document.querySelectorAll('select')].filter((e) => e.offsetParent)[0]; return s ? s.value : null; });
+out.filled = await shot(P, p, TAG, 'D-28-therapy-type-music-selected', { defect: 'D-28', full: true });
+net.length = 0;
+await p.evaluate(() => { const b = [...document.querySelectorAll('button')].filter((x) => x.offsetParent && /Saqlash/.test(x.innerText) && !x.disabled); if (b.length) b[b.length - 1].click(); });
+await p.waitForTimeout(1200);
+out.shot1200ms = await shot(P, p, TAG, 'D-28-therapy-400-response-1200ms', { defect: 'D-28', full: true });
+out.text1200ms = (await text(p)).slice(0, 400);
+await p.waitForTimeout(1600);
+out.shot2800ms = await shot(P, p, TAG, 'D-28-therapy-400-response-2800ms', { defect: 'D-28', full: true });
+out.net = [...net];
+console.log('typeOptions', JSON.stringify(out.typeOptions[0]));
+console.log('selectedType', out.selectedType);
+console.log('net', JSON.stringify(out.net));
+console.log('text@1200ms', JSON.stringify(out.text1200ms.replace(/\n/g, ' | ').slice(0, 300)));
+ev(P, { kind: 'p3p', v: { selectedType: out.selectedType, net: out.net } });
+save(P, 'p3p.json', out); await c.close(); await browser.close();

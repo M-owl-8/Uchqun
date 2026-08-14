@@ -1,0 +1,82 @@
+{
+  "typeOptions": [
+    {
+      "label": "Turi *",
+      "values": [
+        "music=Musiqa",
+        "video=Video",
+        "content=Kontent"
+      ]
+    },
+    {
+      "label": "Kontent turi",
+      "values": [
+        "audio=Audio",
+        "video=Video",
+        "image=Rasm",
+        "document=Hujjat",
+        "interactive=Interaktiv",
+        "link=Havola"
+      ]
+    },
+    {
+      "label": "Yosh Guruhi",
+      "values": [
+        "all=Barcha yoshlar",
+        "infant=Chaqaloq",
+        "toddler=Yosh bola",
+        "preschool=Muassasagacha",
+        "school_age=Muassasa yoshi",
+        "adolescent=O'smir"
+      ]
+    },
+    {
+      "label": "Qiyinlik",
+      "values": [
+        "all=Barcha darajalar",
+        "beginner=Boshlang'ich",
+        "intermediate=O'rta",
+        "advanced=Yuqori"
+      ]
+    },
+    {
+      "label": "Bolaga tayinlash (ix",
+      "values": [
+        "=Tayinlamaslik",
+        "5eed6820-326d-4476-8375-02101fe7e0f5=Sanjar Umarov (Nozima Umarova)",
+        "5eed1727-325e-458f-8efb-84f21659b7b7=Sanjar Qodirov (Sevinch Qodirova)",
+        "5eedc60f-e7c7-4520-8167-75e794b5c79e=Jahongir Sharipov (Oysha Sharipova)",
+        "5eed1ed4-9c2e-4131-80aa-75d142cfb49b=Aziz Rasulov (Sevinch Rasulova)",
+        "5eed2f28-113d-4734-879e-078224570d71=Amirbek Sobirov (Sevinch Sobirova)",
+        "5eed1fc1-716d-4857-8e39-e26472250914=Robiya Jo‘rayeva (Mohira Jo‘rayeva)",
+        "5eedb755-0fdf-4d21-8461-eaa24ada4f1a=Shohruh Karimov (Dilnoza Karimova)",
+        "5eedc096-ea3d-4c96-8334-8a26bbfd8c2e=Aziz Sharipov (Mohira Sharipova)",
+        "5eedf19b-c22e-4ba2-8586-d1982cf7eb42=Zaynab Qodirova (Shahzoda Qodirova)",
+        "5eedb32d-981a-4499-8008-e419be6270cb=Sarvinoz Tursunova (Shahzoda Tursunova)",
+        "5eed714e-dd5b-4a50-8aa3-4799ce53bce9=Ulug‘bek Jo‘rayev (Nozima Jo‘rayeva)",
+        "5eeddf8b-13af-41b3-8f69-03ecfe4cf1d8=Gulnoza Ergasheva (Sarvinoz Ergasheva)",
+        "5eedaeb6-8490-4b8d-8070-8bd0dd6c2e15=Muslima Rahimova (Sevinch Rahimova)",
+        "5eed9a79-5999-431c-8bc3-e45058b47f5e=Gulnoza Rahimova (Sabina Rahimova)",
+        "5eedf355-f206-4d03-8792-5a0fc2b181b9=Muslima Tursunova (Zaynab Tursunova)",
+        "5eed83ee-3ae0-47d9-8069-9bfe8fb7ffc5=Islom Mirzayev (Nozima Mirzayeva)",
+        "5eeddd3d-e225-4abb-8ec7-7a03408b73ae=Rayhona Mirzayeva (Zebo Mirzayeva)",
+        "5eed5a2c-756d-4853-84e3-9e2d1d75df11=Shahzoda Sultonova (Zaynab Sultonova)",
+        "5eed664e-d2a8-4843-83ce-22835f4f4629=Doston Sharipov (Madina Sharipova)",
+        "5eed6188-073a-40b1-81c7-3b2f33f95596=Zaynab Umarova (Zebo Umarova)",
+        "5eed0c9a-fe3e-4031-8f5c-aac195c36b31=Gulnoza Ergasheva (Rayhona Ergasheva)"
+      ]
+    }
+  ],
+  "selectedType": "music",
+  "filled": "163_teacher-tmm3_D-28-D-28-therapy-type-music-selected.png",
+  "shot1200ms": "164_teacher-tmm3_D-28-D-28-therapy-400-response-1200ms.png",
+  "text1200ms": "✕\n\nValidation failed\n\n✕\nU\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nTaomlar\nTerapiya Boshqaruvi\n\nMusiqa, video va content terapiyalarni boshqaring va bolalarga tayinlang\n\nYaratish\nBarchasi\nMusiqa\nVideo\nKontent\nRangli terapiya mashg‘ulotlari\n\nRang va shakl orqali hissiy ifoda mashqlari.\n\n20 min\n4.1\n8\nmaxsus ta’lim\nart\nTayinlash\nHarakat terapiyasi a",
+  "shot2800ms": "165_teacher-tmm3_D-28-D-28-therapy-400-response-2800ms.png",
+  "net": [
+    {
+      "m": "POST",
+      "s": 400,
+      "b": "{\"error\":\"Validation failed\",\"message\":\"Some inputs failed validation\",\"details\":[{\"field\":\"therapyType\",\"message\":\"therapyType must be one of: video, audio, article, exercise, game, breathing, meditation, other\"},{\"fiel"
+    }
+  ]
+}

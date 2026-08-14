@@ -1,0 +1,47 @@
+{
+  "therapy-create-modal": {
+    "tModal": "151_teacher-tmm3_therapy-create-modal.png",
+    "tFields": [
+      "INPUT:text",
+      "INPUT:text",
+      "TEXTAREA:textarea",
+      "SELECT:select-one",
+      "SELECT:select-one",
+      "INPUT:url",
+      "INPUT:number",
+      "SELECT:select-one",
+      "SELECT:select-one",
+      "INPUT:text",
+      "SELECT:select-one"
+    ],
+    "tFilled": "152_teacher-tmm3_therapy-create-filled.png",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/therapy",
+        "s": 400,
+        "b": "{\"error\":\"Validation failed\",\"message\":\"Some inputs failed validation\",\"details\":[{\"field\":\"therapyType\",\"message\":\"therapyType must be one of: video, audio, article, exercise, game, breathing, medita"
+      }
+    ],
+    "after": "153_teacher-tmm3_therapy-create-outcome.png",
+    "toast": null
+  },
+  "gov-message": {
+    "mModal": "155_teacher-tmm3_gov-message-modal.png",
+    "mFields": [
+      "INPUT:text",
+      "TEXTAREA:textarea"
+    ],
+    "mFilled": "156_teacher-tmm3_gov-message-filled.png",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/message-to-government",
+        "s": 201,
+        "b": "{\"success\":true,\"message\":\"Message sent successfully\",\"data\":{\"id\":\"5d638bd7-ae62-42f1-a6af-b43cdd46fcc5\",\"recipientLevel\":\"republic\",\"senderId\":\"5eedf422-4935-4657-84ed-b36e12f3f190\",\"subject\":\"QA-P3"
+      }
+    ],
+    "after": "157_teacher-tmm3_gov-message-outcome.png",
+    "toast": null
+  }
+}

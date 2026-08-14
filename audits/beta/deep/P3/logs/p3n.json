@@ -1,0 +1,18 @@
+{
+  "picked": 20,
+  "ready": {
+    "label": "Jo'natish · 2",
+    "disabled": false
+  },
+  "shotReady": "148_teacher-tmm3_journal-subject-body-children-ready.png",
+  "net": [
+    {
+      "m": "POST",
+      "u": "/api/v1/teacher/journal/bulk",
+      "s": 201,
+      "b": "{\"success\":true,\"data\":{\"created\":[{\"id\":\"7447315b-d092-434b-bd87-c9b2eb43cfe9\",\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"teacherId\":\"5eedf422-4935-4657-84ed-b36e12f3f190\",\"schoolId\":\"5eedd253-e422-44d5-82a8-a37d03df93dd\",\"date\":\"20"
+    }
+  ],
+  "after": "149_teacher-tmm3_journal-sent-to-two-parents.png",
+  "toast": null
+}

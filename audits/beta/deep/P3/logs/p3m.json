@@ -1,0 +1,32 @@
+{
+  "s0": {
+    "send": {
+      "label": "Jo'natish · 0",
+      "disabled": true
+    },
+    "textareaLen": 0,
+    "textareas": 2
+  },
+  "s1_afterTyping": {
+    "send": {
+      "label": "Jo'natish · 0",
+      "disabled": true
+    },
+    "textareaLen": 66,
+    "textareas": 2
+  },
+  "shotTyped": "143_teacher-tmm3_journal-note-typed.png",
+  "picked": 20,
+  "s2_afterSelect": {
+    "send": {
+      "label": "Jo'natish · 2",
+      "disabled": true
+    },
+    "textareaLen": 66,
+    "textareas": 2
+  },
+  "shotReady": "144_teacher-tmm3_journal-note-typed-and-selected.png",
+  "net": [],
+  "after": "145_teacher-tmm3_journal-send-outcome.png",
+  "toast": null
+}

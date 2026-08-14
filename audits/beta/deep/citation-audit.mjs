@@ -6,7 +6,14 @@ import path from 'path';
 const [, , artifact, ...dirs] = process.argv;
 if (!artifact) { console.error('usage: citation-audit.mjs <artifact.md> <dir>...'); process.exit(2); }
 
-const report = fs.readFileSync(artifact, 'utf8');
+const raw = fs.readFileSync(artifact, 'utf8');
+// Regions wrapped in <!-- citation-audit:ignore --> ... <!-- /citation-audit:ignore -->
+// are excluded. This exists so an artifact can quote a FAILING audit run verbatim as
+// evidence without the quoted filenames re-triggering the failure. The markers are
+// visible in the source, so every exemption is itself auditable; count them.
+const IGNORE = /<!--\s*citation-audit:ignore\s*-->[\s\S]*?<!--\s*\/citation-audit:ignore\s*-->/g;
+const ignored = (raw.match(IGNORE) || []).length;
+const report = raw.replace(IGNORE, '');
 const files = new Set();
 const ordMap = new Map();
 for (const d of dirs) {
@@ -35,6 +42,7 @@ for (const m of report.replace(/`?\d{3}_[A-Za-z0-9._-]+\.png`?/g, '').matchAll(/
 }
 console.log(`ARTIFACT ${path.basename(artifact)}`);
 console.log(`  screenshot dirs      : ${dirs.join(' ')}`);
+console.log(`  ignored regions      : ${ignored}`);
 console.log(`  files on disk        : ${files.size}`);
 console.log(`  filename citations   : ${names} | unresolvable: ${badName.length} ${JSON.stringify(badName)}`);
 console.log(`  ordinal citations    : ${ords} | unresolvable: ${badOrd.length} ${JSON.stringify(badOrd)}`);

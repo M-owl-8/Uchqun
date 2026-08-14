@@ -1,0 +1,167 @@
+{
+  "structure": {
+    "checkboxes": [
+      {
+        "name": "",
+        "checked": false,
+        "label": "Hammasiga jo'natish"
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "GE\nGulnoza E."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "GE\nGulnoza E."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "UJ\nUlug‘bek J."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "RJ\nRobiya J."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "SK\nShohruh K."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "IM\nIslom M."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "RM\nRayhona M."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "SQ\nSanjar Q."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "ZQ\nZaynab Q."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "GR\nGulnoza R."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "MR\nMuslima R."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "AR\nAziz R."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "AS\nAziz S."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "DS\nDoston S."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "JS\nJahongir S."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "AS\nAmirbek S."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "SS\nShahzoda S."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "MT\nMuslima T."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "ST\nSarvinoz T."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "SU\nSanjar U."
+      },
+      {
+        "name": "",
+        "checked": false,
+        "label": "ZU\nZaynab U."
+      }
+    ],
+    "buttons": [
+      {
+        "t": "Profil",
+        "disabled": false
+      },
+      {
+        "t": "Sozlamalar",
+        "disabled": false
+      },
+      {
+        "t": "Kunlik mulohaza",
+        "disabled": false
+      },
+      {
+        "t": "+ Birinchi marta",
+        "disabled": false
+      },
+      {
+        "t": "+ Yaxshi natija",
+        "disabled": false
+      },
+      {
+        "t": "+ Yordam kerak",
+        "disabled": false
+      },
+      {
+        "t": "Lavha",
+        "disabled": false
+      },
+      {
+        "t": "Qoralama",
+        "disabled": false
+      },
+      {
+        "t": "Jo'natish · 0",
+        "disabled": true
+      },
+      {
+        "t": "Chiqish",
+        "disabled": false
+      }
+    ]
+  },
+  "selected": 20,
+  "filled": "140_teacher-tmm3_journal-children-selected.png",
+  "sendState": {
+    "label": "Jo'natish · 2",
+    "disabled": true
+  },
+  "net": [],
+  "after": "141_teacher-tmm3_journal-send-result.png",
+  "toast": null
+}

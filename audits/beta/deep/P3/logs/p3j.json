@@ -1,0 +1,130 @@
+{
+  "therapy-assign": {
+    "modal": "125_teacher-tmm3_therapy-assign-modal.png",
+    "fields": [
+      "INPUT:text",
+      "SELECT:select-one",
+      "TEXTAREA:textarea"
+    ],
+    "filled": "126_teacher-tmm3_therapy-assign-filled.png",
+    "modalButtons": [
+      "Individual reja",
+      "Terapiya",
+      "Kuzatuv",
+      "Taomlar",
+      "Yaratish",
+      "Barchasi",
+      "Musiqa",
+      "Video",
+      "Kontent",
+      "Bekor qilish",
+      "Tayinlash"
+    ],
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/therapy/5eedc892-bd9c-4737-8bc3-8fb527995079/start",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"id\":\"674dbf88-60e9-48aa-9b4c-876d6f45b381\",\"therapyId\":\"5eedc892-bd9c-4737-8bc3-8fb527995079\",\"childId\":\"5eed6820-326d-4476-8375-02101fe7e0f5\",\"parentId\":\"5eed0424-7"
+      }
+    ],
+    "after": "127_teacher-tmm3_therapy-assign-result.png",
+    "toast": null
+  },
+  "journal-composer": {
+    "pageButtons": [
+      "Profil",
+      "Sozlamalar",
+      "Kunlik mulohaza",
+      "+ Birinchi marta",
+      "+ Yaxshi natija",
+      "+ Yordam kerak",
+      "Lavha",
+      "Qoralama",
+      "Jo'natish · 0",
+      "Chiqish"
+    ],
+    "fields": [
+      "TEXTAREA:textarea",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:checkbox",
+      "INPUT:text",
+      "TEXTAREA:textarea"
+    ],
+    "filled": "129_teacher-tmm3_journal-composer-filled.png",
+    "actionLabels": [],
+    "net": [],
+    "after": "130_teacher-tmm3_journal-composer-result.png"
+  },
+  "irr-sections": {
+    "sections": [
+      "Asosiy ma'lumotlar",
+      "Ehtiyojlarni baholash",
+      "Saqlash",
+      "Baholash natijalari",
+      "Yangi baholash",
+      "4\nМустақил бажаради",
+      "3\nДеярли ҳеч қандай ёрдамсиз",
+      "2\nБироз ёрдам билан ёки баъзан",
+      "1\nБошқалар ёрдамида бажаради",
+      "0\nБажара олмайди",
+      "4\nИккаласини ҳам бошқаради",
+      "1\nСийдикни ушлаб тура олмайди",
+      "0\nНажасни ушлаб тура олмайди",
+      "4\nОсон",
+      "3\nОзгина қийинчилик билан",
+      "2\nБаъзи қийинчиликлар билан",
+      "1\nКатта қийинчиликлар билан",
+      "0\nТушунмайди",
+      "4\nБемалол",
+      "3\nДеярли эркин",
+      "2\nБироз қийналади",
+      "1\nЗўрға",
+      "0\nГаплаша олмайди",
+      "4\nОсон тушунади",
+      "3\nДеярли қийналмайди",
+      "4\nМустақил ўтиради",
+      "3\nДеярли ёрдамсиз мумкин",
+      "1\nБошқаларнинг ёрдами билан ўтиради",
+      "0\nЎтирмайди",
+      "4\nМустақил туради"
+    ]
+  },
+  "pref-persist": {
+    "before": true,
+    "toggled": false,
+    "saveButtons": 1,
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/profile",
+        "s": 200,
+        "b": "{\"id\":\"5eedf422-4935-4657-84ed-b36e12f3f190\",\"email\":\"tarbiyachi1@tmm3.uz\",\"firstName\":\"Zebo\",\"lastName\":\"Ashurova\",\"phone\":\"+998901000010\",\"role\":\"teacher\",\"isVerified\":true,\"documentsAppro"
+      }
+    ],
+    "shotA": "133_teacher-tmm3_pref-after-save.png",
+    "afterReload": false,
+    "persisted": true,
+    "shotB": "134_teacher-tmm3_pref-after-reload.png"
+  }
+}

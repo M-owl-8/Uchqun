@@ -1,0 +1,264 @@
+{
+  "therapy-tab-controls": {
+    "buttons": [
+      "Individual reja",
+      "Terapiya",
+      "Kuzatuv",
+      "Taomlar",
+      "Yaratish",
+      "Barchasi",
+      "Musiqa",
+      "Video",
+      "Kontent",
+      "Tayinlash",
+      "submit",
+      "submit",
+      "Tayinlash",
+      "submit",
+      "submit",
+      "Tayinlash"
+    ],
+    "inputs": 1
+  },
+  "therapy-create": {
+    "modal": "106_teacher-tmm3_therapy-modal-open.png",
+    "fields": [
+      "INPUT:text"
+    ],
+    "filled": "107_teacher-tmm3_therapy-modal-filled.png",
+    "subLabels": [],
+    "net": [],
+    "after": "108_teacher-tmm3_therapy-create-result.png",
+    "toast": null
+  },
+  "media": {
+    "pageButtons": [
+      "Hammasi",
+      "Rasmlar",
+      "Videolar",
+      "Media qo'shish"
+    ],
+    "modal": "110_teacher-tmm3_X-01-X-01-media-upload-modal.png",
+    "fileInputs": 1,
+    "fields": [
+      "SELECT:select-one:required",
+      "INPUT:text:required",
+      "TEXTAREA:textarea:required",
+      "INPUT:date:required",
+      "SELECT:select-one",
+      "INPUT:file"
+    ],
+    "note": "file upload is the X-01 gate — no binary is uploaded to production storage in this campaign"
+  },
+  "journal": {
+    "openable": false,
+    "buttons": [
+      "IEP maqsadlar",
+      "Hujjatlar",
+      "Xabarlar",
+      "Galereya"
+    ]
+  },
+  "bulkfill": {
+    "modal": "113_teacher-tmm3_monitoring-bulk-fill-modal.png",
+    "optionButtons": 0,
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record updated successfully\",\"data\":{\"id\":\"d2adef1d-a284-401c-8816-69fc00a2a5d3\",\"childId\":\"5eed6820-326d-4476-8375-02101fe7e0f5\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"c9dc55db-42bb-4e99-af67-c8b62777f583\",\"childId\":\"5eedc096-ea3d-4c96-8334-8a26bbfd8c2e\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"52f807e7-468c-44f9-86e8-b64a1d9e82ad\",\"childId\":\"5eed2f28-113d-4734-879e-078224570d71\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"8d3d4567-81d7-45ed-a1b6-a4c92075567c\",\"childId\":\"5eeddf8b-13af-41b3-8f69-03ecfe4cf1d8\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"3ac65d3a-7a65-456e-881a-9b31f34e6762\",\"childId\":\"5eed1fc1-716d-4857-8e39-e26472250914\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"b621b220-9b7d-4c14-a519-c34fd6d8f80a\",\"childId\":\"5eedc60f-e7c7-4520-8167-75e794b5c79e\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"a16e5e68-661e-4374-b141-7d0bc5bfb9c8\",\"childId\":\"5eed1727-325e-458f-8efb-84f21659b7b7\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"28349b4d-48f4-437c-a7dc-7295bc3b595e\",\"childId\":\"5eed5a2c-756d-4853-84e3-9e2d1d75df11\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"b463cdc8-94af-4b05-983e-f80fc82935d0\",\"childId\":\"5eed1ed4-9c2e-4131-80aa-75d142cfb49b\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"0531ce96-f7c2-4059-81c3-6ebe6a8fdd8f\",\"childId\":\"5eedb755-0fdf-4d21-8461-eaa24ada4f1a\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"1dfc4560-33e3-4737-bac9-17c2ad3ce361\",\"childId\":\"5eeddd3d-e225-4abb-8ec7-7a03408b73ae\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"5c447205-31f7-49b4-897d-ccc8dbc9cdcc\",\"childId\":\"5eedb32d-981a-4499-8008-e419be6270cb\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"1984b98b-c55c-4949-9d26-044061232ac6\",\"childId\":\"5eedf19b-c22e-4ba2-8586-d1982cf7eb42\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"f2cb0762-4a4e-46c2-a435-0ba95a2a9746\",\"childId\":\"5eed714e-dd5b-4a50-8aa3-4799ce53bce9\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"d5731cfa-5c4f-481e-915c-6e25fe4d9260\",\"childId\":\"5eed9a79-5999-431c-8bc3-e45058b47f5e\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"1b48be93-84d9-411f-a6f1-87442f9ed603\",\"childId\":\"5eedf355-f206-4d03-8792-5a0fc2b181b9\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"d925bfc4-073a-48e3-b75b-2904e3c755b2\",\"childId\":\"5eed664e-d2a8-4843-83ce-22835f4f4629\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"087e6017-67dd-4cd8-a18b-530b2c899c4c\",\"childId\":\"5eed6188-073a-40b1-81c7-3b2f33f95596\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"53f99688-85a9-4f1f-80f8-36e77cfcec1e\",\"childId\":\"5eedaeb6-8490-4b8d-8070-8bd0dd6c2e15\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"4d596d29-2e8a-4c46-a42f-42339ab0fc1c\",\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"teacherId\":\"5eedf422-4935-4657-"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/teacher/emotional-monitoring",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Monitoring record created successfully\",\"data\":{\"id\":\"cc13748e-e12d-4ace-9123-03f570f82498\",\"childId\":\"5eed83ee-3ae0-47d9-8069-9bfe8fb7ffc5\",\"teacherId\":\"5eedf422-4935-4657-"
+      }
+    ],
+    "after": "114_teacher-tmm3_monitoring-bulk-fill-result.png",
+    "toast": null
+  },
+  "monitoring-tab-Kunlik": {
+    "shot": "115_teacher-tmm3_monitoring-tab-Kunlik.png",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKuzatuv jurnali\n\nBolalarning kunlik va haftalik holatini kuzatish\n\nEmotsional\nKunlik\nHaftalik\n\nYoz"
+  },
+  "monitoring-tab-Haftalik": {
+    "shot": "116_teacher-tmm3_monitoring-tab-Haftalik.png",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKuzatuv jurnali\n\nBolalarning kunlik va haftalik holatini kuzatish\n\nEmotsional\nKunlik\nHaftalik\n\nYoz"
+  },
+  "milestones-ERR": "locator.click: Timeout 30000ms exceeded.",
+  "settings-profile": {
+    "buttons": [
+      "Profil",
+      "Sozlamalar",
+      "Kunlik mulohaza",
+      "Rasmni o'zgartirish",
+      "Davlatga xabar yuborish",
+      "Chiqish"
+    ],
+    "inputs": []
+  },
+  "settings-settings": {
+    "buttons": [
+      "Profil",
+      "Sozlamalar",
+      "Kunlik mulohaza",
+      "Rasmni o'zgartirish",
+      "Profilni saqlash",
+      "Saqlash",
+      "button",
+      "button",
+      "button",
+      "Parolni yangilash",
+      "Xabar yuborish",
+      "logout",
+      "Chiqish"
+    ],
+    "inputs": [
+      "INPUT:text:text",
+      "INPUT:text:text",
+      "INPUT:email:email",
+      "INPUT:tel:+998 90 123 45 67",
+      "INPUT:checkbox:checkbox",
+      "INPUT:password:password",
+      "INPUT:password:password",
+      "INPUT:password:password"
+    ]
+  },
+  "notification-toggle": {
+    "count": 1,
+    "beforeState": true,
+    "afterState": false,
+    "net": [],
+    "shot": "120_teacher-tmm3_notification-preference-toggled.png"
+  },
+  "password-wrong-current": {
+    "inputs": 3,
+    "filled": "122_teacher-tmm3_password-wrong-current-filled.png",
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/password",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"CURRENT_PASSWORD_INCORRECT\",\"detail\":\"Current password is incorrect\"}}"
+      }
+    ],
+    "after": "123_teacher-tmm3_password-wrong-current-rejected.png",
+    "msg": "xatolik"
+  }
+}

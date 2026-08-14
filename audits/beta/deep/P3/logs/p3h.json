@@ -1,0 +1,195 @@
+{
+  "meal-form-fields": [
+    {
+      "tag": "select",
+      "type": "select-one",
+      "name": null,
+      "required": false,
+      "placeholder": null,
+      "value": "2026-08-14",
+      "label": "KUNNI TANLANG",
+      "options": [
+        "2026-08-14",
+        "2026-08-13",
+        "2026-08-12",
+        "2026-08-11",
+        "2026-08-10",
+        "2026-08-07",
+        "2026-08-06",
+        "2026-08-05",
+        "2026-08-04",
+        "2026-08-03",
+        "2026-07-31",
+        "2026-07-30",
+        "2026-07-29",
+        "2026-07-28",
+        "2026-07-27"
+      ]
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "name": null,
+      "required": true,
+      "placeholder": null,
+      "value": "5eed6820-326d-4476-8375-02101fe7e0f5",
+      "label": "Bola",
+      "options": [
+        "",
+        "5eed6820-326d-4476-8375-02101fe7e0f5",
+        "5eed1727-325e-458f-8efb-84f21659b7b7",
+        "5eedc60f-e7c7-4520-8167-75e794b5c79e",
+        "5eed1ed4-9c2e-4131-80aa-75d142cfb49b",
+        "5eed2f28-113d-4734-879e-078224570d71",
+        "5eed1fc1-716d-4857-8e39-e26472250914",
+        "5eedb755-0fdf-4d21-8461-eaa24ada4f1a",
+        "5eedc096-ea3d-4c96-8334-8a26bbfd8c2e",
+        "5eedf19b-c22e-4ba2-8586-d1982cf7eb42",
+        "5eedb32d-981a-4499-8008-e419be6270cb",
+        "5eed714e-dd5b-4a50-8aa3-4799ce53bce9",
+        "5eeddf8b-13af-41b3-8f69-03ecfe4cf1d8",
+        "5eedaeb6-8490-4b8d-8070-8bd0dd6c2e15",
+        "5eed9a79-5999-431c-8bc3-e45058b47f5e",
+        "5eedf355-f206-4d03-8792-5a0fc2b181b9",
+        "5eed83ee-3ae0-47d9-8069-9bfe8fb7ffc5",
+        "5eeddd3d-e225-4abb-8ec7-7a03408b73ae",
+        "5eed5a2c-756d-4853-84e3-9e2d1d75df11",
+        "5eed664e-d2a8-4843-83ce-22835f4f4629",
+        "5eed6188-073a-40b1-81c7-3b2f33f95596",
+        "5eed0c9a-fe3e-4031-8f5c-aac195c36b31"
+      ]
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "name": null,
+      "required": false,
+      "placeholder": null,
+      "value": "Breakfast",
+      "label": "Taom turi",
+      "options": [
+        "Breakfast",
+        "Lunch",
+        "Snack",
+        "Dinner"
+      ]
+    },
+    {
+      "tag": "input",
+      "type": "date",
+      "name": null,
+      "required": true,
+      "placeholder": null,
+      "value": "2026-08-14",
+      "label": "Sana"
+    },
+    {
+      "tag": "input",
+      "type": "text",
+      "name": null,
+      "required": true,
+      "placeholder": null,
+      "value": "",
+      "label": "Taom nomi"
+    },
+    {
+      "tag": "textarea",
+      "type": "textarea",
+      "name": null,
+      "required": true,
+      "placeholder": null,
+      "value": "",
+      "label": "Tavsif"
+    },
+    {
+      "tag": "input",
+      "type": "time",
+      "name": null,
+      "required": true,
+      "placeholder": null,
+      "value": "08:30",
+      "label": "Vaqt"
+    },
+    {
+      "tag": "select",
+      "type": "select-one",
+      "name": null,
+      "required": false,
+      "placeholder": null,
+      "value": "Full portion",
+      "label": "Miqdor",
+      "options": [
+        "Full portion",
+        "Half portion",
+        "Small portion"
+      ]
+    },
+    {
+      "tag": "textarea",
+      "type": "textarea",
+      "name": null,
+      "required": false,
+      "placeholder": null,
+      "value": "",
+      "label": "Maxsus eslatmalar (ixtiyoriy)"
+    },
+    {
+      "tag": "input",
+      "type": "checkbox",
+      "name": null,
+      "required": false,
+      "placeholder": null,
+      "value": "on",
+      "label": ""
+    }
+  ],
+  "meal-submit": {
+    "emptyShot": "099_teacher-tmm3_meal-form-empty.png",
+    "filledShot": "100_teacher-tmm3_meal-form-filled-every-field.png",
+    "filledVals": [
+      "select-one=2026-08-14",
+      "select-one=5eed6820-326d-4476-8375-02101fe7e0f5",
+      "select-one=Breakfast",
+      "date=2026-08-14",
+      "text=Sabzavotli sho‘rva",
+      "textarea=Sabzavotli sho‘rva",
+      "time=12:30",
+      "select-one=Full portion",
+      "textarea=Sabzavotli sho‘rva",
+      "checkbox=on"
+    ],
+    "submits": [
+      "Yaratish"
+    ],
+    "network": [
+      {
+        "method": "POST",
+        "url": "/api/v1/meals",
+        "status": 201,
+        "body": "{\"id\":\"05249a7b-34c2-4b81-a5b8-2cce9fcf83ef\",\"childId\":\"5eed6820-326d-4476-8375-02101fe7e0f5\",\"date\":\"2026-08-14\",\"mealType\":\"Breakfast\",\"mealName\":\"Sabzavotli sho‘rva\",\"description\":\"Sabzavotli sho‘rva\",\"quantity\":\"Full portion\",\"specialNotes\":\"Sabzavotli sho"
+      },
+      {
+        "method": "GET",
+        "url": "/api/v1/meals",
+        "status": 200,
+        "body": "[{\"id\":\"5eed60ff-6d57-44ae-832b-bf350b9f6047\",\"childId\":\"5eedf355-f206-4d03-8792-5a0fc2b181b9\",\"date\":\"2026-08-14\",\"mealType\":\"Snack\",\"mealName\":\"Sutli kakao va quruq non\",\"description\":\"Iliq holda\",\"quantity\":\"To‘liq\",\"specialNotes\":null,\"time\":\"15:30:00\",\"ea"
+      }
+    ],
+    "toast": "muvaffaqiyatli yaratildi",
+    "modalStillOpen": false,
+    "after": "101_teacher-tmm3_meal-after-submit.png"
+  },
+  "irr-real-change": {
+    "before": {
+      "textareas": 7,
+      "firstValue": "F84.0 — Autizm spektri buzilishi",
+      "inputs": 13
+    },
+    "changed": true,
+    "stamp": "QA-P3H 2026-08-14 tekshiruv belgisi",
+    "filled": "103_teacher-tmm3_irr-real-change-filled.png",
+    "network": [],
+    "toast": null,
+    "after": "104_teacher-tmm3_irr-real-change-result.png"
+  }
+}

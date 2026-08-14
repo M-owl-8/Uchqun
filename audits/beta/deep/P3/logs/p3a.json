@@ -1,0 +1,47 @@
+{
+  "login": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  "child-routes": {
+    "childHref": "/teacher/children/5eed0c9a-fe3e-4031-8f5c-aac195c36b31",
+    "t20": "018_teacher-tmm3_T20-child-detail.png",
+    "t21": "019_teacher-tmm3_T21-child-irr.png"
+  },
+  "two-group-teacher": {
+    "childrenListed": 21,
+    "attendanceCards": 21,
+    "names": [
+      "Gulnoza Ergasheva",
+      "Gulnoza Ergasheva",
+      "Ulug‘bek Jo‘rayev",
+      "Robiya Jo‘rayeva",
+      "Shohruh Karimov",
+      "Islom Mirzayev",
+      "Rayhona Mirzayeva",
+      "Sanjar Qodirov",
+      "Zaynab Qodirova",
+      "Gulnoza Rahimova",
+      "Muslima Rahimova",
+      "Aziz Rasulov",
+      "Aziz Sharipov",
+      "Doston Sharipov",
+      "Jahongir Sharipov",
+      "Amirbek Sobirov",
+      "Shahzoda Sultonova",
+      "Muslima Tursunova",
+      "Sarvinoz Tursunova",
+      "Sanjar Umarov",
+      "Zaynab Umarova"
+    ],
+    "headline": "Bolalar (21)",
+    "groupLabel": null
+  },
+  "teacher-with-no-group": {
+    "ok": true,
+    "dashboard": "022_teacher-nogroup_EMPTY-STATE-dashboard-no-group.png",
+    "attendance": "023_teacher-nogroup_EMPTY-STATE-attendance-no-group.png",
+    "bolalar": "024_teacher-nogroup_EMPTY-STATE-bolalar-no-group.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBolalar (0)\n\nSizning guruhingiz bolalari va bugungi holati\n\nHozircha bolalar yo'q\n\nYangi bola qabul kelganda shu yerda ko'rinadi"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "api": {
+    "status": 200,
+    "records": 61,
+    "distinctChildren": 61,
+    "sample": [
+      {
+        "childId": "5eed0c9a-fe3e-4031-8f5c-aac195c36b31",
+        "status": "present",
+        "snapshot": {
+          "lastName": "Ergasheva",
+          "schoolId": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+          "firstName": "Gulnoza"
+        }
+      },
+      {
+        "childId": "5eed6188-073a-40b1-81c7-3b2f33f95596",
+        "status": "present",
+        "snapshot": {
+          "lastName": "Umarova",
+          "schoolId": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+          "firstName": "Zaynab"
+        }
+      }
+    ]
+  },
+  "ownChildren": 21,
+  "saveBar": "21 dan 61 ta belgilangan · Yangilash",
+  "shot": "167_teacher-tmm3_D-31-D-31-attendance-scope-leak-savebar.png"
+}

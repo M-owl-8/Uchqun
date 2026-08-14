@@ -1,0 +1,77 @@
+{
+  "controls": [
+    {
+      "aria": null,
+      "text": "Kun"
+    },
+    {
+      "aria": null,
+      "text": "Hafta"
+    },
+    {
+      "aria": "Oldingi kun",
+      "text": ""
+    },
+    {
+      "aria": "Keyingi kun",
+      "text": ""
+    }
+  ],
+  "week-walk": [
+    {
+      "header": "2026-08-10 – 2026-08-16",
+      "cells": [
+        "M08 10=Shifoxonada",
+        "M08 11=Bor",
+        "M08 12=Bor",
+        "M08 13=Bor",
+        "M08 14=Bor",
+        "M08 15=M08 16"
+      ],
+      "shot": "062_parent-otaona11_D-03-D-03-week-0-2026-08-10.png",
+      "blank": true
+    },
+    {
+      "header": "2026-08-03 – 2026-08-09",
+      "cells": [
+        "M08 3=Yo'q",
+        "M08 4=Bor",
+        "M08 5=Bor",
+        "M08 6=Bor",
+        "M08 7=Bor",
+        "M08 8=Belgilanmagan",
+        "M08 9=Uyda"
+      ],
+      "shot": "063_parent-otaona11_D-03-D-03-week-1-2026-08-03.png",
+      "blank": true
+    },
+    {
+      "header": "2026-07-27 – 2026-08-02",
+      "cells": [
+        "M07 27=Bor",
+        "M07 28=Bor",
+        "M07 29=Bor",
+        "M07 30=Bor",
+        "M07 31=Kasal",
+        "M08 1=Belgilanmagan",
+        "M08 2=Belgilanmagan"
+      ],
+      "shot": "064_parent-otaona11_D-03-D-03-week-2-2026-07-27.png",
+      "blank": true
+    },
+    {
+      "header": "2026-07-20 – 2026-07-26",
+      "cells": [
+        "M07 20=Bor",
+        "M07 21=Bor",
+        "M07 22=Bor",
+        "M07 23=Bor",
+        "M07 24=Bor",
+        "M07 25=Belgilanmagan",
+        "M07 26=Belgilanmagan"
+      ],
+      "shot": "065_parent-otaona11_D-03-D-03-week-3-2026-07-20.png",
+      "blank": true
+    }
+  ]
+}

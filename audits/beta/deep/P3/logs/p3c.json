@@ -1,0 +1,43 @@
+{
+  "parent-week-walk": [
+    {
+      "header": "2026-08-10 – 2026-08-16",
+      "cells": [
+        "M08 10=Shifoxonada",
+        "M08 10",
+        "M08 11=Bor",
+        "M08 11",
+        "M08 12=Bor",
+        "M08 12",
+        "M08 13=Bor",
+        "M08 13",
+        "M08 14=Bor",
+        "M08 14",
+        "M08 15",
+        "M08 15",
+        "M08 16",
+        "M08 16"
+      ],
+      "shot": "056_parent-otaona11_D-03-D-03-parent-week-0-2026-08-10.png"
+    },
+    {
+      "header": null,
+      "cells": [],
+      "shot": "057_parent-otaona11_D-03-D-03-parent-week-1-x.png"
+    },
+    {
+      "header": null,
+      "cells": [],
+      "shot": "058_parent-otaona11_D-03-D-03-parent-week-2-x.png"
+    },
+    {
+      "header": null,
+      "cells": [],
+      "shot": "059_parent-otaona11_D-03-D-03-parent-week-3-x.png"
+    }
+  ],
+  "pre-enrolment-date-save": {
+    "status": 201,
+    "body": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+  }
+}
