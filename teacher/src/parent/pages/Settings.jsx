@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import ParentPageHeader from '../components/ParentPageHeader';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import api from '../../shared/services/api';
 import Card from '../components/Card';
 import { useToast } from '../../shared/context/ToastContext';
@@ -15,8 +16,7 @@ import {
   Eye,
   EyeOff,
   LogOut,
-  ShieldOff,
-} from 'lucide-react';
+  ShieldOff, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const Settings = () => {
@@ -238,6 +238,18 @@ const Settings = () => {
           </div>
         </Card>
       </form>
+
+      {/* D-36: teacher/src/parent/components/LanguageSwitcher.jsx existed and was
+          never mounted anywhere, so <LanguageSwitcher> rendered only on the login
+          page. A parent who landed in the wrong locale had to log out to change
+          it — in a product shipping uz, ru and en. */}
+      <Card className="p-6">
+        <div className="flex items-center gap-3 mb-4">
+          <Globe className="w-6 h-6 text-p-brand-600" />
+          <h2 className="text-xl font-bold text-p-sepia-900">{t('settings.language', { defaultValue: 'Til' })}</h2>
+        </div>
+        <LanguageSwitcher />
+      </Card>
 
       {/* Notification Preferences */}
       <form onSubmit={handleProfileSubmit} className="space-y-6">

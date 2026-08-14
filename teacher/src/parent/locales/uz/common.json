@@ -386,5 +386,8 @@
     "decline": "Roziman emasman, chiqish",
     "footnote": "Ushbu tasdiqlash sizning hisobingizga bog'lab saqlanadi. Qaror qabul qilinganidan keyin uni sozlamalar bo'limidan ko'rishingiz mumkin.",
     "errorGeneric": "Tasdiqlashda xatolik. Qaytadan urinib ko'ring."
+  },
+  "settings": {
+    "language": "Til"
   }
 }

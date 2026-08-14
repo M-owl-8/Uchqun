@@ -386,5 +386,8 @@
     "decline": "I don't agree, sign out",
     "footnote": "This acknowledgement is recorded against your account. You can view it later in your account settings.",
     "errorGeneric": "Could not save your acknowledgement. Please try again."
+  },
+  "settings": {
+    "language": "Language"
   }
 }
