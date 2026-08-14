@@ -924,7 +924,8 @@
     "weakPassword": "Password must contain uppercase, lowercase, and numbers",
     "incorrect": "Current password is incorrect",
     "error": "Error changing password",
-    "button": "Change Password"
+    "button": "Change Password",
+    "subtitleVoluntary": "Set a new password."
   },
   "help": {
     "email": "Email",

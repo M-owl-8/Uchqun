@@ -30,7 +30,28 @@ export const uploadDocument = async (req, res) => {
       return res.status(400).json({ error: 'File content does not match a supported document format' });
     }
 
-    const { url: persistentUrl } = await uploadFile(buffer, file.filename, file.mimetype);
+    // D-06: a storage outage here used to fall through to the generic catch and
+    // surface as an untranslated "An unexpected error occurred" with no code.
+    // Mirror the media path (mediaController.js:447-453): 502 + a named code the
+    // frontend can localise.
+    let persistentUrl;
+    try {
+      ({ url: persistentUrl } = await uploadFile(buffer, file.filename, file.mimetype));
+    } catch (storageError) {
+      logger.error('Document storage upload failed', {
+        error: storageError.message,
+        stack: storageError.stack,
+        filename: file.filename,
+        mimetype: file.mimetype,
+      });
+      return res.status(502).json({
+        success: false,
+        error: {
+          code: 'DOCUMENT_UPLOAD_STORAGE_FAILED',
+          detail: storageError.message,
+        },
+      });
+    }
 
     const document = await Document.create({
       userId: req.user.id,

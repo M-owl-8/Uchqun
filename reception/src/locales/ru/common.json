@@ -506,7 +506,8 @@
   },
   "errors": {
     "NETWORK_ERROR": "Ошибка сети",
-    "ACCOUNT_NOT_ACTIVE": "Аккаунт заблокирован"
+    "ACCOUNT_NOT_ACTIVE": "Аккаунт заблокирован",
+    "DOCUMENT_UPLOAD_STORAGE_FAILED": "Не удалось загрузить документ. Хранилище файлов временно недоступно — попробуйте позже."
   },
   "groupStep": {
     "title": "Назначение группы",

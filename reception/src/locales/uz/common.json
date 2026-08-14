@@ -486,7 +486,8 @@
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",
-    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan"
+    "ACCOUNT_NOT_ACTIVE": "Hisob to'xtatilgan",
+    "DOCUMENT_UPLOAD_STORAGE_FAILED": "Hujjatni yuklab boʻlmadi. Fayl saqlash xizmati vaqtincha ishlamayapti — keyinroq urinib koʻring."
   },
   "groupStep": {
     "title": "Guruh tayinlash",

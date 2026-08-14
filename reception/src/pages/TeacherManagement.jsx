@@ -575,7 +575,10 @@ const TeacherManagement = () => {
                       className="flex-1 px-4 py-3 border-0 outline-none bg-transparent"
                     />
                     <span className="px-3 py-3 bg-slate-100 text-slate-500 text-sm border-l border-slate-200 select-none whitespace-nowrap">
-                      @{schoolSlug || 'your-school.uz'}
+                      {/* D-15: schoolSlug is the bare slug ('smm2'); the address the backend
+                          actually composes is <slug>.uz (utils/accountDomain.js). The chip
+                          read '@smm2' and the created login was smm2.uz. */}
+                      @{schoolSlug ? `${schoolSlug}.uz` : 'your-school.uz'}
                     </span>
                   </div>
                 )}

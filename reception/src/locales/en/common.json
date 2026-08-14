@@ -489,7 +489,8 @@
   },
   "errors": {
     "NETWORK_ERROR": "Network error",
-    "ACCOUNT_NOT_ACTIVE": "Account suspended"
+    "ACCOUNT_NOT_ACTIVE": "Account suspended",
+    "DOCUMENT_UPLOAD_STORAGE_FAILED": "Could not upload the document. File storage is temporarily unavailable — please try again later."
   },
   "groupStep": {
     "title": "Group Assignment",

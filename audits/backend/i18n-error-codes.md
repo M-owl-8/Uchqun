@@ -481,6 +481,7 @@ Added 2026-05-27. Introduced by `parentSendMessage` (parent route), `getAllMessa
 |---|---|---|---|
 | `MEDIA_STORAGE_NOT_CONFIGURED` | 503 | Production upload attempted with no Appwrite and no `LOCAL_STORAGE_FALLBACK=true` | "Media uploads are not available. Contact your administrator." |
 | `MEDIA_UPLOAD_STORAGE_FAILED` | 502 | Appwrite SDK threw during file upload (bad credentials, non-existent bucket, network issue) | "File upload failed. Please try again." |
+| `DOCUMENT_UPLOAD_STORAGE_FAILED` | 502 | D-06: object storage rejected or was unreachable during a reception document upload. Mirrors MEDIA_UPLOAD_STORAGE_FAILED; previously fell through to a generic untranslated 500. | "Could not upload the document. Please try again." |
 
 ---
 

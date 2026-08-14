@@ -66,7 +66,10 @@ export default function ParentStep({ data, onChange, schoolSlug }) {
               />
             </div>
             <span className="h-10 flex items-center px-3 bg-slate-100 text-slate-500 text-[13px] border-l border-slate-300 select-none whitespace-nowrap">
-              @{schoolSlug || 'your-school.uz'}
+              {/* D-15: schoolSlug is the bare slug ('smm2'); the address the backend
+                          actually composes is <slug>.uz (utils/accountDomain.js). The chip
+                          read '@smm2' and the created login was smm2.uz. */}
+                      @{schoolSlug ? `${schoolSlug}.uz` : 'your-school.uz'}
             </span>
           </div>
           <p className="text-[12px] text-slate-500 mt-1.5">{t('parentStep.emailHint')}</p>

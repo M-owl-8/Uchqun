@@ -924,7 +924,8 @@
     "weakPassword": "Parol katta va kichik harflar hamda raqamdan iborat bo'lishi kerak",
     "incorrect": "Joriy parol noto'g'ri",
     "error": "Parolni o'zgartirishda xatolik",
-    "button": "Parolni o'zgartirish"
+    "button": "Parolni o'zgartirish",
+    "subtitleVoluntary": "Yangi parolni o'rnating."
   },
   "help": {
     "email": "Email",

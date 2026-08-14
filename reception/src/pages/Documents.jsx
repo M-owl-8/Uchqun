@@ -66,7 +66,20 @@ export default function Documents() {
       success(t('documents.uploadSuccess', { defaultValue: 'Hujjat yuklandi. Admin tasdiqlashi kutilmoqda.' }));
       loadDocs(true);
     } catch (err) {
-      showError(err.response?.data?.error || t('documents.uploadError', { defaultValue: "Hujjat yuklanmadi. Qayta urinib ko'ring." }));
+      // D-06: this rendered whatever the backend put in `error` — which was the raw
+      // English string "An unexpected error occurred" (screen 262), and would now be a
+      // {code, detail} object. Resolve the code through the catalog; never show detail,
+      // which is debug-only per the CLAUDE.md response-shape standard.
+      const payload = err.response?.data?.error;
+      const code = typeof payload === 'object' ? payload?.code : null;
+      const fallback = t('documents.uploadError', { defaultValue: "Hujjat yuklanmadi. Qayta urinib ko'ring." });
+      let msg = fallback;
+      if (code) {
+        const key = `errors.${code}`;
+        const translated = t(key);
+        if (translated !== key) msg = translated;
+      }
+      showError(msg);
       setDocs((prev) => prev.filter((d) => d.id !== tempId));
     }
   };

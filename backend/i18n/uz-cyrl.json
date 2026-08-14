@@ -269,5 +269,6 @@
   "MONTHLY_MILESTONE_BULK_FAILED": "Мақсадларни сақлаб бўлмади. Қайтадан уриниб кўринг.",
   "MONTHLY_MILESTONE_DELETE_FAILED": "Мақсадни ўчириб бўлмади. Қайтадан уриниб кўринг.",
   "ATTENDANCE_PARTIALLY_SAVED": "Баъзи болалар сақланмади. Рўйхатни текшириб, қайта уриниб кўринг.",
-  "RATING_NO_ASSIGNED_TEACHER": "Фарзандингизга ҳали тарбиячи бириктирилмаган."
+  "RATING_NO_ASSIGNED_TEACHER": "Фарзандингизга ҳали тарбиячи бириктирилмаган.",
+  "DOCUMENT_UPLOAD_STORAGE_FAILED": "Ҳужжатни юклаб бўлмади. Қайтадан уриниб кўринг."
 }

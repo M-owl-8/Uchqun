@@ -67,7 +67,12 @@ const ChangePassword = () => {
             {t('changePasswordForced.title')}
           </h1>
           <p className="text-sm text-slate-500 text-center mb-6">
-            {t('changePasswordForced.subtitle')}
+            {/* D-13: this read 'you must set a new password before continuing'
+                for every visitor, including users under no such obligation who
+                simply navigated here to change their password. */}
+            {user?.mustChangePassword
+              ? t('changePasswordForced.subtitle')
+              : t('changePasswordForced.subtitleVoluntary')}
           </p>
 
           {error && (
