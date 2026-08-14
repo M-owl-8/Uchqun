@@ -230,7 +230,12 @@ const BulkImport = () => {
                 onClick={() => setShowErrors(v => !v)}
                 className="text-sm text-brand-700 font-medium hover:underline"
               >
-                {showErrors ? 'Hide errors' : `Show ${jobResult.errors.length} errors`}
+                {/* D-40: this was a hardcoded English literal on the control that
+                    reveals WHICH rows failed — the one thing an admin needs after a
+                    failed import — in an otherwise Uzbek interface. */}
+                {showErrors
+                  ? t('import.hideErrors', { defaultValue: 'Xatolarni yashirish' })
+                  : t('import.showErrors', { count: jobResult.errors.length, defaultValue: `${jobResult.errors.length} ta xatoni ko'rsatish` })}
               </button>
               {showErrors && (
                 <div className="mt-3 border border-warm-200 rounded-lg overflow-hidden">

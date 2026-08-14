@@ -50,10 +50,10 @@ const ChildDetail = () => {
         {child && (
           <div className="flex flex-wrap gap-4 mt-3 text-sm text-warm-600">
             {child.dateOfBirth && (
-              <span>DOB: {new Date(child.dateOfBirth).toLocaleDateString()}</span>
+              <span>{t('childDetail.dob', { defaultValue: "Tug'ilgan sana" })}: {new Date(child.dateOfBirth).toLocaleDateString()}</span>
             )}
-            {child.gender && <span>Gender: {child.gender}</span>}
-            {child.class && <span>Class: {child.class}</span>}
+            {child.gender && <span>{t('childDetail.gender', { defaultValue: 'Jinsi' })}: {child.gender}</span>}
+            {child.class && <span>{t('childDetail.class', { defaultValue: 'Sinf' })}: {child.class}</span>}
           </div>
         )}
       </div>

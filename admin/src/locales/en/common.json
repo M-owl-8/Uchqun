@@ -421,7 +421,10 @@
     "latestReview": "Latest review",
     "loadError": "Failed to load data",
     "irr": "IRR",
-    "signFailed": "Failed to sign"
+    "signFailed": "Failed to sign",
+    "dob": "Date of birth",
+    "gender": "Gender",
+    "class": "Class"
   },
   "trash": {
     "title": "Trash",
@@ -514,7 +517,9 @@
     "newImport": "New Import",
     "uploadError": "Upload failed",
     "startError": "Could not start import",
-    "rowsProcessed": "rows"
+    "rowsProcessed": "rows",
+    "hideErrors": "Hide errors",
+    "showErrors": "Show {{count}} errors"
   },
   "common": {
     "networkError": "Network error. Please try again.",
