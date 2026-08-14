@@ -10,7 +10,7 @@
   },
   "lint-staged": {
     "backend/**/*.js": [
-      "npx eslint --fix --config backend/.eslintrc.cjs"
+      "bash -c 'cd backend && npx eslint --fix ${@#backend/}' --"
     ],
     "admin/src/**/*.{js,jsx}": [
       "npx eslint --fix --config admin/.eslintrc.cjs"
@@ -47,6 +47,7 @@
     "playwright": "^1.60.0"
   },
   "dependencies": {
-    "axios": "^1.16.0"
+    "axios": "^1.19.0",
+    "form-data": "^4.0.6"
   }
 }

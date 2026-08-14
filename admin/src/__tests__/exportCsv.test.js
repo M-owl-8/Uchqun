@@ -17,11 +17,11 @@ let captured;
 
 beforeEach(() => {
   captured = {};
-  global.Blob = class {
+  globalThis.Blob = class {
     constructor(parts, opts) { this.parts = parts; this.opts = opts; captured.blob = this; }
   };
-  global.URL.createObjectURL = vi.fn(() => 'blob:mock');
-  global.URL.revokeObjectURL = vi.fn();
+  globalThis.URL.createObjectURL = vi.fn(() => 'blob:mock');
+  globalThis.URL.revokeObjectURL = vi.fn();
   vi.spyOn(document, 'createElement').mockImplementation(() => {
     const a = { click: vi.fn(), set href(v) { captured.href = v; }, get href() { return captured.href; } };
     Object.defineProperty(a, 'download', {

@@ -12,6 +12,17 @@ if [ -z "$TYPE" ]; then
   exit 0  # build:, ci:, docs:, style:, perf: are free-form
 fi
 
+# The backlog is the AUTHORITY this hook validates against. If it is absent
+# there is nothing to validate an ID against, and demanding one anyway blocks
+# every fix/test/chore/refactor commit in the repository while offering no way
+# to satisfy it. The hook already says as much further down — "cleanup-backlog.md
+# not found — skipping ID verification" — but that check ran AFTER the format
+# check, so it could never be reached. Checked first now.
+BACKLOG="$(git rev-parse --show-toplevel)/audit/cleanup-backlog.md"
+if [ ! -f "$BACKLOG" ]; then
+  exit 0
+fi
+
 # Check for the #ID pattern
 if ! echo "$MSG" | grep -qP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})'; then
   echo ""
@@ -24,12 +35,6 @@ fi
 
 # Extract the ID and verify it exists in the backlog
 ID=$(echo "$MSG" | grep -oP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})' | head -1 | tr -d '#')
-BACKLOG="$(git rev-parse --show-toplevel)/audit/cleanup-backlog.md"
-
-if [ ! -f "$BACKLOG" ]; then
-  echo "⚠️   cleanup-backlog.md not found — skipping ID verification"
-  exit 0
-fi
 
 if ! grep -q "| $ID |" "$BACKLOG"; then
   echo ""
