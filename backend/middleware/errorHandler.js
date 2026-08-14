@@ -78,6 +78,11 @@ export const errorHandler = (err, req, res, _next) => {
   captureException(err, { url: req.url, method: req.method, userId: req.user?.id });
   return res.status(status).json({
     success: false,
+    // D-08 (Campaign II P4): the correlation id already existed on the request
+    // and in the log line, but never reached the caller's body — only the
+    // X-Correlation-ID header. A user reporting "it failed" could not quote
+    // anything, and support could not find the line. Return it.
+    correlationId: req.correlationId,
     error: isProduction
       ? 'An unexpected error occurred'
       : err.message || 'Internal server error',

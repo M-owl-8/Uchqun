@@ -26,25 +26,45 @@ const piiRedact = winston.format((info) => {
   const sensitiveKeys = /password|secret|token|authorization|cookie/i;
   const emailRegex = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g;
 
+  // D-08 ROOT CAUSE. This used to rebuild `info` with Object.entries(), which
+  // enumerates string keys only. Winston keeps `level` and `message` on the
+  // info object under Symbol.for('level') and Symbol.for('message'), and the
+  // Console transport writes info[Symbol.for('message')]. Rebuilding dropped
+  // both symbols, so the transport had nothing to write and EVERY log line was
+  // silently discarded — in every environment, for the platform's whole life.
+  //
+  // Two campaigns recorded that as "logs unretrievable via Railway" and it
+  // blocked the diagnosis of D-06, D-48 and D-51. The logs were never lost in
+  // transit; they were never emitted.
+  //
+  // Redact the nested VALUES, and mutate the top-level info object in place so
+  // its symbols survive.
   function redact(obj) {
     if (typeof obj === 'string') {
       return obj.replace(emailRegex, '[REDACTED_EMAIL]');
     }
-    if (obj && typeof obj === 'object' && !Array.isArray(obj)) {
+    if (Array.isArray(obj)) {
+      return obj.map(redact);
+    }
+    if (obj && typeof obj === 'object') {
       const cleaned = {};
       for (const [key, value] of Object.entries(obj)) {
-        if (sensitiveKeys.test(key)) {
-          cleaned[key] = '[REDACTED]';
-        } else {
-          cleaned[key] = redact(value);
-        }
+        cleaned[key] = sensitiveKeys.test(key) ? '[REDACTED]' : redact(value);
       }
       return cleaned;
     }
     return obj;
   }
 
-  return redact(info);
+  for (const key of Object.keys(info)) {
+    info[key] = sensitiveKeys.test(key) ? '[REDACTED]' : redact(info[key]);
+  }
+  // keep the symbol-held message in step with the redacted string message
+  const MESSAGE = Symbol.for('message');
+  if (typeof info[MESSAGE] === 'string') {
+    info[MESSAGE] = info[MESSAGE].replace(emailRegex, '[REDACTED_EMAIL]');
+  }
+  return info;
 });
 
 // Define log format

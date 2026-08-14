@@ -1,0 +1,6 @@
+    × an info line reaches a transport with its winston symbols intact (31 ms)
+    × an error line reaches a transport with its symbols intact (6 ms)
+    × a stack survives into the serialised message (4 ms)
+    × PII redaction still works — an email is not emitted verbatim (6 ms)
+    × sensitive keys are still redacted (4 ms)
+Tests:       5 failed, 5 total
