@@ -204,23 +204,41 @@ export const approveDocument = async (req, res) => {
       return res.status(403).json({ error: 'Access denied to this document' });
     }
 
-    if (document.status !== 'pending') {
+    // D-52: rejection used to be a one-way door. This gate was
+    // `document.status !== 'pending'`, so once an admin rejected the wrong
+    // document there was no route back: no un-reject endpoint, no way to return
+    // it to pending, and reception access requires documentsApproved — so the
+    // reception whose identification was mistakenly rejected stayed locked out
+    // permanently. Restoring one during the audit needed direct SQL, because
+    // the product offered no way to do it.
+    //
+    // A rejected document may now be approved on review. Already-approved stays
+    // a no-op: re-approving changes nothing and should not rewrite reviewedAt.
+    const wasRejected = document.status === 'rejected';
+    if (document.status !== 'pending' && !wasRejected) {
       return res.status(400).json({ error: 'Document is not pending approval' });
     }
 
-    // Audit before mutation
+    // Audit before mutation. A reversal is recorded as its own action so that
+    // "this document was rejected and then approved by the same admin" is
+    // legible in the audit log rather than looking like a plain approval.
     logAudit({
       actorId: req.user.id,
       actorRole: req.user.role,
-      action: 'approve',
+      action: wasRejected ? 'approve_after_rejection' : 'approve',
       entity: 'documents',
       entityId: document.id,
       schoolId: req.user.schoolId,
-      meta: { userId: document.userId },
+      meta: {
+        userId: document.userId,
+        ...(wasRejected ? { previousRejectionReason: document.rejectionReason } : {}),
+      },
     });
 
     // Update document status
     document.status = 'approved';
+    // the old rejection reason must not survive on an approved document
+    if (wasRejected) document.rejectionReason = null;
     document.reviewedBy = req.user.id;
     document.reviewedAt = new Date();
     await document.save();
