@@ -1,8 +1,8 @@
 # P9 — Closeout
 
 **Campaign:** CONSOLIDATION AND HARDENING II · phase 9 of 9
-**Date:** 2026-08-15 · **HEAD at campaign start:** `3d780e33` · **HEAD at close:** `028ef934`
-**Commits this campaign:** 55 · **Artifacts:** `audits/beta/deep2/P1…P9`
+**Date:** 2026-08-15 · **HEAD at campaign start:** `3d780e33` · **HEAD at close:** `159874f3`
+**Commits this campaign:** 57 · **Artifacts:** `audits/beta/deep2/P1…P9`
 **Single source of truth for defects:** `audits/beta/DEFECT-LEDGER.md`
 
 Every claim below was re-derived from the artifacts on disk, not from memory.
@@ -431,3 +431,42 @@ and it is why §6 is longer than a closing report would normally want it to be.
 
 **The number is 7.4. The finding is that the number was never the problem — the
 confidence in it was.**
+
+---
+
+## 10. Addendum — this document's own commit turned CI red
+
+Recorded because it happened *after* §7 said the packet had been executed green,
+and leaving it out would make this report the kind of artifact the campaign was
+written to distrust.
+
+Publishing P9 (`b9ff2198`) **failed CI**. Two defects, both in the gate I built
+in `b77f01a2`, both found by it failing on the closeout itself:
+
+1. **The gate hid its own failure.** The step runs under `bash -e`, so
+   `RESULT=$(npm test …)` aborts the moment the suite exits non-zero — *before*
+   the `echo "$RESULT"`. The run page showed the script source and **not one
+   line of test output**. Diagnosing it meant re-running the suite locally to
+   guess what CI had seen. A gate that cannot say why it failed is precisely
+   what §3.1 credits this campaign with removing, and I had shipped one.
+
+2. **The admin suite timed out** on the 5s default, on a cold runner
+   transforming 34 files. P7 established these timeouts are environmental —
+   isolating a change with and without it gave identical results — and 30s is
+   the timeout used locally throughout. **The suite passing in CI beforehand was
+   luck, not evidence**, which is the same shape as D-59: a green that was not
+   measuring what it appeared to.
+
+Fixed in `159874f3`: `set +e`, `tee`, `PIPESTATUS`, print everything, then fail
+with the real status; and `--testTimeout=30000`.
+
+**Final state, re-verified after the fix:**
+
+```
+CI:     success  159874f3   jobs: 19  success: 19  skipped: 0
+DEPLOY: success  159874f3
+```
+
+The scores in §3 are unchanged — nothing about the product changed — but §3.1's
+2.2/3.0 for Truthfulness is better supported by this having been caught, fixed
+and written down than it would have been by the first run passing.
