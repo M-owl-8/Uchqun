@@ -1,0 +1,33 @@
+{
+  "handshake": {
+    "socketsOpened": 2,
+    "urls": [
+      "wss://teacher-production-0647.up.railway.app/socket.io/",
+      "wss://teacher-production-0647.up.railway.app/socket.io/"
+    ],
+    "anyStillOpen": true,
+    "framesBeforeWrite": 6,
+    "sawEngineOpen": true,
+    "sawNamespaceConnect": true
+  },
+  "write": {
+    "status": 201,
+    "body": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+  },
+  "afterWrite": {
+    "newFrames": 4,
+    "attendanceFrames": [
+      "42[\"attendance:updated\",{\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"date\":\"2026-08-08\",\"status\":\"home_leave\",\"timestamp\":\"2026-08-14T18:33:31.656Z\"}]",
+      "42[\"notification:new\",{\"id\":\"ab3cf382-1b8f-4669-bef8-bf3bdcf684e3\",\"type\":\"attendance\",\"title\":\"Bolangiz uyga ruxsat oldi\",\"message\":\"Gulnoza: 2026-08-08\"}]"
+    ],
+    "anyEventFrame": [
+      "42[\"attendance:updated\",{\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"date\":\"2026-08-08\",\"status\":\"home_leave\",\"timestamp\":\"2026-08-14T18:33:31.656Z\"}]",
+      "42[\"notification:new\",{\"id\":\"ab3cf382-1b8f-4669-bef8-bf3bdcf684e3\",\"type\":\"attendance\",\"title\":\"Bolangiz uyga ruxsat oldi\",\"message\":\"Gulnoza: 2026-08-08\"}]"
+    ]
+  },
+  "verdict": {
+    "handshakeWorks": true,
+    "realtimeDelivers": true
+  },
+  "shotParent": "005_sock-parent_socket-parent-after-event.png"
+}

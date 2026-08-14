@@ -1,0 +1,8 @@
+{"t":"2026-08-14T18:31:58.530Z","role":"sock-parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:31:58.743Z","role":"sock-parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:32:13.809Z","role":"sock-teacher","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:32:13.935Z","role":"sock-teacher","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:33:00.530Z","role":"sock-parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:33:00.658Z","role":"sock-parent","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:33:21.944Z","role":"sock-teacher","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T18:33:22.106Z","role":"sock-teacher","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}

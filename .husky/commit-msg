@@ -6,7 +6,16 @@
 # IDs: 01-001 through 11-011, N-001..N-003, R-001..R-999
 
 MSG=$(cat "$1")
-TYPE=$(echo "$MSG" | grep -oP '^(fix|test|chore|refactor)')
+# The SUBJECT decides the type, not the body. `grep -oP '^(fix|…)'` over the
+# whole message matches the start of ANY line, so a docs: commit whose body
+# happened to contain a line beginning "test-frontend gains a check" was
+# classified as a test commit and blocked. Anchor to the first line only.
+# `|| true` is load-bearing. husky runs this hook as `sh -e "$s"`, so a grep
+# that matches NOTHING returns 1 and aborts the whole hook — meaning every
+# docs:/ci:/feat:/style: commit failed with "commit-msg script failed (code 1)"
+# for the sole reason that it was not a fix/test/chore/refactor commit. The
+# check that was meant to wave those through was killing them.
+TYPE=$(head -1 "$1" | grep -oP '^(fix|test|chore|refactor)' || true)
 
 if [ -z "$TYPE" ]; then
   exit 0  # build:, ci:, docs:, style:, perf: are free-form
@@ -34,7 +43,7 @@ if ! echo "$MSG" | grep -qP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})'; then
 fi
 
 # Extract the ID and verify it exists in the backlog
-ID=$(echo "$MSG" | grep -oP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})' | head -1 | tr -d '#')
+ID=$(echo "$MSG" | grep -oP '#([0-9]{2}-[0-9]{3}|[NR]-[0-9]{3})' | head -1 | tr -d '#' || true)
 
 if ! grep -q "| $ID |" "$BACKLOG"; then
   echo ""

@@ -58,7 +58,7 @@ repository is historical and must not be treated as current.
 | D-47 | blocks-use | **FIXED** `6727bc27` | cross-tenant read of child activity and meal records | `deep/P8-CLOSEOUT.md` §1 |
 | D-48 | degrades-use | **FIXED** `e81d1291` | unlock cleared one of three rate-limit buckets; now resets the per-email limiter too | `deep2/P4-OBSERVABILITY.md` §3 |
 | D-49 | degrades-use | **FIXED** `6727bc27` | no frontend i18n gate existed | `deep/P8-CLOSEOUT.md` §1 |
-| D-50 | degrades-use | **PARTIAL** `5c52885d` | CI red on every commit; deploys ungated. Stale test fixed; dependency vulns and the missing gate remain | `deep/P8-CLOSEOUT.md` §2 |
+| D-50 | blocks-trust | **FIXED** `b77f01a2`, `b6a99aa1` | CI was red on every commit and deploys were ungated; CI is now green and required, and the deploy is gated on it — proven blocked and allowed | `deep2/P8-GATES.md` §2 |
 | D-51 | blocks-use | **FIXED** `bb3e8f61` | the export selected `telegramUsername`, a column that exists nowhere; verified working, 67,561 bytes | `deep2/P4-OBSERVABILITY.md` §3 |
 | D-52 | degrades-use | **FIXED** `aa24648a` | a rejected document can be approved on review; no path back to pending (P7 §7) | `deep2/P7-FIXES.md` §7 |
 | D-53 | blocks-use | **FIXED** `fdc57107` | `/service-plans` had no access check; `/therapy/usage` let childId overwrite the school scope and left `where` empty for reception and government | `deep2/P3-ISOLATION.md` §4 |
