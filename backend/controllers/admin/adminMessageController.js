@@ -9,9 +9,29 @@ import logger from '../../utils/logger.js';
  */
 export const getMyMessages = async (req, res) => {
   try {
+    // D-04: government replies are stored as CHILD rows (parentMessageId set by
+    // governmentMessageController.replyToMessage); the parent row's legacy scalar
+    // `reply` column stays NULL. Returning bare parent rows meant the school that
+    // sent the message saw "Kutilmoqda" forever and never saw the answer.
+    // Top-level only + eager-loaded replies, mirroring the government-side query.
     const messages = await GovernmentMessage.findAll({
-      where: { senderId: req.user.id },
-      order: [['createdAt', 'DESC']],
+      where: { senderId: req.user.id, parentMessageId: null },
+      include: [
+        {
+          model: GovernmentMessage,
+          as: 'replies',
+          required: false,
+          include: [
+            {
+              model: User,
+              as: 'sender',
+              attributes: ['id', 'firstName', 'lastName', 'role'],
+              required: false,
+            },
+          ],
+        },
+      ],
+      order: [['createdAt', 'DESC'], [{ model: GovernmentMessage, as: 'replies' }, 'createdAt', 'ASC']],
     });
 
     res.json({

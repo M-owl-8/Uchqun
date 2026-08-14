@@ -21,14 +21,18 @@ const mkRes = () => {
 describe('admin/adminMessageController.getMyMessages', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('scopes to senderId from req.user.id', async () => {
+  // D-04: the school that sent a message must receive the government's reply.
+  // Replies are child rows (parentMessageId), so this query must be top-level-only
+  // and must eager-load `replies`. Before the fix it returned bare parent rows and
+  // the school's inbox showed "Kutilmoqda" forever.
+  it('scopes to senderId, top-level only, and eager-loads replies', async () => {
     mockFindAll.mockResolvedValue([{ toJSON: () => ({ id: 'm1' }) }]);
     const req = { user: { id: 'a1' } };
     const res = mkRes();
     await getMyMessages(req, res);
-    expect(mockFindAll).toHaveBeenCalledWith(expect.objectContaining({
-      where: { senderId: 'a1' },
-    }));
+    const opts = mockFindAll.mock.calls[0][0];
+    expect(opts.where).toEqual({ senderId: 'a1', parentMessageId: null });
+    expect(opts.include.some(i => i.as === 'replies')).toBe(true);
     expect(res.json).toHaveBeenCalledWith(expect.objectContaining({
       success: true,
       data: [{ id: 'm1' }],

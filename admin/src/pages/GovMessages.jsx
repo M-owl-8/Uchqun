@@ -4,6 +4,28 @@ import api from '../services/api';
 import { useToast } from '@shared/context/ToastContext';
 import { Plus, X } from 'lucide-react';
 
+/**
+ * D-04: normalise a message into the list of government replies it actually has.
+ * Threaded child rows (GovernmentMessage.replies, written by
+ * governmentMessageController.replyToMessage) first; the legacy scalar `reply`
+ * column is kept as a fallback for rows written before CP-022 threading.
+ */
+const threadReplies = (msg) => {
+  if (!msg) return [];
+  const children = (msg.replies ?? []).map((r) => ({
+    id: r.id,
+    body: r.message,
+    at: r.createdAt,
+    author: r.sender ? `${r.sender.firstName ?? ''} ${r.sender.lastName ?? ''}`.trim() : null,
+  }));
+  if (children.length) return children;
+  if (msg.reply) return [{ id: `${msg.id}-legacy`, body: msg.reply, at: msg.repliedAt, author: null }];
+  return [];
+};
+
+/** D-04: a message counts as answered if it has any reply, threaded or legacy. */
+const hasReply = (msg) => threadReplies(msg).length > 0;
+
 const GovMessages = () => {
   const { t } = useTranslation();
   const { success: toastSuccess, error: toastError } = useToast();
@@ -115,12 +137,12 @@ const GovMessages = () => {
                       {msg.subject}
                     </span>
                     <span className={`inline-flex items-center gap-1 text-xs px-1.5 py-0.5 rounded-sm font-medium shrink-0 ${
-                      msg.reply
+                      hasReply(msg)
                         ? 'bg-success-50 text-success-700 border border-success-100'
                         : 'bg-warning-50 text-warning-700 border border-warning-100'
                     }`}>
-                      <span className={`w-1.5 h-1.5 rounded-full ${msg.reply ? 'bg-success-600' : 'bg-warning-500'}`} />
-                      {msg.reply
+                      <span className={`w-1.5 h-1.5 rounded-full ${hasReply(msg) ? 'bg-success-600' : 'bg-warning-500'}`} />
+                      {hasReply(msg)
                         ? t('govMessages.badge.replied', { defaultValue: 'Javob berildi' })
                         : t('govMessages.badge.pending', { defaultValue: 'Kutilmoqda' })}
                     </span>
@@ -146,12 +168,12 @@ const GovMessages = () => {
                 <div className="flex items-center gap-4 text-xs text-warm-500">
                   <span>{t('govMessages.sent', { defaultValue: 'Yuborilgan' })}: {formatDateTime(selected.createdAt)}</span>
                   <span className={`inline-flex items-center gap-1 px-1.5 py-0.5 rounded-sm font-medium ${
-                    selected.reply
+                    hasReply(selected)
                       ? 'bg-success-50 text-success-700 border border-success-100'
                       : 'bg-warning-50 text-warning-700 border border-warning-100'
                   }`}>
-                    <span className={`w-1.5 h-1.5 rounded-full ${selected.reply ? 'bg-success-600' : 'bg-warning-500'}`} />
-                    {selected.reply
+                    <span className={`w-1.5 h-1.5 rounded-full ${hasReply(selected) ? 'bg-success-600' : 'bg-warning-500'}`} />
+                    {hasReply(selected)
                       ? t('govMessages.badge.replied', { defaultValue: 'Javob berildi' })
                       : t('govMessages.badge.pending', { defaultValue: 'Kutilmoqda' })}
                   </span>
@@ -166,20 +188,24 @@ const GovMessages = () => {
                 <p className="text-sm text-warm-800 whitespace-pre-wrap">{selected.message}</p>
               </div>
 
-              {/* Government reply */}
-              {selected.reply && (
-                <div className="bg-brand-50 border border-brand-100 rounded-md p-4">
+              {/* Government replies — D-04: threaded child rows, newest last. The
+                  legacy scalar `selected.reply` is still rendered for pre-threading
+                  rows, but the government reply flow has written child rows since
+                  CP-022 and this page only ever looked at the scalar. */}
+              {threadReplies(selected).map((r) => (
+                <div key={r.id} className="bg-brand-50 border border-brand-100 rounded-md p-4">
                   <p className="text-xs font-medium text-brand-700 mb-2">
                     {t('govMessages.govReply', { defaultValue: 'Davlat javobi' })}
-                    {selected.repliedAt && (
+                    {r.author && <span className="ml-2 font-normal text-brand-500">· {r.author}</span>}
+                    {r.at && (
                       <span className="ml-2 font-normal text-brand-400">
-                        · {formatDateTime(selected.repliedAt)}
+                        · {formatDateTime(r.at)}
                       </span>
                     )}
                   </p>
-                  <p className="text-sm text-warm-800 whitespace-pre-wrap">{selected.reply}</p>
+                  <p className="text-sm text-warm-800 whitespace-pre-wrap">{r.body}</p>
                 </div>
-              )}
+              ))}
             </div>
           )}
         </div>
