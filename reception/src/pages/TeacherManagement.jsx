@@ -246,7 +246,19 @@ const TeacherManagement = () => {
       setShowModal(false);
       loadTeachers(true);
     } catch (error) {
-      showError(error.response?.data?.error || t('teachersPage.toastSaveError'));
+      // D-21: the backend rejects a weak password with
+      //   {"error":"Validation failed","details":[{"field":"password",
+      //     "message":"password must be at least 8 characters"}, …]}
+      // and this handler used to render only `data.error` — the bare, untranslated
+      // "Validation failed", naming no field and offering no rule. details[] is
+      // where the actionable content is, so surface it.
+      const data = error.response?.data;
+      const details = Array.isArray(data?.details) ? data.details : [];
+      showError(
+        details.length
+          ? details.map((d) => (d.field ? `${d.field}: ${d.message}` : d.message)).join(' · ')
+          : data?.error || t('teachersPage.toastSaveError')
+      );
     }
   };
 
