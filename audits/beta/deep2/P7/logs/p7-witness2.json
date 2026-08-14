@@ -1,0 +1,79 @@
+{
+  "D-21": {
+    "bareValidationFailed": false,
+    "namesTheField": true,
+    "message": "Parol (yangilash)",
+    "shot": "047_D-21_D-21-validation-names-the-field.png"
+  },
+  "D-23": {
+    "stepBefore": "QADAM 1 / 3",
+    "stepAfter": "QADAM 1 / 3",
+    "advancedOnBlank": false,
+    "namesMissingFields": true,
+    "message": "Quyidagi majburiy maydonlar to'ldirilmagan: Ism, Familiya, Email, Telefon, Parol",
+    "shot": "049_D-22_D-23-blank-step-refused.png"
+  },
+  "D-24": {
+    "atStep2": "QADAM 2 / 3",
+    "afterBackUrl": "/reception/parents/new",
+    "afterBackStep": "QADAM 1 / 3",
+    "stayedInWizard": true,
+    "shot": "050_D-22_D-24-back-walks-the-steps.png"
+  },
+  "D-22": {
+    "buttonLabels": [
+      "Chiqish",
+      "O'zbekcha",
+      "Tezkor qidiruv…\n⌘ K",
+      "Qoralamani tiklash",
+      "Bekor qilish",
+      "Orqaga",
+      "Saqlab chiqish",
+      "Davom etish"
+    ],
+    "duplicateDavomEtish": 1,
+    "resumeLabelDistinct": true,
+    "bannerNamesTheGuardian": false,
+    "shot": "052_D-22_D-22-draft-banner-disambiguated.png"
+  },
+  "D-25": {
+    "triggerFound": true,
+    "hasAriaHaspopup": true,
+    "menuItemsVisibleAfterTap": [
+      "Tahrirlash",
+      "Bola qo'shish",
+      "Parolni tiklash",
+      "O'chirish"
+    ],
+    "editVisibleAfterTap": true,
+    "shot": "054_D-25_D-25-menu-open-after-touch-tap.png"
+  },
+  "D-29-dashboard": {
+    "namesUmid": true,
+    "namesYulduz": true,
+    "line": "Xush kelibsiz, Zebo opa/aka. \"Umid guruhi, Yulduz guruhi\" Guruh · 24 bola.",
+    "shot": "056_D-29_D-29-dashboard-names-both-groups.png"
+  },
+  "D-30": {
+    "header": "Umid guruhi, Yulduz guruhi · 24 bola",
+    "gulnozaCards": 2,
+    "gulnozaLabels": [
+      "Gulnoza Ergasheva (2022): Bor",
+      "Gulnoza Ergasheva (2018): Bor"
+    ],
+    "distinctLabels": 2,
+    "indistinguishable": false,
+    "shot": "058_D-29_D-30-same-named-children-disambiguated.png"
+  },
+  "D-42": {
+    "file": "ota-onalar-2026-08-14.csv",
+    "bytes": 4232,
+    "lines": 64,
+    "bom": true,
+    "header": "﻿\"Ism\",\"Familiya\",\"Email\",\"Telefon\",\"Bolalar\",\"Holat\"",
+    "headerIsUzbek": true,
+    "firstRow": "\"Zuhra\",\"Ibragimova\",\"t.abandon@tmm3.uz\",\"+998901239900\",\"\",\"Faol\"",
+    "namesOnScreen": 10,
+    "shot": "060_D-42_D-42-admin-export.png"
+  }
+}

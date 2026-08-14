@@ -1,0 +1,48 @@
+{
+  "D-45": {
+    "header": "\"#\",\"Nomi\",\"Manzil\",\"Turi\",\"Hudud\",\"O'quvchilar\",\"Tarbiyachilar\",\"Baho\",\"Baholar soni\"",
+    "stillEnglish": false,
+    "typeColumnSample": "\"1\",\"Toshkent Maxsus Maktab 1\",\"\",\"Madad maktabi\",\"Toshkent shahri\",\"3\",\"0\",\"4.10\",\"12\"",
+    "shot": "012_D-45_D-45-csv-downloaded.png"
+  },
+  "D-40": {
+    "bulkHasEnglish": false,
+    "detailHasEnglish": false,
+    "shotBulk": "015_D-40_D-40-bulk-import-labels.png"
+  },
+  "D-36": {
+    "hasLangSection": true,
+    "langControls": [
+      "O'zbekcha"
+    ],
+    "shot": "017_D-36_D-36-language-switcher.png"
+  },
+  "D-55-reception": {
+    "requested": "/reception/parents",
+    "redirectedToLogin": true,
+    "afterLogin": "/reception/parents",
+    "returnedToDeepLink": true,
+    "shot": "019_D-55-reception_D-55-reception-after-login.png"
+  },
+  "D-55-teacher": {
+    "requested": "/teacher/bolalar",
+    "redirectedToLogin": true,
+    "afterLogin": "/teacher",
+    "returnedToDeepLink": false,
+    "shot": "021_D-55-teacher_D-55-teacher-after-login.png"
+  },
+  "D-55-admin": {
+    "requested": "/admin/receptions",
+    "redirectedToLogin": true,
+    "afterLogin": "/admin/receptions",
+    "returnedToDeepLink": true,
+    "shot": "023_D-55-admin_D-55-admin-after-login.png"
+  },
+  "D-55-government": {
+    "requested": "/government/schools",
+    "redirectedToLogin": true,
+    "afterLogin": "/government/schools",
+    "returnedToDeepLink": true,
+    "shot": "025_D-55-government_D-55-government-after-login.png"
+  }
+}

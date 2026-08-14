@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-59.
+**Numbering:** ids are permanent and never reused. New defects continue from D-61.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -22,47 +22,53 @@ repository is historical and must not be treated as current.
 | D-11 | degrades-use | **FIXED** `21ee564e` | parent–teacher rating had no assigned teacher | `deep/P4-PARENT.md` §5 |
 | D-12 | degrades-use | **FIXED** | group label rendered as empty quotes | `deep/P3-TEACHER.md` §5 |
 | D-13 | cosmetic | **FIXED** | change-password copy | `deep/P3-TEACHER.md` §5 |
-| D-14 | cosmetic | **CONFIRMED PRESENT** | government portal 404s on `/s/geistmono/…woff2` on every load — witnessed for the first time | `deep2/P5-UI.md` §4 |
+| D-14 | cosmetic | **WITHDRAWN** | no longer reproduces on any portal; the retired Google font file was corrected upstream — not fixed by this repository | `deep2/P7-FIXES.md` §6 |
 | D-15 | cosmetic | **FIXED** | teacher-form domain chip | `rerun-2026-08-14/` |
 | D-16 | — | confirmed | reception portal finding | `deep/P2-RECEPTION.md` |
 | D-17 | — | corrected | reception portal finding | `deep/P2-RECEPTION.md` |
 | D-18 | — | see artifact | | `deep/P2-RECEPTION.md` |
 | D-19 | — | **UNREPRESENTABLE** | one guardian per child — `children.parentId` is a single `NOT NULL` uuid | `deep/P4-PARENT.md` §7 |
 | D-20 | — | **UNREPRESENTABLE** | one teacher per group — single `groups.teacherId` column | `deep/P1-SEED.md` |
-| D-21…D-25 | mixed | **OPEN** | reception portal defects | `deep/P2-RECEPTION.md` |
+| D-21 | degrades-use | **FIXED** `b9f52a01` | create-teacher showed a bare "Validation failed" and discarded details[] | `deep2/P7-FIXES.md` §1 |
+| D-22 | blocks-use | **FIXED** `f243d21a` | the draft-resume button shared the wizard's words and enrolled a child under a guardian never entered | `deep2/P7-FIXES.md` §5 |
+| D-23 | degrades-use | **FIXED** `f243d21a` | a blank required step advanced and was ticked green | `deep2/P7-FIXES.md` §5 |
+| D-24 | degrades-use | **FIXED** `f243d21a` | browser Back left the wizard and discarded everything | `deep2/P7-FIXES.md` §5 |
+| D-25 | blocks-use (touch) | **FIXED** `dffa22a0` | the parent action menu was hover-only, unreachable on any touch device | `deep2/P7-FIXES.md` §1 |
 | D-26 | degrades-use | **FIXED** `6727bc27` | attendance had no lower date bound | `deep/P8-CLOSEOUT.md` §1 |
 | D-27 | blocks-use | **FIXED** `6727bc27`, `ed2579f7` | overwrites falsely attributed, unaudited; cleared absences silent | `deep/P8-CLOSEOUT.md` §1 |
 | D-28 | blocks-use | **FIXED** `6727bc27` | `therapyType` meant three different things | `deep/P8-CLOSEOUT.md` §1 |
-| D-29 | degrades-use | **OPEN** | multi-group teacher labelled with one group's name | `deep/P3-TEACHER.md` §4 |
-| D-30 | degrades-use | **OPEN** | same-named children indistinguishable (teacher grid + admin IRR) | `deep/P3-TEACHER.md` §4 |
+| D-29 | degrades-use | **FIXED** `ebc8591f` | the group label names every group shown, not the first child's | `deep2/P7-FIXES.md` §1 |
+| D-30 | degrades-use | **FIXED** `186116cf` | same-named children carry a birth year on the card and in the accessible name | `deep2/P7-FIXES.md` §1 |
 | D-31 | blocks-use | **FIXED** `6727bc27` | teacher received the whole school's attendance | `deep/P8-CLOSEOUT.md` §1 |
 | D-32 | degrades-use | **FIXED** `240c75b1`,`bc59ff6e` | `/rating` 411px with 4 of 5 criteria truncated — two separate causes | `deep2/P5-UI.md` §2 |
 | D-33 | cosmetic | **FIXED** `9f7c78ba` | `/therapy` 394px — non-wrapping filter row | `deep2/P5-UI.md` §2 |
 | D-34 | — | **WITHDRAWN** | mobile tab bar investigated and found correct | `deep/P4-PARENT.md` §6 |
-| D-35 | degrades-use | **OPEN** | notifications never fed by journal, chat or attendance events | `deep/P4-PARENT.md` §4 |
-| D-36 | degrades-use | **OPEN** | no in-app language switcher for parents | `deep/P4-PARENT.md` §4 |
+| D-35 | degrades-use | **PARTIALLY FIXED** `b36c5ca1` | attendance and journal now notify; chat deliberately not wired | `deep2/P7-FIXES.md` §12 |
+| D-36 | degrades-use | **FIXED** `3f5fb5e1` | the parent portal has a language switcher | `deep2/P7-FIXES.md` §1 |
 | D-37 | degrades-use | **FIXED** `6727bc27` | `logout` rendered as a raw i18n key | `deep/P8-CLOSEOUT.md` §1 |
 | D-38 | — | **WITHDRAWN** | "Mening murojaatlarim" investigated and found working | `deep/P4-PARENT.md` §6 |
 | D-39 | — | **WITHDRAWN** | partial-import Start exists behind a confirm step | `deep/P5-ADMIN.md` §6 |
-| D-40 | degrades-use | **OPEN** | hardcoded English outside i18n in admin | `deep/P5-ADMIN.md` §4 |
-| D-41 | degrades-use | **OPEN** | admin child page shows a raw UUID on refresh | `deep/P5-ADMIN.md` §4 |
-| D-42 | degrades-use | **OPEN** | admin portal has no data export | `deep/P5-ADMIN.md` §4 |
+| D-40 | degrades-use | **FIXED** `a4f6ae2d` | admin hardcoded English literals routed through i18n | `deep2/P7-FIXES.md` §1 |
+| D-41 | degrades-use | **FIXED** `bfe33af8` | the admin child page fetches its child; no raw UUID in any state | `deep2/P7-FIXES.md` §8 |
+| D-42 | degrades-use | **FIXED** `46e848ba` | /admin/parents exports CSV via a shared helper | `deep2/P7-FIXES.md` §1 |
 | D-43 | blocks-use | **FIXED** `6727bc27` | `/admin/therapy` dead on every load | `deep/P8-CLOSEOUT.md` §1 |
 | D-44 | — | **WITHDRAWN** — see below | claimed the documented credentials do not work | `deep2/P1-CONSOLIDATION.md` §3 |
-| D-45 | degrades-use | **OPEN** | government CSV exports English headers and raw enums | `deep/P6-GOVERNMENT.md` §3 |
+| D-45 | degrades-use | **FIXED** `59c304e0` | the government schools CSV header is Uzbek | `deep2/P7-FIXES.md` §1 |
 | D-46 | degrades-use | **FIXED** `6727bc27` | offline/stale UI untranslated in all portals | `deep/P8-CLOSEOUT.md` §1 |
 | D-47 | blocks-use | **FIXED** `6727bc27` | cross-tenant read of child activity and meal records | `deep/P8-CLOSEOUT.md` §1 |
 | D-48 | degrades-use | **FIXED** `e81d1291` | unlock cleared one of three rate-limit buckets; now resets the per-email limiter too | `deep2/P4-OBSERVABILITY.md` §3 |
 | D-49 | degrades-use | **FIXED** `6727bc27` | no frontend i18n gate existed | `deep/P8-CLOSEOUT.md` §1 |
 | D-50 | degrades-use | **PARTIAL** `5c52885d` | CI red on every commit; deploys ungated. Stale test fixed; dependency vulns and the missing gate remain | `deep/P8-CLOSEOUT.md` §2 |
 | D-51 | blocks-use | **FIXED** `bb3e8f61` | the export selected `telegramUsername`, a column that exists nowhere; verified working, 67,561 bytes | `deep2/P4-OBSERVABILITY.md` §3 |
-| D-52 | degrades-use | **OPEN** | document rejection is irreversible; a mis-rejected document blocks a reception permanently | `deep2/P2-AUDIT-INTEGRITY.md` §5 |
+| D-52 | degrades-use | **FIXED** `aa24648a` | a rejected document can be approved on review; no path back to pending (P7 §7) | `deep2/P7-FIXES.md` §7 |
 | D-53 | blocks-use | **FIXED** `fdc57107` | `/service-plans` had no access check; `/therapy/usage` let childId overwrite the school scope and left `where` empty for reception and government | `deep2/P3-ISOLATION.md` §4 |
 | D-54 | blocks-use | **FIXED** `fd5c2aee` | `validateChildAccess` skipped its scope check for any user without a schoolId, admitting every government account to every child in the country | `deep2/P3-ISOLATION.md` §5 |
-| D-55 | degrades-use | **OPEN** | a deep link is discarded on login in all four portals | `deep2/P5-UI.md` §3 |
+| D-55 | degrades-use | **FIXED** `44846072`, `7f57c18f`, `b2b4ee4f` | deep links survive login in all four portals — the fourth was found by the witness | `deep2/P7-FIXES.md` §4 |
 | D-56 | blocks-use | **FIXED** `9f7c78ba` | `/child` rendered 720px wide on a 390px phone — a `<select>` sized by option text carrying the school name | `deep2/P5-UI.md` §2 |
 | D-57 | cosmetic | **FIXED** `af07912c` | the teacher's name truncated on every activity card at 1440px | `deep2/P5-UI.md` §2 |
 | D-58 | degrades-use | **FIXED** `92d16c82` | `admin/src/i18n.js:30` fell back to English while the three other portals fell back to Uzbek | `deep2/P6-I18N.md` §3 |
+| D-59 | blocks-trust | **FIXED** `25fac0d7` | teacher vitest silently ran 11–12 of 19 test files and exited 0 — 56 tests never ran while the suite reported green | `deep2/P7-FIXES.md` §2 |
+| D-60 | blocks-trust | **FIXED** `6f6a6c39` | an approved identification document could never be revoked — a reception approved in error kept access permanently | `deep2/P7-FIXES.md` §7 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused
