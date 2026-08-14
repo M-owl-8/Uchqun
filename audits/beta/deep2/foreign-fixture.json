@@ -1,0 +1,17 @@
+{
+ "child": "5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+ "group": "5eed1f6b-6ae7-455a-8678-805cb366713a",
+ "teacher": "5eedd529-f49e-47a1-8705-eed694440f03",
+ "parent": "5eed391e-deeb-489a-868c-bec7901678d3",
+ "reception": "5eedc018-3ea9-44c0-8177-77f61b6600b0",
+ "admin": "5eed7a0e-d282-40f4-83a1-f361197d3761",
+ "meal": "5eed370c-1ec0-4854-871a-d3322c88a485",
+ "activity": "5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+ "media": null,
+ "attendance": "5eed6699-bbd4-43f6-8e02-f09d6bbc85b1",
+ "irr": "5eed5eef-bd0c-4c64-89bb-a32b86dbd7de",
+ "document": "5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+ "emotional": null,
+ "school": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+ "homeChild": "5eed5a2c-756d-4853-84e3-9e2d1d75df11"
+}

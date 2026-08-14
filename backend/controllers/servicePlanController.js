@@ -28,6 +28,16 @@ export const getServicePlans = async (req, res) => {
       return res.status(400).json({ error: 'childId is required' });
     }
 
+    // D-53: this read went straight to the query with no access check at all —
+    // no validateChildAccess, no role branch — so any authenticated user could
+    // read another school's service plans by supplying that child's id. The
+    // CREATE path below already does this (see upsertServicePlan); the pattern
+    // was known and applied to writes only.
+    const child = await validateChildAccess(childId, req);
+    if (!child) {
+      return res.status(403).json({ error: 'Access denied to this child' });
+    }
+
     const planYear = parseInt(year) || new Date().getFullYear();
 
     const plans = await ServicePlan.findAll({

@@ -1,0 +1,11 @@
+    √ getServicePlans refuses a foreign childId for role=admin (22 ms)
+    √ getServicePlans refuses a foreign childId for role=reception (5 ms)
+    √ getServicePlans refuses a foreign childId for role=government (6 ms)
+    √ getServicePlans refuses a foreign childId for role=teacher (6 ms)
+    √ getServicePlans refuses a foreign childId for role=parent (6 ms)
+    √ getServicePlans still works for a child the caller may see (8 ms)
+    √ getTherapyUsage refuses a foreign childId for role=admin (5 ms)
+    √ getTherapyUsage refuses a foreign childId for role=reception (4 ms)
+    √ getTherapyUsage refuses a foreign childId for role=government (5 ms)
+    √ getTherapyUsage without a childId never leaves `where` unscoped for reception (4 ms)
+Tests:       10 passed, 10 total

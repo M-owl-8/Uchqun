@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import Group from '../models/Group.js';
 import { Op } from 'sequelize';
 import logger from '../utils/logger.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 import { parsePagination } from '../utils/pagination.js';
 
 /**
@@ -494,16 +495,32 @@ export const getTherapyUsage = async (req, res) => {
 
     const where = {};
 
+    // D-53: a supplied childId used to OVERWRITE the scope built below, so an
+    // admin could read another school's therapy usage by passing that child's
+    // id. Validate it first — then the scope and the filter agree instead of
+    // one replacing the other.
+    if (childId) {
+      const child = await validateChildAccess(childId, req);
+      if (!child) {
+        return res.status(403).json({ error: 'Access denied to this child' });
+      }
+    }
+
     if (req.user.role === 'parent') {
       where.parentId = userId;
     } else if (req.user.role === 'teacher') {
       where.teacherId = userId;
-    } else if (req.user.role === 'admin' && req.user.schoolId) {
+    } else if ((req.user.role === 'admin' || req.user.role === 'reception') && req.user.schoolId) {
       const schoolChildren = await Child.findAll({
         where: { schoolId: req.user.schoolId },
         attributes: ['id'],
       });
       where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+    } else if (req.user.role !== 'government') {
+      // D-53: reception and any unrecognised role matched NO branch, leaving
+      // `where` empty — the query then returned every therapy usage row on the
+      // platform. Fail closed instead of returning everything.
+      return res.status(403).json({ error: 'Access denied' });
     }
 
     if (childId) {

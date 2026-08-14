@@ -1,0 +1,4387 @@
+{
+ "rows": [
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 18,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", paginationValidator.concat(dateQueryValidator).concat(childIdQueryValidator), handleValidationErrors, getAct"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 19,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activityIdValidator, handleValidationErrors, getActivity);"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 22,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), createActivityValidator, handleValidationErrors, createActivit"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 23,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), activityIdValidator.concat(updateActivityValidator), handleVal"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 24,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), activityIdValidator, handleValidationErrors, deleteActivity);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 71,
+   "method": "POST",
+   "path": "/message-to-government",
+   "pathIds": [],
+   "middleware": ", messageToGovValidator, handleValidationErrors, sendMessage);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 73,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", getMyMessages);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 75,
+   "method": "GET",
+   "path": "/owner-messages",
+   "pathIds": [],
+   "middleware": ", getOwnerMessages);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 78,
+   "method": "POST",
+   "path": "/receptions",
+   "pathIds": [],
+   "middleware": ", createReceptionValidator, handleValidationErrors, createReception); // Admin can create Reception"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 79,
+   "method": "GET",
+   "path": "/receptions",
+   "pathIds": [],
+   "middleware": ", getReceptions);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 80,
+   "method": "GET",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getReceptionById);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 81,
+   "method": "PUT",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateReception); // Admin can edit Reception"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 82,
+   "method": "DELETE",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteReception); // Admin can delete Reception"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 83,
+   "method": "PUT",
+   "path": "/receptions/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateReception);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 84,
+   "method": "PUT",
+   "path": "/receptions/:id/deactivate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deactivateReception);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 87,
+   "method": "GET",
+   "path": "/documents",
+   "pathIds": [],
+   "middleware": ", getDocuments);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 88,
+   "method": "GET",
+   "path": "/documents/pending",
+   "pathIds": [],
+   "middleware": ", getPendingDocuments);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 89,
+   "method": "GET",
+   "path": "/receptions/:id/documents",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getReceptionDocuments);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 90,
+   "method": "PUT",
+   "path": "/documents/:id/approve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", adminIdParamValidator, handleValidationErrors, approveDocument);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 91,
+   "method": "PUT",
+   "path": "/documents/:id/reject",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", rejectDocumentValidator, handleValidationErrors, rejectDocument);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 94,
+   "method": "GET",
+   "path": "/children/:id/goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listByChildAsAdmin);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 95,
+   "method": "PUT",
+   "path": "/children/:id/transfer",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", transferChild);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 98,
+   "method": "PUT",
+   "path": "/children/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreChild);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 99,
+   "method": "PUT",
+   "path": "/users/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreUser);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 100,
+   "method": "PUT",
+   "path": "/attendance/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreAttendance);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 103,
+   "method": "POST",
+   "path": "/import/children/validate",
+   "pathIds": [],
+   "middleware": ", uploadImportCsv.single('file'), handleImportUploadError, validateImport);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 104,
+   "method": "POST",
+   "path": "/import/:id/start",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", startImport);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 105,
+   "method": "GET",
+   "path": "/import/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getImportStatus);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 106,
+   "method": "GET",
+   "path": "/import/:id/errors",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getImportErrors);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 109,
+   "method": "GET",
+   "path": "/teachers",
+   "pathIds": [],
+   "middleware": ", getTeachers); // View only"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 110,
+   "method": "GET",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTeacherById); // View teacher detail + groups"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 111,
+   "method": "GET",
+   "path": "/parents",
+   "pathIds": [],
+   "middleware": ", getParents); // View only"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 112,
+   "method": "GET",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getParentById); // View parent with their data"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 113,
+   "method": "PUT",
+   "path": "/parents/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendParent);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 114,
+   "method": "PUT",
+   "path": "/parents/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateParent);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 115,
+   "method": "GET",
+   "path": "/groups",
+   "pathIds": [],
+   "middleware": ", getGroups); // View only"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 116,
+   "method": "GET",
+   "path": "/groups/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getGroup); // View only"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 119,
+   "method": "GET",
+   "path": "/audit-log",
+   "pathIds": [],
+   "middleware": ", getAdminAuditLog);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 122,
+   "method": "GET",
+   "path": "/school",
+   "pathIds": [],
+   "middleware": ", getAdminSchool);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 123,
+   "method": "PATCH",
+   "path": "/school",
+   "pathIds": [],
+   "middleware": ", patchAdminSchool);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 126,
+   "method": "GET",
+   "path": "/statistics",
+   "pathIds": [],
+   "middleware": ", getStatistics); // Admin can view all statistics"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 129,
+   "method": "GET",
+   "path": "/school-ratings",
+   "pathIds": [],
+   "middleware": ", getSchoolRatings); // View school ratings from parents created by admin's receptions"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 130,
+   "method": "GET",
+   "path": "/school-rating-summary",
+   "pathIds": [],
+   "middleware": ", getAdminSchoolRatingSummary); // Three-rating summary (parent + gov + cumulative)"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 133,
+   "method": "POST",
+   "path": "/irr/quarterly-entries",
+   "pathIds": [],
+   "middleware": ", createQuarterlyEntry);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 134,
+   "method": "GET",
+   "path": "/irr/quarterly-entries",
+   "pathIds": [],
+   "middleware": ", listQuarterlyEntries);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 137,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetChildIRR);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 138,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 139,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetGoals);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 146,
+   "method": "POST",
+   "path": "/goal-periods/:id/sign",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", irrSignGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 21,
+   "method": "POST",
+   "path": "/analyze",
+   "pathIds": [],
+   "middleware": ", requireRole('admin', 'government'), analyzeWarningsValidator, handleValidationErrors, analyzeRatings);"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 24,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('admin', 'government', 'teacher'), getWarnings);"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 27,
+   "method": "PUT",
+   "path": "/:id/resolve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'government', 'teacher'), resolveWarningValidator, handleValidationErrors, resolveWarni"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 30,
+   "method": "POST",
+   "path": "/:id/notify",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'government'), notifyWarningValidator, handleValidationErrors, notifyUsers);"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 9,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireTeacher, createAttendance"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 10,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireTeacher, listAttendance"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 11,
+   "method": "PATCH",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireTeacher, updateAttendance"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 12,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireAdmin, deleteAttendance"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 14,
+   "method": "POST",
+   "path": "/login",
+   "pathIds": [],
+   "middleware": ", loginIpLimiter, loginLimiter, loginValidator, handleValidationErrors, login);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 16,
+   "method": "POST",
+   "path": "/refresh",
+   "pathIds": [],
+   "middleware": ", refresh);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 17,
+   "method": "POST",
+   "path": "/set-password",
+   "pathIds": [],
+   "middleware": ", authLimiter, setPassword);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 18,
+   "method": "GET",
+   "path": "/me",
+   "pathIds": [],
+   "middleware": ", authenticate, getMe);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 19,
+   "method": "POST",
+   "path": "/logout",
+   "pathIds": [],
+   "middleware": ", authenticate, logout);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 20,
+   "method": "POST",
+   "path": "/unlock-account",
+   "pathIds": [],
+   "middleware": ", authenticate, requireRole('government', 'admin'), unlockAccount);"
+  },
+  {
+   "file": "backend/routes/authRoutes.js",
+   "line": 22,
+   "method": "POST",
+   "path": "/admin-register",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/businessRoutes.js",
+   "line": 18,
+   "method": "GET",
+   "path": "/overview",
+   "pathIds": [],
+   "middleware": ", getOverview);"
+  },
+  {
+   "file": "backend/routes/businessRoutes.js",
+   "line": 19,
+   "method": "GET",
+   "path": "/users",
+   "pathIds": [],
+   "middleware": ", getUsersStats);"
+  },
+  {
+   "file": "backend/routes/businessRoutes.js",
+   "line": 20,
+   "method": "GET",
+   "path": "/usage",
+   "pathIds": [],
+   "middleware": ", getUsageStats);"
+  },
+  {
+   "file": "backend/routes/businessRoutes.js",
+   "line": 21,
+   "method": "POST",
+   "path": "/stats/generate",
+   "pathIds": [],
+   "middleware": ", generateStatsValidator, handleValidationErrors, generateStats);"
+  },
+  {
+   "file": "backend/routes/businessRoutes.js",
+   "line": 22,
+   "method": "GET",
+   "path": "/stats",
+   "pathIds": [],
+   "middleware": ", getSavedStats);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 24,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", listMessages);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 25,
+   "method": "POST",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", sendMessageValidator, handleValidationErrors, createMessage);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 26,
+   "method": "POST",
+   "path": "/read",
+   "pathIds": [],
+   "middleware": ", markReadValidator, handleValidationErrors, markConversationRead);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 27,
+   "method": "PUT",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateMessageValidator, handleValidationErrors, updateMessage);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 28,
+   "method": "DELETE",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", messageIdValidator, handleValidationErrors, deleteMessage);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 29,
+   "method": "GET",
+   "path": "/unread-count",
+   "pathIds": [],
+   "middleware": ", getUnreadCount);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/conversations",
+   "pathIds": [],
+   "middleware": ", listConversations);"
+  },
+  {
+   "file": "backend/routes/childAssessmentRoutes.js",
+   "line": 13,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getAssessments);"
+  },
+  {
+   "file": "backend/routes/childAssessmentRoutes.js",
+   "line": 14,
+   "method": "GET",
+   "path": "/latest",
+   "pathIds": [],
+   "middleware": ", getLatestAssessments);"
+  },
+  {
+   "file": "backend/routes/childAssessmentRoutes.js",
+   "line": 15,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), createAssessmentValidator, handleValidationErrors, createAssessment);"
+  },
+  {
+   "file": "backend/routes/childAssessmentRoutes.js",
+   "line": 16,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), updateAssessmentValidator, handleValidationErrors, updateAssessment);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 13,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('parent'), getChildren);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 14,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", childIdValidator, handleValidationErrors, getChild);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 17,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 25,
+   "method": "PUT",
+   "path": "/:id/avatar",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", childIdValidator, handleValidationErrors, updateChildAvatar);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 28,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 68,
+   "method": "GET",
+   "path": "/overview",
+   "pathIds": [],
+   "middleware": ", getOverview);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 69,
+   "method": "GET",
+   "path": "/schools",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewSchools'), getSchoolsStats);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 70,
+   "method": "GET",
+   "path": "/schools/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewSchools'), getSchoolById);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 71,
+   "method": "PUT",
+   "path": "/schools/:id/archive",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canArchiveSchools'), archiveSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 72,
+   "method": "PUT",
+   "path": "/schools/:id/reactivate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canArchiveSchools'), reactivateSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 73,
+   "method": "PUT",
+   "path": "/schools/:id/category",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", changeSchoolCategory);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 74,
+   "method": "GET",
+   "path": "/students",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewStudents'), getStudentsStats);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 75,
+   "method": "GET",
+   "path": "/teachers",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewTeachers'), getTeachersList);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 76,
+   "method": "GET",
+   "path": "/parents",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewParents'), getParentsList);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 77,
+   "method": "GET",
+   "path": "/ratings",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewRatings'), getRatingsAggregated);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 78,
+   "method": "GET",
+   "path": "/ratings/:schoolId",
+   "pathIds": [
+    "schoolId"
+   ],
+   "middleware": ", requireGovAccess('canViewRatings'), getSchoolRatings);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 79,
+   "method": "POST",
+   "path": "/schools/:id/rate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canRateSchools'), rateSchoolAsGov);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 80,
+   "method": "GET",
+   "path": "/schools/:id/ratings/gov",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewRatings'), getGovRatingsForSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 81,
+   "method": "POST",
+   "path": "/stats/generate",
+   "pathIds": [],
+   "middleware": ", generateStats);  // Available for future stats snapshot feature"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 82,
+   "method": "GET",
+   "path": "/stats",
+   "pathIds": [],
+   "middleware": ", getSavedStats);             // Available for future stats snapshot feature"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 85,
+   "method": "GET",
+   "path": "/admins",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canManageAdmins'), getAdmins);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 86,
+   "method": "GET",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), getAdminDetails);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 87,
+   "method": "POST",
+   "path": "/admins",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canManageAdmins'), createAdminValidator, handleValidationErrors, createAdmin);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 88,
+   "method": "PUT",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), updateAdminValidator, handleValidationErrors, updateAdmin);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 89,
+   "method": "DELETE",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), deleteAdminValidator, handleValidationErrors, deleteAdmin);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 92,
+   "method": "GET",
+   "path": "/users",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), getGovernments);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 93,
+   "method": "POST",
+   "path": "/users",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), createGovernment);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 94,
+   "method": "PUT",
+   "path": "/users/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), updateGovernmentValidator, handleValidationErrors, updateGover"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 95,
+   "method": "DELETE",
+   "path": "/users/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), deleteGovernmentUser);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 96,
+   "method": "PUT",
+   "path": "/users/:id/reset-password",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), resetGovernmentPassword);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 99,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewMessages'), getAllMessages);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 100,
+   "method": "POST",
+   "path": "/messages/:id/reply",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), replyToMessage);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 101,
+   "method": "PUT",
+   "path": "/messages/:id/read",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), markMessageRead);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 102,
+   "method": "DELETE",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), deleteMessage);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 105,
+   "method": "GET",
+   "path": "/admin-registrations",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canManageRegistrations'), getRegistrationRequests);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 106,
+   "method": "POST",
+   "path": "/admin-registrations/:id/approve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageRegistrations'), approveRegistrationRequest);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 107,
+   "method": "POST",
+   "path": "/admin-registrations/:id/reject",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageRegistrations'), rejectRegistrationRequest);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 110,
+   "method": "GET",
+   "path": "/audit-log",
+   "pathIds": [],
+   "middleware": ", requireGovAccess('canViewAuditLog'), getAuditLog);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 113,
+   "method": "GET",
+   "path": "/regions",
+   "pathIds": [],
+   "middleware": ", getRegions);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 126,
+   "method": "GET",
+   "path": "/schools/:schoolId/students",
+   "pathIds": [
+    "schoolId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govListSchoolStudents);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 127,
+   "method": "GET",
+   "path": "/children/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetChild);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 128,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetChildIRR);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 129,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 130,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetGoals);"
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 24,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 38,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 45,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 53,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/health.js",
+   "line": 12,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", async (req, res) => {"
+  },
+  {
+   "file": "backend/routes/health.js",
+   "line": 40,
+   "method": "GET",
+   "path": "/readiness",
+   "pathIds": [],
+   "middleware": ", async (req, res) => {"
+  },
+  {
+   "file": "backend/routes/health.js",
+   "line": 86,
+   "method": "GET",
+   "path": "/liveness",
+   "pathIds": [],
+   "middleware": ", (req, res) => {"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 22,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getMealPlans);"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 23,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), createMealPlanValidator, handleValidationErrors, createMealPlan);"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 24,
+   "method": "POST",
+   "path": "/bulk",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), bulkCreateMealPlansValidator, handleValidationErrors, bulkCreateMealPlans);"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 25,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), updateMealPlanValidator, handleValidationErrors, updateMealPlan);"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 26,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealPlanIdValidator, handleValidationErrors, deleteMealPlan);"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 18,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", paginationValidator.concat(dateQueryValidator).concat(childIdQueryValidator), handleValidationErrors, getMea"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 19,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", mealIdValidator, handleValidationErrors, getMeal);"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 22,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), createMealValidator, handleValidationErrors, createMeal);"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 23,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealIdValidator.concat(updateMealValidator), handleValidationErrors, update"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 24,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealIdValidator, handleValidationErrors, deleteMeal);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 22,
+   "method": "GET",
+   "path": "/proxy/:fileId",
+   "pathIds": [
+    "fileId"
+   ],
+   "middleware": ", authenticate, proxyMediaFile);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 27,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", paginationValidator.concat(dateQueryValidator).concat(childIdQueryValidator), handleValidationErrors, getMed"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 28,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", mediaIdValidator, handleValidationErrors, getMediaItem);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 32,
+   "method": "POST",
+   "path": "/upload",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 63,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), createMediaValidator, handleValidationErrors, createMedia);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 64,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), mediaIdValidator.concat(updateMediaValidator), handleValidatio"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 65,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), mediaIdValidator, handleValidationErrors, deleteMedia);"
+  },
+  {
+   "file": "backend/routes/migrationRoutes.js",
+   "line": 16,
+   "method": "POST",
+   "path": "/run",
+   "pathIds": [],
+   "middleware": ", authLimiter, async (req, res) => {"
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 24,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 37,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 44,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 52,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 24,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getNotifications);"
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 27,
+   "method": "GET",
+   "path": "/count",
+   "pathIds": [],
+   "middleware": ", getUnreadCount);"
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 30,
+   "method": "PUT",
+   "path": "/:id/read",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", notificationIdValidator, handleValidationErrors, markAsRead);"
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 33,
+   "method": "PUT",
+   "path": "/read-all",
+   "pathIds": [],
+   "middleware": ", markAllAsRead);"
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 36,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", notificationIdValidator, handleValidationErrors, deleteNotification);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 56,
+   "method": "GET",
+   "path": "/children",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyChildren);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 59,
+   "method": "GET",
+   "path": "/attendance",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyChildAttendance);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 60,
+   "method": "GET",
+   "path": "/activities",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyActivities);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 61,
+   "method": "GET",
+   "path": "/activities/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getActivityById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 62,
+   "method": "GET",
+   "path": "/meals",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyMeals);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 63,
+   "method": "GET",
+   "path": "/meals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMealById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 64,
+   "method": "GET",
+   "path": "/media",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyMedia);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 65,
+   "method": "GET",
+   "path": "/media/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMediaById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 66,
+   "method": "GET",
+   "path": "/profile",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyProfile);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 67,
+   "method": "GET",
+   "path": "/ratings",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyRating);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 68,
+   "method": "POST",
+   "path": "/ratings",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, rateTeacherValidator, handleValidationErrors, rateMyTeacher);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 69,
+   "method": "GET",
+   "path": "/school-rating",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMySchoolRating);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 70,
+   "method": "POST",
+   "path": "/school-rating",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, rateSchoolValidator, handleValidationErrors, rateSchool);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 71,
+   "method": "GET",
+   "path": "/schools",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getSchools);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 74,
+   "method": "POST",
+   "path": "/evaluations",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, submitEvaluationValidator, handleValidationErrors, submitParentEvaluation);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 75,
+   "method": "GET",
+   "path": "/evaluations",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyEvaluations);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 78,
+   "method": "POST",
+   "path": "/message-to-government",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, parentMessageToGovValidator, handleValidationErrors, parentSendMessage);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 80,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getMyMessages);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 83,
+   "method": "GET",
+   "path": "/me/export",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, dataExportLimiter, exportMyData);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 86,
+   "method": "GET",
+   "path": "/privacy-consent",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, getPrivacyConsent);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 87,
+   "method": "POST",
+   "path": "/privacy-consent",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, setPrivacyConsent);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 88,
+   "method": "DELETE",
+   "path": "/privacy-consent",
+   "pathIds": [],
+   "middleware": ", authenticate, requireParent, withdrawPrivacyConsent);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 91,
+   "method": "GET",
+   "path": "/children/:id/journal",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getChildJournal);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 94,
+   "method": "GET",
+   "path": "/emotional-monitoring/child/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getMonitoringByChild);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 95,
+   "method": "GET",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMonitoringById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 98,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getParentChildIRR);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 99,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 100,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getIRRGoals);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 104,
+   "method": "GET",
+   "path": "/:parentId/data",
+   "pathIds": [
+    "parentId"
+   ],
+   "middleware": ", authenticate, requireAdminOrReception, getParentData);"
+  },
+  {
+   "file": "backend/routes/progressRoutes.js",
+   "line": 12,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getProgress);"
+  },
+  {
+   "file": "backend/routes/progressRoutes.js",
+   "line": 13,
+   "method": "PUT",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", updateProgressValidator, handleValidationErrors, updateProgress);"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/school-info",
+   "pathIds": [],
+   "middleware": ", getSchoolInfo"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 33,
+   "method": "POST",
+   "path": "/documents",
+   "pathIds": [],
+   "middleware": ", upload.single('file'"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 34,
+   "method": "GET",
+   "path": "/documents",
+   "pathIds": [],
+   "middleware": ", getMyDocuments"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 35,
+   "method": "DELETE",
+   "path": "/documents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteDocument"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 36,
+   "method": "GET",
+   "path": "/verification-status",
+   "pathIds": [],
+   "middleware": ", getVerificationStatus"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 39,
+   "method": "POST",
+   "path": "/teachers",
+   "pathIds": [],
+   "middleware": ", createStaffValidator, handleValidationErrors, createTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 40,
+   "method": "GET",
+   "path": "/teachers",
+   "pathIds": [],
+   "middleware": ", getTeachers"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 41,
+   "method": "GET",
+   "path": "/teachers/:id/ratings",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTeacherRatings"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 42,
+   "method": "PUT",
+   "path": "/teachers/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 43,
+   "method": "PUT",
+   "path": "/teachers/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 44,
+   "method": "POST",
+   "path": "/teachers/:id/reset-credentials",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", resetTeacherCredentials"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 45,
+   "method": "PUT",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 46,
+   "method": "DELETE",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 50,
+   "method": "POST",
+   "path": "/parents",
+   "pathIds": [],
+   "middleware": ", upload.fields([{ name: 'child[photo]', maxCount: 1 }]"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 51,
+   "method": "GET",
+   "path": "/parents",
+   "pathIds": [],
+   "middleware": ", getParents"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 52,
+   "method": "PUT",
+   "path": "/parents/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 53,
+   "method": "PUT",
+   "path": "/parents/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 54,
+   "method": "POST",
+   "path": "/parents/:id/reset-credentials",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", resetParentCredentials"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 55,
+   "method": "PUT",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 56,
+   "method": "DELETE",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 58,
+   "method": "POST",
+   "path": "/children",
+   "pathIds": [],
+   "middleware": ", upload.fields([{ name: 'child[photo]', maxCount: 1 }]"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 59,
+   "method": "PUT",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", upload.fields([{ name: 'child[photo]', maxCount: 1 }]"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 60,
+   "method": "DELETE",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteChildForReception"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 63,
+   "method": "GET",
+   "path": "/groups",
+   "pathIds": [],
+   "middleware": ", getGroups"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 66,
+   "method": "POST",
+   "path": "/message-to-government",
+   "pathIds": [],
+   "middleware": ", messageToGovValidator, handleValidationErrors, sendMessage"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 68,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", getMyMessages"
+  },
+  {
+   "file": "backend/routes/servicePlanRoutes.js",
+   "line": 10,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getServicePlans);"
+  },
+  {
+   "file": "backend/routes/servicePlanRoutes.js",
+   "line": 11,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), upsertServicePlanValidator, handleValidationErrors, upsertServicePlan);"
+  },
+  {
+   "file": "backend/routes/servicePlanRoutes.js",
+   "line": 12,
+   "method": "POST",
+   "path": "/bulk",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), bulkUpsertServicePlansValidator, handleValidationErrors, bulkUpsertServiceP"
+  },
+  {
+   "file": "backend/routes/teacherResourceRoutes.js",
+   "line": 32,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getResources);"
+  },
+  {
+   "file": "backend/routes/teacherResourceRoutes.js",
+   "line": 33,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher', 'admin'), resourceUpload.single('file'), createResourceValidator, handleValidationErr"
+  },
+  {
+   "file": "backend/routes/teacherResourceRoutes.js",
+   "line": 34,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), resourceIdValidator, handleValidationErrors, deleteResource);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 63,
+   "method": "GET",
+   "path": "/profile",
+   "pathIds": [],
+   "middleware": ", getMyProfile);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 64,
+   "method": "GET",
+   "path": "/dashboard",
+   "pathIds": [],
+   "middleware": ", getDashboard);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 65,
+   "method": "GET",
+   "path": "/dashboard/counts",
+   "pathIds": [],
+   "middleware": ", getDashboardCounts);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 68,
+   "method": "GET",
+   "path": "/responsibilities",
+   "pathIds": [],
+   "middleware": ", getMyResponsibilities);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 69,
+   "method": "GET",
+   "path": "/responsibilities/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getResponsibilityById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 72,
+   "method": "GET",
+   "path": "/tasks",
+   "pathIds": [],
+   "middleware": ", getMyTasks);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 73,
+   "method": "GET",
+   "path": "/tasks/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTaskById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 74,
+   "method": "PUT",
+   "path": "/tasks/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTaskStatusValidator, handleValidationErrors, updateTaskStatus);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 77,
+   "method": "GET",
+   "path": "/work-history",
+   "pathIds": [],
+   "middleware": ", getMyWorkHistory);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 78,
+   "method": "GET",
+   "path": "/work-history/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getWorkHistoryById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 79,
+   "method": "PUT",
+   "path": "/work-history/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTaskStatusValidator, handleValidationErrors, updateWorkHistoryStatus);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 82,
+   "method": "GET",
+   "path": "/parents",
+   "pathIds": [],
+   "middleware": ", getParents);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 83,
+   "method": "GET",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getParentById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 86,
+   "method": "GET",
+   "path": "/groups",
+   "pathIds": [],
+   "middleware": ", getMyGroups);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 89,
+   "method": "GET",
+   "path": "/ratings",
+   "pathIds": [],
+   "middleware": ", getTeacherRatings);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 92,
+   "method": "POST",
+   "path": "/message-to-government",
+   "pathIds": [],
+   "middleware": ", messageToGovValidator, handleValidationErrors, sendMessage);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 94,
+   "method": "GET",
+   "path": "/messages",
+   "pathIds": [],
+   "middleware": ", getMyMessages);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 97,
+   "method": "GET",
+   "path": "/children",
+   "pathIds": [],
+   "middleware": ", getChildren);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 98,
+   "method": "GET",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getChildById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 100,
+   "method": "GET",
+   "path": "/children/:childId/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listGoalsByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 101,
+   "method": "POST",
+   "path": "/children/:childId/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 102,
+   "method": "GET",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getGoalById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 103,
+   "method": "PATCH",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 104,
+   "method": "DELETE",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 105,
+   "method": "POST",
+   "path": "/goals/:id/reviews",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), createGoalReview);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 106,
+   "method": "GET",
+   "path": "/goals/:id/reviews",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listGoalReviews);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 109,
+   "method": "POST",
+   "path": "/reflections",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher'), createReflection);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 110,
+   "method": "GET",
+   "path": "/reflections",
+   "pathIds": [],
+   "middleware": ", requireRole('teacher'), listReflections);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 113,
+   "method": "POST",
+   "path": "/journal",
+   "pathIds": [],
+   "middleware": ", createJournalEntry);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 114,
+   "method": "POST",
+   "path": "/journal/bulk",
+   "pathIds": [],
+   "middleware": ", createJournalBulk);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 115,
+   "method": "GET",
+   "path": "/journal/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listJournalByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 119,
+   "method": "GET",
+   "path": "/emotional-monitoring/child/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", getMonitoringByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 120,
+   "method": "GET",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getMonitoringById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 121,
+   "method": "PUT",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateEmotionalMonitoringValidator, handleValidationErrors, createOrUpdateMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 122,
+   "method": "DELETE",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 124,
+   "method": "POST",
+   "path": "/emotional-monitoring",
+   "pathIds": [],
+   "middleware": ", createEmotionalMonitoringValidator, handleValidationErrors, createOrUpdateMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 125,
+   "method": "GET",
+   "path": "/emotional-monitoring",
+   "pathIds": [],
+   "middleware": ", getAllMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 129,
+   "method": "POST",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 130,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", getChildIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 132,
+   "method": "POST",
+   "path": "/children/:childId/daily-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createDailyEntry);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 133,
+   "method": "GET",
+   "path": "/children/:childId/daily-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listDailyEntries);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 135,
+   "method": "POST",
+   "path": "/children/:childId/weekly-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createWeeklyEntry);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 136,
+   "method": "GET",
+   "path": "/children/:childId/weekly-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listWeeklyEntries);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 138,
+   "method": "GET",
+   "path": "/irr/:irrId",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", getIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 139,
+   "method": "PATCH",
+   "path": "/irr/:irrId",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), updateIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 140,
+   "method": "POST",
+   "path": "/irr/:irrId/activate",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), activateIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 141,
+   "method": "POST",
+   "path": "/irr/:irrId/archive",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), archiveIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 143,
+   "method": "POST",
+   "path": "/irr/:irrId/assessment-sessions",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createAssessmentSession);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 144,
+   "method": "GET",
+   "path": "/irr/:irrId/assessment-sessions",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listAssessmentSessions);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 145,
+   "method": "GET",
+   "path": "/assessment-sessions/:sessionId",
+   "pathIds": [
+    "sessionId"
+   ],
+   "middleware": ", getAssessmentSession);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 147,
+   "method": "POST",
+   "path": "/irr/:irrId/long-term-goals",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 148,
+   "method": "GET",
+   "path": "/irr/:irrId/long-term-goals",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listLongTermGoals);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 149,
+   "method": "PATCH",
+   "path": "/long-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 150,
+   "method": "DELETE",
+   "path": "/long-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 152,
+   "method": "POST",
+   "path": "/irr/:irrId/goal-periods",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 153,
+   "method": "GET",
+   "path": "/irr/:irrId/goal-periods",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listGoalPeriods);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 154,
+   "method": "PATCH",
+   "path": "/goal-periods/:id/review",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateGoalPeriodReview);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 155,
+   "method": "POST",
+   "path": "/goal-periods/:id/sign",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", signGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 157,
+   "method": "POST",
+   "path": "/goal-periods/:id/short-term-goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), createShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 158,
+   "method": "GET",
+   "path": "/goal-periods/:id/short-term-goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listShortTermGoals);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 159,
+   "method": "PATCH",
+   "path": "/short-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 160,
+   "method": "DELETE",
+   "path": "/short-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 162,
+   "method": "GET",
+   "path": "/irr/:irrId/monthly-milestones",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listMonthlyMilestonesByIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 163,
+   "method": "GET",
+   "path": "/long-term-goals/:ltgId/monthly-milestones",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", listMonthlyMilestonesByLTG);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 164,
+   "method": "POST",
+   "path": "/long-term-goals/:ltgId/monthly-milestones",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", requireRole('teacher'), createMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 165,
+   "method": "PUT",
+   "path": "/long-term-goals/:ltgId/monthly-milestones/bulk",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", requireRole('teacher'), replaceMonthlyMilestones);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 166,
+   "method": "PATCH",
+   "path": "/monthly-milestones/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 167,
+   "method": "DELETE",
+   "path": "/monthly-milestones/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 26,
+   "method": "GET",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", getTherapies);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 29,
+   "method": "GET",
+   "path": "/usage",
+   "pathIds": [],
+   "middleware": ", getTherapyUsage);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 30,
+   "method": "PUT",
+   "path": "/usage/:id/end",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('parent', 'teacher'), endTherapyValidator, handleValidationErrors, endTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 31,
+   "method": "POST",
+   "path": "/:id/start",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('parent', 'teacher'), therapyIdValidator, handleValidationErrors, startTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 33,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", therapyIdValidator, handleValidationErrors, getTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 35,
+   "method": "POST",
+   "path": "/",
+   "pathIds": [],
+   "middleware": ", requireRole('admin', 'teacher'), createTherapyValidator, handleValidationErrors, createTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 36,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'teacher'), updateTherapyValidator, handleValidationErrors, updateTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 37,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'teacher'), therapyIdValidator, handleValidationErrors, deleteTherapy);"
+  },
+  {
+   "file": "backend/routes/userRoutes.js",
+   "line": 14,
+   "method": "PUT",
+   "path": "/profile",
+   "pathIds": [],
+   "middleware": ", updateProfileValidator, handleValidationErrors, updateProfile"
+  },
+  {
+   "file": "backend/routes/userRoutes.js",
+   "line": 15,
+   "method": "PUT",
+   "path": "/avatar",
+   "pathIds": [],
+   "middleware": ", uploadUserAvatar.single('avatar'"
+  },
+  {
+   "file": "backend/routes/userRoutes.js",
+   "line": 16,
+   "method": "PUT",
+   "path": "/password",
+   "pathIds": [],
+   "middleware": ", changePasswordLimiter, changePasswordValidator, handleValidationErrors, changePassword"
+  },
+  {
+   "file": "backend/routes/userRoutes.js",
+   "line": 19,
+   "method": "POST",
+   "path": "/message-to-government",
+   "pathIds": [],
+   "middleware": ", sendMessage"
+  }
+ ],
+ "withPathId": [
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 19,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activityIdValidator, handleValidationErrors, getActivity);"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 23,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), activityIdValidator.concat(updateActivityValidator), handleVal"
+  },
+  {
+   "file": "backend/routes/activityRoutes.js",
+   "line": 24,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), activityIdValidator, handleValidationErrors, deleteActivity);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 80,
+   "method": "GET",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getReceptionById);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 81,
+   "method": "PUT",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateReception); // Admin can edit Reception"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 82,
+   "method": "DELETE",
+   "path": "/receptions/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteReception); // Admin can delete Reception"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 83,
+   "method": "PUT",
+   "path": "/receptions/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateReception);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 84,
+   "method": "PUT",
+   "path": "/receptions/:id/deactivate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deactivateReception);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 89,
+   "method": "GET",
+   "path": "/receptions/:id/documents",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getReceptionDocuments);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 90,
+   "method": "PUT",
+   "path": "/documents/:id/approve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", adminIdParamValidator, handleValidationErrors, approveDocument);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 91,
+   "method": "PUT",
+   "path": "/documents/:id/reject",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", rejectDocumentValidator, handleValidationErrors, rejectDocument);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 94,
+   "method": "GET",
+   "path": "/children/:id/goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listByChildAsAdmin);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 95,
+   "method": "PUT",
+   "path": "/children/:id/transfer",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", transferChild);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 98,
+   "method": "PUT",
+   "path": "/children/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreChild);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 99,
+   "method": "PUT",
+   "path": "/users/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreUser);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 100,
+   "method": "PUT",
+   "path": "/attendance/:id/restore",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", restoreAttendance);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 104,
+   "method": "POST",
+   "path": "/import/:id/start",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", startImport);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 105,
+   "method": "GET",
+   "path": "/import/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getImportStatus);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 106,
+   "method": "GET",
+   "path": "/import/:id/errors",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getImportErrors);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 110,
+   "method": "GET",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTeacherById); // View teacher detail + groups"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 112,
+   "method": "GET",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getParentById); // View parent with their data"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 113,
+   "method": "PUT",
+   "path": "/parents/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendParent);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 114,
+   "method": "PUT",
+   "path": "/parents/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateParent);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 116,
+   "method": "GET",
+   "path": "/groups/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getGroup); // View only"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 137,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetChildIRR);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 138,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 139,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", adminGetGoals);"
+  },
+  {
+   "file": "backend/routes/adminRoutes.js",
+   "line": 146,
+   "method": "POST",
+   "path": "/goal-periods/:id/sign",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", irrSignGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 27,
+   "method": "PUT",
+   "path": "/:id/resolve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'government', 'teacher'), resolveWarningValidator, handleValidationErrors, resolveWarni"
+  },
+  {
+   "file": "backend/routes/aiWarningRoutes.js",
+   "line": 30,
+   "method": "POST",
+   "path": "/:id/notify",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'government'), notifyWarningValidator, handleValidationErrors, notifyUsers);"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 11,
+   "method": "PATCH",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireTeacher, updateAttendance"
+  },
+  {
+   "file": "backend/routes/attendanceRoutes.js",
+   "line": 12,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireAdmin, deleteAttendance"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 27,
+   "method": "PUT",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateMessageValidator, handleValidationErrors, updateMessage);"
+  },
+  {
+   "file": "backend/routes/chatRoutes.js",
+   "line": 28,
+   "method": "DELETE",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", messageIdValidator, handleValidationErrors, deleteMessage);"
+  },
+  {
+   "file": "backend/routes/childAssessmentRoutes.js",
+   "line": 16,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), updateAssessmentValidator, handleValidationErrors, updateAssessment);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 14,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", childIdValidator, handleValidationErrors, getChild);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 17,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 25,
+   "method": "PUT",
+   "path": "/:id/avatar",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", childIdValidator, handleValidationErrors, updateChildAvatar);"
+  },
+  {
+   "file": "backend/routes/childRoutes.js",
+   "line": 28,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 70,
+   "method": "GET",
+   "path": "/schools/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewSchools'), getSchoolById);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 71,
+   "method": "PUT",
+   "path": "/schools/:id/archive",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canArchiveSchools'), archiveSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 72,
+   "method": "PUT",
+   "path": "/schools/:id/reactivate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canArchiveSchools'), reactivateSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 73,
+   "method": "PUT",
+   "path": "/schools/:id/category",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", changeSchoolCategory);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 78,
+   "method": "GET",
+   "path": "/ratings/:schoolId",
+   "pathIds": [
+    "schoolId"
+   ],
+   "middleware": ", requireGovAccess('canViewRatings'), getSchoolRatings);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 79,
+   "method": "POST",
+   "path": "/schools/:id/rate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canRateSchools'), rateSchoolAsGov);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 80,
+   "method": "GET",
+   "path": "/schools/:id/ratings/gov",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewRatings'), getGovRatingsForSchool);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 86,
+   "method": "GET",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), getAdminDetails);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 88,
+   "method": "PUT",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), updateAdminValidator, handleValidationErrors, updateAdmin);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 89,
+   "method": "DELETE",
+   "path": "/admins/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageAdmins'), deleteAdminValidator, handleValidationErrors, deleteAdmin);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 94,
+   "method": "PUT",
+   "path": "/users/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), updateGovernmentValidator, handleValidationErrors, updateGover"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 95,
+   "method": "DELETE",
+   "path": "/users/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), deleteGovernmentUser);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 96,
+   "method": "PUT",
+   "path": "/users/:id/reset-password",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageGovernmentUsers'), resetGovernmentPassword);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 100,
+   "method": "POST",
+   "path": "/messages/:id/reply",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), replyToMessage);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 101,
+   "method": "PUT",
+   "path": "/messages/:id/read",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), markMessageRead);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 102,
+   "method": "DELETE",
+   "path": "/messages/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canViewMessages'), deleteMessage);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 106,
+   "method": "POST",
+   "path": "/admin-registrations/:id/approve",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageRegistrations'), approveRegistrationRequest);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 107,
+   "method": "POST",
+   "path": "/admin-registrations/:id/reject",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireGovAccess('canManageRegistrations'), rejectRegistrationRequest);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 126,
+   "method": "GET",
+   "path": "/schools/:schoolId/students",
+   "pathIds": [
+    "schoolId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govListSchoolStudents);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 127,
+   "method": "GET",
+   "path": "/children/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetChild);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 128,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetChildIRR);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 129,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/governmentRoutes.js",
+   "line": 130,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireGovAccess('canViewStudents'), govGetGoals);"
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 45,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/groupRoutes.js",
+   "line": 53,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 25,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), updateMealPlanValidator, handleValidationErrors, updateMealPlan);"
+  },
+  {
+   "file": "backend/routes/mealPlanRoutes.js",
+   "line": 26,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealPlanIdValidator, handleValidationErrors, deleteMealPlan);"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 19,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", mealIdValidator, handleValidationErrors, getMeal);"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 23,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealIdValidator.concat(updateMealValidator), handleValidationErrors, update"
+  },
+  {
+   "file": "backend/routes/mealRoutes.js",
+   "line": 24,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), mealIdValidator, handleValidationErrors, deleteMeal);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 22,
+   "method": "GET",
+   "path": "/proxy/:fileId",
+   "pathIds": [
+    "fileId"
+   ],
+   "middleware": ", authenticate, proxyMediaFile);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 28,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", mediaIdValidator, handleValidationErrors, getMediaItem);"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 64,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), mediaIdValidator.concat(updateMediaValidator), handleValidatio"
+  },
+  {
+   "file": "backend/routes/mediaRoutes.js",
+   "line": 65,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin', 'reception'), mediaIdValidator, handleValidationErrors, deleteMedia);"
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 30,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 44,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/newsRoutes.js",
+   "line": 52,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ""
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 30,
+   "method": "PUT",
+   "path": "/:id/read",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", notificationIdValidator, handleValidationErrors, markAsRead);"
+  },
+  {
+   "file": "backend/routes/notificationRoutes.js",
+   "line": 36,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", notificationIdValidator, handleValidationErrors, deleteNotification);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 61,
+   "method": "GET",
+   "path": "/activities/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getActivityById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 63,
+   "method": "GET",
+   "path": "/meals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMealById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 65,
+   "method": "GET",
+   "path": "/media/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMediaById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 91,
+   "method": "GET",
+   "path": "/children/:id/journal",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getChildJournal);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 94,
+   "method": "GET",
+   "path": "/emotional-monitoring/child/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getMonitoringByChild);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 95,
+   "method": "GET",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", authenticate, requireParent, getMonitoringById);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 98,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getParentChildIRR);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 99,
+   "method": "GET",
+   "path": "/children/:childId/irr/assessment",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getAssessmentProgression);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 100,
+   "method": "GET",
+   "path": "/children/:childId/irr/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", authenticate, requireParent, getIRRGoals);"
+  },
+  {
+   "file": "backend/routes/parentRoutes.js",
+   "line": 104,
+   "method": "GET",
+   "path": "/:parentId/data",
+   "pathIds": [
+    "parentId"
+   ],
+   "middleware": ", authenticate, requireAdminOrReception, getParentData);"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 35,
+   "method": "DELETE",
+   "path": "/documents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteDocument"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 41,
+   "method": "GET",
+   "path": "/teachers/:id/ratings",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTeacherRatings"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 42,
+   "method": "PUT",
+   "path": "/teachers/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 43,
+   "method": "PUT",
+   "path": "/teachers/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 44,
+   "method": "POST",
+   "path": "/teachers/:id/reset-credentials",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", resetTeacherCredentials"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 45,
+   "method": "PUT",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 46,
+   "method": "DELETE",
+   "path": "/teachers/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteTeacher"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 52,
+   "method": "PUT",
+   "path": "/parents/:id/activate",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", activateParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 53,
+   "method": "PUT",
+   "path": "/parents/:id/suspend",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", suspendParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 54,
+   "method": "POST",
+   "path": "/parents/:id/reset-credentials",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", resetParentCredentials"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 55,
+   "method": "PUT",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 56,
+   "method": "DELETE",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteParent"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 59,
+   "method": "PUT",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", upload.fields([{ name: 'child[photo]', maxCount: 1 }]"
+  },
+  {
+   "file": "backend/routes/receptionRoutes.js",
+   "line": 60,
+   "method": "DELETE",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteChildForReception"
+  },
+  {
+   "file": "backend/routes/teacherResourceRoutes.js",
+   "line": 34,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher', 'admin'), resourceIdValidator, handleValidationErrors, deleteResource);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 69,
+   "method": "GET",
+   "path": "/responsibilities/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getResponsibilityById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 73,
+   "method": "GET",
+   "path": "/tasks/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getTaskById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 74,
+   "method": "PUT",
+   "path": "/tasks/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTaskStatusValidator, handleValidationErrors, updateTaskStatus);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 78,
+   "method": "GET",
+   "path": "/work-history/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getWorkHistoryById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 79,
+   "method": "PUT",
+   "path": "/work-history/:id/status",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateTaskStatusValidator, handleValidationErrors, updateWorkHistoryStatus);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 83,
+   "method": "GET",
+   "path": "/parents/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getParentById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 98,
+   "method": "GET",
+   "path": "/children/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getChildById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 100,
+   "method": "GET",
+   "path": "/children/:childId/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listGoalsByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 101,
+   "method": "POST",
+   "path": "/children/:childId/goals",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 102,
+   "method": "GET",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getGoalById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 103,
+   "method": "PATCH",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 104,
+   "method": "DELETE",
+   "path": "/goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 105,
+   "method": "POST",
+   "path": "/goals/:id/reviews",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), createGoalReview);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 106,
+   "method": "GET",
+   "path": "/goals/:id/reviews",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listGoalReviews);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 115,
+   "method": "GET",
+   "path": "/journal/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listJournalByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 119,
+   "method": "GET",
+   "path": "/emotional-monitoring/child/:childId",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", getMonitoringByChild);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 120,
+   "method": "GET",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", getMonitoringById);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 121,
+   "method": "PUT",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", updateEmotionalMonitoringValidator, handleValidationErrors, createOrUpdateMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 122,
+   "method": "DELETE",
+   "path": "/emotional-monitoring/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", deleteMonitoring);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 129,
+   "method": "POST",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 130,
+   "method": "GET",
+   "path": "/children/:childId/irr",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", getChildIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 132,
+   "method": "POST",
+   "path": "/children/:childId/daily-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createDailyEntry);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 133,
+   "method": "GET",
+   "path": "/children/:childId/daily-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listDailyEntries);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 135,
+   "method": "POST",
+   "path": "/children/:childId/weekly-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", requireRole('teacher'), createWeeklyEntry);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 136,
+   "method": "GET",
+   "path": "/children/:childId/weekly-entries",
+   "pathIds": [
+    "childId"
+   ],
+   "middleware": ", listWeeklyEntries);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 138,
+   "method": "GET",
+   "path": "/irr/:irrId",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", getIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 139,
+   "method": "PATCH",
+   "path": "/irr/:irrId",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), updateIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 140,
+   "method": "POST",
+   "path": "/irr/:irrId/activate",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), activateIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 141,
+   "method": "POST",
+   "path": "/irr/:irrId/archive",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), archiveIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 143,
+   "method": "POST",
+   "path": "/irr/:irrId/assessment-sessions",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createAssessmentSession);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 144,
+   "method": "GET",
+   "path": "/irr/:irrId/assessment-sessions",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listAssessmentSessions);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 145,
+   "method": "GET",
+   "path": "/assessment-sessions/:sessionId",
+   "pathIds": [
+    "sessionId"
+   ],
+   "middleware": ", getAssessmentSession);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 147,
+   "method": "POST",
+   "path": "/irr/:irrId/long-term-goals",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 148,
+   "method": "GET",
+   "path": "/irr/:irrId/long-term-goals",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listLongTermGoals);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 149,
+   "method": "PATCH",
+   "path": "/long-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 150,
+   "method": "DELETE",
+   "path": "/long-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteLongTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 152,
+   "method": "POST",
+   "path": "/irr/:irrId/goal-periods",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", requireRole('teacher'), createGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 153,
+   "method": "GET",
+   "path": "/irr/:irrId/goal-periods",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listGoalPeriods);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 154,
+   "method": "PATCH",
+   "path": "/goal-periods/:id/review",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateGoalPeriodReview);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 155,
+   "method": "POST",
+   "path": "/goal-periods/:id/sign",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", signGoalPeriod);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 157,
+   "method": "POST",
+   "path": "/goal-periods/:id/short-term-goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), createShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 158,
+   "method": "GET",
+   "path": "/goal-periods/:id/short-term-goals",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", listShortTermGoals);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 159,
+   "method": "PATCH",
+   "path": "/short-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 160,
+   "method": "DELETE",
+   "path": "/short-term-goals/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteShortTermGoal);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 162,
+   "method": "GET",
+   "path": "/irr/:irrId/monthly-milestones",
+   "pathIds": [
+    "irrId"
+   ],
+   "middleware": ", listMonthlyMilestonesByIRR);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 163,
+   "method": "GET",
+   "path": "/long-term-goals/:ltgId/monthly-milestones",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", listMonthlyMilestonesByLTG);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 164,
+   "method": "POST",
+   "path": "/long-term-goals/:ltgId/monthly-milestones",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", requireRole('teacher'), createMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 165,
+   "method": "PUT",
+   "path": "/long-term-goals/:ltgId/monthly-milestones/bulk",
+   "pathIds": [
+    "ltgId"
+   ],
+   "middleware": ", requireRole('teacher'), replaceMonthlyMilestones);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 166,
+   "method": "PATCH",
+   "path": "/monthly-milestones/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), updateMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/teacherRoutes.js",
+   "line": 167,
+   "method": "DELETE",
+   "path": "/monthly-milestones/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('teacher'), deleteMonthlyMilestone);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 30,
+   "method": "PUT",
+   "path": "/usage/:id/end",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('parent', 'teacher'), endTherapyValidator, handleValidationErrors, endTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 31,
+   "method": "POST",
+   "path": "/:id/start",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('parent', 'teacher'), therapyIdValidator, handleValidationErrors, startTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 33,
+   "method": "GET",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", therapyIdValidator, handleValidationErrors, getTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 36,
+   "method": "PUT",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'teacher'), updateTherapyValidator, handleValidationErrors, updateTherapy);"
+  },
+  {
+   "file": "backend/routes/therapyRoutes.js",
+   "line": 37,
+   "method": "DELETE",
+   "path": "/:id",
+   "pathIds": [
+    "id"
+   ],
+   "middleware": ", requireRole('admin', 'teacher'), therapyIdValidator, handleValidationErrors, deleteTherapy);"
+  }
+ ],
+ "queryIds": {
+  "backend/controllers/activityController.js": [
+   "childId"
+  ],
+  "backend/controllers/aiWarningController.js": [
+   "targetId",
+   "schoolId"
+  ],
+  "backend/controllers/attendanceController.js": [
+   "childId"
+  ],
+  "backend/controllers/chatController.js": [
+   "conversationId"
+  ],
+  "backend/controllers/childAssessmentController.js": [
+   "childId"
+  ],
+  "backend/controllers/governmentController.js": [
+   "schoolId"
+  ],
+  "backend/controllers/mealController.js": [
+   "childId"
+  ],
+  "backend/controllers/mealPlanController.js": [
+   "childId"
+  ],
+  "backend/controllers/mediaController.js": [
+   "childId"
+  ],
+  "backend/controllers/parent/parentActivityController.js": [
+   "childId"
+  ],
+  "backend/controllers/parent/parentMealController.js": [
+   "childId"
+  ],
+  "backend/controllers/parent/parentSchoolRatingController.js": [
+   "childId"
+  ],
+  "backend/controllers/progressController.js": [
+   "childId"
+  ],
+  "backend/controllers/servicePlanController.js": [
+   "childId"
+  ],
+  "backend/controllers/therapyController.js": [
+   "childId",
+   "therapyId"
+  ]
+ }
+}

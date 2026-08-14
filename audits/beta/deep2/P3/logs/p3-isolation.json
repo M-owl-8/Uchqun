@@ -1,0 +1,2521 @@
+{
+  "fixture": {
+    "child": "5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+    "group": "5eed1f6b-6ae7-455a-8678-805cb366713a",
+    "teacher": "5eedd529-f49e-47a1-8705-eed694440f03",
+    "parent": "5eed391e-deeb-489a-868c-bec7901678d3",
+    "reception": "5eedc018-3ea9-44c0-8177-77f61b6600b0",
+    "admin": "5eed7a0e-d282-40f4-83a1-f361197d3761",
+    "meal": "5eed370c-1ec0-4854-871a-d3322c88a485",
+    "activity": "5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+    "media": null,
+    "attendance": "5eed6699-bbd4-43f6-8e02-f09d6bbc85b1",
+    "irr": "5eed5eef-bd0c-4c64-89bb-a32b86dbd7de",
+    "document": "5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+    "emotional": null,
+    "school": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "homeChild": "5eed5a2c-756d-4853-84e3-9e2d1d75df11"
+  },
+  "cells": [
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "activities",
+      "path": "/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "attendance",
+      "path": "/attendance?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&startDate=2026-08-01&endDate=2026-08-14",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "meals",
+      "path": "/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "media",
+      "path": "/media?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "meal-plans",
+      "path": "/meal-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "progress",
+      "path": "/progress?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "service-plans",
+      "path": "/service-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "child-assessments",
+      "path": "/child-assessments?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "therapy-usage",
+      "path": "/therapy/usage?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "ai-warnings",
+      "path": "/ai-warnings?targetId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "gov-schools-scoped",
+      "path": "/government/schools?schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "parent-activities",
+      "path": "/parent/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "parent-meals",
+      "path": "/parent/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "READ",
+      "surface": "emotional-monitoring",
+      "path": "/teacher/emotional-monitoring?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "GET",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "PUT",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "DELETE",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-attendance",
+      "path": "/attendance",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-child-create",
+      "path": "/children",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "teacher",
+      "kind": "FORGE",
+      "surface": "forge-groupId-cross-school",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "activities",
+      "path": "/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "attendance",
+      "path": "/attendance?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&startDate=2026-08-01&endDate=2026-08-14",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "meals",
+      "path": "/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "media",
+      "path": "/media?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "meal-plans",
+      "path": "/meal-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "progress",
+      "path": "/progress?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "service-plans",
+      "path": "/service-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "child-assessments",
+      "path": "/child-assessments?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "therapy-usage",
+      "path": "/therapy/usage?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "ai-warnings",
+      "path": "/ai-warnings?targetId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "gov-schools-scoped",
+      "path": "/government/schools?schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "parent-activities",
+      "path": "/parent/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "parent-meals",
+      "path": "/parent/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "READ",
+      "surface": "emotional-monitoring",
+      "path": "/teacher/emotional-monitoring?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "GET",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "PUT",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "DELETE",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-attendance",
+      "path": "/attendance",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-child-create",
+      "path": "/children",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "parent",
+      "kind": "FORGE",
+      "surface": "forge-groupId-cross-school",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 401,
+      "bytes": 29,
+      "leaked": false,
+      "body": "{\"error\":\"No token provided\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "activities",
+      "path": "/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "attendance",
+      "path": "/attendance?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&startDate=2026-08-01&endDate=2026-08-14",
+      "status": 200,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":[]}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "meals",
+      "path": "/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "media",
+      "path": "/media?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "meal-plans",
+      "path": "/meal-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 11,
+      "leaked": false,
+      "body": "{\"data\":[]}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "progress",
+      "path": "/progress?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "service-plans",
+      "path": "/service-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2440,
+      "leaked": true,
+      "body": "{\"data\":[{\"id\":null,\"childId\":\"5eeddb15-7f8a-4f32-8f93-5c2e166981fb\",\"year\":2026,\"serviceType\":\"logoped\",\"months\":{\"jan\":false,\"feb\":false,\"mar\":false"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "child-assessments",
+      "path": "/child-assessments?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "therapy-usage",
+      "path": "/therapy/usage?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 8549,
+      "leaked": true,
+      "body": "{\"success\":true,\"data\":{\"usages\":[{\"id\":\"5eed239c-8194-4b14-89eb-1a375d2c3b56\",\"therapyId\":\"5eed19d3-c1ab-4bad-8391-6c3798253f61\",\"childId\":\"5eeddb15-"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "ai-warnings",
+      "path": "/ai-warnings?targetId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 200,
+      "bytes": 71,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":{\"warnings\":[],\"total\":0,\"limit\":20,\"offset\":0}}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "gov-schools-scoped",
+      "path": "/government/schools?schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "parent-activities",
+      "path": "/parent/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "parent-meals",
+      "path": "/parent/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "READ",
+      "surface": "emotional-monitoring",
+      "path": "/teacher/emotional-monitoring?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 58,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":[],\"total\":0,\"limit\":50,\"offset\":0}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 404,
+      "bytes": 61,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":{\"code\":\"IRR_CHILD_NOT_ACCESSIBLE\"}}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Child not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 404,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 404,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 404,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 30,
+      "leaked": false,
+      "body": "{\"error\":\"Activity not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 53,
+      "leaked": false,
+      "body": "{\"error\":\"Activity child not found or access denied\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 47,
+      "leaked": false,
+      "body": "{\"error\":\"Activity not found or access denied\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this group\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 404,
+      "bytes": 54,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":{\"code\":\"TEACHER_NOT_FOUND\"}}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 404,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Reception account not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 404,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Reception account not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 404,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Reception account not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "GET",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "PUT",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "DELETE",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-attendance",
+      "path": "/attendance",
+      "status": 400,
+      "bytes": 231,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_ACCESS_DENIED\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped\":0,\"errors\":[{\"chil"
+    },
+    {
+      "role": "admin",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-child-create",
+      "path": "/children",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "admin",
+      "kind": "FORGE",
+      "surface": "forge-groupId-cross-school",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "activities",
+      "path": "/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "attendance",
+      "path": "/attendance?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&startDate=2026-08-01&endDate=2026-08-14",
+      "status": 200,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":[]}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "meals",
+      "path": "/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "media",
+      "path": "/media?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2,
+      "leaked": false,
+      "body": "[]"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "meal-plans",
+      "path": "/meal-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 11,
+      "leaked": false,
+      "body": "{\"data\":[]}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "progress",
+      "path": "/progress?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "service-plans",
+      "path": "/service-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2440,
+      "leaked": true,
+      "body": "{\"data\":[{\"id\":null,\"childId\":\"5eeddb15-7f8a-4f32-8f93-5c2e166981fb\",\"year\":2026,\"serviceType\":\"logoped\",\"months\":{\"jan\":false,\"feb\":false,\"mar\":false"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "child-assessments",
+      "path": "/child-assessments?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "therapy-usage",
+      "path": "/therapy/usage?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 8549,
+      "leaked": true,
+      "body": "{\"success\":true,\"data\":{\"usages\":[{\"id\":\"5eed239c-8194-4b14-89eb-1a375d2c3b56\",\"therapyId\":\"5eed19d3-c1ab-4bad-8391-6c3798253f61\",\"childId\":\"5eeddb15-"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "ai-warnings",
+      "path": "/ai-warnings?targetId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "gov-schools-scoped",
+      "path": "/government/schools?schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "parent-activities",
+      "path": "/parent/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "parent-meals",
+      "path": "/parent/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "READ",
+      "surface": "emotional-monitoring",
+      "path": "/teacher/emotional-monitoring?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 58,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":[],\"total\":0,\"limit\":50,\"offset\":0}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Child not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 404,
+      "bytes": 26,
+      "leaked": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 30,
+      "leaked": false,
+      "body": "{\"error\":\"Activity not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 53,
+      "leaked": false,
+      "body": "{\"error\":\"Activity child not found or access denied\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 47,
+      "leaked": false,
+      "body": "{\"error\":\"Activity not found or access denied\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this group\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this group\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 39,
+      "leaked": false,
+      "body": "{\"error\":\"Access denied to this group\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "GET",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "PUT",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "DELETE",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-attendance",
+      "path": "/attendance",
+      "status": 400,
+      "bytes": 231,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_ACCESS_DENIED\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped\":0,\"errors\":[{\"chil"
+    },
+    {
+      "role": "reception",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-child-create",
+      "path": "/children",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "reception",
+      "kind": "FORGE",
+      "surface": "forge-groupId-cross-school",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "activities",
+      "path": "/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2,
+      "leaked": false,
+      "body": "[]"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "attendance",
+      "path": "/attendance?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&startDate=2026-08-01&endDate=2026-08-14",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "meals",
+      "path": "/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2,
+      "leaked": false,
+      "body": "[]"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "media",
+      "path": "/media?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2,
+      "leaked": false,
+      "body": "[]"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "meal-plans",
+      "path": "/meal-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 11,
+      "leaked": false,
+      "body": "{\"data\":[]}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "progress",
+      "path": "/progress?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "service-plans",
+      "path": "/service-plans?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 2440,
+      "leaked": true,
+      "body": "{\"data\":[{\"id\":null,\"childId\":\"5eeddb15-7f8a-4f32-8f93-5c2e166981fb\",\"year\":2026,\"serviceType\":\"logoped\",\"months\":{\"jan\":false,\"feb\":false,\"mar\":false"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "child-assessments",
+      "path": "/child-assessments?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "therapy-usage",
+      "path": "/therapy/usage?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 200,
+      "bytes": 8549,
+      "leaked": true,
+      "body": "{\"success\":true,\"data\":{\"usages\":[{\"id\":\"5eed239c-8194-4b14-89eb-1a375d2c3b56\",\"therapyId\":\"5eed19d3-c1ab-4bad-8391-6c3798253f61\",\"childId\":\"5eeddb15-"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "ai-warnings",
+      "path": "/ai-warnings?targetId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb&schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 200,
+      "bytes": 71,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":{\"warnings\":[],\"total\":0,\"limit\":20,\"offset\":0}}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "gov-schools-scoped",
+      "path": "/government/schools?schoolId=5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 200,
+      "bytes": 2595,
+      "leaked": false,
+      "body": "{\"success\":true,\"data\":{\"schools\":[{\"id\":\"eec19bb5-36ae-4006-a330-031d07654c40\",\"name\":\"Toshkent Maxsus Maktab 1\",\"type\":\"support\",\"address\":null,\"pho"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "parent-activities",
+      "path": "/parent/activities?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "parent-meals",
+      "path": "/parent/meals?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "READ",
+      "surface": "emotional-monitoring",
+      "path": "/teacher/emotional-monitoring?childId=5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "child-by-id",
+      "path": "/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "admin-child",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "admin-child-irr",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb/irr",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "teacher-child",
+      "path": "/teacher/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 404,
+      "bytes": 27,
+      "leaked": false,
+      "body": "{\"error\":\"Child not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "meal-by-id",
+      "path": "/meals/5eed370c-1ec0-4854-871a-d3322c88a485",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 404,
+      "bytes": 27,
+      "leaked": false,
+      "body": "{\"error\":\"Child not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "activity-by-id",
+      "path": "/activities/5eedd950-cfcc-45d7-808e-9f6fa8dba7d8",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 200,
+      "bytes": 591,
+      "leaked": false,
+      "body": "{\"id\":\"5eed1f6b-6ae7-455a-8678-805cb366713a\",\"name\":\"Umid guruhi\",\"description\":\"Umid guruhi — kunlik rejim va individual mashg‘ulotlar\",\"teacherId\":\""
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "group-by-id",
+      "path": "/groups/5eed1f6b-6ae7-455a-8678-805cb366713a",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "admin-teacher",
+      "path": "/admin/teachers/5eedd529-f49e-47a1-8705-eed694440f03",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "admin-reception",
+      "path": "/admin/receptions/5eedc018-3ea9-44c0-8177-77f61b6600b0",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 404,
+      "bytes": 28,
+      "leaked": false,
+      "body": "{\"error\":\"School not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "gov-school",
+      "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "GET",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "PUT",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "DELETE",
+      "surface": "document-by-id",
+      "path": "/admin/documents/5eedaa09-aa5d-445b-8a4d-6ae9ace2c6af",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-attendance",
+      "path": "/attendance",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "FORGE",
+      "surface": "forge-schoolId-on-child-create",
+      "path": "/children",
+      "status": 404,
+      "bytes": 43,
+      "leaked": false,
+      "body": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "role": "gov-region",
+      "kind": "FORGE",
+      "surface": "forge-groupId-cross-school",
+      "path": "/admin/children/5eeddb15-7f8a-4f32-8f93-5c2e166981fb",
+      "status": 403,
+      "bytes": 36,
+      "leaked": false,
+      "body": "{\"error\":\"Insufficient permissions\"}"
+    }
+  ]
+}

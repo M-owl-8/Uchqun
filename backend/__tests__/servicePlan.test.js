@@ -39,7 +39,12 @@ describe('servicePlanController', () => {
       mockFindAll.mockResolvedValue([
         { serviceType: 'logoped', months: { jan: true } },
       ]);
-      const req = { query: { childId: 'c1', year: '2026' } };
+      // D-53 (Campaign II P3): getServicePlans now calls validateChildAccess
+      // before querying — this read previously had no access check of any kind
+      // and leaked another school's plans to anyone who supplied the childId.
+      // The request needs a user and an accessible child for the happy path.
+      mockValidateChildAccess.mockResolvedValue({ id: 'c1', schoolId: 's1' });
+      const req = { user: { id: 'u1', role: 'admin', schoolId: 's1' }, query: { childId: 'c1', year: '2026' } };
       const res = mkRes();
       await getServicePlans(req, res);
       const data = res.json.mock.calls[0][0].data;

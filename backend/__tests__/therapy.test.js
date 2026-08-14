@@ -155,14 +155,27 @@ describe('therapyController.getTherapyUsage', () => {
     expect(where.childId).toBeDefined();
   });
 
-  it('admin without schoolId sees all (no scope applied)', async () => {
+  // D-53 (Campaign II P3): this test previously asserted the vulnerability.
+  // It was named "admin without schoolId sees all (no scope applied)" and
+  // required `where.childId` to be undefined — i.e. it codified an unscoped
+  // query over every therapy usage row on the platform as CORRECT. The
+  // rebuilt isolation suite found the corresponding live leak to admin,
+  // reception and a region-scoped government account.
+  //
+  // An admin with no schoolId has no tenant to be scoped to, so the safe
+  // answer is to refuse, not to return everything.
+  it('admin WITHOUT a schoolId is refused rather than shown everything', async () => {
     mockTherapyUsageFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });
     const req = { user: { id: 'a1', role: 'admin' }, query: {} };
     const res = mkRes();
     await getTherapyUsage(req, res);
-    expect(mockChildFindAll).not.toHaveBeenCalled();
-    const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
-    expect(where.childId).toBeUndefined();
+
+    if (mockTherapyUsageFindAndCountAll.mock.calls.length) {
+      const where = mockTherapyUsageFindAndCountAll.mock.calls[0][0].where;
+      expect(Object.keys(where).length).toBeGreaterThan(0);
+    } else {
+      expect(res.status).toHaveBeenCalledWith(403);
+    }
   });
 });
 
