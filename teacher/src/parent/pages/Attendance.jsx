@@ -20,7 +20,7 @@ import { useToast } from '../../shared/context/ToastContext';
 import {
   formatDateWeekdayMonth,
   formatDateShort,
-  formatDateMedium, todayLocal} from '@shared/utils/formatDate';
+  formatDateMedium, todayLocal, isoLocal } from '@shared/utils/formatDate';
 
 const STATUS_META = {
   present:      { color: 'bg-success-100 text-success-800 border-success-300', dot: 'bg-success-500', labelKey: 'attendance.statusPresent' },
@@ -32,17 +32,25 @@ const STATUS_META = {
 
 const todayIsoDate = () => todayLocal();
 
-// Anchor of week = Monday of the given date
+// Anchor of week = Monday of the given date.
+// D-03: anchored at local noon, not local midnight. The teacher page uses the same
+// 'T12:00:00' anchor (teacher/src/pages/Attendance.jsx:38) precisely so that no
+// timezone offset can push the date across a day boundary.
 const mondayOf = (d) => {
-  const date = new Date(d);
+  const date = new Date(`${typeof d === 'string' ? d.slice(0, 10) : isoLocal(d)}T12:00:00`);
   const day = date.getDay();
   const diff = day === 0 ? -6 : 1 - day;
   date.setDate(date.getDate() + diff);
-  date.setHours(0, 0, 0, 0);
   return date;
 };
 
-const isoOf = (d) => new Date(d).toISOString().slice(0, 10);
+// D-03: was `new Date(d).toISOString().slice(0,10)` — UTC conversion. At UTC+5 that
+// turned local 2026-08-10T00:00 into '2026-08-09', so every week cell looked up the
+// previous day's record while displaying its own date, and "today" highlighted the
+// wrong card. isoLocal (shared/utils/formatDate.js:147) is the project's existing,
+// regression-locked local-calendar formatter — the same helper todayLocal() is built
+// on. Added 2026-06-07 for exactly this class of bug; this page never adopted it.
+const isoOf = isoLocal;
 
 const Attendance = () => {
   const { t, i18n } = useTranslation();
