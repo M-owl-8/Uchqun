@@ -187,11 +187,15 @@ describe('resolveEmailDomain — rejected paths', () => {
     );
   });
 
-  it('reception cannot create teacher → ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', async () => {
-    await expectError(
-      () => resolveEmailDomain(receptionTmm1(), 'teacher'),
-      'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY'
-    );
+  // D-02 scope extension: this assertion is what made teacher creation
+  // impossible for every role. POST /reception/teachers is mounted behind
+  // requireReception (routes/receptionRoutes.js:39) and there is no
+  // POST /admin/teachers at all (adminRoutes.js:109 is GET-only), so forbidding
+  // reception here left no path. Reception created teachers directly before
+  // a0723db1. Reception may create a teacher for its OWN school only — the
+  // cross-school and hierarchy-escalation refusals below still stand.
+  it('reception creates teacher for its own school → tmm1.uz', async () => {
+    await expect(resolveEmailDomain(receptionTmm1(), 'teacher')).resolves.toBe('tmm1.uz');
   });
 
   it('reception cannot create admin → ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', async () => {

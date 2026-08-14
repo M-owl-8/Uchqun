@@ -126,10 +126,20 @@ export async function resolveEmailDomain(creator, newRole, context = {}) {
     return `${school.slug}.uz`;
   }
 
-  // ── Admin creating reception / teacher ────────────────────────────────────
+  // ── Admin creating reception; admin or reception creating teacher ──────────
+  //
+  // D-02 (scope extension): a0723db1 narrowed teacher creation to `admin` only,
+  // but POST /reception/teachers has been mounted behind requireReception since
+  // the first commit, the reception portal ships a full "Tarbiyachi qo'shish"
+  // form, and there is no POST /admin/teachers route at all — adminRoutes.js:109
+  // is GET-only. The result was that NO role could create a teacher through any
+  // route: reception got 403 ACCOUNT_CREATE_FORBIDDEN_HIERARCHY, and admin had
+  // nowhere to call. Before a0723db1 reception created teachers directly
+  // (receptionTeacherController.createTeacher, isActive:true). Restored.
   if (newRole === 'reception' || newRole === 'teacher') {
-    if (role !== 'admin') {
-      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: `only admin accounts can create ${newRole} accounts` };
+    const allowed = newRole === 'teacher' ? ['admin', 'reception'] : ['admin'];
+    if (!allowed.includes(role)) {
+      throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: `only ${allowed.join(' or ')} accounts can create ${newRole} accounts` };
     }
     if (!creatorSchoolId) {
       throw { code: 'ACCOUNT_CREATE_FORBIDDEN_HIERARCHY', detail: 'admin has no school assignment' };

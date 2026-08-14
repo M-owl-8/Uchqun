@@ -177,6 +177,15 @@ export const createAdmin = async (req, res) => {
       firstName,
       lastName,
       role: 'admin',
+      // D-02 (scope extension): omitted here, so the User model default
+      // (isActive:false) applied and every director created through the
+      // government portal was refused at login with "Admin account is not
+      // active." There is no admin approval workflow to satisfy — unlike
+      // reception, whose isActive:false is a documented document-approval gate.
+      // Every sibling creator (createGovernment:345, createTeacher:60,
+      // createParent:129) sets isActive:true.
+      isActive: true,
+      isVerified: true,
       ...(schoolId && { schoolId }),
     });
 
