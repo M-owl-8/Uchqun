@@ -1,0 +1,56 @@
+{
+  "proof-admin-tmm3": {
+    "activities": {
+      "status": 200,
+      "bytes": 8645,
+      "records": 13,
+      "childIds": [
+        "5eed7fed-b5ea-4db5-8ab7-b60720996a30"
+      ],
+      "sample": "{\"id\":\"5eeda350-be19-41c1-8f33-80636b18e93d\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08-14\",\"title\":\"O‘z-o‘ziga xizmat\",\"description\":\"Qo‘l yuvish ketma-ketligi, tugma qadash mashqi.\",\"type\":\"Other\",\"duration\":20,\"teacher\":\"Islomjon Ergashev\",\"studentEngagement\":\"Medium\",\"notes"
+    },
+    "meals": {
+      "status": 200,
+      "bytes": 18596,
+      "records": 39,
+      "childIds": [
+        "5eed7fed-b5ea-4db5-8ab7-b60720996a30"
+      ],
+      "sample": "{\"id\":\"5eed28fa-3765-41ec-8bec-60f3180e972f\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08-14\",\"mealType\":\"Snack\",\"mealName\":\"Sutli kakao va quruq non\",\"description\":\"Iliq holda\",\"quantity\":\"To‘liq\",\"specialNotes\":\"Ishtahasi past bo‘ldi\",\"time\":\"15:30:00\",\"eaten\":true,\"createdAt\":"
+    },
+    "media": {
+      "status": 403,
+      "bytes": 39,
+      "records": 0,
+      "childIds": [],
+      "sample": "{\"error\":\"Access denied to this child\"}"
+    },
+    "_caller": {}
+  },
+  "proof-reception-tmm3": {
+    "activities": {
+      "status": 200,
+      "bytes": 8645,
+      "records": 13,
+      "childIds": [
+        "5eed7fed-b5ea-4db5-8ab7-b60720996a30"
+      ],
+      "sample": "{\"id\":\"5eeda350-be19-41c1-8f33-80636b18e93d\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08-14\",\"title\":\"O‘z-o‘ziga xizmat\",\"description\":\"Qo‘l yuvish ketma-ketligi, tugma qadash mashqi.\",\"type\":\"Other\",\"duration\":20,\"teacher\":\"Islomjon Ergashev\",\"studentEngagement\":\"Medium\",\"notes"
+    },
+    "meals": {
+      "status": 200,
+      "bytes": 2,
+      "records": 0,
+      "childIds": [],
+      "sample": "[]"
+    },
+    "media": {
+      "status": 200,
+      "bytes": 2,
+      "records": 0,
+      "childIds": [],
+      "sample": "[]"
+    },
+    "_caller": {}
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "unlock": {
+    "status": 200,
+    "body": "{\"success\":true,\"message\":\"Account lockout cleared\"}"
+  },
+  "after": {
+    "status": 429,
+    "body": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+  }
+}

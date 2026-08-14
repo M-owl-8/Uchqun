@@ -1,0 +1,83 @@
+{
+  "fifteen-attempts": {
+    "statuses": [
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      401,
+      429,
+      429,
+      429,
+      429
+    ],
+    "totalMs": 4468,
+    "perAttemptMs": [
+      663,
+      257,
+      253,
+      280,
+      351,
+      273,
+      255,
+      294,
+      342,
+      337,
+      319,
+      183,
+      228,
+      251,
+      182
+    ],
+    "anyNon401": [
+      {
+        "i": 12,
+        "s": 429,
+        "b": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please "
+      },
+      {
+        "i": 13,
+        "s": 429,
+        "b": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please "
+      },
+      {
+        "i": 14,
+        "s": 429,
+        "b": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please "
+      },
+      {
+        "i": 15,
+        "s": 429,
+        "b": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please "
+      }
+    ]
+  },
+  "enumeration": [
+    {
+      "email": "definitely.not.a.user@tmm3.uz",
+      "status": 401,
+      "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please check and try again.\"}"
+    },
+    {
+      "email": "sh.umarova@tmm3.uz",
+      "status": 429,
+      "body": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+    },
+    {
+      "email": "sh.umarova@tmm3.uz",
+      "status": 429,
+      "body": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+    },
+    {
+      "email": "direktor@tmm3.uz",
+      "status": 401,
+      "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please check and try again.\"}"
+    }
+  ]
+}

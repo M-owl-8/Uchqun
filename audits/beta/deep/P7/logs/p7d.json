@@ -1,0 +1,202 @@
+{
+  "leak-admin-tmm3": {
+    "home": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+    "foreignChild": "5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+    "foreignSchool": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "reads": [
+      {
+        "label": "activities",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "meals",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "media",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "attendance",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "therapy usage",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "monitoring",
+        "status": 200,
+        "len": 821,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      }
+    ],
+    "LEAKED": []
+  },
+  "leak-reception-tmm3": {
+    "home": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+    "foreignChild": "5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+    "foreignSchool": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "reads": [
+      {
+        "label": "activities",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "meals",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "media",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "attendance",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "therapy usage",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      },
+      {
+        "label": "monitoring",
+        "status": 200,
+        "len": 826,
+        "containsForeignChildId": false,
+        "body": "<!doctype html>\n<html lang=\"uz\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <!-- TODO(phase-1): replace placeholder /vite.svg with branded favicon -->\n    <link rel=\"icon\" type=\"image/svg+xml\" href=\"/v"
+      }
+    ],
+    "LEAKED": []
+  },
+  "leak-teacher-tmm3": {
+    "home": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+    "foreignChild": "5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+    "foreignSchool": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "reads": [
+      {
+        "label": "activities",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "meals",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "media",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "attendance",
+        "status": 200,
+        "len": 26,
+        "containsForeignChildId": false,
+        "body": "{\"success\":true,\"data\":[]}"
+      },
+      {
+        "label": "therapy usage",
+        "status": 200,
+        "len": 69,
+        "containsForeignChildId": false,
+        "body": "{\"success\":true,\"data\":{\"usages\":[],\"total\":0,\"limit\":20,\"offset\":0}}"
+      },
+      {
+        "label": "monitoring",
+        "status": 200,
+        "len": 11065,
+        "containsForeignChildId": false,
+        "body": "{\"success\":true,\"data\":[{\"id\":\"d2adef1d-a284-401c-8816-69fc00a2a5d3\",\"childId\":\"5eed6820-326d-4476-8375-02101fe7e0f5\",\"teacherId\":\"5eedf422-4935-4657-84ed-b36e12f3f190\",\"date\":\"2026-08-14\",\"emotionalS"
+      }
+    ],
+    "LEAKED": []
+  },
+  "leak-parent-tmm3": {
+    "home": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+    "foreignChild": "5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+    "foreignSchool": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "reads": [
+      {
+        "label": "activities",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "meals",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "media",
+        "status": 403,
+        "len": 39,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "attendance",
+        "status": 403,
+        "len": 36,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "label": "therapy usage",
+        "status": 200,
+        "len": 69,
+        "containsForeignChildId": false,
+        "body": "{\"success\":true,\"data\":{\"usages\":[],\"total\":0,\"limit\":20,\"offset\":0}}"
+      },
+      {
+        "label": "monitoring",
+        "status": 403,
+        "len": 36,
+        "containsForeignChildId": false,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      }
+    ],
+    "LEAKED": []
+  }
+}

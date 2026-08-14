@@ -1,0 +1,530 @@
+{
+ "localeMatrix": {
+  "teacher": {
+   "counts": {
+    "uz": 924,
+    "ru": 924,
+    "en": 924
+   },
+   "missingVsUz": {
+    "ru": 0,
+    "en": 0
+   },
+   "extraVsUz": {
+    "ru": 0,
+    "en": 0
+   },
+   "sampleMissingRu": [],
+   "sampleMissingEn": []
+  },
+  "admin": {
+   "counts": {
+    "uz": 673,
+    "ru": 673,
+    "en": 672
+   },
+   "missingVsUz": {
+    "ru": 0,
+    "en": 1
+   },
+   "extraVsUz": {
+    "ru": 0,
+    "en": 0
+   },
+   "sampleMissingRu": [],
+   "sampleMissingEn": [
+    "dashboard.parentsCard"
+   ]
+  },
+  "reception": {
+   "counts": {
+    "uz": 478,
+    "ru": 500,
+    "en": 481
+   },
+   "missingVsUz": {
+    "ru": 6,
+    "en": 5
+   },
+   "extraVsUz": {
+    "ru": 28,
+    "en": 8
+   },
+   "sampleMissingRu": [
+    "parentsPage.children",
+    "parentsPage.children_plural",
+    "parentsPage.bulkActivateConfirm",
+    "parentsPage.bulkDeleteConfirm",
+    "documents.pendingCountLabel",
+    "documents.rejectedCountLabel"
+   ],
+   "sampleMissingEn": [
+    "parentsPage.bulkActivateConfirm",
+    "parentsPage.bulkDeleteConfirm",
+    "teachersPage.form.delete",
+    "documents.pendingCountLabel",
+    "documents.rejectedCountLabel"
+   ]
+  },
+  "government": {
+   "counts": {
+    "uz": 526,
+    "ru": 529,
+    "en": 523
+   },
+   "missingVsUz": {
+    "ru": 0,
+    "en": 3
+   },
+   "extraVsUz": {
+    "ru": 3,
+    "en": 0
+   },
+   "sampleMissingRu": [],
+   "sampleMissingEn": [
+    "provision._note",
+    "scope._note",
+    "changePasswordForced._note"
+   ]
+  }
+ },
+ "keysUsedButMissing": {
+  "teacher": [
+   "cancel  (components/MonitoringBulkFill.jsx)",
+   "common.loading  (pages/ChangePassword.jsx)",
+   "nav.exit  (pages/Men.jsx)",
+   "logout  (pages/Settings.jsx)",
+   "brand.role  (parent/components/DesktopTopNav.jsx)",
+   "nav.notifications  (parent/components/DesktopTopNav.jsx)",
+   "brand.role  (parent/components/MobileTopBar.jsx)",
+   "nav.notifications  (parent/components/MobileTopBar.jsx)",
+   "privacyConsent.errorGeneric  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.title  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.intro  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.mediaTitle  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.mediaBody  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.mediaAck  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.i18nTitle  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.i18nBody  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.i18nAck  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.accept  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.decline  (parent/components/PrivacyConsentModal.jsx)",
+   "privacyConsent.footnote  (parent/components/PrivacyConsentModal.jsx)",
+   "activities.title  (parent/pages/Activities.jsx)",
+   "activities.subtitle  (parent/pages/Activities.jsx)",
+   "activities.skill  (parent/pages/Activities.jsx)",
+   "activities.startDate  (parent/pages/Activities.jsx)",
+   "activities.endDate  (parent/pages/Activities.jsx)",
+   "activities.teacher  (parent/pages/Activities.jsx)",
+   "activities.services  (parent/pages/Activities.jsx)",
+   "activities.showDetails  (parent/pages/Activities.jsx)",
+   "activities.empty  (parent/pages/Activities.jsx)",
+   "activities.goal  (parent/pages/Activities.jsx)",
+   "activities.tasks  (parent/pages/Activities.jsx)",
+   "activities.methods  (parent/pages/Activities.jsx)",
+   "activities.progress  (parent/pages/Activities.jsx)",
+   "activities.observation  (parent/pages/Activities.jsx)",
+   "activities.close  (parent/pages/Activities.jsx)",
+   "common.loading  (parent/pages/ChangePassword.jsx)",
+   "parentChat.title  (parent/pages/Chat.jsx)",
+   "parentChat.subtitle  (parent/pages/Chat.jsx)",
+   "cancel  (parent/pages/Chat.jsx)",
+   "save  (parent/pages/Chat.jsx)",
+   "parentChat.placeholder  (parent/pages/Chat.jsx)",
+   "irr.trend.increased  (parent/pages/ChildIRR.jsx)",
+   "irr.trend.decreased  (parent/pages/ChildIRR.jsx)",
+   "irr.trend.unchanged  (parent/pages/ChildIRR.jsx)",
+   "child.ageYears  (parent/pages/childProfile/ChildProfileHero.jsx)",
+   "child.emotionalCriteria.notes  (parent/pages/childProfile/EmotionalMonitoringSection.jsx)",
+   "child.errorNotFound  (parent/pages/ChildProfile.jsx)",
+   "child.errorLoading  (parent/pages/ChildProfile.jsx)",
+   "child.title  (parent/pages/ChildProfile.jsx)",
+   "child.selectPrompt  (parent/pages/ChildProfile.jsx)",
+   "child.notFoundTitle  (parent/pages/ChildProfile.jsx)",
+   "child.notFoundDesc  (parent/pages/ChildProfile.jsx)",
+   "child.notFoundHelp  (parent/pages/ChildProfile.jsx)",
+   "child.selectLabel  (parent/pages/ChildProfile.jsx)",
+   "child.basicInfo  (parent/pages/ChildProfile.jsx)",
+   "child.fullName  (parent/pages/ChildProfile.jsx)",
+   "child.birthDate  (parent/pages/ChildProfile.jsx)",
+   "child.teacher  (parent/pages/ChildProfile.jsx)",
+   "child.specialNeeds  (parent/pages/ChildProfile.jsx)",
+   "child.weeklyResults  (parent/pages/ChildProfile.jsx)",
+   "child.activities  (parent/pages/ChildProfile.jsx)",
+   "child.meals  (parent/pages/ChildProfile.jsx)",
+   "child.media  (parent/pages/ChildProfile.jsx)",
+   "child.section.plan  (parent/pages/ChildProfile.jsx)",
+   "child.row.irr  (parent/pages/ChildProfile.jsx)",
+   "child.row.individualPlan  (parent/pages/ChildProfile.jsx)",
+   "child.row.therapy  (parent/pages/ChildProfile.jsx)",
+   "child.row.attendance  (parent/pages/ChildProfile.jsx)",
+   "child.row.meals  (parent/pages/ChildProfile.jsx)",
+   "child.section.school  (parent/pages/ChildProfile.jsx)",
+   "child.row.rating  (parent/pages/ChildProfile.jsx)",
+   "child.row.contactGovt  (parent/pages/ChildProfile.jsx)",
+   "child.row.myMessages  (parent/pages/ChildProfile.jsx)",
+   "child.section.account  (parent/pages/ChildProfile.jsx)",
+   "child.row.settings  (parent/pages/ChildProfile.jsx)",
+   "child.row.logout  (parent/pages/ChildProfile.jsx)",
+   "dashboard.attendanceUnknown  (parent/pages/Dashboard.jsx)",
+   "dashboard.snapshot  (parent/pages/Dashboard.jsx)",
+   "dashboard.todayAttendance  (parent/pages/Dashboard.jsx)",
+   "dashboard.todayMeals  (parent/pages/Dashboard.jsx)",
+   "dashboard.todayMedia  (parent/pages/Dashboard.jsx)",
+   "dashboard.todayActivities  (parent/pages/Dashboard.jsx)",
+   "dashboard.latestJournalEyebrow  (parent/pages/Dashboard.jsx)",
+   "dashboard.noJournalToday  (parent/pages/Dashboard.jsx)",
+   "dashboard.quickAccess  (parent/pages/Dashboard.jsx)",
+   "help.q1  (parent/pages/Help.jsx)",
+   "help.a1  (parent/pages/Help.jsx)",
+   "help.q2  (parent/pages/Help.jsx)",
+   "help.a2  (parent/pages/Help.jsx)",
+   "help.q3  (parent/pages/Help.jsx)",
+   "help.a3  (parent/pages/Help.jsx)",
+   "help.q4  (parent/pages/Help.jsx)",
+   "help.a4  (parent/pages/Help.jsx)",
+   "help.title  (parent/pages/Help.jsx)",
+   "help.subtitle  (parent/pages/Help.jsx)",
+   "help.contactUs  (parent/pages/Help.jsx)",
+   "help.phone  (parent/pages/Help.jsx)",
+   "help.faq  (parent/pages/Help.jsx)",
+   "help.quickLinks  (parent/pages/Help.jsx)",
+   "help.linkActivities  (parent/pages/Help.jsx)",
+   "help.linkMedia  (parent/pages/Help.jsx)",
+   "help.linkMeals  (parent/pages/Help.jsx)",
+   "help.linkSettings  (parent/pages/Help.jsx)",
+   "parentJournal.loadError  (parent/pages/Journal.jsx)",
+   "parentJournal.noChild  (parent/pages/Journal.jsx)",
+   "parentJournal.title  (parent/pages/Journal.jsx)",
+   "parentJournal.subtitle  (parent/pages/Journal.jsx)",
+   "parentJournal.empty  (parent/pages/Journal.jsx)",
+   "parentJournal.author  (parent/pages/Journal.jsx)",
+   "meals.breakfast  (parent/pages/Meals.jsx)",
+   "meals.lunch  (parent/pages/Meals.jsx)",
+   "meals.snack  (parent/pages/Meals.jsx)",
+   "meals.dinner  (parent/pages/Meals.jsx)",
+   "meals.title  (parent/pages/Meals.jsx)",
+   "meals.subtitle  (parent/pages/Meals.jsx)",
+   "meals.selectDay  (parent/pages/Meals.jsx)",
+   "meals.jumpToToday  (parent/pages/Meals.jsx)",
+   "meals.quantity  (parent/pages/Meals.jsx)",
+   "meals.eaten  (parent/pages/Meals.jsx)",
+   "meals.notEaten  (parent/pages/Meals.jsx)",
+   "meals.note  (parent/pages/Meals.jsx)",
+   "meals.empty  (parent/pages/Meals.jsx)",
+   "meals.dailySummary  (parent/pages/Meals.jsx)",
+   "meals.totalMeals  (parent/pages/Meals.jsx)",
+   "meals.skipped  (parent/pages/Meals.jsx)",
+   "meals.quality  (parent/pages/Meals.jsx)",
+   "meals.excellent  (parent/pages/Meals.jsx)",
+   "media.video.loading  (parent/pages/Media.jsx)",
+   "media.video.failedTitle  (parent/pages/Media.jsx)",
+   "media.video.failedDesc  (parent/pages/Media.jsx)",
+   "media.video.unsupportedTitle  (parent/pages/Media.jsx)",
+   "media.video.unsupportedDesc  (parent/pages/Media.jsx)",
+   "media.video.openNewTab  (parent/pages/Media.jsx)",
+   "media.photoLabel  (parent/pages/Media.jsx)",
+   "media.videoLabel  (parent/pages/Media.jsx)",
+   "media.title  (parent/pages/Media.jsx)",
+   "media.subtitle  (parent/pages/Media.jsx)",
+   "media.filterAllTime  (parent/pages/Media.jsx)",
+   "media.filterToday  (parent/pages/Media.jsx)",
+   "media.filterAll  (parent/pages/Media.jsx)",
+   "media.filterPhoto  (parent/pages/Media.jsx)",
+   "media.filterVideo  (parent/pages/Media.jsx)",
+   "media.empty  (parent/pages/Media.jsx)",
+   "media.back  (parent/pages/Media.jsx)",
+   "media.date  (parent/pages/Media.jsx)",
+   "notifications.title  (parent/pages/Notifications.jsx)",
+   "notifications.subtitle  (parent/pages/Notifications.jsx)",
+   "notifications.markAllRead  (parent/pages/Notifications.jsx)",
+   "notifications.filterAll  (parent/pages/Notifications.jsx)",
+   "notifications.filterUnread  (parent/pages/Notifications.jsx)",
+   "notifications.filterRead  (parent/pages/Notifications.jsx)",
+   "notifications.new  (parent/pages/Notifications.jsx)",
+   "notifications.markAsRead  (parent/pages/Notifications.jsx)",
+   "notifications.delete  (parent/pages/Notifications.jsx)",
+   "notifications.empty  (parent/pages/Notifications.jsx)",
+   "notifications.emptyUnread  (parent/pages/Notifications.jsx)",
+   "notifications.emptyRead  (parent/pages/Notifications.jsx)",
+   "logout  (parent/pages/Settings.jsx)",
+   "ratingPage.errorLoad  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.noTeacher  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.errorRequired  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.success  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.errorSave  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.noSchool  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.success  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.errorSave  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.title  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.subtitle  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.yourTeacher  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.average  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.ratingsCount  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.noPhone  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.starsLabel  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.commentLabel  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.optional  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.commentPlaceholder  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.lastUpdated  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.update  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.submit  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.yourRating  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.noComment  (parent/pages/TeacherRating.jsx)",
+   "ratingPage.summaryTitle  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.title  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.subtitle  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.yourSchool  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.commentLabel  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.commentPlaceholder  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.lastUpdated  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.update  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.submit  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.yourRating  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.noComment  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.summaryTitle  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.average  (parent/pages/TeacherRating.jsx)",
+   "schoolRatingPage.ratingsCount  (parent/pages/TeacherRating.jsx)"
+  ],
+  "admin": [
+   "role.admin  (components/Sidebar.jsx)",
+   "login.hidePassword  (pages/ChangePassword.jsx)",
+   "login.showPassword  (pages/ChangePassword.jsx)",
+   "role.admin  (pages/Profile.jsx)"
+  ],
+  "reception": [
+   "common.loading  (pages/ChangePassword.jsx)",
+   "common.all  (pages/ParentManagement.jsx)",
+   "colStatus  (pages/ParentManagement.jsx)",
+   "common.close  (pages/ParentManagement.jsx)",
+   "common.close  (pages/parents/ChildFormModal.jsx)",
+   "common.close  (pages/parents/ParentFormModal.jsx)",
+   "childStep.years  (pages/ParentWizard/steps/ChildStep.jsx)",
+   "childStep.months  (pages/ParentWizard/steps/ChildStep.jsx)",
+   "common.close  (pages/TeacherManagement.jsx)"
+  ],
+  "government": [
+   "adminDetails.view  (components/tabs/AdminsTab.jsx)",
+   "provision.errors.resetFailed  (components/tabs/GovernmentTab.jsx)",
+   "platform.markReadFailed  (components/tabs/MessagesTab.jsx)",
+   "government.messageDeleted  (components/tabs/MessagesTab.jsx)",
+   "government.deleteError  (components/tabs/MessagesTab.jsx)",
+   "government.governmentLabel  (components/tabs/MessagesTab.jsx)",
+   "government.searchMessages  (components/tabs/MessagesTab.jsx)",
+   "government.loadError  (components/tabs/MessagesTab.jsx)",
+   "government.noSearchResults  (components/tabs/MessagesTab.jsx)",
+   "government.replies  (components/tabs/MessagesTab.jsx)",
+   "government.collapse  (components/tabs/MessagesTab.jsx)",
+   "government.loadMore  (components/tabs/MessagesTab.jsx)",
+   "registrations.certificate  (components/tabs/RegistrationsTab.jsx)",
+   "registrations.passport  (components/tabs/RegistrationsTab.jsx)",
+   "government.setPasswordMissing  (components/tabs/RegistrationsTab.jsx)",
+   "warnings.severityAll  (pages/AIWarnings.jsx)",
+   "warnings.noMatchSeverity  (pages/AIWarnings.jsx)",
+   "warnings.noActiveRegionDesc  (pages/AIWarnings.jsx)",
+   "warnings.noActiveDesc  (pages/AIWarnings.jsx)",
+   "common.cancel  (pages/AIWarnings.jsx)",
+   "government.confirmDeleteWarning  (pages/Platform.jsx)",
+   "provision.actions.confirmDeleteWarning  (pages/Platform.jsx)",
+   "government.confirmRejectRequest  (pages/Platform.jsx)",
+   "government.confirmRejectRequestWarning  (pages/Platform.jsx)",
+   "platform.loadError  (pages/Platform.jsx)",
+   "common.cancel  (pages/Profile.jsx)",
+   "ratings.loadError  (pages/Ratings.jsx)",
+   "govRating.commentRequired  (pages/SchoolDetail.jsx)",
+   "govRating.success  (pages/SchoolDetail.jsx)",
+   "govRating.periodInvalid  (pages/SchoolDetail.jsx)",
+   "govRating.indicatorsRequired  (pages/SchoolDetail.jsx)",
+   "govRating.indicatorInvalid  (pages/SchoolDetail.jsx)",
+   "govRating.schoolNotFound  (pages/SchoolDetail.jsx)",
+   "govRating.failed  (pages/SchoolDetail.jsx)",
+   "govRating.editTitle  (pages/SchoolDetail.jsx)",
+   "govRating.addTitle  (pages/SchoolDetail.jsx)",
+   "govRating.period  (pages/SchoolDetail.jsx)",
+   "govRating.checking  (pages/SchoolDetail.jsx)",
+   "govRating.existingFound  (pages/SchoolDetail.jsx)",
+   "govRating.indicators  (pages/SchoolDetail.jsx)",
+   "govRating.comment  (pages/SchoolDetail.jsx)",
+   "govRating.commentPlaceholder  (pages/SchoolDetail.jsx)",
+   "govRating.updateBtn  (pages/SchoolDetail.jsx)",
+   "govRating.submitBtn  (pages/SchoolDetail.jsx)",
+   "settings.passwordWeak  (pages/Settings.jsx)",
+   "settings.passwordIncorrect  (pages/Settings.jsx)"
+  ]
+ },
+ "consoleAggregate": {
+  "P1": {
+   "file": "absent"
+  },
+  "P2": {
+   "total": 23,
+   "byType": {
+    "error": 23
+   },
+   "distinctErrors": 4,
+   "topErrors": [
+    [
+     "Failed to load resource: the server responded with a status of 401 ()",
+     20
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 400 ()",
+     1
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 500 ()",
+     1
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 403 ()",
+     1
+    ]
+   ]
+  },
+  "P3": {
+   "total": 77,
+   "byType": {
+    "error": 77
+   },
+   "distinctErrors": 3,
+   "topErrors": [
+    [
+     "Failed to load resource: the server responded with a status of 401 ()",
+     50
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 404 ()",
+     22
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 400 ()",
+     5
+    ]
+   ]
+  },
+  "P4": {
+   "total": 39,
+   "byType": {
+    "error": 39
+   },
+   "distinctErrors": 4,
+   "topErrors": [
+    [
+     "Failed to load resource: the server responded with a status of 401 ()",
+     32
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 403 ()",
+     4
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 404 ()",
+     2
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 400 ()",
+     1
+    ]
+   ]
+  },
+  "P5": {
+   "total": 50,
+   "byType": {
+    "error": 50
+   },
+   "distinctErrors": 5,
+   "topErrors": [
+    [
+     "Failed to load resource: the server responded with a status of 401 ()",
+     32
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 404 ()",
+     10
+    ],
+    [
+     "TypeError: L.rating.toFixed is not a function",
+     4
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 400 ()",
+     3
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 500 ()",
+     1
+    ]
+   ]
+  },
+  "P6": {
+   "total": 59,
+   "byType": {
+    "error": 59
+   },
+   "distinctErrors": 6,
+   "topErrors": [
+    [
+     "Failed to load resource: the server responded with a status of 401 ()",
+     35
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 403 ()",
+     20
+    ],
+    [
+     "Access to XMLHttpRequest at 'https://uchqun-production-b484.up.railway.app/api/v1/ai-warnings?isResolved=false",
+     1
+    ],
+    [
+     "Failed to load resource: net::ERR_FAILED",
+     1
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 502 ()",
+     1
+    ],
+    [
+     "Failed to load resource: the server responded with a status of 400 ()",
+     1
+    ]
+   ]
+  }
+ },
+ "missingKeyImpact": {
+  "teacher": {
+   "rendersEnglishDefault": 3,
+   "rendersRawKey": 214,
+   "rawSamples": [
+    "common.loading  (pages/ChangePassword.jsx)",
+    "logout  (pages/Settings.jsx)",
+    "brand.role  (parent/components/DesktopTopNav.jsx)",
+    "nav.notifications  (parent/components/DesktopTopNav.jsx)",
+    "brand.role  (parent/components/MobileTopBar.jsx)",
+    "nav.notifications  (parent/components/MobileTopBar.jsx)",
+    "privacyConsent.errorGeneric  (parent/components/PrivacyConsentModal.jsx)",
+    "privacyConsent.title  (parent/components/PrivacyConsentModal.jsx)"
+   ]
+  },
+  "admin": {
+   "rendersEnglishDefault": 3,
+   "rendersRawKey": 1,
+   "rawSamples": [
+    "role.admin  (pages/Profile.jsx)"
+   ]
+  },
+  "reception": {
+   "rendersEnglishDefault": 8,
+   "rendersRawKey": 3,
+   "rawSamples": [
+    "common.all  (pages/ParentManagement.jsx)",
+    "childStep.years  (pages/ParentWizard/steps/ChildStep.jsx)",
+    "childStep.months  (pages/ParentWizard/steps/ChildStep.jsx)"
+   ]
+  },
+  "government": {
+   "rendersEnglishDefault": 46,
+   "rendersRawKey": 0,
+   "rawSamples": []
+  }
+ }
+}

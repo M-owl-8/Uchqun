@@ -1,0 +1,55 @@
+{
+  "attempts": [
+    {
+      "i": 1,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 2,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 3,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 4,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 5,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 6,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 7,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    },
+    {
+      "i": 8,
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or passw"
+    }
+  ],
+  "verdict": {
+    "lockedAtAttempt": null,
+    "distinctStatuses": [
+      401
+    ],
+    "lastBody": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please check and try again.\"}"
+  },
+  "correct-password-after-failures": {
+    "status": 403,
+    "body": "{\"success\":false,\"error\":\"Account not approved. Please wait for Admin approval.\",\"requiresApproval\":true,\"documentsApproved\":false,\"isActive\":false}"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "D-47-getMeal-by-id": {
+    "status": 200,
+    "bytes": 482,
+    "body": "{\"id\":\"5eed28fa-3765-41ec-8bec-60f3180e972f\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08-14\",\"mealType\":\"Snack\",\"mealName\":\"Sutli kakao va quruq non\",\"description\":\"Iliq holda\",\"quantity\":\"To‘liq\",\"specialNotes\":\"Ishtahasi past bo‘ldi\",\"time\":\"15:30:00\",\"eaten\":true,\"createdAt\":"
+  },
+  "logout-invalidation": {
+    "before": {
+      "s": 200,
+      "b": "{\"success\":true,\"data\":{\"id\":\"5eedb47c-c1a7-4d89-861a-adb60319a9e1\",\"email\":\"direktor@tmm3"
+    },
+    "logout": {
+      "s": 200,
+      "b": "{\"success\":true,\"message\":\"Logged out successfully\"}"
+    },
+    "after": {
+      "me": {
+        "s": 401,
+        "b": "{\"error\":\"No token provided\"}"
+      },
+      "protectedRoute": {
+        "s": 401,
+        "b": "{\"error\":\"No token provided\"}"
+      }
+    },
+    "refreshAfterLogout": {
+      "s": 401,
+      "b": "{\"success\":false,\"error\":\"Refresh token is required\"}"
+    },
+    "shot": "012_session_after-logout.png"
+  },
+  "lockout": {
+    "attempts": [
+      {
+        "attempt": 1,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 2,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 3,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 4,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 5,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 6,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      },
+      {
+        "attempt": 7,
+        "status": 401,
+        "body": "{\"success\":false,\"error\":\"Invalid email or password\",\"message\":\"The email address or password you entered is incorrect. Please che"
+      }
+    ],
+    "distinctStatuses": [
+      401
+    ],
+    "lockedAt": null
+  },
+  "unauthenticated-access": {
+    "admin": {
+      "landedOn": "/login",
+      "redirectedToLogin": true,
+      "body": "U |  | Uchqun |  | Muassasa boshqaruv tizimi |  | Direktor |  | DIREKTOR PANELI |  | Muass"
+    },
+    "government": {
+      "landedOn": "/login",
+      "redirectedToLogin": true,
+      "body": "Oʻzbekiston Respublikasi | Ijtimoiy himoya milliy agentligi |  | YAGONA AXBOROT TIZIMI |  "
+    },
+    "teacher": {
+      "landedOn": "/login",
+      "redirectedToLogin": true,
+      "body": "U | Uchqun | O'qituvchi portali | O'qituvchi | Sinfingiz, darslar va baholar — bir joyda |"
+    },
+    "parent": {
+      "landedOn": "/login",
+      "redirectedToLogin": true,
+      "body": "U | Uchqun | O'qituvchi portali | O'qituvchi | Sinfingiz, darslar va baholar — bir joyda |"
+    },
+    "reception": {
+      "landedOn": "/login",
+      "redirectedToLogin": true,
+      "body": "U | Uchqun | Qabulxona portali | Qabulxona |  | QABULXONA PORTALI |  | Ota-onalar va hujja"
+    }
+  }
+}

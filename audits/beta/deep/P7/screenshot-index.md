@@ -1,0 +1,22 @@
+| File | Defect | Viewport | Role | Action | Path |
+|---|---|---|---|---|---|
+| 001_teacher-tmm3_isolation-probe-context-teacher-tmm3.png | — | desktop | teacher-tmm3 | isolation-probe-context-teacher-tmm3 | /teacher |
+| 002_reception-tmm3_isolation-probe-context-reception-tmm3.png | — | desktop | reception-tmm3 | isolation-probe-context-reception-tmm3 | /reception |
+| 003_admin-tmm3_isolation-probe-context-admin-tmm3.png | — | desktop | admin-tmm3 | isolation-probe-context-admin-tmm3 | /admin |
+| 004_parent-tmm3_isolation-probe-context-parent-tmm3.png | — | desktop | parent-tmm3 | isolation-probe-context-parent-tmm3 | / |
+| 005_admin-tmm3_leak-probe-admin-tmm3.png | — | desktop | admin-tmm3 | leak-probe-admin-tmm3 | /admin |
+| 006_reception-tmm3_leak-probe-reception-tmm3.png | — | desktop | reception-tmm3 | leak-probe-reception-tmm3 | /reception |
+| 007_teacher-tmm3_leak-probe-teacher-tmm3.png | — | desktop | teacher-tmm3 | leak-probe-teacher-tmm3 | /teacher |
+| 008_parent-tmm3_leak-probe-parent-tmm3.png | — | desktop | parent-tmm3 | leak-probe-parent-tmm3 | / |
+| 009_admin-tmm3_D-47-D-47-cross-tenant-read-admin-tmm3.png | D-47 | desktop | admin-tmm3 | D-47-cross-tenant-read-admin-tmm3 | /admin |
+| 010_reception-tmm3_D-47-D-47-cross-tenant-read-reception-tmm3.png | D-47 | desktop | reception-tmm3 | D-47-cross-tenant-read-reception-tmm3 | /reception |
+| 011_admin-tmm3_D-47-D-47-single-meal-by-id.png | D-47 | desktop | admin-tmm3 | D-47-single-meal-by-id | /admin |
+| 012_session_after-logout.png | — | desktop | session | after-logout | /admin |
+| 013_lockout_lockout-start.png | — | desktop | lockout | lockout-start | /login |
+| 014_anon_anon-admin.png | — | desktop | anon | anon-admin | /login |
+| 015_anon_anon-government.png | — | desktop | anon | anon-government | /login |
+| 016_anon_anon-teacher.png | — | desktop | anon | anon-teacher | /login |
+| 017_anon_anon-parent.png | — | desktop | anon | anon-parent | /login |
+| 018_anon_anon-reception.png | — | desktop | anon | anon-reception | /login |
+| 019_lockout-real_lockout-real-start.png | — | desktop | lockout-real | lockout-real-start | /login |
+| 020_lockout-deep_lockout-deep-start.png | — | desktop | lockout-deep | lockout-deep-start | /login |

@@ -1,0 +1,367 @@
+{
+  "foreign-target": {
+    "school": "5eed12eb-5c07-43fb-8179-81b057c773b9",
+    "slug": "smm3",
+    "name": "Samarqand viloyati 3-sonli madad maktabi",
+    "child": null,
+    "teacher": null
+  },
+  "foreign-child-fallback": {
+    "child": "5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+    "schoolId": "5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "name": "Oysha Abdullayeva"
+  },
+  "iso-teacher-tmm3": {
+    "reads": [
+      {
+        "label": "child by id",
+        "path": "/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      },
+      {
+        "label": "child detail (admin path)",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "child IRR",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30/irr",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "teacher child list scope",
+        "path": "/teacher/children",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "attendance for foreign child",
+        "path": "/attendance?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30&startDate=2026-08-14&endDate=2026-08-14",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "activities for foreign child",
+        "path": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "meals for foreign child",
+        "path": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "media for foreign child",
+        "path": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "foreign school",
+        "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "foreign school admin view",
+        "path": "/admin/school/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      }
+    ],
+    "writes": [
+      {
+        "label": "POST attendance for foreign child",
+        "status": 401,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "POST journal to foreign child",
+        "status": 401,
+        "body": "{\"error\":\"No token provided\"}"
+      }
+    ],
+    "suspectedLeaks": []
+  },
+  "iso-reception-tmm3": {
+    "reads": [
+      {
+        "label": "child by id",
+        "path": "/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      },
+      {
+        "label": "child detail (admin path)",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 403,
+        "len": 36,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "label": "child IRR",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30/irr",
+        "status": 403,
+        "len": 36,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "label": "teacher child list scope",
+        "path": "/teacher/children",
+        "status": 200,
+        "len": 18146,
+        "body": "{\"success\":true,\"data\":[{\"id\":\"5eed1e4f-bb74-4985-8a82-bd5c69bf9377\",\"firstName\":\"Diyorbek\",\"lastName\":\"Abdull"
+      },
+      {
+        "label": "attendance for foreign child",
+        "path": "/attendance?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30&startDate=2026-08-14&endDate=2026-08-14",
+        "status": 200,
+        "len": 26,
+        "body": "{\"success\":true,\"data\":[]}"
+      },
+      {
+        "label": "activities for foreign child",
+        "path": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 200,
+        "len": 8645,
+        "body": "[{\"id\":\"5eeda350-be19-41c1-8f33-80636b18e93d\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08"
+      },
+      {
+        "label": "meals for foreign child",
+        "path": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 200,
+        "len": 2,
+        "body": "[]"
+      },
+      {
+        "label": "media for foreign child",
+        "path": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 200,
+        "len": 2,
+        "body": "[]"
+      },
+      {
+        "label": "foreign school",
+        "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 403,
+        "len": 36,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "label": "foreign school admin view",
+        "path": "/admin/school/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 403,
+        "len": 36,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      }
+    ],
+    "writes": [
+      {
+        "label": "POST attendance for foreign child",
+        "status": 400,
+        "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_ACCESS_DENIED\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped"
+      },
+      {
+        "label": "POST journal to foreign child",
+        "status": 400,
+        "body": "{\"success\":false,\"error\":{\"code\":\"JOURNAL_INVALID_DATE\"}}"
+      }
+    ],
+    "suspectedLeaks": [
+      "activities for foreign child"
+    ]
+  },
+  "iso-admin-tmm3": {
+    "reads": [
+      {
+        "label": "child by id",
+        "path": "/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      },
+      {
+        "label": "child detail (admin path)",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      },
+      {
+        "label": "child IRR",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30/irr",
+        "status": 404,
+        "len": 61,
+        "body": "{\"success\":false,\"error\":{\"code\":\"IRR_CHILD_NOT_ACCESSIBLE\"}}"
+      },
+      {
+        "label": "teacher child list scope",
+        "path": "/teacher/children",
+        "status": 200,
+        "len": 18146,
+        "body": "{\"success\":true,\"data\":[{\"id\":\"5eed1e4f-bb74-4985-8a82-bd5c69bf9377\",\"firstName\":\"Diyorbek\",\"lastName\":\"Abdull"
+      },
+      {
+        "label": "attendance for foreign child",
+        "path": "/attendance?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30&startDate=2026-08-14&endDate=2026-08-14",
+        "status": 200,
+        "len": 26,
+        "body": "{\"success\":true,\"data\":[]}"
+      },
+      {
+        "label": "activities for foreign child",
+        "path": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 200,
+        "len": 8645,
+        "body": "[{\"id\":\"5eeda350-be19-41c1-8f33-80636b18e93d\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08"
+      },
+      {
+        "label": "meals for foreign child",
+        "path": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 200,
+        "len": 18596,
+        "body": "[{\"id\":\"5eed28fa-3765-41ec-8bec-60f3180e972f\",\"childId\":\"5eed7fed-b5ea-4db5-8ab7-b60720996a30\",\"date\":\"2026-08"
+      },
+      {
+        "label": "media for foreign child",
+        "path": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 403,
+        "len": 39,
+        "body": "{\"error\":\"Access denied to this child\"}"
+      },
+      {
+        "label": "foreign school",
+        "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 403,
+        "len": 36,
+        "body": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "label": "foreign school admin view",
+        "path": "/admin/school/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      }
+    ],
+    "writes": [
+      {
+        "label": "POST attendance for foreign child",
+        "status": 400,
+        "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_ACCESS_DENIED\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped"
+      },
+      {
+        "label": "POST journal to foreign child",
+        "status": 400,
+        "body": "{\"success\":false,\"error\":{\"code\":\"JOURNAL_INVALID_DATE\"}}"
+      }
+    ],
+    "suspectedLeaks": [
+      "activities for foreign child",
+      "meals for foreign child"
+    ]
+  },
+  "iso-parent-tmm3": {
+    "reads": [
+      {
+        "label": "child by id",
+        "path": "/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 404,
+        "len": 43,
+        "body": "{\"success\":false,\"error\":\"Route not found\"}"
+      },
+      {
+        "label": "child detail (admin path)",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "child IRR",
+        "path": "/admin/children/5eed7fed-b5ea-4db5-8ab7-b60720996a30/irr",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "teacher child list scope",
+        "path": "/teacher/children",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "attendance for foreign child",
+        "path": "/attendance?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30&startDate=2026-08-14&endDate=2026-08-14",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "activities for foreign child",
+        "path": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "meals for foreign child",
+        "path": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "media for foreign child",
+        "path": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "foreign school",
+        "path": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "foreign school admin view",
+        "path": "/admin/school/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+        "status": 401,
+        "len": 29,
+        "body": "{\"error\":\"No token provided\"}"
+      }
+    ],
+    "writes": [
+      {
+        "label": "POST attendance for foreign child",
+        "status": 401,
+        "body": "{\"error\":\"No token provided\"}"
+      },
+      {
+        "label": "POST journal to foreign child",
+        "status": 401,
+        "body": "{\"error\":\"No token provided\"}"
+      }
+    ],
+    "suspectedLeaks": []
+  }
+}

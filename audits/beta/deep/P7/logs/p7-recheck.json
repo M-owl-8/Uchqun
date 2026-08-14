@@ -1,0 +1,17 @@
+[
+  {
+    "label": "login-before-2nd-unlock",
+    "status": 429,
+    "body": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+  },
+  {
+    "label": "unlock-2",
+    "status": 200,
+    "body": "{\"success\":true,\"message\":\"Account lockout cleared\"}"
+  },
+  {
+    "label": "login-after-2nd-unlock",
+    "status": 429,
+    "body": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+  }
+]

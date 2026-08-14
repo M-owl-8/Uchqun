@@ -1,0 +1,99 @@
+{
+ "catalogueMatrix": {
+  "teacher": {
+   "counts": {
+    "uz": 1199,
+    "ru": 1199,
+    "en": 1199
+   },
+   "ruMissingVsUz": 0,
+   "enMissingVsUz": 0,
+   "ruMissingSample": [],
+   "enMissingSample": []
+  },
+  "admin": {
+   "counts": {
+    "uz": 673,
+    "ru": 673,
+    "en": 672
+   },
+   "ruMissingVsUz": 0,
+   "enMissingVsUz": 1,
+   "ruMissingSample": [],
+   "enMissingSample": [
+    "dashboard.parentsCard"
+   ]
+  },
+  "reception": {
+   "counts": {
+    "uz": 478,
+    "ru": 500,
+    "en": 481
+   },
+   "ruMissingVsUz": 6,
+   "enMissingVsUz": 5,
+   "ruMissingSample": [
+    "parentsPage.children",
+    "parentsPage.children_plural",
+    "parentsPage.bulkActivateConfirm",
+    "parentsPage.bulkDeleteConfirm",
+    "documents.pendingCountLabel"
+   ],
+   "enMissingSample": [
+    "parentsPage.bulkActivateConfirm",
+    "parentsPage.bulkDeleteConfirm",
+    "teachersPage.form.delete",
+    "documents.pendingCountLabel",
+    "documents.rejectedCountLabel"
+   ]
+  },
+  "government": {
+   "counts": {
+    "uz": 526,
+    "ru": 529,
+    "en": 523
+   },
+   "ruMissingVsUz": 0,
+   "enMissingVsUz": 3,
+   "ruMissingSample": [],
+   "enMissingSample": [
+    "provision._note",
+    "scope._note",
+    "changePasswordForced._note"
+   ]
+  }
+ },
+ "impact": {
+  "teacher": {
+   "rendersEnglishDefault": 0,
+   "rendersRawKey": 4,
+   "rawKeys": [
+    "common.loading  (pages/ChangePassword.jsx)",
+    "logout  (pages/Settings.jsx)",
+    "common.loading  (parent/pages/ChangePassword.jsx)",
+    "logout  (parent/pages/Settings.jsx)"
+   ]
+  },
+  "admin": {
+   "rendersEnglishDefault": 3,
+   "rendersRawKey": 1,
+   "rawKeys": [
+    "role.admin  (pages/Profile.jsx)"
+   ]
+  },
+  "reception": {
+   "rendersEnglishDefault": 8,
+   "rendersRawKey": 3,
+   "rawKeys": [
+    "common.all  (pages/ParentManagement.jsx)",
+    "childStep.years  (pages/ParentWizard/steps/ChildStep.jsx)",
+    "childStep.months  (pages/ParentWizard/steps/ChildStep.jsx)"
+   ]
+  },
+  "government": {
+   "rendersEnglishDefault": 48,
+   "rendersRawKey": 0,
+   "rawKeys": []
+  }
+ }
+}
