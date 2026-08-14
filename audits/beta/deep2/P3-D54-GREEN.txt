@@ -1,0 +1,6 @@
+    √ a region-scoped government account is refused a child in another region (18 ms)
+    √ a region-scoped government account is allowed a child in its OWN region (6 ms)
+    √ a republic-level government account is allowed any child (5 ms)
+    √ a school-scoped user is still refused another school (unchanged) (3 ms)
+    √ an intake child (schoolId null) is still reachable by government (4 ms)
+Tests:       5 passed, 5 total

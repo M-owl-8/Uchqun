@@ -1,6 +1,7 @@
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
 import User from '../models/User.js';
+import School from '../models/School.js';
 
 /**
  * Validates that a child belongs to the same school as the requesting user.
@@ -26,6 +27,18 @@ export async function validateChildAccess(childId, req) {
   // Scoped users (with schoolId) must match child's schoolId exactly
   if (req.user.schoolId && child.schoolId !== req.user.schoolId) {
     return null;
+  }
+
+  // D-54: government users have no schoolId — they are scoped by govRegionId —
+  // so the check above skipped them entirely and admitted EVERY government
+  // account to EVERY child. A region-scoped account (gov.toshkent) could read a
+  // child in Andijon. Region scoping is enforced on the /government/* endpoints
+  // (Campaign I P6) and was simply absent from this shared path.
+  if (req.user.role === 'government' && req.user.govRegionId) {
+    const school = await School.findByPk(child.schoolId, { attributes: ['id', 'regionId'] });
+    if (!school || school.regionId !== req.user.govRegionId) {
+      return null;
+    }
   }
 
   return child;
