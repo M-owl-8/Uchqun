@@ -248,7 +248,7 @@ COL children|class|varchar|NO|-
 COL children|contactPhone|varchar|YES|-
 COL children|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
 COL children|dateOfBirth|date|NO|-
-COL children|deletedAt|timestamp|YES|-
+COL children|deletedAt|timestamptz|YES|-
 COL children|disabilityType|varchar|NO|-
 COL children|emergencyContact|jsonb|NO|'{}'::jsonb
 COL children|expectedOutcomes|text|YES|-
@@ -343,7 +343,7 @@ COL government_messages|readAt|timestamptz|YES|-
 COL government_messages|recipientLevel|enum_government_messages_recipientLevel|NO|'republic'::"enum_government_messages_recipientLevel"
 COL government_messages|repliedAt|timestamptz|YES|-
 COL government_messages|reply|text|YES|-
-COL government_messages|senderId|uuid|NO|-
+COL government_messages|senderId|uuid|YES|-
 COL government_messages|subject|varchar|NO|-
 COL government_messages|updatedAt|timestamptz|NO|now()
 COL government_school_ratings|comment|text|NO|-
@@ -596,12 +596,12 @@ COL school_ratings|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
 COL schools|address|text|YES|-
 COL schools|categoryId|uuid|YES|-
 COL schools|city|varchar|YES|-
-COL schools|createdAt|timestamp|NO|now()
+COL schools|createdAt|timestamptz|NO|-
 COL schools|description|text|YES|-
 COL schools|director|varchar|YES|-
 COL schools|districtId|uuid|YES|-
 COL schools|email|varchar|YES|-
-COL schools|id|uuid|NO|gen_random_uuid()
+COL schools|id|uuid|NO|-
 COL schools|isActive|bool|NO|true
 COL schools|name|varchar|NO|-
 COL schools|phone|varchar|YES|-
@@ -609,7 +609,7 @@ COL schools|region|varchar|YES|-
 COL schools|regionId|uuid|YES|-
 COL schools|slug|varchar|NO|-
 COL schools|type|varchar|NO|'support'::character varying
-COL schools|updatedAt|timestamp|NO|now()
+COL schools|updatedAt|timestamptz|NO|-
 COL service_plans|child_id|uuid|NO|-
 COL service_plans|created_at|timestamptz|NO|now()
 COL service_plans|created_by|uuid|YES|-
@@ -728,7 +728,7 @@ COL therapy_usages|updatedAt|timestamptz|NO|now()
 COL users|avatar|text|YES|-
 COL users|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
 COL users|createdBy|uuid|YES|-
-COL users|deletedAt|timestamp|YES|-
+COL users|deletedAt|timestamptz|YES|-
 COL users|documentsApproved|bool|NO|false
 COL users|email|varchar|NO|-
 COL users|firstName|varchar|NO|-
@@ -1241,7 +1241,6 @@ CON government_messages|super_admin_messages_isRead_not_null|n|NOT NULL "isRead"
 CON government_messages|super_admin_messages_message_not_null|n|NOT NULL message
 CON government_messages|super_admin_messages_pkey|p|PRIMARY KEY (id)
 CON government_messages|super_admin_messages_senderId_fkey|f|FOREIGN KEY ("senderId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
-CON government_messages|super_admin_messages_senderId_not_null|n|NOT NULL "senderId"
 CON government_messages|super_admin_messages_subject_not_null|n|NOT NULL subject
 CON government_messages|super_admin_messages_updatedAt_not_null|n|NOT NULL "updatedAt"
 CON government_school_ratings|government_school_ratings_comment_not_null|n|NOT NULL comment
@@ -1607,6 +1606,7 @@ CON users|users_mustChangePassword_not_null|n|NOT NULL "mustChangePassword"
 CON users|users_password_not_null|n|NOT NULL password
 CON users|users_pkey|p|PRIMARY KEY (id)
 CON users|users_role_not_null|n|NOT NULL role
+CON users|users_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE SET NULL
 CON users|users_status_check|c|CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'suspended'::character varying, 'archived'::character varying])::text[])))
 CON users|users_updatedAt_not_null|n|NOT NULL "updatedAt"
 CON weekly_monitoring_entries|weekly_monitoring_entries_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE CASCADE
