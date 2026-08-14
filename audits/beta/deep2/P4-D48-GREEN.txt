@@ -1,0 +1,4 @@
+    √ it clears the account lockout store (19 ms)
+    √ it ALSO resets the per-email login rate limiter (5 ms)
+    √ a limiter reset failure does not break the unlock response (5 ms)
+Tests:       3 passed, 3 total

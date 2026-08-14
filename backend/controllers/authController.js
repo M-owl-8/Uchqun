@@ -5,6 +5,7 @@ import User from '../models/User.js';
 import RefreshToken from '../models/RefreshToken.js';
 import logger from '../utils/logger.js';
 import { recordFailedAttempt, clearAttempts, isLockedOut } from '../utils/loginRateLimitStore.js';
+import { loginLimiter } from '../middleware/rateLimiter.js';
 import { revokeJti } from '../middleware/auth.js';
 
 const ACCESS_TOKEN_EXPIRY = '15m';
@@ -313,8 +314,33 @@ export const unlockAccount = async (req, res) => {
     }
     const normalized = email.toLowerCase().trim();
     await clearAttempts(normalized);
-    logger.info('Account lockout cleared by admin', { clearedBy: req.user.id, role: req.user.role });
-    res.json({ success: true, message: 'Account lockout cleared' });
+
+    // D-48: there are THREE sources of LOGIN_RATE_LIMITED — the account lockout
+    // store cleared above, loginLimiter (per email, key `email:<addr>`) and
+    // loginIpLimiter (per IP). This endpoint cleared only the first, so the
+    // documented remedy returned 200 "Account lockout cleared" while the caller
+    // stayed blocked by a per-email bucket it never touched. Reproduced four
+    // times across two campaigns; unknowable until D-08 was fixed and the log
+    // line showed the unlock completing cleanly.
+    //
+    // The IP bucket still has no unlock path (see the RL-004 note in
+    // middleware/rateLimiter.js) — it is keyed by an IP this endpoint does not
+    // know and expires after an hour.
+    let limiterReset = false;
+    try {
+      if (typeof loginLimiter?.resetKey === 'function') {
+        await loginLimiter.resetKey(`email:${normalized}`);
+        limiterReset = true;
+      }
+    } catch (limiterErr) {
+      // never let this break the unlock the admin asked for
+      logger.error('unlockAccount: login limiter reset failed', { error: limiterErr.message });
+    }
+
+    logger.info('Account lockout cleared by admin', {
+      clearedBy: req.user.id, role: req.user.role, limiterReset,
+    });
+    res.json({ success: true, message: 'Account lockout cleared', limiterReset });
   } catch (error) {
     logger.error('unlockAccount error', { error: error.message });
     res.status(500).json({ success: false, error: 'Failed to clear lockout' });

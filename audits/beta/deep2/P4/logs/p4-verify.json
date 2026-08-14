@@ -1,0 +1,36 @@
+{
+  "D-51-after": {
+    "status": 200,
+    "bytes": 67561,
+    "disposition": "attachment; filename=\"uchqun-data-export-5eed8cd8-710c-4ddc-8de9-6616372838e1-20260814.json\"",
+    "topKeys": [
+      "meta",
+      "parent",
+      "children",
+      "schoolRatings",
+      "teacherRatings"
+    ],
+    "children": 1,
+    "head": "{\n  \"meta\": {\n    \"generatedAt\": \"2026-08-14T13:28:01.911Z\",\n    \"parentId\": \"5eed8cd8-710c-4ddc-8de9-6616372838e1\",\n    \"dataWindowFrom\": \"2024-08-14T13:28:01.911Z\",\n    \"dataWind",
+    "shot": "004_parent_D-51-D-51-FIXED-export-200.png"
+  },
+  "d48-lock": {
+    "attempts": 21,
+    "lockedAt": 21,
+    "lastCid": null
+  },
+  "d48-unlock-then-login": [
+    {
+      "path": "/auth/unlock-account",
+      "s": 200,
+      "cid": null,
+      "b": "{\"success\":true,\"message\":\"Account lockout cleared\"}"
+    },
+    {
+      "path": "/auth/login",
+      "s": 429,
+      "cid": null,
+      "b": "{\"success\":false,\"error\":{\"code\":\"LOGIN_RATE_LIMITED\",\"detail\":\"Too many failed login attempts for this account. Please try again later.\"}}"
+    }
+  ]
+}
