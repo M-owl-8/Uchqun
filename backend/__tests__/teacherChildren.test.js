@@ -34,23 +34,80 @@ const mkRes = () => {
   return res;
 };
 
+const row = (obj) => ({ toJSON: () => ({ ...obj }) });
+
 describe('teacherController — getChildren', () => {
   beforeEach(() => jest.clearAllMocks());
 
-  it('200 returns school-scoped children list', async () => {
-    mockChildFindAll.mockResolvedValue([{ id: 'c1', firstName: 'Aisha' }]);
-    const req = { user: { id: 't1', schoolId: 'school-1' } };
+  it('200 returns school-scoped children list for reception/admin', async () => {
+    mockChildFindAll.mockResolvedValue([row({ id: 'c1', firstName: 'Aisha' })]);
+    const req = { user: { id: 'r1', role: 'reception', schoolId: 'school-1' } };
     const res = mkRes();
     await getChildren(req, res);
-    expect(res.json).toHaveBeenCalledWith({ success: true, data: [{ id: 'c1', firstName: 'Aisha' }] });
-    // Confirm schoolId scope is applied
+    expect(res.json).toHaveBeenCalledWith({
+      success: true,
+      data: [{ id: 'c1', firstName: 'Aisha', groupName: null }],
+    });
     const where = mockChildFindAll.mock.calls[0][0].where;
     expect(where.schoolId).toBe('school-1');
+    // requireTeacher also admits reception/admin — they keep school scope, no group filter.
+    expect(Object.getOwnPropertySymbols(where).length).toBe(0);
+  });
+
+  // D-01: returning the whole school here is what let the attendance grid offer a
+  // teacher children the write path then refused, silently discarding their records.
+  it('scopes a teacher to their own groups and legacy parent links', async () => {
+    const GroupModel = (await import('../models/Group.js')).default;
+    const UserModel = (await import('../models/User.js')).default;
+    GroupModel.findAll.mockResolvedValue([{ id: 'g1' }, { id: 'g2' }]);
+    UserModel.findAll.mockResolvedValue([{ id: 'p9' }]);
+    mockChildFindAll.mockResolvedValue([]);
+
+    const req = { user: { id: 't1', role: 'teacher', schoolId: 'school-1' } };
+    const res = mkRes();
+    await getChildren(req, res);
+
+    const where = mockChildFindAll.mock.calls[0][0].where;
+    expect(where.schoolId).toBe('school-1');
+    const orKey = Object.getOwnPropertySymbols(where).find(s => String(s).includes('or'));
+    expect(orKey).toBeDefined();
+    expect(where[orKey]).toHaveLength(2);
+  });
+
+  it('a teacher with no group and no legacy parents gets no children, not the school', async () => {
+    const GroupModel = (await import('../models/Group.js')).default;
+    const UserModel = (await import('../models/User.js')).default;
+    GroupModel.findAll.mockResolvedValue([]);
+    UserModel.findAll.mockResolvedValue([]);
+    mockChildFindAll.mockResolvedValue([]);
+
+    const req = { user: { id: 't1', role: 'teacher', schoolId: 'school-1' } };
+    const res = mkRes();
+    await getChildren(req, res);
+
+    const where = mockChildFindAll.mock.calls[0][0].where;
+    const orKey = Object.getOwnPropertySymbols(where).find(s => String(s).includes('or'));
+    expect(where[orKey]).toEqual([{ id: null }]);
+  });
+
+  // D-12: the teacher dashboard rendered `"" Guruh · 3 bola.` because groupName
+  // was never returned by this endpoint.
+  it('flattens childGroup into groupName', async () => {
+    mockChildFindAll.mockResolvedValue([
+      row({ id: 'c1', firstName: 'Aisha', childGroup: { id: 'g1', name: 'A-guruh' } }),
+    ]);
+    const req = { user: { id: 'r1', role: 'reception', schoolId: 'school-1' } };
+    const res = mkRes();
+    await getChildren(req, res);
+    const data = res.json.mock.calls[0][0].data;
+    expect(data[0].groupName).toBe('A-guruh');
+    expect(data[0].childGroup).toBeUndefined();
+    expect(mockChildFindAll.mock.calls[0][0].include[0].as).toBe('childGroup');
   });
 
   it('500 when DB throws', async () => {
     mockChildFindAll.mockRejectedValue(new Error('DB down'));
-    const req = { user: { id: 't1', schoolId: 'school-1' } };
+    const req = { user: { id: 'r1', role: 'reception', schoolId: 'school-1' } };
     const res = mkRes();
     await getChildren(req, res);
     expect(res.status).toHaveBeenCalledWith(500);

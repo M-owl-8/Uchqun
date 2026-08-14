@@ -258,13 +258,24 @@ export const getChildren = async (req, res) => {
       where[Op.or] = or.length ? or : [{ id: null }];
     }
 
+    // D-12: groupName was never returned, so the teacher dashboard rendered
+    // `"" Guruh · 3 bola.` — literal empty quotes on the first screen of the app.
     const children = await Child.findAll({
       where,
       attributes: ['id', 'firstName', 'lastName', 'dateOfBirth', 'gender', 'schoolId', 'groupId', 'class'],
+      include: [{ model: Group, as: 'childGroup', attributes: ['id', 'name'], required: false }],
       order: [['lastName', 'ASC'], ['firstName', 'ASC']],
     });
 
-    return res.json({ success: true, data: children });
+    return res.json({
+      success: true,
+      data: children.map((c) => {
+        const json = c.toJSON();
+        json.groupName = json.childGroup?.name ?? null;
+        delete json.childGroup;
+        return json;
+      }),
+    });
   } catch (error) {
     logger.error('getChildren error', { error: error.message, stack: error.stack });
     return res.status(500).json({ success: false, error: 'Failed to fetch children' });
