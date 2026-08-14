@@ -1,5 +1,14 @@
 /**
- * D-65 — seven tables existed ONLY because Sequelize sync() once created them.
+ * D-65 — six tables existed ONLY because Sequelize sync() once created them.
+ *
+ * CAMPAIGN III P2 CORRECTION: this migration originally created SEVEN, including
+ * `government_messages`. That was wrong. government_messages is created by
+ * 20260112000000 as `super_admin_messages` and renamed by 20260510000000 — my
+ * P8 analysis counted tables by grepping createTable() and so missed the rename.
+ * Creating it here under its FINAL name meant the rename could not run:
+ *     Migration skipped (already exists)
+ *     error: relation "government_messages" already exists
+ * and a fresh database ended up with BOTH tables. The schema diff found it.
  *
  * CI's new migrate-fresh job applies every migration to an empty database. It
  * failed:
@@ -8,7 +17,7 @@
  *     error: relation "public.groups" does not exist
  *
  * No migration creates `groups`. Nor `notifications`, `ai_warnings`,
- * `business_stats`, `government_messages`, `government_stats` or `news` — seven
+ * `business_stats`, `government_stats` or `news` — six
  * of the 56 model tables. They exist in production because sync() made them at
  * some point, and every migration since has been layered on top of a schema that
  * the migration set alone cannot reproduce.
@@ -38,8 +47,6 @@
  *     groups.schoolId                                  20260401000010
  *     notifications.schoolId                           20260514000004
  *     news.schoolId                                    20260514000003
- *     government_messages.parentMessageId              20260518100001
- *     government_messages.recipientLevel, escalatedFromId  20260527000003
  *     government_stats.regionId                        20260521300000
  * The point is to make the SEQUENCE reproduce production, not to shortcut it.
  */
@@ -60,7 +67,6 @@ export default {
     await sql.query(mkEnum('enum_ai_warnings_targetType', "'school', 'parent', 'teacher', 'child'"));
     await sql.query(mkEnum('enum_business_stats_statType', "'overview', 'users', 'schools', 'revenue', 'subscriptions', 'usage', 'engagement', 'custom'"));
     await sql.query(mkEnum('enum_business_stats_period', "'daily', 'weekly', 'monthly', 'quarterly', 'yearly'"));
-    await sql.query(mkEnum('enum_government_messages_recipientLevel', "'owner', 'region', 'republic'"));
     await sql.query(mkEnum('enum_government_stats_statType', "'overview', 'schools', 'students', 'teachers', 'ratings', 'payments', 'therapies', 'activities', 'complaints'"));
     await sql.query(mkEnum('enum_government_stats_period', "'daily', 'weekly', 'monthly', 'quarterly', 'yearly'"));
     await sql.query(mkEnum('enum_news_targetAudience', "'all', 'parents', 'teachers', 'admins'"));
@@ -130,20 +136,6 @@ export default {
         "generatedAt" timestamp NOT NULL DEFAULT now(),
         "createdAt"   timestamp NOT NULL DEFAULT now(),
         "updatedAt"   timestamp NOT NULL DEFAULT now()
-      );`);
-
-    await sql.query(`
-      CREATE TABLE IF NOT EXISTS "government_messages" (
-        "id"              uuid PRIMARY KEY DEFAULT gen_random_uuid(),
-        "senderId"        uuid NOT NULL,
-        "subject"         varchar(500) NOT NULL,
-        "message"         text NOT NULL,
-        "isRead"          boolean NOT NULL DEFAULT false,
-        "readAt"          timestamptz,
-        "reply"           text,
-        "repliedAt"       timestamptz,
-        "createdAt"       timestamptz NOT NULL DEFAULT now(),
-        "updatedAt"       timestamptz NOT NULL DEFAULT now()
       );`);
 
     await sql.query(`

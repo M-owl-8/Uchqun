@@ -66,6 +66,11 @@ export default {
     await addColumn('users', 'isSuperAdmin', 'boolean DEFAULT false');
     await addColumn('users', 'deletedAt', 'timestamp');
     await addColumn('users', 'createdBy', 'uuid');
+
+    // CAMPAIGN III P2: found by the schema diff. Production has it; no migration
+    // creates it. Same sync()-only class as the eleven above.
+    await addColumn('admin_registration_requests', 'telegramUsername',
+      "varchar(255) NOT NULL DEFAULT ''::character varying");
   },
 
   async down() {
