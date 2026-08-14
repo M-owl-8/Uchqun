@@ -16,7 +16,7 @@ repository is historical and must not be treated as current.
 | D-05 | degrades-use | **FIXED** `452e88d0` | audit-log date column empty | `deep/P6-GOVERNMENT.md` §4 |
 | D-06 | degrades-use | **PARTIAL** `7028767a` | document-upload error path: user string fixed, throw site unknown (blocked by D-08) | `rerun-2026-08-14/` |
 | D-07 | degrades-use | **FIXED** `ec8ed394`, `03906f24` | teacher dashboard showed a placeholder attendance figure | `deep/P3-TEACHER.md` §5 |
-| D-08 | degrades-use | **OPEN** | backend application logs unretrievable; blocks diagnosis of D-06 and D-48 | `deep/P7-CROSS-CUTTING.md` §4 |
+| D-08 | degrades-use | **FIXED** `56d08287` | the logger emitted NOTHING — PII redaction dropped winston's Symbol(message), so every transport discarded every line. Not a Railway problem. | `deep2/P4-OBSERVABILITY.md` §1 |
 | D-09 | degrades-use | **FIXED** `6b3a210f` | Reja tab bar missing Taomlar | `deep/P3-TEACHER.md` §5 |
 | D-10 | degrades-use | **FIXED** `6b3a210f` | admin/government navigation sections missing | `rerun-2026-08-14/` |
 | D-11 | degrades-use | **FIXED** `21ee564e` | parent–teacher rating had no assigned teacher | `deep/P4-PARENT.md` §5 |
@@ -52,10 +52,10 @@ repository is historical and must not be treated as current.
 | D-45 | degrades-use | **OPEN** | government CSV exports English headers and raw enums | `deep/P6-GOVERNMENT.md` §3 |
 | D-46 | degrades-use | **FIXED** `6727bc27` | offline/stale UI untranslated in all portals | `deep/P8-CLOSEOUT.md` §1 |
 | D-47 | blocks-use | **FIXED** `6727bc27` | cross-tenant read of child activity and meal records | `deep/P8-CLOSEOUT.md` §1 |
-| D-48 | degrades-use | **OPEN** | unlock endpoint reports success, does not unlock | `deep/P7-CROSS-CUTTING.md` §3 |
+| D-48 | degrades-use | **FIXED** `e81d1291` | unlock cleared one of three rate-limit buckets; now resets the per-email limiter too | `deep2/P4-OBSERVABILITY.md` §3 |
 | D-49 | degrades-use | **FIXED** `6727bc27` | no frontend i18n gate existed | `deep/P8-CLOSEOUT.md` §1 |
 | D-50 | degrades-use | **PARTIAL** `5c52885d` | CI red on every commit; deploys ungated. Stale test fixed; dependency vulns and the missing gate remain | `deep/P8-CLOSEOUT.md` §2 |
-| D-51 | blocks-use | **OPEN** | `GET /parent/me/export` returns 500 on every parent tested; the right-of-access export has never succeeded in production | `deep2/P2-AUDIT-INTEGRITY.md` §4 |
+| D-51 | blocks-use | **FIXED** `bb3e8f61` | the export selected `telegramUsername`, a column that exists nowhere; verified working, 67,561 bytes | `deep2/P4-OBSERVABILITY.md` §3 |
 | D-52 | degrades-use | **OPEN** | document rejection is irreversible; a mis-rejected document blocks a reception permanently | `deep2/P2-AUDIT-INTEGRITY.md` §5 |
 | D-53 | blocks-use | **FIXED** `fdc57107` | `/service-plans` had no access check; `/therapy/usage` let childId overwrite the school scope and left `where` empty for reception and government | `deep2/P3-ISOLATION.md` §4 |
 | D-54 | blocks-use | **FIXED** `fd5c2aee` | `validateChildAccess` skipped its scope check for any user without a schoolId, admitting every government account to every child in the country | `deep2/P3-ISOLATION.md` §5 |

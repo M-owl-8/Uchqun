@@ -1,0 +1,16 @@
+{
+  "lock": {
+    "attempts": 1,
+    "finalStatus": 429
+  },
+  "unlock-then-login": {
+    "unlock": {
+      "s": 200,
+      "b": "{\"success\":true,\"message\":\"Account lockout cleared\",\"limiterReset\":true}"
+    },
+    "login": {
+      "s": 200,
+      "b": "{\"success\":true,\"expiresIn\":\"15m\",\"user\":{\"id\":\"0ba775ad-db26-4566-9509-73514c982c00\",\"email\":\"k.yusupova@tmm3.uz\",\"firstName\":\"Kamola\",\"las"
+    }
+  }
+}

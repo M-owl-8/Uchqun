@@ -31,3 +31,8 @@
 {"t":"2026-08-14T13:28:14.721Z","role":"d48-admin","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
 {"t":"2026-08-14T13:28:15.144Z","role":"d48-admin","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
 {"t":"2026-08-14T13:28:24.858Z","role":"d48-admin","type":"error","url":"https://admin-production-536f.up.railway.app/admin","text":"Failed to load resource: the server responded with a status of 429 ()"}
+{"t":"2026-08-14T13:36:45.017Z","role":"lock","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T13:36:45.400Z","role":"lock","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T13:36:49.348Z","role":"lock","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 429 ()"}
+{"t":"2026-08-14T13:36:51.003Z","role":"unlock","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T13:36:51.597Z","role":"unlock","type":"error","url":"https://admin-production-536f.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
