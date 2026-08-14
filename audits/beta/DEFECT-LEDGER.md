@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-51.
+**Numbering:** ids are permanent and never reused. New defects continue from D-53.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -55,6 +55,8 @@ repository is historical and must not be treated as current.
 | D-48 | degrades-use | **OPEN** | unlock endpoint reports success, does not unlock | `deep/P7-CROSS-CUTTING.md` §3 |
 | D-49 | degrades-use | **FIXED** `6727bc27` | no frontend i18n gate existed | `deep/P8-CLOSEOUT.md` §1 |
 | D-50 | degrades-use | **PARTIAL** `5c52885d` | CI red on every commit; deploys ungated. Stale test fixed; dependency vulns and the missing gate remain | `deep/P8-CLOSEOUT.md` §2 |
+| D-51 | blocks-use | **OPEN** | `GET /parent/me/export` returns 500 on every parent tested; the right-of-access export has never succeeded in production | `deep2/P2-AUDIT-INTEGRITY.md` §4 |
+| D-52 | degrades-use | **OPEN** | document rejection is irreversible; a mis-rejected document blocks a reception permanently | `deep2/P2-AUDIT-INTEGRITY.md` §5 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused

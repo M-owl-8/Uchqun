@@ -1,0 +1,7 @@
+{
+  "note": "SIM-Malika sits at smm3 after the transfer probe; the tmm3 admin cannot transfer a child it no longer owns. Restored by direct SQL in the same phase, disclosed in the artifact.",
+  "reapprove-document": {
+    "s": 400,
+    "b": "{\"error\":\"Document is not pending approval\"}"
+  }
+}

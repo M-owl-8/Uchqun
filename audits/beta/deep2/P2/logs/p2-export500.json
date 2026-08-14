@@ -1,0 +1,15 @@
+{
+  "result": {
+    "status": 500,
+    "headers": {
+      "ct": "application/json; charset=utf-8"
+    },
+    "body": "{\"success\":false,\"error\":{\"code\":\"DATA_EXPORT_FAILED\"}}"
+  },
+  "shot": "018_parent3_D-51-D-51-parent-data-export-500.png",
+  "consoleErrors": [
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "Failed to load resource: the server responded with a status of 401 ()",
+    "Failed to load resource: the server responded with a status of 500 ()"
+  ]
+}

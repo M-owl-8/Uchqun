@@ -1,0 +1,28 @@
+{
+  "own-school": {
+    "s": 200,
+    "b": "{\"success\":true,\"data\":{\"id\":\"5eedd253-e422-44d5-82a8-a37d03df93dd\",\"name\":\"Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi\",\"slug\":\"tmm3\",\"type\":\"support\",\"address\":\"Toshkent shahri, Maktab ko‘ch"
+  },
+  "reject-document": {
+    "docId": "5eedf20f-e6f8-4b9d-8feb-4a71d0e0e27d",
+    "userId": "5eedd81f-c17c-49a0-8061-24267c18dae7",
+    "s": 200,
+    "b": "{\"success\":true,\"message\":\"Document rejected\",\"data\":{\"id\":\"5eedf20f-e6f8-4b9d-8feb-4a71d0e0e27d\",\"userId\":\"5eedd81f-c17c-49a0-8061-24267c18dae7\",\"documentType\":\"identification\",\"fileName\":\"shaxsni-ta",
+    "shot": "013_admin-tmm3_audit-reject-document-ok.png"
+  },
+  "transfer": {
+    "fromSchool": "5eedd253-e422-44d5-82a8-a37d03df93dd",
+    "s": 200,
+    "b": "{\"success\":true,\"data\":{\"id\":\"925f570f-51a3-4424-88d1-594bd49bf674\",\"schoolId\":\"5eed12eb-5c07-43fb-8179-81b057c773b9\",\"fromSchoolId\":\"5eedd253-e422-44d5-82a8-a37d03df93dd\",\"toSchoolId\":\"5eed12eb-5c07-43fb-8179-81b057c773b9\"}}",
+    "shot": "014_admin-tmm3_audit-transfer-ok.png"
+  },
+  "data_export": {
+    "s": 500,
+    "bytes": 55,
+    "shot": "016_parent2_audit-data-export-ok.png"
+  },
+  "readiness-after": {
+    "s": 200,
+    "b": "{\"status\":\"ready\",\"timestamp\":\"2026-08-14T12:30:21.825Z\",\"checks\":{\"database\":\"healthy\",\"auditLog\":\"healthy\"},\"audit\":{\"writes\":4,\"failures\":0,\"lastAction\":null,\"lastFailureAt\":null}}"
+  }
+}

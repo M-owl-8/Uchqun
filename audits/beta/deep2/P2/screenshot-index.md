@@ -1,0 +1,20 @@
+| File | Defect | Viewport | Role | Action | Path |
+|---|---|---|---|---|---|
+| 001_parent-tmm3_data-export-context.png | — | desktop | parent-tmm3 | data-export-context | /settings |
+| 002_parent-tmm3_audit-data-export.png | — | desktop | parent-tmm3 | audit-data-export | /settings |
+| 003_admin-tmm3_audit-deactivate.png | — | desktop | admin-tmm3 | audit-deactivate | /admin |
+| 004_admin-tmm3_audit-documents-queue.png | — | desktop | admin-tmm3 | audit-documents-queue | /admin/documents |
+| 005_admin-tmm3_audit-reject-document.png | — | desktop | admin-tmm3 | audit-reject-document | /admin/documents |
+| 006_admin-tmm3_audit-transfer.png | — | desktop | admin-tmm3 | audit-transfer | /admin/documents |
+| 007_parent-tmm3_data-export-context.png | — | desktop | parent-tmm3 | data-export-context | /settings |
+| 008_parent-tmm3_audit-data-export.png | — | desktop | parent-tmm3 | audit-data-export | /settings |
+| 009_admin-tmm3_audit-deactivate.png | — | desktop | admin-tmm3 | audit-deactivate | /admin |
+| 010_admin-tmm3_audit-documents-queue.png | — | desktop | admin-tmm3 | audit-documents-queue | /admin/documents |
+| 011_admin-tmm3_audit-reject-document.png | — | desktop | admin-tmm3 | audit-reject-document | /admin/documents |
+| 012_admin-tmm3_audit-transfer.png | — | desktop | admin-tmm3 | audit-transfer | /admin/documents |
+| 013_admin-tmm3_audit-reject-document-ok.png | — | desktop | admin-tmm3 | audit-reject-document-ok | /admin |
+| 014_admin-tmm3_audit-transfer-ok.png | — | desktop | admin-tmm3 | audit-transfer-ok | /admin |
+| 015_parent2_data-export-context-2.png | — | desktop | parent2 | data-export-context-2 | /settings |
+| 016_parent2_audit-data-export-ok.png | — | desktop | parent2 | audit-data-export-ok | /settings |
+| 017_parent3_export-500-context.png | — | desktop | parent3 | export-500-context | /settings |
+| 018_parent3_D-51-D-51-parent-data-export-500.png | D-51 | desktop | parent3 | D-51-parent-data-export-500 | /settings |

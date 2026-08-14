@@ -1,0 +1,60 @@
+{
+  "data_export": {
+    "s": 429,
+    "bytes": 61,
+    "shot": "008_parent-tmm3_audit-data-export.png"
+  },
+  "receptions": [
+    {
+      "id": "b10facdf-f447-4b57-9e4b-e16b2b7e8455",
+      "email": "sh.umarova@tmm3.uz",
+      "isActive": false
+    },
+    {
+      "id": "5eedd81f-c17c-49a0-8061-24267c18dae7",
+      "email": "qabul2@tmm3.uz",
+      "isActive": true
+    },
+    {
+      "id": "0ba775ad-db26-4566-9509-73514c982c00",
+      "email": "k.yusupova@tmm3.uz",
+      "isActive": true
+    },
+    {
+      "id": "5eed803b-af80-497a-8e1e-6ac3e120a758",
+      "email": "qabul@tmm3.uz",
+      "isActive": true
+    }
+  ],
+  "deactivate": {
+    "target": "sh.umarova@tmm3.uz",
+    "s": 200,
+    "b": "{\"success\":true,\"message\":\"Reception account deactivated successfully\",\"data\":{\"id\":\"b10facdf-f447-4b57-9e4b-e16b2b7e8455\",\"email\":\"sh.umarova@tmm3.uz\",\"firstNa",
+    "shot": "009_admin-tmm3_audit-deactivate.png"
+  },
+  "pending-documents": {
+    "status": 200,
+    "list": [
+      {
+        "id": "5eedf20f-e6f8-4b9d-8feb-4a71d0e0e27d",
+        "type": "identification",
+        "st": "pending"
+      }
+    ]
+  },
+  "reject-document": {
+    "id": "5eedf20f-e6f8-4b9d-8feb-4a71d0e0e27d",
+    "s": 400,
+    "b": "{\"error\":\"Validation failed\",\"message\":\"Some inputs failed validation\",\"details\":[{\"field\":\"rejectionReason\",\"message\":\"rejectionReason is required\"}]}",
+    "shot": "011_admin-tmm3_audit-reject-document.png"
+  },
+  "transfer": {
+    "s": 400,
+    "b": "{\"success\":false,\"error\":{\"code\":\"CHILD_TRANSFER_TARGET_REQUIRED\"}}",
+    "shot": "012_admin-tmm3_audit-transfer.png"
+  },
+  "readiness-after": {
+    "s": 200,
+    "b": "{\"status\":\"ready\",\"timestamp\":\"2026-08-14T12:28:58.467Z\",\"checks\":{\"database\":\"healthy\",\"auditLog\":\"healthy\"},\"audit\":{\"writes\":2,\"failures\":0,\"lastAction\":null,\"lastFailureAt\":null}}"
+  }
+}
