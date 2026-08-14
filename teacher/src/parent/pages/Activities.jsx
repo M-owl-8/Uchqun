@@ -147,7 +147,11 @@ const Activities = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <p className="text-xs text-p-sepia-500 font-semibold mb-0.5">{t('activities.teacher') || 'O\'qituvchi'}</p>
-                        <p className="text-sm font-bold text-p-sepia-900 truncate">{activity.teacher}</p>
+                        {/* D-57: "Zebo Ashurova" needs 104px and the card gives 74,
+                            so every activity card cut the teacher's name mid-word —
+                            at 1440px, not just on a phone. A truncated person's name
+                            is worse than a second line. */}
+                        <p className="text-sm font-bold text-p-sepia-900 break-words">{activity.teacher}</p>
                       </div>
                     </div>
                   )}
@@ -250,7 +254,7 @@ const Activities = () => {
                     </div>
                     <div className="min-w-0 flex-1">
                       <p className="text-xs text-p-sepia-500 font-semibold mb-1">{t('activities.teacher') || 'O\'qituvchi'}</p>
-                      <p className="text-sm font-bold text-p-sepia-900 truncate">{selectedActivity.teacher}</p>
+                      <p className="text-sm font-bold text-p-sepia-900 break-words">{selectedActivity.teacher}</p>
                     </div>
                   </div>
                 )}
