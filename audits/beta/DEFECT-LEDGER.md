@@ -7,7 +7,7 @@ repository is historical and must not be treated as current.
 **Last re-derived:** 2026-08-15 · Campaign II P9 · from HEAD `028ef934`
 **Score:** 7.4 / 10 at close of CONSOLIDATION II — see `deep2/P9-CLOSEOUT.md` §3 (5.5 at start).
 
-**Numbering:** ids are permanent and never reused. New defects continue from D-67.
+**Numbering:** ids are permanent and never reused. New defects continue from D-69.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -75,8 +75,10 @@ repository is historical and must not be treated as current.
 | D-62 | blocks-trust | **FIXED** `cc9467e2` | `createTherapy` wrote a TherapyUsage row against a child in another school — a cross-tenant WRITE | `deep2/P8-GATES.md` |
 | D-63 | latent | **FIXED** `cc9467e2` | `startTherapy`'s "Admin can access any child" branch — UNREACHABLE behind `requireRole('parent','teacher')`; fix retained as defence in depth. Campaign II described it as live; that was wrong | `deep3/P1-DISCLOSURE.md` §1.1 |
 | D-64 | blocks-trust | **FIXED** `cc9467e2` | `getMonitoringByChild` let **admin and reception** (not government — `requireTeacher` excludes it) read any school's emotional-monitoring records | `deep3/P1-DISCLOSURE.md` §1.1 |
-| D-65 | blocks-trust | **FIXED** `a25a9b9e` | the database could not be rebuilt from migrations — 7 model tables existed only because sync() once created them | `deep2/P8-GATES.md` |
+| D-65 | blocks-trust | **FIXED** `34663c38` | the database could not be rebuilt from migrations; now proven to reproduce production EXACTLY by schema diff (1859 = 1859), not by absence of a crash | `deep3/P2-SCHEMA.md` §4 |
 | D-66 | degrades-use | **FIXED** `a25a9b9e` | both commit hooks were broken: lint-staged mis-scoped eslint so migrations could never lint, and commit-msg demanded an id from a file that does not exist | `deep2/P8-GATES.md` |
+| D-67 | blocks-trust | **FIXED** `1b1df13c` | CI ran PostgreSQL 15 against a production running 18.4 — three major versions, in the two jobs meant to prove production behaviour | `deep3/P2-SCHEMA.md` §2 |
+| D-68 | blocks-trust | **OPEN** | Railway's GitHub integration deploys every push independently of GitHub Actions — the Campaign II deploy gate has never gated production | `deep3/P2-SCHEMA.md` §8 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused
