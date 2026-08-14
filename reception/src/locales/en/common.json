@@ -97,7 +97,12 @@
     "showPassword": "Show password",
     "view": "View",
     "selected": "selected",
-    "export": "Export"
+    "export": "Export",
+    "offline": "You are offline. Some data may be outdated.",
+    "staleData": "Showing cached data.",
+    "retry": "Retry",
+    "all": "All",
+    "loading": "Loading…"
   },
   "gender": {
     "male": "Male",
@@ -544,7 +549,9 @@
     "years_one": "{{count}} year",
     "years_other": "{{count}} years",
     "months_one": "{{count}} month",
-    "months_other": "{{count}} months"
+    "months_other": "{{count}} months",
+    "years": "years",
+    "months": "months"
   },
   "disabilityType": {
     "autism": "Autism spectrum",

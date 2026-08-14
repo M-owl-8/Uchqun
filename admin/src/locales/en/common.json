@@ -518,7 +518,10 @@
   "common": {
     "networkError": "Network error. Please try again.",
     "saving": "Saving…",
-    "loading": "Loading…"
+    "loading": "Loading…",
+    "offline": "You are offline. Some data may be outdated.",
+    "staleData": "Showing cached data.",
+    "retry": "Retry"
   },
   "errors": {
     "NETWORK_ERROR": "Network error",
@@ -750,5 +753,8 @@
     "sectionDocumentation": "Documentation",
     "sectionCareQuality": "Care Quality",
     "sectionConditions": "Conditions"
+  },
+  "role": {
+    "admin": "Director"
   }
 }

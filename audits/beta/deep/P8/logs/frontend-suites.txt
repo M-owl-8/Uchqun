@@ -1,0 +1,12 @@
+=== admin ===
+ Test Files  32 passed (32)
+      Tests  171 passed (171)
+=== teacher ===
+ Test Files  19 passed (19)
+      Tests  167 passed (167)
+=== reception ===
+ Test Files  9 passed (9)
+      Tests  84 passed (84)
+=== government ===
+ Test Files  1 failed | 16 passed (17)
+      Tests  2 failed | 122 passed (124)

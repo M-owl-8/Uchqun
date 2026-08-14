@@ -1,0 +1,10 @@
+    × a teacher receives only their own children (4 ms)
+    × a teacher asking for a child outside their groups is refused (1 ms)
+    √ admin still sees the whole school
+    × re-marking updates markedBy to the caller, not the original marker (6 ms)
+    × an overwrite writes an audit row
+    × clearing an absence is logged as a safeguarding event (1 ms)
+    × a date years before the child existed is refused (1 ms)
+    √ a recent date is still accepted (1 ms)
+Test Suites: 1 failed, 1 total
+Tests:       6 failed, 2 passed, 8 total

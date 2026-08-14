@@ -673,7 +673,11 @@
     "timeoutError": "So'rov vaqti tugadi.",
     "save": "Saqlash",
     "edit": "Tahrirlash",
-    "delete": "O'chirish"
+    "delete": "O'chirish",
+    "offline": "Siz oflaynsiz. Ba'zi ma'lumotlar eskirgan bo'lishi mumkin.",
+    "staleData": "Keshdagi ma'lumotlar ko'rsatilmoqda.",
+    "retry": "Qayta urinish",
+    "loading": "Yuklanmoqda…"
   },
   "attendance": {
     "errorLoadChildren": "Bolalar ro'yxatini yuklashda xatolik",
@@ -1046,5 +1050,6 @@
     "unselectAll": "Hammasini olib tashlash",
     "allSaved": "Hammasi saqlandi",
     "partialFail": "{{ok}} ta saqlandi, {{fail}} ta saqlanmadi"
-  }
+  },
+  "logout": "Chiqish"
 }

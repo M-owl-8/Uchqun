@@ -236,6 +236,7 @@
   "ATTENDANCE_DATE_REQUIRED": "Har bir yozuvda sana bo'lishi kerak.",
   "ATTENDANCE_INVALID_DATE": "Iltimos, to'g'ri sana kiriting (YYYY-MM-DD).",
   "ATTENDANCE_FUTURE_DATE": "Kelajakdagi sana uchun davomat belgilab bo'lmaydi.",
+  "ATTENDANCE_DATE_TOO_EARLY": "Davomatni bunchalik uzoq o‘tmish uchun kiritib bo‘lmaydi.",
   "ATTENDANCE_INVALID_STATUS": "Iltimos, to'g'ri holat tanlang.",
   "ATTENDANCE_ACCESS_DENIED": "Siz bu bolaning yozuviga kira olmaysiz.",
   "ATTENDANCE_SAVE_FAILED": "Davomat saqlab bo'lmadi. Iltimos, qaytadan urinib ko'ring.",

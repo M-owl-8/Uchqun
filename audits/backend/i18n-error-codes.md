@@ -55,6 +55,7 @@ Introduced: TP-DAVOMAT-REWORK (2026-06-06)
 | `ATTENDANCE_DATE_REQUIRED` | 400 | A record in the batch is missing `date` | "Each record must include a date." |
 | `ATTENDANCE_INVALID_DATE` | 400 | `date` is not a valid ISO 8601 date string | "Please enter a valid date (YYYY-MM-DD)." |
 | `ATTENDANCE_FUTURE_DATE` | 400 | `date` is after today | "Attendance cannot be recorded for a future date." |
+| `ATTENDANCE_DATE_TOO_EARLY` | 400 | `date` is further in the past than ATTENDANCE_MAX_BACKDATE_DAYS (default 365). D-26: there was an upper bound but no lower one, so 2020-01-06 was accepted for a child born in 2018. | "Attendance cannot be recorded this far in the past." |
 | `ATTENDANCE_INVALID_STATUS` | 400 | `status` is not one of `present`, `absent`, `home_leave`, `sick`, `hospitalized` | "Please select a valid presence status." |
 | `ATTENDANCE_ACCESS_DENIED` | 400 (per-record) | Child does not belong to this school, or teacher is not assigned to the child | "You do not have access to this child's record." |
 | `ATTENDANCE_SAVE_FAILED` | 400/500 | Database error while saving a record | "Failed to save attendance. Please try again." |

@@ -4,8 +4,11 @@ import Child from '../models/Child.js';
 import logger from '../utils/logger.js';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
 import { emitToUser } from '../config/socket.js';
+import { logAudit } from '../utils/auditLogger.js';
 
 const VALID_STATUSES = ['present', 'absent', 'home_leave', 'sick', 'hospitalized'];
+// D-26: how far back attendance may be recorded or corrected.
+const MAX_BACKDATE_DAYS = parseInt(process.env.ATTENDANCE_MAX_BACKDATE_DAYS, 10) || 365;
 
 export const createAttendance = async (req, res) => {
   try {
@@ -39,6 +42,13 @@ export const createAttendance = async (req, res) => {
       if (attendanceDate > todayBound) {
         results.errors.push({ childId, code: 'ATTENDANCE_FUTURE_DATE' }); continue;
       }
+      // D-26: there was an upper bound but no lower one, so 2020-01-06 was
+      // accepted for a child born in 2018 at a school created in 2026.
+      // Back-dating is legitimate for corrections; back-dating by years is not.
+      const earliestBound = new Date(todayBound.getTime() - MAX_BACKDATE_DAYS * 24 * 60 * 60 * 1000);
+      if (attendanceDate < earliestBound) {
+        results.errors.push({ childId, code: 'ATTENDANCE_DATE_TOO_EARLY' }); continue;
+      }
 
       try {
         const child = await validateChildAccess(childId, req);
@@ -51,9 +61,35 @@ export const createAttendance = async (req, res) => {
         const existing = await ChildAttendance.findOne({ where: { childId, date } });
 
         if (existing) {
+          const previousStatus = existing.status;
+          const previousMarker = existing.markedBy;
           existing.status = status;
           if (note !== undefined) existing.note = note || null;
+          // D-27: only status and note were written, so an overwrite by
+          // reception or admin was still attributed to the teacher who first
+          // marked the day. Whoever writes the row owns the row.
+          existing.markedBy = req.user.id;
+          existing.teacherId = req.user.id;
           await existing.save();
+
+          // D-27: an overwrite left no trace anywhere. Record it.
+          logAudit({
+            actorId: req.user.id,
+            actorRole: req.user.role,
+            action: 'attendance_overwrite',
+            entity: 'child_attendance',
+            entityId: `${childId}:${date}`,
+            schoolId: child.schoolId,
+            meta: { childId, date, previousStatus, newStatus: status, previousMarker },
+          });
+
+          // D-27: clearing an absence erased a safeguarding marker silently.
+          if (previousStatus === 'absent' && status !== 'absent') {
+            logger.warn('ATTENDANCE_ABSENCE_CLEARED safeguarding marker removed', {
+              childId, date, previousStatus, newStatus: status,
+              clearedBy: req.user.id, clearedByRole: req.user.role, previousMarker,
+            });
+          }
         } else {
           await ChildAttendance.create({
             childId,
@@ -107,7 +143,31 @@ export const listAttendance = async (req, res) => {
   try {
     const where = { schoolId: req.user.schoolId };
 
-    if (req.query.childId) where.childId = req.query.childId;
+    // D-31: this scoped on schoolId alone, so a teacher of 21 children was
+    // served all 61 children in the school — names, dates and statuses.
+    // isTeacherAssignedToChild guards the write path; the read path had no
+    // equivalent. Narrow teachers to the children they actually teach.
+    if (req.user.role === 'teacher') {
+      if (req.query.childId) {
+        const child = await validateChildAccess(req.query.childId, req);
+        if (!child || !(await isTeacherAssignedToChild(child, req))) {
+          return res.status(403).json({
+            success: false,
+            error: { code: 'ATTENDANCE_CHILD_NOT_ACCESSIBLE' },
+          });
+        }
+        where.childId = req.query.childId;
+      } else {
+        const own = await Child.findAll({ where: { schoolId: req.user.schoolId }, attributes: ['id', 'groupId', 'parentId'] });
+        const mine = [];
+        for (const c of own) {
+          if (await isTeacherAssignedToChild(c, req)) mine.push(c.id);
+        }
+        where.childId = { [Op.in]: mine };
+      }
+    } else if (req.query.childId) {
+      where.childId = req.query.childId;
+    }
     if (req.query.date) where.date = req.query.date;
     if (req.query.startDate && req.query.endDate) {
       where.date = { [Op.between]: [req.query.startDate, req.query.endDate] };

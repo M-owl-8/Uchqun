@@ -320,13 +320,12 @@
     },
     "validation": {
       "required": "Iltimos, barcha kerakli maydonlarni to'ldiring",
-      "allFieldsRequired": "Barcha maydonlar to'ldirilishi kerak",
+      "allFieldsRequired": "Barcha maydonlarni to'ldiring",
       "invalidEmail": "Email formati noto'g'ri",
       "passwordMinLength": "Parol kamida 8 belgidan iborat bo'lishi kerak",
       "passwordStrength": "Parolda katta harf, kichik harf va raqam bo'lishi kerak",
       "passwordStrengthHint": "Kamida 8 belgi, katta harf, kichik harf, raqam",
       "passwordMismatch": "Parollar mos kelmaydi",
-      "allFieldsRequired": "Barcha maydonlarni to'ldiring",
       "schoolRequired": "Muassasani tanlang",
       "localPartInvalid": "Email qismi: 1-32 belgi, kichik harf/raqam/nuqta/chiziq"
     },
@@ -512,7 +511,10 @@
     "error": "Xatolik yuz berdi",
     "notFound": "Topilmadi",
     "unknown": "Noma'lum",
-    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring."
+    "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
+    "offline": "Siz oflaynsiz. Ba'zi ma'lumotlar eskirgan bo'lishi mumkin.",
+    "staleData": "Keshdagi ma'lumotlar ko'rsatilmoqda.",
+    "retry": "Qayta urinish"
   },
   "page404": {
     "heading": "404",

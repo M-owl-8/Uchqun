@@ -320,13 +320,12 @@
     },
     "validation": {
       "required": "Please fill in all required fields",
-      "allFieldsRequired": "All fields are required",
+      "allFieldsRequired": "Please fill in all fields",
       "invalidEmail": "Invalid email format",
       "passwordMinLength": "Password must be at least 8 characters",
       "passwordStrength": "Password must contain uppercase, lowercase, and a number",
       "passwordStrengthHint": "Min 8 chars, uppercase, lowercase, number",
       "passwordMismatch": "Passwords do not match",
-      "allFieldsRequired": "Please fill in all fields",
       "schoolRequired": "Please select a school",
       "localPartInvalid": "Email prefix: 1-32 chars, lowercase letters/digits/dots/dashes"
     },
@@ -524,7 +523,10 @@
     "error": "An error occurred",
     "notFound": "Not found",
     "unknown": "Unknown",
-    "networkError": "Network error. Please try again."
+    "networkError": "Network error. Please try again.",
+    "offline": "You are offline. Some data may be outdated.",
+    "staleData": "Showing cached data.",
+    "retry": "Retry"
   },
   "scope": {
     "national": "All regions",

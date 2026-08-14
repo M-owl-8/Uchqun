@@ -1,0 +1,22 @@
+Frontend i18n gate
+
+  raw keys that would reach a user : 8
+  English defaultValue fallbacks   : 59
+
+  RAW KEYS (hard failure — a user sees the dotted identifier):
+    teacher: common.loading  teacher/src/pages/ChangePassword.jsx
+    teacher: logout  teacher/src/pages/Settings.jsx
+    teacher: common.loading  teacher/src/parent/pages/ChangePassword.jsx
+    teacher: logout  teacher/src/parent/pages/Settings.jsx
+    admin: role.admin  admin/src/pages/Profile.jsx
+    reception: common.all  reception/src/pages/ParentManagement.jsx
+    reception: childStep.years  reception/src/pages/ParentWizard/steps/ChildStep.jsx
+    reception: childStep.months  reception/src/pages/ParentWizard/steps/ChildStep.jsx
+
+  Reported, not failing:
+    admin: role.admin  admin/src/components/Sidebar.jsx
+    admin: login.hidePassword  admin/src/pages/ChangePassword.jsx
+    admin: login.showPassword  admin/src/pages/ChangePassword.jsx
+    admin/en: 1 key(s) present in uz but missing here
+    reception: common.loading  reception/src/pages/ChangePassword.jsx
+    reception: colStatus  reception/src/pages/ParentManagement.jsx

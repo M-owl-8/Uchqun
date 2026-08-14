@@ -1,0 +1,4 @@
+admin:       Tests  171 passed (171)
+teacher:       Tests  167 passed (167)
+reception:       Tests  84 passed (84)
+government:       Tests  124 passed (124)

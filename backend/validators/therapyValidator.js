@@ -2,8 +2,14 @@ import { body, param } from 'express-validator';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
+// D-28: this list disagreed with models/Therapy.js and with the UI select, so
+// two of the three types a teacher could pick ("music", "content") were
+// rejected with a 400. The DB enum is the binding constraint — changing it
+// needs a migration — so the validator aligns to it, not the other way round.
+// Keep in sync with models/Therapy.js therapyType; enforced by
+// __tests__/validators/therapyEnumParity.test.js.
 const THERAPY_TYPES = [
-  'video', 'audio', 'article', 'exercise', 'game', 'breathing', 'meditation', 'other',
+  'music', 'video', 'content', 'art', 'physical', 'speech', 'occupational', 'other',
 ];
 
 const CONTENT_TYPES = ['video', 'audio', 'article', 'interactive', 'other'];

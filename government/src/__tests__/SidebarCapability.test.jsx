@@ -29,7 +29,16 @@ vi.mock('../context/AuthContext', () => ({
 
 const Sidebar = (await import('../components/Sidebar.jsx')).default;
 
-// Hrefs for the 8 nav items defined in NAV_ITEMS (students/teachers/parents removed from primary nav)
+// Hrefs for the nav items defined in NAV_ITEMS.
+//
+// DEEP HARDENING P8: this file asserted 8 links with the comment
+// "students/teachers/parents removed from primary nav". That removal was
+// reversed in the product — the sidebar renders 11 links, and P6 exercised
+// all three restored routes (O'quvchilar 138, Tarbiyachilar 32, Ota-onalar
+// 136) with correct region scoping. The test was left asserting the old
+// contract and had been failing on main since at least 2026-08-10, which is
+// why CI was red across every commit of this campaign. Updated to the
+// contract the product actually has.
 const HREF = {
   dashboard:  '/government',
   schools:    '/government/schools',
@@ -39,6 +48,9 @@ const HREF = {
   platform:   '/government/platform',
   profile:    '/government/profile',
   settings:   '/government/settings',
+  students:   '/government/students',
+  teachers:   '/government/teachers',
+  parents:    '/government/parents',
 };
 const ALL_NAV_HREFS = Object.values(HREF);
 
@@ -57,24 +69,24 @@ const getNavHrefs = () =>
 describe('Sidebar — capability binding', () => {
   beforeEach(() => vi.clearAllMocks());
 
-  it('republic-main: all 8 nav links rendered', () => {
+  it('republic-main: all 11 nav links rendered', () => {
     mockUseAuth.mockReturnValue(
       makeCtx({ govType: 'main', isRepublic: true, isRegionAccount: false, hasCapability: () => true })
     );
     render(<Sidebar />);
     const hrefs = getNavHrefs();
     ALL_NAV_HREFS.forEach((h) => expect(hrefs).toContain(h));
-    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(8);
+    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(ALL_NAV_HREFS.length);
   });
 
-  it('region-main: all 8 nav links rendered', () => {
+  it('region-main: all 11 nav links rendered', () => {
     mockUseAuth.mockReturnValue(
       makeCtx({ govType: 'main', isRepublic: false, isRegionAccount: true, hasCapability: () => true })
     );
     render(<Sidebar />);
     const hrefs = getNavHrefs();
     ALL_NAV_HREFS.forEach((h) => expect(hrefs).toContain(h));
-    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(8);
+    expect(hrefs.filter((h) => h.startsWith('/government')).length).toBe(ALL_NAV_HREFS.length);
   });
 
   it('secondary {canViewSchools}: only dashboard + schools + profile + settings', () => {

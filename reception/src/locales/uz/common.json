@@ -97,7 +97,12 @@
     "showPassword": "Parolni ko'rsatish",
     "view": "Ko'rish",
     "selected": "tanlangan",
-    "export": "Eksport"
+    "export": "Eksport",
+    "offline": "Siz oflaynsiz. Ba'zi ma'lumotlar eskirgan bo'lishi mumkin.",
+    "staleData": "Keshdagi ma'lumotlar ko'rsatilmoqda.",
+    "retry": "Qayta urinish",
+    "all": "Hammasi",
+    "loading": "Yuklanmoqda…"
   },
   "gender": {
     "male": "Erkak",
@@ -541,7 +546,9 @@
     "years_one": "{{count}} yosh",
     "years_other": "{{count}} yosh",
     "months_one": "{{count}} oy",
-    "months_other": "{{count}} oy"
+    "months_other": "{{count}} oy",
+    "years": "yosh",
+    "months": "oy"
   },
   "disabilityType": {
     "autism": "Autizm spektri",

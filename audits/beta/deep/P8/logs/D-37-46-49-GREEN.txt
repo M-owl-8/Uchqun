@@ -1,0 +1,70 @@
+Frontend i18n gate
+
+  raw keys that would reach a user : 0
+  English defaultValue fallbacks   : 57
+
+  Reported, not failing:
+    admin: login.hidePassword  admin/src/pages/ChangePassword.jsx
+    admin: login.showPassword  admin/src/pages/ChangePassword.jsx
+    admin/en: 1 key(s) present in uz but missing here
+    reception: colStatus  reception/src/pages/ParentManagement.jsx
+    reception: common.close  reception/src/pages/ParentManagement.jsx
+    reception: common.close  reception/src/pages/parents/ChildFormModal.jsx
+    reception: common.close  reception/src/pages/parents/ParentFormModal.jsx
+    reception: common.close  reception/src/pages/TeacherManagement.jsx
+    reception: common.close  reception/src/pages/TeacherManagement.jsx
+    reception: common.close  reception/src/pages/TeacherManagement.jsx
+    reception/ru: 6 key(s) present in uz but missing here
+    reception/en: 5 key(s) present in uz but missing here
+    government: adminDetails.view  government/src/components/tabs/AdminsTab.jsx
+    government: provision.errors.resetFailed  government/src/components/tabs/GovernmentTab.jsx
+    government: platform.markReadFailed  government/src/components/tabs/MessagesTab.jsx
+    government: government.messageDeleted  government/src/components/tabs/MessagesTab.jsx
+    government: government.deleteError  government/src/components/tabs/MessagesTab.jsx
+    government: government.governmentLabel  government/src/components/tabs/MessagesTab.jsx
+    government: government.searchMessages  government/src/components/tabs/MessagesTab.jsx
+    government: government.loadError  government/src/components/tabs/MessagesTab.jsx
+    government: government.noSearchResults  government/src/components/tabs/MessagesTab.jsx
+    government: government.replies  government/src/components/tabs/MessagesTab.jsx
+    government: government.collapse  government/src/components/tabs/MessagesTab.jsx
+    government: government.loadMore  government/src/components/tabs/MessagesTab.jsx
+    government: registrations.certificate  government/src/components/tabs/RegistrationsTab.jsx
+    government: registrations.passport  government/src/components/tabs/RegistrationsTab.jsx
+    government: government.setPasswordMissing  government/src/components/tabs/RegistrationsTab.jsx
+    government: warnings.severityAll  government/src/pages/AIWarnings.jsx
+    government: warnings.noMatchSeverity  government/src/pages/AIWarnings.jsx
+    government: warnings.noActiveRegionDesc  government/src/pages/AIWarnings.jsx
+    government: warnings.noActiveDesc  government/src/pages/AIWarnings.jsx
+    government: common.cancel  government/src/pages/AIWarnings.jsx
+    government: government.confirmDeleteWarning  government/src/pages/Platform.jsx
+    government: provision.actions.confirmDeleteWarning  government/src/pages/Platform.jsx
+    government: government.confirmRejectRequest  government/src/pages/Platform.jsx
+    government: government.confirmRejectRequestWarning  government/src/pages/Platform.jsx
+    government: platform.loadError  government/src/pages/Platform.jsx
+    government: platform.loadError  government/src/pages/Platform.jsx
+    government: common.cancel  government/src/pages/Profile.jsx
+    government: ratings.loadError  government/src/pages/Ratings.jsx
+    government: govRating.commentRequired  government/src/pages/SchoolDetail.jsx
+    government: govRating.success  government/src/pages/SchoolDetail.jsx
+    government: govRating.commentRequired  government/src/pages/SchoolDetail.jsx
+    government: govRating.periodInvalid  government/src/pages/SchoolDetail.jsx
+    government: govRating.indicatorsRequired  government/src/pages/SchoolDetail.jsx
+    government: govRating.indicatorInvalid  government/src/pages/SchoolDetail.jsx
+    government: govRating.schoolNotFound  government/src/pages/SchoolDetail.jsx
+    government: govRating.failed  government/src/pages/SchoolDetail.jsx
+    government: govRating.editTitle  government/src/pages/SchoolDetail.jsx
+    government: govRating.addTitle  government/src/pages/SchoolDetail.jsx
+    government: govRating.period  government/src/pages/SchoolDetail.jsx
+    government: govRating.checking  government/src/pages/SchoolDetail.jsx
+    government: govRating.existingFound  government/src/pages/SchoolDetail.jsx
+    government: govRating.indicators  government/src/pages/SchoolDetail.jsx
+    government: govRating.comment  government/src/pages/SchoolDetail.jsx
+    government: govRating.commentPlaceholder  government/src/pages/SchoolDetail.jsx
+    government: govRating.updateBtn  government/src/pages/SchoolDetail.jsx
+    government: govRating.submitBtn  government/src/pages/SchoolDetail.jsx
+    government: settings.passwordWeak  government/src/pages/Settings.jsx
+    government: settings.passwordIncorrect  government/src/pages/Settings.jsx
+    … and 1 more
+
+✅ PASSED — 0 raw key(s), 57 English fallback(s)
+

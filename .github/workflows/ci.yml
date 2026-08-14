@@ -121,6 +121,23 @@ jobs:
       - name: Run backend tests with coverage
         run: cd backend && npm test -- --coverage
 
+  # DEEP HARDENING P8 / D-49 — backend/scripts/verify-i18n.js validates the
+  # backend ERROR CATALOGUE only. It passed 252/252 while the UI shipped 8 raw
+  # i18n keys that reached users as dotted identifiers. This gate reads the
+  # frontend catalogues and every t() call site, and fails the build on any
+  # raw key. English defaultValue fallbacks are reported, not failed.
+  i18n:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Backend error-catalogue parity
+        run: node backend/scripts/verify-i18n.js
+      - name: Frontend i18n gate (fails on raw keys)
+        run: node scripts/verify-frontend-i18n.mjs
+
   test-frontend:
     runs-on: ubuntu-latest
     strategy:

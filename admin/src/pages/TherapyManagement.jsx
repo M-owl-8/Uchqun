@@ -304,10 +304,14 @@ const TherapyManagement = () => {
                     <span>{therapy.duration} {t('therapy.min', { defaultValue: 'min' })}</span>
                   </div>
                 )}
-                {therapy.rating && (
+                {/* D-43: rating is DECIMAL(3,2) and Sequelize serialises it as
+                    a string, so .toFixed() on it threw and the ErrorBoundary
+                    swallowed the whole route. Same guard as
+                    teacher/src/pages/therapy/TherapyCard.jsx:28. */}
+                {therapy.rating != null && !isNaN(Number(therapy.rating)) && (
                   <div className="flex items-center gap-1">
                     <Star className="w-4 h-4 text-warning-500 fill-yellow-500" />
-                    <span>{therapy.rating.toFixed(1)}</span>
+                    <span>{Number(therapy.rating).toFixed(1)}</span>
                   </div>
                 )}
                 {therapy.usageCount && (

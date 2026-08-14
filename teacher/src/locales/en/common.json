@@ -673,7 +673,11 @@
     "timeoutError": "Request timed out.",
     "save": "Save",
     "edit": "Edit",
-    "delete": "Delete"
+    "delete": "Delete",
+    "offline": "You are offline. Some data may be outdated.",
+    "staleData": "Showing cached data.",
+    "retry": "Retry",
+    "loading": "Loading…"
   },
   "attendance": {
     "errorLoadChildren": "Error loading children list",
@@ -1046,5 +1050,6 @@
     "unselectAll": "Unselect all",
     "allSaved": "All saved",
     "partialFail": "{{ok}} saved, {{fail}} failed"
-  }
+  },
+  "logout": "Log out"
 }

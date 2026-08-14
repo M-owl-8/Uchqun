@@ -519,7 +519,10 @@
   "common": {
     "networkError": "Ошибка сети. Попробуйте снова.",
     "saving": "Сохранение…",
-    "loading": "Загрузка…"
+    "loading": "Загрузка…",
+    "offline": "Вы офлайн. Некоторые данные могут быть устаревшими.",
+    "staleData": "Показаны кэшированные данные.",
+    "retry": "Повторить"
   },
   "errors": {
     "NETWORK_ERROR": "Ошибка сети",
@@ -751,5 +754,8 @@
     "sectionDocumentation": "Документация",
     "sectionCareQuality": "Качество ухода",
     "sectionConditions": "Условия"
+  },
+  "role": {
+    "admin": "Директор"
   }
 }

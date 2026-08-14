@@ -519,7 +519,10 @@
   "common": {
     "networkError": "Tarmoq xatosi. Qayta urinib ko'ring.",
     "saving": "Saqlanmoqda…",
-    "loading": "Yuklanmoqda…"
+    "loading": "Yuklanmoqda…",
+    "offline": "Siz oflaynsiz. Ba'zi ma'lumotlar eskirgan bo'lishi mumkin.",
+    "staleData": "Keshdagi ma'lumotlar ko'rsatilmoqda.",
+    "retry": "Qayta urinish"
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",
@@ -751,5 +754,8 @@
     "sectionDocumentation": "Hujjatchilik",
     "sectionCareQuality": "Parvarish sifati",
     "sectionConditions": "Shart-sharoit"
+  },
+  "role": {
+    "admin": "Direktor"
   }
 }

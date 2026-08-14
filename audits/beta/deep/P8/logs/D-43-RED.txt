@@ -1,0 +1,6 @@
+ ❯ src/__tests__/pages/therapyRating.test.js (4 tests | 2 failed) 14ms
+     × the source never calls .toFixed() directly on therapy.rating 8ms
+     × the rating is coerced with Number() before formatting 2ms
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+ Test Files  1 failed (1)
+      Tests  2 failed | 2 passed (4)

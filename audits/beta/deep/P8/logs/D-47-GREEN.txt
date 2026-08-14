@@ -1,0 +1,8 @@
+    √ getActivities refuses a foreign childId for role=admin (4 ms)
+    √ getMeals refuses a foreign childId for role=admin (1 ms)
+    √ getActivities refuses a foreign childId for role=reception (1 ms)
+    √ getMeals refuses a foreign childId for role=reception (1 ms)
+    √ getMeal refuses a single meal belonging to another school's child (1 ms)
+    √ getActivities returns records when the child IS accessible (2 ms)
+Test Suites: 1 passed, 1 total
+Tests:       6 passed, 6 total

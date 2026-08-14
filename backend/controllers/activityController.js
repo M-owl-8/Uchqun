@@ -53,6 +53,14 @@ export const getActivities = async (req, res) => {
       }
     } else if (req.user.role === 'admin' || req.user.role === 'reception') {
       if (childId) {
+        // D-47: a supplied childId must still be inside the caller's school.
+        // Previously this branch assigned where.childId directly and skipped
+        // the school scope in the else-if below, so an admin at school A could
+        // read school B's activity records by passing that child's id.
+        const child = await validateChildAccess(childId, req);
+        if (!child) {
+          return res.status(403).json({ error: 'Access denied to this child' });
+        }
         where.childId = childId;
       } else if (req.user.schoolId) {
         const schoolChildren = await Child.findAll({

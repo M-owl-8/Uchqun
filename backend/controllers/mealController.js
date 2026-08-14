@@ -51,8 +51,16 @@ export const getMeals = async (req, res) => {
       } else {
         where.childId = { [Op.in]: childIds };
       }
-    } else if (req.user.role === 'admin') {
+    } else if (req.user.role === 'admin' || req.user.role === 'reception') {
       if (childId) {
+        // D-47: a supplied childId must still be inside the caller's school.
+        // Previously this branch assigned where.childId directly and skipped
+        // the school scope in the else-if below, so an admin at school A could
+        // read school B's meal records by passing that child's id.
+        const child = await validateChildAccess(childId, req);
+        if (!child) {
+          return res.status(403).json({ error: 'Access denied to this child' });
+        }
         where.childId = childId;
       } else if (req.user.schoolId) {
         const schoolChildren = await Child.findAll({
@@ -147,8 +155,17 @@ export const getMeal = async (req, res) => {
       
       const childIds = children.map(c => c.id);
       where.childId = { [Op.in]: childIds };
-    } else if (req.user.role === 'admin') {
-      // Admin can see all meals - no filter needed
+    } else if (req.user.role === 'admin' || req.user.role === 'reception') {
+      // D-47: "Admin can see all meals" was a cross-tenant read — an admin at
+      // school A could fetch a meal belonging to a child at school B by its id.
+      // Scope the lookup to the caller's own school.
+      if (req.user.schoolId) {
+        const schoolChildren = await Child.findAll({
+          where: { schoolId: req.user.schoolId },
+          attributes: ['id'],
+        });
+        where.childId = { [Op.in]: schoolChildren.map(c => c.id) };
+      }
     } else {
       const child = await Child.findOne({
         where: { parentId: req.user.id },

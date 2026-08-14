@@ -1,0 +1,6 @@
+    × the validator accepts exactly what the model enum allows (7 ms)
+    × every type the UI offers is accepted by the validator (1 ms)
+    √ every type the UI offers is storable by the model (1 ms)
+    × the UI default (music) is usable end to end (4 ms)
+Test Suites: 1 failed, 1 total
+Tests:       3 failed, 1 passed, 4 total

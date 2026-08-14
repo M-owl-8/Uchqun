@@ -236,6 +236,7 @@
   "ATTENDANCE_DATE_REQUIRED": "Ҳар бир ёзувда сана бўлиши керак.",
   "ATTENDANCE_INVALID_DATE": "Илтимос, тўғри сана киритинг (ЙЙЙЙ-ОО-КК).",
   "ATTENDANCE_FUTURE_DATE": "Келажакдаги сана учун даомат белгилаб бўлмайди.",
+  "ATTENDANCE_DATE_TOO_EARLY": "Даоматни бунчалик узоқ ўтмиш учун киритиб бўлмайди.",
   "ATTENDANCE_INVALID_STATUS": "Илтимос, тўғри ҳолат танланг.",
   "ATTENDANCE_ACCESS_DENIED": "Сиз бу болaning ёзувига кира олмайсиз.",
   "ATTENDANCE_SAVE_FAILED": "Даомат сақлаб бўлмади. Илтимос, қайтадан уриниб кўринг.",
