@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-61.
+**Numbering:** ids are permanent and never reused. New defects continue from D-67.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -69,6 +69,12 @@ repository is historical and must not be treated as current.
 | D-58 | degrades-use | **FIXED** `92d16c82` | `admin/src/i18n.js:30` fell back to English while the three other portals fell back to Uzbek | `deep2/P6-I18N.md` §3 |
 | D-59 | blocks-trust | **FIXED** `25fac0d7` | teacher vitest silently ran 11–12 of 19 test files and exited 0 — 56 tests never ran while the suite reported green | `deep2/P7-FIXES.md` §2 |
 | D-60 | blocks-trust | **FIXED** `6f6a6c39` | an approved identification document could never be revoked — a reception approved in error kept access permanently | `deep2/P7-FIXES.md` §7 |
+| D-61 | blocks-trust | **FIXED** `cc9467e2` | `getMealPlans` read any child's meal plans for any role with no access check at all | `deep2/P8-GATES.md` |
+| D-62 | blocks-trust | **FIXED** `cc9467e2` | `createTherapy` wrote a TherapyUsage row against a child in another school — a cross-tenant WRITE | `deep2/P8-GATES.md` |
+| D-63 | blocks-trust | **FIXED** `cc9467e2` | `startTherapy` carried the comment "Admin can access any child" and did exactly that | `deep2/P8-GATES.md` |
+| D-64 | blocks-trust | **FIXED** `cc9467e2` | `getMonitoringByChild` checked parent and teacher; admin, reception and government fell through unchecked | `deep2/P8-GATES.md` |
+| D-65 | blocks-trust | **FIXED** `a25a9b9e` | the database could not be rebuilt from migrations — 7 model tables existed only because sync() once created them | `deep2/P8-GATES.md` |
+| D-66 | degrades-use | **FIXED** `a25a9b9e` | both commit hooks were broken: lint-staged mis-scoped eslint so migrations could never lint, and commit-msg demanded an id from a file that does not exist | `deep2/P8-GATES.md` |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused

@@ -6,6 +6,34 @@
  */
 
 async function alterFk(queryInterface, table, column, refTable, refColumn, onDelete, setNullable = false) {
+  // D-65: this helper assumed every (table, column) below exists. Three of them
+  // do not, and never did:
+  //     chat_messages.sender_id      the column is senderId
+  //     super_admin_messages         the table is now government_messages
+  //     teacher_resources.teacherId  no such column
+  // On production those three silently achieved nothing while the migration was
+  // still recorded as applied — chat_messages has NO foreign keys at all today,
+  // though this migration claims to give it one. On an EMPTY database the first
+  // of them is fatal, which is how the rebuild was found to be impossible.
+  //
+  // Skip what is not there, and say which. The migration already applied exactly
+  // this tolerance to `payments` via try/catch; it is made explicit and reported
+  // rather than left to throw. This does not change any environment where the
+  // migration has already run.
+  const [[{ present }]] = await queryInterface.sequelize.query(`
+    SELECT (
+      to_regclass('public.${table}') IS NOT NULL
+      AND EXISTS (
+        SELECT 1 FROM information_schema.columns
+        WHERE table_schema = current_schema()
+          AND table_name = '${table}' AND column_name = '${column}'
+      )
+    ) AS present;`);
+  if (!present) {
+    console.log(`  ↷ skipping FK ${table}.${column} — table or column does not exist`);
+    return;
+  }
+
   // Find existing FK constraint name
   const [rows] = await queryInterface.sequelize.query(`
     SELECT tc.constraint_name
