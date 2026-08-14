@@ -200,12 +200,14 @@
       "updateChild": "Save",
       "activate": "Activate",
       "suspend": "Suspend",
-      "resetCredentials": "Reset Password"
+      "resetCredentials": "Reset Password",
+      "actions": "Actions"
     },
     "wizard": {
       "draftRestorePrompt": "Saved draft found. Would you like to continue?",
-      "draftResume": "Continue",
-      "draftDiscard": "Discard"
+      "draftResume": "Restore draft",
+      "draftDiscard": "Discard",
+      "draftResumeConfirm": "The data you have entered will be replaced by the draft. Continue?"
     },
     "editChildTitle": "Edit child",
     "noChildrenRegistered": "No children registered",
@@ -407,7 +409,9 @@
       "credentialsNote": "Share this password with the parent. They should change it on first login.",
       "addAnother": "Add another",
       "backToDashboard": "Back to Dashboard"
-    }
+    },
+    "stepIncomplete": "Required fields are empty: {{fields}}",
+    "leaveConfirm": "Your entered data is not saved. Leave this page?"
   },
   "palette": {
     "placeholder": "Search for a parent, teacher, group or action…",

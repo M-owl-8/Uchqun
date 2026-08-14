@@ -64,6 +64,8 @@ const ParentManagement = () => {
   const [loading, setLoading] = useState(!cache.get('reception:parents'));
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  // D-25: which row's action menu is open by click/tap (hover still works)
+  const [openMenuId, setOpenMenuId] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [showChildModal, setShowChildModal] = useState(false);
   const [showEditChildModal, setShowEditChildModal] = useState(false);
@@ -613,12 +615,28 @@ const ParentManagement = () => {
                     </td>
                     <td className="px-4 py-3 num text-slate-500 text-right hidden md:table-cell">{joined}</td>
                     <td className="px-4 py-3">
+                      {/* D-25: this menu was `hidden group-hover:block` behind a
+                          button with no onClick, so on any touch device every
+                          per-parent action — edit, add child, activate/suspend,
+                          delete, reset password — was unreachable. It now opens
+                          on click/tap and keyboard focus as well as hover. */}
                       <div className="relative group">
-                        <button className="p-1 text-slate-500 hover:text-slate-800">
+                        <button
+                          type="button"
+                          aria-haspopup="menu"
+                          aria-expanded={openMenuId === parent.id}
+                          aria-label={t('parentsPage.buttons.actions', { defaultValue: 'Amallar' })}
+                          onClick={() => setOpenMenuId((id) => (id === parent.id ? null : parent.id))}
+                          className="p-1 text-slate-500 hover:text-slate-800"
+                        >
                           <MoreHorizontal className="w-4 h-4" strokeWidth={2} />
                         </button>
                         {/* Action menu (simple) */}
-                        <div className="hidden group-hover:block absolute right-0 top-full mt-1 w-36 rounded-md border border-slate-200 bg-surface shadow-md py-1.5 z-10 text-[13px]">
+                        <div
+                          role="menu"
+                          onClick={() => setOpenMenuId(null)}
+                          className={`${openMenuId === parent.id ? 'block' : 'hidden'} group-hover:block group-focus-within:block absolute right-0 top-full mt-1 w-36 rounded-md border border-slate-200 bg-surface shadow-md py-1.5 z-10 text-[13px]`}
+                        >
                           <button
                             onClick={() => handleEdit(parent)}
                             className="w-full px-3 py-1.5 text-left hover:bg-slate-50 text-slate-800"

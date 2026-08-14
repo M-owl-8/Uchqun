@@ -198,12 +198,14 @@
       "updateChild": "Saqlash",
       "activate": "Faollashtirish",
       "suspend": "To'xtatish",
-      "resetCredentials": "Parolni tiklash"
+      "resetCredentials": "Parolni tiklash",
+      "actions": "Amallar"
     },
     "wizard": {
       "draftRestorePrompt": "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?",
-      "draftResume": "Davom etish",
-      "draftDiscard": "Bekor qilish"
+      "draftResume": "Qoralamani tiklash",
+      "draftDiscard": "Bekor qilish",
+      "draftResumeConfirm": "Formadagi kiritilgan ma'lumotlar qoralama bilan almashtiriladi. Davom etilsinmi?"
     },
     "editChildTitle": "Bolani tahrirlash",
     "noChildrenRegistered": "Bola ro'yxatdan o'tmagan",
@@ -403,7 +405,9 @@
       "credentialsNote": "Bu parolni ota-onaga yetkazing. Birinchi kirishda o'zgartirishni tavsiya eting.",
       "addAnother": "Yana qo'shish",
       "backToDashboard": "Boshqaruv paneliga"
-    }
+    },
+    "stepIncomplete": "Quyidagi majburiy maydonlar to'ldirilmagan: {{fields}}",
+    "leaveConfirm": "Kiritilgan ma'lumotlar saqlanmagan. Sahifadan chiqilsinmi?"
   },
   "palette": {
     "placeholder": "Ota-ona, tarbiyachi, guruh yoki amal qidiring…",
