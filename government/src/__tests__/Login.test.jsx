@@ -8,6 +8,9 @@ vi.mock('../context/AuthContext', () => ({
 }));
 vi.mock('react-router-dom', () => ({
   useNavigate: () => vi.fn(),
+  // D-55: Login now reads location.state.from to return the user to the deep
+  // link they requested before being bounced to /login.
+  useLocation: () => ({ pathname: '/login', state: null }),
 }));
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({ t: (_key, opts) => opts?.defaultValue ?? _key }),
