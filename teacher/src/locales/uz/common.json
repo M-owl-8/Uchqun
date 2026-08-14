@@ -122,7 +122,8 @@
     "linkReflection": "Kun jurnali",
     "absent": "{{name}} bugun yo'q",
     "needsAttention": "{{name}} · diqqat kerak",
-    "contactParent": "Ota-onaga sabab so'rab xabar yo'llang"
+    "contactParent": "Ota-onaga sabab so'rab xabar yo'llang",
+    "notRecorded": "Davomat hali olinmagan"
   },
   "parentsPage": {
     "title": "Ota-onalar ro'yxati",

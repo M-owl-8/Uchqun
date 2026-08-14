@@ -17,13 +17,20 @@ const STATE_COLORS = {
   absent:  '#959BA8',
   late:    '#C58A1F',
   sick:    '#4D6584',
+  // D-07: attendance not yet taken is its own state, not a green "present" dot.
+  unset:   '#FFFFFE',
 };
 
 function ChildStateDot({ state }) {
+  const isUnset = !state || state === 'unset';
   return (
     <span
       className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full border-2 border-surface"
-      style={{ background: STATE_COLORS[state] || STATE_COLORS.absent }}
+      style={
+        isUnset
+          ? { background: '#FFFFFE', boxShadow: 'inset 0 0 0 1.5px #DDE0E6' }
+          : { background: STATE_COLORS[state] || STATE_COLORS.absent }
+      }
     />
   );
 }
@@ -57,18 +64,26 @@ function buildData(statsRes, childrenRes) {
   const rawStats    = statsRes.status    === 'fulfilled' ? (statsRes.value.data?.data    || statsRes.value.data    || {}) : {};
   const rawChildren = childrenRes.status === 'fulfilled' ? (childrenRes.value.data?.data || childrenRes.value.data || []) : [];
 
+  // D-07: `a || b || c` treated a legitimate zero as "no data" and fell through to
+  // the head-count, so a day with NO attendance taken rendered "3/3 keldi · 100%".
+  // Coalesce on null/undefined only, and keep "not yet recorded" distinguishable
+  // from "recorded as zero present".
+  const marked = rawChildren.filter(c => c.attendanceState && c.attendanceState !== 'unset').length;
+  const recorded = rawStats.present != null || marked > 0;
+
   return {
     stats: {
-      present: rawStats.present || rawChildren.filter(c => c.attendanceState === 'present').length || rawChildren.length,
-      total:   rawStats.total   || rawChildren.length,
-      parents: rawStats.parents || rawStats.unreadMessages || 0,
+      present: rawStats.present ?? rawChildren.filter(c => c.attendanceState === 'present').length,
+      total:   rawStats.total   ?? rawChildren.length,
+      parents: rawStats.parents ?? rawStats.unreadMessages ?? 0,
+      recorded,
     },
     children: Array.isArray(rawChildren) ? rawChildren : [],
   };
 }
 
 const FALLBACK_DATA = {
-  stats:    { present: 0, total: 0, parents: 0 },
+  stats:    { present: 0, total: 0, parents: 0, recorded: false },
   children: [],
 };
 
@@ -154,7 +169,12 @@ const Dashboard = () => {
           </h1>
           <p className="mt-2 text-[14px] text-slate-600 self-end">
             {t('dashboard.greeting', { name: user?.firstName })}
-            {children.length > 0 && ` "${children[0]?.groupName || ''}" ${t('dashboard.groupLabel')} · ${children.length} bola.`}
+            {/* D-12: rendered as literal empty quotes — `"" Guruh · 3 bola.` — because
+                /teacher/children never returned groupName. It does now; the quotes are
+                only drawn when there is actually a name to put in them. */}
+            {children.length > 0 && (children[0]?.groupName
+              ? ` "${children[0].groupName}" ${t('dashboard.groupLabel')} · ${children.length} bola.`
+              : ` ${children.length} bola.`)}
           </p>
           <div className="ml-auto text-right shrink-0">
             <div className="text-[13px] text-slate-500">{today}</div>
@@ -188,14 +208,16 @@ const Dashboard = () => {
             <div className="flex items-center justify-between mb-3">
               <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.classAtGlance')}</div>
               <span className="text-[11px] text-slate-500 tnum">
-                {stats.present || children.length}/{children.length} {t('dashboard.presentCount')}
+                {stats.recorded
+                  ? `${stats.present}/${children.length} ${t('dashboard.presentCount')}`
+                  : t('dashboard.notRecorded')}
               </span>
             </div>
             <div className="flex items-center gap-2 flex-wrap">
               {children.map((child) => (
                 <Link key={child.id} to={`/teacher/children/${child.id}`} className="relative" title={`${child.firstName} ${child.lastName}`}>
                   <ChildAvatar child={child} size="sm" />
-                  <ChildStateDot state={child.attendanceState || 'present'} />
+                  <ChildStateDot state={child.attendanceState || 'unset'} />
                 </Link>
               ))}
             </div>
@@ -206,18 +228,31 @@ const Dashboard = () => {
         <div className="mt-5 grid grid-cols-2 gap-4">
           <div className="rounded-lg bg-surface border border-slate-200 shadow-xs p-5">
             <div className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.attendanceStat')}</div>
-            <div className="mt-2 flex items-baseline gap-2">
-              <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.present || 0}</span>
-              <span className="text-[14px] text-slate-500">/ {children.length || 0} {t('dashboard.presentCount')}</span>
-            </div>
-            {children.length > 0 && (
+            {/* D-07: never present a percentage for a day nobody has recorded. */}
+            {stats.recorded ? (
               <>
-                <div className="mt-3 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                  <span className="block h-full bg-mint-500" style={{ width: `${Math.round(((stats.present || 0) / (children.length || 1)) * 100)}%` }} />
+                <div className="mt-2 flex items-baseline gap-2">
+                  <span className="text-[28px] font-semibold text-slate-900 tnum leading-none">{stats.present ?? 0}</span>
+                  <span className="text-[14px] text-slate-500">/ {children.length || 0} {t('dashboard.presentCount')}</span>
                 </div>
-                <div className="mt-1 text-[11px] text-mint-700 font-medium">
-                  {Math.round(((stats.present || 0) / (children.length || 1)) * 100)}% · {t('dashboard.normal')}
-                </div>
+                {children.length > 0 && (
+                  <>
+                    <div className="mt-3 h-1.5 rounded-full bg-slate-100 overflow-hidden">
+                      <span className="block h-full bg-mint-500" style={{ width: `${Math.round(((stats.present ?? 0) / (children.length || 1)) * 100)}%` }} />
+                    </div>
+                    <div className="mt-1 text-[11px] text-mint-700 font-medium">
+                      {Math.round(((stats.present ?? 0) / (children.length || 1)) * 100)}% · {t('dashboard.normal')}
+                    </div>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="mt-2 text-[20px] font-semibold text-slate-400 leading-none">—</div>
+                <div className="mt-2 text-[12px] text-slate-500">{t('dashboard.notRecorded')}</div>
+                <Link to="/teacher/attendance" className="mt-3 inline-flex h-8 px-3 rounded-md bg-brand-600 hover:bg-brand-700 text-surface text-[12px] font-medium items-center">
+                  {t('dashboard.linkAttendance')}
+                </Link>
               </>
             )}
           </div>
@@ -296,14 +331,14 @@ const Dashboard = () => {
           <div className="rounded-xl bg-surface border border-slate-200 p-4">
             <div className="flex items-center justify-between mb-3">
               <span className="text-[11px] uppercase tracking-[.14em] text-slate-500">{t('dashboard.groupLabel')}</span>
-              <span className="text-[11px] text-slate-500 tnum">{stats.present || 0}/{children.length}</span>
+              <span className="text-[11px] text-slate-500 tnum">{stats.recorded ? `${stats.present}/${children.length}` : t('dashboard.notRecorded')}</span>
             </div>
             <div className="grid grid-cols-6 gap-2">
               {children.slice(0, 12).map((child) => (
                 <Link key={child.id} to={`/teacher/children/${child.id}`} className="flex flex-col items-center relative">
                   <div className="relative">
                     <ChildAvatar child={child} size="xs" />
-                    <ChildStateDot state={child.attendanceState || 'present'} />
+                    <ChildStateDot state={child.attendanceState || 'unset'} />
                   </div>
                 </Link>
               ))}
@@ -315,7 +350,7 @@ const Dashboard = () => {
           <div className="rounded-lg bg-surface border border-slate-200 p-3">
             <div className="text-[10px] uppercase tracking-[.1em] text-slate-500">{t('dashboard.attendanceStat')}</div>
             <div className="mt-1 flex items-baseline gap-0.5">
-              <span className="text-[20px] font-semibold text-slate-900 tnum">{stats.present || 0}</span>
+              <span className="text-[20px] font-semibold text-slate-900 tnum">{stats.recorded ? stats.present : '—'}</span>
               <span className="text-[11px] text-slate-500">/{children.length || 0}</span>
             </div>
           </div>

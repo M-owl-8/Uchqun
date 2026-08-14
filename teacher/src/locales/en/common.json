@@ -122,7 +122,8 @@
     "linkReflection": "Daily Journal",
     "absent": "{{name}} is absent today",
     "needsAttention": "{{name}} · needs attention",
-    "contactParent": "Send parent a message asking for reason"
+    "contactParent": "Send parent a message asking for reason",
+    "notRecorded": "Attendance not yet recorded"
   },
   "parentsPage": {
     "title": "Parent list",
