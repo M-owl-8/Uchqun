@@ -207,8 +207,13 @@ const AuditLog = () => {
             <tbody className="divide-y divide-gray-50">
               {entries.map((entry) => (
                 <tr key={entry.id} className="hover:bg-gray-50 transition-colors">
+                  {/* D-05: the audit_log table has no createdAt column — its timestamp
+                      is occurredAt (models/AuditLog.js:38, ordered by it in
+                      governmentController.js:1286). Reading createdAt rendered "—" on
+                      every row, leaving the regulator's audit trail with no dates at all.
+                      admin/src/pages/ActivityFeed.jsx:213 already used occurredAt. */}
                   <td className="px-5 py-3 text-gray-600 tabular-nums whitespace-nowrap">
-                    {formatDateTime(entry.createdAt)}
+                    {formatDateTime(entry.occurredAt ?? entry.createdAt)}
                   </td>
                   <td className="px-5 py-3 text-gray-800">{actorName(entry)}</td>
                   <td className="px-5 py-3">
