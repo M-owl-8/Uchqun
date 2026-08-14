@@ -1,0 +1,50 @@
+{
+  "withdraw": {
+    "consentLineBefore": "Rozi bo'lingan sana: 2026-07-20",
+    "dialogs": [
+      {
+        "type": "confirm",
+        "message": "Rozilikni bekor qilsangiz, tizimdan chiqarilasiz. Keyingi kirishda rozi bo'lish so'raladi."
+      }
+    ],
+    "net": [
+      {
+        "m": "DELETE",
+        "u": "/api/v1/parent/privacy-consent",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"withdrawn\":true}}"
+      },
+      {
+        "m": "POST",
+        "u": "/api/v1/auth/logout",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Logged out successfully\"}"
+      }
+    ],
+    "shot": "094_parent-desktop_consent-withdrawn.png",
+    "toast": "bekor qilindi. Tizimdan chiqilmoqda..."
+  },
+  "after-withdraw-url": {
+    "url": "/login",
+    "shot": "095_parent-desktop_consent-withdrawn-redirect.png"
+  },
+  "reprompt": {
+    "loginOk": true,
+    "modalPresent": 1,
+    "shot": "096_parent-desktop_PrivacyConsentModal-represented-at-login.png",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva |  | BUGUNGI XULOSA |  | M08 14, Fri | DAVOMAT |  | Bor |  | TAOMLAR |  | 3/3 |  | SURATLAR |  | 0 |  | FAOLIYATLAR |  | 15 |  | BUGUNGI YOZUV"
+  },
+  "re-granted": {
+    "reaccept": "accepted",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/parent/privacy-consent",
+        "s": 200,
+        "b": "{\"success\":true,\"data\":{\"consentedAt\":\"2026-08-14T10:05:11.256Z\",\"alreadyConsented\":false}}"
+      }
+    ],
+    "consentLineAfter": "Rozi bo'lingan sana: 2026-08-14",
+    "restored": true
+  }
+}

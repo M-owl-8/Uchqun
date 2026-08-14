@@ -1,0 +1,122 @@
+{
+  "tabbar-short-dashboard": {
+    "atTop": {
+      "position": "static",
+      "navTopViewport": 780,
+      "navBottomViewport": 844,
+      "navTopDocument": 780,
+      "docHeight": 964,
+      "viewportHeight": 844,
+      "scrollY": 0,
+      "visibleInViewport": true
+    },
+    "atMiddle": {
+      "position": "static",
+      "navTopViewport": 780,
+      "navBottomViewport": 844,
+      "navTopDocument": 900,
+      "docHeight": 964,
+      "viewportHeight": 844,
+      "scrollY": 120,
+      "visibleInViewport": true
+    },
+    "atBottom": {
+      "position": "static",
+      "navTopViewport": 780,
+      "navBottomViewport": 844,
+      "navTopDocument": 900,
+      "docHeight": 964,
+      "viewportHeight": 844,
+      "scrollY": 120,
+      "visibleInViewport": true
+    },
+    "shotMid": "058_parent-mobile_D-34-mobile-D-34-tabbar-short-dashboard-scrolled-middle.png",
+    "shotBottom": "057_parent-mobile_D-34-mobile-D-34-tabbar-short-dashboard-scrolled-bottom.png"
+  },
+  "tabbar-long-rating": {
+    "atTop": {
+      "position": "static",
+      "navTopViewport": 826,
+      "navBottomViewport": 890,
+      "navTopDocument": 826,
+      "docHeight": 2339,
+      "viewportHeight": 890,
+      "scrollY": 0,
+      "visibleInViewport": true
+    },
+    "atMiddle": {
+      "position": "static",
+      "navTopViewport": 826,
+      "navBottomViewport": 890,
+      "navTopDocument": 1996,
+      "docHeight": 2339,
+      "viewportHeight": 890,
+      "scrollY": 1170,
+      "visibleInViewport": true
+    },
+    "atBottom": {
+      "position": "static",
+      "navTopViewport": 826,
+      "navBottomViewport": 890,
+      "navTopDocument": 2275,
+      "docHeight": 2339,
+      "viewportHeight": 890,
+      "scrollY": 1449,
+      "visibleInViewport": true
+    },
+    "shotMid": "061_parent-mobile_D-34-mobile-D-34-tabbar-long-rating-scrolled-middle.png",
+    "shotBottom": "060_parent-mobile_D-34-mobile-D-34-tabbar-long-rating-scrolled-bottom.png"
+  },
+  "mobile-tab-taps": [
+    {
+      "label": "Kundalik",
+      "target": {
+        "w": 78,
+        "h": 64
+      },
+      "url": "/journal",
+      "shot": "063_parent-mobile_mobile-mobile-tap-Kundalik.png"
+    },
+    {
+      "label": "Galereya",
+      "target": {
+        "w": 78,
+        "h": 64
+      },
+      "url": "/media",
+      "shot": "064_parent-mobile_mobile-mobile-tap-Galereya.png"
+    },
+    {
+      "label": "Xabar",
+      "target": {
+        "w": 78,
+        "h": 64
+      },
+      "url": "/chat",
+      "shot": "065_parent-mobile_mobile-mobile-tap-Xabar.png"
+    },
+    {
+      "label": "Bola",
+      "target": {
+        "w": 78,
+        "h": 64
+      },
+      "url": "/child",
+      "shot": "066_parent-mobile_mobile-mobile-tap-Bola.png"
+    },
+    {
+      "label": "Bugun",
+      "target": {
+        "w": 136,
+        "h": 64
+      },
+      "url": "/",
+      "shot": "067_parent-mobile_mobile-mobile-tap-Bugun.png"
+    }
+  ],
+  "tap-targets-under-44px": [],
+  "switcher-chips-mobile": [
+    "Gulnoza",
+    "Islom"
+  ]
+}

@@ -70,8 +70,15 @@ export async function newBrowser(headless = true) {
   return chromium.launch({ headless });
 }
 
-export async function ctx(P, browser, role, viewport = DESKTOP) {
-  const c = await browser.newContext({ viewport, locale: 'uz' });
+/** opts may be a bare viewport ({width,height}) or {viewport,hasTouch,isMobile}. */
+export async function ctx(P, browser, role, opts = DESKTOP) {
+  const o = opts && typeof opts.width === 'number' ? { viewport: opts } : (opts || {});
+  const c = await browser.newContext({
+    viewport: o.viewport ?? DESKTOP,
+    locale: 'uz',
+    ...(o.hasTouch ? { hasTouch: true } : {}),
+    ...(o.isMobile ? { isMobile: true } : {}),
+  });
   const p = await c.newPage();
   instrument(P, p, role);
   return { c, p };

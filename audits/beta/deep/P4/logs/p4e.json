@@ -1,0 +1,23 @@
+{
+  "child-A": {
+    "shot": "070_parent-desktop_switcher-child-A-profile.png",
+    "header": "Gulnoza",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Farzandni tanlang | Gulnoza Ergasheva — Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi | Islom Mi"
+  },
+  "clicked-islom": true,
+  "child-B": {
+    "shot": "071_parent-desktop_switcher-child-B-profile.png",
+    "header": "Gulnoza",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Farzandni tanlang | Gulnoza Ergasheva — Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi | Islom Mi"
+  },
+  "child-B-attendance": {
+    "shot": "073_parent-desktop_switcher-child-B-attendance-view.png",
+    "header": "Gulnoza",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Davomat |  | Farzandingizning kunlik davomati |  | Gulnoza | Islom | Kun | Hafta | M08 14, Fri | Bor"
+  },
+  "child-B-journal": {
+    "shot": "075_parent-desktop_switcher-child-B-journal-view.png",
+    "header": "Gulnoza",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Kun jurnali(0) |  | Tarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar |  | Gulnoza | Islom |"
+  }
+}

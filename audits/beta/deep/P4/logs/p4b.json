@@ -1,0 +1,230 @@
+{
+  "rating-mobile-measure": {
+    "scrollWidth": 411,
+    "clientWidth": 390,
+    "clipped": [
+      {
+        "text": "Muassasa tozaligi",
+        "clientW": 96,
+        "scrollW": 119
+      },
+      {
+        "text": "Muassasa tarbiyachisi",
+        "clientW": 96,
+        "scrollW": 149
+      },
+      {
+        "text": "Bolaning o'sishi",
+        "clientW": 96,
+        "scrollW": 105
+      },
+      {
+        "text": "Muassasaga ishonch",
+        "clientW": 96,
+        "scrollW": 141
+      }
+    ],
+    "tabBar": {
+      "position": "static",
+      "bottom": "auto",
+      "rect": {
+        "x": 0,
+        "y": 0,
+        "width": 0,
+        "height": 0,
+        "top": 0,
+        "right": 0,
+        "bottom": 0,
+        "left": 0
+      }
+    }
+  },
+  "rating-mobile-criteria": {
+    "shot": "034_parent-mobile_D-32-mobile-D-32-rating-criteria-labels-clipped.png"
+  },
+  "rating-mobile-scrolled-right": {
+    "shot": "035_parent-mobile_D-32-mobile-D-32-rating-scrolled-right.png",
+    "scrollX": 0
+  },
+  "therapy-mobile-measure": {
+    "scrollWidth": 394,
+    "clientWidth": 390,
+    "culprits": [
+      {
+        "tag": "BUTTON",
+        "cls": "px-4 py-2 rounded-lg font-medium transit",
+        "right": 394,
+        "text": "Kontent"
+      },
+      {
+        "tag": "DIV",
+        "cls": "bg-p-surface border-t border-p-sepia-200",
+        "right": 394,
+        "text": "BugunKundalikGalereyaXabarBola"
+      },
+      {
+        "tag": "NAV",
+        "cls": "flex justify-around items-center h-16",
+        "right": 394,
+        "text": "BugunKundalikGalereyaXabarBola"
+      },
+      {
+        "tag": "A",
+        "cls": "flex flex-col items-center justify-cente",
+        "right": 394,
+        "text": "Bola"
+      }
+    ]
+  },
+  "therapy-mobile-scrolled": {
+    "shot": "037_parent-mobile_D-33-mobile-D-33-therapy-scrolled-right.png",
+    "scrollX": 0
+  },
+  "mobile-tabbar": {
+    "position": "static",
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 0,
+      "height": 0,
+      "top": 0,
+      "right": 0,
+      "bottom": 0,
+      "left": 0
+    },
+    "items": [
+      {
+        "label": "Bugun",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Kundalik",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Galereya",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Xabar",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Bola",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Fikr bildirish",
+        "w": 0,
+        "h": 0
+      },
+      {
+        "label": "Sozlamalar",
+        "w": 0,
+        "h": 0
+      }
+    ]
+  },
+  "tabbar-tap-ERR": "Cannot read properties of null (reading 'x')",
+  "rate-teacher": {
+    "starButtons": 5,
+    "filled": "040_parent-desktop_rate-teacher-filled.png",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/parent/ratings",
+        "s": 200,
+        "b": "{\"success\":true,\"message\":\"Teacher rating saved successfully\",\"data\":{\"id\":\"c40c1408-d483-43e9-b9e2-6961f723f206\",\"teacherId\":\"5eedf422-4935-4657-84ed-b36e12f3f190\",\"parentId\":\"5eed7bf3-ed3a-4548-8e59"
+      }
+    ],
+    "after": "041_parent-desktop_rate-teacher-result.png",
+    "toast": "Rahmat! Fikringiz saqlandi."
+  },
+  "parent-chat-send": {
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/chat/messages",
+        "s": 201,
+        "b": "{\"id\":\"72da58ef-4de4-49c0-8ae4-4d1bb98e6baa\",\"conversationId\":\"parent:5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"senderId\":\"5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"senderRole\":\"parent\",\"content\":\"QA-P4B: r"
+      }
+    ],
+    "after": "043_parent-desktop_parent-chat-sent.png"
+  },
+  "read-journal-content": {
+    "route": "/journal",
+    "shot": "044_parent-desktop_journal-content.png",
+    "buttons": 0,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Kun jurnali(7) |  | Tarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar |  | 2026 M08 14 | · | ZEBO ASHUROVA | B"
+  },
+  "read-irr-readonly": {
+    "route": "/irr",
+    "shot": "045_parent-desktop_irr-readonly.png",
+    "buttons": 0,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva |  | FARZANDINGIZNING RIVOJLANISH YO'LI |  | Rivojlanish rejasi (IRR) |  | Hali baholash o'tkazilmagan. Tarbiyachi birinch"
+  },
+  "read-media-empty": {
+    "route": "/media",
+    "shot": "046_parent-desktop_media-empty.png",
+    "buttons": 5,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Media galereya |  | Muassasa hayotidan eng sara lahzalar |  | Barchasi | Bugun | Hammasi | Rasmlar | Videolar |  | Hozir"
+  },
+  "read-notifications-list": {
+    "route": "/notifications",
+    "shot": "047_parent-desktop_notifications-list.png",
+    "buttons": 3,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Bildirishnomalar(0) |  | Sizning farzandingiz bo'yicha so'nggi yangiliklar |  | Hammasi (0) | O'qilmagan (0) | O'qilgan "
+  },
+  "read-therapy-list": {
+    "route": "/therapy",
+    "shot": "048_parent-desktop_therapy-list.png",
+    "buttons": 24,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva |  | MUSIQA, VIDEO VA CONTENT TERAPIYA RESURSLARI |  | Sarlavha | Barchasi | Musiqa | Video | Kontent | Rangli terapiya ma"
+  },
+  "read-meals-content": {
+    "route": "/meals",
+    "shot": "049_parent-desktop_meals-content.png",
+    "buttons": 0,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Taomlar va ovqatlanish(45) |  | Kunlik taomnoma va iste'mol nazorati |  | KUNNI TANLANG | M08 14, Fri | M08 13, Thu | M0"
+  },
+  "read-activities-content": {
+    "route": "/activities",
+    "shot": "050_parent-desktop_activities-content.png",
+    "buttons": 15,
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Individual reja(15) |  | Farzandingiz uchun individual rejalarni ko'ring |  | Sensor integratsiya |  | Tarbiyachi |  | Z"
+  },
+  "parent-write-attempts": {
+    "posts": [
+      {
+        "u": "/api/v1/attendance",
+        "s": 403,
+        "b": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "u": "/api/v1/teacher/journal/bulk",
+        "s": 403,
+        "b": "{\"error\":\"Insufficient permissions\"}"
+      }
+    ],
+    "gets": [
+      {
+        "u": "/api/v1/teacher/children",
+        "s": 403,
+        "len": 36,
+        "b": "{\"error\":\"Insufficient permissions\"}"
+      },
+      {
+        "u": "/api/v1/attendance?startDate=2026-08-14&endDate=2026-08-14",
+        "s": 403,
+        "len": 36,
+        "b": "{\"error\":\"Insufficient permissions\"}"
+      }
+    ]
+  },
+  "language-controls": []
+}

@@ -1,0 +1,136 @@
+{
+  "settings-inventory": {
+    "buttons": [
+      "Profilni saqlash",
+      "Saqlash",
+      "button",
+      "button",
+      "button",
+      "Parolni yangilash",
+      "Rozilikni bekor qilish",
+      "logout"
+    ],
+    "fields": [
+      {
+        "type": "text",
+        "name": null,
+        "value": "Rayhona",
+        "label": "Ism"
+      },
+      {
+        "type": "text",
+        "name": null,
+        "value": "Ergasheva",
+        "label": "Familiya"
+      },
+      {
+        "type": "email",
+        "name": null,
+        "value": "otaona11@tmm3.uz",
+        "label": "Email"
+      },
+      {
+        "type": "tel",
+        "name": null,
+        "value": "+998936753399",
+        "label": "Telefon"
+      },
+      {
+        "type": "checkbox",
+        "name": null,
+        "value": "on",
+        "label": ""
+      },
+      {
+        "type": "password",
+        "name": null,
+        "value": "",
+        "label": ""
+      },
+      {
+        "type": "password",
+        "name": null,
+        "value": "",
+        "label": ""
+      },
+      {
+        "type": "password",
+        "name": null,
+        "value": "",
+        "label": ""
+      }
+    ]
+  },
+  "profile-phone-roundtrip": {
+    "original": "+998936753399",
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/profile",
+        "s": 200,
+        "b": "{\"id\":\"5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"email\":\"otaona11@tmm3.uz\",\"firstName\":\"Rayhona\",\"lastName\":\"Ergasheva\",\"phone\":\"+998901000099\",\"role\":\"parent\",\"isVerified\":true,\"documentsAppro"
+      }
+    ],
+    "afterReload": "+998901000099",
+    "persisted": true,
+    "restored": "+998936753399",
+    "restoredOk": true,
+    "shot": "077_parent-desktop_settings-profile-restored.png"
+  },
+  "password-wrong-current": {
+    "inputs": 3,
+    "net": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/password",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"CURRENT_PASSWORD_INCORRECT\",\"detail\":\"Current password is incorrect\"}}"
+      }
+    ],
+    "shot": "079_parent-desktop_parent-password-wrong-current.png",
+    "msg": "INCORRECT"
+  },
+  "message-modal": {
+    "modal": "081_parent-desktop_parent-message-modal.png",
+    "filled": "082_parent-desktop_parent-message-filled.png",
+    "net": [
+      {
+        "m": "POST",
+        "u": "/api/v1/parent/message-to-government",
+        "s": 201,
+        "b": "{\"success\":true,\"data\":{\"id\":\"5aba633e-9736-4921-9350-8850ad08ec4b\",\"senderId\":\"5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"subject\":\"QA-P4F savol\",\"message\":\"QA-P4F: farzandim davomati haqida sa"
+      }
+    ],
+    "after": "083_parent-desktop_parent-message-result.png"
+  },
+  "help": {
+    "shot": "084_parent-desktop_help-page.png",
+    "controls": [],
+    "expanded": "085_parent-desktop_help-expanded.png",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | Yordam va qo'llab-quvvatlash |  | Tez-tez beriladigan savollarga javob toping va yordam oling |  | Biz bilan bog'laning |  | Email |  | supp"
+  },
+  "ai-warnings-routes": {
+    "/warnings": {
+      "url": "/warnings",
+      "body": "404 |  | Sahifa topilmadi |  | Orqaga qaytish"
+    },
+    "/ai-warnings": {
+      "url": "/ai-warnings",
+      "body": "404 |  | Sahifa topilmadi |  | Orqaga qaytish"
+    },
+    "/xabar?tab=warnings": {
+      "url": "/xabar",
+      "body": "404 |  | Sahifa topilmadi |  | Orqaga qaytish"
+    }
+  },
+  "consent": {
+    "confirmShot": "090_parent-desktop_consent-revoke-confirm.png",
+    "revokeNet": [],
+    "modalShot": "091_parent-desktop_PrivacyConsentModal-after-revoke.png",
+    "modalPresent": 0,
+    "modalText": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva |  | BUGUNGI XULOSA |  | M08 14, Fri | DAVOMAT |  | Bor |  | TAOMLAR |  | 3/3 |  | SURATLAR |  | 0 |  | FAOLIYATLAR |  | 15 |  | BUGUNGI YOZUV |  | QA-P3N: ikki bola yangi konikmani ",
+    "reaccept": "absent",
+    "reacceptNet": [],
+    "after": "092_parent-desktop_consent-reaccepted.png"
+  }
+}

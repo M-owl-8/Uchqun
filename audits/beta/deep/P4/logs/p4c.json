@@ -1,0 +1,105 @@
+{
+  "switcher-controls": {
+    "before": "052_parent-desktop_switcher-two-children-dashboard.png",
+    "controls": []
+  },
+  "switcher-open": {
+    "openable": false
+  },
+  "language-in-app": {
+    "shot": "053_parent-desktop_settings-language-check.png",
+    "settingsButtons": [
+      "Gulnoza",
+      "Islom",
+      "Profilni saqlash",
+      "Saqlash",
+      "button",
+      "button",
+      "button",
+      "Parolni yangilash",
+      "Rozilikni bekor qilish",
+      "logout"
+    ],
+    "langControlsAnywhere": [],
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Sozlamalar |  | Profil va hisob sozlamalarini boshqarish |  | Profil ma'lumotlari | RE |  | Profil rasmi |  | Rasmni profil sahifasida o'zgartirishingiz mumkin |  | Ism | Familiya | "
+  },
+  "notifications": {
+    "shot": "054_parent-desktop_D-35-D-35-notifications-empty.png",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza | Islom | Bildirishnomalar(0) |  | Sizning farzandingiz bo'yicha so'nggi yangiliklar |  | Hammasi (0) | O'qilmagan (0) | O'qilgan (0) |  | Hozircha bild"
+  },
+  "mobile-tabbar": {
+    "count": 1,
+    "position": "static",
+    "cls": "flex justify-around items-center h-16",
+    "rect": {
+      "x": 0,
+      "y": 780,
+      "width": 390,
+      "height": 64,
+      "top": 780,
+      "right": 390,
+      "bottom": 844,
+      "left": 0
+    },
+    "items": [
+      {
+        "label": "Bugun",
+        "w": 78,
+        "h": 64,
+        "y": 780
+      },
+      {
+        "label": "Kundalik",
+        "w": 78,
+        "h": 64,
+        "y": 780
+      },
+      {
+        "label": "Galereya",
+        "w": 78,
+        "h": 64,
+        "y": 780
+      },
+      {
+        "label": "Xabar",
+        "w": 78,
+        "h": 64,
+        "y": 780
+      },
+      {
+        "label": "Bola",
+        "w": 78,
+        "h": 64,
+        "y": 780
+      }
+    ]
+  },
+  "mobile-tab-taps": [
+    {
+      "label": "Kundalik",
+      "found": true,
+      "boundingBox": null
+    },
+    {
+      "label": "Galereya",
+      "found": true,
+      "boundingBox": null
+    },
+    {
+      "label": "Xabar",
+      "found": true,
+      "boundingBox": null
+    },
+    {
+      "label": "Bola",
+      "found": true,
+      "boundingBox": null
+    },
+    {
+      "label": "Bugun",
+      "found": true,
+      "boundingBox": null
+    }
+  ],
+  "tap-targets-under-44px": []
+}

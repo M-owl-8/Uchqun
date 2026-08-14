@@ -1,0 +1,28 @@
+{
+  "hitTest": {
+    "rect": {
+      "x": 429,
+      "y": 1615,
+      "w": 582,
+      "h": 57
+    },
+    "inViewport": false,
+    "topElementAtCentre": null,
+    "topIsTheButtonOrChild": null,
+    "windowH": 950,
+    "scrollY": 0
+  },
+  "hitTestAfterScroll": {
+    "topElementAtCentre": "SPAN.flex-1 text-[14px] font-medium text-p-in",
+    "topIsTheButtonOrChild": true
+  },
+  "normalClick": {
+    "error": null,
+    "shot": "106_parent-desktop_my-messages-after-normal-click.png"
+  },
+  "domClick": true,
+  "afterDomClick": {
+    "shot": "107_parent-desktop_my-messages-after-dom-click.png",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | O'zgartirish | Gulnoza Ergasheva | Ayol |  | 8 yosh |  | Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi | Umid guruhi | Asosiy ma'lumotlar | TO'LIQ ISMI |  | Gulnoza Ergasheva |  | TUG'ILGAN SANA"
+  }
+}

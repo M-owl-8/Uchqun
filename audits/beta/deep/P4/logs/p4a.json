@@ -1,0 +1,41 @@
+{
+  "login-desktop": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/"
+  },
+  "consent-desktop": "error:Cannot read properties of undefined (reading 'locator')",
+  "overflowing-routes-desktop": [],
+  "login-mobile": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/"
+  },
+  "consent-mobile": "error:Cannot read properties of undefined (reading 'locator')",
+  "overflowing-routes-mobile": [
+    {
+      "id": "P9",
+      "route": "/therapy",
+      "scrollWidth": 394,
+      "clientWidth": 390,
+      "overflows": true,
+      "culprits": [
+        "BUTTON.px-4@394",
+        "DIV.bg-p-surface@394",
+        "NAV.flex@394",
+        "A.flex@394"
+      ]
+    },
+    {
+      "id": "P11",
+      "route": "/rating",
+      "scrollWidth": 411,
+      "clientWidth": 390,
+      "overflows": true,
+      "culprits": [
+        "DIV.flex@411",
+        "P.text-xs@411",
+        "DIV.flex@411",
+        "DIV.mt-1.5@411"
+      ]
+    }
+  ]
+}

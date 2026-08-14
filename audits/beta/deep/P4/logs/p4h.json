@@ -1,0 +1,23 @@
+{
+  "childprofile-controls": {
+    "buttons": [
+      "Rasmni o'zgartirish",
+      "Hukumatga murojaat",
+      "Mening murojaatlarim",
+      "Chiqish"
+    ],
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | O'zgartirish | Gulnoza Ergasheva | Ayol |  | 8 yosh |  | Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi | Umid guruhi | Asosiy ma'lumotlar | TO'LIQ ISMI |  | Gulnoza Ergasheva"
+  },
+  "messages-modal": {
+    "trigger": null,
+    "shot": "099_parent-desktop_parent-messages-modal.png",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | O'zgartirish | Gulnoza Ergasheva | Ayol |  | 8 yosh |  | Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi | Umid guruhi | Asosiy ma'lumot"
+  },
+  "emotional-section": null,
+  "logout-modal": {
+    "trigger": "Chiqish",
+    "shot": "100_parent-desktop_parent-logout-modal.png",
+    "url": "/child",
+    "body": "U | Uchqun | · Ota-ona | Bugun | Kundalik | Galereya | Xabar | Bola | Fikr bildirish | Sozlamalar | Gulnoza Ergasheva | O'zgartirish | Gulnoza Ergasheva | Ayol |  | 8 yosh |  | Toshkent shahar 3-sonli"
+  }
+}

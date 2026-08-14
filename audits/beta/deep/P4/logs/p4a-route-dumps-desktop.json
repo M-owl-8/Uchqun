@@ -1,0 +1,531 @@
+{
+  "P1": {
+    "route": "/",
+    "shot": "001_parent-desktop_P1-dashboard.png",
+    "buttons": [],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications",
+      "/attendance",
+      "/meals",
+      "/media?range=today",
+      "/activities",
+      "/journal",
+      "/irr",
+      "/activities",
+      "/therapy",
+      "/rating",
+      "/settings"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\n\nBUGUNGI XULOSA\n\nM08 14, Fri\nDAVOMAT\n\nBor\n\nTAOMLAR\n\n3/3\n\nSURATLAR\n\n0\n\nFAOLIYATLAR\n\n15\n\nBUGUNGI YOZUV\n\n"
+  },
+  "P2": {
+    "route": "/child",
+    "shot": "002_parent-desktop_P2-child-profile.png",
+    "buttons": [
+      "Rasmni o'zgartirish",
+      "Hukumatga murojaat",
+      "Mening murojaatlarim",
+      "Chiqish"
+    ],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications",
+      "/irr",
+      "/activities",
+      "/therapy",
+      "/attendance",
+      "/meals",
+      "/rating",
+      "/settings"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nO'zgartirish\nGulnoza Ergasheva\nAyol\n\n8 yosh\n\nToshkent shahar 3-sonli ixtisoslashtirilgan maktabi\nUmid "
+  },
+  "P3": {
+    "route": "/attendance",
+    "shot": "003_parent-desktop_P3-attendance.png",
+    "buttons": [
+      "Kun",
+      "Hafta",
+      "Oldingi kun",
+      "Keyingi kun"
+    ],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\nM08 14, Fri\nBor"
+  },
+  "P4": {
+    "route": "/activities",
+    "shot": "004_parent-desktop_P4-activities.png",
+    "buttons": [
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil",
+      "Batafsil"
+    ],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nIndividual reja(15)\n\nFarzandingiz uchun individual rejalarni ko'ring\n\nSensor integratsiya\n\nTarbiyachi\n"
+  },
+  "P5": {
+    "route": "/meals",
+    "shot": "005_parent-desktop_P5-meals.png",
+    "buttons": [],
+    "inputs": [
+      "SELECT:select-one:M08 14, Fri M08 13, Thu M08 12, Wed M08 11, Tue "
+    ],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nTaomlar va ovqatlanish(45)\n\nKunlik taomnoma va iste'mol nazorati\n\nKUNNI TANLANG\nM08 14, Fri\nM08 13, Th"
+  },
+  "P6": {
+    "route": "/media",
+    "shot": "006_parent-desktop_P6-media.png",
+    "buttons": [
+      "Barchasi",
+      "Bugun",
+      "Hammasi",
+      "Rasmlar",
+      "Videolar"
+    ],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nMedia galereya\n\nMuassasa hayotidan eng sara lahzalar\n\nBarchasi\nBugun\nHammasi\nRasmlar\nVideolar\n\nHozirch"
+  },
+  "P7": {
+    "route": "/chat",
+    "shot": "007_parent-desktop_P7-chat.png",
+    "buttons": [
+      "Assalomu alaykum. Bugun Gulnoza ertalabki doirad",
+      "Voalaykum assalom, rahmat. Uyda ham shu haqda ga",
+      "Gulnoza bugun o‘z navbatini kutishni uddaladi — ",
+      "Gulnoza bugun (2026-07-26) kasal deb belgilandi.",
+      "Kecha kechqurun isitmasi ko‘tarildi, bugun shifo",
+      "Juda xursandmiz. Uyda qanday mashq qilaylik? 16:",
+      "Tuzalib ketsin. Qaytganda mashg‘ulotlarni sekin-",
+      "Oddiy navbatli o‘yinlar yetarli: qo‘lma-qo‘l kop",
+      "Tushunarli, bugundan boshlaymiz. 18:15",
+      "Ertaga sensor o‘yin bo‘ladi, kiyim ho‘l bo‘lishi",
+      "Solib yubordim, rahmat ogohlantirganingiz uchun.",
+      "Bugun mayda motorika mashg‘ulotida qaychini must",
+      "Bu ajoyib yangilik. Uyda qaychi berishga qo‘rqam",
+      "Bolalar qaychisi bilan, faqat siz yonida bo‘lgan",
+      "Yaxshi, shunday qilamiz. 15:21",
+      "Kelasi hafta logoped bilan qo‘shimcha mashg‘ulot",
+      "Qaysi kunlari bo‘ladi? 17:23",
+      "Seshanba va payshanba, soat 10:00 da. 18:24",
+      "Kelishdik, o‘sha kunlari erta olib kelamiz. 19:2",
+      "Rahmat. Bugungi kun jurnalini ham to‘ldirdim, il",
+      "Ko‘rdim, juda foydali. Rahmat sizga. 21:27",
+      "Kuzatuv: bugun 09:16 da yangi mashq boshlandi. 1",
+      "Yuborish"
+    ],
+    "inputs": [
+      "TEXTAREA:textarea:Tarbiyachiga xabar yozing..."
+    ],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nTarbiyachi bilan chat\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nM07 23\nAssalomu alaykum. Bugun Guln"
+  },
+  "P8": {
+    "route": "/journal",
+    "shot": "008_parent-desktop_P8-journal.png",
+    "buttons": [],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nKun jurnali(7)\n\nTarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar\n\n2026 M08 14\n·\nZEBO ASHURO"
+  },
+  "P9": {
+    "route": "/therapy",
+    "shot": "009_parent-desktop_P9-therapy.png",
+    "buttons": [
+      "Barchasi",
+      "Musiqa",
+      "Video",
+      "Kontent",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash",
+      "Boshlash"
+    ],
+    "inputs": [
+      "INPUT:text:Qidirish..."
+    ],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\n\nMUSIQA, VIDEO VA CONTENT TERAPIYA RESURSLARI\n\nSarlavha\nBarchasi\nMusiqa\nVideo\nKontent\nRangli terapiya "
+  },
+  "P10": {
+    "route": "/irr",
+    "shot": "010_parent-desktop_P10-irr.png",
+    "buttons": [],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\n\nFARZANDINGIZNING RIVOJLANISH YO'LI\n\nRivojlanish rejasi (IRR)\n\nHali baholash o'tkazilmagan. Tarbiyachi"
+  },
+  "P11": {
+    "route": "/rating",
+    "shot": "011_parent-desktop_P11-rating.png",
+    "buttons": [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "Fikrni yuborish",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "Bahoni yuborish"
+    ],
+    "inputs": [
+      "TEXTAREA:textarea:Tarbiyachiga izoh yozing...",
+      "TEXTAREA:textarea:Muassasa haqida fikringizni yozing..."
+    ],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\n\nFARZANDINGIZ TARBIYACHISIGA BAHO BERING VA FIKR QOLDIRING\n\nTarbiyachini baholash\nZA\n\nBIRIKTIRILGAN TA"
+  },
+  "P12": {
+    "route": "/notifications",
+    "shot": "012_parent-desktop_P12-notifications.png",
+    "buttons": [
+      "Hammasi (0)",
+      "O'qilmagan (0)",
+      "O'qilgan (0)"
+    ],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nBildirishnomalar(0)\n\nSizning farzandingiz bo'yicha so'nggi yangiliklar\n\nHammasi (0)\nO'qilmagan (0)\nO'q"
+  },
+  "P13": {
+    "route": "/help",
+    "shot": "013_parent-desktop_P13-help.png",
+    "buttons": [],
+    "inputs": [],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications",
+      "mailto:support@uchqun.uz",
+      "tel:+998712000000",
+      "/activities",
+      "/media",
+      "/meals",
+      "/settings"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nYordam va qo'llab-quvvatlash\n\nTez-tez beriladigan savollarga javob toping va yordam oling\n\nBiz bilan b"
+  },
+  "P14": {
+    "route": "/settings",
+    "shot": "014_parent-desktop_P14-settings.png",
+    "buttons": [
+      "Profilni saqlash",
+      "Saqlash",
+      "button",
+      "button",
+      "button",
+      "Parolni yangilash",
+      "Rozilikni bekor qilish",
+      "logout"
+    ],
+    "inputs": [
+      "INPUT:text:text",
+      "INPUT:text:text",
+      "INPUT:email:email",
+      "INPUT:tel:+998 90 123 45 67",
+      "INPUT:checkbox:checkbox",
+      "INPUT:password:password",
+      "INPUT:password:password",
+      "INPUT:password:password"
+    ],
+    "links": [
+      "/",
+      "/journal",
+      "/media",
+      "/chat",
+      "/child",
+      "/rating",
+      "/settings",
+      "/notifications"
+    ],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nGulnoza Ergasheva\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nRE\n\nProfil rasmi\n\nRasmni pro"
+  },
+  "P15": {
+    "route": "/change-password",
+    "shot": "015_parent-desktop_P15-change-password.png",
+    "buttons": [
+      "Parolni ko'rsatish",
+      "Parolni ko'rsatish",
+      "Parolni ko'rsatish",
+      "Parolni o'zgartirish"
+    ],
+    "inputs": [
+      "INPUT:password:password",
+      "INPUT:password:password",
+      "INPUT:password:password"
+    ],
+    "links": [],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "Parolni o'zgartirish\n\nYangi parolni o'rnating.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlash\nParolni o'zgartirish"
+  },
+  "P16": {
+    "route": "/zzz-nonexistent",
+    "shot": "016_parent-desktop_P16-notfound.png",
+    "buttons": [
+      "Orqaga qaytish"
+    ],
+    "inputs": [],
+    "links": [],
+    "overflow": {
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "culprits": []
+    },
+    "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+  }
+}

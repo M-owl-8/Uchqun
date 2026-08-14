@@ -1,0 +1,30 @@
+{
+  "buttonState": {
+    "text": "Mening murojaatlarim",
+    "disabled": false,
+    "pointerEvents": "auto",
+    "opacity": "1",
+    "cursor": "pointer"
+  },
+  "api": [
+    {
+      "u": "/api/v1/parent/my-messages",
+      "s": 404,
+      "len": 43,
+      "b": "{\"success\":false,\"error\":\"Route not found\"}"
+    },
+    {
+      "u": "/api/v1/parent/messages",
+      "s": 200,
+      "len": 441,
+      "b": "{\"success\":true,\"data\":[{\"id\":\"5aba633e-9736-4921-9350-8850ad08ec4b\",\"senderId\":\"5eed7bf3-ed3a-4548-8e59-099dd6737ea2\",\"subject\":\"QA-P4F savol\",\"message\":\"QA-P4F: farzandim davomati haqida savolim bor edi.\",\"isRead\":fals"
+    },
+    {
+      "u": "/api/v1/parent/message-to-government",
+      "s": 404,
+      "len": 43,
+      "b": "{\"success\":false,\"error\":\"Route not found\"}"
+    }
+  ],
+  "shot": "104_parent-desktop_D-38-D-38-my-messages-button-inert.png"
+}

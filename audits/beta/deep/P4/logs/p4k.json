@@ -1,0 +1,16 @@
+{
+  "dialog": [
+    {
+      "tag": "DIV",
+      "cls": "fixed inset-0 bg-black/50 backdrop-blur-sm f",
+      "rect": {
+        "x": 384,
+        "y": -915,
+        "w": 672,
+        "h": 1865
+      },
+      "text": "Mening xabarlarim | QA-P4F savol | Respublika |  | 2026 M08 14 15:02 |  | Sizning xabaringiz: |  | QA-P4F: farzandim davomati haqida savolim bor edi."
+    }
+  ],
+  "viewportShot": "109_parent-desktop_parent-my-messages-modal-viewport.png"
+}
