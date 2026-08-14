@@ -1,0 +1,68 @@
+{
+  "export-reception": {
+    "file": "ota-onalar-2026-08-14.csv",
+    "bytes": 234,
+    "lines": 4,
+    "bom": true,
+    "header": "﻿\"Ism\",\"Familiya\",\"Email\",\"Telefon\",\"Status\"",
+    "rows": [
+      "\"Zuhra\",\"Ibragimova\",\"t.abandon@tmm3.uz\",\"+998901239900\",\"Faol\"",
+      "\"Nozima\",\"Umarova\",\"otaona69@tmm3.uz\",\"+998937843299\",\"Faol\"",
+      "\"Sevinch\",\"Qodirova\",\"otaona68@tmm3.uz\",\"+998940957299\",\"Faol\""
+    ],
+    "everyFileRowAppearsOnScreen": true,
+    "shot": "259_exp-reception_export-reception-downloaded.png"
+  },
+  "export-government": {
+    "file": "schools-2026-08-14.csv",
+    "bytes": 1306,
+    "lines": 11,
+    "header": "\"#\",\"Name\",\"Address\",\"Type\",\"Region\",\"Students\",\"Teachers\",\"Rating\",\"Ratings Count\"",
+    "schoolsOnScreen": 8,
+    "schoolsInFile": 10,
+    "countsMatch": true,
+    "headerIsEnglish": true,
+    "shot": "261_exp-gov_export-gov-downloaded.png"
+  },
+  "export-parent-json": {
+    "status": 200,
+    "bytes": 77212,
+    "keys": [
+      "meta",
+      "parent",
+      "children",
+      "schoolRatings",
+      "teacherRatings"
+    ],
+    "childNames": [
+      "Islom Mirzayev"
+    ],
+    "attendanceRows": 61,
+    "shot": "263_exp-parent_export-parent-json.png"
+  },
+  "two-sessions-one-account": {
+    "bothAliveBefore": [
+      200,
+      200
+    ],
+    "afterLogoutOfA": [
+      401,
+      200
+    ],
+    "sessionBSurvived": true,
+    "shotA": "264_sess-A_session-A-after-logout.png",
+    "shotB": "265_sess-B_session-B-after-other-logout.png"
+  },
+  "two-writers-same-day": {
+    "teacher": {
+      "s": 401,
+      "b": "{\"error\":\"No token provided\"}"
+    },
+    "reception": {
+      "s": 201,
+      "b": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+    },
+    "date": "2026-08-10",
+    "note": "DB state read back separately"
+  }
+}

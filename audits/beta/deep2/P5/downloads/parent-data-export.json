@@ -1,0 +1,15 @@
+{
+ "status": 200,
+ "bytes": 77212,
+ "keys": [
+  "meta",
+  "parent",
+  "children",
+  "schoolRatings",
+  "teacherRatings"
+ ],
+ "childNames": [
+  "Islom Mirzayev"
+ ],
+ "attendanceRows": 61
+}

@@ -116,13 +116,7 @@
       "scrollWidth": 1440,
       "clientWidth": 1440,
       "overflows": false,
-      "clipped": [
-        {
-          "t": "Muassasa tarbiyachisi",
-          "c": 146,
-          "s": 149
-        }
-      ],
+      "clipped": [],
       "culprits": []
     },
     "P12": {
@@ -177,15 +171,11 @@
     },
     "P2": {
       "route": "/child",
-      "scrollWidth": 720,
+      "scrollWidth": 390,
       "clientWidth": 390,
-      "overflows": true,
+      "overflows": false,
       "clipped": [],
-      "culprits": [
-        "SELECT.flex-1@720",
-        "DIV.bg-p-surface@720",
-        "NAV.flex@720"
-      ]
+      "culprits": []
     },
     "P3": {
       "route": "/attendance",
@@ -237,15 +227,11 @@
     },
     "P9": {
       "route": "/therapy",
-      "scrollWidth": 394,
+      "scrollWidth": 390,
       "clientWidth": 390,
-      "overflows": true,
+      "overflows": false,
       "clipped": [],
-      "culprits": [
-        "BUTTON.px-4@394",
-        "DIV.bg-p-surface@394",
-        "NAV.flex@394"
-      ]
+      "culprits": []
     },
     "P10": {
       "route": "/irr",
@@ -257,36 +243,11 @@
     },
     "P11": {
       "route": "/rating",
-      "scrollWidth": 411,
+      "scrollWidth": 390,
       "clientWidth": 390,
-      "overflows": true,
-      "clipped": [
-        {
-          "t": "Muassasa tozaligi",
-          "c": 96,
-          "s": 119
-        },
-        {
-          "t": "Muassasa tarbiyachisi",
-          "c": 96,
-          "s": 149
-        },
-        {
-          "t": "Bolaning o'sishi",
-          "c": 96,
-          "s": 105
-        },
-        {
-          "t": "Muassasaga ishonch",
-          "c": 96,
-          "s": 141
-        }
-      ],
-      "culprits": [
-        "DIV.flex@411",
-        "P.text-xs@411",
-        "DIV.flex@411"
-      ]
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
     },
     "P12": {
       "route": "/notifications",

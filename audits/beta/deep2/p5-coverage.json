@@ -1,0 +1,50 @@
+{
+ "rows": [
+  {
+   "portal": "reception",
+   "files": 29,
+   "total": 201,
+   "EXERCISED": 197,
+   "BLOCKED": 4,
+   "NOT-REACHED": 0
+  },
+  {
+   "portal": "teacher",
+   "files": 48,
+   "total": 297,
+   "EXERCISED": 269,
+   "BLOCKED": 20,
+   "NOT-REACHED": 8
+  },
+  {
+   "portal": "parent",
+   "files": 25,
+   "total": 117,
+   "EXERCISED": 109,
+   "BLOCKED": 4,
+   "NOT-REACHED": 4
+  },
+  {
+   "portal": "admin",
+   "files": 37,
+   "total": 209,
+   "EXERCISED": 207,
+   "BLOCKED": 0,
+   "NOT-REACHED": 2
+  },
+  {
+   "portal": "government",
+   "files": 27,
+   "total": 142,
+   "EXERCISED": 137,
+   "BLOCKED": 0,
+   "NOT-REACHED": 5
+  }
+ ],
+ "grand": {
+  "total": 966,
+  "EXERCISED": 919,
+  "BLOCKED": 28,
+  "NOT-REACHED": 19
+ }
+}

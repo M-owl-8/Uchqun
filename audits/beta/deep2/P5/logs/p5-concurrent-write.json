@@ -1,0 +1,15 @@
+{
+  "concurrent-writes": {
+    "date": "2026-08-10",
+    "teacher": {
+      "who": "teacher",
+      "s": 201,
+      "b": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+    },
+    "reception": {
+      "who": "reception",
+      "s": 201,
+      "b": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+    }
+  }
+}

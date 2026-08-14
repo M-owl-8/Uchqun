@@ -5,7 +5,7 @@
 repository is historical and must not be treated as current.
 
 **Last re-derived:** 2026-08-14 · Campaign II P1 · from HEAD `3d780e33`
-**Numbering:** ids are permanent and never reused. New defects continue from D-55.
+**Numbering:** ids are permanent and never reused. New defects continue from D-58.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -22,7 +22,7 @@ repository is historical and must not be treated as current.
 | D-11 | degrades-use | **FIXED** `21ee564e` | parent–teacher rating had no assigned teacher | `deep/P4-PARENT.md` §5 |
 | D-12 | degrades-use | **FIXED** | group label rendered as empty quotes | `deep/P3-TEACHER.md` §5 |
 | D-13 | cosmetic | **FIXED** | change-password copy | `deep/P3-TEACHER.md` §5 |
-| D-14 | cosmetic | **NOT CLAIMED** | font 404s — never proven fixed | `fullrun-2026-08-14/` |
+| D-14 | cosmetic | **CONFIRMED PRESENT** | government portal 404s on `/s/geistmono/…woff2` on every load — witnessed for the first time | `deep2/P5-UI.md` §4 |
 | D-15 | cosmetic | **FIXED** | teacher-form domain chip | `rerun-2026-08-14/` |
 | D-16 | — | confirmed | reception portal finding | `deep/P2-RECEPTION.md` |
 | D-17 | — | corrected | reception portal finding | `deep/P2-RECEPTION.md` |
@@ -36,8 +36,8 @@ repository is historical and must not be treated as current.
 | D-29 | degrades-use | **OPEN** | multi-group teacher labelled with one group's name | `deep/P3-TEACHER.md` §4 |
 | D-30 | degrades-use | **OPEN** | same-named children indistinguishable (teacher grid + admin IRR) | `deep/P3-TEACHER.md` §4 |
 | D-31 | blocks-use | **FIXED** `6727bc27` | teacher received the whole school's attendance | `deep/P8-CLOSEOUT.md` §1 |
-| D-32 | degrades-use | **OPEN** | `/rating` 411 px at a 390 px viewport; 4 of 5 criteria truncated | `deep/P4-PARENT.md` §3 |
-| D-33 | cosmetic | **OPEN** | `/therapy` 394 px at a 390 px viewport | `deep/P4-PARENT.md` §3 |
+| D-32 | degrades-use | **FIXED** `240c75b1`,`bc59ff6e` | `/rating` 411px with 4 of 5 criteria truncated — two separate causes | `deep2/P5-UI.md` §2 |
+| D-33 | cosmetic | **FIXED** `9f7c78ba` | `/therapy` 394px — non-wrapping filter row | `deep2/P5-UI.md` §2 |
 | D-34 | — | **WITHDRAWN** | mobile tab bar investigated and found correct | `deep/P4-PARENT.md` §6 |
 | D-35 | degrades-use | **OPEN** | notifications never fed by journal, chat or attendance events | `deep/P4-PARENT.md` §4 |
 | D-36 | degrades-use | **OPEN** | no in-app language switcher for parents | `deep/P4-PARENT.md` §4 |
@@ -59,6 +59,9 @@ repository is historical and must not be treated as current.
 | D-52 | degrades-use | **OPEN** | document rejection is irreversible; a mis-rejected document blocks a reception permanently | `deep2/P2-AUDIT-INTEGRITY.md` §5 |
 | D-53 | blocks-use | **FIXED** `fdc57107` | `/service-plans` had no access check; `/therapy/usage` let childId overwrite the school scope and left `where` empty for reception and government | `deep2/P3-ISOLATION.md` §4 |
 | D-54 | blocks-use | **FIXED** `fd5c2aee` | `validateChildAccess` skipped its scope check for any user without a schoolId, admitting every government account to every child in the country | `deep2/P3-ISOLATION.md` §5 |
+| D-55 | degrades-use | **OPEN** | a deep link is discarded on login in all four portals | `deep2/P5-UI.md` §3 |
+| D-56 | blocks-use | **FIXED** `9f7c78ba` | `/child` rendered 720px wide on a 390px phone — a `<select>` sized by option text carrying the school name | `deep2/P5-UI.md` §2 |
+| D-57 | cosmetic | **FIXED** `af07912c` | the teacher's name truncated on every activity card at 1440px | `deep2/P5-UI.md` §2 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused
