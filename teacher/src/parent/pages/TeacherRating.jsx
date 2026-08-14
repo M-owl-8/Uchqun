@@ -468,10 +468,17 @@ const TeacherRating = () => {
                 {PARENT_INDICATORS.map((ind) => (
                   <div
                     key={ind.key}
-                    className="flex items-center justify-between gap-3 py-1.5"
+                    // D-32: the label was flex-1 min-w-0 truncate beside a shrink-0
+                    // group holding "n / 5" plus five stars. On a 390px phone the
+                    // right group took the row and the label was truncated to 96px —
+                    // four of five criteria unreadable, on the page whose whole
+                    // purpose is asking a parent to rate them, and the row still
+                    // overflowed to 411px. Stack below sm so the label gets the full
+                    // width and the stars sit under it.
+                    className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3 py-1.5"
                     data-testid={`indicator-row-${ind.key}`}
                   >
-                    <label className="text-sm font-medium text-p-sepia-700 flex-1 min-w-0 truncate">
+                    <label className="text-sm font-medium text-p-sepia-700 w-full sm:flex-1 sm:min-w-0">
                       {ind[i18n.language] || ind.en}
                     </label>
                     <div className="flex items-center gap-3 shrink-0">
