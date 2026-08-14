@@ -1,0 +1,1256 @@
+[
+ {
+  "file": "admin/src/components/BottomNav.jsx",
+  "line": 38,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/components/dnp/Checkbox.jsx",
+  "line": 4,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/components/dnp/Field.jsx",
+  "line": 51,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/components/dnp/Field.jsx",
+  "line": 74,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/components/dnp/InlineLink.jsx",
+  "line": 3,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/components/dnp/LangDropdown.jsx",
+  "line": 39,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/components/dnp/LangDropdown.jsx",
+  "line": 63,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/components/dnp/PrimaryButton.jsx",
+  "line": 20,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/components/Layout.jsx",
+  "line": 36,
+  "kind": "button",
+  "label": "Menyu"
+ },
+ {
+  "file": "admin/src/components/Sidebar.jsx",
+  "line": 74,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 122,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 144,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 155,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 183,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 238,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ActivityFeed.jsx",
+  "line": 245,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 96,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 160,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 272,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 278,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 291,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 311,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 331,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 348,
+  "kind": "input",
+  "label": "directorIrr.departureName"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 355,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 361,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 368,
+  "kind": "input",
+  "label": "directorIrr.departureReason"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 375,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 392,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 401,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/AdminIRR.jsx",
+  "line": 491,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 148,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 160,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 176,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 195,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 214,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 233,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 259,
+  "kind": "input",
+  "label": "file"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 281,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 297,
+  "kind": "input",
+  "label": "file"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 319,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 340,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AdminRegister.jsx",
+  "line": 346,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 130,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 170,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 178,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 334,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 346,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 359,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/AIWarnings.jsx",
+  "line": 367,
+  "kind": "button",
+  "label": "aiWarnings.refresh"
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 174,
+  "kind": "input",
+  "label": "file"
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 188,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 229,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 259,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 265,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 292,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 298,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/BulkImport.jsx",
+  "line": 357,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ChangePassword.jsx",
+  "line": 79,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ChangePassword.jsx",
+  "line": 88,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ChangePassword.jsx",
+  "line": 96,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/ChangePassword.jsx",
+  "line": 109,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/ChildDetail.jsx",
+  "line": 39,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ChildDetail.jsx",
+  "line": 63,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ChildDetail.jsx",
+  "line": 73,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Communications.jsx",
+  "line": 113,
+  "kind": "input",
+  "label": "communications.search"
+ },
+ {
+  "file": "admin/src/pages/Communications.jsx",
+  "line": 138,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 260,
+  "kind": "button",
+  "label": "dashboard.refresh"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 284,
+  "kind": "link",
+  "label": "dashboard.review"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 301,
+  "kind": "link",
+  "label": "dashboard.viewAll"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 313,
+  "kind": "link",
+  "label": "dashboard.activate"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 376,
+  "kind": "link",
+  "label": "dashboard.auditLog"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 409,
+  "kind": "link",
+  "label": "dashboard.viewDetails"
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 453,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 464,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Dashboard.jsx",
+  "line": 475,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 90,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 102,
+  "kind": "button",
+  "label": "receptionsPage.view"
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 110,
+  "kind": "button",
+  "label": "receptionsPage.reject"
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 234,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 247,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 290,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 325,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 333,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 343,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 363,
+  "kind": "button",
+  "label": "receptionsPage.cancel"
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 366,
+  "kind": "button",
+  "label": "receptionsPage.reject"
+ },
+ {
+  "file": "admin/src/pages/DocumentApprovalQueue.jsx",
+  "line": 381,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 96,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 128,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 222,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 226,
+  "kind": "form",
+  "label": "govMessages.subjectLabel"
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 231,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 245,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 256,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/GovMessages.jsx",
+  "line": 263,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/GroupManagement.jsx",
+  "line": 91,
+  "kind": "input",
+  "label": "groupsPage.search"
+ },
+ {
+  "file": "admin/src/pages/NotFound.jsx",
+  "line": 11,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ParentManagement.jsx",
+  "line": 144,
+  "kind": "form",
+  "label": "parentsPage.search"
+ },
+ {
+  "file": "admin/src/pages/ParentManagement.jsx",
+  "line": 146,
+  "kind": "input",
+  "label": "parentsPage.search"
+ },
+ {
+  "file": "admin/src/pages/ParentManagement.jsx",
+  "line": 229,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ParentManagement.jsx",
+  "line": 237,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ParentManagement.jsx",
+  "line": 266,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 137,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 145,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 163,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 174,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 175,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 183,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 194,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 204,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 215,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 222,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 246,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 247,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Profile.jsx",
+  "line": 255,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 56,
+  "kind": "button",
+  "label": "Yopish"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 66,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 75,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 84,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 93,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 137,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionDetailPanel.jsx",
+  "line": 145,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 20,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 24,
+  "kind": "form",
+  "label": "receptionsPage.firstName"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 29,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 41,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 55,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 78,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 85,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 98,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 106,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/reception/ReceptionFormModal.jsx",
+  "line": 113,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 391,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 404,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 413,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 446,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 462,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 487,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 507,
+  "kind": "button",
+  "label": "receptionsPage.editAction"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 514,
+  "kind": "button",
+  "label": "receptionsPage.deleteAction"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 521,
+  "kind": "button",
+  "label": "receptionsPage.viewAction"
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 547,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 555,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/ReceptionManagement.jsx",
+  "line": 567,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/SchoolProfile.jsx",
+  "line": 164,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/SchoolProfile.jsx",
+  "line": 176,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/SchoolProfile.jsx",
+  "line": 185,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 7,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 8,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 16,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 27,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 37,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 48,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessageModal.jsx",
+  "line": 55,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessagesModal.jsx",
+  "line": 8,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessagesModal.jsx",
+  "line": 9,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/MessagesModal.jsx",
+  "line": 17,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/NotificationPreferences.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/NotificationPreferences.jsx",
+  "line": 17,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "admin/src/pages/settings/NotificationPreferences.jsx",
+  "line": 37,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 19,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 26,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 39,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 47,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 61,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 69,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "admin/src/pages/settings/PasswordForm.jsx",
+  "line": 81,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 19,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 30,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 45,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 59,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "admin/src/pages/settings/ProfileForm.jsx",
+  "line": 70,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 161,
+  "kind": "link",
+  "label": "nav.school"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 168,
+  "kind": "link",
+  "label": "nav.import"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 175,
+  "kind": "link",
+  "label": "nav.irr"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 182,
+  "kind": "link",
+  "label": "nav.groups"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 189,
+  "kind": "link",
+  "label": "nav.govMessages"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 196,
+  "kind": "link",
+  "label": "nav.trash"
+ },
+ {
+  "file": "admin/src/pages/Settings.jsx",
+  "line": 208,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TeacherDetail.jsx",
+  "line": 65,
+  "kind": "button",
+  "label": "teacherDetail.back"
+ },
+ {
+  "file": "admin/src/pages/TeacherDetail.jsx",
+  "line": 77,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TeacherManagement.jsx",
+  "line": 86,
+  "kind": "form",
+  "label": "teachersPage.search"
+ },
+ {
+  "file": "admin/src/pages/TeacherManagement.jsx",
+  "line": 88,
+  "kind": "input",
+  "label": "teachersPage.search"
+ },
+ {
+  "file": "admin/src/pages/TeacherManagement.jsx",
+  "line": 134,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 213,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 227,
+  "kind": "input",
+  "label": "therapy.search"
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 236,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 246,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 257,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 268,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 339,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 346,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 384,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 396,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 409,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 423,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 438,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 457,
+  "kind": "input",
+  "label": "url"
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 471,
+  "kind": "input",
+  "label": "number"
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 484,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 502,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 519,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 529,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/TherapyManagement.jsx",
+  "line": 536,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Trash.jsx",
+  "line": 79,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "admin/src/pages/Trash.jsx",
+  "line": 136,
+  "kind": "button",
+  "label": ""
+ }
+]

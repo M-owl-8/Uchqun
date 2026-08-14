@@ -1,0 +1,1208 @@
+[
+ {
+  "file": "reception/src/components/BottomNav.jsx",
+  "line": 34,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/CommandPalette.jsx",
+  "line": 94,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/components/CommandPalette.jsx",
+  "line": 117,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/DocumentUpload.jsx",
+  "line": 31,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/DocumentUpload.jsx",
+  "line": 76,
+  "kind": "link",
+  "label": "common.view"
+ },
+ {
+  "file": "reception/src/components/DocumentUpload.jsx",
+  "line": 108,
+  "kind": "button",
+  "label": "documentUpload.reUpload"
+ },
+ {
+  "file": "reception/src/components/DocumentUpload.jsx",
+  "line": 187,
+  "kind": "input",
+  "label": "file"
+ },
+ {
+  "file": "reception/src/components/Layout.jsx",
+  "line": 61,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/Layout.jsx",
+  "line": 72,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/Sidebar.jsx",
+  "line": 79,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/Sidebar.jsx",
+  "line": 109,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/components/Wizard.jsx",
+  "line": 92,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/components/Wizard.jsx",
+  "line": 104,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/components/Wizard.jsx",
+  "line": 115,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/components/Wizard.jsx",
+  "line": 124,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ChangePassword.jsx",
+  "line": 79,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ChangePassword.jsx",
+  "line": 88,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ChangePassword.jsx",
+  "line": 96,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ChangePassword.jsx",
+  "line": 109,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 120,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 138,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 156,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 215,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 259,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 306,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Dashboard.jsx",
+  "line": 325,
+  "kind": "link",
+  "label": "common.viewAll"
+ },
+ {
+  "file": "reception/src/pages/Documents.jsx",
+  "line": 175,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Documents.jsx",
+  "line": 241,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 153,
+  "kind": "input",
+  "label": "groupsPage.search"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 162,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 203,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 210,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 229,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 236,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 254,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 262,
+  "kind": "form",
+  "label": "groupsPage.form.name"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 265,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 276,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 287,
+  "kind": "input",
+  "label": "number"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 301,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 315,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 334,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/GroupManagement.jsx",
+  "line": 341,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 128,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 141,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 159,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 176,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 185,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 198,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "reception/src/pages/Login.jsx",
+  "line": 208,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/NotFound.jsx",
+  "line": 11,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 409,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 422,
+  "kind": "input",
+  "label": "parentsPage.search"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 439,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 457,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 482,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 508,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 541,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 566,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 585,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 594,
+  "kind": "button",
+  "label": "parentsPage.editChildTitle"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 601,
+  "kind": "button",
+  "label": "parentsPage.buttons.delete"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 617,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 622,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 628,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 636,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 643,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 650,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 657,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 683,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 690,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 708,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 718,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 729,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 791,
+  "kind": "button",
+  "label": "common.copy"
+ },
+ {
+  "file": "reception/src/pages/ParentManagement.jsx",
+  "line": 802,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 51,
+  "kind": "button",
+  "label": "common.close"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 60,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 70,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 82,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 97,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 109,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 126,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 137,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 149,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 170,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 184,
+  "kind": "input",
+  "label": "file"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 205,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/parents/ChildFormModal.jsx",
+  "line": 212,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentCard.jsx",
+  "line": 109,
+  "kind": "button",
+  "label": "parentsPage.editChildTitle"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentCard.jsx",
+  "line": 117,
+  "kind": "button",
+  "label": "parentsPage.buttons.delete"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentCard.jsx",
+  "line": 140,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentCard.jsx",
+  "line": 147,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentCard.jsx",
+  "line": 154,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 25,
+  "kind": "button",
+  "label": "common.close"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 34,
+  "kind": "form",
+  "label": "parentsPage.form.firstName"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 38,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 48,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 60,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 75,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 86,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 93,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 108,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 128,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 167,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 179,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 194,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 206,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 223,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 236,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 247,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 259,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/parents/ParentFormModal.jsx",
+  "line": 266,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/ParentWizardPage.jsx",
+  "line": 139,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/ParentWizardPage.jsx",
+  "line": 146,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 18,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 27,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 61,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 74,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 88,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 123,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 146,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ChildStep.jsx",
+  "line": 165,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/GroupStep.jsx",
+  "line": 78,
+  "kind": "input",
+  "label": "radio"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 23,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 36,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 56,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 87,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 102,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 116,
+  "kind": "input",
+  "label": "AB 1234567"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 130,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/steps/ParentStep.jsx",
+  "line": 149,
+  "kind": "input",
+  "label": "password"
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/WizardCompletePage.jsx",
+  "line": 20,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/WizardCompletePage.jsx",
+  "line": 79,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/ParentWizard/WizardCompletePage.jsx",
+  "line": 85,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 147,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 155,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 173,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 184,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 185,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 193,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 204,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 214,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 225,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 232,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 256,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 257,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Profile.jsx",
+  "line": 265,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 7,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 8,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 16,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 27,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 37,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 48,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessageModal.jsx",
+  "line": 55,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessagesModal.jsx",
+  "line": 8,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessagesModal.jsx",
+  "line": 9,
+  "kind": "onClick-div",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/MessagesModal.jsx",
+  "line": 17,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/NotificationPreferences.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/NotificationPreferences.jsx",
+  "line": 17,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "reception/src/pages/settings/NotificationPreferences.jsx",
+  "line": 37,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 19,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 26,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 39,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 47,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 61,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 69,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/settings/PasswordForm.jsx",
+  "line": 81,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 8,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 19,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 30,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 45,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 59,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "reception/src/pages/settings/ProfileForm.jsx",
+  "line": 70,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/Settings.jsx",
+  "line": 189,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/Settings.jsx",
+  "line": 197,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 283,
+  "kind": "form",
+  "label": "teachersPage.search"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 285,
+  "kind": "input",
+  "label": "teachersPage.search"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 295,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 348,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 358,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 371,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 379,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 387,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 405,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 412,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 440,
+  "kind": "button",
+  "label": "common.close"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 525,
+  "kind": "button",
+  "label": "common.close"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 534,
+  "kind": "form",
+  "label": "teachersPage.form.firstName"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 538,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 548,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 561,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 569,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 589,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 602,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 609,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 621,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 628,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 651,
+  "kind": "button",
+  "label": "common.copy"
+ },
+ {
+  "file": "reception/src/pages/TeacherManagement.jsx",
+  "line": 662,
+  "kind": "button",
+  "label": ""
+ }
+]

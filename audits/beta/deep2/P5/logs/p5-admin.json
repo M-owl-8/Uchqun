@@ -1,0 +1,653 @@
+{
+  "portal": "admin",
+  "routes": {
+    "A1": {
+      "route": "/admin",
+      "shot": "049_p5-admin_A1-dashboard.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Yangilash"
+      ],
+      "inputs": [],
+      "links": 22,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A2": {
+      "route": "/admin/receptions",
+      "shot": "050_p5-admin_A2-receptions.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Qabul yaratish",
+        "Tahrirlash",
+        "O'chirish",
+        "Tafsilotlar",
+        "Tahrirlash",
+        "O'chirish",
+        "Tafsilotlar",
+        "Tahrirlash",
+        "O'chirish",
+        "Tafsilotlar",
+        "Tahrirlash",
+        "O'chirish",
+        "Tafsilotlar",
+        "submit",
+        "1",
+        "submit"
+      ],
+      "inputs": [
+        "INPUT:search:Ism, email yoki telefon...",
+        "SELECT:select-one:Hammasi · 4 Faol · 2 Tasdiqlash kutilmoqda · 1 F",
+        "INPUT:checkbox:checkbox",
+        "INPUT:checkbox:checkbox",
+        "INPUT:checkbox:checkbox",
+        "INPUT:checkbox:checkbox",
+        "INPUT:checkbox:checkbox"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A3": {
+      "route": "/admin/parents",
+      "shot": "051_p5-admin_A3-parents.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish"
+      ],
+      "inputs": [
+        "INPUT:text:Ota-onalarni qidirish..."
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A4": {
+      "route": "/admin/teachers",
+      "shot": "052_p5-admin_A4-teachers.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "JT Jasur Turgunov tarbiyachi8@tmm3.uz +998901000",
+        "OR Ozoda Rasulova tarbiyachi7@tmm3.uz +998901000",
+        "FN Farrux Ne’matov tarbiyachi6@tmm3.uz +99890100",
+        "SY Sitora Yo‘ldosheva tarbiyachi5@tmm3.uz +99890",
+        "BE Bahodir Eshonov tarbiyachi4@tmm3.uz +99890100",
+        "NS Nigora Sultonova tarbiyachi3@tmm3.uz +9989010",
+        "GS Gulnora Saidova g.saidova@tmm3.uz +9989012345",
+        "AQ Anvar Qosimov tarbiyachi2@tmm3.uz +9989010000",
+        "ZA Zebo Ashurova tarbiyachi1@tmm3.uz +9989010000"
+      ],
+      "inputs": [
+        "INPUT:text:Tarbiyachilarni qidirish..."
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A5": {
+      "route": "/admin/groups",
+      "shot": "053_p5-admin_A5-groups.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish"
+      ],
+      "inputs": [
+        "INPUT:text:Guruhlarni qidirish..."
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A6": {
+      "route": "/admin/school-ratings",
+      "shot": "054_p5-admin_A6-school-ratings.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish"
+      ],
+      "inputs": [],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A7": {
+      "route": "/admin/profile",
+      "shot": "055_p5-admin_A7-profile.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Davlatga xabar yuborish",
+        "Mening xabarlarim",
+        "Chiqish"
+      ],
+      "inputs": [],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A8": {
+      "route": "/admin/settings",
+      "shot": "056_p5-admin_A8-settings.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Profilni saqlash",
+        "Saqlash",
+        "button",
+        "button",
+        "button",
+        "Parolni yangilash",
+        "Chiqish"
+      ],
+      "inputs": [
+        "INPUT:text:text",
+        "INPUT:text:text",
+        "INPUT:email:email",
+        "INPUT:tel:+998 90 123 45 67",
+        "INPUT:checkbox:checkbox",
+        "INPUT:password:password",
+        "INPUT:password:password",
+        "INPUT:password:password"
+      ],
+      "links": 21,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A9": {
+      "route": "/admin/documents",
+      "shot": "057_p5-admin_A9-documents.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Kutilmoqda1",
+        "Tasdiqlangan1",
+        "Rad etilgan0",
+        "Tasdiqlash",
+        "Rad etish"
+      ],
+      "inputs": [
+        "INPUT:search:Xodim yoki hujjat turi..."
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A10": {
+      "route": "/admin/ai-warnings",
+      "shot": "058_p5-admin_A10-ai-warnings.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Tahlil qilish",
+        "Yangilash"
+      ],
+      "inputs": [
+        "SELECT:select-one:Hammasi · 4 Hal qilinmagan · 0 Hal qilingan · 4",
+        "SELECT:select-one:Hamma darajalar Past O'rta Yuqori Kritik"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A11": {
+      "route": "/admin/therapy",
+      "shot": "059_p5-admin_A11-therapy.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Yangi terapiya",
+        "Barchasi",
+        "Musiqa",
+        "Video",
+        "Kontent",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit",
+        "Tahrirlash",
+        "submit"
+      ],
+      "inputs": [
+        "INPUT:text:Qidirish..."
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A12": {
+      "route": "/admin/import",
+      "shot": "060_p5-admin_A12-bulk-import.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Tekshirish"
+      ],
+      "inputs": [
+        "INPUT:file:file"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A13": {
+      "route": "/admin/school",
+      "shot": "061_p5-admin_A13-school-profile.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "O'zgarishlarni saqlash"
+      ],
+      "inputs": [
+        "INPUT:text:text",
+        "INPUT:email:email",
+        "INPUT:text:text",
+        "INPUT:text:text",
+        "TEXTAREA:textarea:textarea"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A14": {
+      "route": "/admin/activity",
+      "shot": "062_p5-admin_A14-activity.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish"
+      ],
+      "inputs": [
+        "SELECT:select-one:Barcha amallar Hujjat tasdiqlandi Hujjat rad eti",
+        "INPUT:date:date",
+        "INPUT:date:date"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A15": {
+      "route": "/admin/communications",
+      "shot": "063_p5-admin_A15-communications.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "RE Rayhona Ergasheva 16:49 Assalomu aleykum",
+        "ZU Zebo Umarova 21:27 Ko‘rdim, juda foydali. Rah",
+        "MS Madina Sharipova 21:27 Ko‘rdim, juda foydali.",
+        "ZS Zaynab Sultonova",
+        "MR Mavluda Rahimova",
+        "NM Nozima Mirzayeva",
+        "ZI Zuhra Ibragimova",
+        "NE Nozima Ergasheva",
+        "RS Rayhona Sharipova",
+        "OI Oysha Ismoilova",
+        "ZS Zilola Sobirova",
+        "DT Dilnoza Toshmatova",
+        "SE Sarvinoz Ergasheva",
+        "ZT Zaynab Tursunova",
+        "ZM Zebo Mirzayeva",
+        "SR Sabina Rahimova",
+        "SR Sevinch Rahimova",
+        "NI Nozima Ismoilova",
+        "OT Oysha Tursunova",
+        "ZN Zilola Nazarova",
+        "ZM Zilola Mirzayeva",
+        "NT Nafisa Tursunova",
+        "MS Muslima Sharipova",
+        "RI Rayhona Ismoilova",
+        "SQ Sarvinoz Qodirova",
+        "MI Mohira Ismoilova",
+        "SX Shahzoda Xolmatova",
+        "GS Gulnoza Sultonova",
+        "MR Malika Rahimova",
+        "MS Muslima Sharipova",
+        "SX Shahzoda Xolmatova",
+        "NS Nozima Sultonova",
+        "MO Malika Ochilova",
+        "KN Kamola Ne’matova",
+        "KN Kamola Ne’matova",
+        "OI Oysha Ismoilova",
+        "ZK Zaynab Karimova",
+        "MO Muslima Ochilova",
+        "MN Malika Nazarova",
+        "KM Kamola Mirzayeva",
+        "ZY Zilola Yusupova",
+        "ME Madina Ergasheva",
+        "RY Robiya Yusupova",
+        "MA Muslima Abdullayeva",
+        "NR Nozima Rasulova",
+        "MR Mohira Rahimova",
+        "ZI Zilola Ismoilova",
+        "MS Malika Sultonova",
+        "KA Kamola Abdullayeva",
+        "SQ Shahzoda Qodirova",
+        "MS Mohira Sharipova",
+        "MJ Mohira Jo‘rayeva",
+        "SS Sevinch Sobirova",
+        "SR Sevinch Rasulova",
+        "OS Oysha Sharipova",
+        "SQ Sevinch Qodirova",
+        "NJ Nozima Jo‘rayeva",
+        "ST Shahzoda Tursunova",
+        "SS Sarvinoz Sobirova",
+        "GR Gulnoza Rahimova",
+        "SR Sevinch Rahimova",
+        "DK Dilnoza Karimova",
+        "NU Nozima Umarova"
+      ],
+      "inputs": [
+        "INPUT:text:Ota-onani qidirish…"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A16": {
+      "route": "/admin/trash",
+      "shot": "064_p5-admin_A16-trash.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Ota-onalar",
+        "Qabulxonalar"
+      ],
+      "inputs": [],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A17": {
+      "route": "/admin/messages",
+      "shot": "065_p5-admin_A17-gov-messages.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Yangi xabar",
+        "Terapiya mashg‘ulotlari uchun qo‘shimcha mutaxas"
+      ],
+      "inputs": [],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A18": {
+      "route": "/admin/irr",
+      "shot": "066_p5-admin_A18-irr.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Maqsadli davrlar",
+        "Chorakli monitoring",
+        "Abdullayev Diyorbek Chinor",
+        "Abdullayeva Shahzoda Chinor",
+        "Ergashev Doston Chinor",
+        "Ergashev Muhammadali Nur",
+        "Ergasheva Gulnoza Umid",
+        "Ergasheva Gulnoza Umid",
+        "Ismoilov Islom Nur",
+        "Ismoilov Sirojiddin Nur",
+        "Ismoilova Gulnoza Bahor",
+        "Ismoilova Kamola Kamalak",
+        "Ismoilova Madina Chinor",
+        "Ismoilova Sarvinoz Kamalak",
+        "Jo‘rayev Ulug‘bek Umid",
+        "Jo‘rayeva Robiya Yulduz",
+        "Karimov Shohruh Yulduz",
+        "Karimova Iroda Bahor",
+        "Mirzayev Islom Umid",
+        "Mirzayev Muhammadali Bahor",
+        "Mirzayeva Rayhona Umid",
+        "Mirzayeva Zebo Nur",
+        "Nazarov Doston Bahor",
+        "Nazarov Xurshid Nur",
+        "Ne’matov Bekzod Bahor",
+        "Ne’matov Ravshan Bahor",
+        "Ochilov Javohir Bahor",
+        "Ochilov Muhammadali Bahor",
+        "Qodirov Sanjar Yulduz",
+        "Qodirov Temurbek Kamalak",
+        "Qodirova Zaynab Yulduz",
+        "Rahimov Amirbek Bahor",
+        "Rahimov Islom Chinor",
+        "Rahimova Gulnoza Umid",
+        "Rahimova Mohira Kamalak",
+        "Rahimova Muslima Umid",
+        "Rahimova Muslima Chinor",
+        "Rahimova Ozoda",
+        "Rasulov Aziz Yulduz",
+        "Rasulova Mohira Chinor",
+        "Saidova Zilola",
+        "Sharipov Aziz Yulduz",
+        "Sharipov Doston Umid",
+        "Sharipov Jahongir Yulduz",
+        "Sharipov Muhammadali Nur",
+        "Sharipov Ulug‘bek Kamalak",
+        "Sharipova Gulnoza Nur",
+        "Sobirov Amirbek Yulduz",
+        "Sobirov Asadbek Nur",
+        "Sobirova Zilola Kamalak",
+        "Sultonov Sanjar Chinor",
+        "Sultonov Sardor Kamalak",
+        "Sultonova Shahzoda Umid",
+        "Sultonova Zilola Kamalak",
+        "Tekshiruvov SIM-Bekzod Umid guruhi",
+        "Tekshiruvova SIM-Malika Nur guruhi",
+        "Tekshiruvova SIM-Nodira Umid guruhi",
+        "Toshmatov Bekzod Nur",
+        "Tursunov Diyorbek Nur",
+        "Tursunova Muslima Umid",
+        "Tursunova Sarvinoz Umid",
+        "Tursunova Shahzoda Nur",
+        "Umarov Sanjar Yulduz",
+        "Umarova Zaynab Umid",
+        "Xolmatova Nafisa Kamalak",
+        "Xolmatova Zebo Kamalak",
+        "Yusupov Muhammadali Chinor",
+        "Yusupova Muslima Bahor"
+      ],
+      "inputs": [],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A19": {
+      "route": "/admin/change-password",
+      "shot": "067_p5-admin_A19-change-password.png",
+      "buttons": [
+        "O'zbekcha",
+        "Chiqish",
+        "Parolni ko'rsatish",
+        "Parolni ko'rsatish",
+        "Parolni ko'rsatish",
+        "Parolni o'zgartirish"
+      ],
+      "inputs": [
+        "INPUT:password:password",
+        "INPUT:password:password",
+        "INPUT:password:password"
+      ],
+      "links": 15,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\n"
+    },
+    "A20": {
+      "route": "/admin/zzz",
+      "shot": "068_p5-admin_A20-notfound.png",
+      "buttons": [
+        "Orqaga qaytish"
+      ],
+      "inputs": [],
+      "links": 0,
+      "fit": {
+        "scrollWidth": 1440,
+        "clientWidth": 1440,
+        "overflows": false
+      },
+      "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+    }
+  },
+  "scenarios": {
+    "deeplink-then-login": {
+      "requested": "/admin/receptions",
+      "landedLoggedOut": "/login",
+      "redirectedToLogin": true,
+      "afterLogin": "/admin",
+      "returnedToDeepLink": false,
+      "shot": "048_p5-admin-anon_deeplink-after-login.png"
+    },
+    "login": {
+      "ok": true,
+      "landing": "https://admin-production-536f.up.railway.app/admin"
+    },
+    "validation-failure": {
+      "route": "/admin/settings",
+      "shot": "070_p5-admin_validation-failure-message.png",
+      "message": "Parol kamida 8 ta belgidan iborat bo'lishi kerak",
+      "namesTheField": true
+    },
+    "navigation": {
+      "afterReload": {
+        "url": "/admin/parents",
+        "body": "U  Uchqun  Muassasa  BOSHQARUV  Bosh sahifa Qabul boshqaruvi Tarbiyachilar Ota-onalar Hujj",
+        "shot": "073_p5-admin_nav-after-refresh.png"
+      },
+      "afterBack": {
+        "url": "/admin/receptions",
+        "shot": "074_p5-admin_nav-after-back.png"
+      },
+      "afterForward": {
+        "url": "/admin/parents",
+        "shot": "075_p5-admin_nav-after-forward.png"
+      }
+    },
+    "console-errors": {
+      "total": 2,
+      "distinct": [
+        "Failed to load resource: the server responded with a status of 401 ()"
+      ]
+    },
+    "network-failures": {
+      "total": 2,
+      "byStatus": {
+        "401": 2
+      },
+      "serverErrors": [],
+      "classified": [
+        "401 /api/v1/auth/me — expected: pre-auth probe",
+        "401 /api/v1/auth/refresh — expected: pre-auth probe"
+      ]
+    }
+  }
+}

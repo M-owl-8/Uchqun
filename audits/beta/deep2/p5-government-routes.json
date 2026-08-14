@@ -1,0 +1,301 @@
+{
+ "G1": {
+  "route": "/government",
+  "shot": "078_p5-government_G1-dashboard.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Ma'lumotlarni yangilash",
+   "10 Jami Muassasalar",
+   "0 Faol ogohlantirishlar",
+   "Barchasini ko'rish"
+  ],
+  "inputs": [],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G2": {
+  "route": "/government/schools",
+  "shot": "079_p5-government_G2-schools.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "CSV yuklab olish"
+  ],
+  "inputs": [
+   "INPUT:search:Muassasa nomi yoki manzili...",
+   "SELECT:select-one:Barcha turlar Kunduzgi parvarish Yangi kun Madad"
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G3": {
+  "route": "/government/students",
+  "shot": "080_p5-government_G3-students.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Ko'proq yuklash"
+  ],
+  "inputs": [
+   "INPUT:search:Ism yoki maktab..."
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G4": {
+  "route": "/government/teachers",
+  "shot": "081_p5-government_G4-teachers.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish"
+  ],
+  "inputs": [
+   "INPUT:search:Ism yoki email..."
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G5": {
+  "route": "/government/parents",
+  "shot": "082_p5-government_G5-parents.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Ko'proq yuklash"
+  ],
+  "inputs": [],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G6": {
+  "route": "/government/ratings",
+  "shot": "083_p5-government_G6-ratings.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Davlat baholarini ko'rsatish",
+   "Davlat baholarini ko'rsatish",
+   "Davlat baholarini ko'rsatish",
+   "Ota-onalar izohlarini ko'rsatish",
+   "Davlat baholarini ko'rsatish",
+   "Davlat baholarini ko'rsatish",
+   "Davlat baholarini ko'rsatish",
+   "Davlat baholarini ko'rsatish"
+  ],
+  "inputs": [
+   "INPUT:text:Muassasa qidirish...",
+   "SELECT:select-one:Umumiy (asosiy) Ota-onalar bo'yicha Davlat bo'yi"
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G7": {
+  "route": "/government/platform",
+  "shot": "084_p5-government_G7-platform.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Direktorlar",
+   "Xabarlar",
+   "Davlat foydalanuvchilari",
+   "Ro'yxatdan o'tish so'rovlari",
+   "button",
+   "Yaratish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish",
+   "Yangilash",
+   "O'chirish"
+  ],
+  "inputs": [
+   "INPUT:text:Ism",
+   "INPUT:text:Familiya",
+   "SELECT:select-one:Muassasani tanlang... Andijon viloyati 1-sonli m",
+   "INPUT:text:direktor",
+   "INPUT:password:Parol",
+   "INPUT:password:Parolni tasdiqlang"
+  ],
+  "links": 23,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G8": {
+  "route": "/government/warnings",
+  "shot": "085_p5-government_G8-warnings.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Yangilash",
+   "Faol",
+   "Hal qilingan"
+  ],
+  "inputs": [],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G9": {
+  "route": "/government/audit-log",
+  "shot": "086_p5-government_G9-audit-log.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Filtrlash",
+   "Oldingi",
+   "Keyingi"
+  ],
+  "inputs": [
+   "SELECT:select-one:Barcha harakatlar Arxivlash Qayta faollashtirish",
+   "SELECT:select-one:Barcha ob'ektlar Muassasalar Ro'yxatga olish so'",
+   "INPUT:date:date",
+   "INPUT:date:date"
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G10": {
+  "route": "/government/profile",
+  "shot": "087_p5-government_G10-profile.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Tahrirlash",
+   "Chiqish"
+  ],
+  "inputs": [],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G11": {
+  "route": "/government/settings",
+  "shot": "088_p5-government_G11-settings.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "button",
+   "button",
+   "button",
+   "Parolni o'zgartirish",
+   "Chiqish"
+  ],
+  "inputs": [
+   "INPUT:password:password",
+   "INPUT:password:password",
+   "INPUT:password:password"
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G12": {
+  "route": "/government/change-password",
+  "shot": "089_p5-government_G12-change-password.png",
+  "buttons": [
+   "O'zbekcha",
+   "Chiqish",
+   "Parolni ko'rsatish",
+   "Parolni ko'rsatish",
+   "Parolni ko'rsatish",
+   "Parolni o'zgartirish"
+  ],
+  "inputs": [
+   "INPUT:password:password",
+   "INPUT:password:password",
+   "INPUT:password:password"
+  ],
+  "links": 11,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nO'quvchilar\nTarbiyachilar\nOta-onalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zb"
+ },
+ "G13": {
+  "route": "/government/zzz",
+  "shot": "090_p5-government_G13-notfound.png",
+  "buttons": [
+   "Bosh sahifaga qaytish"
+  ],
+  "inputs": [],
+  "links": 0,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "404\n\nSahifa topilmadi\n\nBosh sahifaga qaytish"
+ }
+}

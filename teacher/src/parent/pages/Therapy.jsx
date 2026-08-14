@@ -139,7 +139,9 @@ const Therapy = () => {
             className="w-full pl-10 pr-4 py-2 border border-p-sepia-300 rounded-lg focus:ring-2 focus:ring-p-brand-500 focus:border-transparent"
           />
         </div>
-        <div className="flex gap-2">
+        {/* D-33: four filter chips on one non-wrapping row overflow a 390px
+            viewport by 4px. Allow the row to wrap. */}
+        <div className="flex gap-2 flex-wrap">
           <button
             onClick={() => setFilter('all')}
             className={`px-4 py-2 rounded-lg font-medium transition-colors ${

@@ -1,0 +1,332 @@
+{
+  "desktop": {
+    "P1": {
+      "route": "/",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P2": {
+      "route": "/child",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P3": {
+      "route": "/attendance",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P4": {
+      "route": "/activities",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        },
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        },
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        },
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        },
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        },
+        {
+          "t": "Zebo Ashurova",
+          "c": 74,
+          "s": 104
+        }
+      ],
+      "culprits": []
+    },
+    "P5": {
+      "route": "/meals",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P6": {
+      "route": "/media",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P7": {
+      "route": "/chat",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P8": {
+      "route": "/journal",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P9": {
+      "route": "/therapy",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P10": {
+      "route": "/irr",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P11": {
+      "route": "/rating",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [
+        {
+          "t": "Muassasa tarbiyachisi",
+          "c": 146,
+          "s": 149
+        }
+      ],
+      "culprits": []
+    },
+    "P12": {
+      "route": "/notifications",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P13": {
+      "route": "/help",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P14": {
+      "route": "/settings",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P15": {
+      "route": "/change-password",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P16": {
+      "route": "/zzz",
+      "scrollWidth": 1440,
+      "clientWidth": 1440,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    }
+  },
+  "mobile": {
+    "P1": {
+      "route": "/",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P2": {
+      "route": "/child",
+      "scrollWidth": 720,
+      "clientWidth": 390,
+      "overflows": true,
+      "clipped": [],
+      "culprits": [
+        "SELECT.flex-1@720",
+        "DIV.bg-p-surface@720",
+        "NAV.flex@720"
+      ]
+    },
+    "P3": {
+      "route": "/attendance",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P4": {
+      "route": "/activities",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P5": {
+      "route": "/meals",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P6": {
+      "route": "/media",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P7": {
+      "route": "/chat",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P8": {
+      "route": "/journal",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P9": {
+      "route": "/therapy",
+      "scrollWidth": 394,
+      "clientWidth": 390,
+      "overflows": true,
+      "clipped": [],
+      "culprits": [
+        "BUTTON.px-4@394",
+        "DIV.bg-p-surface@394",
+        "NAV.flex@394"
+      ]
+    },
+    "P10": {
+      "route": "/irr",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P11": {
+      "route": "/rating",
+      "scrollWidth": 411,
+      "clientWidth": 390,
+      "overflows": true,
+      "clipped": [
+        {
+          "t": "Muassasa tozaligi",
+          "c": 96,
+          "s": 119
+        },
+        {
+          "t": "Muassasa tarbiyachisi",
+          "c": 96,
+          "s": 149
+        },
+        {
+          "t": "Bolaning o'sishi",
+          "c": 96,
+          "s": 105
+        },
+        {
+          "t": "Muassasaga ishonch",
+          "c": 96,
+          "s": 141
+        }
+      ],
+      "culprits": [
+        "DIV.flex@411",
+        "P.text-xs@411",
+        "DIV.flex@411"
+      ]
+    },
+    "P12": {
+      "route": "/notifications",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P13": {
+      "route": "/help",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P14": {
+      "route": "/settings",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P15": {
+      "route": "/change-password",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    },
+    "P16": {
+      "route": "/zzz",
+      "scrollWidth": 390,
+      "clientWidth": 390,
+      "overflows": false,
+      "clipped": [],
+      "culprits": []
+    }
+  }
+}

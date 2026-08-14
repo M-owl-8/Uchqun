@@ -291,7 +291,11 @@ const ChildProfile = () => {
               setImageLoading(true);
               setPhotoTimestamp(Date.now());
             }}
-            className="flex-1 px-3 py-1.5 bg-p-surface border border-p-sepia-200 rounded-md text-[13px] text-p-ink focus:outline-none focus:border-p-brand-400"
+            // D-56: a <select> takes its intrinsic width from its longest option, and the
+            // options carry the school name — "Gulnoza Ergasheva — Toshkent shahar 3-sonli
+            // ixtisoslashtirilgan maktabi". flex-1 alone cannot shrink below that, so this
+            // pushed the document to 720px on a 390px phone. min-w-0 lets it shrink.
+            className="flex-1 min-w-0 px-3 py-1.5 bg-p-surface border border-p-sepia-200 rounded-md text-[13px] text-p-ink focus:outline-none focus:border-p-brand-400"
           >
             {children.map((c) => (
               <option key={c.id} value={c.id}>

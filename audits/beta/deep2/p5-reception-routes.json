@@ -1,0 +1,378 @@
+{
+ "R1": {
+  "route": "/reception",
+  "shot": "003_p5-reception_R1-dashboard.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Yangi ota-ona 3 qadamli sehrgar bilan",
+   "Yangi tarbiyachi Hisob va guruh tayinlash",
+   "Hujjat yuklash Maktab rahbari tasdiqlaydi"
+  ],
+  "inputs": [],
+  "links": 10,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R2": {
+  "route": "/reception/parents",
+  "shot": "004_p5-reception_R2-parents.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Ota-ona qo'shish",
+   "Hammasi",
+   "Faol",
+   "Kutmoqda",
+   "To'xtatilgan",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "Bolani tahrirlash",
+   "O'chirish",
+   "submit",
+   "submit",
+   "1",
+   "2",
+   "3",
+   "submit"
+  ],
+  "inputs": [
+   "INPUT:text:Ota-onalarni qidirish...",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox",
+   "INPUT:checkbox:checkbox"
+  ],
+  "links": 32,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R3": {
+  "route": "/reception/parents/new",
+  "shot": "005_p5-reception_R3-parent-wizard.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Orqaga",
+   "Saqlab chiqish",
+   "Davom etish"
+  ],
+  "inputs": [
+   "INPUT:text:text",
+   "INPUT:text:text",
+   "INPUT:text:hulkar",
+   "INPUT:tel:tel",
+   "TEXTAREA:textarea:Toshkent shahri, Yunusobod tumani…",
+   "INPUT:text:AB 1234567",
+   "SELECT:select-one:Tanlang O'zbek Rus Tojik",
+   "INPUT:password:password"
+  ],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R4": {
+  "route": "/reception/teachers",
+  "shot": "006_p5-reception_R4-teachers.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Tarbiyachi qo'shish",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash",
+   "Yangilash",
+   "O'chirish",
+   "To'xtatish",
+   "Parolni tiklash"
+  ],
+  "inputs": [
+   "INPUT:text:Tarbiyachilarni qidirish..."
+  ],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R5": {
+  "route": "/reception/groups",
+  "shot": "007_p5-reception_R5-groups.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K"
+  ],
+  "inputs": [],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R6": {
+  "route": "/reception/documents",
+  "shot": "008_p5-reception_R6-documents.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K"
+  ],
+  "inputs": [
+   "SELECT:select-one:Litsenziya Sertifikat Shaxsni tasdiqlovchi hujja"
+  ],
+  "links": 8,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R7": {
+  "route": "/reception/settings",
+  "shot": "009_p5-reception_R7-settings.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Profilni saqlash",
+   "Sozlamalarni saqlash",
+   "button",
+   "button",
+   "button",
+   "Parolni o'zgartirish",
+   "Davlatga xabar yuborish"
+  ],
+  "inputs": [
+   "INPUT:text:text",
+   "INPUT:text:text",
+   "INPUT:email:email",
+   "INPUT:tel:+998 90 123 45 67",
+   "INPUT:checkbox:checkbox",
+   "INPUT:password:password",
+   "INPUT:password:password",
+   "INPUT:password:password"
+  ],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R8": {
+  "route": "/reception/profile",
+  "shot": "010_p5-reception_R8-profile.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Davlatga xabar yuborish",
+   "Chiqish"
+  ],
+  "inputs": [],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R9": {
+  "route": "/reception/change-password",
+  "shot": "011_p5-reception_R9-change-password.png",
+  "buttons": [
+   "Chiqish",
+   "O'zbekcha",
+   "Tezkor qidiruv… ⌘ K",
+   "Parolni ko'rsatish",
+   "Parolni ko'rsatish",
+   "Parolni ko'rsatish",
+   "Parolni o'zgartirish"
+  ],
+  "inputs": [
+   "INPUT:password:password",
+   "INPUT:password:password",
+   "INPUT:password:password"
+  ],
+  "links": 7,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish"
+ },
+ "R10": {
+  "route": "/reception/wizard/complete",
+  "shot": "012_p5-reception_R10-wizard-complete.png",
+  "buttons": [],
+  "inputs": [],
+  "links": 0,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "Loading…"
+ },
+ "R11": {
+  "route": "/reception/zzz",
+  "shot": "013_p5-reception_R11-notfound.png",
+  "buttons": [
+   "Orqaga qaytish"
+  ],
+  "inputs": [],
+  "links": 0,
+  "fit": {
+   "scrollWidth": 1440,
+   "clientWidth": 1440,
+   "overflows": false
+  },
+  "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+ }
+}
