@@ -268,5 +268,6 @@
   "MONTHLY_MILESTONE_UPDATE_FAILED": "Не удалось сохранить веху. Попробуйте ещё раз.",
   "MONTHLY_MILESTONE_BULK_FAILED": "Не удалось сохранить вехи. Попробуйте ещё раз.",
   "MONTHLY_MILESTONE_DELETE_FAILED": "Не удалось удалить веху. Попробуйте ещё раз.",
-  "ATTENDANCE_PARTIALLY_SAVED": "Некоторые дети не были сохранены. Проверьте список и попробуйте снова."
+  "ATTENDANCE_PARTIALLY_SAVED": "Некоторые дети не были сохранены. Проверьте список и попробуйте снова.",
+  "RATING_NO_ASSIGNED_TEACHER": "Педагог для вашего ребёнка ещё не назначен."
 }

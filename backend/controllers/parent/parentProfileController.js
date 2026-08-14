@@ -1,5 +1,6 @@
 import User from '../../models/User.js';
 import Group from '../../models/Group.js';
+import Child from '../../models/Child.js';
 import ParentActivity from '../../models/ParentActivity.js';
 import ParentMeal from '../../models/ParentMeal.js';
 import ParentMedia from '../../models/ParentMedia.js';
@@ -42,10 +43,34 @@ export const getMyProfile = async (req, res) => {
       where: { parentId: req.user.id },
     });
 
+    // D-11: assignedTeacher is User.belongsTo(User, {foreignKey:'teacherId'})
+    // (models/index.js:170) and users.teacherId is NULL for every parent created on
+    // the normal enrolment path — so the parent's "Fikr bildirish" page rendered
+    // "Biriktirilgan tarbiyachi topilmadi" for everyone. Fall back to the
+    // authoritative chain child → group → group.teacherId.
+    const userJson = userWithRelations.toJSON();
+    if (!userJson.assignedTeacher) {
+      const child = await Child.findOne({
+        where: { parentId: req.user.id },
+        attributes: ['id', 'groupId'],
+        order: [['createdAt', 'ASC']],
+      });
+      if (child?.groupId) {
+        const group = await Group.findByPk(child.groupId, { attributes: ['id', 'name', 'teacherId'] });
+        if (group?.teacherId) {
+          const teacher = await User.findByPk(group.teacherId, {
+            attributes: ['id', 'firstName', 'lastName', 'email', 'phone'],
+          });
+          if (teacher) userJson.assignedTeacher = teacher.toJSON();
+          if (!userJson.group) userJson.group = { id: group.id, name: group.name, description: null };
+        }
+      }
+    }
+
     res.json({
       success: true,
       data: {
-        user: userWithRelations.toJSON(),
+        user: userJson,
         summary: {
           activitiesCount,
           mealsCount,

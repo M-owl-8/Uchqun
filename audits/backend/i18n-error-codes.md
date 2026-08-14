@@ -59,6 +59,7 @@ Introduced: TP-DAVOMAT-REWORK (2026-06-06)
 | `ATTENDANCE_ACCESS_DENIED` | 400 (per-record) | Child does not belong to this school, or teacher is not assigned to the child | "You do not have access to this child's record." |
 | `ATTENDANCE_SAVE_FAILED` | 400/500 | Database error while saving a record | "Failed to save attendance. Please try again." |
 | `ATTENDANCE_PARTIALLY_SAVED` | 207 | D-01: some records in the batch were saved and at least one was refused (usually `ATTENDANCE_ACCESS_DENIED`). `data.errors[]` names the childIds that were not saved. | "Some children were not saved. Check the list and try again." |
+| `RATING_NO_ASSIGNED_TEACHER` | 409 | D-11: the parent has no group assignment yet, so there is no teacher to rate. Read path returns 200 with teacher:null instead; only the write path uses this code. | "No teacher is assigned to your child yet." |
 
 ---
 

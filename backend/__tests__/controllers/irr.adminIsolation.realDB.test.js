@@ -35,6 +35,18 @@ const ChildModel = sqlite.define('Child', {
   class:       { type: DataTypes.STRING, allowNull: true },
 }, { tableName: 'children', timestamps: false });
 
+// D-12: getChildren now eager-loads the child's group to return groupName.
+// Modelled here so this isolation test exercises the real query shape.
+const GroupModel = sqlite.define('Group', {
+  id:        { type: DataTypes.STRING, primaryKey: true },
+  name:      { type: DataTypes.STRING, allowNull: true },
+  teacherId: { type: DataTypes.STRING, allowNull: true },
+  schoolId:  { type: DataTypes.STRING, allowNull: true },
+}, { tableName: 'groups', timestamps: false });
+
+ChildModel.belongsTo(GroupModel, { foreignKey: 'groupId', as: 'childGroup' });
+GroupModel.hasMany(ChildModel,   { foreignKey: 'groupId', as: 'groupChildren' });
+
 const IRRModel = sqlite.define('IRR', {
   id:       { type: DataTypes.STRING, primaryKey: true },
   childId:  { type: DataTypes.STRING, allowNull: true },
@@ -70,7 +82,7 @@ jest.unstable_mockModule('../../models/GoalPeriod.js', () => ({ default: mockGoa
 
 // Models imported by teacherController but not touched by getChildren
 jest.unstable_mockModule('../../models/User.js',                () => ({ default: mkStub() }));
-jest.unstable_mockModule('../../models/Group.js',               () => ({ default: mkStub() }));
+jest.unstable_mockModule('../../models/Group.js',               () => ({ default: GroupModel }));
 jest.unstable_mockModule('../../models/School.js',              () => ({ default: mkStub() }));
 jest.unstable_mockModule('../../models/Activity.js',            () => ({ default: mkStub() }));
 jest.unstable_mockModule('../../models/Meal.js',                () => ({ default: mkStub() }));
@@ -127,9 +139,14 @@ const adminAReq = (params = {}) => ({
 beforeAll(async () => {
   await sqlite.sync({ force: true });
 
+  await GroupModel.bulkCreate([
+    { id: 'grp-iso-a', name: 'A-guruh', teacherId: 'tch-iso-a', schoolId: SCHOOL_A },
+    { id: 'grp-iso-b', name: 'B-guruh', teacherId: 'tch-iso-b', schoolId: SCHOOL_B },
+  ]);
+
   await ChildModel.bulkCreate([
-    { id: CHILD_A1, schoolId: SCHOOL_A },
-    { id: CHILD_B1, schoolId: SCHOOL_B },
+    { id: CHILD_A1, schoolId: SCHOOL_A, groupId: 'grp-iso-a' },
+    { id: CHILD_B1, schoolId: SCHOOL_B, groupId: 'grp-iso-b' },
   ]);
 
   await IRRModel.bulkCreate([

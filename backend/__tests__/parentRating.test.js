@@ -19,6 +19,8 @@ jest.unstable_mockModule('../models/User.js', () => ({
   },
 }));
 jest.unstable_mockModule('../models/Child.js', () => ({ default: { findOne: jest.fn(), findAll: jest.fn() } }));
+// D-11: the controller now resolves the teacher through child → group.
+jest.unstable_mockModule('../models/Group.js', () => ({ default: { findByPk: jest.fn(), findOne: jest.fn(), findAll: jest.fn() } }));
 jest.unstable_mockModule('../models/TeacherRating.js', () => ({
   default: { findAll: mockTRFindAll, findOne: mockTRFindOne, findOrCreate: mockTRFindOrCreate },
 }));
@@ -58,12 +60,41 @@ describe('parentRatingController.rateMyTeacher', () => {
     }
   });
 
-  it('400 when parent has no assigned teacher', async () => {
+  // D-11: users.teacherId is NULL for every parent created on the normal enrolment
+  // path, so this was the state of 100% of production parents and 400 made the
+  // rating feature permanently unusable. The teacher is now resolved through
+  // child → group → group.teacherId; only a genuinely unassigned child yields a
+  // refusal, and it is 409 (state conflict), not 400 (bad request).
+  it('409 RATING_NO_ASSIGNED_TEACHER when the child has no group at all', async () => {
     mockUserFindByPk.mockResolvedValue({ id: 'p1', teacherId: null });
+    const ChildModel = (await import('../models/Child.js')).default;
+    ChildModel.findOne.mockResolvedValue(null);
     const req = { user: { id: 'p1' }, body: { stars: 4 } };
     const res = mkRes();
     await rateMyTeacher(req, res);
-    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.status).toHaveBeenCalledWith(409);
+    expect(res.json.mock.calls[0][0].error.code).toBe('RATING_NO_ASSIGNED_TEACHER');
+  });
+
+  it('resolves the teacher via child → group when users.teacherId is NULL', async () => {
+    mockUserFindByPk.mockResolvedValue({ id: 'p1', teacherId: null });
+    const ChildModel = (await import('../models/Child.js')).default;
+    const GroupModel = (await import('../models/Group.js')).default;
+    ChildModel.findOne.mockResolvedValue({ id: 'c1', groupId: 'g1' });
+    GroupModel.findByPk.mockResolvedValue({ id: 'g1', teacherId: 't9' });
+    const save = jest.fn().mockResolvedValue();
+    mockTRFindOrCreate.mockResolvedValue([{ id: 'r1', stars: null, comment: null, save, toJSON: () => ({ id: 'r1' }) }, true]);
+    mockTRFindAll.mockResolvedValue([{ stars: 4 }]);
+    mockUserUpdate.mockResolvedValue([1]);
+
+    const req = { user: { id: 'p1' }, body: { stars: 4 } };
+    const res = mkRes();
+    await rateMyTeacher(req, res);
+
+    expect(mockTRFindOrCreate).toHaveBeenCalledWith(expect.objectContaining({
+      where: { teacherId: 't9', parentId: 'p1' },
+    }));
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
   });
 
   it('upserts rating + recalcs teacher average', async () => {

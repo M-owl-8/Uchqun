@@ -12,12 +12,13 @@ const mockPMFindAll = jest.fn();
 const mockPMedFindAll = jest.fn();
 
 jest.unstable_mockModule('../models/Child.js', () => ({
-  default: { findAll: mockChildFindAll },
+  // D-11: getMyProfile now falls back to child → group to resolve assignedTeacher.
+  default: { findAll: mockChildFindAll, findOne: jest.fn() },
 }));
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findByPk: mockUserFindByPk, findOne: mockUserFindOne },
 }));
-jest.unstable_mockModule('../models/Group.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/Group.js', () => ({ default: { findByPk: jest.fn() } }));
 jest.unstable_mockModule('../models/GovernmentMessage.js', () => ({
   default: { findAll: mockSAMFindAll },
 }));
