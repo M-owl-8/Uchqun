@@ -1,7 +1,26 @@
 name: Deploy to Railway
 
+# CONSOLIDATION II P8 / D-50 — this workflow used to trigger on `push` to main,
+# with NO relationship to CI whatsoever. CI and the deploy raced each other on
+# every commit, and because CI was red on every commit for the entire campaign,
+# every one of those commits deployed to production anyway. A gate that cannot
+# block anything is not a gate.
+#
+# GitHub Actions cannot express `needs:` across workflows, so the dependency is
+# expressed with `workflow_run`: this workflow now starts only after CI has
+# COMPLETED, and every job is guarded on CI having concluded 'success'.
+#
+# Two details that make the difference between a real gate and a decorative one:
+#   - `types: [completed]` fires on failure too, so the conclusion MUST be
+#     checked in an `if:` or the gate is theatre
+#   - `workflow_run` checks out the DEFAULT BRANCH by default, not the commit
+#     that was tested. Every checkout below pins
+#     `ref: ${{ github.event.workflow_run.head_sha }}` so the artefact deployed
+#     is the artefact CI actually verified.
 on:
-  push:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -14,8 +33,12 @@ jobs:
   # Root Directory ("backend") points correctly into the uploaded content.
   deploy-backend:
     runs-on: ubuntu-latest
+    # the gate itself
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - name: Deploy Backend (Uchqun) to Railway
         env:
@@ -40,6 +63,7 @@ jobs:
   # so pre-built dist/ is included in the Railway upload.
   deploy-frontends:
     runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     strategy:
       matrix:
         include:
@@ -57,6 +81,8 @@ jobs:
             label: Government
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
 
       - uses: actions/setup-node@v4
         with:
@@ -86,3 +112,19 @@ jobs:
           echo "--- railway up ---"
           railway up --service ${{ matrix.service }} --detach
           echo "${{ matrix.label }} deployment triggered."
+
+  # Without this, a blocked deploy is INVISIBLE: the jobs above simply skip and
+  # the run page shows nothing that says "production was protected". This job
+  # fails loudly, so the block is a legible event rather than an absence.
+  blocked:
+    runs-on: ubuntu-latest
+    if: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.conclusion != 'success' }}
+    steps:
+      - name: Deployment blocked — CI did not pass
+        run: |
+          echo "CI concluded: ${{ github.event.workflow_run.conclusion }}"
+          echo "commit:       ${{ github.event.workflow_run.head_sha }}"
+          echo "CI run:       ${{ github.event.workflow_run.html_url }}"
+          echo ""
+          echo "No deployment was triggered. Fix CI and push again."
+          exit 1

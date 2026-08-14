@@ -138,6 +138,62 @@ jobs:
       - name: Frontend i18n gate (fails on raw keys)
         run: node scripts/verify-frontend-i18n.mjs
 
+  # CONSOLIDATION II P8 — CLAUDE.md rules that were prose only.
+  # P1 found that the enforced rules are largely the mechanical ones, while the
+  # ones encoding tenant-safety judgement (R15) were enforced by nothing. This
+  # gate found four live cross-tenant holes on its first run (D-61…D-64).
+  conventions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: CLAUDE.md convention gate (R15, R06, R09, R18, D-59)
+        run: node scripts/verify-conventions.mjs
+
+  # CONSOLIDATION II P8 — every migration must apply to an EMPTY database.
+  # The production database has had every migration applied incrementally over
+  # months; nothing proved the set still composes from nothing, which is what a
+  # new environment, a restore drill or a second region would need.
+  migrate-fresh:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: uchqun_fresh
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      NODE_ENV: test
+      DB_HOST: localhost
+      DB_PORT: 5432
+      DB_NAME: uchqun_fresh
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      JWT_SECRET: ci-test-jwt-secret-that-is-at-least-32-chars
+      JWT_REFRESH_SECRET: ci-test-refresh-secret-at-least-32-chars
+      FRONTEND_URL: http://localhost:5173
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: cd backend && npm ci
+      - name: Apply every migration to an empty database
+        run: cd backend && npm run migrate
+      - name: Re-apply — migrations must be idempotent
+        run: cd backend && npm run migrate
+
   test-frontend:
     runs-on: ubuntu-latest
     strategy:
@@ -160,6 +216,24 @@ jobs:
             exit 1
           fi
 
+          # D-59: "some tests ran" is not "the tests ran". The teacher suite
+          # reported `Test Files 11 passed (11)` against 19 files on disk and
+          # exited 0 — vitest 4 had silently dropped 8 whose workers failed to
+          # start. This check is the one that would have caught it: every test
+          # file on disk must appear in the run.
+          ON_DISK=$(find src -name '*.test.js' -o -name '*.test.jsx'                     -o -name '*.spec.js' -o -name '*.spec.jsx' | wc -l | tr -d ' ')
+          COLLECTED=$(echo "$RESULT" | grep -oE 'Test Files[^(]*\(([0-9]+)\)' | grep -oE '[0-9]+' | tail -1)
+          echo "test files on disk: $ON_DISK | collected by vitest: ${COLLECTED:-unknown}"
+          if [ -z "$COLLECTED" ]; then
+            echo "ERROR: could not read the collected test-file count from the vitest output."
+            exit 1
+          fi
+          if [ "$COLLECTED" -lt "$ON_DISK" ]; then
+            echo "ERROR: ${{ matrix.app }} collected $COLLECTED of $ON_DISK test files."
+            echo "A suite that silently skips files and still exits 0 is worse than a failing test."
+            exit 1
+          fi
+
   lint-frontend:
     runs-on: ubuntu-latest
     strategy:
@@ -177,7 +251,7 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [lint, lint-frontend, security, sast, test-backend, test-frontend]
+    needs: [lint, lint-frontend, security, sast, test-backend, test-frontend, i18n, conventions, migrate-fresh]
     env:
       VITE_API_URL: https://uchqun-production-b484.up.railway.app/api
     strategy:
