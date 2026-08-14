@@ -545,6 +545,37 @@ Added 2026-06-09. IRR-MONTHLY-MILESTONES (Option B) — per-month projected mile
 
 ## Notes
 
+
+## Codes catalogued retrospectively (CONSOLIDATION II P8 / R09)
+
+These codes were already returned by shipped endpoints but had no catalogue row.
+They were found by `scripts/verify-conventions.mjs`, which enforces the CLAUDE.md
+rule that any commit introducing a code adds its row in the same commit — a rule
+that was itself unenforced until this phase.
+
+| Code | HTTP | When | User-facing meaning |
+|---|---|---|---|
+| `ACCOUNT_CREATE_FORBIDDEN_HIERARCHY` | 403 | Caller attempted to create an account at or above their own level in the role hierarchy | "You are not allowed to create an account of this type." |
+| `ADMIN_CREATE_INVALID` | 400 | Admin creation payload failed validation | "Please check the details and try again." |
+| `ADMIN_CREATE_FAILED` | 500 | Unexpected error creating an admin account | "Could not create the account. Please try again." |
+| `PARENT_CREATE_INVALID` | 400 | Parent creation payload failed validation | "Please check the details and try again." |
+| `RECEPTION_CREATE_INVALID` | 400 | Reception creation payload failed validation | "Please check the details and try again." |
+| `TEACHER_CREATE_INVALID` | 400 | Teacher creation payload failed validation | "Please check the details and try again." |
+| `TEACHER_CREATE_FAILED` | 500 | Unexpected error creating a teacher account | "Could not create the account. Please try again." |
+| `EMAIL_ALREADY_EXISTS` | 409 | An account already exists with this email address | "That email address is already registered." |
+| `EMAIL_LOCAL_PART_INVALID` | 400 | The email local part contains characters outside [a-z0-9._-] | "The email name may use only letters, numbers, dots, hyphens and underscores." |
+| `CURRENT_PASSWORD_INCORRECT` | 400 | The supplied current password does not match | "Your current password is incorrect." |
+| `UPDATE_FORBIDDEN` | 403 | Caller may not modify this record | "You do not have permission to change this." |
+| `CATEGORY_REQUIRED` | 400 | A category id was required and not supplied | "Please choose a category." |
+| `CATEGORY_INVALID_ID` | 400 | The category id is not a valid identifier | "That category is not valid." |
+| `CATEGORY_NOT_FOUND` | 404 | No category exists with that id | "That category no longer exists." |
+| `CATEGORY_CHANGE_FORBIDDEN` | 403 | Caller may not change this record’s category | "You do not have permission to change the category." |
+| `CATEGORY_CHANGE_FAILED` | 500 | Unexpected error changing a category | "Could not change the category. Please try again." |
+| `SCHOOL_INVALID_ID` | 400 | The school id is not a valid identifier | "That school is not valid." |
+| `REGIONS_FETCH_ERROR` | 500 | Unexpected error loading the region list | "Could not load regions. Please try again." |
+| `IMPORT_CREATE_FAILED` | 500 | Unexpected error creating an import job | "Could not start the import. Please try again." |
+| `INTERNAL_ERROR` | 500 | Unhandled server error not covered by a specific code | "Something went wrong. Please try again." |
+
 - **`JOURNAL_CHILD_NOT_ACCESSIBLE` dual HTTP status:** returned as 400 when the `childId` field is structurally invalid (missing or not a UUID), and as 404 when the UUID is valid but the child is inaccessible. Frontend should treat both as "cannot proceed."
 - **`detail` field:** All codes above omit the optional `detail` field in normal operation. Unexpected server errors (5xx codes) may include a `detail` string populated from the caught exception message for Sentry context.
 - **Older endpoints** (pre-Sprint B) still return `{ error: '<string>' }` under the BACKEND-012 grandfather clause. They will be migrated opportunistically. Do not add those string errors to this catalog — only `{ error: { code } }` shape belongs here.
