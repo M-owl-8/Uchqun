@@ -53,6 +53,26 @@ export async function up(queryInterface) {
   }
 
   for (const { table, fields, name } of NEW_INDEXES) {
+    // D-65: on an EMPTY database several of these columns do not exist YET —
+    // they are added by migrations that run LATER in the sequence, even though
+    // every one of them exists on production today. Production accumulated its
+    // columns in an order the migration sequence does not reproduce, and an
+    // unguarded addIndex turns that into a hard failure that makes the database
+    // unbuildable. A skipped index costs a query plan; a migration that throws
+    // costs the whole rebuild.
+    const cols = fields.map((f) => `'${f}'`).join(',');
+    const [[{ present }]] = await queryInterface.sequelize.query(`
+      SELECT (
+        to_regclass('public.${table}') IS NOT NULL
+        AND (SELECT count(*) FROM information_schema.columns
+             WHERE table_schema = current_schema()
+               AND table_name = '${table}'
+               AND column_name IN (${cols})) = ${fields.length}
+      ) AS present;`);
+    if (!present) {
+      console.log(`  ↷ skipping index ${name} — ${table}.${fields.join(',')} not present yet`);
+      continue;
+    }
     try {
       await queryInterface.addIndex(table, fields, { name });
     } catch (err) {

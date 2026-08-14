@@ -32,6 +32,16 @@
  *
  * Idempotent: CREATE TABLE IF NOT EXISTS and a guarded DO block per enum, so on
  * production — where all seven already exist — this is a no-op.
+ *
+ * Six columns production HAS are deliberately not created here, because later
+ * migrations add them and would fail with "column already exists":
+ *     groups.schoolId                                  20260401000010
+ *     notifications.schoolId                           20260514000004
+ *     news.schoolId                                    20260514000003
+ *     government_messages.parentMessageId              20260518100001
+ *     government_messages.recipientLevel, escalatedFromId  20260527000003
+ *     government_stats.regionId                        20260521300000
+ * The point is to make the SEQUENCE reproduce production, not to shortcut it.
  */
 export default {
   async up(queryInterface) {
@@ -64,7 +74,6 @@ export default {
         "teacherId"   uuid,
         "capacity"    integer NOT NULL DEFAULT 20,
         "ageRange"    varchar(50),
-        "schoolId"    uuid,
         "createdAt"   timestamp NOT NULL DEFAULT now(),
         "updatedAt"   timestamp NOT NULL DEFAULT now()
       );`);
@@ -81,7 +90,6 @@ export default {
         "relatedType" "enum_notifications_relatedType",
         "isRead"      boolean NOT NULL DEFAULT false,
         "readAt"      timestamp,
-        "schoolId"    uuid,
         "createdAt"   timestamp NOT NULL DEFAULT now(),
         "updatedAt"   timestamp NOT NULL DEFAULT now()
       );`);
@@ -134,9 +142,6 @@ export default {
         "readAt"          timestamptz,
         "reply"           text,
         "repliedAt"       timestamptz,
-        "parentMessageId" uuid,
-        "recipientLevel"  "enum_government_messages_recipientLevel" NOT NULL DEFAULT 'republic',
-        "escalatedFromId" uuid,
         "createdAt"       timestamptz NOT NULL DEFAULT now(),
         "updatedAt"       timestamptz NOT NULL DEFAULT now()
       );`);
@@ -147,7 +152,6 @@ export default {
         "region"      varchar(255),
         "district"    varchar(255),
         "schoolId"    uuid,
-        "regionId"    uuid,
         "statType"    "enum_government_stats_statType" NOT NULL,
         "period"      "enum_government_stats_period" NOT NULL,
         "periodStart" timestamp NOT NULL,
@@ -168,7 +172,6 @@ export default {
         "published"      boolean NOT NULL DEFAULT false,
         "targetAudience" "enum_news_targetAudience" NOT NULL DEFAULT 'all',
         "createdById"    uuid,
-        "schoolId"       uuid,
         "createdAt"      timestamp NOT NULL DEFAULT now(),
         "updatedAt"      timestamp NOT NULL DEFAULT now()
       );`);
