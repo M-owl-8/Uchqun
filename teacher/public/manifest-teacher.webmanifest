@@ -1,0 +1,19 @@
+{
+  "id": "uchqun-teacher",
+  "name": "Uchqun O'qituvchi",
+  "short_name": "O'qituvchi",
+  "description": "Uchqun — maxsus maktab o'qituvchilari uchun ish portali",
+  "lang": "uz",
+  "start_url": "/teacher",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#F7F2E8",
+  "theme_color": "#7A6FA8",
+  "icons": [
+    { "src": "/icons/teacher/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/teacher/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icons/teacher/maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "/icons/teacher/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

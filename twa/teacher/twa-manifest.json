@@ -1,0 +1,42 @@
+{
+  "packageId": "uz.uchqun.teacher",
+  "host": "teacher-production-0647.up.railway.app",
+  "name": "Uchqun O'qituvchi",
+  "launcherName": "O'qituvchi",
+  "display": "standalone",
+  "themeColor": "#7A6FA8",
+  "themeColorDark": "#7A6FA8",
+  "navigationColor": "#7A6FA8",
+  "navigationColorDark": "#4c1d95",
+  "navigationDividerColor": "#7A6FA8",
+  "navigationDividerColorDark": "#4c1d95",
+  "backgroundColor": "#F7F2E8",
+  "enableNotifications": true,
+  "startUrl": "/teacher",
+  "iconUrl": "https://teacher-production-0647.up.railway.app/icons/teacher/icon-512.png",
+  "maskableIconUrl": "https://teacher-production-0647.up.railway.app/icons/teacher/maskable-512.png",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "./android.keystore",
+    "alias": "uchqun-teacher"
+  },
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "shortcuts": [],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://teacher-production-0647.up.railway.app/manifest-teacher.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://teacher-production-0647.up.railway.app/",
+  "minSdkVersion": 21,
+  "orientation": "default",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": []
+}

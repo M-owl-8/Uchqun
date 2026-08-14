@@ -1,0 +1,18 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "uz.uchqun.teacher",
+      "sha256_cert_fingerprints": ["AD:E1:03:76:C9:92:99:70:26:1E:4A:A3:39:02:C6:82:96:04:25:85:4B:E8:95:BC:FE:89:C0:D7:AC:B9:39:36"]
+    }
+  },
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "uz.uchqun.parent",
+      "sha256_cert_fingerprints": ["3B:30:3F:32:82:7B:72:99:F5:62:F5:EE:D3:C8:12:CF:E4:E8:87:52:7F:6F:81:74:99:D0:5B:54:76:63:DD:65"]
+    }
+  }
+]
