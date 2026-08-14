@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../shared/context/AuthContext';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +18,7 @@ const Login = () => {
 
   const { login } = useAuth();
   const navigate  = useNavigate();
+  const location  = useLocation();
   const { t }     = useTranslation();
 
   // Auth logic reused verbatim — backend role determines redirect, not the toggle.
@@ -31,10 +32,20 @@ const Login = () => {
     if (result.success) {
       const user = result.user || JSON.parse(localStorage.getItem('user') || '{}');
 
+      // D-55: return the user to the route they originally requested. This app
+      // serves BOTH personas, so a stored deep link is only honoured when it
+      // belongs to the persona that actually logged in — otherwise a parent
+      // following a teacher link would be bounced straight back to /login by
+      // ProtectedRoute, and vice versa.
+      const from = location.state?.from?.pathname;
+      const isTeacherPath = (pth) => typeof pth === 'string' && pth.startsWith('/teacher');
+      const isParentPath = (pth) =>
+        typeof pth === 'string' && pth.startsWith('/') && !pth.startsWith('/teacher') && !pth.startsWith('/login');
+
       if (user.role === 'teacher') {
-        navigate('/teacher');
+        navigate(isTeacherPath(from) ? from : '/teacher');
       } else if (user.role === 'parent') {
-        navigate('/');
+        navigate(isParentPath(from) ? from : '/');
       } else {
         localStorage.removeItem('user');
         setError(t('login.invalidRole'));

@@ -12,7 +12,13 @@ import '@testing-library/jest-dom';
 import React from 'react';
 
 vi.mock('react-router-dom', () => ({
-  Navigate: ({ to }) => React.createElement('div', { 'data-testid': 'redirect', 'data-to': to }),
+  // `state` is captured too: D-55 made the login redirect carry the requested
+  // location, and a mock that drops it would let that regress unnoticed.
+  Navigate: ({ to, state }) => React.createElement('div', {
+    'data-testid': 'redirect', 'data-to': to,
+    'data-from': state?.from?.pathname ?? '',
+  }),
+  useLocation: () => ({ pathname: '/teacher/bolalar', search: '', state: null }),
 }));
 
 vi.mock('../shared/context/AuthContext', () => ({

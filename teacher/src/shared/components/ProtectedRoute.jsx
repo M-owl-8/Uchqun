@@ -1,8 +1,9 @@
-import { Navigate } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   const { isAuthenticated, loading, isTeacher, isParent, user } = useAuth();
+  const location = useLocation();
 
   // Block rendering during auth verification regardless of stale localStorage data.
   // The old guard `loading && !user` allowed zombie rendering: if localStorage had
@@ -31,7 +32,8 @@ const ProtectedRoute = ({ children, requireRole, allowMustChange = false }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    // D-55: carry the requested route so Login can return the user to it.
+    return <Navigate to="/login" replace state={{ from: location }} />;
   }
 
   if (user?.mustChangePassword && !allowMustChange) {
