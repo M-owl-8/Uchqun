@@ -938,6 +938,8 @@ IDX schools|idx_schools_category_id|ON public.schools USING btree ("categoryId")
 IDX schools|idx_schools_region_id|ON public.schools USING btree ("regionId")
 IDX schools|idx_schools_slug|ON public.schools USING btree (slug)
 IDX schools|schools_city|ON public.schools USING btree (city)
+IDX schools|schools_is_active|ON public.schools USING btree ("isActive")
+IDX schools|schools_name|ON public.schools USING btree (name)
 IDX schools|schools_pkey|ON public.schools USING btree (id)
 IDX schools|schools_region|ON public.schools USING btree (region)
 IDX schools|schools_type|ON public.schools USING btree (type)
@@ -985,6 +987,7 @@ IDX therapy_usages|therapy_usages_pkey|ON public.therapy_usages USING btree (id)
 IDX users|idx_users_createdBy|ON public.users USING btree ("createdBy")
 IDX users|idx_users_groupId|ON public.users USING btree ("groupId")
 IDX users|idx_users_schoolId|ON public.users USING btree ("schoolId")
+IDX users|idx_users_school_id|ON public.users USING btree ("schoolId")
 IDX users|idx_users_status_non_active|ON public.users USING btree (status) WHERE ((status)::text <> 'active'::text)
 IDX users|idx_users_teacherId|ON public.users USING btree ("teacherId")
 IDX users|users_email_key|ON public.users USING btree (email)
@@ -1384,16 +1387,16 @@ CON parent_activities|parent_activities_parentId_not_null|n|NOT NULL "parentId"
 CON parent_activities|parent_activities_pkey|p|PRIMARY KEY (id)
 CON parent_activities|parent_activities_title_not_null|n|NOT NULL title
 CON parent_activities|parent_activities_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON parent_evaluations|fk_parent_evaluations_parent_id|f|FOREIGN KEY (parent_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON parent_evaluations|fk_parent_evaluations_school_id|f|FOREIGN KEY (school_id) REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON parent_evaluations|fk_parent_evaluations_teacher_id|f|FOREIGN KEY (teacher_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON parent_evaluations|parent_evaluations_answers_not_null|n|NOT NULL answers
 CON parent_evaluations|parent_evaluations_created_at_not_null|n|NOT NULL created_at
 CON parent_evaluations|parent_evaluations_id_not_null|n|NOT NULL id
-CON parent_evaluations|parent_evaluations_parent_id_fkey|f|FOREIGN KEY (parent_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 CON parent_evaluations|parent_evaluations_parent_id_not_null|n|NOT NULL parent_id
 CON parent_evaluations|parent_evaluations_period_not_null|n|NOT NULL period
 CON parent_evaluations|parent_evaluations_pkey|p|PRIMARY KEY (id)
-CON parent_evaluations|parent_evaluations_school_id_fkey|f|FOREIGN KEY (school_id) REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON parent_evaluations|parent_evaluations_submitted_at_not_null|n|NOT NULL submitted_at
-CON parent_evaluations|parent_evaluations_teacher_id_fkey|f|FOREIGN KEY (teacher_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
 CON parent_evaluations|parent_evaluations_updated_at_not_null|n|NOT NULL updated_at
 CON parent_meals|parent_meals_createdAt_not_null|n|NOT NULL "createdAt"
 CON parent_meals|parent_meals_id_not_null|n|NOT NULL id
@@ -1851,6 +1854,6 @@ ENU enum_users_role|admin|1
 ENU enum_users_role|reception|2
 ENU enum_users_role|teacher|3
 ENU enum_users_role|parent|4
-ENU enum_users_role|business|5
-ENU enum_users_role|government|4.5
+ENU enum_users_role|government|5
+ENU enum_users_role|business|6
 SEQ audit_log_id_seq|bigint|1|1

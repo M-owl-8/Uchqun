@@ -58,9 +58,19 @@ SELECT line FROM (
 
   UNION ALL
 
-  -- enum types and every value, in sort order
-  SELECT 5, format('ENU %s|%s|%s', t.typname, e.enumlabel, e.enumsortorder),
-         t.typname, lpad(e.enumsortorder::text, 6, '0')
+  -- enum types and every value, by RANK within the type.
+  --
+  -- Deliberately not enumsortorder itself. Postgres assigns fractional sort
+  -- values when a label is inserted with ADD VALUE BEFORE/AFTER: production has
+  -- enum_users_role.government at 4.5 and business at 5, while a fresh build
+  -- that appends in order gets 5 and 6. Same labels, same relative order, and
+  -- nothing about the database behaves differently. Comparing the float would
+  -- report a permanent difference that no migration can close without dropping
+  -- and recreating the type on a live column.
+  SELECT 5, format('ENU %s|%s|%s', t.typname, e.enumlabel,
+           row_number() OVER (PARTITION BY t.typname ORDER BY e.enumsortorder)),
+         t.typname,
+         lpad((row_number() OVER (PARTITION BY t.typname ORDER BY e.enumsortorder))::text, 6, '0')
   FROM pg_enum e
   JOIN pg_type t ON t.oid = e.enumtypid
   JOIN pg_namespace n ON n.oid = t.typnamespace
