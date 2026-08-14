@@ -133,7 +133,13 @@
     "suspendError": "Ошибка блокировки",
     "activateConfirm": "Активировать этого родителя?",
     "activateSuccess": "Родитель активирован",
-    "activateError": "Ошибка активации"
+    "activateError": "Ошибка активации",
+    "colChildren": "Дети",
+    "form": {
+      "firstName": "Имя",
+      "lastName": "Фамилия",
+      "phone": "Телефон"
+    }
   },
   "teachersPage": {
     "title": "Воспитатели",
@@ -529,7 +535,8 @@
     "loading": "Загрузка…",
     "offline": "Вы офлайн. Некоторые данные могут быть устаревшими.",
     "staleData": "Показаны кэшированные данные.",
-    "retry": "Повторить"
+    "retry": "Повторить",
+    "export": "Экспорт"
   },
   "errors": {
     "NETWORK_ERROR": "Ошибка сети",
@@ -764,5 +771,10 @@
   },
   "role": {
     "admin": "Директор"
+  },
+  "colStatus": "Статус",
+  "userStatus": {
+    "suspended": "Приостановлен",
+    "active": "Активен"
   }
 }

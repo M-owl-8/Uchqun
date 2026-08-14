@@ -133,7 +133,13 @@
     "suspendError": "Failed to suspend",
     "activateConfirm": "Activate this parent?",
     "activateSuccess": "Parent activated",
-    "activateError": "Failed to activate"
+    "activateError": "Failed to activate",
+    "colChildren": "Children",
+    "form": {
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone"
+    }
   },
   "teachersPage": {
     "title": "Teachers",
@@ -529,7 +535,8 @@
     "loading": "Loading…",
     "offline": "You are offline. Some data may be outdated.",
     "staleData": "Showing cached data.",
-    "retry": "Retry"
+    "retry": "Retry",
+    "export": "Export"
   },
   "errors": {
     "NETWORK_ERROR": "Network error",
@@ -764,5 +771,10 @@
   },
   "role": {
     "admin": "Director"
+  },
+  "colStatus": "Status",
+  "userStatus": {
+    "suspended": "Suspended",
+    "active": "Active"
   }
 }

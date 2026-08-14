@@ -133,7 +133,13 @@
     "suspendError": "To’xtatishda xatolik",
     "activateConfirm": "Bu ota-onani faollashtirish?",
     "activateSuccess": "Ota-ona faollashtirildi",
-    "activateError": "Faollashtirishda xatolik"
+    "activateError": "Faollashtirishda xatolik",
+    "colChildren": "Bolalar",
+    "form": {
+      "firstName": "Ism",
+      "lastName": "Familiya",
+      "phone": "Telefon"
+    }
   },
   "teachersPage": {
     "title": "Tarbiyachilar",
@@ -529,7 +535,8 @@
     "loading": "Yuklanmoqda…",
     "offline": "Siz oflaynsiz. Ba'zi ma'lumotlar eskirgan bo'lishi mumkin.",
     "staleData": "Keshdagi ma'lumotlar ko'rsatilmoqda.",
-    "retry": "Qayta urinish"
+    "retry": "Qayta urinish",
+    "export": "Eksport"
   },
   "errors": {
     "NETWORK_ERROR": "Tarmoq xatosi",
@@ -764,5 +771,10 @@
   },
   "role": {
     "admin": "Direktor"
+  },
+  "colStatus": "Holat",
+  "userStatus": {
+    "suspended": "To'xtatilgan",
+    "active": "Faol"
   }
 }

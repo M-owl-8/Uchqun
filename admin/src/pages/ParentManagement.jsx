@@ -7,6 +7,7 @@ import LoadingSpinner from '@shared/components/LoadingSpinner';
 import ConfirmDialog from '@shared/components/ConfirmDialog';
 import { useToast } from '@shared/context/ToastContext';
 import { useTranslation } from 'react-i18next';
+import { exportCsv } from '@shared/utils/exportCsv';
 import {
   Users,
   Search,
@@ -18,6 +19,7 @@ import {
   UserX,
   UserCheck,
   ChevronRight,
+  Download,
 } from 'lucide-react';
 
 /**
@@ -127,6 +129,26 @@ const ParentManagement = () => {
     );
   }), [parents, searchQuery]);
 
+  // D-42
+  const handleExport = () => {
+    const headers = [
+      t('parentsPage.form.firstName', { defaultValue: 'Ism' }),
+      t('parentsPage.form.lastName', { defaultValue: 'Familiya' }),
+      'Email',
+      t('parentsPage.form.phone', { defaultValue: 'Telefon' }),
+      t('parentsPage.colChildren', { defaultValue: 'Bolalar' }),
+      t('colStatus', { defaultValue: 'Holat' }),
+    ];
+    const rows = filteredParents.map((p) => [
+      p.firstName, p.lastName, p.email, p.phone,
+      Array.isArray(p.children) ? p.children.length : '',
+      p.status === 'suspended'
+        ? t('userStatus.suspended', { defaultValue: "To'xtatilgan" })
+        : t('userStatus.active', { defaultValue: 'Faol' }),
+    ]);
+    exportCsv(headers, rows, 'ota-onalar');
+  };
+
   if (loading) {
     return <SkeletonList items={8} />;
   }
@@ -141,6 +163,20 @@ const ParentManagement = () => {
           </h1>
           <p className="text-sm text-warm-500 mt-0.5">{t('parentsPage.subtitle')}</p>
         </div>
+        <div className="flex items-center gap-2 sm:ml-auto">
+          {/* D-42: the admin portal had no export on any route — reception could
+              export its parents and government its schools, but a school
+              director could export nothing. Exports what is on screen: the
+              current search filter, not the unfiltered table. */}
+          <button
+            type="button"
+            onClick={handleExport}
+            disabled={filteredParents.length === 0}
+            className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg border border-warm-200 bg-surface text-sm text-warm-700 hover:bg-warm-50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            <Download className="w-4 h-4" strokeWidth={2} />
+            {t('common.export', { defaultValue: 'Eksport' })}
+          </button>
         <form role="search" aria-label={t('parentsPage.search')} className="relative sm:w-64">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-warm-400" aria-hidden="true" />
           <input
@@ -152,6 +188,7 @@ const ParentManagement = () => {
             className="pl-10 pr-4 py-2.5 bg-surface border border-warm-200 rounded-lg text-sm focus:ring-2 focus:ring-brand-500 focus:border-transparent w-full"
           />
         </form>
+        </div>
       </div>
 
       {/* Master-detail split */}
