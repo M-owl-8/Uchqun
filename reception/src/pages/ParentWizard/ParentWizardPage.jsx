@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Wizard from '../../components/Wizard';
 import ParentStep from './steps/ParentStep';
@@ -53,6 +53,45 @@ export default function ParentWizardPage() {
     if (draft) setDraftBanner(draft);
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
+  // D-22: does the live form already hold operator input that a draft restore
+  // would overwrite? Checked against the same fields the draft carries.
+  const liveFormHasData = Boolean(
+    parentData.firstName || parentData.lastName || parentData.localPart ||
+    parentData.phone || childData.firstName || childData.lastName || groupData.groupId
+  );
+
+  // D-24: wizard steps were React state with no history entries, so browser Back
+  // from step 2 left the wizard entirely for /reception/parents and discarded
+  // everything typed — the beforeunload guard below does not fire on SPA
+  // navigation. Each forward step now pushes a history entry, and popstate walks
+  // back through the steps instead of out of the wizard.
+  useEffect(() => {
+    const onPop = (e) => {
+      const target = e.state?.wizardStep;
+      if (typeof target === 'number') { setStep(target); return; }
+      // No wizard state on the entry we landed on: we are leaving the wizard.
+      // Only intercept when there is unsaved input to lose.
+      if (liveFormHasData) {
+        const ok = window.confirm(
+          t('wizard.leaveConfirm', {
+            defaultValue: "Kiritilgan ma'lumotlar saqlanmagan. Sahifadan chiqilsinmi?",
+          })
+        );
+        if (!ok) { window.history.pushState({ wizardStep: step }, ''); setStep(step); }
+      }
+    };
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, [step, liveFormHasData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Push one history entry per step reached, so Back walks the steps.
+  const lastPushedStep = useRef(null);
+  useEffect(() => {
+    if (lastPushedStep.current === null) { lastPushedStep.current = step; window.history.replaceState({ wizardStep: step }, ''); return; }
+    if (step > lastPushedStep.current) window.history.pushState({ wizardStep: step }, '');
+    lastPushedStep.current = step;
+  }, [step]);
+
   // Auto-save draft to localStorage on every data change (throttled by hook)
   useEffect(() => {
     const hasData = parentData.firstName || parentData.lastName || parentData.email ||
@@ -71,6 +110,18 @@ export default function ParentWizardPage() {
 
   const handleResumeDraft = () => {
     if (!draftBanner) return;
+    // D-22: resume overwrites parentData/childData/groupData/step wholesale. If
+    // the operator has already typed into the live form, restoring silently
+    // replaces their guardian with the draft's — which is how a child came to be
+    // enrolled under a guardian nobody entered. Confirm before destroying input.
+    if (liveFormHasData) {
+      const ok = window.confirm(
+        t('parentsPage.wizard.draftResumeConfirm', {
+          defaultValue: 'Formadagi kiritilgan maʼlumotlar qoralama bilan almashtiriladi. Davom etilsinmi?',
+        })
+      );
+      if (!ok) return;
+    }
     if (draftBanner.parentData) setParentData(draftBanner.parentData);
     if (draftBanner.childData) setChildData(draftBanner.childData);
     if (draftBanner.groupData) setGroupData(draftBanner.groupData);
@@ -88,7 +139,42 @@ export default function ParentWizardPage() {
     success(t('wizard.draftSaved'));
   };
 
+  // D-23: the Next button is not a form submit, so the `required` attributes in
+  // the step components were never enforced — a completely blank step 1
+  // advanced and was ticked green, and the operator only found out at Yakunlash
+  // via the bare "Validation failed".
+  const validateStep = (s) => {
+    if (s === 0) {
+      const missing = ['firstName', 'lastName', 'localPart', 'phone', 'password']
+        .filter((k) => !String(parentData[k] || '').trim());
+      return missing.length ? { missing, scope: 'parentStep' } : null;
+    }
+    if (s === 1) {
+      // The child block is optional as a whole (handleComplete only sends it when
+      // first+last are present), but a partially filled child is not.
+      const touched = Object.values(childData).some((v) => String(v || '').trim() && v !== 'Male');
+      if (!touched) return null;
+      const missing = ['firstName', 'lastName', 'dateOfBirth']
+        .filter((k) => !String(childData[k] || '').trim());
+      return missing.length ? { missing, scope: 'childStep' } : null;
+    }
+    return null;
+  };
+
   const handleNext = () => {
+    const bad = validateStep(step);
+    if (bad) {
+      // the email input binds to `localPart`, but its label key is `email`
+      const labelKey = (k) => (k === 'localPart' ? 'email' : k);
+      const names = bad.missing.map((k) => t(`${bad.scope}.${labelKey(k)}`)).join(', ');
+      showError(
+        t('wizard.stepIncomplete', {
+          fields: names,
+          defaultValue: `Quyidagi majburiy maydonlar to'ldirilmagan: ${names}`,
+        })
+      );
+      return;
+    }
     if (step < STEPS.length - 1) setStep((s) => s + 1);
   };
 
@@ -134,6 +220,17 @@ export default function ParentWizardPage() {
         <div className="mb-4 p-4 rounded-lg border border-warning-100 bg-warning-50 flex items-start gap-4 text-[13.5px] text-warning-700">
           <div className="flex-1">
             {t('parentsPage.wizard.draftRestorePrompt', { defaultValue: "Saqlangan qoralama topildi. Davom etishni xohlaysizmi?" })}
+            {/* D-22: name the guardian the draft belongs to. The defect that made
+                this necessary was a child enrolled under a guardian the operator
+                never typed — an unlabelled draft gives them nothing to notice. */}
+            {(draftBanner.parentData?.firstName || draftBanner.parentData?.lastName) && (
+              <div className="mt-1 font-medium">
+                {[draftBanner.parentData.firstName, draftBanner.parentData.lastName].filter(Boolean).join(' ')}
+                {draftBanner.childData?.firstName
+                  ? ` — ${[draftBanner.childData.firstName, draftBanner.childData.lastName].filter(Boolean).join(' ')}`
+                  : ''}
+              </div>
+            )}
           </div>
           <div className="flex gap-2 shrink-0">
             <button
