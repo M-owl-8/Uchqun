@@ -18,3 +18,7 @@
 {"t":"2026-08-14T11:49:03.214Z","role":"teacher-tmm3","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
 {"t":"2026-08-14T11:49:13.956Z","role":"reception-tmm3","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
 {"t":"2026-08-14T11:49:14.498Z","role":"reception-tmm3","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T11:52:17.871Z","role":"teacher-tmm3","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T11:52:18.160Z","role":"teacher-tmm3","type":"error","url":"https://teacher-production-0647.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T11:52:28.853Z","role":"reception-tmm3","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}
+{"t":"2026-08-14T11:52:29.355Z","role":"reception-tmm3","type":"error","url":"https://reception-production-ba41.up.railway.app/login","text":"Failed to load resource: the server responded with a status of 401 ()"}

@@ -16,3 +16,7 @@
 {"t":"2026-08-14T11:49:12.644Z","kind":"p8b","step":"teacher-marks-absent","v":{"status":201,"body":"{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"}}
 {"t":"2026-08-14T11:49:23.237Z","kind":"login","portal":"reception","email":"qabul@tmm3.uz","role":"reception-tmm3","ok":true,"landing":"https://reception-production-ba41.up.railway.app/reception"}
 {"t":"2026-08-14T11:49:23.570Z","kind":"p8b","step":"reception-overwrites","v":{"status":201,"body":"{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"}}
+{"t":"2026-08-14T11:52:27.350Z","kind":"login","portal":"teacher","email":"tarbiyachi1@tmm3.uz","role":"teacher-tmm3","ok":true,"landing":"https://teacher-production-0647.up.railway.app/teacher"}
+{"t":"2026-08-14T11:52:27.692Z","kind":"p8b","step":"teacher-marks-absent","v":{"status":201,"body":"{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"}}
+{"t":"2026-08-14T11:52:38.189Z","kind":"login","portal":"reception","email":"qabul@tmm3.uz","role":"reception-tmm3","ok":true,"landing":"https://reception-production-ba41.up.railway.app/reception"}
+{"t":"2026-08-14T11:52:38.735Z","kind":"p8b","step":"reception-overwrites","v":{"status":201,"body":"{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"}}
