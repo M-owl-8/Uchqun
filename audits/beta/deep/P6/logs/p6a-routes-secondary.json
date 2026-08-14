@@ -1,0 +1,119 @@
+{
+  "G1": {
+    "route": "/government",
+    "shot": "044_gov-secondary_G1-dashboard.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G2": {
+    "route": "/government/schools",
+    "shot": "045_gov-secondary_G2-schools.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G3": {
+    "route": "/government/students",
+    "shot": "046_gov-secondary_G3-students.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G4": {
+    "route": "/government/teachers",
+    "shot": "047_gov-secondary_G4-teachers.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G5": {
+    "route": "/government/parents",
+    "shot": "048_gov-secondary_G5-parents.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G6": {
+    "route": "/government/ratings",
+    "shot": "049_gov-secondary_G6-ratings.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G7": {
+    "route": "/government/platform",
+    "shot": "050_gov-secondary_G7-platform.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G8": {
+    "route": "/government/warnings",
+    "shot": "051_gov-secondary_G8-warnings.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G9": {
+    "route": "/government/audit-log",
+    "shot": "052_gov-secondary_G9-audit-log.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G10": {
+    "route": "/government/profile",
+    "shot": "053_gov-secondary_G10-profile.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G11": {
+    "route": "/government/settings",
+    "shot": "054_gov-secondary_G11-settings.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G12": {
+    "route": "/government/change-password",
+    "shot": "055_gov-secondary_G12-change-password.png",
+    "buttons": 4,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "iston Respublikasi | Tizimga kirish |  | Davom etish uchun hisobingizga kiring |  | Elektron pochta | Parol | Parolni unutdingizmi? | Bu qurilmani eslab qolish | Kirish | Tizimga kirish urinishlari qayd etiladi | © 2026 IHMA · Oʻzbekiston Respublikasi | O'zbekcha"
+  },
+  "G13": {
+    "route": "/government/zzz-nonexistent",
+    "shot": "056_gov-secondary_G13-notfound.png",
+    "buttons": 1,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": ""
+  }
+}

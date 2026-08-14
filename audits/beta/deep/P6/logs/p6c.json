@@ -1,0 +1,156 @@
+{
+  "school-detail": {
+    "href": null,
+    "clicked": "2\t\n\nAndijon viloyati 1-sonli maxsus ta’l",
+    "url": "/government/schools/5eedd611-e85e-477e-875a-56e0fa6d93fd",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Arxivlash",
+      "Umumiy ma'lumot",
+      "Tarbiyachilar",
+      "O'quvchilar",
+      "Ota-onalar",
+      "Ogohlantirishlar",
+      "Audit",
+      "1",
+      "2",
+      "3"
+    ],
+    "shot": "067_gov-republic_gov-school-detail.png",
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Muassasalar | Andijon viloyati 1-sonli maxsus ta’lim maktabi | Andijon viloyati 1-sonli maxsus ta’lim maktabi |  | Andijon shahri, Maktab ko‘chasi 26-uy |  | Faol | Arxivlash | Umumiy ma'lumo"
+  },
+  "students": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Ko'proq yuklash"
+    ],
+    "inputs": [
+      "INPUT:search:Ism yoki maktab..."
+    ],
+    "childHref": null,
+    "child": null,
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha o'quvchilar |  | Tizimdagi barcha o'quvchilar ro'yxati |  | Barcha viloyatlar | 138 Jami o'quvchilar | #\tIsm\tTug'ilgan sana\t"
+  },
+  "ratings": {
+    "shot": "069_gov-republic_gov-ratings.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Davlat baholarini ko'rsatish",
+      "Davlat baholarini ko'rsatish",
+      "Davlat baholarini ko'rsatish",
+      "Ota-onalar izohlarini ko'rsatish",
+      "Davlat baholarini ko'rsatish",
+      "Davlat baholarini ko'rsatish",
+      "Davlat baholarini ko'rsatish",
+      "Davlat baholarini ko'rsatish"
+    ],
+    "inputs": [
+      "INPUT:text:Muassasa qidirish...",
+      "SELECT:select-one:Umumiy (asosiy) Ota-onalar bo'yicha Davlat bo'yi"
+    ],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Reytinglar |  | Muassasalar reytinglari |  | Barcha viloyatlar | Saralash: | Umumiy (asosiy) | Ota-onalar bo'yi"
+  },
+  "platform": {
+    "shot": "070_gov-republic_gov-platform.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Direktorlar",
+      "Xabarlar",
+      "Davlat foydalanuvchilari",
+      "Ro'yxatdan o'tish so'rovlari",
+      "button",
+      "Yaratish",
+      "Yangilash",
+      "O'chirish",
+      "Yangilash",
+      "O'chirish"
+    ],
+    "inputs": [
+      "INPUT:text:Ism",
+      "INPUT:text:Familiya",
+      "SELECT:select-one:Muassasani tanlang... Andijon viloyati 1-sonli m",
+      "INPUT:text:direktor",
+      "INPUT:password:Parol",
+      "INPUT:password:Parolni tasdiqlang"
+    ],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Direktorlar | Xabarlar | Davlat foydalanuvchilari | Ro'yxatdan o'tish so'rovlari | Yangi Direktor yaratish |  |"
+  },
+  "warnings": {
+    "shot": "071_gov-republic_gov-warnings.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Yangilash",
+      "Faol",
+      "Hal qilingan"
+    ],
+    "inputs": [],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Ogohlantirishlar |  | Muassasalar bo'yicha avtomatik tahlil natijalari |  | Barcha viloyatlar | Faol | Hal qili"
+  },
+  "teachers": {
+    "shot": "072_gov-republic_gov-teachers.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish"
+    ],
+    "inputs": [
+      "INPUT:search:Ism yoki email..."
+    ],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha tarbiyachilar |  | Tizimdagi barcha tarbiyachilar ro'yxati |  | Barcha viloyatlar | 32 Jami tarbiyachila"
+  },
+  "parents": {
+    "shot": "073_gov-republic_gov-parents.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Ko'proq yuklash"
+    ],
+    "inputs": [],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha ota-onalar |  | Tizimdagi barcha ota-onalar ro'yxati |  | Barcha viloyatlar | 136 Jami ota-onalar | #\tIs"
+  },
+  "profile": {
+    "shot": "074_gov-republic_gov-profile.png",
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "Tahrirlash",
+      "Chiqish"
+    ],
+    "inputs": [],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Profil |  | Hisobingiz ma'lumotlari |  | Shaxsiy ma'lumotlar | Tahrirlash |  | Ism |  | Hamidjon |  | Familiya "
+  },
+  "settings": {
+    "buttons": [
+      "O'zbekcha",
+      "Chiqish",
+      "button",
+      "button",
+      "button",
+      "Parolni o'zgartirish",
+      "Chiqish"
+    ],
+    "inputs": [
+      "INPUT:password:password",
+      "INPUT:password:password",
+      "INPUT:password:password"
+    ],
+    "passwordNet": [
+      {
+        "m": "PUT",
+        "u": "/api/v1/user/password",
+        "s": 400,
+        "b": "{\"success\":false,\"error\":{\"code\":\"CURRENT_PASSWORD_INCORRECT\",\"detail\":\"Current password is incorrect\"}}"
+      }
+    ],
+    "shot": "076_gov-republic_gov-settings-password.png"
+  },
+  "offline-strings-on-dashboard": {
+    "showingCached": false,
+    "retry": false,
+    "offline": false
+  }
+}

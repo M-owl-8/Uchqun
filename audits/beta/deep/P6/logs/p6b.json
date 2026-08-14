@@ -1,0 +1,182 @@
+{
+  "secondary-login": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  "secondary-grants": {
+    "govLevel": "republic",
+    "govType": "secondary",
+    "govRegionId": null,
+    "govAccessGrants": {
+      "canRateSchools": true,
+      "canViewRatings": false,
+      "canViewSchools": true,
+      "canViewTeachers": false,
+      "canManageRegistrations": false,
+      "canManageGovernmentUsers": false
+    }
+  },
+  "secondary-surfaces": {
+    "/government": {
+      "shot": "057_gov-secondary_secondary-G1-government.png",
+      "buttons": 7,
+      "schools": [
+        "3-sonli ixtisoslashtirilgan makta",
+        "4-sonli maxsus ta’lim markazi ",
+        "3-sonli madad maktabi "
+      ],
+      "denied": true,
+      "head": "men@davlat.uz |  | Chiqish | Showing cached data. | Retry | Davlat Nazorat Paneli |  | Umumiy ko'rinish |  | Barcha viloyatlar | Oxirgi yangilanish: 15:56 |  | 10 |  | Jami Muassasalar |  | 138 |  | Jami O'quvchilar |  | 0 |  | Kutilayotgan direktor ro'yxatdan o'tishlar"
+    },
+    "/government/schools": {
+      "shot": "058_gov-secondary_secondary-G2-government-schools.png",
+      "buttons": 3,
+      "schools": [
+        "1-sonli maxsus ta’lim maktabi ",
+        "3-sonli madad maktabi ",
+        "3-sonli ixtisoslashtirilgan makta",
+        "4-sonli maxsus ta’lim markazi "
+      ],
+      "denied": false,
+      "head": "men@davlat.uz |  | Chiqish | Muassasalar |  | Barcha muassasalar va ularning baholari |  | Barcha viloyatlar | 10 | CSV yuklab olish | Barcha turlar | Kunduzgi parvarish | Yangi kun | Madad | Erta aralashuv | Uyda qarab turish | #\tMuassasa\tTur\tO'quvchilar\tReyting\t | 1\t "
+    },
+    "/government/students": {
+      "shot": "059_gov-secondary_secondary-G3-government-students.png",
+      "buttons": 2,
+      "schools": [],
+      "denied": false,
+      "head": "men@davlat.uz |  | Chiqish | Barcha o'quvchilar |  | Tizimdagi barcha o'quvchilar ro'yxati |  | Barcha viloyatlar | 0 Jami o'quvchilar | Xatolik yuz berdi"
+    },
+    "/government/ratings": {
+      "shot": "060_gov-secondary_secondary-G6-government-ratings.png",
+      "buttons": 3,
+      "schools": [],
+      "denied": false,
+      "head": "men@davlat.uz |  | Chiqish |  | Ma'lumotlarni yuklashda xatolik |  | Qayta urinish"
+    },
+    "/government/audit-log": {
+      "shot": "061_gov-secondary_secondary-G9-government-audit-log.png",
+      "buttons": 3,
+      "schools": [],
+      "denied": false,
+      "head": "men@davlat.uz |  | Chiqish | Audit jurnali | Barcha viloyatlar | Harakat | Barcha harakatlar | Arxivlash | Qayta faollashtirish | Tasdiqlash | Rad etish | Yaratish | Yangilash | O'chirish | Ob'ekt | Barcha ob'ektlar | Muassasalar | Ro'yxatga olish so'rovlari | Direktorl"
+    },
+    "/government/warnings": {
+      "shot": "062_gov-secondary_secondary-G8-government-warnings.png",
+      "buttons": 5,
+      "schools": [],
+      "denied": true,
+      "head": "men@davlat.uz |  | Chiqish | Ogohlantirishlar |  | Muassasalar bo'yicha avtomatik tahlil natijalari |  | Barcha viloyatlar | Faol | Hal qilingan |  | Faol ogohlantirishlar yo'q |  | Sizning vakolatingizdagi maktablarda hech qanday muammoli signal aniqlanmadi."
+    }
+  },
+  "secondary-api": [
+    {
+      "u": "/government/schools",
+      "s": 200,
+      "len": 6382,
+      "b": "{\"success\":true,\"data\":{\"schools\":[{\"id\":\"5eedd611-e85e-477e-875a-56e0fa6d93fd\",\"name\":\"Andijon viloyati 1-sonli maxsus ta’lim mak"
+    },
+    {
+      "u": "/government/ratings",
+      "s": 403,
+      "len": 54,
+      "b": "{\"success\":false,\"error\":{\"code\":\"GOV_ACCESS_DENIED\"}}"
+    },
+    {
+      "u": "/government/audit-log",
+      "s": 403,
+      "len": 54,
+      "b": "{\"success\":false,\"error\":{\"code\":\"GOV_ACCESS_DENIED\"}}"
+    }
+  ],
+  "toshkent-school-list": {
+    "count": 4,
+    "slugs": [
+      "tmm1",
+      "tmm2",
+      "tmm3",
+      "tmm4"
+    ],
+    "regionIds": [
+      "00000000-0000-0000-0000-000000000001"
+    ]
+  },
+  "toshkent-search-foreign": [
+    {
+      "probe": "search=smm3",
+      "s": 200,
+      "b": "{\"success\":true,\"data\":{\"schools\":[{\"id\":\"eec19bb5-36ae-4006-a330-031d07654c40\",\"name\":\"Toshkent Maxsus Maktab 1\",\"type\":\"support\",\"address\":null,\"phone\":null,\"email\":null,\"description\":null,\"isActive"
+    },
+    {
+      "probe": "search=amm1",
+      "s": 200,
+      "b": "{\"success\":true,\"data\":{\"schools\":[{\"id\":\"eec19bb5-36ae-4006-a330-031d07654c40\",\"name\":\"Toshkent Maxsus Maktab 1\",\"type\":\"support\",\"address\":null,\"phone\":null,\"email\":null,\"description\":null,\"isActive"
+    }
+  ],
+  "samarqand-school-list": {
+    "count": 5,
+    "slugs": [
+      "smm5",
+      "smm1",
+      "smm2",
+      "smm3",
+      "smm4"
+    ],
+    "regionIds": [
+      "00000000-0000-0000-0000-000000000002"
+    ]
+  },
+  "republic-school-list": {
+    "count": 10,
+    "slugs": [
+      "amm1",
+      "smm5",
+      "smm1",
+      "smm2",
+      "smm3",
+      "tmm1",
+      "tmm2",
+      "tmm3",
+      "tmm4",
+      "smm4"
+    ],
+    "regionIds": [
+      "00000000-0000-0000-0000-000000000003",
+      "00000000-0000-0000-0000-000000000002",
+      "00000000-0000-0000-0000-000000000001"
+    ]
+  },
+  "republic-csv": {
+    "controls": [
+      "CSV yuklab olish"
+    ],
+    "err": null,
+    "file": "schools-2026-08-14.csv",
+    "truncationWarning": null,
+    "content": {
+      "bytes": 1306,
+      "lines": 11,
+      "header": "\"#\",\"Name\",\"Address\",\"Type\",\"Region\",\"Students\",\"Teachers\",\"Rating\",\"Ratings Count\"",
+      "firstRow": "\"1\",\"Toshkent Maxsus Maktab 1\",\"\",\"support\",\"Toshkent shahri\",\"3\",\"0\",\"4.10\",\"12\"",
+      "headerCols": 9,
+      "ragged": 0,
+      "containsAllRegions": [
+        "Toshkent",
+        "Samarqand",
+        "Andijon"
+      ]
+    },
+    "shot": "064_gov-republic_republic-export-clicked.png"
+  },
+  "audit-log": {
+    "rows": [
+      "SANA | FOYDALANUVCHI | HARAKAT | OB'EKT | ID",
+      "2026-08-14 12:23 | Hamidjon Mirzayev | Yaratish | Direktorlar | c5711d6e-ee65-4717-83ef-4ee462c14611",
+      "2026-08-14 12:15 | Hamidjon Mirzayev | Yaratish | Direktorlar | 7d70a243-1b1e-4195-9bb8-6f4378de99af",
+      "2026-08-14 09:12 | Hamidjon Mirzayev | Yaratish | Davlat foydalanuvchilari | 958f6c4f-e351-45c1-8acd-1d3cbdb89244",
+      "2026-08-14 09:06 | Hamidjon Mirzayev | Yaratish | Davlat foydalanuvchilari | 7d7bfbd4-3553-487f-861d-ef2dd1d32486",
+      "2026-08-14 01:37 | Sherzod Raximov | Toifani o'zgartirish | Muassasalar | 5eed12eb-5c07-43fb-8179-81b057c773b9"
+    ],
+    "body": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Audit jurnali | Barcha viloyatlar | Harakat | Barcha harakatlar | Arxivlash | Qayta faollashtirish | Tasdiqlash | Rad etish | Yaratish | Yangilash | O'chirish | Ob'ekt | Barcha ob'ektlar | Muassasalar | Ro'yxatga olish so'rovlari |"
+  }
+}

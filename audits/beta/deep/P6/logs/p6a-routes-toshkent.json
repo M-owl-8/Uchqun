@@ -1,0 +1,180 @@
+{
+  "G1": {
+    "route": "/government",
+    "shot": "018_gov-toshkent_G1-dashboard.png",
+    "buttons": 5,
+    "inputs": 0,
+    "regionsNamed": [
+      "Toshkent shahri",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Davlat Nazorat Paneli |  | Umumiy ko'rinish |  | Toshkent shahri | Oxirgi yangilanish: 15:51 |  | 4 |  | Jami Muassasalar |  | 87 |  | Jami O'quvchilar |  | 0 |  | Kutilayotgan"
+  },
+  "G2": {
+    "route": "/government/schools",
+    "shot": "019_gov-toshkent_G2-schools.png",
+    "buttons": 3,
+    "inputs": 2,
+    "regionsNamed": [
+      "Toshkent shahri dagi m",
+      "Toshkent shahri",
+      "Toshkent Maxsus Maktab",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Muassasalar |  | Toshkent shahri dagi muassasalar |  | Toshkent shahri | 4 | CSV yuklab olish | Barcha turlar | Kunduzgi parvarish | Yangi kun | Madad | Erta aralashuv | Uyda q"
+  },
+  "G3": {
+    "route": "/government/students",
+    "shot": "020_gov-toshkent_G3-students.png",
+    "buttons": 3,
+    "inputs": 1,
+    "regionsNamed": [
+      "Toshkent shahri dagi o",
+      "Toshkent shahri",
+      "Toshkent shahar 3-sonl"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi\tS",
+      "3-sonli ixtisoslashtirilgan maktabi\tZ",
+      "3-sonli ixtisoslashtirilgan maktabi\tR",
+      "3-sonli ixtisoslashtirilgan maktabi\tN",
+      "3-sonli ixtisoslashtirilgan maktabi\tO",
+      "3-sonli ixtisoslashtirilgan maktabi\tM",
+      "3-sonli ixtisoslashtirilgan maktabi\tD",
+      "3-sonli ixtisoslashtirilgan maktabi\tK",
+      "3-sonli ixtisoslashtirilgan maktabi\tG"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Barcha o'quvchilar |  | Toshkent shahri dagi o'quvchilar |  | Toshkent shahri | 87 Jami o'quvchilar | #\tIsm\tTug'ilgan sana\tMaktab\tOta-ona | 1\tSIM-Malika TekshiruvovaAyol\t2020-0"
+  },
+  "G4": {
+    "route": "/government/teachers",
+    "shot": "021_gov-toshkent_G4-teachers.png",
+    "buttons": 2,
+    "inputs": 1,
+    "regionsNamed": [
+      "Toshkent shahri dagi t",
+      "Toshkent shahri"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Barcha tarbiyachilar |  | Toshkent shahri dagi tarbiyachilar |  | Toshkent shahri | 16 Jami tarbiyachilar | #\tIsm\tEmail\tTelefon | 1\tJasur Turgunov\ttarbiyachi8@tmm3.uz\t+99890100"
+  },
+  "G5": {
+    "route": "/government/parents",
+    "shot": "022_gov-toshkent_G5-parents.png",
+    "buttons": 3,
+    "inputs": 0,
+    "regionsNamed": [
+      "Toshkent shahri dagi o",
+      "Toshkent shahri"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Barcha ota-onalar |  | Toshkent shahri dagi ota-onalar |  | Toshkent shahri | 84 Jami ota-onalar | #\tIsm\tEmail\tTelefon | 1\tZuhra Ibragimova\tt.abandon@tmm3.uz\t+998901239900 | 2\t"
+  },
+  "G6": {
+    "route": "/government/ratings",
+    "shot": "023_gov-toshkent_G6-ratings.png",
+    "buttons": 6,
+    "inputs": 2,
+    "regionsNamed": [
+      "Toshkent shahri da mua",
+      "Toshkent shahri",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Reytinglar |  | Toshkent shahri da muassasalar reytingi |  | Toshkent shahri | Saralash: | Umumiy (asosiy) | Ota-onalar bo'yicha | Davlat bo'yicha |  | 4 Muassasalar |  | 1 | T"
+  },
+  "G7": {
+    "route": "/government/platform",
+    "shot": "024_gov-toshkent_G7-platform.png",
+    "buttons": 18,
+    "inputs": 6,
+    "regionsNamed": [
+      "Toshkent Maxsus Maktab",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi (",
+      "4-sonli maxsus ta’lim markazi (@tmm4."
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Direktorlar | Xabarlar | Davlat foydalanuvchilari | Ro'yxatdan o'tish so'rovlari | Yangi Direktor yaratish |  | Yangi direktor uchun barcha ma'lumotlarni kiriting |  | Ism | Fa"
+  },
+  "G8": {
+    "route": "/government/warnings",
+    "shot": "025_gov-toshkent_G8-warnings.png",
+    "buttons": 5,
+    "inputs": 0,
+    "regionsNamed": [
+      "Toshkent shahri",
+      "Toshkent shahri hududi"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Ogohlantirishlar |  | Muassasalar bo'yicha avtomatik tahlil natijalari |  | Toshkent shahri | Faol | Hal qilingan |  | Faol ogohlantirishlar yo'q |  | Toshkent shahri hududidag"
+  },
+  "G9": {
+    "route": "/government/audit-log",
+    "shot": "026_gov-toshkent_G9-audit-log.png",
+    "buttons": 5,
+    "inputs": 4,
+    "regionsNamed": [
+      "Toshkent shahri"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Audit jurnali | Toshkent shahri | Harakat | Barcha harakatlar | Arxivlash | Qayta faollashtirish | Tasdiqlash | Rad etish | Yaratish | Yangilash | O'chirish | Ob'ekt | Barcha o"
+  },
+  "G10": {
+    "route": "/government/profile",
+    "shot": "027_gov-toshkent_G10-profile.png",
+    "buttons": 4,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Profil |  | Hisobingiz ma'lumotlari |  | Shaxsiy ma'lumotlar | Tahrirlash |  | Ism |  | Nodira |  | Familiya |  | Yusupova |  | Email |  | gov.toshkent@uchqun.uz |  | Telefon |"
+  },
+  "G11": {
+    "route": "/government/settings",
+    "shot": "028_gov-toshkent_G11-settings.png",
+    "buttons": 7,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Sozlamalar |  | Profil va hisob sozlamalarini boshqarish |  | Parolni o'zgartirish | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish | Chiqish"
+  },
+  "G12": {
+    "route": "/government/change-password",
+    "shot": "029_gov-toshkent_G12-change-password.png",
+    "buttons": 6,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | NY |  | Nodira Yusupova |  | gov.toshkent@uchqun.uz |  | Chiqish | Parolni o'zgartirish |  | Davom etishdan oldin yangi parol o'rnatishingiz kerak. |  | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish"
+  },
+  "G13": {
+    "route": "/government/zzz-nonexistent",
+    "shot": "030_gov-toshkent_G13-notfound.png",
+    "buttons": 1,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": ""
+  }
+}

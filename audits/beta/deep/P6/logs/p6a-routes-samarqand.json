@@ -1,0 +1,176 @@
+{
+  "G1": {
+    "route": "/government",
+    "shot": "031_gov-samarqand_G1-dashboard.png",
+    "buttons": 5,
+    "inputs": 0,
+    "regionsNamed": [
+      "Samarqand viloyati",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Samarqand Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli madad maktabi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Davlat Nazorat Paneli |  | Umumiy ko'rinish |  | Samarqand viloyati | Oxirgi yangilanish: 15:52 |  | 5 |  | Jami Muassasalar |  | 40 |  | Jami O'quvchilar |  | 0 |  | Kutilayo"
+  },
+  "G2": {
+    "route": "/government/schools",
+    "shot": "032_gov-samarqand_G2-schools.png",
+    "buttons": 3,
+    "inputs": 2,
+    "regionsNamed": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati",
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta"
+    ],
+    "schoolsNamed": [
+      "3-sonli madad maktabi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Muassasalar |  | Samarqand viloyati dagi muassasalar |  | Samarqand viloyati | 5 | CSV yuklab olish | Barcha turlar | Kunduzgi parvarish | Yangi kun | Madad | Erta aralashuv |"
+  },
+  "G3": {
+    "route": "/government/students",
+    "shot": "033_gov-samarqand_G3-students.png",
+    "buttons": 2,
+    "inputs": 1,
+    "regionsNamed": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati",
+      "Samarqand viloyati 3-so",
+      "Samarqand Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli madad maktabi\tMadina Xolmatov",
+      "3-sonli madad maktabi\tSevinch Ismoilo",
+      "3-sonli madad maktabi\tZaynab Ismoilov",
+      "3-sonli madad maktabi\tRobiya Qodirova",
+      "3-sonli madad maktabi\tZilola Sobirova",
+      "3-sonli madad maktabi\tRayhona Nazarov",
+      "3-sonli madad maktabi\tRobiya Sharipov",
+      "3-sonli madad maktabi\tOysha Rahimova",
+      "3-sonli madad maktabi\tSevinch Toshmat",
+      "3-sonli madad maktabi\tRobiya Umarova",
+      "3-sonli madad maktabi\tNafisa Ismoilov",
+      "3-sonli madad maktabi\tIroda Tursunova"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Barcha o'quvchilar |  | Samarqand viloyati dagi o'quvchilar |  | Samarqand viloyati | 40 Jami o'quvchilar | #\tIsm\tTug'ilgan sana\tMaktab\tOta-ona | 1\tMuhammadali OchilovErkak\t20"
+  },
+  "G4": {
+    "route": "/government/teachers",
+    "shot": "034_gov-samarqand_G4-teachers.png",
+    "buttons": 2,
+    "inputs": 1,
+    "regionsNamed": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Barcha tarbiyachilar |  | Samarqand viloyati dagi tarbiyachilar |  | Samarqand viloyati | 13 Jami tarbiyachilar | #\tIsm\tEmail\tTelefon | 1\tMunisa Toshmatova\ttarbiyachi3@smm5.uz"
+  },
+  "G5": {
+    "route": "/government/parents",
+    "shot": "035_gov-samarqand_G5-parents.png",
+    "buttons": 3,
+    "inputs": 0,
+    "regionsNamed": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Barcha ota-onalar |  | Samarqand viloyati dagi ota-onalar |  | Samarqand viloyati | 41 Jami ota-onalar | #\tIsm\tEmail\tTelefon | 1\tShahzoda Ochilova\totaona26@smm5.uz\t+9989311841"
+  },
+  "G6": {
+    "route": "/government/ratings",
+    "shot": "036_gov-samarqand_G6-ratings.png",
+    "buttons": 5,
+    "inputs": 2,
+    "regionsNamed": [
+      "Samarqand viloyati da m",
+      "Samarqand viloyati",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Samarqand Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli madad maktabi"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Reytinglar |  | Samarqand viloyati da muassasalar reytingi |  | Samarqand viloyati | Saralash: | Umumiy (asosiy) | Ota-onalar bo'yicha | Davlat bo'yicha |  | 5 Muassasalar |  "
+  },
+  "G7": {
+    "route": "/government/platform",
+    "shot": "037_gov-samarqand_G7-platform.png",
+    "buttons": 20,
+    "inputs": 6,
+    "regionsNamed": [
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so"
+    ],
+    "schoolsNamed": [
+      "3-sonli madad maktabi (@smm3.uz)"
+    ],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Direktorlar | Xabarlar | Davlat foydalanuvchilari | Ro'yxatdan o'tish so'rovlari | Yangi Direktor yaratish |  | Yangi direktor uchun barcha ma'lumotlarni kiriting |  | Ism | F"
+  },
+  "G8": {
+    "route": "/government/warnings",
+    "shot": "038_gov-samarqand_G8-warnings.png",
+    "buttons": 5,
+    "inputs": 0,
+    "regionsNamed": [
+      "Samarqand viloyati",
+      "Samarqand viloyati hudu"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Ogohlantirishlar |  | Muassasalar bo'yicha avtomatik tahlil natijalari |  | Samarqand viloyati | Faol | Hal qilingan |  | Faol ogohlantirishlar yo'q |  | Samarqand viloyati hu"
+  },
+  "G9": {
+    "route": "/government/audit-log",
+    "shot": "039_gov-samarqand_G9-audit-log.png",
+    "buttons": 3,
+    "inputs": 4,
+    "regionsNamed": [
+      "Samarqand viloyati"
+    ],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Audit jurnali | Samarqand viloyati | Harakat | Barcha harakatlar | Arxivlash | Qayta faollashtirish | Tasdiqlash | Rad etish | Yaratish | Yangilash | O'chirish | Ob'ekt | Barc"
+  },
+  "G10": {
+    "route": "/government/profile",
+    "shot": "040_gov-samarqand_G10-profile.png",
+    "buttons": 4,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Profil |  | Hisobingiz ma'lumotlari |  | Shaxsiy ma'lumotlar | Tahrirlash |  | Ism |  | Sherzod |  | Familiya |  | Raximov |  | Email |  | gov.samarqand@uchqun.uz |  | Telefon"
+  },
+  "G11": {
+    "route": "/government/settings",
+    "shot": "041_gov-samarqand_G11-settings.png",
+    "buttons": 7,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Sozlamalar |  | Profil va hisob sozlamalarini boshqarish |  | Parolni o'zgartirish | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish | Chiqish"
+  },
+  "G12": {
+    "route": "/government/change-password",
+    "shot": "042_gov-samarqand_G12-change-password.png",
+    "buttons": 6,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "ar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | SR |  | Sherzod Raximov |  | gov.samarqand@uchqun.uz |  | Chiqish | Parolni o'zgartirish |  | Davom etishdan oldin yangi parol o'rnatishingiz kerak. |  | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish"
+  },
+  "G13": {
+    "route": "/government/zzz-nonexistent",
+    "shot": "043_gov-samarqand_G13-notfound.png",
+    "buttons": 1,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": ""
+  }
+}

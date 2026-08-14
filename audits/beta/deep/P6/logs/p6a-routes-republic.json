@@ -1,0 +1,191 @@
+{
+  "G1": {
+    "route": "/government",
+    "shot": "005_gov-republic_G1-dashboard.png",
+    "buttons": 6,
+    "inputs": 0,
+    "regionsNamed": [
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Samarqand viloyati\t5\tMi",
+      "Toshkent shahri\t4",
+      "Andijon viloyati\t1\tMi"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi",
+      "3-sonli madad maktabi"
+    ],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Davlat Nazorat Paneli |  | Umumiy ko'rinish |  | Barcha viloyatlar | Oxirgi yangilanish: 15:50 |  | 10 |  | Jami Muassasalar |  | 138 |  | Jami O'quvchilar |  | 0 |  | Kut"
+  },
+  "G2": {
+    "route": "/government/schools",
+    "shot": "006_gov-republic_G2-schools.png",
+    "buttons": 3,
+    "inputs": 2,
+    "regionsNamed": [
+      "Toshkent Maxsus Maktab",
+      "Andijon viloyati 1-so",
+      "Andijon shahri, Makta",
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsNamed": [
+      "1-sonli maxsus ta’lim maktabi",
+      "3-sonli madad maktabi",
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Muassasalar |  | Barcha muassasalar va ularning baholari |  | Barcha viloyatlar | 10 | CSV yuklab olish | Barcha turlar | Kunduzgi parvarish | Yangi kun | Madad | Erta ara"
+  },
+  "G3": {
+    "route": "/government/students",
+    "shot": "007_gov-republic_G3-students.png",
+    "buttons": 3,
+    "inputs": 1,
+    "regionsNamed": [
+      "Toshkent shahar 3-sonl",
+      "Andijon viloyati 1-so"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi\tS",
+      "3-sonli ixtisoslashtirilgan maktabi\tZ",
+      "3-sonli ixtisoslashtirilgan maktabi\tR",
+      "1-sonli maxsus ta’lim maktabi\tNafisa",
+      "1-sonli maxsus ta’lim maktabi\tZaynab",
+      "1-sonli maxsus ta’lim maktabi\tSabina",
+      "1-sonli maxsus ta’lim maktabi\tSarvino",
+      "1-sonli maxsus ta’lim maktabi\tMuslima",
+      "1-sonli maxsus ta’lim maktabi\tRayhona",
+      "1-sonli maxsus ta’lim maktabi\tOysha K",
+      "1-sonli maxsus ta’lim maktabi\tMalika",
+      "3-sonli ixtisoslashtirilgan maktabi\tN"
+    ],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha o'quvchilar |  | Tizimdagi barcha o'quvchilar ro'yxati |  | Barcha viloyatlar | 138 Jami o'quvchilar | #\tIsm\tTug'ilgan sana\tMaktab\tOta-ona | 1\tSIM-Malika Tekshiruvo"
+  },
+  "G4": {
+    "route": "/government/teachers",
+    "shot": "008_gov-republic_G4-teachers.png",
+    "buttons": 2,
+    "inputs": 1,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha tarbiyachilar |  | Tizimdagi barcha tarbiyachilar ro'yxati |  | Barcha viloyatlar | 32 Jami tarbiyachilar | #\tIsm\tEmail\tTelefon | 1\tNargiza Qodirova\ttarbiyachi3@amm"
+  },
+  "G5": {
+    "route": "/government/parents",
+    "shot": "009_gov-republic_G5-parents.png",
+    "buttons": 3,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Barcha ota-onalar |  | Tizimdagi barcha ota-onalar ro'yxati |  | Barcha viloyatlar | 136 Jami ota-onalar | #\tIsm\tEmail\tTelefon | 1\tZuhra Ibragimova\tt.abandon@tmm3.uz\t+9989"
+  },
+  "G6": {
+    "route": "/government/ratings",
+    "shot": "010_gov-republic_G6-ratings.png",
+    "buttons": 10,
+    "inputs": 2,
+    "regionsNamed": [
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Andijon viloyati 1-so",
+      "Andijon shahri, Makta",
+      "Samarqand Maxsus Maktab"
+    ],
+    "schoolsNamed": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi",
+      "3-sonli madad maktabi",
+      "1-sonli maxsus ta’lim maktabi"
+    ],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Reytinglar |  | Muassasalar reytinglari |  | Barcha viloyatlar | Saralash: | Umumiy (asosiy) | Ota-onalar bo'yicha | Davlat bo'yicha |  | 10 Muassasalar |  | 1 | Toshkent "
+  },
+  "G7": {
+    "route": "/government/platform",
+    "shot": "011_gov-republic_G7-platform.png",
+    "buttons": 32,
+    "inputs": 6,
+    "regionsNamed": [
+      "Andijon viloyati 1-so",
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Toshkent Maxsus Maktab",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsNamed": [
+      "1-sonli maxsus ta’lim maktabi (@amm1.",
+      "3-sonli madad maktabi (@smm3.uz)",
+      "3-sonli ixtisoslashtirilgan maktabi (",
+      "4-sonli maxsus ta’lim markazi (@tmm4."
+    ],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Direktorlar | Xabarlar | Davlat foydalanuvchilari | Ro'yxatdan o'tish so'rovlari | Yangi Direktor yaratish |  | Yangi direktor uchun barcha ma'lumotlarni kiriting |  | Ism"
+  },
+  "G8": {
+    "route": "/government/warnings",
+    "shot": "012_gov-republic_G8-warnings.png",
+    "buttons": 6,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Ogohlantirishlar |  | Muassasalar bo'yicha avtomatik tahlil natijalari |  | Barcha viloyatlar | Faol | Hal qilingan | Ma'lumotlarni yuklashda xatolik yuz berdi | Qayta uri"
+  },
+  "G9": {
+    "route": "/government/audit-log",
+    "shot": "013_gov-republic_G9-audit-log.png",
+    "buttons": 5,
+    "inputs": 4,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Audit jurnali | Barcha viloyatlar | Harakat | Barcha harakatlar | Arxivlash | Qayta faollashtirish | Tasdiqlash | Rad etish | Yaratish | Yangilash | O'chirish | Ob'ekt | B"
+  },
+  "G10": {
+    "route": "/government/profile",
+    "shot": "014_gov-republic_G10-profile.png",
+    "buttons": 4,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Profil |  | Hisobingiz ma'lumotlari |  | Shaxsiy ma'lumotlar | Tahrirlash |  | Ism |  | Hamidjon |  | Familiya |  | Mirzayev |  | Email |  | gov.republic@uchqun.uz |  | Te"
+  },
+  "G11": {
+    "route": "/government/settings",
+    "shot": "015_gov-republic_G11-settings.png",
+    "buttons": 7,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Sozlamalar |  | Profil va hisob sozlamalarini boshqarish |  | Parolni o'zgartirish | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish | Chiqish"
+  },
+  "G12": {
+    "route": "/government/change-password",
+    "shot": "016_gov-republic_G12-change-password.png",
+    "buttons": 6,
+    "inputs": 3,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": "shlar | Audit jurnali | Platforma | Profil | Sozlamalar | O'zbekcha | HM |  | Hamidjon Mirzayev |  | gov.republic@uchqun.uz |  | Chiqish | Parolni o'zgartirish |  | Davom etishdan oldin yangi parol o'rnatishingiz kerak. |  | Joriy parol | Yangi parol | Yangi parolni tasdiqlang | Parolni o'zgartirish"
+  },
+  "G13": {
+    "route": "/government/zzz-nonexistent",
+    "shot": "017_gov-republic_G13-notfound.png",
+    "buttons": 1,
+    "inputs": 0,
+    "regionsNamed": [],
+    "schoolsNamed": [],
+    "head": ""
+  }
+}

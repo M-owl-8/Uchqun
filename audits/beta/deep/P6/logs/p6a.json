@@ -1,0 +1,116 @@
+{
+  "login-republic": {
+    "email": "gov.republic@uchqun.uz",
+    "note": "republic / main — no region",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  "scope-republic": {
+    "dashboardRegions": [
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Samarqand viloyati\t5\tMi",
+      "Toshkent shahri\t4",
+      "Andijon viloyati\t1\tMi"
+    ],
+    "schoolsPageRegions": [
+      "Toshkent Maxsus Maktab",
+      "Andijon viloyati 1-so",
+      "Andijon shahri, Makta",
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsPageSchools": [
+      "1-sonli maxsus ta’lim maktabi",
+      "3-sonli madad maktabi",
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "studentsRegions": [
+      "Toshkent shahar 3-sonl",
+      "Andijon viloyati 1-so"
+    ]
+  },
+  "login-toshkent": {
+    "email": "gov.toshkent@uchqun.uz",
+    "note": "region / main — Toshkent (…0001)",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  "scope-toshkent": {
+    "dashboardRegions": [
+      "Toshkent shahri",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl",
+      "Toshkent Maxsus Maktab"
+    ],
+    "schoolsPageRegions": [
+      "Toshkent shahri dagi m",
+      "Toshkent shahri",
+      "Toshkent Maxsus Maktab",
+      "Toshkent shahar 3-sonl",
+      "Toshkent shahri, Makta",
+      "Toshkent shahar 4-sonl"
+    ],
+    "schoolsPageSchools": [
+      "3-sonli ixtisoslashtirilgan maktabi",
+      "4-sonli maxsus ta’lim markazi"
+    ],
+    "studentsRegions": [
+      "Toshkent shahri dagi o",
+      "Toshkent shahri",
+      "Toshkent shahar 3-sonl"
+    ]
+  },
+  "login-samarqand": {
+    "email": "gov.samarqand@uchqun.uz",
+    "note": "region / main — Samarqand (…0002)",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  "scope-samarqand": {
+    "dashboardRegions": [
+      "Samarqand viloyati",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta",
+      "Samarqand Maxsus Maktab"
+    ],
+    "schoolsPageRegions": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati",
+      "Samarqand Maxsus Maktab",
+      "Samarqand viloyati 3-so",
+      "Samarqand shahri, Makta"
+    ],
+    "schoolsPageSchools": [
+      "3-sonli madad maktabi"
+    ],
+    "studentsRegions": [
+      "Samarqand viloyati dagi",
+      "Samarqand viloyati",
+      "Samarqand viloyati 3-so",
+      "Samarqand Maxsus Maktab"
+    ]
+  },
+  "login-secondary": {
+    "email": "men@davlat.uz",
+    "note": "republic / secondary — govAccessGrants set",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government/change-password"
+  },
+  "scope-secondary": {
+    "dashboardRegions": [],
+    "schoolsPageRegions": [],
+    "schoolsPageSchools": [],
+    "studentsRegions": []
+  }
+}

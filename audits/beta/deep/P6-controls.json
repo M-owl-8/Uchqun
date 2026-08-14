@@ -1,0 +1,854 @@
+[
+ {
+  "file": "government/src/components/dnp/Checkbox.jsx",
+  "line": 17,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "government/src/components/dnp/Field.jsx",
+  "line": 71,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/dnp/Field.jsx",
+  "line": 95,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/dnp/InlineLink.jsx",
+  "line": 11,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/dnp/LangToggle.jsx",
+  "line": 37,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/dnp/PrimaryButton.jsx",
+  "line": 32,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/Layout.jsx",
+  "line": 21,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/Layout.jsx",
+  "line": 50,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/Sidebar.jsx",
+  "line": 119,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/Sidebar.jsx",
+  "line": 156,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 79,
+  "kind": "form",
+  "label": "government.form.firstName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 81,
+  "kind": "input",
+  "label": "government.form.firstName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 89,
+  "kind": "input",
+  "label": "government.form.lastName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 110,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 131,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 165,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 175,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 189,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 202,
+  "kind": "button",
+  "label": "government.form.create"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 236,
+  "kind": "link",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 243,
+  "kind": "button",
+  "label": "government.form.update"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 246,
+  "kind": "button",
+  "label": "government.delete"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 263,
+  "kind": "button",
+  "label": "government.form.cancel"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 266,
+  "kind": "button",
+  "label": "government.form.save"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 272,
+  "kind": "form",
+  "label": "government.form.firstName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 274,
+  "kind": "input",
+  "label": "government.form.firstName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 280,
+  "kind": "input",
+  "label": "government.form.lastName"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 292,
+  "kind": "input",
+  "label": "email"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 302,
+  "kind": "input",
+  "label": "government.form.phone"
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 311,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/AdminsTab.jsx",
+  "line": 319,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 253,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 266,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 289,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 296,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 316,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 341,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 365,
+  "kind": "input",
+  "label": "provision.form.firstName"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 372,
+  "kind": "input",
+  "label": "provision.form.lastName"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 399,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 409,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 432,
+  "kind": "input",
+  "label": "checkbox"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 455,
+  "kind": "button",
+  "label": "provision.form.create"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 475,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 483,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 495,
+  "kind": "form",
+  "label": "provision.actions.newPassword"
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 501,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/GovernmentTab.jsx",
+  "line": 511,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 150,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 167,
+  "kind": "button",
+  "label": "warnings.retry"
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 216,
+  "kind": "button",
+  "label": "government.markRead"
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 221,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 231,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 265,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 272,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/MessagesTab.jsx",
+  "line": 292,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 56,
+  "kind": "link",
+  "label": "registrations.certificate"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 57,
+  "kind": "link",
+  "label": "registrations.passport"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 62,
+  "kind": "button",
+  "label": "government.approve"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 65,
+  "kind": "button",
+  "label": "government.reject"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 82,
+  "kind": "button",
+  "label": "government.cancel"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 85,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 101,
+  "kind": "textarea",
+  "label": "government.rejectionReason"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 117,
+  "kind": "button",
+  "label": "government.close"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 131,
+  "kind": "input",
+  "label": "government.copy"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 132,
+  "kind": "button",
+  "label": "government.copy"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 143,
+  "kind": "input",
+  "label": "government.copy"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 144,
+  "kind": "button",
+  "label": "government.copy"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 161,
+  "kind": "input",
+  "label": "government.openTelegram"
+ },
+ {
+  "file": "government/src/components/tabs/RegistrationsTab.jsx",
+  "line": 162,
+  "kind": "link",
+  "label": "government.openTelegram"
+ },
+ {
+  "file": "government/src/pages/AdminDetails.jsx",
+  "line": 42,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AdminDetails.jsx",
+  "line": 58,
+  "kind": "button",
+  "label": "adminDetails.back"
+ },
+ {
+  "file": "government/src/pages/AdminDetails.jsx",
+  "line": 76,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 70,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 163,
+  "kind": "button",
+  "label": "warnings.refresh"
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 197,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 218,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 242,
+  "kind": "button",
+  "label": "warnings.retry"
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 302,
+  "kind": "textarea",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 311,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AIWarnings.jsx",
+  "line": 318,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 104,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 121,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 138,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 151,
+  "kind": "input",
+  "label": "date"
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 160,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 242,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/AuditLog.jsx",
+  "line": 254,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/ChangePassword.jsx",
+  "line": 80,
+  "kind": "form",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/ChangePassword.jsx",
+  "line": 89,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/ChangePassword.jsx",
+  "line": 97,
+  "kind": "button",
+  "label": "button"
+ },
+ {
+  "file": "government/src/pages/ChangePassword.jsx",
+  "line": 110,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "government/src/pages/ChildDetail.jsx",
+  "line": 57,
+  "kind": "link",
+  "label": "childDetail.back"
+ },
+ {
+  "file": "government/src/pages/ChildDetail.jsx",
+  "line": 78,
+  "kind": "link",
+  "label": "childDetail.back"
+ },
+ {
+  "file": "government/src/pages/Dashboard.jsx",
+  "line": 136,
+  "kind": "button",
+  "label": "dashboard.refresh"
+ },
+ {
+  "file": "government/src/pages/Dashboard.jsx",
+  "line": 148,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Dashboard.jsx",
+  "line": 169,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Dashboard.jsx",
+  "line": 224,
+  "kind": "button",
+  "label": "dashboard.viewAll"
+ },
+ {
+  "file": "government/src/pages/Dashboard.jsx",
+  "line": 290,
+  "kind": "button",
+  "label": "dashboard.viewAll"
+ },
+ {
+  "file": "government/src/pages/NotFound.jsx",
+  "line": 11,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Parents.jsx",
+  "line": 130,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Platform.jsx",
+  "line": 266,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Platform.jsx",
+  "line": 285,
+  "kind": "button",
+  "label": "warnings.retry"
+ },
+ {
+  "file": "government/src/pages/Platform.jsx",
+  "line": 310,
+  "kind": "button",
+  "label": "warnings.retry"
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 92,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 109,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 121,
+  "kind": "input",
+  "label": "text"
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 134,
+  "kind": "input",
+  "label": "tel"
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 142,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 150,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Profile.jsx",
+  "line": 229,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 208,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 217,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 264,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 379,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 417,
+  "kind": "input",
+  "label": "ratings.searchPlaceholder"
+ },
+ {
+  "file": "government/src/pages/Ratings.jsx",
+  "line": 429,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 103,
+  "kind": "form",
+  "label": "govRating.period"
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 108,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 141,
+  "kind": "textarea",
+  "label": "govRating.commentPlaceholder"
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 145,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 610,
+  "kind": "button",
+  "label": "schoolDetail.backToList"
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 653,
+  "kind": "link",
+  "label": "schools.title"
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 673,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 678,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/SchoolDetail.jsx",
+  "line": 690,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Schools.jsx",
+  "line": 121,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Schools.jsx",
+  "line": 136,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "government/src/pages/Schools.jsx",
+  "line": 144,
+  "kind": "select",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 86,
+  "kind": "form",
+  "label": "settings.currentPassword"
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 92,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 100,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 110,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 118,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 128,
+  "kind": "input",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 136,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 141,
+  "kind": "button",
+  "label": "submit"
+ },
+ {
+  "file": "government/src/pages/Settings.jsx",
+  "line": 155,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Students.jsx",
+  "line": 93,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "government/src/pages/Students.jsx",
+  "line": 161,
+  "kind": "button",
+  "label": ""
+ },
+ {
+  "file": "government/src/pages/Teachers.jsx",
+  "line": 91,
+  "kind": "input",
+  "label": "search"
+ },
+ {
+  "file": "government/src/pages/Teachers.jsx",
+  "line": 150,
+  "kind": "button",
+  "label": ""
+ }
+]
