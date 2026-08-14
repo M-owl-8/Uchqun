@@ -20,8 +20,15 @@
  * The migration set could not produce the column that the entire multi-tenant
  * safety model depends on.
  *
- * Types and nullability read from the live production schema. Guarded, so on
- * production this is a no-op.
+ * Types, defaults and nullability read from the live production schema. Every
+ * addition is guarded, so on production this is a no-op.
+ *
+ * Only columns that NO migration creates are listed. Columns a later migration
+ * owns — users.schoolId, users.status, users.govLevel, users.rating,
+ * users.mustChangePassword, users.privacyConsentedAt, and the
+ * expand-child-profile set — are deliberately left to those migrations. Adding
+ * them here would make them fail with "column already exists", which is exactly
+ * the mistake the first version of 20260401000009 made with six columns.
  */
 export default {
   async up(queryInterface) {
@@ -43,6 +50,22 @@ export default {
     // The tenant boundary for every child on the platform.
     await addColumn('children', 'schoolId', 'uuid');
     await addColumn('children', 'groupId', 'uuid');
+    await addColumn('children', 'deletedAt', 'timestamp');
+
+    // `users` is worse: EIGHT columns have no creating migration, and they are
+    // not peripheral. isActive and documentsApproved ARE the reception access
+    // gate (CLAUDE.md); teacherId binds a parent to a teacher; createdBy is the
+    // ownership chain the document approve/reject boundary checks. Verified
+    // individually: no addColumn for any of them, and none appear in the
+    // initial-schema createTable('users') block.
+    await addColumn('users', 'isVerified', 'boolean NOT NULL DEFAULT false');
+    await addColumn('users', 'documentsApproved', 'boolean NOT NULL DEFAULT false');
+    await addColumn('users', 'isActive', 'boolean NOT NULL DEFAULT false');
+    await addColumn('users', 'groupId', 'uuid');
+    await addColumn('users', 'teacherId', 'uuid');
+    await addColumn('users', 'isSuperAdmin', 'boolean DEFAULT false');
+    await addColumn('users', 'deletedAt', 'timestamp');
+    await addColumn('users', 'createdBy', 'uuid');
   },
 
   async down() {
