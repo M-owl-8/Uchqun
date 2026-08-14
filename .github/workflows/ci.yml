@@ -89,7 +89,13 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15
+        # D-67: this was postgres:15 while production runs 18.4. Three major
+        # versions of divergence, in the lane whose entire purpose is to prove
+        # the migrations and queries behave as they will in production. It is
+        # not academic: PG17+ records NOT NULL constraints in pg_constraint,
+        # so the schema diff reported 400+ phantom differences that were purely
+        # the version gap.
+        image: postgres:18
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
@@ -160,7 +166,13 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: postgres:15
+        # D-67: this was postgres:15 while production runs 18.4. Three major
+        # versions of divergence, in the lane whose entire purpose is to prove
+        # the migrations and queries behave as they will in production. It is
+        # not academic: PG17+ records NOT NULL constraints in pg_constraint,
+        # so the schema diff reported 400+ phantom differences that were purely
+        # the version gap.
+        image: postgres:18
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
