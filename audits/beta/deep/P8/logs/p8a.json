@@ -1,0 +1,79 @@
+{
+  "D-47-after-admin-tmm3": [
+    {
+      "u": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 403,
+      "bytes": 39,
+      "containsForeign": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "u": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 403,
+      "bytes": 39,
+      "containsForeign": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "u": "/meals/5eed28fa-3765-41ec-8bec-60f3180e972f",
+      "s": 404,
+      "bytes": 26,
+      "containsForeign": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "u": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 403,
+      "bytes": 39,
+      "containsForeign": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    }
+  ],
+  "D-47-after-reception-tmm3": [
+    {
+      "u": "/activities?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 403,
+      "bytes": 39,
+      "containsForeign": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "u": "/meals?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 403,
+      "bytes": 39,
+      "containsForeign": false,
+      "body": "{\"error\":\"Access denied to this child\"}"
+    },
+    {
+      "u": "/meals/5eed28fa-3765-41ec-8bec-60f3180e972f",
+      "s": 404,
+      "bytes": 26,
+      "containsForeign": false,
+      "body": "{\"error\":\"Meal not found\"}"
+    },
+    {
+      "u": "/media?childId=5eed7fed-b5ea-4db5-8ab7-b60720996a30",
+      "s": 200,
+      "bytes": 2,
+      "containsForeign": false,
+      "body": "[]"
+    }
+  ],
+  "D-31-after": {
+    "status": 200,
+    "records": 21,
+    "distinctChildren": 21,
+    "ownChildren": 24,
+    "saveBar": "24 dan 21 ta belgilangan · Yangilash"
+  },
+  "D-26-after": {
+    "status": 400,
+    "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_DATE_TOO_EARLY\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped\":0,\"errors\":[{\"childId\":\"5eed0c9a-fe3e-4031-8f5c-aac195c36b31\",\"code\":\"ATTENDANCE_DATE_T"
+  },
+  "D-43-after": {
+    "shot": "005_admin-tmm3_D-43-D-43-FIXED-admin-therapy.png",
+    "crashed": false,
+    "pageErrors": [],
+    "head": "tlar | Xabarlar |  | HISOBOTLAR |  | Ogohlantirishlar | Muassasa baholari | Terapiya boshqaruvi |  | MUASSASA |  | Muassasa profili | Ommaviy import | Savatcha | Profil | Sozlamalar | O'zbekcha | NI |  | Nodira Ismoilova |  | Direktor |  | Chiqish |  | HISOBOTLAR |  | Terapiya boshqaruvi (20) |  | Musiqa, vid"
+  }
+}

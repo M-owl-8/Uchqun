@@ -1,0 +1,10 @@
+{
+  "teacher-marks-absent": {
+    "status": 201,
+    "body": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+  },
+  "reception-overwrites": {
+    "status": 201,
+    "body": "{\"success\":true,\"data\":{\"saved\":1,\"skipped\":0,\"errors\":[]}}"
+  }
+}

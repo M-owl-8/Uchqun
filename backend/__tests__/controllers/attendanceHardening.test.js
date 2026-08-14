@@ -125,6 +125,14 @@ describe('D-27 — an overwrite must be attributed to whoever made it', () => {
     await createAttendance(req, makeRes());
 
     expect(mockLogAudit).toHaveBeenCalled();
+    const entry = mockLogAudit.mock.calls.at(-1)[0];
+    expect(entry.action).toBe('attendance_overwrite');
+    // audit_log.entityId is a uuid column. A composite "childId:date" string is
+    // rejected by Postgres, and logAudit swallows the error by design, so the
+    // row silently never appears — which is exactly what happened on the first
+    // attempt at this fix. The date belongs in meta.
+    expect(entry.entityId).toBe(OWN_CHILD);
+    expect(entry.meta).toMatchObject({ date: '2026-08-11', previousStatus: 'absent', newStatus: 'present' });
   });
 
   test('clearing an absence is logged as a safeguarding event', async () => {

@@ -78,7 +78,10 @@ export const createAttendance = async (req, res) => {
             actorRole: req.user.role,
             action: 'attendance_overwrite',
             entity: 'child_attendance',
-            entityId: `${childId}:${date}`,
+            // entityId is a uuid column — a composite "childId:date" string is
+            // rejected by Postgres and logAudit swallows the error, so the row
+            // would silently never appear. The date belongs in meta.
+            entityId: childId,
             schoolId: child.schoolId,
             meta: { childId, date, previousStatus, newStatus: status, previousMarker },
           });
