@@ -11,3 +11,16 @@ coverage/
 *.log
 uploads/
 backend/uploads/
+
+# CONSOLIDATION II P8 — the deploy started failing with
+#   Failed to upload code. File too large (217682017 bytes)
+# because the audit evidence directory is uploaded to every Railway service on
+# every deploy. audits/ holds thousands of PNG screenshots from two hardening
+# campaigns; none of it is code, and none of it belongs on a production service.
+# This was self-inflicted: the artifacts committed during P7 and P8 pushed the
+# upload past Railway's limit and broke deployment for every service at once.
+audits/
+docs/
+*.pdf
+playwright-report/
+test-results/
