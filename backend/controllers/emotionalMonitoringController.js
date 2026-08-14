@@ -234,6 +234,15 @@ export const getMonitoringByChild = async (req, res) => {
       if (!parent) {
         return res.status(403).json({ error: 'You do not have access to this child' });
       }
+    } else {
+      // D-64: parent and teacher were checked; admin, reception and government
+      // fell straight through with no check at all, so an admin of school A
+      // could read school B's emotional-monitoring records — the safeguarding
+      // data C-01 exists to protect. Fails closed for any unrecognised role.
+      const scoped = await validateChildAccess(childId, req);
+      if (!scoped) {
+        return res.status(403).json({ error: 'You do not have access to this child' });
+      }
     }
 
     const where = { childId };

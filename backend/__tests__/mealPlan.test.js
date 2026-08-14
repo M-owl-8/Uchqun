@@ -38,11 +38,31 @@ describe('mealPlanController', () => {
 
     it('applies date range when both startDate and endDate provided', async () => {
       mockFindAll.mockResolvedValue([]);
-      const req = { query: { childId: 'c1', startDate: '2026-01-01', endDate: '2026-01-31' } };
+      // D-61: getMealPlans now requires the child to pass validateChildAccess
+      // before it queries anything. This test previously proved that a query ran
+      // for a childId nobody had checked — which was the defect itself.
+      mockValidateChildAccess.mockResolvedValue({ id: 'c1', schoolId: 's1' });
+      const req = {
+        query: { childId: 'c1', startDate: '2026-01-01', endDate: '2026-01-31' },
+        user: { id: 'a1', role: 'admin', schoolId: 's1' },
+      };
       const res = mkRes();
       await getMealPlans(req, res);
       const where = mockFindAll.mock.calls[0][0].where;
       expect(where.date).toBeDefined();
+    });
+
+    it('D-61: refuses a child the caller may not see, and runs no query', async () => {
+      mockFindAll.mockResolvedValue([]);
+      mockValidateChildAccess.mockResolvedValue(null);
+      const req = {
+        query: { childId: 'c-other-school' },
+        user: { id: 'a1', role: 'admin', schoolId: 's1' },
+      };
+      const res = mkRes();
+      await getMealPlans(req, res);
+      expect(res.status).toHaveBeenCalledWith(404);
+      expect(mockFindAll).not.toHaveBeenCalled();
     });
   });
 

@@ -176,7 +176,10 @@ export const createTherapy = async (req, res) => {
     // If childId is provided, automatically create therapy usage
     if (childId) {
       try {
-        const child = await Child.findByPk(childId);
+        // D-62: this was Child.findByPk with no school scope, so an admin or
+        // teacher in school A could attach a TherapyUsage row — a clinical
+        // record — to a child in school B. A cross-tenant WRITE, not a read.
+        const child = await validateChildAccess(childId, req);
         if (child) {
           let parentId = child.parentId;
           let teacherId = null;
@@ -301,8 +304,16 @@ export const startTherapy = async (req, res) => {
         }
         teacherId = userId;
         parentId = child.parentId;
-      } else if (userRole === 'admin') {
-        // Admin can access any child
+      } else if (userRole === 'admin' || userRole === 'reception' || userRole === 'government') {
+        // D-63: this branch read "Admin can access any child" and did exactly
+        // that. Admin is SCHOOL-SCOPED on this platform (req.user.schoolId), so
+        // an admin of school A could start a therapy session against a child in
+        // school B and write a TherapyUsage row for them. validateChildAccess
+        // applies the school scope, and the region scope for government (D-54).
+        const scoped = await validateChildAccess(childId, req);
+        if (!scoped) {
+          return res.status(403).json({ error: 'You do not have access to this child' });
+        }
         parentId = child.parentId;
       } else {
         return res.status(403).json({ error: 'Access denied' });

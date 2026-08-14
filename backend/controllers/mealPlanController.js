@@ -18,6 +18,15 @@ export const getMealPlans = async (req, res) => {
       return res.status(400).json({ error: 'childId is required' });
     }
 
+    // D-61: this endpoint took childId straight from the query and ran it with
+    // NO access check of any kind — any authenticated user of any role could
+    // read any child's meal plans in any school. Found by the R15 convention
+    // gate, not by the isolation sweep, which never probed this route.
+    const child = await validateChildAccess(childId, req);
+    if (!child) {
+      return res.status(404).json({ error: 'Child not found' });
+    }
+
     const where = { childId };
 
     if (startDate && endDate) {
