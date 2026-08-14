@@ -6,18 +6,25 @@
 //   - Individual reja  → existing Activities.jsx (the curriculum plan)
 //   - Terapiya         → existing TherapyManagement.jsx (therapy library + sessions)
 //   - Kuzatuv          → MonitoringJournal (emotional + daily + weekly tabs)
+//   - Taomlar          → Meals.jsx. D-10/D-09: /teacher/meals was a fully built page
+//                        with NO link anywhere in teacher/src (grep for 'teacher/meals'
+//                        returned only App.jsx:155), while the parent app advertises
+//                        'Taomlar va ovqatlanish (0)' — a parent-facing feature the
+//                        school could never fill.
 
 import { useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ClipboardList, Stethoscope, Activity } from 'lucide-react';
+import { ClipboardList, Stethoscope, Activity, UtensilsCrossed } from 'lucide-react';
 import Activities from './Activities';
 import TherapyManagement from './TherapyManagement';
 import MonitoringJournal from './MonitoringJournal';
+import Meals from './Meals';
 
 const SUB_TABS = [
   { key: 'activities', labelKey: 'reja.tabActivities', icon: ClipboardList, Component: Activities },
   { key: 'therapy',    labelKey: 'reja.tabTherapy',    icon: Stethoscope,   Component: TherapyManagement },
   { key: 'monitoring', labelKey: 'reja.tabMonitoring', icon: Activity,      Component: MonitoringJournal },
+  { key: 'meals',      labelKey: 'reja.tabMeals',      icon: UtensilsCrossed, Component: Meals },
 ];
 
 const Reja = () => {

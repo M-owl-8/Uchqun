@@ -15,13 +15,19 @@ import {
   Brain,
   MessageSquare,
   Mail,
+  Building2,
+  Upload,
+  Trash2,
+  UserCircle2,
 } from 'lucide-react';
 import { LanguageSwitcher } from '@shared/components/LanguageSwitcher';
 
-// 10 primary nav items in 3 sections + 1 standalone Settings link
-// Removed from primary nav: Groups (read-only, linked from Dashboard + Settings),
-//   IRR (quarterly, linked from Dashboard + Settings),
-//   School Profile + Import (low-freq, accessible from Settings quick-links)
+// D-10: the previous comment here claimed School Profile and Import were
+// "accessible from Settings quick-links". They were not — /admin/settings renders
+// only profile fields and a notifications toggle (screen 043 of the 2026-08-14 run),
+// and the landing page exposed 14 links, none of them to /admin/import, /admin/trash,
+// /admin/school or /admin/profile. Bulk Import is a fully built 5-step wizard
+// (screen 047) that needed a typed URL. They now have a section of their own.
 const NAV_SECTIONS = [
   {
     labelKey: 'nav.section.management',
@@ -46,6 +52,15 @@ const NAV_SECTIONS = [
       { key: 'nav.aiWarnings',     href: '/admin/ai-warnings',    icon: BellRing },
       { key: 'nav.schoolRatings',  href: '/admin/school-ratings', icon: BarChart3 },
       { key: 'nav.therapy',        href: '/admin/therapy',        icon: Brain },
+    ],
+  },
+  {
+    labelKey: 'nav.section.institution',
+    items: [
+      { key: 'nav.school',         href: '/admin/school',         icon: Building2 },
+      { key: 'nav.import',         href: '/admin/import',         icon: Upload },
+      { key: 'nav.trash',          href: '/admin/trash',          icon: Trash2 },
+      { key: 'nav.profile',        href: '/admin/profile',        icon: UserCircle2 },
     ],
   },
 ];

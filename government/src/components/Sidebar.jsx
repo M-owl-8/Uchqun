@@ -7,6 +7,9 @@ import {
   ShieldAlert,
   ClipboardList,
   LayoutGrid,
+  GraduationCap,
+  Users,
+  UserRound,
   User,
   Settings,
   LogOut,
@@ -19,10 +22,19 @@ import ihmaLogo from '@shared/assets/ihma-logo.png';
 
 // Capability required to show a nav item. null = always visible.
 // Arrays mean ANY of the listed grants suffices (secondary only needs one to see the tab).
-// Students, Teachers, Parents are accessed inside school detail — not top-level nav items.
+//
+// D-10: Students/Teachers/Parents were previously excluded here on the grounds that
+// they are "accessed inside school detail". They are not the same screens: the school
+// detail tabs are per-school, while /government/students, /teachers and /parents are
+// the cross-school registers for the account's whole scope, and they render real data
+// (screens 006, 008, 009 of the 2026-08-14 run). With no nav entry they were reachable
+// only by typing the URL. Listed here under the matching capability grants.
 const NAV_ITEMS = [
   { href: '/government',           labelKey: 'nav.dashboard', icon: LayoutDashboard, capability: null },
   { href: '/government/schools',   labelKey: 'nav.schools',   icon: Building2,       capability: 'canViewSchools' },
+  { href: '/government/students',  labelKey: 'nav.students',  icon: GraduationCap,   capability: 'canViewStudents' },
+  { href: '/government/teachers',  labelKey: 'nav.teachers',  icon: Users,           capability: 'canViewTeachers' },
+  { href: '/government/parents',   labelKey: 'nav.parents',   icon: UserRound,       capability: 'canViewParents' },
   { href: '/government/ratings',   labelKey: 'nav.ratings',   icon: Star,            capability: 'canViewRatings' },
   { href: '/government/warnings',  labelKey: 'nav.warnings',  icon: ShieldAlert,     capability: 'canViewAuditLog' },
   { href: '/government/audit-log', labelKey: 'nav.auditLog',  icon: ClipboardList,   capability: 'canViewAuditLog' },

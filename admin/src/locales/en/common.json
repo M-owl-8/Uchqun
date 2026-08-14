@@ -4,7 +4,8 @@
       "management": "Management",
       "communications": "Communications",
       "reports": "Reports",
-      "settings": "System"
+      "settings": "System",
+      "institution": "Institution"
     },
     "dashboard": "Dashboard",
     "receptions": "Reception Management",
