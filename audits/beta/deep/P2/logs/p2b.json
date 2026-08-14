@@ -1,0 +1,39 @@
+{
+  "A-wizard-blank-advance": {
+    "shot": "032_reception-tmm3_wizard-s1-VALIDATION-blank-advance.png",
+    "stillOnStep1": true,
+    "msg": null
+  },
+  "B-wizard-abandon": {
+    "atStep2": "034_reception-tmm3_wizard-abandon-at-step2-filled.png",
+    "draftKept": false,
+    "step": "QADAM 1 / 3",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nYangi ota-ona qo'shish\nTezkor qidiruv…\n⌘ K\nSaqlangan qoralama topildi. Davom etishni xohlaysizmi?\nDavom etish\nBekor qilish\nYangi "
+  },
+  "C-wizard-refresh": {
+    "before": "038_reception-tmm3_wizard-refresh-before.png",
+    "after": "039_reception-tmm3_wizard-refresh-after.png",
+    "stepAfterRefresh": "QADAM 1 / 3",
+    "dataSurvived": false
+  },
+  "D-wizard-browser-back": {
+    "shot": "042_reception-tmm3_wizard-browser-back-result.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/parents",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nOta-onalar\nTezkor qidiruv…\n⌘ K\nOta-onalarni boshqarish62\n\nOta-ona akkauntlarini yaratish va boshqarish\n\nOta-o"
+  },
+  "E-wizard-double-submit": {
+    "s1": "046_reception-tmm3_wizard-double-submit-1s.png",
+    "s2": "047_reception-tmm3_wizard-double-submit-done.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/wizard/complete",
+    "body": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nUchqun\nTezkor qidiruv…\n⌘ K\nTayyor!\n\nOta-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.\n\nYana qo'shish\nBoshqaruv paneliga"
+  },
+  "F-D16-reception-peer": {
+    "scan": {
+      "dashboard": [],
+      "teachers": [],
+      "settings": [],
+      "profile": []
+    },
+    "anyControl": 0
+  }
+}

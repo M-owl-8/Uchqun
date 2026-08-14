@@ -1,0 +1,8 @@
+{
+  "D-25-touch": {
+    "triggerFound": true,
+    "tapped": "077_reception-touch_D-25-D-25-after-TOUCH-TAP-no-hover.png",
+    "editVisibleAfterTap": false,
+    "note": "trigger markup: <button className=\"p-1 ...\"><MoreHorizontal/></button> — no onClick (ParentManagement.jsx:617-619); menu is <div className=\"hidden group-hover:block ...\">"
+  }
+}

@@ -1,0 +1,62 @@
+{
+  "ChildFormModal-ERR": "locator.click: Timeout 15000ms exceeded.",
+  "ParentCard-actions": {
+    "toggles": 0,
+    "shot": null,
+    "buttons": [
+      "Chiqish",
+      "O'zbekcha",
+      "Tezkor qidiruv… ⌘ K",
+      "Ota-ona qo'shish",
+      "Barchasi",
+      "Faol",
+      "Kutmoqda",
+      "To'xtatilgan",
+      "Bolani tahrirlash",
+      "O'chirish",
+      "submit",
+      "Bolani tahrirlash"
+    ]
+  },
+  "MessageModal": {
+    "opened": "065_reception-tmm3_MessageModal-open.png",
+    "validation": "066_reception-tmm3_MessageModal-VALIDATION-empty.png",
+    "filled": "067_reception-tmm3_MessageModal-filled.png",
+    "controls": {
+      "buttons": [
+        "Chiqish",
+        "O'zbekcha",
+        "Tezkor qidiruv… ⌘ K",
+        "Davlatga xabar yuborish",
+        "Chiqish",
+        "submit",
+        "Bekor qilish",
+        "Yuborish"
+      ],
+      "links": [
+        "/reception",
+        "/reception/parents",
+        "/reception/teachers",
+        "/reception/groups",
+        "/reception/documents",
+        "/reception/profile",
+        "/reception/settings"
+      ],
+      "inputs": [
+        "INPUT:text:Xabar mavzusi...",
+        "TEXTAREA:textarea:Xabaringizni yozing..."
+      ],
+      "tabs": []
+    },
+    "buttons": [
+      "Chiqish",
+      "O'zbekcha",
+      "Tezkor qidiruv… ⌘ K",
+      "Davlatga xabar yuborish",
+      "Chiqish",
+      "submit",
+      "Bekor qilish",
+      "Yuborish"
+    ]
+  }
+}

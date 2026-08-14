@@ -1,0 +1,20 @@
+{
+  "form": {
+    "shot": "053_director-tmm3_D-17-D-17-create-form-filled.png"
+  },
+  "D-17-what-the-creator-is-told": {
+    "shots": [
+      "054_director-tmm3_D-17-D-17-immediately-after-create.png",
+      "055_director-tmm3_D-17-D-17-list-after-create.png"
+    ],
+    "toastMentionsActivation": true,
+    "listShowsPendingState": true,
+    "toastText": "Qabul akkaunti yaratildi"
+  },
+  "D-17-first-login": {
+    "ok": false,
+    "landing": "https://reception-production-ba41.up.railway.app/login",
+    "shot": "056_new-reception-2_D-17-D-17-first-login-attempt.png",
+    "head": "U\nUchqun\nQabulxona portali\nQabulxona\n\nQABULXONA PORTALI\n\nOta-onalar va hujjatlarni qabul qilish markazi\n\nYangi ota-onalarni ro'yxatga oling, hujjatlarni qabul qiling va guruhlarga yo'naltiring.\n\n256-bit TLS\n© 2026 Uchqun"
+  }
+}

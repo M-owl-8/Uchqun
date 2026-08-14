@@ -1,0 +1,107 @@
+{
+  "login": {
+    "ok": true,
+    "landing": "https://reception-production-ba41.up.railway.app/reception"
+  },
+  "parents-states": {
+    "fullShot": "see index",
+    "searchHit": "013_reception-tmm3_parents-search-hit.png",
+    "emptyState": "014_reception-tmm3_parents-search-EMPTY-STATE.png",
+    "lastPage": "015_reception-tmm3_parents-last-page.png",
+    "paginationControls": [
+      "1",
+      "2",
+      "3"
+    ],
+    "fullCount": null,
+    "hitHasKarimov": true,
+    "missShowsEmpty": true,
+    "missBody": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nOta-onalar\nTezkor qidiruv…\n⌘ K\nOta-onalarni boshqarish62\n\nOta-ona akkauntlarini yaratish va boshqarish\n\nOta-ona qo'shish\nBarchasi\nFaol\nKutmoqda\nTo'xtatilgan\nHozircha ish yo'q\n\n\"zzzzqqqq\" bo'yicha natija topilm"
+  },
+  "teachers-validation": {
+    "emptyState": "017_reception-tmm3_teachers-search-EMPTY-STATE.png",
+    "emptyStateText": "m\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nTarbiyachilar\nTezkor qidiruv…\n⌘ K\nTarbiyachilarni boshqarish(0)\n\nTarbiyachi akkauntlarini yaratish va boshqarish\n\nTarbiyachi qo'shish\n\nTarbiyachilar topilmadi\n\nQidiruvni tozalash",
+    "modal": "018_reception-tmm3_teachers-create-modal-open.png",
+    "invalidEmpty": "019_reception-tmm3_teachers-create-VALIDATION-empty.png",
+    "invalidWeak": "020_reception-tmm3_teachers-create-VALIDATION-weak-password.png",
+    "cancelled": "021_reception-tmm3_teachers-create-cancelled.png",
+    "emptyMsg": null,
+    "weakMsg": "tarbiyachi8@tmm3.uz"
+  },
+  "groups": {
+    "addButtons": 1,
+    "opened": "023_reception-tmm3_groups-create-form-open.png",
+    "invalid": "024_reception-tmm3_groups-create-VALIDATION-empty.png",
+    "msg": null,
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nGuruhlar\nTezkor qidiruv…\n⌘ K\nGuruhlarni boshqarish(6)\n\nGuruhlarni yaratish va boshqarish\n\nGuruh qo'shish\nBaho"
+  },
+  "documents": {
+    "typeOptions": [
+      "Litsenziya",
+      "Sertifikat",
+      "Shaxsni tasdiqlovchi hujjat",
+      "Boshqa"
+    ],
+    "typed": "026_reception-tmm3_documents-type-selected.png",
+    "err": "027_reception-tmm3_X-01-documents-upload-X01-error.png",
+    "body": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nMening hujjatlarim\nTezkor qidiruv…\n⌘ K\nMening hujjatlarim\n\nHujjatlarni yuklang va direktor tasdiqlashini kuti"
+  },
+  "profile-settings": {
+    "profileControls": {
+      "buttons": [
+        "Chiqish",
+        "O'zbekcha",
+        "Tezkor qidiruv… ⌘ K",
+        "Davlatga xabar yuborish",
+        "Chiqish"
+      ],
+      "links": [
+        "/reception",
+        "/reception/parents",
+        "/reception/teachers",
+        "/reception/groups",
+        "/reception/documents",
+        "/reception/profile",
+        "/reception/settings"
+      ],
+      "inputs": [],
+      "tabs": []
+    },
+    "settingsControls": {
+      "buttons": [
+        "Chiqish",
+        "O'zbekcha",
+        "Tezkor qidiruv… ⌘ K",
+        "Profilni saqlash",
+        "Sozlamalarni saqlash",
+        "button",
+        "button",
+        "button",
+        "Parolni o'zgartirish",
+        "Davlatga xabar yuborish"
+      ],
+      "links": [
+        "/reception",
+        "/reception/parents",
+        "/reception/teachers",
+        "/reception/groups",
+        "/reception/documents",
+        "/reception/profile",
+        "/reception/settings"
+      ],
+      "inputs": [
+        "INPUT:text:text",
+        "INPUT:text:text",
+        "INPUT:email:email",
+        "INPUT:tel:+998 90 123 45 67",
+        "INPUT:checkbox:checkbox",
+        "INPUT:password:password",
+        "INPUT:password:password",
+        "INPUT:password:password"
+      ],
+      "tabs": []
+    },
+    "profileEdit": null,
+    "toggled": "030_reception-tmm3_settings-toggle-flipped.png"
+  }
+}
