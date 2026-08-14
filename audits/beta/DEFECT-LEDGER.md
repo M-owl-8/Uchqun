@@ -73,8 +73,8 @@ repository is historical and must not be treated as current.
 | D-60 | blocks-trust | **FIXED** `6f6a6c39` | an approved identification document could never be revoked — a reception approved in error kept access permanently | `deep2/P7-FIXES.md` §7 |
 | D-61 | blocks-trust | **FIXED** `cc9467e2` | `getMealPlans` read any child's meal plans for any role with no access check at all | `deep2/P8-GATES.md` |
 | D-62 | blocks-trust | **FIXED** `cc9467e2` | `createTherapy` wrote a TherapyUsage row against a child in another school — a cross-tenant WRITE | `deep2/P8-GATES.md` |
-| D-63 | blocks-trust | **FIXED** `cc9467e2` | `startTherapy` carried the comment "Admin can access any child" and did exactly that | `deep2/P8-GATES.md` |
-| D-64 | blocks-trust | **FIXED** `cc9467e2` | `getMonitoringByChild` checked parent and teacher; admin, reception and government fell through unchecked | `deep2/P8-GATES.md` |
+| D-63 | latent | **FIXED** `cc9467e2` | `startTherapy`'s "Admin can access any child" branch — UNREACHABLE behind `requireRole('parent','teacher')`; fix retained as defence in depth. Campaign II described it as live; that was wrong | `deep3/P1-DISCLOSURE.md` §1.1 |
+| D-64 | blocks-trust | **FIXED** `cc9467e2` | `getMonitoringByChild` let **admin and reception** (not government — `requireTeacher` excludes it) read any school's emotional-monitoring records | `deep3/P1-DISCLOSURE.md` §1.1 |
 | D-65 | blocks-trust | **FIXED** `a25a9b9e` | the database could not be rebuilt from migrations — 7 model tables existed only because sync() once created them | `deep2/P8-GATES.md` |
 | D-66 | degrades-use | **FIXED** `a25a9b9e` | both commit hooks were broken: lint-staged mis-scoped eslint so migrations could never lint, and commit-msg demanded an id from a file that does not exist | `deep2/P8-GATES.md` |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
