@@ -11,6 +11,7 @@ import TeacherResponsibility from '../models/TeacherResponsibility.js';
 import TeacherTask from '../models/TeacherTask.js';
 import TeacherWorkHistory from '../models/TeacherWorkHistory.js';
 import GovernmentMessage from '../models/GovernmentMessage.js';
+import ChildAttendance from '../models/ChildAttendance.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
 
@@ -95,6 +96,36 @@ export const getDashboardCounts = async (req, res) => {
       User.findByPk(req.user.id, { attributes: ['rating', 'totalRatings'] }),
     ]);
 
+    // D-07 (scope extension): this endpoint has never returned an attendance
+    // figure. The dashboard's `rawStats.present || … || rawChildren.length`
+    // therefore always fell through to the head count and rendered a fabricated
+    // "3/3 keldi · 100%". Removing that fallback stopped the lie but left the
+    // panel permanently on "not yet recorded", because there was still no number
+    // to show. Return today's real counts for the teacher's own children.
+    const groupChildren = groupIds.length
+      ? await Child.findAll({
+        where: { [Op.or]: [{ groupId: { [Op.in]: groupIds } }, { parentId: { [Op.in]: parents.map(p => p.id) } }] },
+        attributes: ['id'],
+      })
+      : [];
+    const scopedChildIds = [...new Set(groupChildren.map(c => c.id))];
+    const today = new Date().toISOString().slice(0, 10);
+    let attendanceToday = null;
+    if (scopedChildIds.length) {
+      const rows = await ChildAttendance.findAll({
+        where: { childId: { [Op.in]: scopedChildIds }, date: today },
+        attributes: ['childId', 'status'],
+      });
+      // null = nobody has taken attendance today; a number = a real count.
+      if (rows.length) {
+        attendanceToday = {
+          present: rows.filter(r => r.status === 'present').length,
+          recorded: rows.length,
+          total: scopedChildIds.length,
+        };
+      }
+    }
+
     res.json({
       success: true,
       data: {
@@ -105,6 +136,7 @@ export const getDashboardCounts = async (req, res) => {
         statusEntries: monitoringCount,
         rating: Number(teacher?.rating || 0).toFixed(1),
         ratingsCount: Number(teacher?.totalRatings || 0),
+        ...(attendanceToday ? { present: attendanceToday.present, total: attendanceToday.total } : {}),
       },
     });
   } catch (error) {
