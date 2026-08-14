@@ -1,4 +1,5 @@
 import { body, param } from 'express-validator';
+import { identityValidator } from '../utils/accountDomain.js';
 
 const passwordRules = (field = 'password', optional = false) => {
   const chain = optional ? body(field).optional() : body(field);
@@ -10,11 +11,7 @@ const passwordRules = (field = 'password', optional = false) => {
 };
 
 export const createAdminValidator = [
-  body('email')
-    .trim()
-    .isEmail()
-    .withMessage('Please provide a valid email address')
-    .normalizeEmail(),
+  identityValidator(body),
   passwordRules('password'),
   body('firstName')
     .trim()

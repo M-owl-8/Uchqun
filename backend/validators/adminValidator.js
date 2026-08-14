@@ -1,12 +1,10 @@
 import { body, param } from 'express-validator';
+import { identityValidator } from '../utils/accountDomain.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 export const createReceptionValidator = [
-  body('email')
-    .trim()
-    .isEmail().withMessage('email must be a valid email address')
-    .normalizeEmail(),
+  identityValidator(body),
   body('password')
     .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)

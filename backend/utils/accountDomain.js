@@ -37,6 +37,30 @@ export function isValidLocalPart(localPart) {
 }
 
 /**
+ * D-02: express-validator chain accepting EITHER the legacy `email` shape OR the
+ * `localPart` shape that every frontend has sent since a0723db1 (2026-06-02).
+ * The controllers compute the domain themselves via resolveEmailDomain(); the
+ * route validator must not reject a request for lacking a field the product
+ * deliberately stopped sending.
+ *
+ * Usage: `identityValidator(body)` — `body` is express-validator's `body`.
+ */
+export function identityValidator(body) {
+  return body('email')
+    .custom((value, { req }) => {
+      const localPart = req.body?.localPart;
+      if (localPart !== undefined && localPart !== null && localPart !== '') {
+        if (!isValidLocalPart(String(localPart).toLowerCase())) {
+          throw new Error('localPart must be 1-32 lowercase chars (a-z, 0-9, dot, underscore, hyphen)');
+        }
+        return true;
+      }
+      if (typeof value === 'string' && /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim())) return true;
+      throw new Error('either localPart or a valid email address is required');
+    });
+}
+
+/**
  * Resolve the enforced email domain for a new account.
  *
  * @param {object} creator      - req.user from middleware

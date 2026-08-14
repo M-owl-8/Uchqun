@@ -1,14 +1,13 @@
 import { body, param } from 'express-validator';
+import { identityValidator } from '../utils/accountDomain.js';
 
 const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-const GENDER_VALUES = ['male', 'female', 'MALE', 'FEMALE'];
+// D-02: must mirror the Child model enum (models/Child.js:32) — was the opposite casing.
+const GENDER_VALUES = ['Male', 'Female', 'Other'];
 
 // Reusable for both createTeacher and createReception
 export const createStaffValidator = [
-  body('email')
-    .trim()
-    .isEmail().withMessage('email must be a valid email address')
-    .normalizeEmail(),
+  identityValidator(body),
   body('password')
     .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
@@ -28,10 +27,7 @@ export const createStaffValidator = [
 ];
 
 export const createParentValidator = [
-  body('email')
-    .trim()
-    .isEmail().withMessage('email must be a valid email address')
-    .normalizeEmail(),
+  identityValidator(body),
   body('password')
     .isLength({ min: 8 }).withMessage('password must be at least 8 characters')
     .matches(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/)
