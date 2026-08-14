@@ -209,8 +209,25 @@ jobs:
       - name: Run frontend tests
         run: |
           cd ${{ matrix.app }}
-          RESULT=$(npm test -- --run --reporter=verbose 2>&1)
-          echo "$RESULT"
+          # `set +e` and the tee are load-bearing. This step runs under
+          # `bash -e`, so `RESULT=$(npm test …)` ABORTS THE STEP the moment the
+          # suite fails — before the echo — and the run page shows the script
+          # source and no test output at all. A gate that hides why it failed is
+          # the thing this campaign exists to remove, and I shipped one.
+          #
+          # --testTimeout=30000: the default 5s is too tight for a cold CI
+          # runner transforming 34 files. P7 established these timeouts are
+          # environmental (isolating a change with and without it gave identical
+          # results); the suite passing here was previously luck.
+          set +e
+          npm test -- --run --reporter=verbose --testTimeout=30000 2>&1 | tee /tmp/vitest-${{ matrix.app }}.log
+          STATUS=${PIPESTATUS[0]}
+          set -e
+          RESULT=$(cat /tmp/vitest-${{ matrix.app }}.log)
+          if [ "$STATUS" -ne 0 ]; then
+            echo "ERROR: ${{ matrix.app }} test suite exited $STATUS — see the output above."
+            exit "$STATUS"
+          fi
           if echo "$RESULT" | grep -q "No test files found"; then
             echo "ERROR: No test files found in ${{ matrix.app }}. Tests are required."
             exit 1
