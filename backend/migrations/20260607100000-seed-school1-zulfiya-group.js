@@ -24,6 +24,23 @@ const ZULFIYA_ID  = 'd77eb37b-0da4-4530-8096-9ea221e9a891';
 const SCHOOL1_ID  = 'eec19bb5-36ae-4006-a330-031d07654c40';
 
 export async function up(queryInterface) {
+  // D-65: this is a DATA SEED for two specific rows on production —
+  // teacher Zulfiya (d77eb37b…) at school 1 (eec19bb5…). On an empty database
+  // neither exists, so the INSERT violates the groups→users foreign key and the
+  // whole rebuild dies on a repair for data that is not there.
+  //
+  // A seed for particular production rows is meaningless on a fresh database.
+  // Skip when its subjects are absent; the log line says which.
+  const [[{ ready }]] = await queryInterface.sequelize.query(`
+    SELECT (
+      EXISTS (SELECT 1 FROM users   WHERE id = '${ZULFIYA_ID}')
+      AND EXISTS (SELECT 1 FROM schools WHERE id = '${SCHOOL1_ID}')
+    ) AS ready;`);
+  if (!ready) {
+    console.log('[seed-school1] teacher or school not present (fresh database) — skipping seed');
+    return;
+  }
+
   const [existing] = await queryInterface.sequelize.query(
     `SELECT id FROM groups WHERE "teacherId" = :tid LIMIT 1`,
     { replacements: { tid: ZULFIYA_ID }, type: queryInterface.sequelize.QueryTypes.SELECT },
