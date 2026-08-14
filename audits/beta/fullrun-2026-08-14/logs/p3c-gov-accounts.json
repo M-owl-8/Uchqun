@@ -1,0 +1,14 @@
+{
+  "formShot": "176_gov-republic_create-gov-republic-secondary-filled.png",
+  "after1s": "177_gov-republic_create-gov-republic-secondary-1s.png",
+  "after5s": "178_gov-republic_create-gov-republic-secondary-5s.png",
+  "listBody": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nDirektorlar\nXabarlar\nDavlat foydalanuvchilari\nRo'yxatdan o'tish so'rovlari\nDavlat Hisoblar (6)\n\nUshbu portal uchun davlat foydalanuvchi hisoblarini boshqaring\n\nSI\n\nSIM-Respublika Ikkinchi\n\nsimrespublika@davlat.uz\n\nRespublika\nIkkinchi darajali\nParol o'zgartirilishi kerak\nMaktablarni Baholash\nOta-onalarni Ko'rish\nReytinglarni Ko'rish\nMaktablarni Ko'rish\nDirektorlarni Boshqarish\nAudit Jurnalini Ko'rish\nXabarlarni Ko'rish\nO'quvchilarni Ko'rish\nTarbiyachilarni Ko'rish\nMaktablarni Arxivlash\nRo'yxatga Olishlarni Boshqarish\nDavlat Foydalanuvchilarini Boshqarish\nParolni Tiklash\nO'chirish\nSI\n\nSIM-Viloyat Ikkinchi\n\nsimviloyat@samarqand.uz\n\nSamarqand viloyati\nIkkinchi darajali\nParol o'zgartirilishi kerak\nMaktablarni Baholash\nOta-onalarni Ko'rish\nReytinglarni Ko'rish\nMaktablarni Ko'rish\nDirektorlarni Boshqarish\nAudit Jurnalini Ko'rish\nXabarlarni Ko'rish\nO'quvchilarni Ko'rish\nTarbiyachilarni Ko'rish\nMaktablarni Arxivlash\nRo'yxatga Olishlarni Boshqarish\nDavlat Foydalanuvchilarini Boshqarish\nParolni Tiklash\nO'chirish\nMS\n\nMen Sen\n\nmen@davlat.uz\n\nRespublika\nIkkinchi darajali\nParol o'zgartirilishi kerak\nMaktablarni Baholash\nMaktablarni Ko'rish\nParolni Tiklash\nO'chirish\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nRespublika\nAsosiy\nParolni Tiklash\nO'chirish\nNY\n\nNodira Yusupova\n\ngov.toshkent@uc",
+  "gov-region-secondary-SIM": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government/change-password",
+    "shot": "180_gov-region-secondary-SIM_landing.png"
+  },
+  "gov-region-secondary-SIM:schools": "181_gov-region-secondary-SIM_schools-scope-check.png",
+  "gov-region-secondary-SIM:schoolsBody": "Oʻzbekiston Respublikasi\nIjtimoiy himoya milliy agentligi\n\nYAGONA AXBOROT TIZIMI\n\nDavlat Nazorat Paneli\n256-bit TLS\n© 2026 IHMA · Oʻzbekiston Respublikasi\nTizimga kirish\n\nDavom etish uchun hisobingizga kiring\n\nElektron pochta\nParol\nParolni unutdingizmi?\nBu qurilmani eslab qolish\nKirish\nTizimga kirish urinishlari qayd etiladi\n© 2026 IHMA · Oʻzbekiston Respublikasi\nO'zbekcha",
+  "gov-region-secondary-SIM:platform": "182_gov-region-secondary-SIM_platform.png"
+}

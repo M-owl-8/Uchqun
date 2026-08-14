@@ -1,0 +1,882 @@
+[
+  {
+    "role": "gov-republic",
+    "route": "/login",
+    "action": "login",
+    "shot": "002_gov-republic_landing.png",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government",
+    "action": "dashboard",
+    "shot": "003_gov-republic_dashboard.png",
+    "url": "https://government-production.up.railway.app/government",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nDavlat Nazorat Paneli\n\nUmumiy ko'rinish\n\nBarcha viloyatlar\nOxirgi yangilanish: 08:35\n\n4\n\nJami Muassasalar\n\n12\n\nJami O'quvchilar\n\n0\n\nKutilayotgan direktor ro'yxatdan o'tishlari\n\n0\n\nFaol ogohlantiri"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/schools",
+    "action": "schools",
+    "shot": "004_gov-republic_schools.png",
+    "url": "https://government-production.up.railway.app/government/schools",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nMuassasalar\n\nBarcha muassasalar va ularning baholari\n\nBarcha viloyatlar\n4\nCSV yuklab olish\nBarcha turlar\nKunduzgi parvarish\nYangi kun\nMadad\nErta aralashuv\nUyda qarab turish\n#\tMuassasa\tTur\tO'quvchi"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/schools/5334e23c-a749-4808-8b9a-1f8c67aa1938",
+    "action": "school-detail-smm2",
+    "shot": "005_gov-republic_school-detail-smm2.png",
+    "url": "https://government-production.up.railway.app/government/schools/5334e23c-a749-4808-8b9a-1f8c67aa1938",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nMuassasalar\nSamarqand Maxsus Maktab 2\nSamarqand Maxsus Maktab 2\nFaol\nArxivlash\nUmumiy ma'lumot\nTarbiyachilar\nO'quvchilar\nOta-onalar\nOgohlantirishlar\nAudit\nUmumiy ma'lumot\n\nTur\n\nMadad\n\nViloyat\n\nSam"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/students",
+    "action": "students",
+    "shot": "006_gov-republic_students.png",
+    "url": "https://government-production.up.railway.app/government/students",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nBarcha o'quvchilar\n\nTizimdagi barcha o'quvchilar ro'yxati\n\nBarcha viloyatlar\n12 Jami o'quvchilar\n#\tIsm\tTug'ilgan sana\tMaktab\tOta-ona\n1\tShahlo TursunovaAyol\t2018-11-20\tToshkent Maxsus Maktab 1\tDilo"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "action": "child-detail",
+    "shot": "007_gov-republic_child-detail.png",
+    "url": "https://government-production.up.railway.app/government/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nBolalar ro'yxatiga qaytish\nSY\nSanjar Yusupov\n2017-12-01\nSamarqand Maxsus Maktab 2\nAsosiy ma'lumotlar\n\nTashxis\n\nАқлий ривожланишнинг ўрта даражали кечикиши\n\nOta-ona\n\nRano Yusupova+998 91 124 68 72\n"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/teachers",
+    "action": "teachers",
+    "shot": "008_gov-republic_teachers.png",
+    "url": "https://government-production.up.railway.app/government/teachers",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nBarcha tarbiyachilar\n\nTizimdagi barcha tarbiyachilar ro'yxati\n\nBarcha viloyatlar\n8 Jami tarbiyachilar\n#\tIsm\tEmail\tTelefon\n1\tFeruza Normatova\tteacher3@uchqun.uz\t+998 94 345 81 96\n2\tSardor Toshpulat"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/parents",
+    "action": "parents",
+    "shot": "009_gov-republic_parents.png",
+    "url": "https://government-production.up.railway.app/government/parents",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nBarcha ota-onalar\n\nTizimdagi barcha ota-onalar ro'yxati\n\nBarcha viloyatlar\n13 Jami ota-onalar\n#\tIsm\tEmail\tTelefon\n1\tChildless Test\tchildless.test@uchqun.uz\t—\n2\tJasur Qodirov\tparent3@uchqun.uz\t+998"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/ratings",
+    "action": "ratings",
+    "shot": "010_gov-republic_ratings.png",
+    "url": "https://government-production.up.railway.app/government/ratings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nReytinglar\n\nMuassasalar reytinglari\n\nBarcha viloyatlar\nSaralash:\nUmumiy (asosiy)\nOta-onalar bo'yicha\nDavlat bo'yicha\n\n4 Muassasalar\n\n1\nToshkent Maxsus Maktab 1\n4.6\nUmumiy\nOta-onalar reytingi\n4.1\n("
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/platform",
+    "action": "platform",
+    "shot": "011_gov-republic_platform.png",
+    "url": "https://government-production.up.railway.app/government/platform",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nDirektorlar\nXabarlar\nDavlat foydalanuvchilari\nRo'yxatdan o'tish so'rovlari\nYangi Direktor yaratish\n\nYangi direktor uchun barcha ma'lumotlarni kiriting\n\nIsm\nFamiliya\nMuassasa *\nMuassasani tanlang.."
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/profile",
+    "action": "profile",
+    "shot": "012_gov-republic_profile.png",
+    "url": "https://government-production.up.railway.app/government/profile",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nProfil\n\nHisobingiz ma'lumotlari\n\nShaxsiy ma'lumotlar\nTahrirlash\n\nIsm\n\nHamidjon\n\nFamiliya\n\nMirzayev\n\nEmail\n\ngov.republic@uchqun.uz\n\nTelefon\n\n+998 90 512 34 56\n\nRol\n\nHukumat amaldori\n\nHolati\n\nFaol\n\n"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/settings",
+    "action": "settings",
+    "shot": "013_gov-republic_settings.png",
+    "url": "https://government-production.up.railway.app/government/settings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nParolni o'zgartirish\nJoriy parol\nYangi parol\nYangi parolni tasdiqlang\nParolni o'zgartirish\nChiqish"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/admin/9b01fa07-4570-41e1-a322-fe128fe0b1da",
+    "action": "admin-details",
+    "shot": "014_gov-republic_admin-details.png",
+    "url": "https://government-production.up.railway.app/government/admin/9b01fa07-4570-41e1-a322-fe128fe0b1da",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nGulsanam Xolmatova\n\nadmin4@uchqun.uz\n\nEmail\n\nadmin4@uchqun.uz\n\nTelefon\n\n+998 33 689 24 35\n\nYaratilgan sana\n\n2026-05-30\n\nHolati\n\nFaol\nStatistika\n\nO'quvchilar\n\n3\n\nJami o'quvchilar soni\n\nOta-onalar\n\n"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/warnings",
+    "action": "ai-warnings",
+    "shot": "015_gov-republic_ai-warnings.png",
+    "url": "https://government-production.up.railway.app/government/warnings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nOgohlantirishlar\n\nMuassasalar bo'yicha avtomatik tahlil natijalari\n\nBarcha viloyatlar\nFaol\nHal qilingan\n\nFaol ogohlantirishlar yo'q\n\nSizning vakolatingizdagi maktablarda hech qanday muammoli signa"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/audit-log",
+    "action": "audit-log",
+    "shot": "016_gov-republic_audit-log.png",
+    "url": "https://government-production.up.railway.app/government/audit-log",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nAudit jurnali\nBarcha viloyatlar\nHarakat\nBarcha harakatlar\nArxivlash\nQayta faollashtirish\nTasdiqlash\nRad etish\nYaratish\nYangilash\nO'chirish\nOb'ekt\nBarcha ob'ektlar\nMuassasalar\nRo'yxatga olish so'ro"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/change-password",
+    "action": "change-password",
+    "shot": "017_gov-republic_change-password.png",
+    "url": "https://government-production.up.railway.app/government/change-password",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nParolni o'zgartirish\n\nDavom etishdan oldin yangi parol o'rnatishingiz kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlang\nParolni o'zgartirish"
+  },
+  {
+    "role": "gov-republic",
+    "route": "/government/zzz-nonexistent",
+    "action": "notfound",
+    "shot": "018_gov-republic_notfound.png",
+    "url": "https://government-production.up.railway.app/government/zzz-nonexistent",
+    "head": "404\n\nSahifa topilmadi\n\nBosh sahifaga qaytish"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/login",
+    "action": "login",
+    "shot": "020_gov-region-samarqand_landing.png",
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government",
+    "action": "dashboard",
+    "shot": "021_gov-region-samarqand_dashboard.png",
+    "url": "https://government-production.up.railway.app/government",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nDavlat Nazorat Paneli\n\nUmumiy ko'rinish\n\nSamarqand viloyati\nOxirgi yangilanish: 08:36\n\n2\n\nJami Muassasalar\n\n6\n\nJami O'quvchilar\n\n0\n\nKutilayotgan direktor ro'yxatdan o'tishlari\n\n0\n\nFaol ogohlantirishla"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/schools",
+    "action": "schools",
+    "shot": "022_gov-region-samarqand_schools.png",
+    "url": "https://government-production.up.railway.app/government/schools",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nMuassasalar\n\nSamarqand viloyati dagi muassasalar\n\nSamarqand viloyati\n2\nCSV yuklab olish\nBarcha turlar\nKunduzgi parvarish\nYangi kun\nMadad\nErta aralashuv\nUyda qarab turish\n#\tMuassasa\tTur\tO'quvchilar\tRey"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/schools/5334e23c-a749-4808-8b9a-1f8c67aa1938",
+    "action": "school-detail-smm2",
+    "shot": "023_gov-region-samarqand_school-detail-smm2.png",
+    "url": "https://government-production.up.railway.app/government/schools/5334e23c-a749-4808-8b9a-1f8c67aa1938",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nMuassasalar\nSamarqand Maxsus Maktab 2\nSamarqand Maxsus Maktab 2\nFaol\nArxivlash\nUmumiy ma'lumot\nTarbiyachilar\nO'quvchilar\nOta-onalar\nOgohlantirishlar\nAudit\nUmumiy ma'lumot\n\nTur\n\nMadad\n\nViloyat\n\nSamarqa"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/students",
+    "action": "students",
+    "shot": "024_gov-region-samarqand_students.png",
+    "url": "https://government-production.up.railway.app/government/students",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nBarcha o'quvchilar\n\nSamarqand viloyati dagi o'quvchilar\n\nSamarqand viloyati\n6 Jami o'quvchilar\n#\tIsm\tTug'ilgan sana\tMaktab\tOta-ona\n1\tAziza KarimovaAyol\t2021-11-05\tSamarqand Maxsus Maktab 1\tOzoda Karim"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/teachers",
+    "action": "teachers",
+    "shot": "025_gov-region-samarqand_teachers.png",
+    "url": "https://government-production.up.railway.app/government/teachers",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nBarcha tarbiyachilar\n\nSamarqand viloyati dagi tarbiyachilar\n\nSamarqand viloyati\n4 Jami tarbiyachilar\n#\tIsm\tEmail\tTelefon\n1\tShahnoza Ergasheva\tteacher5@uchqun.uz\t+998 91 123 68 79\n2\tErkin Nazarov\tteach"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/parents",
+    "action": "parents",
+    "shot": "026_gov-region-samarqand_parents.png",
+    "url": "https://government-production.up.railway.app/government/parents",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nBarcha ota-onalar\n\nSamarqand viloyati dagi ota-onalar\n\nSamarqand viloyati\n7 Jami ota-onalar\n#\tIsm\tEmail\tTelefon\n1\tChildless Test\tchildless.test@uchqun.uz\t—\n2\tOzoda Karimova\tparent8@uchqun.uz\t+998 95 4"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/ratings",
+    "action": "ratings",
+    "shot": "027_gov-region-samarqand_ratings.png",
+    "url": "https://government-production.up.railway.app/government/ratings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nReytinglar\n\nSamarqand viloyati da muassasalar reytingi\n\nSamarqand viloyati\nSaralash:\nUmumiy (asosiy)\nOta-onalar bo'yicha\nDavlat bo'yicha\n\n2 Muassasalar\n\n1\nSamarqand Maxsus Maktab 1\nReyting yo'q\nOta-on"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/platform",
+    "action": "platform",
+    "shot": "028_gov-region-samarqand_platform.png",
+    "url": "https://government-production.up.railway.app/government/platform",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nDirektorlar\nXabarlar\nDavlat foydalanuvchilari\nRo'yxatdan o'tish so'rovlari\nYangi Direktor yaratish\n\nYangi direktor uchun barcha ma'lumotlarni kiriting\n\nIsm\nFamiliya\nMuassasa *\nMuassasani tanlang...\nSa"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/settings",
+    "action": "settings",
+    "shot": "029_gov-region-samarqand_settings.png",
+    "url": "https://government-production.up.railway.app/government/settings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nParolni o'zgartirish\nJoriy parol\nYangi parol\nYangi parolni tasdiqlang\nParolni o'zgartirish\nChiqish"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/audit-log",
+    "action": "audit-log",
+    "shot": "030_gov-region-samarqand_audit-log.png",
+    "url": "https://government-production.up.railway.app/government/audit-log",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nAudit jurnali\nSamarqand viloyati\nHarakat\nBarcha harakatlar\nArxivlash\nQayta faollashtirish\nTasdiqlash\nRad etish\nYaratish\nYangilash\nO'chirish\nOb'ekt\nBarcha ob'ektlar\nMuassasalar\nRo'yxatga olish so'rovla"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/warnings",
+    "action": "ai-warnings",
+    "shot": "031_gov-region-samarqand_ai-warnings.png",
+    "url": "https://government-production.up.railway.app/government/warnings",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nOgohlantirishlar\n\nMuassasalar bo'yicha avtomatik tahlil natijalari\n\nSamarqand viloyati\nFaol\nHal qilingan\n\nFaol ogohlantirishlar yo'q\n\nSamarqand viloyati hududidagi maktablarda hech qanday muammoli sig"
+  },
+  {
+    "role": "gov-region-samarqand",
+    "route": "/government/profile",
+    "action": "profile",
+    "shot": "032_gov-region-samarqand_profile.png",
+    "url": "https://government-production.up.railway.app/government/profile",
+    "head": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nProfil\n\nHisobingiz ma'lumotlari\n\nShaxsiy ma'lumotlar\nTahrirlash\n\nIsm\n\nSherzod\n\nFamiliya\n\nRaximov\n\nEmail\n\ngov.samarqand@uchqun.uz\n\nTelefon\n\n+998 93 734 56 78\n\nRol\n\nHukumat amaldori\n\nHolati\n\nFaol\n\nYarat"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/login",
+    "action": "login",
+    "shot": "034_admin-smm2_landing.png",
+    "ok": true,
+    "landing": "https://admin-production-536f.up.railway.app/admin"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin",
+    "action": "dashboard",
+    "shot": "035_admin-smm2_dashboard.png",
+    "url": "https://admin-production-536f.up.railway.app/admin",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\n2026 M08 14, FRI\n\nBoshqaruv paneli\n\nXush kelibsiz, Gulsanam\n\nOxirgi yangilanish\n\n08:37\n\nSIZNING E'TIBORINGIZNI TALAB QILADI\n\nHammasi joy"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/receptions",
+    "action": "receptions",
+    "shot": "036_admin-smm2_receptions.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/receptions",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nXODIMLAR\n\nQabul boshqaruvi (1)\n\nQabul akkauntlarini yaratish, ko‘rish va tasdiqlash\n\nQabul yaratish\nHammasi · 1\nFaol · 1\nTasdiqlash kuti"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/parents",
+    "action": "parents",
+    "shot": "037_admin-smm2_parents.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/parents",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nOta-onalar (3)\n\nOta-ona akkauntlarini ko’rish (faqat o’qish)\n\nRY\n\nRano Yusupova\n\nparent10@uchqun.uz\n\n+998 91 124 68 72\nSQ\n\nSanjar Qodirov"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/teachers",
+    "action": "teachers",
+    "shot": "038_admin-smm2_teachers.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/teachers",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nTarbiyachilar (2)\n\nTarbiyachi akkauntlarini ko’rish (faqat o’qish)\n\nMA\n\nMaftuna Aliyeva\n\nteacher7@uchqun.uz\n\n+998 99 892 47 58\nAP\n\nAkbar "
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/teachers/56009e7e-1420-451d-8bd9-91f03249d86e",
+    "action": "teacher-detail",
+    "shot": "039_admin-smm2_teacher-detail.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/teachers/56009e7e-1420-451d-8bd9-91f03249d86e",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nTarbiyachilarga qaytish\n\nFaqat ko'rish — qabul tomonidan boshqariladi\n\nMA\nMaftuna Aliyeva\n\nteacher7@uchqun.uz\n\n+998 99 892 47 58\n\nTayinla"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/groups",
+    "action": "groups",
+    "shot": "040_admin-smm2_groups.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/groups",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nLoading…"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/school-ratings",
+    "action": "school-ratings",
+    "shot": "041_admin-smm2_school-ratings.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/school-ratings",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHISOBOTLAR\n\nMuassasa baholari (1)\n\nOta-onalar tomonidan muassasa va bog'chalarga berilgan baholarni ko'ring\n\nReyting xulosasi\nOta-onalar"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/profile",
+    "action": "profile",
+    "shot": "042_admin-smm2_profile.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/profile",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nProfil\n\nHisobingiz ma'lumotlari va xabarlar\n\nProfil ma'lumotlari\nGX\nGulsanam Xolmatova\n\nDirektor\n\nEMAIL\n\nadmin4@uchqun.uz\n\nDavlatga bog'l"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/settings",
+    "action": "settings",
+    "shot": "043_admin-smm2_settings.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/settings",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nSOZLAMALAR\n\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nIsm\nFamiliya\nEmail\n\nEmail o'zgartirib bo'lmaydi\n\nT"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/documents",
+    "action": "documents-queue",
+    "shot": "044_admin-smm2_documents-queue.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/documents",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHUJJATLAR NAVBATI\n\nHujjatlar navbati (0)\n\nTasdiq kutayotgan hujjat yo'q\n\nKutilmoqda0\nTasdiqlangan0\nRad etilgan0\n\nTasdiq kutayotgan hujja"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/ai-warnings",
+    "action": "ai-warnings",
+    "shot": "045_admin-smm2_ai-warnings.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/ai-warnings",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/therapy",
+    "action": "therapy",
+    "shot": "046_admin-smm2_therapy.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/therapy",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHISOBOTLAR\n\nTerapiya boshqaruvi (0)\n\nMusiqa, video va kontent terapiyalarni boshqaring\n\nYangi terapiya\nBarchasi\nMusiqa\nVideo\nKontent\nTer"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/import",
+    "action": "bulk-import",
+    "shot": "047_admin-smm2_bulk-import.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/import",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nSOZLAMALAR\n\nOmmaviy import\n\nCSV fayl orqali bolalarni import qilish\n\n1\n2\n3\n4\n5\nCSV yuklash\n\nMajburiy ustunlar: firstName, lastName, date"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/school",
+    "action": "school-profile",
+    "shot": "048_admin-smm2_school-profile.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/school",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nSOZLAMALAR\n\nSamarqand Maxsus Maktab 2\n\nMaktabingizning aloqa ma'lumotlarini ko'ring va yangilang\n\nsupport\nFaol\n\nHUKUMAT TOMONIDAN BOSHQA"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/activity",
+    "action": "activity-feed",
+    "shot": "049_admin-smm2_activity-feed.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/activity",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHISOBOTLAR\n\nFaoliyat tarixchasi\n\nMaktabingizdagi barcha amallar audit jurnali\n\nAmal bo'yicha filtrlash\nBarcha amallar\nHujjat tasdiqlandi"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "action": "child-detail",
+    "shot": "050_admin-smm2_child-detail.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nOrqaga\nChild 78d1f578-956c-42c7-81f5-9eafc994219b\nIRR\nMaqsadlar\nIRR'ni yuklab bo'lmadi"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/communications",
+    "action": "communications",
+    "shot": "051_admin-smm2_communications.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/communications",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nALOQA\n\nMuloqotlar (3)\n\nMaktabingizdagi xodim-ota-ona suhbatlarini faqat ko'rish\n\nFaqat o'qish — direktor xabar yubora olmaydi\n\nSQ\n\nSanja"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/trash",
+    "action": "trash",
+    "shot": "052_admin-smm2_trash.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/trash",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nSavatcha\nOta-onalar\nQabulxonalar\n\nO'chirilgan yozuvlar yo'q"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/messages",
+    "action": "gov-messages",
+    "shot": "053_admin-smm2_gov-messages.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/messages",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nALOQA\n\nHukumatga xabarlar (0)\n\nDavlat nazorat organiga murojaatlar\n\nYangi xabar\nYUBORILGAN\n\nHali xabar yuborilmagan\n\nYangi xabar tugmasi"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/irr",
+    "action": "irr",
+    "shot": "054_admin-smm2_irr.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/irr",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHISOBOTLAR\n\nIRR boshqaruvi — Rahbar\n\nMaqsadli davrlarni imzolash va chorakli monitoring\n\nMaqsadli davrlar\nChorakli monitoring\nAhmedova M"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/change-password",
+    "action": "change-password",
+    "shot": "055_admin-smm2_change-password.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/change-password",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nParolni o'zgartirish\n\nDavom etish uchun yangi parol o'rnatishingiz kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlang\nParolni o'zga"
+  },
+  {
+    "role": "admin-smm2",
+    "route": "/admin/zzz-nonexistent",
+    "action": "notfound",
+    "shot": "056_admin-smm2_notfound.png",
+    "url": "https://admin-production-536f.up.railway.app/admin/zzz-nonexistent",
+    "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/login",
+    "action": "login",
+    "shot": "058_reception-smm2_landing.png",
+    "ok": true,
+    "landing": "https://reception-production-ba41.up.railway.app/reception"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception",
+    "action": "dashboard",
+    "shot": "059_reception-smm2_dashboard.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nBosh sahifa\nTezkor qidiruv…\n⌘ K\nBoshqaruv paneli\n\nXush kelibsiz, Umida. Bugun qiladigan ishlaringiz:\n\nOxirgi yangilanish: 2026 M08 14, 08:39\nTezkor qidiruv\n⌘ K\nYangi ota-ona\n3 qadamli sehrgar bilan\nYangi tarbi"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/parents",
+    "action": "parents",
+    "shot": "060_reception-smm2_parents.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/parents",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nOta-onalar\nTezkor qidiruv…\n⌘ K\nOta-onalarni boshqarish3\n\nOta-ona akkauntlarini yaratish va boshqarish\n\nOta-ona qo'shish\nBarchasi\nFaol\nKutmoqda\nTo'xtatilgan\n\tISM\tTELEFON\tEMAIL\tBOLA\tHOLAT\tQO'SHILGAN\t\n\t\nRY\nRano Y"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/parents/new",
+    "action": "parent-wizard",
+    "shot": "061_reception-smm2_parent-wizard.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/parents/new",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nYangi ota-ona qo'shish\nTezkor qidiruv…\n⌘ K\nYangi ota-ona qo'shish\n\nOta-ona, bola va guruhni 3 qadamda ro'yxatdan o'tkating.\n\nQADAM 1 / 3\nYangi ota-ona qo'shish\n1\nOta-ona ma'lumotlari\n2\nBola ma'lumotlari\n3\nGuru"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/teachers",
+    "action": "teachers",
+    "shot": "062_reception-smm2_teachers.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/teachers",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nTarbiyachilar\nTezkor qidiruv…\n⌘ K\nTarbiyachilarni boshqarish(2)\n\nTarbiyachi akkauntlarini yaratish va boshqarish\n\nTarbiyachi qo'shish\nMA\nMaftuna Aliyeva\n\nteacher7@uchqun.uz\n\nteacher7@uchqun.uz\n+998 99 892 47 5"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/groups",
+    "action": "groups",
+    "shot": "063_reception-smm2_groups.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/groups",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nGuruhlar\nTezkor qidiruv…\n⌘ K\nGuruhlarni boshqarish(2)\n\nGuruhlarni yaratish va boshqarish\n\nGuruh qo'shish\nA-guruh\nSig'im: 20 bola\nTarbiyachi: Maftuna Aliyeva\nYangilash\nO'chirish\nB-guruh\nSig'im: 20 bola\nTarbiyac"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/documents",
+    "action": "documents",
+    "shot": "064_reception-smm2_documents.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/documents",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nMening hujjatlarim\nTezkor qidiruv…\n⌘ K\nMening hujjatlarim\n\nHujjatlarni yuklang va direktor tasdiqlashini kuting.\n\nHujjat yuklash\nHujjat turi\nLitsenziya\nSertifikat\nShaxsni tasdiqlovchi hujjat\nBoshqa\nHujjatlarni"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/settings",
+    "action": "settings",
+    "shot": "065_reception-smm2_settings.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/settings",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nSozlamalar\nTezkor qidiruv…\n⌘ K\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nIsm\nFamiliya\nEmail\n\nEmail o'zgartirilmaydi\n\nTelefon\nProfilni saqlash\nBildirishnoma sozlamalari\nEmail bil"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/profile",
+    "action": "profile",
+    "shot": "066_reception-smm2_profile.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/profile",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nProfil\nTezkor qidiruv…\n⌘ K\nProfil\n\nHisobingiz ma'lumotlari va xabarlar\n\nProfil ma'lumotlari\nUQ\nUmida Qodirboyeva\n\nQabulxona xodimi\n\nEMAIL\n\nreception4@uchqun.uz\n\nTELEFON\n\n+998 97 791 35 48\n\nDavlatga bog'lanish\n"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/wizard/complete",
+    "action": "wizard-complete",
+    "shot": "067_reception-smm2_wizard-complete.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/wizard/complete",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nUchqun\nTezkor qidiruv…\n⌘ K\nTayyor!\n\nOta-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.\n\nYana qo'shish\nBoshqaruv paneliga"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/change-password",
+    "action": "change-password",
+    "shot": "068_reception-smm2_change-password.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/change-password",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nUchqun\nTezkor qidiruv…\n⌘ K\nParolni o'zgartirish\n\nDavom etish uchun yangi parol o'rnatishingiz kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlang\nParolni o'zgartirish"
+  },
+  {
+    "role": "reception-smm2",
+    "route": "/reception/zzz-nonexistent",
+    "action": "notfound",
+    "shot": "069_reception-smm2_notfound.png",
+    "url": "https://reception-production-ba41.up.railway.app/reception/zzz-nonexistent",
+    "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/login",
+    "action": "login",
+    "shot": "071_teacher-smm2_landing.png",
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher",
+    "action": "dashboard",
+    "shot": "072_teacher-smm2_dashboard.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Maftuna opa/aka. \"\" Guruh · 3 bola.\n\n2026 M08 14\nYangi yozuv\nSINF BIR QARASHDA\n3/3 keldi\nMA\nNQ\nSY\nDAVOMAT\n3\n/ 3 keldi\n100% · normal\nYANGI XABARLAR\n0\nota-onadan\nXabarlarni ko'rish\nTezkor havolalar\nDavomat belgilash\nBolalar ro'yxati\nOta-onalar bilan chat\nKun jurnali"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/bolalar",
+    "action": "bolalar",
+    "shot": "073_teacher-smm2_bolalar.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/bolalar",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBolalar (3)\n\nSizning guruhingiz bolalari va bugungi holati\n\nMA\nMalika Ahmedova\nTayyorlov\nDavomat belgilanmagan\nNQ\nNozima Qodirova\nMaktabgacha\nDavomat belgilanmagan\nSY\nSanjar Yusupov\n2-sinf\nDavomat belgilanmagan"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/reja?tab=activities",
+    "action": "reja-activities",
+    "shot": "074_teacher-smm2_reja-activities.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/reja?tab=activities",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nIndividual reja\n\nO'quvchilaringiz uchun individual rejalar yarating va boshqaring\n\nIndividual reja qo'shish\n\nHozircha ushbu turdagi mashg'ulotlar yo'q"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/reja?tab=therapy",
+    "action": "reja-therapy",
+    "shot": "075_teacher-smm2_reja-therapy.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/reja?tab=therapy",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nTerapiya Boshqaruvi\n\nMusiqa, video va content terapiyalarni boshqaring va bolalarga tayinlang\n\nYaratish\nBarchasi\nMusiqa\nVideo\nKontent\nTerapiyalar topilmadi\n\nQidiruv natijalari bo'sh"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/reja?tab=monitoring",
+    "action": "reja-monitoring",
+    "shot": "076_teacher-smm2_reja-monitoring.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/reja?tab=monitoring",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nKuzatuv jurnali\n\nBolalarning kunlik va haftalik holatini kuzatish\n\nEmotsional\nKunlik\nHaftalik\n\nYozuvlar rasmiy muhrlangan jismoniy jurnalda ham yuritiladi — bu platforma uni to'ldiradi, o'rnini bosmaydi.\n\nHammasini birga to'ldirish\nSanjar Yusupov\n\nRano Yusupova\n\n, 2-sinf\n\nBugun uchun baholanmadi\nBaholash"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/xabar?tab=chat",
+    "action": "xabar-chat",
+    "shot": "077_teacher-smm2_xabar-chat.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/xabar?tab=chat",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOta-onalar bilan muloqot\nGuruhingiz ota-onalari bilan yozishmalar\nSQ\nSanjar Qodirov\n06:58\nP11 beta xabar 58177 — ota-ona javobi 🙏\nRY\nRano Yusupova\nXabar yo'q\nSQ\nSanjar Qodirov\nNozima Qodirova\nM06 8\nP11 beta xabar 58177 — ota-ona javobi 🙏\n06:58"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/xabar?tab=warnings",
+    "action": "xabar-warnings",
+    "shot": "078_teacher-smm2_xabar-warnings.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/xabar?tab=warnings",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOgohlantirishlar(0)\n\nGuruhingiz bolalari bo'yicha ogohlantirishlar\n\nBarchasi\nYechilmagan\nYechilgan\nOgohlantirishlar yo'q\n\nHozircha ogohlantirishlar mavjud emas"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/men?tab=profile",
+    "action": "men-profile",
+    "shot": "079_teacher-smm2_men-profile.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=profile",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nProfil\n\nHisobingizni boshqaring\n\nMA\nMaftuna Aliyeva\nteacher7@uchqun.uz\nROL\nteacher\nID\n56009e7e-1420-451d-8bd9-91f03249d86e\nDavlatga xabar yuborish\n\nDavlatga xabar yuborish uchun quyidagi tugmani bosing\n\nDavlatga xabar yuborish\nChiqish"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/men?tab=settings",
+    "action": "men-settings",
+    "shot": "080_teacher-smm2_men-settings.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=settings",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nMA\n\nProfil rasmi\n\nRasmni o'zgartirish uchun bosing\n\nIsm\nFamiliya\nEmail\n\nEmail o'zgartirib bo'lmaydi\n\nTelefon\nProfilni saqlash\nBildirishnomalar\nEmail bildirishnomalari\n\nEmail orqali yangiliklar olish\n\n"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/men?tab=reflection",
+    "action": "men-reflection",
+    "shot": "081_teacher-smm2_men-reflection.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=reflection",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nKun jurnali\n\n2026 M08 14, Fri\n\nSHAXSIY\nFaqat men ko'raman\nAvtomatik saqlanadi\nOta-onaga jurnal\nBOLALAR\nHammasiga jo'natish\nMA\nMalika A.\nNQ\nNozima Q.\nSY\nSanjar Y.\n2026 M08 14\n+ Birinchi marta\n+ Yaxshi natija\n+ Yordam kerak\nLavha\nQabul qiluvchi tanlanmagan\nQoralama\nJo'natish "
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/attendance",
+    "action": "attendance",
+    "shot": "082_teacher-smm2_attendance.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/attendance",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKunlik\nHafta\nOy\nGuruh · 3 bola\nHammasi keldi\nHammasi · 3\nBor · 0\nUyda · 0\nKasal · 0\nShifoxonada · 0\nYo'q · 0\nMA\nMalika A.\nBelgilanmagan\nNQ\nNozima Q.\nBelgilanmagan\nSY\nSanjar Y.\nBelgilanmagan\n3 dan 0 ta belgilangan · Saqlash"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/meals",
+    "action": "meals",
+    "shot": "083_teacher-smm2_meals.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/meals",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nTaomlar va ovqatlanish\n\nKunlik taomnoma va iste'mol nazorati\n\nTaom qo'shish\nKUNNI TANLANG\n\nBu kunda taomlar qayd etilmagan"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/media",
+    "action": "media",
+    "shot": "084_teacher-smm2_media.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/media",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMedia galereya (0)\n\nMuassasa hayotidan eng sara lahzalar\n\nHammasi\nRasmlar\nVideolar\nMedia qo'shish\n\nHozircha media fayllar yo'q"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/monitoring",
+    "action": "monitoring-journal",
+    "shot": "085_teacher-smm2_monitoring-journal.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/monitoring",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKuzatuv jurnali\n\nBolalarning kunlik va haftalik holatini kuzatish\n\nEmotsional\nKunlik\nHaftalik\n\nYozuvlar rasmiy muhrlangan jismoniy jurnalda ham yuritiladi — bu platforma uni to'ldiradi, o'rnini bosmaydi.\n\nHammasini birga to'ldirish\nSanjar Yusupov\n\nRano Yusupova\n\n, 2-sinf\n\nBugun uchun baholanmadi\nBaholash\nNozima Qodirova\n\nSanjar Qodirov\n"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "action": "child-detail",
+    "shot": "086_teacher-smm2_child-detail.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nGuruh ro'yxati\nSY\nSanjar Yusupov\nOta-onaga yozish\nIRR tuzish\nIEP maqsadlar\nHujjatlar\nXabarlar\nGalereya\nHozircha maqsad yo'q\n\nBirinchi IEP maqsadini qo'shing"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b/irr",
+    "action": "child-irr",
+    "shot": "087_teacher-smm2_child-irr.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b/irr",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBolaning sahifasi\nIndividual Rivojlanish Rejasi\n\nBola uchun yangi IRR tuzing. Barcha majburiy maydonlarni (*) toʻldiring va saqlang.\n\nAsosiy ma'lumotlar\n\n* * belgilangan maydonlar faollashtirish uchun majburiy\n\nBolaning familiyasi, ismi*\nTugʻilgan sanasi*\nTekshiruv boshlangan vaqtdagi yosh*\nPTPKga kelib tushgan sana*\nPTPK xulosasi sanas"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/parents",
+    "action": "redirect-parents",
+    "shot": "088_teacher-smm2_redirect-parents.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/bolalar",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBolalar (3)\n\nSizning guruhingiz bolalari va bugungi holati\n\nMA\nMalika Ahmedova\nTayyorlov\nDavomat belgilanmagan\nNQ\nNozima Qodirova\nMaktabgacha\nDavomat belgilanmagan\nSY\nSanjar Yusupov\n2-sinf\nDavomat belgilanmagan"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/profile",
+    "action": "redirect-profile",
+    "shot": "089_teacher-smm2_redirect-profile.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=profile",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nProfil\n\nHisobingizni boshqaring\n\nMA\nMaftuna Aliyeva\nteacher7@uchqun.uz\nROL\nteacher\nID\n56009e7e-1420-451d-8bd9-91f03249d86e\nDavlatga xabar yuborish\n\nDavlatga xabar yuborish uchun quyidagi tugmani bosing\n\nDavlatga xabar yuborish\nChiqish"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/settings",
+    "action": "redirect-settings",
+    "shot": "090_teacher-smm2_redirect-settings.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=settings",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nMA\n\nProfil rasmi\n\nRasmni o'zgartirish uchun bosing\n\nIsm\nFamiliya\nEmail\n\nEmail o'zgartirib bo'lmaydi\n\nTelefon\nProfilni saqlash\nBildirishnomalar\nEmail bildirishnomalari\n\nEmail orqali yangiliklar olish\n\n"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/reflection",
+    "action": "redirect-reflection",
+    "shot": "091_teacher-smm2_redirect-reflection.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/men?tab=reflection",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMA\nMaftuna Aliyeva\nO'qituvchi\nProfil\nSozlamalar\nKunlik mulohaza\nKun jurnali\n\n2026 M08 14, Fri\n\nSHAXSIY\nFaqat men ko'raman\nAvtomatik saqlanadi\nOta-onaga jurnal\nBOLALAR\nHammasiga jo'natish\nMA\nMalika A.\nNQ\nNozima Q.\nSY\nSanjar Y.\n2026 M08 14\n+ Birinchi marta\n+ Yaxshi natija\n+ Yordam kerak\nLavha\nQabul qiluvchi tanlanmagan\nQoralama\nJo'natish "
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/activities",
+    "action": "redirect-activities",
+    "shot": "092_teacher-smm2_redirect-activities.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/reja?tab=activities",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nIndividual reja\n\nO'quvchilaringiz uchun individual rejalar yarating va boshqaring\n\nIndividual reja qo'shish\n\nHozircha ushbu turdagi mashg'ulotlar yo'q"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/therapy",
+    "action": "redirect-therapy",
+    "shot": "093_teacher-smm2_redirect-therapy.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/reja?tab=therapy",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nTerapiya Boshqaruvi\n\nMusiqa, video va content terapiyalarni boshqaring va bolalarga tayinlang\n\nYaratish\nBarchasi\nMusiqa\nVideo\nKontent\nTerapiyalar topilmadi\n\nQidiruv natijalari bo'sh"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/chat",
+    "action": "redirect-chat",
+    "shot": "094_teacher-smm2_redirect-chat.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/xabar?tab=chat",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOta-onalar bilan muloqot\nGuruhingiz ota-onalari bilan yozishmalar\nSQ\nSanjar Qodirov\n06:58\nP11 beta xabar 58177 — ota-ona javobi 🙏\nRY\nRano Yusupova\nXabar yo'q\nSQ\nSanjar Qodirov\nNozima Qodirova\nM06 8\nP11 beta xabar 58177 — ota-ona javobi 🙏\n06:58"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/warnings",
+    "action": "redirect-warnings",
+    "shot": "095_teacher-smm2_redirect-warnings.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/xabar?tab=warnings",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOgohlantirishlar(0)\n\nGuruhingiz bolalari bo'yicha ogohlantirishlar\n\nBarchasi\nYechilmagan\nYechilgan\nOgohlantirishlar yo'q\n\nHozircha ogohlantirishlar mavjud emas"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/ai-warnings",
+    "action": "redirect-ai-warnings",
+    "shot": "096_teacher-smm2_redirect-ai-warnings.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/xabar?tab=warnings",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOgohlantirishlar(0)\n\nGuruhingiz bolalari bo'yicha ogohlantirishlar\n\nBarchasi\nYechilmagan\nYechilgan\nOgohlantirishlar yo'q\n\nHozircha ogohlantirishlar mavjud emas"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/change-password",
+    "action": "change-password",
+    "shot": "097_teacher-smm2_change-password.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/change-password",
+    "head": "Parolni o'zgartirish\n\nDavom etishdan oldin yangi parol o'rnatish kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlash\nParolni o'zgartirish"
+  },
+  {
+    "role": "teacher-smm2",
+    "route": "/teacher/zzz-nonexistent",
+    "action": "notfound",
+    "shot": "098_teacher-smm2_notfound.png",
+    "url": "https://teacher-production-0647.up.railway.app/teacher/zzz-nonexistent",
+    "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/login",
+    "action": "login",
+    "shot": "100_parent-smm2_landing.png",
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/",
+    "action": "dashboard",
+    "shot": "101_parent-smm2_dashboard.png",
+    "url": "https://teacher-production-0647.up.railway.app/",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\n\nBUGUNGI XULOSA\n\nM08 14, Fri\nDAVOMAT\n\n—\n\nTAOMLAR\n\n0/0\n\nSURATLAR\n\n0\n\nFAOLIYATLAR\n\n0\n\nBUGUNGI YOZUV\n\nBugun uchun hali yozuv yo'q.\n\nTEZKOR O'TISH\nIRR — Reabilitatsiya rejasi\nIndividual reja\nTerapiya\nO'qituvchi va maktabni baholash\nSozlamalar\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni b"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/child",
+    "action": "child-profile",
+    "shot": "102_parent-smm2_child-profile.png",
+    "url": "https://teacher-production-0647.up.railway.app/child",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nO'zgartirish\nSanjar Yusupov\nErkak\n\n8 yosh\n\nSamarqand Maxsus Maktab 2\nAsosiy ma'lumotlar\nTO'LIQ ISMI\n\nSanjar Yusupov\n\nTUG'ILGAN SANA\n\n2017-12-01\n\nTASHXISI\n\nАқлий ривожланишнинг ўрта даражали кечикиши\n\nTARBIYACHI\n\nMaftuna Aliyeva\n\nQo'shimcha kasalliklari va allergiyalari\n\nOddiy, takrorlanadigan topshiriqla"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/activities",
+    "action": "activities",
+    "shot": "103_parent-smm2_activities.png",
+    "url": "https://teacher-production-0647.up.railway.app/activities",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nIndividual reja(0)\n\nFarzandingiz uchun individual rejalarni ko'ring\n\nHozircha ushbu turdagi mashg'ulotlar yo'q\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'rsatilishini"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/meals",
+    "action": "meals",
+    "shot": "104_parent-smm2_meals.png",
+    "url": "https://teacher-production-0647.up.railway.app/meals",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTaomlar va ovqatlanish(0)\n\nKunlik taomnoma va iste'mol nazorati\n\nKUNNI TANLANG\n\nBu kunda taomlar qayd etilmagan\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'rsatilishin"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/media",
+    "action": "media",
+    "shot": "105_parent-smm2_media.png",
+    "url": "https://teacher-production-0647.up.railway.app/media",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nMedia galereya\n\nMuassasa hayotidan eng sara lahzalar\n\nBarchasi\nBugun\nHammasi\nRasmlar\nVideolar\n\nHozircha media fayllar yo'q\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/chat",
+    "action": "chat",
+    "shot": "106_parent-smm2_chat.png",
+    "url": "https://teacher-production-0647.up.railway.app/chat",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachi bilan chat\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nHozircha xabarlar yo’q\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/notifications",
+    "action": "notifications",
+    "shot": "107_parent-smm2_notifications.png",
+    "url": "https://teacher-production-0647.up.railway.app/notifications",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nBildirishnomalar(0)\n\nSizning farzandingiz bo'yicha so'nggi yangiliklar\n\nHammasi (0)\nO'qilmagan (0)\nO'qilgan (0)\n\nHozircha bildirishnomalar yo'q\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/help",
+    "action": "help",
+    "shot": "108_parent-smm2_help.png",
+    "url": "https://teacher-production-0647.up.railway.app/help",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nYordam va qo'llab-quvvatlash\n\nTez-tez beriladigan savollarga javob toping va yordam oling\n\nBiz bilan bog'laning\n\nEmail\n\nsupport@uchqun.uz\n\nTelefon\n\n+998 71 200 00 00\nKo'p beriladigan savollar\nFarzandimning kunlik faoliyatlarini qanday ko'raman?\n\nBarcha kunlik faoliyatlar va tarbiyachilarning yangilanishl"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/rating",
+    "action": "teacher-rating",
+    "shot": "109_parent-smm2_teacher-rating.png",
+    "url": "https://teacher-production-0647.up.railway.app/rating",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachini baholash\n\nBiriktirilgan tarbiyachi topilmadi. Iltimos, muassasa bilan bog’laning.\n\nMuassasa bahosi\n\nFarzandingiz o'qiyotgan muassasa yoki bog'chani baholang\n\nFARZANDINGIZ MUASSASASI\n\nSamarqand Maxsus Maktab 2\nReyting yo'q\n\nOta-onalar: 0.0\n\nDavlat: —\n\nKo'rsatkichlar bo'yicha baho\nMuassasa toz"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/settings",
+    "action": "settings",
+    "shot": "110_parent-smm2_settings.png",
+    "url": "https://teacher-production-0647.up.railway.app/settings",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nRY\n\nProfil rasmi\n\nRasmni profil sahifasida o'zgartirishingiz mumkin\n\nIsm\nFamiliya\nEmail\n\nEmail o'zgartirib bo'lmaydi\n\nTelefon\nProfilni saqlash\nBildirishnomalar\nEmail bildirishnomalari\n\nEmail orqali yangiliklar olish\n\nSaqlash\nParoln"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/therapy",
+    "action": "therapy",
+    "shot": "111_parent-smm2_therapy.png",
+    "url": "https://teacher-production-0647.up.railway.app/therapy",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\n\nMUSIQA, VIDEO VA CONTENT TERAPIYA RESURSLARI\n\nSarlavha\nBarchasi\nMusiqa\nVideo\nKontent\nTerapiyalar topilmadi\n\nQidiruv natijalari bo'sh\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/irr",
+    "action": "irr",
+    "shot": "112_parent-smm2_irr.png",
+    "url": "https://teacher-production-0647.up.railway.app/irr",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nRivojlanish rejasi hali tuzilmagan\n\nO'qituvchi rejani tuzgach, siz bu yerda farzandingizning rivojlanishini kuzata olasiz.\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/attendance",
+    "action": "attendance",
+    "shot": "113_parent-smm2_attendance.png",
+    "url": "https://teacher-production-0647.up.railway.app/attendance",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\nM08 14, Fri\n\nBu kun uchun yozuv yo'q\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingizning ma'lumotlari qanday ko'rsatilishini tushunishingiz uchun"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/journal",
+    "action": "journal",
+    "shot": "114_parent-smm2_journal.png",
+    "url": "https://teacher-production-0647.up.railway.app/journal",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nKun jurnali(0)\n\nTarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar\n\nHali yozuv yo'q. Tarbiyachi yangi yozuv qo'shganda bu yerda ko'rinadi.\n\nMaxfiylik tasdiqlash\n\nUchqun ota-onalar portalidan foydalanishni boshlashdan oldin quyidagi ikki ma'lumotni o'qing va tasdiqlang. Bu sizning farzandingiznin"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/change-password",
+    "action": "change-password",
+    "shot": "115_parent-smm2_change-password.png",
+    "url": "https://teacher-production-0647.up.railway.app/change-password",
+    "head": "Parolni o'zgartirish\n\nDavom etishdan oldin yangi parol o'rnatish kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlash\nParolni o'zgartirish"
+  },
+  {
+    "role": "parent-smm2",
+    "route": "/zzz-nonexistent",
+    "action": "notfound",
+    "shot": "116_parent-smm2_notfound.png",
+    "url": "https://teacher-production-0647.up.railway.app/zzz-nonexistent",
+    "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+  }
+]

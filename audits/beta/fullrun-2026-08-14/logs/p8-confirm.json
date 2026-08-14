@@ -1,0 +1,136 @@
+{
+  "A0-consent": "absent",
+  "A-sweep": [
+    {
+      "route": "/",
+      "action": "dashboard",
+      "shot": "328_parent10-sanjar_postconsent-dashboard.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\n\nBUGUNGI XULOSA\n\nM08 14, Fri\nDAVOMAT\n\nBor\n\nTAOMLAR\n\n0/0\n\nSURATLAR\n\n0\n\nFAOLIYATLAR\n\n0\n\nBUGUNGI YOZUV\n\nBugun uchun hali yozuv yo'q.\n\nTEZKOR O'TISH\nIRR — Reabilitatsiya"
+    },
+    {
+      "route": "/child",
+      "action": "child-profile",
+      "shot": "329_parent10-sanjar_postconsent-child-profile.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nO'zgartirish\nSanjar Yusupov\nErkak\n\n8 yosh\n\nSamarqand Maxsus Maktab 2\nAsosiy ma'lumotlar\nTO'LIQ ISMI\n\nSanjar Yusupov\n\nTUG'ILGAN SANA\n\n2017-12-01\n\nTASHXISI\n\nАқлий риво"
+    },
+    {
+      "route": "/activities",
+      "action": "activities",
+      "shot": "330_parent10-sanjar_postconsent-activities.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nIndividual reja(0)\n\nFarzandingiz uchun individual rejalarni ko'ring\n\nHozircha ushbu turdagi mashg'ulotlar yo'q"
+    },
+    {
+      "route": "/meals",
+      "action": "meals",
+      "shot": "331_parent10-sanjar_postconsent-meals.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTaomlar va ovqatlanish(0)\n\nKunlik taomnoma va iste'mol nazorati\n\nKUNNI TANLANG\n\nBu kunda taomlar qayd etilmagan"
+    },
+    {
+      "route": "/media",
+      "action": "media",
+      "shot": "332_parent10-sanjar_postconsent-media.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nMedia galereya\n\nMuassasa hayotidan eng sara lahzalar\n\nBarchasi\nBugun\nHammasi\nRasmlar\nVideolar\n\nHozircha media fayllar yo'q"
+    },
+    {
+      "route": "/chat",
+      "action": "chat",
+      "shot": "333_parent10-sanjar_postconsent-chat.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachi bilan chat\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nM08 14\nSIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?\n09:24\nSIM-A"
+    },
+    {
+      "route": "/notifications",
+      "action": "notifications",
+      "shot": "334_parent10-sanjar_postconsent-notifications.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nBildirishnomalar(0)\n\nSizning farzandingiz bo'yicha so'nggi yangiliklar\n\nHammasi (0)\nO'qilmagan (0)\nO'qilgan (0)\n\nHozircha bildirishnomalar yo'q"
+    },
+    {
+      "route": "/help",
+      "action": "help",
+      "shot": "335_parent10-sanjar_postconsent-help.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nYordam va qo'llab-quvvatlash\n\nTez-tez beriladigan savollarga javob toping va yordam oling\n\nBiz bilan bog'laning\n\nEmail\n\nsupport@uchqun.uz\n\nTelefon\n\n+998 71 200 00 00"
+    },
+    {
+      "route": "/rating",
+      "action": "teacher-rating",
+      "shot": "336_parent10-sanjar_postconsent-teacher-rating.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachini baholash\n\nBiriktirilgan tarbiyachi topilmadi. Iltimos, muassasa bilan bog’laning.\n\nMuassasa bahosi\n\nFarzandingiz o'qiyotgan muassasa yoki bog'chani baho"
+    },
+    {
+      "route": "/settings",
+      "action": "settings",
+      "shot": "337_parent10-sanjar_postconsent-settings.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nSozlamalar\n\nProfil va hisob sozlamalarini boshqarish\n\nProfil ma'lumotlari\nRY\n\nProfil rasmi\n\nRasmni profil sahifasida o'zgartirishingiz mumkin\n\nIsm\nFamiliya\nEmail\n\nEm"
+    },
+    {
+      "route": "/therapy",
+      "action": "therapy",
+      "shot": "338_parent10-sanjar_postconsent-therapy.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\n\nMUSIQA, VIDEO VA CONTENT TERAPIYA RESURSLARI\n\nSarlavha\nBarchasi\nMusiqa\nVideo\nKontent\nTerapiyalar topilmadi\n\nQidiruv natijalari bo'sh"
+    },
+    {
+      "route": "/irr",
+      "action": "irr",
+      "shot": "339_parent10-sanjar_postconsent-irr.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nRivojlanish rejasi hali tuzilmagan\n\nO'qituvchi rejani tuzgach, siz bu yerda farzandingizning rivojlanishini kuzata olasiz."
+    },
+    {
+      "route": "/attendance",
+      "action": "attendance",
+      "shot": "340_parent10-sanjar_postconsent-attendance.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\nM08 14, Fri\nBor"
+    },
+    {
+      "route": "/journal",
+      "action": "journal",
+      "shot": "341_parent10-sanjar_postconsent-journal.png",
+      "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nKun jurnali(0)\n\nTarbiyachi farzandingiz haqida yozayotgan kundalik yozuvlar\n\nHali yozuv yo'q. Tarbiyachi yangi yozuv qo'shganda bu yerda ko'rinadi."
+    },
+    {
+      "route": "/change-password",
+      "action": "change-password",
+      "shot": "342_parent10-sanjar_postconsent-change-password.png",
+      "head": "Parolni o'zgartirish\n\nDavom etishdan oldin yangi parol o'rnatish kerak.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlash\nParolni o'zgartirish"
+    },
+    {
+      "route": "/zzz-nonexistent",
+      "action": "notfound",
+      "shot": "343_parent10-sanjar_postconsent-notfound.png",
+      "head": "404\n\nSahifa topilmadi\n\nOrqaga qaytish"
+    }
+  ],
+  "A1-parent10-sees-D3-sick": {
+    "shot": "345_parent10-sanjar_attendance-week-view.png",
+    "mentionsKasal": true,
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\n2026-08-09 – 2026-08-15\nM08 10\nBor\nM08 11\nKasal\nM08 12\nBor\nM08 13\nBor\nM08 14\nBor\nM08 15\nBor\nM08 16"
+  },
+  "B-parent11-sees-D5-absent": {
+    "shot": "351_parent11-nozima_attendance-week-view.png",
+    "mentionsYoq": true,
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nNozima Qodirova\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\n2026-08-09 – 2026-08-15\nM08 10\nBor\nM08 11\nBor\nM08 12\nBor\nM08 13\nYo'q\nM08 14\nBor\nM08 15\nBor\nM08 16"
+  },
+  "C-parent12-sees-D6-homeleave": {
+    "shot": "357_parent12-malika_attendance-week-view.png",
+    "mentionsUyda": false,
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nMalika Ahmedova\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\n2026-08-09 – 2026-08-15\nM08 10\nBelgilanmagan\nM08 11\nBelgilanmagan\nM08 12\nBelgilanmagan\nM08 13\nBelgilanmagan\nM08 14\nBelgilanmagan\nM08 15\nBelgilanmagan\nM08 16"
+  },
+  "C2-parent12-dashboard": {
+    "shot": "358_parent12-malika_dashboard.png",
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nMalika Ahmedova\n\nBUGUNGI XULOSA\n\nM08 14, Fri\nDAVOMAT\n\n—\n\nTAOMLAR\n\n0/0\n\nSURATLAR\n\n0\n\nFAOLIYATLAR\n\n0\n\nBUGUNGI YOZUV\n\nBugun uchun hali yozuv yo'q.\n\nTEZKOR O'TISH\nIRR — Reabilitatsiya rejasi\nIndividual reja\nTerapiya\nO'qituvchi va maktabni baholash\nSozlamalar"
+  },
+  "D0-dashboard": {
+    "shot": "361_teacher8-bguruh_dashboard.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Akbar opa/aka. \"\" Guruh · 3 bola.\n\n2026 M08 14\nYangi yozuv\nSINF BIR QARASHDA\n3/3 keldi\nMA\nNQ\nSY\nDAVOMAT\n3\n/ 3 keldi\n100% · normal\nYANGI XABARLAR\n0\nota-onadan\nXabarlarni ko'rish\nTezkor havolalar\nDavomat belgilash\nBolalar ro'yxati\nOta-onalar bilan chat\nKun jurnali"
+  },
+  "D1-teacher8-week": {
+    "shot": "363_teacher8-bguruh_attendance-week-view.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKunlik\nHafta\nOy\nBor\nUyda\nKasal\nShifoxonada\nYo'q\nIsm\t10.08\t11.08\t12.08\t13.08\t14.08\t15.08\t16.08\tBor\nMalika A.\t—\t—\t—\t—\t—\t—\t—\t0/7\nNozima Q.\t\t\t\t\t\t—\t—\t4/7\nSanjar Y.\t\t\t\t\t\t—\t—\t4/7"
+  },
+  "E1-admin-child-detail-malika": {
+    "shot": "366_admin-smm2_child-detail-malika.png",
+    "body": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\nOrqaga\nChild f52ed345-6de6-4e7c-8a65-e82ba59418c2\nIRR\nMaqsadlar\nIRR'ni yuklab bo'lmadi"
+  },
+  "E2-admin-activity": {
+    "shot": "367_admin-smm2_activity-feed-confirm.png",
+    "body": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHISOBOTLAR\n\nFaoliyat tarixchasi\n\nMaktabingizdagi barcha amallar audit jurnali\n\nAmal bo'yicha filtrlash\nBarcha amallar\nHujjat tasdiqlandi\nHujjat rad etildi\nQabulxona yaratildi\nQabulxona o'chirildi\nQabulxona faollashtirildi\nQabulxona o'chirildi\nOta-ona to'xtatildi\nOta-ona faollashtirildi\nBola tiklandi\nFoydalanuvchi tiklandi\nBolalar import qilindi\nBola ko'chirildi\nMuassasa yangilandi\nDan\nGacha\n\nHozircha faoliyat yo'q\n\nXodimlar ish boshlagach, amallar bu yerda ko'rinadi"
+  }
+}

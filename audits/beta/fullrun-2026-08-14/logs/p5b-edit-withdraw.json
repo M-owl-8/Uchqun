@@ -1,0 +1,9 @@
+{
+  "before": "249_parent-smm2_chat-before-edit.png",
+  "actionRow": "250_parent-smm2_chat-own-message-action-row.png",
+  "editOpen": "251_parent-smm2_chat-edit-open.png",
+  "editDone": "252_parent-smm2_chat-edit-saved.png",
+  "editVisible": true,
+  "withdrawErr": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button[aria-label=\"O\\'chirish\"]').last()\u001b[22m\n",
+  "finalBody": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachi bilan chat\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nM08 14\nSIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?\n09:24\nSIM-Absence-D3-02 — Rahmat, Sanjar isitmaladi, ertaga keladi.\n09:24\nSIM-Withdraw-01 — TAHRIRLANDI 2026-08-14\n09:25\nTahrirlash\nO’chirish"
+}

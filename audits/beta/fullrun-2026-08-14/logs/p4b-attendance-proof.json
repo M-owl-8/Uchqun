@@ -1,0 +1,15 @@
+{
+  "ariaLabel": "Malika Ahmedova: Uyda",
+  "shots": [
+    "226_teacher-smm2_attendance-D6-malika-uyda-marked.png",
+    "227_teacher-smm2_attendance-D6-saved-toast.png",
+    "228_teacher-smm2_attendance-D6-after-save-landing.png"
+  ],
+  "captured": [
+    {
+      "status": 201,
+      "reqBody": "{\"records\":[{\"childId\":\"f52ed345-6de6-4e7c-8a65-e82ba59418c2\",\"date\":\"2026-08-13\",\"status\":\"home_leave\"},{\"childId\":\"c3788fed-4c86-4577-b390-848948c55a7e\",\"date\":\"2026-08-13\",\"status\":\"present\"},{\"childId\":\"78d1f578-956c-42c7-81f5-9eafc994219b\",\"date\":\"2026-08-13\",\"status\":\"present\"}]}",
+      "resBody": "{\"success\":true,\"data\":{\"saved\":2,\"skipped\":0,\"errors\":[{\"childId\":\"f52ed345-6de6-4e7c-8a65-e82ba59418c2\",\"code\":\"ATTENDANCE_ACCESS_DENIED\"}]}}"
+    }
+  ]
+}

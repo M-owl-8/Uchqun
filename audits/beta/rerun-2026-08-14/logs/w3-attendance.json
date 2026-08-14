@@ -1,0 +1,67 @@
+{
+  "login": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  "D-07-dashboard": {
+    "shot": "037_teacher-tmm3_D-07-dashboard-before-attendance.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Zebo opa/aka. \"Umid guruhi\" Guruh · 7 bola.\n\n2026 M08 14\nYangi yozuv\nSINF BIR QARASHDA\nDavomat hali olinmagan\nNI\nAN\nON\nMO\nMR\nNS\nRT\nDAVOMAT\n—\nDavomat hali olinmagan\nDavomat belgilash\nYANGI XABARLAR\n7\nota-onadan\nXabarlarni ko'rish\nTezkor havolalar\nDavomat belgilash\nBolalar ro'yxati\nOta-onalar bilan chat\n7\nKun jurnali"
+  },
+  "D-01-grid-scope": {
+    "cardsOffered": 7,
+    "names": [
+      "Nurbek Ismoilov",
+      "Aziz Nazarov",
+      "Oysha Nazarova",
+      "Muslima Ochilova",
+      "Malika Rasulova",
+      "Nozima Sharipova",
+      "Rayhona Toshmatova"
+    ],
+    "foreignChildOffered": false
+  },
+  "D-01-api-refusal": {
+    "status": 400,
+    "body": "{\"success\":false,\"error\":{\"code\":\"ATTENDANCE_ACCESS_DENIED\",\"detail\":\"1 of 1 record(s) were not saved\"},\"data\":{\"saved\":0,\"skipped\":0,\"errors\":[{\"childId\":\"5eedc269-d2c5-4ed7-8427-881cbfbb2ebd\",\"code\":\"ATTENDANCE_ACCESS_DENIED\"}]}}"
+  },
+  "D-01-marked": {
+    "label": "Nozima Sharipova: Kasal",
+    "shot": "040_teacher-tmm3_D-01-attendance-marked-sick.png"
+  },
+  "D-01-saved": {
+    "shot": "041_teacher-tmm3_D-01-attendance-save-result.png",
+    "body": "✓\n\nDavomat saqlandi\n\n✕\nU\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Zebo opa/aka. \"Umid guruhi\" Guruh · 7 bola.\n\n2026 M08 14\nYangi yozuv\nSINF BIR QARASHDA\nDavoma"
+  },
+  "D-07-dashboard-after": {
+    "shot": "042_teacher-tmm3_D-07-dashboard-after-attendance.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Zebo opa/aka. \"Umid guruhi\" Guruh · 7 bola.\n\n2026 M08 14\nYangi yozuv\nSINF BIR QARASHDA\nDavomat hali olinmagan\nNI\nAN\nON\nMO\nMR\nNS\nRT\nDAVOMAT\n—\nDavomat hali olinmagan\nDavomat belgilash\nYANGI XABARLAR\n7\nota-onadan\nXabarlarni ko'rish\nTezkor havolalar\nDavomat belgilash\nBolalar ro'yxati\nOta-onalar bilan chat\n7\nKun jurnali"
+  },
+  "D-09-meals-nav": {
+    "shot": "043_teacher-tmm3_D-09-reja-tabbar-with-meals.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nIndividual reja\nTerapiya\nKuzatuv\nTaomlar\nIndividual reja\n\nO'quvchilaringiz uchun individual rejalar yarating va boshqaring\n\nIndividual reja qo'shish\nSensor integratsiya\n\nTarbiyachi\n\nZebo Ashurova\n\nBatafsil\nMayda motorika\n\nTarbiyachi\n\nZebo"
+  },
+  "D-09-meals-page": {
+    "shot": "044_teacher-tmm3_D-09-reja-meals-tab.png"
+  },
+  "D-13-change-password": {
+    "shot": "045_teacher-tmm3_D-13-change-password-copy.png",
+    "body": "Parolni o'zgartirish\n\nYangi parolni o'rnating.\n\nJoriy parol\nYangi parol\nYangi parolni tasdiqlash\nParolni o'zgartirish"
+  },
+  "parent-login": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/"
+  },
+  "D-03-parent-week": {
+    "today": "2026-08-14",
+    "shot": "047_parent-tmm3_D-03-parent-attendance-week.png",
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nNozima Sharipova\nDavomat\n\nFarzandingizning kunlik davomati\n\nKun\nHafta\n2026-08-10 – 2026-08-16\nM08 10\nBor\nM08 11\nKasal\nM08 12\nKasal\nM08 13\nBor\nM08 14\nKasal\nM08 15\nM08 16"
+  },
+  "D-11-rating": {
+    "shot": "048_parent-tmm3_D-11-parent-teacher-rating.png",
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nNozima Sharipova\n\nFARZANDINGIZ TARBIYACHISIGA BAHO BERING VA FIKR QOLDIRING\n\nTarbiyachini baholash\nZA\n\nBIRIKTIRILGAN TARBIYACHI\n\nZebo Ashurova\n\ntarbiyachi1@tmm3.uz\n\nO‘RTACHA BAHO\n\n0.0\n0 ta baho\ntarbiyachi1@tmm3.uz\n+998901000010\n\nBaho tanlang\n\nIzoh\n\nIxtiyoriy\nFikrni yuborish\n\nSizning baho va fikringiz\n\nHozircha izoh qoldirmadingiz.\n\nBoshqa ota-onalar fikri\n\n0.0\n\nO‘rtacha baho\n\n0\n\n0 ta baho\n\nMuassasa bahosi\n\nFarzanding"
+  },
+  "D-06-meals": {
+    "shot": "049_parent-tmm3_parent-meals-populated.png",
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nNozima Sharipova\nTaomlar va ovqatlanish(39)\n\nKunlik taomnoma va iste'mol nazorati\n\nKUNNI TANLANG\nM08 14, Fri\nM08 13, Thu\nM08 10, Mon\nM08 7, Fri\nM08 6, Thu\nM08 5, Wed\nM08 4, Tue\nM08 3, Mon\nM07 31, Fri\nM07 30, Thu\nM07 29, "
+  }
+}

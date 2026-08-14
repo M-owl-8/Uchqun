@@ -1,0 +1,82 @@
+{
+  "gov-republic": {
+    "links": [
+      "/government",
+      "/government/schools",
+      "/government/ratings",
+      "/government/warnings",
+      "/government/audit-log",
+      "/government/platform",
+      "/government/profile",
+      "/government/settings"
+    ],
+    "navBtns": [
+      "O'zbekcha",
+      "Chiqish",
+      "4 Jami Muassasalar",
+      "0 Faol ogohlantirishlar"
+    ]
+  },
+  "admin-smm2": {
+    "links": [
+      "/admin",
+      "/admin/receptions",
+      "/admin/teachers",
+      "/admin/parents",
+      "/admin/documents",
+      "/admin/communications",
+      "/admin/messages",
+      "/admin/ai-warnings",
+      "/admin/school-ratings",
+      "/admin/therapy",
+      "/admin/settings",
+      "/admin/activity",
+      "/admin/irr",
+      "/admin/groups"
+    ],
+    "navBtns": [
+      "O'zbekcha",
+      "Chiqish"
+    ]
+  },
+  "reception-smm2": {
+    "links": [
+      "/reception",
+      "/reception/parents",
+      "/reception/teachers",
+      "/reception/groups",
+      "/reception/documents",
+      "/reception/profile",
+      "/reception/settings"
+    ],
+    "navBtns": [
+      "Chiqish",
+      "O'zbekcha",
+      "Tezkor qidiruv… ⌘ K",
+      "Yangi ota-ona 3 qadamli sehrgar bilan",
+      "Yangi tarbiyachi Hisob va guruh tayinlas",
+      "Hujjat yuklash Maktab rahbari tasdiqlayd"
+    ]
+  },
+  "teacher-smm2": {
+    "links": [
+      "/teacher",
+      "/teacher/bolalar",
+      "/teacher/reja",
+      "/teacher/xabar",
+      "/teacher/men",
+      "/teacher/men?tab=settings",
+      "/teacher/xabar?tab=warnings",
+      "/teacher/reja?tab=activities",
+      "/teacher/children/f52ed345-6de6-4e7c-8a65-e82ba59418c2",
+      "/teacher/children/c3788fed-4c86-4577-b390-848948c55a7e",
+      "/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b",
+      "/teacher/xabar?tab=chat",
+      "/teacher/attendance",
+      "/teacher/parents",
+      "/teacher/chat",
+      "/teacher/reflection"
+    ],
+    "navBtns": []
+  }
+}

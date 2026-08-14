@@ -1,0 +1,2358 @@
+{
+ "rowsExact": [
+  {
+   "line": 265,
+   "cited": "002_gov-republic_landing.png",
+   "exists": true,
+   "actual": "002_gov-republic_landing.png"
+  },
+  {
+   "line": 267,
+   "cited": "020_gov-region-samarqand_landing.png",
+   "exists": true,
+   "actual": "020_gov-region-samarqand_landing.png"
+  },
+  {
+   "line": 269,
+   "cited": "034_admin-smm2_landing.png",
+   "exists": true,
+   "actual": "034_admin-smm2_landing.png"
+  },
+  {
+   "line": 270,
+   "cited": "058_reception-smm2_landing.png",
+   "exists": true,
+   "actual": "058_reception-smm2_landing.png"
+  },
+  {
+   "line": 271,
+   "cited": "071_teacher-smm2_landing.png",
+   "exists": true,
+   "actual": "071_teacher-smm2_landing.png"
+  },
+  {
+   "line": 272,
+   "cited": "360_teacher8-bguruh_landing.png",
+   "exists": true,
+   "actual": "360_teacher8-bguruh_landing.png"
+  },
+  {
+   "line": 273,
+   "cited": "100_parent-smm2_landing.png",
+   "exists": true,
+   "actual": "100_parent-smm2_landing.png"
+  },
+  {
+   "line": 274,
+   "cited": "347_parent11-nozima_landing.png",
+   "exists": true,
+   "actual": "347_parent11-nozima_landing.png"
+  },
+  {
+   "line": 275,
+   "cited": "353_parent12-malika_landing.png",
+   "exists": true,
+   "actual": "353_parent12-malika_landing.png"
+  }
+ ],
+ "rowsOrdinal": [
+  {
+   "line": 266,
+   "cited": "193",
+   "exists": true,
+   "actual": "193_gov-republic-secondary-SIM_landing.png"
+  },
+  {
+   "line": 266,
+   "cited": "196",
+   "exists": true,
+   "actual": "196_gov-republic-secondary-SIM_change-password-result.png"
+  },
+  {
+   "line": 266,
+   "cited": "205",
+   "exists": true,
+   "actual": "205_gov-republic-secondary-SIM_landing.png"
+  },
+  {
+   "line": 268,
+   "cited": "184",
+   "exists": true,
+   "actual": "184_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 268,
+   "cited": "187",
+   "exists": true,
+   "actual": "187_gov-region-secondary-SIM_change-password-result.png"
+  },
+  {
+   "line": 268,
+   "cited": "202",
+   "exists": true,
+   "actual": "202_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 268,
+   "cited": "203",
+   "exists": true,
+   "actual": "203_gov-region-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 290,
+   "cited": "209",
+   "exists": true,
+   "actual": "209_teacher-smm2_attendance-D1-2026-08-08-marked.png"
+  },
+  {
+   "line": 290,
+   "cited": "210",
+   "exists": true,
+   "actual": "210_teacher-smm2_attendance-D1-2026-08-08-saved.png"
+  },
+  {
+   "line": 291,
+   "cited": "211",
+   "exists": true,
+   "actual": "211_teacher-smm2_attendance-D2-2026-08-09-marked.png"
+  },
+  {
+   "line": 291,
+   "cited": "212",
+   "exists": true,
+   "actual": "212_teacher-smm2_attendance-D2-2026-08-09-saved.png"
+  },
+  {
+   "line": 292,
+   "cited": "213",
+   "exists": true,
+   "actual": "213_teacher-smm2_attendance-D3-2026-08-10-marked.png"
+  },
+  {
+   "line": 292,
+   "cited": "214",
+   "exists": true,
+   "actual": "214_teacher-smm2_attendance-D3-2026-08-10-saved.png"
+  },
+  {
+   "line": 293,
+   "cited": "232",
+   "exists": true,
+   "actual": "232_teacher-smm2_chat-thread-opened.png"
+  },
+  {
+   "line": 293,
+   "cited": "233",
+   "exists": true,
+   "actual": "233_teacher-smm2_chat-absence-message-typed.png"
+  },
+  {
+   "line": 293,
+   "cited": "234",
+   "exists": true,
+   "actual": "234_teacher-smm2_chat-absence-message-sent.png"
+  },
+  {
+   "line": 294,
+   "cited": "240",
+   "exists": true,
+   "actual": "240_parent-smm2_chat-sees-teacher-absence-message.png"
+  },
+  {
+   "line": 294,
+   "cited": "241",
+   "exists": true,
+   "actual": "241_parent-smm2_chat-parent-reply-sent.png"
+  },
+  {
+   "line": 295,
+   "cited": "246",
+   "exists": true,
+   "actual": "246_teacher-smm2_chat-sees-parent-reply.png"
+  },
+  {
+   "line": 296,
+   "cited": "215",
+   "exists": true,
+   "actual": "215_teacher-smm2_attendance-D4-2026-08-11-marked.png"
+  },
+  {
+   "line": 296,
+   "cited": "216",
+   "exists": true,
+   "actual": "216_teacher-smm2_attendance-D4-2026-08-11-saved.png"
+  },
+  {
+   "line": 297,
+   "cited": "235",
+   "exists": true,
+   "actual": "235_teacher-smm2_media-upload-form-filled.png"
+  },
+  {
+   "line": 297,
+   "cited": "236",
+   "exists": true,
+   "actual": "236_teacher-smm2_media-upload-1s-after-submit.png"
+  },
+  {
+   "line": 297,
+   "cited": "237",
+   "exists": true,
+   "actual": "237_teacher-smm2_media-upload-result.png"
+  },
+  {
+   "line": 298,
+   "cited": "217",
+   "exists": true,
+   "actual": "217_teacher-smm2_attendance-D5-2026-08-12-marked.png"
+  },
+  {
+   "line": 298,
+   "cited": "218",
+   "exists": true,
+   "actual": "218_teacher-smm2_attendance-D5-2026-08-12-saved.png"
+  },
+  {
+   "line": 299,
+   "cited": "219",
+   "exists": true,
+   "actual": "219_teacher-smm2_attendance-D6-2026-08-13-marked.png"
+  },
+  {
+   "line": 299,
+   "cited": "220",
+   "exists": true,
+   "actual": "220_teacher-smm2_attendance-D6-2026-08-13-saved.png"
+  },
+  {
+   "line": 299,
+   "cited": "226",
+   "exists": true,
+   "actual": "226_teacher-smm2_attendance-D6-malika-uyda-marked.png"
+  },
+  {
+   "line": 299,
+   "cited": "227",
+   "exists": true,
+   "actual": "227_teacher-smm2_attendance-D6-saved-toast.png"
+  },
+  {
+   "line": 299,
+   "cited": "228",
+   "exists": true,
+   "actual": "228_teacher-smm2_attendance-D6-after-save-landing.png"
+  },
+  {
+   "line": 300,
+   "cited": "221",
+   "exists": true,
+   "actual": "221_teacher-smm2_attendance-D7-2026-08-14-marked.png"
+  },
+  {
+   "line": 300,
+   "cited": "222",
+   "exists": true,
+   "actual": "222_teacher-smm2_attendance-D7-2026-08-14-saved.png"
+  },
+  {
+   "line": 301,
+   "cited": "223",
+   "exists": true,
+   "actual": "223_teacher-smm2_attendance-week-view-witness.png"
+  },
+  {
+   "line": 302,
+   "cited": "250",
+   "exists": true,
+   "actual": "250_parent-smm2_chat-own-message-action-row.png"
+  },
+  {
+   "line": 302,
+   "cited": "251",
+   "exists": true,
+   "actual": "251_parent-smm2_chat-edit-open.png"
+  },
+  {
+   "line": 302,
+   "cited": "252",
+   "exists": true,
+   "actual": "252_parent-smm2_chat-edit-saved.png"
+  },
+  {
+   "line": 303,
+   "cited": "255",
+   "exists": true,
+   "actual": "255_parent-smm2_chat-withdraw-action-row.png"
+  },
+  {
+   "line": 303,
+   "cited": "256",
+   "exists": true,
+   "actual": "256_parent-smm2_chat-withdraw-confirm-dialog.png"
+  },
+  {
+   "line": 303,
+   "cited": "257",
+   "exists": true,
+   "actual": "257_parent-smm2_chat-withdraw-done.png"
+  },
+  {
+   "line": 304,
+   "cited": "260",
+   "exists": true,
+   "actual": "260_reception-smm2_daily-dashboard.png"
+  },
+  {
+   "line": 304,
+   "cited": "264",
+   "exists": true,
+   "actual": "264_reception-smm2_parents-daily-review.png"
+  },
+  {
+   "line": 304,
+   "cited": "265",
+   "exists": true,
+   "actual": "265_reception-smm2_groups-daily-review.png"
+  },
+  {
+   "line": 305,
+   "cited": "262",
+   "exists": true,
+   "actual": "262_reception-smm2_document-selected.png"
+  },
+  {
+   "line": 305,
+   "cited": "263",
+   "exists": true,
+   "actual": "263_reception-smm2_document-uploaded.png"
+  },
+  {
+   "line": 306,
+   "cited": "268",
+   "exists": true,
+   "actual": "268_admin-smm2_document-approval-queue.png"
+  },
+  {
+   "line": 307,
+   "cited": "269",
+   "exists": true,
+   "actual": "269_admin-smm2_gov-messages-before.png"
+  },
+  {
+   "line": 307,
+   "cited": "272",
+   "exists": true,
+   "actual": "272_admin-smm2_gov-message-sent.png"
+  },
+  {
+   "line": 308,
+   "cited": "276",
+   "exists": true,
+   "actual": "276_gov-region-samarqand_schools-across-region.png"
+  },
+  {
+   "line": 308,
+   "cited": "277",
+   "exists": true,
+   "actual": "277_gov-region-samarqand_students-across-region.png"
+  },
+  {
+   "line": 309,
+   "cited": "279",
+   "exists": true,
+   "actual": "279_gov-region-samarqand_messages-sees-school-escalation.png"
+  },
+  {
+   "line": 310,
+   "cited": "314",
+   "exists": true,
+   "actual": "314_gov-region-samarqand_reply-composer-open.png"
+  },
+  {
+   "line": 310,
+   "cited": "317",
+   "exists": true,
+   "actual": "317_gov-region-samarqand_reply-sent.png"
+  },
+  {
+   "line": 311,
+   "cited": "319",
+   "exists": true,
+   "actual": "319_gov-region-samarqand_school-rating-filled.png"
+  },
+  {
+   "line": 311,
+   "cited": "320",
+   "exists": true,
+   "actual": "320_gov-region-samarqand_school-rating-1s-after-submit.png"
+  },
+  {
+   "line": 311,
+   "cited": "321",
+   "exists": true,
+   "actual": "321_gov-region-samarqand_school-rating-result.png"
+  },
+  {
+   "line": 312,
+   "cited": "286",
+   "exists": true,
+   "actual": "286_gov-republic_dashboard-across-regions.png"
+  },
+  {
+   "line": 312,
+   "cited": "289",
+   "exists": true,
+   "actual": "289_gov-republic_ratings-across-regions.png"
+  },
+  {
+   "line": 312,
+   "cited": "290",
+   "exists": true,
+   "actual": "290_gov-republic_audit-log-after-actions.png"
+  },
+  {
+   "line": 312,
+   "cited": "308",
+   "exists": true,
+   "actual": "308_gov-republic_ratings-after-region-rating.png"
+  },
+  {
+   "line": 312,
+   "cited": "309",
+   "exists": true,
+   "actual": "309_gov-republic_dashboard-after-region-rating.png"
+  },
+  {
+   "line": 312,
+   "cited": "310",
+   "exists": true,
+   "actual": "310_gov-republic_audit-log-after.png"
+  },
+  {
+   "line": 313,
+   "cited": "288",
+   "exists": true,
+   "actual": "288_gov-republic_messages-republic-view.png"
+  },
+  {
+   "line": 314,
+   "cited": "305",
+   "exists": true,
+   "actual": "305_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 314,
+   "cited": "325",
+   "exists": true,
+   "actual": "325_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 326,
+   "cited": "345",
+   "exists": true,
+   "actual": "345_parent10-sanjar_attendance-week-view.png"
+  },
+  {
+   "line": 327,
+   "cited": "351",
+   "exists": true,
+   "actual": "351_parent11-nozima_attendance-week-view.png"
+  },
+  {
+   "line": 328,
+   "cited": "357",
+   "exists": true,
+   "actual": "357_parent12-malika_attendance-week-view.png"
+  },
+  {
+   "line": 329,
+   "cited": "358",
+   "exists": true,
+   "actual": "358_parent12-malika_dashboard.png"
+  },
+  {
+   "line": 330,
+   "cited": "363",
+   "exists": true,
+   "actual": "363_teacher8-bguruh_attendance-week-view.png"
+  },
+  {
+   "line": 331,
+   "cited": "361",
+   "exists": true,
+   "actual": "361_teacher8-bguruh_dashboard.png"
+  },
+  {
+   "line": 332,
+   "cited": "240",
+   "exists": true,
+   "actual": "240_parent-smm2_chat-sees-teacher-absence-message.png"
+  },
+  {
+   "line": 333,
+   "cited": "246",
+   "exists": true,
+   "actual": "246_teacher-smm2_chat-sees-parent-reply.png"
+  },
+  {
+   "line": 334,
+   "cited": "242",
+   "exists": true,
+   "actual": "242_parent-smm2_media-gallery-sees-teacher-photo.png"
+  },
+  {
+   "line": 335,
+   "cited": "279",
+   "exists": true,
+   "actual": "279_gov-region-samarqand_messages-sees-school-escalation.png"
+  },
+  {
+   "line": 336,
+   "cited": "288",
+   "exists": true,
+   "actual": "288_gov-republic_messages-republic-view.png"
+  },
+  {
+   "line": 337,
+   "cited": "325",
+   "exists": true,
+   "actual": "325_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 337,
+   "cited": "317",
+   "exists": true,
+   "actual": "317_gov-region-samarqand_reply-sent.png"
+  },
+  {
+   "line": 338,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 339,
+   "cited": "202",
+   "exists": true,
+   "actual": "202_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 339,
+   "cited": "203",
+   "exists": true,
+   "actual": "203_gov-region-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 340,
+   "cited": "205",
+   "exists": true,
+   "actual": "205_gov-republic-secondary-SIM_landing.png"
+  },
+  {
+   "line": 340,
+   "cited": "206",
+   "exists": true,
+   "actual": "206_gov-republic-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 341,
+   "cited": "016",
+   "exists": true,
+   "actual": "016_gov-republic_audit-log.png"
+  },
+  {
+   "line": 341,
+   "cited": "310",
+   "exists": true,
+   "actual": "310_gov-republic_audit-log-after.png"
+  },
+  {
+   "line": 360,
+   "cited": "087",
+   "exists": true,
+   "actual": "087_teacher-smm2_child-irr.png"
+  },
+  {
+   "line": 361,
+   "cited": "109",
+   "exists": true,
+   "actual": "109_parent-smm2_teacher-rating.png"
+  },
+  {
+   "line": 361,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 362,
+   "cited": "184",
+   "exists": true,
+   "actual": "184_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 362,
+   "cited": "193",
+   "exists": true,
+   "actual": "193_gov-republic-secondary-SIM_landing.png"
+  },
+  {
+   "line": 363,
+   "cited": "050",
+   "exists": true,
+   "actual": "050_admin-smm2_child-detail.png"
+  },
+  {
+   "line": 363,
+   "cited": "007",
+   "exists": true,
+   "actual": "007_gov-republic_child-detail.png"
+  },
+  {
+   "line": 364,
+   "cited": "083",
+   "exists": true,
+   "actual": "083_teacher-smm2_meals.png"
+  },
+  {
+   "line": 365,
+   "cited": "153",
+   "exists": true,
+   "actual": "153_gov-republic_create-admin-immediately-after-submit.png"
+  },
+  {
+   "line": 366,
+   "cited": "162",
+   "exists": true,
+   "actual": "162_reception-smm2_create-teacher-immediately-after-submit.png"
+  },
+  {
+   "line": 367,
+   "cited": "172",
+   "exists": true,
+   "actual": "172_admin-smm2_create-reception-1s-after-submit.png"
+  },
+  {
+   "line": 369,
+   "cited": "236",
+   "exists": true,
+   "actual": "236_teacher-smm2_media-upload-1s-after-submit.png"
+  },
+  {
+   "line": 370,
+   "cited": "262",
+   "exists": true,
+   "actual": "262_reception-smm2_document-selected.png"
+  },
+  {
+   "line": 376,
+   "cited": "404",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 377,
+   "cited": "404",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 378,
+   "cited": "400",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 398,
+   "cited": "226",
+   "exists": true,
+   "actual": "226_teacher-smm2_attendance-D6-malika-uyda-marked.png"
+  },
+  {
+   "line": 398,
+   "cited": "227",
+   "exists": true,
+   "actual": "227_teacher-smm2_attendance-D6-saved-toast.png"
+  },
+  {
+   "line": 398,
+   "cited": "357",
+   "exists": true,
+   "actual": "357_parent12-malika_attendance-week-view.png"
+  },
+  {
+   "line": 398,
+   "cited": "363",
+   "exists": true,
+   "actual": "363_teacher8-bguruh_attendance-week-view.png"
+  },
+  {
+   "line": 399,
+   "cited": "153",
+   "exists": true,
+   "actual": "153_gov-republic_create-admin-immediately-after-submit.png"
+  },
+  {
+   "line": 399,
+   "cited": "162",
+   "exists": true,
+   "actual": "162_reception-smm2_create-teacher-immediately-after-submit.png"
+  },
+  {
+   "line": 399,
+   "cited": "172",
+   "exists": true,
+   "actual": "172_admin-smm2_create-reception-1s-after-submit.png"
+  },
+  {
+   "line": 400,
+   "cited": "345",
+   "exists": true,
+   "actual": "345_parent10-sanjar_attendance-week-view.png"
+  },
+  {
+   "line": 400,
+   "cited": "351",
+   "exists": true,
+   "actual": "351_parent11-nozima_attendance-week-view.png"
+  },
+  {
+   "line": 401,
+   "cited": "317",
+   "exists": true,
+   "actual": "317_gov-region-samarqand_reply-sent.png"
+  },
+  {
+   "line": 401,
+   "cited": "325",
+   "exists": true,
+   "actual": "325_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 402,
+   "cited": "016",
+   "exists": true,
+   "actual": "016_gov-republic_audit-log.png"
+  },
+  {
+   "line": 402,
+   "cited": "310",
+   "exists": true,
+   "actual": "310_gov-republic_audit-log-after.png"
+  },
+  {
+   "line": 403,
+   "cited": "262",
+   "exists": true,
+   "actual": "262_reception-smm2_document-selected.png"
+  },
+  {
+   "line": 403,
+   "cited": "502",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 403,
+   "cited": "236",
+   "exists": true,
+   "actual": "236_teacher-smm2_media-upload-1s-after-submit.png"
+  },
+  {
+   "line": 403,
+   "cited": "268",
+   "exists": true,
+   "actual": "268_admin-smm2_document-approval-queue.png"
+  },
+  {
+   "line": 404,
+   "cited": "072",
+   "exists": true,
+   "actual": "072_teacher-smm2_dashboard.png"
+  },
+  {
+   "line": 404,
+   "cited": "361",
+   "exists": true,
+   "actual": "361_teacher8-bguruh_dashboard.png"
+  },
+  {
+   "line": 406,
+   "cited": "083",
+   "exists": true,
+   "actual": "083_teacher-smm2_meals.png"
+  },
+  {
+   "line": 406,
+   "cited": "104",
+   "exists": true,
+   "actual": "104_parent-smm2_meals.png"
+  },
+  {
+   "line": 407,
+   "cited": "047",
+   "exists": true,
+   "actual": "047_admin-smm2_bulk-import.png"
+  },
+  {
+   "line": 407,
+   "cited": "006",
+   "exists": true,
+   "actual": "006_gov-republic_students.png"
+  },
+  {
+   "line": 407,
+   "cited": "008",
+   "exists": true,
+   "actual": "008_gov-republic_teachers.png"
+  },
+  {
+   "line": 407,
+   "cited": "009",
+   "exists": true,
+   "actual": "009_gov-republic_parents.png"
+  },
+  {
+   "line": 408,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 409,
+   "cited": "072",
+   "exists": true,
+   "actual": "072_teacher-smm2_dashboard.png"
+  },
+  {
+   "line": 409,
+   "cited": "361",
+   "exists": true,
+   "actual": "361_teacher8-bguruh_dashboard.png"
+  },
+  {
+   "line": 410,
+   "cited": "097",
+   "exists": true,
+   "actual": "097_teacher-smm2_change-password.png"
+  },
+  {
+   "line": 410,
+   "cited": "115",
+   "exists": true,
+   "actual": "115_parent-smm2_change-password.png"
+  },
+  {
+   "line": 412,
+   "cited": "162",
+   "exists": true,
+   "actual": "162_reception-smm2_create-teacher-immediately-after-submit.png"
+  },
+  {
+   "line": 412,
+   "cited": "153",
+   "exists": true,
+   "actual": "153_gov-republic_create-admin-immediately-after-submit.png"
+  },
+  {
+   "line": 413,
+   "cited": "236",
+   "exists": true,
+   "actual": "236_teacher-smm2_media-upload-1s-after-submit.png"
+  },
+  {
+   "line": 413,
+   "cited": "500",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 413,
+   "cited": "262",
+   "exists": true,
+   "actual": "262_reception-smm2_document-selected.png"
+  },
+  {
+   "line": 436,
+   "cited": "202",
+   "exists": true,
+   "actual": "202_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 436,
+   "cited": "203",
+   "exists": true,
+   "actual": "203_gov-region-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 437,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 439,
+   "cited": "059",
+   "exists": true,
+   "actual": "059_reception-smm2_dashboard.png"
+  },
+  {
+   "line": 486,
+   "cited": "001",
+   "exists": true,
+   "actual": "001_gov-republic_login-form.png"
+  },
+  {
+   "line": 486,
+   "cited": "010",
+   "exists": true,
+   "actual": "010_gov-republic_ratings.png"
+  },
+  {
+   "line": 486,
+   "cited": "012",
+   "exists": true,
+   "actual": "012_gov-republic_profile.png"
+  },
+  {
+   "line": 486,
+   "cited": "183",
+   "exists": true,
+   "actual": "183_gov-region-secondary-SIM_login-form.png"
+  },
+  {
+   "line": 486,
+   "cited": "192",
+   "exists": true,
+   "actual": "192_gov-republic-secondary-SIM_login-form.png"
+  },
+  {
+   "line": 486,
+   "cited": "201",
+   "exists": true,
+   "actual": "201_gov-region-secondary-SIM_login-form.png"
+  },
+  {
+   "line": 486,
+   "cited": "204",
+   "exists": true,
+   "actual": "204_gov-republic-secondary-SIM_login-form.png"
+  },
+  {
+   "line": 487,
+   "cited": "003",
+   "exists": true,
+   "actual": "003_gov-republic_dashboard.png"
+  },
+  {
+   "line": 487,
+   "cited": "021",
+   "exists": true,
+   "actual": "021_gov-region-samarqand_dashboard.png"
+  },
+  {
+   "line": 487,
+   "cited": "202",
+   "exists": true,
+   "actual": "202_gov-region-secondary-SIM_landing.png"
+  },
+  {
+   "line": 487,
+   "cited": "205",
+   "exists": true,
+   "actual": "205_gov-republic-secondary-SIM_landing.png"
+  },
+  {
+   "line": 487,
+   "cited": "286",
+   "exists": true,
+   "actual": "286_gov-republic_dashboard-across-regions.png"
+  },
+  {
+   "line": 487,
+   "cited": "309",
+   "exists": true,
+   "actual": "309_gov-republic_dashboard-after-region-rating.png"
+  },
+  {
+   "line": 488,
+   "cited": "017",
+   "exists": true,
+   "actual": "017_gov-republic_change-password.png"
+  },
+  {
+   "line": 488,
+   "cited": "185",
+   "exists": true,
+   "actual": "185_gov-region-secondary-SIM_forced-change-password.png"
+  },
+  {
+   "line": 488,
+   "cited": "187",
+   "exists": true,
+   "actual": "187_gov-region-secondary-SIM_change-password-result.png"
+  },
+  {
+   "line": 488,
+   "cited": "194",
+   "exists": true,
+   "actual": "194_gov-republic-secondary-SIM_forced-change-password.png"
+  },
+  {
+   "line": 488,
+   "cited": "196",
+   "exists": true,
+   "actual": "196_gov-republic-secondary-SIM_change-password-result.png"
+  },
+  {
+   "line": 489,
+   "cited": "004",
+   "exists": true,
+   "actual": "004_gov-republic_schools.png"
+  },
+  {
+   "line": 489,
+   "cited": "022",
+   "exists": true,
+   "actual": "022_gov-region-samarqand_schools.png"
+  },
+  {
+   "line": 489,
+   "cited": "203",
+   "exists": true,
+   "actual": "203_gov-region-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 489,
+   "cited": "206",
+   "exists": true,
+   "actual": "206_gov-republic-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 489,
+   "cited": "276",
+   "exists": true,
+   "actual": "276_gov-region-samarqand_schools-across-region.png"
+  },
+  {
+   "line": 490,
+   "cited": "005",
+   "exists": true,
+   "actual": "005_gov-republic_school-detail-smm2.png"
+  },
+  {
+   "line": 490,
+   "cited": "023",
+   "exists": true,
+   "actual": "023_gov-region-samarqand_school-detail-smm2.png"
+  },
+  {
+   "line": 490,
+   "cited": "318",
+   "exists": true,
+   "actual": "318_gov-region-samarqand_school-detail.png"
+  },
+  {
+   "line": 490,
+   "cited": "321",
+   "exists": true,
+   "actual": "321_gov-region-samarqand_school-rating-result.png"
+  },
+  {
+   "line": 491,
+   "cited": "006",
+   "exists": true,
+   "actual": "006_gov-republic_students.png"
+  },
+  {
+   "line": 491,
+   "cited": "024",
+   "exists": true,
+   "actual": "024_gov-region-samarqand_students.png"
+  },
+  {
+   "line": 491,
+   "cited": "277",
+   "exists": true,
+   "actual": "277_gov-region-samarqand_students-across-region.png"
+  },
+  {
+   "line": 492,
+   "cited": "007",
+   "exists": true,
+   "actual": "007_gov-republic_child-detail.png"
+  },
+  {
+   "line": 493,
+   "cited": "008",
+   "exists": true,
+   "actual": "008_gov-republic_teachers.png"
+  },
+  {
+   "line": 493,
+   "cited": "025",
+   "exists": true,
+   "actual": "025_gov-region-samarqand_teachers.png"
+  },
+  {
+   "line": 494,
+   "cited": "009",
+   "exists": true,
+   "actual": "009_gov-republic_parents.png"
+  },
+  {
+   "line": 494,
+   "cited": "026",
+   "exists": true,
+   "actual": "026_gov-region-samarqand_parents.png"
+  },
+  {
+   "line": 495,
+   "cited": "010",
+   "exists": true,
+   "actual": "010_gov-republic_ratings.png"
+  },
+  {
+   "line": 495,
+   "cited": "027",
+   "exists": true,
+   "actual": "027_gov-region-samarqand_ratings.png"
+  },
+  {
+   "line": 495,
+   "cited": "289",
+   "exists": true,
+   "actual": "289_gov-republic_ratings-across-regions.png"
+  },
+  {
+   "line": 495,
+   "cited": "308",
+   "exists": true,
+   "actual": "308_gov-republic_ratings-after-region-rating.png"
+  },
+  {
+   "line": 496,
+   "cited": "011",
+   "exists": true,
+   "actual": "011_gov-republic_platform.png"
+  },
+  {
+   "line": 496,
+   "cited": "028",
+   "exists": true,
+   "actual": "028_gov-region-samarqand_platform.png"
+  },
+  {
+   "line": 496,
+   "cited": "153",
+   "exists": true,
+   "actual": "153_gov-republic_create-admin-immediately-after-submit.png"
+  },
+  {
+   "line": 496,
+   "cited": "154",
+   "exists": true,
+   "actual": "154_gov-republic_create-admin-4s-after-submit.png"
+  },
+  {
+   "line": 497,
+   "cited": "279",
+   "exists": true,
+   "actual": "279_gov-region-samarqand_messages-sees-school-escalation.png"
+  },
+  {
+   "line": 497,
+   "cited": "288",
+   "exists": true,
+   "actual": "288_gov-republic_messages-republic-view.png"
+  },
+  {
+   "line": 497,
+   "cited": "313",
+   "exists": true,
+   "actual": "313_gov-region-samarqand_platform.png"
+  },
+  {
+   "line": 497,
+   "cited": "317",
+   "exists": true,
+   "actual": "317_gov-region-samarqand_reply-sent.png"
+  },
+  {
+   "line": 497,
+   "cited": "384",
+   "exists": true,
+   "actual": "384_gov-republic_platform-tab-messages.png"
+  },
+  {
+   "line": 498,
+   "cited": "150",
+   "exists": true,
+   "actual": "150_gov-republic_create-gov-region-secondary-filled.png"
+  },
+  {
+   "line": 498,
+   "cited": "152",
+   "exists": true,
+   "actual": "152_gov-republic_create-gov-region-secondary-4s-after-submit.png"
+  },
+  {
+   "line": 498,
+   "cited": "176",
+   "exists": true,
+   "actual": "176_gov-republic_create-gov-republic-secondary-filled.png"
+  },
+  {
+   "line": 498,
+   "cited": "178",
+   "exists": true,
+   "actual": "178_gov-republic_create-gov-republic-secondary-5s.png"
+  },
+  {
+   "line": 498,
+   "cited": "385",
+   "exists": true,
+   "actual": "385_gov-republic_platform-tab-government-users.png"
+  },
+  {
+   "line": 499,
+   "cited": "383",
+   "exists": true,
+   "actual": "383_gov-republic_platform-tab-registrations.png"
+  },
+  {
+   "line": 500,
+   "cited": "012",
+   "exists": true,
+   "actual": "012_gov-republic_profile.png"
+  },
+  {
+   "line": 500,
+   "cited": "032",
+   "exists": true,
+   "actual": "032_gov-region-samarqand_profile.png"
+  },
+  {
+   "line": 501,
+   "cited": "013",
+   "exists": true,
+   "actual": "013_gov-republic_settings.png"
+  },
+  {
+   "line": 501,
+   "cited": "029",
+   "exists": true,
+   "actual": "029_gov-region-samarqand_settings.png"
+  },
+  {
+   "line": 502,
+   "cited": "014",
+   "exists": true,
+   "actual": "014_gov-republic_admin-details.png"
+  },
+  {
+   "line": 503,
+   "cited": "015",
+   "exists": true,
+   "actual": "015_gov-republic_ai-warnings.png"
+  },
+  {
+   "line": 503,
+   "cited": "031",
+   "exists": true,
+   "actual": "031_gov-region-samarqand_ai-warnings.png"
+  },
+  {
+   "line": 504,
+   "cited": "016",
+   "exists": true,
+   "actual": "016_gov-republic_audit-log.png"
+  },
+  {
+   "line": 504,
+   "cited": "030",
+   "exists": true,
+   "actual": "030_gov-region-samarqand_audit-log.png"
+  },
+  {
+   "line": 504,
+   "cited": "290",
+   "exists": true,
+   "actual": "290_gov-republic_audit-log-after-actions.png"
+  },
+  {
+   "line": 504,
+   "cited": "310",
+   "exists": true,
+   "actual": "310_gov-republic_audit-log-after.png"
+  },
+  {
+   "line": 506,
+   "cited": "018",
+   "exists": true,
+   "actual": "018_gov-republic_notfound.png"
+  },
+  {
+   "line": 513,
+   "cited": "003",
+   "exists": true,
+   "actual": "003_gov-republic_dashboard.png"
+  },
+  {
+   "line": 513,
+   "cited": "014",
+   "exists": true,
+   "actual": "014_gov-republic_admin-details.png"
+  },
+  {
+   "line": 513,
+   "cited": "034",
+   "exists": true,
+   "actual": "034_admin-smm2_landing.png"
+  },
+  {
+   "line": 514,
+   "cited": "380",
+   "exists": true,
+   "actual": "380_anon_admin-register-public.png"
+  },
+  {
+   "line": 515,
+   "cited": "035",
+   "exists": true,
+   "actual": "035_admin-smm2_dashboard.png"
+  },
+  {
+   "line": 516,
+   "cited": "055",
+   "exists": true,
+   "actual": "055_admin-smm2_change-password.png"
+  },
+  {
+   "line": 517,
+   "cited": "036",
+   "exists": true,
+   "actual": "036_admin-smm2_receptions.png"
+  },
+  {
+   "line": 517,
+   "cited": "170",
+   "exists": true,
+   "actual": "170_admin-smm2_landing.png"
+  },
+  {
+   "line": 517,
+   "cited": "173",
+   "exists": true,
+   "actual": "173_admin-smm2_create-reception-5s-after-submit.png"
+  },
+  {
+   "line": 518,
+   "cited": "037",
+   "exists": true,
+   "actual": "037_admin-smm2_parents.png"
+  },
+  {
+   "line": 519,
+   "cited": "038",
+   "exists": true,
+   "actual": "038_admin-smm2_teachers.png"
+  },
+  {
+   "line": 520,
+   "cited": "039",
+   "exists": true,
+   "actual": "039_admin-smm2_teacher-detail.png"
+  },
+  {
+   "line": 521,
+   "cited": "040",
+   "exists": true,
+   "actual": "040_admin-smm2_groups.png"
+  },
+  {
+   "line": 522,
+   "cited": "041",
+   "exists": true,
+   "actual": "041_admin-smm2_school-ratings.png"
+  },
+  {
+   "line": 523,
+   "cited": "042",
+   "exists": true,
+   "actual": "042_admin-smm2_profile.png"
+  },
+  {
+   "line": 524,
+   "cited": "043",
+   "exists": true,
+   "actual": "043_admin-smm2_settings.png"
+  },
+  {
+   "line": 525,
+   "cited": "044",
+   "exists": true,
+   "actual": "044_admin-smm2_documents-queue.png"
+  },
+  {
+   "line": 525,
+   "cited": "268",
+   "exists": true,
+   "actual": "268_admin-smm2_document-approval-queue.png"
+  },
+  {
+   "line": 526,
+   "cited": "045",
+   "exists": true,
+   "actual": "045_admin-smm2_ai-warnings.png"
+  },
+  {
+   "line": 527,
+   "cited": "046",
+   "exists": true,
+   "actual": "046_admin-smm2_therapy.png"
+  },
+  {
+   "line": 528,
+   "cited": "047",
+   "exists": true,
+   "actual": "047_admin-smm2_bulk-import.png"
+  },
+  {
+   "line": 529,
+   "cited": "048",
+   "exists": true,
+   "actual": "048_admin-smm2_school-profile.png"
+  },
+  {
+   "line": 530,
+   "cited": "049",
+   "exists": true,
+   "actual": "049_admin-smm2_activity-feed.png"
+  },
+  {
+   "line": 530,
+   "cited": "273",
+   "exists": true,
+   "actual": "273_admin-smm2_activity-feed-after-actions.png"
+  },
+  {
+   "line": 530,
+   "cited": "367",
+   "exists": true,
+   "actual": "367_admin-smm2_activity-feed-confirm.png"
+  },
+  {
+   "line": 531,
+   "cited": "050",
+   "exists": true,
+   "actual": "050_admin-smm2_child-detail.png"
+  },
+  {
+   "line": 531,
+   "cited": "366",
+   "exists": true,
+   "actual": "366_admin-smm2_child-detail-malika.png"
+  },
+  {
+   "line": 532,
+   "cited": "051",
+   "exists": true,
+   "actual": "051_admin-smm2_communications.png"
+  },
+  {
+   "line": 533,
+   "cited": "052",
+   "exists": true,
+   "actual": "052_admin-smm2_trash.png"
+  },
+  {
+   "line": 534,
+   "cited": "053",
+   "exists": true,
+   "actual": "053_admin-smm2_gov-messages.png"
+  },
+  {
+   "line": 534,
+   "cited": "268",
+   "exists": true,
+   "actual": "268_admin-smm2_document-approval-queue.png"
+  },
+  {
+   "line": 534,
+   "cited": "272",
+   "exists": true,
+   "actual": "272_admin-smm2_gov-message-sent.png"
+  },
+  {
+   "line": 534,
+   "cited": "305",
+   "exists": true,
+   "actual": "305_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 534,
+   "cited": "325",
+   "exists": true,
+   "actual": "325_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 535,
+   "cited": "054",
+   "exists": true,
+   "actual": "054_admin-smm2_irr.png"
+  },
+  {
+   "line": 537,
+   "cited": "056",
+   "exists": true,
+   "actual": "056_admin-smm2_notfound.png"
+  },
+  {
+   "line": 543,
+   "cited": "004",
+   "exists": true,
+   "actual": "004_gov-republic_schools.png"
+  },
+  {
+   "line": 543,
+   "cited": "016",
+   "exists": true,
+   "actual": "016_gov-republic_audit-log.png"
+  },
+  {
+   "line": 543,
+   "cited": "058",
+   "exists": true,
+   "actual": "058_reception-smm2_landing.png"
+  },
+  {
+   "line": 544,
+   "cited": "059",
+   "exists": true,
+   "actual": "059_reception-smm2_dashboard.png"
+  },
+  {
+   "line": 544,
+   "cited": "260",
+   "exists": true,
+   "actual": "260_reception-smm2_daily-dashboard.png"
+  },
+  {
+   "line": 545,
+   "cited": "068",
+   "exists": true,
+   "actual": "068_reception-smm2_change-password.png"
+  },
+  {
+   "line": 546,
+   "cited": "060",
+   "exists": true,
+   "actual": "060_reception-smm2_parents.png"
+  },
+  {
+   "line": 546,
+   "cited": "264",
+   "exists": true,
+   "actual": "264_reception-smm2_parents-daily-review.png"
+  },
+  {
+   "line": 547,
+   "cited": "061",
+   "exists": true,
+   "actual": "061_reception-smm2_parent-wizard.png"
+  },
+  {
+   "line": 547,
+   "cited": "140",
+   "exists": true,
+   "actual": "140_reception-smm2_parent-wizard-step1.png"
+  },
+  {
+   "line": 547,
+   "cited": "147",
+   "exists": true,
+   "actual": "147_reception-smm2_parent-wizard-end.png"
+  },
+  {
+   "line": 547,
+   "cited": "164",
+   "exists": true,
+   "actual": "164_reception-smm2_wizard-s1-parent-filled.png"
+  },
+  {
+   "line": 547,
+   "cited": "168",
+   "exists": true,
+   "actual": "168_reception-smm2_wizard-complete-4s-after-submit.png"
+  },
+  {
+   "line": 548,
+   "cited": "062",
+   "exists": true,
+   "actual": "062_reception-smm2_teachers.png"
+  },
+  {
+   "line": 548,
+   "cited": "160",
+   "exists": true,
+   "actual": "160_reception-smm2_landing.png"
+  },
+  {
+   "line": 548,
+   "cited": "163",
+   "exists": true,
+   "actual": "163_reception-smm2_create-teacher-4s-after-submit.png"
+  },
+  {
+   "line": 549,
+   "cited": "063",
+   "exists": true,
+   "actual": "063_reception-smm2_groups.png"
+  },
+  {
+   "line": 549,
+   "cited": "265",
+   "exists": true,
+   "actual": "265_reception-smm2_groups-daily-review.png"
+  },
+  {
+   "line": 550,
+   "cited": "064",
+   "exists": true,
+   "actual": "064_reception-smm2_documents.png"
+  },
+  {
+   "line": 550,
+   "cited": "261",
+   "exists": true,
+   "actual": "261_reception-smm2_documents-before-upload.png"
+  },
+  {
+   "line": 550,
+   "cited": "263",
+   "exists": true,
+   "actual": "263_reception-smm2_document-uploaded.png"
+  },
+  {
+   "line": 551,
+   "cited": "065",
+   "exists": true,
+   "actual": "065_reception-smm2_settings.png"
+  },
+  {
+   "line": 552,
+   "cited": "066",
+   "exists": true,
+   "actual": "066_reception-smm2_profile.png"
+  },
+  {
+   "line": 553,
+   "cited": "067",
+   "exists": true,
+   "actual": "067_reception-smm2_wizard-complete.png"
+  },
+  {
+   "line": 555,
+   "cited": "069",
+   "exists": true,
+   "actual": "069_reception-smm2_notfound.png"
+  },
+  {
+   "line": 561,
+   "cited": "006",
+   "exists": true,
+   "actual": "006_gov-republic_students.png"
+  },
+  {
+   "line": 561,
+   "cited": "018",
+   "exists": true,
+   "actual": "018_gov-republic_notfound.png"
+  },
+  {
+   "line": 561,
+   "cited": "070",
+   "exists": true,
+   "actual": "070_teacher-smm2_login-form.png"
+  },
+  {
+   "line": 562,
+   "cited": "097",
+   "exists": true,
+   "actual": "097_teacher-smm2_change-password.png"
+  },
+  {
+   "line": 563,
+   "cited": "072",
+   "exists": true,
+   "actual": "072_teacher-smm2_dashboard.png"
+  },
+  {
+   "line": 563,
+   "cited": "361",
+   "exists": true,
+   "actual": "361_teacher8-bguruh_dashboard.png"
+  },
+  {
+   "line": 564,
+   "cited": "073",
+   "exists": true,
+   "actual": "073_teacher-smm2_bolalar.png"
+  },
+  {
+   "line": 565,
+   "cited": "074",
+   "exists": true,
+   "actual": "074_teacher-smm2_reja-activities.png"
+  },
+  {
+   "line": 565,
+   "cited": "092",
+   "exists": true,
+   "actual": "092_teacher-smm2_redirect-activities.png"
+  },
+  {
+   "line": 566,
+   "cited": "075",
+   "exists": true,
+   "actual": "075_teacher-smm2_reja-therapy.png"
+  },
+  {
+   "line": 566,
+   "cited": "093",
+   "exists": true,
+   "actual": "093_teacher-smm2_redirect-therapy.png"
+  },
+  {
+   "line": 567,
+   "cited": "076",
+   "exists": true,
+   "actual": "076_teacher-smm2_reja-monitoring.png"
+  },
+  {
+   "line": 568,
+   "cited": "077",
+   "exists": true,
+   "actual": "077_teacher-smm2_xabar-chat.png"
+  },
+  {
+   "line": 568,
+   "cited": "094",
+   "exists": true,
+   "actual": "094_teacher-smm2_redirect-chat.png"
+  },
+  {
+   "line": 568,
+   "cited": "231",
+   "exists": true,
+   "actual": "231_teacher-smm2_chat-conversation-list.png"
+  },
+  {
+   "line": 568,
+   "cited": "234",
+   "exists": true,
+   "actual": "234_teacher-smm2_chat-absence-message-sent.png"
+  },
+  {
+   "line": 568,
+   "cited": "246",
+   "exists": true,
+   "actual": "246_teacher-smm2_chat-sees-parent-reply.png"
+  },
+  {
+   "line": 569,
+   "cited": "078",
+   "exists": true,
+   "actual": "078_teacher-smm2_xabar-warnings.png"
+  },
+  {
+   "line": 569,
+   "cited": "095",
+   "exists": true,
+   "actual": "095_teacher-smm2_redirect-warnings.png"
+  },
+  {
+   "line": 569,
+   "cited": "096",
+   "exists": true,
+   "actual": "096_teacher-smm2_redirect-ai-warnings.png"
+  },
+  {
+   "line": 570,
+   "cited": "079",
+   "exists": true,
+   "actual": "079_teacher-smm2_men-profile.png"
+  },
+  {
+   "line": 570,
+   "cited": "089",
+   "exists": true,
+   "actual": "089_teacher-smm2_redirect-profile.png"
+  },
+  {
+   "line": 571,
+   "cited": "080",
+   "exists": true,
+   "actual": "080_teacher-smm2_men-settings.png"
+  },
+  {
+   "line": 571,
+   "cited": "090",
+   "exists": true,
+   "actual": "090_teacher-smm2_redirect-settings.png"
+  },
+  {
+   "line": 572,
+   "cited": "081",
+   "exists": true,
+   "actual": "081_teacher-smm2_men-reflection.png"
+  },
+  {
+   "line": 572,
+   "cited": "091",
+   "exists": true,
+   "actual": "091_teacher-smm2_redirect-reflection.png"
+  },
+  {
+   "line": 573,
+   "cited": "082",
+   "exists": true,
+   "actual": "082_teacher-smm2_attendance.png"
+  },
+  {
+   "line": 573,
+   "cited": "209",
+   "exists": true,
+   "actual": "209_teacher-smm2_attendance-D1-2026-08-08-marked.png"
+  },
+  {
+   "line": 573,
+   "cited": "228",
+   "exists": true,
+   "actual": "228_teacher-smm2_attendance-D6-after-save-landing.png"
+  },
+  {
+   "line": 573,
+   "cited": "363",
+   "exists": true,
+   "actual": "363_teacher8-bguruh_attendance-week-view.png"
+  },
+  {
+   "line": 574,
+   "cited": "083",
+   "exists": true,
+   "actual": "083_teacher-smm2_meals.png"
+  },
+  {
+   "line": 575,
+   "cited": "084",
+   "exists": true,
+   "actual": "084_teacher-smm2_media.png"
+  },
+  {
+   "line": 575,
+   "cited": "235",
+   "exists": true,
+   "actual": "235_teacher-smm2_media-upload-form-filled.png"
+  },
+  {
+   "line": 575,
+   "cited": "237",
+   "exists": true,
+   "actual": "237_teacher-smm2_media-upload-result.png"
+  },
+  {
+   "line": 576,
+   "cited": "085",
+   "exists": true,
+   "actual": "085_teacher-smm2_monitoring-journal.png"
+  },
+  {
+   "line": 577,
+   "cited": "086",
+   "exists": true,
+   "actual": "086_teacher-smm2_child-detail.png"
+  },
+  {
+   "line": 578,
+   "cited": "087",
+   "exists": true,
+   "actual": "087_teacher-smm2_child-irr.png"
+  },
+  {
+   "line": 579,
+   "cited": "088",
+   "exists": true,
+   "actual": "088_teacher-smm2_redirect-parents.png"
+  },
+  {
+   "line": 580,
+   "cited": "089",
+   "exists": true,
+   "actual": "089_teacher-smm2_redirect-profile.png"
+  },
+  {
+   "line": 580,
+   "cited": "096",
+   "exists": true,
+   "actual": "096_teacher-smm2_redirect-ai-warnings.png"
+  },
+  {
+   "line": 581,
+   "cited": "098",
+   "exists": true,
+   "actual": "098_teacher-smm2_notfound.png"
+  },
+  {
+   "line": 585,
+   "cited": "101",
+   "exists": true,
+   "actual": "101_parent-smm2_dashboard.png"
+  },
+  {
+   "line": 585,
+   "cited": "116",
+   "exists": true,
+   "actual": "116_parent-smm2_notfound.png"
+  },
+  {
+   "line": 589,
+   "cited": "099",
+   "exists": true,
+   "actual": "099_parent-smm2_login-form.png"
+  },
+  {
+   "line": 589,
+   "cited": "100",
+   "exists": true,
+   "actual": "100_parent-smm2_landing.png"
+  },
+  {
+   "line": 589,
+   "cited": "326",
+   "exists": true,
+   "actual": "326_parent10-sanjar_login-form.png"
+  },
+  {
+   "line": 589,
+   "cited": "346",
+   "exists": true,
+   "actual": "346_parent11-nozima_login-form.png"
+  },
+  {
+   "line": 589,
+   "cited": "352",
+   "exists": true,
+   "actual": "352_parent12-malika_login-form.png"
+  },
+  {
+   "line": 590,
+   "cited": "127",
+   "exists": true,
+   "actual": "127_parent-smm2_privacy-consent-gate.png"
+  },
+  {
+   "line": 590,
+   "cited": "128",
+   "exists": true,
+   "actual": "128_parent-smm2_privacy-consent-both-ticked.png"
+  },
+  {
+   "line": 590,
+   "cited": "348",
+   "exists": true,
+   "actual": "348_parent11-nozima_privacy-consent-gate.png"
+  },
+  {
+   "line": 590,
+   "cited": "349",
+   "exists": true,
+   "actual": "349_parent11-nozima_privacy-consent-both-ticked.png"
+  },
+  {
+   "line": 590,
+   "cited": "354",
+   "exists": true,
+   "actual": "354_parent12-malika_privacy-consent-gate.png"
+  },
+  {
+   "line": 590,
+   "cited": "355",
+   "exists": true,
+   "actual": "355_parent12-malika_privacy-consent-both-ticked.png"
+  },
+  {
+   "line": 591,
+   "cited": "328",
+   "exists": true,
+   "actual": "328_parent10-sanjar_postconsent-dashboard.png"
+  },
+  {
+   "line": 591,
+   "cited": "358",
+   "exists": true,
+   "actual": "358_parent12-malika_dashboard.png"
+  },
+  {
+   "line": 592,
+   "cited": "329",
+   "exists": true,
+   "actual": "329_parent10-sanjar_postconsent-child-profile.png"
+  },
+  {
+   "line": 593,
+   "cited": "330",
+   "exists": true,
+   "actual": "330_parent10-sanjar_postconsent-activities.png"
+  },
+  {
+   "line": 594,
+   "cited": "331",
+   "exists": true,
+   "actual": "331_parent10-sanjar_postconsent-meals.png"
+  },
+  {
+   "line": 595,
+   "cited": "332",
+   "exists": true,
+   "actual": "332_parent10-sanjar_postconsent-media.png"
+  },
+  {
+   "line": 595,
+   "cited": "242",
+   "exists": true,
+   "actual": "242_parent-smm2_media-gallery-sees-teacher-photo.png"
+  },
+  {
+   "line": 596,
+   "cited": "333",
+   "exists": true,
+   "actual": "333_parent10-sanjar_postconsent-chat.png"
+  },
+  {
+   "line": 596,
+   "cited": "240",
+   "exists": true,
+   "actual": "240_parent-smm2_chat-sees-teacher-absence-message.png"
+  },
+  {
+   "line": 596,
+   "cited": "241",
+   "exists": true,
+   "actual": "241_parent-smm2_chat-parent-reply-sent.png"
+  },
+  {
+   "line": 596,
+   "cited": "249",
+   "exists": true,
+   "actual": "249_parent-smm2_chat-before-edit.png"
+  },
+  {
+   "line": 596,
+   "cited": "257",
+   "exists": true,
+   "actual": "257_parent-smm2_chat-withdraw-done.png"
+  },
+  {
+   "line": 597,
+   "cited": "334",
+   "exists": true,
+   "actual": "334_parent10-sanjar_postconsent-notifications.png"
+  },
+  {
+   "line": 598,
+   "cited": "335",
+   "exists": true,
+   "actual": "335_parent10-sanjar_postconsent-help.png"
+  },
+  {
+   "line": 599,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 600,
+   "cited": "337",
+   "exists": true,
+   "actual": "337_parent10-sanjar_postconsent-settings.png"
+  },
+  {
+   "line": 601,
+   "cited": "338",
+   "exists": true,
+   "actual": "338_parent10-sanjar_postconsent-therapy.png"
+  },
+  {
+   "line": 602,
+   "cited": "339",
+   "exists": true,
+   "actual": "339_parent10-sanjar_postconsent-irr.png"
+  },
+  {
+   "line": 603,
+   "cited": "340",
+   "exists": true,
+   "actual": "340_parent10-sanjar_postconsent-attendance.png"
+  },
+  {
+   "line": 603,
+   "cited": "344",
+   "exists": true,
+   "actual": "344_parent10-sanjar_attendance-day-view.png"
+  },
+  {
+   "line": 603,
+   "cited": "345",
+   "exists": true,
+   "actual": "345_parent10-sanjar_attendance-week-view.png"
+  },
+  {
+   "line": 603,
+   "cited": "350",
+   "exists": true,
+   "actual": "350_parent11-nozima_attendance-day-view.png"
+  },
+  {
+   "line": 603,
+   "cited": "351",
+   "exists": true,
+   "actual": "351_parent11-nozima_attendance-week-view.png"
+  },
+  {
+   "line": 603,
+   "cited": "356",
+   "exists": true,
+   "actual": "356_parent12-malika_attendance-day-view.png"
+  },
+  {
+   "line": 603,
+   "cited": "357",
+   "exists": true,
+   "actual": "357_parent12-malika_attendance-week-view.png"
+  },
+  {
+   "line": 604,
+   "cited": "341",
+   "exists": true,
+   "actual": "341_parent10-sanjar_postconsent-journal.png"
+  },
+  {
+   "line": 605,
+   "cited": "342",
+   "exists": true,
+   "actual": "342_parent10-sanjar_postconsent-change-password.png"
+  },
+  {
+   "line": 606,
+   "cited": "343",
+   "exists": true,
+   "actual": "343_parent10-sanjar_postconsent-notfound.png"
+  },
+  {
+   "line": 624,
+   "cited": "153",
+   "exists": true,
+   "actual": "153_gov-republic_create-admin-immediately-after-submit.png"
+  },
+  {
+   "line": 624,
+   "cited": "154",
+   "exists": true,
+   "actual": "154_gov-republic_create-admin-4s-after-submit.png"
+  },
+  {
+   "line": 625,
+   "cited": "171",
+   "exists": true,
+   "actual": "171_admin-smm2_create-reception-filled.png"
+  },
+  {
+   "line": 625,
+   "cited": "173",
+   "exists": true,
+   "actual": "173_admin-smm2_create-reception-5s-after-submit.png"
+  },
+  {
+   "line": 626,
+   "cited": "162",
+   "exists": true,
+   "actual": "162_reception-smm2_create-teacher-immediately-after-submit.png"
+  },
+  {
+   "line": 626,
+   "cited": "163",
+   "exists": true,
+   "actual": "163_reception-smm2_create-teacher-4s-after-submit.png"
+  },
+  {
+   "line": 627,
+   "cited": "400",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 627,
+   "cited": "164",
+   "exists": true,
+   "actual": "164_reception-smm2_wizard-s1-parent-filled.png"
+  },
+  {
+   "line": 627,
+   "cited": "168",
+   "exists": true,
+   "actual": "168_reception-smm2_wizard-complete-4s-after-submit.png"
+  },
+  {
+   "line": 629,
+   "cited": "268",
+   "exists": true,
+   "actual": "268_admin-smm2_document-approval-queue.png"
+  },
+  {
+   "line": 630,
+   "cited": "336",
+   "exists": true,
+   "actual": "336_parent10-sanjar_postconsent-teacher-rating.png"
+  },
+  {
+   "line": 638,
+   "cited": "500",
+   "exists": false,
+   "actual": "(MISSING)"
+  },
+  {
+   "line": 655,
+   "cited": "001",
+   "exists": true,
+   "actual": "001_gov-republic_login-form.png"
+  },
+  {
+   "line": 655,
+   "cited": "116",
+   "exists": true,
+   "actual": "116_parent-smm2_notfound.png"
+  },
+  {
+   "line": 656,
+   "cited": "117",
+   "exists": true,
+   "actual": "117_gov-republic_login-form.png"
+  },
+  {
+   "line": 656,
+   "cited": "148",
+   "exists": true,
+   "actual": "148_gov-republic_login-form.png"
+  },
+  {
+   "line": 657,
+   "cited": "149",
+   "exists": true,
+   "actual": "149_gov-republic_landing.png"
+  },
+  {
+   "line": 657,
+   "cited": "178",
+   "exists": true,
+   "actual": "178_gov-republic_create-gov-republic-secondary-5s.png"
+  },
+  {
+   "line": 658,
+   "cited": "179",
+   "exists": true,
+   "actual": "179_gov-region-secondary-SIM_login-form.png"
+  },
+  {
+   "line": 658,
+   "cited": "206",
+   "exists": true,
+   "actual": "206_gov-republic-secondary-SIM_schools-scope.png"
+  },
+  {
+   "line": 659,
+   "cited": "207",
+   "exists": true,
+   "actual": "207_teacher-smm2_login-form.png"
+  },
+  {
+   "line": 659,
+   "cited": "228",
+   "exists": true,
+   "actual": "228_teacher-smm2_attendance-D6-after-save-landing.png"
+  },
+  {
+   "line": 660,
+   "cited": "229",
+   "exists": true,
+   "actual": "229_teacher-smm2_login-form.png"
+  },
+  {
+   "line": 660,
+   "cited": "257",
+   "exists": true,
+   "actual": "257_parent-smm2_chat-withdraw-done.png"
+  },
+  {
+   "line": 661,
+   "cited": "258",
+   "exists": true,
+   "actual": "258_reception-smm2_login-form.png"
+  },
+  {
+   "line": 661,
+   "cited": "294",
+   "exists": true,
+   "actual": "294_admin-smm2_gov-message-thread-with-reply.png"
+  },
+  {
+   "line": 662,
+   "cited": "295",
+   "exists": true,
+   "actual": "295_gov-region-samarqand_login-form.png"
+  },
+  {
+   "line": 662,
+   "cited": "325",
+   "exists": true,
+   "actual": "325_admin-smm2_gov-message-thread-reply-check.png"
+  },
+  {
+   "line": 663,
+   "cited": "326",
+   "exists": true,
+   "actual": "326_parent10-sanjar_login-form.png"
+  },
+  {
+   "line": 663,
+   "cited": "367",
+   "exists": true,
+   "actual": "367_admin-smm2_activity-feed-confirm.png"
+  },
+  {
+   "line": 664,
+   "cited": "368",
+   "exists": true,
+   "actual": "368_gov-republic_login-form.png"
+  },
+  {
+   "line": 664,
+   "cited": "380",
+   "exists": true,
+   "actual": "380_anon_admin-register-public.png"
+  },
+  {
+   "line": 665,
+   "cited": "381",
+   "exists": true,
+   "actual": "381_gov-republic_login-form.png"
+  },
+  {
+   "line": 665,
+   "cited": "385",
+   "exists": true,
+   "actual": "385_gov-republic_platform-tab-government-users.png"
+  }
+ ]
+}

@@ -1,0 +1,72 @@
+{
+  "A1-dashboard": {
+    "shot": "260_reception-smm2_daily-dashboard.png"
+  },
+  "A2-upload-document": {
+    "shot": "263_reception-smm2_document-uploaded.png",
+    "body": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nMening hujjatlarim\nTezkor qidiruv…\n⌘ K\nMening hujjatlarim\n\nHujjatlarni yuklang va direktor tasdiqlashini kuting.\n\nHujjat yuklash\nHujjat turi\nLitsenziya\nSertifikat\nShaxsni tasdiqlovchi hujjat\nBoshqa\nHujjatlarni shu yerga tashlang yoki bosing\nPDF, JPG, PNG · maks. 10 MB\nHolat\nTasdiqlangan\n0\nKo'rib chiqilmoqda\n0\nRad etilgan\n0\nJami\n0\nYordam\n· PDF, JPG, PNG formatlar qabul qilinadi\n· Maksimal fayl hajmi 10 MB\n·"
+  },
+  "A3-parents": {
+    "shot": "264_reception-smm2_parents-daily-review.png"
+  },
+  "A4-groups": {
+    "shot": "265_reception-smm2_groups-daily-review.png"
+  },
+  "B1-approve-document": {
+    "approveButtons": 0,
+    "shot": null,
+    "queueBody": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHUJJATLAR NAVBATI\n\nHujjatlar navbati (0)\n\nTasdiq kutayotgan hujjat yo'q\n\nKutilmoqda0\nTasdiqlangan0\nRad etilgan0\n\nTasdiq kutayotgan hujjat yo'q\n\nHammasi ko'rib chiqilgan. Qabulxona yangi hujjat yuklaganda bu yerda paydo bo'ladi.",
+    "after": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nHUJJATLAR NAVBATI\n\nHujjatlar navbati (0)\n\nTasdiq kutayotgan hujjat yo'q\n\nKutilmoqda0\nTasdiqlangan0\nRad etilgan0\n\nTasdiq kutayotgan hujjat yo'q\n\nHammasi ko'rib chiqilgan. Qabulxona yangi hujjat yuklaganda bu yerda paydo bo'ladi."
+  },
+  "B2-message-to-government": {
+    "subject": "SIM-Escalation-01 davomat masalasi",
+    "shot": "272_admin-smm2_gov-message-sent.png",
+    "body": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nALOQA\n\nHukumatga xabarlar (1)\n\nDavlat nazorat organiga murojaatlar\n\nYangi xabar\nYUBORILGAN\nSIM-Escalation-01 davomat masalasi\nKutilmoqda\n\n2026-08-14\n\nKo'rish uchun xabar tanlang"
+  },
+  "B3-activity-feed": {
+    "shot": "273_admin-smm2_activity-feed-after-actions.png"
+  },
+  "B3-activityBody": null,
+  "C1-schools-across-region": {
+    "shot": "276_gov-region-samarqand_schools-across-region.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nMuassasalar\n\nSamarqand viloyati dagi muassasalar\n\nSamarqand viloyati\n2\nCSV yuklab olish\nBarcha turlar\nKunduzgi parvarish\nYangi kun\nMadad\nErta aralashuv\nUyda qarab turish\n#\tMuassasa\tTur\tO'quvchilar\tReyting\t\n1\t\n\nSamarqand Maxsus Maktab 1\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n2\t\n\nSamarqand Maxsus Maktab 2\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n2 / 2 ko'rsatilmoqda"
+  },
+  "C1b-students-across-region": {
+    "shot": "277_gov-region-samarqand_students-across-region.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nBarcha o'quvchilar\n\nSamarqand viloyati dagi o'quvchilar\n\nSamarqand viloyati\n6 Jami o'quvchilar\n#\tIsm\tTug'ilgan sana\tMaktab\tOta-ona\n1\tAziza KarimovaAyol\t2021-11-05\tSamarqand Maxsus Maktab 1\tOzoda Karimova\n2\tZafar ErgashevErkak\t2015-06-14\tSamarqand Maxsus Maktab 1\tPahlavon Ergashev\n3\tNozima QodirovaAyol\t2023-02-27\tSamarqand Maxsus Maktab 2\tSanjar Qodirov\n4\tMalika AhmedovaAyol\t2020-09-16\tSamarqand Ma"
+  },
+  "C2-region-sees-and-replies": {
+    "escalationVisible": true,
+    "shots": [
+      "279_gov-region-samarqand_messages-sees-school-escalation.png",
+      null
+    ],
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSR\n\nSherzod Raximov\n\ngov.samarqand@uchqun.uz\n\nChiqish\nDirektorlar\nXabarlar1\nDavlat foydalanuvchilari\nRo'yxatdan o'tish so'rovlari\nFoydalanuvchi xabarlari\n\nFoydalanuvchilardan kelgan xabarlar\n\nSIM-Escalation-01 davomat masalasi\nYangi\n\nSIM-Escalation-01 — Samarqand Maxsus Maktab 2: 2026-08-08..14 davomat yozuvlari bo'yicha viloyat nazoratiga murojaat.\n\nGulsanam Xolmatova (admin)\n2026-08-14 09:34:40\nO'qilgan deb belgilash\nJavob\nO'chirish"
+  },
+  "C3-region-rates-school": {
+    "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /Saqlash|Yuborish|Baholash/ }).last()\u001b[22m\n"
+  },
+  "D1-dashboard-across-regions": {
+    "shot": "286_gov-republic_dashboard-across-regions.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nDavlat Nazorat Paneli\n\nUmumiy ko'rinish\n\nBarcha viloyatlar\nOxirgi yangilanish: 09:36\n\n4\n\nJami Muassasalar\n\n12\n\nJami O'quvchilar\n\n0\n\nKutilayotgan direktor ro'yxatdan o'tishlari\n\n0\n\nFaol ogohlantirishlar\n\nKutilayotgan ro'yxatdan o'tishlar\nKutilayotgan ro'yxatdan o'tishlar yo'q\nMuassasalar va Baholari\n1\n\nToshkent Maxsus Maktab 1\n\n4.6\nP:4.1 · D:5.0\n2\n\nSamarqand Maxsus Maktab 1\n\n—\n3\n\nSamarqand Maxsus Maktab 2\n\n—\n4\n\nToshkent Maxsus Maktab 2\n\n—\nMintaqalar bo'yicha\nMintaqa\tMaktablar\tO'rtacha reyting\nSamarqand viloyati\t2\tMintaqaviy reyting ma'lumotlari yo'q\nToshkent shahri\t2\t\n4.1"
+  },
+  "D2-republic-sees-escalation": {
+    "escalationVisible": true,
+    "shot": "288_gov-republic_messages-republic-view.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nDirektorlar\nXabarlar7\nDavlat foydalanuvchilari\nRo'yxatdan o'tish so'rovlari\nFoydalanuvchi xabarlari\n\nFoydalanuvchilardan kelgan xabarlar\n\nSIM-Escalation-01 davomat masalasi\nYangi\n\nSIM-Escalation-01 — Samarqand Maxsus Maktab 2: 2026-08-08..14 davomat yozuvlari bo'yicha viloyat nazoratiga murojaat.\n\nGulsanam Xolmatova (admin)\n2026-08-14 09:34:40\nO'qilgan deb belgilash\nJavob\nO'chirish\nTeacher beta test 07638\nYangi\n\nBeta xabar 07638\n\nZulfiya Nazarova (teacher)\n2026-06-08 06:35:20\nO'qilgan deb be"
+  },
+  "D3-ratings-across-regions": {
+    "shot": "289_gov-republic_ratings-across-regions.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nReytinglar\n\nMuassasalar reytinglari\n\nBarcha viloyatlar\nSaralash:\nUmumiy (asosiy)\nOta-onalar bo'yicha\nDavlat bo'yicha\n\n4 Muassasalar\n\n1\nToshkent Maxsus Maktab 1\n4.6\nUmumiy\nOta-onalar reytingi\n4.1\n(12)\nDavlat reytingi\n5.0\nQ2-2026\nOta-onalar izohlarini ko'rsatish\nDavlat baholarini ko'rsatish\n2\nToshkent Maxsus Maktab 2\nReyting yo'q\nOta-onalar reytingi\nReyting yo'q\nDavlat reytingi\nReyting yo'q\n3\nSa"
+  },
+  "D4-audit-log": {
+    "shot": "290_gov-republic_audit-log-after-actions.png",
+    "body": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nHM\n\nHamidjon Mirzayev\n\ngov.republic@uchqun.uz\n\nChiqish\nAudit jurnali\nBarcha viloyatlar\nHarakat\nBarcha harakatlar\nArxivlash\nQayta faollashtirish\nTasdiqlash\nRad etish\nYaratish\nYangilash\nO'chirish\nOb'ekt\nBarcha ob'ektlar\nMuassasalar\nRo'yxatga olish so'rovlari\nDirektorlar\nDavlat foydalanuvchilari\nBoshlanish sanasi\nTugash sanasi\nFiltrlash\nSANA\tFOYDALANUVCHI\tHARAKAT\tOB'EKT\tID\n—\tHamidjon Mirzayev\tYaratish\tDavlat foydalanuvchilari\t958f6c4f-e351-45c1-8acd-1d3cbdb89244\n—\tHamidjon Mirzayev\tYaratish\tDavlat foydalanuvchilari\t7d7bfbd4-3553-487f-861d-ef2dd1d32486\n—\tHamidjon Mirzayev\tYaratish\tDavlat foydalanuvchilari\ta8235635-42d5-4734-bb2c-2d509a0f294e\n—\tNod"
+  },
+  "E-admin-sees-reply": {
+    "replyVisible": false,
+    "shot": "294_admin-smm2_gov-message-thread-with-reply.png",
+    "body": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nALOQA\n\nHukumatga xabarlar (1)\n\nDavlat nazorat organiga murojaatlar\n\nYangi xabar\nYUBORILGAN\nSIM-Escalation-01 davomat masalasi\nKutilmoqda\n\n2026-08-14\n\nKo'rish uchun xabar tanlang",
+    "threadBody": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\nSozlamalar\nO'zbekcha\nGX\n\nGulsanam Xolmatova\n\nDirektor\n\nChiqish\n\nALOQA\n\nHukumatga xabarlar (1)\n\nDavlat nazorat organiga murojaatlar\n\nYangi xabar\nYUBORILGAN\nSIM-Escalation-01 davomat masalasi\nKutilmoqda\n\n2026-08-14\n\nSIM-Escalation-01 davomat masalasi\nYuborilgan: 2026-08-14 09:34:40\nKutilmoqda\n\nSizning xabaringiz\n\nSIM-Escalation-01 — Samarqand Maxsus Maktab 2: 2026-08-08..14 davomat yozuvlari bo'yicha viloyat nazoratiga murojaat."
+  }
+}

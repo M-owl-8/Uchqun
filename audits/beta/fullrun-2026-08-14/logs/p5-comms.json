@@ -1,0 +1,34 @@
+{
+  "1-teacher-sends": {
+    "msg": "SIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?",
+    "shot": "234_teacher-smm2_chat-absence-message-sent.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nSuhbat\nOgohlantirishlar\nOta-onalar bilan muloqot\nGuruhingiz ota-onalari bilan yozishmalar\nSQ\nSanjar Qodirov\n06:58\nP11 beta xabar 58177 — ota-ona javobi 🙏\nRY\nRano Yusupova\n09:24\nSIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?\nRY\nRano Yusupova\nSanjar Yusupov\nM08 14\nSIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?\n09:24"
+  },
+  "3-teacher-uploads-photo": {
+    "shot": "237_teacher-smm2_media-upload-result.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nMedia galereya (0)\n\nMuassasa hayotidan eng sara lahzalar\n\nHammasi\nRasmlar\nVideolar\nMedia qo'shish\n\nHozircha media fayllar yo'q\n\nMedia qo'shish\nBola *\nBolani tanlang\nNozima Qodirova\nSanjar Yusupov\nSarlavha *\nTavsif\nSana *\nTuri *\nRasm\nVideo\nMedia fayl *\n\nRasm yoki video fayl yuklang (max 50 MB)\n\nBekor qilish\nYaratish"
+  },
+  "2-parent-replies": {
+    "teacherMsgVisible": true,
+    "reply": "SIM-Absence-D3-02 — Rahmat, Sanjar isitmaladi, ertaga keladi.",
+    "shots": [
+      "240_parent-smm2_chat-sees-teacher-absence-message.png",
+      "241_parent-smm2_chat-parent-reply-sent.png"
+    ]
+  },
+  "4-parent-sees-photo": {
+    "visible": false,
+    "shot": "242_parent-smm2_media-gallery-sees-teacher-photo.png",
+    "body": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nMedia galereya\n\nMuassasa hayotidan eng sara lahzalar\n\nBarchasi\nBugun\nHammasi\nRasmlar\nVideolar\n\nHozircha media fayllar yo'q"
+  },
+  "6-parent-edit-and-withdraw": {
+    "sent": "243_parent-smm2_chat-withdraw-message-sent.png",
+    "edited": null,
+    "withdrawn": null,
+    "finalBody": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nSanjar Yusupov\nTarbiyachi bilan chat\n\nFarzandingiz tarbiyachisiga xabar yuboring\n\nM08 14\nSIM-Absence-D3-01 — Sanjar 2026-08-10 kuni kasal deb belgilandi. Ahvoli qanday?\n09:24\nSIM-Absence-D3-02 — Rahmat, Sanjar isitmaladi, ertaga keladi.\n09:24\nSIM-Withdraw-01 — bu xabar qaytarib olinadi\n09:25"
+  },
+  "5-teacher-sees-reply": {
+    "replyVisible": true,
+    "shot": "246_teacher-smm2_chat-sees-parent-reply.png"
+  }
+}

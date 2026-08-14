@@ -1,0 +1,18 @@
+{
+  "gov-region-secondary-SIM": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government",
+    "shot": "202_gov-region-secondary-SIM_landing.png"
+  },
+  "gov-region-secondary-SIM:dashBody": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat· ikkilamchi\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSI\n\nSIM-Viloyat Ikkinchi\n\nsimviloyat@samarqand.uz\n\nChiqish\nDavlat Nazorat Paneli\n\nUmumiy ko'rinish\n\nSamarqand viloyati\nOxirgi yangilanish: 09:17\n\n2\n\nJami Muassasalar\n\n6\n\nJami O'quvchilar\n\n0\n\nKutilayotgan direktor ro'yxatdan o'tishlari\n\n0\n\nFaol ogohlantirishlar\n\nKutilayotgan ro'yxatdan o'tishlar\nKutilayotgan ro'yxatdan o'tishlar yo'q\nMuassasalar va Baholari\n1\n\nSamarqand Maxsus Maktab 1\n\n—\n2\n\nSamarqand Maxsus Maktab 2\n\n—",
+  "gov-region-secondary-SIM:schools": "203_gov-region-secondary-SIM_schools-scope.png",
+  "gov-region-secondary-SIM:schoolsBody": "Davlat Panel\n\nIHMA · O'zbekiston\n\nViloyat· ikkilamchi\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSI\n\nSIM-Viloyat Ikkinchi\n\nsimviloyat@samarqand.uz\n\nChiqish\nMuassasalar\n\nSamarqand viloyati dagi muassasalar\n\nSamarqand viloyati\n2\nCSV yuklab olish\nBarcha turlar\nKunduzgi parvarish\nYangi kun\nMadad\nErta aralashuv\nUyda qarab turish\n#\tMuassasa\tTur\tO'quvchilar\tReyting\t\n1\t\n\nSamarqand Maxsus Maktab 1\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n2\t\n\nSamarqand Maxsus Maktab 2\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n2 / 2 ko'rsatilmoqda",
+  "gov-republic-secondary-SIM": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government",
+    "shot": "205_gov-republic-secondary-SIM_landing.png"
+  },
+  "gov-republic-secondary-SIM:dashBody": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika· ikkilamchi\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSI\n\nSIM-Respublika Ikkinchi\n\nsimrespublika@davlat.uz\n\nChiqish\nDavlat Nazorat Paneli\n\nUmumiy ko'rinish\n\nBarcha viloyatlar\nOxirgi yangilanish: 09:17\n\n4\n\nJami Muassasalar\n\n12\n\nJami O'quvchilar\n\n0\n\nKutilayotgan direktor ro'yxatdan o'tishlari\n\n0\n\nFaol ogohlantirishlar\n\nKutilayotgan ro'yxatdan o'tishlar\nKutilayotgan ro'yxatdan o'tishlar yo'q\nMuassasalar va Baholari\n1\n\nToshkent Maxsus Maktab 1\n\n4.6\nP:4.1 · D:5.0\n2\n\nSamarqand Maxsus Maktab 1\n\n—\n3\n\nSamarqand Maxsus Maktab 2\n\n—\n4\n\nToshkent Maxsus Maktab 2\n\n—\nMintaqalar bo'yicha\nMintaqa\tMaktabl",
+  "gov-republic-secondary-SIM:schools": "206_gov-republic-secondary-SIM_schools-scope.png",
+  "gov-republic-secondary-SIM:schoolsBody": "Davlat Panel\n\nIHMA · O'zbekiston\n\nRespublika· ikkilamchi\nBosh sahifa\nMuassasalar\nReytinglar\nOgohlantirishlar\nAudit jurnali\nPlatforma\nProfil\nSozlamalar\nO'zbekcha\nSI\n\nSIM-Respublika Ikkinchi\n\nsimrespublika@davlat.uz\n\nChiqish\nMuassasalar\n\nBarcha muassasalar va ularning baholari\n\nBarcha viloyatlar\n4\nCSV yuklab olish\nBarcha turlar\nKunduzgi parvarish\nYangi kun\nMadad\nErta aralashuv\nUyda qarab turish\n#\tMuassasa\tTur\tO'quvchilar\tReyting\t\n1\t\n\nToshkent Maxsus Maktab 1\n\n\tMadad\t3\t\n4.1\n(12)\n\t\n\n2\t\n\nSamarqand Maxsus Maktab 1\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n3\t\n\nSamarqand Maxsus Maktab 2\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n4\t\n\nToshkent Maxsus Maktab 2\n\n\tMadad\t3\t\n0.0\n(0)\n\t\n\n4 / 4 ko'rsatilmoqda"
+}

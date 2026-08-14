@@ -1,0 +1,4524 @@
+{
+  "gov-republic:platform-admins": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": "ism",
+        "placeholder": "Ism",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": "familiya",
+        "placeholder": "Familiya",
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "::Muassasani tanlang...",
+          "2dac6af4-96c9-4c4f-8430-aac62440f4e5::Samarqand Maxsus Maktab 1 (@smm1.uz)",
+          "5334e23c-a749-4808-8b9a-1f8c67aa1938::Samarqand Maxsus Maktab 2 (@smm2.uz)",
+          "eec19bb5-36ae-4006-a330-031d07654c40::Toshkent Maxsus Maktab 1 (@tmm1.uz)",
+          "7b27fadd-3532-4e53-a5e3-79bc652a947f::Toshkent Maxsus Maktab 2 (@tmm2.uz)"
+        ]
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "direktor",
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "INPUT",
+        "type": "password",
+        "name": null,
+        "id": null,
+        "placeholder": "Parol",
+        "options": null
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "password",
+        "name": null,
+        "id": null,
+        "placeholder": "Parolni tasdiqlang",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/government"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reytinglar",
+        "href": "/government/ratings"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/government/warnings"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Audit jurnali",
+        "href": "/government/audit-log"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Platforma",
+        "href": "/government/platform"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/government/profile"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/government/settings"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Direktorlar",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Xabarlar",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Davlat foydalanuvchilari",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ro'yxatdan o'tish so'rovlari",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yaratish",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ko'rish",
+        "href": "/government/admin/23ab5921-ab51-4cd4-9267-6ff3b8439a4e"
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ko'rish",
+        "href": "/government/admin/c99dba0c-f181-49e4-9186-45580ae77a55"
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ko'rish",
+        "href": "/government/admin/a878ae4b-cf39-4e03-a39e-24dd016a9f82"
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 25,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ko'rish",
+        "href": "/government/admin/9b01fa07-4570-41e1-a322-fe128fe0b1da"
+      },
+      {
+        "i": 26,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 27,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      }
+    ]
+  },
+  "gov-republic:platform-gov": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "republic::Respublika",
+          "region::Viloyat"
+        ]
+      },
+      {
+        "i": 1,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "main::Asosiy (to'liq kirish)",
+          "secondary::Ikkinchi darajali (ruxsat asosida)"
+        ]
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": "ism",
+        "placeholder": "Ism",
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": "familiya",
+        "placeholder": "Familiya",
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "INPUT",
+        "type": "password",
+        "name": null,
+        "id": null,
+        "placeholder": "••••••••",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/government"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reytinglar",
+        "href": "/government/ratings"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/government/warnings"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Audit jurnali",
+        "href": "/government/audit-log"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Platforma",
+        "href": "/government/platform"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/government/profile"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/government/settings"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Direktorlar",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Xabarlar",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Davlat foydalanuvchilari",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ro'yxatdan o'tish so'rovlari",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Parolni Tiklash",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Parolni Tiklash",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Parolni Tiklash",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Parolni Tiklash",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Hisob Yaratish",
+        "href": null
+      }
+    ]
+  },
+  "gov-republic:platform-messages": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "search",
+        "name": null,
+        "id": null,
+        "placeholder": "Xabarlarni qidirish...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/government"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reytinglar",
+        "href": "/government/ratings"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/government/warnings"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Audit jurnali",
+        "href": "/government/audit-log"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Platforma",
+        "href": "/government/platform"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/government/profile"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/government/settings"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Direktorlar",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Xabarlar6",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Davlat foydalanuvchilari",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ro'yxatdan o'tish so'rovlari",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 25,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 26,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 27,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 28,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 29,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'qilgan deb belgilash",
+        "href": null
+      },
+      {
+        "i": 30,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Javob",
+        "href": null
+      },
+      {
+        "i": 31,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      }
+    ]
+  },
+  "gov-republic:platform-registrations": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/government"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reytinglar",
+        "href": "/government/ratings"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/government/warnings"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Audit jurnali",
+        "href": "/government/audit-log"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Platforma",
+        "href": "/government/platform"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/government/profile"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/government/settings"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Direktorlar",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Xabarlar",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Davlat foydalanuvchilari",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ro'yxatdan o'tish so'rovlari",
+        "href": null
+      }
+    ]
+  },
+  "gov-republic:school-detail": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "Q3-2026::Q3-2026",
+          "Q2-2026::Q2-2026",
+          "Q1-2026::Q1-2026",
+          "Q4-2025::Q4-2025"
+        ]
+      },
+      {
+        "i": 1,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Muassasaning ushbu davrdagi faoliyati haqida izoh yozing...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/government"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reytinglar",
+        "href": "/government/ratings"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/government/warnings"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Audit jurnali",
+        "href": "/government/audit-log"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Platforma",
+        "href": "/government/platform"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/government/profile"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/government/settings"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasalar",
+        "href": "/government/schools"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Arxivlash",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Umumiy ma'lumot",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "O'quvchilar",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Audit",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 25,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 26,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 27,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 28,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 29,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 30,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 31,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 32,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 33,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 34,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 35,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 36,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 37,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 38,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 39,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 40,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 41,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 42,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 43,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Baho yuborish",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:receptions": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "search",
+        "name": null,
+        "id": null,
+        "placeholder": "Ism, email yoki telefon...",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "all::Hammasi · 1",
+          "active::Faol · 1",
+          "pending::Tasdiqlash kutilmoqda · 0",
+          "inactive::Faol emas · 0"
+        ]
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Qabul yaratish",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": "Tafsilotlar",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "1",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:messages": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Mavzuni kiriting",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Xabaringizni kiriting",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yangi xabar",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Bekor qilish",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yuborish",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:groups": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Guruhlarni qidirish...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:documents": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "search",
+        "name": null,
+        "id": null,
+        "placeholder": "Xodim yoki hujjat turi...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Kutilmoqda0",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tasdiqlangan0",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Rad etilgan0",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:communications": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Ota-onani qidirish…",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "SQ\n\nSanjar Qodirov\n\n06:58\n\nP11 beta xabar 581",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "RY\n\nRano Yusupova",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "TA\n\nTursunoy Ahmedova",
+        "href": null
+      }
+    ]
+  },
+  "admin-smm2:school-ratings": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/admin"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Qabul boshqaruvi",
+        "href": "/admin/receptions"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/admin/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/admin/parents"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Hujjatlar navbati",
+        "href": "/admin/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muloqotlar",
+        "href": "/admin/communications"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabarlar",
+        "href": "/admin/messages"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": "/admin/ai-warnings"
+      },
+      {
+        "i": 8,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Muassasa baholari",
+        "href": "/admin/school-ratings"
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Terapiya boshqaruvi",
+        "href": "/admin/therapy"
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/admin/settings"
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      }
+    ]
+  },
+  "reception-smm2:teachers": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Tarbiyachilarni qidirish...",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "zulfiya",
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "INPUT",
+        "type": "tel",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "password",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/reception"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/reception/parents"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/reception/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Guruhlar",
+        "href": "/reception/groups"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Mening hujjatlarim",
+        "href": "/reception/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/reception/profile"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/reception/settings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tezkor qidiruv…\n⌘ K",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tarbiyachi qo'shish",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "DIV",
+        "type": null,
+        "aria": null,
+        "text": "MA\nMaftuna Aliyeva\n\nteacher7@uchqun.uz\n\nteach",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "To'xtatish",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Parolni tiklash",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "DIV",
+        "type": null,
+        "aria": null,
+        "text": "AP\nAkbar Pulatov\n\nteacher8@uchqun.uz\n\nteacher",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "To'xtatish",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Parolni tiklash",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": "Yopish",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Parolni ko'rsatish",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Bekor qilish",
+        "href": null
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yaratish",
+        "href": null
+      }
+    ]
+  },
+  "reception-smm2:parent-wizard": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "hulkar",
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "tel",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Toshkent shahri, Yunusobod tumani…",
+        "options": null
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "AB 1234567",
+        "options": null
+      },
+      {
+        "i": 6,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "::Tanlang",
+          "uzbek::O'zbek",
+          "russian::Rus",
+          "tajik::Tojik"
+        ]
+      },
+      {
+        "i": 7,
+        "tag": "INPUT",
+        "type": "password",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/reception"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/reception/parents"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/reception/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Guruhlar",
+        "href": "/reception/groups"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Mening hujjatlarim",
+        "href": "/reception/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/reception/profile"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/reception/settings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tezkor qidiruv…\n⌘ K",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Orqaga",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Saqlab chiqish",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Davom etish",
+        "href": null
+      }
+    ]
+  },
+  "reception-smm2:groups": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Guruhlarni qidirish...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/reception"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/reception/parents"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/reception/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Guruhlar",
+        "href": "/reception/groups"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Mening hujjatlarim",
+        "href": "/reception/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/reception/profile"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/reception/settings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tezkor qidiruv…\n⌘ K",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Guruh qo'shish",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yangilash",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "O'chirish",
+        "href": null
+      }
+    ]
+  },
+  "reception-smm2:documents": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "license::Litsenziya",
+          "certificate::Sertifikat",
+          "identification::Shaxsni tasdiqlovchi hujjat",
+          "other::Boshqa"
+        ]
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bosh sahifa",
+        "href": "/reception"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Ota-onalar",
+        "href": "/reception/parents"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Tarbiyachilar",
+        "href": "/reception/teachers"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Guruhlar",
+        "href": "/reception/groups"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Mening hujjatlarim",
+        "href": "/reception/documents"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Profil",
+        "href": "/reception/profile"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/reception/settings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "O'zbekcha",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Tezkor qidiruv…\n⌘ K",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "support@ihma.uz",
+        "href": "mailto:support@ihma.uz"
+      }
+    ]
+  },
+  "teacher-smm2:attendance": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Kunlik",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Hafta",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Oy",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Hammasi keldi",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Hammasi · 3",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Bor · 0",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Uyda · 0",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Kasal · 0",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Shifoxonada · 0",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Yo'q · 0",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Malika Ahmedova: Belgilanmagan",
+        "text": "MA\nMalika A.\nBelgilanmagan",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Nozima Qodirova: Belgilanmagan",
+        "text": "NQ\nNozima Q.\nBelgilanmagan",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Sanjar Yusupov: Belgilanmagan",
+        "text": "SY\nSanjar Y.\nBelgilanmagan",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "3 dan 0 ta belgilangan · Saqlash",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:media-modal": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "::Bolani tanlang",
+          "78d1f578-956c-42c7-81f5-9eafc994219b::Sanjar Yusupov",
+          "c3788fed-4c86-4577-b390-848948c55a7e::Nozima Qodirova"
+        ]
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Enter media title",
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": [
+          "photo::Rasm",
+          "video::Video"
+        ]
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "file",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Hammasi",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Rasmlar",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Videolar",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Media qo'shish",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Bekor qilish",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Yaratish",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:chat": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Ota-ona qidirish...",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Xabar yozing...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Suhbat",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Ogohlantirishlar",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "SQ\nSanjar Qodirov\n06:58\nP11 beta xabar 58177 ",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "RY\nRano Yusupova\nXabar yo'q",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Yuborish",
+        "text": "",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:reja-activities": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Individual reja",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Terapiya",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Kuzatuv",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Individual reja qo'shish",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:meals": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "SELECT",
+        "type": "select-one",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": []
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Taom qo'shish",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:reflection": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Bugungi kun haqida shaxsiy fikrlaringizni yozing...",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "INPUT",
+        "type": "checkbox",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Mavzu...",
+        "options": null
+      },
+      {
+        "i": 6,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Bugungi kun haqida ota-onaga yozing...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Profil",
+        "href": null
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Kunlik mulohaza",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "+ Birinchi marta",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "+ Yaxshi natija",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "+ Yordam kerak",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Lavha",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Qoralama",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Jo'natish · 0",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Chiqish",
+        "text": "Chiqish",
+        "href": null
+      }
+    ]
+  },
+  "teacher-smm2:child-irr": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "Yusupov Zafar Bobir o'g'li",
+        "options": null
+      },
+      {
+        "i": 1,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 2,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "5 yosh 3 oy",
+        "options": null
+      },
+      {
+        "i": 3,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 4,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 5,
+        "tag": "INPUT",
+        "type": "text",
+        "name": null,
+        "id": null,
+        "placeholder": "PKT-001",
+        "options": null
+      },
+      {
+        "i": 6,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "F84.0 — Autizm...",
+        "options": null
+      },
+      {
+        "i": 7,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "PTPK qo'shimcha izohlari…",
+        "options": null
+      },
+      {
+        "i": 8,
+        "tag": "INPUT",
+        "type": "date",
+        "name": null,
+        "id": null,
+        "placeholder": null,
+        "options": null
+      },
+      {
+        "i": 9,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Bola haqida qo'shimcha ma'lumotlar...",
+        "options": null
+      },
+      {
+        "i": 10,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Mustaqil ovqatlanadi, rasm chizishni yaxshi ko'radi...",
+        "options": null
+      },
+      {
+        "i": 11,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Tutqanoq hujumlari, maxsus parvarish talab etadi...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/teacher"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolalar",
+        "href": "/teacher/bolalar"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Reja",
+        "href": "/teacher/reja"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/teacher/xabar"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Men",
+        "href": "/teacher/men"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/teacher/men?tab=settings"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/teacher/xabar?tab=warnings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bolaning sahifasi",
+        "href": "/teacher/children/78d1f578-956c-42c7-81f5-9eafc994219b"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Saqlash",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kunlik va haftalik kuzatuv jurnali\n\nBola uchu",
+        "href": "/teacher/monitoring?mchildId=78d1f578-956c-42c7-81f5-9eafc994219b"
+      }
+    ]
+  },
+  "parent-smm2:consent": "accepted",
+  "parent-smm2:chat": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Tarbiyachiga xabar yozing...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kundalik",
+        "href": "/journal"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Galereya",
+        "href": "/media"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/chat"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bola",
+        "href": "/child"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Fikr bildirish",
+        "href": "/rating"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/settings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/notifications"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Yuborish",
+        "text": "",
+        "href": null
+      }
+    ]
+  },
+  "parent-smm2:media": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kundalik",
+        "href": "/journal"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Galereya",
+        "href": "/media"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/chat"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bola",
+        "href": "/child"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Fikr bildirish",
+        "href": "/rating"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/settings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/notifications"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Barchasi",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Bugun",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Hammasi",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Rasmlar",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "submit",
+        "aria": null,
+        "text": "Videolar",
+        "href": null
+      }
+    ]
+  },
+  "parent-smm2:rating": {
+    "ctl": [
+      {
+        "i": 0,
+        "tag": "TEXTAREA",
+        "type": "textarea",
+        "name": null,
+        "id": null,
+        "placeholder": "Muassasa haqida fikringizni yozing...",
+        "options": null
+      }
+    ],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kundalik",
+        "href": "/journal"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Galereya",
+        "href": "/media"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/chat"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bola",
+        "href": "/child"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Fikr bildirish",
+        "href": "/rating"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/settings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/notifications"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 12,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 13,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 14,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 15,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 16,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 17,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 18,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 19,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 20,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 21,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 22,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 23,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 24,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 25,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 26,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 27,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 28,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "1",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 29,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "2",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 30,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "3",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 31,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "4",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 32,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "5",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 33,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Bahoni yuborish",
+        "href": null
+      }
+    ]
+  },
+  "parent-smm2:attendance": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kundalik",
+        "href": "/journal"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Galereya",
+        "href": "/media"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/chat"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bola",
+        "href": "/child"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Fikr bildirish",
+        "href": "/rating"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/settings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/notifications"
+      },
+      {
+        "i": 8,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Kun",
+        "href": null
+      },
+      {
+        "i": 9,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": null,
+        "text": "Hafta",
+        "href": null
+      },
+      {
+        "i": 10,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Oldingi kun",
+        "text": "",
+        "href": null
+      },
+      {
+        "i": 11,
+        "tag": "BUTTON",
+        "type": "button",
+        "aria": "Keyingi kun",
+        "text": "",
+        "href": null
+      }
+    ]
+  },
+  "parent-smm2:journal": {
+    "ctl": [],
+    "btn": [
+      {
+        "i": 0,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bugun",
+        "href": "/"
+      },
+      {
+        "i": 1,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Kundalik",
+        "href": "/journal"
+      },
+      {
+        "i": 2,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Galereya",
+        "href": "/media"
+      },
+      {
+        "i": 3,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Xabar",
+        "href": "/chat"
+      },
+      {
+        "i": 4,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Bola",
+        "href": "/child"
+      },
+      {
+        "i": 5,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Fikr bildirish",
+        "href": "/rating"
+      },
+      {
+        "i": 6,
+        "tag": "A",
+        "type": null,
+        "aria": null,
+        "text": "Sozlamalar",
+        "href": "/settings"
+      },
+      {
+        "i": 7,
+        "tag": "A",
+        "type": null,
+        "aria": "Bildirishnomalar",
+        "text": "",
+        "href": "/notifications"
+      }
+    ]
+  }
+}

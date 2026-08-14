@@ -1,0 +1,34 @@
+{
+  "gov-region-secondary-SIM": {
+    "firstLogin": true,
+    "landing": "https://government-production.up.railway.app/government/change-password",
+    "shot": "184_gov-region-secondary-SIM_landing.png"
+  },
+  "gov-region-secondary-SIM:changed": "187_gov-region-secondary-SIM_change-password-result.png",
+  "gov-region-secondary-SIM:afterUrl": "https://government-production.up.railway.app/government",
+  "gov-region-secondary-SIM:relogin": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government",
+    "shot": "189_gov-region-secondary-SIM_landing.png"
+  },
+  "gov-region-secondary-SIM:dash": "190_gov-region-secondary-SIM_dashboard.png",
+  "gov-region-secondary-SIM:dashBody": "Oʻzbekiston Respublikasi\nIjtimoiy himoya milliy agentligi\n\nYAGONA AXBOROT TIZIMI\n\nDavlat Nazorat Paneli\n256-bit TLS\n© 2026 IHMA · Oʻzbekiston Respublikasi\nTizimga kirish\n\nDavom etish uchun hisobingizga kiring\n\nElektron pochta\nParol\nParolni unutdingizmi?\nBu qurilmani eslab qolish\nKirish\nTizimga kirish urinishlari qayd etiladi\n© 2026 IHMA · Oʻzbekiston Respublikasi\nO'zbekcha",
+  "gov-region-secondary-SIM:schools": "191_gov-region-secondary-SIM_schools-scope.png",
+  "gov-region-secondary-SIM:schoolsBody": "Oʻzbekiston Respublikasi\nIjtimoiy himoya milliy agentligi\n\nYAGONA AXBOROT TIZIMI\n\nDavlat Nazorat Paneli\n256-bit TLS\n© 2026 IHMA · Oʻzbekiston Respublikasi\nTizimga kirish\n\nDavom etish uchun hisobingizga kiring\n\nElektron pochta\nParol\nParolni unutdingizmi?\nBu qurilmani eslab qolish\nKirish\nTizimga kirish urinishlari qayd etiladi\n© 2026 IHMA · Oʻzbekiston Respublikasi\nO'zbekcha",
+  "gov-republic-secondary-SIM": {
+    "firstLogin": true,
+    "landing": "https://government-production.up.railway.app/government/change-password",
+    "shot": "193_gov-republic-secondary-SIM_landing.png"
+  },
+  "gov-republic-secondary-SIM:changed": "196_gov-republic-secondary-SIM_change-password-result.png",
+  "gov-republic-secondary-SIM:afterUrl": "https://government-production.up.railway.app/government",
+  "gov-republic-secondary-SIM:relogin": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government",
+    "shot": "198_gov-republic-secondary-SIM_landing.png"
+  },
+  "gov-republic-secondary-SIM:dash": "199_gov-republic-secondary-SIM_dashboard.png",
+  "gov-republic-secondary-SIM:dashBody": "Oʻzbekiston Respublikasi\nIjtimoiy himoya milliy agentligi\n\nYAGONA AXBOROT TIZIMI\n\nDavlat Nazorat Paneli\n256-bit TLS\n© 2026 IHMA · Oʻzbekiston Respublikasi\nTizimga kirish\n\nDavom etish uchun hisobingizga kiring\n\nElektron pochta\nParol\nParolni unutdingizmi?\nBu qurilmani eslab qolish\nKirish\nTizimga kirish urinishlari qayd etiladi\n© 2026 IHMA · Oʻzbekiston Respublikasi\nO'zbekcha",
+  "gov-republic-secondary-SIM:schools": "200_gov-republic-secondary-SIM_schools-scope.png",
+  "gov-republic-secondary-SIM:schoolsBody": "Oʻzbekiston Respublikasi\nIjtimoiy himoya milliy agentligi\n\nYAGONA AXBOROT TIZIMI\n\nDavlat Nazorat Paneli\n256-bit TLS\n© 2026 IHMA · Oʻzbekiston Respublikasi\nTizimga kirish\n\nDavom etish uchun hisobingizga kiring\n\nElektron pochta\nParol\nParolni unutdingizmi?\nBu qurilmani eslab qolish\nKirish\nTizimga kirish urinishlari qayd etiladi\n© 2026 IHMA · Oʻzbekiston Respublikasi\nO'zbekcha"
+}

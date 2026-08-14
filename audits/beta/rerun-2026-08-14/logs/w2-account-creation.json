@@ -1,0 +1,92 @@
+{
+  "login-gov": {
+    "ok": true,
+    "landing": "https://government-production.up.railway.app/government"
+  },
+  "D-02-admin-form": {
+    "shot": "002_gov-republic_D-02-create-director-filled.png",
+    "school": "Toshkent shahar 3-sonli ixtisoslashtirilgan maktabi (@tmm3.uz)"
+  },
+  "D-02-admin-created": {
+    "toast": "✓\n\nDirektor muvaffaqiyatli yaratildi\n\n✕\n✓\n\nHisob ma'lumotlari: sh.qurbonova@tmm3.uz\n\n✕",
+    "shots": [
+      "003_gov-republic_D-02-create-director-result.png",
+      "004_gov-republic_D-02-create-director-list.png"
+    ],
+    "visibleInList": true
+  },
+  "login-director": {
+    "ok": true,
+    "landing": "https://admin-production-536f.up.railway.app/admin"
+  },
+  "D-02-reception-form": {
+    "shot": "006_director-tmm3_D-02-create-reception-filled.png"
+  },
+  "D-02-reception-created": {
+    "toast": "✓\n\nQabul akkaunti yaratildi\n\n✕",
+    "shots": [
+      "007_director-tmm3_D-02-create-reception-result.png",
+      "008_director-tmm3_D-02-create-reception-list.png"
+    ],
+    "visibleInList": true
+  },
+  "login-reception": {
+    "ok": true,
+    "landing": "https://reception-production-ba41.up.railway.app/reception"
+  },
+  "D-15-domain-chip": {
+    "shot": "010_reception-tmm3_D-15-create-teacher-filled-domain-chip.png"
+  },
+  "D-02-teacher-created": {
+    "toast": null,
+    "shots": [
+      "011_reception-tmm3_D-02-create-teacher-result.png",
+      "012_reception-tmm3_D-02-create-teacher-list.png"
+    ],
+    "visibleInList": false
+  },
+  "D-02-wizard-s1": {
+    "shot": "014_reception-tmm3_D-02-wizard-s1-parent-filled.png"
+  },
+  "D-02-wizard-s2": {
+    "shot": "015_reception-tmm3_D-02-wizard-s2-child-filled.png"
+  },
+  "D-02-wizard-s3": {
+    "shot": "016_reception-tmm3_D-02-wizard-s3-group-selected.png"
+  },
+  "D-02-parent-created": {
+    "toast": "Uchqun\nTezkor qidiruv…\n⌘ K\nTayyor!\n\nOta-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.\n\nYana qo'shish\nBoshqaruv paneliga",
+    "shots": [
+      "017_reception-tmm3_D-02-wizard-result.png",
+      "018_reception-tmm3_D-02-wizard-complete.png"
+    ],
+    "body": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nGT\nGulbahor Tojiyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nUchqun\nTezkor qidiruv…\n⌘ K\nTayyor!\n\nOta-ona, bola va guruh muvaffaqiyatli ro'yxatdan o'tkazildi.\n\nYana qo'shish\nBoshqaruv paneliga"
+  },
+  "D-02-parent-in-list": {
+    "visible": true
+  },
+  "D-02-first-login-new-director": {
+    "ok": false,
+    "landing": "https://admin-production-536f.up.railway.app/login",
+    "shot": "020_new-director_D-02-first-login-landing.png",
+    "head": "U\n\nUchqun\n\nMuassasa boshqaruv tizimi\n\nDirektor\n\nDIREKTOR PANELI\n\nMuassasalarni yagona boshqaruv markazi\n\nTizim sozlamalari, foydalanuvchilar va nazorat — bitta xavfsiz hududda.\n\n256-bit TLS\nDirektor kirishi · IHMA · O‘zb"
+  },
+  "D-02-first-login-new-reception": {
+    "ok": false,
+    "landing": "https://reception-production-ba41.up.railway.app/login",
+    "shot": "021_new-reception_D-02-first-login-landing.png",
+    "head": "U\nUchqun\nQabulxona portali\nQabulxona\n\nQABULXONA PORTALI\n\nOta-onalar va hujjatlarni qabul qilish markazi\n\nYangi ota-onalarni ro'yxatga oling, hujjatlarni qabul qiling va guruhlarga yo'naltiring.\n\n256-bit TLS\n© 2026 Uchqun"
+  },
+  "D-02-first-login-new-teacher": {
+    "ok": false,
+    "landing": "https://teacher-production-0647.up.railway.app/login",
+    "shot": "022_new-teacher_D-02-first-login-landing.png",
+    "head": "U\nUchqun\nO'qituvchi portali\nO'qituvchi\nSinfingiz, darslar va baholar — bir joyda\n\nDavomat, vazifalar va ota-onalar bilan aloqa uchun yagona ish maydoni.\n\n256-bit TLS\n© 2026 Uchqun\nXush kelibsiz\n\nO'qituvchi sifatida hisob"
+  },
+  "D-02-first-login-new-parent": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/",
+    "shot": "023_new-parent_D-02-first-login-landing.png",
+    "head": "U\nUchqun\n· Ota-ona\nBugun\nKundalik\nGalereya\nXabar\nBola\nFikr bildirish\nSozlamalar\nOzoda Rahimova\n\nBUGUNGI XULOSA\n\nM08 14, Fri\nDAVOMAT\n\n—\n\nTAOMLAR\n\n0/0\n\nSURATLAR\n\n0\n\nFAOLIYATLAR\n\n0\n\nBUGUNGI YOZUV\n\nBugun uchun hali yozuv yo'"
+  }
+}

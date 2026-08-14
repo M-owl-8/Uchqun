@@ -1,0 +1,42 @@
+{
+  "D-15-domain-chip": {
+    "shot": "025_reception-tmm3_D-15-teacher-form-domain-chip.png"
+  },
+  "D-02-teacher-created": {
+    "toast": "✓ Tarbiyachi akkaunti yaratildi ✕",
+    "shots": [
+      "026_reception-tmm3_D-02-create-teacher-result.png",
+      "027_reception-tmm3_D-02-create-teacher-list.png"
+    ],
+    "visibleInList": true
+  },
+  "D-02-director2-form": {
+    "shot": "029_gov-republic_D-02-create-director2-filled.png"
+  },
+  "D-02-director2-created": {
+    "toast": "✓ Direktor muvaffaqiyatli yaratildi ✕ ✓ Hisob ma'lumotlari: d.ergashev@smm4.uz ✕",
+    "shot": "030_gov-republic_D-02-create-director2-result.png"
+  },
+  "D-02-first-login-new-teacher": {
+    "ok": true,
+    "landing": "https://teacher-production-0647.up.railway.app/teacher",
+    "shot": "031_new-teacher_D-02-first-login-landing.png",
+    "head": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nBugun\n\nXush kelibsiz, Gulnora opa/aka.\n\n2026 M08 14\nYangi yozuv\nSizning sinfingizda hali bolalar yo'q\n\nSinfingizga bolalar tayinlanmaguncha, bu sahifa bo'sh ko'rinadi. Maktab direktoriga murojaat qi"
+  },
+  "D-02-first-login-new-director2": {
+    "ok": true,
+    "landing": "https://admin-production-536f.up.railway.app/admin",
+    "shot": "032_new-director2_D-02-first-login-landing.png",
+    "head": "U\n\nUchqun\n\nMuassasa\n\nBOSHQARUV\n\nBosh sahifa\nQabul boshqaruvi\nTarbiyachilar\nOta-onalar\nHujjatlar navbati\n\nALOQA\n\nMuloqotlar\nXabarlar\n\nHISOBOTLAR\n\nOgohlantirishlar\nMuassasa baholari\nTerapiya boshqaruvi\n\nMUASSASA\n\nMuassasa profili\nOmmaviy import\nSavatcha\nProfil\nS"
+  },
+  "D-17-reception-activation": {
+    "shot": "035_director-tmm3_D-17-reception-activated.png",
+    "hasPendingLabel": true
+  },
+  "D-17-reception-login-after": {
+    "ok": true,
+    "landing": "https://reception-production-ba41.up.railway.app/reception",
+    "shot": "036_new-reception_D-17-first-login-after-activation.png",
+    "head": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nKY\nKamola Yusupova\nQabulxona xodimi\nChiqish\nO'zbekcha\nBosh sahifa\nTezkor qidiruv…\n⌘ K"
+  }
+}

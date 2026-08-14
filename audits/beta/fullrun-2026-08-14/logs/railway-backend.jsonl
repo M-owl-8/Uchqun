@@ -1,0 +1,5 @@
+{"level":"info","message":"","timestamp":"2026-08-10T09:35:09.548463050Z"}
+{"message":"> uchqun-backend@1.0.0 start:migrate","timestamp":"2026-08-10T09:35:09.548466100Z","level":"info"}
+{"message":"> node config/migrate.js && node server.js","timestamp":"2026-08-10T09:35:09.548468610Z","level":"info"}
+{"level":"info","timestamp":"2026-08-10T09:35:09.548470880Z","message":""}
+{"message":"Starting Container","timestamp":"2026-08-10T09:35:09.850025899Z","level":"info"}

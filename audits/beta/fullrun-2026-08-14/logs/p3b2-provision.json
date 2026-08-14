@@ -1,0 +1,426 @@
+{
+  "R": [
+    {
+      "step": "1a",
+      "target": "government / region / secondary",
+      "toast": [],
+      "shots": [
+        "151_gov-republic_create-gov-region-secondary-immediately-after-submit.png",
+        "152_gov-republic_create-gov-region-secondary-4s-after-submit.png"
+      ]
+    },
+    {
+      "step": "1b",
+      "target": "school director (admin) @smm2",
+      "toast": [],
+      "shots": [
+        "153_gov-republic_create-admin-immediately-after-submit.png",
+        "154_gov-republic_create-admin-4s-after-submit.png"
+      ]
+    },
+    {
+      "step": "2",
+      "error": "locator.click: Timeout 30000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('button').filter({ hasText: /^Yaratish$|^Saqlash$|^Qo'shish$|^Qabul yaratish$/ }).last()\u001b[22m\n\u001b[2m    - locator resolved to <button class=\"inline-flex items-center gap-2 h-10 px-4 text-sm font-medium bg-brand-600 hover:bg-brand-700 text-walnut-text rounded-md shadow-xs transition-colors\">…</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    53 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div class=\"fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50\">…</div> intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n"
+    },
+    {
+      "step": "3",
+      "target": "teacher @smm2",
+      "toast": [],
+      "shots": [
+        "162_reception-smm2_create-teacher-immediately-after-submit.png",
+        "163_reception-smm2_create-teacher-4s-after-submit.png"
+      ]
+    },
+    {
+      "step": "4",
+      "target": "parent + child @smm2",
+      "toast": [],
+      "shots": [
+        "167_reception-smm2_wizard-complete-immediately-after-submit.png",
+        "168_reception-smm2_wizard-complete-4s-after-submit.png"
+      ],
+      "body": "U\nUchqun\nQabulxona portali\nMAKTAB\nTIZIM MENYU\nBosh sahifa\nOta-onalar\nTarbiyachilar\nGuruhlar\nMening hujjatlarim\nTIZIM\nProfil\nSozlamalar\nUQ\nUmida Qodirboyeva\nQabulxona xodimi\nChiqish\nO'zbekcha\nYangi ota-ona qo'shish\nTezkor qidiruv…\n⌘ K\nYangi ota-ona qo'shish\n\nOta-ona, bola va guruhni 3 qadamda ro'yxatdan o'tkating.\n\nQADAM 3 / 3\nYangi ota-ona qo'shish\nOta-ona ma'lumotlari\nBola ma'lumotlari\n3\nGuruh ta"
+    }
+  ],
+  "dumps": {
+    "1a-form": {
+      "ctl": [
+        {
+          "i": 0,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "republic::Respublika",
+            "region::Viloyat"
+          ]
+        },
+        {
+          "i": 1,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "main::Asosiy (to'liq kirish)",
+            "secondary::Ikkinchi darajali (ruxsat asosida)"
+          ]
+        },
+        {
+          "i": 2,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "00000000-0000-0000-0000-000000000003::Andijon viloyati",
+            "00000000-0000-0000-0000-000000000004::Buxoro viloyati",
+            "00000000-0000-0000-0000-000000000005::Farg'ona viloyati",
+            "00000000-0000-0000-0000-000000000006::Jizzax viloyati",
+            "00000000-0000-0000-0000-000000000007::Namangan viloyati",
+            "00000000-0000-0000-0000-000000000008::Navoiy viloyati",
+            "00000000-0000-0000-0000-000000000009::Qashqadaryo viloyati",
+            "00000000-0000-0000-0000-000000000013::Qoraqalpog'iston Respublikasi"
+          ]
+        },
+        {
+          "i": 3,
+          "tag": "INPUT",
+          "type": "text",
+          "id": "ism",
+          "ph": "Ism",
+          "opts": null
+        },
+        {
+          "i": 4,
+          "tag": "INPUT",
+          "type": "text",
+          "id": "familiya",
+          "ph": "Familiya",
+          "opts": null
+        },
+        {
+          "i": 5,
+          "tag": "INPUT",
+          "type": "password",
+          "id": null,
+          "ph": "••••••••",
+          "opts": null
+        },
+        {
+          "i": 6,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 7,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 8,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 9,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 10,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 11,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 12,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 13,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 14,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 15,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 16,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 17,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        }
+      ],
+      "btn": [
+        "O'zbekcha",
+        "Chiqish",
+        "Direktorlar",
+        "Xabarlar",
+        "Davlat foydalanuvchilari",
+        "Ro'yxatdan o'tish so'rovlari",
+        "Parolni Tiklash",
+        "O'chirish",
+        "Parolni Tiklash",
+        "O'chirish",
+        "Parolni Tiklash",
+        "O'chirish",
+        "Parolni Tiklash",
+        "O'chirish",
+        "",
+        "Hisob Yaratish"
+      ]
+    },
+    "2-modal": {
+      "ctl": [
+        {
+          "i": 0,
+          "tag": "INPUT",
+          "type": "search",
+          "id": null,
+          "ph": "Ism, email yoki telefon...",
+          "opts": null
+        },
+        {
+          "i": 1,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "all::Hammasi · 1",
+            "active::Faol · 1",
+            "pending::Tasdiqlash kutilmoqda · 0",
+            "inactive::Faol emas · 0"
+          ]
+        },
+        {
+          "i": 2,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 3,
+          "tag": "INPUT",
+          "type": "checkbox",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 4,
+          "tag": "INPUT",
+          "type": "text",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 5,
+          "tag": "INPUT",
+          "type": "text",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 6,
+          "tag": "INPUT",
+          "type": "text",
+          "id": null,
+          "ph": "iroda",
+          "opts": null
+        },
+        {
+          "i": 7,
+          "tag": "INPUT",
+          "type": "password",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 8,
+          "tag": "INPUT",
+          "type": "tel",
+          "id": null,
+          "ph": null,
+          "opts": null
+        }
+      ],
+      "btn": [
+        "O'zbekcha",
+        "Chiqish",
+        "Qabul yaratish",
+        "",
+        "",
+        "",
+        "",
+        "1",
+        "",
+        "",
+        "",
+        "Bekor qilish",
+        "Qabulni yaratish"
+      ]
+    },
+    "wizard-s2": {
+      "ctl": [
+        {
+          "i": 0,
+          "tag": "INPUT",
+          "type": "text",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 1,
+          "tag": "INPUT",
+          "type": "text",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 2,
+          "tag": "INPUT",
+          "type": "date",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 3,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "::Tanlang",
+            "autism::Autizm spektri",
+            "hearing::Eshitish nuqsoni",
+            "vision::Ko'rish nuqsoni",
+            "speech::Nutq nuqsoni",
+            "mixed::Aralash buzilishlar"
+          ]
+        },
+        {
+          "i": 4,
+          "tag": "SELECT",
+          "type": "select-one",
+          "id": null,
+          "ph": null,
+          "opts": [
+            "::Tanlang",
+            "light::Yengil",
+            "medium::O'rta",
+            "heavy::Og'ir"
+          ]
+        },
+        {
+          "i": 5,
+          "tag": "TEXTAREA",
+          "type": "textarea",
+          "id": null,
+          "ph": "Masalan: glyutensiz ovqat, individual o'qituvchi yordami…",
+          "opts": null
+        }
+      ],
+      "btn": [
+        "Chiqish",
+        "O'zbekcha",
+        "Tezkor qidiruv…\n⌘ K",
+        "Erkak",
+        "Ayol",
+        "Orqaga",
+        "Saqlab chiqish",
+        "Davom etish"
+      ]
+    },
+    "wizard-s3": {
+      "ctl": [
+        {
+          "i": 0,
+          "tag": "INPUT",
+          "type": "radio",
+          "id": null,
+          "ph": null,
+          "opts": null
+        },
+        {
+          "i": 1,
+          "tag": "INPUT",
+          "type": "radio",
+          "id": null,
+          "ph": null,
+          "opts": null
+        }
+      ],
+      "btn": [
+        "Chiqish",
+        "O'zbekcha",
+        "Tezkor qidiruv…\n⌘ K",
+        "Orqaga",
+        "Saqlab chiqish",
+        "Yakunlash"
+      ]
+    }
+  }
+}

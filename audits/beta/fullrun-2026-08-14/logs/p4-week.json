@@ -1,0 +1,88 @@
+[
+  {
+    "d": "2026-08-08",
+    "label": "D1",
+    "except": null,
+    "dateSet": "2026-08-08",
+    "shotBefore": "209_teacher-smm2_attendance-D1-2026-08-08-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "210_teacher-smm2_attendance-D1-2026-08-08-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-09",
+    "label": "D2",
+    "except": null,
+    "dateSet": "2026-08-09",
+    "shotBefore": "211_teacher-smm2_attendance-D2-2026-08-09-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "212_teacher-smm2_attendance-D2-2026-08-09-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-10",
+    "label": "D3",
+    "except": {
+      "child": "Sanjar Yusupov",
+      "state": "sick"
+    },
+    "dateSet": "2026-08-10",
+    "exceptLabel": "Sanjar Yusupov: Kasal",
+    "shotBefore": "213_teacher-smm2_attendance-D3-2026-08-10-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "214_teacher-smm2_attendance-D3-2026-08-10-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-11",
+    "label": "D4",
+    "except": null,
+    "dateSet": "2026-08-11",
+    "shotBefore": "215_teacher-smm2_attendance-D4-2026-08-11-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "216_teacher-smm2_attendance-D4-2026-08-11-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-12",
+    "label": "D5",
+    "except": {
+      "child": "Nozima Qodirova",
+      "state": "absent"
+    },
+    "dateSet": "2026-08-12",
+    "exceptLabel": "Nozima Qodirova: Yo'q",
+    "shotBefore": "217_teacher-smm2_attendance-D5-2026-08-12-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "218_teacher-smm2_attendance-D5-2026-08-12-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-13",
+    "label": "D6",
+    "except": {
+      "child": "Malika Ahmedova",
+      "state": "home_leave"
+    },
+    "dateSet": "2026-08-13",
+    "exceptLabel": "Malika Ahmedova: Uyda",
+    "shotBefore": "219_teacher-smm2_attendance-D6-2026-08-13-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "220_teacher-smm2_attendance-D6-2026-08-13-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "d": "2026-08-14",
+    "label": "D7",
+    "except": null,
+    "dateSet": "2026-08-14",
+    "shotBefore": "221_teacher-smm2_attendance-D7-2026-08-14-marked.png",
+    "saveBtnText": "3 dan 3 ta belgilangan · Saqlash",
+    "shotAfter": "222_teacher-smm2_attendance-D7-2026-08-14-saved.png",
+    "urlAfter": "https://teacher-production-0647.up.railway.app/teacher"
+  },
+  {
+    "weekView": "223_teacher-smm2_attendance-week-view-witness.png",
+    "body": "U\nUchqun\n· Tarbiyachi\nBugun\nBolalar\nReja\nXabar\nMen\nSozlamalar\nKunlik\nHafta\nOy\nBor\nUyda\nKasal\nShifoxonada\nYo'q\nIsm\t10.08\t11.08\t12.08\t13.08\t14.08\t15.08\t16.08\tBor\nMalika A.\t—\t—\t—\t—\t—\t—\t—\t0/7\nNozima Q.\t\t\t\t\t\t—\t—\t4/7\nSanjar Y.\t\t\t\t\t\t—\t—\t4/7"
+  }
+]
