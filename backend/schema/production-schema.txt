@@ -1,0 +1,1856 @@
+TAB SequelizeMeta
+TAB activities
+TAB admin_registration_requests
+TAB ai_warnings
+TAB assessment_criteria
+TAB assessment_scores
+TAB assessment_sessions
+TAB audit_log
+TAB business_stats
+TAB chat_messages
+TAB child_assessments
+TAB child_attendance
+TAB child_goal_reviews
+TAB child_goals
+TAB child_journal_entries
+TAB children
+TAB daily_monitoring_entries
+TAB districts
+TAB documents
+TAB emotional_monitoring
+TAB goal_periods
+TAB government_messages
+TAB government_school_ratings
+TAB government_stats
+TAB groups
+TAB import_jobs
+TAB irrs
+TAB long_term_goals
+TAB meal_plans
+TAB meals
+TAB media
+TAB monthly_milestones
+TAB news
+TAB notifications
+TAB parent_activities
+TAB parent_evaluations
+TAB parent_meals
+TAB parent_media
+TAB progress
+TAB quarterly_monitoring_entries
+TAB refresh_tokens
+TAB regions
+TAB school_categories
+TAB school_ratings
+TAB schools
+TAB service_plans
+TAB short_term_goals
+TAB teacher_ratings
+TAB teacher_reflections
+TAB teacher_resources
+TAB teacher_responsibilities
+TAB teacher_tasks
+TAB teacher_work_history
+TAB therapies
+TAB therapy_usages
+TAB users
+TAB weekly_monitoring_entries
+COL SequelizeMeta|name|varchar|NO|-
+COL activities|childId|uuid|NO|-
+COL activities|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL activities|date|date|NO|CURRENT_DATE
+COL activities|deletedAt|timestamptz|YES|-
+COL activities|description|text|NO|-
+COL activities|duration|int4|NO|-
+COL activities|endDate|date|YES|-
+COL activities|goal|text|YES|-
+COL activities|id|uuid|NO|-
+COL activities|methods|text|YES|-
+COL activities|notes|text|YES|-
+COL activities|observation|text|YES|-
+COL activities|progress|text|YES|-
+COL activities|services|jsonb|YES|'[]'::jsonb
+COL activities|skill|varchar|YES|-
+COL activities|startDate|date|YES|-
+COL activities|studentEngagement|enum_activities_studentEngagement|YES|'Medium'::"enum_activities_studentEngagement"
+COL activities|tasks|jsonb|YES|'[]'::jsonb
+COL activities|teacher|varchar|NO|-
+COL activities|title|varchar|NO|-
+COL activities|type|enum_activities_type|NO|-
+COL activities|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL admin_registration_requests|approvedUserId|uuid|YES|-
+COL admin_registration_requests|certificateFile|varchar|YES|-
+COL admin_registration_requests|city|varchar|YES|-
+COL admin_registration_requests|createdAt|timestamptz|NO|now()
+COL admin_registration_requests|email|varchar|NO|-
+COL admin_registration_requests|firstName|varchar|NO|-
+COL admin_registration_requests|id|uuid|NO|-
+COL admin_registration_requests|lastName|varchar|NO|-
+COL admin_registration_requests|location|varchar|YES|-
+COL admin_registration_requests|passportFile|varchar|YES|-
+COL admin_registration_requests|passportNumber|varchar|YES|-
+COL admin_registration_requests|passportSeries|varchar|YES|-
+COL admin_registration_requests|phone|varchar|NO|-
+COL admin_registration_requests|region|varchar|YES|-
+COL admin_registration_requests|rejectionReason|text|YES|-
+COL admin_registration_requests|reviewedAt|timestamptz|YES|-
+COL admin_registration_requests|reviewedBy|uuid|YES|-
+COL admin_registration_requests|schoolId|uuid|YES|-
+COL admin_registration_requests|status|enum_admin_registration_requests_status|NO|'pending'::enum_admin_registration_requests_status
+COL admin_registration_requests|telegramUsername|varchar|NO|''::character varying
+COL admin_registration_requests|updatedAt|timestamptz|NO|now()
+COL ai_warnings|aiAnalysis|text|YES|-
+COL ai_warnings|createdAt|timestamp|NO|now()
+COL ai_warnings|id|uuid|NO|gen_random_uuid()
+COL ai_warnings|isResolved|bool|NO|false
+COL ai_warnings|message|text|NO|-
+COL ai_warnings|notifiedUsers|_uuid|YES|-
+COL ai_warnings|parentId|uuid|YES|-
+COL ai_warnings|ratingData|jsonb|YES|-
+COL ai_warnings|resolutionNotes|text|YES|-
+COL ai_warnings|resolvedAt|timestamp|YES|-
+COL ai_warnings|resolvedBy|uuid|YES|-
+COL ai_warnings|schoolId|uuid|YES|-
+COL ai_warnings|severity|enum_ai_warnings_severity|NO|'medium'::enum_ai_warnings_severity
+COL ai_warnings|targetId|uuid|NO|-
+COL ai_warnings|targetType|enum_ai_warnings_targetType|NO|-
+COL ai_warnings|title|varchar|NO|-
+COL ai_warnings|updatedAt|timestamp|NO|now()
+COL ai_warnings|warningType|enum_ai_warnings_warningType|NO|-
+COL assessment_criteria|code|varchar|NO|-
+COL assessment_criteria|createdAt|timestamptz|NO|-
+COL assessment_criteria|id|uuid|NO|gen_random_uuid()
+COL assessment_criteria|isActive|bool|NO|true
+COL assessment_criteria|isHearingSpecific|bool|NO|false
+COL assessment_criteria|levelDescriptions|jsonb|NO|'{}'::jsonb
+COL assessment_criteria|scoringType|enum_assessment_criteria_scoringType|NO|'ability'::"enum_assessment_criteria_scoringType"
+COL assessment_criteria|sortOrder|int4|NO|-
+COL assessment_criteria|textEn|text|YES|-
+COL assessment_criteria|textRu|text|YES|-
+COL assessment_criteria|textUz|text|NO|-
+COL assessment_criteria|updatedAt|timestamptz|NO|-
+COL assessment_scores|createdAt|timestamptz|NO|-
+COL assessment_scores|criterionId|uuid|NO|-
+COL assessment_scores|id|uuid|NO|gen_random_uuid()
+COL assessment_scores|notes|text|YES|-
+COL assessment_scores|schoolId|uuid|NO|-
+COL assessment_scores|score|int4|NO|-
+COL assessment_scores|sessionId|uuid|NO|-
+COL assessment_scores|updatedAt|timestamptz|NO|-
+COL assessment_sessions|assessmentDate|date|NO|-
+COL assessment_sessions|childId|uuid|YES|-
+COL assessment_sessions|completedAt|timestamptz|YES|-
+COL assessment_sessions|completedBy|uuid|YES|-
+COL assessment_sessions|createdAt|timestamptz|NO|-
+COL assessment_sessions|customLabel|varchar|YES|-
+COL assessment_sessions|id|uuid|NO|gen_random_uuid()
+COL assessment_sessions|irrId|uuid|NO|-
+COL assessment_sessions|isHearingImpaired|bool|NO|false
+COL assessment_sessions|maxPossibleScore|int4|YES|68
+COL assessment_sessions|notes|text|YES|-
+COL assessment_sessions|schoolId|uuid|NO|-
+COL assessment_sessions|sessionType|enum_assessment_sessions_sessionType|NO|-
+COL assessment_sessions|totalScore|int4|YES|-
+COL assessment_sessions|updatedAt|timestamptz|NO|-
+COL audit_log|action|varchar|NO|-
+COL audit_log|actorId|uuid|YES|-
+COL audit_log|actorRole|varchar|NO|-
+COL audit_log|entity|varchar|NO|-
+COL audit_log|entityId|uuid|YES|-
+COL audit_log|id|int8|NO|nextval('audit_log_id_seq'::regclass)
+COL audit_log|meta|jsonb|YES|-
+COL audit_log|occurredAt|timestamptz|NO|now()
+COL audit_log|schoolId|uuid|YES|-
+COL business_stats|businessId|uuid|NO|-
+COL business_stats|createdAt|timestamp|NO|now()
+COL business_stats|data|jsonb|NO|-
+COL business_stats|generatedAt|timestamp|NO|now()
+COL business_stats|id|uuid|NO|gen_random_uuid()
+COL business_stats|isPublic|bool|NO|false
+COL business_stats|period|enum_business_stats_period|NO|-
+COL business_stats|periodEnd|timestamp|NO|-
+COL business_stats|periodStart|timestamp|NO|-
+COL business_stats|statType|enum_business_stats_statType|NO|-
+COL business_stats|summary|jsonb|YES|-
+COL business_stats|updatedAt|timestamp|NO|now()
+COL chat_messages|content|text|NO|-
+COL chat_messages|conversationId|varchar|NO|-
+COL chat_messages|createdAt|timestamptz|NO|now()
+COL chat_messages|deletedAt|timestamptz|YES|-
+COL chat_messages|id|uuid|NO|-
+COL chat_messages|readByParent|bool|YES|false
+COL chat_messages|readByTeacher|bool|YES|false
+COL chat_messages|senderId|uuid|NO|-
+COL chat_messages|senderRole|enum_chat_messages_senderRole|NO|-
+COL chat_messages|updatedAt|timestamptz|NO|now()
+COL child_assessments|category|enum_child_assessments_category|NO|-
+COL child_assessments|child_id|uuid|NO|-
+COL child_assessments|created_at|timestamptz|NO|now()
+COL child_assessments|date|date|NO|-
+COL child_assessments|deleted_at|timestamptz|YES|-
+COL child_assessments|id|uuid|NO|-
+COL child_assessments|notes|text|YES|-
+COL child_assessments|score|int4|NO|-
+COL child_assessments|teacher_id|uuid|NO|-
+COL child_assessments|updated_at|timestamptz|NO|now()
+COL child_attendance|childId|uuid|YES|-
+COL child_attendance|childSnapshot|jsonb|NO|'{}'::jsonb
+COL child_attendance|createdAt|timestamptz|NO|-
+COL child_attendance|date|date|NO|-
+COL child_attendance|deletedAt|timestamptz|YES|-
+COL child_attendance|id|uuid|NO|gen_random_uuid()
+COL child_attendance|markedBy|uuid|YES|-
+COL child_attendance|note|text|YES|-
+COL child_attendance|schoolId|uuid|NO|-
+COL child_attendance|status|enum_child_attendance_status|NO|-
+COL child_attendance|teacherId|uuid|YES|-
+COL child_attendance|updatedAt|timestamptz|NO|-
+COL child_goal_reviews|createdAt|timestamptz|NO|-
+COL child_goal_reviews|evidence|text|YES|-
+COL child_goal_reviews|goalId|uuid|NO|-
+COL child_goal_reviews|id|uuid|NO|gen_random_uuid()
+COL child_goal_reviews|nextSteps|text|YES|-
+COL child_goal_reviews|reviewDate|date|NO|-
+COL child_goal_reviews|reviewerId|uuid|YES|-
+COL child_goal_reviews|status|enum_child_goal_reviews_status|NO|-
+COL child_goal_reviews|updatedAt|timestamptz|NO|-
+COL child_goals|baseline|text|YES|-
+COL child_goals|category|enum_child_goals_category|NO|-
+COL child_goals|childId|uuid|YES|-
+COL child_goals|childSnapshot|jsonb|NO|'{}'::jsonb
+COL child_goals|createdAt|timestamptz|NO|-
+COL child_goals|createdBy|uuid|YES|-
+COL child_goals|currentProgress|enum_child_goals_currentProgress|NO|'not_started'::"enum_child_goals_currentProgress"
+COL child_goals|deletedAt|timestamptz|YES|-
+COL child_goals|description|text|YES|-
+COL child_goals|id|uuid|NO|gen_random_uuid()
+COL child_goals|measurement|text|YES|-
+COL child_goals|progressNotes|text|YES|-
+COL child_goals|schoolId|uuid|NO|-
+COL child_goals|targetDate|date|YES|-
+COL child_goals|title|varchar|NO|-
+COL child_goals|updatedAt|timestamptz|NO|-
+COL child_journal_entries|childId|uuid|YES|-
+COL child_journal_entries|childSnapshot|jsonb|NO|'{}'::jsonb
+COL child_journal_entries|content|text|NO|-
+COL child_journal_entries|createdAt|timestamptz|NO|now()
+COL child_journal_entries|date|date|NO|-
+COL child_journal_entries|deletedAt|timestamptz|YES|-
+COL child_journal_entries|id|uuid|NO|gen_random_uuid()
+COL child_journal_entries|isVisibleToParent|bool|NO|true
+COL child_journal_entries|schoolId|uuid|NO|-
+COL child_journal_entries|subject|varchar|YES|-
+COL child_journal_entries|teacherId|uuid|YES|-
+COL child_journal_entries|updatedAt|timestamptz|NO|now()
+COL children|address|text|YES|-
+COL children|childDescription|text|YES|-
+COL children|class|varchar|NO|-
+COL children|contactPhone|varchar|YES|-
+COL children|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL children|dateOfBirth|date|NO|-
+COL children|deletedAt|timestamp|YES|-
+COL children|disabilityType|varchar|NO|-
+COL children|emergencyContact|jsonb|NO|'{}'::jsonb
+COL children|expectedOutcomes|text|YES|-
+COL children|fatherDOB|date|YES|-
+COL children|fatherFullName|varchar|YES|-
+COL children|fatherOccupation|varchar|YES|-
+COL children|firstName|varchar|NO|-
+COL children|gender|enum_children_gender|NO|-
+COL children|groupId|uuid|YES|-
+COL children|id|uuid|NO|-
+COL children|institutionStartDate|date|YES|-
+COL children|lastName|varchar|NO|-
+COL children|medicalDiagnosis|varchar|YES|-
+COL children|motherDOB|date|YES|-
+COL children|motherFullName|varchar|YES|-
+COL children|motherOccupation|varchar|YES|-
+COL children|parentId|uuid|NO|-
+COL children|photo|text|YES|-
+COL children|schoolId|uuid|YES|-
+COL children|specialNeeds|text|YES|-
+COL children|teacher|varchar|NO|-
+COL children|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL daily_monitoring_entries|childId|uuid|NO|-
+COL daily_monitoring_entries|createdAt|timestamptz|NO|-
+COL daily_monitoring_entries|entryDate|date|NO|-
+COL daily_monitoring_entries|giData|jsonb|NO|'{}'::jsonb
+COL daily_monitoring_entries|healthData|jsonb|NO|'{}'::jsonb
+COL daily_monitoring_entries|hygieneData|jsonb|NO|'{}'::jsonb
+COL daily_monitoring_entries|id|uuid|NO|gen_random_uuid()
+COL daily_monitoring_entries|irrId|uuid|YES|-
+COL daily_monitoring_entries|notes|text|YES|-
+COL daily_monitoring_entries|recordedAt|timestamptz|YES|-
+COL daily_monitoring_entries|recordedBy|uuid|YES|-
+COL daily_monitoring_entries|schoolId|uuid|NO|-
+COL daily_monitoring_entries|updatedAt|timestamptz|NO|-
+COL districts|code|varchar|YES|-
+COL districts|createdAt|timestamptz|NO|-
+COL districts|id|uuid|NO|gen_random_uuid()
+COL districts|name|varchar|NO|-
+COL districts|regionId|uuid|NO|-
+COL districts|updatedAt|timestamptz|NO|-
+COL documents|createdAt|timestamptz|NO|-
+COL documents|deletedAt|timestamptz|YES|-
+COL documents|documentType|enum_documents_documentType|NO|-
+COL documents|fileName|varchar|NO|-
+COL documents|filePath|varchar|NO|-
+COL documents|fileSize|int4|YES|-
+COL documents|id|uuid|NO|-
+COL documents|mimeType|varchar|YES|-
+COL documents|rejectionReason|text|YES|-
+COL documents|reviewedAt|timestamptz|YES|-
+COL documents|reviewedBy|uuid|YES|-
+COL documents|status|enum_documents_status|NO|'pending'::enum_documents_status
+COL documents|updatedAt|timestamptz|NO|-
+COL documents|userId|uuid|NO|-
+COL emotional_monitoring|childId|uuid|NO|-
+COL emotional_monitoring|createdAt|timestamptz|NO|now()
+COL emotional_monitoring|date|date|NO|-
+COL emotional_monitoring|deletedAt|timestamptz|YES|-
+COL emotional_monitoring|emotionalState|jsonb|NO|'{"stable": false, "noAnxiety": false, "stableMood": false, "noHostility": false, "calmResponse": false, "showsEmpathy": false, "quickRecovery": false, "positiveEmotions": false, "trustingRelationship": false}'::jsonb
+COL emotional_monitoring|id|uuid|NO|-
+COL emotional_monitoring|notes|text|YES|-
+COL emotional_monitoring|teacherId|uuid|NO|-
+COL emotional_monitoring|teacherSignature|varchar|YES|-
+COL emotional_monitoring|updatedAt|timestamptz|NO|now()
+COL goal_periods|childId|uuid|YES|-
+COL goal_periods|createdAt|timestamptz|NO|-
+COL goal_periods|id|uuid|NO|gen_random_uuid()
+COL goal_periods|irrId|uuid|NO|-
+COL goal_periods|managerSignedAt|timestamptz|YES|-
+COL goal_periods|managerSignedBy|uuid|YES|-
+COL goal_periods|nextAssessmentDate|date|YES|-
+COL goal_periods|nextReviewDate|date|YES|-
+COL goal_periods|overallAssessment|text|YES|-
+COL goal_periods|parentDiscussionDate|date|YES|-
+COL goal_periods|parentRecommendations|text|YES|-
+COL goal_periods|periodEnd|date|NO|-
+COL goal_periods|periodStart|date|NO|-
+COL goal_periods|planChanges|text|YES|-
+COL goal_periods|schoolId|uuid|NO|-
+COL goal_periods|status|enum_goal_periods_status|NO|'active'::enum_goal_periods_status
+COL goal_periods|teacherSignedAt|timestamptz|YES|-
+COL goal_periods|teacherSignedBy|uuid|YES|-
+COL goal_periods|updatedAt|timestamptz|NO|-
+COL government_messages|createdAt|timestamptz|NO|now()
+COL government_messages|escalatedFromId|uuid|YES|-
+COL government_messages|id|uuid|NO|-
+COL government_messages|isRead|bool|NO|false
+COL government_messages|message|text|NO|-
+COL government_messages|parentMessageId|uuid|YES|-
+COL government_messages|readAt|timestamptz|YES|-
+COL government_messages|recipientLevel|enum_government_messages_recipientLevel|NO|'republic'::"enum_government_messages_recipientLevel"
+COL government_messages|repliedAt|timestamptz|YES|-
+COL government_messages|reply|text|YES|-
+COL government_messages|senderId|uuid|NO|-
+COL government_messages|subject|varchar|NO|-
+COL government_messages|updatedAt|timestamptz|NO|now()
+COL government_school_ratings|comment|text|NO|-
+COL government_school_ratings|createdAt|timestamptz|NO|-
+COL government_school_ratings|deletedAt|timestamptz|YES|-
+COL government_school_ratings|govUserId|uuid|YES|-
+COL government_school_ratings|id|uuid|NO|-
+COL government_school_ratings|indicators|jsonb|NO|-
+COL government_school_ratings|period|varchar|NO|-
+COL government_school_ratings|schoolId|uuid|NO|-
+COL government_school_ratings|stars|int4|NO|-
+COL government_school_ratings|updatedAt|timestamptz|NO|-
+COL government_stats|createdAt|timestamp|NO|now()
+COL government_stats|data|jsonb|NO|-
+COL government_stats|district|varchar|YES|-
+COL government_stats|generatedAt|timestamp|NO|now()
+COL government_stats|generatedBy|uuid|YES|-
+COL government_stats|id|uuid|NO|gen_random_uuid()
+COL government_stats|period|enum_government_stats_period|NO|-
+COL government_stats|periodEnd|timestamp|NO|-
+COL government_stats|periodStart|timestamp|NO|-
+COL government_stats|region|varchar|YES|-
+COL government_stats|regionId|uuid|YES|-
+COL government_stats|schoolId|uuid|YES|-
+COL government_stats|statType|enum_government_stats_statType|NO|-
+COL government_stats|summary|jsonb|YES|-
+COL government_stats|updatedAt|timestamp|NO|now()
+COL groups|ageRange|varchar|YES|-
+COL groups|capacity|int4|NO|20
+COL groups|createdAt|timestamp|NO|now()
+COL groups|description|text|YES|-
+COL groups|id|uuid|NO|gen_random_uuid()
+COL groups|name|varchar|NO|-
+COL groups|schoolId|uuid|YES|-
+COL groups|teacherId|uuid|YES|-
+COL groups|updatedAt|timestamp|NO|now()
+COL import_jobs|createdAt|timestamptz|NO|-
+COL import_jobs|createdBy|uuid|YES|-
+COL import_jobs|deletedAt|timestamptz|YES|-
+COL import_jobs|errors|jsonb|NO|'[]'::jsonb
+COL import_jobs|filename|varchar|NO|-
+COL import_jobs|id|uuid|NO|gen_random_uuid()
+COL import_jobs|invalidRows|int4|NO|0
+COL import_jobs|rawCsv|text|NO|-
+COL import_jobs|schoolId|uuid|NO|-
+COL import_jobs|status|enum_import_jobs_status|NO|'ready'::enum_import_jobs_status
+COL import_jobs|totalRows|int4|NO|0
+COL import_jobs|updatedAt|timestamptz|NO|-
+COL import_jobs|validRows|int4|NO|0
+COL irrs|additionalInfo|text|YES|-
+COL irrs|ageAtAssessmentStart|varchar|YES|-
+COL irrs|childFullName|varchar|YES|-
+COL irrs|childId|uuid|YES|-
+COL irrs|childStrengths|text|YES|-
+COL irrs|createdAt|timestamptz|NO|-
+COL irrs|createdBy|uuid|YES|-
+COL irrs|dateOfBirth|date|YES|-
+COL irrs|deletedAt|timestamptz|YES|-
+COL irrs|id|uuid|NO|gen_random_uuid()
+COL irrs|irrStartDate|date|YES|-
+COL irrs|parentId|uuid|YES|-
+COL irrs|ptpkConclusionDate|date|YES|-
+COL irrs|ptpkConclusionNumber|varchar|YES|-
+COL irrs|ptpkDiagnosis|text|YES|-
+COL irrs|ptpkIntakeDate|date|YES|-
+COL irrs|ptpkNotes|text|YES|-
+COL irrs|riskFactors|text|YES|-
+COL irrs|schoolId|uuid|NO|-
+COL irrs|status|enum_irrs_status|NO|'draft'::enum_irrs_status
+COL irrs|updatedAt|timestamptz|NO|-
+COL long_term_goals|childId|uuid|YES|-
+COL long_term_goals|createdAt|timestamptz|NO|-
+COL long_term_goals|goalText|text|NO|-
+COL long_term_goals|id|uuid|NO|gen_random_uuid()
+COL long_term_goals|irrId|uuid|NO|-
+COL long_term_goals|schoolId|uuid|NO|-
+COL long_term_goals|sortOrder|int4|NO|1
+COL long_term_goals|targetPeriodEnd|date|YES|-
+COL long_term_goals|targetPeriodStart|date|YES|-
+COL long_term_goals|updatedAt|timestamptz|NO|-
+COL meal_plans|child_id|uuid|NO|-
+COL meal_plans|created_at|timestamptz|NO|now()
+COL meal_plans|created_by|uuid|YES|-
+COL meal_plans|date|date|NO|-
+COL meal_plans|deleted_at|timestamptz|YES|-
+COL meal_plans|id|uuid|NO|-
+COL meal_plans|meal_type|enum_meal_plans_meal_type|NO|-
+COL meal_plans|notes|text|YES|-
+COL meal_plans|planned_menu|text|NO|-
+COL meal_plans|updated_at|timestamptz|NO|now()
+COL meals|childId|uuid|NO|-
+COL meals|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL meals|date|date|NO|CURRENT_DATE
+COL meals|deletedAt|timestamptz|YES|-
+COL meals|description|text|YES|-
+COL meals|eaten|bool|YES|true
+COL meals|id|uuid|NO|-
+COL meals|mealName|varchar|NO|-
+COL meals|mealType|enum_meals_mealType|NO|-
+COL meals|quantity|varchar|YES|-
+COL meals|specialNotes|text|YES|-
+COL meals|time|time|YES|-
+COL meals|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL media|activityId|uuid|YES|-
+COL media|childId|uuid|NO|-
+COL media|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL media|date|date|NO|CURRENT_DATE
+COL media|deletedAt|timestamptz|YES|-
+COL media|description|text|YES|-
+COL media|id|uuid|NO|-
+COL media|thumbnail|text|YES|-
+COL media|title|varchar|YES|-
+COL media|type|enum_media_type|NO|-
+COL media|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL media|url|text|NO|-
+COL monthly_milestones|actualText|text|YES|-
+COL monthly_milestones|assessedAt|date|YES|-
+COL monthly_milestones|assessedBy|uuid|YES|-
+COL monthly_milestones|childId|uuid|YES|-
+COL monthly_milestones|createdAt|timestamptz|NO|-
+COL monthly_milestones|id|uuid|NO|-
+COL monthly_milestones|irrId|uuid|NO|-
+COL monthly_milestones|longTermGoalId|uuid|NO|-
+COL monthly_milestones|monthNumber|int4|NO|-
+COL monthly_milestones|notes|text|YES|-
+COL monthly_milestones|schoolId|uuid|NO|-
+COL monthly_milestones|status|enum_monthly_milestones_status|NO|'planned'::enum_monthly_milestones_status
+COL monthly_milestones|targetText|text|NO|-
+COL monthly_milestones|updatedAt|timestamptz|NO|-
+COL news|content|text|NO|-
+COL news|createdAt|timestamp|NO|now()
+COL news|createdById|uuid|YES|-
+COL news|id|uuid|NO|gen_random_uuid()
+COL news|published|bool|NO|false
+COL news|schoolId|uuid|YES|-
+COL news|targetAudience|enum_news_targetAudience|NO|'all'::"enum_news_targetAudience"
+COL news|title|varchar|NO|-
+COL news|updatedAt|timestamp|NO|now()
+COL notifications|childId|uuid|YES|-
+COL notifications|createdAt|timestamp|NO|now()
+COL notifications|id|uuid|NO|gen_random_uuid()
+COL notifications|isRead|bool|NO|false
+COL notifications|message|text|NO|-
+COL notifications|readAt|timestamp|YES|-
+COL notifications|relatedId|uuid|YES|-
+COL notifications|relatedType|enum_notifications_relatedType|YES|-
+COL notifications|schoolId|uuid|YES|-
+COL notifications|title|varchar|NO|-
+COL notifications|type|enum_notifications_type|NO|-
+COL notifications|updatedAt|timestamp|NO|now()
+COL notifications|userId|uuid|NO|-
+COL parent_activities|activityDate|timestamptz|NO|-
+COL parent_activities|activityType|enum_parent_activities_activityType|NO|-
+COL parent_activities|createdAt|timestamptz|NO|-
+COL parent_activities|description|text|YES|-
+COL parent_activities|id|uuid|NO|-
+COL parent_activities|location|varchar|YES|-
+COL parent_activities|notes|text|YES|-
+COL parent_activities|parentId|uuid|NO|-
+COL parent_activities|title|varchar|NO|-
+COL parent_activities|updatedAt|timestamptz|NO|-
+COL parent_evaluations|answers|jsonb|NO|'{}'::jsonb
+COL parent_evaluations|created_at|timestamptz|NO|now()
+COL parent_evaluations|id|uuid|NO|-
+COL parent_evaluations|notes|text|YES|-
+COL parent_evaluations|parent_id|uuid|NO|-
+COL parent_evaluations|period|enum_parent_evaluations_period|NO|-
+COL parent_evaluations|school_id|uuid|YES|-
+COL parent_evaluations|submitted_at|timestamptz|NO|now()
+COL parent_evaluations|teacher_id|uuid|YES|-
+COL parent_evaluations|updated_at|timestamptz|NO|now()
+COL parent_meals|calories|int4|YES|-
+COL parent_meals|createdAt|timestamptz|NO|-
+COL parent_meals|description|text|YES|-
+COL parent_meals|id|uuid|NO|-
+COL parent_meals|mealDate|timestamptz|NO|-
+COL parent_meals|mealName|varchar|NO|-
+COL parent_meals|mealType|enum_parent_meals_mealType|NO|-
+COL parent_meals|notes|text|YES|-
+COL parent_meals|parentId|uuid|NO|-
+COL parent_meals|updatedAt|timestamptz|NO|-
+COL parent_media|createdAt|timestamptz|NO|-
+COL parent_media|description|text|YES|-
+COL parent_media|fileName|varchar|NO|-
+COL parent_media|filePath|varchar|NO|-
+COL parent_media|fileSize|int4|YES|-
+COL parent_media|fileType|enum_parent_media_fileType|NO|-
+COL parent_media|id|uuid|NO|-
+COL parent_media|mimeType|varchar|YES|-
+COL parent_media|parentId|uuid|NO|-
+COL parent_media|title|varchar|YES|-
+COL parent_media|updatedAt|timestamptz|NO|-
+COL parent_media|uploadDate|timestamptz|NO|-
+COL progress|academic|jsonb|YES|'{}'::jsonb
+COL progress|behavioral|jsonb|YES|'{}'::jsonb
+COL progress|childId|uuid|NO|-
+COL progress|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL progress|deletedAt|timestamptz|YES|-
+COL progress|id|uuid|NO|-
+COL progress|social|jsonb|YES|'{}'::jsonb
+COL progress|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL quarterly_monitoring_entries|careQualityData|jsonb|NO|'{}'::jsonb
+COL quarterly_monitoring_entries|conditionsData|jsonb|NO|'{}'::jsonb
+COL quarterly_monitoring_entries|createdAt|timestamptz|NO|-
+COL quarterly_monitoring_entries|departures|jsonb|NO|'[]'::jsonb
+COL quarterly_monitoring_entries|documentationData|jsonb|NO|'{}'::jsonb
+COL quarterly_monitoring_entries|id|uuid|NO|gen_random_uuid()
+COL quarterly_monitoring_entries|infoSystemData|jsonb|NO|'{}'::jsonb
+COL quarterly_monitoring_entries|notes|text|YES|-
+COL quarterly_monitoring_entries|parentWorkData|jsonb|NO|'{}'::jsonb
+COL quarterly_monitoring_entries|quarterStart|date|NO|-
+COL quarterly_monitoring_entries|recordedAt|timestamptz|YES|-
+COL quarterly_monitoring_entries|recordedBy|uuid|YES|-
+COL quarterly_monitoring_entries|schoolId|uuid|NO|-
+COL quarterly_monitoring_entries|updatedAt|timestamptz|NO|-
+COL refresh_tokens|created_at|timestamptz|NO|CURRENT_TIMESTAMP
+COL refresh_tokens|expires_at|timestamptz|NO|-
+COL refresh_tokens|id|uuid|NO|-
+COL refresh_tokens|revoked|bool|NO|false
+COL refresh_tokens|revoked_at|timestamptz|YES|-
+COL refresh_tokens|token_hash|varchar|NO|-
+COL refresh_tokens|updated_at|timestamptz|NO|CURRENT_TIMESTAMP
+COL refresh_tokens|user_id|uuid|NO|-
+COL regions|code|varchar|NO|-
+COL regions|createdAt|timestamptz|NO|-
+COL regions|id|uuid|NO|gen_random_uuid()
+COL regions|isRepublic|bool|NO|false
+COL regions|name|varchar|NO|-
+COL regions|nameCyrl|varchar|YES|-
+COL regions|nameRu|varchar|YES|-
+COL regions|slug|varchar|NO|-
+COL regions|updatedAt|timestamptz|NO|-
+COL school_categories|code|varchar|NO|-
+COL school_categories|createdAt|timestamptz|NO|-
+COL school_categories|id|uuid|NO|gen_random_uuid()
+COL school_categories|isActive|bool|NO|true
+COL school_categories|name|varchar|NO|-
+COL school_categories|updatedAt|timestamptz|NO|-
+COL school_ratings|comment|text|NO|-
+COL school_ratings|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL school_ratings|deletedAt|timestamptz|YES|-
+COL school_ratings|evaluation|jsonb|YES|'{}'::jsonb
+COL school_ratings|id|uuid|NO|gen_random_uuid()
+COL school_ratings|indicators|jsonb|YES|-
+COL school_ratings|numericRating|int4|YES|-
+COL school_ratings|parentId|uuid|NO|-
+COL school_ratings|schoolId|uuid|NO|-
+COL school_ratings|stars|int4|NO|-
+COL school_ratings|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL schools|address|text|YES|-
+COL schools|categoryId|uuid|YES|-
+COL schools|city|varchar|YES|-
+COL schools|createdAt|timestamp|NO|now()
+COL schools|description|text|YES|-
+COL schools|director|varchar|YES|-
+COL schools|districtId|uuid|YES|-
+COL schools|email|varchar|YES|-
+COL schools|id|uuid|NO|gen_random_uuid()
+COL schools|isActive|bool|NO|true
+COL schools|name|varchar|NO|-
+COL schools|phone|varchar|YES|-
+COL schools|region|varchar|YES|-
+COL schools|regionId|uuid|YES|-
+COL schools|slug|varchar|NO|-
+COL schools|type|varchar|NO|'support'::character varying
+COL schools|updatedAt|timestamp|NO|now()
+COL service_plans|child_id|uuid|NO|-
+COL service_plans|created_at|timestamptz|NO|now()
+COL service_plans|created_by|uuid|YES|-
+COL service_plans|deleted_at|timestamptz|YES|-
+COL service_plans|id|uuid|NO|-
+COL service_plans|months|jsonb|NO|'{"apr": false, "aug": false, "dec": false, "feb": false, "jan": false, "jul": false, "jun": false, "mar": false, "may": false, "nov": false, "oct": false, "sep": false}'::jsonb
+COL service_plans|service_type|enum_service_plans_service_type|NO|-
+COL service_plans|updated_at|timestamptz|NO|now()
+COL service_plans|year|int4|NO|-
+COL short_term_goals|childId|uuid|YES|-
+COL short_term_goals|createdAt|timestamptz|NO|-
+COL short_term_goals|goalText|text|NO|-
+COL short_term_goals|id|uuid|NO|gen_random_uuid()
+COL short_term_goals|irrId|uuid|NO|-
+COL short_term_goals|methods|text|YES|-
+COL short_term_goals|observations|text|YES|-
+COL short_term_goals|periodId|uuid|NO|-
+COL short_term_goals|progress|text|YES|-
+COL short_term_goals|schoolId|uuid|NO|-
+COL short_term_goals|skillAreaCode|varchar|YES|-
+COL short_term_goals|sortOrder|int4|NO|1
+COL short_term_goals|targetDate|date|YES|-
+COL short_term_goals|taskSetDate|date|YES|-
+COL short_term_goals|tasks|text|YES|-
+COL short_term_goals|updatedAt|timestamptz|NO|-
+COL teacher_ratings|comment|text|YES|-
+COL teacher_ratings|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL teacher_ratings|deletedAt|timestamptz|YES|-
+COL teacher_ratings|id|uuid|NO|gen_random_uuid()
+COL teacher_ratings|parentId|uuid|NO|-
+COL teacher_ratings|stars|int4|NO|-
+COL teacher_ratings|teacherId|uuid|NO|-
+COL teacher_ratings|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL teacher_reflections|content|text|NO|-
+COL teacher_reflections|createdAt|timestamptz|NO|now()
+COL teacher_reflections|date|date|NO|-
+COL teacher_reflections|deletedAt|timestamptz|YES|-
+COL teacher_reflections|id|uuid|NO|gen_random_uuid()
+COL teacher_reflections|schoolId|uuid|NO|-
+COL teacher_reflections|teacherId|uuid|YES|-
+COL teacher_reflections|updatedAt|timestamptz|NO|now()
+COL teacher_resources|created_at|timestamptz|NO|now()
+COL teacher_resources|description|text|YES|-
+COL teacher_resources|id|uuid|NO|-
+COL teacher_resources|is_active|bool|NO|true
+COL teacher_resources|school_id|uuid|YES|-
+COL teacher_resources|teacher_id|uuid|NO|-
+COL teacher_resources|title|varchar|NO|-
+COL teacher_resources|type|enum_teacher_resources_type|NO|-
+COL teacher_resources|updated_at|timestamptz|NO|now()
+COL teacher_resources|url|varchar|YES|-
+COL teacher_responsibilities|assignedDate|timestamptz|NO|-
+COL teacher_responsibilities|createdAt|timestamptz|NO|-
+COL teacher_responsibilities|description|text|YES|-
+COL teacher_responsibilities|id|uuid|NO|-
+COL teacher_responsibilities|priority|enum_teacher_responsibilities_priority|NO|'medium'::enum_teacher_responsibilities_priority
+COL teacher_responsibilities|status|enum_teacher_responsibilities_status|NO|'active'::enum_teacher_responsibilities_status
+COL teacher_responsibilities|teacherId|uuid|NO|-
+COL teacher_responsibilities|title|varchar|NO|-
+COL teacher_responsibilities|updatedAt|timestamptz|NO|-
+COL teacher_tasks|completedAt|timestamptz|YES|-
+COL teacher_tasks|createdAt|timestamptz|NO|-
+COL teacher_tasks|description|text|YES|-
+COL teacher_tasks|id|uuid|NO|-
+COL teacher_tasks|notes|text|YES|-
+COL teacher_tasks|status|enum_teacher_tasks_status|NO|'pending'::enum_teacher_tasks_status
+COL teacher_tasks|taskDate|timestamptz|NO|-
+COL teacher_tasks|teacherId|uuid|NO|-
+COL teacher_tasks|title|varchar|NO|-
+COL teacher_tasks|updatedAt|timestamptz|NO|-
+COL teacher_work_history|completedAt|timestamptz|YES|-
+COL teacher_work_history|createdAt|timestamptz|NO|-
+COL teacher_work_history|deadline|timestamptz|YES|-
+COL teacher_work_history|description|text|YES|-
+COL teacher_work_history|id|uuid|NO|-
+COL teacher_work_history|notes|text|YES|-
+COL teacher_work_history|status|enum_teacher_work_history_status|NO|'pending'::enum_teacher_work_history_status
+COL teacher_work_history|teacherId|uuid|NO|-
+COL teacher_work_history|title|varchar|NO|-
+COL teacher_work_history|updatedAt|timestamptz|NO|-
+COL teacher_work_history|workDate|timestamptz|NO|-
+COL teacher_work_history|workType|enum_teacher_work_history_workType|NO|-
+COL therapies|ageGroup|enum_therapies_ageGroup|NO|'all'::"enum_therapies_ageGroup"
+COL therapies|contentType|enum_therapies_contentType|YES|-
+COL therapies|contentUrl|text|YES|-
+COL therapies|createdAt|timestamptz|NO|now()
+COL therapies|createdBy|uuid|YES|-
+COL therapies|deletedAt|timestamptz|YES|-
+COL therapies|description|text|YES|-
+COL therapies|difficultyLevel|enum_therapies_difficultyLevel|NO|'all'::"enum_therapies_difficultyLevel"
+COL therapies|duration|int4|YES|-
+COL therapies|id|uuid|NO|-
+COL therapies|isActive|bool|NO|true
+COL therapies|rating|numeric|YES|0
+COL therapies|ratingCount|int4|NO|0
+COL therapies|tags|_varchar|YES|(ARRAY[]::character varying[])::character varying(255)[]
+COL therapies|therapyType|enum_therapies_therapyType|NO|-
+COL therapies|title|varchar|NO|-
+COL therapies|updatedAt|timestamptz|NO|now()
+COL therapies|usageCount|int4|NO|0
+COL therapy_usages|childId|uuid|YES|-
+COL therapy_usages|createdAt|timestamptz|NO|now()
+COL therapy_usages|deletedAt|timestamptz|YES|-
+COL therapy_usages|duration|int4|YES|-
+COL therapy_usages|endTime|timestamptz|YES|-
+COL therapy_usages|feedback|text|YES|-
+COL therapy_usages|id|uuid|NO|-
+COL therapy_usages|notes|text|YES|-
+COL therapy_usages|parentId|uuid|YES|-
+COL therapy_usages|progress|int4|YES|-
+COL therapy_usages|rating|int4|YES|-
+COL therapy_usages|startTime|timestamptz|NO|now()
+COL therapy_usages|teacherId|uuid|YES|-
+COL therapy_usages|therapyId|uuid|NO|-
+COL therapy_usages|updatedAt|timestamptz|NO|now()
+COL users|avatar|text|YES|-
+COL users|createdAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL users|createdBy|uuid|YES|-
+COL users|deletedAt|timestamp|YES|-
+COL users|documentsApproved|bool|NO|false
+COL users|email|varchar|NO|-
+COL users|firstName|varchar|NO|-
+COL users|govAccessGrants|jsonb|YES|-
+COL users|govLevel|varchar|YES|-
+COL users|govRegionId|uuid|YES|-
+COL users|govType|varchar|YES|-
+COL users|groupId|uuid|YES|-
+COL users|id|uuid|NO|-
+COL users|isActive|bool|NO|false
+COL users|isSuperAdmin|bool|YES|false
+COL users|isVerified|bool|NO|false
+COL users|lastName|varchar|NO|-
+COL users|mustChangePassword|bool|NO|false
+COL users|notificationPreferences|jsonb|YES|'{"push": true, "email": true}'::jsonb
+COL users|password|varchar|NO|-
+COL users|phone|varchar|YES|-
+COL users|privacyConsentedAt|timestamptz|YES|-
+COL users|rating|float8|YES|'0'::double precision
+COL users|role|enum_users_role|NO|'parent'::enum_users_role
+COL users|schoolId|uuid|YES|-
+COL users|status|varchar|YES|'active'::character varying
+COL users|teacherId|uuid|YES|-
+COL users|totalRatings|int4|YES|0
+COL users|updatedAt|timestamptz|NO|CURRENT_TIMESTAMP
+COL weekly_monitoring_entries|childId|uuid|NO|-
+COL weekly_monitoring_entries|createdAt|timestamptz|NO|-
+COL weekly_monitoring_entries|emotionalData|jsonb|NO|'{}'::jsonb
+COL weekly_monitoring_entries|environmentData|jsonb|NO|'{}'::jsonb
+COL weekly_monitoring_entries|id|uuid|NO|gen_random_uuid()
+COL weekly_monitoring_entries|irrId|uuid|YES|-
+COL weekly_monitoring_entries|notes|text|YES|-
+COL weekly_monitoring_entries|recordedAt|timestamptz|YES|-
+COL weekly_monitoring_entries|recordedBy|uuid|YES|-
+COL weekly_monitoring_entries|schoolId|uuid|NO|-
+COL weekly_monitoring_entries|updatedAt|timestamptz|NO|-
+COL weekly_monitoring_entries|weekStart|date|NO|-
+IDX SequelizeMeta|SequelizeMeta_pkey|ON public."SequelizeMeta" USING btree (name)
+IDX activities|activities_childId_date_idx|ON public.activities USING btree ("childId", date)
+IDX activities|activities_pkey|ON public.activities USING btree (id)
+IDX activities|idx_activities_childId|ON public.activities USING btree ("childId")
+IDX admin_registration_requests|admin_registration_requests_created_at|ON public.admin_registration_requests USING btree ("createdAt")
+IDX admin_registration_requests|admin_registration_requests_email|ON public.admin_registration_requests USING btree (email)
+IDX admin_registration_requests|admin_registration_requests_email_key|ON public.admin_registration_requests USING btree (email)
+IDX admin_registration_requests|admin_registration_requests_pkey|ON public.admin_registration_requests USING btree (id)
+IDX admin_registration_requests|admin_registration_requests_reviewed_by|ON public.admin_registration_requests USING btree ("reviewedBy")
+IDX admin_registration_requests|admin_registration_requests_status|ON public.admin_registration_requests USING btree (status)
+IDX ai_warnings|ai_warnings_pkey|ON public.ai_warnings USING btree (id)
+IDX assessment_criteria|assessment_criteria_pkey|ON public.assessment_criteria USING btree (id)
+IDX assessment_criteria|idx_assessment_criteria_code_unique|ON public.assessment_criteria USING btree (code)
+IDX assessment_criteria|idx_assessment_criteria_is_active|ON public.assessment_criteria USING btree ("isActive")
+IDX assessment_criteria|idx_assessment_criteria_sort_order|ON public.assessment_criteria USING btree ("sortOrder")
+IDX assessment_scores|assessment_scores_pkey|ON public.assessment_scores USING btree (id)
+IDX assessment_scores|idx_assessment_scores_criterion_id|ON public.assessment_scores USING btree ("criterionId")
+IDX assessment_scores|idx_assessment_scores_school_id|ON public.assessment_scores USING btree ("schoolId")
+IDX assessment_scores|idx_assessment_scores_session_criterion_unique|ON public.assessment_scores USING btree ("sessionId", "criterionId")
+IDX assessment_scores|idx_assessment_scores_session_id|ON public.assessment_scores USING btree ("sessionId")
+IDX assessment_sessions|assessment_sessions_pkey|ON public.assessment_sessions USING btree (id)
+IDX assessment_sessions|idx_assessment_sessions_child_id|ON public.assessment_sessions USING btree ("childId")
+IDX assessment_sessions|idx_assessment_sessions_irr_id|ON public.assessment_sessions USING btree ("irrId")
+IDX assessment_sessions|idx_assessment_sessions_irr_type_unique|ON public.assessment_sessions USING btree ("irrId", "sessionType") WHERE ("sessionType" <> 'custom'::"enum_assessment_sessions_sessionType")
+IDX assessment_sessions|idx_assessment_sessions_school_id|ON public.assessment_sessions USING btree ("schoolId")
+IDX audit_log|audit_log_actor_id_idx|ON public.audit_log USING btree ("actorId")
+IDX audit_log|audit_log_entity_idx|ON public.audit_log USING btree (entity, "entityId")
+IDX audit_log|audit_log_occurred_at_idx|ON public.audit_log USING btree ("occurredAt")
+IDX audit_log|audit_log_pkey|ON public.audit_log USING btree (id)
+IDX audit_log|audit_log_school_id_idx|ON public.audit_log USING btree ("schoolId")
+IDX business_stats|business_stats_pkey|ON public.business_stats USING btree (id)
+IDX chat_messages|chat_messages_conversation_id_created_at|ON public.chat_messages USING btree ("conversationId", "createdAt")
+IDX chat_messages|chat_messages_pkey|ON public.chat_messages USING btree (id)
+IDX chat_messages|chat_messages_sender_id|ON public.chat_messages USING btree ("senderId")
+IDX chat_messages|idx_chat_messages_conversationId_createdAt|ON public.chat_messages USING btree ("conversationId", "createdAt")
+IDX chat_messages|idx_chat_messages_senderId|ON public.chat_messages USING btree ("senderId")
+IDX child_assessments|child_assessments_child_category_date_unique|ON public.child_assessments USING btree (child_id, category, date)
+IDX child_assessments|child_assessments_child_id|ON public.child_assessments USING btree (child_id)
+IDX child_assessments|child_assessments_pkey|ON public.child_assessments USING btree (id)
+IDX child_assessments|child_assessments_teacher_id|ON public.child_assessments USING btree (teacher_id)
+IDX child_attendance|child_attendance_child_date_unique|ON public.child_attendance USING btree ("childId", date) WHERE ("deletedAt" IS NULL)
+IDX child_attendance|child_attendance_pkey|ON public.child_attendance USING btree (id)
+IDX child_attendance|child_attendance_school_date_idx|ON public.child_attendance USING btree ("schoolId", date)
+IDX child_attendance|child_attendance_teacher_id_idx|ON public.child_attendance USING btree ("teacherId")
+IDX child_goal_reviews|child_goal_reviews_pkey|ON public.child_goal_reviews USING btree (id)
+IDX child_goal_reviews|idx_goal_review_goal_date|ON public.child_goal_reviews USING btree ("goalId", "reviewDate" DESC)
+IDX child_goals|child_goals_pkey|ON public.child_goals USING btree (id)
+IDX child_goals|idx_goal_child_progress|ON public.child_goals USING btree ("childId", "currentProgress") WHERE ("deletedAt" IS NULL)
+IDX child_goals|idx_goal_created_by|ON public.child_goals USING btree ("createdBy")
+IDX child_goals|idx_goal_school_created|ON public.child_goals USING btree ("schoolId", "createdAt" DESC) WHERE ("deletedAt" IS NULL)
+IDX child_journal_entries|child_journal_entries_child_date_idx|ON public.child_journal_entries USING btree ("childId", date)
+IDX child_journal_entries|child_journal_entries_pkey|ON public.child_journal_entries USING btree (id)
+IDX child_journal_entries|child_journal_entries_school_date_idx|ON public.child_journal_entries USING btree ("schoolId", date)
+IDX children|children_parentId_idx|ON public.children USING btree ("parentId")
+IDX children|children_pkey|ON public.children USING btree (id)
+IDX children|idx_children_groupId|ON public.children USING btree ("groupId")
+IDX children|idx_children_schoolId|ON public.children USING btree ("schoolId")
+IDX daily_monitoring_entries|daily_monitoring_entries_pkey|ON public.daily_monitoring_entries USING btree (id)
+IDX daily_monitoring_entries|idx_daily_monitoring_child_date_unique|ON public.daily_monitoring_entries USING btree ("childId", "entryDate")
+IDX daily_monitoring_entries|idx_daily_monitoring_recorded_by|ON public.daily_monitoring_entries USING btree ("recordedBy")
+IDX daily_monitoring_entries|idx_daily_monitoring_school_date|ON public.daily_monitoring_entries USING btree ("schoolId", "entryDate")
+IDX districts|districts_pkey|ON public.districts USING btree (id)
+IDX documents|documents_pkey|ON public.documents USING btree (id)
+IDX documents|documents_status|ON public.documents USING btree (status)
+IDX documents|documents_user_id|ON public.documents USING btree ("userId")
+IDX documents|idx_documents_reviewedBy|ON public.documents USING btree ("reviewedBy")
+IDX documents|idx_documents_userId|ON public.documents USING btree ("userId")
+IDX emotional_monitoring|em_child_idx|ON public.emotional_monitoring USING btree ("childId")
+IDX emotional_monitoring|emotional_monitoring_pkey|ON public.emotional_monitoring USING btree (id)
+IDX emotional_monitoring|idx_emotional_monitoring_date|ON public.emotional_monitoring USING btree (date)
+IDX emotional_monitoring|idx_emotional_monitoring_not_deleted|ON public.emotional_monitoring USING btree ("deletedAt") WHERE ("deletedAt" IS NULL)
+IDX emotional_monitoring|idx_emotional_monitoring_teacher_id|ON public.emotional_monitoring USING btree ("teacherId")
+IDX emotional_monitoring|unique_child_date|ON public.emotional_monitoring USING btree ("childId", date)
+IDX goal_periods|goal_periods_pkey|ON public.goal_periods USING btree (id)
+IDX goal_periods|idx_goal_periods_child_id|ON public.goal_periods USING btree ("childId")
+IDX goal_periods|idx_goal_periods_irr_id|ON public.goal_periods USING btree ("irrId")
+IDX goal_periods|idx_goal_periods_irr_period_start|ON public.goal_periods USING btree ("irrId", "periodStart")
+IDX goal_periods|idx_goal_periods_school_id|ON public.goal_periods USING btree ("schoolId")
+IDX goal_periods|idx_goal_periods_status|ON public.goal_periods USING btree (status)
+IDX government_messages|government_messages_created_at|ON public.government_messages USING btree ("createdAt")
+IDX government_messages|government_messages_escalated_from_idx|ON public.government_messages USING btree ("escalatedFromId")
+IDX government_messages|government_messages_is_read|ON public.government_messages USING btree ("isRead")
+IDX government_messages|government_messages_parent_message_id|ON public.government_messages USING btree ("parentMessageId")
+IDX government_messages|government_messages_recipient_level_idx|ON public.government_messages USING btree ("recipientLevel")
+IDX government_messages|government_messages_sender_id|ON public.government_messages USING btree ("senderId")
+IDX government_messages|super_admin_messages_pkey|ON public.government_messages USING btree (id)
+IDX government_school_ratings|government_school_ratings_pkey|ON public.government_school_ratings USING btree (id)
+IDX government_school_ratings|idx_gov_school_ratings_gov_user|ON public.government_school_ratings USING btree ("govUserId")
+IDX government_school_ratings|idx_gov_school_ratings_school|ON public.government_school_ratings USING btree ("schoolId")
+IDX government_school_ratings|idx_gov_school_ratings_unique_active|ON public.government_school_ratings USING btree ("schoolId", "govUserId", period) WHERE ("deletedAt" IS NULL)
+IDX government_stats|government_stats_pkey|ON public.government_stats USING btree (id)
+IDX government_stats|government_stats_region_stat_type|ON public.government_stats USING btree (region, "statType")
+IDX government_stats|government_stats_stat_type_period|ON public.government_stats USING btree ("statType", period)
+IDX government_stats|idx_government_stats_region_id|ON public.government_stats USING btree ("regionId")
+IDX groups|groups_pkey|ON public.groups USING btree (id)
+IDX groups|idx_groups_school_id|ON public.groups USING btree ("schoolId")
+IDX import_jobs|import_jobs_created_by|ON public.import_jobs USING btree ("createdBy")
+IDX import_jobs|import_jobs_pkey|ON public.import_jobs USING btree (id)
+IDX import_jobs|import_jobs_school_created|ON public.import_jobs USING btree ("schoolId", "createdAt")
+IDX import_jobs|import_jobs_status|ON public.import_jobs USING btree (status)
+IDX irrs|idx_irrs_child_id|ON public.irrs USING btree ("childId")
+IDX irrs|idx_irrs_child_status_active|ON public.irrs USING btree ("childId", status) WHERE ("deletedAt" IS NULL)
+IDX irrs|idx_irrs_parent_id|ON public.irrs USING btree ("parentId")
+IDX irrs|idx_irrs_school_id|ON public.irrs USING btree ("schoolId")
+IDX irrs|idx_irrs_status|ON public.irrs USING btree (status)
+IDX irrs|irrs_pkey|ON public.irrs USING btree (id)
+IDX long_term_goals|idx_long_term_goals_child_id|ON public.long_term_goals USING btree ("childId")
+IDX long_term_goals|idx_long_term_goals_irr_id|ON public.long_term_goals USING btree ("irrId")
+IDX long_term_goals|idx_long_term_goals_irr_sort|ON public.long_term_goals USING btree ("irrId", "sortOrder")
+IDX long_term_goals|idx_long_term_goals_school_id|ON public.long_term_goals USING btree ("schoolId")
+IDX long_term_goals|long_term_goals_pkey|ON public.long_term_goals USING btree (id)
+IDX meal_plans|meal_plans_child_date_meal_type_unique|ON public.meal_plans USING btree (child_id, date, meal_type)
+IDX meal_plans|meal_plans_child_id|ON public.meal_plans USING btree (child_id)
+IDX meal_plans|meal_plans_date|ON public.meal_plans USING btree (date)
+IDX meal_plans|meal_plans_pkey|ON public.meal_plans USING btree (id)
+IDX meals|meals_childId_date_idx|ON public.meals USING btree ("childId", date)
+IDX meals|meals_pkey|ON public.meals USING btree (id)
+IDX media|media_childId_date_idx|ON public.media USING btree ("childId", date)
+IDX media|media_pkey|ON public.media USING btree (id)
+IDX media|media_type_idx|ON public.media USING btree (type)
+IDX monthly_milestones|mm_child_month_idx|ON public.monthly_milestones USING btree ("childId", "monthNumber")
+IDX monthly_milestones|mm_irr_idx|ON public.monthly_milestones USING btree ("irrId")
+IDX monthly_milestones|mm_ltg_idx|ON public.monthly_milestones USING btree ("longTermGoalId")
+IDX monthly_milestones|mm_ltg_month_unique|ON public.monthly_milestones USING btree ("longTermGoalId", "monthNumber")
+IDX monthly_milestones|mm_school_idx|ON public.monthly_milestones USING btree ("schoolId")
+IDX monthly_milestones|monthly_milestones_pkey|ON public.monthly_milestones USING btree (id)
+IDX news|news_pkey|ON public.news USING btree (id)
+IDX news|news_school_id|ON public.news USING btree ("schoolId")
+IDX notifications|notifications_pkey|ON public.notifications USING btree (id)
+IDX parent_activities|idx_parent_activities_parentId|ON public.parent_activities USING btree ("parentId")
+IDX parent_activities|parent_activities_activity_date|ON public.parent_activities USING btree ("activityDate")
+IDX parent_activities|parent_activities_parent_id|ON public.parent_activities USING btree ("parentId")
+IDX parent_activities|parent_activities_pkey|ON public.parent_activities USING btree (id)
+IDX parent_evaluations|parent_evaluations_parent_id|ON public.parent_evaluations USING btree (parent_id)
+IDX parent_evaluations|parent_evaluations_period|ON public.parent_evaluations USING btree (period)
+IDX parent_evaluations|parent_evaluations_pkey|ON public.parent_evaluations USING btree (id)
+IDX parent_evaluations|parent_evaluations_school_id|ON public.parent_evaluations USING btree (school_id)
+IDX parent_evaluations|parent_evaluations_submitted_at|ON public.parent_evaluations USING btree (submitted_at)
+IDX parent_evaluations|parent_evaluations_teacher_id|ON public.parent_evaluations USING btree (teacher_id)
+IDX parent_meals|idx_parent_meals_parentId|ON public.parent_meals USING btree ("parentId")
+IDX parent_meals|parent_meals_meal_date|ON public.parent_meals USING btree ("mealDate")
+IDX parent_meals|parent_meals_parent_id|ON public.parent_meals USING btree ("parentId")
+IDX parent_meals|parent_meals_pkey|ON public.parent_meals USING btree (id)
+IDX parent_media|idx_parent_media_parentId|ON public.parent_media USING btree ("parentId")
+IDX parent_media|parent_media_parent_id|ON public.parent_media USING btree ("parentId")
+IDX parent_media|parent_media_pkey|ON public.parent_media USING btree (id)
+IDX progress|idx_progress_not_deleted|ON public.progress USING btree ("deletedAt") WHERE ("deletedAt" IS NULL)
+IDX progress|progress_childId_key|ON public.progress USING btree ("childId")
+IDX progress|progress_childId_unique|ON public.progress USING btree ("childId")
+IDX progress|progress_pkey|ON public.progress USING btree (id)
+IDX quarterly_monitoring_entries|idx_quarterly_monitoring_recorded_by|ON public.quarterly_monitoring_entries USING btree ("recordedBy")
+IDX quarterly_monitoring_entries|idx_quarterly_monitoring_school_id|ON public.quarterly_monitoring_entries USING btree ("schoolId")
+IDX quarterly_monitoring_entries|idx_quarterly_monitoring_school_quarter_unique|ON public.quarterly_monitoring_entries USING btree ("schoolId", "quarterStart")
+IDX quarterly_monitoring_entries|quarterly_monitoring_entries_pkey|ON public.quarterly_monitoring_entries USING btree (id)
+IDX refresh_tokens|idx_refresh_tokens_revoked|ON public.refresh_tokens USING btree (revoked)
+IDX refresh_tokens|idx_refresh_tokens_token_hash|ON public.refresh_tokens USING btree (token_hash)
+IDX refresh_tokens|idx_refresh_tokens_user_id|ON public.refresh_tokens USING btree (user_id)
+IDX refresh_tokens|refresh_tokens_pkey|ON public.refresh_tokens USING btree (id)
+IDX regions|idx_regions_code|ON public.regions USING btree (code)
+IDX regions|idx_regions_slug|ON public.regions USING btree (slug)
+IDX regions|regions_code_key|ON public.regions USING btree (code)
+IDX regions|regions_pkey|ON public.regions USING btree (id)
+IDX school_categories|idx_school_categories_code|ON public.school_categories USING btree (code)
+IDX school_categories|school_categories_code_key|ON public.school_categories USING btree (code)
+IDX school_categories|school_categories_pkey|ON public.school_categories USING btree (id)
+IDX school_ratings|school_ratings_pkey|ON public.school_ratings USING btree (id)
+IDX school_ratings|school_ratings_school_id|ON public.school_ratings USING btree ("schoolId")
+IDX school_ratings|school_ratings_school_parent_unique|ON public.school_ratings USING btree ("schoolId", "parentId")
+IDX schools|idx_schools_category_id|ON public.schools USING btree ("categoryId")
+IDX schools|idx_schools_region_id|ON public.schools USING btree ("regionId")
+IDX schools|idx_schools_slug|ON public.schools USING btree (slug)
+IDX schools|schools_city|ON public.schools USING btree (city)
+IDX schools|schools_pkey|ON public.schools USING btree (id)
+IDX schools|schools_region|ON public.schools USING btree (region)
+IDX schools|schools_type|ON public.schools USING btree (type)
+IDX service_plans|service_plans_child_id|ON public.service_plans USING btree (child_id)
+IDX service_plans|service_plans_child_year_service_unique|ON public.service_plans USING btree (child_id, year, service_type) WHERE (deleted_at IS NULL)
+IDX service_plans|service_plans_pkey|ON public.service_plans USING btree (id)
+IDX short_term_goals|idx_short_term_goals_child_id|ON public.short_term_goals USING btree ("childId")
+IDX short_term_goals|idx_short_term_goals_irr_id|ON public.short_term_goals USING btree ("irrId")
+IDX short_term_goals|idx_short_term_goals_period_id|ON public.short_term_goals USING btree ("periodId")
+IDX short_term_goals|idx_short_term_goals_period_sort|ON public.short_term_goals USING btree ("periodId", "sortOrder")
+IDX short_term_goals|idx_short_term_goals_school_id|ON public.short_term_goals USING btree ("schoolId")
+IDX short_term_goals|short_term_goals_pkey|ON public.short_term_goals USING btree (id)
+IDX teacher_ratings|teacher_ratings_pkey|ON public.teacher_ratings USING btree (id)
+IDX teacher_ratings|teacher_ratings_teacher_id|ON public.teacher_ratings USING btree ("teacherId")
+IDX teacher_ratings|teacher_ratings_teacher_parent_unique|ON public.teacher_ratings USING btree ("teacherId", "parentId")
+IDX teacher_reflections|teacher_reflections_pkey|ON public.teacher_reflections USING btree (id)
+IDX teacher_reflections|teacher_reflections_teacher_date_idx|ON public.teacher_reflections USING btree ("teacherId", date)
+IDX teacher_reflections|teacher_reflections_teacher_date_unique|ON public.teacher_reflections USING btree ("teacherId", date)
+IDX teacher_resources|teacher_resources_pkey|ON public.teacher_resources USING btree (id)
+IDX teacher_resources|teacher_resources_school_id_type|ON public.teacher_resources USING btree (school_id, type)
+IDX teacher_resources|teacher_resources_teacher_id|ON public.teacher_resources USING btree (teacher_id)
+IDX teacher_resources|teacher_resources_type|ON public.teacher_resources USING btree (type)
+IDX teacher_responsibilities|idx_teacher_responsibilities_teacherId|ON public.teacher_responsibilities USING btree ("teacherId")
+IDX teacher_responsibilities|teacher_responsibilities_pkey|ON public.teacher_responsibilities USING btree (id)
+IDX teacher_responsibilities|teacher_responsibilities_teacher_id|ON public.teacher_responsibilities USING btree ("teacherId")
+IDX teacher_tasks|idx_teacher_tasks_teacherId|ON public.teacher_tasks USING btree ("teacherId")
+IDX teacher_tasks|teacher_tasks_pkey|ON public.teacher_tasks USING btree (id)
+IDX teacher_tasks|teacher_tasks_teacher_id|ON public.teacher_tasks USING btree ("teacherId")
+IDX teacher_work_history|idx_teacher_work_history_teacherId|ON public.teacher_work_history USING btree ("teacherId")
+IDX teacher_work_history|teacher_work_history_deadline|ON public.teacher_work_history USING btree (deadline)
+IDX teacher_work_history|teacher_work_history_pkey|ON public.teacher_work_history USING btree (id)
+IDX teacher_work_history|teacher_work_history_teacher_id|ON public.teacher_work_history USING btree ("teacherId")
+IDX therapies|idx_therapies_age_group|ON public.therapies USING btree ("ageGroup")
+IDX therapies|idx_therapies_created_by|ON public.therapies USING btree ("createdBy")
+IDX therapies|idx_therapies_difficulty_level|ON public.therapies USING btree ("difficultyLevel")
+IDX therapies|idx_therapies_is_active|ON public.therapies USING btree ("isActive")
+IDX therapies|idx_therapies_therapy_type|ON public.therapies USING btree ("therapyType")
+IDX therapies|therapies_pkey|ON public.therapies USING btree (id)
+IDX therapy_usages|idx_therapy_usages_child_id|ON public.therapy_usages USING btree ("childId")
+IDX therapy_usages|idx_therapy_usages_parent_id|ON public.therapy_usages USING btree ("parentId")
+IDX therapy_usages|idx_therapy_usages_start_time|ON public.therapy_usages USING btree ("startTime")
+IDX therapy_usages|idx_therapy_usages_teacher_id|ON public.therapy_usages USING btree ("teacherId")
+IDX therapy_usages|idx_therapy_usages_therapy_id|ON public.therapy_usages USING btree ("therapyId")
+IDX therapy_usages|therapy_usages_pkey|ON public.therapy_usages USING btree (id)
+IDX users|idx_users_createdBy|ON public.users USING btree ("createdBy")
+IDX users|idx_users_groupId|ON public.users USING btree ("groupId")
+IDX users|idx_users_schoolId|ON public.users USING btree ("schoolId")
+IDX users|idx_users_status_non_active|ON public.users USING btree (status) WHERE ((status)::text <> 'active'::text)
+IDX users|idx_users_teacherId|ON public.users USING btree ("teacherId")
+IDX users|users_email_key|ON public.users USING btree (email)
+IDX users|users_email_unique|ON public.users USING btree (email)
+IDX users|users_is_active_idx|ON public.users USING btree ("isActive")
+IDX users|users_pkey|ON public.users USING btree (id)
+IDX users|users_role_idx|ON public.users USING btree (role)
+IDX weekly_monitoring_entries|idx_weekly_monitoring_child_week_unique|ON public.weekly_monitoring_entries USING btree ("childId", "weekStart")
+IDX weekly_monitoring_entries|idx_weekly_monitoring_recorded_by|ON public.weekly_monitoring_entries USING btree ("recordedBy")
+IDX weekly_monitoring_entries|idx_weekly_monitoring_school_week|ON public.weekly_monitoring_entries USING btree ("schoolId", "weekStart")
+IDX weekly_monitoring_entries|weekly_monitoring_entries_pkey|ON public.weekly_monitoring_entries USING btree (id)
+CON SequelizeMeta|SequelizeMeta_name_not_null|n|NOT NULL name
+CON SequelizeMeta|SequelizeMeta_pkey|p|PRIMARY KEY (name)
+CON activities|activities_childId_not_null|n|NOT NULL "childId"
+CON activities|activities_createdAt_not_null|n|NOT NULL "createdAt"
+CON activities|activities_date_not_null|n|NOT NULL date
+CON activities|activities_description_not_null|n|NOT NULL description
+CON activities|activities_duration_not_null|n|NOT NULL duration
+CON activities|activities_id_not_null|n|NOT NULL id
+CON activities|activities_pkey|p|PRIMARY KEY (id)
+CON activities|activities_teacher_not_null|n|NOT NULL teacher
+CON activities|activities_title_not_null|n|NOT NULL title
+CON activities|activities_type_not_null|n|NOT NULL type
+CON activities|activities_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON activities|fk_activities_childId|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON admin_registration_requests|admin_registration_requests_approvedUserId_fkey|f|FOREIGN KEY ("approvedUserId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON admin_registration_requests|admin_registration_requests_createdAt_not_null|n|NOT NULL "createdAt"
+CON admin_registration_requests|admin_registration_requests_email_key|u|UNIQUE (email)
+CON admin_registration_requests|admin_registration_requests_email_not_null|n|NOT NULL email
+CON admin_registration_requests|admin_registration_requests_firstName_not_null|n|NOT NULL "firstName"
+CON admin_registration_requests|admin_registration_requests_id_not_null|n|NOT NULL id
+CON admin_registration_requests|admin_registration_requests_lastName_not_null|n|NOT NULL "lastName"
+CON admin_registration_requests|admin_registration_requests_phone_not_null|n|NOT NULL phone
+CON admin_registration_requests|admin_registration_requests_pkey|p|PRIMARY KEY (id)
+CON admin_registration_requests|admin_registration_requests_reviewedBy_fkey|f|FOREIGN KEY ("reviewedBy") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON admin_registration_requests|admin_registration_requests_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE SET NULL
+CON admin_registration_requests|admin_registration_requests_status_not_null|n|NOT NULL status
+CON admin_registration_requests|admin_registration_requests_telegramUsername_not_null|n|NOT NULL "telegramUsername"
+CON admin_registration_requests|admin_registration_requests_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON ai_warnings|ai_warnings_createdAt_not_null|n|NOT NULL "createdAt"
+CON ai_warnings|ai_warnings_id_not_null|n|NOT NULL id
+CON ai_warnings|ai_warnings_isResolved_not_null|n|NOT NULL "isResolved"
+CON ai_warnings|ai_warnings_message_not_null|n|NOT NULL message
+CON ai_warnings|ai_warnings_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id)
+CON ai_warnings|ai_warnings_pkey|p|PRIMARY KEY (id)
+CON ai_warnings|ai_warnings_resolvedBy_fkey|f|FOREIGN KEY ("resolvedBy") REFERENCES users(id)
+CON ai_warnings|ai_warnings_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id)
+CON ai_warnings|ai_warnings_severity_not_null|n|NOT NULL severity
+CON ai_warnings|ai_warnings_targetId_not_null|n|NOT NULL "targetId"
+CON ai_warnings|ai_warnings_targetType_not_null|n|NOT NULL "targetType"
+CON ai_warnings|ai_warnings_title_not_null|n|NOT NULL title
+CON ai_warnings|ai_warnings_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON ai_warnings|ai_warnings_warningType_not_null|n|NOT NULL "warningType"
+CON assessment_criteria|assessment_criteria_code_not_null|n|NOT NULL code
+CON assessment_criteria|assessment_criteria_createdAt_not_null|n|NOT NULL "createdAt"
+CON assessment_criteria|assessment_criteria_id_not_null|n|NOT NULL id
+CON assessment_criteria|assessment_criteria_isActive_not_null|n|NOT NULL "isActive"
+CON assessment_criteria|assessment_criteria_isHearingSpecific_not_null|n|NOT NULL "isHearingSpecific"
+CON assessment_criteria|assessment_criteria_levelDescriptions_not_null|n|NOT NULL "levelDescriptions"
+CON assessment_criteria|assessment_criteria_pkey|p|PRIMARY KEY (id)
+CON assessment_criteria|assessment_criteria_scoringType_not_null|n|NOT NULL "scoringType"
+CON assessment_criteria|assessment_criteria_sortOrder_not_null|n|NOT NULL "sortOrder"
+CON assessment_criteria|assessment_criteria_textUz_not_null|n|NOT NULL "textUz"
+CON assessment_criteria|assessment_criteria_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON assessment_scores|assessment_scores_createdAt_not_null|n|NOT NULL "createdAt"
+CON assessment_scores|assessment_scores_criterionId_fkey|f|FOREIGN KEY ("criterionId") REFERENCES assessment_criteria(id) ON DELETE RESTRICT
+CON assessment_scores|assessment_scores_criterionId_not_null|n|NOT NULL "criterionId"
+CON assessment_scores|assessment_scores_id_not_null|n|NOT NULL id
+CON assessment_scores|assessment_scores_pkey|p|PRIMARY KEY (id)
+CON assessment_scores|assessment_scores_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON assessment_scores|assessment_scores_schoolId_not_null|n|NOT NULL "schoolId"
+CON assessment_scores|assessment_scores_score_not_null|n|NOT NULL score
+CON assessment_scores|assessment_scores_sessionId_fkey|f|FOREIGN KEY ("sessionId") REFERENCES assessment_sessions(id) ON DELETE CASCADE
+CON assessment_scores|assessment_scores_sessionId_not_null|n|NOT NULL "sessionId"
+CON assessment_scores|assessment_scores_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON assessment_scores|chk_assessment_score_range|c|CHECK (((score >= 0) AND (score <= 4)))
+CON assessment_sessions|assessment_sessions_assessmentDate_not_null|n|NOT NULL "assessmentDate"
+CON assessment_sessions|assessment_sessions_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON assessment_sessions|assessment_sessions_completedBy_fkey|f|FOREIGN KEY ("completedBy") REFERENCES users(id) ON DELETE SET NULL
+CON assessment_sessions|assessment_sessions_createdAt_not_null|n|NOT NULL "createdAt"
+CON assessment_sessions|assessment_sessions_id_not_null|n|NOT NULL id
+CON assessment_sessions|assessment_sessions_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE CASCADE
+CON assessment_sessions|assessment_sessions_irrId_not_null|n|NOT NULL "irrId"
+CON assessment_sessions|assessment_sessions_isHearingImpaired_not_null|n|NOT NULL "isHearingImpaired"
+CON assessment_sessions|assessment_sessions_pkey|p|PRIMARY KEY (id)
+CON assessment_sessions|assessment_sessions_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON assessment_sessions|assessment_sessions_schoolId_not_null|n|NOT NULL "schoolId"
+CON assessment_sessions|assessment_sessions_sessionType_not_null|n|NOT NULL "sessionType"
+CON assessment_sessions|assessment_sessions_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON audit_log|audit_log_action_not_null|n|NOT NULL action
+CON audit_log|audit_log_actorId_fkey|f|FOREIGN KEY ("actorId") REFERENCES users(id) ON DELETE SET NULL
+CON audit_log|audit_log_actorRole_not_null|n|NOT NULL "actorRole"
+CON audit_log|audit_log_entity_not_null|n|NOT NULL entity
+CON audit_log|audit_log_id_not_null|n|NOT NULL id
+CON audit_log|audit_log_occurredAt_not_null|n|NOT NULL "occurredAt"
+CON audit_log|audit_log_pkey|p|PRIMARY KEY (id)
+CON audit_log|audit_log_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE SET NULL
+CON business_stats|business_stats_businessId_fkey|f|FOREIGN KEY ("businessId") REFERENCES users(id)
+CON business_stats|business_stats_businessId_not_null|n|NOT NULL "businessId"
+CON business_stats|business_stats_createdAt_not_null|n|NOT NULL "createdAt"
+CON business_stats|business_stats_data_not_null|n|NOT NULL data
+CON business_stats|business_stats_generatedAt_not_null|n|NOT NULL "generatedAt"
+CON business_stats|business_stats_id_not_null|n|NOT NULL id
+CON business_stats|business_stats_isPublic_not_null|n|NOT NULL "isPublic"
+CON business_stats|business_stats_periodEnd_not_null|n|NOT NULL "periodEnd"
+CON business_stats|business_stats_periodStart_not_null|n|NOT NULL "periodStart"
+CON business_stats|business_stats_period_not_null|n|NOT NULL period
+CON business_stats|business_stats_pkey|p|PRIMARY KEY (id)
+CON business_stats|business_stats_statType_not_null|n|NOT NULL "statType"
+CON business_stats|business_stats_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON chat_messages|chat_messages_content_not_null|n|NOT NULL content
+CON chat_messages|chat_messages_conversationId_not_null|n|NOT NULL "conversationId"
+CON chat_messages|chat_messages_createdAt_not_null|n|NOT NULL "createdAt"
+CON chat_messages|chat_messages_id_not_null|n|NOT NULL id
+CON chat_messages|chat_messages_pkey|p|PRIMARY KEY (id)
+CON chat_messages|chat_messages_senderId_not_null|n|NOT NULL "senderId"
+CON chat_messages|chat_messages_senderRole_not_null|n|NOT NULL "senderRole"
+CON chat_messages|chat_messages_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON child_assessments|child_assessments_category_not_null|n|NOT NULL category
+CON child_assessments|child_assessments_child_id_fkey|f|FOREIGN KEY (child_id) REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON child_assessments|child_assessments_child_id_not_null|n|NOT NULL child_id
+CON child_assessments|child_assessments_created_at_not_null|n|NOT NULL created_at
+CON child_assessments|child_assessments_date_not_null|n|NOT NULL date
+CON child_assessments|child_assessments_id_not_null|n|NOT NULL id
+CON child_assessments|child_assessments_pkey|p|PRIMARY KEY (id)
+CON child_assessments|child_assessments_score_not_null|n|NOT NULL score
+CON child_assessments|child_assessments_teacher_id_fkey|f|FOREIGN KEY (teacher_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON child_assessments|child_assessments_teacher_id_not_null|n|NOT NULL teacher_id
+CON child_assessments|child_assessments_updated_at_not_null|n|NOT NULL updated_at
+CON child_attendance|child_attendance_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON child_attendance|child_attendance_childSnapshot_not_null|n|NOT NULL "childSnapshot"
+CON child_attendance|child_attendance_createdAt_not_null|n|NOT NULL "createdAt"
+CON child_attendance|child_attendance_date_not_null|n|NOT NULL date
+CON child_attendance|child_attendance_id_not_null|n|NOT NULL id
+CON child_attendance|child_attendance_markedBy_fkey|f|FOREIGN KEY ("markedBy") REFERENCES users(id) ON DELETE SET NULL
+CON child_attendance|child_attendance_pkey|p|PRIMARY KEY (id)
+CON child_attendance|child_attendance_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON child_attendance|child_attendance_schoolId_not_null|n|NOT NULL "schoolId"
+CON child_attendance|child_attendance_status_not_null|n|NOT NULL status
+CON child_attendance|child_attendance_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON DELETE SET NULL
+CON child_attendance|child_attendance_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON child_goal_reviews|child_goal_reviews_createdAt_not_null|n|NOT NULL "createdAt"
+CON child_goal_reviews|child_goal_reviews_goalId_fkey|f|FOREIGN KEY ("goalId") REFERENCES child_goals(id) ON DELETE CASCADE
+CON child_goal_reviews|child_goal_reviews_goalId_not_null|n|NOT NULL "goalId"
+CON child_goal_reviews|child_goal_reviews_id_not_null|n|NOT NULL id
+CON child_goal_reviews|child_goal_reviews_pkey|p|PRIMARY KEY (id)
+CON child_goal_reviews|child_goal_reviews_reviewDate_not_null|n|NOT NULL "reviewDate"
+CON child_goal_reviews|child_goal_reviews_reviewerId_fkey|f|FOREIGN KEY ("reviewerId") REFERENCES users(id) ON DELETE SET NULL
+CON child_goal_reviews|child_goal_reviews_status_not_null|n|NOT NULL status
+CON child_goal_reviews|child_goal_reviews_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON child_goals|child_goals_category_not_null|n|NOT NULL category
+CON child_goals|child_goals_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON child_goals|child_goals_childSnapshot_not_null|n|NOT NULL "childSnapshot"
+CON child_goals|child_goals_createdAt_not_null|n|NOT NULL "createdAt"
+CON child_goals|child_goals_createdBy_fkey|f|FOREIGN KEY ("createdBy") REFERENCES users(id) ON DELETE SET NULL
+CON child_goals|child_goals_currentProgress_not_null|n|NOT NULL "currentProgress"
+CON child_goals|child_goals_id_not_null|n|NOT NULL id
+CON child_goals|child_goals_pkey|p|PRIMARY KEY (id)
+CON child_goals|child_goals_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON child_goals|child_goals_schoolId_not_null|n|NOT NULL "schoolId"
+CON child_goals|child_goals_title_not_null|n|NOT NULL title
+CON child_goals|child_goals_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON child_journal_entries|child_journal_entries_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON child_journal_entries|child_journal_entries_childSnapshot_not_null|n|NOT NULL "childSnapshot"
+CON child_journal_entries|child_journal_entries_content_not_null|n|NOT NULL content
+CON child_journal_entries|child_journal_entries_createdAt_not_null|n|NOT NULL "createdAt"
+CON child_journal_entries|child_journal_entries_date_not_null|n|NOT NULL date
+CON child_journal_entries|child_journal_entries_id_not_null|n|NOT NULL id
+CON child_journal_entries|child_journal_entries_isVisibleToParent_not_null|n|NOT NULL "isVisibleToParent"
+CON child_journal_entries|child_journal_entries_pkey|p|PRIMARY KEY (id)
+CON child_journal_entries|child_journal_entries_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE RESTRICT
+CON child_journal_entries|child_journal_entries_schoolId_not_null|n|NOT NULL "schoolId"
+CON child_journal_entries|child_journal_entries_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON child_journal_entries|child_journal_entries_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON children|children_class_not_null|n|NOT NULL class
+CON children|children_createdAt_not_null|n|NOT NULL "createdAt"
+CON children|children_dateOfBirth_not_null|n|NOT NULL "dateOfBirth"
+CON children|children_disabilityType_not_null|n|NOT NULL "disabilityType"
+CON children|children_emergencyContact_not_null|n|NOT NULL "emergencyContact"
+CON children|children_firstName_not_null|n|NOT NULL "firstName"
+CON children|children_gender_not_null|n|NOT NULL gender
+CON children|children_id_not_null|n|NOT NULL id
+CON children|children_lastName_not_null|n|NOT NULL "lastName"
+CON children|children_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON children|children_parentId_not_null|n|NOT NULL "parentId"
+CON children|children_pkey|p|PRIMARY KEY (id)
+CON children|children_teacher_not_null|n|NOT NULL teacher
+CON children|children_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON daily_monitoring_entries|daily_monitoring_entries_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE CASCADE
+CON daily_monitoring_entries|daily_monitoring_entries_childId_not_null|n|NOT NULL "childId"
+CON daily_monitoring_entries|daily_monitoring_entries_createdAt_not_null|n|NOT NULL "createdAt"
+CON daily_monitoring_entries|daily_monitoring_entries_entryDate_not_null|n|NOT NULL "entryDate"
+CON daily_monitoring_entries|daily_monitoring_entries_giData_not_null|n|NOT NULL "giData"
+CON daily_monitoring_entries|daily_monitoring_entries_healthData_not_null|n|NOT NULL "healthData"
+CON daily_monitoring_entries|daily_monitoring_entries_hygieneData_not_null|n|NOT NULL "hygieneData"
+CON daily_monitoring_entries|daily_monitoring_entries_id_not_null|n|NOT NULL id
+CON daily_monitoring_entries|daily_monitoring_entries_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE SET NULL
+CON daily_monitoring_entries|daily_monitoring_entries_pkey|p|PRIMARY KEY (id)
+CON daily_monitoring_entries|daily_monitoring_entries_recordedBy_fkey|f|FOREIGN KEY ("recordedBy") REFERENCES users(id) ON DELETE SET NULL
+CON daily_monitoring_entries|daily_monitoring_entries_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON daily_monitoring_entries|daily_monitoring_entries_schoolId_not_null|n|NOT NULL "schoolId"
+CON daily_monitoring_entries|daily_monitoring_entries_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON districts|districts_createdAt_not_null|n|NOT NULL "createdAt"
+CON districts|districts_id_not_null|n|NOT NULL id
+CON districts|districts_name_not_null|n|NOT NULL name
+CON districts|districts_pkey|p|PRIMARY KEY (id)
+CON districts|districts_regionId_fkey|f|FOREIGN KEY ("regionId") REFERENCES regions(id) ON DELETE RESTRICT
+CON districts|districts_regionId_not_null|n|NOT NULL "regionId"
+CON districts|districts_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON documents|documents_createdAt_not_null|n|NOT NULL "createdAt"
+CON documents|documents_documentType_not_null|n|NOT NULL "documentType"
+CON documents|documents_fileName_not_null|n|NOT NULL "fileName"
+CON documents|documents_filePath_not_null|n|NOT NULL "filePath"
+CON documents|documents_id_not_null|n|NOT NULL id
+CON documents|documents_pkey|p|PRIMARY KEY (id)
+CON documents|documents_reviewedBy_fkey|f|FOREIGN KEY ("reviewedBy") REFERENCES users(id)
+CON documents|documents_status_not_null|n|NOT NULL status
+CON documents|documents_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON documents|documents_userId_fkey|f|FOREIGN KEY ("userId") REFERENCES users(id) ON DELETE CASCADE
+CON documents|documents_userId_not_null|n|NOT NULL "userId"
+CON emotional_monitoring|emotional_monitoring_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON emotional_monitoring|emotional_monitoring_childId_not_null|n|NOT NULL "childId"
+CON emotional_monitoring|emotional_monitoring_createdAt_not_null|n|NOT NULL "createdAt"
+CON emotional_monitoring|emotional_monitoring_date_not_null|n|NOT NULL date
+CON emotional_monitoring|emotional_monitoring_emotionalState_not_null|n|NOT NULL "emotionalState"
+CON emotional_monitoring|emotional_monitoring_id_not_null|n|NOT NULL id
+CON emotional_monitoring|emotional_monitoring_pkey|p|PRIMARY KEY (id)
+CON emotional_monitoring|emotional_monitoring_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON emotional_monitoring|emotional_monitoring_teacherId_not_null|n|NOT NULL "teacherId"
+CON emotional_monitoring|emotional_monitoring_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON goal_periods|goal_periods_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON goal_periods|goal_periods_createdAt_not_null|n|NOT NULL "createdAt"
+CON goal_periods|goal_periods_id_not_null|n|NOT NULL id
+CON goal_periods|goal_periods_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE CASCADE
+CON goal_periods|goal_periods_irrId_not_null|n|NOT NULL "irrId"
+CON goal_periods|goal_periods_managerSignedBy_fkey|f|FOREIGN KEY ("managerSignedBy") REFERENCES users(id) ON DELETE SET NULL
+CON goal_periods|goal_periods_periodEnd_not_null|n|NOT NULL "periodEnd"
+CON goal_periods|goal_periods_periodStart_not_null|n|NOT NULL "periodStart"
+CON goal_periods|goal_periods_pkey|p|PRIMARY KEY (id)
+CON goal_periods|goal_periods_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON goal_periods|goal_periods_schoolId_not_null|n|NOT NULL "schoolId"
+CON goal_periods|goal_periods_status_not_null|n|NOT NULL status
+CON goal_periods|goal_periods_teacherSignedBy_fkey|f|FOREIGN KEY ("teacherSignedBy") REFERENCES users(id) ON DELETE SET NULL
+CON goal_periods|goal_periods_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON government_messages|government_messages_escalatedFromId_fkey|f|FOREIGN KEY ("escalatedFromId") REFERENCES government_messages(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON government_messages|government_messages_parentMessageId_fkey|f|FOREIGN KEY ("parentMessageId") REFERENCES government_messages(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON government_messages|government_messages_recipientLevel_not_null|n|NOT NULL "recipientLevel"
+CON government_messages|super_admin_messages_createdAt_not_null|n|NOT NULL "createdAt"
+CON government_messages|super_admin_messages_id_not_null|n|NOT NULL id
+CON government_messages|super_admin_messages_isRead_not_null|n|NOT NULL "isRead"
+CON government_messages|super_admin_messages_message_not_null|n|NOT NULL message
+CON government_messages|super_admin_messages_pkey|p|PRIMARY KEY (id)
+CON government_messages|super_admin_messages_senderId_fkey|f|FOREIGN KEY ("senderId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON government_messages|super_admin_messages_senderId_not_null|n|NOT NULL "senderId"
+CON government_messages|super_admin_messages_subject_not_null|n|NOT NULL subject
+CON government_messages|super_admin_messages_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON government_school_ratings|government_school_ratings_comment_not_null|n|NOT NULL comment
+CON government_school_ratings|government_school_ratings_createdAt_not_null|n|NOT NULL "createdAt"
+CON government_school_ratings|government_school_ratings_govUserId_fkey|f|FOREIGN KEY ("govUserId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON government_school_ratings|government_school_ratings_id_not_null|n|NOT NULL id
+CON government_school_ratings|government_school_ratings_indicators_not_null|n|NOT NULL indicators
+CON government_school_ratings|government_school_ratings_period_not_null|n|NOT NULL period
+CON government_school_ratings|government_school_ratings_pkey|p|PRIMARY KEY (id)
+CON government_school_ratings|government_school_ratings_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE RESTRICT
+CON government_school_ratings|government_school_ratings_schoolId_not_null|n|NOT NULL "schoolId"
+CON government_school_ratings|government_school_ratings_stars_not_null|n|NOT NULL stars
+CON government_school_ratings|government_school_ratings_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON government_stats|government_stats_createdAt_not_null|n|NOT NULL "createdAt"
+CON government_stats|government_stats_data_not_null|n|NOT NULL data
+CON government_stats|government_stats_generatedAt_not_null|n|NOT NULL "generatedAt"
+CON government_stats|government_stats_generatedBy_fkey|f|FOREIGN KEY ("generatedBy") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON government_stats|government_stats_id_not_null|n|NOT NULL id
+CON government_stats|government_stats_periodEnd_not_null|n|NOT NULL "periodEnd"
+CON government_stats|government_stats_periodStart_not_null|n|NOT NULL "periodStart"
+CON government_stats|government_stats_period_not_null|n|NOT NULL period
+CON government_stats|government_stats_pkey|p|PRIMARY KEY (id)
+CON government_stats|government_stats_regionId_fkey|f|FOREIGN KEY ("regionId") REFERENCES regions(id) ON DELETE SET NULL
+CON government_stats|government_stats_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON government_stats|government_stats_statType_not_null|n|NOT NULL "statType"
+CON government_stats|government_stats_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON groups|groups_capacity_not_null|n|NOT NULL capacity
+CON groups|groups_createdAt_not_null|n|NOT NULL "createdAt"
+CON groups|groups_id_not_null|n|NOT NULL id
+CON groups|groups_name_not_null|n|NOT NULL name
+CON groups|groups_pkey|p|PRIMARY KEY (id)
+CON groups|groups_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE SET NULL
+CON groups|groups_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id)
+CON groups|groups_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON import_jobs|import_jobs_createdAt_not_null|n|NOT NULL "createdAt"
+CON import_jobs|import_jobs_createdBy_fkey|f|FOREIGN KEY ("createdBy") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON import_jobs|import_jobs_errors_not_null|n|NOT NULL errors
+CON import_jobs|import_jobs_filename_not_null|n|NOT NULL filename
+CON import_jobs|import_jobs_id_not_null|n|NOT NULL id
+CON import_jobs|import_jobs_invalidRows_not_null|n|NOT NULL "invalidRows"
+CON import_jobs|import_jobs_pkey|p|PRIMARY KEY (id)
+CON import_jobs|import_jobs_rawCsv_not_null|n|NOT NULL "rawCsv"
+CON import_jobs|import_jobs_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE RESTRICT
+CON import_jobs|import_jobs_schoolId_not_null|n|NOT NULL "schoolId"
+CON import_jobs|import_jobs_status_not_null|n|NOT NULL status
+CON import_jobs|import_jobs_totalRows_not_null|n|NOT NULL "totalRows"
+CON import_jobs|import_jobs_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON import_jobs|import_jobs_validRows_not_null|n|NOT NULL "validRows"
+CON irrs|irrs_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON irrs|irrs_createdAt_not_null|n|NOT NULL "createdAt"
+CON irrs|irrs_createdBy_fkey|f|FOREIGN KEY ("createdBy") REFERENCES users(id) ON DELETE SET NULL
+CON irrs|irrs_id_not_null|n|NOT NULL id
+CON irrs|irrs_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON DELETE SET NULL
+CON irrs|irrs_pkey|p|PRIMARY KEY (id)
+CON irrs|irrs_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON irrs|irrs_schoolId_not_null|n|NOT NULL "schoolId"
+CON irrs|irrs_status_not_null|n|NOT NULL status
+CON irrs|irrs_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON long_term_goals|long_term_goals_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON long_term_goals|long_term_goals_createdAt_not_null|n|NOT NULL "createdAt"
+CON long_term_goals|long_term_goals_goalText_not_null|n|NOT NULL "goalText"
+CON long_term_goals|long_term_goals_id_not_null|n|NOT NULL id
+CON long_term_goals|long_term_goals_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE CASCADE
+CON long_term_goals|long_term_goals_irrId_not_null|n|NOT NULL "irrId"
+CON long_term_goals|long_term_goals_pkey|p|PRIMARY KEY (id)
+CON long_term_goals|long_term_goals_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON long_term_goals|long_term_goals_schoolId_not_null|n|NOT NULL "schoolId"
+CON long_term_goals|long_term_goals_sortOrder_not_null|n|NOT NULL "sortOrder"
+CON long_term_goals|long_term_goals_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON meal_plans|meal_plans_child_id_fkey|f|FOREIGN KEY (child_id) REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON meal_plans|meal_plans_child_id_not_null|n|NOT NULL child_id
+CON meal_plans|meal_plans_created_at_not_null|n|NOT NULL created_at
+CON meal_plans|meal_plans_created_by_fkey|f|FOREIGN KEY (created_by) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON meal_plans|meal_plans_date_not_null|n|NOT NULL date
+CON meal_plans|meal_plans_id_not_null|n|NOT NULL id
+CON meal_plans|meal_plans_meal_type_not_null|n|NOT NULL meal_type
+CON meal_plans|meal_plans_pkey|p|PRIMARY KEY (id)
+CON meal_plans|meal_plans_planned_menu_not_null|n|NOT NULL planned_menu
+CON meal_plans|meal_plans_updated_at_not_null|n|NOT NULL updated_at
+CON meals|fk_meals_childId|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON meals|meals_childId_not_null|n|NOT NULL "childId"
+CON meals|meals_createdAt_not_null|n|NOT NULL "createdAt"
+CON meals|meals_date_not_null|n|NOT NULL date
+CON meals|meals_id_not_null|n|NOT NULL id
+CON meals|meals_mealName_not_null|n|NOT NULL "mealName"
+CON meals|meals_mealType_not_null|n|NOT NULL "mealType"
+CON meals|meals_pkey|p|PRIMARY KEY (id)
+CON meals|meals_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON media|fk_media_activityId|f|FOREIGN KEY ("activityId") REFERENCES activities(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON media|fk_media_childId|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON media|media_childId_not_null|n|NOT NULL "childId"
+CON media|media_createdAt_not_null|n|NOT NULL "createdAt"
+CON media|media_date_not_null|n|NOT NULL date
+CON media|media_id_not_null|n|NOT NULL id
+CON media|media_pkey|p|PRIMARY KEY (id)
+CON media|media_type_not_null|n|NOT NULL type
+CON media|media_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON media|media_url_not_null|n|NOT NULL url
+CON monthly_milestones|mm_month_range_check|c|CHECK ((("monthNumber" >= 1) AND ("monthNumber" <= 12)))
+CON monthly_milestones|monthly_milestones_assessedBy_fkey|f|FOREIGN KEY ("assessedBy") REFERENCES users(id) ON DELETE SET NULL
+CON monthly_milestones|monthly_milestones_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON monthly_milestones|monthly_milestones_createdAt_not_null|n|NOT NULL "createdAt"
+CON monthly_milestones|monthly_milestones_id_not_null|n|NOT NULL id
+CON monthly_milestones|monthly_milestones_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE CASCADE
+CON monthly_milestones|monthly_milestones_irrId_not_null|n|NOT NULL "irrId"
+CON monthly_milestones|monthly_milestones_longTermGoalId_fkey|f|FOREIGN KEY ("longTermGoalId") REFERENCES long_term_goals(id) ON DELETE CASCADE
+CON monthly_milestones|monthly_milestones_longTermGoalId_not_null|n|NOT NULL "longTermGoalId"
+CON monthly_milestones|monthly_milestones_monthNumber_not_null|n|NOT NULL "monthNumber"
+CON monthly_milestones|monthly_milestones_pkey|p|PRIMARY KEY (id)
+CON monthly_milestones|monthly_milestones_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON monthly_milestones|monthly_milestones_schoolId_not_null|n|NOT NULL "schoolId"
+CON monthly_milestones|monthly_milestones_status_not_null|n|NOT NULL status
+CON monthly_milestones|monthly_milestones_targetText_not_null|n|NOT NULL "targetText"
+CON monthly_milestones|monthly_milestones_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON news|fk_news_createdById|f|FOREIGN KEY ("createdById") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON news|news_content_not_null|n|NOT NULL content
+CON news|news_createdAt_not_null|n|NOT NULL "createdAt"
+CON news|news_id_not_null|n|NOT NULL id
+CON news|news_pkey|p|PRIMARY KEY (id)
+CON news|news_published_not_null|n|NOT NULL published
+CON news|news_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON news|news_targetAudience_not_null|n|NOT NULL "targetAudience"
+CON news|news_title_not_null|n|NOT NULL title
+CON news|news_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON notifications|notifications_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE CASCADE
+CON notifications|notifications_createdAt_not_null|n|NOT NULL "createdAt"
+CON notifications|notifications_id_not_null|n|NOT NULL id
+CON notifications|notifications_isRead_not_null|n|NOT NULL "isRead"
+CON notifications|notifications_message_not_null|n|NOT NULL message
+CON notifications|notifications_pkey|p|PRIMARY KEY (id)
+CON notifications|notifications_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON notifications|notifications_title_not_null|n|NOT NULL title
+CON notifications|notifications_type_not_null|n|NOT NULL type
+CON notifications|notifications_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON notifications|notifications_userId_fkey|f|FOREIGN KEY ("userId") REFERENCES users(id) ON DELETE CASCADE
+CON notifications|notifications_userId_not_null|n|NOT NULL "userId"
+CON parent_activities|parent_activities_activityDate_not_null|n|NOT NULL "activityDate"
+CON parent_activities|parent_activities_activityType_not_null|n|NOT NULL "activityType"
+CON parent_activities|parent_activities_createdAt_not_null|n|NOT NULL "createdAt"
+CON parent_activities|parent_activities_id_not_null|n|NOT NULL id
+CON parent_activities|parent_activities_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON DELETE CASCADE
+CON parent_activities|parent_activities_parentId_not_null|n|NOT NULL "parentId"
+CON parent_activities|parent_activities_pkey|p|PRIMARY KEY (id)
+CON parent_activities|parent_activities_title_not_null|n|NOT NULL title
+CON parent_activities|parent_activities_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON parent_evaluations|parent_evaluations_answers_not_null|n|NOT NULL answers
+CON parent_evaluations|parent_evaluations_created_at_not_null|n|NOT NULL created_at
+CON parent_evaluations|parent_evaluations_id_not_null|n|NOT NULL id
+CON parent_evaluations|parent_evaluations_parent_id_fkey|f|FOREIGN KEY (parent_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON parent_evaluations|parent_evaluations_parent_id_not_null|n|NOT NULL parent_id
+CON parent_evaluations|parent_evaluations_period_not_null|n|NOT NULL period
+CON parent_evaluations|parent_evaluations_pkey|p|PRIMARY KEY (id)
+CON parent_evaluations|parent_evaluations_school_id_fkey|f|FOREIGN KEY (school_id) REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON parent_evaluations|parent_evaluations_submitted_at_not_null|n|NOT NULL submitted_at
+CON parent_evaluations|parent_evaluations_teacher_id_fkey|f|FOREIGN KEY (teacher_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON parent_evaluations|parent_evaluations_updated_at_not_null|n|NOT NULL updated_at
+CON parent_meals|parent_meals_createdAt_not_null|n|NOT NULL "createdAt"
+CON parent_meals|parent_meals_id_not_null|n|NOT NULL id
+CON parent_meals|parent_meals_mealDate_not_null|n|NOT NULL "mealDate"
+CON parent_meals|parent_meals_mealName_not_null|n|NOT NULL "mealName"
+CON parent_meals|parent_meals_mealType_not_null|n|NOT NULL "mealType"
+CON parent_meals|parent_meals_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON DELETE CASCADE
+CON parent_meals|parent_meals_parentId_not_null|n|NOT NULL "parentId"
+CON parent_meals|parent_meals_pkey|p|PRIMARY KEY (id)
+CON parent_meals|parent_meals_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON parent_media|parent_media_createdAt_not_null|n|NOT NULL "createdAt"
+CON parent_media|parent_media_fileName_not_null|n|NOT NULL "fileName"
+CON parent_media|parent_media_filePath_not_null|n|NOT NULL "filePath"
+CON parent_media|parent_media_fileType_not_null|n|NOT NULL "fileType"
+CON parent_media|parent_media_id_not_null|n|NOT NULL id
+CON parent_media|parent_media_parentId_fkey|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON DELETE CASCADE
+CON parent_media|parent_media_parentId_not_null|n|NOT NULL "parentId"
+CON parent_media|parent_media_pkey|p|PRIMARY KEY (id)
+CON parent_media|parent_media_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON parent_media|parent_media_uploadDate_not_null|n|NOT NULL "uploadDate"
+CON progress|fk_progress_childId|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON progress|progress_childId_key|u|UNIQUE ("childId")
+CON progress|progress_childId_not_null|n|NOT NULL "childId"
+CON progress|progress_createdAt_not_null|n|NOT NULL "createdAt"
+CON progress|progress_id_not_null|n|NOT NULL id
+CON progress|progress_pkey|p|PRIMARY KEY (id)
+CON progress|progress_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_careQualityData_not_null|n|NOT NULL "careQualityData"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_conditionsData_not_null|n|NOT NULL "conditionsData"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_createdAt_not_null|n|NOT NULL "createdAt"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_departures_not_null|n|NOT NULL departures
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_documentationData_not_null|n|NOT NULL "documentationData"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_id_not_null|n|NOT NULL id
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_infoSystemData_not_null|n|NOT NULL "infoSystemData"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_parentWorkData_not_null|n|NOT NULL "parentWorkData"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_pkey|p|PRIMARY KEY (id)
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_quarterStart_not_null|n|NOT NULL "quarterStart"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_recordedBy_fkey|f|FOREIGN KEY ("recordedBy") REFERENCES users(id) ON DELETE SET NULL
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_schoolId_not_null|n|NOT NULL "schoolId"
+CON quarterly_monitoring_entries|quarterly_monitoring_entries_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON refresh_tokens|fk_refresh_tokens_user_id|f|FOREIGN KEY (user_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON refresh_tokens|refresh_tokens_created_at_not_null|n|NOT NULL created_at
+CON refresh_tokens|refresh_tokens_expires_at_not_null|n|NOT NULL expires_at
+CON refresh_tokens|refresh_tokens_id_not_null|n|NOT NULL id
+CON refresh_tokens|refresh_tokens_pkey|p|PRIMARY KEY (id)
+CON refresh_tokens|refresh_tokens_revoked_not_null|n|NOT NULL revoked
+CON refresh_tokens|refresh_tokens_token_hash_not_null|n|NOT NULL token_hash
+CON refresh_tokens|refresh_tokens_updated_at_not_null|n|NOT NULL updated_at
+CON refresh_tokens|refresh_tokens_user_id_not_null|n|NOT NULL user_id
+CON regions|regions_code_key|u|UNIQUE (code)
+CON regions|regions_code_not_null|n|NOT NULL code
+CON regions|regions_createdAt_not_null|n|NOT NULL "createdAt"
+CON regions|regions_id_not_null|n|NOT NULL id
+CON regions|regions_isRepublic_not_null|n|NOT NULL "isRepublic"
+CON regions|regions_name_not_null|n|NOT NULL name
+CON regions|regions_pkey|p|PRIMARY KEY (id)
+CON regions|regions_slug_not_null|n|NOT NULL slug
+CON regions|regions_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON school_categories|school_categories_code_key|u|UNIQUE (code)
+CON school_categories|school_categories_code_not_null|n|NOT NULL code
+CON school_categories|school_categories_createdAt_not_null|n|NOT NULL "createdAt"
+CON school_categories|school_categories_id_not_null|n|NOT NULL id
+CON school_categories|school_categories_isActive_not_null|n|NOT NULL "isActive"
+CON school_categories|school_categories_name_not_null|n|NOT NULL name
+CON school_categories|school_categories_pkey|p|PRIMARY KEY (id)
+CON school_categories|school_categories_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON school_ratings|fk_school_ratings_parentId|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON school_ratings|fk_school_ratings_schoolId|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON school_ratings|school_ratings_comment_not_null|n|NOT NULL comment
+CON school_ratings|school_ratings_createdAt_not_null|n|NOT NULL "createdAt"
+CON school_ratings|school_ratings_id_not_null|n|NOT NULL id
+CON school_ratings|school_ratings_parentId_not_null|n|NOT NULL "parentId"
+CON school_ratings|school_ratings_pkey|p|PRIMARY KEY (id)
+CON school_ratings|school_ratings_schoolId_not_null|n|NOT NULL "schoolId"
+CON school_ratings|school_ratings_school_parent_unique|u|UNIQUE ("schoolId", "parentId")
+CON school_ratings|school_ratings_stars_not_null|n|NOT NULL stars
+CON school_ratings|school_ratings_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON schools|schools_categoryId_fkey|f|FOREIGN KEY ("categoryId") REFERENCES school_categories(id) ON DELETE SET NULL
+CON schools|schools_createdAt_not_null|n|NOT NULL "createdAt"
+CON schools|schools_districtId_fkey|f|FOREIGN KEY ("districtId") REFERENCES districts(id) ON DELETE SET NULL
+CON schools|schools_id_not_null|n|NOT NULL id
+CON schools|schools_isActive_not_null|n|NOT NULL "isActive"
+CON schools|schools_name_not_null|n|NOT NULL name
+CON schools|schools_pkey|p|PRIMARY KEY (id)
+CON schools|schools_regionId_fkey|f|FOREIGN KEY ("regionId") REFERENCES regions(id) ON DELETE SET NULL
+CON schools|schools_slug_not_null|n|NOT NULL slug
+CON schools|schools_type_new_check|c|CHECK (((type)::text = ANY (ARRAY[('daycare'::character varying)::text, ('early_preschool'::character varying)::text, ('support'::character varying)::text, ('early_intervention'::character varying)::text, ('home_care'::character varying)::text])))
+CON schools|schools_type_new_not_null|n|NOT NULL type
+CON schools|schools_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON service_plans|service_plans_child_id_fkey|f|FOREIGN KEY (child_id) REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON service_plans|service_plans_child_id_not_null|n|NOT NULL child_id
+CON service_plans|service_plans_created_at_not_null|n|NOT NULL created_at
+CON service_plans|service_plans_created_by_fkey|f|FOREIGN KEY (created_by) REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON service_plans|service_plans_id_not_null|n|NOT NULL id
+CON service_plans|service_plans_months_not_null|n|NOT NULL months
+CON service_plans|service_plans_pkey|p|PRIMARY KEY (id)
+CON service_plans|service_plans_service_type_not_null|n|NOT NULL service_type
+CON service_plans|service_plans_updated_at_not_null|n|NOT NULL updated_at
+CON service_plans|service_plans_year_not_null|n|NOT NULL year
+CON short_term_goals|short_term_goals_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE SET NULL
+CON short_term_goals|short_term_goals_createdAt_not_null|n|NOT NULL "createdAt"
+CON short_term_goals|short_term_goals_goalText_not_null|n|NOT NULL "goalText"
+CON short_term_goals|short_term_goals_id_not_null|n|NOT NULL id
+CON short_term_goals|short_term_goals_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE CASCADE
+CON short_term_goals|short_term_goals_irrId_not_null|n|NOT NULL "irrId"
+CON short_term_goals|short_term_goals_periodId_fkey|f|FOREIGN KEY ("periodId") REFERENCES goal_periods(id) ON DELETE CASCADE
+CON short_term_goals|short_term_goals_periodId_not_null|n|NOT NULL "periodId"
+CON short_term_goals|short_term_goals_pkey|p|PRIMARY KEY (id)
+CON short_term_goals|short_term_goals_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON short_term_goals|short_term_goals_schoolId_not_null|n|NOT NULL "schoolId"
+CON short_term_goals|short_term_goals_sortOrder_not_null|n|NOT NULL "sortOrder"
+CON short_term_goals|short_term_goals_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_ratings|fk_teacher_ratings_parentId|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON teacher_ratings|fk_teacher_ratings_teacherId|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON teacher_ratings|teacher_ratings_createdAt_not_null|n|NOT NULL "createdAt"
+CON teacher_ratings|teacher_ratings_id_not_null|n|NOT NULL id
+CON teacher_ratings|teacher_ratings_parentId_not_null|n|NOT NULL "parentId"
+CON teacher_ratings|teacher_ratings_pkey|p|PRIMARY KEY (id)
+CON teacher_ratings|teacher_ratings_stars_not_null|n|NOT NULL stars
+CON teacher_ratings|teacher_ratings_teacherId_not_null|n|NOT NULL "teacherId"
+CON teacher_ratings|teacher_ratings_teacher_parent_unique|u|UNIQUE ("teacherId", "parentId")
+CON teacher_ratings|teacher_ratings_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_reflections|teacher_reflections_content_not_null|n|NOT NULL content
+CON teacher_reflections|teacher_reflections_createdAt_not_null|n|NOT NULL "createdAt"
+CON teacher_reflections|teacher_reflections_date_not_null|n|NOT NULL date
+CON teacher_reflections|teacher_reflections_id_not_null|n|NOT NULL id
+CON teacher_reflections|teacher_reflections_pkey|p|PRIMARY KEY (id)
+CON teacher_reflections|teacher_reflections_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON UPDATE CASCADE ON DELETE RESTRICT
+CON teacher_reflections|teacher_reflections_schoolId_not_null|n|NOT NULL "schoolId"
+CON teacher_reflections|teacher_reflections_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON teacher_reflections|teacher_reflections_teacher_date_unique|u|UNIQUE ("teacherId", date)
+CON teacher_reflections|teacher_reflections_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_resources|teacher_resources_created_at_not_null|n|NOT NULL created_at
+CON teacher_resources|teacher_resources_id_not_null|n|NOT NULL id
+CON teacher_resources|teacher_resources_is_active_not_null|n|NOT NULL is_active
+CON teacher_resources|teacher_resources_pkey|p|PRIMARY KEY (id)
+CON teacher_resources|teacher_resources_school_id_fkey|f|FOREIGN KEY (school_id) REFERENCES schools(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON teacher_resources|teacher_resources_teacher_id_fkey|f|FOREIGN KEY (teacher_id) REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON teacher_resources|teacher_resources_teacher_id_not_null|n|NOT NULL teacher_id
+CON teacher_resources|teacher_resources_title_not_null|n|NOT NULL title
+CON teacher_resources|teacher_resources_type_not_null|n|NOT NULL type
+CON teacher_resources|teacher_resources_updated_at_not_null|n|NOT NULL updated_at
+CON teacher_responsibilities|teacher_responsibilities_assignedDate_not_null|n|NOT NULL "assignedDate"
+CON teacher_responsibilities|teacher_responsibilities_createdAt_not_null|n|NOT NULL "createdAt"
+CON teacher_responsibilities|teacher_responsibilities_id_not_null|n|NOT NULL id
+CON teacher_responsibilities|teacher_responsibilities_pkey|p|PRIMARY KEY (id)
+CON teacher_responsibilities|teacher_responsibilities_priority_not_null|n|NOT NULL priority
+CON teacher_responsibilities|teacher_responsibilities_status_not_null|n|NOT NULL status
+CON teacher_responsibilities|teacher_responsibilities_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON DELETE CASCADE
+CON teacher_responsibilities|teacher_responsibilities_teacherId_not_null|n|NOT NULL "teacherId"
+CON teacher_responsibilities|teacher_responsibilities_title_not_null|n|NOT NULL title
+CON teacher_responsibilities|teacher_responsibilities_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_tasks|teacher_tasks_createdAt_not_null|n|NOT NULL "createdAt"
+CON teacher_tasks|teacher_tasks_id_not_null|n|NOT NULL id
+CON teacher_tasks|teacher_tasks_pkey|p|PRIMARY KEY (id)
+CON teacher_tasks|teacher_tasks_status_not_null|n|NOT NULL status
+CON teacher_tasks|teacher_tasks_taskDate_not_null|n|NOT NULL "taskDate"
+CON teacher_tasks|teacher_tasks_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON DELETE CASCADE
+CON teacher_tasks|teacher_tasks_teacherId_not_null|n|NOT NULL "teacherId"
+CON teacher_tasks|teacher_tasks_title_not_null|n|NOT NULL title
+CON teacher_tasks|teacher_tasks_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_work_history|teacher_work_history_createdAt_not_null|n|NOT NULL "createdAt"
+CON teacher_work_history|teacher_work_history_id_not_null|n|NOT NULL id
+CON teacher_work_history|teacher_work_history_pkey|p|PRIMARY KEY (id)
+CON teacher_work_history|teacher_work_history_status_not_null|n|NOT NULL status
+CON teacher_work_history|teacher_work_history_teacherId_fkey|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON DELETE CASCADE
+CON teacher_work_history|teacher_work_history_teacherId_not_null|n|NOT NULL "teacherId"
+CON teacher_work_history|teacher_work_history_title_not_null|n|NOT NULL title
+CON teacher_work_history|teacher_work_history_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON teacher_work_history|teacher_work_history_workDate_not_null|n|NOT NULL "workDate"
+CON teacher_work_history|teacher_work_history_workType_not_null|n|NOT NULL "workType"
+CON therapies|fk_therapies_createdBy|f|FOREIGN KEY ("createdBy") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON therapies|therapies_ageGroup_not_null|n|NOT NULL "ageGroup"
+CON therapies|therapies_createdAt_not_null|n|NOT NULL "createdAt"
+CON therapies|therapies_difficultyLevel_not_null|n|NOT NULL "difficultyLevel"
+CON therapies|therapies_id_not_null|n|NOT NULL id
+CON therapies|therapies_isActive_not_null|n|NOT NULL "isActive"
+CON therapies|therapies_pkey|p|PRIMARY KEY (id)
+CON therapies|therapies_ratingCount_not_null|n|NOT NULL "ratingCount"
+CON therapies|therapies_therapyType_not_null|n|NOT NULL "therapyType"
+CON therapies|therapies_title_not_null|n|NOT NULL title
+CON therapies|therapies_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON therapies|therapies_usageCount_not_null|n|NOT NULL "usageCount"
+CON therapy_usages|fk_therapy_usages_childId|f|FOREIGN KEY ("childId") REFERENCES children(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON therapy_usages|fk_therapy_usages_parentId|f|FOREIGN KEY ("parentId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON therapy_usages|fk_therapy_usages_teacherId|f|FOREIGN KEY ("teacherId") REFERENCES users(id) ON UPDATE CASCADE ON DELETE SET NULL
+CON therapy_usages|fk_therapy_usages_therapyId|f|FOREIGN KEY ("therapyId") REFERENCES therapies(id) ON UPDATE CASCADE ON DELETE CASCADE
+CON therapy_usages|therapy_usages_createdAt_not_null|n|NOT NULL "createdAt"
+CON therapy_usages|therapy_usages_id_not_null|n|NOT NULL id
+CON therapy_usages|therapy_usages_pkey|p|PRIMARY KEY (id)
+CON therapy_usages|therapy_usages_startTime_not_null|n|NOT NULL "startTime"
+CON therapy_usages|therapy_usages_therapyId_not_null|n|NOT NULL "therapyId"
+CON therapy_usages|therapy_usages_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON users|users_createdAt_not_null|n|NOT NULL "createdAt"
+CON users|users_documentsApproved_not_null|n|NOT NULL "documentsApproved"
+CON users|users_email_key|u|UNIQUE (email)
+CON users|users_email_not_null|n|NOT NULL email
+CON users|users_firstName_not_null|n|NOT NULL "firstName"
+CON users|users_govRegionId_fkey|f|FOREIGN KEY ("govRegionId") REFERENCES regions(id) ON DELETE SET NULL
+CON users|users_gov_level_check|c|CHECK ((("govLevel")::text = ANY ((ARRAY['republic'::character varying, 'region'::character varying])::text[])))
+CON users|users_gov_type_check|c|CHECK ((("govType")::text = ANY ((ARRAY['main'::character varying, 'secondary'::character varying])::text[])))
+CON users|users_id_not_null|n|NOT NULL id
+CON users|users_isActive_not_null|n|NOT NULL "isActive"
+CON users|users_isVerified_not_null|n|NOT NULL "isVerified"
+CON users|users_lastName_not_null|n|NOT NULL "lastName"
+CON users|users_mustChangePassword_not_null|n|NOT NULL "mustChangePassword"
+CON users|users_password_not_null|n|NOT NULL password
+CON users|users_pkey|p|PRIMARY KEY (id)
+CON users|users_role_not_null|n|NOT NULL role
+CON users|users_status_check|c|CHECK (((status)::text = ANY ((ARRAY['active'::character varying, 'suspended'::character varying, 'archived'::character varying])::text[])))
+CON users|users_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON weekly_monitoring_entries|weekly_monitoring_entries_childId_fkey|f|FOREIGN KEY ("childId") REFERENCES children(id) ON DELETE CASCADE
+CON weekly_monitoring_entries|weekly_monitoring_entries_childId_not_null|n|NOT NULL "childId"
+CON weekly_monitoring_entries|weekly_monitoring_entries_createdAt_not_null|n|NOT NULL "createdAt"
+CON weekly_monitoring_entries|weekly_monitoring_entries_emotionalData_not_null|n|NOT NULL "emotionalData"
+CON weekly_monitoring_entries|weekly_monitoring_entries_environmentData_not_null|n|NOT NULL "environmentData"
+CON weekly_monitoring_entries|weekly_monitoring_entries_id_not_null|n|NOT NULL id
+CON weekly_monitoring_entries|weekly_monitoring_entries_irrId_fkey|f|FOREIGN KEY ("irrId") REFERENCES irrs(id) ON DELETE SET NULL
+CON weekly_monitoring_entries|weekly_monitoring_entries_pkey|p|PRIMARY KEY (id)
+CON weekly_monitoring_entries|weekly_monitoring_entries_recordedBy_fkey|f|FOREIGN KEY ("recordedBy") REFERENCES users(id) ON DELETE SET NULL
+CON weekly_monitoring_entries|weekly_monitoring_entries_schoolId_fkey|f|FOREIGN KEY ("schoolId") REFERENCES schools(id) ON DELETE RESTRICT
+CON weekly_monitoring_entries|weekly_monitoring_entries_schoolId_not_null|n|NOT NULL "schoolId"
+CON weekly_monitoring_entries|weekly_monitoring_entries_updatedAt_not_null|n|NOT NULL "updatedAt"
+CON weekly_monitoring_entries|weekly_monitoring_entries_weekStart_not_null|n|NOT NULL "weekStart"
+ENU enum_activities_studentEngagement|High|1
+ENU enum_activities_studentEngagement|Medium|2
+ENU enum_activities_studentEngagement|Low|3
+ENU enum_activities_type|Learning|1
+ENU enum_activities_type|Therapy|2
+ENU enum_activities_type|Social|3
+ENU enum_activities_type|Physical|4
+ENU enum_activities_type|Other|5
+ENU enum_admin_registration_requests_status|pending|1
+ENU enum_admin_registration_requests_status|approved|2
+ENU enum_admin_registration_requests_status|rejected|3
+ENU enum_ai_warnings_severity|low|1
+ENU enum_ai_warnings_severity|medium|2
+ENU enum_ai_warnings_severity|high|3
+ENU enum_ai_warnings_severity|critical|4
+ENU enum_ai_warnings_targetType|school|1
+ENU enum_ai_warnings_targetType|parent|2
+ENU enum_ai_warnings_targetType|teacher|3
+ENU enum_ai_warnings_targetType|child|4
+ENU enum_ai_warnings_warningType|low_rating|1
+ENU enum_ai_warnings_warningType|declining_rating|2
+ENU enum_ai_warnings_warningType|negative_feedback|3
+ENU enum_ai_warnings_warningType|complaint|4
+ENU enum_ai_warnings_warningType|safety_concern|5
+ENU enum_ai_warnings_warningType|quality_issue|6
+ENU enum_ai_warnings_warningType|other|7
+ENU enum_assessment_criteria_scoringType|ability|1
+ENU enum_assessment_criteria_scoringType|frequency|2
+ENU enum_assessment_criteria_scoringType|participation|3
+ENU enum_assessment_sessions_sessionType|intake|1
+ENU enum_assessment_sessions_sessionType|3mo|2
+ENU enum_assessment_sessions_sessionType|6mo|3
+ENU enum_assessment_sessions_sessionType|9mo|4
+ENU enum_assessment_sessions_sessionType|12mo|5
+ENU enum_assessment_sessions_sessionType|custom|6
+ENU enum_business_stats_period|daily|1
+ENU enum_business_stats_period|weekly|2
+ENU enum_business_stats_period|monthly|3
+ENU enum_business_stats_period|quarterly|4
+ENU enum_business_stats_period|yearly|5
+ENU enum_business_stats_statType|overview|1
+ENU enum_business_stats_statType|users|2
+ENU enum_business_stats_statType|schools|3
+ENU enum_business_stats_statType|revenue|4
+ENU enum_business_stats_statType|subscriptions|5
+ENU enum_business_stats_statType|usage|6
+ENU enum_business_stats_statType|engagement|7
+ENU enum_business_stats_statType|custom|8
+ENU enum_chat_messages_senderRole|parent|1
+ENU enum_chat_messages_senderRole|teacher|2
+ENU enum_child_assessments_category|cognitive|1
+ENU enum_child_assessments_category|motor|2
+ENU enum_child_assessments_category|speech|3
+ENU enum_child_assessments_category|behavior|4
+ENU enum_child_assessments_category|social|5
+ENU enum_child_assessments_category|self_care|6
+ENU enum_child_attendance_status|present|1
+ENU enum_child_attendance_status|absent|2
+ENU enum_child_attendance_status|home_leave|3
+ENU enum_child_attendance_status|sick|4
+ENU enum_child_attendance_status|hospitalized|5
+ENU enum_child_goal_reviews_status|on_track|1
+ENU enum_child_goal_reviews_status|progressing_slowly|2
+ENU enum_child_goal_reviews_status|not_progressing|3
+ENU enum_child_goal_reviews_status|achieved|4
+ENU enum_child_goal_reviews_status|revised|5
+ENU enum_child_goals_category|communication|1
+ENU enum_child_goals_category|social_emotional|2
+ENU enum_child_goals_category|cognitive|3
+ENU enum_child_goals_category|fine_motor|4
+ENU enum_child_goals_category|gross_motor|5
+ENU enum_child_goals_category|self_care|6
+ENU enum_child_goals_category|behavioral|7
+ENU enum_child_goals_category|academic|8
+ENU enum_child_goals_currentProgress|not_started|1
+ENU enum_child_goals_currentProgress|emerging|2
+ENU enum_child_goals_currentProgress|developing|3
+ENU enum_child_goals_currentProgress|achieved|4
+ENU enum_child_goals_currentProgress|discontinued|5
+ENU enum_child_observations_domain|communication|1
+ENU enum_child_observations_domain|motor|2
+ENU enum_child_observations_domain|social|3
+ENU enum_child_observations_domain|cognitive|4
+ENU enum_child_observations_domain|self_care|5
+ENU enum_child_observations_severity|routine|1
+ENU enum_child_observations_severity|concern|2
+ENU enum_child_observations_severity|urgent|3
+ENU enum_children_gender|Male|1
+ENU enum_children_gender|Female|2
+ENU enum_children_gender|Other|3
+ENU enum_documents_documentType|license|1
+ENU enum_documents_documentType|certificate|2
+ENU enum_documents_documentType|identification|3
+ENU enum_documents_documentType|other|4
+ENU enum_documents_status|pending|1
+ENU enum_documents_status|approved|2
+ENU enum_documents_status|rejected|3
+ENU enum_goal_periods_status|active|1
+ENU enum_goal_periods_status|reviewed|2
+ENU enum_goal_periods_status|completed|3
+ENU enum_government_messages_recipientLevel|owner|1
+ENU enum_government_messages_recipientLevel|region|2
+ENU enum_government_messages_recipientLevel|republic|3
+ENU enum_government_stats_period|daily|1
+ENU enum_government_stats_period|weekly|2
+ENU enum_government_stats_period|monthly|3
+ENU enum_government_stats_period|quarterly|4
+ENU enum_government_stats_period|yearly|5
+ENU enum_government_stats_statType|overview|1
+ENU enum_government_stats_statType|schools|2
+ENU enum_government_stats_statType|students|3
+ENU enum_government_stats_statType|teachers|4
+ENU enum_government_stats_statType|ratings|5
+ENU enum_government_stats_statType|payments|6
+ENU enum_government_stats_statType|therapies|7
+ENU enum_government_stats_statType|activities|8
+ENU enum_government_stats_statType|complaints|9
+ENU enum_import_jobs_status|ready|1
+ENU enum_import_jobs_status|importing|2
+ENU enum_import_jobs_status|completed|3
+ENU enum_import_jobs_status|failed|4
+ENU enum_irrs_status|draft|1
+ENU enum_irrs_status|active|2
+ENU enum_irrs_status|archived|3
+ENU enum_meal_plans_meal_type|Breakfast|1
+ENU enum_meal_plans_meal_type|Lunch|2
+ENU enum_meal_plans_meal_type|Snack|3
+ENU enum_meal_plans_meal_type|Dinner|4
+ENU enum_meals_mealType|Breakfast|1
+ENU enum_meals_mealType|Lunch|2
+ENU enum_meals_mealType|Snack|3
+ENU enum_meals_mealType|Dinner|4
+ENU enum_media_type|photo|1
+ENU enum_media_type|video|2
+ENU enum_monthly_milestones_status|planned|1
+ENU enum_monthly_milestones_status|achieved|2
+ENU enum_monthly_milestones_status|partial|3
+ENU enum_monthly_milestones_status|missed|4
+ENU enum_news_targetAudience|all|1
+ENU enum_news_targetAudience|parents|2
+ENU enum_news_targetAudience|teachers|3
+ENU enum_news_targetAudience|admins|4
+ENU enum_notifications_relatedType|activity|1
+ENU enum_notifications_relatedType|meal|2
+ENU enum_notifications_relatedType|media|3
+ENU enum_notifications_relatedType|progress|4
+ENU enum_notifications_relatedType|attendance|5
+ENU enum_notifications_relatedType|journal|6
+ENU enum_notifications_type|activity|1
+ENU enum_notifications_type|meal|2
+ENU enum_notifications_type|media|3
+ENU enum_notifications_type|progress|4
+ENU enum_notifications_type|general|5
+ENU enum_notifications_type|attendance|6
+ENU enum_notifications_type|journal|7
+ENU enum_parent_activities_activityType|educational|1
+ENU enum_parent_activities_activityType|recreational|2
+ENU enum_parent_activities_activityType|therapeutic|3
+ENU enum_parent_activities_activityType|social|4
+ENU enum_parent_activities_activityType|other|5
+ENU enum_parent_evaluations_period|daily|1
+ENU enum_parent_evaluations_period|weekly|2
+ENU enum_parent_evaluations_period|monthly|3
+ENU enum_parent_meals_mealType|breakfast|1
+ENU enum_parent_meals_mealType|lunch|2
+ENU enum_parent_meals_mealType|dinner|3
+ENU enum_parent_meals_mealType|snack|4
+ENU enum_parent_media_fileType|image|1
+ENU enum_parent_media_fileType|video|2
+ENU enum_parent_media_fileType|document|3
+ENU enum_parent_media_fileType|audio|4
+ENU enum_service_plans_service_type|logoped|1
+ENU enum_service_plans_service_type|defektolog|2
+ENU enum_service_plans_service_type|self_care|3
+ENU enum_service_plans_service_type|ipotherapy|4
+ENU enum_service_plans_service_type|music|5
+ENU enum_service_plans_service_type|labor|6
+ENU enum_service_plans_service_type|tmc|7
+ENU enum_service_plans_service_type|physiotherapy|8
+ENU enum_teacher_resources_type|music|1
+ENU enum_teacher_resources_type|video|2
+ENU enum_teacher_resources_type|recommendation|3
+ENU enum_teacher_responsibilities_priority|low|1
+ENU enum_teacher_responsibilities_priority|medium|2
+ENU enum_teacher_responsibilities_priority|high|3
+ENU enum_teacher_responsibilities_priority|urgent|4
+ENU enum_teacher_responsibilities_status|active|1
+ENU enum_teacher_responsibilities_status|completed|2
+ENU enum_teacher_responsibilities_status|cancelled|3
+ENU enum_teacher_tasks_status|pending|1
+ENU enum_teacher_tasks_status|in_progress|2
+ENU enum_teacher_tasks_status|completed|3
+ENU enum_teacher_tasks_status|cancelled|4
+ENU enum_teacher_work_history_status|pending|1
+ENU enum_teacher_work_history_status|in_progress|2
+ENU enum_teacher_work_history_status|completed|3
+ENU enum_teacher_work_history_status|overdue|4
+ENU enum_teacher_work_history_status|cancelled|5
+ENU enum_teacher_work_history_workType|assignment|1
+ENU enum_teacher_work_history_workType|report|2
+ENU enum_teacher_work_history_workType|meeting|3
+ENU enum_teacher_work_history_workType|training|4
+ENU enum_teacher_work_history_workType|evaluation|5
+ENU enum_teacher_work_history_workType|other|6
+ENU enum_therapies_ageGroup|infant|1
+ENU enum_therapies_ageGroup|toddler|2
+ENU enum_therapies_ageGroup|preschool|3
+ENU enum_therapies_ageGroup|school_age|4
+ENU enum_therapies_ageGroup|adolescent|5
+ENU enum_therapies_ageGroup|all|6
+ENU enum_therapies_contentType|audio|1
+ENU enum_therapies_contentType|video|2
+ENU enum_therapies_contentType|image|3
+ENU enum_therapies_contentType|document|4
+ENU enum_therapies_contentType|interactive|5
+ENU enum_therapies_contentType|link|6
+ENU enum_therapies_difficultyLevel|beginner|1
+ENU enum_therapies_difficultyLevel|intermediate|2
+ENU enum_therapies_difficultyLevel|advanced|3
+ENU enum_therapies_difficultyLevel|all|4
+ENU enum_therapies_therapyType|music|1
+ENU enum_therapies_therapyType|video|2
+ENU enum_therapies_therapyType|content|3
+ENU enum_therapies_therapyType|art|4
+ENU enum_therapies_therapyType|physical|5
+ENU enum_therapies_therapyType|speech|6
+ENU enum_therapies_therapyType|occupational|7
+ENU enum_therapies_therapyType|other|8
+ENU enum_users_role|admin|1
+ENU enum_users_role|reception|2
+ENU enum_users_role|teacher|3
+ENU enum_users_role|parent|4
+ENU enum_users_role|business|5
+ENU enum_users_role|government|4.5
+SEQ audit_log_id_seq|bigint|1|1

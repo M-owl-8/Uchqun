@@ -194,6 +194,23 @@ jobs:
       - name: Re-apply — migrations must be idempotent
         run: cd backend && npm run migrate
 
+      # CAMPAIGN III P2 — "the migrations ran" is not "the migrations produce
+      # production". D-65's seven tables and eleven columns existed only because
+      # sync() once made them; a rebuild that completes but omits
+      # children.schoolId would pass the step above and fail this one.
+      - name: Dump the rebuilt schema
+        run: node backend/scripts/schema-dump.mjs --out /tmp/fresh-schema.txt
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/uchqun_fresh
+      - name: Diff against the production snapshot
+        run: node backend/scripts/schema-diff.mjs backend/schema/production-schema.txt /tmp/fresh-schema.txt
+      - name: Upload the rebuilt schema
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fresh-schema
+          path: /tmp/fresh-schema.txt
+
   test-frontend:
     runs-on: ubuntu-latest
     strategy:
