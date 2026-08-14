@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -15,7 +15,26 @@ const ChildDetail = () => {
   const toastErrorRef = useRef(toastError);
   toastErrorRef.current = toastError;
 
-  const child = location.state?.child ?? null;
+  // D-41: the child used to come ONLY from navigation state, so a refresh, a
+  // bookmark, a pasted link or a new tab rendered the heading as the literal
+  // "Child <uuid>" with the entire detail block empty. Seed from navigation
+  // state when it is there (no flash for the common in-app path) and fetch
+  // whenever it is not.
+  const [child, setChild] = useState(location.state?.child ?? null);
+  const [loadingChild, setLoadingChild] = useState(!location.state?.child);
+
+  useEffect(() => {
+    if (location.state?.child) return;
+    let alive = true;
+    setLoadingChild(true);
+    api.get(`/admin/children/${id}`)
+      .then((res) => { if (alive) setChild(res.data?.data ?? null); })
+      .catch(() => {
+        if (alive) toastErrorRef.current(t('childDetail.loadError', { defaultValue: 'Failed to load data' }));
+      })
+      .finally(() => { if (alive) setLoadingChild(false); });
+    return () => { alive = false; };
+  }, [id]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const [activeTab, setActiveTab] = useState('irr');
   const [goals, setGoals] = useState([]);
@@ -31,7 +50,13 @@ const ChildDetail = () => {
       .finally(() => setLoadingGoals(false));
   };
 
-  const displayName = child ? `${child.firstName} ${child.lastName}` : `Child ${id}`;
+  // D-41: never render the raw uuid at a user. While the fetch is in flight say
+  // so; if it genuinely fails, say that rather than printing a database key.
+  const displayName = child
+    ? `${child.firstName} ${child.lastName}`
+    : loadingChild
+      ? t('childDetail.loading', { defaultValue: 'Yuklanmoqda…' })
+      : t('childDetail.notFound', { defaultValue: 'Bola topilmadi' });
 
   return (
     <div className="max-w-3xl mx-auto space-y-6">
@@ -53,7 +78,7 @@ const ChildDetail = () => {
               <span>{t('childDetail.dob', { defaultValue: "Tug'ilgan sana" })}: {new Date(child.dateOfBirth).toLocaleDateString()}</span>
             )}
             {child.gender && <span>{t('childDetail.gender', { defaultValue: 'Jinsi' })}: {child.gender}</span>}
-            {child.class && <span>{t('childDetail.class', { defaultValue: 'Sinf' })}: {child.class}</span>}
+            {(child.class || child.groupName) && <span>{t('childDetail.class', { defaultValue: 'Sinf' })}: {child.class || child.groupName}</span>}
           </div>
         )}
       </div>

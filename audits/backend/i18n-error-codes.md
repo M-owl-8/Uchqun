@@ -116,6 +116,8 @@ Introduced: Sprint D T2-4 (2026-05-20)
 
 | Code | HTTP | Meaning | Frontend translation guidance |
 |---|---|---|---|
+| `CHILD_READ_FORBIDDEN` | 403 | Caller role is not `admin`/`reception` (controller-level defense-in-depth) | "You do not have permission to view this child." |
+| `CHILD_READ_FAILED` | 500 | Unexpected error reading the child record | "Could not load the child. Please try again." |
 | `CHILD_TRANSFER_FORBIDDEN` | 403 | Caller role is not `admin` (controller-level defense-in-depth) | "Only admins can transfer children between schools." |
 | `CHILD_TRANSFER_TARGET_REQUIRED` | 400 | `toSchoolId` field is missing from request body | "Please specify the destination school." |
 | `CHILD_TRANSFER_NOT_IN_SCHOOL` | 403 | Child does not belong to the admin's school — cross-school pull attempt blocked | "This child is not in your school." |

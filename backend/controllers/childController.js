@@ -6,6 +6,7 @@ import { deleteFile } from '../config/storage.js';
 import logger from '../utils/logger.js';
 import { emitToUser } from '../config/socket.js';
 import { logAudit } from '../utils/auditLogger.js';
+import { validateChildAccess } from '../utils/schoolValidation.js';
 
 // Get all children for the logged-in parent
 export const getChildren = async (req, res) => {
@@ -400,6 +401,55 @@ export const updateChild = async (req, res) => {
  * Security: source admin only — cannot pull children from other schools.
  * Audit entry is written BEFORE the update so there is always a trace.
  */
+/**
+ * GET /api/v1/admin/children/:id — a single child, for admin.
+ *
+ * D-41: admin/src/pages/ChildDetail.jsx took the child ONLY from React Router
+ * navigation state and never fetched it, so a refresh, bookmark, pasted link or
+ * new tab rendered the heading as the literal "Child <uuid>" with the whole
+ * detail block empty. There was no endpoint to fetch from; this is it.
+ *
+ * Access follows the mandatory child-scoped pattern (CLAUDE.md): the school
+ * scope check is done by validateChildAccess, not by the role check alone.
+ */
+export const getChildForAdmin = async (req, res) => {
+  // Defense in depth: the route middleware already restricts this, but a future
+  // route reorganisation must not be the only thing standing between roles.
+  if (!['admin', 'reception'].includes(req.user.role)) {
+    return res.status(403).json({ success: false, error: { code: 'CHILD_READ_FORBIDDEN' } });
+  }
+
+  try {
+    const child = await validateChildAccess(req.params.id, req);
+    if (!child) {
+      return res.status(404).json({ success: false, error: { code: 'CHILD_NOT_ACCESSIBLE' } });
+    }
+
+    const group = child.groupId ? await Group.findByPk(child.groupId, { attributes: ['id', 'name'] }) : null;
+
+    return res.json({
+      success: true,
+      data: {
+        id: child.id,
+        firstName: child.firstName,
+        lastName: child.lastName,
+        dateOfBirth: child.dateOfBirth,
+        gender: child.gender,
+        disabilityType: child.disabilityType,
+        specialNeeds: child.specialNeeds,
+        photo: child.photo,
+        groupId: child.groupId,
+        groupName: group?.name ?? null,
+        parentId: child.parentId,
+        schoolId: child.schoolId,
+      },
+    });
+  } catch (err) {
+    logger.error('getChildForAdmin failed', { err: err.message, childId: req.params.id });
+    return res.status(500).json({ success: false, error: { code: 'CHILD_READ_FAILED', detail: err.message } });
+  }
+};
+
 export const transferChild = async (req, res) => {
   if (req.user.role !== 'admin') {
     return res.status(403).json({ success: false, error: { code: 'CHILD_TRANSFER_FORBIDDEN' } });

@@ -29,7 +29,7 @@ import { restoreChild, restoreUser, restoreAttendance } from '../controllers/adm
 import { getAdminAuditLog } from '../controllers/admin/adminAuditController.js';
 import { getAdminSchool, patchAdminSchool } from '../controllers/admin/adminSchoolController.js';
 import { getTeacherById } from '../controllers/admin/adminTeacherController.js';
-import { transferChild } from '../controllers/childController.js';
+import { transferChild, getChildForAdmin } from '../controllers/childController.js';
 import { validate as validateImport, start as startImport, getStatus as getImportStatus, getErrors as getImportErrors } from '../controllers/admin/adminImportController.js';
 import { uploadImportCsv, handleImportUploadError } from '../middleware/uploadImportCsv.js';
 import { getGroups, getGroup } from '../controllers/groupController.js';
@@ -92,6 +92,8 @@ router.put('/documents/:id/reject', rejectDocumentValidator, handleValidationErr
 
 // Children goals (admin read)
 router.get('/children/:id/goals', listByChildAsAdmin);
+// D-41: the admin child page had no endpoint to fetch from, so a refresh showed a raw UUID
+router.get('/children/:id', getChildForAdmin);
 router.put('/children/:id/transfer', transferChild);
 
 // Restore endpoints (soft-delete recovery)

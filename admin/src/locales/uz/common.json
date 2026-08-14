@@ -424,7 +424,9 @@
     "signFailed": "Imzo qo'yib bo'lmadi",
     "dob": "Tug'ilgan sana",
     "gender": "Jinsi",
-    "class": "Sinf"
+    "class": "Sinf",
+    "loading": "Yuklanmoqda…",
+    "notFound": "Bola topilmadi"
   },
   "trash": {
     "title": "Savatcha",

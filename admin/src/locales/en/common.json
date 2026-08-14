@@ -424,7 +424,9 @@
     "signFailed": "Failed to sign",
     "dob": "Date of birth",
     "gender": "Gender",
-    "class": "Class"
+    "class": "Class",
+    "loading": "Loading…",
+    "notFound": "Child not found"
   },
   "trash": {
     "title": "Trash",

@@ -271,5 +271,7 @@
   "MONTHLY_MILESTONE_DELETE_FAILED": "Maqsadni oʻchirib boʻlmadi. Qaytadan urinib koʻring.",
   "ATTENDANCE_PARTIALLY_SAVED": "Ba'zi bolalar saqlanmadi. Ro'yxatni tekshirib, qayta urinib ko'ring.",
   "RATING_NO_ASSIGNED_TEACHER": "Farzandingizga hali tarbiyachi biriktirilmagan.",
-  "DOCUMENT_UPLOAD_STORAGE_FAILED": "Hujjatni yuklab boʻlmadi. Qaytadan urinib koʻring."
+  "DOCUMENT_UPLOAD_STORAGE_FAILED": "Hujjatni yuklab boʻlmadi. Qaytadan urinib koʻring.",
+  "CHILD_READ_FORBIDDEN": "Ushbu bola ma'lumotlarini ko'rish huquqingiz yo'q.",
+  "CHILD_READ_FAILED": "Bola ma'lumotlarini yuklab bo'lmadi. Qayta urinib ko'ring."
 }
