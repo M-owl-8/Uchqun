@@ -7,7 +7,7 @@ repository is historical and must not be treated as current.
 **Last re-derived:** 2026-08-15 · Campaign II P9 · from HEAD `028ef934`
 **Score:** 7.4 / 10 at close of CONSOLIDATION II — see `deep2/P9-CLOSEOUT.md` §3 (5.5 at start).
 
-**Numbering:** ids are permanent and never reused. New defects continue from D-69.
+**Numbering:** ids are permanent and never reused. New defects continue from D-70.
 
 | id | severity | status | one line | authoritative artifact |
 |---|---|---|---|---|
@@ -79,6 +79,7 @@ repository is historical and must not be treated as current.
 | D-66 | degrades-use | **FIXED** `a25a9b9e` | both commit hooks were broken: lint-staged mis-scoped eslint so migrations could never lint, and commit-msg demanded an id from a file that does not exist | `deep2/P8-GATES.md` |
 | D-67 | blocks-trust | **FIXED** `1b1df13c` | CI ran PostgreSQL 15 against a production running 18.4 — three major versions, in the two jobs meant to prove production behaviour | `deep3/P2-SCHEMA.md` §2 |
 | D-68 | blocks-trust | **OPEN** | Railway's GitHub integration deploys every push independently of GitHub Actions — the Campaign II deploy gate has never gated production | `deep3/P2-SCHEMA.md` §8 |
+| D-69 | degrades-trust | **FIXED** `185f33a3` | the P3 isolation lane could not detect a cross-tenant WRITE — a 2xx with a clean body concealed a TherapyUsage row created against another school's child | `deep3/P3-INTEGRATION.md` §4 |
 | X-01 | — | **GATING** | media upload not exercised against production storage | `deep/P1-SEED.md` |
 
 ## D-44 — WITHDRAWN, and the damage it caused
