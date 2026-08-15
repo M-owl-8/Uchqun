@@ -262,6 +262,11 @@ jobs:
       FRONTEND_URL: http://localhost:5173
     steps:
       - uses: actions/checkout@v4
+        with:
+          # The regression canary reverts files to pre-fix commits (6727bc27^,
+          # cc9467e2^). The default shallow clone has neither, and git says so:
+          #   fatal: invalid reference: 6727bc27^
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 20
