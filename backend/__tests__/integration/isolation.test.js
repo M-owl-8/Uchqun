@@ -30,6 +30,13 @@ import request from 'supertest';
 
 import app from '../../server.js';
 import { buildTwoTenants, secretsOf, auth, closeDb } from './helpers/fixtures.js';
+import ChildModel from '../../models/Child.js';
+import TherapyUsage from '../../models/TherapyUsage.js';
+import ChildAttendance from '../../models/ChildAttendance.js';
+import Activity from '../../models/Activity.js';
+import Meal from '../../models/Meal.js';
+import MealPlan from '../../models/MealPlan.js';
+import EmotionalMonitoring from '../../models/EmotionalMonitoring.js';
 
 jest.setTimeout(120000);
 
@@ -42,6 +49,22 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await closeDb();
+});
+
+/**
+ * Everything currently attached to tenant B's child.
+ *
+ * A cross-tenant WRITE does not show up in the response body — D-62 returned
+ * 201 with a clean body and a new TherapyUsage row pointing at another school's
+ * child. Counting before and after is what makes that visible.
+ */
+const countTenantBRows = async () => ({
+  therapyUsages: await TherapyUsage.count({ where: { childId: B.child.id } }),
+  attendance: await ChildAttendance.count({ where: { childId: B.child.id } }),
+  activities: await Activity.count({ where: { childId: B.child.id } }),
+  meals: await Meal.count({ where: { childId: B.child.id } }),
+  mealPlans: await MealPlan.count({ where: { childId: B.child.id } }),
+  monitoring: await EmotionalMonitoring.count({ where: { childId: B.child.id } }),
 });
 
 /** Assert a response did not carry tenant B's data to a tenant A caller. */
@@ -134,20 +157,27 @@ describe('P3 — cross-tenant isolation, real database', () => {
     for (const [roleName, idOf] of roles()) {
       for (const [surface, method, pathOf, bodyOf] of writeSurfaces()) {
         it(`${roleName} :: ${surface} :: must not cross the boundary`, async () => {
+          const before = await countTenantBRows();
           const req = request(app)[method](pathOf()).set(auth(idOf()));
           const body = bodyOf();
           const res = body === undefined ? await req : await req.send(body);
           expectNoLeak(res, `${roleName} ${surface}`);
 
-          // A write that returns 2xx must not have changed tenant B.
-          if (res.status < 400) {
-            const { default: Child } = await import('../../models/Child.js');
-            const fresh = await Child.findByPk(B.child.id, { paranoid: false });
-            expect(fresh).not.toBeNull();
-            expect(fresh.firstName).toBe(B.child.firstName);
-            expect(fresh.schoolId).toBe(B.school.id);
-            expect(fresh.deletedAt).toBeNull();
-          }
+          // A 2xx is not enough. D-62 returned 201 with a body containing none
+          // of tenant B's secrets while creating a TherapyUsage row against
+          // tenant B's child — the leak was the WRITE, invisible in the
+          // response. The regression canary caught the lane missing it.
+          //
+          // So every write probe re-reads tenant B afterwards: the child must be
+          // untouched, and NOTHING may have been attached to it.
+          const after = await countTenantBRows();
+          expect(after).toEqual(before);
+
+          const fresh = await ChildModel.findByPk(B.child.id, { paranoid: false });
+          expect(fresh).not.toBeNull();
+          expect(fresh.firstName).toBe(B.child.firstName);
+          expect(fresh.schoolId).toBe(B.school.id);
+          expect(fresh.deletedAt).toBeNull();
         });
       }
     }
