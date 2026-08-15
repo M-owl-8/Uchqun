@@ -31,6 +31,7 @@ import request from 'supertest';
 import app from '../../server.js';
 import { buildTwoTenants, secretsOf, auth, closeDb } from './helpers/fixtures.js';
 import ChildModel from '../../models/Child.js';
+import UserModel from '../../models/User.js';
 import TherapyUsage from '../../models/TherapyUsage.js';
 import ChildAttendance from '../../models/ChildAttendance.js';
 import Activity from '../../models/Activity.js';
@@ -101,6 +102,12 @@ const querySurfaces = () => [
   ['teacher/children/:id', 'get', () => `/api/v1/teacher/children/${B.child.id}`],
   ['children/:id', 'get', () => `/api/v1/children/${B.child.id}`],
   ['groups/:id', 'get', () => `/api/v1/groups/${B.group.id}`],
+  // USER-scoped surfaces. 3.3 requires coverage of every scope-bearing path
+  // including users, and the first version of this matrix had none — every
+  // probe reached for a CHILD. A staff record is tenant data too.
+  ['admin/receptions/:id', 'get', () => `/api/v1/admin/receptions/${B.reception.id}`],
+  ['admin/receptions/:id/documents', 'get', () => `/api/v1/admin/receptions/${B.reception.id}/documents`],
+  ['admin/teachers/:id', 'get', () => `/api/v1/admin/teachers/${B.teacher.id}`],
 ];
 
 // Writes across the boundary — the half Campaign II's original suite never had.
@@ -122,6 +129,12 @@ const writeSurfaces = () => [
   ['DELETE meals/:id (foreign)', 'delete', () => `/api/v1/meals/${B.meal.id}`, () => undefined],
   ['PUT admin/documents/:id/approve (foreign)', 'put',
     () => `/api/v1/admin/documents/${B.document.id}/approve`, () => ({})],
+  ['PUT admin/receptions/:id (foreign)', 'put',
+    () => `/api/v1/admin/receptions/${B.reception.id}`, () => ({ firstName: 'overwritten' })],
+  ['DELETE admin/receptions/:id (foreign)', 'delete',
+    () => `/api/v1/admin/receptions/${B.reception.id}`, () => undefined],
+  ['PUT admin/receptions/:id/deactivate (foreign)', 'put',
+    () => `/api/v1/admin/receptions/${B.reception.id}/deactivate`, () => ({})],
   // forged scope: a body claiming the other tenant's school/group
   ['POST children with forged schoolId', 'post', () => '/api/v1/children',
     () => ({ firstName: 'forged', lastName: 'probe', dateOfBirth: '2020-01-01',
@@ -178,6 +191,14 @@ describe('P3 — cross-tenant isolation, real database', () => {
           expect(fresh.firstName).toBe(B.child.firstName);
           expect(fresh.schoolId).toBe(B.school.id);
           expect(fresh.deletedAt).toBeNull();
+
+          // Staff are tenant data too: a foreign reception must not be renamed,
+          // deactivated or soft-deleted by a caller from another school.
+          const staff = await UserModel.findByPk(B.reception.id, { paranoid: false });
+          expect(staff).not.toBeNull();
+          expect(staff.firstName).toBe(B.reception.firstName);
+          expect(staff.isActive).toBe(true);
+          expect(staff.deletedAt).toBeNull();
         });
       }
     }
