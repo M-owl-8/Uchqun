@@ -142,7 +142,26 @@ for (const suite of SUITES) {
       }
       // early return before any expect — passes by not running
       const firstExpect = t.body.search(/\bexpect\s*\(/);
-      const earlyReturn = /\bif\s*\([^)]*\)\s*(\{[^}]*\breturn\b|return\b)/.exec(t.body);
+      // Only a return at the TEST BODY's own level counts. An `if (url === …)
+      // return Promise.resolve(…)` inside a mock implementation is a router,
+      // not an early exit, and flagging it called six correct AdminIRR tests
+      // conditional. Depth is measured from the body's opening brace, and any
+      // nested function/arrow puts us deeper than 1.
+      const topLevelReturn = (() => {
+        let depth = 0;
+        for (let k = 0; k < t.body.length; k++) {
+          const ch = t.body[k];
+          if (ch === '{') depth++;
+          else if (ch === '}') depth--;
+          else if (depth === 1 && t.body.startsWith('return', k) && /\W/.test(t.body[k - 1] ?? ' ')) {
+            // is it guarded by an if on the same statement?
+            const before = t.body.slice(Math.max(0, k - 200), k);
+            if (/\bif\s*\([^)]*\)\s*\{?\s*$/.test(before)) return { index: k };
+          }
+        }
+        return null;
+      })();
+      const earlyReturn = topLevelReturn;
       if (asserts && earlyReturn && earlyReturn.index < firstExpect) {
         findings.conditional.push({ file: rel, line: t.line, what: 'conditional early return', name: t.name });
       }
