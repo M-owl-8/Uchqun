@@ -97,10 +97,13 @@ async function buildTenant(label, regionName) {
     date: '2026-08-01', specialNotes: `${label} SECRET meal notes`,
   });
 
+  // MealPlan maps camelCase attributes onto snake_case columns (underscored:
+  // true, plus explicit field:). The MODEL names are what Sequelize validates,
+  // so the column names fail with a notNull violation that names the attribute.
   const mealPlan = await MealPlan.create({
-    child_id: child.id, date: '2026-08-01', meal_type: 'Breakfast',
-    planned_menu: `${label} SECRET planned menu`, notes: `${label} SECRET plan notes`,
-    created_by: teacher.id,
+    childId: child.id, date: '2026-08-01', mealType: 'Breakfast',
+    plannedMenu: `${label} SECRET planned menu`, notes: `${label} SECRET plan notes`,
+    createdBy: teacher.id,
   });
 
   const monitoring = await EmotionalMonitoring.create({
@@ -150,7 +153,7 @@ export function secretsOf(t) {
     t.child.specialNeeds, t.child.medicalDiagnosis,
     t.activity.title, t.activity.notes,
     t.meal.mealName, t.meal.specialNotes,
-    t.mealPlan.planned_menu, t.mealPlan.notes,
+    t.mealPlan.plannedMenu, t.mealPlan.notes,
     t.monitoring.notes, t.therapyUsage.notes,
   ].filter(Boolean);
 }
