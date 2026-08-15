@@ -367,7 +367,11 @@ jobs:
           # P4.3 — the collection check above compares collected against ON DISK,
           # so a DELETED file makes both fall together and it stays green. This
           # compares against a committed baseline and names what disappeared.
-          TESTS=$(echo "$RESULT" | grep -oE 'Tests +[0-9]+ passed \(([0-9]+)\)' | grep -oE '[0-9]+' | tail -1)
+          # Tolerant of ANSI colour codes, exactly like the Test Files pattern
+          # above. A strict 'Tests +N passed \(N\)' matches nothing against
+          # vitest's coloured output and yields 0, which fails the gate for the
+          # wrong reason.
+          TESTS=$(echo "$RESULT" | grep -oE 'Tests[^(]*\(([0-9]+)\)' | grep -oE '[0-9]+' | tail -1)
           cd "$GITHUB_WORKSPACE"
           node scripts/verify-suite-baseline.mjs ${{ matrix.app }} --tests "${TESTS:-0}"
 
