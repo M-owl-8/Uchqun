@@ -38,12 +38,19 @@ export const tokenFor = (userId) =>
 
 export const auth = (userId) => ({ Authorization: `Bearer ${tokenFor(userId)}` });
 
+// regions.code carries a UNIQUE constraint (regions_code_key). The regression
+// canary runs this lane FIVE times against one database, so a fixed code
+// collides on the second run and every later run fails for a reason that has
+// nothing to do with isolation. Every run gets its own suffix.
+const RUN = crypto.randomUUID().slice(0, 8);
+
 async function makeSchool(label, regionName) {
   const region = await Region.create({
-    name: regionName, code: label.toUpperCase(), slug: `${label}-region`, isRepublic: false,
+    name: `${regionName} ${RUN}`, code: `${label.toUpperCase()}-${RUN}`,
+    slug: `${label}-region-${RUN}`, isRepublic: false,
   });
   const school = await School.create({
-    name: `${label} school`, slug: `${label}-school`, isActive: true,
+    name: `${label} school ${RUN}`, slug: `${label}-school-${RUN}`, isActive: true,
     type: 'support', regionId: region.id,
   });
   return { region, school };
