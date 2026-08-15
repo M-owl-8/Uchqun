@@ -272,6 +272,18 @@ jobs:
       - name: Cross-tenant isolation matrix against a real database
         run: cd backend && npm run test:integration
 
+      # P3.4 / L14 — a lane that has never been observed FAILING is unverified,
+      # however green it is. This reverts each known cross-tenant fix in the
+      # runner's checkout only, requires the lane to go red naming the right
+      # probe, restores, and requires green.
+      #
+      # It is a job rather than a one-off because of D-68: Railway deploys every
+      # push to main independently of any gate, so committing a revert of a
+      # cross-tenant fix would put a live hole into production. Here the revert
+      # never leaves the runner.
+      - name: Regression canary — the lane must still catch D-47, D-61, D-62, D-64
+        run: cd backend && node scripts/regression-canary.mjs
+
   test-frontend:
     runs-on: ubuntu-latest
     strategy:
