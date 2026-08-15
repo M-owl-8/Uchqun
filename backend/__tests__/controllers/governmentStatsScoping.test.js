@@ -153,24 +153,12 @@ describe('GovernmentStats — Sprint D Commit 3', () => {
   });
 
   describe('[REVERT-TEST] region-scoping for getSavedStats', () => {
-    it('[REVERT-TEST: BUG] without regionId filter, region account would see all stats', async () => {
-      // Simulate the query WITHOUT the where.regionId = req.regionScope line:
-      const allStats = [
-        { id: 's1', regionId: REGION_A },       // own region
-        { id: 's2', regionId: 'other-region' },  // other region — should NOT be visible
-        { id: 's3', regionId: null },             // republic-level — should NOT be visible to region account
-      ];
-      mockStatsFindAndCountAll.mockResolvedValue({ rows: allStats, count: 3 });
-
-      // BUG: call the mock with no regionId filter (as it was before Sprint D Commit 3)
-      const where = {}; // intentionally no regionId
-      await mockStatsFindAndCountAll({ where, limit: 20, offset: 0, order: [['generatedAt', 'DESC']] });
-
-      // Without the filter, all 3 rows returned — region-B and null rows leak
-      const returned = mockStatsFindAndCountAll.mock.calls[0][0];
-      expect(returned.where).not.toHaveProperty('regionId');
-      // All 3 rows visible — this is the pre-fix leak
-    });
+// Historical bug, documented rather than asserted (P4.6):
+//   without regionId filter, region account would see all stats
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
     it('[REVERT-TEST: FIXED] region account only sees own-region stats', async () => {
       mockStatsFindAndCountAll.mockResolvedValue({ rows: [], count: 0 });

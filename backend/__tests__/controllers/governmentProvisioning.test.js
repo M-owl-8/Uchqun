@@ -106,27 +106,12 @@ describe('createGovernment', () => {
     // With bug: a second republic-main can be created (mockCreate called with govType='main').
     // With fix: 409 returned, mockCreate never called.
     //
-    it('[REVERT-TEST: BUG] without republic-main guard, second super-admin creation succeeds', async () => {
-      // Simulate buggy controller that skips the REPUBLIC_MAIN_EXISTS check
-      const buggyCreate = async (req, res) => {
-        const { govLevel, govType, govRegionId } = req.body;
-        // BUG: no republic-main guard
-        if (!req.body.firstName || !govLevel || !govType) return res.status(400).json({});
-        if (govLevel === 'region' && !govRegionId) return res.status(400).json({});
-        mockRegionFindByPk.mockResolvedValueOnce({ id: REGION_A, code: 'R01' });
-        mockUserFindOne.mockResolvedValueOnce(null);
-        mockUserCreate.mockResolvedValueOnce({ id: 'new', email: 'ali@respublika', toJSON: () => ({ id: 'new' }) });
-        return res.status(201).json({ success: true });
-      };
-      const req = {
-        user: republicMain(),
-        body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'republic', govType: 'main' },
-      };
-      const res = mkRes();
-      await buggyCreate(req, res);
-      // With the bug, 201 is returned — a second super-admin is created
-      expect(res.status).toHaveBeenCalledWith(201);
-    });
+// Historical bug, documented rather than asserted (P4.6):
+//   without republic-main guard, second super-admin creation succeeds
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
     it('[REVERT-TEST: FIXED] republic-main guard blocks second super-admin → 409', async () => {
       const req = {
@@ -159,25 +144,12 @@ describe('createGovernment', () => {
     // With bug: region-main creates account in region B (out of scope).
     // With fix: 403 PROVISION_REGION_OUT_OF_SCOPE returned.
     //
-    it('[REVERT-TEST: BUG] without region scope guard, region-main creates account in other region', async () => {
-      const buggyCreate = async (req, res) => {
-        // BUG: no region scope check on govRegionId
-        const { govLevel, govType, govRegionId } = req.body;
-        if (!req.body.firstName || !govLevel || !govType || !govRegionId) return res.status(400).json({});
-        mockRegionFindByPk.mockResolvedValueOnce({ id: REGION_B, code: 'R02' });
-        mockUserFindOne.mockResolvedValueOnce(null);
-        mockUserCreate.mockResolvedValueOnce({ id: 'new', toJSON: () => ({}) });
-        return res.status(201).json({ success: true });
-      };
-      const req = {
-        user: regionMainA(), // actor is region A
-        body: { firstName: 'Ali', lastName: 'Yo', password: 'Pass@2026', govLevel: 'region', govType: 'main', govRegionId: REGION_B },
-      };
-      const res = mkRes();
-      await buggyCreate(req, res);
-      // With bug: account created in region B by region-A actor
-      expect(res.status).toHaveBeenCalledWith(201);
-    });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region scope guard, region-main creates account in other region
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
     it('[REVERT-TEST: FIXED] region-main creating account in other region → 403 PROVISION_REGION_OUT_OF_SCOPE', async () => {
       mockRegionFindByPk.mockResolvedValue({ id: REGION_B, code: 'R02', slug: 'region-b' });
@@ -371,21 +343,12 @@ describe('deleteGovernmentUser', () => {
   // With bug: destroy is called on the republic-main.
   // With fix: 403 returned, destroy never called.
   //
-  it('[REVERT-TEST: BUG] without guard, republic-main account can be deleted', async () => {
-    const destroy = jest.fn().mockResolvedValue();
-    const buggyDelete = async (req, res) => {
-      const target = { id: req.params.id, role: 'government', govLevel: 'republic', govType: 'main', destroy };
-      if (req.user.id === target.id) return res.status(400).json({});
-      // BUG: no DELETE_LAST_REPUBLIC_MAIN guard
-      await target.destroy();
-      return res.json({ success: true });
-    };
-    const req = { user: republicMain(), params: { id: 'other-super-admin' } };
-    const res = mkRes();
-    await buggyDelete(req, res);
-    expect(destroy).toHaveBeenCalled(); // root account deleted — data loss
-    expect(res.json).toHaveBeenCalledWith({ success: true });
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without guard, republic-main account can be deleted
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] delete-last-republic-main guard prevents deletion', async () => {
     mockUserFindOne.mockResolvedValue({ id: 'target', role: 'government', govLevel: 'republic', govType: 'main' });
@@ -418,21 +381,12 @@ describe('deleteGovernmentUser', () => {
   // With bug: region-A main deletes region-B account successfully.
   // With fix: 403 DELETE_FORBIDDEN.
   //
-  it('[REVERT-TEST: BUG] without region scope check, region-main deletes other-region account', async () => {
-    const destroy = jest.fn().mockResolvedValue();
-    const buggyDelete = async (req, res) => {
-      const target = { id: req.params.id, role: 'government', govLevel: 'region', govType: 'main', govRegionId: REGION_B, destroy };
-      if (req.user.govType === 'secondary') return res.status(403).json({});
-      if (target.govLevel === 'republic' && target.govType === 'main') return res.status(403).json({});
-      // BUG: no region scope check
-      await target.destroy();
-      return res.json({ success: true });
-    };
-    const req = { user: regionMainA(), params: { id: 'region-b-account' } };
-    const res = mkRes();
-    await buggyDelete(req, res);
-    expect(destroy).toHaveBeenCalled(); // cross-region deletion succeeds
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region scope check, region-main deletes other-region account
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] region-main cannot delete account in other region → 403 DELETE_FORBIDDEN', async () => {
     mockUserFindOne.mockResolvedValue({
@@ -503,22 +457,12 @@ describe('resetGovernmentPassword', () => {
   // With bug: region-A main resets region-B account password.
   // With fix: 403 RESET_OUT_OF_SCOPE.
   //
-  it('[REVERT-TEST: BUG] without scope check, region-main resets other-region password', async () => {
-    const save = jest.fn().mockResolvedValue();
-    const buggyReset = async (req, res) => {
-      if (req.user.govType === 'secondary') return res.status(403).json({});
-      if (!req.body.newPassword) return res.status(400).json({});
-      // BUG: no scope check
-      const target = { id: req.params.id, role: 'government', govLevel: 'region', govType: 'main', govRegionId: REGION_B, save };
-      target.mustChangePassword = true;
-      await target.save();
-      return res.json({ success: true });
-    };
-    const req = { user: regionMainA(), params: { id: 'region-b-account' }, body: { newPassword: 'Pass@2026' } };
-    const res = mkRes();
-    await buggyReset(req, res);
-    expect(save).toHaveBeenCalled(); // cross-region reset succeeds
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without scope check, region-main resets other-region password
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] region-main cannot reset other-region account → 403 RESET_OUT_OF_SCOPE', async () => {
     mockUserFindOne.mockResolvedValue({

@@ -139,23 +139,12 @@ describe('getAccessibleConversationIds — admin school scoping', () => {
   // FIXED: Child.findAll({ where: { schoolId: req.user.schoolId } }) is now used.
   //   Admin A only gets parent:PARENT_A1 and parent:PARENT_A2.
 
-  it('[REVERT-TEST BUG] old ChatMessage.findAll approach would return cross-school conversations', async () => {
-    // Simulate the OLD buggy branch: ChatMessage.findAll returns all convIds including school B
-    const buggyChatFindAll = jest.fn().mockResolvedValue([
-      { conversationId: `parent:${PARENT_A1}` },
-      { conversationId: `parent:${PARENT_A2}` },
-      { conversationId: `parent:${PARENT_B1}` }, // cross-school leak
-    ]);
-
-    // Old code would map these: ['parent:PARENT_A1', 'parent:PARENT_A2', 'parent:PARENT_B1']
-    const oldIds = (await buggyChatFindAll({ attributes: ['conversationId'], group: ['conversationId'], raw: true }))
-      .map(r => r.conversationId);
-
-    // BUG: cross-school conversation included
-    expect(oldIds).toContain(`parent:${PARENT_B1}`);
-    // Old code never called Child.findAll at all — no schoolId filter applied
-    expect(buggyChatFindAll).toHaveBeenCalledTimes(1);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   old ChatMessage.findAll approach would return cross-school conversations
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST FIXED] with fix, admin A does not receive school B parent conversations', async () => {
     // Only school A children
@@ -226,17 +215,12 @@ describe('canAccessConversation — admin conversation access', () => {
   // FIXED: Child.findOne({ where: { parentId, schoolId: req.user.schoolId } }) is used.
   //   For admin A accessing PARENT_B1, findOne returns null → returns false → 403.
 
-  it('[REVERT-TEST BUG] old unconditional return-true allowed cross-school direct access', () => {
-    // Simulate old behavior: admin always returns true
-    const buggyCanAccess = async (_req, _conversationId) => {
-      if (_req.user.role === 'admin') return true; // BUG: no school check
-      return false;
-    };
-
-    const adminAReq = adminReq(SCHOOL_A);
-    // BUG: returns true even for school B's conversation
-    return expect(buggyCanAccess(adminAReq, `parent:${PARENT_B1}`)).resolves.toBe(true);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   old unconditional return-true allowed cross-school direct access
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST FIXED] with fix, admin A gets 403 for school B conversation', async () => {
     // Child.findOne returns null: PARENT_B1 has no children in SCHOOL_A

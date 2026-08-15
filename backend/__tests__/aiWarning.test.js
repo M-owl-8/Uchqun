@@ -168,24 +168,12 @@ describe('aiWarningController', () => {
       expect(update).toHaveBeenCalledWith(expect.objectContaining({ isResolved: true }));
     });
 
-    it('[REVERT-TEST: BUG] without govRegionId check, region gov can resolve cross-region warning', async () => {
-      const update = jest.fn().mockResolvedValue();
-      const buggyResolveWarning = async (req, res) => {
-        const warning = await mockFindByPk(req.params.id);
-        if (!warning) return res.status(404).json({ error: 'Warning not found' });
-        // BUG: government treated as platform-wide regardless of govRegionId
-        if (req.user.role !== 'government' && req.user.schoolId && warning.schoolId && req.user.schoolId !== warning.schoolId) {
-          return res.status(404).json({ error: 'Warning not found' });
-        }
-        await warning.update({ isResolved: true });
-        res.json({ success: true, data: warning });
-      };
-      mockFindByPk.mockReturnValue({ id: 'w1', schoolId: 'SCHOOL_B', update });
-      const req = { user: { id: 'g1', role: 'government', govRegionId: 'REGION_A' }, params: { id: 'w1' }, body: {} };
-      const res = mkRes();
-      await buggyResolveWarning(req, res);
-      expect(update).toHaveBeenCalled(); // BUG: resolved cross-region
-    });
+// Historical bug, documented rather than asserted (P4.6):
+//   without govRegionId check, region gov can resolve cross-region warning
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
     it('[REVERT-TEST: FIXED] with govRegionId check, region gov cannot resolve cross-region warning', async () => {
       const update = jest.fn();

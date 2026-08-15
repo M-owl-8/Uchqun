@@ -117,18 +117,12 @@ describe('Region isolation — revert-test evidence', () => {
   // Expected: region B account should NOT see school A.
   // With bug: it DOES — this test FAILS (proves the filter does real work).
   //
-  it('[REVERT-TEST: BUG] regionWhere returning {} for region account leaks cross-region data', () => {
-    const buggyRegionWhere = (_req) => ({}); // simulates the bug: always returns {} (no filter)
-
-    const reqB = { isGlobalAccess: false, regionScope: REGION_B };
-    const filter = buggyRegionWhere(reqB);
-    const visible = applyFilter(allSchools, filter);
-
-    // With the bug, region B account sees school A — THIS IS THE FAILURE:
-    expect(visible.some((s) => s.id === schoolA.id)).toBe(true);
-    // (This assertion is intentionally asserting the BUGGY behavior to show the test would fail
-    //  if the bug were present. The companion test below proves the fix.)
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   regionWhere returning {} for region account leaks cross-region data
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   // ── FIXED: correct isolation ─────────────────────────────────────────────────
   //
@@ -240,25 +234,12 @@ describe('requireGovAccess', () => {
   // JS implementations, or a permissive check like `if (!grants)` could accidentally
   // skip the denial. The || {} fallback prevents both outcomes.
   //
-  it('[REVERT-TEST: BUG] secondary with null grants without || {} fallback could crash or skip denial', () => {
-    // Simulate the bug: no || {} fallback, direct property access on null
-    const buggyRequireGovAccess = (grantKey) => (req, res, next) => {
-      if (req.govType === 'main') return next();
-      const grants = req.govAccessGrants; // BUG: no || {} fallback
-      // If grants is null, !grants is true → correctly returns 403 here
-      // but a different buggy pattern (e.g. grants && grants[key]) could pass
-      if (!grants || !grants[grantKey]) {
-        return res.status(403).json({ success: false, error: { code: 'GOV_ACCESS_DENIED' } });
-      }
-      next();
-    };
-    const req = { govType: 'secondary', govAccessGrants: null };
-    const res = mkRes();
-    const next = jest.fn();
-    buggyRequireGovAccess('canViewSchools')(req, res, next);
-    expect(res.status).toHaveBeenCalledWith(403);
-    expect(next).not.toHaveBeenCalled();
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   secondary with null grants without || {} fallback could crash or skip denial
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] secondary with null grants → 403 with || {} fallback (cannot escalate)', () => {
     const req = { govType: 'secondary', govAccessGrants: null };

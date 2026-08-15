@@ -117,18 +117,12 @@ describe('getSchoolsStats — region scoping', () => {
   // BUG: without regionWhere, region-A account lists all schools (region-B included).
   // With fix: region-A account sees only region-A schools.
   //
-  it('[REVERT-TEST: BUG] without regionWhere, region-A where has no regionId filter', async () => {
-    mockSchoolFindAndCountAll.mockResolvedValue({ count: 0, rows: [] });
-    // Simulates the old code path: no regionWhere applied
-    const buggyGetSchoolsStats = async (req, res) => {
-      const where = { isActive: true };  // BUG: no regionWhere
-      await mockSchoolFindAndCountAll({ where, limit: 50, offset: 0, distinct: true });
-      res.json({ success: true, data: { schools: [], total: 0 } });
-    };
-    await buggyGetSchoolsStats(regionAReq(), mkRes());
-    const callWhere = mockSchoolFindAndCountAll.mock.calls[0][0].where;
-    expect(callWhere).not.toHaveProperty('regionId');  // BUG: region-B schools would leak
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without regionWhere, region-A where has no regionId filter
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with regionWhere, region-A where has regionId filter', async () => {
     mockSchoolFindAndCountAll.mockResolvedValue({ count: 0, rows: [] });
@@ -215,22 +209,12 @@ describe('getSchoolById — region IDOR isolation', () => {
   // BUG: without regionWhere in getSchoolById, region-A account can read any school by UUID.
   // With fix: region-A account gets 404 for school in region-B.
   //
-  it('[REVERT-TEST: BUG] without regionWhere, region-A finds region-B school → 200', async () => {
-    const buggyGetSchoolById = async (req, res) => {
-      const { id } = req.params;
-      // BUG: no regionWhere — any school UUID resolves
-      const school = await mockSchoolFindOne({ where: { id } });
-      if (!school) return res.status(404).json({});
-      res.json({ success: true, data: school.toJSON() });
-    };
-    mockSchoolFindOne.mockResolvedValue({
-      id: SCHOOL_B_ID, regionId: REGION_B, toJSON: () => ({ id: SCHOOL_B_ID }),
-    });
-    const res = mkRes();
-    await buggyGetSchoolById({ ...regionAReq(), params: { id: SCHOOL_B_ID } }, res);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
-    // BUG confirmed: region-A saw region-B school
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without regionWhere, region-A finds region-B school → 200
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with regionWhere, region-A gets 404 for region-B school', async () => {
     // The real function uses regionWhere(req) = { regionId: REGION_A }
@@ -285,23 +269,12 @@ describe('archiveSchool — region scoping', () => {
   // BUG: without regionWhere in archiveSchool, region-A can archive any school.
   // With fix: region-A gets 404 for out-of-region school.
   //
-  it('[REVERT-TEST: BUG] without regionWhere, region-A archives region-B school', async () => {
-    const buggyArchive = async (req, res) => {
-      const { id } = req.params;
-      // BUG: findByPk — no region filter
-      const school = await mockSchoolFindOne({ where: { id } });  // called without regionId
-      if (!school) return res.status(404).json({});
-      if (!school.isActive) return res.status(409).json({});
-      await school.update({ isActive: false });
-      res.json({ success: true });
-    };
-    mockSchoolFindOne.mockResolvedValue({ id: SCHOOL_B_ID, isActive: true, update: mockSchoolUpdate });
-    mockSchoolUpdate.mockResolvedValue({});
-    const res = mkRes();
-    await buggyArchive({ ...regionAReq(), params: { id: SCHOOL_B_ID } }, res);
-    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
-    // BUG confirmed: region-A archived region-B school
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without regionWhere, region-A archives region-B school
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with regionWhere, region-A cannot archive region-B school', async () => {
     mockSchoolFindOne.mockResolvedValue(null);  // regionId=REGION_A filter → no result for SCHOOL_B

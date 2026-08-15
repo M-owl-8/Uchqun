@@ -109,16 +109,12 @@ describe('getStudentsStats — region scoping', () => {
   });
 
   // ── REVERT-TEST ──────────────────────────────────────────────────────────
-  it('[REVERT-TEST: BUG] without school-join scope, region-A Child query has no schoolId filter', async () => {
-    const buggyGetStudents = async (req, res) => {
-      const where = {};  // BUG: no scoping
-      await mockChildFindAndCountAll({ where, limit: 50, offset: 0 });
-      res.json({ success: true, data: { total: 0, students: [] } });
-    };
-    await buggyGetStudents(regionAReq(), mkRes());
-    const childWhere = mockChildFindAndCountAll.mock.calls[0][0].where;
-    expect(childWhere).not.toHaveProperty('schoolId');  // BUG: unscoped
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without school-join scope, region-A Child query has no schoolId filter
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with school-join scope, region-A Child query has schoolId filter', async () => {
     mockSchoolFindAll.mockResolvedValue([{ id: SCHOOL_A_ID }]);
@@ -157,15 +153,12 @@ describe('getTeachersList — region scoping', () => {
   });
 
   // ── REVERT-TEST ──────────────────────────────────────────────────────────
-  it('[REVERT-TEST: BUG] without scope, teacher query has no schoolId filter', async () => {
-    const buggyGetTeachers = async (req, res) => {
-      await mockUserFindAndCountAll({ where: { role: 'teacher' }, limit: 50, offset: 0 });  // BUG
-      res.json({ success: true, data: { total: 0, teachers: [] } });
-    };
-    await buggyGetTeachers(regionAReq(), mkRes());
-    const userWhere = mockUserFindAndCountAll.mock.calls[0][0].where;
-    expect(userWhere).not.toHaveProperty('schoolId');  // BUG confirmed
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without scope, teacher query has no schoolId filter
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with scope, teacher query has schoolId filter', async () => {
     await getTeachersList(regionAReq(), mkRes());

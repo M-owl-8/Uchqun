@@ -260,19 +260,12 @@ describe('changeSchoolCategory — Sprint D Commit 2', () => {
   });
 
   describe('[REVERT-TEST] secondary-account category change', () => {
-    it('[REVERT-TEST: BUG] secondary could change category if govType check absent', async () => {
-      // Simulate the controller WITHOUT the govType guard:
-      // secondary req → School.findOne → SchoolCategory.findByPk → save
-      const school = makeSchool();
-      mockSchoolFindOne.mockResolvedValue(school);
-      mockCategoryFindByPk.mockResolvedValue(makeCategory());
-      mockSchoolSave.mockResolvedValue();
-
-      // BUG scenario: if we call the mocks directly (bypassing the guard), the write succeeds
-      const cat = await (await import('../../models/SchoolCategory.js')).default.findByPk(CATEGORY_ID);
-      school.categoryId = cat.id;
-      expect(school.categoryId).toBe(CATEGORY_ID); // leak — write completes without any govType check
-    });
+// Historical bug, documented rather than asserted (P4.6):
+//   secondary could change category if govType check absent
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
     it('[REVERT-TEST: FIXED] secondary → 403 (govType check present)', async () => {
       const res = mkRes();

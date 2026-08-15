@@ -125,7 +125,16 @@ jobs:
           cache: npm
       - run: cd backend && npm ci
       - name: Run backend tests with coverage
-        run: cd backend && npm test -- --coverage
+        run: |
+          cd backend
+          set +e
+          npm test -- --coverage 2>&1 | tee /tmp/jest-backend.log
+          STATUS=${PIPESTATUS[0]}
+          set -e
+          [ "$STATUS" -ne 0 ] && exit "$STATUS"
+          TESTS=$(grep -oE '^Tests: +[0-9]+ passed, ([0-9]+) total' /tmp/jest-backend.log | grep -oE '[0-9]+' | tail -1)
+          cd "$GITHUB_WORKSPACE"
+          node scripts/verify-suite-baseline.mjs backend --tests "${TESTS:-0}"
 
   # DEEP HARDENING P8 / D-49 — backend/scripts/verify-i18n.js validates the
   # backend ERROR CATALOGUE only. It passed 252/252 while the UI shipped 8 raw
@@ -275,7 +284,16 @@ jobs:
       - name: Build the schema FROM MIGRATIONS
         run: cd backend && npm run migrate
       - name: Cross-tenant isolation matrix against a real database
-        run: cd backend && npm run test:integration
+        run: |
+          cd backend
+          set +e
+          npm run test:integration 2>&1 | tee /tmp/jest-integration.log
+          STATUS=${PIPESTATUS[0]}
+          set -e
+          [ "$STATUS" -ne 0 ] && exit "$STATUS"
+          TESTS=$(grep -oE '^Tests: +[0-9]+ passed, ([0-9]+) total' /tmp/jest-integration.log | grep -oE '[0-9]+' | tail -1)
+          cd "$GITHUB_WORKSPACE"
+          node scripts/verify-suite-baseline.mjs backend-integration --tests "${TESTS:-0}"
 
       # P3.4 / L14 — a lane that has never been observed FAILING is unverified,
       # however green it is. This reverts each known cross-tenant fix in the
@@ -345,6 +363,13 @@ jobs:
             echo "A suite that silently skips files and still exits 0 is worse than a failing test."
             exit 1
           fi
+
+          # P4.3 — the collection check above compares collected against ON DISK,
+          # so a DELETED file makes both fall together and it stays green. This
+          # compares against a committed baseline and names what disappeared.
+          TESTS=$(echo "$RESULT" | grep -oE 'Tests +[0-9]+ passed \(([0-9]+)\)' | grep -oE '[0-9]+' | tail -1)
+          cd "$GITHUB_WORKSPACE"
+          node scripts/verify-suite-baseline.mjs ${{ matrix.app }} --tests "${TESTS:-0}"
 
   lint-frontend:
     runs-on: ubuntu-latest

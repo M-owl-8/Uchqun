@@ -218,28 +218,12 @@ describe('getAuditLog — region scoping (CP-021 Sprint C)', () => {
   // With fix: School.findAll is called with regionId=REGION_A, and the DB
   //   query has entity='schools' and entityId IN (region-A school IDs only).
 
-  it('[REVERT-TEST: BUG] without region filter, region-A account query has no entityId restriction', async () => {
-    // Simulate the buggy controller: no scoping block — just pass through to DB
-    const buggyGetAuditLog = async (req, res) => {
-      const allowlistPairs = [
-        { action: 'archive', entity: 'schools' },
-        { action: 'reactivate', entity: 'schools' },
-        { action: 'create', entity: 'government_users' },
-      ];
-      const where = { [Op.or]: allowlistPairs };
-      // BUG: no region filter applied at all
-      mockAuditFindAndCountAll({ where, limit: 20, offset: 0 });
-      res.json({ success: true, data: { entries: [], total: 0 } });
-    };
-
-    const res = mkRes();
-    await buggyGetAuditLog(regionAReq(), res);
-
-    const callArg = mockAuditFindAndCountAll.mock.calls[0][0];
-    // BUG: no entityId filter → region-B events would be returned
-    expect(callArg.where.entityId).toBeUndefined(); // BUG: missing filter
-    expect(callArg.where.entity).toBeUndefined();   // BUG: entity not restricted to 'schools'
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region filter, region-A account query has no entityId restriction
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region filter, region-A query has entity=schools and entityId IN (region-A schools)', async () => {
     mockSchoolFindAll.mockResolvedValue([{ id: SCHOOL_A1 }, { id: SCHOOL_A2 }]);

@@ -230,26 +230,12 @@ describe('Hole 1 — Admin mutation region scoping', () => {
   });
 
   // ── REVERT-TEST: updateAdmin isolation ───────────────────────────────────
-  it('[REVERT-TEST: BUG] without region check, region-A can update region-B admin', async () => {
-    const save = jest.fn().mockResolvedValue();
-    // BUG: no region check — any admin is mutable
-    const buggyUpdateAdmin = async (req, res) => {
-      const admin = await mockUserFindOne({ where: { id: req.params.id, role: 'admin' } });
-      if (!admin) return res.status(404).json({ error: 'not found' });
-      // BUG: no region check here
-      admin.firstName = req.body.firstName;
-      await admin.save();
-      res.json({ success: true });
-    };
-
-    mockUserFindOne.mockReturnValue({ id: ADMIN_B_ID, schoolId: SCHOOL_B, firstName: 'Old', save });
-    const res = mkRes();
-    await buggyUpdateAdmin(regionAReq({ params: { id: ADMIN_B_ID }, body: { firstName: 'Hacked' } }), res);
-
-    // BUG: save was called — mutation succeeded without region check
-    expect(save).toHaveBeenCalled();
-    expect(res.json.mock.calls[0][0].success).toBe(true);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region check, region-A can update region-B admin
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region check, region-A cannot update region-B admin', async () => {
     mockUserFindOne.mockResolvedValue({ id: ADMIN_B_ID, email: 'b@x.com', schoolId: SCHOOL_B });
@@ -339,24 +325,12 @@ describe('Hole 2 — Registration approve/reject region scoping', () => {
   });
 
   // ── REVERT-TEST: rejectRegistrationRequest isolation ─────────────────────
-  it('[REVERT-TEST: BUG] without region check, region-A can reject region-B request', async () => {
-    const save = jest.fn().mockResolvedValue();
-    const buggyReject = async (req, res) => {
-      const request = await mockRegReqFindByPk(req.params.id);
-      if (!request) return res.status(404).json({ error: 'not found' });
-      // BUG: no region check
-      request.status = 'rejected';
-      await request.save();
-      res.json({ success: true });
-    };
-
-    mockRegReqFindByPk.mockReturnValue({ id: REG_REQ_ID, schoolId: SCHOOL_B, status: 'pending', save });
-    const res = mkRes();
-    await buggyReject(regionAReq({ params: { id: REG_REQ_ID }, body: {} }), res);
-
-    expect(save).toHaveBeenCalled(); // BUG: mutation succeeded
-    expect(res.json.mock.calls[0][0].success).toBe(true);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region check, region-A can reject region-B request
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region check, region-A cannot reject region-B request', async () => {
     mockRegReqFindByPk.mockResolvedValue({ id: REG_REQ_ID, schoolId: SCHOOL_B, status: 'pending' });
@@ -484,23 +458,12 @@ describe('Hole 3 — Message region scoping (3-hop join)', () => {
   });
 
   // ── REVERT-TEST: message region isolation ────────────────────────────────
-  it('[REVERT-TEST: BUG] without region check, region-A can delete region-B message', async () => {
-    const destroy = jest.fn().mockResolvedValue();
-    const buggyDeleteMessage = async (req, res) => {
-      const message = await mockMsgFindByPk(req.params.id);
-      if (!message) return res.status(404).json({ error: 'not found' });
-      // BUG: no region check
-      await message.destroy();
-      res.json({ success: true });
-    };
-
-    mockMsgFindByPk.mockReturnValue({ id: MSG_ID, senderId: SENDER_B_ID, parentMessageId: null, destroy });
-    const res = mkRes();
-    await buggyDeleteMessage(regionAReq({ params: { id: MSG_ID } }), res);
-
-    expect(destroy).toHaveBeenCalled(); // BUG: deletion succeeded
-    expect(res.json.mock.calls[0][0].success).toBe(true);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region check, region-A can delete region-B message
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region check, region-A cannot delete region-B message', async () => {
     const destroy = jest.fn().mockResolvedValue();
@@ -608,24 +571,12 @@ describe('Hole 4 — updateGovernmentUser region scoping (CLOSEOUT)', () => {
     expect(save).toHaveBeenCalled();
   });
 
-  it('[REVERT-TEST: BUG] without region check, region-A can update republic gov user', async () => {
-    const save = jest.fn().mockResolvedValue();
-    const buggyUpdateGov = async (req, res) => {
-      const government = await mockUserFindOne({ where: { id: req.params.id, role: 'government' } });
-      if (!government) return res.status(404).json({ error: 'not found' });
-      // BUG: no region scope check
-      government.firstName = req.body.firstName;
-      await government.save();
-      res.json({ success: true, data: {} });
-    };
-
-    mockUserFindOne.mockReturnValue({ id: GOV_REPUBLIC, govLevel: 'republic', govRegionId: null, email: 'r@r', firstName: 'Old', save });
-    const res = mkRes();
-    await buggyUpdateGov(regionAReq({ params: { id: GOV_REPUBLIC }, body: { firstName: 'Hacked' } }), res);
-
-    expect(save).toHaveBeenCalled(); // BUG: mutation succeeded cross-region
-    expect(res.json.mock.calls[0][0].success).toBe(true);
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region check, region-A can update republic gov user
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region check, region-A cannot update republic gov user', async () => {
     mockUserFindOne.mockResolvedValue({

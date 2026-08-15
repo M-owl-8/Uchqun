@@ -174,19 +174,12 @@ describe('getAdmins — region scoping', () => {
   });
 
   // ── REVERT-TEST: getAdmins isolation ──────────────────────────────────────
-  it('[REVERT-TEST: BUG] without region filter, query has no schoolId restriction', async () => {
-    const buggyGetAdmins = async (_req, res) => {
-      // BUG: no scoping block — queries all admins regardless of region
-      mockUserFindAndCountAll({ where: { role: 'admin' }, limit: 100, offset: 0 });
-      res.json({ success: true, data: [] });
-    };
-
-    const res = mkRes();
-    await buggyGetAdmins(regionAReq(), res);
-
-    const callArg = mockUserFindAndCountAll.mock.calls[0][0];
-    expect(callArg.where.schoolId).toBeUndefined(); // BUG: region-B admins would appear
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without region filter, query has no schoolId restriction
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with region filter, schoolId IN(region-A schools) injected', async () => {
     mockSchoolFindAll.mockResolvedValue([{ id: SCHOOL_A1 }]);
@@ -237,19 +230,12 @@ describe('getRatingsStats — region scoping', () => {
   });
 
   // ── REVERT-TEST: getRatingsStats isolation ───────────────────────────────
-  it('[REVERT-TEST: BUG] without regionWhere, query has no regionId restriction', async () => {
-    const buggyGetRatings = async (_req, res) => {
-      // BUG: no regionWhere — queries all active schools regardless of region
-      mockSchoolFindAll({ where: { isActive: true } });
-      res.json({ success: true, data: { schools: [], total: 0, average: 0 } });
-    };
-
-    const res = mkRes();
-    await buggyGetRatings(regionAReq(), res);
-
-    const callArg = mockSchoolFindAll.mock.calls[0][0];
-    expect(callArg.where.regionId).toBeUndefined(); // BUG: region-B schools would be rated
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without regionWhere, query has no regionId restriction
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with regionWhere, regionId=REGION_A in school query', async () => {
     mockSchoolFindAll.mockResolvedValue([]);

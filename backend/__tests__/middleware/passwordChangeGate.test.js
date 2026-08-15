@@ -139,18 +139,12 @@ describe('mustChangePassword gate in authenticate', () => {
   //   With bug: next() called even for arbitrary endpoints.
   //   With fix: 403 PASSWORD_CHANGE_REQUIRED.
   //
-  it('[REVERT-TEST: BUG] without gate, mustChangePassword account reaches next()', async () => {
-    const buggyAuthenticate = async (req, res, next) => {
-      // No mustChangePassword gate — simulates the code path before Commit 3
-      req.user = { id: 'u1', role: 'government', mustChangePassword: true };
-      next();
-    };
-    const req = mkReq('u1', { originalUrl: '/api/v1/government/secrets' });
-    const res = mkRes();
-    const next = jest.fn();
-    await buggyAuthenticate(req, res, next);
-    expect(next).toHaveBeenCalled(); // BUG: should not reach here
-  });
+// Historical bug, documented rather than asserted (P4.6):
+//   without gate, mustChangePassword account reaches next()
+// The former [REVERT-TEST: BUG] case here reimplemented the buggy code
+// locally and asserted the bug, so it could not fail when the real
+// controller regressed. The [REVERT-TEST: FIXED] case below exercises
+// the real controller and is what actually guards this.
 
   it('[REVERT-TEST: FIXED] with gate, mustChangePassword account gets 403', async () => {
     mockFindByPk.mockResolvedValue({
