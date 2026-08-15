@@ -28,7 +28,8 @@
     "migrate": "node config/migrate.js",
     "migrate:undo": "echo 'Manual rollback required - check migrations directory'",
     "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --forceExit --detectOpenHandles",
-    "lint": "eslint controllers/ middleware/ utils/ routes/ config/ models/"
+    "lint": "eslint controllers/ middleware/ utils/ routes/ config/ models/",
+    "test:integration": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --config jest.integration.config.js --runInBand"
   },
   "keywords": [
     "education",
