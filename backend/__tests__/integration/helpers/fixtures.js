@@ -88,17 +88,17 @@ async function buildTenant(label, regionName) {
 
   const activity = await Activity.create({
     childId: child.id, title: `${label} SECRET activity`, description: `${label} SECRET description`,
-    type: 'individual', duration: 30, teacher: teacher.firstName, date: '2026-08-01',
+    type: 'Learning', duration: 30, teacher: teacher.firstName, date: '2026-08-01',
     notes: `${label} SECRET activity notes`,
   });
 
   const meal = await Meal.create({
-    childId: child.id, mealName: `${label} SECRET meal`, mealType: 'breakfast',
+    childId: child.id, mealName: `${label} SECRET meal`, mealType: 'Breakfast',
     date: '2026-08-01', specialNotes: `${label} SECRET meal notes`,
   });
 
   const mealPlan = await MealPlan.create({
-    child_id: child.id, date: '2026-08-01', meal_type: 'breakfast',
+    child_id: child.id, date: '2026-08-01', meal_type: 'Breakfast',
     planned_menu: `${label} SECRET planned menu`, notes: `${label} SECRET plan notes`,
     created_by: teacher.id,
   });

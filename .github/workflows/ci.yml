@@ -253,9 +253,12 @@ jobs:
       DB_NAME: uchqun_integration
       DB_USER: postgres
       DB_PASSWORD: postgres
-      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/uchqun_integration
-      JWT_SECRET: ci-integration-jwt-secret-at-least-32-chars
-      JWT_REFRESH_SECRET: ci-integration-refresh-secret-at-least-32
+      # JWT_SECRET / JWT_REFRESH_SECRET / DATABASE_URL are deliberately NOT set
+      # here. __tests__/integration/helpers/env.js supplies test defaults, and
+      # gitleaks' generic-api-key rule fires on a high-entropy literal assigned
+      # to JWT_SECRET in a workflow file — correctly, since it cannot tell a
+      # throwaway CI value from a real one. Keeping them out of the yaml keeps
+      # the scanner honest instead of teaching it to ignore that shape.
       FRONTEND_URL: http://localhost:5173
     steps:
       - uses: actions/checkout@v4
