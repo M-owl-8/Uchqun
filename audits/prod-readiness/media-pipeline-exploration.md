@@ -539,3 +539,12 @@ Genuinely small: **2 real content files, 3 base64 avatars/photos, 0 local-disk f
 9. **Is EXIF stripping required before real-user launch?** Originals are stored byte-for-byte with GPS intact; `sharp` is installed and `_generateThumbnail` (`mediaController.js:264`) is dead code that could be repurposed. For geotagged photographs of identified children this likely warrants a decision before launch.
 10. **I could not read `backend/.env.example`** — the session's permission hook denied it. All env-var facts above are derived from `process.env` reads in code, which is stronger evidence anyway, but I could not confirm which vars are *documented*. `backend/__tests__/envExample.test.js:20` asserts `APPWRITE_ENDPOINT` appears there. → Have someone with read access confirm the file lists all four `APPWRITE_*` plus `LOCAL_STORAGE_FALLBACK` and `FILE_BASE_URL`.
 11. **Not read in full:** `docs/RAILWAY_SETUP.md` and `audits/redesign/TP-MEDIA-STORAGE.md` both match `appwrite`. They may contain the original decision record for §8 and are the obvious next read if the "why Appwrite" history matters.
+
+
+---
+
+## Round 3 remediation
+
+See **[media-round3-log.md](media-round3-log.md)** for the round-3 status reconciliation
+(rounds 1-3), the teacher-scope fork analysis, the 12 reception accounts, and the two facts
+that cannot be closed from the repo.
