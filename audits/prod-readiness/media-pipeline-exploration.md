@@ -50,7 +50,36 @@
 > read-only MCP cannot purge. Live media count is back to 6.
 >
 > **The product owner's original claim is now definitively false:** storage is connected and working.
-> The "cannot send pictures" symptom is item 3 below — a frontend stub with no storage involvement.
+>
+> ### The actual root cause, found 2026-09-15 by opening the deployed portals
+>
+> Storage was never the problem, and the journal stub was only half of it. **No Appwrite-hosted photo
+> has ever displayed in any portal**, because `getProxyUrl` never produced a resolvable URL:
+>
+> ```js
+> const apiBase = apiUrl.replace('/api', '');        // "/api/v1" -> "/v1"  (replace hits the FIRST /api)
+> return `${apiBase}/api/media/proxy/${mediaId}`;    // -> "/v1/api/media/proxy/<id>"
+> ```
+>
+> The portals are built with `VITE_API_URL=/api/v1`, so the version segment is orphaned and the result is
+> a **portal-relative** path. The SPA's `/* → index.html` rewrite answers it with **HTTP 200 and an HTML
+> body**, so every `<img>` received markup instead of an image and rendered blank — with no error in the
+> console, no 404, and nothing in the backend logs. Verified against production: `/v1/api/media/proxy/<id>`
+> returns `index.html`; `/api/v1/media/proxy/<id>` reaches the backend (401 unauthenticated). The other
+> candidate base, `https://host/api`, fails differently — it omits `/v1` and 404s.
+>
+> The galleries looked *partly* populated because the pexels/googleapis seed rows are absolute third-party
+> URLs that bypass the proxy entirely. That is precisely why this survived every prior audit: the feature
+> appeared to work for exactly the rows that never exercised the broken code path.
+>
+> The logic was **duplicated** (`teacher/src/pages/media/mediaUtils.js` and inline in
+> `teacher/src/parent/pages/Media.jsx`) and **both copies were broken**. Fixed in commit `2798ecd6` by
+> moving it to `shared/utils/mediaUrl.js`, appending to the API base instead of rebuilding it, and
+> normalising a version-less `/api` to `/api/v1`. Confirmed live afterwards: the parent gallery now loads
+> `/api/v1/media/proxy/484a4fe7…` at 640×640, `broken: false`.
+>
+> This supersedes §4's "local-fallback retrieval is broken" as the headline retrieval defect — that entry
+> described a real but narrower problem; this one affected **every** Appwrite photo, which is all of them.
 
 ---
 
