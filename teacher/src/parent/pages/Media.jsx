@@ -25,27 +25,7 @@ import {
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { formatDateMedium, formatDateLong, todayLocal} from '@shared/utils/formatDate';
-
-// Helper function to convert Appwrite URL to proxy URL
-const getProxyUrl = (url, mediaId) => {
-  if (!url) return url;
-  if (!mediaId) {
-    return url;
-  }
-  
-  // If URL is from Appwrite, convert to proxy endpoint
-  if (url.includes('appwrite.io') && (url.includes('/storage/buckets/') || url.includes('/files/'))) {
-    // Use VITE_API_URL if available, otherwise use Railway backend URL (same as api.js)
-    // This ensures consistency with the API base URL
-    const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-    const apiBase = apiUrl.replace('/api', '');
-    const proxyUrl = `${apiBase}/api/media/proxy/${mediaId}`;
-    return proxyUrl;
-  }
-  
-  // Otherwise return original URL
-  return url;
-};
+import { getProxyUrl } from '@shared/utils/mediaUrl';
 
 // Helper function to get YouTube embed URL
 const getYouTubeEmbedUrl = (url) => {
@@ -82,7 +62,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
   // Check if URL is a direct video file (has video extension, is from Appwrite storage, or is a proxy URL)
   const isDirectVideo = url.match(/\.(mp4|webm|ogg|mov|avi)(\?.*)?$/i) || 
                         (url.includes('/storage/buckets/') && url.includes('/files/') && url.includes('/view')) ||
-                        url.includes('/api/media/proxy/');
+                        url.includes('/media/proxy/');
 
   // Format time helper
   const formatTime = (seconds) => {

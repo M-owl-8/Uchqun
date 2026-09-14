@@ -41,7 +41,7 @@ const VideoPlayer = ({ url, autoPlay = false, onEnded }) => {
   const vimeoUrl = getVimeoEmbedUrl(url);
   const isDirectVideo = url.match(/\.(mp4|webm|ogg|mov|avi)(\?.*)?$/i) ||
     (url.includes('/storage/buckets/') && url.includes('/files/') && url.includes('/view')) ||
-    url.includes('/api/media/proxy/');
+    url.includes('/media/proxy/');
 
   const formatTime = (seconds) => {
     if (!isFinite(seconds)) return '0:00';
