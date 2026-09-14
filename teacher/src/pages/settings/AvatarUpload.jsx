@@ -4,6 +4,7 @@ import { Camera } from 'lucide-react';
 import api from '../../shared/services/api';
 import { useAuth } from '../../shared/context/AuthContext';
 import { useToast } from '../../shared/context/ToastContext';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const AvatarUpload = ({ user }) => {
   const { t } = useTranslation();
@@ -11,7 +12,6 @@ const AvatarUpload = ({ user }) => {
   const { success, error: showError } = useToast();
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef(null);
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   const handleAvatarClick = () => {
     fileInputRef.current?.click();
@@ -57,7 +57,7 @@ const AvatarUpload = ({ user }) => {
         >
           {user?.avatar ? (
             <img
-              src={user.avatar.startsWith('http') ? user.avatar : `${API_BASE.replace(/\/api\/?$/, '')}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`}
+              src={resolveAvatarUrl(user.avatar)}
               alt=""
               className="w-full h-full object-cover"
             />

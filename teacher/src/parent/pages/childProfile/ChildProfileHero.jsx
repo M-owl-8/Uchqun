@@ -1,5 +1,6 @@
 import { School, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const defaultAvatar = '/avatars/avatar1.jfif';
 
@@ -15,13 +16,23 @@ const ChildProfileHero = ({
 }) => {
   const { t } = useTranslation();
 
-  const photoSrc = child.photo
-    ? child.photo.startsWith('/avatars/')
-      ? child.photo
-      : child.photo.startsWith('http://') || child.photo.startsWith('https://')
-      ? child.photo
-      : `${API_BASE}${child.photo.startsWith('/') ? '' : '/'}${child.photo}?t=${photoTimestamp}`
-    : defaultAvatar;
+  // '/avatars/*' are bundled portal assets (teacher/public/avatars) and must stay
+  // relative to the portal origin, not the API host — so they bypass the resolver.
+  // Everything else goes through resolveAvatarUrl, which keeps base64 data URIs
+  // intact; child.photo is stored as a data URI (see childController photoBase64).
+  const photoSrc = !child.photo
+    ? defaultAvatar
+    : child.photo.startsWith('/avatars/')
+    ? child.photo
+    : (() => {
+        const resolved = resolveAvatarUrl(child.photo, API_BASE);
+        if (!resolved) return defaultAvatar;
+        // Cache-bust only real network URLs. A data: URI already changes
+        // wholesale when the photo changes, and appending ?t= corrupts it.
+        return /^https?:\/\//i.test(resolved)
+          ? `${resolved}${resolved.includes('?') ? '&' : '?'}t=${photoTimestamp}`
+          : resolved;
+      })();
 
   const age = (() => {
     const today = new Date();

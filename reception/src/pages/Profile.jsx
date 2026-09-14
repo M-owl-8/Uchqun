@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const Profile = () => {
   const { user, logout } = useAuth();
@@ -103,7 +104,7 @@ const Profile = () => {
         <div className="flex items-center gap-6 mb-6">
           <div className="w-20 h-20 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg overflow-hidden shrink-0">
             {user?.avatar ? (
-              <img src={user.avatar.startsWith('http') ? user.avatar : `${(import.meta.env.VITE_API_URL || '').replace(/\/api\/?$/, '') || window.location.origin}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
+              <img src={resolveAvatarUrl(user.avatar)} alt="" className="w-full h-full object-cover" />
             ) : (
               <span>{user?.firstName?.[0]}{user?.lastName?.[0]}</span>
             )}

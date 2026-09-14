@@ -83,14 +83,22 @@ export const uploadDocuments = uploadDocument.fields([
   { name: 'passportFile', maxCount: 1 },
 ]);
 
+// Single-file document upload (Reception verification documents).
+// Must use documentFileFilter, not the media filter: receptionController's
+// DOCUMENT_ALLOWED_MIMES includes application/pdf and re-verifies by magic
+// bytes, but the media filter rejects PDFs before the controller ever runs.
+export const uploadDocumentSingle = uploadDocument.single('file');
+
 
 // Error handler for multer errors
 export const handleUploadError = (err, req, res, next) => {
   if (err instanceof multer.MulterError) {
     if (err.code === 'LIMIT_FILE_SIZE') {
+      // Limits differ per upload type (media 50MB, documents 10MB), so this
+      // message must stay generic — it is shared by every multer instance.
       return res.status(400).json({
         error: 'File too large',
-        message: 'File size exceeds the maximum allowed size of 50MB',
+        message: 'File size exceeds the maximum allowed size for this upload',
       });
     }
     if (err.code === 'LIMIT_FILE_COUNT') {

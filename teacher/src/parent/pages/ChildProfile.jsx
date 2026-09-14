@@ -14,6 +14,7 @@ import MessageModal from './childProfile/MessageModal';
 import MessagesModal from './childProfile/MessagesModal';
 import EmotionalMonitoringSection from './childProfile/EmotionalMonitoringSection';
 import { InfoItem, StatRow } from './childProfile/childProfileUtils';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
 
@@ -141,9 +142,9 @@ const ChildProfile = () => {
           if (childResponse.data?.photo) {
             const img = new Image();
             const p = childResponse.data.photo;
-            img.src = p.startsWith('/avatars/') || p.startsWith('http://') || p.startsWith('https://')
-              ? p
-              : `${API_BASE}${p.startsWith('/') ? '' : '/'}${p}`;
+            // '/avatars/*' are bundled portal assets — keep them portal-relative.
+            // resolveAvatarUrl handles the rest and leaves data: URIs untouched.
+            img.src = p.startsWith('/avatars/') ? p : (resolveAvatarUrl(p, API_BASE) || p);
             img.onload = () => setImageLoading(false);
             img.onerror = () => setImageLoading(false);
           } else {

@@ -18,12 +18,12 @@ import {
   LogOut,
   ShieldOff, Globe } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const Settings = () => {
   const { user, setUser, logout } = useAuth();
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const API_BASE = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000';
   const [saving, setSaving] = useState(false);
   const [savingPassword, setSavingPassword] = useState(false);
   const [consentedAt, setConsentedAt] = useState(null);
@@ -157,7 +157,7 @@ const Settings = () => {
           <div className="mb-6 flex items-center gap-4">
             <div className="w-20 h-20 rounded-full bg-p-sepia-100 text-p-brand-700 flex items-center justify-center text-2xl font-bold overflow-hidden shrink-0">
               {user?.avatar ? (
-                <img src={user.avatar.startsWith('http') ? user.avatar : `${API_BASE.replace(/\/api\/?$/, '')}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
+                <img src={resolveAvatarUrl(user.avatar)} alt="" className="w-full h-full object-cover" />
               ) : (
                 <span>{user?.firstName?.[0]}{user?.lastName?.[0]}</span>
               )}

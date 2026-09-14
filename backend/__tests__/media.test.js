@@ -6,6 +6,7 @@ const mockMediaFindByPk = jest.fn();
 const mockChildFindAll = jest.fn();
 const mockUserFindAll = jest.fn();
 const mockValidateChildAccess = jest.fn();
+const mockNotificationDestroy = jest.fn();
 
 jest.unstable_mockModule('../models/Media.js', () => ({
   default: { findAll: mockMediaFindAll, findOne: mockMediaFindOne, create: jest.fn(), findByPk: mockMediaFindByPk },
@@ -14,6 +15,9 @@ jest.unstable_mockModule('../models/Child.js', () => ({
   default: { findAll: mockChildFindAll, findOne: jest.fn() },
 }));
 jest.unstable_mockModule('../models/Activity.js', () => ({ default: {} }));
+jest.unstable_mockModule('../models/Notification.js', () => ({
+  default: { destroy: mockNotificationDestroy },
+}));
 jest.unstable_mockModule('../models/User.js', () => ({
   default: { findAll: mockUserFindAll },
 }));
@@ -203,5 +207,55 @@ describe('mediaController.deleteMedia — IDOR guard (BACKEND-003)', () => {
     await deleteMedia(req, res);
     expect(res.status).toHaveBeenCalledWith(404);
     expect(destroy).not.toHaveBeenCalled();
+  });
+});
+
+describe('mediaController.deleteMedia — notification cleanup', () => {
+  beforeEach(() => jest.clearAllMocks());
+
+  const okMedia = () => {
+    const destroy = jest.fn();
+    mockMediaFindByPk.mockResolvedValue({ id: 'm1', childId: 'c1', url: 'http://x', thumbnail: null, destroy });
+    mockValidateChildAccess.mockResolvedValue({ id: 'c1', parentId: 'p1', schoolId: 'S1' });
+    return destroy;
+  };
+  const req = () => ({ user: { id: 't1', role: 'teacher', schoolId: 'S1' }, params: { id: 'm1' } });
+
+  it('deletes the media notification so parents keep no dead alert', async () => {
+    const destroy = okMedia();
+    mockNotificationDestroy.mockResolvedValue(1);
+    const res = mkRes();
+
+    await deleteMedia(req(), res);
+
+    expect(destroy).toHaveBeenCalled();
+    expect(mockNotificationDestroy).toHaveBeenCalledWith({
+      where: { relatedId: 'm1', relatedType: 'media' },
+    });
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
+  });
+
+  it('scopes the cleanup to relatedType media — never a blanket destroy', async () => {
+    okMedia();
+    mockNotificationDestroy.mockResolvedValue(1);
+    await deleteMedia(req(), mkRes());
+
+    const where = mockNotificationDestroy.mock.calls[0][0].where;
+    expect(where.relatedType).toBe('media');
+    expect(where.relatedId).toBe('m1');
+    // A destroy without a where clause would wipe every notification in the table.
+    expect(Object.keys(where).sort()).toEqual(['relatedId', 'relatedType']);
+  });
+
+  it('still succeeds when notification cleanup throws (must not cascade)', async () => {
+    const destroy = okMedia();
+    mockNotificationDestroy.mockRejectedValue(new Error('db down'));
+    const res = mkRes();
+
+    await deleteMedia(req(), res);
+
+    expect(destroy).toHaveBeenCalled();
+    expect(res.status).not.toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith(expect.objectContaining({ success: true }));
   });
 });

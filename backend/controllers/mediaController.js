@@ -3,6 +3,7 @@ import Media from '../models/Media.js';
 import Child from '../models/Child.js';
 import Activity from '../models/Activity.js';
 import User from '../models/User.js';
+import Notification from '../models/Notification.js';
 import { fileTypeFromFile } from 'file-type';
 import { uploadFile, deleteFile } from '../config/storage.js';
 import { createNotification } from './notificationController.js';
@@ -972,6 +973,25 @@ export const deleteMedia = async (req, res) => {
     }
 
     await media.destroy({ actorId: req.user.id, actorRole: req.user.role, reason: 'teacher_delete' });
+
+    // Remove the "new media" notification this record created on upload
+    // (see createNotification call in uploadMedia). Without this the parent is
+    // left with an unread alert pointing at media that no longer exists, and
+    // tapping it dead-ends. Mirrors the audit-logger convention: notification
+    // bookkeeping must never cascade into a feature failure.
+    try {
+      const removed = await Notification.destroy({
+        where: { relatedId: mediaId, relatedType: 'media' },
+      });
+      if (removed > 0) {
+        logger.info('Removed notifications for deleted media', { mediaId, count: removed });
+      }
+    } catch (notifError) {
+      logger.warn('Failed to remove notifications for deleted media', {
+        error: notifError.message,
+        mediaId,
+      });
+    }
 
     // Emit real-time update to parent
     if (child && child.parentId) {

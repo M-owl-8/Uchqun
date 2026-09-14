@@ -6,6 +6,7 @@ import api from '../shared/services/api';
 import { useToast } from '../shared/context/ToastContext';
 import { useState, useEffect, useRef } from 'react';
 import LoadingSpinner from '../shared/components/LoadingSpinner';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 
 const Profile = () => {
   const { user, setUser } = useAuth();
@@ -20,7 +21,6 @@ const Profile = () => {
   const [showMessagesModal, setShowMessagesModal] = useState(false);
   const [uploadingAvatar, setUploadingAvatar] = useState(false);
   const fileInputRef = useRef(null);
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
   useEffect(() => {
     const controller = new AbortController();
@@ -127,7 +127,7 @@ const Profile = () => {
           <div className="relative">
             <div className="w-14 h-14 rounded-full bg-brand-100 text-brand-700 flex items-center justify-center text-xl font-bold overflow-hidden shrink-0 cursor-pointer hover:opacity-80 transition-opacity" onClick={handleAvatarClick}>
               {user?.avatar ? (
-                <img src={user.avatar.startsWith('http') ? user.avatar : `${API_BASE.replace(/\/api\/?$/, '')}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`} alt="" className="w-full h-full object-cover" />
+                <img src={resolveAvatarUrl(user.avatar)} alt="" className="w-full h-full object-cover" />
               ) : (
                 <span>{user?.firstName?.[0]}{user?.lastName?.[0]}</span>
               )}

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '@shared/context/ToastContext';
 import Card from '@shared/components/Card';
+import { resolveAvatarUrl } from '@shared/utils/avatarUrl';
 import { Shield, Mail, Phone, LogOut, Pencil, X, Check } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import api from '../services/api';
@@ -54,11 +55,7 @@ const Profile = () => {
     navigate('/login');
   };
 
-  const avatarUrl = user?.avatar
-    ? (user.avatar.startsWith('http')
-        ? user.avatar
-        : `${(import.meta.env.VITE_API_URL || '').replace(/\/api(?:\/v\d+)?\/?$/, '') || window.location.origin}${user.avatar.startsWith('/') ? '' : '/'}${user.avatar}`)
-    : null;
+  const avatarUrl = resolveAvatarUrl(user?.avatar);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">
