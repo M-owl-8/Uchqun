@@ -1,10 +1,9 @@
 import { Op } from 'sequelize';
 import Activity from '../models/Activity.js';
 import Child from '../models/Child.js';
-import User from '../models/User.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
-import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild, getTeacherScopedChildIds } from '../utils/schoolValidation.js';
 import logger from '../utils/logger.js';
 
 export const getActivities = async (req, res) => {
@@ -17,29 +16,14 @@ export const getActivities = async (req, res) => {
     
     // If user is teacher, show only activities for children of assigned parents
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      
-      if (assignedParents.length === 0) {
+      // Union of group ownership and the legacy parent.teacherId link — the same
+      // scope isTeacherAssignedToChild grants on the write path. Legacy-only here
+      // left group-wired teachers with an empty activity list.
+      const childIds = await getTeacherScopedChildIds(req);
+
+      if (childIds.length === 0) {
         return res.json([]);
       }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
-        attributes: ['id'],
-      });
-      
-      if (children.length === 0) {
-        return res.json([]);
-      }
-      
-      const childIds = children.map(c => c.id);
       
       if (childId) {
         // If childId is specified, verify it belongs to assigned parents
@@ -160,29 +144,12 @@ export const getActivity = async (req, res) => {
     
     // If user is teacher, only show activities for children of assigned parents
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      
-      if (assignedParents.length === 0) {
+      // Same union as getActivities.
+      const childIds = await getTeacherScopedChildIds(req);
+
+      if (childIds.length === 0) {
         return res.status(404).json({ error: 'Activity not found' });
       }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
-        attributes: ['id'],
-      });
-      
-      if (children.length === 0) {
-        return res.status(404).json({ error: 'Activity not found' });
-      }
-      
-      const childIds = children.map(c => c.id);
       where.childId = { [Op.in]: childIds };
     } else if (req.user.role === 'admin' || req.user.role === 'reception') {
       if (req.user.schoolId) {

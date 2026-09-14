@@ -14,6 +14,9 @@ const mockValidateChildAccess = jest.fn();
 const mockGroupFindByPk = jest.fn();
 
 jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
+  // Added with the teacher-scope union refactor; the real module exports this
+  // and an out-of-date mock fails the suite at import time.
+  getTeacherScopedChildIds: jest.fn().mockResolvedValue([]),
   validateChildAccess: mockValidateChildAccess,
   isTeacherAssignedToChild: jest.fn(),
   findChildScopedResource: jest.fn(),

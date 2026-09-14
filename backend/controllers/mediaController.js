@@ -2,7 +2,6 @@ import { Op } from 'sequelize';
 import Media from '../models/Media.js';
 import Child from '../models/Child.js';
 import Activity from '../models/Activity.js';
-import User from '../models/User.js';
 import Notification from '../models/Notification.js';
 import { fileTypeFromFile } from 'file-type';
 import { uploadFile, deleteFile } from '../config/storage.js';
@@ -12,7 +11,7 @@ import fs from 'fs';
 import path from 'path';
 import logger from '../utils/logger.js';
 import axios from 'axios';
-import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild, getTeacherScopedChildIds } from '../utils/schoolValidation.js';
 import { stripImageMetadata } from '../utils/imageSanitizer.js';
 
 // sharp is loaded dynamically to avoid startup crashes in containers
@@ -46,40 +45,25 @@ export const getMedia = async (req, res) => {
 
     const where = {};
     
-    // If user is teacher, show only media for children of assigned parents
+    // Teacher scope resolves through the SAME union as isTeacherAssignedToChild —
+    // group ownership OR the legacy parent.teacherId link. This branch previously
+    // used the legacy link alone, so a teacher wired only via a group could upload
+    // media and fetch it through the proxy but saw an empty gallery.
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      
-      if (assignedParents.length === 0) {
+      const childIds = await getTeacherScopedChildIds(req);
+
+      if (childIds.length === 0) {
         return res.json([]);
       }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
-        attributes: ['id'],
-      });
-      
-      if (children.length === 0) {
-        return res.json([]);
-      }
-      
-      const childIds = children.map(c => c.id);
-      
+
       if (childId) {
-        // If childId is specified, verify it belongs to assigned parents
+        // If childId is specified, verify it is inside the teacher's scope
         if (!childIds.includes(childId)) {
           return res.status(403).json({ error: 'Access denied to this child' });
         }
         where.childId = childId;
       } else {
-        // Show media for all assigned children
+        // Show media for all children this teacher is assigned to
         where.childId = { [Op.in]: childIds };
       }
     } else if (req.user.role === 'admin') {
@@ -178,31 +162,14 @@ export const getMediaItem = async (req, res) => {
 
     const where = { id };
     
-    // If user is teacher, only show media for children of assigned parents
+    // Same union as isTeacherAssignedToChild — see getMedia above.
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      
-      if (assignedParents.length === 0) {
+      const childIds = await getTeacherScopedChildIds(req);
+
+      if (childIds.length === 0) {
         return res.status(404).json({ error: 'Media not found' });
       }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
-        attributes: ['id'],
-      });
-      
-      if (children.length === 0) {
-        return res.status(404).json({ error: 'Media not found' });
-      }
-      
-      const childIds = children.map(c => c.id);
+
       where.childId = { [Op.in]: childIds };
     } else if (req.user.role === 'admin') {
       if (req.user.schoolId) {

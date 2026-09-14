@@ -5,7 +5,7 @@ import User from '../models/User.js';
 import School from '../models/School.js';
 import logger from '../utils/logger.js';
 import { Op } from 'sequelize';
-import { validateChildAccess } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild, getTeacherScopedChildIds } from '../utils/schoolValidation.js';
 
 /**
  * Emotional Monitoring Controller
@@ -227,11 +227,10 @@ export const getMonitoringByChild = async (req, res) => {
         return res.status(403).json({ error: 'You do not have access to this child' });
       }
     } else if (req.user.role === 'teacher') {
-      // Teacher can only see children of their assigned parents
-      const parent = await User.findOne({
-        where: { id: child.parentId, teacherId: req.user.id },
-      });
-      if (!parent) {
+      // Group ownership OR the legacy parent.teacherId link — the same union the
+      // write path uses. Legacy-only here denied group-wired teachers their own
+      // children's safeguarding records.
+      if (!(await isTeacherAssignedToChild(child, req))) {
         return res.status(403).json({ error: 'You do not have access to this child' });
       }
     } else {
@@ -288,18 +287,10 @@ export const getAllMonitoring = async (req, res) => {
   try {
     const { startDate, endDate, limit = 50, offset = 0 } = req.query;
 
-    // Get all children assigned to this teacher
-    const parents = await User.findAll({
-      where: { teacherId: req.user.id, role: 'parent' },
-      attributes: ['id'],
-    });
-
-    const parentIds = parents.map(p => p.id);
-    
-    const children = await Child.findAll({
-      where: { parentId: { [Op.in]: parentIds } },
-      attributes: ['id'],
-    });
+    // Children this teacher is assigned to, via group ownership OR the legacy
+    // parent.teacherId link (same union as isTeacherAssignedToChild).
+    const scopedChildIds = await getTeacherScopedChildIds(req);
+    const children = scopedChildIds.map((id) => ({ id }));
 
     const childIds = children.map(c => c.id);
 
@@ -387,10 +378,8 @@ export const getMonitoringById = async (req, res) => {
         return res.status(403).json({ error: 'You do not have access to this record' });
       }
     } else if (req.user.role === 'teacher') {
-      const parent = await User.findOne({
-        where: { id: record.child.parentId, teacherId: req.user.id },
-      });
-      if (!parent) {
+      // Same union as the other reads — see getMonitoringByChild.
+      if (!(await isTeacherAssignedToChild(record.child, req))) {
         return res.status(403).json({ error: 'You do not have access to this record' });
       }
     }

@@ -1,11 +1,9 @@
 import { Op } from 'sequelize';
 import Meal from '../models/Meal.js';
 import Child from '../models/Child.js';
-import User from '../models/User.js';
-import Group from '../models/Group.js';
 import { createNotification } from './notificationController.js';
 import { emitToUser } from '../config/socket.js';
-import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { validateChildAccess, isTeacherAssignedToChild, getTeacherScopedChildIds } from '../utils/schoolValidation.js';
 import logger from '../utils/logger.js';
 
 export const getMeals = async (req, res) => {
@@ -18,26 +16,10 @@ export const getMeals = async (req, res) => {
     
     // If user is teacher, show only meals for children in their groups or assigned via legacy path
     if (req.user.role === 'teacher') {
-      // Modern path: children in groups where teacherId = this teacher
-      const teacherGroups = await Group.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      const groupIds = teacherGroups.map(g => g.id);
-      const groupChildIds = groupIds.length > 0
-        ? (await Child.findAll({ where: { groupId: { [Op.in]: groupIds } }, attributes: ['id'] })).map(c => c.id)
-        : [];
-
-      // Legacy path: children whose parent has teacherId = this teacher
-      const legacyParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      const legacyChildIds = legacyParents.length > 0
-        ? (await Child.findAll({ where: { parentId: { [Op.in]: legacyParents.map(p => p.id) } }, attributes: ['id'] })).map(c => c.id)
-        : [];
-
-      const childIds = [...new Set([...groupChildIds, ...legacyChildIds])];
+      // Union of group ownership and the legacy parent.teacherId link. This was
+      // already correct here; it now shares one implementation with the other
+      // teacher-scoped readers and with isTeacherAssignedToChild.
+      const childIds = await getTeacherScopedChildIds(req);
 
       if (childIds.length === 0) {
         return res.json([]);
@@ -131,29 +113,14 @@ export const getMeal = async (req, res) => {
     
     // If user is teacher, only show meals for children of assigned parents
     if (req.user.role === 'teacher') {
-      // Get all parents assigned to this teacher
-      const assignedParents = await User.findAll({
-        where: { teacherId: req.user.id },
-        attributes: ['id'],
-      });
-      
-      if (assignedParents.length === 0) {
+      // getMeals used the union; this single-item read did not, so a
+      // group-wired teacher could list a meal and then 404 opening it.
+      const childIds = await getTeacherScopedChildIds(req);
+
+      if (childIds.length === 0) {
         return res.status(404).json({ error: 'Meal not found' });
       }
-      
-      const parentIds = assignedParents.map(p => p.id);
-      
-      // Get all children of assigned parents
-      const children = await Child.findAll({
-        where: { parentId: { [Op.in]: parentIds } },
-        attributes: ['id'],
-      });
-      
-      if (children.length === 0) {
-        return res.status(404).json({ error: 'Meal not found' });
-      }
-      
-      const childIds = children.map(c => c.id);
+
       where.childId = { [Op.in]: childIds };
     } else if (req.user.role === 'admin' || req.user.role === 'reception') {
       // D-47: "Admin can see all meals" was a cross-tenant read — an admin at

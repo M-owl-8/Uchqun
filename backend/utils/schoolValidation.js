@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import Child from '../models/Child.js';
 import Group from '../models/Group.js';
 import User from '../models/User.js';
@@ -78,6 +79,61 @@ export async function isTeacherAssignedToChild(child, req) {
   }
 
   return false;
+}
+
+/**
+ * The list-side mirror of isTeacherAssignedToChild().
+ *
+ * Returns every child id a teacher may access, via the SAME two paths that
+ * function accepts: group ownership (group.teacherId) and the legacy
+ * parent.teacherId link. Any other role gets null, meaning "not teacher-scoped —
+ * the caller's own school/role scoping applies".
+ *
+ * Why this exists: the read endpoints and the write/retrieval path had forked.
+ * uploadMedia and proxyMediaFile gate on isTeacherAssignedToChild (union), while
+ * getMedia, getMediaItem, getMeal, getActivities, getActivity and the emotional
+ * monitoring reads resolved children ONLY through users.teacherId. A teacher
+ * wired the modern way — a group, no legacy link — was authorised to upload and
+ * to fetch a file through the proxy, but their gallery, meal list and activity
+ * list were empty. Six teachers are in exactly that state in production today,
+ * and since reception onboarding only sets users.teacherId when a teacher or
+ * group is explicitly chosen, teachers can be created blind.
+ *
+ * Keeping the union rather than narrowing to groups is deliberate: three
+ * children in production have no group at all and reach their teacher only via
+ * the legacy link. Dropping it would make them unreachable — a regression, not a
+ * fix. See LQ-TEACHERLINK in the remediation log for the stale-link hazard that
+ * the union does NOT close.
+ *
+ * Fail-closed: a teacher with neither link gets [], never "everything".
+ *
+ * @param {object} req - Express request (req.user.id + req.user.role)
+ * @returns {Promise<string[]|null>} child ids, or null when not a teacher
+ */
+export async function getTeacherScopedChildIds(req) {
+  if (!req.user || req.user.role !== 'teacher') return null;
+
+  const [ownGroups, ownParents] = await Promise.all([
+    Group.findAll({ where: { teacherId: req.user.id }, attributes: ['id'] }),
+    User.findAll({ where: { teacherId: req.user.id, role: 'parent' }, attributes: ['id'] }),
+  ]);
+
+  const groupIds = ownGroups.map((g) => g.id);
+  const parentIds = ownParents.map((u) => u.id);
+
+  const or = [];
+  if (groupIds.length) or.push({ groupId: { [Op.in]: groupIds } });
+  if (parentIds.length) or.push({ parentId: { [Op.in]: parentIds } });
+
+  // Neither link → no children. Never fall through to an unscoped query.
+  if (or.length === 0) return [];
+
+  const children = await Child.findAll({
+    where: { [Op.or]: or },
+    attributes: ['id'],
+  });
+
+  return children.map((c) => c.id);
 }
 
 /**

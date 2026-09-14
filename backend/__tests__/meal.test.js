@@ -8,6 +8,7 @@ const mockChildFindAll = jest.fn();
 const mockChildFindOne = jest.fn();
 const mockUserFindAll = jest.fn();
 const mockGroupFindAll = jest.fn();
+const mockScopedChildIds = jest.fn().mockResolvedValue([]);
 const mockValidateChildAccess = jest.fn();
 const mockCreateNotification = jest.fn();
 const mockEmitToUser = jest.fn();
@@ -30,6 +31,9 @@ jest.unstable_mockModule('../models/Group.js', () => ({
   default: { findAll: mockGroupFindAll },
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
+  // Added with the teacher-scope union refactor; the real module exports this
+  // and an out-of-date mock fails the suite at import time.
+  getTeacherScopedChildIds: mockScopedChildIds,
   validateChildAccess: mockValidateChildAccess,
   isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
@@ -68,8 +72,9 @@ describe('mealController', () => {
     });
 
     it('teacher: empty array when no groups and no legacy parents', async () => {
-      mockGroupFindAll.mockResolvedValue([]);
-      mockUserFindAll.mockResolvedValue([]);
+      // The union now lives in getTeacherScopedChildIds (utils/schoolValidation.js),
+      // which has its own suite; here we drive its result.
+      mockScopedChildIds.mockResolvedValue([]);
       const req = { user: { id: 't1', role: 'teacher' }, query: {} };
       const res = mkRes();
       await getMeals(req, res);
@@ -77,9 +82,7 @@ describe('mealController', () => {
     });
 
     it('teacher: 403 when childId not in group-assigned or legacy children', async () => {
-      mockGroupFindAll.mockResolvedValue([{ id: 'g1' }]);
-      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]); // group children
-      mockUserFindAll.mockResolvedValue([]); // no legacy parents
+      mockScopedChildIds.mockResolvedValue(['c1']); // teacher may see c1 only
       const req = { user: { id: 't1', role: 'teacher' }, query: { childId: 'OTHER' } };
       const res = mkRes();
       await getMeals(req, res);
@@ -87,9 +90,7 @@ describe('mealController', () => {
     });
 
     it('teacher: returns meals for child in assigned group (modern path)', async () => {
-      mockGroupFindAll.mockResolvedValue([{ id: 'g1' }]);
-      mockChildFindAll.mockResolvedValue([{ id: 'c1' }]); // group children
-      mockUserFindAll.mockResolvedValue([]); // no legacy parents
+      mockScopedChildIds.mockResolvedValue(['c1']); // reachable via group only
       mockMealFindAll.mockResolvedValue([{ id: 'm1', childId: 'c1' }]);
       const req = { user: { id: 't1', role: 'teacher' }, query: { childId: 'c1' } };
       const res = mkRes();

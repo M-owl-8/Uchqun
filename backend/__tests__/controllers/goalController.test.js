@@ -27,6 +27,9 @@ jest.unstable_mockModule('../../models/Child.js', () => ({
   default: { findByPk: mockChildFindByPk },
 }));
 jest.unstable_mockModule('../../utils/schoolValidation.js', () => ({
+  // Added with the teacher-scope union refactor; the real module exports this
+  // and an out-of-date mock fails the suite at import time.
+  getTeacherScopedChildIds: jest.fn().mockResolvedValue([]),
   validateChildAccess: jest.fn(async (childId, req) => {
     if (!childId) return null;
     const child = await mockChildFindByPk(childId);

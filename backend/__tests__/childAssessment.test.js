@@ -15,7 +15,11 @@ jest.unstable_mockModule('../config/database.js', () => ({
   default: { fn: jest.fn(), col: jest.fn(), literal: jest.fn(), escape: (v) => `'${v}'` },
 }));
 jest.unstable_mockModule('../utils/schoolValidation.js', () => ({
+  // Added with the teacher-scope union refactor; the real module exports this
+  // and an out-of-date mock fails the suite at import time.
+  getTeacherScopedChildIds: jest.fn().mockResolvedValue([]),
   validateChildAccess: mockValidateChildAccess,
+  isTeacherAssignedToChild: jest.fn().mockResolvedValue(true),
 }));
 jest.unstable_mockModule('../utils/logger.js', () => ({
   default: { error: jest.fn(), info: jest.fn(), warn: jest.fn(), debug: jest.fn() },

@@ -18,7 +18,10 @@ jest.unstable_mockModule('../../models/IRR.js',                () => ({ default:
 jest.unstable_mockModule('../../models/LongTermGoal.js',       () => ({ default: { findByPk: mockLTGFindByPk } }));
 jest.unstable_mockModule('../../models/MonthlyMilestone.js',   () => ({ default: { findAll: mockMMFindAll, findOne: mockMMFindOne, findByPk: mockMMFindByPk, create: mockMMCreate } }));
 jest.unstable_mockModule('../../models/Child.js',              () => ({ default: { findByPk: mockChildFindByPk } }));
-jest.unstable_mockModule('../../utils/schoolValidation.js',    () => ({ isTeacherAssignedToChild: mockIsTeacherAssignedToChild }));
+jest.unstable_mockModule('../../utils/schoolValidation.js',    () => ({
+  // Added with the teacher-scope union refactor; the real module exports this
+  // and an out-of-date mock fails the suite at import time.
+  getTeacherScopedChildIds: jest.fn().mockResolvedValue([]), isTeacherAssignedToChild: mockIsTeacherAssignedToChild }));
 jest.unstable_mockModule('../../utils/logger.js',              () => ({ default: { error: jest.fn(), info: jest.fn(), warn: jest.fn() } }));
 
 const { listByIRR, listByLTG, create, replaceAll, update, remove } = await import(
