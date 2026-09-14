@@ -7,7 +7,13 @@ const { defineConfig, devices } = require('@playwright/test');
 // evidence screenshots write explicitly into audits/beta/screens themselves.
 const ARTIFACTS = '.playwright-artifacts';
 
+// WP5: these projects hardcode production hosts, so a bare `npx playwright test`
+// writes to the live database. globalSetup aborts the run before any spec
+// executes unless ALLOW_PROD_E2E=true is set deliberately.
+const globalSetup = require.resolve('./tests/_guards/global-setup.cjs');
+
 module.exports = defineConfig({
+  globalSetup,
   testDir: './tests',
   fullyParallel: false,
   timeout: 45000,
