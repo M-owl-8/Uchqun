@@ -964,6 +964,7 @@
     "momentHelp": "Yordam kerak",
     "toastSent": "{{count}} ta yuborildi",
     "toastPartial": "{{ok}} ta yuborildi, {{fail}} ta xato",
+    "toastPhotoPartial": "{{fail}} ta rasm yuborilmadi",
     "toastError": "Yuborib boʻlmadi"
   },
   "layout": {

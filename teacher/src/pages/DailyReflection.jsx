@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { ParentJournalComposer } from '../components/ParentJournalComposer';
 import api from '../shared/services/api';
 import { todayLocal } from '@shared/utils/formatDate';
+import { uploadJournalPhotos } from '../utils/uploadJournalPhotos';
 
 const getReflectionKey = () => {
   const d = todayLocal();
@@ -58,20 +59,32 @@ const DailyReflection = () => {
     }
   };
 
-  // PP-JOURNAL-BULK — composer sends {subject, body, recipientIds, photos};
-  // we translate to the backend's bulk shape and drop photos (a follow-up;
-  // composer keeps showing the "not persisted" warning when photos are
-  // attached). Returns the server response so the composer can surface
-  // per-recipient failures.
-  const handleJournalSend = async ({ subject, body, recipientIds }) => {
+  // PP-JOURNAL-BULK — composer sends {subject, body, recipientIds, photos}.
+  // The journal entry goes to the bulk endpoint; photos are then delivered via
+  // POST /media/upload, one Media row per (child, photo), so they land in the
+  // parent's existing Media gallery. Returns the server response plus a photo
+  // tally so the composer can surface per-recipient and per-photo failures.
+  const handleJournalSend = async ({ subject, body, recipientIds, photos = [] }) => {
+    const date = todayLocal();
     const res = await api.post('/teacher/journal/bulk', {
       subject,
       body,
       recipientIds,
-      date: todayLocal(),
+      date,
       isVisibleToParent: true,
     });
-    return res.data;
+
+    // Attach photos only to children whose journal entry actually persisted —
+    // createBulk is per-row, so `created` can be a subset of recipientIds.
+    const created = res.data?.data?.created ?? [];
+    const childIds = [...new Set(created.map((e) => e?.childId).filter(Boolean))];
+
+    let photoResult = { attempted: 0, uploaded: 0, failed: 0 };
+    if (photos.length > 0 && childIds.length > 0) {
+      photoResult = await uploadJournalPhotos({ api, photos, childIds, subject, date });
+    }
+
+    return { ...res.data, photos: photoResult };
   };
 
   return (

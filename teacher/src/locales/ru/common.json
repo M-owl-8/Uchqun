@@ -964,6 +964,7 @@
     "momentHelp": "Нужна помощь",
     "toastSent": "Отправлено: {{count}}",
     "toastPartial": "Отправлено: {{ok}}, ошибок: {{fail}}",
+    "toastPhotoPartial": "Не удалось отправить фото: {{fail}}",
     "toastError": "Не удалось отправить"
   },
   "layout": {

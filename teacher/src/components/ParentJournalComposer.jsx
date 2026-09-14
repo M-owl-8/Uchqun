@@ -66,7 +66,9 @@ export function ParentJournalComposer({ childList = [], onSend }) {
     }
   };
 
-  // Warn before unload if photos are attached (they are not persisted)
+  // Warn before unload while photos are attached: they upload on send, so
+  // leaving now loses the selection (the files themselves are never persisted
+  // in the draft — localStorage holds only subject/body/ids).
   useEffect(() => {
     if (photos.length === 0) return;
     const handler = (e) => { e.preventDefault(); return (e.returnValue = ''); };
@@ -82,6 +84,10 @@ export function ParentJournalComposer({ childList = [], onSend }) {
       // Bulk endpoint returns { success, data: { created, failed } }.
       const createdCount = result?.data?.created?.length ?? selectedIds.length;
       const failedCount  = result?.data?.failed?.length  ?? 0;
+      // Photos upload after the entry lands; report their failures separately
+      // rather than letting them disappear silently (the original defect).
+      const photoFailed  = result?.photos?.failed ?? 0;
+
       if (failedCount === 0) {
         toastOk(t('journal.toastSent', { count: createdCount, defaultValue: `${createdCount} ta yuborildi` }));
       } else {
@@ -89,6 +95,12 @@ export function ParentJournalComposer({ childList = [], onSend }) {
           ok: createdCount,
           fail: failedCount,
           defaultValue: `${createdCount} ta yuborildi, ${failedCount} ta xato`,
+        }));
+      }
+      if (photoFailed > 0) {
+        toastError(t('journal.toastPhotoPartial', {
+          fail: photoFailed,
+          defaultValue: `${photoFailed} ta rasm yuborilmadi`,
         }));
       }
       // Clear draft on success (any created)

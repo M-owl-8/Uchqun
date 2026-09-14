@@ -964,6 +964,7 @@
     "momentHelp": "Needs support",
     "toastSent": "{{count}} sent",
     "toastPartial": "{{ok}} sent, {{fail}} failed",
+    "toastPhotoPartial": "{{fail}} photo(s) could not be sent",
     "toastError": "Could not send"
   },
   "layout": {
