@@ -236,3 +236,48 @@ the extension, log in as a reception account, and read the avatar `<img>` `natur
 DOM, as was done for teacher and parent. Note Reception has no avatar-upload UI and no seeded
 avatar, so the strongest available check there is "page renders, no console errors, no broken
 images" — the avatar fix itself is not demonstrable on that portal.
+
+
+---
+
+## Live verification against production (2026-09-15, after deploy of `12c7fe25`)
+
+Measured, not assumed. CI green, backend redeployed, migration executed by
+`start:migrate`.
+
+### WP1 — the fork is closed
+
+`GET /api/v1/media` as each teacher, compared against the child/media counts
+derived independently from the database:
+
+| Teacher | Links | Group children | Media for those children (DB) | API returned | Before fix |
+|---|---|---|---|---|---|
+| `teacher3@uchqun.uz` | group only | 2 | 1 | **1** ("gidrovanna") | **0** |
+| `teacher1@uchqun.uz` | group + legacy | 2 | 4 | **4** | 4 (unchanged) |
+| `teacher5@uchqun.uz` | group only | 2 | 0 | **0** | 0 |
+
+teacher3 is the package in one line: authorised all along, gallery empty, now
+returns the photo. teacher1 confirms the union case did not regress. teacher5
+returns 0 because their two children genuinely have no media rows — verified
+against the DB rather than read as residual breakage.
+
+### WP2 — applied, with the lockout guarantee intact
+
+| Check | Result |
+|---|---|
+| Migration in `SequelizeMeta` | ✅ present |
+| `documents` total / pending | 12 / **12** |
+| `documents` not pending | **0** |
+| `audit_log` rows `document_reset_unverifiable` | **7** |
+| `documentsApproved` / `isActive` changed | **none — 0 of 12** |
+
+The 7 audit rows are exactly the 6 `approved` + 1 `rejected` that needed
+resetting; the 5 already-`pending` rows were correctly left alone and have no
+audit row. Every audit row carries its `previousStatus`, so the finding — that
+six documents were approved against files that never existed — survives the fix
+and is queryable.
+
+All 10 reception accounts that could log in before can still log in. The two
+that were already locked out (`qabul2@tmm3.uz`, `qabul2@amm1.uz`) are unchanged;
+they were locked out before this migration and still are, which remains an
+owner decision, not a consequence of this work.
