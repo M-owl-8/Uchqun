@@ -71,23 +71,36 @@ describe('Playwright production guard', () => {
     }
   });
 
-  // A guard that is not wired protects nothing. Assert the RESOLVED config
-  // value, not the file text: `const globalSetup = require.resolve(...)` keeps
-  // the string present even when the property is commented out, so a text match
-  // here passes while the guard is completely disabled.
+  // A guard that is not wired protects nothing.
+  //
+  // This cannot require() playwright.config.js: that pulls in @playwright/test,
+  // which lives in the ROOT node_modules and is absent in the backend-only CI
+  // job. So assert on the config text — but strip comments first and match the
+  // PROPERTY (`globalSetup,` / `globalSetup:`) rather than the bare identifier.
+  // A loose match also hits `const globalSetup = require.resolve(...)`, which
+  // survives commenting the property out — that is exactly how the first
+  // version of this test failed to catch the mutation.
+  const configWithoutComments = () =>
+    readFileSync(CONFIG, 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '')
+      .replace(/(^|[^:])\/\/.*$/gm, '$1');
+
   it('is wired into playwright.config.js as globalSetup', () => {
     expect(existsSync(GUARD)).toBe(true);
-    const config = require(CONFIG);
-    expect(typeof config.globalSetup).toBe('string');
-    expect(config.globalSetup).toMatch(/global-setup\.cjs$/);
-    expect(existsSync(config.globalSetup)).toBe(true);
+    const src = configWithoutComments();
+    // the property inside defineConfig({ ... }), not the const declaration
+    expect(src).toMatch(/^\s*globalSetup\s*[,:]/m);
+    expect(src).toMatch(/_guards\/global-setup\.cjs/);
   });
 
   it('the wired globalSetup actually invokes the guard', async () => {
-    const config = require(CONFIG);
-    const globalSetup = require(config.globalSetup);
+    const globalSetup = require(path.join(ROOT, 'tests/_guards/global-setup.cjs'));
     await expect(
       globalSetup({ projects: [{ use: { baseURL: 'https://teacher-production-0647.up.railway.app' } }] }),
     ).rejects.toThrow(/BLOCKED/);
+    // and it must let a non-production target through
+    await expect(
+      globalSetup({ projects: [{ use: { baseURL: 'http://localhost:5174' } }] }),
+    ).resolves.toBeUndefined();
   });
 });

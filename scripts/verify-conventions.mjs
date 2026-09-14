@@ -60,7 +60,7 @@ const strip = (s) => s
     // irrController.js:25 resolveChildAccess() is the real case: it checks
     // schoolId and isTeacherAssignedToChild by hand and is entirely correct.
     const localGuards = [...src.matchAll(/(?:async\s+)?function\s+(\w+)\s*\([^)]*\)\s*\{([\s\S]{0,900}?)\n\}/g)]
-      .filter((m) => /validateChildAccess|isTeacherAssignedToChild|findChildScopedResource|schoolId\s*!==\s*req\.user\.schoolId/.test(m[2]))
+      .filter((m) => /validateChildAccess|isTeacherAssignedToChild|findChildScopedResource|getTeacherScopedChildIds|schoolId\s*!==\s*req\.user\.schoolId/.test(m[2]))
       .map((m) => m[1]);
     // split into functions so a validateChildAccess in a NEIGHBOURING handler
     // cannot vouch for this one — that is how D-53 hid
@@ -86,7 +86,13 @@ const strip = (s) => s
       //      request's childId against that set before using it — the parent
       //      pattern in attendanceController.getMyChildAttendance, which is
       //      stronger than validateChildAccess for a parent, not weaker
-      const guardedDirect = /validateChildAccess|findChildScopedResource|isTeacherAssignedToChild/.test(fn);
+      // getTeacherScopedChildIds (utils/schoolValidation.js) is the list-side mirror
+      // of isTeacherAssignedToChild: it derives the allowed child ids FROM THE
+      // DATABASE via the same two links and fails closed on neither. It counts
+      // for the same reason guard 3 below does — the difference is only that the
+      // Child.findAll now lives in the helper instead of being inlined in every
+      // handler. Extracting a guard must not read as removing one.
+      const guardedDirect = /validateChildAccess|findChildScopedResource|isTeacherAssignedToChild|getTeacherScopedChildIds/.test(fn);
       const guardedByLocalHelper = localGuards.length > 0
         && new RegExp(`\\b(?:${localGuards.join('|')})\\s*\\(`).test(fn);
       const derivesAllowedSet = /Child\.findAll\s*\(/.test(fn)
