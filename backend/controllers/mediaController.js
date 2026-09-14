@@ -13,6 +13,7 @@ import path from 'path';
 import logger from '../utils/logger.js';
 import axios from 'axios';
 import { validateChildAccess, isTeacherAssignedToChild } from '../utils/schoolValidation.js';
+import { stripImageMetadata } from '../utils/imageSanitizer.js';
 
 // sharp is loaded dynamically to avoid startup crashes in containers
 let sharpModule = null;
@@ -424,7 +425,24 @@ export const uploadMedia = async (req, res) => {
     }
 
     // Upload file to Appwrite storage (single URL persisted)
-    const fileBuffer = fs.readFileSync(req.file.path);
+    let fileBuffer = fs.readFileSync(req.file.path);
+
+    // Strip EXIF/GPS before the bytes leave this process. Phone photos carry
+    // the coordinates where they were taken; these are photographs of
+    // identified children. Never blocks the upload — on any failure the
+    // original buffer is kept (see utils/imageSanitizer.js).
+    if (detectedType.mime.startsWith('image/')) {
+      const { buffer: cleaned, stripped } = await stripImageMetadata(fileBuffer, detectedType.mime);
+      fileBuffer = cleaned;
+      logger.info('Image metadata strip', {
+        filename: req.file.filename,
+        mime: detectedType.mime,
+        stripped,
+        bytesBefore: req.file.size,
+        bytesAfter: cleaned.length,
+      });
+    }
+
     let uploadResult;
     try {
       logger.info('Uploading file to Appwrite', {

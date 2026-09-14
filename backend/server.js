@@ -8,6 +8,7 @@ import { fileURLToPath } from 'url';
 import { syncDatabase } from './models/index.js';
 import sequelize from './config/database.js';
 import { errorHandler, notFound } from './middleware/errorHandler.js';
+import { authenticate } from './middleware/auth.js';
 import { initializeSocket } from './config/socket.js';
 import { securityHeaders, enforceHTTPS } from './middleware/security.js';
 import { sanitizeBody } from './middleware/sanitize.js';
@@ -147,7 +148,14 @@ app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 app.use(sanitizeBody);
 
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// Locally-stored uploads (teacher resource videos, and the local-disk storage
+// fallback) were served to anyone who guessed a URL — no authentication at all,
+// while the upload that created them required a login. Filenames are only
+// `resource-<ms>-<rand>.<ext>` (teacherResourceRoutes.js), which is not a
+// security boundary. Gate reads behind the same session the write required.
+// Cookies are SameSite=None;Secure in production, so <img>/<video> requests
+// from the portals still carry the session.
+app.use('/uploads', authenticate, express.static(path.join(process.cwd(), 'uploads')));
 
 // Global rate limiter — applies to all /api/* routes; health and static files are above
 app.use('/api', apiLimiter);

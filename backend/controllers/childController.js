@@ -2,11 +2,67 @@ import Child from '../models/Child.js';
 import User from '../models/User.js';
 import Group from '../models/Group.js';
 import School from '../models/School.js';
+import { fileTypeFromBuffer } from 'file-type';
 import { deleteFile } from '../config/storage.js';
 import logger from '../utils/logger.js';
 import { emitToUser } from '../config/socket.js';
 import { logAudit } from '../utils/auditLogger.js';
 import { validateChildAccess } from '../utils/schoolValidation.js';
+
+// Image formats accepted for a child photo, verified by magic bytes rather
+// than by the client-declared Content-Type.
+const ALLOWED_PHOTO_MIMES = new Set(['image/jpeg', 'image/png', 'image/webp', 'image/gif']);
+
+const MAX_CHILD_PHOTO_BYTES = 1.5 * 1024 * 1024; // ~1.5 MB raw, matches updateChild
+
+// Bundled portal avatars ('/avatars/avatar1.jfif' and friends) are static assets
+// shipped with the frontend, not uploads — allow the path, nothing else.
+const PORTAL_AVATAR_RE = /^\/avatars\/[A-Za-z0-9._-]{1,64}$/;
+
+/**
+ * Validate a client-supplied child photo value.
+ * Returns { ok: true, value } or { ok: false, status, error }.
+ */
+async function validateChildPhotoValue(photo) {
+  if (photo === null || photo === '' || photo === undefined) {
+    return { ok: true, value: null }; // explicit removal
+  }
+  if (typeof photo !== 'string') {
+    return { ok: false, status: 400, error: 'photo must be a string' };
+  }
+  if (PORTAL_AVATAR_RE.test(photo)) {
+    return { ok: true, value: photo };
+  }
+
+  const matches = photo.match(/^data:([^;,]+);base64,(.+)$/);
+  if (!matches) {
+    return {
+      ok: false,
+      status: 400,
+      error: 'photo must be a bundled avatar path or a data:image/...;base64 URI',
+    };
+  }
+
+  const decoded = Buffer.from(matches[2], 'base64');
+  if (decoded.length === 0) {
+    return { ok: false, status: 400, error: 'Empty base64 data' };
+  }
+  if (decoded.length > MAX_CHILD_PHOTO_BYTES) {
+    return { ok: false, status: 413, error: 'Photo too large' };
+  }
+
+  const detected = await fileTypeFromBuffer(decoded);
+  if (!detected || !ALLOWED_PHOTO_MIMES.has(detected.mime)) {
+    return {
+      ok: false,
+      status: 415,
+      error: 'Unsupported file type. Use JPEG, PNG, WebP, or GIF.',
+    };
+  }
+
+  // Rebuild from the detected type so the stored value cannot misdeclare itself.
+  return { ok: true, value: `data:${detected.mime};base64,${decoded.toString('base64')}` };
+}
 
 // Get all children for the logged-in parent
 export const getChildren = async (req, res) => {
@@ -161,7 +217,17 @@ export const updateChildAvatar = async (req, res) => {
       return res.status(404).json({ error: 'Child not found or you do not have permission' });
     }
 
-    await child.update({ photo, updatedAt: new Date() });
+    // This endpoint took an arbitrary client-supplied string and wrote it
+    // straight to `children.photo` — no type, size, or content validation —
+    // which every portal then renders into an <img src>. Accept only:
+    //   - a bundled portal avatar path ('/avatars/…'), or
+    //   - a base64 data URI whose bytes really are an allowed image format.
+    const validated = await validateChildPhotoValue(photo);
+    if (!validated.ok) {
+      return res.status(validated.status).json({ error: validated.error });
+    }
+
+    await child.update({ photo: validated.value, updatedAt: new Date() });
     await child.reload();
 
     const childData = child.toJSON();
@@ -247,8 +313,16 @@ export const updateChild = async (req, res) => {
             message: 'Please pick an image smaller than 1.5 MB.',
           });
         }
-        const mimetype = req.file.mimetype || 'image/jpeg';
-        updateData.photo = `data:${mimetype};base64,${req.file.buffer.toString('base64')}`;
+        // Magic-byte check — `req.file.mimetype` is the client's claim, and the
+        // old default of 'image/jpeg' meant unverified bytes were stored and
+        // served back to every portal inside a data: URI.
+        const detected = await fileTypeFromBuffer(req.file.buffer);
+        if (!detected || !ALLOWED_PHOTO_MIMES.has(detected.mime)) {
+          return res.status(415).json({
+            error: 'Unsupported file type. Use JPEG, PNG, WebP, or GIF.',
+          });
+        }
+        updateData.photo = `data:${detected.mime};base64,${req.file.buffer.toString('base64')}`;
         delete updateData.photoBase64;
       } catch (uploadError) {
         logger.error('Photo encode error (multipart)', {
@@ -288,7 +362,24 @@ export const updateChild = async (req, res) => {
           });
         }
 
-        updateData.photo = req.body.photoBase64;
+        // The regex above accepts ANY media type — `data:text/html;base64,...`
+        // passed and was persisted verbatim, then served back to every portal.
+        // Verify the decoded bytes really are one of the allowed image formats
+        // and rebuild the URI from the detected type.
+        let decodedBuffer;
+        try {
+          decodedBuffer = Buffer.from(base64Data, 'base64');
+        } catch {
+          return res.status(400).json({ error: 'Invalid base64 photo data' });
+        }
+        const detectedB64 = await fileTypeFromBuffer(decodedBuffer);
+        if (!detectedB64 || !ALLOWED_PHOTO_MIMES.has(detectedB64.mime)) {
+          return res.status(415).json({
+            error: 'Unsupported file type. Use JPEG, PNG, WebP, or GIF.',
+          });
+        }
+
+        updateData.photo = `data:${detectedB64.mime};base64,${decodedBuffer.toString('base64')}`;
         delete updateData.photoBase64;
         
       } catch (uploadError) {

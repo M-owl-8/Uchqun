@@ -28,6 +28,13 @@ const mkUser = (overrides = {}) => ({
   ...overrides,
 });
 
+// A genuine 1x1 PNG. Avatar validation is magic-byte based, so fixtures
+// must be real image bytes rather than arbitrary buffers.
+const REAL_PNG = Buffer.from(
+  'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==',
+  'base64',
+);
+
 describe('userController', () => {
   beforeEach(() => jest.clearAllMocks());
 
@@ -91,12 +98,46 @@ describe('userController', () => {
 
     it('persists base64 data URI on success', async () => {
       const user = mkUser();
-      const req = { user, file: { buffer: Buffer.from('hello'), mimetype: 'image/png' } };
+      const req = { user, file: { buffer: REAL_PNG, mimetype: 'image/png' } };
       const res = mkRes();
       await updateAvatar(req, res);
       const [args] = user.update.mock.calls[0];
       expect(args.avatar).toMatch(/^data:image\/png;base64,/);
       expect(mockEmitToUser).toHaveBeenCalledWith('u1', 'user:updated', expect.any(Object));
+    });
+
+    // This test previously passed `Buffer.from('hello')` with mimetype
+    // 'image/png' and asserted it was stored — it encoded the very gap the
+    // magic-byte check now closes.
+    it('415 when the bytes are not a real image despite an image Content-Type', async () => {
+      const user = mkUser();
+      const req = { user, file: { buffer: Buffer.from('hello'), mimetype: 'image/png' } };
+      const res = mkRes();
+      await updateAvatar(req, res);
+      expect(res.status).toHaveBeenCalledWith(415);
+      expect(user.update).not.toHaveBeenCalled();
+    });
+
+    it('415 for a real image in a format that is not allowed', async () => {
+      const user = mkUser();
+      // BMP: valid magic bytes, not in the allowlist.
+      const bmp = Buffer.concat([Buffer.from('BM'), Buffer.alloc(64)]);
+      const req = { user, file: { buffer: bmp, mimetype: 'image/png' } };
+      const res = mkRes();
+      await updateAvatar(req, res);
+      expect(res.status).toHaveBeenCalledWith(415);
+      expect(user.update).not.toHaveBeenCalled();
+    });
+
+    it('stores the DETECTED media type, not the client-declared one', async () => {
+      const user = mkUser();
+      // Real PNG bytes, but the client claims JPEG.
+      const req = { user, file: { buffer: REAL_PNG, mimetype: 'image/jpeg' } };
+      const res = mkRes();
+      await updateAvatar(req, res);
+      const [args] = user.update.mock.calls[0];
+      expect(args.avatar).toMatch(/^data:image\/png;base64,/);
+      expect(args.avatar).not.toMatch(/^data:image\/jpeg/);
     });
   });
 

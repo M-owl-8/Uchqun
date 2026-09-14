@@ -1,4 +1,5 @@
 import User from '../models/User.js';
+import { fileTypeFromBuffer } from 'file-type';
 import { emitToUser } from '../config/socket.js';
 import logger from '../utils/logger.js';
 
@@ -74,7 +75,18 @@ export const updateAvatar = async (req, res) => {
         message: 'Please pick an image smaller than 1.5 MB.',
       });
     }
-    const dataUri = `data:${mimetype};base64,${req.file.buffer.toString('base64')}`;
+    // Magic-byte check. `req.file.mimetype` is the client's claim — the media
+    // upload path has verified content since H-03 (mediaController.js), but the
+    // avatar path still trusted it, so arbitrary bytes could be stored and
+    // served straight back to every portal inside a data: URI.
+    const detected = await fileTypeFromBuffer(req.file.buffer);
+    if (!detected || !ALLOWED_MIMETYPES.has(detected.mime)) {
+      return res.status(415).json({ error: 'Unsupported file type. Use JPEG, PNG, WebP, or GIF.' });
+    }
+
+    // Build the URI from the DETECTED type, not the declared one, so the stored
+    // media type always matches the actual bytes.
+    const dataUri = `data:${detected.mime};base64,${req.file.buffer.toString('base64')}`;
 
     await user.update({ avatar: dataUri });
     await user.reload();
